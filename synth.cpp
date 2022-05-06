@@ -1,5 +1,9 @@
 #include "synth.h"
 
+#include <iostream>
+
+#include "audio_util.h"
+
 namespace synth {
     namespace {
         float Polyblep(float t, float dt) {
@@ -40,7 +44,7 @@ namespace synth {
         }
     }  // namespace
 
-    void InitStateData(StateData& state, EventQueue* eventQueue, int sampleRate) {
+    void InitStateData(StateData& state) {
         state.left_phase = state.right_phase = 0.0f;
         state.f = 440.0f;
         state.lp0 = 0.0f;
@@ -59,60 +63,50 @@ namespace synth {
         state.ampEnvDecayTime = 0.1f;
         state.ampEnvSustainLevel = 0.5f;
         state.ampEnvReleaseTime = 0.5f;
-
-        state.events = eventQueue;
     }
 
-    void InitEventQueueWithSequence(EventQueue* queue, int sampleRate) {
-        int const bpm = 200;
-        int const kSamplesPerBeat = (sampleRate * 60) / bpm;
-        for (int i = 0; i < 16; ++i) {
-            Event e;
-            e.type = EventType::NoteOn;
-            e.timeInTicks = kSamplesPerBeat*i;
-            e.midiNote = 69 + i;
-            queue->push(e);
+    void Process(
+        StateData* state, audio::PendingEventBuffer const& pendingEvents, int eventCount,
+        float* outputBuffer, int const numChannels, int const framesPerBuffer, int const sampleRate) {
 
-            e.type = EventType::NoteOff;
-            e.timeInTicks = kSamplesPerBeat*i + (kSamplesPerBeat / 2);
-            queue->push(e);
-        }
-    }
-
-    void Process(StateData* state, float* outputBuffer, int const numChannels, int const framesPerBuffer, int const sampleRate)
-    {
         float const dt = 1.0f / sampleRate;
         float const k = state->cutoffK;  // between [0,4], unstable at 4
         int const attackTimeInTicks = state->ampEnvAttackTime * sampleRate;
         int const decayTimeInTicks = state->ampEnvDecayTime * sampleRate;
         int const releaseTimeInTicks = state->ampEnvReleaseTime * sampleRate;
         
+        int pendingEventIx = 0;
         for(int i = 0; i < framesPerBuffer; ++i)
         {
-            Event* e = state->events->front();
-            while (e != nullptr && state->tickTime >= e->timeInTicks) {
-                if (e->timeInTicks == state->tickTime) {
-                    switch (e->type) {
-                        case EventType::NoteOn: {
-                            state->f = MidiToFreq(e->midiNote);
+            // Handle events
+            while (true) {
+                if (pendingEventIx >= eventCount) {
+                    break;
+                }
+                audio::PendingEvent const& pendingEvent = pendingEvents[pendingEventIx];
+                if (pendingEvent._sampleIx == i) {
+                    audio::Event const& e = pendingEvent._e;
+                    switch (e.type) {
+                        case audio::EventType::NoteOn: {
+                            state->f = synth::MidiToFreq(e.midiNote);
                             state->ampEnvTicksSinceStart = 0;
-                            state->ampEnvState = AdsrState::Opening;
-                        }
+                            state->ampEnvState = synth::AdsrState::Opening;
                             break;
-                        case EventType::NoteOff: {
+                        }
+                        case audio::EventType::NoteOff: {
                             // TODO: ignoring the note. assuming monophony for now
                             state->ampEnvTicksSinceStart = 0;
-                            state->ampEnvState = AdsrState::Closing;                
-                        }
+                            state->ampEnvState = synth::AdsrState::Closing;                
                             break;
-                        case EventType::None: {
-                            // will never happen
                         }
+                        default: {
                             break;
+                        }
                     }
+                    ++pendingEventIx;
+                } else {
+                    break;
                 }
-                state->events->pop();
-                e = state->events->front();
             }
 
             // Get pitch LFO value
@@ -120,6 +114,7 @@ namespace synth {
                 state->pitchLFOPhase -= 2*kPi;
             }
             // Make LFO a sine wave for now.
+            
             float const pitchLFOValue = state->pitchLFOGain * sinf(state->pitchLFOPhase);
             state->pitchLFOPhase += (state->pitchLFOFreq * 2*kPi / sampleRate);
 
@@ -216,10 +211,8 @@ namespace synth {
             v *= ampEnvValue;
 
             for (int channelIx = 0; channelIx < numChannels; ++channelIx) {
-                *outputBuffer++ = v;    
+                *outputBuffer++ += v;    
             }
-
-            ++state->tickTime;
         }
     }
 }

@@ -4,7 +4,7 @@
 #include <math.h>
 #include <string.h>
 
-#include "SPSCQueue.h"
+#include "audio_util.h"
 
 namespace synth {
     static inline float const kPi = 3.141592653589793f;
@@ -20,22 +20,9 @@ namespace synth {
         return 440.0f * pow(2.0f, (midi - a4) / 12.0f);
     }
 
-    enum class EventType {
-        None, NoteOn, NoteOff
-    };
-
-    struct Event {
-        EventType type;
-        int timeInTicks = 0;
-        int midiNote = 0;
-    };
-
     enum class AdsrState {
         Closed, Opening, Closing
     };
-
-    static inline int const kEventQueueLength = 64;
-    typedef rigtorp::SPSCQueue<Event> EventQueue;
 
     struct StateData {
         float f = 440.0f;
@@ -63,19 +50,12 @@ namespace synth {
         int ampEnvTicksSinceStart = -1;
         AdsrState ampEnvState = AdsrState::Closed;
         float lastNoteOnAmpEnvValue = 0.0f;
-
-        EventQueue* events = nullptr;
-
-        int tickTime = 0;
-
-        char message[20];
     };
 
-    
+    void InitStateData(StateData& state);
 
-    void InitStateData(StateData& state, EventQueue* eventQueue, int sampleRate);
-
-    void InitEventQueueWithSequence(EventQueue* queue, int sampleRate);
-
-    void Process(StateData* state, float* outputBuffer, int const numChannels, int const framesPerBuffer, int const sampleRate);
+    // TODO!!!!! Put the synth-only shit in its own struct.
+    void Process(
+        StateData* state, audio::PendingEventBuffer const& pendingEvents, int eventCount,
+        float* outputBuffer, int const numChannels, int const framesPerBuffer, int const sampleRate);
 }
