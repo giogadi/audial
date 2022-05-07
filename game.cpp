@@ -9,10 +9,29 @@
 #include <glad/glad.h> 
 #include <GLFW/glfw3.h>
 
-#include "audio.h"
-
 #define DR_WAV_IMPLEMENTATION
 #include "dr_wav.h"
+
+#include "audio.h"
+#include "beat_clock.h"
+
+void InitEventQueueWithSequence(audio::EventQueue* queue, BeatClock const& beatClock) {
+    double const firstNoteBeatTime = beatClock.GetDownBeatTime() + 1.0;
+    for (int i = 0; i < 16; ++i) {
+        double const beatTime = firstNoteBeatTime + (double)i;
+        unsigned long const tickTime = beatClock.BeatTimeToTickTime(beatTime);
+
+        audio::Event e;
+        e.type = audio::EventType::NoteOn;
+        e.timeInTicks = tickTime;
+        e.midiNote = 69 + i;
+        queue->push(e);
+
+        e.type = audio::EventType::NoteOff;
+        e.timeInTicks = beatClock.BeatTimeToTickTime(beatTime + 0.5);
+        queue->push(e);
+    }
+}
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height) {
     glViewport(0, 0, width, height);
@@ -58,30 +77,25 @@ int main() {
 
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
 
+    BeatClock beatClock(/*bpm=*/120.0, (unsigned int)sampleRate, audioContext._stream);
+    beatClock.Update();
+
     // Init event queue with a synth sequence
     {
         double const audioTime = Pa_GetStreamTime(audioContext._stream);
-        InitEventQueueWithSequence(&audioContext._eventQueue, sampleRate, audioTime);
+        InitEventQueueWithSequence(&audioContext._eventQueue, beatClock);
     }
 
-    double prevBeatTime = Pa_GetStreamTime(audioContext._stream);
     while(!glfwWindowShouldClose(window)) {
-        double const audioTime = Pa_GetStreamTime(audioContext._stream);
-        constexpr double kBpm = 120.0;
-        double const beatTime = audioTime * (kBpm / 60.0);
-        if (floor(beatTime) != floor(prevBeatTime)) {
-            // New beat! queue a sound for the very next beat.
-            double soundPlayBeatTime = floor(beatTime) + 1.0;
-            double soundPlayTime = soundPlayBeatTime * (60.0 / kBpm);
-            long timeInTicks = (long) (soundPlayTime * SAMPLE_RATE);
+        beatClock.Update();
+        if (beatClock.IsNewBeat()) {
             audio::Event e;
             e.type = audio::EventType::PlayPcm;
-            e.timeInTicks = timeInTicks;
+            e.timeInTicks = beatClock.BeatTimeToTickTime(beatClock.GetDownBeatTime() + 1.0);
             if (!audioContext._eventQueue.try_push(e)) {
                 std::cout << "Failed to queue audio event" << std::endl;
             }
         }
-        prevBeatTime = beatTime;
 
         // printf("Num desyncs: %d\n", audio::GetNumDesyncs());
         // printf("Avg desync time: %d\n", audio::GetAvgDesyncTime());
@@ -95,6 +109,7 @@ int main() {
         glfwPollEvents();
     }
 
+    // NOTE: Do not use BeatClock after shutting down audio.
     if (audio::ShutDown(audioContext) != paNoError) {
         return 1;
     }

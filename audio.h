@@ -29,8 +29,6 @@ struct StateData {
 
 void InitStateData(StateData& state, EventQueue* eventQueue, int sampleRate, float* pcmBuffer, unsigned long pcmBufferLength);
 
-void InitEventQueueWithSequence(EventQueue* queue, int sampleRate, double audioTime);
-
 int PortAudioCallback(
     const void *inputBuffer, void *outputBuffer,
     unsigned long framesPerBuffer,

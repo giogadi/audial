@@ -33,29 +33,6 @@ void InitStateData(
     state.events = eventQueue;
 }
 
-void InitEventQueueWithSequence(EventQueue* queue, int sampleRate, double const audioTime) {
-    constexpr double kBpm = 120.0;
-    double const currentBeatTime = audioTime * (kBpm / 60.0);
-    double noteBeatTime = floor(currentBeatTime) + 2.0;
-    long const kSamplesPerBeat = (sampleRate * 60) / kBpm;
-    for (int i = 0; i < 16; ++i) {
-        double noteAudioTime = noteBeatTime * (60.0 / kBpm);
-        long noteTickTime = (long) (noteAudioTime * sampleRate);
-
-        Event e;
-        e.type = EventType::NoteOn;
-        e.timeInTicks = noteTickTime;
-        e.midiNote = 69 + i;
-        queue->push(e);
-
-        e.type = EventType::NoteOff;
-        e.timeInTicks = noteTickTime + (kSamplesPerBeat / 2);
-        queue->push(e);
-
-        noteBeatTime += 1.0;
-    }
-}
-
 PaError Init(Context& context, float* pcmBuffer, unsigned long pcmBufferLength)
 {
     PaError err;
