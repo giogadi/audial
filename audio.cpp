@@ -44,13 +44,11 @@ void InitEventQueueWithSequence(EventQueue* queue, int sampleRate, double const 
 
         Event e;
         e.type = EventType::NoteOn;
-        // e.timeInTicks = kSamplesPerBeat*i;
         e.timeInTicks = noteTickTime;
         e.midiNote = 69 + i;
         queue->push(e);
 
         e.type = EventType::NoteOff;
-        // e.timeInTicks = kSamplesPerBeat*i + (kSamplesPerBeat / 2);
         e.timeInTicks = noteTickTime + (kSamplesPerBeat / 2);
         queue->push(e);
 
@@ -135,8 +133,6 @@ void ProcessEventQueue(EventQueue* eventQueue, std::array<Event, 256>* pendingEv
             return;
         }
         (*pendingEvents)[pendingEventCount] = *e;
-        // long offset = e->timeInTicks - tickTime;
-        //printf("count: %d, offset: %ld\n", pendingEventCount, offset);
         eventQueue->pop();
     }
     if (pendingEventCount == pendingEvents->size()) {
@@ -158,8 +154,8 @@ int FindEventsInThisFrame(
         Event& e = (*pendingEvents)[pendingEventIx];
         long sampleIx = e.timeInTicks - frameStartTickTime;
         if (sampleIx < 0) {
-            // // remove this element by swapping the last element with this one.
-            // printf("WARNING: PROCESSED A STALE EVENT: %ld   %ld    %f\n", sampleIx, e.timeInTicks, timeSecs);
+            // remove this element by swapping the last element with this one.
+            printf("WARNING: PROCESSED A STALE EVENT: %ld   %ld    %f\n", sampleIx, e.timeInTicks, timeSecs);
             // std::swap(e, (*pendingEvents)[pendingEventCount-1]);
             // --pendingEventCount;
             // continue;
@@ -184,32 +180,36 @@ int FindEventsInThisFrame(
     return numEventsThisFrame;
 }
 
-// int ProcessEventQueue(EventQueue* eventQueue, unsigned long framesPerBuffer, double const timeSecs, PendingEventBuffer* pendingEvents) {
-//     long tickTime = timeSecs * SAMPLE_RATE;
-//     int pendingEventCount = 0;
-//     for (int i = 0; i < framesPerBuffer; ++i) {
-//         Event* e = eventQueue->front();
-//         while (e != nullptr && tickTime >= e->timeInTicks) {
-//             if (e->timeInTicks == tickTime) {
-//                 PendingEvent& pending = (*pendingEvents)[pendingEventCount];
-//                 pending._e = *e;
-//                 pending._sampleIx = i;
-//                 ++pendingEventCount;
-//                 if (pendingEventCount >= pendingEvents->size()) {
-//                     std::cout << "MAXED OUT PENDING EVENT BUFFER!" << std::endl;
-//                     return pendingEvents->size();
-//                 }
-//             }
-//             eventQueue->pop();
-//             e = eventQueue->front();
-//         }
-//         if (e == nullptr) {
-//             break;
-//         }
-//         ++tickTime;
-//     }
-//     return pendingEventCount;
-// }
+namespace {
+    double gLastCallbackTime = 0.0;
+    int gNumDesyncs = 0;
+    int gDevSum = 0;
+    int gTotalCallbacks = 0;
+
+    double gTimeSinceLastCallback = 0.0;
+    double gTotalTime = 0.0;
+    unsigned long gLastFrameSize = 0;
+}
+
+int GetNumDesyncs() {
+    return gNumDesyncs;
+}
+
+int GetAvgDesyncTickTime() {
+    return gDevSum / gTotalCallbacks;
+}
+
+double GetAvgTimeBetweenCallbacks() {
+    return gTotalTime / gTotalCallbacks;
+}
+
+double GetLastDt() {
+    return gTimeSinceLastCallback;
+}
+
+unsigned long GetLastFrameSize() {
+    return gLastFrameSize;
+}
 
 int PortAudioCallback(
     const void *inputBuffer, void *const outputBufferUntyped,
@@ -220,15 +220,28 @@ int PortAudioCallback(
 
     high_resolution_clock::time_point t1 = high_resolution_clock::now();
 
+    gLastFrameSize = framesPerBuffer;
+
     StateData* state = (StateData*)userData;
-    double const timeSecs = timeInfo->currentTime;
+    // double const timeSecs = timeInfo->currentTime;
+    double const timeSecs = timeInfo->outputBufferDacTime;
+
+    // DEBUG
+    gTimeSinceLastCallback = timeSecs - gLastCallbackTime;
+    gTotalTime += gTimeSinceLastCallback;
+    long ticksSinceLastCallback = (long)(gTimeSinceLastCallback * SAMPLE_RATE);
+    if (ticksSinceLastCallback != framesPerBuffer) {
+        ++gNumDesyncs;
+    }
+    gDevSum += (int)(std::abs(ticksSinceLastCallback - (long)framesPerBuffer));
+    ++gTotalCallbacks;
+    gLastCallbackTime = timeSecs;
+    // DEBUG
     
     // zero out the output buffer first.
     memset(outputBufferUntyped, 0, NUM_OUTPUT_CHANNELS * framesPerBuffer * sizeof(float));
 
     // Figure out which events apply to this invocation of the callback, and which effects should handle them.
-    // PendingEventBuffer pendingEvents;
-    // int const eventCount = ProcessEventQueue(state->events, framesPerBuffer, timeSecs, &pendingEvents);
     ProcessEventQueue(state->events, &state->pendingEvents, state->pendingEventCount, timeSecs * SAMPLE_RATE);
     EventsThisFrame eventsThisFrame;
     int const numEventsThisFrame = FindEventsInThisFrame(&(state->pendingEvents), state->pendingEventCount, framesPerBuffer, timeSecs, &eventsThisFrame);
@@ -283,7 +296,6 @@ int PortAudioCallback(
 
     const double kSecsPerCallback = (double) framesPerBuffer / SAMPLE_RATE;
     double callbackTimeSecs = std::chrono::duration_cast<std::chrono::duration<double>>(t2 - t1).count();
-    // printf("%f\n", callbackTimeSecs / kSecsPerCallback);
     if (callbackTimeSecs / kSecsPerCallback > 0.9) {
         printf("Frame close to deadline: %f / %f", callbackTimeSecs, kSecsPerCallback);
     }

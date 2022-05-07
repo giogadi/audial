@@ -61,4 +61,10 @@ PaError Init(Context& context, float* pcmBuffer, unsigned long pcmBufferLength);
 
 PaError ShutDown(Context& stream);
 
+int GetNumDesyncs();
+int GetAvgDesyncTime();
+double GetAvgTimeBetweenCallbacks();
+double GetLastDt();
+unsigned long GetLastFrameSize();
+
 }  // namespace audio

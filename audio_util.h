@@ -18,10 +18,6 @@ struct Event {
 static inline int const kEventQueueLength = 64;
 typedef rigtorp::SPSCQueue<Event> EventQueue;
 
-// struct PendingEvent {
-//     Event _e;
-//     int _sampleIx;
-// };
 struct FrameEvent {
     Event _e;
     int _sampleIx;

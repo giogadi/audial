@@ -54,7 +54,6 @@ namespace synth {
 
     void InitStateData(StateData& state);
 
-    // TODO!!!!! Put the synth-only shit in its own struct.
     void Process(
         StateData* state, audio::EventsThisFrame const& frameEvents, int eventCount,
         float* outputBuffer, int const numChannels, int const framesPerBuffer, int const sampleRate);

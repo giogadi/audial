@@ -2,6 +2,7 @@
 #include <cstdio>
 #include <cmath>
 #include <cstring>
+#include <limits>
 
 #include <portaudio.h>
 
@@ -81,6 +82,14 @@ int main() {
             }
         }
         prevBeatTime = beatTime;
+
+        // printf("Num desyncs: %d\n", audio::GetNumDesyncs());
+        // printf("Avg desync time: %d\n", audio::GetAvgDesyncTime());
+        // printf("Avg dt: %f\n", audio::GetAvgTimeBetweenCallbacks() * SAMPLE_RATE);
+        // printf("dt: %f\n", audio::GetLastDt());
+        // std::cout.precision(std::numeric_limits<double>::max_digits10);
+        // std::cout << "dt: " << audio::GetLastDt() << std::endl;
+        // printf("frame size: %lu\n", audio::GetLastFrameSize());
 
         glfwSwapBuffers(window);
         glfwPollEvents();
