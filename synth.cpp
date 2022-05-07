@@ -66,7 +66,7 @@ namespace synth {
     }
 
     void Process(
-        StateData* state, audio::PendingEventBuffer const& pendingEvents, int eventCount,
+        StateData* state, audio::EventsThisFrame const& frameEvents, int eventCount,
         float* outputBuffer, int const numChannels, int const framesPerBuffer, int const sampleRate) {
 
         float const dt = 1.0f / sampleRate;
@@ -75,17 +75,17 @@ namespace synth {
         int const decayTimeInTicks = state->ampEnvDecayTime * sampleRate;
         int const releaseTimeInTicks = state->ampEnvReleaseTime * sampleRate;
         
-        int pendingEventIx = 0;
+        int frameEventIx = 0;
         for(int i = 0; i < framesPerBuffer; ++i)
         {
             // Handle events
             while (true) {
-                if (pendingEventIx >= eventCount) {
+                if (frameEventIx >= eventCount) {
                     break;
                 }
-                audio::PendingEvent const& pendingEvent = pendingEvents[pendingEventIx];
-                if (pendingEvent._sampleIx == i) {
-                    audio::Event const& e = pendingEvent._e;
+                audio::FrameEvent const& fe = frameEvents[frameEventIx];
+                if (fe._sampleIx == i) {
+                    audio::Event const& e = fe._e;
                     switch (e.type) {
                         case audio::EventType::NoteOn: {
                             state->f = synth::MidiToFreq(e.midiNote);
@@ -103,7 +103,7 @@ namespace synth {
                             break;
                         }
                     }
-                    ++pendingEventIx;
+                    ++frameEventIx;
                 } else {
                     break;
                 }

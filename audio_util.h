@@ -18,11 +18,16 @@ struct Event {
 static inline int const kEventQueueLength = 64;
 typedef rigtorp::SPSCQueue<Event> EventQueue;
 
-struct PendingEvent {
+// struct PendingEvent {
+//     Event _e;
+//     int _sampleIx;
+// };
+struct FrameEvent {
     Event _e;
     int _sampleIx;
 };
 
-typedef std::array<PendingEvent, 256> PendingEventBuffer;
+// typedef std::array<PendingEvent, 256> PendingEventBuffer;
+typedef std::array<FrameEvent, 256> EventsThisFrame;
 
 }  // namespace audio

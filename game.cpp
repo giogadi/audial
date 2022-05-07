@@ -57,6 +57,12 @@ int main() {
 
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
 
+    // Init event queue with a synth sequence
+    {
+        double const audioTime = Pa_GetStreamTime(audioContext._stream);
+        InitEventQueueWithSequence(&audioContext._eventQueue, sampleRate, audioTime);
+    }
+
     double prevBeatTime = Pa_GetStreamTime(audioContext._stream);
     while(!glfwWindowShouldClose(window)) {
         double const audioTime = Pa_GetStreamTime(audioContext._stream);

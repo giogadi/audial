@@ -21,13 +21,15 @@ struct StateData {
     int currentPcmBufferIx = 0;
 
     EventQueue* events = nullptr;
+    std::array<Event,256> pendingEvents;
+    int pendingEventCount = 0;
 
     char message[20];
 };
 
 void InitStateData(StateData& state, EventQueue* eventQueue, int sampleRate, float* pcmBuffer, unsigned long pcmBufferLength);
 
-void InitEventQueueWithSequence(EventQueue* queue, int sampleRate);
+void InitEventQueueWithSequence(EventQueue* queue, int sampleRate, double audioTime);
 
 int PortAudioCallback(
     const void *inputBuffer, void *outputBuffer,
