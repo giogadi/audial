@@ -14,6 +14,8 @@
 
 #include "glm/ext/matrix_transform.hpp"
 
+#include "stb_image.h"
+
 #include "audio.h"
 #include "beat_clock.h"
 #include "shader.h"
@@ -94,6 +96,28 @@ int main() {
         return 1;
     }
 
+    // TEXTURE
+    int texWidth, texHeight, texNumChannels;
+    std::string const textureFilename("data/textures/wood_container.jpg");
+    stbi_set_flip_vertically_on_load(true);
+    unsigned char *texData = stbi_load(textureFilename.c_str(), &texWidth, &texHeight, &texNumChannels, 0);
+    if (texData == nullptr) {
+        std::cout << "Error: could not load texture " << textureFilename << std::endl;
+        return 1;
+    }
+    unsigned int texture;
+    glGenTextures(1, &texture);
+    glBindTexture(GL_TEXTURE_2D, texture);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glTexImage2D(
+        GL_TEXTURE_2D, /*mipmapLevel=*/0, /*textureFormat=*/GL_RGB, texWidth, texHeight, /*legacy=*/0,
+        /*sourceFormat=*/GL_RGB, /*sourceDataType=*/GL_UNSIGNED_BYTE, texData);
+    glGenerateMipmap(GL_TEXTURE_2D);
+    stbi_image_free(texData);
+
     unsigned int vao;
     glGenVertexArrays(1, &vao);
     glBindVertexArray(vao);
@@ -106,12 +130,20 @@ int main() {
     glGenBuffers(1, &vbo);
     glBindBuffer(GL_ARRAY_BUFFER, vbo);
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices.data(), GL_STATIC_DRAW);
+
+    // Position
     glVertexAttribPointer(
-        /*attributeIndex=*/0, /*numValues=*/3, /*valueType=*/GL_FLOAT, /*normalized=*/false, /*stride=*/5*sizeof(float),
-        /*offsetOfFirstValue=*/(void*)0);
+        /*attributeIndex=*/0, /*numValues=*/3, /*valueType=*/GL_FLOAT, /*normalized=*/false,
+        /*stride=*/5*sizeof(float), /*offsetOfFirstValue=*/(void*)0);
     // This vertex attribute will be read from the VBO that is currently bound
     // to GL_ARRAY_BUFFER, which was bound above to "vbo".
     glEnableVertexAttribArray(/*attributeIndex=*/0);
+
+    // Texture
+    glVertexAttribPointer(
+        /*attributeIndex=*/1, /*numValues=*/2, /*valueType=*/GL_FLOAT, /*normalized=*/false,
+        /*stride=*/5*sizeof(float), /*offsetOfFirstValue=*/(void*)(3*sizeof(float)));
+    glEnableVertexAttribArray(/*attributeIndex=*/1);
 
     // Init event queue with a synth sequence
     {
@@ -139,9 +171,12 @@ int main() {
         shaderProgram.Use();
 
         glm::mat4 transform(1.0f);
-        transform = glm::rotate(transform, (float)(M_PI)/4.0f, glm::vec3(0.0f,0.0f,1.0f));
+        // float angle = (float) beatClock.GetBeatTime() * 2 * (float)M_PI / 4;
+        float angle = (float)M_PI / 4.0f;
+        transform = glm::rotate(transform, angle, glm::vec3(0.0f,0.0f,1.0f));
         shaderProgram.SetMat4("transform", transform);
 
+        glBindTexture(GL_TEXTURE_2D, texture);
         glBindVertexArray(vao);
         glDrawArrays(GL_TRIANGLES, /*startIndex=*/0, numVertices);
 

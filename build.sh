@@ -23,6 +23,6 @@ done
     -L src/glfw/lib-x86_64 \
     -l portaudio \
     -lglfw -framework Cocoa -framework OpenGL -framework IOKit \
-    src/game.cpp src/audio.cpp src/synth.cpp src/glad/src/glad.cpp src/shader.cpp \
+    src/game.cpp src/audio.cpp src/synth.cpp src/glad/src/glad.cpp src/shader.cpp src/stb_image.cpp \
     -o game.out
 )
