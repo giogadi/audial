@@ -7,6 +7,8 @@
 
 #include <glad/glad.h>
 
+#include "glm/gtc/type_ptr.hpp"
+
 bool Shader::Init(const char* vertexPath, const char* fragmentPath)
 {
     // 1. retrieve the vertex/fragment source code from filePath
@@ -103,4 +105,8 @@ void Shader::SetInt(const char* name, int value) const
 void Shader::SetFloat(const char* name, float value) const
 { 
     glUniform1f(glGetUniformLocation(_id, name), value); 
-} 
+}
+void Shader::SetMat4(const char* name, glm::mat4 const& mat) const {
+    glUniformMatrix4fv(
+        glGetUniformLocation(_id, name), /*count=*/1, /*transpose=*/GL_FALSE, glm::value_ptr(mat));
+}

@@ -1,5 +1,7 @@
 #pragma once
 
+#include "glm/mat4x4.hpp"
+
 class Shader {
 public:
     unsigned int GetId() const { return _id; }
@@ -14,6 +16,7 @@ public:
     void SetBool(const char* name, bool value) const;  
     void SetInt(const char* name, int value) const;   
     void SetFloat(const char* name, float value) const;
+    void SetMat4(const char* name, glm::mat4 const& mat) const;
 private:
     unsigned int _id = 0;
 };

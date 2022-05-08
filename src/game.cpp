@@ -12,9 +12,12 @@
 #define DR_WAV_IMPLEMENTATION
 #include "dr_wav.h"
 
+#include "glm/ext/matrix_transform.hpp"
+
 #include "audio.h"
 #include "beat_clock.h"
 #include "shader.h"
+#include "cube_verts.h"
 
 void InitEventQueueWithSequence(audio::EventQueue* queue, BeatClock const& beatClock) {
     double const firstNoteBeatTime = beatClock.GetDownBeatTime() + 1.0;
@@ -95,17 +98,16 @@ int main() {
     glGenVertexArrays(1, &vao);
     glBindVertexArray(vao);
     
-    float vertices[] = {
-        -0.5f, -0.5f, 0.0f,
-        0.5f, -0.5f, 0.0f,
-        0.0f,  0.5f, 0.0f
-    };
+    std::array<float,180> vertices;
+    GetCubeVertices(&vertices);
+    int const numVertices = 36;
+
     unsigned int vbo;
     glGenBuffers(1, &vbo);
     glBindBuffer(GL_ARRAY_BUFFER, vbo);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices.data(), GL_STATIC_DRAW);
     glVertexAttribPointer(
-        /*attributeIndex=*/0, /*numValues=*/3, /*valueType=*/GL_FLOAT, /*normalized=*/false, /*stride=*/3*sizeof(float),
+        /*attributeIndex=*/0, /*numValues=*/3, /*valueType=*/GL_FLOAT, /*normalized=*/false, /*stride=*/5*sizeof(float),
         /*offsetOfFirstValue=*/(void*)0);
     // This vertex attribute will be read from the VBO that is currently bound
     // to GL_ARRAY_BUFFER, which was bound above to "vbo".
@@ -135,8 +137,13 @@ int main() {
         glClear(GL_COLOR_BUFFER_BIT);
 
         shaderProgram.Use();
+
+        glm::mat4 transform(1.0f);
+        transform = glm::rotate(transform, (float)(M_PI)/4.0f, glm::vec3(0.0f,0.0f,1.0f));
+        shaderProgram.SetMat4("transform", transform);
+
         glBindVertexArray(vao);
-        glDrawArrays(GL_TRIANGLES, /*startIndex=*/0, /*numVertices=*/3);
+        glDrawArrays(GL_TRIANGLES, /*startIndex=*/0, numVertices);
 
         glfwSwapBuffers(window);
         glfwPollEvents();
