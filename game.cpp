@@ -14,6 +14,7 @@
 
 #include "audio.h"
 #include "beat_clock.h"
+#include "shader.h"
 
 void InitEventQueueWithSequence(audio::EventQueue* queue, BeatClock const& beatClock) {
     double const firstNoteBeatTime = beatClock.GetDownBeatTime() + 1.0;
@@ -33,8 +34,13 @@ void InitEventQueueWithSequence(audio::EventQueue* queue, BeatClock const& beatC
     }
 }
 
-void framebuffer_size_callback(GLFWwindow* window, int width, int height) {
+void FramebufferSizeCallback(GLFWwindow* window, int width, int height) {
     glViewport(0, 0, width, height);
+}
+
+void ProcessInput(GLFWwindow *window) {
+    if(glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
+        glfwSetWindowShouldClose(window, true);
 }
 
 int main() {
@@ -58,7 +64,9 @@ int main() {
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+#ifdef __APPLE__
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
+#endif
 
     GLFWwindow* window = glfwCreateWindow(800, 600, "Audial", nullptr, nullptr);
     if (window == nullptr) {
@@ -73,12 +81,35 @@ int main() {
         return -1;
     }
 
-    glViewport(0, 0, 800, 600);
-
-    glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
+    glfwSetFramebufferSizeCallback(window, FramebufferSizeCallback);
 
     BeatClock beatClock(/*bpm=*/120.0, (unsigned int)sampleRate, audioContext._stream);
     beatClock.Update();
+
+    Shader shaderProgram;
+    if (!shaderProgram.Init("shaders/shader.vert", "shaders/shader.frag")) {
+        return 1;
+    }
+
+    unsigned int vao;
+    glGenVertexArrays(1, &vao);
+    glBindVertexArray(vao);
+    
+    float vertices[] = {
+        -0.5f, -0.5f, 0.0f,
+        0.5f, -0.5f, 0.0f,
+        0.0f,  0.5f, 0.0f
+    };
+    unsigned int vbo;
+    glGenBuffers(1, &vbo);
+    glBindBuffer(GL_ARRAY_BUFFER, vbo);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+    glVertexAttribPointer(
+        /*attributeIndex=*/0, /*numValues=*/3, /*valueType=*/GL_FLOAT, /*normalized=*/false, /*stride=*/3*sizeof(float),
+        /*offsetOfFirstValue=*/(void*)0);
+    // This vertex attribute will be read from the VBO that is currently bound
+    // to GL_ARRAY_BUFFER, which was bound above to "vbo".
+    glEnableVertexAttribArray(/*attributeIndex=*/0);
 
     // Init event queue with a synth sequence
     {
@@ -97,17 +128,21 @@ int main() {
             }
         }
 
-        // printf("Num desyncs: %d\n", audio::GetNumDesyncs());
-        // printf("Avg desync time: %d\n", audio::GetAvgDesyncTime());
-        // printf("Avg dt: %f\n", audio::GetAvgTimeBetweenCallbacks() * SAMPLE_RATE);
-        // printf("dt: %f\n", audio::GetLastDt());
-        // std::cout.precision(std::numeric_limits<double>::max_digits10);
-        // std::cout << "dt: " << audio::GetLastDt() << std::endl;
-        // printf("frame size: %lu\n", audio::GetLastFrameSize());
+        ProcessInput(window);
+
+        // Rendering
+        glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+        glClear(GL_COLOR_BUFFER_BIT);
+
+        shaderProgram.Use();
+        glBindVertexArray(vao);
+        glDrawArrays(GL_TRIANGLES, /*startIndex=*/0, /*numVertices=*/3);
 
         glfwSwapBuffers(window);
         glfwPollEvents();
     }
+
+    glfwTerminate();
 
     // NOTE: Do not use BeatClock after shutting down audio.
     if (audio::ShutDown(audioContext) != paNoError) {
