@@ -40,12 +40,12 @@ public:
 
 class BoundMesh {
 public:
-    // ASSUMES 5 VALUES PER VERTEX
+    // ASSUMES 8 VALUES PER VERTEX
     void Init(float* vertexData, int numVertices, Material const* m) {
         _numVerts = numVertices;
         _mat = m;
 
-        int const numValuesPerVertex = 5;
+        int const numValuesPerVertex = 8;
 
         glGenVertexArrays(1, &_vao);
         glBindVertexArray(_vao);
@@ -64,11 +64,19 @@ public:
         // to GL_ARRAY_BUFFER, which was bound above to "vbo".
         glEnableVertexAttribArray(/*attributeIndex=*/0);
 
+        // Normal attribute
+        glVertexAttribPointer(
+            /*attributeIndex=*/1, /*numValues=*/3, /*valueType=*/GL_FLOAT, /*normalized=*/false,
+            /*stride=*/numValuesPerVertex*sizeof(float), /*offsetOfFirstValue=*/(void*)(3*sizeof(float)));
+        // This vertex attribute will be read from the VBO that is currently bound
+        // to GL_ARRAY_BUFFER, which was bound above to "vbo".
+        glEnableVertexAttribArray(/*attributeIndex=*/1);
+
         // (s,t) attribute
         glVertexAttribPointer(
-            /*attributeIndex=*/1, /*numValues=*/2, /*valueType=*/GL_FLOAT, /*normalized=*/false,
-            /*stride=*/numValuesPerVertex*sizeof(float), /*offsetOfFirstValue=*/(void*)(3*sizeof(float)));
-        glEnableVertexAttribArray(/*attributeIndex=*/1);
+            /*attributeIndex=*/2, /*numValues=*/2, /*valueType=*/GL_FLOAT, /*normalized=*/false,
+            /*stride=*/numValuesPerVertex*sizeof(float), /*offsetOfFirstValue=*/(void*)(6*sizeof(float)));
+        glEnableVertexAttribArray(/*attributeIndex=*/2);
     }
 
     unsigned int _vao = 0;

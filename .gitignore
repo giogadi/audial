@@ -1,3 +1,4 @@
+game
 game.out
 game.out.dSYM
 notes.txt
@@ -5,3 +6,4 @@ fmod_core
 fmod_test.cpp
 .vscode
 .DS_Store
+intermediates

@@ -116,7 +116,7 @@ int main() {
 
     BoundMesh cubeMesh;
     {
-        std::array<float,180> cubeVerts;
+        std::array<float,kCubeVertsNumValues> cubeVerts;
         GetCubeVertices(&cubeVerts);
         int const numCubeVerts = 36;
         cubeMesh.Init(cubeVerts.data(), numCubeVerts, &material);
