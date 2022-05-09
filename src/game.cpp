@@ -48,11 +48,10 @@ void FramebufferSizeCallback(GLFWwindow* window, int width, int height) {
     glViewport(0, 0, width, height);
 }
 
-void CreateCube(Shader const& shader, glm::mat4 const* viewProjTrans, int texture, int vao,
-    int numVertices, Entity* e) {
+void CreateCube(
+    Shader const& shader, glm::mat4 const* viewProjTrans, BoundMesh const& mesh, Entity* e) {
     auto t = std::make_unique<TransformComponent>();
-    auto m = std::make_unique<ModelComponent>(
-        t.get(), viewProjTrans, shader, texture, vao, numVertices);
+    auto m = std::make_unique<ModelComponent>(t.get(), viewProjTrans, &mesh);
     e->_transform = std::move(t);
     e->_model = std::move(m);
 }
@@ -89,6 +88,7 @@ int main() {
         return -1;
     }
     glfwMakeContextCurrent(window);
+    // glfwSwapInterval(1);  // vsync?
 
     if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
         std::cout << "Failed to initialize GLAD" << std::endl;
@@ -104,54 +104,23 @@ int main() {
         return 1;
     }
 
-    // TEXTURE
-    int texWidth, texHeight, texNumChannels;
-    std::string const textureFilename("data/textures/wood_container.jpg");
-    stbi_set_flip_vertically_on_load(true);
-    unsigned char *texData = stbi_load(textureFilename.c_str(), &texWidth, &texHeight, &texNumChannels, 0);
-    if (texData == nullptr) {
-        std::cout << "Error: could not load texture " << textureFilename << std::endl;
+    std::unique_ptr<Texture> texture =
+        Texture::CreateTextureFromFile("data/textures/wood_container.jpg");
+    if (texture == nullptr) {
         return 1;
     }
-    unsigned int texture;
-    glGenTextures(1, &texture);
-    glBindTexture(GL_TEXTURE_2D, texture);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    glTexImage2D(
-        GL_TEXTURE_2D, /*mipmapLevel=*/0, /*textureFormat=*/GL_RGB, texWidth, texHeight, /*legacy=*/0,
-        /*sourceFormat=*/GL_RGB, /*sourceDataType=*/GL_UNSIGNED_BYTE, texData);
-    glGenerateMipmap(GL_TEXTURE_2D);
-    stbi_image_free(texData);
 
-    unsigned int vao;
-    glGenVertexArrays(1, &vao);
-    glBindVertexArray(vao);
-    
-    std::array<float,180> vertices;
-    GetCubeVertices(&vertices);
-    int const numVertices = 36;
+    Material material;
+    material._shader = shaderProgram;
+    material._texture = texture.get();
 
-    unsigned int vbo;
-    glGenBuffers(1, &vbo);
-    glBindBuffer(GL_ARRAY_BUFFER, vbo);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices.data(), GL_STATIC_DRAW);
-
-    // Position
-    glVertexAttribPointer(
-        /*attributeIndex=*/0, /*numValues=*/3, /*valueType=*/GL_FLOAT, /*normalized=*/false,
-        /*stride=*/5*sizeof(float), /*offsetOfFirstValue=*/(void*)0);
-    // This vertex attribute will be read from the VBO that is currently bound
-    // to GL_ARRAY_BUFFER, which was bound above to "vbo".
-    glEnableVertexAttribArray(/*attributeIndex=*/0);
-
-    // Texture
-    glVertexAttribPointer(
-        /*attributeIndex=*/1, /*numValues=*/2, /*valueType=*/GL_FLOAT, /*normalized=*/false,
-        /*stride=*/5*sizeof(float), /*offsetOfFirstValue=*/(void*)(3*sizeof(float)));
-    glEnableVertexAttribArray(/*attributeIndex=*/1);
+    BoundMesh cubeMesh;
+    {
+        std::array<float,180> cubeVerts;
+        GetCubeVertices(&cubeVerts);
+        int const numCubeVerts = 36;
+        cubeMesh.Init(cubeVerts.data(), numCubeVerts, &material);
+    }
 
     BeatClock beatClock(/*bpm=*/120.0, (unsigned int)sampleRate, audioContext._stream);
     beatClock.Update();
@@ -161,19 +130,16 @@ int main() {
     DebugCamera camera(inputManager);
     camera._pos = glm::vec3(0.0f, 0.0f, 3.0f);
 
-    glm::mat4 viewProjTransform;
-    {
-        // DEDUP WITH UPDATE BELOW
-        int windowWidth, windowHeight;
-        glfwGetWindowSize(window, &windowWidth, &windowHeight);
-        float aspectRatio = (float)windowWidth / windowHeight;
-        glm::mat4 proj = glm::perspective(
-            /*fovy=*/glm::radians(45.f), aspectRatio, /*near=*/0.1f, /*far=*/100.0f);
-        viewProjTransform = proj * camera.GetViewMatrix();        
-    }
+    // NOTE!!! DO NOT TRY TO USE THIS UNTIL IT'S BEEN SET IN THE RENDER LOOP BELOW
+    glm::mat4 viewProjTransform(1.f);
 
     Entity cubeEntity;
-    CreateCube(shaderProgram, &viewProjTransform, texture, vao, /*numVertices=*/36, &cubeEntity);
+    CreateCube(shaderProgram, &viewProjTransform, cubeMesh, &cubeEntity);
+
+    Entity cubeEntity2;
+    CreateCube(shaderProgram, &viewProjTransform, cubeMesh, &cubeEntity2);
+    cubeEntity2._transform->_transform = 
+        glm::translate(cubeEntity2._transform->_transform, glm::vec3(-1.f,0.f,0.f));
 
     // Init event queue with a synth sequence
     {
@@ -201,7 +167,6 @@ int main() {
 
         camera.Update(dt);
 
-        // ProcessInput(window);
         if (inputManager.IsKeyPressed(InputManager::Key::Escape)) {
             glfwSetWindowShouldClose(window, true);
         }        
@@ -210,17 +175,15 @@ int main() {
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        shaderProgram.Use();
-
         int windowWidth, windowHeight;
         glfwGetWindowSize(window, &windowWidth, &windowHeight);
         float aspectRatio = (float)windowWidth / windowHeight;
         glm::mat4 projTransform = glm::perspective(
             /*fovy=*/glm::radians(45.f), aspectRatio, /*near=*/0.1f, /*far=*/100.0f);
-
         viewProjTransform = projTransform * camera.GetViewMatrix();
 
         cubeEntity.Update(dt);
+        cubeEntity2.Update(dt);
 
         glfwSwapBuffers(window);
         glfwPollEvents();

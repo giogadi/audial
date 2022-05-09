@@ -3,6 +3,8 @@
 #include "glm/mat4x4.hpp"
 #include "glm/ext/matrix_transform.hpp"
 
+#include "model.h"
+
 class TransformComponent {
 public:
     TransformComponent()
@@ -24,31 +26,24 @@ public:
 class ModelComponent {
 public:
     ModelComponent(
-        TransformComponent const* trans, glm::mat4 const* viewProjTrans, Shader const& shader, 
-        int texture, int vao, int numVertices)
+        TransformComponent const* trans, glm::mat4 const* viewProjTrans, BoundMesh const* mesh)
         : _transform(trans)
         , _viewProjTransform(viewProjTrans)
-        , _shader(shader)
-        , _textureHandle(texture)
-        , _vao(vao)
-        , _numVertices(numVertices)
+        , _mesh(mesh)
     {}
 
-
     void Update() {
-        _shader.Use();
-        _shader.SetMat4("transform", *_viewProjTransform * _transform->_transform);
-        glBindTexture(GL_TEXTURE_2D, _textureHandle);
-        glBindVertexArray(_vao);
-        glDrawArrays(GL_TRIANGLES, /*startIndex=*/0, _numVertices);
+        _mesh->_mat->_shader.Use();
+        _mesh->_mat->_shader.SetMat4("transform", *_viewProjTransform * _transform->_transform);
+        glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_2D, _mesh->_mat->_texture->_handle);
+        glBindVertexArray(_mesh->_vao);
+        glDrawArrays(GL_TRIANGLES, /*startIndex=*/0, _mesh->_numVerts);
     }
 
     TransformComponent const* _transform = nullptr;
     glm::mat4 const* _viewProjTransform = nullptr;
-    Shader _shader;
-    int _textureHandle = -1;
-    int _vao = -1;
-    int _numVertices = -1;
+    BoundMesh const* _mesh = nullptr;
 };
 
 class Entity {
