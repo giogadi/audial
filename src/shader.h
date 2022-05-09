@@ -2,6 +2,8 @@
 
 #include "glm/mat4x4.hpp"
 
+// TODO: Do we need a "glDeleteProgram" or something on destruction?
+
 class Shader {
 public:
     unsigned int GetId() const { return _id; }
@@ -10,7 +12,7 @@ public:
     // TODO: if returns false, will leak memory because it doesn't free the shaders. Just quit if this fails
     bool Init(const char* vertexPath, const char* fragmentPath);
     // use/activate the shader
-    void Use();
+    void Use() const;
     // utility uniform functions
     // TODO: cache the uniform locations.
     void SetBool(const char* name, bool value) const;  

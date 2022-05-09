@@ -90,7 +90,7 @@ bool Shader::Init(const char* vertexPath, const char* fragmentPath)
     return true;
 }
 
-void Shader::Use() {
+void Shader::Use() const {
     glUseProgram(_id);
 }
 

@@ -3,6 +3,7 @@
 #include <cmath>
 #include <cstring>
 #include <limits>
+#include <memory>
 
 #include <portaudio.h>
 
@@ -23,6 +24,7 @@
 #include "cube_verts.h"
 #include "input_manager.h"
 #include "camera.h"
+#include "component.h"
 
 void InitEventQueueWithSequence(audio::EventQueue* queue, BeatClock const& beatClock) {
     double const firstNoteBeatTime = beatClock.GetDownBeatTime() + 1.0;
@@ -44,6 +46,15 @@ void InitEventQueueWithSequence(audio::EventQueue* queue, BeatClock const& beatC
 
 void FramebufferSizeCallback(GLFWwindow* window, int width, int height) {
     glViewport(0, 0, width, height);
+}
+
+void CreateCube(Shader const& shader, glm::mat4 const* viewProjTrans, int texture, int vao,
+    int numVertices, Entity* e) {
+    auto t = std::make_unique<TransformComponent>();
+    auto m = std::make_unique<ModelComponent>(
+        t.get(), viewProjTrans, shader, texture, vao, numVertices);
+    e->_transform = std::move(t);
+    e->_model = std::move(m);
 }
 
 int main() {
@@ -150,17 +161,25 @@ int main() {
     DebugCamera camera(inputManager);
     camera._pos = glm::vec3(0.0f, 0.0f, 3.0f);
 
+    glm::mat4 viewProjTransform;
+    {
+        // DEDUP WITH UPDATE BELOW
+        int windowWidth, windowHeight;
+        glfwGetWindowSize(window, &windowWidth, &windowHeight);
+        float aspectRatio = (float)windowWidth / windowHeight;
+        glm::mat4 proj = glm::perspective(
+            /*fovy=*/glm::radians(45.f), aspectRatio, /*near=*/0.1f, /*far=*/100.0f);
+        viewProjTransform = proj * camera.GetViewMatrix();        
+    }
+
+    Entity cubeEntity;
+    CreateCube(shaderProgram, &viewProjTransform, texture, vao, /*numVertices=*/36, &cubeEntity);
+
     // Init event queue with a synth sequence
     {
         double const audioTime = Pa_GetStreamTime(audioContext._stream);
         InitEventQueueWithSequence(&audioContext._eventQueue, beatClock);
     }
-
-    glm::mat4 modelTransform(1.0f);
-    modelTransform = glm::rotate(modelTransform, glm::radians(45.f), glm::vec3(0.f, 1.f, 0.f));
-    modelTransform = glm::rotate(modelTransform, glm::radians(45.f), glm::vec3(1.f, 0.f, 0.f));
-
-    glm::mat4 viewTransform = camera.GetViewMatrix();
 
     float lastGlfwTime = (float)glfwGetTime();
     while(!glfwWindowShouldClose(window)) {
@@ -199,18 +218,9 @@ int main() {
         glm::mat4 projTransform = glm::perspective(
             /*fovy=*/glm::radians(45.f), aspectRatio, /*near=*/0.1f, /*far=*/100.0f);
 
-        modelTransform = glm::rotate(
-            modelTransform, dt * glm::radians(180.0f),
-            glm::vec3(0.0f, 1.0f, 0.0f));
+        viewProjTransform = projTransform * camera.GetViewMatrix();
 
-        viewTransform = camera.GetViewMatrix();
-        
-        glm::mat4 transform = projTransform * viewTransform * modelTransform;
-        shaderProgram.SetMat4("transform", transform);
-
-        glBindTexture(GL_TEXTURE_2D, texture);
-        glBindVertexArray(vao);
-        glDrawArrays(GL_TRIANGLES, /*startIndex=*/0, numVertices);
+        cubeEntity.Update(dt);
 
         glfwSwapBuffers(window);
         glfwPollEvents();
