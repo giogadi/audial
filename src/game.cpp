@@ -13,6 +13,7 @@
 #include "dr_wav.h"
 
 #include "glm/ext/matrix_transform.hpp"
+#include "glm/ext/matrix_clip_space.hpp"
 
 #include "stb_image.h"
 
@@ -20,6 +21,8 @@
 #include "beat_clock.h"
 #include "shader.h"
 #include "cube_verts.h"
+#include "input_manager.h"
+#include "camera.h"
 
 void InitEventQueueWithSequence(audio::EventQueue* queue, BeatClock const& beatClock) {
     double const firstNoteBeatTime = beatClock.GetDownBeatTime() + 1.0;
@@ -41,11 +44,6 @@ void InitEventQueueWithSequence(audio::EventQueue* queue, BeatClock const& beatC
 
 void FramebufferSizeCallback(GLFWwindow* window, int width, int height) {
     glViewport(0, 0, width, height);
-}
-
-void ProcessInput(GLFWwindow *window) {
-    if(glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
-        glfwSetWindowShouldClose(window, true);
 }
 
 int main() {
@@ -88,8 +86,7 @@ int main() {
 
     glfwSetFramebufferSizeCallback(window, FramebufferSizeCallback);
 
-    BeatClock beatClock(/*bpm=*/120.0, (unsigned int)sampleRate, audioContext._stream);
-    beatClock.Update();
+    glEnable(GL_DEPTH_TEST);
 
     Shader shaderProgram;
     if (!shaderProgram.Init("shaders/shader.vert", "shaders/shader.frag")) {
@@ -145,13 +142,32 @@ int main() {
         /*stride=*/5*sizeof(float), /*offsetOfFirstValue=*/(void*)(3*sizeof(float)));
     glEnableVertexAttribArray(/*attributeIndex=*/1);
 
+    BeatClock beatClock(/*bpm=*/120.0, (unsigned int)sampleRate, audioContext._stream);
+    beatClock.Update();
+
+    InputManager inputManager(window);
+
+    DebugCamera camera(inputManager);
+    camera._pos = glm::vec3(0.0f, 0.0f, 3.0f);
+
     // Init event queue with a synth sequence
     {
         double const audioTime = Pa_GetStreamTime(audioContext._stream);
         InitEventQueueWithSequence(&audioContext._eventQueue, beatClock);
     }
 
+    glm::mat4 modelTransform(1.0f);
+    modelTransform = glm::rotate(modelTransform, glm::radians(45.f), glm::vec3(0.f, 1.f, 0.f));
+    modelTransform = glm::rotate(modelTransform, glm::radians(45.f), glm::vec3(1.f, 0.f, 0.f));
+
+    glm::mat4 viewTransform = camera.GetViewMatrix();
+
+    float lastGlfwTime = (float)glfwGetTime();
     while(!glfwWindowShouldClose(window)) {
+        float thisGlfwTime = (float)glfwGetTime();
+        float dt = thisGlfwTime - lastGlfwTime;
+        lastGlfwTime = thisGlfwTime;
+
         beatClock.Update();
         if (beatClock.IsNewBeat()) {
             audio::Event e;
@@ -162,18 +178,34 @@ int main() {
             }
         }
 
-        ProcessInput(window);
+        inputManager.Update();
+
+        camera.Update(dt);
+
+        // ProcessInput(window);
+        if (inputManager.IsKeyPressed(InputManager::Key::Escape)) {
+            glfwSetWindowShouldClose(window, true);
+        }        
 
         // Rendering
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
-        glClear(GL_COLOR_BUFFER_BIT);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         shaderProgram.Use();
 
-        glm::mat4 transform(1.0f);
-        // float angle = (float) beatClock.GetBeatTime() * 2 * (float)M_PI / 4;
-        float angle = (float)M_PI / 4.0f;
-        transform = glm::rotate(transform, angle, glm::vec3(0.0f,0.0f,1.0f));
+        int windowWidth, windowHeight;
+        glfwGetWindowSize(window, &windowWidth, &windowHeight);
+        float aspectRatio = (float)windowWidth / windowHeight;
+        glm::mat4 projTransform = glm::perspective(
+            /*fovy=*/glm::radians(45.f), aspectRatio, /*near=*/0.1f, /*far=*/100.0f);
+
+        modelTransform = glm::rotate(
+            modelTransform, dt * glm::radians(180.0f),
+            glm::vec3(0.0f, 1.0f, 0.0f));
+
+        viewTransform = camera.GetViewMatrix();
+        
+        glm::mat4 transform = projTransform * viewTransform * modelTransform;
         shaderProgram.SetMat4("transform", transform);
 
         glBindTexture(GL_TEXTURE_2D, texture);
