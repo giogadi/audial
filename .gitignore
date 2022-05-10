@@ -1,9 +1,12 @@
 game
 game.out
 game.out.dSYM
+game-dbg
+a.out
 notes.txt
 fmod_core
 fmod_test.cpp
 .vscode
 .DS_Store
 intermediates
+intermediates-dbg

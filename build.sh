@@ -1,9 +1,13 @@
 
 MAKE_ARGS=""
-while getopts 'd' OPTION; do
+SILENT_ARG="-s"
+while getopts 'dv' OPTION; do
     case "$OPTION" in
         d) 
-            MAKE_ARGS="${MAKE_ARGS} OBJDIR=intermediates-dbg GAMENAME=game-dbg"
+            MAKE_ARGS="${MAKE_ARGS} debug OBJDIR=intermediates-dbg GAMENAME=game-dbg"
+            ;;
+        v)
+            SILENT_ARG=""
             ;;
         ?)
             echo "Unrecognized option ${OPTION}"
@@ -12,7 +16,7 @@ while getopts 'd' OPTION; do
     esac
 done
 
-make -j4 -s $MAKE_ARGS
+make -j4 $SILENT_ARG $MAKE_ARGS
 
 # (
 #     set -x ; 

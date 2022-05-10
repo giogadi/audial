@@ -49,11 +49,13 @@ void FramebufferSizeCallback(GLFWwindow* window, int width, int height) {
 }
 
 void CreateCube(
-    Shader const& shader, glm::mat4 const* viewProjTrans, BoundMesh const& mesh, Entity* e) {
-    auto t = std::make_unique<TransformComponent>();
-    auto m = std::make_unique<ModelComponent>(t.get(), viewProjTrans, &mesh);
-    e->_transform = std::move(t);
-    e->_model = std::move(m);
+    SceneManager* sceneManager, Shader const& shader, glm::mat4 const* viewProjTrans,
+    BoundMesh const& mesh, Entity* e) {
+    {
+        auto t = std::make_unique<TransformComponent>();
+        e->_transform = std::move(t);
+    }
+    e->_model = sceneManager->AddModel(e->_transform.get(), viewProjTrans, &mesh);
 }
 
 int main() {
@@ -133,11 +135,24 @@ int main() {
     // NOTE!!! DO NOT TRY TO USE THIS UNTIL IT'S BEEN SET IN THE RENDER LOOP BELOW
     glm::mat4 viewProjTransform(1.f);
 
+    auto lightTransform = std::make_unique<TransformComponent>();
+    lightTransform->SetPos(glm::vec3(0.f, 3.f, 0.f));
+
+    SceneManager sceneManager(&camera);
+    LightComponent* lightComponent = sceneManager.SetLight(
+        lightTransform.get(), glm::vec3(0.2f,0.2f,0.2f), glm::vec3(1.f,1.f,1.f));
+
     Entity cubeEntity;
-    CreateCube(shaderProgram, &viewProjTransform, cubeMesh, &cubeEntity);
+    CreateCube(&sceneManager, shaderProgram, &viewProjTransform, cubeMesh, &cubeEntity);
+    {
+        glm::mat4& t = cubeEntity._transform->_transform;
+        t = glm::rotate(t, glm::radians(45.f), glm::vec3(0.f, 1.f, 0.f));
+        t = glm::rotate(t, glm::radians(45.f), glm::vec3(1.f, 0.f, 0.f));
+        t = glm::translate(t, glm::vec3(1.f, 0.f, 0.f));
+    }
 
     Entity cubeEntity2;
-    CreateCube(shaderProgram, &viewProjTransform, cubeMesh, &cubeEntity2);
+    CreateCube(&sceneManager, shaderProgram, &viewProjTransform, cubeMesh, &cubeEntity2);
     cubeEntity2._transform->_transform = 
         glm::translate(cubeEntity2._transform->_transform, glm::vec3(-1.f,0.f,0.f));
 
@@ -181,9 +196,19 @@ int main() {
         glm::mat4 projTransform = glm::perspective(
             /*fovy=*/glm::radians(45.f), aspectRatio, /*near=*/0.1f, /*far=*/100.0f);
         viewProjTransform = projTransform * camera.GetViewMatrix();
+        
+        // turn cube1
+        {
+            glm::mat4& t = cubeEntity._transform->_transform;
+            t = glm::rotate(t, dt * glm::radians(180.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+        }
+        // turn cube2
+        {
+            glm::mat4& t = cubeEntity2._transform->_transform;
+            t = glm::rotate(t, dt * glm::radians(180.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+        }
 
-        cubeEntity.Update(dt);
-        cubeEntity2.Update(dt);
+        sceneManager.Draw();
 
         glfwSwapBuffers(window);
         glfwPollEvents();
