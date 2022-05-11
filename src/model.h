@@ -1,5 +1,14 @@
 #pragma once
 
+#include <iostream>
+
+#include <glad/glad.h> 
+
+#include "stb_image.h"
+#include "glm/ext/matrix_clip_space.hpp"
+
+#include "shader.h"
+
 class Texture {
 public:
     static std::unique_ptr<Texture> CreateTextureFromFile(char const* filename) {

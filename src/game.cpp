@@ -47,26 +47,25 @@ void FramebufferSizeCallback(GLFWwindow* window, int width, int height) {
     glViewport(0, 0, width, height);
 }
 
-void CreateCube(
-    TransformManager* transformMgr, SceneManager* sceneMgr,
-    BoundMesh const& mesh, Entity* e) {
-    TransformComponent* t = transformMgr->CreateTransform();
-    e->_components.push_back(t);
-    e->_components.push_back(sceneMgr->AddModel(t, &mesh));
+void CreateCube(SceneManager* sceneMgr, BoundMesh const& mesh, Entity* e) {
+    auto unique = std::make_unique<TransformComponent>();
+    TransformComponent* t = unique.get();
+    e->_components.push_back(std::move(unique));
+    e->_components.push_back(std::make_unique<ModelComponent>(t, &mesh, sceneMgr));
 }
 
-void CreateLight(TransformManager* transformMgr, SceneManager* sceneMgr, Entity* e) {
-    TransformComponent* t = transformMgr->CreateTransform();
-    e->_components.push_back(t);
-    e->_components.push_back(sceneMgr->AddLight(t, glm::vec3(0.2f,0.2f,0.2f), glm::vec3(1.f,1.f,1.f)));
+void CreateLight(SceneManager* sceneMgr, Entity* e) {
+    auto unique = std::make_unique<TransformComponent>();
+    TransformComponent* t = unique.get();
+    e->_components.push_back(std::move(unique));
+    e->_components.push_back(std::make_unique<LightComponent>(t, glm::vec3(0.2f,0.2f,0.2f), glm::vec3(1.f,1.f,1.f), sceneMgr));
 }
 
-void CreateCamera(
-    TransformManager* transformMgr, SceneManager* sceneMgr, InputManager* inputMgr,
-    Entity* e) {
-    TransformComponent* t = transformMgr->CreateTransform();
-    e->_components.push_back(t);
-    e->_components.push_back(sceneMgr->AddCamera(t, inputMgr));
+void CreateCamera(SceneManager* sceneMgr, InputManager* inputMgr, Entity* e) {
+    auto unique = std::make_unique<TransformComponent>();
+    TransformComponent* t = unique.get();
+    e->_components.push_back(std::move(unique));
+    e->_components.push_back(std::make_unique<CameraComponent>(t, inputMgr, sceneMgr));
 }
 
 int main() {
@@ -140,15 +139,13 @@ int main() {
 
     InputManager inputManager(window);
 
-    TransformManager transformManager;
-
     SceneManager sceneManager;
 
     EntityManager entityManager;
 
     // Camera
     Entity* camera = entityManager.AddEntity();
-    CreateCamera(&transformManager, &sceneManager, &inputManager, camera);
+    CreateCamera(&sceneManager, &inputManager, camera);
     {
         TransformComponent* t = camera->DebugFindComponentOfType<TransformComponent>();
         t->SetPos(glm::vec3(0.f, 0.f, 3.f));
@@ -156,7 +153,7 @@ int main() {
 
     // Light
     Entity* light = entityManager.AddEntity();
-    CreateLight(&transformManager, &sceneManager, light);
+    CreateLight(&sceneManager, light);
     {
         TransformComponent* t = light->DebugFindComponentOfType<TransformComponent>();
         t->SetPos(glm::vec3(0.f, 3.f, 0.f));
@@ -164,7 +161,7 @@ int main() {
 
     // Cube1
     Entity* cube1 = entityManager.AddEntity();
-    CreateCube(&transformManager, &sceneManager, cubeMesh, cube1);
+    CreateCube(&sceneManager, cubeMesh, cube1);
     {
         glm::mat4& t = cube1->DebugFindComponentOfType<TransformComponent>()->_transform;
         t = glm::rotate(t, glm::radians(45.f), glm::vec3(0.f, 1.f, 0.f));
@@ -174,7 +171,7 @@ int main() {
 
     // Cube2
     Entity* cube2 = entityManager.AddEntity();
-    CreateCube(&transformManager, &sceneManager, cubeMesh, cube2);
+    CreateCube(&sceneManager, cubeMesh, cube2);
     {
         glm::mat4& t = cube2->DebugFindComponentOfType<TransformComponent>()->_transform;
         t = glm::translate(t, glm::vec3(-1.f,0.f,0.f));
@@ -187,6 +184,7 @@ int main() {
     }
 
     float lastGlfwTime = (float)glfwGetTime();
+    float cube2Timer = 0.0f;
     while(!glfwWindowShouldClose(window)) {
         float thisGlfwTime = (float)glfwGetTime();
         float dt = thisGlfwTime - lastGlfwTime;
@@ -204,7 +202,13 @@ int main() {
 
         inputManager.Update();
 
-        sceneManager.Update(dt);
+        cube2Timer += dt;
+        if (cube2Timer > 1.f && cube2 != nullptr) {
+            entityManager.DestroyEntity(cube2);
+            cube2 = nullptr;
+        }
+
+        entityManager.Update(dt);
 
         if (inputManager.IsKeyPressed(InputManager::Key::Escape)) {
             glfwSetWindowShouldClose(window, true);
@@ -215,12 +219,12 @@ int main() {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         
         // turn cube1
-        {
+        if (cube1 != nullptr) {
             glm::mat4& t = cube1->DebugFindComponentOfType<TransformComponent>()->_transform;
             t = glm::rotate(t, dt * glm::radians(180.0f), glm::vec3(0.0f, 1.0f, 0.0f));
         }
         // turn cube2
-        {
+        if (cube2 != nullptr) {
             glm::mat4& t = cube2->DebugFindComponentOfType<TransformComponent>()->_transform;
             t = glm::rotate(t, dt * glm::radians(180.0f), glm::vec3(0.0f, 1.0f, 0.0f));
         }

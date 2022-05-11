@@ -4,7 +4,7 @@ OBJDIR = intermediates
 CXXFLAGS = -std=c++17 -I src/glfw/include -I src/glad/include
 GAMENAME = game
 
-OBJS = $(addprefix $(OBJDIR)/,game.o audio.o shader.o stb_image.o synth.o glad.o)
+OBJS = $(addprefix $(OBJDIR)/,game.o audio.o shader.o stb_image.o synth.o glad.o component.o)
 
 $(GAMENAME): $(OBJS)
 	$(CXX) $(CXXFLAGS) -L src/glfw/lib-x86_64 -l portaudio -lglfw -framework Cocoa -framework OpenGL -framework IOKit -o $(GAMENAME) $(OBJS)
