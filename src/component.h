@@ -7,11 +7,16 @@
 #include "glm/gtc/matrix_inverse.hpp"
 
 #include "model.h"
+#include "input_manager.h"
 
-class TransformComponent {
+class Component {
 public:
-    TransformComponent()
-        : _transform(1.f) {}
+    virtual ~Component() {}
+};
+
+class TransformComponent : public Component {
+public:
+    virtual ~TransformComponent() {}
 
     glm::vec3 GetPos() const {
         return glm::vec3(_transform[3]);
@@ -20,28 +25,58 @@ public:
         _transform[3] = glm::vec4(p, 1.f);
     }
 
+    glm::vec3 GetXAxis() const {
+        return glm::vec3(_transform[0]);
+    }
+    glm::vec3 GetYAxis() const {
+        return glm::vec3(_transform[1]);
+    }
+    glm::vec3 GetZAxis() const {
+        return glm::vec3(_transform[2]);
+    }
+
     glm::mat4 _transform;
+
+private:
+    TransformComponent()
+        : _transform(1.f) {}
+
+    friend class TransformManager;
 };
 
-class ModelComponent {
+class TransformManager {
 public:
-    TransformComponent const* _transform = nullptr;
-    glm::mat4 const* _viewProjTransform = nullptr;
-    BoundMesh const* _mesh = nullptr;
+    TransformComponent* CreateTransform() {
+        std::unique_ptr<TransformComponent> t(new TransformComponent());
+        _transforms.push_back(std::move(t));
+        return _transforms.back().get();
+    }
 
-    friend class SceneManager;
+    // TODO Obviously make these not pointers
+    std::vector<std::unique_ptr<TransformComponent>> _transforms;
+};
+
+class ModelComponent : public Component {
+public:
+    virtual ~ModelComponent() {}
+
+    TransformComponent const* _transform = nullptr;
+    BoundMesh const* _mesh = nullptr;
 
 private:
     ModelComponent(
-        TransformComponent const* trans, glm::mat4 const* viewProjTrans, BoundMesh const* mesh)
+        TransformComponent const* trans, BoundMesh const* mesh)
         : _transform(trans)
-        , _viewProjTransform(viewProjTrans)
         , _mesh(mesh)
     {}
+
+    friend class SceneManager;
 };
 
-class LightComponent {
+class LightComponent : public Component {
 public:
+    virtual ~LightComponent() {}
+
     TransformComponent const* _transform;
     glm::vec3 _ambient;
     glm::vec3 _diffuse;
@@ -54,41 +89,115 @@ private:
     friend class SceneManager;
 };
 
-class SceneManager {
-public:
-    SceneManager(DebugCamera const* camera)
-        : _camera(camera) {}
-    
-    ModelComponent* AddModel(
-        TransformComponent const* trans, glm::mat4 const* viewProjTrans, BoundMesh const* mesh) {
+class CameraComponent : public Component {
+public:    
+    void Init(TransformComponent* t, InputManager const* input) {
+        _transform = t;
+        _input = input;
+    }
 
+    virtual ~CameraComponent() {}
+
+    glm::mat4 GetViewMatrix() const {
+        glm::vec3 p = _transform->GetPos();
+        glm::vec3 forward = -_transform->GetZAxis();  // Z-axis points backward
+        glm::vec3 up = _transform->GetYAxis();
+        return glm::lookAt(p, p + forward, up);
+    }
+
+    // TODO: make movement relative to camera viewpoint
+    // TODO: break movement out into its own component
+    void Update(float const dt) {
+        glm::vec3 inputVec(0.0f);
+        if (_input->IsKeyPressed(InputManager::Key::W)) {
+            inputVec.z -= 1.0f;
+        }
+        if (_input->IsKeyPressed(InputManager::Key::S)) {
+            inputVec.z += 1.0f;
+        }
+        if (_input->IsKeyPressed(InputManager::Key::A)) {
+            inputVec.x -= 1.0f;
+        }
+        if (_input->IsKeyPressed(InputManager::Key::D)) {
+            inputVec.x += 1.0f;
+        }
+        if (_input->IsKeyPressed(InputManager::Key::Q)) {
+            inputVec.y += 1.0f;
+        }
+        if (_input->IsKeyPressed(InputManager::Key::E)) {
+            inputVec.y -= 1.0f;
+        }
+
+        if (inputVec.x == 0.f && inputVec.y == 0.f && inputVec.z == 0.f) {
+            return;
+        }
+
+        float const kSpeed = 5.0f;
+        glm::vec3 translation = dt * kSpeed * glm::normalize(inputVec);
+        glm::vec3 newPos = _transform->GetPos() + translation;
+        _transform->SetPos(newPos);
+    }
+
+    TransformComponent* _transform = nullptr;
+    InputManager const* _input = nullptr;
+
+private:
+    CameraComponent() {}
+    CameraComponent(TransformComponent* t, InputManager const* input)
+        : _transform(t)
+        , _input(input) {}
+    
+    friend class SceneManager;
+};
+
+class SceneManager {
+public:    
+    void Update(float dt) {
+        assert(_cameras.size() == 1);
+        _cameras.front()->Update(dt);
+    }
+
+    ModelComponent* AddModel(TransformComponent* t, BoundMesh const* mesh) {
         std::unique_ptr<ModelComponent> model(new ModelComponent(
-            trans, viewProjTrans, mesh));
+            t, mesh));
         _models.push_back(std::move(model));
         return _models.back().get();
     }
 
-    LightComponent* SetLight(
-        TransformComponent const* trans, glm::vec3 const& ambient, glm::vec3 const& diffuse) {
-            
-        _light.reset(new LightComponent(trans, ambient, diffuse));
-        return _light.get();
+    LightComponent* AddLight(
+        TransformComponent* t, glm::vec3 const& ambient, glm::vec3 const& diffuse) {
+        std::unique_ptr<LightComponent> light(new LightComponent(t, ambient, diffuse));
+        _lights.push_back(std::move(light));
+        return _lights.back().get();
     }
 
-    void Draw() {
+    CameraComponent* AddCamera(TransformComponent* t, InputManager const* input) {
+        std::unique_ptr<CameraComponent> camera(new CameraComponent(t, input));
+        _cameras.push_back(std::move(camera));
+        return _cameras.back().get();
+    }
+
+    void Draw(int windowWidth, int windowHeight) {
+        assert(_cameras.size() == 1);
+        assert(_lights.size() == 1);
+        CameraComponent const* camera = _cameras.front().get();
+        LightComponent const* light = _lights.front().get();
+
+        float aspectRatio = (float)windowWidth / windowHeight;
+        glm::mat4 viewProjTransform = glm::perspective(
+            /*fovy=*/glm::radians(45.f), aspectRatio, /*near=*/0.1f, /*far=*/100.0f);
+        viewProjTransform = viewProjTransform * camera->GetViewMatrix();
+
         // TODO: group them by Material
-        // TODO: compute viewProjTransform from camera instead of storing it in model component
-        // TODO: make Camera a component?
         for (auto const& pModel : _models) {
             ModelComponent const& m = *pModel;
             m._mesh->_mat->_shader.Use();
-            m._mesh->_mat->_shader.SetMat4("uMvpTrans", *m._viewProjTransform * m._transform->_transform);
+            m._mesh->_mat->_shader.SetMat4("uMvpTrans", viewProjTransform * m._transform->_transform);
             m._mesh->_mat->_shader.SetMat4("uModelTrans", m._transform->_transform);
             m._mesh->_mat->_shader.SetMat3("uModelInvTrans", glm::mat3(glm::inverseTranspose(m._transform->_transform)));
-            assert(_light != nullptr);
-            m._mesh->_mat->_shader.SetVec3("uLightPos", _light->_transform->GetPos());
-            m._mesh->_mat->_shader.SetVec3("uAmbient", _light->_ambient);
-            m._mesh->_mat->_shader.SetVec3("uDiffuse", _light->_diffuse);
+            m._mesh->_mat->_shader.SetVec3("uLightPos", light->_transform->GetPos());
+            m._mesh->_mat->_shader.SetVec3("uAmbient", light->_ambient);
+            m._mesh->_mat->_shader.SetVec3("uDiffuse", light->_diffuse);
             glActiveTexture(GL_TEXTURE0);
             glBindTexture(GL_TEXTURE_2D, m._mesh->_mat->_texture->_handle);
             glBindVertexArray(m._mesh->_vao);
@@ -96,20 +205,42 @@ public:
         }
     }
 
+    // TODO: are these std::unique_ptr's safe when resizing the vector?
     std::vector<std::unique_ptr<ModelComponent>> _models;
-    std::unique_ptr<LightComponent> _light;
-    DebugCamera const* _camera = nullptr;  
+    std::vector<std::unique_ptr<LightComponent>> _lights;
+    std::vector<std::unique_ptr<CameraComponent>> _cameras;
 };
 
 class Entity {
 public:
+    template <typename T>
+    T* DebugFindComponentOfType() {
+        for (Component* c : _components) {
+            T* t = dynamic_cast<T*>(c);
+            if (t != nullptr) {
+                return t;
+            }
+        }
+        return nullptr;
+    }
+
+    std::vector<Component*> _components;
+
+private:
     Entity() {}
 
-    Entity(std::unique_ptr<TransformComponent> t, ModelComponent* m)
-        : _transform(std::move(t))
-        , _model(m)
-    {}
+    friend class EntityManager;
+};
 
-    std::unique_ptr<TransformComponent> _transform;
-    ModelComponent* _model;
+class EntityManager {
+public:
+    Entity* AddEntity() {
+        {
+            std::unique_ptr<Entity> e(new Entity);
+            _entities.push_back(std::move(e));
+        }
+        return _entities.back().get();
+    }
+
+    std::vector<std::unique_ptr<Entity>> _entities;
 };

@@ -23,7 +23,6 @@
 #include "shader.h"
 #include "cube_verts.h"
 #include "input_manager.h"
-#include "camera.h"
 #include "component.h"
 
 void InitEventQueueWithSequence(audio::EventQueue* queue, BeatClock const& beatClock) {
@@ -49,13 +48,25 @@ void FramebufferSizeCallback(GLFWwindow* window, int width, int height) {
 }
 
 void CreateCube(
-    SceneManager* sceneManager, Shader const& shader, glm::mat4 const* viewProjTrans,
+    TransformManager* transformMgr, SceneManager* sceneMgr,
     BoundMesh const& mesh, Entity* e) {
-    {
-        auto t = std::make_unique<TransformComponent>();
-        e->_transform = std::move(t);
-    }
-    e->_model = sceneManager->AddModel(e->_transform.get(), viewProjTrans, &mesh);
+    TransformComponent* t = transformMgr->CreateTransform();
+    e->_components.push_back(t);
+    e->_components.push_back(sceneMgr->AddModel(t, &mesh));
+}
+
+void CreateLight(TransformManager* transformMgr, SceneManager* sceneMgr, Entity* e) {
+    TransformComponent* t = transformMgr->CreateTransform();
+    e->_components.push_back(t);
+    e->_components.push_back(sceneMgr->AddLight(t, glm::vec3(0.2f,0.2f,0.2f), glm::vec3(1.f,1.f,1.f)));
+}
+
+void CreateCamera(
+    TransformManager* transformMgr, SceneManager* sceneMgr, InputManager* inputMgr,
+    Entity* e) {
+    TransformComponent* t = transformMgr->CreateTransform();
+    e->_components.push_back(t);
+    e->_components.push_back(sceneMgr->AddCamera(t, inputMgr));
 }
 
 int main() {
@@ -129,32 +140,45 @@ int main() {
 
     InputManager inputManager(window);
 
-    DebugCamera camera(inputManager);
-    camera._pos = glm::vec3(0.0f, 0.0f, 3.0f);
+    TransformManager transformManager;
 
-    // NOTE!!! DO NOT TRY TO USE THIS UNTIL IT'S BEEN SET IN THE RENDER LOOP BELOW
-    glm::mat4 viewProjTransform(1.f);
+    SceneManager sceneManager;
 
-    auto lightTransform = std::make_unique<TransformComponent>();
-    lightTransform->SetPos(glm::vec3(0.f, 3.f, 0.f));
+    EntityManager entityManager;
 
-    SceneManager sceneManager(&camera);
-    LightComponent* lightComponent = sceneManager.SetLight(
-        lightTransform.get(), glm::vec3(0.2f,0.2f,0.2f), glm::vec3(1.f,1.f,1.f));
-
-    Entity cubeEntity;
-    CreateCube(&sceneManager, shaderProgram, &viewProjTransform, cubeMesh, &cubeEntity);
+    // Camera
+    Entity* camera = entityManager.AddEntity();
+    CreateCamera(&transformManager, &sceneManager, &inputManager, camera);
     {
-        glm::mat4& t = cubeEntity._transform->_transform;
+        TransformComponent* t = camera->DebugFindComponentOfType<TransformComponent>();
+        t->SetPos(glm::vec3(0.f, 0.f, 3.f));
+    }
+
+    // Light
+    Entity* light = entityManager.AddEntity();
+    CreateLight(&transformManager, &sceneManager, light);
+    {
+        TransformComponent* t = light->DebugFindComponentOfType<TransformComponent>();
+        t->SetPos(glm::vec3(0.f, 3.f, 0.f));
+    }
+
+    // Cube1
+    Entity* cube1 = entityManager.AddEntity();
+    CreateCube(&transformManager, &sceneManager, cubeMesh, cube1);
+    {
+        glm::mat4& t = cube1->DebugFindComponentOfType<TransformComponent>()->_transform;
         t = glm::rotate(t, glm::radians(45.f), glm::vec3(0.f, 1.f, 0.f));
         t = glm::rotate(t, glm::radians(45.f), glm::vec3(1.f, 0.f, 0.f));
         t = glm::translate(t, glm::vec3(1.f, 0.f, 0.f));
     }
 
-    Entity cubeEntity2;
-    CreateCube(&sceneManager, shaderProgram, &viewProjTransform, cubeMesh, &cubeEntity2);
-    cubeEntity2._transform->_transform = 
-        glm::translate(cubeEntity2._transform->_transform, glm::vec3(-1.f,0.f,0.f));
+    // Cube2
+    Entity* cube2 = entityManager.AddEntity();
+    CreateCube(&transformManager, &sceneManager, cubeMesh, cube2);
+    {
+        glm::mat4& t = cube2->DebugFindComponentOfType<TransformComponent>()->_transform;
+        t = glm::translate(t, glm::vec3(-1.f,0.f,0.f));
+    }
 
     // Init event queue with a synth sequence
     {
@@ -180,7 +204,7 @@ int main() {
 
         inputManager.Update();
 
-        camera.Update(dt);
+        sceneManager.Update(dt);
 
         if (inputManager.IsKeyPressed(InputManager::Key::Escape)) {
             glfwSetWindowShouldClose(window, true);
@@ -189,26 +213,21 @@ int main() {
         // Rendering
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-        int windowWidth, windowHeight;
-        glfwGetWindowSize(window, &windowWidth, &windowHeight);
-        float aspectRatio = (float)windowWidth / windowHeight;
-        glm::mat4 projTransform = glm::perspective(
-            /*fovy=*/glm::radians(45.f), aspectRatio, /*near=*/0.1f, /*far=*/100.0f);
-        viewProjTransform = projTransform * camera.GetViewMatrix();
         
         // turn cube1
         {
-            glm::mat4& t = cubeEntity._transform->_transform;
+            glm::mat4& t = cube1->DebugFindComponentOfType<TransformComponent>()->_transform;
             t = glm::rotate(t, dt * glm::radians(180.0f), glm::vec3(0.0f, 1.0f, 0.0f));
         }
         // turn cube2
         {
-            glm::mat4& t = cubeEntity2._transform->_transform;
+            glm::mat4& t = cube2->DebugFindComponentOfType<TransformComponent>()->_transform;
             t = glm::rotate(t, dt * glm::radians(180.0f), glm::vec3(0.0f, 1.0f, 0.0f));
         }
 
-        sceneManager.Draw();
+        int windowWidth, windowHeight;
+        glfwGetWindowSize(window, &windowWidth, &windowHeight);
+        sceneManager.Draw(windowWidth, windowHeight);
 
         glfwSwapBuffers(window);
         glfwPollEvents();
