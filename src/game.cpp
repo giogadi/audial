@@ -24,6 +24,8 @@
 #include "cube_verts.h"
 #include "input_manager.h"
 #include "component.h"
+#include "components/player_controller.h"
+#include "components/beep_on_hit.h"
 
 void InitEventQueueWithSequence(audio::EventQueue* queue, BeatClock const& beatClock) {
     double const firstNoteBeatTime = beatClock.GetDownBeatTime() + 1.0;
@@ -143,6 +145,8 @@ int main() {
 
     EntityManager entityManager;
 
+    HitManager hitManager;
+
     // Camera
     Entity* camera = entityManager.AddEntity();
     CreateCamera(&sceneManager, &inputManager, camera);
@@ -167,10 +171,13 @@ int main() {
     Entity* cube1 = entityManager.AddEntity();
     CreateCube(&sceneManager, cubeMesh, cube1);
     {
-        glm::mat4& t = cube1->DebugFindComponentOfType<TransformComponent>()->_transform;
-        t = glm::rotate(t, glm::radians(45.f), glm::vec3(0.f, 1.f, 0.f));
-        t = glm::rotate(t, glm::radians(45.f), glm::vec3(1.f, 0.f, 0.f));
-        t = glm::translate(t, glm::vec3(1.f, 0.f, 0.f));
+        TransformComponent* tComp = cube1->DebugFindComponentOfType<TransformComponent>();
+        // glm::mat4& t = tComp->_transform;
+        // t = glm::rotate(t, glm::radians(45.f), glm::vec3(0.f, 1.f, 0.f));
+        // t = glm::rotate(t, glm::radians(45.f), glm::vec3(1.f, 0.f, 0.f));
+        // t = glm::translate(t, glm::vec3(1.f, 0.f, 0.f));
+
+        cube1->_components.push_back(std::make_unique<BeepOnHitComponent>(tComp, &hitManager, &audioContext, &beatClock));
     }
 
     // Cube2
@@ -181,13 +188,20 @@ int main() {
         glm::mat4& t = tComp->_transform;
         t = glm::translate(t, glm::vec3(-1.f,0.f,0.f));
 
-        cube2->_components.push_back(std::make_unique<PlayerControllerComponent>(tComp, &inputManager));
+        VelocityComponent* v = nullptr;
+        {
+            auto vComp = std::make_unique<VelocityComponent>(tComp);
+            v = vComp.get();
+            cube2->_components.push_back(std::move(vComp));
+        }
+        cube2->_components.push_back(
+            std::make_unique<PlayerControllerComponent>(tComp, v, &inputManager, &hitManager));
     }
 
     // Init event queue with a synth sequence
     {
-        double const audioTime = Pa_GetStreamTime(audioContext._stream);
-        InitEventQueueWithSequence(&audioContext._eventQueue, beatClock);
+        // double const audioTime = Pa_GetStreamTime(audioContext._stream);
+        // InitEventQueueWithSequence(&audioContext._eventQueue, beatClock);
     }
 
     float lastGlfwTime = (float)glfwGetTime();
@@ -219,10 +233,10 @@ int main() {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         
         // turn cube1
-        if (cube1 != nullptr) {
-            glm::mat4& t = cube1->DebugFindComponentOfType<TransformComponent>()->_transform;
-            t = glm::rotate(t, dt * glm::radians(180.0f), glm::vec3(0.0f, 1.0f, 0.0f));
-        }
+        // if (cube1 != nullptr) {
+        //     glm::mat4& t = cube1->DebugFindComponentOfType<TransformComponent>()->_transform;
+        //     t = glm::rotate(t, dt * glm::radians(180.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+        // }
 
         int windowWidth, windowHeight;
         glfwGetWindowSize(window, &windowWidth, &windowHeight);

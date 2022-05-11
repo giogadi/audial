@@ -44,6 +44,22 @@ public:
     glm::mat4 _transform;
 };
 
+class VelocityComponent : public Component {
+public:
+    VelocityComponent(TransformComponent* t)
+        : _transform(t)
+        , _linear(0.f) {}
+    
+    virtual void Update(float dt) override {
+        _transform->SetPos(_transform->GetPos() + dt * _linear);
+        _transform->_transform = glm::rotate(_transform->_transform, dt * _angularY, glm::vec3(0.f,1.f,0.f));
+    }
+
+    TransformComponent* _transform = nullptr;
+    glm::vec3 _linear;
+    float _angularY = 0.0f;  // rad / s
+};
+
 class SceneManager;
 
 class ModelComponent : public Component {
@@ -121,48 +137,6 @@ public:
     TransformComponent* _transform = nullptr;
     InputManager const* _input = nullptr;
     SceneManager* _mgr = nullptr;
-};
-
-class PlayerControllerComponent : public Component {
-public:
-    PlayerControllerComponent(TransformComponent* t, InputManager const* input) 
-        : _transform(t)
-        , _input(input) {}
-        
-    virtual ~PlayerControllerComponent() {}
-    virtual void Update(float dt) override {
-        glm::vec3 inputVec(0.0f);
-        if (_input->IsKeyPressed(InputManager::Key::W)) {
-            inputVec.z -= 1.0f;
-        }
-        if (_input->IsKeyPressed(InputManager::Key::S)) {
-            inputVec.z += 1.0f;
-        }
-        if (_input->IsKeyPressed(InputManager::Key::A)) {
-            inputVec.x -= 1.0f;
-        }
-        if (_input->IsKeyPressed(InputManager::Key::D)) {
-            inputVec.x += 1.0f;
-        }
-        if (_input->IsKeyPressed(InputManager::Key::Q)) {
-            inputVec.y += 1.0f;
-        }
-        if (_input->IsKeyPressed(InputManager::Key::E)) {
-            inputVec.y -= 1.0f;
-        }
-
-        if (inputVec.x == 0.f && inputVec.y == 0.f && inputVec.z == 0.f) {
-            return;
-        }
-
-        float const kSpeed = 5.0f;
-        glm::vec3 translation = dt * kSpeed * glm::normalize(inputVec);
-        glm::vec3 newPos = _transform->GetPos() + translation;
-        _transform->SetPos(newPos);
-    }
-    
-    TransformComponent* _transform = nullptr;
-    InputManager const* _input = nullptr;
 };
 
 class SceneManager {

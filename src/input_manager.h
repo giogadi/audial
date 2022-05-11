@@ -7,7 +7,7 @@
 class InputManager {
 public:
     enum class Key : int {
-        W,S,A,D,E,Q,Escape,Space,NumKeys
+        W,S,A,D,E,Q,J,Escape,Space,NumKeys
     };
 
     InputManager(GLFWwindow* window)
@@ -44,6 +44,7 @@ private:
             case Key::D: return GLFW_KEY_D;
             case Key::E: return GLFW_KEY_E;
             case Key::Q: return GLFW_KEY_Q;
+            case Key::J: return GLFW_KEY_J;
             case Key::Escape: return GLFW_KEY_ESCAPE;
             case Key::Space: return GLFW_KEY_SPACE;
             default: {                    

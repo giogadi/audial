@@ -1,7 +1,7 @@
 # A LOT OF THIS came from https://www.gnu.org/software/make/manual/html_node/Prerequisite-Types.html
 
 OBJDIR = intermediates
-CXXFLAGS = -std=c++17 -I src/glfw/include -I src/glad/include
+CXXFLAGS = -std=c++17 -I src/glfw/include -I src/glad/include -I src/
 GAMENAME = game
 
 OBJS = $(addprefix $(OBJDIR)/,game.o audio.o shader.o stb_image.o synth.o glad.o component.o)
