@@ -148,7 +148,11 @@ int main() {
     CreateCamera(&sceneManager, &inputManager, camera);
     {
         TransformComponent* t = camera->DebugFindComponentOfType<TransformComponent>();
-        t->SetPos(glm::vec3(0.f, 0.f, 3.f));
+        float angle = glm::radians(45.f);
+        glm::vec3 dir(0.f, sin(angle), cos(angle));
+        float dist = 15.f;
+        t->SetPos(dist * dir);
+        t->_transform = glm::rotate(t->_transform, -angle, glm::vec3(1.f, 0.f, 0.f));
     }
 
     // Light
@@ -173,8 +177,11 @@ int main() {
     Entity* cube2 = entityManager.AddEntity();
     CreateCube(&sceneManager, cubeMesh, cube2);
     {
-        glm::mat4& t = cube2->DebugFindComponentOfType<TransformComponent>()->_transform;
+        TransformComponent* tComp = cube2->DebugFindComponentOfType<TransformComponent>();
+        glm::mat4& t = tComp->_transform;
         t = glm::translate(t, glm::vec3(-1.f,0.f,0.f));
+
+        cube2->_components.push_back(std::make_unique<PlayerControllerComponent>(tComp, &inputManager));
     }
 
     // Init event queue with a synth sequence
@@ -184,7 +191,6 @@ int main() {
     }
 
     float lastGlfwTime = (float)glfwGetTime();
-    float cube2Timer = 0.0f;
     while(!glfwWindowShouldClose(window)) {
         float thisGlfwTime = (float)glfwGetTime();
         float dt = thisGlfwTime - lastGlfwTime;
@@ -202,12 +208,6 @@ int main() {
 
         inputManager.Update();
 
-        cube2Timer += dt;
-        if (cube2Timer > 1.f && cube2 != nullptr) {
-            entityManager.DestroyEntity(cube2);
-            cube2 = nullptr;
-        }
-
         entityManager.Update(dt);
 
         if (inputManager.IsKeyPressed(InputManager::Key::Escape)) {
@@ -221,11 +221,6 @@ int main() {
         // turn cube1
         if (cube1 != nullptr) {
             glm::mat4& t = cube1->DebugFindComponentOfType<TransformComponent>()->_transform;
-            t = glm::rotate(t, dt * glm::radians(180.0f), glm::vec3(0.0f, 1.0f, 0.0f));
-        }
-        // turn cube2
-        if (cube2 != nullptr) {
-            glm::mat4& t = cube2->DebugFindComponentOfType<TransformComponent>()->_transform;
             t = glm::rotate(t, dt * glm::radians(180.0f), glm::vec3(0.0f, 1.0f, 0.0f));
         }
 

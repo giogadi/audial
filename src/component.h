@@ -86,6 +86,8 @@ public:
     // TODO: make movement relative to camera viewpoint
     // TODO: break movement out into its own component
     virtual void Update(float const dt) override {
+        return;
+
         glm::vec3 inputVec(0.0f);
         if (_input->IsKeyPressed(InputManager::Key::W)) {
             inputVec.z -= 1.0f;
@@ -119,6 +121,48 @@ public:
     TransformComponent* _transform = nullptr;
     InputManager const* _input = nullptr;
     SceneManager* _mgr = nullptr;
+};
+
+class PlayerControllerComponent : public Component {
+public:
+    PlayerControllerComponent(TransformComponent* t, InputManager const* input) 
+        : _transform(t)
+        , _input(input) {}
+        
+    virtual ~PlayerControllerComponent() {}
+    virtual void Update(float dt) override {
+        glm::vec3 inputVec(0.0f);
+        if (_input->IsKeyPressed(InputManager::Key::W)) {
+            inputVec.z -= 1.0f;
+        }
+        if (_input->IsKeyPressed(InputManager::Key::S)) {
+            inputVec.z += 1.0f;
+        }
+        if (_input->IsKeyPressed(InputManager::Key::A)) {
+            inputVec.x -= 1.0f;
+        }
+        if (_input->IsKeyPressed(InputManager::Key::D)) {
+            inputVec.x += 1.0f;
+        }
+        if (_input->IsKeyPressed(InputManager::Key::Q)) {
+            inputVec.y += 1.0f;
+        }
+        if (_input->IsKeyPressed(InputManager::Key::E)) {
+            inputVec.y -= 1.0f;
+        }
+
+        if (inputVec.x == 0.f && inputVec.y == 0.f && inputVec.z == 0.f) {
+            return;
+        }
+
+        float const kSpeed = 5.0f;
+        glm::vec3 translation = dt * kSpeed * glm::normalize(inputVec);
+        glm::vec3 newPos = _transform->GetPos() + translation;
+        _transform->SetPos(newPos);
+    }
+    
+    TransformComponent* _transform = nullptr;
+    InputManager const* _input = nullptr;
 };
 
 class SceneManager {
