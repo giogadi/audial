@@ -24,16 +24,27 @@ namespace synth {
         Closed, Opening, Closing
     };
 
-    struct StateData {
+    struct Voice {
         float f = 440.0f;
         float left_phase = 0.0f;
         float right_phase = 0.0f;
-        float cutoffFreq = 0.0f;
-        float cutoffK = 0.0f;  // [0,4] but 4 is unstable
+
+        int ampEnvTicksSinceStart = -1;
+        AdsrState ampEnvState = AdsrState::Closed;
+        float lastNoteOnAmpEnvValue = 0.0f;
+        int lastMidiNote = -1;
+
         float lp0 = 0.0f;
         float lp1 = 0.0f;
         float lp2 = 0.0f;
         float lp3 = 0.0f;
+    };
+
+    struct StateData {
+        std::array<Voice, 4> voices;
+
+        float cutoffFreq = 0.0f;
+        float cutoffK = 0.0f;  // [0,4] but 4 is unstable
 
         float pitchLFOGain = 0.0f;
         float pitchLFOFreq = 0.0f;
@@ -47,9 +58,6 @@ namespace synth {
         float ampEnvDecayTime = 0.0f;
         float ampEnvSustainLevel = 1.0f;
         float ampEnvReleaseTime = 0.0f;
-        int ampEnvTicksSinceStart = -1;
-        AdsrState ampEnvState = AdsrState::Closed;
-        float lastNoteOnAmpEnvValue = 0.0f;
     };
 
     void InitStateData(StateData& state);

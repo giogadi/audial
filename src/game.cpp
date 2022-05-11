@@ -102,7 +102,8 @@ int main() {
         return -1;
     }
     glfwMakeContextCurrent(window);
-    // glfwSwapInterval(1);  // vsync?
+    glfwSwapInterval(1);  // vsync?
+    // glfwSwapInterval(0);  // disable vsync?
 
     if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
         std::cout << "Failed to initialize GLAD" << std::endl;
@@ -231,12 +232,6 @@ int main() {
         // Rendering
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-        
-        // turn cube1
-        // if (cube1 != nullptr) {
-        //     glm::mat4& t = cube1->DebugFindComponentOfType<TransformComponent>()->_transform;
-        //     t = glm::rotate(t, dt * glm::radians(180.0f), glm::vec3(0.0f, 1.0f, 0.0f));
-        // }
 
         int windowWidth, windowHeight;
         glfwGetWindowSize(window, &windowWidth, &windowHeight);
