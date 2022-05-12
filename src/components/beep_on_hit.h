@@ -73,6 +73,7 @@ public:
             if (noteOffTime > _lastScheduledEvent) {
                 _lastScheduledEvent = noteOffTime;
                 audio::Event e;
+                e.channel = 0;
                 e.type = audio::EventType::NoteOn;
                 e.midiNote = 69;
                 e.timeInTicks = _beatClock->BeatTimeToTickTime(noteTime);

@@ -24,7 +24,10 @@ void OnPortAudioError(PaError const& err) {
 void InitStateData(
     StateData& state, EventQueue* eventQueue, int sampleRate, float* pcmBuffer,
     unsigned long pcmBufferLength) {
-    synth::InitStateData(state.synth);
+    for (int i = 0; i < state.synths.size(); ++i) {
+        synth::StateData& s = state.synths[i];
+        synth::InitStateData(s, /*channel=*/i);
+    }
 
     state.pcmBuffer = pcmBuffer;
     state.pcmBufferLength = pcmBufferLength;
@@ -265,9 +268,11 @@ int PortAudioCallback(
 
     outputBuffer = (float*) outputBufferUntyped;
 
-    synth::Process(
-        &state->synth, eventsThisFrame, numEventsThisFrame, outputBuffer,
-        NUM_OUTPUT_CHANNELS, framesPerBuffer, SAMPLE_RATE);
+    for (synth::StateData& s : state->synths) {
+        synth::Process(
+            &s, eventsThisFrame, numEventsThisFrame, outputBuffer,
+            NUM_OUTPUT_CHANNELS, framesPerBuffer, SAMPLE_RATE);
+    }
     
     high_resolution_clock::time_point t2 = high_resolution_clock::now();
 

@@ -14,7 +14,7 @@
 namespace audio {
 
 struct StateData {
-    synth::StateData synth;
+    std::array<synth::StateData,2> synths;
 
     float* pcmBuffer = nullptr;
     int pcmBufferLength = 0;

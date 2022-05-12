@@ -10,6 +10,10 @@
 #include <glad/glad.h> 
 #include <GLFW/glfw3.h>
 
+#include "imgui.h"
+#include "backends/imgui_impl_glfw.h"
+#include "backends/imgui_impl_opengl3.h"
+
 #define DR_WAV_IMPLEMENTATION
 #include "dr_wav.h"
 
@@ -70,6 +74,25 @@ void CreateCamera(SceneManager* sceneMgr, InputManager* inputMgr, Entity* e) {
     e->_components.push_back(std::make_unique<CameraComponent>(t, inputMgr, sceneMgr));
 }
 
+void DrawImGuiWindow() {
+    static float f = 0.0f;
+    static int counter = 0;
+
+    ImGui::Begin("Hello, world!");                          // Create a window called "Hello, world!" and append into it.
+
+    ImGui::Text("This is some useful text.");               // Display some text (you can use a format strings too)
+
+    ImGui::SliderFloat("float", &f, 0.0f, 1.0f);            // Edit 1 float using a slider from 0.0f to 1.0f
+
+    if (ImGui::Button("Button"))                            // Buttons return true when clicked (most widgets return true when edited/activated)
+        counter++;
+    ImGui::SameLine();
+    ImGui::Text("counter = %d", counter);
+
+    ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
+    ImGui::End();
+}
+
 int main() {
     unsigned int channels;
     unsigned int sampleRate;
@@ -113,6 +136,22 @@ int main() {
     glfwSetFramebufferSizeCallback(window, FramebufferSizeCallback);
 
     glEnable(GL_DEPTH_TEST);
+
+    // Setup Dear ImGui context
+    IMGUI_CHECKVERSION();
+    ImGui::CreateContext();
+    ImGuiIO& io = ImGui::GetIO(); (void)io;
+    //io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
+    //io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
+
+    // Setup Dear ImGui style
+    ImGui::StyleColorsDark();
+    //ImGui::StyleColorsClassic();
+
+    // Setup Platform/Renderer backends
+    ImGui_ImplGlfw_InitForOpenGL(window, true);
+    // TODO: should I be setting this? imgui_impl_opengl3.h says it's ok to be null.
+    ImGui_ImplOpenGL3_Init(/*glsl_version=*/NULL);
 
     Shader shaderProgram;
     if (!shaderProgram.Init("shaders/shader.vert", "shaders/shader.frag")) {
@@ -206,6 +245,7 @@ int main() {
     }
 
     float lastGlfwTime = (float)glfwGetTime();
+    bool showImGuiWindow = true;
     while(!glfwWindowShouldClose(window)) {
         float thisGlfwTime = (float)glfwGetTime();
         float dt = thisGlfwTime - lastGlfwTime;
@@ -227,7 +267,16 @@ int main() {
 
         if (inputManager.IsKeyPressed(InputManager::Key::Escape)) {
             glfwSetWindowShouldClose(window, true);
-        }        
+        }
+
+        // Start the Dear ImGui frame
+        ImGui_ImplOpenGL3_NewFrame();
+        ImGui_ImplGlfw_NewFrame();
+        ImGui::NewFrame();
+        if (showImGuiWindow) {
+            DrawImGuiWindow();
+        }
+        ImGui::Render();    
 
         // Rendering
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
@@ -237,9 +286,20 @@ int main() {
         glfwGetWindowSize(window, &windowWidth, &windowHeight);
         sceneManager.Draw(windowWidth, windowHeight);
 
+        ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+
         glfwSwapBuffers(window);
+
+        // You can read the io.WantCaptureMouse, io.WantCaptureKeyboard flags to tell if dear imgui wants to use your inputs.
+        // - When io.WantCaptureMouse is true, do not dispatch mouse input data to your main application, or clear/overwrite your copy of the mouse data.
+        // - When io.WantCaptureKeyboard is true, do not dispatch keyboard input data to your main application, or clear/overwrite your copy of the keyboard data.
+        // Generally you may always pass all inputs to dear imgui, and hide them from your application based on those two flags.
         glfwPollEvents();
     }
+
+    ImGui_ImplOpenGL3_Shutdown();
+    ImGui_ImplGlfw_Shutdown();
+    ImGui::DestroyContext();
 
     glfwTerminate();
 

@@ -11,6 +11,7 @@ enum class EventType {
 
 struct Event {
     EventType type;
+    int channel = -1;
     long timeInTicks = 0;
     int midiNote = 0;
 };

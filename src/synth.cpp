@@ -44,7 +44,9 @@ namespace synth {
         }
     }  // namespace
 
-    void InitStateData(StateData& state) {
+    void InitStateData(StateData& state, int channel) {
+        state.channel = channel;
+
         for (int i = 0; i < state.voices.size(); ++i) {
             Voice& v = state.voices[i];
             v.left_phase = v.right_phase = 0.0f;
@@ -208,37 +210,42 @@ namespace synth {
                     break;
                 }
                 audio::FrameEvent const& fe = frameEvents[frameEventIx];
-                if (fe._sampleIx == i) {
-                    audio::Event const& e = fe._e;
-                    switch (e.type) {
-                        case audio::EventType::NoteOn: {
-                            Voice* v = FindVoiceForNoteOn(*state);
-                            if (v != nullptr) {
-                                v->f = synth::MidiToFreq(e.midiNote);
-                                v->ampEnvTicksSinceStart = 0;
-                                v->ampEnvState = synth::AdsrState::Opening;
-                                v->lastMidiNote = e.midiNote;
-                            } else {
-                                std::cout << "couldn't find a note for noteon" << std::endl;
-                            }  
-                            break;
-                        }
-                        case audio::EventType::NoteOff: {
-                            Voice* v = FindVoiceForNoteOff(e.midiNote, *state);
-                            if (v != nullptr) {
-                                v->ampEnvTicksSinceStart = 0;
-                                v->ampEnvState = synth::AdsrState::Closing;
-                            }                   
-                            break;
-                        }
-                        default: {
-                            break;
-                        }
-                    }
+                audio::Event const& e = fe._e;
+                if (e.channel != state->channel) {
+                    // Not meant for this channel. Skip this message.
                     ++frameEventIx;
-                } else {
+                    continue;
+                }
+                if (fe._sampleIx != i) {
+                    // This event gets processed on a later sample this frame.
                     break;
                 }
+                switch (e.type) {
+                    case audio::EventType::NoteOn: {
+                        Voice* v = FindVoiceForNoteOn(*state);
+                        if (v != nullptr) {
+                            v->f = synth::MidiToFreq(e.midiNote);
+                            v->ampEnvTicksSinceStart = 0;
+                            v->ampEnvState = synth::AdsrState::Opening;
+                            v->lastMidiNote = e.midiNote;
+                        } else {
+                            std::cout << "couldn't find a note for noteon" << std::endl;
+                        }  
+                        break;
+                    }
+                    case audio::EventType::NoteOff: {
+                        Voice* v = FindVoiceForNoteOff(e.midiNote, *state);
+                        if (v != nullptr) {
+                            v->ampEnvTicksSinceStart = 0;
+                            v->ampEnvState = synth::AdsrState::Closing;
+                        }                   
+                        break;
+                    }
+                    default: {
+                        break;
+                    }
+                }
+                ++frameEventIx;
             }
 
             // Get pitch LFO value

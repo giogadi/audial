@@ -41,6 +41,8 @@ namespace synth {
     };
 
     struct StateData {
+        int channel = -1;
+
         std::array<Voice, 4> voices;
 
         float cutoffFreq = 0.0f;
@@ -60,7 +62,7 @@ namespace synth {
         float ampEnvReleaseTime = 0.0f;
     };
 
-    void InitStateData(StateData& state);
+    void InitStateData(StateData& state, int channel);
 
     void Process(
         StateData* state, audio::EventsThisFrame const& frameEvents, int eventCount,
