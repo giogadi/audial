@@ -7,7 +7,7 @@
 class InputManager {
 public:
     enum class Key : int {
-        W,S,A,D,E,Q,J,Escape,Space,NumKeys
+        W,S,A,D,E,Q,J,Escape,Space,Right,NumKeys
     };
 
     InputManager(GLFWwindow* window)
@@ -47,6 +47,7 @@ private:
             case Key::J: return GLFW_KEY_J;
             case Key::Escape: return GLFW_KEY_ESCAPE;
             case Key::Space: return GLFW_KEY_SPACE;
+            case Key::Right: return GLFW_KEY_RIGHT;
             default: {                    
                 std::cout << "InputManager: UNRECOGNIZED KEY!" << std::endl;
                 return -1;

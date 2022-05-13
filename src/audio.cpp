@@ -203,8 +203,8 @@ int PortAudioCallback(
     gLastFrameSize = framesPerBuffer;
 
     StateData* state = (StateData*)userData;
-    // double const timeSecs = timeInfo->currentTime;
-    double const timeSecs = timeInfo->outputBufferDacTime;
+    double const timeSecs = timeInfo->currentTime;
+    // double const timeSecs = timeInfo->outputBufferDacTime;
 
     // DEBUG
     gTimeSinceLastCallback = timeSecs - gLastCallbackTime;

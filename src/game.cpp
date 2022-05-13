@@ -30,6 +30,7 @@
 #include "component.h"
 #include "components/player_controller.h"
 #include "components/beep_on_hit.h"
+#include "components/sequencer.h"
 
 void InitEventQueueWithSequence(audio::EventQueue* queue, BeatClock const& beatClock) {
     double const firstNoteBeatTime = beatClock.GetDownBeatTime() + 1.0;
@@ -72,6 +73,25 @@ void CreateCamera(SceneManager* sceneMgr, InputManager* inputMgr, Entity* e) {
     TransformComponent* t = unique.get();
     e->_components.push_back(std::move(unique));
     e->_components.push_back(std::make_unique<CameraComponent>(t, inputMgr, sceneMgr));
+}
+
+void CreateDrone(audio::Context* audio, BeatClock const* beatClock, Entity* e) {
+    auto seqComp = std::make_unique<SequencerComponent>(audio, beatClock);
+    {
+        audio::Event e;
+        e.channel = 1;
+        e.type = audio::EventType::NoteOn;
+        e.midiNote = 45;
+        e.timeInTicks = 0;
+        seqComp->AddToSequence(e);
+
+        e.midiNote = 49;
+        seqComp->AddToSequence(e);
+
+        e.midiNote = 52;
+        seqComp->AddToSequence(e);
+    }
+    e->_components.push_back(std::move(seqComp));
 }
 
 void DrawImGuiWindow() {
@@ -212,12 +232,8 @@ int main() {
     CreateCube(&sceneManager, cubeMesh, cube1);
     {
         TransformComponent* tComp = cube1->DebugFindComponentOfType<TransformComponent>();
-        // glm::mat4& t = tComp->_transform;
-        // t = glm::rotate(t, glm::radians(45.f), glm::vec3(0.f, 1.f, 0.f));
-        // t = glm::rotate(t, glm::radians(45.f), glm::vec3(1.f, 0.f, 0.f));
-        // t = glm::translate(t, glm::vec3(1.f, 0.f, 0.f));
-
-        cube1->_components.push_back(std::make_unique<BeepOnHitComponent>(tComp, &hitManager, &audioContext, &beatClock));
+        float hitSphereRadius = 0.5f;
+        cube1->_components.push_back(std::make_unique<BeepOnHitComponent>(tComp, hitSphereRadius, &hitManager, &audioContext, &beatClock));
     }
 
     // Cube2
@@ -228,15 +244,18 @@ int main() {
         glm::mat4& t = tComp->_transform;
         t = glm::translate(t, glm::vec3(-1.f,0.f,0.f));
 
-        VelocityComponent* v = nullptr;
-        {
-            auto vComp = std::make_unique<VelocityComponent>(tComp);
-            v = vComp.get();
-            cube2->_components.push_back(std::move(vComp));
-        }
-        cube2->_components.push_back(
-            std::make_unique<PlayerControllerComponent>(tComp, v, &inputManager, &hitManager));
+        auto vComp = std::make_unique<VelocityPhysicsComponent>(tComp, 0.5f, &hitManager);
+        auto controller = std::make_unique<PlayerControllerComponent>(tComp, vComp.get(), &inputManager, &hitManager);
+
+        vComp->SetOnHitCallback(std::bind(&PlayerControllerComponent::OnHit, controller.get()));
+
+        cube2->_components.push_back(std::move(controller));
+        cube2->_components.push_back(std::move(vComp));
     }
+
+    // drone sequencer
+    Entity* droneSeq = entityManager.AddEntity();
+    CreateDrone(&audioContext, &beatClock, droneSeq);
 
     // Init event queue with a synth sequence
     {
@@ -244,13 +263,11 @@ int main() {
         // InitEventQueueWithSequence(&audioContext._eventQueue, beatClock);
     }
 
-    float lastGlfwTime = (float)glfwGetTime();
-    bool showImGuiWindow = true;
+    bool showImGuiWindow = false;
+    float const fixedTimeStep = 1.f / 60.f;
+    bool paused = false;
     while(!glfwWindowShouldClose(window)) {
-        float thisGlfwTime = (float)glfwGetTime();
-        float dt = thisGlfwTime - lastGlfwTime;
-        lastGlfwTime = thisGlfwTime;
-
+        
         beatClock.Update();
         if (beatClock.IsNewBeat()) {
             audio::Event e;
@@ -262,6 +279,21 @@ int main() {
         }
 
         inputManager.Update();
+
+        if (inputManager.IsKeyPressedThisFrame(InputManager::Key::Space)) {
+            paused = !paused;
+        }
+
+        float dt = 0.f;
+        if (paused) {
+            if (inputManager.IsKeyPressedThisFrame(InputManager::Key::Right)) {
+                dt = fixedTimeStep;
+            } else {
+                dt = 0.f;
+            }
+        } else {
+            dt = fixedTimeStep;
+        }
 
         entityManager.Update(dt);
 
