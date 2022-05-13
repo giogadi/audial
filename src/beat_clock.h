@@ -1,5 +1,7 @@
 #pragma once
 
+#include <portaudio.h>
+
 class BeatClock {
 public:
     BeatClock(double bpm, double sampleRate, PaStream* stream)

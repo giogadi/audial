@@ -18,7 +18,6 @@
 #include "dr_wav.h"
 
 #include "glm/ext/matrix_transform.hpp"
-#include "glm/ext/matrix_clip_space.hpp"
 
 #include "stb_image.h"
 
@@ -27,10 +26,14 @@
 #include "shader.h"
 #include "cube_verts.h"
 #include "input_manager.h"
+#include "collisions.h"
 #include "component.h"
+#include "model.h"
+#include "renderer.h"
 #include "components/player_controller.h"
 #include "components/beep_on_hit.h"
 #include "components/sequencer.h"
+#include "components/rigid_body.h"
 
 void InitEventQueueWithSequence(audio::EventQueue* queue, BeatClock const& beatClock) {
     double const firstNoteBeatTime = beatClock.GetDownBeatTime() + 1.0;
@@ -205,7 +208,7 @@ int main() {
 
     EntityManager entityManager;
 
-    HitManager hitManager;
+    CollisionManager collisionManager;
 
     // Camera
     Entity* camera = entityManager.AddEntity();
@@ -232,8 +235,11 @@ int main() {
     CreateCube(&sceneManager, cubeMesh, cube1);
     {
         TransformComponent* tComp = cube1->DebugFindComponentOfType<TransformComponent>();
-        float hitSphereRadius = 0.5f;
-        cube1->_components.push_back(std::make_unique<BeepOnHitComponent>(tComp, hitSphereRadius, &hitManager, &audioContext, &beatClock));
+        auto beepComp = std::make_unique<BeepOnHitComponent>(tComp, &audioContext, &beatClock);
+        auto rbComp = std::make_unique<RigidBodyComponent>(tComp, &collisionManager, MakeCubeAabb(0.5f));
+        rbComp->SetOnHitCallback(std::bind(&BeepOnHitComponent::OnHit, beepComp.get()));
+        cube1->_components.push_back(std::move(beepComp));
+        cube1->_components.push_back(std::move(rbComp));
     }
 
     // Cube2
@@ -242,15 +248,15 @@ int main() {
     {
         TransformComponent* tComp = cube2->DebugFindComponentOfType<TransformComponent>();
         glm::mat4& t = tComp->_transform;
-        t = glm::translate(t, glm::vec3(-1.f,0.f,0.f));
+        t = glm::translate(t, glm::vec3(-2.f,0.f,0.f));
 
-        auto vComp = std::make_unique<VelocityPhysicsComponent>(tComp, 0.5f, &hitManager);
-        auto controller = std::make_unique<PlayerControllerComponent>(tComp, vComp.get(), &inputManager, &hitManager);
-
-        vComp->SetOnHitCallback(std::bind(&PlayerControllerComponent::OnHit, controller.get()));
+        auto rbComp = std::make_unique<RigidBodyComponent>(tComp, &collisionManager, MakeCubeAabb(0.5f));
+        rbComp->_static = false;
+        auto controller = std::make_unique<PlayerControllerComponent>(tComp, rbComp.get(), &inputManager);
+        rbComp->SetOnHitCallback(std::bind(&PlayerControllerComponent::OnHit, controller.get()));
 
         cube2->_components.push_back(std::move(controller));
-        cube2->_components.push_back(std::move(vComp));
+        cube2->_components.push_back(std::move(rbComp));
     }
 
     // drone sequencer
@@ -267,7 +273,7 @@ int main() {
     float const fixedTimeStep = 1.f / 60.f;
     bool paused = false;
     while(!glfwWindowShouldClose(window)) {
-        
+
         beatClock.Update();
         if (beatClock.IsNewBeat()) {
             audio::Event e;
@@ -296,6 +302,8 @@ int main() {
         }
 
         entityManager.Update(dt);
+
+        collisionManager.Update(dt);
 
         if (inputManager.IsKeyPressed(InputManager::Key::Escape)) {
             glfwSetWindowShouldClose(window, true);

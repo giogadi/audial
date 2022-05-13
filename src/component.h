@@ -1,14 +1,9 @@
 #pragma once
 
 #include <vector>
-#include <algorithm>
 
 #include "glm/mat4x4.hpp"
 #include "glm/ext/matrix_transform.hpp"
-#include "glm/gtc/matrix_inverse.hpp"
-
-#include "model.h"
-#include "input_manager.h"
 
 class Component {
 public:
@@ -58,134 +53,6 @@ public:
     TransformComponent* _transform = nullptr;
     glm::vec3 _linear;
     float _angularY = 0.0f;  // rad / s
-};
-
-class SceneManager;
-
-class ModelComponent : public Component {
-public:
-    ModelComponent(TransformComponent const* trans, BoundMesh const* mesh, SceneManager* sceneMgr);
-    virtual ~ModelComponent() {}
-    virtual void Destroy() override;
-
-    TransformComponent const* _transform = nullptr;
-    BoundMesh const* _mesh = nullptr;
-    SceneManager* _mgr = nullptr;
-};
-
-class LightComponent : public Component {
-public:
-    LightComponent(TransformComponent const* t, glm::vec3 const& ambient, glm::vec3 const& diffuse, SceneManager* sceneMgr);
-    virtual ~LightComponent() {}
-    virtual void Destroy() override;
-
-    TransformComponent const* _transform;
-    glm::vec3 _ambient;
-    glm::vec3 _diffuse;
-    SceneManager* _mgr;
-};
-
-class CameraComponent : public Component {
-public:  
-    CameraComponent(TransformComponent* t, InputManager const* input, SceneManager* sceneMgr);
-
-    virtual ~CameraComponent() {}
-    virtual void Destroy() override;
-
-    glm::mat4 GetViewMatrix() const {
-        glm::vec3 p = _transform->GetPos();
-        glm::vec3 forward = -_transform->GetZAxis();  // Z-axis points backward
-        glm::vec3 up = _transform->GetYAxis();
-        return glm::lookAt(p, p + forward, up);
-    }
-
-    // TODO: make movement relative to camera viewpoint
-    // TODO: break movement out into its own component
-    virtual void Update(float const dt) override {
-        return;
-
-        glm::vec3 inputVec(0.0f);
-        if (_input->IsKeyPressed(InputManager::Key::W)) {
-            inputVec.z -= 1.0f;
-        }
-        if (_input->IsKeyPressed(InputManager::Key::S)) {
-            inputVec.z += 1.0f;
-        }
-        if (_input->IsKeyPressed(InputManager::Key::A)) {
-            inputVec.x -= 1.0f;
-        }
-        if (_input->IsKeyPressed(InputManager::Key::D)) {
-            inputVec.x += 1.0f;
-        }
-        if (_input->IsKeyPressed(InputManager::Key::Q)) {
-            inputVec.y += 1.0f;
-        }
-        if (_input->IsKeyPressed(InputManager::Key::E)) {
-            inputVec.y -= 1.0f;
-        }
-
-        if (inputVec.x == 0.f && inputVec.y == 0.f && inputVec.z == 0.f) {
-            return;
-        }
-
-        float const kSpeed = 5.0f;
-        glm::vec3 translation = dt * kSpeed * glm::normalize(inputVec);
-        glm::vec3 newPos = _transform->GetPos() + translation;
-        _transform->SetPos(newPos);
-    }
-
-    TransformComponent* _transform = nullptr;
-    InputManager const* _input = nullptr;
-    SceneManager* _mgr = nullptr;
-};
-
-class SceneManager {
-public:    
-    void AddModel(ModelComponent const* m) { _models.push_back(m); }
-    void AddLight(LightComponent const* l) { _lights.push_back(l); }
-    void AddCamera(CameraComponent const* c) { _cameras.push_back(c); }
-
-    void RemoveModel(ModelComponent const* m) { 
-        _models.erase(std::remove(_models.begin(), _models.end(), m));
-    }
-    void RemoveLight(LightComponent const* l) {
-        _lights.erase(std::remove(_lights.begin(), _lights.end(), l));
-    }
-    void RemoveCamera(CameraComponent const* c) { 
-        _cameras.erase(std::remove(_cameras.begin(), _cameras.end(), c));
-    }
-
-    void Draw(int windowWidth, int windowHeight) {
-        assert(_cameras.size() == 1);
-        assert(_lights.size() == 1);
-        CameraComponent const* camera = _cameras.front();
-        LightComponent const* light = _lights.front();
-
-        float aspectRatio = (float)windowWidth / windowHeight;
-        glm::mat4 viewProjTransform = glm::perspective(
-            /*fovy=*/glm::radians(45.f), aspectRatio, /*near=*/0.1f, /*far=*/100.0f);
-        viewProjTransform = viewProjTransform * camera->GetViewMatrix();
-
-        // TODO: group them by Material
-        for (auto const& pModel : _models) {
-            ModelComponent const& m = *pModel;
-            m._mesh->_mat->_shader.Use();
-            m._mesh->_mat->_shader.SetMat4("uMvpTrans", viewProjTransform * m._transform->_transform);
-            m._mesh->_mat->_shader.SetMat4("uModelTrans", m._transform->_transform);
-            m._mesh->_mat->_shader.SetMat3("uModelInvTrans", glm::mat3(glm::inverseTranspose(m._transform->_transform)));
-            m._mesh->_mat->_shader.SetVec3("uLightPos", light->_transform->GetPos());
-            m._mesh->_mat->_shader.SetVec3("uAmbient", light->_ambient);
-            m._mesh->_mat->_shader.SetVec3("uDiffuse", light->_diffuse);
-            glActiveTexture(GL_TEXTURE0);
-            glBindTexture(GL_TEXTURE_2D, m._mesh->_mat->_texture->_handle);
-            glBindVertexArray(m._mesh->_vao);
-            glDrawArrays(GL_TRIANGLES, /*startIndex=*/0, m._mesh->_numVerts);
-        }
-    }
-
-    std::vector<ModelComponent const*> _models;
-    std::vector<LightComponent const*> _lights;
-    std::vector<CameraComponent const*> _cameras;
 };
 
 class Entity {
