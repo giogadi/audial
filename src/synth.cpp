@@ -3,6 +3,7 @@
 #include <iostream>
 
 #include "audio_util.h"
+#include "constants.h"
 
 namespace synth {
     namespace {

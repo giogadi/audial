@@ -2,6 +2,8 @@
 
 #include "glm/mat4x4.hpp"
 
+#include "matrix.h"
+
 // TODO: Do we need a "glDeleteProgram" or something on destruction?
 
 class Shader {
@@ -19,7 +21,9 @@ public:
     void SetInt(const char* name, int value) const;   
     void SetFloat(const char* name, float value) const;
     void SetMat3(const char* name, glm::mat3 const& mat) const;
+    void SetMat3(const char* name, Mat3 const& mat) const;
     void SetMat4(const char* name, glm::mat4 const& mat) const;
+    void SetMat4(const char* name, Mat4 const& mat) const;
     void SetVec3(const char* name, glm::vec3 const& vec) const;
 private:
     unsigned int _id = 0;

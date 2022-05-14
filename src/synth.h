@@ -7,8 +7,6 @@
 #include "audio_util.h"
 
 namespace synth {
-    static inline float const kPi = 3.141592653589793f;
-
     static inline float const kSemitoneRatio = 1.05946309f;
     static inline float const kFifthRatio = 1.49830703f;
 

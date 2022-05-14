@@ -8,6 +8,8 @@
 
 #include "model.h"
 #include "input_manager.h"
+#include "matrix.h"
+#include "constants.h"
 
 ModelComponent::ModelComponent(TransformComponent const* trans, BoundMesh const* mesh, SceneManager* sceneMgr)
         : _transform(trans)
@@ -98,18 +100,40 @@ void SceneManager::Draw(int windowWidth, int windowHeight) {
     CameraComponent const* camera = _cameras.front();
     LightComponent const* light = _lights.front();
 
+    float fovy = 45.f * kPi / 180.f;
     float aspectRatio = (float)windowWidth / windowHeight;
-    glm::mat4 viewProjTransform = glm::perspective(
+    Mat4 viewProjTransform = Mat4::Perspective(
+        fovy, aspectRatio, /*near=*/0.1f, /*far=*/100.f);
+    Mat4 camMatrix;
+    glm::mat4 camMatGlm = camera->GetViewMatrix();
+    Mat4 transform;
+    glm::mat4 tGlm;
+    for (int i = 0; i < 4; ++i) {
+        for (int j = 0; j < 4; ++j) {
+            camMatrix._data[4*i+j] = camMatGlm[i][j];
+            transform._data[4*i+j] = tGlm[i][j];
+        }
+    }
+    viewProjTransform = viewProjTransform * camMatrix;
+
+    glm::mat4 viewProjTransformGlm = glm::perspective(
         /*fovy=*/glm::radians(45.f), aspectRatio, /*near=*/0.1f, /*far=*/100.0f);
-    viewProjTransform = viewProjTransform * camera->GetViewMatrix();
+    viewProjTransformGlm = viewProjTransformGlm * camera->GetViewMatrix();
 
     // TODO: group them by Material
     for (auto const& pModel : _models) {
         ModelComponent const& m = *pModel;
+        Mat4 transform;
+        for (int i = 0; i < 4; ++i) {
+            for (int j = 0; j < 4; ++j) {
+                transform._data[4*i+j] = m._transform->_transform[i][j];
+            }
+        }
         m._mesh->_mat->_shader.Use();
-        m._mesh->_mat->_shader.SetMat4("uMvpTrans", viewProjTransform * m._transform->_transform);
-        m._mesh->_mat->_shader.SetMat4("uModelTrans", m._transform->_transform);
-        m._mesh->_mat->_shader.SetMat3("uModelInvTrans", glm::mat3(glm::inverseTranspose(m._transform->_transform)));
+        m._mesh->_mat->_shader.SetMat4("uMvpTrans", viewProjTransform * transform);
+        m._mesh->_mat->_shader.SetMat4("uModelTrans", transform);
+        m._mesh->_mat->_shader.SetMat3("uModelInvTrans", transform.GetMat3());
+        // m._mesh->_mat->_shader.SetMat3("uModelInvTrans", glm::mat3(glm::inverseTranspose(m._transform->_transform)));
         m._mesh->_mat->_shader.SetVec3("uLightPos", light->_transform->GetPos());
         m._mesh->_mat->_shader.SetVec3("uAmbient", light->_ambient);
         m._mesh->_mat->_shader.SetVec3("uDiffuse", light->_diffuse);
