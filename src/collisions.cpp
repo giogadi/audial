@@ -10,12 +10,12 @@ void CollisionManager::RemoveBody(RigidBodyComponent* body) {
 
 namespace {
     bool aabbOverlap(Aabb const& a, Aabb const& b) {
-        return !(a._min[0] > b._max[0] || a._max[0] < b._min[0] ||
-                 a._min[1] > b._max[1] || a._max[1] < b._min[1] ||
-                 a._min[2] > b._max[2] || a._max[2] < b._min[2]);
+        return !(a._min._x > b._max._x || a._max._x < b._min._x ||
+                 a._min._y > b._max._y || a._max._y < b._min._y ||
+                 a._min._z > b._max._z || a._max._z < b._min._z);
     }
 
-    Aabb translateAabb(Aabb const& a, glm::vec3 const& translate) {
+    Aabb translateAabb(Aabb const& a, Vec3 const& translate) {
         Aabb newAabb = a;
         newAabb._min += translate;
         newAabb._max += translate;
@@ -24,10 +24,10 @@ namespace {
 
     // ONLY WORKS IF THEY'RE OVERLAPPING. This isn't a true penetration vec: it
     // just returns a push in one of the 3 axes that results in no more overlap. Result vector pushes a away from b.
-    glm::vec3 GetPenetrationVec(Aabb const& a, Aabb const& b, float padding) {
+    Vec3 GetPenetrationVec(Aabb const& a, Aabb const& b, float padding) {
         // find minimum penetration axis. ASSUME OVERLAP!!!
-        glm::vec3 diff1 = a._min - b._max;
-        glm::vec3 diff2 = a._max - b._min;
+        Vec3 diff1 = a._min - b._max;
+        Vec3 diff2 = a._max - b._min;
         float minDepth = std::numeric_limits<float>::max();
         int minDepthIdx = -1;
         bool minDepth1 = false;
@@ -47,7 +47,7 @@ namespace {
             }
         }
 
-        glm::vec3 pushVec(0.f);
+        Vec3 pushVec(0.f, 0.f, 0.f);
         if (minDepth1) {
             // This means we need to scooch along the POSITIVE minimum axis.
             pushVec[minDepthIdx] += minDepth + padding;
@@ -61,13 +61,13 @@ namespace {
 
 // For now, we're not gonna do anything clever about n-body collisions.
 void CollisionManager::Update(float dt) {
-    std::vector<glm::vec3> newPositions(_bodies.size());
+    std::vector<Vec3> newPositions(_bodies.size());
     std::vector<Aabb> newAabbs(_bodies.size());
     std::vector<bool> hits(_bodies.size(), false);
     for (int i = 0; i < _bodies.size(); ++i) {
         RigidBodyComponent& rb = *_bodies[i];
-        glm::vec3 const rbTranslate = dt * rb._velocity;
-        glm::vec3 newPos = rb._transform->GetPos() + rbTranslate;
+        Vec3 const rbTranslate = dt * rb._velocity;
+        Vec3 newPos = rb._transform->GetPosNew() + rbTranslate;
         Aabb newAabb = translateAabb(rb._localAabb, newPos);
         newPositions[i] = newPos;
         newAabbs[i] = newAabb;
@@ -89,7 +89,7 @@ void CollisionManager::Update(float dt) {
             // we translate it by -vector. This is not a realistic interaction.
             // Also, we require at least one to be static or else we'll never
             // escape collision.
-            glm::vec3 pushVec = GetPenetrationVec(newAabbs[i], newAabbs[j], /*padding=*/0.001f);
+            Vec3 pushVec = GetPenetrationVec(newAabbs[i], newAabbs[j], /*padding=*/0.001f);
             assert(!rb1._static || !rb2._static);
             if (!rb1._static) {
                 newPositions[i] += pushVec;
@@ -106,7 +106,7 @@ void CollisionManager::Update(float dt) {
 
     for (int i = 0; i < _bodies.size(); ++i) {
         RigidBodyComponent& rb = *_bodies[i];
-        rb._transform->SetPos(newPositions[i]);
+        rb._transform->SetPosNew(newPositions[i]);
         if (hits[i] && rb._onHitCallback) {
             rb._onHitCallback();
         }

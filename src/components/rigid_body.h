@@ -7,14 +7,14 @@
 class CollisionManager;
 
 struct Aabb {
-    glm::vec3 _min;
-    glm::vec3 _max;
+    Vec3 _min;
+    Vec3 _max;
 };
 
 inline Aabb MakeCubeAabb(float half_width) {
     Aabb a;
-    a._min = glm::vec3(-half_width);
-    a._max = glm::vec3(half_width);
+    a._min = Vec3(-half_width, -half_width, -half_width);
+    a._max = Vec3(half_width, half_width, half_width);
     return a;
 }
 
@@ -28,7 +28,7 @@ public:
         _onHitCallback = f;
     }
 
-    glm::vec3 _velocity;
+    Vec3 _velocity;
     Aabb _localAabb;  // Aabb assuming position = (0,0,0)
     TransformComponent* _transform;
     CollisionManager* _collisionMgr;

@@ -1,3 +1,5 @@
 #pragma once
 
-static inline float const kPi = 3.141592653589793f;
+float constexpr kPi = 3.141592653589793f;
+
+float constexpr kDeg2Rad = kPi / 180.f;

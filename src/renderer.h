@@ -21,13 +21,13 @@ public:
 
 class LightComponent : public Component {
 public:
-    LightComponent(TransformComponent const* t, glm::vec3 const& ambient, glm::vec3 const& diffuse, SceneManager* sceneMgr);
+    LightComponent(TransformComponent const* t, Vec3 const& ambient, Vec3 const& diffuse, SceneManager* sceneMgr);
     virtual ~LightComponent() {}
     virtual void Destroy() override;
 
     TransformComponent const* _transform;
-    glm::vec3 _ambient;
-    glm::vec3 _diffuse;
+    Vec3 _ambient;
+    Vec3 _diffuse;
     SceneManager* _mgr;
 };
 
@@ -38,7 +38,7 @@ public:
     virtual ~CameraComponent() {}
     virtual void Destroy() override;
 
-    glm::mat4 GetViewMatrix() const;
+    Mat4 GetViewMatrix() const;
 
     // TODO: make movement relative to camera viewpoint
     // TODO: break movement out into its own component

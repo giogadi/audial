@@ -69,7 +69,7 @@ void CreateLight(SceneManager* sceneMgr, Entity* e) {
     auto unique = std::make_unique<TransformComponent>();
     TransformComponent* t = unique.get();
     e->_components.push_back(std::move(unique));
-    e->_components.push_back(std::make_unique<LightComponent>(t, glm::vec3(0.2f,0.2f,0.2f), glm::vec3(1.f,1.f,1.f), sceneMgr));
+    e->_components.push_back(std::make_unique<LightComponent>(t, Vec3(0.2f,0.2f,0.2f), Vec3(1.f,1.f,1.f), sceneMgr));
 }
 
 void CreateCamera(SceneManager* sceneMgr, InputManager* inputMgr, Entity* e) {
@@ -216,10 +216,10 @@ int main() {
     CreateCamera(&sceneManager, &inputManager, camera);
     {
         TransformComponent* t = camera->DebugFindComponentOfType<TransformComponent>();
-        float angle = glm::radians(45.f);
-        glm::vec3 dir(0.f, sin(angle), cos(angle));
+        float angle = 45.f * kDeg2Rad;
+        Vec3 dir(0.f, sin(angle), cos(angle));
         float dist = 15.f;
-        t->SetPos(dist * dir);
+        t->SetPosNew(dist * dir);
         Mat3 rot = Mat3::FromAxisAngle(Vec3(1.f, 0.f, 0.f), -angle);
         t->SetRot(rot);
         // glm::mat4 tGlm = TEMP_ToGlmMat4(t->_transform);
@@ -232,7 +232,7 @@ int main() {
     CreateLight(&sceneManager, light);
     {
         TransformComponent* t = light->DebugFindComponentOfType<TransformComponent>();
-        t->SetPos(glm::vec3(0.f, 3.f, 0.f));
+        t->SetPosNew(Vec3(0.f, 3.f, 0.f));
     }
 
     // Cube1

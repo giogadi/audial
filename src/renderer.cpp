@@ -2,9 +2,9 @@
 
 #include <algorithm>
 
-#include "glm/ext/matrix_transform.hpp"
-#include "glm/gtc/matrix_inverse.hpp"
-#include "glm/ext/matrix_clip_space.hpp"
+// #include "glm/ext/matrix_transform.hpp"
+// #include "glm/gtc/matrix_inverse.hpp"
+// #include "glm/ext/matrix_clip_space.hpp"
 
 #include "model.h"
 #include "input_manager.h"
@@ -22,7 +22,7 @@ void ModelComponent::Destroy() {
     _mgr->RemoveModel(this);
 }
 
-LightComponent::LightComponent(TransformComponent const* t, glm::vec3 const& ambient, glm::vec3 const& diffuse, SceneManager* sceneMgr)
+LightComponent::LightComponent(TransformComponent const* t, Vec3 const& ambient, Vec3 const& diffuse, SceneManager* sceneMgr)
         : _transform(t) 
         , _ambient(ambient)
         , _diffuse(diffuse)
@@ -45,44 +45,44 @@ void CameraComponent::Destroy() {
     _mgr->RemoveCamera(this);
 }
 
-glm::mat4 CameraComponent::GetViewMatrix() const {
-    glm::vec3 p = _transform->GetPos();
-    glm::vec3 forward = -_transform->GetZAxis();  // Z-axis points backward
-    glm::vec3 up = _transform->GetYAxis();
-    return glm::lookAt(p, p + forward, up);
+Mat4 CameraComponent::GetViewMatrix() const {
+    Vec3 p = _transform->GetPosNew();
+    Vec3 forward = -_transform->GetZAxisNew();  // Z-axis points backward
+    Vec3 up = _transform->GetYAxisNew();
+    return Mat4::LookAt(p, p + forward, up);
 }
 
 void CameraComponent::Update(float dt) {
     return;
 
-    glm::vec3 inputVec(0.0f);
+    Vec3 inputVec(0.f,0.f,0.f);
     if (_input->IsKeyPressed(InputManager::Key::W)) {
-        inputVec.z -= 1.0f;
+        inputVec._z -= 1.0f;
     }
     if (_input->IsKeyPressed(InputManager::Key::S)) {
-        inputVec.z += 1.0f;
+        inputVec._z += 1.0f;
     }
     if (_input->IsKeyPressed(InputManager::Key::A)) {
-        inputVec.x -= 1.0f;
+        inputVec._x -= 1.0f;
     }
     if (_input->IsKeyPressed(InputManager::Key::D)) {
-        inputVec.x += 1.0f;
+        inputVec._x += 1.0f;
     }
     if (_input->IsKeyPressed(InputManager::Key::Q)) {
-        inputVec.y += 1.0f;
+        inputVec._y += 1.0f;
     }
     if (_input->IsKeyPressed(InputManager::Key::E)) {
-        inputVec.y -= 1.0f;
+        inputVec._y -= 1.0f;
     }
 
-    if (inputVec.x == 0.f && inputVec.y == 0.f && inputVec.z == 0.f) {
+    if (inputVec._x == 0.f && inputVec._y == 0.f && inputVec._z == 0.f) {
         return;
     }
 
     float const kSpeed = 5.0f;
-    glm::vec3 translation = dt * kSpeed * glm::normalize(inputVec);
-    glm::vec3 newPos = _transform->GetPos() + translation;
-    _transform->SetPos(newPos);
+    Vec3 translation = dt * kSpeed * inputVec.GetNormalized();
+    Vec3 newPos = _transform->GetPosNew() + translation;
+    _transform->SetPosNew(newPos);
 }
 
 void SceneManager::RemoveModel(ModelComponent const* m) { 
@@ -104,7 +104,7 @@ void SceneManager::Draw(int windowWidth, int windowHeight) {
     float aspectRatio = (float)windowWidth / windowHeight;
     Mat4 viewProjTransform = Mat4::Perspective(
         fovy, aspectRatio, /*near=*/0.1f, /*far=*/100.f);
-    Mat4 camMatrix = TEMP_ToMat4(camera->GetViewMatrix());
+    Mat4 camMatrix = camera->GetViewMatrix();
     viewProjTransform = viewProjTransform * camMatrix;
 
     // TODO: group them by Material

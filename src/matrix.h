@@ -36,6 +36,31 @@ struct Vec3 {
 
     Vec3 GetNormalized() const;
 
+    float& operator[](int i) {
+        return _data[i];
+    }
+    float const& operator[](int i) const {
+        return _data[i];
+    }
+    Vec3& operator+=(Vec3 const& rhs) {
+        _x += rhs._x;
+        _y += rhs._y;
+        _z += rhs._z;
+        return *this;
+    }
+    Vec3& operator-=(Vec3 const& rhs) {
+        _x -= rhs._x;
+        _y -= rhs._y;
+        _z -= rhs._z;
+        return *this;
+    }
+    Vec3& operator*=(float a) {
+        _x *= a;
+        _y *= a;
+        _z *= a;
+        return *this;
+    }
+
     union {
         float _data[3];
         struct {

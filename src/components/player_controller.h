@@ -3,6 +3,7 @@
 #include <functional>
 
 #include "component.h"
+#include "matrix.h"
 
 class RigidBodyComponent;
 class InputManager;
@@ -37,5 +38,5 @@ public:
     InputManager const* _input = nullptr;
     State _state = State::Idle;
     float _stateTimer = 0.f;
-    glm::vec3 _attackDir;
+    Vec3 _attackDir;
 };

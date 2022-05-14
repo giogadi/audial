@@ -12,3 +12,6 @@ intermediates
 intermediates-dbg
 imgui.ini
 a.out.dSYM
+mat_timing_test.cpp
+matrix_separated.h
+matrix_separated.cpp
