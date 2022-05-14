@@ -67,7 +67,7 @@ void CollisionManager::Update(float dt) {
     for (int i = 0; i < _bodies.size(); ++i) {
         RigidBodyComponent& rb = *_bodies[i];
         Vec3 const rbTranslate = dt * rb._velocity;
-        Vec3 newPos = rb._transform->GetPosNew() + rbTranslate;
+        Vec3 newPos = rb._transform->GetPos() + rbTranslate;
         Aabb newAabb = translateAabb(rb._localAabb, newPos);
         newPositions[i] = newPos;
         newAabbs[i] = newAabb;
@@ -106,7 +106,7 @@ void CollisionManager::Update(float dt) {
 
     for (int i = 0; i < _bodies.size(); ++i) {
         RigidBodyComponent& rb = *_bodies[i];
-        rb._transform->SetPosNew(newPositions[i]);
+        rb._transform->SetPos(newPositions[i]);
         if (hits[i] && rb._onHitCallback) {
             rb._onHitCallback();
         }

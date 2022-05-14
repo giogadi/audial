@@ -5,7 +5,6 @@
 #include <glad/glad.h> 
 
 #include "stb_image.h"
-#include "glm/ext/matrix_clip_space.hpp"
 
 #include "shader.h"
 

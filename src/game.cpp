@@ -17,8 +17,6 @@
 #define DR_WAV_IMPLEMENTATION
 #include "dr_wav.h"
 
-#include "glm/ext/matrix_transform.hpp"
-
 #include "stb_image.h"
 
 #include "constants.h"
@@ -219,11 +217,9 @@ int main() {
         float angle = 45.f * kDeg2Rad;
         Vec3 dir(0.f, sin(angle), cos(angle));
         float dist = 15.f;
-        t->SetPosNew(dist * dir);
+        t->SetPos(dist * dir);
         Mat3 rot = Mat3::FromAxisAngle(Vec3(1.f, 0.f, 0.f), -angle);
         t->SetRot(rot);
-        // glm::mat4 tGlm = TEMP_ToGlmMat4(t->_transform);
-        // t->_transform = TEMP_ToMat4(glm::rotate(tGlm, -angle, glm::vec3(1.f, 0.f, 0.f)));
         
     }
 
@@ -232,7 +228,7 @@ int main() {
     CreateLight(&sceneManager, light);
     {
         TransformComponent* t = light->DebugFindComponentOfType<TransformComponent>();
-        t->SetPosNew(Vec3(0.f, 3.f, 0.f));
+        t->SetPos(Vec3(0.f, 3.f, 0.f));
     }
 
     // Cube1

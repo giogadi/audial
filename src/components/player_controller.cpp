@@ -2,9 +2,6 @@
 
 #include <limits>
 
-#include "glm/gtc/constants.hpp"
-#include "glm/gtx/norm.hpp"
-
 #include "components/rigid_body.h"
 #include "input_manager.h"
 
@@ -70,7 +67,6 @@ bool PlayerControllerComponent::UpdateAttackState(float dt, bool newState) {
         Vec3 decel = -_attackDir * decelAmount;
         Vec3 newVel = _rb->_velocity + dt * decel;
         if (Vec3::Dot(newVel, _attackDir) <= 0.5*kIdleSpeed) {
-            // _rb->_velocity = glm::vec3(0.f);    
             _state = State::Idle;            
             return true;
         } else {

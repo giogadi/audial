@@ -1,7 +1,5 @@
 #include "beep_on_hit.h"
 
-#include "glm/gtx/norm.hpp"
-
 #include "beat_clock.h"
 #include "audio.h"
 

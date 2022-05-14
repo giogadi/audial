@@ -3,8 +3,6 @@
 #include <cmath>
 #include <cassert>
 
-#include "glm/mat4x4.hpp"
-
 struct Vec3 {
     Vec3() {}
     Vec3(float x, float y, float z)
@@ -320,23 +318,3 @@ struct Transform {
     Vec3 _pos;
     // float _scale;
 };
-
-inline glm::mat4 TEMP_ToGlmMat4(Mat4 const& m) {
-    glm::mat4 mGlm;
-    for (int i = 0; i < 4; ++i) {
-        for (int j = 0; j < 4; ++j) {
-            mGlm[i][j] = m._data[4*i+j];            
-        }
-    }
-    return mGlm;
-}
-
-inline Mat4 TEMP_ToMat4(glm::mat4 const& mGlm) {
-    Mat4 m;
-    for (int i = 0; i < 4; ++i) {
-        for (int j = 0; j < 4; ++j) {
-            m._data[4*i+j] = mGlm[i][j];
-        }
-    }
-    return m;
-}

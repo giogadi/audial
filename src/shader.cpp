@@ -7,8 +7,6 @@
 
 #include <glad/glad.h>
 
-#include "glm/gtc/type_ptr.hpp"
-
 bool Shader::Init(const char* vertexPath, const char* fragmentPath)
 {
     // 1. retrieve the vertex/fragment source code from filePath
@@ -106,25 +104,13 @@ void Shader::SetFloat(const char* name, float value) const
 { 
     glUniform1f(glGetUniformLocation(_id, name), value); 
 }
-void Shader::SetMat3(const char* name, glm::mat3 const& mat) const {
-    glUniformMatrix3fv(
-        glGetUniformLocation(_id, name), /*count=*/1, /*transpose=*/GL_FALSE, glm::value_ptr(mat));
-}
 void Shader::SetMat3(const char* name, Mat3 const& mat) const {
     glUniformMatrix3fv(
         glGetUniformLocation(_id, name), /*count=*/1, /*transpose=*/GL_FALSE, mat._data);
 }
-void Shader::SetMat4(const char* name, glm::mat4 const& mat) const {
-    glUniformMatrix4fv(
-        glGetUniformLocation(_id, name), /*count=*/1, /*transpose=*/GL_FALSE, glm::value_ptr(mat));
-}
 void Shader::SetMat4(const char* name, Mat4 const& mat) const {
     glUniformMatrix4fv(
         glGetUniformLocation(_id, name), /*count=*/1, /*transpose=*/GL_FALSE, mat._data);
-}
-void Shader::SetVec3(const char* name, glm::vec3 const& vec) const {
-    glUniform3fv(
-        glGetUniformLocation(_id, name), /*count=*/1, glm::value_ptr(vec));
 }
 void Shader::SetVec3(const char* name, Vec3 const& vec) const {
     glUniform3fv(

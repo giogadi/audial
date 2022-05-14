@@ -2,10 +2,6 @@
 
 #include <algorithm>
 
-// #include "glm/ext/matrix_transform.hpp"
-// #include "glm/gtc/matrix_inverse.hpp"
-// #include "glm/ext/matrix_clip_space.hpp"
-
 #include "model.h"
 #include "input_manager.h"
 #include "matrix.h"
@@ -46,9 +42,9 @@ void CameraComponent::Destroy() {
 }
 
 Mat4 CameraComponent::GetViewMatrix() const {
-    Vec3 p = _transform->GetPosNew();
-    Vec3 forward = -_transform->GetZAxisNew();  // Z-axis points backward
-    Vec3 up = _transform->GetYAxisNew();
+    Vec3 p = _transform->GetPos();
+    Vec3 forward = -_transform->GetZAxis();  // Z-axis points backward
+    Vec3 up = _transform->GetYAxis();
     return Mat4::LookAt(p, p + forward, up);
 }
 
@@ -81,8 +77,8 @@ void CameraComponent::Update(float dt) {
 
     float const kSpeed = 5.0f;
     Vec3 translation = dt * kSpeed * inputVec.GetNormalized();
-    Vec3 newPos = _transform->GetPosNew() + translation;
-    _transform->SetPosNew(newPos);
+    Vec3 newPos = _transform->GetPos() + translation;
+    _transform->SetPos(newPos);
 }
 
 void SceneManager::RemoveModel(ModelComponent const* m) { 
