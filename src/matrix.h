@@ -3,6 +3,8 @@
 #include <cmath>
 #include <cassert>
 
+#include "glm/mat4x4.hpp"
+
 struct Vec3 {
     Vec3() {}
     Vec3(float x, float y, float z)
@@ -83,6 +85,8 @@ struct Mat3 {
             0.f, 0.f, 1.f);
     }
 
+    static Mat3 FromAxisAngle(Vec3 const& axis, float angleRad);
+
     Mat3 GetTranspose() const {
         return Mat3(
             _m00, _m01, _m02,
@@ -95,6 +99,19 @@ struct Mat3 {
             _m00*v._x + _m10*v._y + _m20*v._z,
             _m01*v._x + _m11*v._y + _m21*v._z,
             _m02*v._x + _m12*v._y + _m22*v._z);
+    }
+
+    Vec3& GetCol(int c) {
+        return const_cast<Vec3&>(static_cast<Mat3 const&>(*this).GetCol(c));
+    }
+    Vec3 const& GetCol(int c) const {
+        switch (c) {
+            case 0: return _col0;
+            case 1: return _col1;
+            case 2: return _col2;            
+        }
+        assert(false);
+        return _col0;
     }
 
     union {
@@ -167,6 +184,13 @@ struct Mat4 {
             0.f, 0.f, 1.f, 0.f,
             0.f, 0.f, 0.f, 1.f);
     }
+    static Mat4 Zero() {
+        return Mat4(
+            0.f, 0.f, 0.f, 0.f,
+            0.f, 0.f, 0.f, 0.f,
+            0.f, 0.f, 0.f, 0.f,
+            0.f, 0.f, 0.f, 0.f);
+    }
 
     Mat3 GetMat3() const {
         return Mat3(
@@ -192,9 +216,31 @@ struct Mat4 {
         return _col0;
     }
 
+    // TODO: maybe add a version that just reinterpets the memory instead of copying
+    Vec3 GetCol3(int c) const {
+        assert(c < 4);
+        return Vec3(_data[4*c], _data[4*c + 1], _data[4*c + 2]);
+    }
+
+    void SetTopLeftMat3(Mat3 const& m3) {
+        for (int c = 0; c < 3; ++c) {
+            Vec4& v4 = this->GetCol(c);
+            Vec3 const& v3 = m3.GetCol(c);
+            v4._x = v3._x;
+            v4._y = v3._y;
+            v4._z = v3._z;
+        }
+    }
+
     static Mat4 LookAt(Vec3 const& eye, Vec3 const& at, Vec3 const& up);
     static Mat4 Frustrum(float left, float right, float bottom, float top, float znear, float zfar);
     static Mat4 Perspective(float fovyRadians, float aspectRatio, float znear, float zfar);
+
+    void Translate(Vec3 const& t) {
+        _m03 += t._x;
+        _m13 += t._y;
+        _m23 += t._z;
+    }
 
     union {
         float _data[16];
@@ -221,4 +267,51 @@ inline Mat4 operator*(Mat4 const& a, Mat4 const& b) {
         }
     }
     return result;
+}
+
+struct Transform {
+    Transform() {}
+    Transform(Mat3 const& rot, Vec3 const& p) 
+        : _rot(rot)
+        , _pos(p) {}
+
+    Mat4 MakeMat4() const {
+        Mat4 m = Mat4::Identity();
+        for (int c = 0; c < 3; ++c) {
+            Vec4& v4 = m.GetCol(c);
+            Vec3 const& v3 = _rot.GetCol(c);
+            v4._x = v3._x;
+            v4._y = v3._y;
+            v4._z = v3._z;
+        }
+        Vec4& p4 = m.GetCol(3);
+        p4._x = _pos._x;
+        p4._y = _pos._y;
+        p4._z = _pos._z;
+        return m;
+    }
+
+    Mat3 _rot;
+    Vec3 _pos;
+    // float _scale;
+};
+
+inline glm::mat4 TEMP_ToGlmMat4(Mat4 const& m) {
+    glm::mat4 mGlm;
+    for (int i = 0; i < 4; ++i) {
+        for (int j = 0; j < 4; ++j) {
+            mGlm[i][j] = m._data[4*i+j];            
+        }
+    }
+    return mGlm;
+}
+
+inline Mat4 TEMP_ToMat4(glm::mat4 const& mGlm) {
+    Mat4 m;
+    for (int i = 0; i < 4; ++i) {
+        for (int j = 0; j < 4; ++j) {
+            m._data[4*i+j] = mGlm[i][j];
+        }
+    }
+    return m;
 }

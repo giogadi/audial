@@ -9,6 +9,29 @@ Vec3 Vec3::GetNormalized() const {
     }
 }
 
+Mat3 Mat3::FromAxisAngle(Vec3 const& axis, float angleRad) {
+    float c = cos(angleRad);
+    float c1 = 1.f - c;
+    float s = sin(angleRad);
+    float x = axis._x;
+    float y = axis._y;
+    float z = axis._z;
+    float xx = axis._x * axis._x;
+    float yy = axis._y * axis._y;
+    float zz = axis._z * axis._z;
+    float xyc1 = x*y*c1;
+    float yzc1 = y*z*c1;
+    float xzc1 = x*z*c1;
+    float xs = x*s;
+    float ys = y*s;
+    float zs = z*s;
+    return Mat3(
+        c+xx*c1, xyc1+zs, xzc1-ys,
+        xyc1-zs, c+yy*c1, yzc1+xs,
+        xzc1+ys, yzc1-xs, c+zz*c1
+    );
+}
+
 Mat4 Mat4::LookAt(Vec3 const& eye, Vec3 const& at, Vec3 const& up) {
     Mat3 r;
     r._col2 = (at - eye).GetNormalized();

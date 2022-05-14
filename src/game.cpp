@@ -21,6 +21,7 @@
 
 #include "stb_image.h"
 
+#include "constants.h"
 #include "audio.h"
 #include "beat_clock.h"
 #include "shader.h"
@@ -219,7 +220,11 @@ int main() {
         glm::vec3 dir(0.f, sin(angle), cos(angle));
         float dist = 15.f;
         t->SetPos(dist * dir);
-        t->_transform = glm::rotate(t->_transform, -angle, glm::vec3(1.f, 0.f, 0.f));
+        Mat3 rot = Mat3::FromAxisAngle(Vec3(1.f, 0.f, 0.f), -angle);
+        t->SetRot(rot);
+        // glm::mat4 tGlm = TEMP_ToGlmMat4(t->_transform);
+        // t->_transform = TEMP_ToMat4(glm::rotate(tGlm, -angle, glm::vec3(1.f, 0.f, 0.f)));
+        
     }
 
     // Light
@@ -238,8 +243,11 @@ int main() {
         auto beepComp = std::make_unique<BeepOnHitComponent>(tComp, &audioContext, &beatClock);
         auto rbComp = std::make_unique<RigidBodyComponent>(tComp, &collisionManager, MakeCubeAabb(0.5f));
         rbComp->SetOnHitCallback(std::bind(&BeepOnHitComponent::OnHit, beepComp.get()));
+        auto velComp = std::make_unique<VelocityComponent>(tComp);
+        velComp->_angularY = 2*kPi;
         cube1->_components.push_back(std::move(beepComp));
         cube1->_components.push_back(std::move(rbComp));
+        cube1->_components.push_back(std::move(velComp));
     }
 
     // Cube2
@@ -247,8 +255,10 @@ int main() {
     CreateCube(&sceneManager, cubeMesh, cube2);
     {
         TransformComponent* tComp = cube2->DebugFindComponentOfType<TransformComponent>();
-        glm::mat4& t = tComp->_transform;
-        t = glm::translate(t, glm::vec3(-2.f,0.f,0.f));
+        // glm::mat4& t = tComp->_transform;
+        // t = glm::translate(t, glm::vec3(-2.f,0.f,0.f));
+        Mat4& t = tComp->_transform;
+        t.Translate(Vec3(-2.f,0.f,0.f));
 
         auto rbComp = std::make_unique<RigidBodyComponent>(tComp, &collisionManager, MakeCubeAabb(0.5f));
         rbComp->_static = false;
