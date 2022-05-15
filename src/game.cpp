@@ -52,6 +52,23 @@ void InitEventQueueWithSequence(audio::EventQueue* queue, BeatClock const& beatC
     }
 }
 
+void InitEventQueueWithParamSequence(audio::EventQueue* queue, BeatClock const& beatClock) {
+    double const firstNoteBeatTime = beatClock.GetDownBeatTime() + 1.0;
+    // gradually increase the cutoff from 0 to 1 in 4 measures = 16 beats.
+    for (int i = 0; i < 16; ++i) {
+        double const beatTime = firstNoteBeatTime + (double)i;
+        unsigned long const tickTime = beatClock.BeatTimeToTickTime(beatTime);
+
+        audio::Event e;
+        e.channel = 1;
+        e.type = audio::EventType::SynthParam;
+        e.timeInTicks = tickTime;
+        e.param = audio::ParamType::Cutoff;
+        e.newParamValue = i * (1.f / 16.f);
+        queue->push(e);
+    }
+}
+
 void FramebufferSizeCallback(GLFWwindow* window, int width, int height) {
     glViewport(0, 0, width, height);
 }
@@ -96,22 +113,91 @@ void CreateDrone(audio::Context* audio, BeatClock const* beatClock, Entity* e) {
     e->_components.push_back(std::move(seqComp));
 }
 
-void DrawImGuiWindow() {
-    static float f = 0.0f;
-    static int counter = 0;
+// TODO: Maybe just use polymorphism instead of this awkward shit lol. Synth
+// params stay constant, you only do the allocations once.
+char const* GetSynthParamName(audio::ParamType param) {
+    switch (param) {
+        case audio::ParamType::Cutoff:
+            return "LPF Cutoff";
+    }
+}
+float GetSynthParamMinValue(audio::ParamType param) {
+    switch (param) {
+        case audio::ParamType::Cutoff:
+            return 0.f;
+    }
+}
+float GetSynthParamMaxValue(audio::ParamType param) {
+    switch (param) {
+        case audio::ParamType::Cutoff:
+            return 1.f;
+    }
+}
+struct SynthParam {
+    audio::ParamType _param;
+    float _currentValue;
+    float _prevValue;    
+};
+struct SynthPatch {
+    static int constexpr kNumParams = 1;
+    std::string _name;
+    std::array<SynthParam, kNumParams> _params;
+};
 
-    ImGui::Begin("Hello, world!");                          // Create a window called "Hello, world!" and append into it.
+struct SynthGuiState {
+    int _activeSynthIx = 0;
+    std::array<char const*, audio::kNumSynths> _synthListItems;
+    std::array<SynthPatch, audio::kNumSynths> _synths;
+};
+void InitSynthGuiState(SynthGuiState& guiState, audio::StateData const& audioState, int sampleRate) {
+    {
+        SynthPatch& patch = guiState._synths[0];
+        patch._name = "beep";
+        SynthParam& p = patch._params[0];
+        p._param = audio::ParamType::Cutoff;
+        p._currentValue = p._prevValue = std::max(1.f, audioState.synths[0].cutoffFreq / (float)sampleRate);
+    }
+    {
+        SynthPatch& patch = guiState._synths[1];
+        patch._name = "drone";
+        SynthParam& p = patch._params[0];
+        p._param = audio::ParamType::Cutoff;
+        p._currentValue = p._prevValue = std::max(1.f, audioState.synths[1].cutoffFreq / (float)sampleRate);
+    }
 
-    ImGui::Text("This is some useful text.");               // Display some text (you can use a format strings too)
+    for (int i = 0; i < audio::kNumSynths; ++i) {
+        guiState._synthListItems[i] = guiState._synths[i]._name.c_str();
+    }
+}
 
-    ImGui::SliderFloat("float", &f, 0.0f, 1.0f);            // Edit 1 float using a slider from 0.0f to 1.0f
+void RequestSynthParamChange(int synthIx, SynthParam const& param, audio::Context& audioContext) {
+    audio::Event e;
+    e.channel = synthIx;
+    e.timeInTicks = 0;
+    e.type = audio::EventType::SynthParam;
+    e.param = param._param;
+    e.newParamValue = param._currentValue;
+    if (!audioContext._eventQueue.try_push(e)) {
+        std::cout << "Failed to push synth param change!" << std::endl;
+    }
+}
 
-    if (ImGui::Button("Button"))                            // Buttons return true when clicked (most widgets return true when edited/activated)
-        counter++;
-    ImGui::SameLine();
-    ImGui::Text("counter = %d", counter);
-
-    ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
+// TODO weird that this also requests synth param changes.
+void DrawSynthGuiAndUpdatePatch(SynthGuiState& state, audio::Context& audioContext) {
+    ImGui::Begin("Synth settings");
+    // TODO: demo adds one more argument to this. what does it do?
+    ImGui::ListBox("Synth list", &state._activeSynthIx, state._synthListItems.data(), /*numItems=*/2);
+    SynthPatch& patch = state._synths[state._activeSynthIx];
+    for (int paramIx = 0; paramIx < SynthPatch::kNumParams; ++paramIx) {
+        SynthParam& param = patch._params[paramIx];
+        ImGui::SliderFloat(
+            GetSynthParamName(param._param), &param._currentValue,
+            GetSynthParamMinValue(param._param), GetSynthParamMaxValue(param._param));
+        if (param._currentValue != param._prevValue) {
+            RequestSynthParamChange(state._activeSynthIx, param, audioContext);
+            param._prevValue = param._currentValue;
+        }
+    }
     ImGui::End();
 }
 
@@ -251,8 +337,6 @@ int main() {
     CreateCube(&sceneManager, cubeMesh, cube2);
     {
         TransformComponent* tComp = cube2->DebugFindComponentOfType<TransformComponent>();
-        // glm::mat4& t = tComp->_transform;
-        // t = glm::translate(t, glm::vec3(-2.f,0.f,0.f));
         Mat4& t = tComp->_transform;
         t.Translate(Vec3(-2.f,0.f,0.f));
 
@@ -273,9 +357,13 @@ int main() {
     {
         // double const audioTime = Pa_GetStreamTime(audioContext._stream);
         // InitEventQueueWithSequence(&audioContext._eventQueue, beatClock);
+        // InitEventQueueWithParamSequence(&audioContext._eventQueue, beatClock);
     }
 
-    bool showImGuiWindow = false;
+    SynthGuiState synthGuiState;
+    InitSynthGuiState(synthGuiState, audioContext._state, sampleRate);
+
+    bool showSynthWindow = false;
     float const fixedTimeStep = 1.f / 60.f;
     bool paused = false;
     while(!glfwWindowShouldClose(window)) {
@@ -307,6 +395,10 @@ int main() {
             dt = fixedTimeStep;
         }
 
+        if (inputManager.IsKeyPressedThisFrame(InputManager::Key::Y)) {
+            showSynthWindow = !showSynthWindow;
+        }
+
         entityManager.Update(dt);
 
         collisionManager.Update(dt);
@@ -319,8 +411,8 @@ int main() {
         ImGui_ImplOpenGL3_NewFrame();
         ImGui_ImplGlfw_NewFrame();
         ImGui::NewFrame();
-        if (showImGuiWindow) {
-            DrawImGuiWindow();
+        if (showSynthWindow) {
+            DrawSynthGuiAndUpdatePatch(synthGuiState, audioContext);
         }
         ImGui::Render();    
 

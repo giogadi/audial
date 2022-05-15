@@ -6,14 +6,24 @@
 namespace audio {
 
 enum class EventType {
-    None, NoteOn, NoteOff, PlayPcm
+    None, NoteOn, NoteOff, SynthParam, PlayPcm
+};
+enum class ParamType {
+    Cutoff
 };
 
 struct Event {
     EventType type;
     int channel = -1;
     long timeInTicks = 0;
-    int midiNote = 0;
+    union {
+        int midiNote = 0;
+        struct {
+            // valid under SynthParam type
+            ParamType param;
+            double newParamValue;
+        };
+    };
 };
 
 static inline int const kEventQueueLength = 64;

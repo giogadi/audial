@@ -242,6 +242,18 @@ namespace synth {
                         }                   
                         break;
                     }
+                    case audio::EventType::SynthParam: {
+                        switch (e.param) {
+                            case audio::ParamType::Cutoff:
+                                // value should be [0,1]. freq(0) = 0, freq(1) =
+                                // sampleRate, but how do we scale it
+                                // exponentially? so that 0.2 is twice the
+                                // frequency of 0.1? Do we want that?
+                                state->cutoffFreq = e.newParamValue * sampleRate;
+                                break;
+                        }
+                        break;
+                    }
                     default: {
                         break;
                     }

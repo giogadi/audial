@@ -13,8 +13,10 @@
 
 namespace audio {
 
+int constexpr kNumSynths = 2;
+
 struct StateData {
-    std::array<synth::StateData,2> synths;
+    std::array<synth::StateData,kNumSynths> synths;
 
     float* pcmBuffer = nullptr;
     int pcmBufferLength = 0;
