@@ -9,7 +9,7 @@ enum class EventType {
     None, NoteOn, NoteOff, SynthParam, PlayPcm
 };
 enum class ParamType : int {
-    Cutoff, Peak, PitchLFOGain, PitchLFOFreq, CutoffLFOGain, CutoffLFOFreq, AmpEnvAttack, AmpEnvDecay, AmpEnvSustain, AmpEnvRelease,
+    Gain, Cutoff, Peak, PitchLFOGain, PitchLFOFreq, CutoffLFOGain, CutoffLFOFreq, AmpEnvAttack, AmpEnvDecay, AmpEnvSustain, AmpEnvRelease,
     NumParams
 };
 
@@ -35,7 +35,6 @@ struct FrameEvent {
     int _sampleIx;
 };
 
-// typedef std::array<PendingEvent, 256> PendingEventBuffer;
 typedef std::array<FrameEvent, 256> EventsThisFrame;
 
 }  // namespace audio

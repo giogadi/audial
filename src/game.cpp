@@ -122,6 +122,8 @@ struct SynthParamSpec {
 };
 SynthParamSpec GetSynthParamSpec(audio::ParamType param) {
     switch (param) {
+        case audio::ParamType::Gain:
+            return SynthParamSpec {"Gain", 0.f, 1.f };
         case audio::ParamType::Cutoff:
             return SynthParamSpec { "LPF Cutoff", 0.f, 1.f };
         case audio::ParamType::Peak:
@@ -134,6 +136,14 @@ SynthParamSpec GetSynthParamSpec(audio::ParamType param) {
             return SynthParamSpec { "Cutoff LFO Gain", 0.f, 1.f };
         case audio::ParamType::CutoffLFOFreq:
             return SynthParamSpec { "Cutoff LFO Freq", 0.f, 30.f };
+        case audio::ParamType::AmpEnvAttack:
+            return SynthParamSpec { "Amp Env Atk", 0.f, 1.f };
+        case audio::ParamType::AmpEnvDecay:
+            return SynthParamSpec { "Amp Env Decay", 0.f, 1.f };
+        case audio::ParamType::AmpEnvSustain:
+            return SynthParamSpec { "Amp Env Sus", 0.f, 1.f };
+        case audio::ParamType::AmpEnvRelease:
+            return SynthParamSpec { "Amp Env Rel", 0.f, 1.f };
         default:
             return SynthParamSpec { "UNSUPPORTED", 0.f, 0.f };
     }
@@ -155,6 +165,11 @@ void InitSynthPatch(
 
     patch._name = name;
     int paramIx = 0;
+    {
+        SynthParam& p = patch._params[paramIx++];
+        p._param = audio::ParamType::Gain;
+        p._currentValue = p._prevValue = synthState.gainFactor;
+    }
     {
         SynthParam& p = patch._params[paramIx++];
         p._param = audio::ParamType::Cutoff;
@@ -188,6 +203,26 @@ void InitSynthPatch(
         SynthParam& p = patch._params[paramIx++];
         p._param = audio::ParamType::CutoffLFOFreq;
         p._currentValue = p._prevValue = synthState.cutoffLFOFreq;
+    }
+    {
+        SynthParam& p = patch._params[paramIx++];
+        p._param = audio::ParamType::AmpEnvAttack;
+        p._currentValue = p._prevValue = synthState.ampEnvAttackTime;
+    }
+    {
+        SynthParam& p = patch._params[paramIx++];
+        p._param = audio::ParamType::AmpEnvDecay;
+        p._currentValue = p._prevValue = synthState.ampEnvDecayTime;
+    }
+    {
+        SynthParam& p = patch._params[paramIx++];
+        p._param = audio::ParamType::AmpEnvSustain;
+        p._currentValue = p._prevValue = synthState.ampEnvSustainLevel;
+    }
+    {
+        SynthParam& p = patch._params[paramIx++];
+        p._param = audio::ParamType::AmpEnvRelease;
+        p._currentValue = p._prevValue = synthState.ampEnvReleaseTime;
     }
     // Give the rest of the params an invalid value for now.
     for (; paramIx < SynthPatch::kNumParams; ++paramIx) {
@@ -256,7 +291,8 @@ int main() {
     unsigned int channels;
     unsigned int sampleRate;
     drwav_uint64 totalPCMFrameCount;
-    float* pSampleData = drwav_open_file_and_read_pcm_frames_f32("data/sounds/kick.wav", &channels, &sampleRate, &totalPCMFrameCount, NULL);
+    float* pSampleData = drwav_open_file_and_read_pcm_frames_f32(
+        "data/sounds/kick.wav", &channels, &sampleRate, &totalPCMFrameCount, NULL);
     if (pSampleData == NULL) {
         // Error opening and reading WAV file.
         std::cout << "error opening and reading wav file" << std::endl;

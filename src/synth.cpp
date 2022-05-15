@@ -58,6 +58,7 @@ namespace synth {
             v.lp3 = 0.0f;
         }
 
+        state.gainFactor = 0.7f;
         state.cutoffFreq = 44100.0f;
         state.cutoffK = 0.0f;
         state.pitchLFOFreq = 1.0f;
@@ -108,73 +109,96 @@ namespace synth {
         v = voice.lp3;
 
         // Amplitude envelope
-        float ampEnvValue = 0.0f;
-        switch (voice.ampEnvState) {
-            case AdsrState::Closed: break;
-            case AdsrState::Opening: {
-                if (voice.ampEnvTicksSinceStart < attackTimeInTicks) {
-                    // attack phase
+        // TODO: move this up top so we can early-exit if the envelope is closed and save some computation.
+        // TODO: consider only doing the envelope computation once per buffer frame.
+        float ampEnvValue = 0.f;
+        if (voice.ampEnvTicksSinceADSPhaseStart >= 0.f) {
+            // TODO: do we want to let the ADS curve continue evolving after note-off, or should we freeze it at note-off?
+            float adsEnvValue = 0.f;
+            switch (voice.adsPhase) {
+                case ADSPhase::Attack: {
                     float t;
                     if (attackTimeInTicks == 0) {
                         t = 1.0f;
                     } else {
-                        t = fmin(1.0f, (float) voice.ampEnvTicksSinceStart / (float) attackTimeInTicks);
+                        t = fmin(1.0f, (float) voice.ampEnvTicksSinceADSPhaseStart / (float) attackTimeInTicks);
                     }
                     float const startAmp = kSmallAmplitude;
                     float const factor = 1.0f / startAmp;
-                    ampEnvValue = startAmp*powf(factor, t);
-                } else {
-                    // decay phase
+                    adsEnvValue = startAmp*powf(factor, t);
+                    ++voice.ampEnvTicksSinceADSPhaseStart;
+                    if (voice.ampEnvTicksSinceADSPhaseStart >= attackTimeInTicks) {
+                        voice.adsPhase = ADSPhase::Decay;
+                        voice.ampEnvTicksSinceADSPhaseStart = 0;
+                    }
+                    break;
+                }
+                case ADSPhase::Decay: {
                     float t;
                     if (decayTimeInTicks == 0) {
                         t = 1.0f;
-                    } else {
-                        int ticksSinceDecayStart = voice.ampEnvTicksSinceStart - attackTimeInTicks;
-                        t = fmin(1.0f, (float) ticksSinceDecayStart / (float) decayTimeInTicks);
+                    } else {;
+                        t = fmin(1.0f, (float) voice.ampEnvTicksSinceADSPhaseStart / (float) decayTimeInTicks);
                     }                        
                     float const sustain = fmax(kSmallAmplitude, ampEnvSustainLevel);
-                    ampEnvValue = 1.0f*powf(sustain, t);
-                }
-                voice.lastNoteOnAmpEnvValue = ampEnvValue;
-                break;
-            }
-            case AdsrState::Closing: {
-                // release phase. release time defined as how long it takes
-                // to get from value just before release down to -80db or
-                // w/e.
-                if (voice.ampEnvTicksSinceStart > releaseTimeInTicks) {
-                    voice.ampEnvState = AdsrState::Closed;
+                    adsEnvValue = 1.0f*powf(sustain, t);
+                    ++voice.ampEnvTicksSinceADSPhaseStart;
+                    if (voice.ampEnvTicksSinceADSPhaseStart >= decayTimeInTicks) {
+                        voice.adsPhase = ADSPhase::Sustain;
+                        voice.ampEnvTicksSinceADSPhaseStart = 0;
+                    }
                     break;
                 }
+                case ADSPhase::Sustain: {
+                    adsEnvValue = ampEnvSustainLevel;
+                    break;
+                }
+            }
+            float ampReleaseEnv = 1.f;
+            if (voice.ampEnvTicksSinceNoteOff >= 0) {
                 float t;
                 if (releaseTimeInTicks == 0) {
                     t = 1.0f;
                 } else {
-                    t = fmin(1.0f, (float) voice.ampEnvTicksSinceStart / (float) releaseTimeInTicks);
+                    t = fmin(1.0f, (float) voice.ampEnvTicksSinceNoteOff / (float) releaseTimeInTicks);
                 }
-                ampEnvValue = voice.lastNoteOnAmpEnvValue*powf(kSmallAmplitude / voice.lastNoteOnAmpEnvValue, t);                    
-                break;
+                ampReleaseEnv = powf(kSmallAmplitude, t);
+                ++voice.ampEnvTicksSinceNoteOff;
+                if (voice.ampEnvTicksSinceNoteOff >= releaseTimeInTicks) {
+                    // Reset envelope state.
+                    voice.ampEnvTicksSinceADSPhaseStart = -1;
+                    voice.ampEnvTicksSinceNoteOff = -1;
+                    voice.currentMidiNote = -1;
+                }
             }
+
+            ampEnvValue = adsEnvValue * ampReleaseEnv;
         }
-        ++voice.ampEnvTicksSinceStart;
 
         v *= ampEnvValue;
 
         return v;
     }
 
-    Voice* FindVoiceForNoteOn(StateData& state) {
-        // Find closing notes.
+    Voice* FindVoiceForNoteOn(StateData& state, int const midiNote) {
+        // First, look for a voice already playing the note we want to play and
+        // use that. If no such voice, look for any voices with closed
+        // envelopes. If no such voice, look for voice that started closing the
+        // longest time ago. If no such voice, then we don't play this note,
+        // sorry bro
         int oldestClosingIx = -1;
         int oldestClosingAge = -1;
         for (int i = 0; i < state.voices.size(); ++i) {
             Voice& v = state.voices[i];
-            if (v.ampEnvState == AdsrState::Closed) {
+            if (v.currentMidiNote == midiNote) {
                 return &v;
             }
-            if (v.ampEnvState == AdsrState::Closing && v.ampEnvTicksSinceStart > oldestClosingAge) {
+            if (v.currentMidiNote == -1) {
                 oldestClosingIx = i;
-                oldestClosingAge = v.ampEnvTicksSinceStart;
+                oldestClosingAge = std::numeric_limits<int>::max();
+            } else if (v.ampEnvTicksSinceNoteOff >= oldestClosingAge) {
+                oldestClosingIx = i;
+                oldestClosingAge = v.ampEnvTicksSinceNoteOff;
             }
         }
         if (oldestClosingIx >= 0) {
@@ -183,13 +207,18 @@ namespace synth {
         return nullptr;
     }
 
-    Voice* FindVoiceForNoteOff(int midiNote, StateData& state) {
+    Voice* FindVoiceForNoteOff(StateData& state, int midiNote) {
+        // NOTE: we should be able to return as soon as we find a voice matching
+        // the given note, but I'm doing the full iteration to check for
+        // correctness for now.
+        Voice* resultVoice = nullptr;
         for (Voice& v : state.voices) {
-            if (v.ampEnvState == AdsrState::Opening && v.lastMidiNote == midiNote) {
-                return &v;
+            if (v.currentMidiNote == midiNote) {
+                assert(resultVoice == nullptr);
+                resultVoice = &v;
             }
         }
-        return nullptr;
+        return resultVoice;
     }
 
     void Process(
@@ -223,27 +252,32 @@ namespace synth {
                 }
                 switch (e.type) {
                     case audio::EventType::NoteOn: {
-                        Voice* v = FindVoiceForNoteOn(*state);
+                        Voice* v = FindVoiceForNoteOn(*state, e.midiNote);
                         if (v != nullptr) {
                             v->f = synth::MidiToFreq(e.midiNote);
-                            v->ampEnvTicksSinceStart = 0;
-                            v->ampEnvState = synth::AdsrState::Opening;
-                            v->lastMidiNote = e.midiNote;
+                            v->adsPhase = synth::ADSPhase::Attack;
+                            v->ampEnvTicksSinceADSPhaseStart = 0;
+                            v->ampEnvTicksSinceNoteOff = -1;
+                            v->currentMidiNote = e.midiNote;
                         } else {
                             std::cout << "couldn't find a note for noteon" << std::endl;
                         }  
                         break;
                     }
                     case audio::EventType::NoteOff: {
-                        Voice* v = FindVoiceForNoteOff(e.midiNote, *state);
+                        Voice* v = FindVoiceForNoteOff(*state, e.midiNote);
                         if (v != nullptr) {
-                            v->ampEnvTicksSinceStart = 0;
-                            v->ampEnvState = synth::AdsrState::Closing;
+                            v->ampEnvTicksSinceNoteOff = 0;
+                            // v->ampEnvTicksSinceStart = 0;
+                            // v->ampEnvState = synth::AdsrState::Closing;
                         }                   
                         break;
                     }
                     case audio::EventType::SynthParam: {
                         switch (e.param) {
+                            case audio::ParamType::Gain:
+                                state->gainFactor = e.newParamValue;
+                                break;
                             case audio::ParamType::Cutoff:
                                 // value should be [0,1]. freq(0) = 0, freq(1) =
                                 // sampleRate, but how do we scale it
@@ -265,6 +299,18 @@ namespace synth {
                                 break;
                             case audio::ParamType::CutoffLFOFreq:
                                 state->cutoffLFOFreq = e.newParamValue;
+                                break;
+                            case audio::ParamType::AmpEnvAttack:
+                                state->ampEnvAttackTime = e.newParamValue;
+                                break;
+                            case audio::ParamType::AmpEnvDecay:
+                                state->ampEnvDecayTime = e.newParamValue;
+                                break;
+                            case audio::ParamType::AmpEnvSustain:
+                                state->ampEnvSustainLevel = e.newParamValue;
+                                break;
+                            case audio::ParamType::AmpEnvRelease:
+                                state->ampEnvReleaseTime = e.newParamValue;
                                 break;
                             default:
                                 std::cout << "Received unsupported synth param " << static_cast<int>(e.param) << std::endl;
@@ -302,6 +348,14 @@ namespace synth {
                 v += ProcessVoice(
                     voice, sampleRate, pitchLFOValue, modulatedCutoff, k, attackTimeInTicks, decayTimeInTicks,
                     state->ampEnvSustainLevel, releaseTimeInTicks);
+            }
+
+            // Apply final gain. Map from linear [0,1] to exponential from -80db to 0db.
+            {
+                float const startAmp = 0.01f;
+                float const factor = 1.0f / startAmp;
+                float gain = startAmp*powf(factor, state->gainFactor);
+                v *= gain;
             }
 
             for (int channelIx = 0; channelIx < numChannels; ++channelIx) {

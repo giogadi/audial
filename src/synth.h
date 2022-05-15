@@ -18,8 +18,8 @@ namespace synth {
         return 440.0f * pow(2.0f, (midi - a4) / 12.0f);
     }
 
-    enum class AdsrState {
-        Closed, Opening, Closing
+    enum class ADSPhase {
+        Attack, Decay, Sustain
     };
 
     struct Voice {
@@ -27,10 +27,10 @@ namespace synth {
         float left_phase = 0.0f;
         float right_phase = 0.0f;
 
-        int ampEnvTicksSinceStart = -1;
-        AdsrState ampEnvState = AdsrState::Closed;
-        float lastNoteOnAmpEnvValue = 0.0f;
-        int lastMidiNote = -1;
+        ADSPhase adsPhase = ADSPhase::Attack;
+        int ampEnvTicksSinceADSPhaseStart = -1;
+        int ampEnvTicksSinceNoteOff = -1;
+        int currentMidiNote = -1;
 
         float lp0 = 0.0f;
         float lp1 = 0.0f;
@@ -42,6 +42,10 @@ namespace synth {
         int channel = -1;
 
         std::array<Voice, 4> voices;
+
+        // This is interpreted linearly from [0,1]. This will get mapped later to [-80db,0db].
+        // TODO: consider just having this be a decibel value capped at 0db.
+        float gainFactor = 0.5f;
 
         float cutoffFreq = 0.0f;
         float cutoffK = 0.0f;  // [0,4] but 4 is unstable
