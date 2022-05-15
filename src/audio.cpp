@@ -135,7 +135,7 @@ int FindEventsInThisFrame(
         long sampleIx = e.timeInTicks - frameStartTickTime;
         if (sampleIx < 0) {
             // remove this element by swapping the last element with this one.
-            printf("WARNING: PROCESSED A STALE EVENT: %ld   %ld    %f\n", sampleIx, e.timeInTicks, timeSecs);
+            // printf("WARNING: PROCESSED A STALE EVENT: %ld   %ld    %f\n", sampleIx, e.timeInTicks, timeSecs);
             // std::swap(e, (*pendingEvents)[pendingEventCount-1]);
             // --pendingEventCount;
             // continue;

@@ -8,8 +8,9 @@ namespace audio {
 enum class EventType {
     None, NoteOn, NoteOff, SynthParam, PlayPcm
 };
-enum class ParamType {
-    Cutoff
+enum class ParamType : int {
+    Cutoff, Peak, PitchLFOGain, PitchLFOFreq, CutoffLFOGain, CutoffLFOFreq, AmpEnvAttack, AmpEnvDecay, AmpEnvSustain, AmpEnvRelease,
+    NumParams
 };
 
 struct Event {

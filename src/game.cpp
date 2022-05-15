@@ -115,22 +115,27 @@ void CreateDrone(audio::Context* audio, BeatClock const* beatClock, Entity* e) {
 
 // TODO: Maybe just use polymorphism instead of this awkward shit lol. Synth
 // params stay constant, you only do the allocations once.
-char const* GetSynthParamName(audio::ParamType param) {
+struct SynthParamSpec {
+    char const* _name;
+    float _minValue;
+    float _maxValue;
+};
+SynthParamSpec GetSynthParamSpec(audio::ParamType param) {
     switch (param) {
         case audio::ParamType::Cutoff:
-            return "LPF Cutoff";
-    }
-}
-float GetSynthParamMinValue(audio::ParamType param) {
-    switch (param) {
-        case audio::ParamType::Cutoff:
-            return 0.f;
-    }
-}
-float GetSynthParamMaxValue(audio::ParamType param) {
-    switch (param) {
-        case audio::ParamType::Cutoff:
-            return 1.f;
+            return SynthParamSpec { "LPF Cutoff", 0.f, 1.f };
+        case audio::ParamType::Peak:
+            return SynthParamSpec { "LPF Peak", 0.f, 0.99f };
+        case audio::ParamType::PitchLFOGain:
+            return SynthParamSpec { "Pitch LFO Gain", 0.f, 1.f };
+        case audio::ParamType::PitchLFOFreq:
+            return SynthParamSpec { "Pitch LFO Freq", 0.f, 30.f };
+        case audio::ParamType::CutoffLFOGain:
+            return SynthParamSpec { "Cutoff LFO Gain", 0.f, 1.f };
+        case audio::ParamType::CutoffLFOFreq:
+            return SynthParamSpec { "Cutoff LFO Freq", 0.f, 30.f };
+        default:
+            return SynthParamSpec { "UNSUPPORTED", 0.f, 0.f };
     }
 }
 struct SynthParam {
@@ -139,10 +144,58 @@ struct SynthParam {
     float _prevValue;    
 };
 struct SynthPatch {
-    static int constexpr kNumParams = 1;
+    static int constexpr kNumParams = static_cast<int>(audio::ParamType::NumParams);
     std::string _name;
     std::array<SynthParam, kNumParams> _params;
 };
+void InitSynthPatch(
+    SynthPatch& patch, audio::StateData const& audioState, int synthIx, int sampleRate,
+    char const* name) {
+    synth::StateData const& synthState = audioState.synths[synthIx];
+
+    patch._name = name;
+    int paramIx = 0;
+    {
+        SynthParam& p = patch._params[paramIx++];
+        p._param = audio::ParamType::Cutoff;
+        p._currentValue = p._prevValue = std::min(1.f, synthState.cutoffFreq / (float)sampleRate);
+    }
+    {
+        SynthParam& p = patch._params[paramIx++];
+        p._param = audio::ParamType::Peak;
+        p._currentValue = p._prevValue = std::min(1.f, synthState.cutoffK / 4.f);
+    }
+    {
+        // When this is 0, variation is 0. when this is 1, the pitch varies up and down by a whole octave (so a full spread of 2 octaves)
+        SynthParam& p = patch._params[paramIx++];
+        p._param = audio::ParamType::PitchLFOGain;
+        p._currentValue = p._prevValue = synthState.pitchLFOGain;
+    }
+    {
+        SynthParam& p = patch._params[paramIx++];
+        p._param = audio::ParamType::PitchLFOFreq;
+        p._currentValue = p._prevValue = synthState.pitchLFOFreq;
+    }
+    {
+        // When this is 0, variation is 0. when this is 1, the cutoff varies up
+        // and down by a whole octave (so cutoff freq goes from 0.5*cutoff to
+        // 2.0*cutoff)
+        SynthParam& p = patch._params[paramIx++];
+        p._param = audio::ParamType::CutoffLFOGain;
+        p._currentValue = p._prevValue = synthState.cutoffLFOGain;
+    }
+    {
+        SynthParam& p = patch._params[paramIx++];
+        p._param = audio::ParamType::CutoffLFOFreq;
+        p._currentValue = p._prevValue = synthState.cutoffLFOFreq;
+    }
+    // Give the rest of the params an invalid value for now.
+    for (; paramIx < SynthPatch::kNumParams; ++paramIx) {
+        SynthParam& p = patch._params[paramIx];
+        p._param = audio::ParamType::NumParams;
+        p._currentValue = p._prevValue = 0.f;
+    }
+}
 
 struct SynthGuiState {
     int _activeSynthIx = 0;
@@ -152,17 +205,11 @@ struct SynthGuiState {
 void InitSynthGuiState(SynthGuiState& guiState, audio::StateData const& audioState, int sampleRate) {
     {
         SynthPatch& patch = guiState._synths[0];
-        patch._name = "beep";
-        SynthParam& p = patch._params[0];
-        p._param = audio::ParamType::Cutoff;
-        p._currentValue = p._prevValue = std::max(1.f, audioState.synths[0].cutoffFreq / (float)sampleRate);
+        InitSynthPatch(patch, audioState, /*synthIx=*/0, sampleRate, "beep");
     }
     {
         SynthPatch& patch = guiState._synths[1];
-        patch._name = "drone";
-        SynthParam& p = patch._params[0];
-        p._param = audio::ParamType::Cutoff;
-        p._currentValue = p._prevValue = std::max(1.f, audioState.synths[1].cutoffFreq / (float)sampleRate);
+        InitSynthPatch(patch, audioState, /*synthIx=*/1, sampleRate, "drone");
     }
 
     for (int i = 0; i < audio::kNumSynths; ++i) {
@@ -190,9 +237,13 @@ void DrawSynthGuiAndUpdatePatch(SynthGuiState& state, audio::Context& audioConte
     SynthPatch& patch = state._synths[state._activeSynthIx];
     for (int paramIx = 0; paramIx < SynthPatch::kNumParams; ++paramIx) {
         SynthParam& param = patch._params[paramIx];
+        // skip unsupported params
+        if (param._param == audio::ParamType::NumParams) {
+            continue;
+        }
+        SynthParamSpec const spec = GetSynthParamSpec(param._param);
         ImGui::SliderFloat(
-            GetSynthParamName(param._param), &param._currentValue,
-            GetSynthParamMinValue(param._param), GetSynthParamMaxValue(param._param));
+            spec._name, &param._currentValue, spec._minValue, spec._maxValue);
         if (param._currentValue != param._prevValue) {
             RequestSynthParamChange(state._activeSynthIx, param, audioContext);
             param._prevValue = param._currentValue;

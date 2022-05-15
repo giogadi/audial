@@ -251,6 +251,24 @@ namespace synth {
                                 // frequency of 0.1? Do we want that?
                                 state->cutoffFreq = e.newParamValue * sampleRate;
                                 break;
+                            case audio::ParamType::Peak:
+                                state->cutoffK = e.newParamValue * 4.f;
+                                break;
+                            case audio::ParamType::PitchLFOGain:
+                                state->pitchLFOGain = e.newParamValue;
+                                break;
+                            case audio::ParamType::PitchLFOFreq:
+                                state->pitchLFOFreq = e.newParamValue;
+                                break;
+                            case audio::ParamType::CutoffLFOGain:
+                                state->cutoffLFOGain = e.newParamValue;
+                                break;
+                            case audio::ParamType::CutoffLFOFreq:
+                                state->cutoffLFOFreq = e.newParamValue;
+                                break;
+                            default:
+                                std::cout << "Received unsupported synth param " << static_cast<int>(e.param) << std::endl;
+                                break;
                         }
                         break;
                     }
