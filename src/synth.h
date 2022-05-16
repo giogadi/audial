@@ -18,8 +18,23 @@ namespace synth {
         return 440.0f * pow(2.0f, (midi - a4) / 12.0f);
     }
 
-    enum class ADSPhase {
-        Attack, Decay, Sustain
+    enum class ADSRPhase {
+        Closed, Attack, Decay, Sustain, Release
+    };
+
+    struct ADSREnvState {
+        ADSRPhase phase = ADSRPhase::Closed;
+        float currentValue = 0.f;
+        float multiplier = 0.f;
+        long ticksSincePhaseStart = -1;
+    };
+
+    struct ADSREnvSpec {
+        long attackTimeInTicks = 0l;
+        long decayTimeInTicks = 0l;
+        float sustainLevel = 0.f;
+        long releaseTimeInTicks = 0l;
+        float minValue = kSmallAmplitude;
     };
 
     struct Voice {
@@ -27,9 +42,8 @@ namespace synth {
         float left_phase = 0.0f;
         float right_phase = 0.0f;
 
-        ADSPhase adsPhase = ADSPhase::Attack;
-        int ampEnvTicksSinceADSPhaseStart = -1;
-        int ampEnvTicksSinceNoteOff = -1;
+        ADSREnvState ampEnvState;
+        ADSREnvState cutoffEnvState;
         int currentMidiNote = -1;
 
         float lp0 = 0.0f;
@@ -62,6 +76,12 @@ namespace synth {
         float ampEnvDecayTime = 0.0f;
         float ampEnvSustainLevel = 1.0f;
         float ampEnvReleaseTime = 0.0f;
+
+        float cutoffEnvGain = 0.f;
+        float cutoffEnvAttackTime = 0.f;
+        float cutoffEnvDecayTime = 0.f;
+        float cutoffEnvSustainLevel = 1.f;
+        float cutoffEnvReleaseTime = 0.f;
     };
 
     void InitStateData(StateData& state, int channel);

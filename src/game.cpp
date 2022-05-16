@@ -137,13 +137,23 @@ SynthParamSpec GetSynthParamSpec(audio::ParamType param) {
         case audio::ParamType::CutoffLFOFreq:
             return SynthParamSpec { "Cutoff LFO Freq", 0.f, 30.f };
         case audio::ParamType::AmpEnvAttack:
-            return SynthParamSpec { "Amp Env Atk", 0.f, 1.f };
+            return SynthParamSpec { "Cutoff Env Atk", 0.f, 1.f };
         case audio::ParamType::AmpEnvDecay:
             return SynthParamSpec { "Amp Env Decay", 0.f, 1.f };
         case audio::ParamType::AmpEnvSustain:
             return SynthParamSpec { "Amp Env Sus", 0.f, 1.f };
         case audio::ParamType::AmpEnvRelease:
-            return SynthParamSpec { "Amp Env Rel", 0.f, 1.f };
+            return SynthParamSpec { "Amp Env Rel", 0.f, 1.f };    
+        case audio::ParamType::CutoffEnvGain:
+            return SynthParamSpec { "Cutoff Env Gain", 0.f, 20000.f };
+        case audio::ParamType::CutoffEnvAttack:
+            return SynthParamSpec { "Cutoff Env Atk", 0.f, 1.f };
+        case audio::ParamType::CutoffEnvDecay:
+            return SynthParamSpec { "Cutoff Env Decay", 0.f, 1.f };
+        case audio::ParamType::CutoffEnvSustain:
+            return SynthParamSpec { "Cutoff Env Sus", 0.f, 1.f };
+        case audio::ParamType::CutoffEnvRelease:
+            return SynthParamSpec { "Cutoff Env Rel", 0.f, 1.f };
         default:
             return SynthParamSpec { "UNSUPPORTED", 0.f, 0.f };
     }
@@ -223,6 +233,31 @@ void InitSynthPatch(
         SynthParam& p = patch._params[paramIx++];
         p._param = audio::ParamType::AmpEnvRelease;
         p._currentValue = p._prevValue = synthState.ampEnvReleaseTime;
+    }
+    {
+        SynthParam& p = patch._params[paramIx++];
+        p._param = audio::ParamType::CutoffEnvGain;
+        p._currentValue = p._prevValue = synthState.cutoffEnvGain;
+    }
+    {
+        SynthParam& p = patch._params[paramIx++];
+        p._param = audio::ParamType::CutoffEnvAttack;
+        p._currentValue = p._prevValue = synthState.cutoffEnvAttackTime;
+    }
+    {
+        SynthParam& p = patch._params[paramIx++];
+        p._param = audio::ParamType::CutoffEnvDecay;
+        p._currentValue = p._prevValue = synthState.cutoffEnvDecayTime;
+    }
+    {
+        SynthParam& p = patch._params[paramIx++];
+        p._param = audio::ParamType::CutoffEnvSustain;
+        p._currentValue = p._prevValue = synthState.cutoffEnvSustainLevel;
+    }
+    {
+        SynthParam& p = patch._params[paramIx++];
+        p._param = audio::ParamType::CutoffEnvRelease;
+        p._currentValue = p._prevValue = synthState.cutoffEnvReleaseTime;
     }
     // Give the rest of the params an invalid value for now.
     for (; paramIx < SynthPatch::kNumParams; ++paramIx) {

@@ -9,7 +9,9 @@ enum class EventType {
     None, NoteOn, NoteOff, SynthParam, PlayPcm
 };
 enum class ParamType : int {
-    Gain, Cutoff, Peak, PitchLFOGain, PitchLFOFreq, CutoffLFOGain, CutoffLFOFreq, AmpEnvAttack, AmpEnvDecay, AmpEnvSustain, AmpEnvRelease,
+    Gain, Cutoff, Peak, PitchLFOGain, PitchLFOFreq, CutoffLFOGain, CutoffLFOFreq,
+    AmpEnvAttack, AmpEnvDecay, AmpEnvSustain, AmpEnvRelease,
+    CutoffEnvGain, CutoffEnvAttack, CutoffEnvDecay, CutoffEnvSustain, CutoffEnvRelease,
     NumParams
 };
 

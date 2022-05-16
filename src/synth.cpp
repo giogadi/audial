@@ -73,11 +73,102 @@ namespace synth {
         state.ampEnvReleaseTime = 0.5f;
     }
 
+    float calcMultiplier(float startLevel, float endLevel, long numSamples) {
+        assert(numSamples > 0l);
+        assert(startLevel > 0.f);
+        double recip = 1.0 / numSamples;
+        double endOverStart = endLevel / startLevel;
+        double val = pow(endOverStart, recip);
+        return (float) val;
+    }
+
+    void adsrEnvelope(ADSREnvSpec const& spec, ADSREnvState& state) {
+        switch (state.phase) {
+            case ADSRPhase::Closed:
+                // Do nothing
+                break;
+            case ADSRPhase::Attack:
+                if (state.ticksSincePhaseStart == 0) {
+                    if (spec.attackTimeInTicks == 0) {
+                        state.currentValue = 1.f;
+                        state.multiplier = 1.f;
+                    } else {
+                        state.currentValue = spec.minValue;
+                        state.multiplier = calcMultiplier(spec.minValue, 1.f, spec.attackTimeInTicks);                            
+                    }                    
+                }
+                state.currentValue *= state.multiplier;
+                ++state.ticksSincePhaseStart;
+                if (state.ticksSincePhaseStart >= spec.attackTimeInTicks) {
+                    state.phase = ADSRPhase::Decay;
+                    state.ticksSincePhaseStart = 0;
+                }
+                // LINEAR ATTACK code
+                // if (state.ticksSincePhaseStart == 0) {
+                //     state.currentValue = 0.f;
+                //     if (spec.attackTimeInTicks == 0) {
+                //         state.currentValue = 1.f;
+                //     }
+                // } else {
+                //     state.currentValue = (float)state.ticksSincePhaseStart / (float)spec.attackTimeInTicks;
+                // }
+                // ++state.ticksSincePhaseStart;
+                // if (state.ticksSincePhaseStart >= spec.attackTimeInTicks) {
+                //     state.phase = ADSRPhase::Decay;
+                //     state.ticksSincePhaseStart = 0;
+                // }
+                break;
+            case ADSRPhase::Decay:
+                if (state.ticksSincePhaseStart == 0) {                    
+                    if (spec.decayTimeInTicks == 0) {
+                        state.currentValue = spec.sustainLevel;
+                        state.multiplier = 1.f;
+                    } else {
+                        state.currentValue = 1.f;
+                        state.multiplier = calcMultiplier(1.f, spec.sustainLevel, spec.decayTimeInTicks);
+                    }
+                }
+                state.currentValue *= state.multiplier;
+                ++state.ticksSincePhaseStart;
+                if (state.ticksSincePhaseStart >= spec.decayTimeInTicks) {
+                    state.phase = ADSRPhase::Sustain;
+                    state.ticksSincePhaseStart = 0;
+                }
+                break;
+            case ADSRPhase::Sustain:
+                // Do nothing. waiting for external signal to enter Release.
+                break;
+            case ADSRPhase::Release: {
+                if (state.ticksSincePhaseStart == 0) {                    
+                    if (spec.releaseTimeInTicks == 0) {                        
+                        state.multiplier = 0.f;
+                    } else {
+                        // Keep current level. might have hit release before hitting sustain level
+                        // TODO: calculate release from sustain to 0, or from current level to 0? I like sustain better.
+                        state.multiplier = calcMultiplier(spec.sustainLevel, spec.minValue, spec.releaseTimeInTicks);
+                    }
+                }
+                state.currentValue *= state.multiplier;
+                ++state.ticksSincePhaseStart;
+                if (state.ticksSincePhaseStart >= spec.releaseTimeInTicks) {
+                    state.phase = ADSRPhase::Closed;
+                    state.ticksSincePhaseStart = -1;
+                    state.currentValue = 0.f;
+                }
+                break;
+            }
+        }
+        // This is important right now because when we modify attack times, it
+        // can cause the precomputed multiplier to be applied for longer than
+        // expected and thus result in gains > 1.
+        state.currentValue = std::min(1.f, state.currentValue);
+    }
+
     // TODO: make this process an entire buffer.
     // TODO: early exit if envelope is closed.
     float ProcessVoice(
         Voice& voice, int const sampleRate, float pitchLFOValue, float modulatedCutoff, float cutoffK,
-        int const attackTimeInTicks, int const decayTimeInTicks, float const ampEnvSustainLevel, int const releaseTimeInTicks) {
+        ADSREnvSpec const& ampEnvSpec, ADSREnvSpec const& cutoffEnvSpec, float const cutoffEnvGain) {
         float const dt = 1.0f / sampleRate;
 
         // Now use the LFO value to get a new frequency.
@@ -97,6 +188,10 @@ namespace synth {
             voice.left_phase += phaseChange;
         }
 
+        // Cutoff envelope
+        adsrEnvelope(cutoffEnvSpec, voice.cutoffEnvState);
+        modulatedCutoff += cutoffEnvGain * voice.cutoffEnvState.currentValue;
+
         // ladder filter
         float const rc = 1 / modulatedCutoff;
         float const a = dt / (rc + dt);
@@ -111,71 +206,11 @@ namespace synth {
         // Amplitude envelope
         // TODO: move this up top so we can early-exit if the envelope is closed and save some computation.
         // TODO: consider only doing the envelope computation once per buffer frame.
-        float ampEnvValue = 0.f;
-        if (voice.ampEnvTicksSinceADSPhaseStart >= 0.f) {
-            // TODO: do we want to let the ADS curve continue evolving after note-off, or should we freeze it at note-off?
-            float adsEnvValue = 0.f;
-            switch (voice.adsPhase) {
-                case ADSPhase::Attack: {
-                    float t;
-                    if (attackTimeInTicks == 0) {
-                        t = 1.0f;
-                    } else {
-                        t = fmin(1.0f, (float) voice.ampEnvTicksSinceADSPhaseStart / (float) attackTimeInTicks);
-                    }
-                    float const startAmp = kSmallAmplitude;
-                    float const factor = 1.0f / startAmp;
-                    adsEnvValue = startAmp*powf(factor, t);
-                    ++voice.ampEnvTicksSinceADSPhaseStart;
-                    if (voice.ampEnvTicksSinceADSPhaseStart >= attackTimeInTicks) {
-                        voice.adsPhase = ADSPhase::Decay;
-                        voice.ampEnvTicksSinceADSPhaseStart = 0;
-                    }
-                    break;
-                }
-                case ADSPhase::Decay: {
-                    float t;
-                    if (decayTimeInTicks == 0) {
-                        t = 1.0f;
-                    } else {;
-                        t = fmin(1.0f, (float) voice.ampEnvTicksSinceADSPhaseStart / (float) decayTimeInTicks);
-                    }                        
-                    float const sustain = fmax(kSmallAmplitude, ampEnvSustainLevel);
-                    adsEnvValue = 1.0f*powf(sustain, t);
-                    ++voice.ampEnvTicksSinceADSPhaseStart;
-                    if (voice.ampEnvTicksSinceADSPhaseStart >= decayTimeInTicks) {
-                        voice.adsPhase = ADSPhase::Sustain;
-                        voice.ampEnvTicksSinceADSPhaseStart = 0;
-                    }
-                    break;
-                }
-                case ADSPhase::Sustain: {
-                    adsEnvValue = ampEnvSustainLevel;
-                    break;
-                }
-            }
-            float ampReleaseEnv = 1.f;
-            if (voice.ampEnvTicksSinceNoteOff >= 0) {
-                float t;
-                if (releaseTimeInTicks == 0) {
-                    t = 1.0f;
-                } else {
-                    t = fmin(1.0f, (float) voice.ampEnvTicksSinceNoteOff / (float) releaseTimeInTicks);
-                }
-                ampReleaseEnv = powf(kSmallAmplitude, t);
-                ++voice.ampEnvTicksSinceNoteOff;
-                if (voice.ampEnvTicksSinceNoteOff >= releaseTimeInTicks) {
-                    // Reset envelope state.
-                    voice.ampEnvTicksSinceADSPhaseStart = -1;
-                    voice.ampEnvTicksSinceNoteOff = -1;
-                    voice.currentMidiNote = -1;
-                }
-            }
-
-            ampEnvValue = adsEnvValue * ampReleaseEnv;
+        adsrEnvelope(ampEnvSpec, voice.ampEnvState);
+        if (voice.ampEnvState.phase == ADSRPhase::Closed) {
+            voice.currentMidiNote = -1;
         }
-
-        v *= ampEnvValue;
+        v *= voice.ampEnvState.currentValue;
 
         return v;
     }
@@ -193,12 +228,12 @@ namespace synth {
             if (v.currentMidiNote == midiNote) {
                 return &v;
             }
-            if (v.currentMidiNote == -1) {
+            if (v.ampEnvState.phase == ADSRPhase::Closed) {
                 oldestClosingIx = i;
                 oldestClosingAge = std::numeric_limits<int>::max();
-            } else if (v.ampEnvTicksSinceNoteOff >= oldestClosingAge) {
+            } else if (v.ampEnvState.phase == ADSRPhase::Release && v.ampEnvState.ticksSincePhaseStart >= oldestClosingAge/*v.ampEnvTicksSinceNoteOff >= oldestClosingAge*/) {
                 oldestClosingIx = i;
-                oldestClosingAge = v.ampEnvTicksSinceNoteOff;
+                oldestClosingAge = v.ampEnvState.ticksSincePhaseStart;
             }
         }
         if (oldestClosingIx >= 0) {
@@ -227,9 +262,20 @@ namespace synth {
 
         float const dt = 1.0f / sampleRate;
         float const k = state->cutoffK;  // between [0,4], unstable at 4
-        int const attackTimeInTicks = state->ampEnvAttackTime * sampleRate;
-        int const decayTimeInTicks = state->ampEnvDecayTime * sampleRate;
-        int const releaseTimeInTicks = state->ampEnvReleaseTime * sampleRate;
+
+        ADSREnvSpec ampEnvSpec;
+        ampEnvSpec.attackTimeInTicks = state->ampEnvAttackTime * sampleRate;
+        ampEnvSpec.decayTimeInTicks = state->ampEnvDecayTime * sampleRate;
+        ampEnvSpec.sustainLevel = state->ampEnvSustainLevel;
+        ampEnvSpec.releaseTimeInTicks = state->ampEnvReleaseTime * sampleRate;
+        ampEnvSpec.minValue = 0.01f;
+
+        ADSREnvSpec cutoffEnvSpec;
+        cutoffEnvSpec.attackTimeInTicks = state->cutoffEnvAttackTime * sampleRate;
+        cutoffEnvSpec.decayTimeInTicks = state->cutoffEnvDecayTime * sampleRate;
+        cutoffEnvSpec.sustainLevel = state->cutoffEnvSustainLevel;
+        cutoffEnvSpec.releaseTimeInTicks = state->cutoffEnvReleaseTime * sampleRate;
+        cutoffEnvSpec.minValue = 0.01f;
         
         int frameEventIx = 0;
         for(int i = 0; i < framesPerBuffer; ++i)
@@ -255,10 +301,11 @@ namespace synth {
                         Voice* v = FindVoiceForNoteOn(*state, e.midiNote);
                         if (v != nullptr) {
                             v->f = synth::MidiToFreq(e.midiNote);
-                            v->adsPhase = synth::ADSPhase::Attack;
-                            v->ampEnvTicksSinceADSPhaseStart = 0;
-                            v->ampEnvTicksSinceNoteOff = -1;
                             v->currentMidiNote = e.midiNote;
+                            v->ampEnvState.phase = synth::ADSRPhase::Attack;
+                            v->ampEnvState.ticksSincePhaseStart = 0;
+                            v->cutoffEnvState.phase = synth::ADSRPhase::Attack;
+                            v->cutoffEnvState.ticksSincePhaseStart = 0;
                         } else {
                             std::cout << "couldn't find a note for noteon" << std::endl;
                         }  
@@ -267,10 +314,11 @@ namespace synth {
                     case audio::EventType::NoteOff: {
                         Voice* v = FindVoiceForNoteOff(*state, e.midiNote);
                         if (v != nullptr) {
-                            v->ampEnvTicksSinceNoteOff = 0;
-                            // v->ampEnvTicksSinceStart = 0;
-                            // v->ampEnvState = synth::AdsrState::Closing;
-                        }                   
+                            v->ampEnvState.phase = synth::ADSRPhase::Release;
+                            v->ampEnvState.ticksSincePhaseStart = 0;
+                            v->cutoffEnvState.phase = synth::ADSRPhase::Release;
+                            v->cutoffEnvState.ticksSincePhaseStart = 0;
+                        }
                         break;
                     }
                     case audio::EventType::SynthParam: {
@@ -312,6 +360,21 @@ namespace synth {
                             case audio::ParamType::AmpEnvRelease:
                                 state->ampEnvReleaseTime = e.newParamValue;
                                 break;
+                            case audio::ParamType::CutoffEnvGain:
+                                state->cutoffEnvGain = e.newParamValue;
+                                break;
+                            case audio::ParamType::CutoffEnvAttack:
+                                state->cutoffEnvAttackTime = e.newParamValue;
+                                break;
+                            case audio::ParamType::CutoffEnvDecay:
+                                state->cutoffEnvDecayTime = e.newParamValue;
+                                break;
+                            case audio::ParamType::CutoffEnvSustain:
+                                state->cutoffEnvSustainLevel = e.newParamValue;
+                                break;
+                            case audio::ParamType::CutoffEnvRelease:
+                                state->cutoffEnvReleaseTime = e.newParamValue;
+                                break;
                             default:
                                 std::cout << "Received unsupported synth param " << static_cast<int>(e.param) << std::endl;
                                 break;
@@ -346,8 +409,7 @@ namespace synth {
             float v = 0.0f;
             for (Voice& voice : state->voices) {
                 v += ProcessVoice(
-                    voice, sampleRate, pitchLFOValue, modulatedCutoff, k, attackTimeInTicks, decayTimeInTicks,
-                    state->ampEnvSustainLevel, releaseTimeInTicks);
+                    voice, sampleRate, pitchLFOValue, modulatedCutoff, k, ampEnvSpec, cutoffEnvSpec, state->cutoffEnvGain);
             }
 
             // Apply final gain. Map from linear [0,1] to exponential from -80db to 0db.
