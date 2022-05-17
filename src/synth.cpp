@@ -88,35 +88,36 @@ namespace synth {
                 // Do nothing
                 break;
             case ADSRPhase::Attack:
-                if (state.ticksSincePhaseStart == 0) {
-                    if (spec.attackTimeInTicks == 0) {
-                        state.currentValue = 1.f;
-                        state.multiplier = 1.f;
-                    } else {
-                        state.currentValue = spec.minValue;
-                        state.multiplier = calcMultiplier(spec.minValue, 1.f, spec.attackTimeInTicks);                            
-                    }                    
-                }
-                state.currentValue *= state.multiplier;
-                ++state.ticksSincePhaseStart;
-                if (state.ticksSincePhaseStart >= spec.attackTimeInTicks) {
-                    state.phase = ADSRPhase::Decay;
-                    state.ticksSincePhaseStart = 0;
-                }
-                // LINEAR ATTACK code
+                // EXPONENTIAL ATTACK
                 // if (state.ticksSincePhaseStart == 0) {
-                //     state.currentValue = 0.f;
                 //     if (spec.attackTimeInTicks == 0) {
                 //         state.currentValue = 1.f;
-                //     }
-                // } else {
-                //     state.currentValue = (float)state.ticksSincePhaseStart / (float)spec.attackTimeInTicks;
+                //         state.multiplier = 1.f;
+                //     } else {
+                //         state.currentValue = spec.minValue;
+                //         state.multiplier = calcMultiplier(spec.minValue, 1.f, spec.attackTimeInTicks);                            
+                //     }                    
                 // }
+                // state.currentValue *= state.multiplier;
                 // ++state.ticksSincePhaseStart;
                 // if (state.ticksSincePhaseStart >= spec.attackTimeInTicks) {
                 //     state.phase = ADSRPhase::Decay;
                 //     state.ticksSincePhaseStart = 0;
                 // }
+                // LINEAR ATTACK code
+                if (state.ticksSincePhaseStart == 0) {
+                    state.currentValue = 0.f;
+                    if (spec.attackTimeInTicks == 0) {
+                        state.currentValue = 1.f;
+                    }
+                } else {
+                    state.currentValue = (float)state.ticksSincePhaseStart / (float)spec.attackTimeInTicks;
+                }
+                ++state.ticksSincePhaseStart;
+                if (state.ticksSincePhaseStart >= spec.attackTimeInTicks) {
+                    state.phase = ADSRPhase::Decay;
+                    state.ticksSincePhaseStart = 0;
+                }
                 break;
             case ADSRPhase::Decay:
                 if (state.ticksSincePhaseStart == 0) {                    

@@ -21,6 +21,8 @@ public:
 
     virtual void Update(float const dt) override;
 
+    virtual void Destroy() override {}
+
     TransformComponent* _t = nullptr;
     audio::Context* _audio = nullptr;
     BeatClock const* _beatClock = nullptr;

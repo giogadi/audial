@@ -4,11 +4,49 @@
 
 #include "matrix.h"
 
+class Entity;
+
 class Component {
 public:
     virtual ~Component() {}
     virtual void Update(float dt) {}
-    virtual void Destroy() {}
+    // MUST BE PURE or else Cereal won't work
+    virtual void Destroy() = 0;
+    virtual void ConnectComponents(Entity& e) {}
+};
+
+class Entity {
+public:
+    template <typename T>
+    T* DebugFindComponentOfType() {
+        for (std::unique_ptr<Component>& c : _components) {
+            T* t = dynamic_cast<T*>(c.get());
+            if (t != nullptr) {
+                return t;
+            }
+        }
+        return nullptr;
+    }
+
+    void Update(float dt) {
+        for (auto& c : _components) {
+            c->Update(dt);
+        }
+    }
+
+    void Destroy() {
+        for (auto& c : _components) {
+            c->Destroy();
+        }
+    }
+
+    void ConnectComponents() {
+        for (auto& c : _components) {
+            c->ConnectComponents(*this);
+        }
+    }
+
+    std::vector<std::unique_ptr<Component>> _components;
 };
 
 class TransformComponent : public Component {
@@ -17,6 +55,7 @@ public:
         : _transform(Mat4::Identity()) {}
 
     virtual ~TransformComponent() {}
+    virtual void Destroy() override {}
 
     // TODO make these return const& to memory in Mat4
     Vec3 GetPos() const {
@@ -51,6 +90,8 @@ public:
 
 class VelocityComponent : public Component {
 public:
+    VelocityComponent()
+        :_linear(0.f,0.f,0.f) {}
     VelocityComponent(TransformComponent* t)
         : _transform(t)
         , _linear(0.f,0.f,0.f) {}
@@ -62,38 +103,17 @@ public:
         _transform->SetRot(rot);
     }
 
+    virtual void Destroy() override {}
+
+    virtual void ConnectComponents(Entity& e) override {
+        _transform = e.DebugFindComponentOfType<TransformComponent>();
+        assert(_transform != nullptr);
+    }
+
     TransformComponent* _transform = nullptr;
     Vec3 _linear;
     float _angularY = 0.0f;  // rad / s
     
-};
-
-class Entity {
-public:
-    template <typename T>
-    T* DebugFindComponentOfType() {
-        for (std::unique_ptr<Component>& c : _components) {
-            T* t = dynamic_cast<T*>(c.get());
-            if (t != nullptr) {
-                return t;
-            }
-        }
-        return nullptr;
-    }
-
-    void Update(float dt) {
-        for (auto& c : _components) {
-            c->Update(dt);
-        }
-    }
-
-    void Destroy() {
-        for (auto& c : _components) {
-            c->Destroy();
-        }
-    }
-
-    std::vector<std::unique_ptr<Component>> _components;
 };
 
 class EntityManager {
@@ -115,6 +135,12 @@ public:
     void Update(float dt) {
         for (auto& e : _entities) {
             e->Update(dt);
+        }
+    }
+
+    void ConnectComponents() {
+        for (auto& pEntity : _entities) {
+            pEntity->ConnectComponents();
         }
     }
 

@@ -19,6 +19,8 @@ public:
 
     virtual void Update(float dt) override;
 
+    virtual void Destroy() override {}
+
     // Returns true if we need to re-evaluate state machine
     bool UpdateIdleState(float dt, bool newState);
 

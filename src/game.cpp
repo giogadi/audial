@@ -1,4 +1,5 @@
 #include <iostream>
+#include <fstream>
 #include <cstdio>
 #include <cmath>
 #include <cstring>
@@ -480,6 +481,30 @@ int main() {
         // double const audioTime = Pa_GetStreamTime(audioContext._stream);
         // InitEventQueueWithSequence(&audioContext._eventQueue, beatClock);
         // InitEventQueueWithParamSequence(&audioContext._eventQueue, beatClock);
+    }
+
+    {
+        // TESTING CEREAL
+        // Entity* howdy = entityManager.AddEntity();
+        // auto t = std::make_unique<TransformComponent>();
+        // auto v = std::make_unique<VelocityComponent>();
+        // v->_transform = t.get();
+        // howdy->_components.push_back(std::move(t));
+        // howdy->_components.push_back(std::move(v));
+        // howdy->ConnectComponents();
+        // {
+        //     std::ofstream outFile("test.json");
+        //     cereal::JSONOutputArchive archive(outFile);
+        //     archive(*howdy); 
+        // }
+        // {
+        //     std::ifstream inFile("test.json");
+        //     cereal::JSONInputArchive archive(inFile);
+        //     Entity* howdyCopy = entityManager.AddEntity();
+        //     archive(*howdyCopy);
+        //     std::cout << howdyCopy->_components.size() << std::endl;
+        //     howdyCopy->ConnectComponents();
+        // }
     }
 
     SynthGuiState synthGuiState;

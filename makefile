@@ -4,7 +4,7 @@ OBJDIR = intermediates
 CXXFLAGS = -std=c++17 -I src/glfw/include -I src/glad/include -I src/ -I src/imgui
 GAMENAME = game
 
-OBJS = $(addprefix $(OBJDIR)/,game.o audio.o shader.o stb_image.o synth.o glad.o matrix.o component.o renderer.o collisions.o rigid_body.o beep_on_hit.o player_controller.o imgui.o imgui_demo.o imgui_draw.o imgui_tables.o imgui_widgets.o imgui_impl_glfw.o imgui_impl_opengl3.o)
+OBJS = $(addprefix $(OBJDIR)/,entity_loader.o game.o audio.o shader.o stb_image.o synth.o glad.o matrix.o component.o renderer.o collisions.o rigid_body.o beep_on_hit.o player_controller.o imgui.o imgui_demo.o imgui_draw.o imgui_tables.o imgui_widgets.o imgui_impl_glfw.o imgui_impl_opengl3.o)
 
 $(GAMENAME): $(OBJS)
 	$(CXX) $(CXXFLAGS) -L src/glfw/lib-x86_64 -l portaudio -lglfw -framework Cocoa -framework OpenGL -framework IOKit -o $(GAMENAME) $(OBJS)
@@ -24,6 +24,9 @@ $(OBJDIR)/%.o : src/imgui/backends/%.cpp
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
 $(OBJDIR)/stb_image.o : src/stb_image.cpp
+	$(CXX) $(CXXFLAGS) -c $< -o $@
+
+$(OBJDIR)/entity_loader.o : src/entity_loader.cpp src/entity_loader.h src/serialize.h src/matrix.h src/component.h
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
 # I want the rest of the cpp files to force rebuild so I don't have to worry about headers and shit

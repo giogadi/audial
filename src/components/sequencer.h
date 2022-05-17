@@ -21,7 +21,7 @@ public:
         });
     }
     
-    void Update(float const dt) {        
+    void Update(float const dt) override {        
         if (_events.empty()) {
             return;
         }
@@ -38,6 +38,8 @@ public:
             }
         }
     }
+
+    virtual void Destroy() override {}
 
     audio::Context* _audio = nullptr;
     BeatClock const* _beatClock = nullptr;
