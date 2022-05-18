@@ -2,11 +2,9 @@
 
 #include "collisions.h"
 
-RigidBodyComponent::RigidBodyComponent(TransformComponent* t, CollisionManager* collisionMgr, Aabb const& localAabb)
-    : _velocity(0.f,0.f,0.f)
-    , _transform(t)
-    , _collisionMgr(collisionMgr)
-    , _localAabb(localAabb) {
+void RigidBodyComponent::ConnectComponents(Entity& e, GameManager& g) {
+    _transform = e.DebugFindComponentOfType<TransformComponent>();
+    _collisionMgr = g._collisionManager;
     _collisionMgr->AddBody(this);
 }
 

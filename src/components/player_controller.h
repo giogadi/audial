@@ -10,10 +10,10 @@ class InputManager;
 
 class PlayerControllerComponent : public Component {
 public:
-    PlayerControllerComponent(TransformComponent* t, RigidBodyComponent* rb, InputManager const* input) 
-        : _transform(t)
-        , _rb(rb)
-        , _input(input) {}
+    virtual ComponentType Type() override { return ComponentType::PlayerController; }
+    PlayerControllerComponent()
+        : _attackDir(0.f,0.f,0.f) {}
+    virtual void ConnectComponents(Entity& e, GameManager& g) override;
         
     virtual ~PlayerControllerComponent() {}
 

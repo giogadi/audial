@@ -26,7 +26,7 @@ $(OBJDIR)/%.o : src/imgui/backends/%.cpp
 $(OBJDIR)/stb_image.o : src/stb_image.cpp
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
-$(OBJDIR)/entity_loader.o : src/entity_loader.cpp src/entity_loader.h src/serialize.h src/matrix.h src/component.h
+$(OBJDIR)/entity_loader.o : src/entity_loader.cpp src/entity_loader.h src/serialize.h src/matrix.h src/component.h src/components/rigid_body.h src/components/beep_on_hit.h src/components/player_controller.h src/components/sequencer.h src/renderer.h src/audio_util.h
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
 # I want the rest of the cpp files to force rebuild so I don't have to worry about headers and shit

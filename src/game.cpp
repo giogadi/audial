@@ -5,6 +5,8 @@
 #include <cstring>
 #include <limits>
 #include <memory>
+#include <unordered_map>
+#include <optional>
 
 #include <portaudio.h>
 
@@ -21,6 +23,8 @@
 #include "stb_image.h"
 
 #include "constants.h"
+#include "game_manager.h"
+#include "resource_manager.h"
 #include "audio.h"
 #include "beat_clock.h"
 #include "shader.h"
@@ -34,6 +38,9 @@
 #include "components/beep_on_hit.h"
 #include "components/sequencer.h"
 #include "components/rigid_body.h"
+#include "entity_loader.h"
+
+#include "test_script.h"
 
 void InitEventQueueWithSequence(audio::EventQueue* queue, BeatClock const& beatClock) {
     double const firstNoteBeatTime = beatClock.GetDownBeatTime() + 1.0;
@@ -72,46 +79,6 @@ void InitEventQueueWithParamSequence(audio::EventQueue* queue, BeatClock const& 
 
 void FramebufferSizeCallback(GLFWwindow* window, int width, int height) {
     glViewport(0, 0, width, height);
-}
-
-void CreateCube(SceneManager* sceneMgr, BoundMesh const& mesh, Entity* e) {
-    auto unique = std::make_unique<TransformComponent>();
-    TransformComponent* t = unique.get();
-    e->_components.push_back(std::move(unique));
-    e->_components.push_back(std::make_unique<ModelComponent>(t, &mesh, sceneMgr));
-}
-
-void CreateLight(SceneManager* sceneMgr, Entity* e) {
-    auto unique = std::make_unique<TransformComponent>();
-    TransformComponent* t = unique.get();
-    e->_components.push_back(std::move(unique));
-    e->_components.push_back(std::make_unique<LightComponent>(t, Vec3(0.2f,0.2f,0.2f), Vec3(1.f,1.f,1.f), sceneMgr));
-}
-
-void CreateCamera(SceneManager* sceneMgr, InputManager* inputMgr, Entity* e) {
-    auto unique = std::make_unique<TransformComponent>();
-    TransformComponent* t = unique.get();
-    e->_components.push_back(std::move(unique));
-    e->_components.push_back(std::make_unique<CameraComponent>(t, inputMgr, sceneMgr));
-}
-
-void CreateDrone(audio::Context* audio, BeatClock const* beatClock, Entity* e) {
-    auto seqComp = std::make_unique<SequencerComponent>(audio, beatClock);
-    {
-        audio::Event e;
-        e.channel = 1;
-        e.type = audio::EventType::NoteOn;
-        e.midiNote = 45;
-        e.timeInTicks = 0;
-        seqComp->AddToSequence(e);
-
-        e.midiNote = 49;
-        seqComp->AddToSequence(e);
-
-        e.midiNote = 52;
-        seqComp->AddToSequence(e);
-    }
-    e->_components.push_back(std::move(seqComp));
 }
 
 // TODO: Maybe just use polymorphism instead of this awkward shit lol. Synth
@@ -323,7 +290,7 @@ void DrawSynthGuiAndUpdatePatch(SynthGuiState& state, audio::Context& audioConte
     ImGui::End();
 }
 
-int main() {
+int main(int argc, char** argv) {
     unsigned int channels;
     unsigned int sampleRate;
     drwav_uint64 totalPCMFrameCount;
@@ -399,12 +366,15 @@ int main() {
     material._shader = shaderProgram;
     material._texture = texture.get();
 
-    BoundMesh cubeMesh;
+    ModelManager modelManager;
+
     {
         std::array<float,kCubeVertsNumValues> cubeVerts;
         GetCubeVertices(&cubeVerts);
         int const numCubeVerts = 36;
-        cubeMesh.Init(cubeVerts.data(), numCubeVerts, &material);
+        auto mesh = std::make_unique<BoundMesh>();
+        mesh->Init(cubeVerts.data(), numCubeVerts, &material);
+        assert(modelManager._modelMap.emplace("wood_box", std::move(mesh)).second);
     }
 
     BeatClock beatClock(/*bpm=*/120.0, (unsigned int)sampleRate, audioContext._stream);
@@ -418,93 +388,40 @@ int main() {
 
     CollisionManager collisionManager;
 
-    // Camera
-    Entity* camera = entityManager.AddEntity();
-    CreateCamera(&sceneManager, &inputManager, camera);
-    {
-        TransformComponent* t = camera->DebugFindComponentOfType<TransformComponent>();
-        float angle = 45.f * kDeg2Rad;
-        Vec3 dir(0.f, sin(angle), cos(angle));
-        float dist = 15.f;
-        t->SetPos(dist * dir);
-        Mat3 rot = Mat3::FromAxisAngle(Vec3(1.f, 0.f, 0.f), -angle);
-        t->SetRot(rot);
-        
+    GameManager gameManager {
+        &sceneManager, &inputManager, &audioContext, &entityManager, &collisionManager, &modelManager, &beatClock };
+
+    std::optional<std::string> scriptFilename;
+    std::optional<std::string> saveFilename;
+    for (int argIx = 1; argIx < argc; ++argIx) {
+        if (strcmp(argv[argIx], "-f") == 0) {
+            ++argIx;
+            if (argIx >= argc) {
+                std::cout << "Need a filename with -f. Using hardcoded script." << std::endl;
+                continue;
+            }
+            scriptFilename = argv[argIx];
+        } else if (strcmp(argv[argIx], "-s") == 0) {
+            ++argIx;
+            if (argIx >= argc) {
+                std::cout << "need a filename with -s. Not saving." << std::endl;
+                continue;
+            }
+            saveFilename = argv[argIx];
+        }
     }
 
-    // Light
-    Entity* light = entityManager.AddEntity();
-    CreateLight(&sceneManager, light);
-    {
-        TransformComponent* t = light->DebugFindComponentOfType<TransformComponent>();
-        t->SetPos(Vec3(0.f, 3.f, 0.f));
+    if (scriptFilename.has_value()) {
+        std::cout << "loading " << scriptFilename.value() << std::endl;
+        LoadEntities(scriptFilename->c_str(), entityManager, gameManager);
+    } else {
+        std::cout << "loading hardcoded script" << std::endl;
+        LoadTestScript(gameManager);
     }
 
-    // Cube1
-    Entity* cube1 = entityManager.AddEntity();
-    CreateCube(&sceneManager, cubeMesh, cube1);
-    {
-        TransformComponent* tComp = cube1->DebugFindComponentOfType<TransformComponent>();
-        auto beepComp = std::make_unique<BeepOnHitComponent>(tComp, &audioContext, &beatClock);
-        auto rbComp = std::make_unique<RigidBodyComponent>(tComp, &collisionManager, MakeCubeAabb(0.5f));
-        rbComp->SetOnHitCallback(std::bind(&BeepOnHitComponent::OnHit, beepComp.get()));
-        auto velComp = std::make_unique<VelocityComponent>(tComp);
-        velComp->_angularY = 2*kPi;
-        cube1->_components.push_back(std::move(beepComp));
-        cube1->_components.push_back(std::move(rbComp));
-        cube1->_components.push_back(std::move(velComp));
-    }
-
-    // Cube2
-    Entity* cube2 = entityManager.AddEntity();
-    CreateCube(&sceneManager, cubeMesh, cube2);
-    {
-        TransformComponent* tComp = cube2->DebugFindComponentOfType<TransformComponent>();
-        Mat4& t = tComp->_transform;
-        t.Translate(Vec3(-2.f,0.f,0.f));
-
-        auto rbComp = std::make_unique<RigidBodyComponent>(tComp, &collisionManager, MakeCubeAabb(0.5f));
-        rbComp->_static = false;
-        auto controller = std::make_unique<PlayerControllerComponent>(tComp, rbComp.get(), &inputManager);
-        rbComp->SetOnHitCallback(std::bind(&PlayerControllerComponent::OnHit, controller.get()));
-
-        cube2->_components.push_back(std::move(controller));
-        cube2->_components.push_back(std::move(rbComp));
-    }
-
-    // drone sequencer
-    Entity* droneSeq = entityManager.AddEntity();
-    CreateDrone(&audioContext, &beatClock, droneSeq);
-
-    // Init event queue with a synth sequence
-    {
-        // double const audioTime = Pa_GetStreamTime(audioContext._stream);
-        // InitEventQueueWithSequence(&audioContext._eventQueue, beatClock);
-        // InitEventQueueWithParamSequence(&audioContext._eventQueue, beatClock);
-    }
-
-    {
-        // TESTING CEREAL
-        // Entity* howdy = entityManager.AddEntity();
-        // auto t = std::make_unique<TransformComponent>();
-        // auto v = std::make_unique<VelocityComponent>();
-        // v->_transform = t.get();
-        // howdy->_components.push_back(std::move(t));
-        // howdy->_components.push_back(std::move(v));
-        // howdy->ConnectComponents();
-        // {
-        //     std::ofstream outFile("test.json");
-        //     cereal::JSONOutputArchive archive(outFile);
-        //     archive(*howdy); 
-        // }
-        // {
-        //     std::ifstream inFile("test.json");
-        //     cereal::JSONInputArchive archive(inFile);
-        //     Entity* howdyCopy = entityManager.AddEntity();
-        //     archive(*howdyCopy);
-        //     std::cout << howdyCopy->_components.size() << std::endl;
-        //     howdyCopy->ConnectComponents();
-        // }
+    if (saveFilename.has_value()) {
+        std::cout << "saving to " << saveFilename.value() << std::endl;
+        SaveEntities(saveFilename->c_str(), entityManager);
     }
 
     SynthGuiState synthGuiState;

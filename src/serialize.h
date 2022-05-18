@@ -2,22 +2,16 @@
 
 #include "cereal/cereal.hpp"
 #include "cereal/archives/json.hpp"
-#include "cereal/types/memory.hpp"
 #include "cereal/types/vector.hpp"
-#include "cereal/types/polymorphic.hpp"
 
 #include "matrix.h"
 #include "component.h"
-
-template<typename Archive>
-void serialize(Archive& ar, Entity& e) {
-    ar(CEREAL_NVP(e._components));
-}
-
-template<typename Archive>
-void serialize(Archive& ar, EntityManager& e) {
-    ar(CEREAL_NVP(e._entities));
-}
+#include "renderer.h"
+#include "components/rigid_body.h"
+#include "components/beep_on_hit.h"
+#include "components/player_controller.h"
+#include "components/sequencer.h"
+#include "audio_util.h"
 
 template<typename Archive>
 void serialize(Archive& ar, Vec3& v) {
@@ -51,12 +45,58 @@ template<typename Archive>
 void serialize(Archive& ar, TransformComponent& t) {
     ar(CEREAL_NVP(t._transform));
 }
-CEREAL_REGISTER_TYPE(TransformComponent);
-CEREAL_REGISTER_POLYMORPHIC_RELATION(Component, TransformComponent);
 
 template<typename Archive>
 void serialize(Archive& ar, VelocityComponent& v) {
-    ar(CEREAL_NVP(v._linear));
+    ar(CEREAL_NVP(v._linear), CEREAL_NVP(v._angularY));
 }
-CEREAL_REGISTER_TYPE(VelocityComponent);
-CEREAL_REGISTER_POLYMORPHIC_RELATION(Component, VelocityComponent);
+
+template<typename Archive>
+void serialize(Archive& ar, ModelComponent& m) {
+    ar(CEREAL_NVP(m._modelId));
+}
+
+template<typename Archive>
+void serialize(Archive& ar, LightComponent& m) {
+    ar(CEREAL_NVP(m._ambient), CEREAL_NVP(m._diffuse));
+}
+
+template<typename Archive>
+void serialize(Archive& ar, CameraComponent& m) {
+    
+}
+
+template<typename Archive>
+void serialize(Archive& ar, Aabb& m) {
+    ar(CEREAL_NVP(m._min), CEREAL_NVP(m._max));
+}
+
+template<typename Archive>
+void serialize(Archive& ar, RigidBodyComponent& m) {
+    ar(CEREAL_NVP(m._localAabb), CEREAL_NVP(m._static));
+}
+
+template<typename Archive>
+void serialize(Archive& ar, BeepOnHitComponent& m) {
+    // TODO: can we have an empty serialize?
+}
+
+template<typename Archive>
+void serialize(Archive& ar, PlayerControllerComponent& m) {
+    // TODO: can we have an empty serialize?
+}
+
+// template<typename Archive>
+// void serialize(Archive& ar, audio::Event& e) {
+//     ar(cereal::make_nvp("type",e.type));
+//     ar(cereal::make_nvp("channel",e.channel));
+//     ar(cereal::make_nvp("tick_time",e.timeInTicks));
+//     if (e.type == audio::EventType::SynthParam) {
+//         ar(cereal::make_nvp("param"))
+//     }
+// }
+
+template<typename Archive>
+void serialize(Archive& ar, SequencerComponent& m) {
+    // TODO: add the events in here
+}

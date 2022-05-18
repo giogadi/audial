@@ -1,19 +1,24 @@
 #pragma once
 
 #include <vector>
+#include <string>
 
 #include "component.h"
 
 class SceneManager;
 class BoundMesh;
 class InputManager;
+class GameManager;
 
 class ModelComponent : public Component {
 public:
-    ModelComponent(TransformComponent const* trans, BoundMesh const* mesh, SceneManager* sceneMgr);
+    virtual ComponentType Type() override { return ComponentType::Model; }
+    ModelComponent() {}
     virtual ~ModelComponent() {}
     virtual void Destroy() override;
+    virtual void ConnectComponents(Entity& e, GameManager& g) override;
 
+    std::string _modelId;
     TransformComponent const* _transform = nullptr;
     BoundMesh const* _mesh = nullptr;
     SceneManager* _mgr = nullptr;
@@ -21,19 +26,26 @@ public:
 
 class LightComponent : public Component {
 public:
-    LightComponent(TransformComponent const* t, Vec3 const& ambient, Vec3 const& diffuse, SceneManager* sceneMgr);
+    virtual ComponentType Type() override { return ComponentType::Light; }
+    LightComponent()
+        : _ambient(0.1f,0.1f,0.1f)
+        , _diffuse(1.f,1.f,1.f)
+        {}
     virtual ~LightComponent() {}
     virtual void Destroy() override;
+    virtual void ConnectComponents(Entity& e, GameManager& g) override;
 
-    TransformComponent const* _transform;
+    TransformComponent const* _transform = nullptr;
     Vec3 _ambient;
     Vec3 _diffuse;
-    SceneManager* _mgr;
+    SceneManager* _mgr = nullptr;
 };
 
 class CameraComponent : public Component {
 public:  
-    CameraComponent(TransformComponent* t, InputManager const* input, SceneManager* sceneMgr);
+    virtual ComponentType Type() override { return ComponentType::Camera; }
+    CameraComponent() {}
+    virtual void ConnectComponents(Entity& e, GameManager& g) override;
 
     virtual ~CameraComponent() {}
     virtual void Destroy() override;

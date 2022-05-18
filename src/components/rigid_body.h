@@ -20,9 +20,12 @@ inline Aabb MakeCubeAabb(float half_width) {
 
 class RigidBodyComponent : public Component {
 public:
-    RigidBodyComponent(TransformComponent* t, CollisionManager* collisionMgr, Aabb const& localAabb);
+    virtual ComponentType Type() override { return ComponentType::RigidBody; }
+    RigidBodyComponent()
+        : _velocity(0.f,0.f,0.f) {}
     virtual ~RigidBodyComponent() {}
     virtual void Destroy() override;
+    virtual void ConnectComponents(Entity& e, GameManager& g) override;
 
     void SetOnHitCallback(std::function<void()> f) {
         _onHitCallback = f;

@@ -2,6 +2,15 @@
 
 #include "beat_clock.h"
 #include "audio.h"
+#include "rigid_body.h"
+
+void BeepOnHitComponent::ConnectComponents(Entity& e, GameManager& g) {
+    _t = e.DebugFindComponentOfType<TransformComponent>();
+    _audio = g._audioContext;
+    _beatClock = g._beatClock;
+    RigidBodyComponent* rb = e.DebugFindComponentOfType<RigidBodyComponent>();
+    rb->SetOnHitCallback(std::bind(&BeepOnHitComponent::OnHit, this));
+}
 
 void BeepOnHitComponent::Update(float dt) {
     if (!_wasHit) {

@@ -5,6 +5,13 @@
 #include "components/rigid_body.h"
 #include "input_manager.h"
 
+void PlayerControllerComponent::ConnectComponents(Entity& e, GameManager& g) {
+    _transform = e.DebugFindComponentOfType<TransformComponent>();
+    _rb = e.DebugFindComponentOfType<RigidBodyComponent>();
+    _rb->SetOnHitCallback(std::bind(&PlayerControllerComponent::OnHit, this));
+    _input = g._inputManager;
+}
+
 void PlayerControllerComponent::Update(float dt) {
     bool evalStateMachine = true;
     State prevState = _state;

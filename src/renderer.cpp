@@ -6,39 +6,39 @@
 #include "input_manager.h"
 #include "matrix.h"
 #include "constants.h"
-
-ModelComponent::ModelComponent(TransformComponent const* trans, BoundMesh const* mesh, SceneManager* sceneMgr)
-        : _transform(trans)
-        , _mesh(mesh)
-        , _mgr(sceneMgr) {
-    _mgr->AddModel(this);
-}
+#include "resource_manager.h"
 
 void ModelComponent::Destroy() {
     _mgr->RemoveModel(this);
 }
 
-LightComponent::LightComponent(TransformComponent const* t, Vec3 const& ambient, Vec3 const& diffuse, SceneManager* sceneMgr)
-        : _transform(t) 
-        , _ambient(ambient)
-        , _diffuse(diffuse)
-        , _mgr(sceneMgr) {
-    _mgr->AddLight(this);
+void ModelComponent::ConnectComponents(Entity& e, GameManager& g) {
+    _transform = e.DebugFindComponentOfType<TransformComponent>();
+    ModelManager* modelManager = g._modelManager;
+    _mesh = modelManager->_modelMap.at(_modelId).get();
+    _mgr = g._sceneManager;
+    _mgr->AddModel(this);
 }
 
 void LightComponent::Destroy() {
     _mgr->RemoveLight(this);
 }
 
-CameraComponent::CameraComponent(TransformComponent* t, InputManager const* input, SceneManager* sceneMgr)
-        : _transform(t)
-        , _input(input)
-        , _mgr(sceneMgr) {
-    _mgr->AddCamera(this);
+void LightComponent::ConnectComponents(Entity& e, GameManager& g) {
+    _transform = e.DebugFindComponentOfType<TransformComponent>();
+    _mgr = g._sceneManager;
+    _mgr->AddLight(this);
 }
 
 void CameraComponent::Destroy() {
     _mgr->RemoveCamera(this);
+}
+
+void CameraComponent::ConnectComponents(Entity& e, GameManager& g) {
+    _transform = e.DebugFindComponentOfType<TransformComponent>();
+    _input = g._inputManager;
+    _mgr = g._sceneManager;
+    _mgr->AddCamera(this);
 }
 
 Mat4 CameraComponent::GetViewMatrix() const {

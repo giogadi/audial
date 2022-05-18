@@ -9,11 +9,9 @@ namespace audio {
 
 class BeepOnHitComponent : public Component {
 public:
-    BeepOnHitComponent(TransformComponent* t, audio::Context* audio, BeatClock const* beatClock)
-        : _t(t)
-        , _audio(audio)
-        , _beatClock(beatClock) {
-    }
+    virtual ComponentType Type() override { return ComponentType::BeepOnHit; }
+    BeepOnHitComponent() {}    
+    virtual void ConnectComponents(Entity& e, GameManager& g) override;
 
     void OnHit() {
         _wasHit = true;

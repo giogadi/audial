@@ -5,13 +5,17 @@
 #include "component.h"
 #include "audio_util.h"
 #include "beat_clock.h"
+#include "audio.h"
 
 // Does NOT loop yet.
 class SequencerComponent : public Component {
 public:
-    SequencerComponent(audio::Context* audio, BeatClock const* beatClock)
-        : _audio(audio)
-        , _beatClock(beatClock) {}
+    virtual ComponentType Type() override { return ComponentType::Sequencer; }
+    SequencerComponent() {}
+    virtual void ConnectComponents(Entity& e, GameManager& g) override {
+        _audio = g._audioContext;
+        _beatClock = g._beatClock;
+    }
     
     // Keeps event sorted by time
     void AddToSequence(audio::Event const& newEvent) {

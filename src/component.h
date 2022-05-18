@@ -1,10 +1,35 @@
 #pragma once
 
 #include <vector>
+#include <string>
 
 #include "matrix.h"
+#include "game_manager.h"
 
 class Entity;
+
+#define M_COMPONENT_TYPES \
+    X(Transform) \
+    X(Velocity) \
+    X(Model) \
+    X(Light) \
+    X(Camera) \
+    X(RigidBody) \
+    X(PlayerController) \
+    X(BeepOnHit) \
+    X(Sequencer)
+
+enum class ComponentType: int {
+#   define X(a) a,
+    M_COMPONENT_TYPES
+#   undef X
+    NumTypes
+};
+
+// TODO: can make this constexpr?
+char const* ComponentTypeToString(ComponentType c);
+
+ComponentType StringToComponentType(char const* s);
 
 class Component {
 public:
@@ -12,7 +37,8 @@ public:
     virtual void Update(float dt) {}
     // MUST BE PURE or else Cereal won't work
     virtual void Destroy() = 0;
-    virtual void ConnectComponents(Entity& e) {}
+    virtual void ConnectComponents(Entity& e, GameManager& g) {}
+    virtual ComponentType Type() = 0;
 };
 
 class Entity {
@@ -40,22 +66,24 @@ public:
         }
     }
 
-    void ConnectComponents() {
+    void ConnectComponents(GameManager& g) {
         for (auto& c : _components) {
-            c->ConnectComponents(*this);
+            c->ConnectComponents(*this, g);
         }
     }
 
+    std::string _name;
     std::vector<std::unique_ptr<Component>> _components;
 };
 
 class TransformComponent : public Component {
 public:
+    virtual ComponentType Type() override { return ComponentType::Transform; }
     TransformComponent()
         : _transform(Mat4::Identity()) {}
 
     virtual ~TransformComponent() {}
-    virtual void Destroy() override {}
+    virtual void Destroy() override {}    
 
     // TODO make these return const& to memory in Mat4
     Vec3 GetPos() const {
@@ -90,11 +118,9 @@ public:
 
 class VelocityComponent : public Component {
 public:
+    virtual ComponentType Type() override { return ComponentType::Velocity; }
     VelocityComponent()
         :_linear(0.f,0.f,0.f) {}
-    VelocityComponent(TransformComponent* t)
-        : _transform(t)
-        , _linear(0.f,0.f,0.f) {}
     
     virtual void Update(float dt) override {
         _transform->SetPos(_transform->GetPos() + dt * _linear);
@@ -105,7 +131,7 @@ public:
 
     virtual void Destroy() override {}
 
-    virtual void ConnectComponents(Entity& e) override {
+    virtual void ConnectComponents(Entity& e, GameManager& g) override {
         _transform = e.DebugFindComponentOfType<TransformComponent>();
         assert(_transform != nullptr);
     }
@@ -138,9 +164,9 @@ public:
         }
     }
 
-    void ConnectComponents() {
+    void ConnectComponents(GameManager& g) {
         for (auto& pEntity : _entities) {
-            pEntity->ConnectComponents();
+            pEntity->ConnectComponents(g);
         }
     }
 
