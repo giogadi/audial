@@ -71,7 +71,7 @@ void InitEventQueueWithParamSequence(audio::EventQueue* queue, BeatClock const& 
         e.channel = 1;
         e.type = audio::EventType::SynthParam;
         e.timeInTicks = tickTime;
-        e.param = audio::ParamType::Cutoff;
+        e.param = audio::SynthParamType::Cutoff;
         e.newParamValue = i * (1.f / 16.f);
         queue->push(e);
     }
@@ -88,51 +88,51 @@ struct SynthParamSpec {
     float _minValue;
     float _maxValue;
 };
-SynthParamSpec GetSynthParamSpec(audio::ParamType param) {
+SynthParamSpec GetSynthParamSpec(audio::SynthParamType param) {
     switch (param) {
-        case audio::ParamType::Gain:
+        case audio::SynthParamType::Gain:
             return SynthParamSpec {"Gain", 0.f, 1.f };
-        case audio::ParamType::Cutoff:
+        case audio::SynthParamType::Cutoff:
             return SynthParamSpec { "LPF Cutoff", 0.f, 1.f };
-        case audio::ParamType::Peak:
+        case audio::SynthParamType::Peak:
             return SynthParamSpec { "LPF Peak", 0.f, 0.99f };
-        case audio::ParamType::PitchLFOGain:
+        case audio::SynthParamType::PitchLFOGain:
             return SynthParamSpec { "Pitch LFO Gain", 0.f, 1.f };
-        case audio::ParamType::PitchLFOFreq:
+        case audio::SynthParamType::PitchLFOFreq:
             return SynthParamSpec { "Pitch LFO Freq", 0.f, 30.f };
-        case audio::ParamType::CutoffLFOGain:
+        case audio::SynthParamType::CutoffLFOGain:
             return SynthParamSpec { "Cutoff LFO Gain", 0.f, 1.f };
-        case audio::ParamType::CutoffLFOFreq:
+        case audio::SynthParamType::CutoffLFOFreq:
             return SynthParamSpec { "Cutoff LFO Freq", 0.f, 30.f };
-        case audio::ParamType::AmpEnvAttack:
+        case audio::SynthParamType::AmpEnvAttack:
             return SynthParamSpec { "Cutoff Env Atk", 0.f, 1.f };
-        case audio::ParamType::AmpEnvDecay:
+        case audio::SynthParamType::AmpEnvDecay:
             return SynthParamSpec { "Amp Env Decay", 0.f, 1.f };
-        case audio::ParamType::AmpEnvSustain:
+        case audio::SynthParamType::AmpEnvSustain:
             return SynthParamSpec { "Amp Env Sus", 0.f, 1.f };
-        case audio::ParamType::AmpEnvRelease:
+        case audio::SynthParamType::AmpEnvRelease:
             return SynthParamSpec { "Amp Env Rel", 0.f, 1.f };    
-        case audio::ParamType::CutoffEnvGain:
+        case audio::SynthParamType::CutoffEnvGain:
             return SynthParamSpec { "Cutoff Env Gain", 0.f, 20000.f };
-        case audio::ParamType::CutoffEnvAttack:
+        case audio::SynthParamType::CutoffEnvAttack:
             return SynthParamSpec { "Cutoff Env Atk", 0.f, 1.f };
-        case audio::ParamType::CutoffEnvDecay:
+        case audio::SynthParamType::CutoffEnvDecay:
             return SynthParamSpec { "Cutoff Env Decay", 0.f, 1.f };
-        case audio::ParamType::CutoffEnvSustain:
+        case audio::SynthParamType::CutoffEnvSustain:
             return SynthParamSpec { "Cutoff Env Sus", 0.f, 1.f };
-        case audio::ParamType::CutoffEnvRelease:
+        case audio::SynthParamType::CutoffEnvRelease:
             return SynthParamSpec { "Cutoff Env Rel", 0.f, 1.f };
         default:
             return SynthParamSpec { "UNSUPPORTED", 0.f, 0.f };
     }
 }
 struct SynthParam {
-    audio::ParamType _param;
+    audio::SynthParamType _param;
     float _currentValue;
     float _prevValue;    
 };
 struct SynthPatch {
-    static int constexpr kNumParams = static_cast<int>(audio::ParamType::NumParams);
+    static int constexpr kNumParams = static_cast<int>(audio::SynthParamType::Count);
     std::string _name;
     std::array<SynthParam, kNumParams> _params;
 };
@@ -145,28 +145,28 @@ void InitSynthPatch(
     int paramIx = 0;
     {
         SynthParam& p = patch._params[paramIx++];
-        p._param = audio::ParamType::Gain;
+        p._param = audio::SynthParamType::Gain;
         p._currentValue = p._prevValue = synthState.gainFactor;
     }
     {
         SynthParam& p = patch._params[paramIx++];
-        p._param = audio::ParamType::Cutoff;
+        p._param = audio::SynthParamType::Cutoff;
         p._currentValue = p._prevValue = std::min(1.f, synthState.cutoffFreq / (float)sampleRate);
     }
     {
         SynthParam& p = patch._params[paramIx++];
-        p._param = audio::ParamType::Peak;
+        p._param = audio::SynthParamType::Peak;
         p._currentValue = p._prevValue = std::min(1.f, synthState.cutoffK / 4.f);
     }
     {
         // When this is 0, variation is 0. when this is 1, the pitch varies up and down by a whole octave (so a full spread of 2 octaves)
         SynthParam& p = patch._params[paramIx++];
-        p._param = audio::ParamType::PitchLFOGain;
+        p._param = audio::SynthParamType::PitchLFOGain;
         p._currentValue = p._prevValue = synthState.pitchLFOGain;
     }
     {
         SynthParam& p = patch._params[paramIx++];
-        p._param = audio::ParamType::PitchLFOFreq;
+        p._param = audio::SynthParamType::PitchLFOFreq;
         p._currentValue = p._prevValue = synthState.pitchLFOFreq;
     }
     {
@@ -174,63 +174,63 @@ void InitSynthPatch(
         // and down by a whole octave (so cutoff freq goes from 0.5*cutoff to
         // 2.0*cutoff)
         SynthParam& p = patch._params[paramIx++];
-        p._param = audio::ParamType::CutoffLFOGain;
+        p._param = audio::SynthParamType::CutoffLFOGain;
         p._currentValue = p._prevValue = synthState.cutoffLFOGain;
     }
     {
         SynthParam& p = patch._params[paramIx++];
-        p._param = audio::ParamType::CutoffLFOFreq;
+        p._param = audio::SynthParamType::CutoffLFOFreq;
         p._currentValue = p._prevValue = synthState.cutoffLFOFreq;
     }
     {
         SynthParam& p = patch._params[paramIx++];
-        p._param = audio::ParamType::AmpEnvAttack;
+        p._param = audio::SynthParamType::AmpEnvAttack;
         p._currentValue = p._prevValue = synthState.ampEnvAttackTime;
     }
     {
         SynthParam& p = patch._params[paramIx++];
-        p._param = audio::ParamType::AmpEnvDecay;
+        p._param = audio::SynthParamType::AmpEnvDecay;
         p._currentValue = p._prevValue = synthState.ampEnvDecayTime;
     }
     {
         SynthParam& p = patch._params[paramIx++];
-        p._param = audio::ParamType::AmpEnvSustain;
+        p._param = audio::SynthParamType::AmpEnvSustain;
         p._currentValue = p._prevValue = synthState.ampEnvSustainLevel;
     }
     {
         SynthParam& p = patch._params[paramIx++];
-        p._param = audio::ParamType::AmpEnvRelease;
+        p._param = audio::SynthParamType::AmpEnvRelease;
         p._currentValue = p._prevValue = synthState.ampEnvReleaseTime;
     }
     {
         SynthParam& p = patch._params[paramIx++];
-        p._param = audio::ParamType::CutoffEnvGain;
+        p._param = audio::SynthParamType::CutoffEnvGain;
         p._currentValue = p._prevValue = synthState.cutoffEnvGain;
     }
     {
         SynthParam& p = patch._params[paramIx++];
-        p._param = audio::ParamType::CutoffEnvAttack;
+        p._param = audio::SynthParamType::CutoffEnvAttack;
         p._currentValue = p._prevValue = synthState.cutoffEnvAttackTime;
     }
     {
         SynthParam& p = patch._params[paramIx++];
-        p._param = audio::ParamType::CutoffEnvDecay;
+        p._param = audio::SynthParamType::CutoffEnvDecay;
         p._currentValue = p._prevValue = synthState.cutoffEnvDecayTime;
     }
     {
         SynthParam& p = patch._params[paramIx++];
-        p._param = audio::ParamType::CutoffEnvSustain;
+        p._param = audio::SynthParamType::CutoffEnvSustain;
         p._currentValue = p._prevValue = synthState.cutoffEnvSustainLevel;
     }
     {
         SynthParam& p = patch._params[paramIx++];
-        p._param = audio::ParamType::CutoffEnvRelease;
+        p._param = audio::SynthParamType::CutoffEnvRelease;
         p._currentValue = p._prevValue = synthState.cutoffEnvReleaseTime;
     }
     // Give the rest of the params an invalid value for now.
     for (; paramIx < SynthPatch::kNumParams; ++paramIx) {
         SynthParam& p = patch._params[paramIx];
-        p._param = audio::ParamType::NumParams;
+        p._param = audio::SynthParamType::Count;
         p._currentValue = p._prevValue = 0.f;
     }
 }
@@ -276,7 +276,7 @@ void DrawSynthGuiAndUpdatePatch(SynthGuiState& state, audio::Context& audioConte
     for (int paramIx = 0; paramIx < SynthPatch::kNumParams; ++paramIx) {
         SynthParam& param = patch._params[paramIx];
         // skip unsupported params
-        if (param._param == audio::ParamType::NumParams) {
+        if (param._param == audio::SynthParamType::Count) {
             continue;
         }
         SynthParamSpec const spec = GetSynthParamSpec(param._param);

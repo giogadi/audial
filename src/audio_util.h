@@ -5,15 +5,46 @@
 
 namespace audio {
 
-enum class EventType {
-    None, NoteOn, NoteOff, SynthParam, PlayPcm
+#define M_AUDIO_EVENT_TYPES \
+    X(None) \
+    X(NoteOn) \
+    X(NoteOff) \
+    X(SynthParam) \
+    X(PlayPcm)
+enum class EventType : int {
+#   define X(a) a,
+    M_AUDIO_EVENT_TYPES
+#   undef X
+    Count
 };
-enum class ParamType : int {
-    Gain, Cutoff, Peak, PitchLFOGain, PitchLFOFreq, CutoffLFOGain, CutoffLFOFreq,
-    AmpEnvAttack, AmpEnvDecay, AmpEnvSustain, AmpEnvRelease,
-    CutoffEnvGain, CutoffEnvAttack, CutoffEnvDecay, CutoffEnvSustain, CutoffEnvRelease,
-    NumParams
+char const* EventTypeToString(EventType e);
+EventType StringToEventType(char const* s);
+
+#define M_AUDIO_SYNTH_PARAM_TYPES \
+    X(Gain) \
+    X(Cutoff) \
+    X(Peak) \
+    X(PitchLFOGain) \
+    X(PitchLFOFreq) \
+    X(CutoffLFOGain) \
+    X(CutoffLFOFreq) \
+    X(AmpEnvAttack) \
+    X(AmpEnvDecay) \
+    X(AmpEnvSustain) \
+    X(AmpEnvRelease) \
+    X(CutoffEnvGain) \
+    X(CutoffEnvAttack) \
+    X(CutoffEnvDecay) \
+    X(CutoffEnvSustain) \
+    X(CutoffEnvRelease)
+enum class SynthParamType : int {
+#   define X(a) a,
+    M_AUDIO_SYNTH_PARAM_TYPES
+#   undef X
+    Count
 };
+char const* SynthParamTypeToString(SynthParamType e);
+SynthParamType StringToSynthParamType(char const* s);
 
 struct Event {
     EventType type;
@@ -23,7 +54,7 @@ struct Event {
         int midiNote = 0;
         struct {
             // valid under SynthParam type
-            ParamType param;
+            SynthParamType param;
             double newParamValue;
         };
     };

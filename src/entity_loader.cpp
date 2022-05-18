@@ -3,6 +3,7 @@
 #include <fstream>
 
 #include "cereal/types/string.hpp"
+#include "cereal/archives/xml.hpp"
 #include "serialize.h"
 
 template<typename Archive>
@@ -78,13 +79,13 @@ void load(Archive& ar, EntityManager& e) {
 
 void LoadEntities(char const* filename, EntityManager& e, GameManager& g) {    
     std::ifstream inFile(filename);
-    cereal::JSONInputArchive archive(inFile);
+    cereal::XMLInputArchive archive(inFile);
     archive(e);
     e.ConnectComponents(g);
 }
 
 void SaveEntities(char const* filename, EntityManager& entities) {
     std::ofstream outFile(filename);
-    cereal::JSONOutputArchive archive(outFile);
+    cereal::XMLOutputArchive archive(outFile);
     archive(CEREAL_NVP(entities));
 }

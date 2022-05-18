@@ -324,56 +324,56 @@ namespace synth {
                     }
                     case audio::EventType::SynthParam: {
                         switch (e.param) {
-                            case audio::ParamType::Gain:
+                            case audio::SynthParamType::Gain:
                                 state->gainFactor = e.newParamValue;
                                 break;
-                            case audio::ParamType::Cutoff:
+                            case audio::SynthParamType::Cutoff:
                                 // value should be [0,1]. freq(0) = 0, freq(1) =
                                 // sampleRate, but how do we scale it
                                 // exponentially? so that 0.2 is twice the
                                 // frequency of 0.1? Do we want that?
                                 state->cutoffFreq = e.newParamValue * sampleRate;
                                 break;
-                            case audio::ParamType::Peak:
+                            case audio::SynthParamType::Peak:
                                 state->cutoffK = e.newParamValue * 4.f;
                                 break;
-                            case audio::ParamType::PitchLFOGain:
+                            case audio::SynthParamType::PitchLFOGain:
                                 state->pitchLFOGain = e.newParamValue;
                                 break;
-                            case audio::ParamType::PitchLFOFreq:
+                            case audio::SynthParamType::PitchLFOFreq:
                                 state->pitchLFOFreq = e.newParamValue;
                                 break;
-                            case audio::ParamType::CutoffLFOGain:
+                            case audio::SynthParamType::CutoffLFOGain:
                                 state->cutoffLFOGain = e.newParamValue;
                                 break;
-                            case audio::ParamType::CutoffLFOFreq:
+                            case audio::SynthParamType::CutoffLFOFreq:
                                 state->cutoffLFOFreq = e.newParamValue;
                                 break;
-                            case audio::ParamType::AmpEnvAttack:
+                            case audio::SynthParamType::AmpEnvAttack:
                                 state->ampEnvAttackTime = e.newParamValue;
                                 break;
-                            case audio::ParamType::AmpEnvDecay:
+                            case audio::SynthParamType::AmpEnvDecay:
                                 state->ampEnvDecayTime = e.newParamValue;
                                 break;
-                            case audio::ParamType::AmpEnvSustain:
+                            case audio::SynthParamType::AmpEnvSustain:
                                 state->ampEnvSustainLevel = e.newParamValue;
                                 break;
-                            case audio::ParamType::AmpEnvRelease:
+                            case audio::SynthParamType::AmpEnvRelease:
                                 state->ampEnvReleaseTime = e.newParamValue;
                                 break;
-                            case audio::ParamType::CutoffEnvGain:
+                            case audio::SynthParamType::CutoffEnvGain:
                                 state->cutoffEnvGain = e.newParamValue;
                                 break;
-                            case audio::ParamType::CutoffEnvAttack:
+                            case audio::SynthParamType::CutoffEnvAttack:
                                 state->cutoffEnvAttackTime = e.newParamValue;
                                 break;
-                            case audio::ParamType::CutoffEnvDecay:
+                            case audio::SynthParamType::CutoffEnvDecay:
                                 state->cutoffEnvDecayTime = e.newParamValue;
                                 break;
-                            case audio::ParamType::CutoffEnvSustain:
+                            case audio::SynthParamType::CutoffEnvSustain:
                                 state->cutoffEnvSustainLevel = e.newParamValue;
                                 break;
-                            case audio::ParamType::CutoffEnvRelease:
+                            case audio::SynthParamType::CutoffEnvRelease:
                                 state->cutoffEnvReleaseTime = e.newParamValue;
                                 break;
                             default:
