@@ -30,11 +30,31 @@ namespace synth {
     };
 
     struct ADSREnvSpec {
-        long attackTimeInTicks = 0l;
-        long decayTimeInTicks = 0l;
+        float attackTime = 0.f;
+        float decayTime = 0.f;
         float sustainLevel = 0.f;
-        long releaseTimeInTicks = 0l;
+        float releaseTime = 0.f;
         float minValue = kSmallAmplitude;
+    };
+
+    struct Patch {
+        // This is interpreted linearly from [0,1]. This will get mapped later to [-80db,0db].
+        // TODO: consider just having this be a decibel value capped at 0db.
+        float gainFactor = 0.5f;
+
+        float cutoffFreq = 0.0f;
+        float cutoffK = 0.0f;  // [0,4] but 4 is unstable
+
+        float pitchLFOGain = 0.0f;
+        float pitchLFOFreq = 0.0f;
+
+        float cutoffLFOGain = 0.0f;
+        float cutoffLFOFreq = 0.0f;        
+
+        ADSREnvSpec ampEnvSpec;
+
+        ADSREnvSpec cutoffEnvSpec;
+        float cutoffEnvGain = 0.f;
     };
 
     struct Voice {
@@ -57,31 +77,10 @@ namespace synth {
 
         std::array<Voice, 4> voices;
 
-        // This is interpreted linearly from [0,1]. This will get mapped later to [-80db,0db].
-        // TODO: consider just having this be a decibel value capped at 0db.
-        float gainFactor = 0.5f;
+        Patch patch;
 
-        float cutoffFreq = 0.0f;
-        float cutoffK = 0.0f;  // [0,4] but 4 is unstable
-
-        float pitchLFOGain = 0.0f;
-        float pitchLFOFreq = 0.0f;
         float pitchLFOPhase = 0.0f;
-
-        float cutoffLFOGain = 0.0f;
-        float cutoffLFOFreq = 0.0f;
         float cutoffLFOPhase = 0.0f;
-
-        float ampEnvAttackTime = 0.0f;
-        float ampEnvDecayTime = 0.0f;
-        float ampEnvSustainLevel = 1.0f;
-        float ampEnvReleaseTime = 0.0f;
-
-        float cutoffEnvGain = 0.f;
-        float cutoffEnvAttackTime = 0.f;
-        float cutoffEnvDecayTime = 0.f;
-        float cutoffEnvSustainLevel = 1.f;
-        float cutoffEnvReleaseTime = 0.f;
     };
 
     void InitStateData(StateData& state, int channel);

@@ -85,38 +85,6 @@ void serialize(Archive& ar, PlayerControllerComponent& m) {
     // TODO: can we have an empty serialize?
 }
 
-namespace audio {
-template<typename Archive>
-void save(Archive& ar, Event const& e) {
-    ar(cereal::make_nvp("type",std::string(EventTypeToString(e.type))));
-    ar(cereal::make_nvp("channel",e.channel));
-    ar(cereal::make_nvp("tick_time",e.timeInTicks));
-    if (e.type == EventType::SynthParam) {
-        ar(cereal::make_nvp("synth_param", std::string(SynthParamTypeToString(e.param))));
-        ar(cereal::make_nvp("value", e.newParamValue));
-    } else {
-        ar(cereal::make_nvp("midi_note", e.midiNote));
-    }
-}
-
-template<typename Archive>
-void load(Archive& ar, Event& e) {
-    std::string eventTypeName;
-    ar(eventTypeName);
-    e.type = StringToEventType(eventTypeName.c_str());
-    ar(cereal::make_nvp("channel",e.channel));
-    ar(cereal::make_nvp("tick_time",e.timeInTicks));
-    if (e.type == EventType::SynthParam) {
-        std::string synthParamTypeName;
-        ar(synthParamTypeName);
-        e.param = StringToSynthParamType(synthParamTypeName.c_str());        
-        ar(cereal::make_nvp("value", e.newParamValue));
-    } else {
-        ar(cereal::make_nvp("midi_note", e.midiNote));
-    }
-}
-} // namespace audio
-
 template<typename Archive>
 void serialize(Archive& ar, SequencerComponent& m) {
     ar(cereal::make_nvp("events", m._events));

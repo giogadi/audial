@@ -39,6 +39,7 @@
 #include "components/sequencer.h"
 #include "components/rigid_body.h"
 #include "entity_loader.h"
+#include "audio_loader.h"
 
 #include "test_script.h"
 
@@ -139,35 +140,35 @@ struct SynthPatch {
 void InitSynthPatch(
     SynthPatch& patch, audio::StateData const& audioState, int synthIx, int sampleRate,
     char const* name) {
-    synth::StateData const& synthState = audioState.synths[synthIx];
+    synth::Patch const& synthPatch = audioState.synths[synthIx].patch;
 
     patch._name = name;
     int paramIx = 0;
     {
         SynthParam& p = patch._params[paramIx++];
         p._param = audio::SynthParamType::Gain;
-        p._currentValue = p._prevValue = synthState.gainFactor;
+        p._currentValue = p._prevValue = synthPatch.gainFactor;
     }
     {
         SynthParam& p = patch._params[paramIx++];
         p._param = audio::SynthParamType::Cutoff;
-        p._currentValue = p._prevValue = std::min(1.f, synthState.cutoffFreq / (float)sampleRate);
+        p._currentValue = p._prevValue = std::min(1.f, synthPatch.cutoffFreq / (float)sampleRate);
     }
     {
         SynthParam& p = patch._params[paramIx++];
         p._param = audio::SynthParamType::Peak;
-        p._currentValue = p._prevValue = std::min(1.f, synthState.cutoffK / 4.f);
+        p._currentValue = p._prevValue = std::min(1.f, synthPatch.cutoffK / 4.f);
     }
     {
         // When this is 0, variation is 0. when this is 1, the pitch varies up and down by a whole octave (so a full spread of 2 octaves)
         SynthParam& p = patch._params[paramIx++];
         p._param = audio::SynthParamType::PitchLFOGain;
-        p._currentValue = p._prevValue = synthState.pitchLFOGain;
+        p._currentValue = p._prevValue = synthPatch.pitchLFOGain;
     }
     {
         SynthParam& p = patch._params[paramIx++];
         p._param = audio::SynthParamType::PitchLFOFreq;
-        p._currentValue = p._prevValue = synthState.pitchLFOFreq;
+        p._currentValue = p._prevValue = synthPatch.pitchLFOFreq;
     }
     {
         // When this is 0, variation is 0. when this is 1, the cutoff varies up
@@ -175,57 +176,57 @@ void InitSynthPatch(
         // 2.0*cutoff)
         SynthParam& p = patch._params[paramIx++];
         p._param = audio::SynthParamType::CutoffLFOGain;
-        p._currentValue = p._prevValue = synthState.cutoffLFOGain;
+        p._currentValue = p._prevValue = synthPatch.cutoffLFOGain;
     }
     {
         SynthParam& p = patch._params[paramIx++];
         p._param = audio::SynthParamType::CutoffLFOFreq;
-        p._currentValue = p._prevValue = synthState.cutoffLFOFreq;
+        p._currentValue = p._prevValue = synthPatch.cutoffLFOFreq;
     }
     {
         SynthParam& p = patch._params[paramIx++];
         p._param = audio::SynthParamType::AmpEnvAttack;
-        p._currentValue = p._prevValue = synthState.ampEnvAttackTime;
+        p._currentValue = p._prevValue = synthPatch.ampEnvSpec.attackTime;
     }
     {
         SynthParam& p = patch._params[paramIx++];
         p._param = audio::SynthParamType::AmpEnvDecay;
-        p._currentValue = p._prevValue = synthState.ampEnvDecayTime;
+        p._currentValue = p._prevValue = synthPatch.ampEnvSpec.decayTime;
     }
     {
         SynthParam& p = patch._params[paramIx++];
         p._param = audio::SynthParamType::AmpEnvSustain;
-        p._currentValue = p._prevValue = synthState.ampEnvSustainLevel;
+        p._currentValue = p._prevValue = synthPatch.ampEnvSpec.sustainLevel;
     }
     {
         SynthParam& p = patch._params[paramIx++];
         p._param = audio::SynthParamType::AmpEnvRelease;
-        p._currentValue = p._prevValue = synthState.ampEnvReleaseTime;
+        p._currentValue = p._prevValue = synthPatch.ampEnvSpec.releaseTime;
     }
     {
         SynthParam& p = patch._params[paramIx++];
         p._param = audio::SynthParamType::CutoffEnvGain;
-        p._currentValue = p._prevValue = synthState.cutoffEnvGain;
+        p._currentValue = p._prevValue = synthPatch.cutoffEnvGain;
     }
     {
         SynthParam& p = patch._params[paramIx++];
         p._param = audio::SynthParamType::CutoffEnvAttack;
-        p._currentValue = p._prevValue = synthState.cutoffEnvAttackTime;
+        p._currentValue = p._prevValue = synthPatch.cutoffEnvSpec.attackTime;
     }
     {
         SynthParam& p = patch._params[paramIx++];
         p._param = audio::SynthParamType::CutoffEnvDecay;
-        p._currentValue = p._prevValue = synthState.cutoffEnvDecayTime;
+        p._currentValue = p._prevValue = synthPatch.cutoffEnvSpec.decayTime;
     }
     {
         SynthParam& p = patch._params[paramIx++];
         p._param = audio::SynthParamType::CutoffEnvSustain;
-        p._currentValue = p._prevValue = synthState.cutoffEnvSustainLevel;
+        p._currentValue = p._prevValue = synthPatch.cutoffEnvSpec.sustainLevel;
     }
     {
         SynthParam& p = patch._params[paramIx++];
         p._param = audio::SynthParamType::CutoffEnvRelease;
-        p._currentValue = p._prevValue = synthState.cutoffEnvReleaseTime;
+        p._currentValue = p._prevValue = synthPatch.cutoffEnvSpec.releaseTime;
     }
     // Give the rest of the params an invalid value for now.
     for (; paramIx < SynthPatch::kNumParams; ++paramIx) {
@@ -423,6 +424,9 @@ int main(int argc, char** argv) {
         std::cout << "saving to " << saveFilename.value() << std::endl;
         SaveEntities(saveFilename->c_str(), entityManager);
     }
+
+    // SAVE/LOAD SYNTH SETTINGS
+    SaveSynthPatch("tmp/synth_patch.xml", audioContext._state.synths[0].patch);    
 
     SynthGuiState synthGuiState;
     InitSynthGuiState(synthGuiState, audioContext._state, sampleRate);

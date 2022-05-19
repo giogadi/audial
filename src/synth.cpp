@@ -58,19 +58,26 @@ namespace synth {
             v.lp3 = 0.0f;
         }
 
-        state.gainFactor = 0.7f;
-        state.cutoffFreq = 44100.0f;
-        state.cutoffK = 0.0f;
-        state.pitchLFOFreq = 1.0f;
-        state.pitchLFOGain = 0.0f;
         state.pitchLFOPhase = 0.0f;
-        state.cutoffLFOFreq = 10.0f;
-        state.cutoffLFOGain = 0.0f;
         state.cutoffLFOPhase = 0.0f;
-        state.ampEnvAttackTime = 0.01f;
-        state.ampEnvDecayTime = 0.1f;
-        state.ampEnvSustainLevel = 0.5f;
-        state.ampEnvReleaseTime = 0.5f;
+
+        Patch& patch = state.patch;
+        patch.gainFactor = 0.7f;
+        patch.cutoffFreq = 44100.0f;
+        patch.cutoffK = 0.0f;
+        patch.pitchLFOFreq = 1.0f;
+        patch.pitchLFOGain = 0.0f;
+        
+        patch.cutoffLFOFreq = 10.0f;
+        patch.cutoffLFOGain = 0.0f;        
+
+        patch.ampEnvSpec.attackTime = 0.01f;
+        patch.ampEnvSpec.decayTime = 0.1f;
+        patch.ampEnvSpec.sustainLevel = 0.5f;
+        patch.ampEnvSpec.releaseTime = 0.5f;
+        patch.ampEnvSpec.minValue = 0.01f;
+
+        patch.cutoffEnvSpec.minValue = 0.01f;
     }
 
     float calcMultiplier(float startLevel, float endLevel, long numSamples) {
@@ -82,7 +89,15 @@ namespace synth {
         return (float) val;
     }
 
-    void adsrEnvelope(ADSREnvSpec const& spec, ADSREnvState& state) {
+    struct ADSREnvSpecInTicks {
+        long attackTime = 0l;
+        long decayTime = 0l;
+        float sustainLevel = 0.f;
+        long releaseTime = 0l;
+        float minValue = kSmallAmplitude;
+    };
+
+    void adsrEnvelope(ADSREnvSpecInTicks const& spec, ADSREnvState& state) {
         switch (state.phase) {
             case ADSRPhase::Closed:
                 // Do nothing
@@ -107,31 +122,31 @@ namespace synth {
                 // LINEAR ATTACK code
                 if (state.ticksSincePhaseStart == 0) {
                     state.currentValue = 0.f;
-                    if (spec.attackTimeInTicks == 0) {
+                    if (spec.attackTime == 0) {
                         state.currentValue = 1.f;
                     }
                 } else {
-                    state.currentValue = (float)state.ticksSincePhaseStart / (float)spec.attackTimeInTicks;
+                    state.currentValue = (float)state.ticksSincePhaseStart / (float)spec.attackTime;
                 }
                 ++state.ticksSincePhaseStart;
-                if (state.ticksSincePhaseStart >= spec.attackTimeInTicks) {
+                if (state.ticksSincePhaseStart >= spec.attackTime) {
                     state.phase = ADSRPhase::Decay;
                     state.ticksSincePhaseStart = 0;
                 }
                 break;
             case ADSRPhase::Decay:
                 if (state.ticksSincePhaseStart == 0) {                    
-                    if (spec.decayTimeInTicks == 0) {
+                    if (spec.decayTime == 0) {
                         state.currentValue = spec.sustainLevel;
                         state.multiplier = 1.f;
                     } else {
                         state.currentValue = 1.f;
-                        state.multiplier = calcMultiplier(1.f, spec.sustainLevel, spec.decayTimeInTicks);
+                        state.multiplier = calcMultiplier(1.f, spec.sustainLevel, spec.decayTime);
                     }
                 }
                 state.currentValue *= state.multiplier;
                 ++state.ticksSincePhaseStart;
-                if (state.ticksSincePhaseStart >= spec.decayTimeInTicks) {
+                if (state.ticksSincePhaseStart >= spec.decayTime) {
                     state.phase = ADSRPhase::Sustain;
                     state.ticksSincePhaseStart = 0;
                 }
@@ -141,17 +156,17 @@ namespace synth {
                 break;
             case ADSRPhase::Release: {
                 if (state.ticksSincePhaseStart == 0) {                    
-                    if (spec.releaseTimeInTicks == 0) {                        
+                    if (spec.releaseTime == 0) {                        
                         state.multiplier = 0.f;
                     } else {
                         // Keep current level. might have hit release before hitting sustain level
                         // TODO: calculate release from sustain to 0, or from current level to 0? I like sustain better.
-                        state.multiplier = calcMultiplier(spec.sustainLevel, spec.minValue, spec.releaseTimeInTicks);
+                        state.multiplier = calcMultiplier(spec.sustainLevel, spec.minValue, spec.releaseTime);
                     }
                 }
                 state.currentValue *= state.multiplier;
                 ++state.ticksSincePhaseStart;
-                if (state.ticksSincePhaseStart >= spec.releaseTimeInTicks) {
+                if (state.ticksSincePhaseStart >= spec.releaseTime) {
                     state.phase = ADSRPhase::Closed;
                     state.ticksSincePhaseStart = -1;
                     state.currentValue = 0.f;
@@ -169,7 +184,7 @@ namespace synth {
     // TODO: early exit if envelope is closed.
     float ProcessVoice(
         Voice& voice, int const sampleRate, float pitchLFOValue, float modulatedCutoff, float cutoffK,
-        ADSREnvSpec const& ampEnvSpec, ADSREnvSpec const& cutoffEnvSpec, float const cutoffEnvGain) {
+        ADSREnvSpecInTicks const& ampEnvSpec, ADSREnvSpecInTicks const& cutoffEnvSpec, float const cutoffEnvGain) {
         float const dt = 1.0f / sampleRate;
 
         // Now use the LFO value to get a new frequency.
@@ -257,26 +272,19 @@ namespace synth {
         return resultVoice;
     }
 
+    void ConvertADSREnvSpec(ADSREnvSpec const& spec, ADSREnvSpecInTicks& specInTicks, int sampleRate) {
+        specInTicks.attackTime = (long)(spec.attackTime * sampleRate);
+        specInTicks.decayTime = (long)(spec.decayTime * sampleRate);
+        specInTicks.sustainLevel = spec.sustainLevel;
+        specInTicks.releaseTime = (long)(spec.releaseTime * sampleRate);
+        specInTicks.minValue = spec.minValue;
+    }
+
     void Process(
         StateData* state, audio::EventsThisFrame const& frameEvents, int eventCount,
         float* outputBuffer, int const numChannels, int const framesPerBuffer, int const sampleRate) {
 
-        float const dt = 1.0f / sampleRate;
-        float const k = state->cutoffK;  // between [0,4], unstable at 4
-
-        ADSREnvSpec ampEnvSpec;
-        ampEnvSpec.attackTimeInTicks = state->ampEnvAttackTime * sampleRate;
-        ampEnvSpec.decayTimeInTicks = state->ampEnvDecayTime * sampleRate;
-        ampEnvSpec.sustainLevel = state->ampEnvSustainLevel;
-        ampEnvSpec.releaseTimeInTicks = state->ampEnvReleaseTime * sampleRate;
-        ampEnvSpec.minValue = 0.01f;
-
-        ADSREnvSpec cutoffEnvSpec;
-        cutoffEnvSpec.attackTimeInTicks = state->cutoffEnvAttackTime * sampleRate;
-        cutoffEnvSpec.decayTimeInTicks = state->cutoffEnvDecayTime * sampleRate;
-        cutoffEnvSpec.sustainLevel = state->cutoffEnvSustainLevel;
-        cutoffEnvSpec.releaseTimeInTicks = state->cutoffEnvReleaseTime * sampleRate;
-        cutoffEnvSpec.minValue = 0.01f;
+        Patch& patch = state->patch;     
         
         int frameEventIx = 0;
         for(int i = 0; i < framesPerBuffer; ++i)
@@ -325,56 +333,56 @@ namespace synth {
                     case audio::EventType::SynthParam: {
                         switch (e.param) {
                             case audio::SynthParamType::Gain:
-                                state->gainFactor = e.newParamValue;
+                                patch.gainFactor = e.newParamValue;
                                 break;
                             case audio::SynthParamType::Cutoff:
                                 // value should be [0,1]. freq(0) = 0, freq(1) =
                                 // sampleRate, but how do we scale it
                                 // exponentially? so that 0.2 is twice the
                                 // frequency of 0.1? Do we want that?
-                                state->cutoffFreq = e.newParamValue * sampleRate;
+                                patch.cutoffFreq = e.newParamValue * sampleRate;
                                 break;
                             case audio::SynthParamType::Peak:
-                                state->cutoffK = e.newParamValue * 4.f;
+                                patch.cutoffK = e.newParamValue * 4.f;
                                 break;
                             case audio::SynthParamType::PitchLFOGain:
-                                state->pitchLFOGain = e.newParamValue;
+                                patch.pitchLFOGain = e.newParamValue;
                                 break;
                             case audio::SynthParamType::PitchLFOFreq:
-                                state->pitchLFOFreq = e.newParamValue;
+                                patch.pitchLFOFreq = e.newParamValue;
                                 break;
                             case audio::SynthParamType::CutoffLFOGain:
-                                state->cutoffLFOGain = e.newParamValue;
+                                patch.cutoffLFOGain = e.newParamValue;
                                 break;
                             case audio::SynthParamType::CutoffLFOFreq:
-                                state->cutoffLFOFreq = e.newParamValue;
+                                patch.cutoffLFOFreq = e.newParamValue;
                                 break;
                             case audio::SynthParamType::AmpEnvAttack:
-                                state->ampEnvAttackTime = e.newParamValue;
+                                patch.ampEnvSpec.attackTime = e.newParamValue;
                                 break;
                             case audio::SynthParamType::AmpEnvDecay:
-                                state->ampEnvDecayTime = e.newParamValue;
+                                patch.ampEnvSpec.decayTime = e.newParamValue;
                                 break;
                             case audio::SynthParamType::AmpEnvSustain:
-                                state->ampEnvSustainLevel = e.newParamValue;
+                                patch.ampEnvSpec.sustainLevel = e.newParamValue;
                                 break;
                             case audio::SynthParamType::AmpEnvRelease:
-                                state->ampEnvReleaseTime = e.newParamValue;
+                                patch.ampEnvSpec.releaseTime = e.newParamValue;
                                 break;
                             case audio::SynthParamType::CutoffEnvGain:
-                                state->cutoffEnvGain = e.newParamValue;
+                                patch.cutoffEnvGain = e.newParamValue;
                                 break;
                             case audio::SynthParamType::CutoffEnvAttack:
-                                state->cutoffEnvAttackTime = e.newParamValue;
+                                patch.cutoffEnvSpec.attackTime = e.newParamValue;
                                 break;
                             case audio::SynthParamType::CutoffEnvDecay:
-                                state->cutoffEnvDecayTime = e.newParamValue;
+                                patch.cutoffEnvSpec.decayTime = e.newParamValue;
                                 break;
                             case audio::SynthParamType::CutoffEnvSustain:
-                                state->cutoffEnvSustainLevel = e.newParamValue;
+                                patch.cutoffEnvSpec.sustainLevel = e.newParamValue;
                                 break;
                             case audio::SynthParamType::CutoffEnvRelease:
-                                state->cutoffEnvReleaseTime = e.newParamValue;
+                                patch.cutoffEnvSpec.releaseTime = e.newParamValue;
                                 break;
                             default:
                                 std::cout << "Received unsupported synth param " << static_cast<int>(e.param) << std::endl;
@@ -395,29 +403,33 @@ namespace synth {
             }
             // Make LFO a sine wave for now.
             
-            float const pitchLFOValue = state->pitchLFOGain * sinf(state->pitchLFOPhase);
-            state->pitchLFOPhase += (state->pitchLFOFreq * 2*kPi / sampleRate);
+            float const pitchLFOValue = patch.pitchLFOGain * sinf(state->pitchLFOPhase);
+            state->pitchLFOPhase += (patch.pitchLFOFreq * 2*kPi / sampleRate);
 
             // Get cutoff LFO value
             if (state->cutoffLFOPhase >= 2*kPi) {
                 state->cutoffLFOPhase -= 2*kPi;
             }
             // Make LFO a sine wave for now.
-            float const cutoffLFOValue = state->cutoffLFOGain * sinf(state->cutoffLFOPhase);
-            state->cutoffLFOPhase += (state->cutoffLFOFreq * 2*kPi / sampleRate);
-            float const modulatedCutoff = state->cutoffFreq * powf(2.0f, cutoffLFOValue);
+            float const cutoffLFOValue = patch.cutoffLFOGain * sinf(state->cutoffLFOPhase);
+            state->cutoffLFOPhase += (patch.cutoffLFOFreq * 2*kPi / sampleRate);
+            float const modulatedCutoff = patch.cutoffFreq * powf(2.0f, cutoffLFOValue);
+
+            ADSREnvSpecInTicks ampEnvSpec, cutoffEnvSpec;
+            ConvertADSREnvSpec(patch.ampEnvSpec, ampEnvSpec, sampleRate);
+            ConvertADSREnvSpec(patch.cutoffEnvSpec, cutoffEnvSpec, sampleRate);
 
             float v = 0.0f;
             for (Voice& voice : state->voices) {
                 v += ProcessVoice(
-                    voice, sampleRate, pitchLFOValue, modulatedCutoff, k, ampEnvSpec, cutoffEnvSpec, state->cutoffEnvGain);
+                    voice, sampleRate, pitchLFOValue, modulatedCutoff, patch.cutoffK, ampEnvSpec, cutoffEnvSpec, patch.cutoffEnvGain);
             }
 
             // Apply final gain. Map from linear [0,1] to exponential from -80db to 0db.
             {
                 float const startAmp = 0.01f;
                 float const factor = 1.0f / startAmp;
-                float gain = startAmp*powf(factor, state->gainFactor);
+                float gain = startAmp*powf(factor, patch.gainFactor);
                 v *= gain;
             }
 

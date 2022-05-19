@@ -5,6 +5,7 @@
 #include "cereal/types/string.hpp"
 #include "cereal/archives/xml.hpp"
 #include "serialize.h"
+#include "audio_serialize.h"
 
 template<typename Archive>
 void save(Archive& ar, Entity const& e) {
