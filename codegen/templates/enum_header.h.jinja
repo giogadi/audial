@@ -1,0 +1,18 @@
+#pragma once
+
+{% for ns in namespaces %}
+namespace {{ns}} {
+{% endfor %}
+
+enum class {{enumName}} : int {
+    {% for item in enumItems %}
+    {{item}},
+    {% endfor %}
+    Count
+};
+char const* {{enumName}}ToString({{enumName}} e);
+{{enumName}} StringTo{{enumName}}(char const* s);
+
+{% for ns in namespaces %}
+}
+{% endfor %}

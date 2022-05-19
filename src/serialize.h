@@ -70,8 +70,7 @@ void serialize(Archive& ar, Aabb& m) {
     ar(CEREAL_NVP(m._min), CEREAL_NVP(m._max));
 }
 
-namespace cereal {
-template<typename Archive> inline
+template<typename Archive>
 std::string save_minimal(Archive const& ar, CollisionLayer const& c) {
     return std::string(CollisionLayerToString(c));
 }
@@ -79,7 +78,6 @@ std::string save_minimal(Archive const& ar, CollisionLayer const& c) {
 template<typename Archive>
 void load_minimal(Archive const& ar, CollisionLayer& c, std::string const& value) {
     c = StringToCollisionLayer(value.c_str());
-}
 }
 
 template<typename Archive>

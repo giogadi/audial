@@ -1,0 +1,11 @@
+{
+    "namespaces": ["audio"],
+    "enumName": "EventType",
+    "enumItems": [
+        "None",
+        "NoteOn",
+        "NoteOff",
+        "SynthParam",
+        "PlayPcm"
+    ]
+}

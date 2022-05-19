@@ -1,0 +1,35 @@
+#include "{{headerFilename}}"
+
+#include <unordered_map>
+#include <string>
+
+{% for ns in namespaces %}
+namespace {{ns}} {
+{% endfor %}
+
+namespace {
+char const* g{{enumName}}Strings[] = {
+	{% for item in enumItems %}
+    "{{item}}"{% if not loop.last %},{% endif %}
+    {% endfor %}
+};
+
+std::unordered_map<std::string, {{enumName}}> const gStringTo{{enumName}} = {
+    {% for item in enumItems %}
+    { "{{item}}", {{enumName}}::{{item}} }{% if not loop.last %},{% endif %}
+    {% endfor %}
+};
+
+} // end namespace
+
+char const* {{enumName}}ToString({{enumName}} e) {
+	return g{{enumName}}Strings[static_cast<int>(e)];
+}
+
+{{enumName}} StringTo{{enumName}}(char const* s) {
+	return gStringTo{{enumName}}.at(s);
+}
+
+{% for ns in namespaces %}
+}
+{% endfor %}

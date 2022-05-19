@@ -3,48 +3,10 @@
 #include "SPSCQueue.h"
 #include <array>
 
+#include "enums/audio_EventType.h"
+#include "enums/audio_SynthParamType.h"
+
 namespace audio {
-
-#define M_AUDIO_EVENT_TYPES \
-    X(None) \
-    X(NoteOn) \
-    X(NoteOff) \
-    X(SynthParam) \
-    X(PlayPcm)
-enum class EventType : int {
-#   define X(a) a,
-    M_AUDIO_EVENT_TYPES
-#   undef X
-    Count
-};
-char const* EventTypeToString(EventType e);
-EventType StringToEventType(char const* s);
-
-#define M_AUDIO_SYNTH_PARAM_TYPES \
-    X(Gain) \
-    X(Cutoff) \
-    X(Peak) \
-    X(PitchLFOGain) \
-    X(PitchLFOFreq) \
-    X(CutoffLFOGain) \
-    X(CutoffLFOFreq) \
-    X(AmpEnvAttack) \
-    X(AmpEnvDecay) \
-    X(AmpEnvSustain) \
-    X(AmpEnvRelease) \
-    X(CutoffEnvGain) \
-    X(CutoffEnvAttack) \
-    X(CutoffEnvDecay) \
-    X(CutoffEnvSustain) \
-    X(CutoffEnvRelease)
-enum class SynthParamType : int {
-#   define X(a) a,
-    M_AUDIO_SYNTH_PARAM_TYPES
-#   undef X
-    Count
-};
-char const* SynthParamTypeToString(SynthParamType e);
-SynthParamType StringToSynthParamType(char const* s);
 
 struct Event {
     EventType type;

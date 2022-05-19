@@ -1,0 +1,22 @@
+{
+    "namespaces": ["audio"],
+    "enumName": "SynthParamType",
+    "enumItems": [
+        "Gain",
+        "Cutoff",
+        "Peak",
+        "PitchLFOGain",
+        "PitchLFOFreq",
+        "CutoffLFOGain",
+        "CutoffLFOFreq",
+        "AmpEnvAttack",
+        "AmpEnvDecay",
+        "AmpEnvSustain",
+        "AmpEnvRelease",
+        "CutoffEnvGain",
+        "CutoffEnvAttack",
+        "CutoffEnvDecay",
+        "CutoffEnvSustain",
+        "CutoffEnvRelease"
+    ]
+}

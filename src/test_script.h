@@ -100,6 +100,11 @@ void LoadTestScript(GameManager& g) {
 
             e.midiNote = 52;
             seqComp->AddToSequence(e);
+
+            e.type = audio::EventType::SynthParam;
+            e.param = audio::SynthParamType::Gain;
+            e.newParamValue = 0.5;
+            seqComp->AddToSequence(e);
         }
         droneSeq->_components.push_back(std::move(seqComp));
         droneSeq->ConnectComponents(g);
