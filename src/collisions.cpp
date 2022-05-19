@@ -63,7 +63,8 @@ namespace {
 void CollisionManager::Update(float dt) {
     std::vector<Vec3> newPositions(_bodies.size());
     std::vector<Aabb> newAabbs(_bodies.size());
-    std::vector<bool> hits(_bodies.size(), false);
+    // Stores pointer of other body hit. nullptr if no hit
+    std::vector<RigidBodyComponent*> hits(_bodies.size(), nullptr);
     for (int i = 0; i < _bodies.size(); ++i) {
         RigidBodyComponent& rb = *_bodies[i];
         Vec3 const rbTranslate = dt * rb._velocity;
@@ -80,7 +81,8 @@ void CollisionManager::Update(float dt) {
             if (!aabbOverlap(newAabbs[i], newAabbs[j])) {
                 continue;
             }
-            hits[i] = hits[j] = true;
+            hits[i] = &rb2;
+            hits[j] = &rb1;
 
             // Our shitty collision response strategy: we generate an
             // axis-aligned vector of minimum motion to push rb1 out of rb2
@@ -107,8 +109,8 @@ void CollisionManager::Update(float dt) {
     for (int i = 0; i < _bodies.size(); ++i) {
         RigidBodyComponent& rb = *_bodies[i];
         rb._transform->SetPos(newPositions[i]);
-        if (hits[i] && rb._onHitCallback) {
-            rb._onHitCallback();
+        if (hits[i] != nullptr && rb._onHitCallback) {
+            rb._onHitCallback(hits[i]);
         }
     }
 }

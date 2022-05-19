@@ -4,11 +4,6 @@
 
 #include "components/rigid_body.h"
 
-enum class CollisionLayer : int {
-    Solid,
-    BodyAttack
-};
-
 class CollisionManager {
 public:
     void AddBody(RigidBodyComponent* body);

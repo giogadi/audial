@@ -30,6 +30,10 @@ void PlayerControllerComponent::Update(float dt) {
 }
 
 bool PlayerControllerComponent::UpdateIdleState(float dt, bool newState) {
+    if (newState) {
+        _rb->_layer = CollisionLayer::Solid;
+    }
+
     // Check for attack transition
     if (_input->IsKeyPressedThisFrame(InputManager::Key::J) &&
         _rb->_velocity.Length2() > 0.1f*0.1f) {
@@ -67,6 +71,7 @@ bool PlayerControllerComponent::UpdateAttackState(float dt, bool newState) {
         _stateTimer = 0.f;
         _attackDir = _rb->_velocity.GetNormalized();
         _rb->_velocity = _attackDir * kAttackSpeed;
+        _rb->_layer = CollisionLayer::BodyAttack;
     }
 
     {

@@ -6,6 +6,7 @@ class BeatClock;
 namespace audio {
     class Context;
 }
+class RigidBodyComponent;
 
 class BeepOnHitComponent : public Component {
 public:
@@ -13,9 +14,7 @@ public:
     BeepOnHitComponent() {}    
     virtual void ConnectComponents(Entity& e, GameManager& g) override;
 
-    void OnHit() {
-        _wasHit = true;
-    }
+    void OnHit(RigidBodyComponent* other);
 
     virtual void Update(float const dt) override;
 

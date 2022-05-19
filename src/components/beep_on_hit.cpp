@@ -9,7 +9,11 @@ void BeepOnHitComponent::ConnectComponents(Entity& e, GameManager& g) {
     _audio = g._audioContext;
     _beatClock = g._beatClock;
     RigidBodyComponent* rb = e.DebugFindComponentOfType<RigidBodyComponent>();
-    rb->SetOnHitCallback(std::bind(&BeepOnHitComponent::OnHit, this));
+    rb->SetOnHitCallback(std::bind(&BeepOnHitComponent::OnHit, this, std::placeholders::_1));
+}
+
+void BeepOnHitComponent::OnHit(RigidBodyComponent* other) {
+    _wasHit = other->_layer == CollisionLayer::BodyAttack;
 }
 
 void BeepOnHitComponent::Update(float dt) {
@@ -19,8 +23,8 @@ void BeepOnHitComponent::Update(float dt) {
     _wasHit = false;
 
     double beatTime = _beatClock->GetBeatTime();
-    // double denom = 0.25;
-    double denom = 1.0;
+    double denom = 0.25;
+    // double denom = 1.0;
     double noteTime = BeatClock::GetNextBeatDenomTime(beatTime, denom);
     double noteOffTime = noteTime + 0.5 * denom;
     if (noteOffTime > _lastScheduledEvent) {
