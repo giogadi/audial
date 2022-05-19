@@ -1,0 +1,9 @@
+{
+    "namespaces": [],
+    "enumName": "CollisionLayer",
+    "enumItems": [
+        "None",
+        "Solid",
+        "BodyAttack"
+    ]
+}

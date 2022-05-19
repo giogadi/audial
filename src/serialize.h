@@ -11,6 +11,7 @@
 #include "components/player_controller.h"
 #include "components/sequencer.h"
 #include "audio_util.h"
+#include "enums/CollisionLayer_cereal.h"
 
 template<typename Archive>
 void serialize(Archive& ar, Vec3& v) {
@@ -68,16 +69,6 @@ void serialize(Archive& ar, CameraComponent& m) {
 template<typename Archive>
 void serialize(Archive& ar, Aabb& m) {
     ar(CEREAL_NVP(m._min), CEREAL_NVP(m._max));
-}
-
-template<typename Archive>
-std::string save_minimal(Archive const& ar, CollisionLayer const& c) {
-    return std::string(CollisionLayerToString(c));
-}
-
-template<typename Archive>
-void load_minimal(Archive const& ar, CollisionLayer& c, std::string const& value) {
-    c = StringToCollisionLayer(value.c_str());
 }
 
 template<typename Archive>

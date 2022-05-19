@@ -19,7 +19,10 @@ def generateEnumFromJson(dataFilename):
     dataFile.close()
     dataDict = json.loads(dataFileContents)
 
-    outputFilenamePrefix = "src/enums/" + "_".join(dataDict["namespaces"]) + "_" + dataDict["enumName"]
+    namespacesPrefix = ""
+    if len(dataDict["namespaces"]) > 0:
+        namespacesPrefix = "_".join(dataDict["namespaces"]) + "_"
+    outputFilenamePrefix = "src/enums/" + namespacesPrefix + dataDict["enumName"]
 
     headerTemplateFilename = "codegen/templates/enum_header.h.jinja"
     headerOutputFilename = outputFilenamePrefix + ".h"

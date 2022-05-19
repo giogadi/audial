@@ -4,7 +4,7 @@ OBJDIR = intermediates
 CXXFLAGS = -std=c++17 -I src/glfw/include -I src/glad/include -I src/ -I src/imgui -I .
 GAMENAME = game
 
-OBJS = $(addprefix $(OBJDIR)/,stb_image.o imgui.o imgui_demo.o imgui_draw.o imgui_tables.o imgui_widgets.o imgui_impl_glfw.o imgui_impl_opengl3.o entity_loader.o audio_loader.o game.o audio_util.o audio.o shader.o synth.o glad.o matrix.o component.o renderer.o collisions.o rigid_body.o beep_on_hit.o player_controller.o audio_EventType.o audio_SynthParamType.o)
+OBJS = $(addprefix $(OBJDIR)/,stb_image.o imgui.o imgui_demo.o imgui_draw.o imgui_tables.o imgui_widgets.o imgui_impl_glfw.o imgui_impl_opengl3.o entity_loader.o audio_loader.o game.o audio_util.o audio.o shader.o synth.o glad.o matrix.o component.o renderer.o collisions.o rigid_body.o beep_on_hit.o player_controller.o audio_EventType.o audio_SynthParamType.o CollisionLayer.o)
 
 $(GAMENAME): $(OBJS)
 	$(CXX) $(CXXFLAGS) -L src/glfw/lib-x86_64 -l portaudio -lglfw -framework Cocoa -framework OpenGL -framework IOKit -o $(GAMENAME) $(OBJS)

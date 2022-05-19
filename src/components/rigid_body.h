@@ -3,6 +3,7 @@
 #include <functional>
 
 #include "component.h"
+#include "enums/CollisionLayer.h"
 
 class CollisionManager;
 
@@ -17,19 +18,6 @@ inline Aabb MakeCubeAabb(float half_width) {
     a._max = Vec3(half_width, half_width, half_width);
     return a;
 }
-
-#define M_COLLISION_LAYERS \
-    X(None) \
-    X(Solid) \
-    X(BodyAttack)
-enum class CollisionLayer : int {
-#   define X(a) a,
-    M_COLLISION_LAYERS
-#   undef X
-    Count
-};
-char const* CollisionLayerToString(CollisionLayer e);
-CollisionLayer StringToCollisionLayer(char const* s);
 
 class RigidBodyComponent : public Component {
 public:
