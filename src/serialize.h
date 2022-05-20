@@ -78,6 +78,7 @@ void serialize(Archive& ar, RigidBodyComponent& m) {
 
 template<typename Archive>
 void serialize(Archive& ar, BeepOnHitComponent& m) {
+    ar(cereal::make_nvp("synth_channel", m._synthChannel), cereal::make_nvp("notes", m._midiNotes));
 }
 
 template<typename Archive>

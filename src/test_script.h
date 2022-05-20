@@ -47,6 +47,8 @@ void LoadTestScript(GameManager& g) {
         modelComp->_modelId = std::string("wood_box");
         TransformComponent* t = tComp.get();
         auto beepComp = std::make_unique<BeepOnHitComponent>();
+        beepComp->_synthChannel = 0;
+        beepComp->_midiNotes = { 69, 73 };
         auto rbComp = std::make_unique<RigidBodyComponent>();
         rbComp->_localAabb = MakeCubeAabb(0.5f);
         auto velComp = std::make_unique<VelocityComponent>();

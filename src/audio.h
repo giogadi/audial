@@ -55,6 +55,15 @@ struct Context {
     EventQueue _eventQueue;
     Context()
         : _eventQueue(kEventQueueLength) {}
+
+    bool AddEvent(Event const& e) {
+        bool success = _eventQueue.try_push(e);
+        if (!success) {
+            // TODO: maybe use serialize to get a string of the event
+            std::cout << "Failed to add event to audio queue:" << std::endl;
+        }
+        return success;
+    }
 };
 
 PaError Init(Context& context, float* pcmBuffer, unsigned long pcmBufferLength);

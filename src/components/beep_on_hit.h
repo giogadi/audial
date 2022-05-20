@@ -23,6 +23,8 @@ public:
     TransformComponent* _t = nullptr;
     audio::Context* _audio = nullptr;
     BeatClock const* _beatClock = nullptr;
+    int _synthChannel = 0;
+    std::vector<int> _midiNotes;
     double _lastScheduledEvent = -1.0;
     bool _wasHit = false;
 };
