@@ -1,0 +1,31 @@
+cmake_minimum_required(VERSION 3.10)
+
+project(Audial)
+
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED True)
+
+add_executable(game
+    src/stb_image.cpp src/imgui/imgui.cpp src/imgui/imgui_demo.cpp src/imgui/imgui_draw.cpp
+    src/imgui/imgui_tables.cpp src/imgui/imgui_widgets.cpp src/imgui/backends/imgui_impl_glfw.cpp 
+    src/imgui/backends/imgui_impl_opengl3.cpp src/glad/src/glad.cpp
+    src/entity_loader.cpp src/audio_loader.cpp src/game.cpp src/audio_util.cpp src/audio.cpp
+    src/shader.cpp src/synth.cpp  src/matrix.cpp src/component.cpp src/renderer.cpp src/collisions.cpp
+    src/components/rigid_body.cpp src/components/beep_on_hit.cpp src/components/player_controller.cpp
+    src/enums/audio_EventType.cpp src/enums/audio_SynthParamType.cpp src/enums/CollisionLayer.cpp)
+
+## GLFW ##
+set(GLFW_BUILD_DOCS OFF CACHE BOOL "" FORCE)
+set(GLFW_BUILD_TESTS OFF CACHE BOOL "" FORCE)
+set(GLFW_BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
+add_subdirectory(src/glfw)
+target_link_libraries(game glfw)
+target_include_directories(game PUBLIC src/glfw/include)
+
+## PORTAUDIO ##
+add_subdirectory(src/portaudio EXCLUDE_FROM_ALL)
+target_link_libraries(game PortAudio)
+target_include_directories(game PUBLIC src/portaudio/include)
+
+target_include_directories(game PUBLIC
+    ./ ./src src/cereal src/glfw/include src/glad/include src/imgui)

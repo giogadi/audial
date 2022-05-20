@@ -296,7 +296,7 @@ int main(int argc, char** argv) {
     unsigned int sampleRate;
     drwav_uint64 totalPCMFrameCount;
     float* pSampleData = drwav_open_file_and_read_pcm_frames_f32(
-        "data/sounds/kick.wav", &channels, &sampleRate, &totalPCMFrameCount, NULL);
+        "../data/sounds/kick.wav", &channels, &sampleRate, &totalPCMFrameCount, NULL);
     if (pSampleData == NULL) {
         // Error opening and reading WAV file.
         std::cout << "error opening and reading wav file" << std::endl;
@@ -353,12 +353,12 @@ int main(int argc, char** argv) {
     ImGui_ImplOpenGL3_Init(/*glsl_version=*/NULL);
 
     Shader shaderProgram;
-    if (!shaderProgram.Init("shaders/shader.vert", "shaders/shader.frag")) {
+    if (!shaderProgram.Init("../shaders/shader.vert", "../shaders/shader.frag")) {
         return 1;
     }
 
     std::unique_ptr<Texture> texture =
-        Texture::CreateTextureFromFile("data/textures/wood_container.jpg");
+        Texture::CreateTextureFromFile("../data/textures/wood_container.jpg");
     if (texture == nullptr) {
         return 1;
     }
