@@ -10,6 +10,7 @@ add_executable(game
     src/imgui/imgui_tables.cpp src/imgui/imgui_widgets.cpp src/imgui/backends/imgui_impl_glfw.cpp 
     src/imgui/backends/imgui_impl_opengl3.cpp src/glad/src/glad.cpp
     src/entity_loader.cpp src/audio_loader.cpp src/game.cpp src/audio_util.cpp src/audio.cpp
+    src/transform_manager.cpp src/entity_editing_context.cpp
     src/shader.cpp src/synth.cpp  src/matrix.cpp src/component.cpp src/renderer.cpp src/collisions.cpp
     src/components/rigid_body.cpp src/components/beep_on_hit.cpp src/components/player_controller.cpp
     src/enums/audio_EventType.cpp src/enums/audio_SynthParamType.cpp src/enums/CollisionLayer.cpp)

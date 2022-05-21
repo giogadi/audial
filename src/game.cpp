@@ -24,6 +24,7 @@
 
 #include "constants.h"
 #include "game_manager.h"
+#include "transform_manager.h"
 #include "resource_manager.h"
 #include "audio.h"
 #include "beat_clock.h"
@@ -40,6 +41,7 @@
 #include "components/rigid_body.h"
 #include "entity_loader.h"
 #include "audio_loader.h"
+#include "entity_editing_context.h"
 
 #include "test_script.h"
 
@@ -389,11 +391,14 @@ int main(int argc, char** argv) {
 
     CollisionManager collisionManager;
 
+    TransformManager transformManager;
+
     GameManager gameManager {
-        &sceneManager, &inputManager, &audioContext, &entityManager, &collisionManager, &modelManager, &beatClock };
+        &sceneManager, &inputManager, &audioContext, &entityManager, &collisionManager, &modelManager, &beatClock, &transformManager };
 
     std::optional<std::string> scriptFilename;
     std::optional<std::string> saveFilename;
+    bool editMode = false;
     for (int argIx = 1; argIx < argc; ++argIx) {
         if (strcmp(argv[argIx], "-f") == 0) {
             ++argIx;
@@ -409,6 +414,9 @@ int main(int argc, char** argv) {
                 continue;
             }
             saveFilename = argv[argIx];
+        } else if (strcmp(argv[argIx], "-e") == 0) {
+            std::cout << "Edit mode enabled!" << std::endl;
+            editMode = true;            
         }
     }
 
@@ -432,9 +440,15 @@ int main(int argc, char** argv) {
     InitSynthGuiState(synthGuiState, audioContext._state, sampleRate);
 
     bool showSynthWindow = false;
+    bool showEntitiesWindow = false;
+    bool showDemoWindow = false;
     float const fixedTimeStep = 1.f / 60.f;
     bool paused = false;
+    EntityEditingContext entityEditingContext;
     while(!glfwWindowShouldClose(window)) {
+
+        int windowWidth, windowHeight;
+        glfwGetWindowSize(window, &windowWidth, &windowHeight);
 
         beatClock.Update();
         if (beatClock.IsNewBeat()) {
@@ -466,10 +480,20 @@ int main(int argc, char** argv) {
         if (inputManager.IsKeyPressedThisFrame(InputManager::Key::Y)) {
             showSynthWindow = !showSynthWindow;
         }
+        if (inputManager.IsKeyPressedThisFrame(InputManager::Key::E)) {
+            showEntitiesWindow = !showEntitiesWindow;
+        }
+        if (inputManager.IsKeyPressedThisFrame(InputManager::Key::Space)) {
+            showDemoWindow = !showDemoWindow;
+        }
 
-        entityManager.Update(dt);
+        if (!editMode) {
+            entityManager.Update(dt);
+            collisionManager.Update(dt);
+        }
 
-        collisionManager.Update(dt);
+        // transformManager.Update(dt, editMode, gameManager, windowWidth, windowHeight);
+        entityEditingContext.Update(dt, editMode, gameManager, windowWidth, windowHeight);
 
         if (inputManager.IsKeyPressed(InputManager::Key::Escape)) {
             glfwSetWindowShouldClose(window, true);
@@ -482,14 +506,18 @@ int main(int argc, char** argv) {
         if (showSynthWindow) {
             DrawSynthGuiAndUpdatePatch(synthGuiState, audioContext);
         }
+        if (showEntitiesWindow) {
+            entityEditingContext.DrawEntitiesWindow(entityManager, gameManager);
+        }
+        if (showDemoWindow) {
+            ImGui::ShowDemoWindow(&showDemoWindow);
+        }
         ImGui::Render();    
 
         // Rendering
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        int windowWidth, windowHeight;
-        glfwGetWindowSize(window, &windowWidth, &windowHeight);
         sceneManager.Draw(windowWidth, windowHeight);
 
         ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());

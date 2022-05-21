@@ -1,10 +1,14 @@
 #include "beep_on_hit.h"
 
+#include <sstream>
+
+#include "imgui/imgui.h"
+
 #include "beat_clock.h"
 #include "audio.h"
 #include "rigid_body.h"
 
-void BeepOnHitComponent::ConnectComponents(Entity& e, GameManager& g) {
+void BeepOnHitComponent::ConnectComponents(Entity& e, GameManager& g) {    
     _t = e.DebugFindComponentOfType<TransformComponent>();
     _audio = g._audioContext;
     _beatClock = g._beatClock;
@@ -33,6 +37,9 @@ void BeepOnHitComponent::Update(float dt) {
         audio::Event e;
         e.channel = _synthChannel;
         for (int note : _midiNotes) {
+            if (note < 0) {
+                continue;
+            }
             e.midiNote = note;
             e.type = audio::EventType::NoteOn;
             e.timeInTicks = _beatClock->BeatTimeToTickTime(noteTime);
@@ -41,5 +48,15 @@ void BeepOnHitComponent::Update(float dt) {
             e.timeInTicks = _beatClock->BeatTimeToTickTime(noteOffTime);
             _audio->AddEvent(e);
         }
+    }
+}
+
+void BeepOnHitComponent::DrawImGui() {
+    ImGui::InputScalar("Channel", ImGuiDataType_S32, &_synthChannel, /*step=*/nullptr, /*???*/NULL, "%d");
+    char label[] = "Note XXX";
+    for (int i = 0; i < _midiNotes.size(); ++i) {        
+        sprintf(label, "Note %d", i);
+        ImGui::InputScalar(
+            label, ImGuiDataType_S32, &(_midiNotes[i]), /*step=*/nullptr, /*???*/NULL, "%d");
     }
 }

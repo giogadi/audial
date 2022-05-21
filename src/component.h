@@ -7,6 +7,7 @@
 #include "game_manager.h"
 
 class Entity;
+class TransformManager;
 
 #define M_COMPONENT_TYPES \
     X(Transform) \
@@ -39,6 +40,7 @@ public:
     virtual void Destroy() = 0;
     virtual void ConnectComponents(Entity& e, GameManager& g) {}
     virtual ComponentType Type() = 0;
+    virtual void DrawImGui();
 };
 
 class Entity {
@@ -83,7 +85,8 @@ public:
         : _transform(Mat4::Identity()) {}
 
     virtual ~TransformComponent() {}
-    virtual void Destroy() override {}    
+    virtual void ConnectComponents(Entity& e, GameManager& g) override;
+    virtual void Destroy() override;
 
     // TODO make these return const& to memory in Mat4
     Vec3 GetPos() const {
@@ -114,6 +117,7 @@ public:
 
     // TODO store separate rot and pos
     Mat4 _transform;
+    TransformManager* _mgr;
 };
 
 class VelocityComponent : public Component {

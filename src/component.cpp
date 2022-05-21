@@ -2,6 +2,10 @@
 
 #include <unordered_map>
 
+#include "imgui/imgui.h"
+
+#include "transform_manager.h"
+
 namespace {
 char const* gComponentTypeStrings[] = {
 #   define X(a) #a,
@@ -22,4 +26,16 @@ char const* ComponentTypeToString(ComponentType c) {
 
 ComponentType StringToComponentType(char const* c) {
     return gStringToComponentType.at(c);
+}
+
+void Component::DrawImGui() {
+    ImGui::Text("(No properties)");
+}
+
+void TransformComponent::ConnectComponents(Entity& e, GameManager& g) {
+    _mgr = g._transformManager;
+    _mgr->AddTransform(this, &e);
+}
+void TransformComponent::Destroy() {
+    _mgr->RemoveTransform(this);
 }

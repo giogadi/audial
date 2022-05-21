@@ -2,6 +2,7 @@
 
 #include "cereal/cereal.hpp"
 #include "cereal/types/vector.hpp"
+#include "cereal/types/array.hpp"
 
 #include "matrix.h"
 #include "component.h"

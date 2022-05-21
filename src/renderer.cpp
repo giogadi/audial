@@ -2,6 +2,8 @@
 
 #include <algorithm>
 
+#include "imgui/imgui.h"
+
 #include "model.h"
 #include "input_manager.h"
 #include "matrix.h"
@@ -28,6 +30,16 @@ void LightComponent::ConnectComponents(Entity& e, GameManager& g) {
     _transform = e.DebugFindComponentOfType<TransformComponent>();
     _mgr = g._sceneManager;
     _mgr->AddLight(this);
+}
+
+void LightComponent::DrawImGui() {
+    ImGui::InputScalar("Diffuse R", ImGuiDataType_Float, &_diffuse._x, /*step=*/nullptr);
+    ImGui::InputScalar("Diffuse G", ImGuiDataType_Float, &_diffuse._y, /*step=*/nullptr);
+    ImGui::InputScalar("Diffuse B", ImGuiDataType_Float, &_diffuse._z, /*step=*/nullptr);
+
+    ImGui::InputScalar("Ambient R", ImGuiDataType_Float, &_ambient._x, /*step=*/nullptr);
+    ImGui::InputScalar("Ambient G", ImGuiDataType_Float, &_ambient._y, /*step=*/nullptr);
+    ImGui::InputScalar("Ambient B", ImGuiDataType_Float, &_ambient._z, /*step=*/nullptr);
 }
 
 void CameraComponent::Destroy() {

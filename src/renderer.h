@@ -34,6 +34,7 @@ public:
     virtual ~LightComponent() {}
     virtual void Destroy() override;
     virtual void ConnectComponents(Entity& e, GameManager& g) override;
+    virtual void DrawImGui() override;
 
     TransformComponent const* _transform = nullptr;
     Vec3 _ambient;
