@@ -9,7 +9,6 @@ class EntityManager;
 class CollisionManager;
 class ModelManager;
 class BeatClock;
-class TransformManager;
 
 struct GameManager {
     SceneManager* _sceneManager = nullptr;
@@ -19,5 +18,4 @@ struct GameManager {
     CollisionManager* _collisionManager = nullptr;
     ModelManager* _modelManager = nullptr;
     BeatClock* _beatClock = nullptr;
-    TransformManager* _transformManager = nullptr;
 };

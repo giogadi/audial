@@ -10,26 +10,18 @@
 #include "constants.h"
 #include "resource_manager.h"
 
-void ModelComponent::Destroy() {
-    _mgr->RemoveModel(this);
-}
-
 void ModelComponent::ConnectComponents(Entity& e, GameManager& g) {
-    _transform = e.DebugFindComponentOfType<TransformComponent>();
+    _transform = e.FindComponentOfType<TransformComponent>();
     ModelManager* modelManager = g._modelManager;
     _mesh = modelManager->_modelMap.at(_modelId).get();
     _mgr = g._sceneManager;
-    _mgr->AddModel(this);
-}
-
-void LightComponent::Destroy() {
-    _mgr->RemoveLight(this);
+    _mgr->AddModel(e.FindComponentOfType<ModelComponent>());
 }
 
 void LightComponent::ConnectComponents(Entity& e, GameManager& g) {
-    _transform = e.DebugFindComponentOfType<TransformComponent>();
+    _transform = e.FindComponentOfType<TransformComponent>();
     _mgr = g._sceneManager;
-    _mgr->AddLight(this);
+    _mgr->AddLight(e.FindComponentOfType<LightComponent>());
 }
 
 void LightComponent::DrawImGui() {
@@ -42,21 +34,18 @@ void LightComponent::DrawImGui() {
     ImGui::InputScalar("Ambient B", ImGuiDataType_Float, &_ambient._z, /*step=*/nullptr);
 }
 
-void CameraComponent::Destroy() {
-    _mgr->RemoveCamera(this);
-}
-
 void CameraComponent::ConnectComponents(Entity& e, GameManager& g) {
-    _transform = e.DebugFindComponentOfType<TransformComponent>();
+    _transform = e.FindComponentOfType<TransformComponent>();
     _input = g._inputManager;
     _mgr = g._sceneManager;
-    _mgr->AddCamera(this);
+    _mgr->AddCamera(e.FindComponentOfType<CameraComponent>());
 }
 
 Mat4 CameraComponent::GetViewMatrix() const {
-    Vec3 p = _transform->GetPos();
-    Vec3 forward = -_transform->GetZAxis();  // Z-axis points backward
-    Vec3 up = _transform->GetYAxis();
+    auto transform = _transform.lock();
+    Vec3 p = transform->GetPos();
+    Vec3 forward = -transform->GetZAxis();  // Z-axis points backward
+    Vec3 up = transform->GetYAxis();
     return Mat4::LookAt(p, p + forward, up);
 }
 
@@ -89,24 +78,31 @@ void CameraComponent::Update(float dt) {
 
     float const kSpeed = 5.0f;
     Vec3 translation = dt * kSpeed * inputVec.GetNormalized();
-    Vec3 newPos = _transform->GetPos() + translation;
-    _transform->SetPos(newPos);
+    auto transform = _transform.lock();
+    Vec3 newPos = transform->GetPos() + translation;
+    transform->SetPos(newPos);
 }
 
-void SceneManager::RemoveModel(ModelComponent const* m) { 
-    _models.erase(std::remove(_models.begin(), _models.end(), m));
-}
-void SceneManager::RemoveLight(LightComponent const* l) {
-    _lights.erase(std::remove(_lights.begin(), _lights.end(), l));
-}
-void SceneManager::RemoveCamera(CameraComponent const* c) { 
-    _cameras.erase(std::remove(_cameras.begin(), _cameras.end(), c));
-}
 void SceneManager::Draw(int windowWidth, int windowHeight) {
+    // Update our lists of models, cameras, and lights if any of them were deleted.
+    _models.erase(std::remove_if(_models.begin(), _models.end(),
+        [](std::weak_ptr<ModelComponent const> const& p) {
+            return p.expired();
+        }), _models.end());
+    _cameras.erase(std::remove_if(_cameras.begin(), _cameras.end(),
+        [](std::weak_ptr<CameraComponent const> const& p) {
+            return p.expired();
+        }), _cameras.end());
+    _lights.erase(std::remove_if(_lights.begin(), _lights.end(),
+        [](std::weak_ptr<LightComponent const> const& p) {
+            return p.expired();
+        }), _lights.end());
+    
+
     assert(_cameras.size() == 1);
     assert(_lights.size() == 1);
-    CameraComponent const* camera = _cameras.front();
-    LightComponent const* light = _lights.front();
+    auto const camera = _cameras.front().lock();
+    auto const light = _lights.front().lock();
 
     float fovy = 45.f * kPi / 180.f;
     float aspectRatio = (float)windowWidth / windowHeight;
@@ -117,13 +113,13 @@ void SceneManager::Draw(int windowWidth, int windowHeight) {
 
     // TODO: group them by Material
     for (auto const& pModel : _models) {
-        ModelComponent const& m = *pModel;
+        auto const m = *pModel.lock();
         m._mesh->_mat->_shader.Use();
-        Mat4 transMat = m._transform->GetMat4();
+        Mat4 transMat = m._transform.lock()->GetMat4();
         m._mesh->_mat->_shader.SetMat4("uMvpTrans", viewProjTransform * transMat);
         m._mesh->_mat->_shader.SetMat4("uModelTrans", transMat);
         m._mesh->_mat->_shader.SetMat3("uModelInvTrans", transMat.GetMat3());
-        m._mesh->_mat->_shader.SetVec3("uLightPos", light->_transform->GetPos());
+        m._mesh->_mat->_shader.SetVec3("uLightPos", light->_transform.lock()->GetPos());
         m._mesh->_mat->_shader.SetVec3("uAmbient", light->_ambient);
         m._mesh->_mat->_shader.SetVec3("uDiffuse", light->_diffuse);
         glActiveTexture(GL_TEXTURE0);

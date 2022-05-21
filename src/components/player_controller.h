@@ -10,7 +10,7 @@ class InputManager;
 
 class PlayerControllerComponent : public Component {
 public:
-    virtual ComponentType Type() override { return ComponentType::PlayerController; }
+    virtual ComponentType Type() const override { return ComponentType::PlayerController; }
     PlayerControllerComponent()
         : _attackDir(0.f,0.f,0.f) {}
     virtual void ConnectComponents(Entity& e, GameManager& g) override;
@@ -26,7 +26,7 @@ public:
 
     bool UpdateAttackState(float dt, bool newState);
 
-    void OnHit();
+    void OnHit(std::weak_ptr<RigidBodyComponent> other);
 
     enum class State {
         Idle, Attacking
@@ -35,8 +35,8 @@ public:
     static inline float const kIdleSpeed = 5.f;
     static inline float const kAttackSpeed = 40.f;
     
-    TransformComponent* _transform = nullptr;
-    RigidBodyComponent* _rb = nullptr;
+    std::weak_ptr<TransformComponent> _transform;
+    std::weak_ptr<RigidBodyComponent> _rb;
     InputManager const* _input = nullptr;
     State _state = State::Idle;
     float _stateTimer = 0.f;

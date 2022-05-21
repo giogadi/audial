@@ -3,11 +3,7 @@
 #include "collisions.h"
 
 void RigidBodyComponent::ConnectComponents(Entity& e, GameManager& g) {
-    _transform = e.DebugFindComponentOfType<TransformComponent>();
+    _transform = e.FindComponentOfType<TransformComponent>();
     _collisionMgr = g._collisionManager;
-    _collisionMgr->AddBody(this);
-}
-
-void RigidBodyComponent::Destroy() {
-    _collisionMgr->RemoveBody(this);
+    _collisionMgr->AddBody(e.FindComponentOfType<RigidBodyComponent>());
 }

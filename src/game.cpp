@@ -24,7 +24,6 @@
 
 #include "constants.h"
 #include "game_manager.h"
-#include "transform_manager.h"
 #include "resource_manager.h"
 #include "audio.h"
 #include "beat_clock.h"
@@ -391,10 +390,8 @@ int main(int argc, char** argv) {
 
     CollisionManager collisionManager;
 
-    TransformManager transformManager;
-
     GameManager gameManager {
-        &sceneManager, &inputManager, &audioContext, &entityManager, &collisionManager, &modelManager, &beatClock, &transformManager };
+        &sceneManager, &inputManager, &audioContext, &entityManager, &collisionManager, &modelManager, &beatClock };
 
     std::optional<std::string> scriptFilename;
     std::optional<std::string> saveFilename;
@@ -422,7 +419,10 @@ int main(int argc, char** argv) {
 
     if (scriptFilename.has_value()) {
         std::cout << "loading " << scriptFilename.value() << std::endl;
-        LoadEntities(scriptFilename->c_str(), entityManager, gameManager);
+        if (!LoadEntities(scriptFilename->c_str(), entityManager, gameManager)) {
+            std::cout << "Load failed. Exiting" << std::endl;
+            return 1;
+        }
     } else {
         std::cout << "loading hardcoded script" << std::endl;
         LoadTestScript(gameManager);
@@ -492,7 +492,6 @@ int main(int argc, char** argv) {
             collisionManager.Update(dt);
         }
 
-        // transformManager.Update(dt, editMode, gameManager, windowWidth, windowHeight);
         entityEditingContext.Update(dt, editMode, gameManager, windowWidth, windowHeight);
 
         if (inputManager.IsKeyPressed(InputManager::Key::Escape)) {

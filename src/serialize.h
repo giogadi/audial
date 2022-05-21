@@ -43,6 +43,16 @@ void serialize(Archive& ar, Mat4& m) {
 }
 
 template<typename Archive>
+std::string save_minimal(Archive const& ar, ComponentType const& e) {
+	return std::string(ComponentTypeToString(e));
+}
+
+template<typename Archive>
+void load_minimal(Archive const& ar, ComponentType& e, std::string const& v) {
+	e = StringToComponentType(v.c_str());
+}
+
+template<typename Archive>
 void serialize(Archive& ar, TransformComponent& t) {
     ar(CEREAL_NVP(t._transform));
 }

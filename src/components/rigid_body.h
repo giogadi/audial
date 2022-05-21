@@ -21,22 +21,21 @@ inline Aabb MakeCubeAabb(float half_width) {
 
 class RigidBodyComponent : public Component {
 public:
-    virtual ComponentType Type() override { return ComponentType::RigidBody; }
+    virtual ComponentType Type() const override { return ComponentType::RigidBody; }
     RigidBodyComponent()
         : _velocity(0.f,0.f,0.f) {}
     virtual ~RigidBodyComponent() {}
-    virtual void Destroy() override;
     virtual void ConnectComponents(Entity& e, GameManager& g) override;
 
-    void SetOnHitCallback(std::function<void(RigidBodyComponent*)> f) {
+    void SetOnHitCallback(std::function<void(std::weak_ptr<RigidBodyComponent>)> f) {
         _onHitCallback = f;
     }
 
     Vec3 _velocity;
     Aabb _localAabb;  // Aabb assuming position = (0,0,0)
-    TransformComponent* _transform;
+    std::weak_ptr<TransformComponent> _transform;
     CollisionManager* _collisionMgr;
-    std::function<void(RigidBodyComponent*)> _onHitCallback;
+    std::function<void(std::weak_ptr<RigidBodyComponent>)> _onHitCallback;
     // If static, then collision manager won't move this component if there's a collision.
     bool _static = true;
     CollisionLayer _layer = CollisionLayer::Solid;

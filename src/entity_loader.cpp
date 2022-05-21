@@ -10,15 +10,16 @@
 template<typename Archive>
 void save(Archive& ar, Entity const& e) {
     ar(CEREAL_NVP(e._name));
-    ar(cereal::make_nvp("num_components", e._components.size()));
-    for (auto const& pComp : e._components) {
-        ComponentType compType = pComp->Type();
-        std::string compTypeName = ComponentTypeToString(compType);
-        ar(cereal::make_nvp("component_type", compTypeName));
+    int const numComponents = e.GetNumComponents();
+    ar(cereal::make_nvp("num_components", numComponents));
+    for (int compIx = 0; compIx < numComponents; ++compIx) {
+        Component const& comp = e.GetComponent(compIx);
+        ComponentType compType = comp.Type();
+        ar(cereal::make_nvp("component_type", compType));
         switch (compType) {
 #           define X(name) \
             case ComponentType::name: { \
-                name##Component* c = dynamic_cast<name##Component*>(pComp.get()); \
+                name##Component const* c = dynamic_cast<name##Component const*>(&comp); \
                 assert(c != nullptr); \
                 ar(cereal::make_nvp(#name, *c)); \
                 break; \
@@ -37,17 +38,14 @@ void load(Archive& ar, Entity& e) {
     ar(e._name);
     int numComponents = 0;
     ar(numComponents);
-    for (int i = 0; i < numComponents; ++i) {        
-        std::string compTypeName;
-        ar(compTypeName);
-        ComponentType compType = StringToComponentType(compTypeName.c_str());
-        std::unique_ptr<Component> pComp;
+    for (int i = 0; i < numComponents; ++i) {
+        ComponentType compType;
+        ar(compType);
         switch (compType) {
 #           define X(name) \
             case ComponentType::name: { \
-                auto c = std::make_unique<name##Component>(); \
+                auto c = e.AddComponent<name##Component>().lock(); \
                 ar(*c); \
-                pComp = std::move(c); \
                 break; \
             }
             M_COMPONENT_TYPES
@@ -56,7 +54,6 @@ void load(Archive& ar, Entity& e) {
                 assert(false);
                 break;
         }
-        e._components.push_back(std::move(pComp));
     }
 }
 
@@ -78,15 +75,24 @@ void load(Archive& ar, EntityManager& e) {
     }
 }
 
-void LoadEntities(char const* filename, EntityManager& e, GameManager& g) {    
+bool LoadEntities(char const* filename, EntityManager& e, GameManager& g) {    
     std::ifstream inFile(filename);
+    if (!inFile.is_open()) {
+        std::cout << "Couldn't open file " << filename << " for loading." << std::endl;
+        return false;
+    }
     cereal::XMLInputArchive archive(inFile);
     archive(e);
     e.ConnectComponents(g);
+    return true;
 }
 
 void SaveEntities(char const* filename, EntityManager& entities) {
     std::ofstream outFile(filename);
+    if (!outFile.is_open()) {
+        std::cout << "Couldn't open file " << filename << " for saving. Not saving." << std::endl;
+        return;
+    }
     cereal::XMLOutputArchive archive(outFile);
     archive(CEREAL_NVP(entities));
 }

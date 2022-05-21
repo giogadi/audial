@@ -12,31 +12,29 @@ class GameManager;
 
 class ModelComponent : public Component {
 public:
-    virtual ComponentType Type() override { return ComponentType::Model; }
+    virtual ComponentType Type() const override { return ComponentType::Model; }
     ModelComponent() {}
     virtual ~ModelComponent() {}
-    virtual void Destroy() override;
     virtual void ConnectComponents(Entity& e, GameManager& g) override;
 
     std::string _modelId;
-    TransformComponent const* _transform = nullptr;
+    std::weak_ptr<TransformComponent const> _transform;
     BoundMesh const* _mesh = nullptr;
     SceneManager* _mgr = nullptr;
 };
 
 class LightComponent : public Component {
 public:
-    virtual ComponentType Type() override { return ComponentType::Light; }
+    virtual ComponentType Type() const override { return ComponentType::Light; }
     LightComponent()
         : _ambient(0.1f,0.1f,0.1f)
         , _diffuse(1.f,1.f,1.f)
         {}
     virtual ~LightComponent() {}
-    virtual void Destroy() override;
     virtual void ConnectComponents(Entity& e, GameManager& g) override;
     virtual void DrawImGui() override;
 
-    TransformComponent const* _transform = nullptr;
+    std::weak_ptr<TransformComponent const> _transform;
     Vec3 _ambient;
     Vec3 _diffuse;
     SceneManager* _mgr = nullptr;
@@ -44,12 +42,11 @@ public:
 
 class CameraComponent : public Component {
 public:  
-    virtual ComponentType Type() override { return ComponentType::Camera; }
+    virtual ComponentType Type() const override { return ComponentType::Camera; }
     CameraComponent() {}
     virtual void ConnectComponents(Entity& e, GameManager& g) override;
 
     virtual ~CameraComponent() {}
-    virtual void Destroy() override;
 
     Mat4 GetViewMatrix() const;
 
@@ -57,24 +54,20 @@ public:
     // TODO: break movement out into its own component
     virtual void Update(float const dt) override;
 
-    TransformComponent* _transform = nullptr;
+    std::weak_ptr<TransformComponent> _transform;
     InputManager const* _input = nullptr;
     SceneManager* _mgr = nullptr;
 };
 
 class SceneManager {
 public:    
-    void AddModel(ModelComponent const* m) { _models.push_back(m); }
-    void AddLight(LightComponent const* l) { _lights.push_back(l); }
-    void AddCamera(CameraComponent const* c) { _cameras.push_back(c); }
-
-    void RemoveModel(ModelComponent const* m);
-    void RemoveLight(LightComponent const* l);
-    void RemoveCamera(CameraComponent const* c);
+    void AddModel(std::weak_ptr<ModelComponent const> m) { _models.push_back(m); }
+    void AddLight(std::weak_ptr<LightComponent const> l) { _lights.push_back(l); }
+    void AddCamera(std::weak_ptr<CameraComponent const> c) { _cameras.push_back(c); }
 
     void Draw(int windowWidth, int windowHeight);
 
-    std::vector<ModelComponent const*> _models;
-    std::vector<LightComponent const*> _lights;
-    std::vector<CameraComponent const*> _cameras;
+    std::vector<std::weak_ptr<ModelComponent const>> _models;
+    std::vector<std::weak_ptr<LightComponent const>> _lights;
+    std::vector<std::weak_ptr<CameraComponent const>> _cameras;
 };

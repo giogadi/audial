@@ -12,13 +12,13 @@ class RigidBodyComponent;
 
 class BeepOnHitComponent : public Component {
 public:
-    virtual ComponentType Type() override { return ComponentType::BeepOnHit; }
+    virtual ComponentType Type() const override { return ComponentType::BeepOnHit; }
     BeepOnHitComponent() {
         _midiNotes.fill(-1);
     }
     virtual void ConnectComponents(Entity& e, GameManager& g) override;
 
-    void OnHit(RigidBodyComponent* other);
+    void OnHit(std::weak_ptr<RigidBodyComponent> other);
 
     virtual void Update(float const dt) override;
 
@@ -26,7 +26,7 @@ public:
 
     virtual void DrawImGui() override;
 
-    TransformComponent* _t = nullptr;
+    std::weak_ptr<TransformComponent> _t;
     audio::Context* _audio = nullptr;
     BeatClock const* _beatClock = nullptr;
     int _synthChannel = 0;

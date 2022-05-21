@@ -10,7 +10,7 @@
 // Does NOT loop yet.
 class SequencerComponent : public Component {
 public:
-    virtual ComponentType Type() override { return ComponentType::Sequencer; }
+    virtual ComponentType Type() const override { return ComponentType::Sequencer; }
     SequencerComponent() {}
     virtual void ConnectComponents(Entity& e, GameManager& g) override {
         _audio = g._audioContext;
@@ -42,8 +42,6 @@ public:
             }
         }
     }
-
-    virtual void Destroy() override {}
 
     audio::Context* _audio = nullptr;
     BeatClock const* _beatClock = nullptr;

@@ -6,9 +6,8 @@
 
 class CollisionManager {
 public:
-    void AddBody(RigidBodyComponent* body);
-    void RemoveBody(RigidBodyComponent* body);
+    void AddBody(std::weak_ptr<RigidBodyComponent> body);
     void Update(float dt);
 
-    std::vector<RigidBodyComponent*> _bodies;
+    std::vector<std::weak_ptr<RigidBodyComponent>> _bodies;
 };

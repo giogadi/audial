@@ -4,7 +4,7 @@
 
 #include "component.h"
 #include "input_manager.h"
-#include "transform_manager.h"
+#include "entity_picking.h"
 #include "renderer.h"
 
 void EntityEditingContext::Update(
@@ -21,13 +21,14 @@ void EntityEditingContext::Update(
         float const aspectRatio = float(windowWidth) / float(windowHeight);
         float const zNear = 0.1f;
 
-        std::optional<std::pair<TransformComponent*, Entity*>> pickedEntity =
-            g._transformManager->PickEntity(mouseX, mouseY, windowWidth, windowHeight, fovy, 
-                aspectRatio, zNear, *(g._sceneManager->_cameras.front()->_transform));
-        if (pickedEntity.has_value()) {
-            std::cout << "PICKED " << pickedEntity->second->_name << std::endl;
-            _selectedTransform = pickedEntity->first;
-            _selectedEntity = pickedEntity->second;            
+        TransformComponent const& cameraTransform =
+            *(g._sceneManager->_cameras.front().lock()->_transform.lock());
+        Entity* pickedEntity = PickEntity(
+            *g._entityManager, mouseX, mouseY, windowWidth, windowHeight, fovy, aspectRatio, zNear,
+            cameraTransform);
+        if (pickedEntity != nullptr) {
+            std::cout << "PICKED " << pickedEntity->_name << std::endl;
+            _selectedEntity = pickedEntity;
             // Find the ix of this entity
             _selectedEntityIx = -1;
             for (int i = 0; i < g._entityManager->_entities.size(); ++i) {
@@ -50,6 +51,11 @@ void EntityEditingContext::UpdateSelectedPositionFromInput(float dt, InputManage
     if (_selectedEntity == nullptr) {
         return;
     }
+    auto transform = _selectedEntity->FindComponentOfType<TransformComponent>().lock();
+    if (transform == nullptr) {
+        _selectedEntity = nullptr;
+        return;
+    }
 
     Vec3 inputVec(0.0f,0.f,0.f);
     if (input.IsKeyPressed(InputManager::Key::W)) {
@@ -70,7 +76,7 @@ void EntityEditingContext::UpdateSelectedPositionFromInput(float dt, InputManage
     }
 
     float moveSpeed = 3.f;
-    _selectedTransform->SetPos(_selectedTransform->GetPos() + inputVec.GetNormalized() * moveSpeed * dt);
+    transform->SetPos(transform->GetPos() + inputVec.GetNormalized() * moveSpeed * dt);
 }
 
 void EntityEditingContext::DrawEntitiesWindow(EntityManager& entities, GameManager& g) {
@@ -89,15 +95,16 @@ void EntityEditingContext::DrawEntitiesWindow(EntityManager& entities, GameManag
     {
         _selectedEntityIx = selectedIx;
         _selectedEntity = entities._entities[selectedIx].get();
-        _selectedTransform = _selectedEntity->DebugFindComponentOfType<TransformComponent>();
     }
     // Now show a little panel for each component on the selected entity.    
     if (selectedIx < entities._entities.size() && selectedIx >= 0) {
-        Entity const& e = *entities._entities[*_selectedEntityIx];
-        for (auto const& cComp : e._components) {
-            char const* compName = ComponentTypeToString(cComp->Type());
+        Entity& e = *entities._entities[*_selectedEntityIx];
+        int const numComponents = e.GetNumComponents();
+        for (int i = 0; i < numComponents; ++i) {
+            Component& comp = e.GetComponent(i);
+            char const* compName = ComponentTypeToString(comp.Type());
             if (ImGui::CollapsingHeader(compName)) {
-                cComp->DrawImGui();
+                comp.DrawImGui();
             }
         }
     }

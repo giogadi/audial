@@ -6,7 +6,8 @@ void LoadTestScript(GameManager& g) {
     {
         camera->_name = "camera";
 
-        auto pTrans = std::make_unique<TransformComponent>();
+        auto pTrans = camera->AddComponent<TransformComponent>().lock();
+
         float angle = 45.f * kDeg2Rad;
         Vec3 dir(0.f, sin(angle), cos(angle));
         float dist = 15.f;
@@ -14,10 +15,8 @@ void LoadTestScript(GameManager& g) {
         Mat3 rot = Mat3::FromAxisAngle(Vec3(1.f, 0.f, 0.f), -angle);
         pTrans->SetRot(rot);
 
-        auto pCamera = std::make_unique<CameraComponent>();
+        auto pCamera = camera->AddComponent<CameraComponent>().lock();
 
-        camera->_components.push_back(std::move(pTrans));
-        camera->_components.push_back(std::move(pCamera));
         camera->ConnectComponents(g);
     }
 
@@ -26,15 +25,13 @@ void LoadTestScript(GameManager& g) {
     {
         light->_name = "light";
 
-        auto pTrans = std::make_unique<TransformComponent>();
+        auto pTrans = light->AddComponent<TransformComponent>().lock();
         pTrans->SetPos(Vec3(0.f, 3.f, 0.f));
 
-        auto pLight = std::make_unique<LightComponent>();
+        auto pLight = light->AddComponent<LightComponent>().lock();
         pLight->_ambient.Set(0.2f, 0.2f, 0.2f);
         pLight->_diffuse.Set(1.f, 1.f, 1.f);
 
-        light->_components.push_back(std::move(pTrans));
-        light->_components.push_back(std::move(pLight));
         light->ConnectComponents(g);
     }
 
@@ -42,23 +39,18 @@ void LoadTestScript(GameManager& g) {
     Entity* cube1 = g._entityManager->AddEntity();
     {
         cube1->_name = "cube1";
-        auto tComp = std::make_unique<TransformComponent>();
-        auto modelComp = std::make_unique<ModelComponent>();
+        auto tComp = cube1->AddComponent<TransformComponent>().lock();
+        auto modelComp = cube1->AddComponent<ModelComponent>().lock();
         modelComp->_modelId = std::string("wood_box");
         TransformComponent* t = tComp.get();
-        auto beepComp = std::make_unique<BeepOnHitComponent>();
+        auto beepComp = cube1->AddComponent<BeepOnHitComponent>().lock();
         beepComp->_synthChannel = 0;
         beepComp->_midiNotes = { 69, 73 };
-        auto rbComp = std::make_unique<RigidBodyComponent>();
+        auto rbComp = cube1->AddComponent<RigidBodyComponent>().lock();
         rbComp->_localAabb = MakeCubeAabb(0.5f);
-        auto velComp = std::make_unique<VelocityComponent>();
+        auto velComp = cube1->AddComponent<VelocityComponent>().lock();
         velComp->_angularY = 2*kPi;
 
-        cube1->_components.push_back(std::move(tComp));
-        cube1->_components.push_back(std::move(modelComp));
-        cube1->_components.push_back(std::move(beepComp));
-        cube1->_components.push_back(std::move(rbComp));
-        cube1->_components.push_back(std::move(velComp));
         cube1->ConnectComponents(g);
     }
 
@@ -66,21 +58,16 @@ void LoadTestScript(GameManager& g) {
     Entity* cube2 = g._entityManager->AddEntity();
     cube2->_name = "cube2";
     {
-        auto tComp = std::make_unique<TransformComponent>();
-        auto modelComp = std::make_unique<ModelComponent>();
+        auto tComp = cube2->AddComponent<TransformComponent>().lock();
+        auto modelComp = cube2->AddComponent<ModelComponent>().lock();
         modelComp->_modelId = std::string("wood_box");
         TransformComponent* t = tComp.get();
         t->_transform.Translate(Vec3(-2.f,0.f,0.f));
-        // auto rbComp = std::make_unique<RigidBodyComponent>(t, &collisionManager, MakeCubeAabb(0.5f));
-        auto rbComp = std::make_unique<RigidBodyComponent>();
+        auto rbComp = cube2->AddComponent<RigidBodyComponent>().lock();
         rbComp->_localAabb = MakeCubeAabb(0.5f);
         rbComp->_static = false;
-        auto controller = std::make_unique<PlayerControllerComponent>();
+        auto controller = cube2->AddComponent<PlayerControllerComponent>().lock();
 
-        cube2->_components.push_back(std::move(tComp));
-        cube2->_components.push_back(std::move(modelComp));
-        cube2->_components.push_back(std::move(controller));
-        cube2->_components.push_back(std::move(rbComp));
         cube2->ConnectComponents(g);
     }
 
@@ -88,7 +75,7 @@ void LoadTestScript(GameManager& g) {
     Entity* droneSeq = g._entityManager->AddEntity();
     {
         droneSeq->_name = "drone_seq";
-        auto seqComp = std::make_unique<SequencerComponent>();
+        auto seqComp = droneSeq->AddComponent<SequencerComponent>().lock();
         {
             audio::Event e;
             e.channel = 1;
@@ -108,7 +95,6 @@ void LoadTestScript(GameManager& g) {
             e.newParamValue = 0.5;
             seqComp->AddToSequence(e);
         }
-        droneSeq->_components.push_back(std::move(seqComp));
         droneSeq->ConnectComponents(g);
     }
 

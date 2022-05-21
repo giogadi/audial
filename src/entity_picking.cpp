@@ -1,20 +1,8 @@
-#include "transform_manager.h"
+#include "entity_picking.h"
 
 #include <optional>
 
-#include "renderer.h"
-#include "input_manager.h"
-
-void TransformManager::RemoveTransform(TransformComponent const* t) {
-    // TODO!!!!!!! THIS DOESN'T WORK. PLEASE DON'T ALLOW DELETING ENTITIES WITHOUT FIXING THIS
-    // if (_selected.has_value() && _selected->first == t) {
-    //     _selected.reset();
-    // }
-    _transforms.erase(std::remove_if(_transforms.begin(), _transforms.end(), 
-        [t](std::pair<TransformComponent const*,Entity const*> const& p) {
-            return p.first == t;
-        }));
-}
+#include "component.h"
 
 namespace {
 
@@ -48,8 +36,8 @@ std::optional<float> sphereRayCast(Vec3 const& rayStart, Vec3 const& normalizedR
 
 }  // end namespace
 
-std::optional<std::pair<TransformComponent*, Entity*>> TransformManager::PickEntity(
-    double clickX, double clickY, int windowWidth, int windowHeight,
+Entity* PickEntity(
+    EntityManager& entities, double clickX, double clickY, int windowWidth, int windowHeight,
     float fovy, float aspectRatio, float zNear,
     TransformComponent const& cameraTransform) {
     // First we find the world-space position of the top-left corner of the near clipping plane.
@@ -69,25 +57,26 @@ std::optional<std::pair<TransformComponent*, Entity*>> TransformManager::PickEnt
     clickedPointOnNearPlane -= (yFactor * 2 * nearPlaneHalfHeight) * cameraTransform.GetYAxis();
 
     std::optional<float> closestPickDist;
-    std::pair<TransformComponent*, Entity*>* closestPickItem = nullptr;
+    Entity* closestPickItem = nullptr;
     float pickSphereRad = 1.f;
     Vec3 rayDir = (clickedPointOnNearPlane - cameraTransform.GetPos()).GetNormalized();
     // Start ray forward of the camera a bit so we don't just pick the camera
-    Vec3 rayStart = cameraTransform.GetPos() + rayDir * (pickSphereRad + 0.1f);
-    for (auto& item : _transforms) {
-        TransformComponent* t = item.first;
-        std::optional<float> hitDist = sphereRayCast(rayStart, rayDir, t->GetPos(), pickSphereRad);
+    Vec3 rayStart = cameraTransform.GetPos() + rayDir * (pickSphereRad + 0.1f);    
+    for (auto& pEnt : entities._entities) {
+        Entity& entity = *pEnt;
+        std::weak_ptr<TransformComponent> pTrans = entity.FindComponentOfType<TransformComponent>();
+        if (pTrans.expired()) {
+            continue;
+        }
+        TransformComponent const& t = *pTrans.lock();
+        std::optional<float> hitDist = sphereRayCast(rayStart, rayDir, t.GetPos(), pickSphereRad);
         if (hitDist.has_value()) {
             if (!closestPickDist.has_value() || *hitDist < *closestPickDist) {
                 *closestPickDist = *hitDist;
-                closestPickItem = &item;
+                closestPickItem = &entity;
             }
         }
     }
 
-    if (closestPickItem == nullptr) {
-        return std::nullopt;
-    }
-
-    return *closestPickItem;
+    return closestPickItem;
 }
