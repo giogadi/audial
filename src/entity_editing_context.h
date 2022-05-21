@@ -10,7 +10,7 @@ class EntityManager;
 class EntityEditingContext {
 public:
     std::optional<int> _selectedEntityIx;
-    Entity* _selectedEntity = nullptr;
+    std::weak_ptr<Entity> _selectedEntity;
 
     void Update(float dt, bool editMode, GameManager const& g, int windowWidth, int windowHeight);    
     void DrawEntitiesWindow(EntityManager& entities, GameManager& g);

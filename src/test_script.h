@@ -2,7 +2,7 @@
 
 void LoadTestScript(GameManager& g) {
     // Camera
-    Entity* camera = g._entityManager->AddEntity();
+    Entity* camera = g._entityManager->AddEntity().lock().get();
     {
         camera->_name = "camera";
 
@@ -21,7 +21,7 @@ void LoadTestScript(GameManager& g) {
     }
 
     // Light
-    Entity* light = g._entityManager->AddEntity();
+    Entity* light = g._entityManager->AddEntity().lock().get();
     {
         light->_name = "light";
 
@@ -36,7 +36,7 @@ void LoadTestScript(GameManager& g) {
     }
 
     // Cube1
-    Entity* cube1 = g._entityManager->AddEntity();
+    Entity* cube1 = g._entityManager->AddEntity().lock().get();
     {
         cube1->_name = "cube1";
         auto tComp = cube1->AddComponent<TransformComponent>().lock();
@@ -55,7 +55,7 @@ void LoadTestScript(GameManager& g) {
     }
 
     // Cube2
-    Entity* cube2 = g._entityManager->AddEntity();
+    Entity* cube2 = g._entityManager->AddEntity().lock().get();
     cube2->_name = "cube2";
     {
         auto tComp = cube2->AddComponent<TransformComponent>().lock();
@@ -72,7 +72,7 @@ void LoadTestScript(GameManager& g) {
     }
 
     // drone sequencer
-    Entity* droneSeq = g._entityManager->AddEntity();
+    Entity* droneSeq = g._entityManager->AddEntity().lock().get();
     {
         droneSeq->_name = "drone_seq";
         auto seqComp = droneSeq->AddComponent<SequencerComponent>().lock();

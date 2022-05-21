@@ -175,14 +175,19 @@ public:
 
 class EntityManager {
 public:
-    Entity* AddEntity() {
-        _entities.push_back(std::make_unique<Entity>());
-        return _entities.back().get();
+    std::weak_ptr<Entity> AddEntity() {
+        _entities.push_back(std::make_shared<Entity>());
+        return _entities.back();
     }
-    void DestroyEntity(Entity* toDestroy) {
+    
+    void DestroyEntity(std::weak_ptr<Entity> weakToDestroy) {
+        std::shared_ptr<Entity> toDestroy = weakToDestroy.lock();
+        if (toDestroy == nullptr) {
+            return;
+        }
         for (int i = 0; i < _entities.size(); ++i) {
-            if (_entities[i].get() == toDestroy) {
-            _entities[i]->Destroy();
+            if (_entities[i] == toDestroy) {
+                _entities[i]->Destroy();
                 _entities.erase(_entities.begin() + i);
                 break;
             }
@@ -201,5 +206,5 @@ public:
         }
     }
 
-    std::vector<std::unique_ptr<Entity>> _entities;
+    std::vector<std::shared_ptr<Entity>> _entities;
 };

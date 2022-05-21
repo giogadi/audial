@@ -23,16 +23,17 @@ void EntityEditingContext::Update(
 
         TransformComponent const& cameraTransform =
             *(g._sceneManager->_cameras.front().lock()->_transform.lock());
-        Entity* pickedEntity = PickEntity(
+        std::weak_ptr<Entity> pickedEntity = PickEntity(
             *g._entityManager, mouseX, mouseY, windowWidth, windowHeight, fovy, aspectRatio, zNear,
             cameraTransform);
-        if (pickedEntity != nullptr) {
-            std::cout << "PICKED " << pickedEntity->_name << std::endl;
+        if (!pickedEntity.expired()) {
             _selectedEntity = pickedEntity;
+            Entity const& entity = *_selectedEntity.lock();
+            std::cout << "PICKED " << entity._name << std::endl;
             // Find the ix of this entity
             _selectedEntityIx = -1;
             for (int i = 0; i < g._entityManager->_entities.size(); ++i) {
-                if (g._entityManager->_entities[i].get() == _selectedEntity) {
+                if (g._entityManager->_entities[i].get() == &entity) {
                     _selectedEntityIx = i;
                     break;
                 }
@@ -48,12 +49,12 @@ void EntityEditingContext::Update(
 }
 
 void EntityEditingContext::UpdateSelectedPositionFromInput(float dt, InputManager const& input) {
-    if (_selectedEntity == nullptr) {
+    if (_selectedEntity.expired()) {
         return;
     }
-    auto transform = _selectedEntity->FindComponentOfType<TransformComponent>().lock();
+    auto transform = _selectedEntity.lock()->FindComponentOfType<TransformComponent>().lock();
     if (transform == nullptr) {
-        _selectedEntity = nullptr;
+        _selectedEntity.reset();
         return;
     }
 
@@ -94,7 +95,7 @@ void EntityEditingContext::DrawEntitiesWindow(EntityManager& entities, GameManag
     ImGui::ListBox("##", &selectedIx, entityNames.data(), /*numItems=*/entityNames.size());
     {
         _selectedEntityIx = selectedIx;
-        _selectedEntity = entities._entities[selectedIx].get();
+        _selectedEntity = entities._entities[selectedIx];
     }
     // Now show a little panel for each component on the selected entity.    
     if (selectedIx < entities._entities.size() && selectedIx >= 0) {

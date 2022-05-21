@@ -36,7 +36,7 @@ std::optional<float> sphereRayCast(Vec3 const& rayStart, Vec3 const& normalizedR
 
 }  // end namespace
 
-Entity* PickEntity(
+std::weak_ptr<Entity> PickEntity(
     EntityManager& entities, double clickX, double clickY, int windowWidth, int windowHeight,
     float fovy, float aspectRatio, float zNear,
     TransformComponent const& cameraTransform) {
@@ -57,7 +57,7 @@ Entity* PickEntity(
     clickedPointOnNearPlane -= (yFactor * 2 * nearPlaneHalfHeight) * cameraTransform.GetYAxis();
 
     std::optional<float> closestPickDist;
-    Entity* closestPickItem = nullptr;
+    std::weak_ptr<Entity> closestPickItem;
     float pickSphereRad = 1.f;
     Vec3 rayDir = (clickedPointOnNearPlane - cameraTransform.GetPos()).GetNormalized();
     // Start ray forward of the camera a bit so we don't just pick the camera
@@ -73,7 +73,7 @@ Entity* PickEntity(
         if (hitDist.has_value()) {
             if (!closestPickDist.has_value() || *hitDist < *closestPickDist) {
                 *closestPickDist = *hitDist;
-                closestPickItem = &entity;
+                closestPickItem = pEnt;
             }
         }
     }

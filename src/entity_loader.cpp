@@ -70,7 +70,7 @@ void load(Archive& ar, EntityManager& e) {
     int numEntities = 0;
     ar(numEntities);
     for (int i = 0; i < numEntities; ++i) {
-        Entity* entity = e.AddEntity();
+        Entity* entity = e.AddEntity().lock().get();
         ar(*entity);
     }
 }
