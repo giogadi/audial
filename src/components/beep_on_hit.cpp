@@ -64,7 +64,7 @@ void BeepOnHitComponent::Update(float dt) {
     }
 }
 
-void BeepOnHitComponent::DrawImGui() {
+bool BeepOnHitComponent::DrawImGui() {
     ImGui::InputScalar("Channel", ImGuiDataType_S32, &_synthChannel, /*step=*/nullptr, /*???*/NULL, "%d");
     char label[] = "Note XXX";
     for (int i = 0; i < _midiNotes.size(); ++i) {        
@@ -72,4 +72,5 @@ void BeepOnHitComponent::DrawImGui() {
         ImGui::InputScalar(
             label, ImGuiDataType_S32, &(_midiNotes[i]), /*step=*/nullptr, /*???*/NULL, "%d");
     }
+    return false;
 }

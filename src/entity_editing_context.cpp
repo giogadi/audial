@@ -81,6 +81,12 @@ void EntityEditingContext::UpdateSelectedPositionFromInput(float dt, InputManage
 }
 
 void EntityEditingContext::DrawEntitiesWindow(EntityManager& entities, GameManager& g) {
+    // TODO: get direct access to the component type string[] we already have in component.cpp.
+    int constexpr numComponentTypes = static_cast<int>(ComponentType::NumTypes);
+    std::array<char const*, numComponentTypes> componentNames;
+    for (int i = 0; i < numComponentTypes; ++i) {
+        componentNames[i] = ComponentTypeToString(static_cast<ComponentType>(i));
+    }
     ImGui::Begin("Entities");
     if (entities._entities.empty()) {
         ImGui::End();
@@ -100,6 +106,22 @@ void EntityEditingContext::DrawEntitiesWindow(EntityManager& entities, GameManag
     // Now show a little panel for each component on the selected entity.    
     if (selectedIx < entities._entities.size() && selectedIx >= 0) {
         Entity& e = *entities._entities[*_selectedEntityIx];
+        // Add Component
+        if (ImGui::CollapsingHeader("Add Component")) {
+            ImGui::Combo("##", &_selectedComponentIx, componentNames.data(), numComponentTypes);            
+            if (ImGui::Button("Add")) {
+                ComponentType compType = static_cast<ComponentType>(_selectedComponentIx);
+                std::weak_ptr<Component> pComp = e.TryAddComponentOfType(compType);
+                if (pComp.expired()) {
+                    std::cout << "Warning: entity \"" << e._name <<
+                        "\" already contains a component of type \"" <<
+                        componentNames[_selectedComponentIx] << "\"." << std::endl;
+                } else {
+                    e.ConnectComponentsOrDeactivate(g, /*failures=*/nullptr);
+                }
+            }
+        }
+
         for (int i = 0; i < e.GetNumComponents(); ++i) {            
             Component& comp = e.GetComponent(i);
             char const* compName = ComponentTypeToString(comp.Type());
@@ -113,7 +135,10 @@ void EntityEditingContext::DrawEntitiesWindow(EntityManager& entities, GameManag
                     --i;
                     continue;
                 }
-                comp.DrawImGui();
+                bool needsReconnect = comp.DrawImGui();
+                if (needsReconnect) {
+                    e.ConnectComponentsOrDeactivate(g, /*failures=*/nullptr);
+                }
             }
         }
     }

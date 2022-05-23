@@ -6,7 +6,7 @@ void LoadTestScript(GameManager& g) {
     {
         camera->_name = "camera";
 
-        auto pTrans = camera->AddComponent<TransformComponent>().lock();
+        auto pTrans = camera->AddComponentOrDie<TransformComponent>().lock();
 
         float angle = 45.f * kDeg2Rad;
         Vec3 dir(0.f, sin(angle), cos(angle));
@@ -15,7 +15,7 @@ void LoadTestScript(GameManager& g) {
         Mat3 rot = Mat3::FromAxisAngle(Vec3(1.f, 0.f, 0.f), -angle);
         pTrans->SetRot(rot);
 
-        auto pCamera = camera->AddComponent<CameraComponent>().lock();
+        auto pCamera = camera->AddComponentOrDie<CameraComponent>().lock();
 
         camera->ConnectComponentsOrDie(g);
     }
@@ -25,10 +25,10 @@ void LoadTestScript(GameManager& g) {
     {
         light->_name = "light";
 
-        auto pTrans = light->AddComponent<TransformComponent>().lock();
+        auto pTrans = light->AddComponentOrDie<TransformComponent>().lock();
         pTrans->SetPos(Vec3(0.f, 3.f, 0.f));
 
-        auto pLight = light->AddComponent<LightComponent>().lock();
+        auto pLight = light->AddComponentOrDie<LightComponent>().lock();
         pLight->_ambient.Set(0.2f, 0.2f, 0.2f);
         pLight->_diffuse.Set(1.f, 1.f, 1.f);
 
@@ -39,16 +39,16 @@ void LoadTestScript(GameManager& g) {
     Entity* cube1 = g._entityManager->AddEntity().lock().get();
     {
         cube1->_name = "cube1";
-        auto tComp = cube1->AddComponent<TransformComponent>().lock();
-        auto modelComp = cube1->AddComponent<ModelComponent>().lock();
+        auto tComp = cube1->AddComponentOrDie<TransformComponent>().lock();
+        auto modelComp = cube1->AddComponentOrDie<ModelComponent>().lock();
         modelComp->_modelId = std::string("wood_box");
         TransformComponent* t = tComp.get();
-        auto beepComp = cube1->AddComponent<BeepOnHitComponent>().lock();
+        auto beepComp = cube1->AddComponentOrDie<BeepOnHitComponent>().lock();
         beepComp->_synthChannel = 0;
         beepComp->_midiNotes = { 69, 73 };
-        auto rbComp = cube1->AddComponent<RigidBodyComponent>().lock();
+        auto rbComp = cube1->AddComponentOrDie<RigidBodyComponent>().lock();
         rbComp->_localAabb = MakeCubeAabb(0.5f);
-        auto velComp = cube1->AddComponent<VelocityComponent>().lock();
+        auto velComp = cube1->AddComponentOrDie<VelocityComponent>().lock();
         velComp->_angularY = 2*kPi;
 
         cube1->ConnectComponentsOrDie(g);
@@ -58,15 +58,15 @@ void LoadTestScript(GameManager& g) {
     Entity* cube2 = g._entityManager->AddEntity().lock().get();
     cube2->_name = "cube2";
     {
-        auto tComp = cube2->AddComponent<TransformComponent>().lock();
-        auto modelComp = cube2->AddComponent<ModelComponent>().lock();
+        auto tComp = cube2->AddComponentOrDie<TransformComponent>().lock();
+        auto modelComp = cube2->AddComponentOrDie<ModelComponent>().lock();
         modelComp->_modelId = std::string("wood_box");
         TransformComponent* t = tComp.get();
         t->_transform.Translate(Vec3(-2.f,0.f,0.f));
-        auto rbComp = cube2->AddComponent<RigidBodyComponent>().lock();
+        auto rbComp = cube2->AddComponentOrDie<RigidBodyComponent>().lock();
         rbComp->_localAabb = MakeCubeAabb(0.5f);
         rbComp->_static = false;
-        auto controller = cube2->AddComponent<PlayerControllerComponent>().lock();
+        auto controller = cube2->AddComponentOrDie<PlayerControllerComponent>().lock();
 
         cube2->ConnectComponentsOrDie(g);
     }
@@ -75,7 +75,7 @@ void LoadTestScript(GameManager& g) {
     Entity* droneSeq = g._entityManager->AddEntity().lock().get();
     {
         droneSeq->_name = "drone_seq";
-        auto seqComp = droneSeq->AddComponent<SequencerComponent>().lock();
+        auto seqComp = droneSeq->AddComponentOrDie<SequencerComponent>().lock();
         {
             audio::Event e;
             e.channel = 1;

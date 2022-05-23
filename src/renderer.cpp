@@ -12,11 +12,28 @@
 
 bool ModelComponent::ConnectComponents(Entity& e, GameManager& g) {
     _transform = e.FindComponentOfType<TransformComponent>();
+    if (_transform.expired()) {
+        return false;
+    }
     ModelManager* modelManager = g._modelManager;
-    _mesh = modelManager->_modelMap.at(_modelId).get();
-    _mgr = g._sceneManager;
-    _mgr->AddModel(e.FindComponentOfType<ModelComponent>());
-    return !_transform.expired();
+    auto meshIter = modelManager->_modelMap.find(_modelId);
+    if (meshIter != modelManager->_modelMap.end()) {
+        _mesh = meshIter->second.get();
+        _mgr = g._sceneManager;
+        _mgr->AddModel(e.FindComponentOfType<ModelComponent>());
+        return true;
+    } else {
+        return false;
+    }
+}
+
+bool ModelComponent::DrawImGui() {
+    char inputStr[128];
+    assert(_modelId.length() < 128);
+    strcpy(inputStr, _modelId.c_str());
+    bool changed = ImGui::InputText("Model ID", inputStr, 128);
+    _modelId = inputStr;
+    return changed;
 }
 
 bool LightComponent::ConnectComponents(Entity& e, GameManager& g) {
@@ -26,7 +43,7 @@ bool LightComponent::ConnectComponents(Entity& e, GameManager& g) {
     return !_transform.expired();
 }
 
-void LightComponent::DrawImGui() {
+bool LightComponent::DrawImGui() {
     ImGui::InputScalar("Diffuse R", ImGuiDataType_Float, &_diffuse._x, /*step=*/nullptr);
     ImGui::InputScalar("Diffuse G", ImGuiDataType_Float, &_diffuse._y, /*step=*/nullptr);
     ImGui::InputScalar("Diffuse B", ImGuiDataType_Float, &_diffuse._z, /*step=*/nullptr);
@@ -34,6 +51,8 @@ void LightComponent::DrawImGui() {
     ImGui::InputScalar("Ambient R", ImGuiDataType_Float, &_ambient._x, /*step=*/nullptr);
     ImGui::InputScalar("Ambient G", ImGuiDataType_Float, &_ambient._y, /*step=*/nullptr);
     ImGui::InputScalar("Ambient B", ImGuiDataType_Float, &_ambient._z, /*step=*/nullptr);
+    
+    return false;
 }
 
 bool CameraComponent::ConnectComponents(Entity& e, GameManager& g) {

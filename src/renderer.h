@@ -16,6 +16,7 @@ public:
     ModelComponent() {}
     virtual ~ModelComponent() {}
     virtual bool ConnectComponents(Entity& e, GameManager& g) override;
+    virtual bool DrawImGui() override;
 
     std::string _modelId;
     std::weak_ptr<TransformComponent const> _transform;
@@ -32,7 +33,7 @@ public:
         {}
     virtual ~LightComponent() {}
     virtual bool ConnectComponents(Entity& e, GameManager& g) override;
-    virtual void DrawImGui() override;
+    virtual bool DrawImGui() override;
 
     std::weak_ptr<TransformComponent const> _transform;
     Vec3 _ambient;

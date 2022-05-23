@@ -25,7 +25,7 @@ public:
 
     virtual void Destroy() override {}
 
-    virtual void DrawImGui() override;
+    virtual bool DrawImGui() override;
 
     std::weak_ptr<TransformComponent> _t;
     audio::Context* _audio = nullptr;

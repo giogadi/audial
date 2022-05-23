@@ -11,13 +11,12 @@
 
 #include "matrix.h"
 #include "game_manager.h"
-#include "entity_loader.h"
 
 namespace cereal {
     class access;
 }
 class Entity;
-class TransformManager;
+class EntityManager;
 
 #define M_COMPONENT_TYPES \
     X(Transform) \
@@ -42,6 +41,14 @@ char const* ComponentTypeToString(ComponentType c);
 
 ComponentType StringToComponentType(char const* s);
 
+bool LoadEntities(char const* filename, bool dieOnConnectFailure, EntityManager& e, GameManager& g);
+
+void SaveEntities(char const* filename, EntityManager& e);
+
+void SaveEntity(std::ostream& output, Entity const& e);
+
+void LoadEntity(std::istream& input, Entity& e);
+
 // MUST BE PURE or else Cereal won't work. Need at least one = 0 function in there.
 class Component {
 public:
@@ -51,7 +58,8 @@ public:
     virtual void Destroy() {};
     virtual bool ConnectComponents(Entity& e, GameManager& g) { return true; }
     virtual ComponentType Type() const = 0;
-    virtual void DrawImGui();
+    // If true, request that we try reconnecting the entity's components.
+    virtual bool DrawImGui();
 };
 
 class Entity {
@@ -139,8 +147,16 @@ public:
         assert(allActiveSucceeded);
     }
 
+    std::weak_ptr<Component> TryAddComponentOfType(ComponentType c);
+
     template<typename T>
-    std::weak_ptr<T> AddComponent() {
+    std::weak_ptr<T> TryAddComponent() {
+        auto iter = _componentTypeMap.try_emplace(
+            std::type_index(typeid(T)));
+        if (!iter.second) {
+            return std::weak_ptr<T>();
+        }
+
         auto component = std::make_shared<T>();
         {
             auto compAndStatus = std::make_unique<ComponentAndStatus>();
@@ -148,11 +164,16 @@ public:
             compAndStatus->_active = true;
             _components.push_back(std::move(compAndStatus));
         }
-        
-        bool success = _componentTypeMap.emplace(
-            std::type_index(typeid(T)), _components.back().get()).second;
-        assert(success);
+
+        iter.first->second = _components.back().get();
         return component;
+    }
+
+    template<typename T>
+    std::weak_ptr<T> AddComponentOrDie() {
+        std::weak_ptr<T> pComp = TryAddComponent<T>();
+        assert(!pComp.expired());
+        return pComp;
     }
 
     // FOR EDITING AND CEREALIZATION ONLY
@@ -216,7 +237,6 @@ public:
 
     // TODO store separate rot and pos
     Mat4 _transform;
-    TransformManager* _mgr;
 };
 
 class VelocityComponent : public Component {

@@ -11,6 +11,7 @@ class EntityEditingContext {
 public:
     std::optional<int> _selectedEntityIx;
     std::weak_ptr<Entity> _selectedEntity;
+    int _selectedComponentIx = 0;
 
     void Update(float dt, bool editMode, GameManager const& g, int windowWidth, int windowHeight);    
     void DrawEntitiesWindow(EntityManager& entities, GameManager& g);

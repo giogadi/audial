@@ -38,7 +38,6 @@
 #include "components/beep_on_hit.h"
 #include "components/sequencer.h"
 #include "components/rigid_body.h"
-#include "entity_loader.h"
 #include "audio_loader.h"
 #include "entity_editing_context.h"
 
