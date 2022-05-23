@@ -7,14 +7,15 @@
 #include <typeindex>
 #include <iostream>
 #include <memory>
+#include <sstream>
+
+#include "matrix.h"
+#include "game_manager.h"
+#include "entity_loader.h"
 
 namespace cereal {
     class access;
 }
-
-#include "matrix.h"
-#include "game_manager.h"
-
 class Entity;
 class TransformManager;
 
@@ -48,13 +49,14 @@ public:
     virtual void Update(float dt) {}
     // MUST BE PURE or else Cereal won't work
     virtual void Destroy() {};
-    virtual void ConnectComponents(Entity& e, GameManager& g) {}
+    virtual bool ConnectComponents(Entity& e, GameManager& g) { return true; }
     virtual ComponentType Type() const = 0;
     virtual void DrawImGui();
 };
 
 class Entity {
 public:
+    // Only finds active components.
     template <typename T>
     std::weak_ptr<T> FindComponentOfType() {
         auto iter = _componentTypeMap.find(std::type_index(typeid(T)));
@@ -62,47 +64,118 @@ public:
             // std::cout << "Could not find component" << std::endl;
             return std::weak_ptr<T>();
         }
-        std::shared_ptr<T> comp = std::dynamic_pointer_cast<T>(iter->second.lock());
+        ComponentAndStatus* compAndStatus = iter->second;
+        if (!compAndStatus->_active) {
+            return std::weak_ptr<T>();
+        }
+        std::shared_ptr<T> comp = std::dynamic_pointer_cast<T>(compAndStatus->_c);
         return comp;
     }
 
     void Update(float dt) {
         for (auto& c : _components) {
-            c->Update(dt);
+            if (c->_active) {
+                c->_c->Update(dt);
+            }            
         }
     }
 
     void Destroy() {
         for (auto& c : _components) {
-            c->Destroy();
+            // TODO: do I need to consider _active here?
+            c->_c->Destroy();
         }
     }
 
-    void ConnectComponents(GameManager& g) {
-        for (auto& c : _components) {
-            c->ConnectComponents(*this, g);
+    void RemoveComponent(int index) {
+        ComponentType compType = _components[index]->_c->Type();
+        for (auto item = _componentTypeMap.begin(); item != _componentTypeMap.end(); ++item) {
+            if (item->second->_c->Type() == compType) {
+                _componentTypeMap.erase(item);
+                break;
+            }
         }
+        _components[index]->_c->Destroy();
+        _components.erase(_components.begin() + index);
+    }
+
+    void ConnectComponentsOrDie(GameManager& g) {
+        for (auto& compAndStatus : _components) {
+            if (compAndStatus->_active) {
+                assert(compAndStatus->_c->ConnectComponents(*this, g));
+            }
+        }
+    }
+
+    void ConnectComponentsOrDeactivate(
+        GameManager& g, std::vector<ComponentType>* failures = nullptr) {
+        if (_components.empty()) {
+            return;
+        }
+        bool allActiveSucceeded = false;
+        std::vector<bool> active(_components.size());
+        for (int i = 0; i < _components.size(); ++i) {
+            active[i] = _components[i]->_active;
+        }
+        for (int roundIx = 0; !allActiveSucceeded && roundIx < _components.size(); ++roundIx) {
+            // Clone components into a parallel vector, delete the original, start over.
+            std::stringstream entityData;
+            SaveEntity(entityData, *this);
+            _components.clear();
+            _componentTypeMap.clear();
+            LoadEntity(entityData, *this);
+
+            allActiveSucceeded = true;
+            for (int i = 0; i < _components.size(); ++i) {
+                if (active[i]) {
+                    bool success = _components[i]->_c->ConnectComponents(*this, g);
+                    if (!success) {
+                        active[i] = false;
+                        allActiveSucceeded = false;
+                    }
+                }
+            }
+        }
+        assert(allActiveSucceeded);
     }
 
     template<typename T>
     std::weak_ptr<T> AddComponent() {
-        std::shared_ptr<T> comp = std::make_shared<T>();
-        bool success = _componentTypeMap.emplace(std::type_index(typeid(T)), comp).second;
+        auto component = std::make_shared<T>();
+        {
+            auto compAndStatus = std::make_unique<ComponentAndStatus>();
+            compAndStatus->_c = component;
+            compAndStatus->_active = true;
+            _components.push_back(std::move(compAndStatus));
+        }
+        
+        bool success = _componentTypeMap.emplace(
+            std::type_index(typeid(T)), _components.back().get()).second;
         assert(success);
-        _components.push_back(comp);
-        return comp;
+        return component;
     }
 
+    // FOR EDITING AND CEREALIZATION ONLY
     int GetNumComponents() const { return _components.size(); }
-    Component const& GetComponent(int i) const { return *_components.at(i); }
+    Component const& GetComponent(int i) const { return *_components.at(i)->_c; }
     Component& GetComponent(int i) {        
-        return *_components.at(i);
+        return *_components.at(i)->_c;
     }
 
     std::string _name;
 private:
-    std::vector<std::shared_ptr<Component>> _components;
-    std::unordered_map<std::type_index, std::weak_ptr<Component>> _componentTypeMap;
+    struct ComponentAndStatus {
+        std::shared_ptr<Component> _c;
+        bool _active = true;
+    };
+    // We need this to be a vector of pointers so that _componentTypeMap can
+    // have stable pointers to the vector's data even if vector gets
+    // reallocated.
+    std::vector<std::unique_ptr<ComponentAndStatus>> _components;
+    std::unordered_map<std::type_index, ComponentAndStatus*> _componentTypeMap;
+    // std::vector<std::shared_ptr<Component>> _components;
+    // std::vector<bool> _active;
+    // std::unordered_map<std::type_index, std::weak_ptr<Component>> _componentTypeMap;
     friend class cereal::access;
 };
 
@@ -162,9 +235,9 @@ public:
 
     virtual void Destroy() override {}
 
-    virtual void ConnectComponents(Entity& e, GameManager& g) override {
+    virtual bool ConnectComponents(Entity& e, GameManager& g) override {
         _transform = e.FindComponentOfType<TransformComponent>();
-        assert(!_transform.expired());
+        return !_transform.expired();
     }
 
     std::weak_ptr<TransformComponent> _transform;
@@ -179,7 +252,7 @@ public:
         _entities.push_back(std::make_shared<Entity>());
         return _entities.back();
     }
-    
+
     void DestroyEntity(std::weak_ptr<Entity> weakToDestroy) {
         std::shared_ptr<Entity> toDestroy = weakToDestroy.lock();
         if (toDestroy == nullptr) {
@@ -199,10 +272,14 @@ public:
             e->Update(dt);
         }
     }
-
-    void ConnectComponents(GameManager& g) {
+    
+    void ConnectComponents(GameManager& g, bool dieOnConnectFailure) {
         for (auto& pEntity : _entities) {
-            pEntity->ConnectComponents(g);
+            if (dieOnConnectFailure) {
+                pEntity->ConnectComponentsOrDie(g);
+            } else {
+                pEntity->ConnectComponentsOrDeactivate(g, /*failures=*/nullptr);
+            }
         }
     }
 

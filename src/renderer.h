@@ -15,7 +15,7 @@ public:
     virtual ComponentType Type() const override { return ComponentType::Model; }
     ModelComponent() {}
     virtual ~ModelComponent() {}
-    virtual void ConnectComponents(Entity& e, GameManager& g) override;
+    virtual bool ConnectComponents(Entity& e, GameManager& g) override;
 
     std::string _modelId;
     std::weak_ptr<TransformComponent const> _transform;
@@ -31,7 +31,7 @@ public:
         , _diffuse(1.f,1.f,1.f)
         {}
     virtual ~LightComponent() {}
-    virtual void ConnectComponents(Entity& e, GameManager& g) override;
+    virtual bool ConnectComponents(Entity& e, GameManager& g) override;
     virtual void DrawImGui() override;
 
     std::weak_ptr<TransformComponent const> _transform;
@@ -44,7 +44,7 @@ class CameraComponent : public Component {
 public:  
     virtual ComponentType Type() const override { return ComponentType::Camera; }
     CameraComponent() {}
-    virtual void ConnectComponents(Entity& e, GameManager& g) override;
+    virtual bool ConnectComponents(Entity& e, GameManager& g) override;
 
     virtual ~CameraComponent() {}
 

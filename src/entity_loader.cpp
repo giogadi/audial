@@ -75,7 +75,17 @@ void load(Archive& ar, EntityManager& e) {
     }
 }
 
-bool LoadEntities(char const* filename, EntityManager& e, GameManager& g) {    
+void SaveEntity(std::ostream& output, Entity const& e) {
+    cereal::XMLOutputArchive archive(output);
+    archive(CEREAL_NVP(e));
+}
+
+void LoadEntity(std::istream& input, Entity& e) {
+    cereal::XMLInputArchive archive(input);
+    archive(e);
+}
+
+bool LoadEntities(char const* filename, bool dieOnConnectFailure, EntityManager& e, GameManager& g) {    
     std::ifstream inFile(filename);
     if (!inFile.is_open()) {
         std::cout << "Couldn't open file " << filename << " for loading." << std::endl;
@@ -83,7 +93,7 @@ bool LoadEntities(char const* filename, EntityManager& e, GameManager& g) {
     }
     cereal::XMLInputArchive archive(inFile);
     archive(e);
-    e.ConnectComponents(g);
+    e.ConnectComponents(g, dieOnConnectFailure);
     return true;
 }
 

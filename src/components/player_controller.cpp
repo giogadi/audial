@@ -5,11 +5,21 @@
 #include "components/rigid_body.h"
 #include "input_manager.h"
 
-void PlayerControllerComponent::ConnectComponents(Entity& e, GameManager& g) {
+bool PlayerControllerComponent::ConnectComponents(Entity& e, GameManager& g) {
+    bool success = true;
     _transform = e.FindComponentOfType<TransformComponent>();
+    if (_transform.expired()) {
+        success = false;
+    }
     _rb = e.FindComponentOfType<RigidBodyComponent>();
-    _rb.lock()->SetOnHitCallback(std::bind(&PlayerControllerComponent::OnHit, this, std::placeholders::_1));
+    if (_rb.expired()) {
+        success = false;
+    } else {
+        _rb.lock()->SetOnHitCallback(
+            std::bind(&PlayerControllerComponent::OnHit, this, std::placeholders::_1));
+    }    
     _input = g._inputManager;
+    return success;
 }
 
 void PlayerControllerComponent::Update(float dt) {

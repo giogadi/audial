@@ -25,7 +25,7 @@ public:
     RigidBodyComponent()
         : _velocity(0.f,0.f,0.f) {}
     virtual ~RigidBodyComponent() {}
-    virtual void ConnectComponents(Entity& e, GameManager& g) override;
+    virtual bool ConnectComponents(Entity& e, GameManager& g) override;
 
     void SetOnHitCallback(std::function<void(std::weak_ptr<RigidBodyComponent>)> f) {
         _onHitCallback = f;

@@ -57,6 +57,11 @@ namespace {
 
 // For now, we're not gonna do anything clever about n-body collisions.
 void CollisionManager::Update(float dt) {
+    _bodies.erase(std::remove_if(_bodies.begin(), _bodies.end(),
+        [](std::weak_ptr<RigidBodyComponent const> const& p) {
+            return p.expired();
+        }), _bodies.end());
+
     std::vector<Vec3> newPositions(_bodies.size());
     std::vector<Aabb> newAabbs(_bodies.size());
     // Stores pointer of other body hit. nullptr if no hit

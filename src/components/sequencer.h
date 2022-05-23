@@ -12,9 +12,10 @@ class SequencerComponent : public Component {
 public:
     virtual ComponentType Type() const override { return ComponentType::Sequencer; }
     SequencerComponent() {}
-    virtual void ConnectComponents(Entity& e, GameManager& g) override {
+    virtual bool ConnectComponents(Entity& e, GameManager& g) override {
         _audio = g._audioContext;
         _beatClock = g._beatClock;
+        return true;
     }
     
     // Keeps event sorted by time

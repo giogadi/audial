@@ -17,7 +17,7 @@ void LoadTestScript(GameManager& g) {
 
         auto pCamera = camera->AddComponent<CameraComponent>().lock();
 
-        camera->ConnectComponents(g);
+        camera->ConnectComponentsOrDie(g);
     }
 
     // Light
@@ -32,7 +32,7 @@ void LoadTestScript(GameManager& g) {
         pLight->_ambient.Set(0.2f, 0.2f, 0.2f);
         pLight->_diffuse.Set(1.f, 1.f, 1.f);
 
-        light->ConnectComponents(g);
+        light->ConnectComponentsOrDie(g);
     }
 
     // Cube1
@@ -51,7 +51,7 @@ void LoadTestScript(GameManager& g) {
         auto velComp = cube1->AddComponent<VelocityComponent>().lock();
         velComp->_angularY = 2*kPi;
 
-        cube1->ConnectComponents(g);
+        cube1->ConnectComponentsOrDie(g);
     }
 
     // Cube2
@@ -68,7 +68,7 @@ void LoadTestScript(GameManager& g) {
         rbComp->_static = false;
         auto controller = cube2->AddComponent<PlayerControllerComponent>().lock();
 
-        cube2->ConnectComponents(g);
+        cube2->ConnectComponentsOrDie(g);
     }
 
     // drone sequencer
@@ -95,7 +95,7 @@ void LoadTestScript(GameManager& g) {
             e.newParamValue = 0.5;
             seqComp->AddToSequence(e);
         }
-        droneSeq->ConnectComponents(g);
+        droneSeq->ConnectComponentsOrDie(g);
     }
 
     // Init event queue with a synth sequence

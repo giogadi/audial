@@ -100,11 +100,19 @@ void EntityEditingContext::DrawEntitiesWindow(EntityManager& entities, GameManag
     // Now show a little panel for each component on the selected entity.    
     if (selectedIx < entities._entities.size() && selectedIx >= 0) {
         Entity& e = *entities._entities[*_selectedEntityIx];
-        int const numComponents = e.GetNumComponents();
-        for (int i = 0; i < numComponents; ++i) {
+        for (int i = 0; i < e.GetNumComponents(); ++i) {            
             Component& comp = e.GetComponent(i);
             char const* compName = ComponentTypeToString(comp.Type());
             if (ImGui::CollapsingHeader(compName)) {
+                // TODO LMAO
+                char buttonId[] = "DeleteXXX";
+                sprintf(buttonId, "Delete%d", i);
+                if (ImGui::Button(buttonId)) {
+                    e.RemoveComponent(i);
+                    e.ConnectComponentsOrDeactivate(g);
+                    --i;
+                    continue;
+                }
                 comp.DrawImGui();
             }
         }

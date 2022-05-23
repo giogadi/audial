@@ -8,12 +8,22 @@
 #include "audio.h"
 #include "rigid_body.h"
 
-void BeepOnHitComponent::ConnectComponents(Entity& e, GameManager& g) {    
+bool BeepOnHitComponent::ConnectComponents(Entity& e, GameManager& g) {
+    bool success = true;
     _t = e.FindComponentOfType<TransformComponent>();
+    if (_t.expired()) {
+        success = false;
+    }
     _audio = g._audioContext;
     _beatClock = g._beatClock;
-    RigidBodyComponent& rb = *e.FindComponentOfType<RigidBodyComponent>().lock();
-    rb.SetOnHitCallback(std::bind(&BeepOnHitComponent::OnHit, this, std::placeholders::_1));
+    std::weak_ptr<RigidBodyComponent> pRb = e.FindComponentOfType<RigidBodyComponent>();
+    if (pRb.expired()) {
+        success = false;
+    } else {
+        RigidBodyComponent& rb = *pRb.lock();
+        rb.SetOnHitCallback(std::bind(&BeepOnHitComponent::OnHit, this, std::placeholders::_1));
+    }
+    return success;
 }
 
 void BeepOnHitComponent::OnHit(std::weak_ptr<RigidBodyComponent> other) {

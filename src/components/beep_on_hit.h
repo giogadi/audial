@@ -16,7 +16,7 @@ public:
     BeepOnHitComponent() {
         _midiNotes.fill(-1);
     }
-    virtual void ConnectComponents(Entity& e, GameManager& g) override;
+    virtual bool ConnectComponents(Entity& e, GameManager& g) override;
 
     void OnHit(std::weak_ptr<RigidBodyComponent> other);
 

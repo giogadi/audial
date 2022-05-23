@@ -10,18 +10,20 @@
 #include "constants.h"
 #include "resource_manager.h"
 
-void ModelComponent::ConnectComponents(Entity& e, GameManager& g) {
+bool ModelComponent::ConnectComponents(Entity& e, GameManager& g) {
     _transform = e.FindComponentOfType<TransformComponent>();
     ModelManager* modelManager = g._modelManager;
     _mesh = modelManager->_modelMap.at(_modelId).get();
     _mgr = g._sceneManager;
     _mgr->AddModel(e.FindComponentOfType<ModelComponent>());
+    return !_transform.expired();
 }
 
-void LightComponent::ConnectComponents(Entity& e, GameManager& g) {
+bool LightComponent::ConnectComponents(Entity& e, GameManager& g) {
     _transform = e.FindComponentOfType<TransformComponent>();
     _mgr = g._sceneManager;
     _mgr->AddLight(e.FindComponentOfType<LightComponent>());
+    return !_transform.expired();
 }
 
 void LightComponent::DrawImGui() {
@@ -34,11 +36,12 @@ void LightComponent::DrawImGui() {
     ImGui::InputScalar("Ambient B", ImGuiDataType_Float, &_ambient._z, /*step=*/nullptr);
 }
 
-void CameraComponent::ConnectComponents(Entity& e, GameManager& g) {
+bool CameraComponent::ConnectComponents(Entity& e, GameManager& g) {
     _transform = e.FindComponentOfType<TransformComponent>();
     _input = g._inputManager;
     _mgr = g._sceneManager;
     _mgr->AddCamera(e.FindComponentOfType<CameraComponent>());
+    return !_transform.expired();
 }
 
 Mat4 CameraComponent::GetViewMatrix() const {

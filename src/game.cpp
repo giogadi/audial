@@ -419,19 +419,15 @@ int main(int argc, char** argv) {
 
     if (scriptFilename.has_value()) {
         std::cout << "loading " << scriptFilename.value() << std::endl;
-        if (!LoadEntities(scriptFilename->c_str(), entityManager, gameManager)) {
+        bool dieOnConnectFail = !editMode;
+        if (!LoadEntities(scriptFilename->c_str(), dieOnConnectFail, entityManager, gameManager)) {
             std::cout << "Load failed. Exiting" << std::endl;
             return 1;
         }
     } else {
         std::cout << "loading hardcoded script" << std::endl;
         LoadTestScript(gameManager);
-    }
-
-    if (saveFilename.has_value()) {
-        std::cout << "saving to " << saveFilename.value() << std::endl;
-        SaveEntities(saveFilename->c_str(), entityManager);
-    }
+    }    
 
     // SAVE/LOAD SYNTH SETTINGS
     SaveSynthPatch("tmp/synth_patch.xml", audioContext._state.synths[0].patch);    
@@ -480,7 +476,7 @@ int main(int argc, char** argv) {
         if (inputManager.IsKeyPressedThisFrame(InputManager::Key::Y)) {
             showSynthWindow = !showSynthWindow;
         }
-        if (inputManager.IsKeyPressedThisFrame(InputManager::Key::E)) {
+        if (editMode && inputManager.IsKeyPressedThisFrame(InputManager::Key::E)) {
             showEntitiesWindow = !showEntitiesWindow;
         }
         if (inputManager.IsKeyPressedThisFrame(InputManager::Key::Space)) {
@@ -535,6 +531,11 @@ int main(int argc, char** argv) {
     ImGui::DestroyContext();
 
     glfwTerminate();
+
+    if (saveFilename.has_value()) {
+        std::cout << "saving to " << saveFilename.value() << std::endl;
+        SaveEntities(saveFilename->c_str(), entityManager);
+    }
 
     // NOTE: Do not use BeatClock after shutting down audio.
     if (audio::ShutDown(audioContext) != paNoError) {
