@@ -18,7 +18,8 @@ public:
     }
     virtual bool ConnectComponents(Entity& e, GameManager& g) override;
 
-    void OnHit(std::weak_ptr<RigidBodyComponent> other);
+    static void OnHit(
+        std::weak_ptr<BeepOnHitComponent> beepComp, std::weak_ptr<RigidBodyComponent> other);
 
     virtual void Update(float const dt) override;
 

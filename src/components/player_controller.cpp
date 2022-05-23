@@ -15,8 +15,10 @@ bool PlayerControllerComponent::ConnectComponents(Entity& e, GameManager& g) {
     if (_rb.expired()) {
         success = false;
     } else {
+        std::weak_ptr<PlayerControllerComponent> pComp =
+            e.FindComponentOfType<PlayerControllerComponent>();
         _rb.lock()->SetOnHitCallback(
-            std::bind(&PlayerControllerComponent::OnHit, this, std::placeholders::_1));
+            std::bind(&PlayerControllerComponent::OnHit, pComp, std::placeholders::_1));
     }    
     _input = g._inputManager;
     return success;
@@ -102,10 +104,13 @@ bool PlayerControllerComponent::UpdateAttackState(float dt, bool newState) {
     return false;
 }
 
-void PlayerControllerComponent::OnHit(std::weak_ptr<RigidBodyComponent> /*other*/) {
-    RigidBodyComponent& rb = *_rb.lock();
-    _attackDir = -_attackDir;
+void PlayerControllerComponent::OnHit(
+    std::weak_ptr<PlayerControllerComponent> thisComp,
+    std::weak_ptr<RigidBodyComponent> /*other*/) {
+    auto player = thisComp.lock();
+    RigidBodyComponent& rb = *player->_rb.lock();
+    player->_attackDir = -player->_attackDir;
     float currentSpeed = rb._velocity.Length();
     float newSpeed = std::max(30.f,currentSpeed);
-    rb._velocity = _attackDir * newSpeed;
+    rb._velocity = player->_attackDir * newSpeed;
 }

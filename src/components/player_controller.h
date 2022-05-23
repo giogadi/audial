@@ -26,7 +26,8 @@ public:
 
     bool UpdateAttackState(float dt, bool newState);
 
-    void OnHit(std::weak_ptr<RigidBodyComponent> other);
+    static void OnHit(
+        std::weak_ptr<PlayerControllerComponent> thisComp, std::weak_ptr<RigidBodyComponent> other);
 
     enum class State {
         Idle, Attacking

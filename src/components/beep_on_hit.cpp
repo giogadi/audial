@@ -20,15 +20,17 @@ bool BeepOnHitComponent::ConnectComponents(Entity& e, GameManager& g) {
     if (pRb.expired()) {
         success = false;
     } else {
+        std::weak_ptr<BeepOnHitComponent> pBeep = e.FindComponentOfType<BeepOnHitComponent>();
         RigidBodyComponent& rb = *pRb.lock();
-        rb.SetOnHitCallback(std::bind(&BeepOnHitComponent::OnHit, this, std::placeholders::_1));
+        rb.SetOnHitCallback(std::bind(&BeepOnHitComponent::OnHit, pBeep, std::placeholders::_1));
     }
     return success;
 }
 
-void BeepOnHitComponent::OnHit(std::weak_ptr<RigidBodyComponent> other) {
-    // Assumes other guy didn't get destroyed...
-    _wasHit = other.lock()->_layer == CollisionLayer::BodyAttack;
+void BeepOnHitComponent::OnHit(
+    std::weak_ptr<BeepOnHitComponent> beepComp, std::weak_ptr<RigidBodyComponent> other) {
+    // Assumes neither object got destroyed. But at least we are able to handle this case later.
+    beepComp.lock()->_wasHit = other.lock()->_layer == CollisionLayer::BodyAttack;
 }
 
 void BeepOnHitComponent::Update(float dt) {

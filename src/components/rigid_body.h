@@ -27,7 +27,11 @@ public:
     virtual ~RigidBodyComponent() {}
     virtual bool ConnectComponents(Entity& e, GameManager& g) override;
 
-    void SetOnHitCallback(std::function<void(std::weak_ptr<RigidBodyComponent>)> f) {
+    // Make sure you don't set this callback to bind to a "this" pointer of some
+    // random component. unsafe.
+    typedef std::function<void(std::weak_ptr<RigidBodyComponent>)> OnHitCallback;
+
+    void SetOnHitCallback(OnHitCallback f) {
         _onHitCallback = f;
     }
 
@@ -35,7 +39,7 @@ public:
     Aabb _localAabb;  // Aabb assuming position = (0,0,0)
     std::weak_ptr<TransformComponent> _transform;
     CollisionManager* _collisionMgr;
-    std::function<void(std::weak_ptr<RigidBodyComponent>)> _onHitCallback;
+    OnHitCallback _onHitCallback;
     // If static, then collision manager won't move this component if there's a collision.
     bool _static = true;
     CollisionLayer _layer = CollisionLayer::Solid;
