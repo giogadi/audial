@@ -36,6 +36,8 @@ enum class ComponentType: int {
     NumTypes
 };
 
+extern char const* gComponentTypeStrings[];
+
 // TODO: can make this constexpr?
 char const* ComponentTypeToString(ComponentType c);
 
@@ -119,13 +121,13 @@ public:
         GameManager& g, std::vector<ComponentType>* failures = nullptr) {
         if (_components.empty()) {
             return;
-        }
-        bool allActiveSucceeded = false;
+        }        
         std::vector<bool> active(_components.size());
         for (int i = 0; i < _components.size(); ++i) {
             active[i] = _components[i]->_active;
         }
-        for (int roundIx = 0; !allActiveSucceeded && roundIx < _components.size(); ++roundIx) {
+        bool allActiveSucceeded = false;
+        for (int roundIx = 0; !allActiveSucceeded && roundIx < _components.size() + 1; ++roundIx) {
             // Clone components into a parallel vector, delete the original, start over.
             std::stringstream entityData;
             SaveEntity(entityData, *this);
@@ -194,9 +196,6 @@ private:
     // reallocated.
     std::vector<std::unique_ptr<ComponentAndStatus>> _components;
     std::unordered_map<std::type_index, ComponentAndStatus*> _componentTypeMap;
-    // std::vector<std::shared_ptr<Component>> _components;
-    // std::vector<bool> _active;
-    // std::unordered_map<std::type_index, std::weak_ptr<Component>> _componentTypeMap;
     friend class cereal::access;
 };
 
@@ -285,6 +284,12 @@ public:
                 break;
             }
         }
+    }
+
+    void DestroyEntity(int index) {
+        assert(index >= 0 && index < _entities.size());
+        _entities[index]->Destroy();
+        _entities.erase(_entities.begin() + index);
     }
 
     void Update(float dt) {

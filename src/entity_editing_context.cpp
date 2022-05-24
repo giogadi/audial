@@ -27,8 +27,7 @@ void EntityEditingContext::Update(
             *g._entityManager, mouseX, mouseY, windowWidth, windowHeight, fovy, aspectRatio, zNear,
             cameraTransform);
         if (!pickedEntity.expired()) {
-            _selectedEntity = pickedEntity;
-            Entity const& entity = *_selectedEntity.lock();
+            Entity const& entity = *pickedEntity.lock();
             std::cout << "PICKED " << entity._name << std::endl;
             // Find the ix of this entity
             _selectedEntityIx = -1;
@@ -45,16 +44,18 @@ void EntityEditingContext::Update(
         }
     }
 
-    UpdateSelectedPositionFromInput(dt, *g._inputManager);
+    UpdateSelectedPositionFromInput(dt, *g._inputManager, *g._entityManager);
 }
 
-void EntityEditingContext::UpdateSelectedPositionFromInput(float dt, InputManager const& input) {
-    if (_selectedEntity.expired()) {
+void EntityEditingContext::UpdateSelectedPositionFromInput(float dt, InputManager const& input, EntityManager& entities) {
+    std::shared_ptr<Entity> entity;
+    if (_selectedEntityIx >= 0 && _selectedEntityIx < entities._entities.size()) {
+        entity = entities._entities[_selectedEntityIx];
+    } else {
         return;
     }
-    auto transform = _selectedEntity.lock()->FindComponentOfType<TransformComponent>().lock();
+    auto transform = entity->FindComponentOfType<TransformComponent>().lock();
     if (transform == nullptr) {
-        _selectedEntity.reset();
         return;
     }
 
@@ -81,13 +82,16 @@ void EntityEditingContext::UpdateSelectedPositionFromInput(float dt, InputManage
 }
 
 void EntityEditingContext::DrawEntitiesWindow(EntityManager& entities, GameManager& g) {
-    // TODO: get direct access to the component type string[] we already have in component.cpp.
-    int constexpr numComponentTypes = static_cast<int>(ComponentType::NumTypes);
-    std::array<char const*, numComponentTypes> componentNames;
-    for (int i = 0; i < numComponentTypes; ++i) {
-        componentNames[i] = ComponentTypeToString(static_cast<ComponentType>(i));
-    }
     ImGui::Begin("Entities");
+
+    // Add Entity
+    if (ImGui::Button("Add Entity")) {
+        std::shared_ptr<Entity> newEntity = entities.AddEntity().lock();
+        newEntity->_name = "new_entity";
+        newEntity->AddComponentOrDie<TransformComponent>();
+        newEntity->ConnectComponentsOrDie(g);
+    }
+
     if (entities._entities.empty()) {
         ImGui::End();
         return;
@@ -97,25 +101,46 @@ void EntityEditingContext::DrawEntitiesWindow(EntityManager& entities, GameManag
     for (auto const& e : entities._entities) {
         entityNames.push_back(e->_name.c_str());
     }
-    int selectedIx = _selectedEntityIx.has_value() ? *_selectedEntityIx : 0;
-    ImGui::ListBox("##", &selectedIx, entityNames.data(), /*numItems=*/entityNames.size());
-    {
-        _selectedEntityIx = selectedIx;
-        _selectedEntity = entities._entities[selectedIx];
+
+    ImGui::ListBox("##", &_selectedEntityIx, entityNames.data(), /*numItems=*/entityNames.size());
+
+    // Duplicate Entity
+    if (_selectedEntityIx < entities._entities.size() && _selectedEntityIx >= 0) {
+        if (ImGui::Button("Duplicate Entity")) {
+            std::stringstream entityData;
+            SaveEntity(entityData, *entities._entities[_selectedEntityIx]);
+            std::shared_ptr<Entity> newEntity = entities.AddEntity().lock();
+            LoadEntity(entityData, *newEntity);
+            newEntity->_name += "(dupe)";
+            newEntity->ConnectComponentsOrDeactivate(g, /*failures=*/nullptr);
+        }
     }
-    // Now show a little panel for each component on the selected entity.    
-    if (selectedIx < entities._entities.size() && selectedIx >= 0) {
-        Entity& e = *entities._entities[*_selectedEntityIx];
+
+    // Remove Entity
+    if (_selectedEntityIx < entities._entities.size() && _selectedEntityIx >= 0) {        
+        if (ImGui::Button("Remove Entity")) {
+            entities.DestroyEntity(_selectedEntityIx);
+            if (_selectedEntityIx >= entities._entities.size()) {
+                _selectedEntityIx = -1;
+            }
+        }
+    }
+
+    // Now show a little panel for each component on the selected entity.
+    if (_selectedEntityIx < entities._entities.size() && _selectedEntityIx >= 0) {        
+        Entity& e = *entities._entities[_selectedEntityIx];
+
         // Add Component
         if (ImGui::CollapsingHeader("Add Component")) {
-            ImGui::Combo("##", &_selectedComponentIx, componentNames.data(), numComponentTypes);            
+            int constexpr numComponentTypes = static_cast<int>(ComponentType::NumTypes);
+            ImGui::Combo("##", &_selectedComponentIx, gComponentTypeStrings, numComponentTypes);
             if (ImGui::Button("Add")) {
                 ComponentType compType = static_cast<ComponentType>(_selectedComponentIx);
                 std::weak_ptr<Component> pComp = e.TryAddComponentOfType(compType);
                 if (pComp.expired()) {
                     std::cout << "Warning: entity \"" << e._name <<
                         "\" already contains a component of type \"" <<
-                        componentNames[_selectedComponentIx] << "\"." << std::endl;
+                        gComponentTypeStrings[_selectedComponentIx] << "\"." << std::endl;
                 } else {
                     e.ConnectComponentsOrDeactivate(g, /*failures=*/nullptr);
                 }
