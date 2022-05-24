@@ -130,6 +130,11 @@ void EntityEditingContext::DrawEntitiesWindow(EntityManager& entities, GameManag
     if (_selectedEntityIx < entities._entities.size() && _selectedEntityIx >= 0) {        
         Entity& e = *entities._entities[_selectedEntityIx];
 
+        char entityName[128];
+        strcpy(entityName, e._name.c_str());
+        ImGui::InputText("Entity name", entityName, 128);
+        e._name = entityName;
+
         // Add Component
         if (ImGui::CollapsingHeader("Add Component")) {
             int constexpr numComponentTypes = static_cast<int>(ComponentType::NumTypes);

@@ -353,7 +353,7 @@ int main(int argc, char** argv) {
     ImGui_ImplOpenGL3_Init(/*glsl_version=*/NULL);
 
     Shader shaderProgram;
-    if (!shaderProgram.Init("../shaders/shader.vert", "../shaders/shader.frag")) {
+    if (!shaderProgram.Init("../shaders/shader.vert", "../shaders/color.frag")) {
         return 1;
     }
 
@@ -455,7 +455,13 @@ int main(int argc, char** argv) {
             }
         }
 
-        inputManager.Update();
+        
+        {
+            ImGuiIO& io = ImGui::GetIO();
+            if (!io.WantCaptureMouse && !io.WantCaptureKeyboard) {
+                inputManager.Update();
+            }            
+        }
 
         if (inputManager.IsKeyPressedThisFrame(InputManager::Key::Space)) {
             paused = !paused;

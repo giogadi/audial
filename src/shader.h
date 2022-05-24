@@ -21,6 +21,7 @@ public:
     void SetMat3(const char* name, Mat3 const& mat) const;
     void SetMat4(const char* name, Mat4 const& mat) const;
     void SetVec3(const char* name, Vec3 const& vec) const;
+    void SetVec4(const char* name, Vec4 const& vec) const;
 private:
     unsigned int _id = 0;
 };

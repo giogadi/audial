@@ -20,6 +20,11 @@ void serialize(Archive& ar, Vec3& v) {
 }
 
 template<typename Archive>
+void serialize(Archive& ar, Vec4& v) {
+    ar(CEREAL_NVP(v._x), CEREAL_NVP(v._y), CEREAL_NVP(v._z), CEREAL_NVP(v._w));
+}
+
+template<typename Archive>
 void serialize(Archive& ar, Mat4& m) {
     ar(CEREAL_NVP(m._m00));
     ar(CEREAL_NVP(m._m10));
@@ -64,7 +69,7 @@ void serialize(Archive& ar, VelocityComponent& v) {
 
 template<typename Archive>
 void serialize(Archive& ar, ModelComponent& m) {
-    ar(CEREAL_NVP(m._modelId));
+    ar(CEREAL_NVP(m._modelId), cereal::make_nvp("color", m._color));
 }
 
 template<typename Archive>

@@ -31,9 +31,10 @@ bool ModelComponent::DrawImGui() {
     char inputStr[128];
     assert(_modelId.length() < 128);
     strcpy(inputStr, _modelId.c_str());
-    bool changed = ImGui::InputText("Model ID", inputStr, 128);
+    bool needReconnect = ImGui::InputText("Model ID", inputStr, 128);
     _modelId = inputStr;
-    return changed;
+    ImGui::ColorEdit4("Color", _color._data);
+    return needReconnect;
 }
 
 bool LightComponent::ConnectComponents(Entity& e, GameManager& g) {
@@ -144,6 +145,7 @@ void SceneManager::Draw(int windowWidth, int windowHeight) {
         m._mesh->_mat->_shader.SetVec3("uLightPos", light->_transform.lock()->GetPos());
         m._mesh->_mat->_shader.SetVec3("uAmbient", light->_ambient);
         m._mesh->_mat->_shader.SetVec3("uDiffuse", light->_diffuse);
+        m._mesh->_mat->_shader.SetVec4("uColor", m._color);
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, m._mesh->_mat->_texture->_handle);
         glBindVertexArray(m._mesh->_vao);

@@ -13,7 +13,7 @@ class GameManager;
 class ModelComponent : public Component {
 public:
     virtual ComponentType Type() const override { return ComponentType::Model; }
-    ModelComponent() {}
+    ModelComponent() : _color(1.f, 1.f, 1.f, 1.f) {}
     virtual ~ModelComponent() {}
     virtual bool ConnectComponents(Entity& e, GameManager& g) override;
     virtual bool DrawImGui() override;
@@ -22,6 +22,7 @@ public:
     std::weak_ptr<TransformComponent const> _transform;
     BoundMesh const* _mesh = nullptr;
     SceneManager* _mgr = nullptr;
+    Vec4 _color;
 };
 
 class LightComponent : public Component {
