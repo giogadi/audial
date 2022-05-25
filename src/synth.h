@@ -1,8 +1,9 @@
 #pragma once
 
-#include <stdio.h>
-#include <math.h>
-#include <string.h>
+#include <cstdio>
+#include <cmath>
+#include <cstring>
+#include <string>
 
 #include "audio_util.h"
 
@@ -37,7 +38,8 @@ namespace synth {
         float minValue = kSmallAmplitude;
     };
 
-    struct Patch {
+    struct Patch {        
+        std::string name;
         // This is interpreted linearly from [0,1]. This will get mapped later to [-80db,0db].
         // TODO: consider just having this be a decibel value capped at 0db.
         float gainFactor = 0.5f;

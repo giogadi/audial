@@ -62,6 +62,7 @@ namespace synth {
         state.cutoffLFOPhase = 0.0f;
 
         Patch& patch = state.patch;
+        patch.name = "synth";
         patch.gainFactor = 0.7f;
         patch.cutoffFreq = 44100.0f;
         patch.cutoffK = 0.0f;
@@ -336,14 +337,10 @@ namespace synth {
                                 patch.gainFactor = e.newParamValue;
                                 break;
                             case audio::SynthParamType::Cutoff:
-                                // value should be [0,1]. freq(0) = 0, freq(1) =
-                                // sampleRate, but how do we scale it
-                                // exponentially? so that 0.2 is twice the
-                                // frequency of 0.1? Do we want that?
-                                patch.cutoffFreq = e.newParamValue * sampleRate;
+                                patch.cutoffFreq = e.newParamValue;
                                 break;
                             case audio::SynthParamType::Peak:
-                                patch.cutoffK = e.newParamValue * 4.f;
+                                patch.cutoffK = e.newParamValue;
                                 break;
                             case audio::SynthParamType::PitchLFOGain:
                                 patch.pitchLFOGain = e.newParamValue;

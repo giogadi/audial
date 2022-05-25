@@ -27,8 +27,10 @@ void EntityEditingContext::Update(
             *g._entityManager, mouseX, mouseY, windowWidth, windowHeight, fovy, aspectRatio, zNear,
             cameraTransform);
         if (!pickedEntity.expired()) {
-            Entity const& entity = *pickedEntity.lock();
+            Entity& entity = *pickedEntity.lock();
             std::cout << "PICKED " << entity._name << std::endl;
+            // Call each components' on-pick code.
+            entity.OnEditPickComponents();
             // Find the ix of this entity
             _selectedEntityIx = -1;
             for (int i = 0; i < g._entityManager->_entities.size(); ++i) {
@@ -83,6 +85,20 @@ void EntityEditingContext::UpdateSelectedPositionFromInput(float dt, InputManage
 
 void EntityEditingContext::DrawEntitiesWindow(EntityManager& entities, GameManager& g) {
     ImGui::Begin("Entities");
+
+    {
+        // Saving
+        char filenameBuffer[256];
+        strcpy(filenameBuffer, _saveFilename.c_str());
+        ImGui::InputText("Filename", filenameBuffer, 256);
+        _saveFilename = filenameBuffer;
+
+        if (ImGui::Button("Save")) {
+            if (SaveEntities(_saveFilename.c_str(), entities)) {
+                std::cout << "Saved entities to \"" << _saveFilename << "\"." << std::endl;
+            }
+        }
+    }
 
     // Add Entity
     if (ImGui::Button("Add Entity")) {

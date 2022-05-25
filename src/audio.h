@@ -66,7 +66,9 @@ struct Context {
     }
 };
 
-PaError Init(Context& context, float* pcmBuffer, unsigned long pcmBufferLength);
+PaError Init(
+    Context& context, std::vector<synth::Patch> const& synthPatches, float* pcmBuffer,
+    unsigned long pcmBufferLength);
 
 PaError ShutDown(Context& stream);
 

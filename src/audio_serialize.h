@@ -34,7 +34,7 @@ void serialize(Archive& ar, ADSREnvSpec& s) {
 
 template<typename Archive>
 void serialize(Archive& ar, Patch& p) {
-    ar(CEREAL_NVP(p.gainFactor), CEREAL_NVP(p.cutoffFreq), CEREAL_NVP(p.cutoffK), 
+    ar(CEREAL_NVP(p.name), CEREAL_NVP(p.gainFactor), CEREAL_NVP(p.cutoffFreq), CEREAL_NVP(p.cutoffK), 
         CEREAL_NVP(p.pitchLFOGain), CEREAL_NVP(p.pitchLFOFreq), CEREAL_NVP(p.cutoffLFOGain),
         CEREAL_NVP(p.cutoffLFOFreq), CEREAL_NVP(p.ampEnvSpec), CEREAL_NVP(p.cutoffEnvSpec),
         CEREAL_NVP(p.cutoffEnvGain));

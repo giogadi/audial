@@ -143,12 +143,13 @@ bool LoadEntities(char const* filename, bool dieOnConnectFailure, EntityManager&
     return true;
 }
 
-void SaveEntities(char const* filename, EntityManager& entities) {
+bool SaveEntities(char const* filename, EntityManager const& entities) {
     std::ofstream outFile(filename);
     if (!outFile.is_open()) {
         std::cout << "Couldn't open file " << filename << " for saving. Not saving." << std::endl;
-        return;
+        return false;
     }
     cereal::XMLOutputArchive archive(outFile);
     archive(CEREAL_NVP(entities));
+    return true;
 }

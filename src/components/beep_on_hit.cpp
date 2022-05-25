@@ -33,15 +33,8 @@ void BeepOnHitComponent::OnHit(
     beepComp.lock()->_wasHit = other.lock()->_layer == CollisionLayer::BodyAttack;
 }
 
-void BeepOnHitComponent::Update(float dt) {
-    if (!_wasHit) {
-        return;
-    }
-    _wasHit = false;
-
+void BeepOnHitComponent::PlayNotesOnNextDenom(double denom) {
     double beatTime = _beatClock->GetBeatTime();
-    double denom = 0.25;
-    // double denom = 1.0;
     double noteTime = BeatClock::GetNextBeatDenomTime(beatTime, denom);
     double noteOffTime = noteTime + 0.5 * denom;
     if (noteOffTime > _lastScheduledEvent) {
@@ -64,6 +57,15 @@ void BeepOnHitComponent::Update(float dt) {
     }
 }
 
+void BeepOnHitComponent::Update(float dt) {
+    if (!_wasHit) {
+        return;
+    }
+    _wasHit = false;
+
+    PlayNotesOnNextDenom(/*denom=*/0.25);
+}
+
 bool BeepOnHitComponent::DrawImGui() {
     ImGui::InputScalar("Channel", ImGuiDataType_S32, &_synthChannel, /*step=*/nullptr, /*???*/NULL, "%d");
     char label[] = "Note XXX";
@@ -73,4 +75,8 @@ bool BeepOnHitComponent::DrawImGui() {
             label, ImGuiDataType_S32, &(_midiNotes[i]), /*step=*/nullptr, /*???*/NULL, "%d");
     }
     return false;
+}
+
+void BeepOnHitComponent::OnEditPick() {
+    PlayNotesOnNextDenom(/*denom=*/0.25);
 }

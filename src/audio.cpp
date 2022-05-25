@@ -2,6 +2,7 @@
 
 #include <array>
 #include <chrono>
+#include <vector>
 
 #include "audio_util.h"
 #include "synth.h"
@@ -22,11 +23,21 @@ void OnPortAudioError(PaError const& err) {
 } // namespace
 
 void InitStateData(
-    StateData& state, EventQueue* eventQueue, int sampleRate, float* pcmBuffer,
-    unsigned long pcmBufferLength) {
+    StateData& state, std::vector<synth::Patch> const& synthPatches, EventQueue* eventQueue,
+    int sampleRate, float* pcmBuffer, unsigned long pcmBufferLength) {
+
+    bool useInputPatches = true;
+    if (synthPatches.size() != state.synths.size()) {
+        useInputPatches = false;
+        std::cout << "Missing/mismatched patch data. Loading hardcoded default patch data." << std::endl;
+    }
+
     for (int i = 0; i < state.synths.size(); ++i) {
         synth::StateData& s = state.synths[i];
         synth::InitStateData(s, /*channel=*/i);
+        if (useInputPatches) {
+            s.patch = synthPatches[i];
+        }
     }
 
     state.pcmBuffer = pcmBuffer;
@@ -36,13 +47,15 @@ void InitStateData(
     state.events = eventQueue;
 }
 
-PaError Init(Context& context, float* pcmBuffer, unsigned long pcmBufferLength)
-{
+PaError Init(
+    Context& context, std::vector<synth::Patch> const& synthPatches, float* pcmBuffer,
+    unsigned long pcmBufferLength) {
+
     PaError err;
     
     printf("PortAudio Test: output sine wave. SR = %d, BufSize = %d\n", SAMPLE_RATE, FRAMES_PER_BUFFER);
 
-    InitStateData(context._state, &context._eventQueue, SAMPLE_RATE, pcmBuffer, pcmBufferLength);
+    InitStateData(context._state, synthPatches, &context._eventQueue, SAMPLE_RATE, pcmBuffer, pcmBufferLength);
 
     err = Pa_Initialize();
     if( err != paNoError ) {

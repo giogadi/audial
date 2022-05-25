@@ -1,8 +1,8 @@
 #pragma once
 
-namespace synth {
-    class Patch;
-}
+#include <vector>
 
-void LoadSynthPatch(char const* filename, synth::Patch& p);
-void SaveSynthPatch(char const* filename, synth::Patch const& p);
+#include "synth.h"
+
+bool SaveSynthPatches(char const* filename, std::vector<synth::Patch> const& patches);
+bool LoadSynthPatches(char const* filename, std::vector<synth::Patch>& patches);

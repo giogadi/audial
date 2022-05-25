@@ -45,7 +45,7 @@ ComponentType StringToComponentType(char const* s);
 
 bool LoadEntities(char const* filename, bool dieOnConnectFailure, EntityManager& e, GameManager& g);
 
-void SaveEntities(char const* filename, EntityManager& e);
+bool SaveEntities(char const* filename, EntityManager const& e);
 
 void SaveEntity(std::ostream& output, Entity const& e);
 
@@ -62,6 +62,7 @@ public:
     virtual ComponentType Type() const = 0;
     // If true, request that we try reconnecting the entity's components.
     virtual bool DrawImGui();
+    virtual void OnEditPick() {}
 };
 
 class Entity {
@@ -183,6 +184,13 @@ public:
     Component const& GetComponent(int i) const { return *_components.at(i)->_c; }
     Component& GetComponent(int i) {        
         return *_components.at(i)->_c;
+    }
+    void OnEditPickComponents() {
+        for (auto& compAndStatus : _components) {
+            if (compAndStatus->_active) {
+                compAndStatus->_c->OnEditPick();
+            }
+        }
     }
 
     std::string _name;

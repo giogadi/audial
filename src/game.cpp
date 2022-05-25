@@ -82,216 +82,149 @@ void FramebufferSizeCallback(GLFWwindow* window, int width, int height) {
     glViewport(0, 0, width, height);
 }
 
-// TODO: Maybe just use polymorphism instead of this awkward shit lol. Synth
-// params stay constant, you only do the allocations once.
-struct SynthParamSpec {
-    char const* _name;
-    float _minValue;
-    float _maxValue;
-};
-SynthParamSpec GetSynthParamSpec(audio::SynthParamType param) {
-    switch (param) {
-        case audio::SynthParamType::Gain:
-            return SynthParamSpec {"Gain", 0.f, 1.f };
-        case audio::SynthParamType::Cutoff:
-            return SynthParamSpec { "LPF Cutoff", 0.f, 1.f };
-        case audio::SynthParamType::Peak:
-            return SynthParamSpec { "LPF Peak", 0.f, 0.99f };
-        case audio::SynthParamType::PitchLFOGain:
-            return SynthParamSpec { "Pitch LFO Gain", 0.f, 1.f };
-        case audio::SynthParamType::PitchLFOFreq:
-            return SynthParamSpec { "Pitch LFO Freq", 0.f, 30.f };
-        case audio::SynthParamType::CutoffLFOGain:
-            return SynthParamSpec { "Cutoff LFO Gain", 0.f, 1.f };
-        case audio::SynthParamType::CutoffLFOFreq:
-            return SynthParamSpec { "Cutoff LFO Freq", 0.f, 30.f };
-        case audio::SynthParamType::AmpEnvAttack:
-            return SynthParamSpec { "Cutoff Env Atk", 0.f, 1.f };
-        case audio::SynthParamType::AmpEnvDecay:
-            return SynthParamSpec { "Amp Env Decay", 0.f, 1.f };
-        case audio::SynthParamType::AmpEnvSustain:
-            return SynthParamSpec { "Amp Env Sus", 0.f, 1.f };
-        case audio::SynthParamType::AmpEnvRelease:
-            return SynthParamSpec { "Amp Env Rel", 0.f, 1.f };    
-        case audio::SynthParamType::CutoffEnvGain:
-            return SynthParamSpec { "Cutoff Env Gain", 0.f, 20000.f };
-        case audio::SynthParamType::CutoffEnvAttack:
-            return SynthParamSpec { "Cutoff Env Atk", 0.f, 1.f };
-        case audio::SynthParamType::CutoffEnvDecay:
-            return SynthParamSpec { "Cutoff Env Decay", 0.f, 1.f };
-        case audio::SynthParamType::CutoffEnvSustain:
-            return SynthParamSpec { "Cutoff Env Sus", 0.f, 1.f };
-        case audio::SynthParamType::CutoffEnvRelease:
-            return SynthParamSpec { "Cutoff Env Rel", 0.f, 1.f };
-        default:
-            return SynthParamSpec { "UNSUPPORTED", 0.f, 0.f };
-    }
-}
-struct SynthParam {
-    audio::SynthParamType _param;
-    float _currentValue;
-    float _prevValue;    
-};
-struct SynthPatch {
-    static int constexpr kNumParams = static_cast<int>(audio::SynthParamType::Count);
-    std::string _name;
-    std::array<SynthParam, kNumParams> _params;
-};
-void InitSynthPatch(
-    SynthPatch& patch, audio::StateData const& audioState, int synthIx, int sampleRate,
-    char const* name) {
-    synth::Patch const& synthPatch = audioState.synths[synthIx].patch;
-
-    patch._name = name;
-    int paramIx = 0;
-    {
-        SynthParam& p = patch._params[paramIx++];
-        p._param = audio::SynthParamType::Gain;
-        p._currentValue = p._prevValue = synthPatch.gainFactor;
-    }
-    {
-        SynthParam& p = patch._params[paramIx++];
-        p._param = audio::SynthParamType::Cutoff;
-        p._currentValue = p._prevValue = std::min(1.f, synthPatch.cutoffFreq / (float)sampleRate);
-    }
-    {
-        SynthParam& p = patch._params[paramIx++];
-        p._param = audio::SynthParamType::Peak;
-        p._currentValue = p._prevValue = std::min(1.f, synthPatch.cutoffK / 4.f);
-    }
-    {
-        // When this is 0, variation is 0. when this is 1, the pitch varies up and down by a whole octave (so a full spread of 2 octaves)
-        SynthParam& p = patch._params[paramIx++];
-        p._param = audio::SynthParamType::PitchLFOGain;
-        p._currentValue = p._prevValue = synthPatch.pitchLFOGain;
-    }
-    {
-        SynthParam& p = patch._params[paramIx++];
-        p._param = audio::SynthParamType::PitchLFOFreq;
-        p._currentValue = p._prevValue = synthPatch.pitchLFOFreq;
-    }
-    {
-        // When this is 0, variation is 0. when this is 1, the cutoff varies up
-        // and down by a whole octave (so cutoff freq goes from 0.5*cutoff to
-        // 2.0*cutoff)
-        SynthParam& p = patch._params[paramIx++];
-        p._param = audio::SynthParamType::CutoffLFOGain;
-        p._currentValue = p._prevValue = synthPatch.cutoffLFOGain;
-    }
-    {
-        SynthParam& p = patch._params[paramIx++];
-        p._param = audio::SynthParamType::CutoffLFOFreq;
-        p._currentValue = p._prevValue = synthPatch.cutoffLFOFreq;
-    }
-    {
-        SynthParam& p = patch._params[paramIx++];
-        p._param = audio::SynthParamType::AmpEnvAttack;
-        p._currentValue = p._prevValue = synthPatch.ampEnvSpec.attackTime;
-    }
-    {
-        SynthParam& p = patch._params[paramIx++];
-        p._param = audio::SynthParamType::AmpEnvDecay;
-        p._currentValue = p._prevValue = synthPatch.ampEnvSpec.decayTime;
-    }
-    {
-        SynthParam& p = patch._params[paramIx++];
-        p._param = audio::SynthParamType::AmpEnvSustain;
-        p._currentValue = p._prevValue = synthPatch.ampEnvSpec.sustainLevel;
-    }
-    {
-        SynthParam& p = patch._params[paramIx++];
-        p._param = audio::SynthParamType::AmpEnvRelease;
-        p._currentValue = p._prevValue = synthPatch.ampEnvSpec.releaseTime;
-    }
-    {
-        SynthParam& p = patch._params[paramIx++];
-        p._param = audio::SynthParamType::CutoffEnvGain;
-        p._currentValue = p._prevValue = synthPatch.cutoffEnvGain;
-    }
-    {
-        SynthParam& p = patch._params[paramIx++];
-        p._param = audio::SynthParamType::CutoffEnvAttack;
-        p._currentValue = p._prevValue = synthPatch.cutoffEnvSpec.attackTime;
-    }
-    {
-        SynthParam& p = patch._params[paramIx++];
-        p._param = audio::SynthParamType::CutoffEnvDecay;
-        p._currentValue = p._prevValue = synthPatch.cutoffEnvSpec.decayTime;
-    }
-    {
-        SynthParam& p = patch._params[paramIx++];
-        p._param = audio::SynthParamType::CutoffEnvSustain;
-        p._currentValue = p._prevValue = synthPatch.cutoffEnvSpec.sustainLevel;
-    }
-    {
-        SynthParam& p = patch._params[paramIx++];
-        p._param = audio::SynthParamType::CutoffEnvRelease;
-        p._currentValue = p._prevValue = synthPatch.cutoffEnvSpec.releaseTime;
-    }
-    // Give the rest of the params an invalid value for now.
-    for (; paramIx < SynthPatch::kNumParams; ++paramIx) {
-        SynthParam& p = patch._params[paramIx];
-        p._param = audio::SynthParamType::Count;
-        p._currentValue = p._prevValue = 0.f;
-    }
-}
-
-struct SynthGuiState {
-    int _activeSynthIx = 0;
-    std::array<char const*, audio::kNumSynths> _synthListItems;
-    std::array<SynthPatch, audio::kNumSynths> _synths;
-};
-void InitSynthGuiState(SynthGuiState& guiState, audio::StateData const& audioState, int sampleRate) {
-    {
-        SynthPatch& patch = guiState._synths[0];
-        InitSynthPatch(patch, audioState, /*synthIx=*/0, sampleRate, "beep");
-    }
-    {
-        SynthPatch& patch = guiState._synths[1];
-        InitSynthPatch(patch, audioState, /*synthIx=*/1, sampleRate, "drone");
-    }
-
-    for (int i = 0; i < audio::kNumSynths; ++i) {
-        guiState._synthListItems[i] = guiState._synths[i]._name.c_str();
-    }
-}
-
-void RequestSynthParamChange(int synthIx, SynthParam const& param, audio::Context& audioContext) {
+void RequestSynthParamChange(int synthIx, audio::SynthParamType const& param, double value, audio::Context& audioContext) {
     audio::Event e;
     e.channel = synthIx;
     e.timeInTicks = 0;
     e.type = audio::EventType::SynthParam;
-    e.param = param._param;
-    e.newParamValue = param._currentValue;
-    if (!audioContext._eventQueue.try_push(e)) {
-        std::cout << "Failed to push synth param change!" << std::endl;
-    }
+    e.param = param;
+    e.newParamValue = value;
+    audioContext.AddEvent(e);
 }
 
-// TODO weird that this also requests synth param changes.
-void DrawSynthGuiAndUpdatePatch(SynthGuiState& state, audio::Context& audioContext) {
+struct SynthGuiState {
+    std::vector<synth::Patch> _synthPatches;
+    std::string _saveFilename;
+    int _currentSynthIx = -1;
+};
+void InitSynthGuiState(audio::Context const& audioContext, char const* saveFilename, SynthGuiState& guiState) {
+    guiState._synthPatches.clear();
+    for (synth::StateData const& synthState : audioContext._state.synths) {
+        guiState._synthPatches.push_back(synthState.patch);
+    }
+    assert(!guiState._synthPatches.empty());
+    guiState._currentSynthIx = 0;
+    guiState._saveFilename = std::string(saveFilename);
+};
+void DrawSynthGuiAndUpdatePatch(SynthGuiState& synthGuiState, audio::Context& audioContext) {
     ImGui::Begin("Synth settings");
-    // TODO: demo adds one more argument to this. what does it do?
-    ImGui::ListBox("Synth list", &state._activeSynthIx, state._synthListItems.data(), /*numItems=*/2);
-    SynthPatch& patch = state._synths[state._activeSynthIx];
-    for (int paramIx = 0; paramIx < SynthPatch::kNumParams; ++paramIx) {
-        SynthParam& param = patch._params[paramIx];
-        // skip unsupported params
-        if (param._param == audio::SynthParamType::Count) {
-            continue;
+    {
+        // Saving
+        char saveFilenameBuffer[256];
+        strcpy(saveFilenameBuffer, synthGuiState._saveFilename.c_str());
+        ImGui::InputText("Save filename", saveFilenameBuffer, 256);
+        synthGuiState._saveFilename = saveFilenameBuffer;
+        if (ImGui::Button("Save")) {
+            if (SaveSynthPatches(synthGuiState._saveFilename.c_str(), synthGuiState._synthPatches)) {
+                std::cout << "Saved synth patches to \"" << synthGuiState._saveFilename << "\"." << std::endl;
+            }
         }
-        SynthParamSpec const spec = GetSynthParamSpec(param._param);
-        ImGui::SliderFloat(
-            spec._name, &param._currentValue, spec._minValue, spec._maxValue);
-        if (param._currentValue != param._prevValue) {
-            RequestSynthParamChange(state._activeSynthIx, param, audioContext);
-            param._prevValue = param._currentValue;
+    }
+    
+    // TODO: consider caching this.
+    std::vector<char const*> listNames;
+    listNames.reserve(synthGuiState._synthPatches.size());
+    for (auto const& s : synthGuiState._synthPatches) {
+        listNames.push_back(s.name.c_str());
+    }
+    ImGui::ListBox("Synth list", &synthGuiState._currentSynthIx, listNames.data(), /*numItems=*/listNames.size());
+
+    if (synthGuiState._currentSynthIx >= 0) {
+        synth::Patch& patch = synthGuiState._synthPatches[synthGuiState._currentSynthIx];
+
+        char nameBuffer[128];
+        strcpy(nameBuffer, patch.name.c_str());
+        ImGui::InputText("Name", nameBuffer, 128);
+        patch.name = nameBuffer;
+
+        bool changed = ImGui::SliderFloat("Gain", &patch.gainFactor, 0.f, 1.f);
+        if (changed) {
+            RequestSynthParamChange(synthGuiState._currentSynthIx, audio::SynthParamType::Gain, patch.gainFactor, audioContext);
+        }
+
+        changed = ImGui::SliderFloat("LPF Cutoff", &patch.cutoffFreq, 0.f, 44100.f);
+        if (changed) {
+            RequestSynthParamChange(synthGuiState._currentSynthIx, audio::SynthParamType::Cutoff, patch.cutoffFreq, audioContext);
+        }
+
+        changed = ImGui::SliderFloat("Peak", &patch.cutoffK, 0.f, 3.99f);
+        if (changed) {
+            RequestSynthParamChange(synthGuiState._currentSynthIx, audio::SynthParamType::Peak, patch.cutoffK, audioContext);
+        }
+
+        changed = ImGui::SliderFloat("AmpEnvAtk", &patch.ampEnvSpec.attackTime, 0.f, 1.f);
+        if (changed) {
+            RequestSynthParamChange(synthGuiState._currentSynthIx, audio::SynthParamType::AmpEnvAttack, patch.ampEnvSpec.attackTime, audioContext);
+        }
+
+        changed = ImGui::SliderFloat("AmpEnvDecay", &patch.ampEnvSpec.decayTime, 0.f, 1.f);
+        if (changed) {
+            RequestSynthParamChange(synthGuiState._currentSynthIx, audio::SynthParamType::AmpEnvDecay, patch.ampEnvSpec.decayTime, audioContext);
+        }
+
+        changed = ImGui::SliderFloat("AmpEnvSustain", &patch.ampEnvSpec.sustainLevel, 0.f, 1.f);
+        if (changed) {
+            RequestSynthParamChange(synthGuiState._currentSynthIx, audio::SynthParamType::AmpEnvSustain, patch.ampEnvSpec.sustainLevel, audioContext);
+        }
+
+        changed = ImGui::SliderFloat("AmpEnvRelease", &patch.ampEnvSpec.releaseTime, 0.f, 1.f);
+        if (changed) {
+            RequestSynthParamChange(synthGuiState._currentSynthIx, audio::SynthParamType::AmpEnvRelease, patch.ampEnvSpec.releaseTime, audioContext);
+        }
+
+        changed = ImGui::SliderFloat("CutoffEnvGain", &patch.cutoffEnvGain, 0.f, 44100.f);
+        if (changed) {
+            RequestSynthParamChange(synthGuiState._currentSynthIx, audio::SynthParamType::CutoffEnvGain, patch.cutoffEnvGain, audioContext);
+        }
+
+        changed = ImGui::SliderFloat("CutoffEnvAtk", &patch.cutoffEnvSpec.attackTime, 0.f, 1.f);
+        if (changed) {
+            RequestSynthParamChange(synthGuiState._currentSynthIx, audio::SynthParamType::CutoffEnvAttack, patch.cutoffEnvSpec.attackTime, audioContext);
+        }
+
+        changed = ImGui::SliderFloat("CutoffEnvDecay", &patch.cutoffEnvSpec.decayTime, 0.f, 1.f);
+        if (changed) {
+            RequestSynthParamChange(synthGuiState._currentSynthIx, audio::SynthParamType::CutoffEnvDecay, patch.cutoffEnvSpec.decayTime, audioContext);
+        }
+
+        changed = ImGui::SliderFloat("CutoffEnvSustain", &patch.cutoffEnvSpec.sustainLevel, 0.f, 1.f);
+        if (changed) {
+            RequestSynthParamChange(synthGuiState._currentSynthIx, audio::SynthParamType::CutoffEnvSustain, patch.cutoffEnvSpec.sustainLevel, audioContext);
+        }
+
+        changed = ImGui::SliderFloat("CutoffEnvRelease", &patch.cutoffEnvSpec.releaseTime, 0.f, 1.f);
+        if (changed) {
+            RequestSynthParamChange(synthGuiState._currentSynthIx, audio::SynthParamType::CutoffEnvRelease, patch.cutoffEnvSpec.releaseTime, audioContext);
         }
     }
     ImGui::End();
 }
 
 int main(int argc, char** argv) {
+    std::optional<std::string> scriptFilename;
+    std::optional<std::string> synthPatchesFilename;
+    bool editMode = false;
+    for (int argIx = 1; argIx < argc; ++argIx) {
+        if (strcmp(argv[argIx], "-f") == 0) {
+            ++argIx;
+            if (argIx >= argc) {
+                std::cout << "Need a script filename with -f. Using hardcoded script." << std::endl;
+                continue;
+            }
+            scriptFilename = argv[argIx];
+        } else if (strcmp(argv[argIx], "-y") == 0) {
+            ++argIx;
+            if (argIx >= argc) {
+                std::cout << "need a synth patch filename with -y. Using hardcoded synth patches" << std::endl;
+                continue;
+            }
+            synthPatchesFilename = argv[argIx];
+        } else if (strcmp(argv[argIx], "-e") == 0) {
+            std::cout << "Edit mode enabled!" << std::endl;
+            editMode = true;            
+        }
+    }
+
     unsigned int channels;
     unsigned int sampleRate;
     drwav_uint64 totalPCMFrameCount;
@@ -304,9 +237,20 @@ int main(int argc, char** argv) {
     }
     std::cout << "wav file: " << channels << " channels, " << totalPCMFrameCount << " frames." << std::endl;
 
+    // Init audio    
     audio::Context audioContext;
-    if (audio::Init(audioContext, pSampleData, totalPCMFrameCount) != paNoError) {
-        return 1;
+    {
+        // Load in synth patch data if we have it
+        std::vector<synth::Patch> patches;
+        if (synthPatchesFilename.has_value()) {
+            if (LoadSynthPatches(synthPatchesFilename->c_str(), patches)) {
+                std::cout << "Loaded synth patch data from \"" << *synthPatchesFilename << "\"." << std::endl;
+            }
+        }
+        
+        if (audio::Init(audioContext, patches, pSampleData, totalPCMFrameCount) != paNoError) {
+            return 1;
+        }
     }
 
     glfwInit();
@@ -392,30 +336,6 @@ int main(int argc, char** argv) {
     GameManager gameManager {
         &sceneManager, &inputManager, &audioContext, &entityManager, &collisionManager, &modelManager, &beatClock };
 
-    std::optional<std::string> scriptFilename;
-    std::optional<std::string> saveFilename;
-    bool editMode = false;
-    for (int argIx = 1; argIx < argc; ++argIx) {
-        if (strcmp(argv[argIx], "-f") == 0) {
-            ++argIx;
-            if (argIx >= argc) {
-                std::cout << "Need a filename with -f. Using hardcoded script." << std::endl;
-                continue;
-            }
-            scriptFilename = argv[argIx];
-        } else if (strcmp(argv[argIx], "-s") == 0) {
-            ++argIx;
-            if (argIx >= argc) {
-                std::cout << "need a filename with -s. Not saving." << std::endl;
-                continue;
-            }
-            saveFilename = argv[argIx];
-        } else if (strcmp(argv[argIx], "-e") == 0) {
-            std::cout << "Edit mode enabled!" << std::endl;
-            editMode = true;            
-        }
-    }
-
     if (scriptFilename.has_value()) {
         std::cout << "loading " << scriptFilename.value() << std::endl;
         bool dieOnConnectFail = !editMode;
@@ -426,20 +346,27 @@ int main(int argc, char** argv) {
     } else {
         std::cout << "loading hardcoded script" << std::endl;
         LoadTestScript(gameManager);
-    }    
-
-    // SAVE/LOAD SYNTH SETTINGS
-    SaveSynthPatch("tmp/synth_patch.xml", audioContext._state.synths[0].patch);    
+    }
 
     SynthGuiState synthGuiState;
-    InitSynthGuiState(synthGuiState, audioContext._state, sampleRate);
+    {
+        char const* filename = "";
+        if (synthPatchesFilename.has_value()) {
+            filename = synthPatchesFilename->c_str();
+        }
+        InitSynthGuiState(audioContext, filename, synthGuiState);
+    }
+
+    EntityEditingContext entityEditingContext;
+    if (scriptFilename.has_value()) {
+        entityEditingContext._saveFilename = *scriptFilename;
+    }
 
     bool showSynthWindow = false;
     bool showEntitiesWindow = false;
     bool showDemoWindow = false;
     float const fixedTimeStep = 1.f / 60.f;
-    bool paused = false;
-    EntityEditingContext entityEditingContext;
+    bool paused = false;    
     while(!glfwWindowShouldClose(window)) {
 
         int windowWidth, windowHeight;
@@ -536,11 +463,6 @@ int main(int argc, char** argv) {
     ImGui::DestroyContext();
 
     glfwTerminate();
-
-    if (saveFilename.has_value()) {
-        std::cout << "saving to " << saveFilename.value() << std::endl;
-        SaveEntities(saveFilename->c_str(), entityManager);
-    }
 
     // NOTE: Do not use BeatClock after shutting down audio.
     if (audio::ShutDown(audioContext) != paNoError) {

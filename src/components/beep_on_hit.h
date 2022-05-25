@@ -27,6 +27,8 @@ public:
 
     virtual bool DrawImGui() override;
 
+    virtual void OnEditPick() override;
+
     std::weak_ptr<TransformComponent> _t;
     audio::Context* _audio = nullptr;
     BeatClock const* _beatClock = nullptr;
@@ -34,4 +36,7 @@ public:
     std::array<int, 4> _midiNotes;
     double _lastScheduledEvent = -1.0;
     bool _wasHit = false;
+
+private:
+    void PlayNotesOnNextDenom(double denom);
 };
