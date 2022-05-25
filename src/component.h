@@ -63,6 +63,7 @@ public:
     // If true, request that we try reconnecting the entity's components.
     virtual bool DrawImGui();
     virtual void OnEditPick() {}
+    virtual void EditModeUpdate(float dt) {}
 };
 
 class Entity {
@@ -87,6 +88,14 @@ public:
         for (auto& c : _components) {
             if (c->_active) {
                 c->_c->Update(dt);
+            }            
+        }
+    }
+
+    void EditModeUpdate(float dt) {
+        for (auto& c : _components) {
+            if (c->_active) {
+                c->_c->EditModeUpdate(dt);
             }            
         }
     }
@@ -303,6 +312,12 @@ public:
     void Update(float dt) {
         for (auto& e : _entities) {
             e->Update(dt);
+        }
+    }
+
+    void EditModeUpdate(float dt) {
+        for (auto& e : _entities) {
+            e->EditModeUpdate(dt);
         }
     }
     

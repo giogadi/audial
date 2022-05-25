@@ -415,8 +415,11 @@ int main(int argc, char** argv) {
             showDemoWindow = !showDemoWindow;
         }
 
-        if (!editMode) {
+        if (editMode) {
+            entityManager.EditModeUpdate(dt);
+        } else {
             entityManager.Update(dt);
+            // TODO do we wanna run collision manager during edit mode?
             collisionManager.Update(dt);
         }
 

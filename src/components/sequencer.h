@@ -44,8 +44,20 @@ public:
         }
     }
 
+    void EditModeUpdate(float const dt) override {
+        if (_editUpdateEnabled) {
+            Update(dt);
+        }
+    }
+
+    bool DrawImGui() override {
+        ImGui::Checkbox("Update in edit mode", &_editUpdateEnabled);
+        return false;
+    }
+
     audio::Context* _audio = nullptr;
     BeatClock const* _beatClock = nullptr;
     std::vector<audio::Event> _events;
+    bool _editUpdateEnabled = true;
     int _currentIx = 0;
 };
