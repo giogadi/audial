@@ -6,6 +6,7 @@
 #include "input_manager.h"
 #include "entity_picking.h"
 #include "renderer.h"
+#include "constants.h"
 
 void EntityEditingContext::Update(
     float dt, bool editMode, GameManager const& g, int windowWidth, int windowHeight) {
@@ -17,7 +18,7 @@ void EntityEditingContext::Update(
     g._inputManager->GetMousePos(mouseX, mouseY);
     if (g._inputManager->IsKeyPressedThisFrame(InputManager::MouseButton::Left)) {
         // TODO: ENSURE RENDERER USES THESE SAME VALUES
-        float const fovy = 45.f;
+        float const fovy = 45.f * kPi / 180.f;
         float const aspectRatio = float(windowWidth) / float(windowHeight);
         float const zNear = 0.1f;
 
