@@ -73,37 +73,35 @@ Mat4 CameraComponent::GetViewMatrix() const {
 }
 
 void CameraComponent::Update(float dt) {
-    return;
+    // Vec3 inputVec(0.f,0.f,0.f);
+    // if (_input->IsKeyPressed(InputManager::Key::W)) {
+    //     inputVec._z -= 1.0f;
+    // }
+    // if (_input->IsKeyPressed(InputManager::Key::S)) {
+    //     inputVec._z += 1.0f;
+    // }
+    // if (_input->IsKeyPressed(InputManager::Key::A)) {
+    //     inputVec._x -= 1.0f;
+    // }
+    // if (_input->IsKeyPressed(InputManager::Key::D)) {
+    //     inputVec._x += 1.0f;
+    // }
+    // if (_input->IsKeyPressed(InputManager::Key::Q)) {
+    //     inputVec._y += 1.0f;
+    // }
+    // if (_input->IsKeyPressed(InputManager::Key::E)) {
+    //     inputVec._y -= 1.0f;
+    // }
 
-    Vec3 inputVec(0.f,0.f,0.f);
-    if (_input->IsKeyPressed(InputManager::Key::W)) {
-        inputVec._z -= 1.0f;
-    }
-    if (_input->IsKeyPressed(InputManager::Key::S)) {
-        inputVec._z += 1.0f;
-    }
-    if (_input->IsKeyPressed(InputManager::Key::A)) {
-        inputVec._x -= 1.0f;
-    }
-    if (_input->IsKeyPressed(InputManager::Key::D)) {
-        inputVec._x += 1.0f;
-    }
-    if (_input->IsKeyPressed(InputManager::Key::Q)) {
-        inputVec._y += 1.0f;
-    }
-    if (_input->IsKeyPressed(InputManager::Key::E)) {
-        inputVec._y -= 1.0f;
-    }
+    // if (inputVec._x == 0.f && inputVec._y == 0.f && inputVec._z == 0.f) {
+    //     return;
+    // }
 
-    if (inputVec._x == 0.f && inputVec._y == 0.f && inputVec._z == 0.f) {
-        return;
-    }
-
-    float const kSpeed = 5.0f;
-    Vec3 translation = dt * kSpeed * inputVec.GetNormalized();
-    auto transform = _transform.lock();
-    Vec3 newPos = transform->GetPos() + translation;
-    transform->SetPos(newPos);
+    // float const kSpeed = 5.0f;
+    // Vec3 translation = dt * kSpeed * inputVec.GetNormalized();
+    // auto transform = _transform.lock();
+    // Vec3 newPos = transform->GetPos() + translation;
+    // transform->SetPos(newPos);
 }
 
 void SceneManager::Draw(int windowWidth, int windowHeight) {

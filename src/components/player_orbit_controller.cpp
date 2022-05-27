@@ -189,17 +189,15 @@ bool PlayerOrbitControllerComponent::UpdateAttackState(float dt, bool newState) 
     // triple the speed for a brief time, then decelerate.
     if (newState || _input->IsKeyPressedThisFrame(InputManager::Key::J)) {
         _stateTimer = 0.f;
-        // TODO: compute this only once before state machine
-        // _attackDir = GetInputVec(*_input);
-        // _attackDir = rb._velocity.GetNormalized();
+        // TODO: compute inputVec only once before state machine
         Vec3 const inputVec = GetInputVec(*_input);
         _attackDir = DecideAttackDir(inputVec);
         if (inputVec.IsZero()) {
             _dribbleRadialSpeed = -kAttackSpeed;
         } else {
             _dribbleRadialSpeed.reset();
+            rb._velocity = _attackDir * kAttackSpeed;
         }
-        rb._velocity = _attackDir * kAttackSpeed;
         rb._layer = CollisionLayer::BodyAttack;
     }
 
@@ -209,31 +207,34 @@ bool PlayerOrbitControllerComponent::UpdateAttackState(float dt, bool newState) 
         Vec3 const planetToPlayer = playerPos - planetPos;        
 
         float currentAngle = XZToAngle(planetToPlayer._x, planetToPlayer._z);
-        float newAngle = currentAngle + kOrbitSpeed*dt;   
-        // float newRange = currentRange + 0.05f*(kDesiredRange - currentRange);
-        float newSpeed = 0.f;
+        float newAngle = currentAngle + kOrbitSpeed*dt; 
         if (_dribbleRadialSpeed.value() > 0) {
-            newSpeed = *_dribbleRadialSpeed - kDecel * dt;
+            *_dribbleRadialSpeed -= kDecel * dt;
         } else {
-            newSpeed = *_dribbleRadialSpeed + kDecel * dt;
+            *_dribbleRadialSpeed += kDecel * dt;
         }
-        _dribbleRadialSpeed = newSpeed;
-        if (fabs(newSpeed) < 0.5f*kIdleSpeed) {
+        if (fabs(*_dribbleRadialSpeed) < 0.5f*kIdleSpeed) {
             _state = State::Idle;
+            _dribbleRadialSpeed.reset();
             return true;
         }
 
         // 
         Vec3 newPlanetToPlayerDir(0.f,0.f,0.f);
-        AngleToXZ(newAngle, newPlanetToPlayerDir._x, newPlanetToPlayerDir._y);        
-        Vec3 playerRadialVel = -newPlanetToPlayerDir * _dribbleRadialSpeed.value();
+        AngleToXZ(newAngle, newPlanetToPlayerDir._x, newPlanetToPlayerDir._z);        
+        Vec3 playerRadialVel = newPlanetToPlayerDir * _dribbleRadialSpeed.value();
 
         float currentRadius = planetToPlayer.Length();
         float newRadius = currentRadius + *_dribbleRadialSpeed * dt;
         Vec3 tangentDir = Vec3::Cross(Vec3(0.f,1.f,0.f), newPlanetToPlayerDir);
         Vec3 playerTangentVel = newRadius * kOrbitSpeed * tangentDir;
 
+        // this part ensures that our overall velocity tracks the general
+        // accel-decel curve on dribbleRadialSpeed. This makes dribbles feel
+        // consistent with regular dashes.
         rb._velocity = playerRadialVel + playerTangentVel;
+        float maxVel = std::min(rb._velocity.Length(), fabs(*_dribbleRadialSpeed));
+        rb._velocity = rb._velocity.GetNormalized() * maxVel;
     } else {
         // Non-dribble
         Vec3 decel = -_attackDir * kDecel;
