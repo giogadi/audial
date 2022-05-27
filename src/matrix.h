@@ -34,6 +34,10 @@ struct Vec3 {
 
     Vec3 GetNormalized() const;
 
+    float IsZero() const {
+        return _x == 0.f && _y == 0.f && _z == 0.f;
+    }
+
     float& operator[](int i) {
         return _data[i];
     }

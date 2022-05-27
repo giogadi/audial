@@ -189,7 +189,7 @@
 				<m._static>false</m._static>
 				<m._layer>Solid</m._layer>
 			</RigidBody>
-			<component_type>PlayerController</component_type>
+			<component_type>PlayerOrbitController</component_type>
 			<PlayerController/>
 		</entity>
 		<entity>

@@ -27,7 +27,8 @@ class EntityManager;
     X(RigidBody) \
     X(PlayerController) \
     X(BeepOnHit) \
-    X(Sequencer)
+    X(Sequencer) \
+    X(PlayerOrbitController)
 
 enum class ComponentType: int {
 #   define X(a) a,

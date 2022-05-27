@@ -10,6 +10,7 @@
 #include "components/rigid_body.h"
 #include "components/beep_on_hit.h"
 #include "components/player_controller.h"
+#include "components/player_orbit_controller.h"
 #include "components/sequencer.h"
 #include "audio_util.h"
 #include "enums/CollisionLayer_cereal.h"
@@ -99,6 +100,10 @@ void serialize(Archive& ar, BeepOnHitComponent& m) {
 
 template<typename Archive>
 void serialize(Archive& ar, PlayerControllerComponent& m) {
+}
+
+template<typename Archive>
+void serialize(Archive& ar, PlayerOrbitControllerComponent& m) {
 }
 
 template<typename Archive>
