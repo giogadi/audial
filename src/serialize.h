@@ -14,6 +14,7 @@
 #include "components/sequencer.h"
 #include "audio_util.h"
 #include "enums/CollisionLayer_cereal.h"
+#include "components/camera_controller.h"
 
 template<typename Archive>
 void serialize(Archive& ar, Vec3& v) {
@@ -109,4 +110,10 @@ void serialize(Archive& ar, PlayerOrbitControllerComponent& m) {
 template<typename Archive>
 void serialize(Archive& ar, SequencerComponent& m) {
     ar(cereal::make_nvp("events", m._events));
+}
+
+template<typename Archive>
+void serialize(Archive& ar, CameraControllerComponent& m) {
+    ar(cereal::make_nvp("target_entity_name", m._targetName));
+    ar(cereal::make_nvp("tracking_factor", m._trackingFactor));
 }

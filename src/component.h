@@ -28,7 +28,8 @@ class EntityManager;
     X(PlayerController) \
     X(BeepOnHit) \
     X(Sequencer) \
-    X(PlayerOrbitController)
+    X(PlayerOrbitController) \
+    X(CameraController)
 
 enum class ComponentType: int {
 #   define X(a) a,
@@ -330,6 +331,15 @@ public:
                 pEntity->ConnectComponentsOrDeactivate(g, /*failures=*/nullptr);
             }
         }
+    }
+
+    std::weak_ptr<Entity> FindEntityByName(char const* name) {
+        for (auto const& pEntity : _entities) {
+            if (pEntity->_name == name) {
+                return pEntity;
+            }
+        }
+        return std::weak_ptr<Entity>();
     }
 
     std::vector<std::shared_ptr<Entity>> _entities;

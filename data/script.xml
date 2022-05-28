@@ -4,7 +4,7 @@
 		<num_entities>8</num_entities>
 		<entity>
 			<e._name>camera</e._name>
-			<num_components>2</num_components>
+			<num_components>3</num_components>
 			<component_type>Transform</component_type>
 			<Transform>
 				<t._transform>
@@ -28,6 +28,11 @@
 			</Transform>
 			<component_type>Camera</component_type>
 			<Camera/>
+			<component_type>CameraController</component_type>
+			<CameraController>
+				<target_entity_name>player</target_entity_name>
+				<tracking_factor>0.05000000074505806</tracking_factor>
+			</CameraController>
 		</entity>
 		<entity>
 			<e._name>light</e._name>
@@ -190,7 +195,7 @@
 				<m._layer>Solid</m._layer>
 			</RigidBody>
 			<component_type>PlayerOrbitController</component_type>
-			<PlayerController/>
+			<PlayerOrbitController/>
 		</entity>
 		<entity>
 			<e._name>drone_seq</e._name>
