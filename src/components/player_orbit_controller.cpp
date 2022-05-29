@@ -165,7 +165,12 @@ Vec3 PlayerOrbitControllerComponent::DecideAttackDir(Vec3 const& inputVec) const
         Vec3 const& planetPos = currentPlanet->GetPos();
         return (planetPos - playerPos).GetNormalized();
     }
-    float closestAngleDot = -1.f;
+
+    // look for planets within a code 45 degrees wide around inputVec. Means
+    // angle from planet to inputVec can't be > 45/2 degrees. dot product is
+    // cos(angle), so we check if dot product > cos(22.5 * pi / 180)
+    float constexpr kMinDotWithInput = 0.923879533f;
+    float closestDist = std::numeric_limits<float>::max();
     Vec3 attackDir = inputVec;
     for (std::shared_ptr<Entity> const& e : _entityMgr->_entities) {
         std::shared_ptr<BeepOnHitComponent> planet = e->FindComponentOfType<BeepOnHitComponent>().lock();
@@ -173,10 +178,19 @@ Vec3 PlayerOrbitControllerComponent::DecideAttackDir(Vec3 const& inputVec) const
             continue;
         }
         Vec3 const& planetPos = planet->_t.lock()->GetPos();
-        Vec3 fromPlayerToPlanetDir = (planetPos - playerPos).GetNormalized();
-        float angleDot = Vec3::Dot(fromPlayerToPlanetDir, inputVec);
-        if (angleDot > closestAngleDot) {
-            closestAngleDot = angleDot;
+        Vec3 fromPlayerToPlanetDir = planetPos - playerPos;
+        float dist = fromPlayerToPlanetDir.Length();
+        if (dist == 0.f) {
+            continue;
+        }
+        fromPlayerToPlanetDir *= (1.f / dist);
+        float dotWithInput = Vec3::Dot(fromPlayerToPlanetDir, inputVec);
+        if (dotWithInput < kMinDotWithInput) {
+            continue;
+        }
+
+        if (dist < closestDist) {            
+            closestDist = dist;
             attackDir = fromPlayerToPlanetDir;
         }
     }
