@@ -30,6 +30,7 @@ public:
     virtual void OnEditPick() override;
 
     std::weak_ptr<TransformComponent> _t;
+    std::weak_ptr<RigidBodyComponent> _rb;
     audio::Context* _audio = nullptr;
     BeatClock const* _beatClock = nullptr;
     int _synthChannel = 0;

@@ -9,22 +9,25 @@
 #include "rigid_body.h"
 
 bool BeepOnHitComponent::ConnectComponents(Entity& e, GameManager& g) {
-    bool success = true;
     _t = e.FindComponentOfType<TransformComponent>();
     if (_t.expired()) {
-        success = false;
+        return false;
+    }
+    _rb = e.FindComponentOfType<RigidBodyComponent>();
+    if (_rb.expired()) {
+        return false;
     }
     _audio = g._audioContext;
     _beatClock = g._beatClock;
     std::weak_ptr<RigidBodyComponent> pRb = e.FindComponentOfType<RigidBodyComponent>();
     if (pRb.expired()) {
-        success = false;
-    } else {
-        std::weak_ptr<BeepOnHitComponent> pBeep = e.FindComponentOfType<BeepOnHitComponent>();
-        RigidBodyComponent& rb = *pRb.lock();
-        rb.SetOnHitCallback(std::bind(&BeepOnHitComponent::OnHit, pBeep, std::placeholders::_1));
+        return false;
     }
-    return success;
+    std::weak_ptr<BeepOnHitComponent> pBeep = e.FindComponentOfType<BeepOnHitComponent>();
+    RigidBodyComponent& rb = *pRb.lock();
+    rb.SetOnHitCallback(std::bind(&BeepOnHitComponent::OnHit, pBeep, std::placeholders::_1));
+    rb._layer = CollisionLayer::None;
+    return true;
 }
 
 void BeepOnHitComponent::OnHit(

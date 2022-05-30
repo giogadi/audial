@@ -1,5 +1,13 @@
 #include "collisions.h"
 
+namespace {
+    bool gCollisionMatrix [static_cast<int>(CollisionLayer::Count)][static_cast<int>(CollisionLayer::Count)] = {
+        { 0, 0, 0 }, // None
+        { 0, 1, 1 }, // Solid
+        { 0, 1, 1 }, // BodyAttack
+    };    
+}
+
 void CollisionManager::AddBody(std::weak_ptr<RigidBodyComponent> body) {
     _bodies.push_back(body);
 }
@@ -78,8 +86,11 @@ void CollisionManager::Update(float dt) {
 
     for (int i = 0; i < _bodies.size(); ++i) {
         RigidBodyComponent& rb1 = *_bodies[i].lock();
-        for (int j = (i+1); j < _bodies.size(); ++j) {      
-            RigidBodyComponent& rb2 = *_bodies[j].lock(); 
+        for (int j = (i+1); j < _bodies.size(); ++j) {                  
+            RigidBodyComponent& rb2 = *_bodies[j].lock();
+            if (!gCollisionMatrix[static_cast<int>(rb1._layer)][static_cast<int>(rb2._layer)]) {
+                continue;
+            }
             if (!aabbOverlap(newAabbs[i], newAabbs[j])) {
                 continue;
             }

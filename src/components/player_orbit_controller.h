@@ -7,6 +7,7 @@
 
 class RigidBodyComponent;
 class InputManager;
+class BeepOnHitComponent;
 
 class PlayerOrbitControllerComponent : public Component {
 public:
@@ -26,7 +27,7 @@ public:
 
     bool UpdateAttackState(float dt, bool newState);
 
-    Vec3 DecideAttackDir(Vec3 const& inputVec) const;
+    bool PickNextPlanetToOrbit(Vec3 const& inputVec, Vec3& dashDir);
 
     static void OnHit(
         std::weak_ptr<PlayerOrbitControllerComponent> thisComp, std::weak_ptr<RigidBodyComponent> other);
@@ -37,7 +38,7 @@ public:
     
     std::weak_ptr<TransformComponent> _transform;
     std::weak_ptr<RigidBodyComponent> _rb;
-    std::weak_ptr<TransformComponent> _planetWeOrbit;
+    std::weak_ptr<BeepOnHitComponent> _planetWeOrbit;
     InputManager const* _input = nullptr;
     // For finding planets to orbit. Maybe we'll want a PlanetManager for this later.
     EntityManager const* _entityMgr = nullptr;

@@ -111,14 +111,6 @@ bool PlayerOrbitControllerComponent::UpdateIdleState(float dt, bool newState) {
     RigidBodyComponent& rb = *_rb.lock();
     if (newState) {
         rb._layer = CollisionLayer::Solid;
-        // Are we within range of a planet? If so, start orbiting it!
-        std::weak_ptr<Entity> pPlanet =
-            FindClosestPlanetInRange(_entityMgr, kOrbitRange, _transform.lock()->GetPos());
-        if (!pPlanet.expired()) {
-            auto const& planet = pPlanet.lock();
-            std::cout << "ORBITING " << planet->_name << std::endl;
-            _planetWeOrbit = planet->FindComponentOfType<TransformComponent>();
-        }
     }
 
     // Check for attack transition
@@ -128,10 +120,10 @@ bool PlayerOrbitControllerComponent::UpdateIdleState(float dt, bool newState) {
         return true;
     }
 
-    if (std::shared_ptr<TransformComponent> planet = _planetWeOrbit.lock()) {
+    if (std::shared_ptr<BeepOnHitComponent> planet = _planetWeOrbit.lock()) {
         // Gradually push/pull ourselves into the desired range of the planet.
         Vec3 const playerPos = _transform.lock()->GetPos();
-        Vec3 const planetPos = planet->GetPos();
+        Vec3 const planetPos = planet->_t.lock()->GetPos();
         Vec3 planetToPlayer = playerPos - planetPos;
         float currentRange = planetToPlayer.Length();
         float kDesiredRange = 3.f;
@@ -158,23 +150,35 @@ bool PlayerOrbitControllerComponent::UpdateIdleState(float dt, bool newState) {
     return false;
 }
 
-Vec3 PlayerOrbitControllerComponent::DecideAttackDir(Vec3 const& inputVec) const {
-    Vec3 const& playerPos = _transform.lock()->GetPos();
+bool PlayerOrbitControllerComponent::PickNextPlanetToOrbit(Vec3 const& inputVec, Vec3& dashDir) {
+    Vec3 playerPos = _transform.lock()->GetPos();
     if (inputVec.IsZero()) {
+        // Don't change planets
         auto currentPlanet = _planetWeOrbit.lock();
-        Vec3 const& planetPos = currentPlanet->GetPos();
-        return (planetPos - playerPos).GetNormalized();
+        if (currentPlanet) {
+            Vec3 const& planetPos = currentPlanet->_t.lock()->GetPos();
+            dashDir = (planetPos - playerPos).GetNormalized();
+            return true;
+        } else {
+            return false;
+        }        
     }
 
-    // look for planets within a code 45 degrees wide around inputVec. Means
-    // angle from planet to inputVec can't be > 45/2 degrees. dot product is
-    // cos(angle), so we check if dot product > cos(22.5 * pi / 180)
-    float constexpr kMinDotWithInput = 0.923879533f;
+    // WE USE CURRENTLY ORBITED PLANET AS REFERENCE, NOT PLAYER
+    float constexpr kMinDotWithInput = 0.707106781f;
     float closestDist = std::numeric_limits<float>::max();
-    Vec3 attackDir = inputVec;
+    dashDir = inputVec;
+    std::shared_ptr<BeepOnHitComponent> currentPlanet = _planetWeOrbit.lock();
+    std::shared_ptr<BeepOnHitComponent> potentialNewPlanet;
+    if (currentPlanet) {
+        playerPos = currentPlanet->_t.lock()->GetPos();
+    }
     for (std::shared_ptr<Entity> const& e : _entityMgr->_entities) {
         std::shared_ptr<BeepOnHitComponent> planet = e->FindComponentOfType<BeepOnHitComponent>().lock();
         if (planet == nullptr) {
+            continue;
+        }
+        if (planet == currentPlanet) {
             continue;
         }
         Vec3 const& planetPos = planet->_t.lock()->GetPos();
@@ -190,33 +194,55 @@ Vec3 PlayerOrbitControllerComponent::DecideAttackDir(Vec3 const& inputVec) const
         }
 
         if (dist < closestDist) {            
-            closestDist = dist;
-            attackDir = fromPlayerToPlanetDir;
+            closestDist = dist;        
+            potentialNewPlanet = planet;
+            dashDir = (planetPos - _transform.lock()->GetPos()).GetNormalized();
         }
     }
 
-    return attackDir;
+    if (currentPlanet) {
+        currentPlanet->_rb.lock()->_layer = CollisionLayer::None;
+    }
+    if (potentialNewPlanet) {
+        potentialNewPlanet->_rb.lock()->_layer = CollisionLayer::Solid;
+    }    
+    _planetWeOrbit = potentialNewPlanet;
+
+    return true;
 }
 
 bool PlayerOrbitControllerComponent::UpdateAttackState(float dt, bool newState) {
     RigidBodyComponent& rb = *_rb.lock();
     // triple the speed for a brief time, then decelerate.
+    // Also pick the new planet to orbit
     if (newState || _input->IsKeyPressedThisFrame(InputManager::Key::J)) {
         _stateTimer = 0.f;
         // TODO: compute inputVec only once before state machine
         Vec3 const inputVec = GetInputVec(*_input);
-        _attackDir = DecideAttackDir(inputVec);
+
+        Vec3 dashDir(0.f,0.f,0.f);
+        if (!PickNextPlanetToOrbit(inputVec, dashDir)) {
+            // Not dashing. just skip this update this frame and then we'll go
+            // back to idle. NOTE: we don't go immediately back to idle here
+            // because it might cause an infinite loop of the state machine,
+            // lmao.
+            _state = State::Idle;
+            return false;
+        }
+
+        _attackDir = dashDir;
         if (inputVec.IsZero()) {
             _dribbleRadialSpeed = -kAttackSpeed;
         } else {
             _dribbleRadialSpeed.reset();
             rb._velocity = _attackDir * kAttackSpeed;
         }
+
         rb._layer = CollisionLayer::BodyAttack;
     }
 
     if (_dribbleRadialSpeed.has_value()) {
-        Vec3 const planetPos = _planetWeOrbit.lock()->GetPos();
+        Vec3 const planetPos = _planetWeOrbit.lock()->_t.lock()->GetPos();
         Vec3 const playerPos = _transform.lock()->GetPos();
         Vec3 const planetToPlayer = playerPos - planetPos;        
 
@@ -275,7 +301,7 @@ void PlayerOrbitControllerComponent::OnHit(
         // TODO: add tangent component of speed here
         // TODO: why do we need to update velocity AND dribble radial / attackdir?
         Vec3 const planetToPlayerDir =
-            (player->_transform.lock()->GetPos() - player->_planetWeOrbit.lock()->GetPos()).GetNormalized();
+            (player->_transform.lock()->GetPos() - player->_planetWeOrbit.lock()->_t.lock()->GetPos()).GetNormalized();
         rb._velocity = planetToPlayerDir * player->_dribbleRadialSpeed.value();
     } else {
         player->_attackDir = -player->_attackDir;        
