@@ -103,6 +103,13 @@ namespace {
         x = cos(radians);
         z = -sin(radians);
     }
+    bool WasDashKeyPressedThisFrame(InputManager const& input) {
+        return input.IsKeyPressedThisFrame(InputManager::Key::W) ||
+            input.IsKeyPressedThisFrame(InputManager::Key::S) ||
+            input.IsKeyPressedThisFrame(InputManager::Key::A) ||
+            input.IsKeyPressedThisFrame(InputManager::Key::D) ||
+            input.IsKeyPressedThisFrame(InputManager::Key::J);
+    }
 }
 
 bool PlayerOrbitControllerComponent::UpdateIdleState(float dt, bool newState) {
@@ -114,8 +121,7 @@ bool PlayerOrbitControllerComponent::UpdateIdleState(float dt, bool newState) {
     }
 
     // Check for attack transition
-    if (_input->IsKeyPressedThisFrame(InputManager::Key::J) &&
-        rb._velocity.Length2() > 0.1f*0.1f) {
+    if (WasDashKeyPressedThisFrame(*_input)) {
         _state = State::Attacking;
         return true;
     }
@@ -215,7 +221,7 @@ bool PlayerOrbitControllerComponent::UpdateAttackState(float dt, bool newState) 
     RigidBodyComponent& rb = *_rb.lock();
     // triple the speed for a brief time, then decelerate.
     // Also pick the new planet to orbit
-    if (newState || _input->IsKeyPressedThisFrame(InputManager::Key::J)) {
+    if (newState || WasDashKeyPressedThisFrame(*_input)) {
         _stateTimer = 0.f;
         // TODO: compute inputVec only once before state machine
         Vec3 const inputVec = GetInputVec(*_input);
