@@ -4,7 +4,7 @@
 
 #include "components/rigid_body.h"
 #include "input_manager.h"
-#include "components/beep_on_hit.h"
+#include "components/orbitable.h"
 #include "constants.h"
 
 namespace {
@@ -27,7 +27,7 @@ bool PlayerOrbitControllerComponent::ConnectComponents(Entity& e, GameManager& g
     } else {
         std::weak_ptr<PlayerOrbitControllerComponent> pComp =
             e.FindComponentOfType<PlayerOrbitControllerComponent>();
-        _rb.lock()->SetOnHitCallback(
+        _rb.lock()->AddOnHitCallback(
             std::bind(&PlayerOrbitControllerComponent::OnHit, pComp, std::placeholders::_1));
     }    
     _input = g._inputManager;
@@ -53,14 +53,13 @@ void PlayerOrbitControllerComponent::Update(float dt) {
 }
 
 namespace {
-    // For now, we're looking for BeepOnHit, but we'll probably want a Planet component
     std::weak_ptr<Entity> FindClosestPlanetInRange(
         EntityManager const* entityMgr, float const range, Vec3 const& playerPos) {
         
         std::weak_ptr<Entity> closest;
         float closestDist2 = range * range;
         for (std::shared_ptr<Entity> const& e : entityMgr->_entities) {
-            std::shared_ptr<BeepOnHitComponent> planet = e->FindComponentOfType<BeepOnHitComponent>().lock();
+            std::shared_ptr<OrbitableComponent> planet = e->FindComponentOfType<OrbitableComponent>().lock();
             if (planet == nullptr) {
                 continue;
             }
@@ -126,7 +125,7 @@ bool PlayerOrbitControllerComponent::UpdateIdleState(float dt, bool newState) {
         return true;
     }
 
-    if (std::shared_ptr<BeepOnHitComponent> planet = _planetWeOrbit.lock()) {
+    if (std::shared_ptr<OrbitableComponent> planet = _planetWeOrbit.lock()) {
         // Gradually push/pull ourselves into the desired range of the planet.
         Vec3 const playerPos = _transform.lock()->GetPos();
         Vec3 const planetPos = planet->_t.lock()->GetPos();
@@ -174,13 +173,13 @@ bool PlayerOrbitControllerComponent::PickNextPlanetToOrbit(Vec3 const& inputVec,
     float constexpr kMinDotWithInput = 0.707106781f;
     float closestDist = std::numeric_limits<float>::max();
     dashDir = inputVec;
-    std::shared_ptr<BeepOnHitComponent> currentPlanet = _planetWeOrbit.lock();
-    std::shared_ptr<BeepOnHitComponent> potentialNewPlanet;
+    std::shared_ptr<OrbitableComponent> currentPlanet = _planetWeOrbit.lock();
+    std::shared_ptr<OrbitableComponent> potentialNewPlanet;
     if (currentPlanet) {
         playerPos = currentPlanet->_t.lock()->GetPos();
     }
     for (std::shared_ptr<Entity> const& e : _entityMgr->_entities) {
-        std::shared_ptr<BeepOnHitComponent> planet = e->FindComponentOfType<BeepOnHitComponent>().lock();
+        std::shared_ptr<OrbitableComponent> planet = e->FindComponentOfType<OrbitableComponent>().lock();
         if (planet == nullptr) {
             continue;
         }

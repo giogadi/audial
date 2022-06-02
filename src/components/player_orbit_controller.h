@@ -7,7 +7,7 @@
 
 class RigidBodyComponent;
 class InputManager;
-class BeepOnHitComponent;
+class OrbitableComponent;
 
 class PlayerOrbitControllerComponent : public Component {
 public:
@@ -38,7 +38,7 @@ public:
     
     std::weak_ptr<TransformComponent> _transform;
     std::weak_ptr<RigidBodyComponent> _rb;
-    std::weak_ptr<BeepOnHitComponent> _planetWeOrbit;
+    std::weak_ptr<OrbitableComponent> _planetWeOrbit;
     InputManager const* _input = nullptr;
     // For finding planets to orbit. Maybe we'll want a PlanetManager for this later.
     EntityManager const* _entityMgr = nullptr;

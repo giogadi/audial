@@ -8,11 +8,6 @@ namespace {{ns}} {
 {% endfor %}
 
 namespace {
-char const* g{{enumName}}Strings[] = {
-	{% for item in enumItems %}
-    "{{item}}"{% if not loop.last %},{% endif %}
-    {% endfor %}
-};
 
 std::unordered_map<std::string, {{enumName}}> const gStringTo{{enumName}} = {
     {% for item in enumItems %}
@@ -21,6 +16,12 @@ std::unordered_map<std::string, {{enumName}}> const gStringTo{{enumName}} = {
 };
 
 } // end namespace
+
+char const* g{{enumName}}Strings[] = {
+	{% for item in enumItems %}
+    "{{item}}"{% if not loop.last %},{% endif %}
+    {% endfor %}
+};
 
 char const* {{enumName}}ToString({{enumName}} e) {
 	return g{{enumName}}Strings[static_cast<int>(e)];

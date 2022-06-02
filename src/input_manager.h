@@ -8,7 +8,7 @@
 class InputManager {
 public:
     enum class Key : int {
-        W,S,A,D,E,Q,J,Y,Escape,Space,Right,NumKeys
+        W,S,A,D,E,Q,J,Y,H,Escape,Space,Right,NumKeys
     };
     enum class MouseButton : int {
         Left,Right,Middle,Count
@@ -74,6 +74,7 @@ private:
             case Key::Q: return GLFW_KEY_Q;
             case Key::J: return GLFW_KEY_J;
             case Key::Y: return GLFW_KEY_Y;
+            case Key::H: return GLFW_KEY_H;
             case Key::Escape: return GLFW_KEY_ESCAPE;
             case Key::Space: return GLFW_KEY_SPACE;
             case Key::Right: return GLFW_KEY_RIGHT;

@@ -18,6 +18,7 @@ enum class EventType : int {
     
     Count
 };
+extern char const* gEventTypeStrings[];
 char const* EventTypeToString(EventType e);
 EventType StringToEventType(char const* s);
 

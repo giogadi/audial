@@ -123,8 +123,8 @@ void CollisionManager::Update(float dt) {
     for (int i = 0; i < _bodies.size(); ++i) {
         RigidBodyComponent& rb = *_bodies[i].lock();
         rb._transform.lock()->SetPos(newPositions[i]);
-        if (hits[i] && rb._onHitCallback) {
-            rb._onHitCallback(hitOthers[i]);
+        if (hits[i]) {
+            rb.InvokeCallbacks(hitOthers[i]);
         }
     }
 }

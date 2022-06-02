@@ -40,6 +40,7 @@ enum class SynthParamType : int {
     
     Count
 };
+extern char const* gSynthParamTypeStrings[];
 char const* SynthParamTypeToString(SynthParamType e);
 SynthParamType StringToSynthParamType(char const* s);
 

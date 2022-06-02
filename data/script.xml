@@ -20,9 +20,9 @@
 					<m._m12>0.70710676908493042</m._m12>
 					<m._m22>0.70710676908493042</m._m22>
 					<m._m32>0</m._m32>
-					<m._m03>-0.068380028009414673</m._m03>
+					<m._m03>-0.036148238927125931</m._m03>
 					<m._m13>10.606601715087891</m._m13>
-					<m._m23>13.264093399047852</m._m23>
+					<m._m23>11.996316909790039</m._m23>
 					<m._m33>1</m._m33>
 				</t._transform>
 			</Transform>
@@ -74,7 +74,7 @@
 		</entity>
 		<entity>
 			<e._name>note1</e._name>
-			<num_components>5</num_components>
+			<num_components>6</num_components>
 			<component_type>Transform</component_type>
 			<Transform>
 				<t._transform>
@@ -131,7 +131,7 @@
 					</m._max>
 				</m._localAabb>
 				<m._static>true</m._static>
-				<m._layer>Solid</m._layer>
+				<m._layer>None</m._layer>
 			</RigidBody>
 			<component_type>Velocity</component_type>
 			<Velocity>
@@ -142,6 +142,10 @@
 				</v._linear>
 				<v._angularY>6.2831854820251465</v._angularY>
 			</Velocity>
+			<component_type>HitCounter</component_type>
+			<HitCounter>
+				<num_hits>30</num_hits>
+			</HitCounter>
 		</entity>
 		<entity>
 			<e._name>player</e._name>
@@ -226,7 +230,7 @@
 		</entity>
 		<entity>
 			<e._name>note2</e._name>
-			<num_components>5</num_components>
+			<num_components>6</num_components>
 			<component_type>Transform</component_type>
 			<Transform>
 				<t._transform>
@@ -283,7 +287,7 @@
 					</m._max>
 				</m._localAabb>
 				<m._static>true</m._static>
-				<m._layer>Solid</m._layer>
+				<m._layer>None</m._layer>
 			</RigidBody>
 			<component_type>Velocity</component_type>
 			<Velocity>
@@ -294,10 +298,14 @@
 				</v._linear>
 				<v._angularY>6.2831854820251465</v._angularY>
 			</Velocity>
+			<component_type>HitCounter</component_type>
+			<HitCounter>
+				<num_hits>15</num_hits>
+			</HitCounter>
 		</entity>
 		<entity>
 			<e._name>note3</e._name>
-			<num_components>5</num_components>
+			<num_components>6</num_components>
 			<component_type>Transform</component_type>
 			<Transform>
 				<t._transform>
@@ -354,7 +362,7 @@
 					</m._max>
 				</m._localAabb>
 				<m._static>true</m._static>
-				<m._layer>Solid</m._layer>
+				<m._layer>None</m._layer>
 			</RigidBody>
 			<component_type>Velocity</component_type>
 			<Velocity>
@@ -365,6 +373,10 @@
 				</v._linear>
 				<v._angularY>6.2831854820251465</v._angularY>
 			</Velocity>
+			<component_type>HitCounter</component_type>
+			<HitCounter>
+				<num_hits>12</num_hits>
+			</HitCounter>
 		</entity>
 		<entity>
 			<e._name>note4</e._name>
@@ -425,7 +437,7 @@
 					</m._max>
 				</m._localAabb>
 				<m._static>true</m._static>
-				<m._layer>Solid</m._layer>
+				<m._layer>None</m._layer>
 			</RigidBody>
 			<component_type>Velocity</component_type>
 			<Velocity>
@@ -496,7 +508,7 @@
 					</m._max>
 				</m._localAabb>
 				<m._static>true</m._static>
-				<m._layer>Solid</m._layer>
+				<m._layer>None</m._layer>
 			</RigidBody>
 			<component_type>Velocity</component_type>
 			<Velocity>
@@ -567,7 +579,7 @@
 					</m._max>
 				</m._localAabb>
 				<m._static>true</m._static>
-				<m._layer>Solid</m._layer>
+				<m._layer>None</m._layer>
 			</RigidBody>
 			<component_type>Velocity</component_type>
 			<Velocity>
@@ -638,7 +650,7 @@
 					</m._max>
 				</m._localAabb>
 				<m._static>true</m._static>
-				<m._layer>Solid</m._layer>
+				<m._layer>None</m._layer>
 			</RigidBody>
 			<component_type>Velocity</component_type>
 			<Velocity>
@@ -652,7 +664,7 @@
 		</entity>
 		<entity>
 			<e._name>note4-1</e._name>
-			<num_components>5</num_components>
+			<num_components>6</num_components>
 			<component_type>Transform</component_type>
 			<Transform>
 				<t._transform>
@@ -709,7 +721,7 @@
 					</m._max>
 				</m._localAabb>
 				<m._static>true</m._static>
-				<m._layer>Solid</m._layer>
+				<m._layer>None</m._layer>
 			</RigidBody>
 			<component_type>Velocity</component_type>
 			<Velocity>
@@ -720,6 +732,10 @@
 				</v._linear>
 				<v._angularY>6.2831854820251465</v._angularY>
 			</Velocity>
+			<component_type>HitCounter</component_type>
+			<HitCounter>
+				<num_hits>20</num_hits>
+			</HitCounter>
 		</entity>
 		<entity>
 			<e._name>note4-2</e._name>
@@ -780,7 +796,7 @@
 					</m._max>
 				</m._localAabb>
 				<m._static>true</m._static>
-				<m._layer>Solid</m._layer>
+				<m._layer>None</m._layer>
 			</RigidBody>
 			<component_type>Velocity</component_type>
 			<Velocity>
@@ -851,7 +867,7 @@
 					</m._max>
 				</m._localAabb>
 				<m._static>true</m._static>
-				<m._layer>Solid</m._layer>
+				<m._layer>None</m._layer>
 			</RigidBody>
 			<component_type>Velocity</component_type>
 			<Velocity>
@@ -922,7 +938,7 @@
 					</m._max>
 				</m._localAabb>
 				<m._static>true</m._static>
-				<m._layer>Solid</m._layer>
+				<m._layer>None</m._layer>
 			</RigidBody>
 			<component_type>Velocity</component_type>
 			<Velocity>
@@ -993,7 +1009,7 @@
 					</m._max>
 				</m._localAabb>
 				<m._static>true</m._static>
-				<m._layer>Solid</m._layer>
+				<m._layer>None</m._layer>
 			</RigidBody>
 			<component_type>Velocity</component_type>
 			<Velocity>
@@ -1064,7 +1080,7 @@
 					</m._max>
 				</m._localAabb>
 				<m._static>true</m._static>
-				<m._layer>Solid</m._layer>
+				<m._layer>None</m._layer>
 			</RigidBody>
 			<component_type>Velocity</component_type>
 			<Velocity>
@@ -1135,7 +1151,7 @@
 					</m._max>
 				</m._localAabb>
 				<m._static>true</m._static>
-				<m._layer>Solid</m._layer>
+				<m._layer>None</m._layer>
 			</RigidBody>
 			<component_type>Velocity</component_type>
 			<Velocity>

@@ -6,15 +6,6 @@
 
 
 namespace {
-char const* gCollisionLayerStrings[] = {
-	
-    "None",
-    
-    "Solid",
-    
-    "BodyAttack"
-    
-};
 
 std::unordered_map<std::string, CollisionLayer> const gStringToCollisionLayer = {
     
@@ -27,6 +18,16 @@ std::unordered_map<std::string, CollisionLayer> const gStringToCollisionLayer = 
 };
 
 } // end namespace
+
+char const* gCollisionLayerStrings[] = {
+	
+    "None",
+    
+    "Solid",
+    
+    "BodyAttack"
+    
+};
 
 char const* CollisionLayerToString(CollisionLayer e) {
 	return gCollisionLayerStrings[static_cast<int>(e)];

@@ -8,41 +8,6 @@ namespace audio {
 
 
 namespace {
-char const* gSynthParamTypeStrings[] = {
-	
-    "Gain",
-    
-    "Cutoff",
-    
-    "Peak",
-    
-    "PitchLFOGain",
-    
-    "PitchLFOFreq",
-    
-    "CutoffLFOGain",
-    
-    "CutoffLFOFreq",
-    
-    "AmpEnvAttack",
-    
-    "AmpEnvDecay",
-    
-    "AmpEnvSustain",
-    
-    "AmpEnvRelease",
-    
-    "CutoffEnvGain",
-    
-    "CutoffEnvAttack",
-    
-    "CutoffEnvDecay",
-    
-    "CutoffEnvSustain",
-    
-    "CutoffEnvRelease"
-    
-};
 
 std::unordered_map<std::string, SynthParamType> const gStringToSynthParamType = {
     
@@ -81,6 +46,42 @@ std::unordered_map<std::string, SynthParamType> const gStringToSynthParamType = 
 };
 
 } // end namespace
+
+char const* gSynthParamTypeStrings[] = {
+	
+    "Gain",
+    
+    "Cutoff",
+    
+    "Peak",
+    
+    "PitchLFOGain",
+    
+    "PitchLFOFreq",
+    
+    "CutoffLFOGain",
+    
+    "CutoffLFOFreq",
+    
+    "AmpEnvAttack",
+    
+    "AmpEnvDecay",
+    
+    "AmpEnvSustain",
+    
+    "AmpEnvRelease",
+    
+    "CutoffEnvGain",
+    
+    "CutoffEnvAttack",
+    
+    "CutoffEnvDecay",
+    
+    "CutoffEnvSustain",
+    
+    "CutoffEnvRelease"
+    
+};
 
 char const* SynthParamTypeToString(SynthParamType e) {
 	return gSynthParamTypeStrings[static_cast<int>(e)];

@@ -29,7 +29,10 @@ class EntityManager;
     X(BeepOnHit) \
     X(Sequencer) \
     X(PlayerOrbitController) \
-    X(CameraController)
+    X(CameraController) \
+    X(HitCounter) \
+    X(Orbitable) \
+    X(EventsOnHit)
 
 enum class ComponentType: int {
 #   define X(a) a,

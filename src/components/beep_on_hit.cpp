@@ -19,13 +19,9 @@ bool BeepOnHitComponent::ConnectComponents(Entity& e, GameManager& g) {
     }
     _audio = g._audioContext;
     _beatClock = g._beatClock;
-    std::weak_ptr<RigidBodyComponent> pRb = e.FindComponentOfType<RigidBodyComponent>();
-    if (pRb.expired()) {
-        return false;
-    }
-    std::weak_ptr<BeepOnHitComponent> pBeep = e.FindComponentOfType<BeepOnHitComponent>();
-    RigidBodyComponent& rb = *pRb.lock();
-    rb.SetOnHitCallback(std::bind(&BeepOnHitComponent::OnHit, pBeep, std::placeholders::_1));
+    auto pThisComp = e.FindComponentOfType<BeepOnHitComponent>();  
+    RigidBodyComponent& rb = *_rb.lock();
+    rb.AddOnHitCallback(std::bind(&BeepOnHitComponent::OnHit, pThisComp, std::placeholders::_1));
     rb._layer = CollisionLayer::None;
     return true;
 }

@@ -15,6 +15,9 @@
 #include "audio_util.h"
 #include "enums/CollisionLayer_cereal.h"
 #include "components/camera_controller.h"
+#include "components/hit_counter.h"
+#include "components/orbitable.h"
+#include "components/events_on_hit.h"
 
 template<typename Archive>
 void serialize(Archive& ar, Vec3& v) {
@@ -116,4 +119,18 @@ template<typename Archive>
 void serialize(Archive& ar, CameraControllerComponent& m) {
     ar(cereal::make_nvp("target_entity_name", m._targetName));
     ar(cereal::make_nvp("tracking_factor", m._trackingFactor));
+}
+
+template<typename Archive>
+void serialize(Archive& ar, HitCounterComponent& m) {
+    ar(cereal::make_nvp("num_hits", m._hitsRemaining));
+}
+
+template<typename Archive>
+void serialize(Archive& ar, OrbitableComponent& m) {}
+
+template<typename Archive>
+void serialize(Archive& ar, EventsOnHitComponent& m) {
+    ar(cereal::make_nvp("denom", m._denom));
+    ar(cereal::make_nvp("events", m._events));    
 }

@@ -10,6 +10,7 @@ enum class {{enumName}} : int {
     {% endfor %}
     Count
 };
+extern char const* g{{enumName}}Strings[];
 char const* {{enumName}}ToString({{enumName}} e);
 {{enumName}} StringTo{{enumName}}(char const* s);
 

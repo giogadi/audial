@@ -17,7 +17,7 @@ bool PlayerControllerComponent::ConnectComponents(Entity& e, GameManager& g) {
     } else {
         std::weak_ptr<PlayerControllerComponent> pComp =
             e.FindComponentOfType<PlayerControllerComponent>();
-        _rb.lock()->SetOnHitCallback(
+        _rb.lock()->AddOnHitCallback(
             std::bind(&PlayerControllerComponent::OnHit, pComp, std::placeholders::_1));
     }    
     _input = g._inputManager;

@@ -38,6 +38,7 @@
 #include "components/beep_on_hit.h"
 #include "components/sequencer.h"
 #include "components/rigid_body.h"
+#include "components/hit_counter.h"
 #include "audio_loader.h"
 #include "entity_editing_context.h"
 
@@ -195,6 +196,17 @@ void DrawSynthGuiAndUpdatePatch(SynthGuiState& synthGuiState, audio::Context& au
         changed = ImGui::SliderFloat("CutoffEnvRelease", &patch.cutoffEnvSpec.releaseTime, 0.f, 1.f);
         if (changed) {
             RequestSynthParamChange(synthGuiState._currentSynthIx, audio::SynthParamType::CutoffEnvRelease, patch.cutoffEnvSpec.releaseTime, audioContext);
+        }
+    }
+    ImGui::End();
+}
+
+void ShowHitCounterWindow(EntityManager const& entityMgr) {
+    ImGui::Begin("Hit counters");
+    for (auto const& entity : entityMgr._entities) {
+        std::shared_ptr<HitCounterComponent> hitComp = entity->FindComponentOfType<HitCounterComponent>().lock();
+        if (hitComp) {
+            ImGui::Text("%s: %d", entity->_name.c_str(), hitComp->_hitsRemaining);
         }
     }
     ImGui::End();
@@ -365,6 +377,7 @@ int main(int argc, char** argv) {
     bool showSynthWindow = false;
     bool showEntitiesWindow = false;
     bool showDemoWindow = false;
+    bool showHitCounters = false;
     float const fixedTimeStep = 1.f / 60.f;
     bool paused = false;    
     while(!glfwWindowShouldClose(window)) {
@@ -408,11 +421,14 @@ int main(int argc, char** argv) {
         if (inputManager.IsKeyPressedThisFrame(InputManager::Key::Y)) {
             showSynthWindow = !showSynthWindow;
         }
-        if (editMode && inputManager.IsKeyPressedThisFrame(InputManager::Key::E)) {
+        if (/*editMode &&*/ inputManager.IsKeyPressedThisFrame(InputManager::Key::E)) {
             showEntitiesWindow = !showEntitiesWindow;
         }
         if (inputManager.IsKeyPressedThisFrame(InputManager::Key::Space)) {
             showDemoWindow = !showDemoWindow;
+        }
+        if (inputManager.IsKeyPressedThisFrame(InputManager::Key::H)) {
+            showHitCounters = !showHitCounters;
         }
 
         if (editMode) {
@@ -438,6 +454,9 @@ int main(int argc, char** argv) {
         }
         if (showEntitiesWindow) {
             entityEditingContext.DrawEntitiesWindow(entityManager, gameManager);
+        }
+        if (showHitCounters) {
+            ShowHitCounterWindow(entityManager);
         }
         if (showDemoWindow) {
             ImGui::ShowDemoWindow(&showDemoWindow);

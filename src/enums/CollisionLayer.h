@@ -12,6 +12,7 @@ enum class CollisionLayer : int {
     
     Count
 };
+extern char const* gCollisionLayerStrings[];
 char const* CollisionLayerToString(CollisionLayer e);
 CollisionLayer StringToCollisionLayer(char const* s);
 

@@ -8,19 +8,6 @@ namespace audio {
 
 
 namespace {
-char const* gEventTypeStrings[] = {
-	
-    "None",
-    
-    "NoteOn",
-    
-    "NoteOff",
-    
-    "SynthParam",
-    
-    "PlayPcm"
-    
-};
 
 std::unordered_map<std::string, EventType> const gStringToEventType = {
     
@@ -37,6 +24,20 @@ std::unordered_map<std::string, EventType> const gStringToEventType = {
 };
 
 } // end namespace
+
+char const* gEventTypeStrings[] = {
+	
+    "None",
+    
+    "NoteOn",
+    
+    "NoteOff",
+    
+    "SynthParam",
+    
+    "PlayPcm"
+    
+};
 
 char const* EventTypeToString(EventType e) {
 	return gEventTypeStrings[static_cast<int>(e)];
