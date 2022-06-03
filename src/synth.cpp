@@ -101,7 +101,7 @@ namespace synth {
     void adsrEnvelope(ADSREnvSpecInTicks const& spec, ADSREnvState& state) {
         switch (state.phase) {
             case ADSRPhase::Closed:
-                // Do nothing
+                state.currentValue = 0.f;
                 break;
             case ADSRPhase::Attack:
                 // EXPONENTIAL ATTACK
@@ -286,7 +286,7 @@ namespace synth {
         float* outputBuffer, int const numChannels, int const framesPerBuffer, int const sampleRate) {
 
         Patch& patch = state->patch;     
-        
+                
         int frameEventIx = 0;
         for(int i = 0; i < framesPerBuffer; ++i)
         {
@@ -328,6 +328,17 @@ namespace synth {
                             v->ampEnvState.ticksSincePhaseStart = 0;
                             v->cutoffEnvState.phase = synth::ADSRPhase::Release;
                             v->cutoffEnvState.ticksSincePhaseStart = 0;
+                        }
+                        break;
+                    }
+                    case audio::EventType::AllNotesOff: {
+                        for (Voice& v : state->voices) {
+                            if (v.currentMidiNote != -1) {
+                                v.ampEnvState.phase = synth::ADSRPhase::Release;
+                                v.ampEnvState.ticksSincePhaseStart = 0;
+                                v.cutoffEnvState.phase = synth::ADSRPhase::Release;
+                                v.cutoffEnvState.ticksSincePhaseStart = 0;
+                            }                 
                         }
                         break;
                     }

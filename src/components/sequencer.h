@@ -6,6 +6,7 @@
 #include "audio_util.h"
 #include "beat_clock.h"
 #include "audio.h"
+#include "audio_event_imgui.h"
 
 // Does NOT loop yet.
 class SequencerComponent : public Component {
@@ -17,13 +18,17 @@ public:
         _beatClock = g._beatClock;
         return true;
     }
+
+    void SortEventsByTime() {
+        std::sort(_events.begin(), _events.end(), [](audio::Event const& e1, audio::Event const& e2) {
+            return e1.timeInTicks < e2.timeInTicks;
+        });
+    }
     
     // Keeps event sorted by time
     void AddToSequence(audio::Event const& newEvent) {
         _events.push_back(newEvent);
-        std::sort(_events.begin(), _events.end(), [](audio::Event const& e1, audio::Event const& e2) {
-            return e1.timeInTicks < e2.timeInTicks;
-        });
+        SortEventsByTime();
     }
     
     void Update(float const dt) override {        
@@ -51,7 +56,25 @@ public:
     }
 
     bool DrawImGui() override {
-        ImGui::Checkbox("Update in edit mode", &_editUpdateEnabled);
+        ImGui::Checkbox("Update in edit mode##", &_editUpdateEnabled);
+
+        if (ImGui::Button("Add Event##")) {
+            _events.emplace_back();
+        }
+
+        char headerName[128];
+        for (int i = 0; i < _events.size(); ++i) {
+            ImGui::PushID(i);
+            sprintf(headerName, "%s##Header", audio::EventTypeToString(_events[i].type));
+            if (ImGui::CollapsingHeader(headerName)) {
+                audio::EventDrawImGuiBeatTime(_events[i], *_beatClock);        
+            }
+            ImGui::PopID();
+        }
+
+        // Keep them sorted.
+        SortEventsByTime();
+
         return false;
     }
 

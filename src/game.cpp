@@ -386,6 +386,7 @@ int main(int argc, char** argv) {
         glfwGetWindowSize(window, &windowWidth, &windowHeight);
 
         beatClock.Update();
+
         if (beatClock.IsNewBeat()) {
             audio::Event e;
             e.type = audio::EventType::PlayPcm;

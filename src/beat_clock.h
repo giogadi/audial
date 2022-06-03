@@ -1,5 +1,7 @@
 #pragma once
 
+#include <cmath>
+
 #include <portaudio.h>
 
 class BeatClock {
@@ -26,6 +28,10 @@ public:
 
     unsigned long BeatTimeToTickTime(double beatTime) const {
         return beatTime * (60.0 / _bpm) * _sampleRate;
+    }
+
+    double TickTimeToBeatTime(unsigned long tickTime) const {
+        return (double)(tickTime * _bpm) / (60.0 * _sampleRate);
     }
 
     // These all return the values computed when Update() was called on the

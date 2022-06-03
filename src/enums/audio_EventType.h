@@ -12,6 +12,8 @@ enum class EventType : int {
     
     NoteOff,
     
+    AllNotesOff,
+    
     SynthParam,
     
     PlayPcm,

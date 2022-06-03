@@ -5,6 +5,7 @@
         "None",
         "NoteOn",
         "NoteOff",
+        "AllNotesOff",
         "SynthParam",
         "PlayPcm"
     ]

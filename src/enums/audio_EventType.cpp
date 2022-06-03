@@ -17,6 +17,8 @@ std::unordered_map<std::string, EventType> const gStringToEventType = {
     
     { "NoteOff", EventType::NoteOff },
     
+    { "AllNotesOff", EventType::AllNotesOff },
+    
     { "SynthParam", EventType::SynthParam },
     
     { "PlayPcm", EventType::PlayPcm }
@@ -32,6 +34,8 @@ char const* gEventTypeStrings[] = {
     "NoteOn",
     
     "NoteOff",
+    
+    "AllNotesOff",
     
     "SynthParam",
     

@@ -29,7 +29,7 @@ void EntityEditingContext::Update(
             cameraTransform);
         if (!pickedEntity.expired()) {
             Entity& entity = *pickedEntity.lock();
-            std::cout << "PICKED " << entity._name << std::endl;
+            // std::cout << "PICKED " << entity._name << std::endl;
             // Call each components' on-pick code.
             entity.OnEditPickComponents();
             // Find the ix of this entity
@@ -119,7 +119,7 @@ void EntityEditingContext::DrawEntitiesWindow(EntityManager& entities, GameManag
         entityNames.push_back(e->_name.c_str());
     }
 
-    ImGui::ListBox("##", &_selectedEntityIx, entityNames.data(), /*numItems=*/entityNames.size());
+    ImGui::ListBox("##Entities", &_selectedEntityIx, entityNames.data(), /*numItems=*/entityNames.size());
 
     // Duplicate Entity
     if (_selectedEntityIx < entities._entities.size() && _selectedEntityIx >= 0) {
@@ -155,7 +155,7 @@ void EntityEditingContext::DrawEntitiesWindow(EntityManager& entities, GameManag
         // Add Component
         if (ImGui::CollapsingHeader("Add Component")) {
             int constexpr numComponentTypes = static_cast<int>(ComponentType::NumTypes);
-            ImGui::Combo("##", &_selectedComponentIx, gComponentTypeStrings, numComponentTypes);
+            ImGui::Combo("##Components", &_selectedComponentIx, gComponentTypeStrings, numComponentTypes);
             if (ImGui::Button("Add")) {
                 ComponentType compType = static_cast<ComponentType>(_selectedComponentIx);
                 std::weak_ptr<Component> pComp = e.TryAddComponentOfType(compType);
@@ -173,19 +173,19 @@ void EntityEditingContext::DrawEntitiesWindow(EntityManager& entities, GameManag
             Component& comp = e.GetComponent(i);
             char const* compName = ComponentTypeToString(comp.Type());
             if (ImGui::CollapsingHeader(compName)) {
-                // TODO LMAO
-                char buttonId[] = "DeleteXXX";
-                sprintf(buttonId, "Delete%d", i);
-                if (ImGui::Button(buttonId)) {
+                ImGui::PushID(i);
+                if (ImGui::Button("Delete##")) {
                     e.RemoveComponent(i);
                     e.ConnectComponentsOrDeactivate(g);
                     --i;
+                    ImGui::PopID();
                     continue;
                 }
                 bool needsReconnect = comp.DrawImGui();
                 if (needsReconnect) {
                     e.ConnectComponentsOrDeactivate(g, /*failures=*/nullptr);
                 }
+                ImGui::PopID();
             }
         }
     }
