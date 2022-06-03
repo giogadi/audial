@@ -9,7 +9,7 @@
 namespace audio {
 
 struct Event {
-    EventType type;
+    EventType type = EventType::None;
     int channel = -1;
     long timeInTicks = 0;
     union {

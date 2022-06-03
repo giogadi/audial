@@ -45,6 +45,8 @@ void InitStateData(
     state.currentPcmBufferIx = -1;
 
     state.events = eventQueue;
+
+    state.pendingEvents.fill(audio::Event());
 }
 
 PaError Init(
@@ -123,7 +125,7 @@ void ProcessEventQueue(EventQueue* eventQueue, std::array<Event, 256>* pendingEv
     for (; pendingEventCount < pendingEvents->size(); ++pendingEventCount) {
         Event *e = eventQueue->front();
         if (e == nullptr) {
-            return;
+            break;
         }
         (*pendingEvents)[pendingEventCount] = *e;
         eventQueue->pop();
@@ -131,15 +133,40 @@ void ProcessEventQueue(EventQueue* eventQueue, std::array<Event, 256>* pendingEv
     if (pendingEventCount == pendingEvents->size()) {
         std::cout << "WARNING: WE FILLED THE PENDING EVENT LIST" << std::endl;
     }
+
+    std::stable_sort(pendingEvents->begin(), pendingEvents->begin() + pendingEventCount,
+        [](audio::Event const& a, audio::Event const& b) {
+            // "none" events get pushed to the back.
+            if (a.type == EventType::None) {
+                if (b.type == EventType::None) {
+                    return true;
+                } else {
+                    return false;
+                }
+            } else if (b.type == EventType::None) {
+                return true;
+            }
+            return a.timeInTicks < b.timeInTicks;
+        });
+    
+    // NOW iterate back through and find the first "None" event. that's our new count.
+    int previousCount = pendingEventCount;
+    for (int i = 0; i < previousCount; ++i) {
+        if ((*pendingEvents)[i].type == EventType::None) {
+            pendingEventCount = i;
+            break;
+        }
+    }
 }
 
+// NOTE: THIS ASSUMES THAT pendingEvents ARE SORTED BY TIME!
 int FindEventsInThisFrame(
-    std::array<Event, 256>* pendingEvents, int& pendingEventCount, unsigned long framesPerBuffer,
-    double const timeSecs, EventsThisFrame* eventsThisFrame) {
+    std::array<Event, 256>* pendingEvents, int const pendingEventCount, unsigned long framesPerBuffer,
+    double const timeSecs, EventsThisFrame* eventsThisFrame) {    
     
     int numEventsThisFrame = 0;
     long const frameStartTickTime = timeSecs * SAMPLE_RATE;
-    for (int pendingEventIx = 0; pendingEventIx < pendingEventCount; /*no increment*/) {
+    for (int pendingEventIx = 0; pendingEventIx < pendingEventCount; ++pendingEventIx) {
         if (numEventsThisFrame >= eventsThisFrame->size()) {
             break;
         }
@@ -155,9 +182,8 @@ int FindEventsInThisFrame(
             sampleIx = 0;
         }
         if (sampleIx >= framesPerBuffer) {
-            // not time yet. move to the next frame.
-            ++pendingEventIx;
-            continue;
+            // This event and all events afterward are beyond the time of this frame. We're done.
+            break;
         }
         // Another copy, YUCK.
         FrameEvent& fe = (*eventsThisFrame)[numEventsThisFrame];
@@ -165,10 +191,17 @@ int FindEventsInThisFrame(
         fe._sampleIx = sampleIx;
         ++numEventsThisFrame;
 
-        // Remove this element from pendingEvents.
-        std::swap(e, (*pendingEvents)[pendingEventCount-1]);
-        --pendingEventCount;
-    }
+        // Tag this element as "processed" by making it None.
+        e.type = EventType::None;
+    }    
+
+    // if (numEventsThisFrame > 0) {
+    //     printf("******\n");
+    //     for (int i = 0; i < numEventsThisFrame; ++i) {
+    //         Event const& e = (*eventsThisFrame)[i]._e;
+    //         printf("%s: %ld\n", EventTypeToString(e.type), e.timeInTicks);
+    //     }
+    // }
 
     return numEventsThisFrame;
 }
