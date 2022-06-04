@@ -1,7 +1,9 @@
 #pragma once
 
 #include <iostream>
+
 #include <portaudio.h>
+#include "boost/circular_buffer.hpp"
 
 #include "audio_util.h"
 #include "synth.h"
@@ -23,8 +25,7 @@ struct StateData {
     int currentPcmBufferIx = 0;
 
     EventQueue* events = nullptr;
-    std::array<Event,256> pendingEvents;
-    int pendingEventCount = 0;
+    boost::circular_buffer<Event> pendingEvents;
 
     char message[20];
 };

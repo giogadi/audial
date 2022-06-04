@@ -5,6 +5,8 @@
 #include <cstring>
 #include <string>
 
+#include "boost/circular_buffer.hpp"
+
 #include "audio_util.h"
 
 namespace synth {
@@ -88,6 +90,7 @@ namespace synth {
     void InitStateData(StateData& state, int channel);
 
     void Process(
-        StateData* state, audio::EventsThisFrame const& frameEvents, int eventCount,
-        float* outputBuffer, int const numChannels, int const framesPerBuffer, int const sampleRate);
+        StateData* state, boost::circular_buffer<audio::Event> const& pendingEvents,
+        float* outputBuffer, int const numChannels, int const framesPerBuffer,
+        int const sampleRate, unsigned long frameStartTickTime);
 }

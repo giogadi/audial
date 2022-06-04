@@ -282,30 +282,31 @@ namespace synth {
     }
 
     void Process(
-        StateData* state, audio::EventsThisFrame const& frameEvents, int eventCount,
-        float* outputBuffer, int const numChannels, int const framesPerBuffer, int const sampleRate) {
+        StateData* state, boost::circular_buffer<audio::Event> const& pendingEvents,
+        float* outputBuffer, int const numChannels, int const samplesPerFrame,
+        int const sampleRate, unsigned long frameStartTickTime) {
 
         Patch& patch = state->patch;     
                 
-        int frameEventIx = 0;
-        for(int i = 0; i < framesPerBuffer; ++i)
+        int currentEventIx = 0;
+        for(int i = 0; i < samplesPerFrame; ++i)
         {
             // Handle events
             while (true) {
-                if (frameEventIx >= eventCount) {
+                if (currentEventIx >= pendingEvents.size()) {
                     break;
                 }
-                audio::FrameEvent const& fe = frameEvents[frameEventIx];
-                audio::Event const& e = fe._e;
+                audio::Event const& e = pendingEvents[currentEventIx];
+                if (e.timeInTicks > frameStartTickTime + i) {
+                    // This event gets handled later.
+                    break;
+                }             
                 if (e.channel != state->channel) {
                     // Not meant for this channel. Skip this message.
-                    ++frameEventIx;
+                    ++currentEventIx;
                     continue;
-                }
-                if (fe._sampleIx != i) {
-                    // This event gets processed on a later sample this frame.
-                    break;
-                }
+                }        
+                ++currentEventIx;
                 switch (e.type) {
                     case audio::EventType::NoteOn: {
                         Voice* v = FindVoiceForNoteOn(*state, e.midiNote);
@@ -402,7 +403,6 @@ namespace synth {
                         break;
                     }
                 }
-                ++frameEventIx;
             }
 
             // Get pitch LFO value
