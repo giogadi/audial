@@ -32,7 +32,8 @@ class EntityManager;
     X(CameraController) \
     X(HitCounter) \
     X(Orbitable) \
-    X(EventsOnHit)
+    X(EventsOnHit) \
+    X(Activator)
 
 enum class ComponentType: int {
 #   define X(a) a,

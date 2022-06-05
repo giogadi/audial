@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <cereal>
 	<entities>
-		<num_entities>6</num_entities>
+		<num_entities>7</num_entities>
 		<active>true</active>
 		<entity>
 			<e._name>camera</e._name>
@@ -351,6 +351,16 @@
 					</value2>
 				</events>
 			</EventsOnHit>
+		</entity>
+		<active>true</active>
+		<entity>
+			<e._name>activator</e._name>
+			<num_components>1</num_components>
+			<component_type>Activator</component_type>
+			<Activator>
+				<beat_time>4</beat_time>
+				<entity_name>eb_drone</entity_name>
+			</Activator>
 		</entity>
 	</entities>
 </cereal>

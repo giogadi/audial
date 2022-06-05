@@ -14,7 +14,7 @@ add_executable(game
     src/shader.cpp src/synth.cpp  src/matrix.cpp src/component.cpp src/renderer.cpp src/collisions.cpp
     src/components/rigid_body.cpp src/components/beep_on_hit.cpp src/components/player_controller.cpp
     src/components/player_orbit_controller.cpp src/components/camera_controller.cpp src/components/hit_counter.cpp
-    src/components/orbitable.cpp src/components/events_on_hit.cpp
+    src/components/orbitable.cpp src/components/events_on_hit.cpp src/components/activator.cpp
     src/enums/audio_EventType.cpp src/enums/audio_SynthParamType.cpp src/enums/CollisionLayer.cpp)
 
 ## GLFW ##
