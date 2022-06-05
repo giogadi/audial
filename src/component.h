@@ -107,9 +107,11 @@ public:
 
     void Destroy() {
         for (auto& c : _components) {
-            // TODO: do I need to consider _active here?
+            // TODO: do I need to consider component._active here?
             c->_c->Destroy();
         }
+        _components.clear();
+        _componentTypeMap.clear();
     }
 
     void RemoveComponent(int index) {
@@ -287,63 +289,132 @@ public:
     
 };
 
+struct EntityAndStatus {
+    std::shared_ptr<Entity> _e;
+    bool _active = true;
+};
+
 class EntityManager {
 public:
-    std::weak_ptr<Entity> AddEntity() {
-        _entities.push_back(std::make_shared<Entity>());
-        return _entities.back();
+    std::weak_ptr<Entity> AddEntity(bool active=true) {
+        _entities.emplace_back(EntityAndStatus());
+        EntityAndStatus& e = _entities.back();
+        e._active = active;
+        e._e = std::make_shared<Entity>();
+        return e._e;        
     }
 
-    void DestroyEntity(std::weak_ptr<Entity> weakToDestroy) {
-        std::shared_ptr<Entity> toDestroy = weakToDestroy.lock();
-        if (toDestroy == nullptr) {
-            return;
-        }
-        for (int i = 0; i < _entities.size(); ++i) {
-            if (_entities[i] == toDestroy) {
-                _entities[i]->Destroy();
-                _entities.erase(_entities.begin() + i);
-                break;
-            }
-        }
-    }
+    // Considering making pointers instable when entities activate/deactivate.
+    // In that case, this function will no longer be safe.
+    //
+    // void DestroyEntity(std::weak_ptr<Entity> weakToDestroy) {
+    //     std::shared_ptr<Entity> toDestroy = weakToDestroy.lock(); if
+    //     (toDestroy == nullptr) { return;
+    //     }
+    //     for (int i = 0; i < _entities.size(); ++i) {
+    //         if (_entities[i]._e == toDestroy) {
+    //             _entities[i]._e->Destroy();
+    //             _entities.erase(_entities.begin() + i);
+    //             break;
+    //         }
+    //     }
+    // }
 
     void DestroyEntity(int index) {
         assert(index >= 0 && index < _entities.size());
-        _entities[index]->Destroy();
+        _entities[index]._e->Destroy();
         _entities.erase(_entities.begin() + index);
     }
 
     void Update(float dt) {
         for (auto& e : _entities) {
-            e->Update(dt);
+            if (e._active) {
+                e._e->Update(dt);
+            }            
         }
     }
 
     void EditModeUpdate(float dt) {
         for (auto& e : _entities) {
-            e->EditModeUpdate(dt);
+            if (e._active) {
+                e._e->EditModeUpdate(dt);
+            }            
         }
     }
     
     void ConnectComponents(GameManager& g, bool dieOnConnectFailure) {
         for (auto& pEntity : _entities) {
+            if (!pEntity._active) {
+                continue;
+            }
             if (dieOnConnectFailure) {
-                pEntity->ConnectComponentsOrDie(g);
+                pEntity._e->ConnectComponentsOrDie(g);
             } else {
-                pEntity->ConnectComponentsOrDeactivate(g, /*failures=*/nullptr);
+                pEntity._e->ConnectComponentsOrDeactivate(g, /*failures=*/nullptr);
             }
         }
     }
 
     std::weak_ptr<Entity> FindEntityByName(char const* name) {
-        for (auto const& pEntity : _entities) {
-            if (pEntity->_name == name) {
-                return pEntity;
+        for (auto const& entity : _entities) {
+            if (entity._active && entity._e->_name == name) {
+                return entity._e;
             }
         }
         return std::weak_ptr<Entity>();
     }
 
-    std::vector<std::shared_ptr<Entity>> _entities;
+    void DeactivateEntity(int entityIx) {
+        EntityAndStatus& toDeactivate = _entities[entityIx];
+        if (!toDeactivate._active) {
+            return;
+        }
+        std::stringstream entityData;
+        SaveEntity(entityData, *toDeactivate._e);
+        toDeactivate._e->Destroy();
+        LoadEntity(entityData, *toDeactivate._e);
+        toDeactivate._active = false;
+    }
+
+    // We currently do this by destroying and recreating all the entity's components. This way it
+    // gets all disconnected. This is gross and wasteful but...shrug.
+    void DeactivateEntity(char const* name) {
+        int entityIx = -1;
+        for (int i = 0; i < _entities.size(); ++i) {
+            if (_entities[i]._e->_name == name) {
+                entityIx = i;
+                break;
+            }
+        }
+        if (entityIx < 0) {
+            return;
+        }
+        DeactivateEntity(entityIx);        
+    }
+
+    void ActivateEntity(int entityIx, GameManager& g) {
+        EntityAndStatus& toActivate = _entities[entityIx];
+        if (toActivate._active) {
+            return;
+        }
+        toActivate._e->ConnectComponentsOrDeactivate(g, /*failures=*/nullptr);
+        toActivate._active = true;
+    }
+
+    void ActivateEntity(char const* name, GameManager& g) {
+        int entityIx = -1;
+        for (int i = 0; i < _entities.size(); ++i) {
+            if (_entities[i]._e->_name == name) {
+                entityIx = i;
+                break;
+            }
+        }
+        if (entityIx < 0) {
+            return;
+        }
+        ActivateEntity(entityIx, g);
+    }
+
+public:
+    std::vector<EntityAndStatus> _entities;
 };

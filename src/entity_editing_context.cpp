@@ -35,7 +35,7 @@ void EntityEditingContext::Update(
             // Find the ix of this entity
             _selectedEntityIx = -1;
             for (int i = 0; i < g._entityManager->_entities.size(); ++i) {
-                if (g._entityManager->_entities[i].get() == &entity) {
+                if (g._entityManager->_entities[i]._e.get() == &entity) {
                     _selectedEntityIx = i;
                     break;
                 }
@@ -53,7 +53,7 @@ void EntityEditingContext::Update(
 void EntityEditingContext::UpdateSelectedPositionFromInput(float dt, InputManager const& input, EntityManager& entities) {
     std::shared_ptr<Entity> entity;
     if (_selectedEntityIx >= 0 && _selectedEntityIx < entities._entities.size()) {
-        entity = entities._entities[_selectedEntityIx];
+        entity = entities._entities[_selectedEntityIx]._e;
     } else {
         return;
     }
@@ -82,6 +82,52 @@ void EntityEditingContext::UpdateSelectedPositionFromInput(float dt, InputManage
 
     float moveSpeed = 3.f;
     transform->SetPos(transform->GetPos() + inputVec.GetNormalized() * moveSpeed * dt);
+}
+
+void EntityEditingContext::DrawEntityImGui(Entity& e, GameManager& g, int* selectedComponentIx, bool connectComponents) {
+    char entityName[128];
+    strcpy(entityName, e._name.c_str());
+    ImGui::InputText("Entity name", entityName, 128);
+    e._name = entityName;
+
+    // Add Component
+    if (ImGui::CollapsingHeader("Add Component")) {
+        int constexpr numComponentTypes = static_cast<int>(ComponentType::NumTypes);
+        ImGui::Combo("##Components", selectedComponentIx, gComponentTypeStrings, numComponentTypes);
+        if (ImGui::Button("Add")) {
+            ComponentType compType = static_cast<ComponentType>(*selectedComponentIx);
+            std::weak_ptr<Component> pComp = e.TryAddComponentOfType(compType);
+            if (pComp.expired()) {
+                std::cout << "Warning: entity \"" << e._name <<
+                    "\" already contains a component of type \"" <<
+                    gComponentTypeStrings[*selectedComponentIx] << "\"." << std::endl;
+            } else if (connectComponents) {
+                e.ConnectComponentsOrDeactivate(g, /*failures=*/nullptr);
+            }
+        }
+    }
+
+    for (int i = 0; i < e.GetNumComponents(); ++i) {            
+        Component& comp = e.GetComponent(i);
+        char const* compName = ComponentTypeToString(comp.Type());
+        if (ImGui::CollapsingHeader(compName)) {
+            ImGui::PushID(i);
+            if (ImGui::Button("Delete##")) {
+                e.RemoveComponent(i);
+                if (connectComponents) {
+                    e.ConnectComponentsOrDeactivate(g);
+                }                
+                --i;
+                ImGui::PopID();
+                continue;
+            }
+            bool needsReconnect = comp.DrawImGui();
+            if (needsReconnect && connectComponents) {
+                e.ConnectComponentsOrDeactivate(g, /*failures=*/nullptr);
+            }
+            ImGui::PopID();
+        }
+    }
 }
 
 void EntityEditingContext::DrawEntitiesWindow(EntityManager& entities, GameManager& g) {
@@ -113,19 +159,39 @@ void EntityEditingContext::DrawEntitiesWindow(EntityManager& entities, GameManag
         ImGui::End();
         return;
     }
-    std::vector<char const*> entityNames;
+    std::vector<std::string> entityNames;
+    std::vector<char const*> entityNamesCstr;
     entityNames.reserve(entities._entities.size());
+    entityNamesCstr.reserve(entities._entities.size());
     for (auto const& e : entities._entities) {
-        entityNames.push_back(e->_name.c_str());
+        if (e._active) {
+            entityNames.push_back(e._e->_name);
+        } else {
+            entityNames.push_back(e._e->_name + " (inactive)");
+        }
+        entityNamesCstr.push_back(entityNames.back().c_str());
     }
 
-    ImGui::ListBox("##Entities", &_selectedEntityIx, entityNames.data(), /*numItems=*/entityNames.size());
+    ImGui::ListBox("##Entities", &_selectedEntityIx, entityNamesCstr.data(), /*numItems=*/entityNamesCstr.size());
+
+    // Active/inactive
+    if (_selectedEntityIx < entities._entities.size() && _selectedEntityIx >= 0) {
+        bool active = entities._entities[_selectedEntityIx]._active;
+        bool changed = ImGui::Checkbox("Active", &active);
+        if (changed) {
+            if (active) {
+                entities.ActivateEntity(_selectedEntityIx, g);
+            } else {
+                entities.DeactivateEntity(_selectedEntityIx);
+            }
+        }
+    }
 
     // Duplicate Entity
     if (_selectedEntityIx < entities._entities.size() && _selectedEntityIx >= 0) {
         if (ImGui::Button("Duplicate Entity")) {
             std::stringstream entityData;
-            SaveEntity(entityData, *entities._entities[_selectedEntityIx]);
+            SaveEntity(entityData, *entities._entities[_selectedEntityIx]._e);
             std::shared_ptr<Entity> newEntity = entities.AddEntity().lock();
             LoadEntity(entityData, *newEntity);
             newEntity->_name += "(dupe)";
@@ -145,49 +211,9 @@ void EntityEditingContext::DrawEntitiesWindow(EntityManager& entities, GameManag
 
     // Now show a little panel for each component on the selected entity.
     if (_selectedEntityIx < entities._entities.size() && _selectedEntityIx >= 0) {        
-        Entity& e = *entities._entities[_selectedEntityIx];
+        Entity& e = *entities._entities[_selectedEntityIx]._e;
 
-        char entityName[128];
-        strcpy(entityName, e._name.c_str());
-        ImGui::InputText("Entity name", entityName, 128);
-        e._name = entityName;
-
-        // Add Component
-        if (ImGui::CollapsingHeader("Add Component")) {
-            int constexpr numComponentTypes = static_cast<int>(ComponentType::NumTypes);
-            ImGui::Combo("##Components", &_selectedComponentIx, gComponentTypeStrings, numComponentTypes);
-            if (ImGui::Button("Add")) {
-                ComponentType compType = static_cast<ComponentType>(_selectedComponentIx);
-                std::weak_ptr<Component> pComp = e.TryAddComponentOfType(compType);
-                if (pComp.expired()) {
-                    std::cout << "Warning: entity \"" << e._name <<
-                        "\" already contains a component of type \"" <<
-                        gComponentTypeStrings[_selectedComponentIx] << "\"." << std::endl;
-                } else {
-                    e.ConnectComponentsOrDeactivate(g, /*failures=*/nullptr);
-                }
-            }
-        }
-
-        for (int i = 0; i < e.GetNumComponents(); ++i) {            
-            Component& comp = e.GetComponent(i);
-            char const* compName = ComponentTypeToString(comp.Type());
-            if (ImGui::CollapsingHeader(compName)) {
-                ImGui::PushID(i);
-                if (ImGui::Button("Delete##")) {
-                    e.RemoveComponent(i);
-                    e.ConnectComponentsOrDeactivate(g);
-                    --i;
-                    ImGui::PopID();
-                    continue;
-                }
-                bool needsReconnect = comp.DrawImGui();
-                if (needsReconnect) {
-                    e.ConnectComponentsOrDeactivate(g, /*failures=*/nullptr);
-                }
-                ImGui::PopID();
-            }
-        }
+        DrawEntityImGui(e, g, &_selectedEntityIx, /*connectComponents=*/true);        
     }
     ImGui::End();
 }

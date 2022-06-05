@@ -63,7 +63,10 @@ std::weak_ptr<Entity> PickEntity(
     // Start ray forward of the camera a bit so we don't just pick the camera
     Vec3 rayStart = cameraTransform.GetPos() + rayDir * (pickSphereRad + 0.1f);    
     for (auto& pEnt : entities._entities) {
-        Entity& entity = *pEnt;
+        if (!pEnt._active) {
+            continue;
+        }
+        Entity& entity = *pEnt._e;
         std::weak_ptr<TransformComponent> pTrans = entity.FindComponentOfType<TransformComponent>();
         if (pTrans.expired()) {
             continue;
@@ -73,7 +76,7 @@ std::weak_ptr<Entity> PickEntity(
         if (hitDist.has_value()) {
             if (!closestPickDist.has_value() || *hitDist < *closestPickDist) {
                 *closestPickDist = *hitDist;
-                closestPickItem = pEnt;
+                closestPickItem = pEnt._e;
             }
         }
     }

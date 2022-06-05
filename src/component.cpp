@@ -107,7 +107,8 @@ template<typename Archive>
 void save(Archive& ar, EntityManager const& e) {
     ar(cereal::make_nvp("num_entities", e._entities.size()));
     for (auto const& pEntity : e._entities) {
-        ar(cereal::make_nvp("entity", *pEntity));
+        ar(cereal::make_nvp("active", pEntity._active));
+        ar(cereal::make_nvp("entity", *pEntity._e));
     }
 }
 
@@ -116,7 +117,9 @@ void load(Archive& ar, EntityManager& e) {
     int numEntities = 0;
     ar(numEntities);
     for (int i = 0; i < numEntities; ++i) {
-        Entity* entity = e.AddEntity().lock().get();
+        bool active;
+        ar(active);
+        Entity* entity = e.AddEntity(active).lock().get();
         ar(*entity);
     }
 }

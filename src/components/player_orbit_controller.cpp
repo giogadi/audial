@@ -53,28 +53,7 @@ void PlayerOrbitControllerComponent::Update(float dt) {
 }
 
 namespace {
-    std::weak_ptr<Entity> FindClosestPlanetInRange(
-        EntityManager const* entityMgr, float const range, Vec3 const& playerPos) {
-        
-        std::weak_ptr<Entity> closest;
-        float closestDist2 = range * range;
-        for (std::shared_ptr<Entity> const& e : entityMgr->_entities) {
-            std::shared_ptr<OrbitableComponent> planet = e->FindComponentOfType<OrbitableComponent>().lock();
-            if (planet == nullptr) {
-                continue;
-            }
-            Vec3 const& planetPos = planet->_t.lock()->GetPos();
-            Vec3 fromPlayerToPlanet = planetPos - playerPos;
-            float dist2 = fromPlayerToPlanet.Length2();
-            if (dist2 <= closestDist2) {
-                closestDist2 = dist2;
-                closest = e;
-            }
-        }
-
-        return closest;
-    }
-
+    
     Vec3 GetInputVec(InputManager const& input) {
         Vec3 inputVec(0.0f,0.f,0.f);
             if (input.IsKeyPressed(InputManager::Key::W)) {
@@ -178,7 +157,11 @@ bool PlayerOrbitControllerComponent::PickNextPlanetToOrbit(Vec3 const& inputVec,
     if (currentPlanet) {
         playerPos = currentPlanet->_t.lock()->GetPos();
     }
-    for (std::shared_ptr<Entity> const& e : _entityMgr->_entities) {
+    for (EntityAndStatus const& e_s : _entityMgr->_entities) {
+        if (!e_s._active) {
+            continue;
+        }
+        std::shared_ptr<Entity> const& e = e_s._e;
         std::shared_ptr<OrbitableComponent> planet = e->FindComponentOfType<OrbitableComponent>().lock();
         if (planet == nullptr) {
             continue;
