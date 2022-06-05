@@ -93,6 +93,7 @@ void EntityEditingContext::DrawEntityImGui(Entity& e, GameManager& g, int* selec
     // Add Component
     if (ImGui::CollapsingHeader("Add Component")) {
         int constexpr numComponentTypes = static_cast<int>(ComponentType::NumTypes);
+        ImGui::Combo("##Components", selectedComponentIx, gComponentTypeStrings, numComponentTypes);
         if (ImGui::Button("Add")) {
             ComponentType compType = static_cast<ComponentType>(*selectedComponentIx);
             std::weak_ptr<Component> pComp = e.TryAddComponentOfType(compType);
