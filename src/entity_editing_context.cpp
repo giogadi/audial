@@ -93,7 +93,6 @@ void EntityEditingContext::DrawEntityImGui(Entity& e, GameManager& g, int* selec
     // Add Component
     if (ImGui::CollapsingHeader("Add Component")) {
         int constexpr numComponentTypes = static_cast<int>(ComponentType::NumTypes);
-        ImGui::Combo("##Components", selectedComponentIx, gComponentTypeStrings, numComponentTypes);
         if (ImGui::Button("Add")) {
             ComponentType compType = static_cast<ComponentType>(*selectedComponentIx);
             std::weak_ptr<Component> pComp = e.TryAddComponentOfType(compType);
@@ -210,10 +209,9 @@ void EntityEditingContext::DrawEntitiesWindow(EntityManager& entities, GameManag
     }
 
     // Now show a little panel for each component on the selected entity.
-    if (_selectedEntityIx < entities._entities.size() && _selectedEntityIx >= 0) {        
+    if (_selectedEntityIx < entities._entities.size() && _selectedEntityIx >= 0) {                
         Entity& e = *entities._entities[_selectedEntityIx]._e;
-
-        DrawEntityImGui(e, g, &_selectedEntityIx, /*connectComponents=*/true);        
+        DrawEntityImGui(e, g, &_selectedComponentIx, /*connectComponents=*/true);        
     }
     ImGui::End();
 }
