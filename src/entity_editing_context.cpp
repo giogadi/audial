@@ -210,9 +210,9 @@ void EntityEditingContext::DrawEntitiesWindow(EntityManager& entities, GameManag
     }
 
     // Now show a little panel for each component on the selected entity.
-    if (_selectedEntityIx < entities._entities.size() && _selectedEntityIx >= 0) {                
-        Entity& e = *entities._entities[_selectedEntityIx]._e;
-        DrawEntityImGui(e, g, &_selectedComponentIx, /*connectComponents=*/true);        
+    if (_selectedEntityIx < entities._entities.size() && _selectedEntityIx >= 0) {
+        EntityAndStatus& e_s = entities._entities[_selectedEntityIx];
+        DrawEntityImGui(*e_s._e, g, &_selectedComponentIx, /*connectComponents=*/e_s._active);
     }
     ImGui::End();
 }

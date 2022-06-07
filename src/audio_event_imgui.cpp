@@ -7,7 +7,7 @@
 
 namespace audio {
 
-void EventDrawImGuiBeatTime(Event& event, BeatClock const& beatClock) {
+void EventDrawImGuiNoTime(Event& event) {
     int selectedEventTypeIx = static_cast<int>(event.type);
     bool changed = ImGui::Combo(
         "EventType##", &selectedEventTypeIx, gEventTypeStrings, static_cast<int>(EventType::Count));
@@ -22,24 +22,12 @@ void EventDrawImGuiBeatTime(Event& event, BeatClock const& beatClock) {
             ImGui::InputScalar(
                 "Channel##", ImGuiDataType_S32, &event.channel, /*step=*/nullptr, /*???*/nullptr, "%d");
             ImGui::InputScalar(
-                "Note##", ImGuiDataType_S32, &event.midiNote, /*step=*/nullptr, /*???*/nullptr, "%d");
-            double eventTime = beatClock.TickTimeToBeatTime(event.timeInTicks);
-            bool timeChanged = ImGui::InputScalar(
-                "BeatTime##", ImGuiDataType_Double, &eventTime, /*step=*/nullptr, /*???*/nullptr, "%f");
-            if (timeChanged) {
-                event.timeInTicks = beatClock.BeatTimeToTickTime(eventTime);
-            }
+                "Note##", ImGuiDataType_S32, &event.midiNote, /*step=*/nullptr, /*???*/nullptr, "%d");            
             break;
         }
         case audio::EventType::AllNotesOff: {
             ImGui::InputScalar(
-                "Channel##", ImGuiDataType_S32, &event.channel, /*step=*/nullptr, /*???*/nullptr, "%d");
-            double eventTime = beatClock.TickTimeToBeatTime(event.timeInTicks);
-            bool timeChanged = ImGui::InputScalar(
-                "BeatTime##", ImGuiDataType_Double, &eventTime, /*step=*/nullptr, /*???*/nullptr, "%f");
-            if (timeChanged) {
-                event.timeInTicks = beatClock.BeatTimeToTickTime(eventTime);
-            }
+                "Channel##", ImGuiDataType_S32, &event.channel, /*step=*/nullptr, /*???*/nullptr, "%d");        
             break;
         }
         case audio::EventType::None:

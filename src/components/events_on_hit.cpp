@@ -42,9 +42,10 @@ void EventsOnHitComponent::PlayEventsOnNextDenom(double denom) {
     double startTime = BeatClock::GetNextBeatDenomTime(beatTime, denom);
     unsigned long startTickTime = _beatClock->BeatTimeToTickTime(startTime);
     // std::cout << "TIME: " << startTickTime << std::endl;
-    for (audio::Event event : _events) {
-        event.timeInTicks += startTickTime;
-        _audio->AddEvent(event);
+    for (BeatTimeEvent const& event : _events) {
+        audio::Event e = event._e;
+        e.timeInTicks = _beatClock->BeatTimeToTickTime(event._beatTime) + startTickTime;
+        _audio->AddEvent(e);
     }
 }
 
@@ -67,9 +68,10 @@ bool EventsOnHitComponent::DrawImGui() {
     char headerName[128];
     for (int i = 0; i < _events.size(); ++i) {
         ImGui::PushID(i);
-        sprintf(headerName, "%s##Header", audio::EventTypeToString(_events[i].type));
+        sprintf(headerName, "%s##Header", audio::EventTypeToString(_events[i]._e.type));
         if (ImGui::CollapsingHeader(headerName)) {
-            audio::EventDrawImGuiBeatTime(_events[i], *_beatClock);        
+            ImGui::InputScalar("Beat time##", ImGuiDataType_Float, &_events[i]._beatTime, /*step=*/nullptr, /*???*/nullptr, "%f");
+            audio::EventDrawImGuiNoTime(_events[i]._e);
         }
         ImGui::PopID();
     }

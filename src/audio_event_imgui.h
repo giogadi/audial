@@ -6,6 +6,6 @@ namespace audio {
 
 class Event;
 
-void EventDrawImGuiBeatTime(Event& event, BeatClock const& beatClock);
+void EventDrawImGuiNoTime(Event& event);
 
 }

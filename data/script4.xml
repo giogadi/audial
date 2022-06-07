@@ -197,7 +197,7 @@
 		<active>false</active>
 		<entity>
 			<e._name>eb_drone</e._name>
-			<num_components>6</num_components>
+			<num_components>5</num_components>
 			<component_type>Transform</component_type>
 			<Transform>
 				<t._transform>
@@ -253,29 +253,34 @@
 				<denom>0.25</denom>
 				<events size="dynamic">
 					<value0>
-						<type>AllNotesOff</type>
-						<channel>1</channel>
-						<tick_time>0</tick_time>
-						<midi_note>0</midi_note>
+						<beat_time>0</beat_time>
+						<event>
+							<type>AllNotesOff</type>
+							<channel>1</channel>
+							<tick_time>0</tick_time>
+							<midi_note>0</midi_note>
+						</event>
 					</value0>
 					<value1>
-						<type>NoteOn</type>
-						<channel>1</channel>
-						<tick_time>0</tick_time>
-						<midi_note>39</midi_note>
+						<beat_time>0</beat_time>
+						<event>
+							<type>NoteOn</type>
+							<channel>1</channel>
+							<tick_time>0</tick_time>
+							<midi_note>39</midi_note>
+						</event>
 					</value1>
 					<value2>
-						<type>NoteOn</type>
-						<channel>1</channel>
-						<tick_time>0</tick_time>
-						<midi_note>46</midi_note>
+						<beat_time>0</beat_time>
+						<event>
+							<type>NoteOn</type>
+							<channel>1</channel>
+							<tick_time>0</tick_time>
+							<midi_note>46</midi_note>
+						</event>
 					</value2>
 				</events>
 			</EventsOnHit>
-			<component_type>Damage</component_type>
-			<Damage>
-				<hp>1</hp>
-			</Damage>
 		</entity>
 		<active>true</active>
 		<entity>
@@ -336,22 +341,31 @@
 				<denom>0.25</denom>
 				<events size="dynamic">
 					<value0>
-						<type>AllNotesOff</type>
-						<channel>1</channel>
-						<tick_time>0</tick_time>
-						<midi_note>0</midi_note>
+						<beat_time>0</beat_time>
+						<event>
+							<type>AllNotesOff</type>
+							<channel>1</channel>
+							<tick_time>0</tick_time>
+							<midi_note>0</midi_note>
+						</event>
 					</value0>
 					<value1>
-						<type>NoteOn</type>
-						<channel>1</channel>
-						<tick_time>0</tick_time>
-						<midi_note>36</midi_note>
+						<beat_time>0</beat_time>
+						<event>
+							<type>NoteOn</type>
+							<channel>1</channel>
+							<tick_time>0</tick_time>
+							<midi_note>36</midi_note>
+						</event>
 					</value1>
 					<value2>
-						<type>NoteOn</type>
-						<channel>1</channel>
-						<tick_time>0</tick_time>
-						<midi_note>43</midi_note>
+						<beat_time>0</beat_time>
+						<event>
+							<type>NoteOn</type>
+							<channel>1</channel>
+							<tick_time>0</tick_time>
+							<midi_note>43</midi_note>
+						</event>
 					</value2>
 				</events>
 			</EventsOnHit>

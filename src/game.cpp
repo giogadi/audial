@@ -445,6 +445,9 @@ int main(int argc, char** argv) {
 
         entityEditingContext.Update(dt, editMode, gameManager, windowWidth, windowHeight);
 
+        // TODO: where in the frame should entity removal happen? idk
+        entityManager.DestroyTaggedEntities();
+
         if (inputManager.IsKeyPressed(InputManager::Key::Escape)) {
             glfwSetWindowShouldClose(window, true);
         }

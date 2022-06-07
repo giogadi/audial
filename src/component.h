@@ -33,7 +33,8 @@ class EntityManager;
     X(HitCounter) \
     X(Orbitable) \
     X(EventsOnHit) \
-    X(Activator)
+    X(Activator) \
+    X(Damage)
 
 enum class ComponentType: int {
 #   define X(a) a,
@@ -293,6 +294,7 @@ public:
 struct EntityAndStatus {
     std::shared_ptr<Entity> _e;
     bool _active = true;
+    bool _toDestroy = false;
 };
 
 class EntityManager {
@@ -305,22 +307,18 @@ public:
         return e._e;        
     }
 
-    // Considering making pointers instable when entities activate/deactivate.
-    // In that case, this function will no longer be safe.
-    //
-    // void DestroyEntity(std::weak_ptr<Entity> weakToDestroy) {
-    //     std::shared_ptr<Entity> toDestroy = weakToDestroy.lock(); if
-    //     (toDestroy == nullptr) { return;
-    //     }
-    //     for (int i = 0; i < _entities.size(); ++i) {
-    //         if (_entities[i]._e == toDestroy) {
-    //             _entities[i]._e->Destroy();
-    //             _entities.erase(_entities.begin() + i);
-    //             break;
-    //         }
-    //     }
-    // }
+    // TODO: This might not actually be safe if we ever delete an entity and reuse its pointer location. We need a real entity ID UGH!
+    void TagEntityForDestroy(Entity* pToDestroy) {
+        for (int i = 0; i < _entities.size(); ++i) {
+            auto& e = _entities[i]._e;
+            if (e.get() == pToDestroy) {
+                _entities[i]._toDestroy = true;
+                break;
+            }
+        }
+    }
 
+    // TODO: remove this please and thanks. Everyone should tag for destroy I think.
     void DestroyEntity(int index) {
         assert(index >= 0 && index < _entities.size());
         _entities[index]._e->Destroy();
@@ -414,6 +412,16 @@ public:
             return;
         }
         ActivateEntity(entityIx, g);
+    }
+
+    void DestroyTaggedEntities() {
+        for (int i = 0; i < _entities.size(); /*no_increment*/) {
+            if (_entities[i]._toDestroy) {
+                DestroyEntity(i);
+                continue;            
+            }
+            ++i;
+        }
     }
 
 public:

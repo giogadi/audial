@@ -3,7 +3,7 @@
 #include <array>
 
 #include "component.h"
-#include "audio_util.h"
+#include "beat_time_event.h"
 
 class BeatClock;
 namespace audio {
@@ -34,7 +34,7 @@ public:
     BeatClock const* _beatClock = nullptr;
     bool _wasHit = false;
     double _denom = 0.25;
-    std::vector<audio::Event> _events;
+    std::vector<BeatTimeEvent> _events;
 
 private:
     void PlayEventsOnNextDenom(double denom);

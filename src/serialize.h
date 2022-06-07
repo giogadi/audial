@@ -19,6 +19,8 @@
 #include "components/orbitable.h"
 #include "components/events_on_hit.h"
 #include "components/activator.h"
+#include "components/damage.h"
+#include "beat_time_event.h"
 
 template<typename Archive>
 void serialize(Archive& ar, Vec3& v) {
@@ -140,4 +142,15 @@ template<typename Archive>
 void serialize(Archive& ar, ActivatorComponent& m) {
     ar(cereal::make_nvp("beat_time", m._activationBeatTime));
     ar(cereal::make_nvp("entity_name", m._entityName));    
+}
+
+template<typename Archive>
+void serialize(Archive& ar, DamageComponent& m) {
+    ar(cereal::make_nvp("hp", m._hp));
+}
+
+template<typename Archive>
+void serialize(Archive& ar, BeatTimeEvent& e) {
+    ar(cereal::make_nvp("beat_time", e._beatTime));
+    ar(cereal::make_nvp("event", e._e));
 }

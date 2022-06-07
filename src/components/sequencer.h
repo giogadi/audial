@@ -67,7 +67,9 @@ public:
             ImGui::PushID(i);
             sprintf(headerName, "%s##Header", audio::EventTypeToString(_events[i].type));
             if (ImGui::CollapsingHeader(headerName)) {
-                audio::EventDrawImGuiBeatTime(_events[i], *_beatClock);        
+                // ImGui::InputScalar("Beat time##", ImGuiDataType_Float, &_events[i]._beatTime, /*step=*/nullptr, /*???*/nullptr, "%f");
+                ImGui::InputScalar("Tick time##", ImGuiDataType_S64, &_events[i].timeInTicks, /*step=*/nullptr, /*???*/nullptr, "%ld");
+                audio::EventDrawImGuiNoTime(_events[i]);
             }
             ImGui::PopID();
         }
