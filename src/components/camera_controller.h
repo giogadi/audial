@@ -5,7 +5,7 @@
 class CameraControllerComponent : public Component {
 public:
     virtual ComponentType Type() const override { return ComponentType::CameraController; }
-    virtual bool ConnectComponents(Entity& e, GameManager& g) override;
+    virtual bool ConnectComponents(EntityId id, Entity& e, GameManager& g) override;
     virtual void Update(float dt) override;
     virtual bool DrawImGui() override;
 

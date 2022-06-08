@@ -2,15 +2,16 @@
 
 #include "imgui/imgui.h"
 
-bool CameraControllerComponent::ConnectComponents(Entity& e, GameManager& g) {
+bool CameraControllerComponent::ConnectComponents(EntityId id, Entity& e, GameManager& g) {
     _transform = e.FindComponentOfType<TransformComponent>();
     if (_transform.expired()) {
         return false;
     }    
-    std::shared_ptr<Entity> targetEntity = g._entityManager->FindEntityByName(_targetName.c_str()).lock();
-    if (!targetEntity) {
+    EntityId targetEntityId = g._entityManager->FindActiveEntityByName(_targetName.c_str());
+    if (!targetEntityId.IsValid()) {
         return false;
     }
+    Entity* targetEntity = g._entityManager->GetEntity(targetEntityId);
     _target = targetEntity->FindComponentOfType<TransformComponent>();
     if (_target.expired()) {
         return false;

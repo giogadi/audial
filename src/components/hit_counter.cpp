@@ -6,7 +6,7 @@
 
 #include "rigid_body.h"
 
-bool HitCounterComponent::ConnectComponents(Entity& e, GameManager& g) {
+bool HitCounterComponent::ConnectComponents(EntityId id, Entity& e, GameManager& g) {
     _t = e.FindComponentOfType<TransformComponent>();
     if (_t.expired()) {
         return false;

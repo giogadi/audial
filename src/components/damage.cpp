@@ -4,7 +4,7 @@
 
 #include "rigid_body.h"
 
-bool DamageComponent::ConnectComponents(Entity& e, GameManager& g) {
+bool DamageComponent::ConnectComponents(EntityId id, Entity& e, GameManager& g) {
     _rb = e.FindComponentOfType<RigidBodyComponent>();
     if (_rb.expired()) {
         return false;
@@ -13,8 +13,8 @@ bool DamageComponent::ConnectComponents(Entity& e, GameManager& g) {
     RigidBodyComponent& rb = *_rb.lock();
     rb.AddOnHitCallback(std::bind(&DamageComponent::OnHit, pThisComp, std::placeholders::_1));
 
-    _entity = &e;
     _entityManager = g._entityManager;
+    _entityId = id;
     return true;
 }
 
@@ -26,7 +26,7 @@ void DamageComponent::Update(float const dt) {
     if (_wasHit) {
         _hp -= 1;
         if (_hp == 0) {
-            _entityManager->TagEntityForDestroy(_entity);
+            _entityManager->TagEntityForDestroy(_entityId);
         }
         _wasHit = false;
     }

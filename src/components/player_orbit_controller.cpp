@@ -15,7 +15,7 @@ namespace {
     float constexpr kOrbitSpeed = 2*kPi;  // rads per second
 }
 
-bool PlayerOrbitControllerComponent::ConnectComponents(Entity& e, GameManager& g) {
+bool PlayerOrbitControllerComponent::ConnectComponents(EntityId id, Entity& e, GameManager& g) {
     bool success = true;
     _transform = e.FindComponentOfType<TransformComponent>();
     if (_transform.expired()) {
@@ -157,28 +157,25 @@ bool PlayerOrbitControllerComponent::PickNextPlanetToOrbit(Vec3 const& inputVec,
     if (currentPlanet) {
         playerPos = currentPlanet->_t.lock()->GetPos();
     }
-    for (EntityAndStatus const& e_s : _entityMgr->_entities) {
-        if (!e_s._active) {
-            continue;
-        }
-        std::shared_ptr<Entity> const& e = e_s._e;
-        std::shared_ptr<OrbitableComponent> planet = e->FindComponentOfType<OrbitableComponent>().lock();
+    _entityMgr->ForEveryActiveEntity([&](EntityId id) {
+        Entity& e = *_entityMgr->GetEntity(id);
+        std::shared_ptr<OrbitableComponent> planet = e.FindComponentOfType<OrbitableComponent>().lock();
         if (planet == nullptr) {
-            continue;
+            return;
         }
         if (planet == currentPlanet) {
-            continue;
+            return;
         }
         Vec3 const& planetPos = planet->_t.lock()->GetPos();
         Vec3 fromPlayerToPlanetDir = planetPos - playerPos;
         float dist = fromPlayerToPlanetDir.Length();
         if (dist == 0.f) {
-            continue;
+            return;
         }
         fromPlayerToPlanetDir *= (1.f / dist);
         float dotWithInput = Vec3::Dot(fromPlayerToPlanetDir, inputVec);
         if (dotWithInput < kMinDotWithInput) {
-            continue;
+            return;
         }
 
         if (dist < closestDist) {            
@@ -186,7 +183,7 @@ bool PlayerOrbitControllerComponent::PickNextPlanetToOrbit(Vec3 const& inputVec,
             potentialNewPlanet = planet;
             dashDir = (planetPos - _transform.lock()->GetPos()).GetNormalized();
         }
-    }
+    });
 
     if (currentPlanet) {
         currentPlanet->_rb.lock()->_layer = CollisionLayer::None;

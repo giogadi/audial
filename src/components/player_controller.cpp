@@ -5,7 +5,7 @@
 #include "components/rigid_body.h"
 #include "input_manager.h"
 
-bool PlayerControllerComponent::ConnectComponents(Entity& e, GameManager& g) {
+bool PlayerControllerComponent::ConnectComponents(EntityId id, Entity& e, GameManager& g) {
     bool success = true;
     _transform = e.FindComponentOfType<TransformComponent>();
     if (_transform.expired()) {

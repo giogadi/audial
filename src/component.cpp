@@ -104,22 +104,30 @@ void load(Archive& ar, Entity& e) {
 }
 
 template<typename Archive>
-void save(Archive& ar, EntityManager const& e) {
-    ar(cereal::make_nvp("num_entities", e._entities.size()));
-    for (auto const& pEntity : e._entities) {
-        ar(cereal::make_nvp("active", pEntity._active));
-        ar(cereal::make_nvp("entity", *pEntity._e));
-    }
+void save(Archive& ar, EntityManager const& eMgr) {
+    int numEntities = 0;
+    eMgr.ForEveryActiveAndInactiveEntity([&numEntities](EntityId id) {
+        ++numEntities;
+    });
+
+    ar(cereal::make_nvp("num_entities", numEntities));
+
+    eMgr.ForEveryActiveAndInactiveEntity([&ar, &eMgr](EntityId id) {
+        Entity const* e = eMgr.GetEntity(id);
+        ar(cereal::make_nvp("active", eMgr.IsActive(id)));
+        ar(cereal::make_nvp("entity", *e));
+    });
 }
 
 template<typename Archive>
-void load(Archive& ar, EntityManager& e) {
+void load(Archive& ar, EntityManager& eMgr) {
     int numEntities = 0;
     ar(numEntities);
     for (int i = 0; i < numEntities; ++i) {
         bool active;
         ar(active);
-        Entity* entity = e.AddEntity(active).lock().get();
+        EntityId id = eMgr.AddEntity(active);
+        Entity* entity = eMgr.GetEntity(id);
         ar(*entity);
     }
 }

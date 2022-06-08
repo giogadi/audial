@@ -10,7 +10,7 @@
 #include "constants.h"
 #include "resource_manager.h"
 
-bool ModelComponent::ConnectComponents(Entity& e, GameManager& g) {
+bool ModelComponent::ConnectComponents(EntityId id, Entity& e, GameManager& g) {
     _transform = e.FindComponentOfType<TransformComponent>();
     if (_transform.expired()) {
         return false;
@@ -37,7 +37,7 @@ bool ModelComponent::DrawImGui() {
     return needReconnect;
 }
 
-bool LightComponent::ConnectComponents(Entity& e, GameManager& g) {
+bool LightComponent::ConnectComponents(EntityId id, Entity& e, GameManager& g) {
     _transform = e.FindComponentOfType<TransformComponent>();
     _mgr = g._sceneManager;
     _mgr->AddLight(e.FindComponentOfType<LightComponent>());
@@ -56,7 +56,7 @@ bool LightComponent::DrawImGui() {
     return false;
 }
 
-bool CameraComponent::ConnectComponents(Entity& e, GameManager& g) {
+bool CameraComponent::ConnectComponents(EntityId id, Entity& e, GameManager& g) {
     _transform = e.FindComponentOfType<TransformComponent>();
     _input = g._inputManager;
     _mgr = g._sceneManager;

@@ -15,7 +15,7 @@ class EventsOnHitComponent : public Component {
 public:
     virtual ComponentType Type() const override { return ComponentType::EventsOnHit; }
     EventsOnHitComponent() {}
-    virtual bool ConnectComponents(Entity& e, GameManager& g) override;
+    virtual bool ConnectComponents(EntityId id, Entity& e, GameManager& g) override;
 
     static void OnHit(
         std::weak_ptr<EventsOnHitComponent> beepComp, std::weak_ptr<RigidBodyComponent> other);

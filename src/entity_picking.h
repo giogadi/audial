@@ -2,10 +2,8 @@
 
 #include <memory>
 
-class Entity;
-class EntityManager;
-class TransformComponent;
+#include "component.h"
 
-std::weak_ptr<Entity> PickEntity(
+EntityId PickEntity(
     EntityManager& entities, double clickX, double clickY, int windowWidth, int windowHeight,
     float fovy, float aspectRatio, float zNear, TransformComponent const& cameraTransform);

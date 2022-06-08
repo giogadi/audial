@@ -1,5 +1,6 @@
 #pragma once
 
+#include <cstdint>
 #include <vector>
 #include <string>
 #include <unordered_map>
@@ -58,6 +59,36 @@ void SaveEntity(std::ostream& output, Entity const& e);
 
 void LoadEntity(std::istream& input, Entity& e);
 
+typedef int32_t EntityIndex;
+typedef int32_t EntityVersion;
+
+class EntityId {
+public:
+    constexpr EntityId(EntityIndex index, EntityVersion version) :
+        _id(((int64_t)index << 32) | ((int64_t) version)) {}
+
+    EntityIndex GetIndex() const {
+        return _id >> 32;
+    }
+    EntityVersion GetVersion() const {
+        return (int32_t)_id;
+    }
+    static constexpr EntityId InvalidId() {
+        return EntityId(-1, 0);
+    }
+    bool IsValid() const {
+        return GetIndex() >= 0;
+    }
+    bool operator==(EntityId rhs) const {
+        return _id == rhs._id;
+    }
+    bool operator!=(EntityId rhs) const {
+        return !(*this == rhs);
+    }
+private:
+    int64_t _id;
+};
+
 // MUST BE PURE or else Cereal won't work. Need at least one = 0 function in there.
 class Component {
 public:
@@ -65,7 +96,7 @@ public:
     virtual void Update(float dt) {}
     // MUST BE PURE or else Cereal won't work
     virtual void Destroy() {};
-    virtual bool ConnectComponents(Entity& e, GameManager& g) { return true; }
+    virtual bool ConnectComponents(EntityId id, Entity& e, GameManager& g) { return true; }
     virtual ComponentType Type() const = 0;
     // If true, request that we try reconnecting the entity's components.
     virtual bool DrawImGui();
@@ -128,16 +159,16 @@ public:
         _components.erase(_components.begin() + index);
     }
 
-    void ConnectComponentsOrDie(GameManager& g) {
+    void ConnectComponentsOrDie(EntityId id, GameManager& g) {
         for (auto& compAndStatus : _components) {
             if (compAndStatus->_active) {
-                assert(compAndStatus->_c->ConnectComponents(*this, g));
+                assert(compAndStatus->_c->ConnectComponents(id, *this, g));
             }
         }
     }
 
     void ConnectComponentsOrDeactivate(
-        GameManager& g, std::vector<ComponentType>* failures = nullptr) {
+        EntityId id, GameManager& g, std::vector<ComponentType>* failures = nullptr) {
         if (_components.empty()) {
             return;
         }        
@@ -157,7 +188,7 @@ public:
             allActiveSucceeded = true;
             for (int i = 0; i < _components.size(); ++i) {
                 if (active[i]) {
-                    bool success = _components[i]->_c->ConnectComponents(*this, g);
+                    bool success = _components[i]->_c->ConnectComponents(id, *this, g);
                     if (!success) {
                         active[i] = false;
                         allActiveSucceeded = false;
@@ -280,7 +311,7 @@ public:
 
     virtual void Destroy() override {}
 
-    virtual bool ConnectComponents(Entity& e, GameManager& g) override {
+    virtual bool ConnectComponents(EntityId id, Entity& e, GameManager& g) override {
         _transform = e.FindComponentOfType<TransformComponent>();
         return !_transform.expired();
     }
@@ -292,138 +323,273 @@ public:
 };
 
 struct EntityAndStatus {
-    std::shared_ptr<Entity> _e;
+    std::shared_ptr<Entity> _e;   
+    EntityId _id = EntityId::InvalidId(); 
     bool _active = true;
     bool _toDestroy = false;
 };
 
 class EntityManager {
 public:
-    std::weak_ptr<Entity> AddEntity(bool active=true) {
-        _entities.emplace_back(EntityAndStatus());
-        EntityAndStatus& e = _entities.back();
-        e._active = active;
-        e._e = std::make_shared<Entity>();
-        return e._e;        
+    EntityId AddEntity(bool active=true) {
+        EntityAndStatus* e_s;
+        if (_freeList.empty()) {
+            _entities.emplace_back();
+            e_s = &_entities.back();
+            e_s->_id = EntityId(_entities.size() - 1, 0);
+        } else {
+            EntityIndex freeIndex = _freeList.back();
+            _freeList.pop_back();
+            e_s = &_entities[freeIndex];
+            EntityId newId(freeIndex, e_s->_id.GetVersion());
+            e_s->_id = newId;
+        }
+        e_s->_e = std::make_shared<Entity>();
+        e_s->_active = active;
+        e_s->_toDestroy = false;
+        return e_s->_id;
+    }
+
+    // ONLY FOR USE IN EDIT MODE TO MAINTAIN ORDERING OF ENTITIES
+    EntityId AddEntityToBack(bool active=true) {
+        _entities.emplace_back();
+        EntityAndStatus* e_s = &_entities.back();
+        e_s->_id = EntityId(_entities.size() - 1, 0);
+        e_s->_e = std::make_shared<Entity>();
+        e_s->_active = active;
+        e_s->_toDestroy = false;
+        return e_s->_id;
+    }
+
+    void TagEntityForDestroy(EntityId idToDestroy) {
+        if (!idToDestroy.IsValid()) {
+            return;
+        }
+        EntityIndex indexToDestroy = idToDestroy.GetIndex();
+        if (indexToDestroy >= _entities.size()) {
+            return;
+        }
+        EntityAndStatus& e_s = _entities[indexToDestroy];
+        if (e_s._id != idToDestroy) {
+            std::cout << "ALREADY DESTROYED THIS DUDE" << std::endl;
+            return;
+        }
+        e_s._toDestroy = true;
     }
 
     // TODO: This might not actually be safe if we ever delete an entity and reuse its pointer location. We need a real entity ID UGH!
-    void TagEntityForDestroy(Entity* pToDestroy) {
-        for (int i = 0; i < _entities.size(); ++i) {
-            auto& e = _entities[i]._e;
-            if (e.get() == pToDestroy) {
-                _entities[i]._toDestroy = true;
-                break;
-            }
-        }
-    }
+    // void TagEntityForDestroy(Entity* pToDestroy) {
+    //     for (int i = 0; i < _entities.size(); ++i) {
+    //         auto& e = _entities[i]._e;
+    //         if (e.get() == pToDestroy) {
+    //             _entities[i]._toDestroy = true;
+    //             break;
+    //         }
+    //     }
+    // }
 
     // TODO: remove this please and thanks. Everyone should tag for destroy I think.
-    void DestroyEntity(int index) {
-        assert(index >= 0 && index < _entities.size());
-        _entities[index]._e->Destroy();
-        _entities.erase(_entities.begin() + index);
-    }
+    // void DestroyEntity(int index) {
+    //     assert(index >= 0 && index < _entities.size());
+    //     _entities[index]._e->Destroy();
+    //     _entities.erase(_entities.begin() + index);
+    // }
 
     void Update(float dt) {
-        for (auto& e : _entities) {
-            if (e._active) {
-                e._e->Update(dt);
-            }            
-        }
+        ForEveryActiveEntity([this, dt](EntityId id) {
+            this->GetEntity(id)->Update(dt);
+        });
     }
 
     void EditModeUpdate(float dt) {
-        for (auto& e : _entities) {
-            if (e._active) {
-                e._e->EditModeUpdate(dt);
-            }            
-        }
+        ForEveryActiveEntity([this, dt](EntityId id) {
+            this->GetEntity(id)->EditModeUpdate(dt);
+        });
     }
     
     void ConnectComponents(GameManager& g, bool dieOnConnectFailure) {
-        for (auto& pEntity : _entities) {
-            if (!pEntity._active) {
-                continue;
-            }
+        ForEveryActiveEntity([&](EntityId id) {
+            Entity* e = this->GetEntity(id);
             if (dieOnConnectFailure) {
-                pEntity._e->ConnectComponentsOrDie(g);
+                e->ConnectComponentsOrDie(id, g);
             } else {
-                pEntity._e->ConnectComponentsOrDeactivate(g, /*failures=*/nullptr);
+                e->ConnectComponentsOrDeactivate(id, g, /*failures=*/nullptr);
             }
-        }
+        });
     }
 
-    std::weak_ptr<Entity> FindEntityByName(char const* name) {
+    EntityId FindActiveEntityByName(char const* name) {
         for (auto const& entity : _entities) {
-            if (entity._active && entity._e->_name == name) {
-                return entity._e;
+            if (entity._id.IsValid() && entity._active && entity._e->_name == name) {
+                return entity._id;
             }
         }
-        return std::weak_ptr<Entity>();
+        return EntityId::InvalidId();
     }
 
-    void DeactivateEntity(int entityIx) {
-        EntityAndStatus& toDeactivate = _entities[entityIx];
-        if (!toDeactivate._active) {
+    EntityId FindInactiveEntityByName(char const* name) {
+        for (auto const& entity : _entities) {
+            if (entity._id.IsValid() && !entity._active && entity._e->_name == name) {
+                return entity._id;
+            }
+        }
+        return EntityId::InvalidId();
+    }
+
+    // std::weak_ptr<Entity> FindEntityByName(char const* name) {
+    //     for (auto const& entity : _entities) {
+    //         if (entity._active && entity._e->_name == name) {
+    //             return entity._e;
+    //         }
+    //     }
+    //     return std::weak_ptr<Entity>();
+    // }
+
+    void DeactivateEntity(EntityId id) {
+        EntityAndStatus* e_s = GetEntityAndStatus(id);
+        if (e_s == nullptr) {
+            return;
+        }
+        if (!e_s->_active) {
             return;
         }
         std::stringstream entityData;
-        SaveEntity(entityData, *toDeactivate._e);
-        toDeactivate._e->Destroy();
-        LoadEntity(entityData, *toDeactivate._e);
-        toDeactivate._active = false;
+        SaveEntity(entityData, *e_s->_e);
+        e_s->_e->Destroy();
+        LoadEntity(entityData, *e_s->_e);
+        e_s->_active = false;
     }
 
     // We currently do this by destroying and recreating all the entity's components. This way it
     // gets all disconnected. This is gross and wasteful but...shrug.
-    void DeactivateEntity(char const* name) {
-        int entityIx = -1;
-        for (int i = 0; i < _entities.size(); ++i) {
-            if (_entities[i]._e->_name == name) {
-                entityIx = i;
-                break;
-            }
-        }
-        if (entityIx < 0) {
+    // void DeactivateEntity(char const* name) {
+    //     int entityIx = -1;
+    //     for (int i = 0; i < _entities.size(); ++i) {
+    //         if (_entities[i]._e->_name == name) {
+    //             entityIx = i;
+    //             break;
+    //         }
+    //     }
+    //     if (entityIx < 0) {
+    //         return;
+    //     }
+    //     DeactivateEntity(entityIx);        
+    // }
+
+    void ActivateEntity(EntityId id, GameManager& g) {
+        EntityAndStatus* e_s = GetEntityAndStatus(id);
+        if (e_s == nullptr) {
             return;
         }
-        DeactivateEntity(entityIx);        
+        if (e_s->_active) {
+            return;
+        }
+        e_s->_e->ConnectComponentsOrDeactivate(id, g, /*failures=*/nullptr);
+        e_s->_active = true;
     }
 
-    void ActivateEntity(int entityIx, GameManager& g) {
-        EntityAndStatus& toActivate = _entities[entityIx];
-        if (toActivate._active) {
-            return;
-        }
-        toActivate._e->ConnectComponentsOrDeactivate(g, /*failures=*/nullptr);
-        toActivate._active = true;
-    }
+    // void ActivateEntity(int entityIx, GameManager& g) {
+    //     EntityAndStatus& toActivate = _entities[entityIx];
+    //     if (toActivate._active) {
+    //         return;
+    //     }
+    //     toActivate._e->ConnectComponentsOrDeactivate(g, /*failures=*/nullptr);
+    //     toActivate._active = true;
+    // }
 
-    void ActivateEntity(char const* name, GameManager& g) {
-        int entityIx = -1;
-        for (int i = 0; i < _entities.size(); ++i) {
-            if (_entities[i]._e->_name == name) {
-                entityIx = i;
-                break;
-            }
-        }
-        if (entityIx < 0) {
-            return;
-        }
-        ActivateEntity(entityIx, g);
-    }
+    // void ActivateEntity(char const* name, GameManager& g) {
+    //     int entityIx = -1;
+    //     for (int i = 0; i < _entities.size(); ++i) {
+    //         if (_entities[i]._e->_name == name) {
+    //             entityIx = i;
+    //             break;
+    //         }
+    //     }
+    //     if (entityIx < 0) {
+    //         return;
+    //     }
+    //     ActivateEntity(entityIx, g);
+    // }
 
     void DestroyTaggedEntities() {
-        for (int i = 0; i < _entities.size(); /*no_increment*/) {
-            if (_entities[i]._toDestroy) {
-                DestroyEntity(i);
-                continue;            
+        ForEveryActiveAndInactiveEntity([this](EntityId id) {
+            EntityAndStatus& e_s = *this->GetEntityAndStatus(id);
+            if (!e_s._toDestroy) { return; }
+             e_s._e->Destroy();
+            // TODO: We don't need to delete the entity yet, right? It should
+            // get automatically deleted when we do AddEntity().
+            e_s._id = EntityId(EntityIndex(-1), id.GetVersion() + 1);
+            e_s._toDestroy = false;
+            this->_freeList.push_back(id.GetIndex());
+        });        
+    }
+
+    void ForEveryActiveEntity(std::function<void(EntityId)> f) const {
+        for (auto const& e_s : _entities) {
+            if (e_s._id.IsValid() && e_s._active) {
+                f(e_s._id);
             }
-            ++i;
+        }
+    }
+    void ForEveryActiveAndInactiveEntity(std::function<void(EntityId)> f) const {
+        for (auto const& e_s : _entities) {
+            if (e_s._id.IsValid()) {
+                f(e_s._id);
+            }
         }
     }
 
-public:
+    // DO NOT STORE POINTER!!!
+    Entity* GetEntity(EntityId id) {
+        EntityAndStatus* e_s = GetEntityAndStatus(id);
+        if (e_s == nullptr) {
+            return nullptr;
+        }
+        return e_s->_e.get();
+    }
+    Entity const* GetEntity(EntityId id) const {
+        EntityAndStatus const* e_s = GetEntityAndStatus(id);
+        if (e_s == nullptr) {
+            return nullptr;
+        }
+        return e_s->_e.get();
+    }
+
+    bool IsActive(EntityId id) const {
+        EntityAndStatus const* e_s = GetEntityAndStatus(id);
+        if (e_s == nullptr) {
+            return false;
+        }
+        return e_s->_active;
+    }
+
+private:
+    // DON'T STORE THIS POINTER! Maybe should be edit-only or something
+    EntityAndStatus* GetEntityAndStatus(EntityId id) {
+        if (id.IsValid()) {
+            EntityIndex index = id.GetIndex();
+            if (index < _entities.size()) {
+                EntityAndStatus& e_s = _entities[index];
+                if (e_s._id == id) {
+                    return &e_s;
+                }                
+            }
+        }
+        return nullptr;
+    }
+    EntityAndStatus const* GetEntityAndStatus(EntityId id) const {
+        if (id.IsValid()) {
+            EntityIndex index = id.GetIndex();
+            if (index < _entities.size()) {
+                EntityAndStatus const& e_s = _entities[index];
+                if (e_s._id == id) {
+                    return &e_s;
+                }                
+            }
+        }
+        return nullptr;
+    }
+
     std::vector<EntityAndStatus> _entities;
+    std::vector<EntityIndex> _freeList;
 };

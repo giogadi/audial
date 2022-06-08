@@ -16,7 +16,7 @@ public:
     BeepOnHitComponent() {
         _midiNotes.fill(-1);
     }
-    virtual bool ConnectComponents(Entity& e, GameManager& g) override;
+    virtual bool ConnectComponents(EntityId id, Entity& e, GameManager& g) override;
 
     static void OnHit(
         std::weak_ptr<BeepOnHitComponent> beepComp, std::weak_ptr<RigidBodyComponent> other);

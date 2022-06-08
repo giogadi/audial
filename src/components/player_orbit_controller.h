@@ -14,7 +14,7 @@ public:
     virtual ComponentType Type() const override { return ComponentType::PlayerOrbitController; }
     PlayerOrbitControllerComponent()
         : _attackDir(0.f,0.f,0.f) {}
-    virtual bool ConnectComponents(Entity& e, GameManager& g) override;
+    virtual bool ConnectComponents(EntityId id, Entity& e, GameManager& g) override;
         
     virtual ~PlayerOrbitControllerComponent() {}
 
@@ -41,7 +41,7 @@ public:
     std::weak_ptr<OrbitableComponent> _planetWeOrbit;
     InputManager const* _input = nullptr;
     // For finding planets to orbit. Maybe we'll want a PlanetManager for this later.
-    EntityManager const* _entityMgr = nullptr;
+    EntityManager* _entityMgr = nullptr;
     State _state = State::Idle;
     float _stateTimer = 0.f;
     Vec3 _attackDir;

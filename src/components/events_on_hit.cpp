@@ -9,7 +9,7 @@
 #include "rigid_body.h"
 #include "audio_event_imgui.h"
 
-bool EventsOnHitComponent::ConnectComponents(Entity& e, GameManager& g) {
+bool EventsOnHitComponent::ConnectComponents(EntityId id, Entity& e, GameManager& g) {
     _t = e.FindComponentOfType<TransformComponent>();
     if (_t.expired()) {
         return false;

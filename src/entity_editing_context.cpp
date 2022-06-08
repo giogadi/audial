@@ -24,26 +24,14 @@ void EntityEditingContext::Update(
 
         TransformComponent const& cameraTransform =
             *(g._sceneManager->_cameras.front().lock()->_transform.lock());
-        std::weak_ptr<Entity> pickedEntity = PickEntity(
+        _selectedEntityId = PickEntity(
             *g._entityManager, mouseX, mouseY, windowWidth, windowHeight, fovy, aspectRatio, zNear,
             cameraTransform);
-        if (!pickedEntity.expired()) {
-            Entity& entity = *pickedEntity.lock();
+        if (_selectedEntityId.IsValid()) {
+            Entity& entity = *g._entityManager->GetEntity(_selectedEntityId);
             // std::cout << "PICKED " << entity._name << std::endl;
             // Call each components' on-pick code.
             entity.OnEditPickComponents();
-            // Find the ix of this entity
-            _selectedEntityIx = -1;
-            for (int i = 0; i < g._entityManager->_entities.size(); ++i) {
-                if (g._entityManager->_entities[i]._e.get() == &entity) {
-                    _selectedEntityIx = i;
-                    break;
-                }
-            }
-            if (_selectedEntityIx == -1) {
-                std::cout << "WTF Why can't we find the entity we just picked?" << std::endl;
-                assert(false);
-            }
         }
     }
 
@@ -51,12 +39,12 @@ void EntityEditingContext::Update(
 }
 
 void EntityEditingContext::UpdateSelectedPositionFromInput(float dt, InputManager const& input, EntityManager& entities) {
-    std::shared_ptr<Entity> entity;
-    if (_selectedEntityIx >= 0 && _selectedEntityIx < entities._entities.size()) {
-        entity = entities._entities[_selectedEntityIx]._e;
-    } else {
+    Entity* entity = entities.GetEntity(_selectedEntityId);
+    if (entity == nullptr) {
+        _selectedEntityId = EntityId::InvalidId();
         return;
     }
+
     auto transform = entity->FindComponentOfType<TransformComponent>().lock();
     if (transform == nullptr) {
         return;
@@ -84,7 +72,8 @@ void EntityEditingContext::UpdateSelectedPositionFromInput(float dt, InputManage
     transform->SetPos(transform->GetPos() + inputVec.GetNormalized() * moveSpeed * dt);
 }
 
-void EntityEditingContext::DrawEntityImGui(Entity& e, GameManager& g, int* selectedComponentIx, bool connectComponents) {
+void EntityEditingContext::DrawEntityImGui(EntityId id, GameManager& g, int* selectedComponentIx, bool connectComponents) {
+    Entity& e = *g._entityManager->GetEntity(id);
     char entityName[128];
     strcpy(entityName, e._name.c_str());
     ImGui::InputText("Entity name", entityName, 128);
@@ -102,7 +91,7 @@ void EntityEditingContext::DrawEntityImGui(Entity& e, GameManager& g, int* selec
                     "\" already contains a component of type \"" <<
                     gComponentTypeStrings[*selectedComponentIx] << "\"." << std::endl;
             } else if (connectComponents) {
-                e.ConnectComponentsOrDeactivate(g, /*failures=*/nullptr);
+                e.ConnectComponentsOrDeactivate(id, g, /*failures=*/nullptr);
             }
         }
     }
@@ -115,7 +104,7 @@ void EntityEditingContext::DrawEntityImGui(Entity& e, GameManager& g, int* selec
             if (ImGui::Button("Delete##")) {
                 e.RemoveComponent(i);
                 if (connectComponents) {
-                    e.ConnectComponentsOrDeactivate(g);
+                    e.ConnectComponentsOrDeactivate(id, g);
                 }                
                 --i;
                 ImGui::PopID();
@@ -123,7 +112,7 @@ void EntityEditingContext::DrawEntityImGui(Entity& e, GameManager& g, int* selec
             }
             bool needsReconnect = comp.DrawImGui();
             if (needsReconnect && connectComponents) {
-                e.ConnectComponentsOrDeactivate(g, /*failures=*/nullptr);
+                e.ConnectComponentsOrDeactivate(id, g, /*failures=*/nullptr);
             }
             ImGui::PopID();
         }
@@ -149,70 +138,97 @@ void EntityEditingContext::DrawEntitiesWindow(EntityManager& entities, GameManag
 
     // Add Entity
     if (ImGui::Button("Add Entity")) {
-        std::shared_ptr<Entity> newEntity = entities.AddEntity().lock();
-        newEntity->_name = "new_entity";
-        newEntity->AddComponentOrDie<TransformComponent>();
-        newEntity->ConnectComponentsOrDie(g);
+        EntityId newId = entities.AddEntityToBack();
+        Entity& newEntity = *entities.GetEntity(newId);
+        newEntity._name = "new_entity";
+        newEntity.AddComponentOrDie<TransformComponent>();
+        newEntity.ConnectComponentsOrDie(newId, g);
     }
 
-    if (entities._entities.empty()) {
+    int numEntities = 0;
+    entities.ForEveryActiveAndInactiveEntity([&numEntities](EntityId id) {
+        ++numEntities;
+    });
+
+    if (numEntities == 0) {
         ImGui::End();
         return;
     }
+
+
     std::vector<std::string> entityNames;
     std::vector<char const*> entityNamesCstr;
-    entityNames.reserve(entities._entities.size());
-    entityNamesCstr.reserve(entities._entities.size());
-    for (auto const& e : entities._entities) {
-        if (e._active) {
-            entityNames.push_back(e._e->_name);
+    std::vector<EntityId> entityIds;
+    entityNames.reserve(numEntities);
+    entityNamesCstr.reserve(numEntities);
+    int entityIndex = 0;
+    int selectedEntityIndex = -1;
+    entities.ForEveryActiveAndInactiveEntity([&](EntityId id) {
+        Entity const& e = *entities.GetEntity(id);
+        if (entities.IsActive(id)) {
+            entityNames.push_back(e._name);
         } else {
-            entityNames.push_back(e._e->_name + " (inactive)");
+            entityNames.push_back(e._name + " (inactive)");
         }
         entityNamesCstr.push_back(entityNames.back().c_str());
+        if (_selectedEntityId == id) {
+            selectedEntityIndex = entityIndex;
+        }
+        ++entityIndex;
+        entityIds.push_back(id);
+    });
+
+    if (selectedEntityIndex < 0) {
+        _selectedEntityId = EntityId::InvalidId();
     }
 
-    ImGui::ListBox("##Entities", &_selectedEntityIx, entityNamesCstr.data(), /*numItems=*/entityNamesCstr.size());
+    bool selectedChanged = ImGui::ListBox("##Entities", &selectedEntityIndex, entityNamesCstr.data(), /*numItems=*/entityNamesCstr.size());
+    if (selectedChanged && selectedEntityIndex >= 0) {
+        _selectedEntityId = entityIds[selectedEntityIndex];
+    }
 
     // Active/inactive
-    if (_selectedEntityIx < entities._entities.size() && _selectedEntityIx >= 0) {
-        bool active = entities._entities[_selectedEntityIx]._active;
+    if (_selectedEntityId.IsValid()) {
+        bool active = entities.IsActive(_selectedEntityId);
         bool changed = ImGui::Checkbox("Active", &active);
         if (changed) {
             if (active) {
-                entities.ActivateEntity(_selectedEntityIx, g);
+                entities.ActivateEntity(_selectedEntityId, g);
             } else {
-                entities.DeactivateEntity(_selectedEntityIx);
+                entities.DeactivateEntity(_selectedEntityId);
             }
         }
     }
 
     // Duplicate Entity
-    if (_selectedEntityIx < entities._entities.size() && _selectedEntityIx >= 0) {
+    if (_selectedEntityId.IsValid()) {
         if (ImGui::Button("Duplicate Entity")) {
+            Entity const& entity = *entities.GetEntity(_selectedEntityId);            
             std::stringstream entityData;
-            SaveEntity(entityData, *entities._entities[_selectedEntityIx]._e);
-            std::shared_ptr<Entity> newEntity = entities.AddEntity().lock();
-            LoadEntity(entityData, *newEntity);
-            newEntity->_name += "(dupe)";
-            newEntity->ConnectComponentsOrDeactivate(g, /*failures=*/nullptr);
+            SaveEntity(entityData, entity);
+            EntityId newEntityId = entities.AddEntityToBack(entities.IsActive(_selectedEntityId));
+            Entity& newEntity = *entities.GetEntity(newEntityId);
+            LoadEntity(entityData, newEntity);
+            newEntity._name += "(dupe)";
+            if (entities.IsActive(newEntityId)) {
+                newEntity.ConnectComponentsOrDeactivate(newEntityId, g, /*failures=*/nullptr);
+            }            
         }
     }
 
     // Remove Entity
-    if (_selectedEntityIx < entities._entities.size() && _selectedEntityIx >= 0) {        
+    if (_selectedEntityId.IsValid()) {
         if (ImGui::Button("Remove Entity")) {
-            entities.DestroyEntity(_selectedEntityIx);
-            if (_selectedEntityIx >= entities._entities.size()) {
-                _selectedEntityIx = -1;
-            }
+            entities.TagEntityForDestroy(_selectedEntityId);
+            _selectedEntityId = EntityId::InvalidId();
         }
     }
 
     // Now show a little panel for each component on the selected entity.
-    if (_selectedEntityIx < entities._entities.size() && _selectedEntityIx >= 0) {
-        EntityAndStatus& e_s = entities._entities[_selectedEntityIx];
-        DrawEntityImGui(*e_s._e, g, &_selectedComponentIx, /*connectComponents=*/e_s._active);
+    if (_selectedEntityId.IsValid()) {
+        bool active = entities.IsActive(_selectedEntityId);
+        DrawEntityImGui(_selectedEntityId, g, &_selectedComponentIx, /*connectComponents=*/active);
     }
+
     ImGui::End();
 }

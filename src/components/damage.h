@@ -8,7 +8,7 @@ class DamageComponent : public Component {
 public:
     virtual ComponentType Type() const override { return ComponentType::Damage; }
     DamageComponent() {}
-    virtual bool ConnectComponents(Entity& e, GameManager& g) override;
+    virtual bool ConnectComponents(EntityId id, Entity& e, GameManager& g) override;
 
     virtual void Update(float dt) override;
 
@@ -21,8 +21,7 @@ public:
 
     int _hp = -1;
     std::weak_ptr<RigidBodyComponent> _rb;
-    // DO NOT DEREFERENCE THE ENTITY! Only used to tell manager which entity to delete.
-    Entity* _entity = nullptr;
+    EntityId _entityId = EntityId::InvalidId();
     EntityManager* _entityManager = nullptr;
     bool _wasHit = false;
 };

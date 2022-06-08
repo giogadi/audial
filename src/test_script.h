@@ -2,7 +2,7 @@
 
 void LoadTestScript(GameManager& g) {
     // Camera
-    Entity* camera = g._entityManager->AddEntity().lock().get();
+    Entity* camera = g._entityManager->GetEntity(g._entityManager->AddEntity());
     {
         camera->_name = "camera";
 
@@ -16,12 +16,10 @@ void LoadTestScript(GameManager& g) {
         pTrans->SetRot(rot);
 
         auto pCamera = camera->AddComponentOrDie<CameraComponent>().lock();
-
-        camera->ConnectComponentsOrDie(g);
     }
 
     // Light
-    Entity* light = g._entityManager->AddEntity().lock().get();
+    Entity* light = g._entityManager->GetEntity(g._entityManager->AddEntity());
     {
         light->_name = "light";
 
@@ -31,8 +29,6 @@ void LoadTestScript(GameManager& g) {
         auto pLight = light->AddComponentOrDie<LightComponent>().lock();
         pLight->_ambient.Set(0.2f, 0.2f, 0.2f);
         pLight->_diffuse.Set(1.f, 1.f, 1.f);
-
-        light->ConnectComponentsOrDie(g);
     }
 
     // // Cube1
@@ -99,5 +95,7 @@ void LoadTestScript(GameManager& g) {
         // InitEventQueueWithSequence(&audioContext._eventQueue, beatClock);
         // InitEventQueueWithParamSequence(&audioContext._eventQueue, beatClock);
     }
+
+    g._entityManager->ConnectComponents(g, /*dieOnConnectFailure=*/true);
 
 }

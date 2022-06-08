@@ -4,7 +4,7 @@
 
 #include "beat_clock.h"
 
-bool ActivatorComponent::ConnectComponents(Entity& e, GameManager& g) {
+bool ActivatorComponent::ConnectComponents(EntityId id, Entity& e, GameManager& g) {
     _gameManager = &g;
     _beatClock = g._beatClock;
     return true;
@@ -31,7 +31,8 @@ void ActivatorComponent::Update(float dt) {
         _absoluteActivationBeatTime = std::ceil(_beatClock->GetBeatTime()) + _activationBeatTime;
     }
     if (_beatClock->GetBeatTime() >= _absoluteActivationBeatTime) {
-        _gameManager->_entityManager->ActivateEntity(_entityName.c_str(), *_gameManager);
+        EntityId toActivateId = _gameManager->_entityManager->FindInactiveEntityByName(_entityName.c_str());
+        _gameManager->_entityManager->ActivateEntity(toActivateId, *_gameManager);
         _haveActivated = true;
     }
 }

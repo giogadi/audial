@@ -36,7 +36,7 @@ std::optional<float> sphereRayCast(Vec3 const& rayStart, Vec3 const& normalizedR
 
 }  // end namespace
 
-std::weak_ptr<Entity> PickEntity(
+EntityId PickEntity(
     EntityManager& entities, double clickX, double clickY, int windowWidth, int windowHeight,
     float fovy, float aspectRatio, float zNear,
     TransformComponent const& cameraTransform) {
@@ -57,29 +57,26 @@ std::weak_ptr<Entity> PickEntity(
     clickedPointOnNearPlane -= (yFactor * 2 * nearPlaneHalfHeight) * cameraTransform.GetYAxis();
 
     std::optional<float> closestPickDist;
-    std::weak_ptr<Entity> closestPickItem;
+    EntityId closestPickItem = EntityId::InvalidId();
     float pickSphereRad = 1.f;
     Vec3 rayDir = (clickedPointOnNearPlane - cameraTransform.GetPos()).GetNormalized();
     // Start ray forward of the camera a bit so we don't just pick the camera
-    Vec3 rayStart = cameraTransform.GetPos() + rayDir * (pickSphereRad + 0.1f);    
-    for (auto& pEnt : entities._entities) {
-        if (!pEnt._active) {
-            continue;
-        }
-        Entity& entity = *pEnt._e;
+    Vec3 rayStart = cameraTransform.GetPos() + rayDir * (pickSphereRad + 0.1f);
+    entities.ForEveryActiveEntity([&](EntityId id) {
+        Entity& entity = *entities.GetEntity(id);
         std::weak_ptr<TransformComponent> pTrans = entity.FindComponentOfType<TransformComponent>();
         if (pTrans.expired()) {
-            continue;
+            return;
         }
         TransformComponent const& t = *pTrans.lock();
         std::optional<float> hitDist = sphereRayCast(rayStart, rayDir, t.GetPos(), pickSphereRad);
         if (hitDist.has_value()) {
             if (!closestPickDist.has_value() || *hitDist < *closestPickDist) {
                 *closestPickDist = *hitDist;
-                closestPickItem = pEnt._e;
+                closestPickItem = id;
             }
         }
-    }
+    });
 
     return closestPickItem;
 }

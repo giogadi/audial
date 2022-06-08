@@ -8,7 +8,7 @@
 #include "audio.h"
 #include "rigid_body.h"
 
-bool BeepOnHitComponent::ConnectComponents(Entity& e, GameManager& g) {
+bool BeepOnHitComponent::ConnectComponents(EntityId id, Entity& e, GameManager& g) {
     _t = e.FindComponentOfType<TransformComponent>();
     if (_t.expired()) {
         return false;

@@ -26,7 +26,7 @@ public:
         : _velocity(0.f,0.f,0.f)
         , _localAabb(MakeCubeAabb(0.5f)) {}
     virtual ~RigidBodyComponent() {}
-    virtual bool ConnectComponents(Entity& e, GameManager& g) override;
+    virtual bool ConnectComponents(EntityId id, Entity& e, GameManager& g) override;
     virtual bool DrawImGui() override;
 
     // Make sure you don't set this callback to bind to a "this" pointer of some

@@ -11,7 +11,7 @@ class ActivatorComponent : public Component {
 public:
     virtual ComponentType Type() const override { return ComponentType::Activator; }
     ActivatorComponent() {}
-    virtual bool ConnectComponents(Entity& e, GameManager& g) override;
+    virtual bool ConnectComponents(EntityId id, Entity& e, GameManager& g) override;
 
     virtual void Update(float const dt) override;
 

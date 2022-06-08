@@ -201,17 +201,15 @@ void DrawSynthGuiAndUpdatePatch(SynthGuiState& synthGuiState, audio::Context& au
     ImGui::End();
 }
 
-void ShowHitCounterWindow(EntityManager const& entityMgr) {
+void ShowHitCounterWindow(EntityManager& entityMgr) {
     ImGui::Begin("Hit counters");
-    for (auto const& e_s : entityMgr._entities) {
-        if (e_s._active) {
-            auto const& entity = e_s._e;
-            std::shared_ptr<HitCounterComponent> hitComp = entity->FindComponentOfType<HitCounterComponent>().lock();
-            if (hitComp) {
-                ImGui::Text("%s: %d", entity->_name.c_str(), hitComp->_hitsRemaining);
-            }
-        }        
-    }
+    entityMgr.ForEveryActiveEntity([&entityMgr](EntityId id) {
+        Entity& entity = *entityMgr.GetEntity(id);
+        std::shared_ptr<HitCounterComponent> hitComp = entity.FindComponentOfType<HitCounterComponent>().lock();
+        if (hitComp) {
+            ImGui::Text("%s: %d", entity._name.c_str(), hitComp->_hitsRemaining);
+        }
+    });
     ImGui::End();
 }
 
