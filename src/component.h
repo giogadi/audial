@@ -35,7 +35,8 @@ class EntityManager;
     X(Orbitable) \
     X(EventsOnHit) \
     X(Activator) \
-    X(Damage)
+    X(Damage) \
+    X(OnDestroyEvent)
 
 enum class ComponentType: int {
 #   define X(a) a,
@@ -143,10 +144,16 @@ public:
             // TODO: do I need to consider component._active here?
             c->_c->Destroy();
         }
+        ResetWithoutComponentDestroy();
+    }
+
+    // Used for edit mode to not invoke event logic and such when deleting an entity.
+    void ResetWithoutComponentDestroy() {
         _components.clear();
         _componentTypeMap.clear();
     }
 
+    // NOTE: DOES NOT CALL DESTROY ON REMOVED COMPONENT.
     void RemoveComponent(int index) {
         ComponentType compType = _components[index]->_c->Type();
         for (auto item = _componentTypeMap.begin(); item != _componentTypeMap.end(); ++item) {
@@ -155,7 +162,7 @@ public:
                 break;
             }
         }
-        _components[index]->_c->Destroy();
+        // _components[index]->_c->Destroy();
         _components.erase(_components.begin() + index);
     }
 
@@ -322,11 +329,15 @@ public:
     
 };
 
+enum class EntityDestroyType {
+    None, DestroyComponents, ResetWithoutDestroy
+};
+
 struct EntityAndStatus {
     std::shared_ptr<Entity> _e;   
     EntityId _id = EntityId::InvalidId(); 
     bool _active = true;
-    bool _toDestroy = false;
+    EntityDestroyType _destroy = EntityDestroyType::None;
 };
 
 class EntityManager {
@@ -346,7 +357,7 @@ public:
         }
         e_s->_e = std::make_shared<Entity>();
         e_s->_active = active;
-        e_s->_toDestroy = false;
+        e_s->_destroy = EntityDestroyType::None;
         return e_s->_id;
     }
 
@@ -357,11 +368,12 @@ public:
         e_s->_id = EntityId(_entities.size() - 1, 0);
         e_s->_e = std::make_shared<Entity>();
         e_s->_active = active;
-        e_s->_toDestroy = false;
+        e_s->_destroy = EntityDestroyType::None;
         return e_s->_id;
     }
 
-    void TagEntityForDestroy(EntityId idToDestroy) {
+    void TagEntityForDestroy(
+        EntityId idToDestroy, EntityDestroyType destroyType = EntityDestroyType::DestroyComponents) {
         if (!idToDestroy.IsValid()) {
             return;
         }
@@ -374,26 +386,8 @@ public:
             std::cout << "ALREADY DESTROYED THIS DUDE" << std::endl;
             return;
         }
-        e_s._toDestroy = true;
+        e_s._destroy = destroyType;
     }
-
-    // TODO: This might not actually be safe if we ever delete an entity and reuse its pointer location. We need a real entity ID UGH!
-    // void TagEntityForDestroy(Entity* pToDestroy) {
-    //     for (int i = 0; i < _entities.size(); ++i) {
-    //         auto& e = _entities[i]._e;
-    //         if (e.get() == pToDestroy) {
-    //             _entities[i]._toDestroy = true;
-    //             break;
-    //         }
-    //     }
-    // }
-
-    // TODO: remove this please and thanks. Everyone should tag for destroy I think.
-    // void DestroyEntity(int index) {
-    //     assert(index >= 0 && index < _entities.size());
-    //     _entities[index]._e->Destroy();
-    //     _entities.erase(_entities.begin() + index);
-    // }
 
     void Update(float dt) {
         ForEveryActiveEntity([this, dt](EntityId id) {
@@ -436,15 +430,6 @@ public:
         return EntityId::InvalidId();
     }
 
-    // std::weak_ptr<Entity> FindEntityByName(char const* name) {
-    //     for (auto const& entity : _entities) {
-    //         if (entity._active && entity._e->_name == name) {
-    //             return entity._e;
-    //         }
-    //     }
-    //     return std::weak_ptr<Entity>();
-    // }
-
     void DeactivateEntity(EntityId id) {
         EntityAndStatus* e_s = GetEntityAndStatus(id);
         if (e_s == nullptr) {
@@ -455,26 +440,10 @@ public:
         }
         std::stringstream entityData;
         SaveEntity(entityData, *e_s->_e);
-        e_s->_e->Destroy();
+        e_s->_e->ResetWithoutComponentDestroy();
         LoadEntity(entityData, *e_s->_e);
         e_s->_active = false;
     }
-
-    // We currently do this by destroying and recreating all the entity's components. This way it
-    // gets all disconnected. This is gross and wasteful but...shrug.
-    // void DeactivateEntity(char const* name) {
-    //     int entityIx = -1;
-    //     for (int i = 0; i < _entities.size(); ++i) {
-    //         if (_entities[i]._e->_name == name) {
-    //             entityIx = i;
-    //             break;
-    //         }
-    //     }
-    //     if (entityIx < 0) {
-    //         return;
-    //     }
-    //     DeactivateEntity(entityIx);        
-    // }
 
     void ActivateEntity(EntityId id, GameManager& g) {
         EntityAndStatus* e_s = GetEntityAndStatus(id);
@@ -488,38 +457,23 @@ public:
         e_s->_active = true;
     }
 
-    // void ActivateEntity(int entityIx, GameManager& g) {
-    //     EntityAndStatus& toActivate = _entities[entityIx];
-    //     if (toActivate._active) {
-    //         return;
-    //     }
-    //     toActivate._e->ConnectComponentsOrDeactivate(g, /*failures=*/nullptr);
-    //     toActivate._active = true;
-    // }
-
-    // void ActivateEntity(char const* name, GameManager& g) {
-    //     int entityIx = -1;
-    //     for (int i = 0; i < _entities.size(); ++i) {
-    //         if (_entities[i]._e->_name == name) {
-    //             entityIx = i;
-    //             break;
-    //         }
-    //     }
-    //     if (entityIx < 0) {
-    //         return;
-    //     }
-    //     ActivateEntity(entityIx, g);
-    // }
-
     void DestroyTaggedEntities() {
         ForEveryActiveAndInactiveEntity([this](EntityId id) {
             EntityAndStatus& e_s = *this->GetEntityAndStatus(id);
-            if (!e_s._toDestroy) { return; }
-             e_s._e->Destroy();
+            switch (e_s._destroy) {
+                case EntityDestroyType::None:
+                    return;
+                case EntityDestroyType::DestroyComponents:
+                    e_s._e->Destroy();
+                    break;
+                case EntityDestroyType::ResetWithoutDestroy:
+                    e_s._e->ResetWithoutComponentDestroy();
+                    break;                    
+            }            
             // TODO: We don't need to delete the entity yet, right? It should
             // get automatically deleted when we do AddEntity().
             e_s._id = EntityId(EntityIndex(-1), id.GetVersion() + 1);
-            e_s._toDestroy = false;
+            e_s._destroy = EntityDestroyType::None;
             this->_freeList.push_back(id.GetIndex());
         });        
     }

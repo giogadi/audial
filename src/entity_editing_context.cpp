@@ -219,7 +219,7 @@ void EntityEditingContext::DrawEntitiesWindow(EntityManager& entities, GameManag
     // Remove Entity
     if (_selectedEntityId.IsValid()) {
         if (ImGui::Button("Remove Entity")) {
-            entities.TagEntityForDestroy(_selectedEntityId);
+            entities.TagEntityForDestroy(_selectedEntityId, EntityDestroyType::ResetWithoutDestroy);
             _selectedEntityId = EntityId::InvalidId();
         }
     }

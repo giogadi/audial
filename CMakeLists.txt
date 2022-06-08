@@ -10,12 +10,13 @@ add_executable(game
     src/imgui/imgui_tables.cpp src/imgui/imgui_widgets.cpp src/imgui/backends/imgui_impl_glfw.cpp 
     src/imgui/backends/imgui_impl_opengl3.cpp src/glad/src/glad.cpp
     src/audio_loader.cpp src/game.cpp src/audio_util.cpp src/audio.cpp src/audio_event_imgui.cpp
-    src/entity_picking.cpp src/entity_editing_context.cpp
+    src/entity_picking.cpp src/entity_editing_context.cpp src/script_action.cpp
     src/shader.cpp src/synth.cpp  src/matrix.cpp src/component.cpp src/renderer.cpp src/collisions.cpp
     src/components/rigid_body.cpp src/components/beep_on_hit.cpp src/components/player_controller.cpp
     src/components/player_orbit_controller.cpp src/components/camera_controller.cpp src/components/hit_counter.cpp
     src/components/orbitable.cpp src/components/events_on_hit.cpp src/components/activator.cpp src/components/damage.cpp
-    src/enums/audio_EventType.cpp src/enums/audio_SynthParamType.cpp src/enums/CollisionLayer.cpp)
+    src/enums/audio_EventType.cpp src/enums/audio_SynthParamType.cpp src/enums/CollisionLayer.cpp
+    src/enums/ScriptActionType.cpp)
 
 ## GLFW ##
 set(GLFW_BUILD_DOCS OFF CACHE BOOL "" FORCE)
