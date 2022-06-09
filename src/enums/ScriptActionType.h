@@ -6,6 +6,8 @@ enum class ScriptActionType : int {
     
     DestroyAllPlanets,
     
+    ActivateEntity,
+    
     Count
 };
 extern char const* gScriptActionTypeStrings[];

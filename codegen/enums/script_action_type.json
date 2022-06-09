@@ -2,6 +2,7 @@
     "namespaces": [],
     "enumName": "ScriptActionType",
     "enumItems": [
-        "DestroyAllPlanets"
+        "DestroyAllPlanets",
+        "ActivateEntity"
     ]
 }

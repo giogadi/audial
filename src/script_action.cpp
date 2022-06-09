@@ -8,6 +8,10 @@ std::unique_ptr<ScriptAction> MakeScriptActionOfType(ScriptActionType actionType
             return std::make_unique<ScriptActionDestroyAllPlanets>();
             break;
         }
+        case ScriptActionType::ActivateEntity: {
+            return std::make_unique<ScriptActionActivateEntity>();
+            break;
+        }
         case ScriptActionType::Count: {
             assert(false);
             break;
@@ -37,5 +41,13 @@ void DrawScriptActionListImGui(std::vector<std::unique_ptr<ScriptAction>>& actio
             actions[i]->DrawImGui();
         }
         ImGui::PopID();
+    }
+}
+
+ void ScriptActionActivateEntity::DrawImGui() {
+    char name[128];
+    strcpy(name, _entityName.c_str());
+    if (ImGui::InputText("Name##", name, 128)) {
+        _entityName = name;
     }
 }

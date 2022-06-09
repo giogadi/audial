@@ -1,6 +1,7 @@
 #pragma once
 
 #include "cereal/cereal.hpp"
+#include "cereal/types/string.hpp"
 
 #include "component.h"
 #include "enums/ScriptActionType.h"
@@ -12,7 +13,7 @@ public:
     virtual ~ScriptAction() {}
     virtual ScriptActionType Type() const = 0;
     virtual void Execute(GameManager& g) const = 0;
-    virtual void DrawImGui() const {}
+    virtual void DrawImGui() {}
 };
 
 class ScriptActionDestroyAllPlanets : public ScriptAction {
@@ -25,11 +26,29 @@ public:
             if (hasPlanet) {
                 g._entityManager->TagEntityForDestroy(id);
             }            
-        });        
+        });
     }
 
     template<typename Archive>
     void serialize(Archive& ar) {}
+};
+
+class ScriptActionActivateEntity : public ScriptAction {
+public:
+    virtual ScriptActionType Type() const override { return ScriptActionType::ActivateEntity; }
+    virtual void Execute(GameManager& g) const override {
+        EntityId id = g._entityManager->FindInactiveEntityByName(_entityName.c_str());
+        g._entityManager->ActivateEntity(id, g);
+    }
+
+    virtual void DrawImGui() override;
+
+    template<typename Archive>
+    void serialize(Archive& ar) {
+        ar(cereal::make_nvp("entity_name", _entityName));
+    }
+
+    std::string _entityName;
 };
 
 std::unique_ptr<ScriptAction> MakeScriptActionOfType(ScriptActionType actionType);
@@ -43,6 +62,11 @@ inline void SaveActions(Archive& ar, std::vector<std::unique_ptr<ScriptAction>> 
         switch (action->Type()) {
             case ScriptActionType::DestroyAllPlanets: {
                 auto const* pAction = dynamic_cast<ScriptActionDestroyAllPlanets const*>(action.get());
+                ar(cereal::make_nvp("action", *pAction));
+                break;
+            }
+            case ScriptActionType::ActivateEntity: {
+                auto const* pAction = dynamic_cast<ScriptActionActivateEntity const*>(action.get());
                 ar(cereal::make_nvp("action", *pAction));
                 break;
             }
@@ -64,6 +88,12 @@ inline void LoadActions(Archive& ar, std::vector<std::unique_ptr<ScriptAction>>&
         switch (actionType) {
             case ScriptActionType::DestroyAllPlanets: {
                 auto* pAction = dynamic_cast<ScriptActionDestroyAllPlanets*>(pBaseAction.get());
+                ar(cereal::make_nvp("action", *pAction));
+                actions.push_back(std::move(pBaseAction));
+                break;
+            }
+            case ScriptActionType::ActivateEntity: {
+                auto* pAction = dynamic_cast<ScriptActionActivateEntity*>(pBaseAction.get());
                 ar(cereal::make_nvp("action", *pAction));
                 actions.push_back(std::move(pBaseAction));
                 break;

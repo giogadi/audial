@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <cereal>
 	<entities>
-		<num_entities>7</num_entities>
+		<num_entities>8</num_entities>
 		<active>true</active>
 		<entity>
 			<e._name>camera</e._name>
@@ -287,9 +287,13 @@
 			</Damage>
 			<component_type>OnDestroyEvent</component_type>
 			<OnDestroyEvent>
-				<num_actions>1</num_actions>
+				<num_actions>2</num_actions>
 				<action_type>DestroyAllPlanets</action_type>
 				<action/>
+				<action_type>ActivateEntity</action_type>
+				<action>
+					<entity_name>r2_note1</entity_name>
+				</action>
 			</OnDestroyEvent>
 		</entity>
 		<active>true</active>
@@ -389,6 +393,71 @@
 				<beat_time>4</beat_time>
 				<entity_name>eb_drone</entity_name>
 			</Activator>
+		</entity>
+		<active>false</active>
+		<entity>
+			<e._name>r2_note1</e._name>
+			<num_components>5</num_components>
+			<component_type>Transform</component_type>
+			<Transform>
+				<t._transform>
+					<m._m00>1</m._m00>
+					<m._m10>0</m._m10>
+					<m._m20>0</m._m20>
+					<m._m30>0</m._m30>
+					<m._m01>0</m._m01>
+					<m._m11>1</m._m11>
+					<m._m21>0</m._m21>
+					<m._m31>0</m._m31>
+					<m._m02>0</m._m02>
+					<m._m12>0</m._m12>
+					<m._m22>1</m._m22>
+					<m._m32>0</m._m32>
+					<m._m03>1.2556346654891968</m._m03>
+					<m._m13>0</m._m13>
+					<m._m23>6.4556455612182617</m._m23>
+					<m._m33>1</m._m33>
+				</t._transform>
+			</Transform>
+			<component_type>Model</component_type>
+			<Model>
+				<m._modelId>wood_box</m._modelId>
+				<color>
+					<v._x>1</v._x>
+					<v._y>0.22549021244049072</v._y>
+					<v._z>0.22549021244049072</v._z>
+					<v._w>1</v._w>
+				</color>
+			</Model>
+			<component_type>Orbitable</component_type>
+			<Orbitable/>
+			<component_type>RigidBody</component_type>
+			<RigidBody>
+				<m._localAabb>
+					<m._min>
+						<v._x>-0.5</v._x>
+						<v._y>-0.5</v._y>
+						<v._z>-0.5</v._z>
+					</m._min>
+					<m._max>
+						<v._x>0.5</v._x>
+						<v._y>0.5</v._y>
+						<v._z>0.5</v._z>
+					</m._max>
+				</m._localAabb>
+				<m._static>true</m._static>
+				<m._layer>None</m._layer>
+			</RigidBody>
+			<component_type>BeepOnHit</component_type>
+			<BeepOnHit>
+				<synth_channel>0</synth_channel>
+				<notes>
+					<value0>69</value0>
+					<value1>-1</value1>
+					<value2>-1</value2>
+					<value3>-1</value3>
+				</notes>
+			</BeepOnHit>
 		</entity>
 	</entities>
 </cereal>

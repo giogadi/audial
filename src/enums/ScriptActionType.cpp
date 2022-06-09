@@ -9,7 +9,9 @@ namespace {
 
 std::unordered_map<std::string, ScriptActionType> const gStringToScriptActionType = {
     
-    { "DestroyAllPlanets", ScriptActionType::DestroyAllPlanets }
+    { "DestroyAllPlanets", ScriptActionType::DestroyAllPlanets },
+    
+    { "ActivateEntity", ScriptActionType::ActivateEntity }
     
 };
 
@@ -17,7 +19,9 @@ std::unordered_map<std::string, ScriptActionType> const gStringToScriptActionTyp
 
 char const* gScriptActionTypeStrings[] = {
 	
-    "DestroyAllPlanets"
+    "DestroyAllPlanets",
+    
+    "ActivateEntity"
     
 };
 
