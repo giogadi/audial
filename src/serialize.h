@@ -22,8 +22,8 @@
 #include "components/activator.h"
 #include "components/damage.h"
 #include "beat_time_event.h"
+#include "script_action.h"
 #include "components/on_destroy_event.h"
-#include "enums/ScriptActionType_cereal.h"
 
 template<typename Archive>
 void serialize(Archive& ar, Vec3& v) {
@@ -156,50 +156,6 @@ template<typename Archive>
 void serialize(Archive& ar, BeatTimeEvent& e) {
     ar(cereal::make_nvp("beat_time", e._beatTime));
     ar(cereal::make_nvp("event", e._e));
-}
-
-template<typename Archive>
-void serialize(Archive& ar, ScriptActionDestroyAllPlanets& e) {
-    
-}
-
-template<typename Archive>
-void SaveActions(Archive& ar, std::vector<std::unique_ptr<ScriptAction>> const& actions) {
-    ar(cereal::make_nvp("num_actions", actions.size()));
-    for (std::unique_ptr<ScriptAction> const& action : actions) {
-        ar(cereal::make_nvp("action_type", action->Type()));
-        switch (action->Type()) {
-            case ScriptActionType::DestroyAllPlanets: {
-                auto const* pAction = dynamic_cast<ScriptActionDestroyAllPlanets const*>(action.get());
-                ar(cereal::make_nvp("action", *pAction));
-                break;
-            }
-            case ScriptActionType::Count: {
-                assert(false);
-            }
-        }
-    }
-}
-
-template<typename Archive>
-void LoadActions(Archive& ar, std::vector<std::unique_ptr<ScriptAction>>& actions) {
-    int numActions;
-    ar(cereal::make_nvp("num_actions", numActions));
-    for (int i = 0; i < numActions; ++i) {
-        ScriptActionType actionType;
-        ar(cereal::make_nvp("action_type", actionType));
-        std::unique_ptr<ScriptAction> pBaseAction = MakeScriptActionOfType(actionType);
-        switch (actionType) {
-            case ScriptActionType::DestroyAllPlanets: {
-                auto* pAction = dynamic_cast<ScriptActionDestroyAllPlanets*>(pBaseAction.get());
-                ar(cereal::make_nvp("action", *pAction));
-                actions.push_back(std::move(pBaseAction));
-                break;
-            }
-            case ScriptActionType::Count:
-                assert(false);
-        }
-    }
 }
 
 template<typename Archive>
