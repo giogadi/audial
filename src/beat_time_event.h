@@ -5,7 +5,7 @@
 
 struct BeatTimeEvent {
     audio::Event _e;  // timeInTicks is ignored.
-    double _beatTime;
+    double _beatTime = 0.0;
 };
 
 inline audio::Event BeatTimeToTickTimeEvent(BeatTimeEvent const& b_e, BeatClock const& beatClock) {

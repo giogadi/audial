@@ -70,7 +70,7 @@ bool EventsOnHitComponent::DrawImGui() {
         ImGui::PushID(i);
         sprintf(headerName, "%s##Header", audio::EventTypeToString(_events[i]._e.type));
         if (ImGui::CollapsingHeader(headerName)) {
-            ImGui::InputScalar("Beat time##", ImGuiDataType_Float, &_events[i]._beatTime, /*step=*/nullptr, /*???*/nullptr, "%f");
+            ImGui::InputScalar("Beat time##", ImGuiDataType_Double, &_events[i]._beatTime, /*step=*/nullptr, /*???*/nullptr, "%f");
             audio::EventDrawImGuiNoTime(_events[i]._e);
         }
         ImGui::PopID();
