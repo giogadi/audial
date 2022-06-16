@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <cereal>
 	<entities>
-		<num_entities>10</num_entities>
+		<num_entities>11</num_entities>
 		<active>true</active>
 		<entity>
 			<e._name>camera</e._name>
@@ -612,6 +612,61 @@
 					<value3>-1</value3>
 				</notes>
 			</BeepOnHit>
+		</entity>
+		<active>true</active>
+		<entity>
+			<e._name>kick</e._name>
+			<num_components>1</num_components>
+			<component_type>Sequencer</component_type>
+			<Sequencer>
+				<events size="dynamic">
+					<value0>
+						<beat_time>0</beat_time>
+						<event>
+							<type>PlayPcm</type>
+							<channel>-1</channel>
+							<tick_time>0</tick_time>
+							<midi_note>0</midi_note>
+						</event>
+					</value0>
+					<value1>
+						<beat_time>1</beat_time>
+						<event>
+							<type>PlayPcm</type>
+							<channel>-1</channel>
+							<tick_time>0</tick_time>
+							<midi_note>0</midi_note>
+						</event>
+					</value1>
+					<value2>
+						<beat_time>2</beat_time>
+						<event>
+							<type>PlayPcm</type>
+							<channel>-1</channel>
+							<tick_time>0</tick_time>
+							<midi_note>0</midi_note>
+						</event>
+					</value2>
+					<value3>
+						<beat_time>3</beat_time>
+						<event>
+							<type>PlayPcm</type>
+							<channel>-1</channel>
+							<tick_time>0</tick_time>
+							<midi_note>0</midi_note>
+						</event>
+					</value3>
+					<value4>
+						<beat_time>4</beat_time>
+						<event>
+							<type>None</type>
+							<channel>-1</channel>
+							<tick_time>0</tick_time>
+							<midi_note>0</midi_note>
+						</event>
+					</value4>
+				</events>
+			</Sequencer>
 		</entity>
 	</entities>
 </cereal>

@@ -23,8 +23,8 @@ void OnPortAudioError(PaError const& err) {
 } // namespace
 
 void InitStateData(
-    StateData& state, std::vector<synth::Patch> const& synthPatches, EventQueue* eventQueue,
-    int sampleRate, float* pcmBuffer, unsigned long pcmBufferLength) {
+    StateData& state, std::vector<synth::Patch> const& synthPatches, std::vector<PcmSound> const& pcmSounds,
+    EventQueue* eventQueue, int sampleRate) {
 
     bool useInputPatches = true;
     if (synthPatches.size() != state.synths.size()) {
@@ -40,9 +40,13 @@ void InitStateData(
         }
     }
 
-    state.pcmBuffer = pcmBuffer;
-    state.pcmBufferLength = pcmBufferLength;
-    state.currentPcmBufferIx = -1;
+    for (int i = 0; i < pcmSounds.size(); ++i) {
+        if (i >= state.pcmSounds.size()) {
+            std::cout << "Trying to load too many sounds. Ignoring some sounds." << std::endl;
+            break;
+        }
+        state.pcmSounds[i] = pcmSounds[i];
+    }
 
     state.events = eventQueue;
 
@@ -50,14 +54,13 @@ void InitStateData(
 }
 
 PaError Init(
-    Context& context, std::vector<synth::Patch> const& synthPatches, float* pcmBuffer,
-    unsigned long pcmBufferLength) {
+    Context& context, std::vector<synth::Patch> const& synthPatches, std::vector<PcmSound> const& pcmSounds) {
 
     PaError err;
     
     printf("PortAudio Test: output sine wave. SR = %d, BufSize = %d\n", SAMPLE_RATE, FRAMES_PER_BUFFER);
 
-    InitStateData(context._state, synthPatches, &context._eventQueue, SAMPLE_RATE, pcmBuffer, pcmBufferLength);
+    InitStateData(context._state, synthPatches, pcmSounds, &context._eventQueue, SAMPLE_RATE);
 
     err = Pa_Initialize();
     if( err != paNoError ) {
@@ -239,7 +242,19 @@ int PortAudioCallback(
             }
             switch (e.type) {
                 case EventType::PlayPcm: {
-                    state->currentPcmBufferIx = 0;
+                    // state->currentPcmBufferIx = 0;
+                    bool valid = true;
+                    if (e.midiNote >= state->pcmSounds.size()) {
+                        std::cout << "NO PCM SOUND FOR NOTE " << e.midiNote << std::endl;
+                        break;
+                    }
+                    PcmSound const& sound = state->pcmSounds[e.midiNote];
+                    if (sound._buffer == nullptr) {
+                        std::cout << "PCM SOUND AT NOTE " << e.midiNote << " IS NULL" << std::endl;
+                        break;
+                    }
+                    state->pcmVoices[0]._soundIx = e.midiNote;
+                    state->pcmVoices[0]._soundBufferIx = 0;
                     break;
                 }
                 default: {
@@ -250,11 +265,32 @@ int PortAudioCallback(
         }
 
         float v = 0.0f;
-        if (state->currentPcmBufferIx >= 0 &&
-            state->currentPcmBufferIx < state->pcmBufferLength) {
-            v = state->pcmBuffer[state->currentPcmBufferIx];
-            ++state->currentPcmBufferIx;
+        for (int voiceIx = 0; voiceIx < state->pcmVoices.size(); ++voiceIx) {
+            PcmVoice& voice = state->pcmVoices[voiceIx];
+            if (voice._soundIx < 0) {
+                assert(voice._soundBufferIx < 0);
+                continue;
+            }
+            PcmSound const& sound = state->pcmSounds[voice._soundIx];
+            if (sound._buffer == nullptr) {
+                std::cout << "VOICE TRYING TO PLAY NULL BUFFER" << std::endl;
+                continue;
+            }
+            assert(voice._soundBufferIx >= 0);
+            assert(voice._soundBufferIx < sound._bufferLength);
+            v = sound._buffer[voice._soundBufferIx];
+            ++voice._soundBufferIx;
+            if (voice._soundBufferIx >= sound._bufferLength) {
+                voice._soundBufferIx = -1;
+                voice._soundIx = -1;
+            }
         }
+
+        // if (state->currentPcmBufferIx >= 0 &&
+        //     state->currentPcmBufferIx < state->pcmBufferLength) {
+        //     v = state->pcmBuffer[state->currentPcmBufferIx];
+        //     ++state->currentPcmBufferIx;
+        // }
 
         for (int channelIx = 0; channelIx < NUM_OUTPUT_CHANNELS; ++channelIx) {
             *outputBuffer++ += v;
@@ -277,7 +313,7 @@ int PortAudioCallback(
     const double kSecsPerCallback = (double) samplesPerFrame / SAMPLE_RATE;
     double callbackTimeSecs = std::chrono::duration_cast<std::chrono::duration<double>>(t2 - t1).count();
     if (callbackTimeSecs / kSecsPerCallback > 0.9) {
-        printf("Frame close to deadline: %f / %f", callbackTimeSecs, kSecsPerCallback);
+        printf("Frame close to deadline: %f / %f\n", callbackTimeSecs, kSecsPerCallback);
     }
         
     return paContinue;

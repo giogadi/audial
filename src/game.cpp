@@ -213,6 +213,25 @@ void ShowHitCounterWindow(EntityManager& entityMgr) {
     ImGui::End();
 }
 
+void LoadSoundData(std::vector<audio::PcmSound>& sounds) {
+    std::vector<char const*> soundFilenames = {
+        "../data/sounds/kick.wav"
+        , "../data/sounds/woodblock_reverb_mono.wav"
+    };
+    for (char const* filename : soundFilenames) {
+        audio::PcmSound sound;
+        unsigned int numChannels;
+        unsigned int sampleRate;    
+        sound._buffer = drwav_open_file_and_read_pcm_frames_f32(
+            filename, &numChannels, &sampleRate, &sound._bufferLength, /*???*/NULL);
+        assert(numChannels == 1);
+        assert(sampleRate == 44100);
+        assert(sound._buffer != nullptr);
+        std::cout << filename << ": " << numChannels << " channels, " << sound._bufferLength << " samples." << std::endl;
+        sounds.push_back(std::move(sound));
+    } 
+}
+
 int main(int argc, char** argv) {
     std::optional<std::string> scriptFilename;
     std::optional<std::string> synthPatchesFilename;
@@ -238,17 +257,8 @@ int main(int argc, char** argv) {
         }
     }
 
-    unsigned int channels;
-    unsigned int sampleRate;
-    drwav_uint64 totalPCMFrameCount;
-    float* pSampleData = drwav_open_file_and_read_pcm_frames_f32(
-        "../data/sounds/kick.wav", &channels, &sampleRate, &totalPCMFrameCount, NULL);
-    if (pSampleData == NULL) {
-        // Error opening and reading WAV file.
-        std::cout << "error opening and reading wav file" << std::endl;
-        return 1;
-    }
-    std::cout << "wav file: " << channels << " channels, " << totalPCMFrameCount << " frames." << std::endl;
+    std::vector<audio::PcmSound> pcmSounds;
+    LoadSoundData(pcmSounds);
 
     // Init audio    
     audio::Context audioContext;
@@ -260,8 +270,8 @@ int main(int argc, char** argv) {
                 std::cout << "Loaded synth patch data from \"" << *synthPatchesFilename << "\"." << std::endl;
             }
         }
-        
-        if (audio::Init(audioContext, patches, pSampleData, totalPCMFrameCount) != paNoError) {
+
+        if (audio::Init(audioContext, patches, pcmSounds) != paNoError) {
             return 1;
         }
     }
@@ -335,7 +345,7 @@ int main(int argc, char** argv) {
         assert(modelManager._modelMap.emplace("wood_box", std::move(mesh)).second);
     }
 
-    BeatClock beatClock(/*bpm=*/120.0, (unsigned int)sampleRate, audioContext._stream);
+    BeatClock beatClock(/*bpm=*/120.0, SAMPLE_RATE, audioContext._stream);
     beatClock.Update();
 
     InputManager inputManager(window);
@@ -387,16 +397,6 @@ int main(int argc, char** argv) {
         glfwGetWindowSize(window, &windowWidth, &windowHeight);
 
         beatClock.Update();
-
-        if (beatClock.IsNewBeat()) {
-            audio::Event e;
-            e.type = audio::EventType::PlayPcm;
-            e.timeInTicks = beatClock.BeatTimeToTickTime(beatClock.GetDownBeatTime() + 1.0);
-            if (!audioContext._eventQueue.try_push(e)) {
-                std::cout << "Failed to queue audio event" << std::endl;
-            }
-        }
-
         
         {
             ImGuiIO& io = ImGui::GetIO();
@@ -496,7 +496,9 @@ int main(int argc, char** argv) {
         return 1;
     }
 
-    drwav_free(pSampleData, NULL);
+    for (audio::PcmSound& sound : pcmSounds) {
+        drwav_free(sound._buffer, /*???*/NULL);
+    }
 
     return 0;
 }

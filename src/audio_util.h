@@ -13,6 +13,7 @@ struct Event {
     int channel = -1;
     long timeInTicks = 0;
     union {
+        // If type is pcm, midiNote is the index of the sound to play.
         int midiNote = 0;
         struct {
             // valid under SynthParam type

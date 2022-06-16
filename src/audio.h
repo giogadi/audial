@@ -16,13 +16,24 @@
 namespace audio {
 
 int constexpr kNumSynths = 2;
+int constexpr kNumPcmSounds = 2;
+int constexpr kNumPcmVoices = 2;
+
+struct PcmSound {
+    float* _buffer = nullptr;
+    uint64_t _bufferLength = 0;
+};
+
+struct PcmVoice {
+    int _soundIx = -1;
+    int _soundBufferIx = -1;
+};
 
 struct StateData {
     std::array<synth::StateData,kNumSynths> synths;
 
-    float* pcmBuffer = nullptr;
-    int pcmBufferLength = 0;
-    int currentPcmBufferIx = 0;
+    std::array<PcmSound,kNumPcmSounds> pcmSounds;
+    std::array<PcmVoice,kNumPcmVoices> pcmVoices;
 
     EventQueue* events = nullptr;
     boost::circular_buffer<Event> pendingEvents;
@@ -30,7 +41,9 @@ struct StateData {
     char message[20];
 };
 
-void InitStateData(StateData& state, EventQueue* eventQueue, int sampleRate, float* pcmBuffer, unsigned long pcmBufferLength);
+void InitStateData(
+    StateData& state, std::vector<synth::Patch> const& synthPatches, std::vector<PcmSound> const& pcmSounds,
+    EventQueue* eventQueue, int sampleRate);
 
 int PortAudioCallback(
     const void *inputBuffer, void *outputBuffer,
@@ -68,8 +81,7 @@ struct Context {
 };
 
 PaError Init(
-    Context& context, std::vector<synth::Patch> const& synthPatches, float* pcmBuffer,
-    unsigned long pcmBufferLength);
+    Context& context, std::vector<synth::Patch> const& synthPatches, std::vector<PcmSound> const& pcmSounds);
 
 PaError ShutDown(Context& stream);
 

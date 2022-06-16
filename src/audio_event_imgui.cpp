@@ -30,9 +30,12 @@ void EventDrawImGuiNoTime(Event& event) {
                 "Channel##", ImGuiDataType_S32, &event.channel, /*step=*/nullptr, /*???*/nullptr, "%d");        
             break;
         }
+        case audio::EventType::PlayPcm: {
+            ImGui::InputScalar("Sound##", ImGuiDataType_S32, &event.midiNote, /*step=*/nullptr, /*???*/nullptr, "%d");
+            break;
+        }
         case audio::EventType::None:
-        case audio::EventType::SynthParam:
-        case audio::EventType::PlayPcm:
+        case audio::EventType::SynthParam:        
         case audio::EventType::Count:
             ImGui::Text("UNSUPPORTED");
             break;

@@ -8,7 +8,6 @@
 #include "audio_event_imgui.h"
 #include "audio.h"
 
-// Does NOT loop yet.
 class SequencerComponent : public Component {
 public:
     virtual ComponentType Type() const override { return ComponentType::Sequencer; }
@@ -90,14 +89,19 @@ public:
             ImGui::PushID(i);
             sprintf(headerName, "%s##Header", audio::EventTypeToString(_events[i]._e.type));
             if (ImGui::CollapsingHeader(headerName)) {
-                ImGui::InputScalar("Beat time##", ImGuiDataType_Double, &_events[i]._beatTime, /*step=*/nullptr, /*???*/nullptr, "%f");
-                audio::EventDrawImGuiNoTime(_events[i]._e);
+                if (ImGui::Button("Remove##")) {
+                    _events.erase(_events.begin() + i);
+                    --i;                    
+                } else {
+                    ImGui::InputScalar("Beat time##", ImGuiDataType_Double, &_events[i]._beatTime, /*step=*/nullptr, /*???*/nullptr, "%f");
+                    audio::EventDrawImGuiNoTime(_events[i]._e);
+                }                
             }
             ImGui::PopID();
         }
 
         // Keep them sorted.
-        SortEventsByTime();
+        // SortEventsByTime();
 
         return false;
     }
