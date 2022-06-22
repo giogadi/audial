@@ -17,7 +17,7 @@ namespace audio {
 
 int constexpr kNumSynths = 2;
 int constexpr kNumPcmSounds = 2;
-int constexpr kNumPcmVoices = 2;
+int constexpr kNumPcmVoices = 8;
 
 struct PcmSound {
     float* _buffer = nullptr;

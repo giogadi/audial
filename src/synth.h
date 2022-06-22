@@ -79,7 +79,7 @@ namespace synth {
     struct StateData {
         int channel = -1;
 
-        std::array<Voice, 4> voices;
+        std::array<Voice, 6> voices;
 
         Patch patch;
 

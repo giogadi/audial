@@ -43,12 +43,16 @@ public:
         }
     }
 
-    Vec3 _velocity;
-    Aabb _localAabb;  // Aabb assuming position = (0,0,0)
-    std::weak_ptr<TransformComponent> _transform;
-    CollisionManager* _collisionMgr;
-    std::vector<OnHitCallback> _onHitCallbacks;
+    // Serialized
+
     // If static, then collision manager won't move this component if there's a collision.
     bool _static = true;
     CollisionLayer _layer = CollisionLayer::Solid;
+    Aabb _localAabb;  // Aabb assuming position = (0,0,0)
+
+    Vec3 _velocity;    
+    std::weak_ptr<TransformComponent> _transform;
+    CollisionManager* _collisionMgr;
+    std::vector<OnHitCallback> _onHitCallbacks;    
+    
 };

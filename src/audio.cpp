@@ -253,8 +253,22 @@ int PortAudioCallback(
                         std::cout << "PCM SOUND AT NOTE " << e.midiNote << " IS NULL" << std::endl;
                         break;
                     }
-                    state->pcmVoices[0]._soundIx = e.midiNote;
-                    state->pcmVoices[0]._soundBufferIx = 0;
+                    // Find free voice
+                    int voiceIx = -1;
+                    for (int i = 0; i < state->pcmVoices.size(); ++i) {
+                        if (state->pcmVoices[i]._soundBufferIx < 0) {
+                            voiceIx = i;
+                            break;
+                        }
+                    }
+                    if (voiceIx < 0) {
+                        std::cout << "NO MORE PCM VOICES" << std::endl;
+                        break;
+                    } else {
+                        state->pcmVoices[voiceIx]._soundIx = e.midiNote;
+                        state->pcmVoices[voiceIx]._soundBufferIx = 0;    
+                    }
+
                     break;
                 }
                 default: {
@@ -278,7 +292,7 @@ int PortAudioCallback(
             }
             assert(voice._soundBufferIx >= 0);
             assert(voice._soundBufferIx < sound._bufferLength);
-            v = sound._buffer[voice._soundBufferIx];
+            v += sound._buffer[voice._soundBufferIx];
             ++voice._soundBufferIx;
             if (voice._soundBufferIx >= sound._bufferLength) {
                 voice._soundBufferIx = -1;

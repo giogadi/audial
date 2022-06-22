@@ -110,6 +110,17 @@ void InitSynthGuiState(audio::Context const& audioContext, char const* saveFilen
 void DrawSynthGuiAndUpdatePatch(SynthGuiState& synthGuiState, audio::Context& audioContext) {
     ImGui::Begin("Synth settings");
     {
+        // kill sound
+        if (ImGui::Button("All notes off")) {            
+            for (int i = 0; i < audioContext._state.synths.size(); ++i) {
+                audio::Event e;
+                e.type = audio::EventType::AllNotesOff;
+                e.channel = i;
+                e.timeInTicks = 0;
+                audioContext.AddEvent(e);
+            }
+        }
+
         // Saving
         char saveFilenameBuffer[256];
         strcpy(saveFilenameBuffer, synthGuiState._saveFilename.c_str());
@@ -215,7 +226,7 @@ void ShowHitCounterWindow(EntityManager& entityMgr) {
 
 void LoadSoundData(std::vector<audio::PcmSound>& sounds) {
     std::vector<char const*> soundFilenames = {
-        "../data/sounds/kick.wav"
+        "../data/sounds/kick_deep.wav"
         , "../data/sounds/woodblock_reverb_mono.wav"
     };
     for (char const* filename : soundFilenames) {

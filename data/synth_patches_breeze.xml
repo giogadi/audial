@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<cereal>
+	<synthPatches size="dynamic">
+		<value0>
+			<p.name>beep</p.name>
+			<p.gainFactor>0.71100002527236938</p.gainFactor>
+			<p.cutoffFreq>3071.64208984375</p.cutoffFreq>
+			<p.cutoffK>0</p.cutoffK>
+			<p.pitchLFOGain>0</p.pitchLFOGain>
+			<p.pitchLFOFreq>1</p.pitchLFOFreq>
+			<p.cutoffLFOGain>0</p.cutoffLFOGain>
+			<p.cutoffLFOFreq>10</p.cutoffLFOFreq>
+			<p.ampEnvSpec>
+				<s.attackTime>0.0099999997764825821</s.attackTime>
+				<s.decayTime>0.075000002980232239</s.decayTime>
+				<s.sustainLevel>0.17399999499320984</s.sustainLevel>
+				<s.releaseTime>0.62199997901916504</s.releaseTime>
+				<s.minValue>0.0099999997764825821</s.minValue>
+			</p.ampEnvSpec>
+			<p.cutoffEnvSpec>
+				<s.attackTime>0</s.attackTime>
+				<s.decayTime>0</s.decayTime>
+				<s.sustainLevel>1</s.sustainLevel>
+				<s.releaseTime>0.66200000047683716</s.releaseTime>
+				<s.minValue>0.0099999997764825821</s.minValue>
+			</p.cutoffEnvSpec>
+			<p.cutoffEnvGain>3729.85107421875</p.cutoffEnvGain>
+		</value0>
+		<value1>
+			<p.name>drone</p.name>
+			<p.gainFactor>0.41299998760223389</p.gainFactor>
+			<p.cutoffFreq>6801.4921875</p.cutoffFreq>
+			<p.cutoffK>1.309999942779541</p.cutoffK>
+			<p.pitchLFOGain>0</p.pitchLFOGain>
+			<p.pitchLFOFreq>1</p.pitchLFOFreq>
+			<p.cutoffLFOGain>0</p.cutoffLFOGain>
+			<p.cutoffLFOFreq>10</p.cutoffLFOFreq>
+			<p.ampEnvSpec>
+				<s.attackTime>0.0099999997764825821</s.attackTime>
+				<s.decayTime>0.10000000149011612</s.decayTime>
+				<s.sustainLevel>0.5</s.sustainLevel>
+				<s.releaseTime>0.5</s.releaseTime>
+				<s.minValue>0.0099999997764825821</s.minValue>
+			</p.ampEnvSpec>
+			<p.cutoffEnvSpec>
+				<s.attackTime>0</s.attackTime>
+				<s.decayTime>0</s.decayTime>
+				<s.sustainLevel>0</s.sustainLevel>
+				<s.releaseTime>0</s.releaseTime>
+				<s.minValue>0.0099999997764825821</s.minValue>
+			</p.cutoffEnvSpec>
+			<p.cutoffEnvGain>0</p.cutoffEnvGain>
+		</value1>
+	</synthPatches>
+</cereal>
+
