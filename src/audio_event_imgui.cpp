@@ -22,7 +22,8 @@ void EventDrawImGuiNoTime(Event& event) {
             ImGui::InputScalar(
                 "Channel##", ImGuiDataType_S32, &event.channel, /*step=*/nullptr, /*???*/nullptr, "%d");
             ImGui::InputScalar(
-                "Note##", ImGuiDataType_S32, &event.midiNote, /*step=*/nullptr, /*???*/nullptr, "%d");            
+                "Note##", ImGuiDataType_S32, &event.midiNote, /*step=*/nullptr, /*???*/nullptr, "%d");
+            ImGui::InputScalar("Vel##", ImGuiDataType_Float, &event.velocity);
             break;
         }
         case audio::EventType::AllNotesOff: {
@@ -32,6 +33,7 @@ void EventDrawImGuiNoTime(Event& event) {
         }
         case audio::EventType::PlayPcm: {
             ImGui::InputScalar("Sound##", ImGuiDataType_S32, &event.midiNote, /*step=*/nullptr, /*???*/nullptr, "%d");
+            ImGui::InputScalar("Vel##", ImGuiDataType_Float, &event.velocity);
             break;
         }
         case audio::EventType::None:

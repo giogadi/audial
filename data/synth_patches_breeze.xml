@@ -3,7 +3,7 @@
 	<synthPatches size="dynamic">
 		<value0>
 			<p.name>beep</p.name>
-			<p.gainFactor>0.71100002527236938</p.gainFactor>
+			<p.gainFactor>0.83099997043609619</p.gainFactor>
 			<p.cutoffFreq>3071.64208984375</p.cutoffFreq>
 			<p.cutoffK>0</p.cutoffK>
 			<p.pitchLFOGain>0</p.pitchLFOGain>

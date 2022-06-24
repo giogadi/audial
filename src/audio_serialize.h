@@ -10,7 +10,7 @@
 namespace audio {
 
 template<typename Archive>
-void serialize(Archive& ar, Event& e) {
+void serialize(Archive& ar, Event& e, std::uint32_t const version) {
     ar(cereal::make_nvp("type", e.type));
     ar(cereal::make_nvp("channel",e.channel));
     ar(cereal::make_nvp("tick_time",e.timeInTicks));
@@ -19,10 +19,16 @@ void serialize(Archive& ar, Event& e) {
         ar(cereal::make_nvp("value", e.newParamValue));
     } else {
         ar(cereal::make_nvp("midi_note", e.midiNote));
+        if (version < 1) {
+            e.velocity = 1.f;
+        } else {
+            ar(cereal::make_nvp("velocity", e.velocity));
+        }
     }
 }
 
 } // namespace audio
+CEREAL_CLASS_VERSION(audio::Event, 1);
 
 namespace synth {
 

@@ -5,7 +5,7 @@
 		<active>true</active>
 		<entity>
 			<e._name>camera</e._name>
-			<num_components>2</num_components>
+			<num_components>3</num_components>
 			<component_type>Transform</component_type>
 			<Transform>
 				<t._transform>
@@ -29,6 +29,11 @@
 			</Transform>
 			<component_type>Camera</component_type>
 			<Camera/>
+			<component_type>CameraController</component_type>
+			<CameraController>
+				<target_entity_name>player</target_entity_name>
+				<tracking_factor>0.05000000074505806</tracking_factor>
+			</CameraController>
 		</entity>
 		<active>true</active>
 		<entity>
@@ -100,10 +105,12 @@
 					<value0>
 						<beat_time>0.5</beat_time>
 						<event>
+							<cereal_class_version>1</cereal_class_version>
 							<type>PlayPcm</type>
 							<channel>-1</channel>
 							<tick_time>0</tick_time>
 							<midi_note>1</midi_note>
+							<velocity>0.5</velocity>
 						</event>
 					</value0>
 					<value1>
@@ -113,6 +120,7 @@
 							<channel>-1</channel>
 							<tick_time>0</tick_time>
 							<midi_note>1</midi_note>
+							<velocity>0.5</velocity>
 						</event>
 					</value1>
 					<value2>
@@ -122,6 +130,7 @@
 							<channel>-1</channel>
 							<tick_time>0</tick_time>
 							<midi_note>1</midi_note>
+							<velocity>0.5</velocity>
 						</event>
 					</value2>
 					<value3>
@@ -131,6 +140,7 @@
 							<channel>-1</channel>
 							<tick_time>0</tick_time>
 							<midi_note>1</midi_note>
+							<velocity>0.5</velocity>
 						</event>
 					</value3>
 					<value4>
@@ -140,6 +150,7 @@
 							<channel>-1</channel>
 							<tick_time>0</tick_time>
 							<midi_note>0</midi_note>
+							<velocity>1</velocity>
 						</event>
 					</value4>
 				</events>
@@ -246,6 +257,7 @@
 							<channel>1</channel>
 							<tick_time>0</tick_time>
 							<midi_note>55</midi_note>
+							<velocity>1</velocity>
 						</event>
 					</value0>
 					<value1>
@@ -255,6 +267,7 @@
 							<channel>1</channel>
 							<tick_time>0</tick_time>
 							<midi_note>58</midi_note>
+							<velocity>1</velocity>
 						</event>
 					</value1>
 					<value2>
@@ -264,6 +277,7 @@
 							<channel>1</channel>
 							<tick_time>0</tick_time>
 							<midi_note>62</midi_note>
+							<velocity>1</velocity>
 						</event>
 					</value2>
 					<value3>
@@ -273,6 +287,7 @@
 							<channel>1</channel>
 							<tick_time>0</tick_time>
 							<midi_note>65</midi_note>
+							<velocity>1</velocity>
 						</event>
 					</value3>
 				</events>
@@ -354,6 +369,7 @@
 							<channel>0</channel>
 							<tick_time>0</tick_time>
 							<midi_note>31</midi_note>
+							<velocity>1</velocity>
 						</event>
 					</value0>
 					<value1>
@@ -363,6 +379,7 @@
 							<channel>0</channel>
 							<tick_time>0</tick_time>
 							<midi_note>31</midi_note>
+							<velocity>1</velocity>
 						</event>
 					</value1>
 					<value2>
@@ -372,6 +389,7 @@
 							<channel>0</channel>
 							<tick_time>0</tick_time>
 							<midi_note>43</midi_note>
+							<velocity>1</velocity>
 						</event>
 					</value2>
 					<value3>
@@ -381,6 +399,7 @@
 							<channel>0</channel>
 							<tick_time>0</tick_time>
 							<midi_note>43</midi_note>
+							<velocity>1</velocity>
 						</event>
 					</value3>
 				</events>
@@ -451,6 +470,7 @@
 							<channel>0</channel>
 							<tick_time>0</tick_time>
 							<midi_note>26</midi_note>
+							<velocity>1</velocity>
 						</event>
 					</value0>
 					<value1>
@@ -460,6 +480,7 @@
 							<channel>0</channel>
 							<tick_time>0</tick_time>
 							<midi_note>26</midi_note>
+							<velocity>1</velocity>
 						</event>
 					</value1>
 					<value2>
@@ -469,6 +490,7 @@
 							<channel>0</channel>
 							<tick_time>0</tick_time>
 							<midi_note>38</midi_note>
+							<velocity>1</velocity>
 						</event>
 					</value2>
 					<value3>
@@ -478,6 +500,7 @@
 							<channel>0</channel>
 							<tick_time>0</tick_time>
 							<midi_note>38</midi_note>
+							<velocity>1</velocity>
 						</event>
 					</value3>
 				</events>
@@ -548,6 +571,7 @@
 							<channel>0</channel>
 							<tick_time>0</tick_time>
 							<midi_note>34</midi_note>
+							<velocity>1</velocity>
 						</event>
 					</value0>
 					<value1>
@@ -557,6 +581,7 @@
 							<channel>0</channel>
 							<tick_time>0</tick_time>
 							<midi_note>34</midi_note>
+							<velocity>1</velocity>
 						</event>
 					</value1>
 					<value2>
@@ -566,6 +591,7 @@
 							<channel>0</channel>
 							<tick_time>0</tick_time>
 							<midi_note>46</midi_note>
+							<velocity>1</velocity>
 						</event>
 					</value2>
 					<value3>
@@ -575,6 +601,7 @@
 							<channel>0</channel>
 							<tick_time>0</tick_time>
 							<midi_note>46</midi_note>
+							<velocity>1</velocity>
 						</event>
 					</value3>
 				</events>
@@ -611,6 +638,7 @@
 							<channel>-1</channel>
 							<tick_time>0</tick_time>
 							<midi_note>0</midi_note>
+							<velocity>0.80000001192092896</velocity>
 						</event>
 					</value0>
 					<value1>
@@ -620,6 +648,7 @@
 							<channel>-1</channel>
 							<tick_time>0</tick_time>
 							<midi_note>0</midi_note>
+							<velocity>1</velocity>
 						</event>
 					</value1>
 				</events>

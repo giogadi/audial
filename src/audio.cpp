@@ -57,7 +57,7 @@ PaError Init(
     Context& context, std::vector<synth::Patch> const& synthPatches, std::vector<PcmSound> const& pcmSounds) {
 
     PaError err;
-    
+
     printf("PortAudio Test: output sine wave. SR = %d, BufSize = %d\n", SAMPLE_RATE, FRAMES_PER_BUFFER);
 
     InitStateData(context._state, synthPatches, pcmSounds, &context._eventQueue, SAMPLE_RATE);
@@ -138,7 +138,7 @@ void ProcessEventQueue(EventQueue* eventQueue, boost::circular_buffer<Event>* pe
     }
 
     std::stable_sort(pendingEvents->begin(), pendingEvents->end(),
-        [](audio::Event const& a, audio::Event const& b) {            
+        [](audio::Event const& a, audio::Event const& b) {
             return a.timeInTicks < b.timeInTicks;
         });
 }
@@ -218,12 +218,12 @@ int PortAudioCallback(
     ++gTotalCallbacks;
     gLastCallbackTime = timeSecs;
     // DEBUG
-    
+
     // zero out the output buffer first.
     memset(outputBufferUntyped, 0, NUM_OUTPUT_CHANNELS * samplesPerFrame * sizeof(float));
 
     // Figure out which events apply to this invocation of the callback, and which effects should handle them.
-    ProcessEventQueue(state->events, &state->pendingEvents, timeSecs * SAMPLE_RATE);    
+    ProcessEventQueue(state->events, &state->pendingEvents, timeSecs * SAMPLE_RATE);
 
     float* outputBuffer = (float*) outputBufferUntyped;
 
@@ -242,7 +242,6 @@ int PortAudioCallback(
             }
             switch (e.type) {
                 case EventType::PlayPcm: {
-                    // state->currentPcmBufferIx = 0;
                     bool valid = true;
                     if (e.midiNote >= state->pcmSounds.size()) {
                         std::cout << "NO PCM SOUND FOR NOTE " << e.midiNote << std::endl;
@@ -266,7 +265,8 @@ int PortAudioCallback(
                         break;
                     } else {
                         state->pcmVoices[voiceIx]._soundIx = e.midiNote;
-                        state->pcmVoices[voiceIx]._soundBufferIx = 0;    
+                        state->pcmVoices[voiceIx]._soundBufferIx = 0;
+                        state->pcmVoices[voiceIx]._gain = e.velocity;
                     }
 
                     break;
@@ -292,19 +292,13 @@ int PortAudioCallback(
             }
             assert(voice._soundBufferIx >= 0);
             assert(voice._soundBufferIx < sound._bufferLength);
-            v += sound._buffer[voice._soundBufferIx];
+            v += sound._buffer[voice._soundBufferIx] * voice._gain;
             ++voice._soundBufferIx;
             if (voice._soundBufferIx >= sound._bufferLength) {
                 voice._soundBufferIx = -1;
                 voice._soundIx = -1;
             }
         }
-
-        // if (state->currentPcmBufferIx >= 0 &&
-        //     state->currentPcmBufferIx < state->pcmBufferLength) {
-        //     v = state->pcmBuffer[state->currentPcmBufferIx];
-        //     ++state->currentPcmBufferIx;
-        // }
 
         for (int channelIx = 0; channelIx < NUM_OUTPUT_CHANNELS; ++channelIx) {
             *outputBuffer++ += v;
@@ -321,7 +315,7 @@ int PortAudioCallback(
 
     // Clear out events from this frame.
     PopEventsFromThisFrame(&(state->pendingEvents), timeSecs, samplesPerFrame);
-    
+
     high_resolution_clock::time_point t2 = high_resolution_clock::now();
 
     const double kSecsPerCallback = (double) samplesPerFrame / SAMPLE_RATE;
@@ -329,7 +323,7 @@ int PortAudioCallback(
     if (callbackTimeSecs / kSecsPerCallback > 0.9) {
         printf("Frame close to deadline: %f / %f\n", callbackTimeSecs, kSecsPerCallback);
     }
-        
+
     return paContinue;
 }
 

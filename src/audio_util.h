@@ -9,12 +9,22 @@
 namespace audio {
 
 struct Event {
-    EventType type = EventType::None;
-    int channel = -1;
-    long timeInTicks = 0;
+    Event() {
+        type = EventType::None;
+        channel = 0;
+        timeInTicks = 0;
+        midiNote = 0;
+        velocity = 1.f;
+    }
+    EventType type;
+    int channel;
+    long timeInTicks;
     union {
         // If type is pcm, midiNote is the index of the sound to play.
-        int midiNote = 0;
+        struct {
+            int midiNote;
+            float velocity;
+        };
         struct {
             // valid under SynthParam type
             SynthParamType param;

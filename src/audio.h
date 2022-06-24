@@ -27,13 +27,14 @@ struct PcmSound {
 struct PcmVoice {
     int _soundIx = -1;
     int _soundBufferIx = -1;
+    float _gain = 1.f;
 };
 
 struct StateData {
     std::array<synth::StateData,kNumSynths> synths;
 
     std::array<PcmSound,kNumPcmSounds> pcmSounds;
-    std::array<PcmVoice,kNumPcmVoices> pcmVoices;
+    std::array<PcmVoice,kNumPcmVoices> pcmVoices;    
 
     EventQueue* events = nullptr;
     boost::circular_buffer<Event> pendingEvents;
