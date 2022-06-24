@@ -243,30 +243,68 @@ void LoadSoundData(std::vector<audio::PcmSound>& sounds) {
     } 
 }
 
-int main(int argc, char** argv) {
-    std::optional<std::string> scriptFilename;
-    std::optional<std::string> synthPatchesFilename;
-    bool editMode = false;
-    for (int argIx = 1; argIx < argc; ++argIx) {
-        if (strcmp(argv[argIx], "-f") == 0) {
+struct CommandLineInputs {
+    std::optional<std::string> _scriptFilename;
+    std::optional<std::string> _synthPatchesFilename;
+    bool _editMode = false;
+};
+void ParseCommandLine(CommandLineInputs& inputs, std::vector<std::string> const& argv) {
+    inputs._editMode = false;
+    for (int argIx = 0; argIx < argv.size(); ++argIx) {
+        if (argv[argIx] == "-f") {
             ++argIx;
-            if (argIx >= argc) {
-                std::cout << "Need a script filename with -f. Using hardcoded script." << std::endl;
+            if (argIx >= argv.size()) {
+                std::cout << "Need a command line filename with -f. Ignoring." << std::endl;
                 continue;
             }
-            scriptFilename = argv[argIx];
-        } else if (strcmp(argv[argIx], "-y") == 0) {
+            std::vector<std::string> fileArgv;            
+            {
+                std::ifstream cmdLineFile(argv[argIx]);
+                if (!cmdLineFile.is_open()) {
+                    std::cout << "Tried to open command line file \"" << argv[argIx] <<
+                        "\", but could not open file. Skipping." << std::endl;
+                    continue;
+                }
+                while (!cmdLineFile.eof()) {
+                    std::string arg;
+                    cmdLineFile >> arg;
+                    fileArgv.push_back(std::move(arg));
+                }
+            }
+            ParseCommandLine(inputs, fileArgv);            
+        } else if (argv[argIx] == "-s") {
             ++argIx;
-            if (argIx >= argc) {
+            if (argIx >= argv.size()) {
+                std::cout << "Need a script filename with -s. Using hardcoded script." << std::endl;
+                continue;
+            }
+            inputs._scriptFilename = argv[argIx];
+        } else if (argv[argIx] == "-y") {
+            ++argIx;
+            if (argIx >= argv.size()) {
                 std::cout << "need a synth patch filename with -y. Using hardcoded synth patches" << std::endl;
                 continue;
             }
-            synthPatchesFilename = argv[argIx];
-        } else if (strcmp(argv[argIx], "-e") == 0) {
+            inputs._synthPatchesFilename = argv[argIx];
+        } else if (argv[argIx] == "-e") {
             std::cout << "Edit mode enabled!" << std::endl;
-            editMode = true;            
+            inputs._editMode = true;            
         }
     }
+}
+
+void ParseCommandLine(CommandLineInputs& inputs, int argc, char** argv) {
+    std::vector<std::string> argVec;
+    argVec.reserve(argc - 1);  // ignore first parameter
+    for (int i = 1; i < argc; ++i) {
+        argVec.push_back(argv[i]);
+    }
+    ParseCommandLine(inputs, argVec);
+}
+
+int main(int argc, char** argv) {
+    CommandLineInputs cmdLineInputs;
+    ParseCommandLine(cmdLineInputs, argc, argv);
 
     std::vector<audio::PcmSound> pcmSounds;
     LoadSoundData(pcmSounds);
@@ -276,9 +314,9 @@ int main(int argc, char** argv) {
     {
         // Load in synth patch data if we have it
         std::vector<synth::Patch> patches;
-        if (synthPatchesFilename.has_value()) {
-            if (LoadSynthPatches(synthPatchesFilename->c_str(), patches)) {
-                std::cout << "Loaded synth patch data from \"" << *synthPatchesFilename << "\"." << std::endl;
+        if (cmdLineInputs._synthPatchesFilename.has_value()) {
+            if (LoadSynthPatches(cmdLineInputs._synthPatchesFilename->c_str(), patches)) {
+                std::cout << "Loaded synth patch data from \"" << *cmdLineInputs._synthPatchesFilename << "\"." << std::endl;
             }
         }
 
@@ -370,10 +408,10 @@ int main(int argc, char** argv) {
     GameManager gameManager {
         &sceneManager, &inputManager, &audioContext, &entityManager, &collisionManager, &modelManager, &beatClock };
 
-    if (scriptFilename.has_value()) {
-        std::cout << "loading " << scriptFilename.value() << std::endl;
-        bool dieOnConnectFail = !editMode;
-        if (!LoadEntities(scriptFilename->c_str(), dieOnConnectFail, entityManager, gameManager)) {
+    if (cmdLineInputs._scriptFilename.has_value()) {
+        std::cout << "loading " << cmdLineInputs._scriptFilename.value() << std::endl;
+        bool dieOnConnectFail = !cmdLineInputs._editMode;
+        if (!LoadEntities(cmdLineInputs._scriptFilename->c_str(), dieOnConnectFail, entityManager, gameManager)) {
             std::cout << "Load failed. Exiting" << std::endl;
             return 1;
         }
@@ -385,15 +423,15 @@ int main(int argc, char** argv) {
     SynthGuiState synthGuiState;
     {
         char const* filename = "";
-        if (synthPatchesFilename.has_value()) {
-            filename = synthPatchesFilename->c_str();
+        if (cmdLineInputs._synthPatchesFilename.has_value()) {
+            filename = cmdLineInputs._synthPatchesFilename->c_str();
         }
         InitSynthGuiState(audioContext, filename, synthGuiState);
     }
 
     EntityEditingContext entityEditingContext;
-    if (scriptFilename.has_value()) {
-        entityEditingContext._saveFilename = *scriptFilename;
+    if (cmdLineInputs._scriptFilename.has_value()) {
+        entityEditingContext._saveFilename = *cmdLineInputs._scriptFilename;
     }
 
     bool showSynthWindow = false;
@@ -444,7 +482,7 @@ int main(int argc, char** argv) {
             showHitCounters = !showHitCounters;
         }
 
-        if (editMode) {
+        if (cmdLineInputs._editMode) {
             entityManager.EditModeUpdate(dt);
         } else {
             entityManager.Update(dt);
@@ -452,7 +490,7 @@ int main(int argc, char** argv) {
             collisionManager.Update(dt);
         }
 
-        entityEditingContext.Update(dt, editMode, gameManager, windowWidth, windowHeight);
+        entityEditingContext.Update(dt, cmdLineInputs._editMode, gameManager, windowWidth, windowHeight);
 
         // TODO: where in the frame should entity removal happen? idk
         entityManager.DestroyTaggedEntities();
