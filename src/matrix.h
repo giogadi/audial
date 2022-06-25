@@ -3,11 +3,15 @@
 #include <cmath>
 #include <cassert>
 
+#include "boost/property_tree/ptree.hpp"
+
+using boost::property_tree::ptree;
+
 struct Vec3 {
     Vec3() {}
     Vec3(float x, float y, float z)
         : _x(x), _y(y), _z(z) {}
-    
+
     void Set(float x, float y, float z) {
         _x = x;
         _y = y;
@@ -61,6 +65,17 @@ struct Vec3 {
         _y *= a;
         _z *= a;
         return *this;
+    }
+
+    void Save(ptree& pt) const {
+        pt.put<float>("x", _x);
+        pt.put<float>("y", _y);
+        pt.put<float>("z", _z);
+    }
+    void Load(ptree const& pt) {
+        _x = pt.get<float>("x");
+        _y = pt.get<float>("y");
+        _z = pt.get<float>("z");
     }
 
     union {
@@ -135,14 +150,14 @@ struct Mat3 {
         switch (c) {
             case 0: return _col0;
             case 1: return _col1;
-            case 2: return _col2;            
+            case 2: return _col2;
         }
         assert(false);
         return _col0;
     }
 
     union {
-        float _data[9];        
+        float _data[9];
         struct {
             // Data is laid out so that column vectors are contiguous in memory. index names are mathematical [row,column].
             float
@@ -237,7 +252,7 @@ struct Mat4 {
             case 0: return _col0;
             case 1: return _col1;
             case 2: return _col2;
-            case 3: return _col3;                
+            case 3: return _col3;
         }
         assert(false);
         return _col0;
@@ -269,6 +284,25 @@ struct Mat4 {
         _m23 += t._z;
     }
 
+    void Save(ptree& pt) const {
+        char name[] = "mXX";
+        for (int i = 0; i < 4; ++i) {
+            for (int j = 0; j < 4; ++j) {
+                snprintf(name, 4, "m%d%d", j, i);
+                pt.put<float>(name, _data[4*i + j]);
+            }
+        }
+    }
+    void Load(ptree const& pt) {
+        char name[] = "mXX";
+        for (int i = 0; i < 4; ++i) {
+            for (int j = 0; j < 4; ++j) {
+                snprintf(name, 4, "m%d%d", j, i);
+                _data[4*i + j] = pt.get<float>(name);
+            }
+        }
+    }
+
     union {
         float _data[16];
         struct {
@@ -298,7 +332,7 @@ inline Mat4 operator*(Mat4 const& a, Mat4 const& b) {
 
 struct Transform {
     Transform() {}
-    Transform(Mat3 const& rot, Vec3 const& p) 
+    Transform(Mat3 const& rot, Vec3 const& p)
         : _rot(rot)
         , _pos(p) {}
 

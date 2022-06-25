@@ -10,8 +10,12 @@
 #include <memory>
 #include <sstream>
 
+#include "boost/property_tree/ptree.hpp"
+
 #include "matrix.h"
 #include "game_manager.h"
+
+using boost::property_tree::ptree;
 
 namespace cereal {
     class access;
@@ -103,6 +107,8 @@ public:
     virtual bool DrawImGui();
     virtual void OnEditPick() {}
     virtual void EditModeUpdate(float dt) {}
+    virtual void Save(ptree& pt) const {}
+    virtual void Load(ptree const& pt) {}
 };
 
 class Entity {
@@ -127,7 +133,7 @@ public:
         for (auto& c : _components) {
             if (c->_active) {
                 c->_c->Update(dt);
-            }            
+            }
         }
     }
 
@@ -135,7 +141,7 @@ public:
         for (auto& c : _components) {
             if (c->_active) {
                 c->_c->EditModeUpdate(dt);
-            }            
+            }
         }
     }
 
@@ -178,7 +184,7 @@ public:
         EntityId id, GameManager& g, std::vector<ComponentType>* failures = nullptr) {
         if (_components.empty()) {
             return;
-        }        
+        }
         std::vector<bool> active(_components.size());
         for (int i = 0; i < _components.size(); ++i) {
             active[i] = _components[i]->_active;
@@ -238,7 +244,7 @@ public:
     // FOR EDITING AND CEREALIZATION ONLY
     int GetNumComponents() const { return _components.size(); }
     Component const& GetComponent(int i) const { return *_components.at(i)->_c; }
-    Component& GetComponent(int i) {        
+    Component& GetComponent(int i) {
         return *_components.at(i)->_c;
     }
     void OnEditPickComponents() {
@@ -248,6 +254,9 @@ public:
             }
         }
     }
+
+    void Save(ptree& pt) const;
+    void Load(ptree const& pt);
 
     std::string _name;
 private:
@@ -298,6 +307,9 @@ public:
         _transform.SetTopLeftMat3(rot);
     }
 
+    virtual void Save(ptree& pt) const override;
+    virtual void Load(ptree const& pt) override;
+
     // TODO store separate rot and pos
     Mat4 _transform;
 };
@@ -307,7 +319,7 @@ public:
     virtual ComponentType Type() const override { return ComponentType::Velocity; }
     VelocityComponent()
         :_linear(0.f,0.f,0.f) {}
-    
+
     virtual void Update(float dt) override {
         std::shared_ptr<TransformComponent> transform = _transform.lock();
         transform->SetPos(transform->GetPos() + dt * _linear);
@@ -323,10 +335,13 @@ public:
         return !_transform.expired();
     }
 
+    virtual void Save(ptree& pt) const override;
+    virtual void Load(ptree const& pt) override;
+
     std::weak_ptr<TransformComponent> _transform;
     Vec3 _linear;
     float _angularY = 0.0f;  // rad / s
-    
+
 };
 
 enum class EntityDestroyType {
@@ -334,8 +349,8 @@ enum class EntityDestroyType {
 };
 
 struct EntityAndStatus {
-    std::shared_ptr<Entity> _e;   
-    EntityId _id = EntityId::InvalidId(); 
+    std::shared_ptr<Entity> _e;
+    EntityId _id = EntityId::InvalidId();
     bool _active = true;
     EntityDestroyType _destroy = EntityDestroyType::None;
 };
@@ -400,7 +415,7 @@ public:
             this->GetEntity(id)->EditModeUpdate(dt);
         });
     }
-    
+
     void ConnectComponents(GameManager& g, bool dieOnConnectFailure) {
         ForEveryActiveEntity([&](EntityId id) {
             Entity* e = this->GetEntity(id);
@@ -468,14 +483,14 @@ public:
                     break;
                 case EntityDestroyType::ResetWithoutDestroy:
                     e_s._e->ResetWithoutComponentDestroy();
-                    break;                    
-            }            
+                    break;
+            }
             // TODO: We don't need to delete the entity yet, right? It should
             // get automatically deleted when we do AddEntity().
             e_s._id = EntityId(EntityIndex(-1), id.GetVersion() + 1);
             e_s._destroy = EntityDestroyType::None;
             this->_freeList.push_back(id.GetIndex());
-        });        
+        });
     }
 
     void ForEveryActiveEntity(std::function<void(EntityId)> f) const {
@@ -517,6 +532,9 @@ public:
         return e_s->_active;
     }
 
+    void Save(ptree& pt) const;
+    void Load(ptree const& pt);
+
 private:
     // DON'T STORE THIS POINTER! Maybe should be edit-only or something
     EntityAndStatus* GetEntityAndStatus(EntityId id) {
@@ -526,7 +544,7 @@ private:
                 EntityAndStatus& e_s = _entities[index];
                 if (e_s._id == id) {
                     return &e_s;
-                }                
+                }
             }
         }
         return nullptr;
@@ -538,7 +556,7 @@ private:
                 EntityAndStatus const& e_s = _entities[index];
                 if (e_s._id == id) {
                     return &e_s;
-                }                
+                }
             }
         }
         return nullptr;
@@ -547,3 +565,13 @@ private:
     std::vector<EntityAndStatus> _entities;
     std::vector<EntityIndex> _freeList;
 };
+
+// TODO: move this to some more general "serial.h" file.
+namespace serial {
+    template <typename T>
+    inline void SaveInNewChildOf(ptree& pt, char const* childName, T const& v) {
+        ptree childPt;
+        v.Save(childPt);
+        pt.add_child(childName, childPt);
+    }
+}

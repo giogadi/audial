@@ -1,1 +1,1 @@
--s ../data/breeze.xml -y ../data/synth_patches_breeze.xml
+-s ../data/game_ptree_test.xml -y ../data/synth_patches_breeze.xml

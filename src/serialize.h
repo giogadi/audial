@@ -90,7 +90,7 @@ void serialize(Archive& ar, LightComponent& m) {
 
 template<typename Archive>
 void serialize(Archive& ar, CameraComponent& m) {
-    
+
 }
 
 template<typename Archive>
@@ -138,13 +138,13 @@ void serialize(Archive& ar, OrbitableComponent& m) {}
 template<typename Archive>
 void serialize(Archive& ar, EventsOnHitComponent& m) {
     ar(cereal::make_nvp("denom", m._denom));
-    ar(cereal::make_nvp("events", m._events));    
+    ar(cereal::make_nvp("events", m._events));
 }
 
 template<typename Archive>
 void serialize(Archive& ar, ActivatorComponent& m) {
     ar(cereal::make_nvp("beat_time", m._activationBeatTime));
-    ar(cereal::make_nvp("entity_name", m._entityName));    
+    ar(cereal::make_nvp("entity_name", m._entityName));
 }
 
 template<typename Archive>

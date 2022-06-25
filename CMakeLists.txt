@@ -7,7 +7,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 
 add_executable(game
     src/stb_image.cpp src/imgui/imgui.cpp src/imgui/imgui_demo.cpp src/imgui/imgui_draw.cpp
-    src/imgui/imgui_tables.cpp src/imgui/imgui_widgets.cpp src/imgui/backends/imgui_impl_glfw.cpp 
+    src/imgui/imgui_tables.cpp src/imgui/imgui_widgets.cpp src/imgui/backends/imgui_impl_glfw.cpp
     src/imgui/backends/imgui_impl_opengl3.cpp
     src/glad/src/glad.cpp
     src/audio_loader.cpp src/game.cpp src/audio_util.cpp src/audio.cpp src/audio_event_imgui.cpp
@@ -34,3 +34,8 @@ target_include_directories(game PUBLIC src/portaudio/include)
 
 target_include_directories(game PUBLIC
     ./ ./src src/cereal src/glfw/include src/glad/include src/imgui)
+
+## TEST SHIT ##
+add_executable(ptree_test src/ptree_test.cpp)
+target_include_directories(ptree_test PUBLIC
+    ./src)

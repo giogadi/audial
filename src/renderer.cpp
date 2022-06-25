@@ -52,8 +52,17 @@ bool LightComponent::DrawImGui() {
     ImGui::InputScalar("Ambient R", ImGuiDataType_Float, &_ambient._x, /*step=*/nullptr);
     ImGui::InputScalar("Ambient G", ImGuiDataType_Float, &_ambient._y, /*step=*/nullptr);
     ImGui::InputScalar("Ambient B", ImGuiDataType_Float, &_ambient._z, /*step=*/nullptr);
-    
+
     return false;
+}
+
+void LightComponent::Save(ptree& pt) const {
+    serial::SaveInNewChildOf(pt, "ambient", _ambient);
+    serial::SaveInNewChildOf(pt, "diffuse", _diffuse);
+}
+void LightComponent::Load(ptree const& pt) {
+    _ambient.Load(pt.get_child("ambient"));
+    _diffuse.Load(pt.get_child("diffuse"));
 }
 
 bool CameraComponent::ConnectComponents(EntityId id, Entity& e, GameManager& g) {
@@ -118,7 +127,7 @@ void SceneManager::Draw(int windowWidth, int windowHeight) {
         [](std::weak_ptr<LightComponent const> const& p) {
             return p.expired();
         }), _lights.end());
-    
+
 
     assert(_cameras.size() == 1);
     assert(_lights.size() == 1);

@@ -35,6 +35,8 @@ public:
     virtual ~LightComponent() {}
     virtual bool ConnectComponents(EntityId id, Entity& e, GameManager& g) override;
     virtual bool DrawImGui() override;
+    virtual void Save(ptree& pt) const override;
+    virtual void Load(ptree const& pt) override;
 
     std::weak_ptr<TransformComponent const> _transform;
     Vec3 _ambient;
@@ -43,7 +45,7 @@ public:
 };
 
 class CameraComponent : public Component {
-public:  
+public:
     virtual ComponentType Type() const override { return ComponentType::Camera; }
     CameraComponent() {}
     virtual bool ConnectComponents(EntityId id, Entity& e, GameManager& g) override;
@@ -62,7 +64,7 @@ public:
 };
 
 class SceneManager {
-public:    
+public:
     void AddModel(std::weak_ptr<ModelComponent const> m) { _models.push_back(m); }
     void AddLight(std::weak_ptr<LightComponent const> l) { _lights.push_back(l); }
     void AddCamera(std::weak_ptr<CameraComponent const> c) { _cameras.push_back(c); }
