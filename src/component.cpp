@@ -133,15 +133,7 @@ void EntityManager::Save(ptree& pt) const {
         Entity const* e = this->GetEntity(id);
         ptree ePt;
         ePt.put("entity_active", this->IsActive(id));
-        std::cout << ePt.size() << std::endl;
-        if (ePt.size() > 0) {
-            std::cout << ePt.front().first << std::endl;
-        }
         e->Save(ePt);
-        std::cout << ePt.size() << std::endl;
-        if (ePt.size() > 0) {
-            std::cout << ePt.front().first << std::endl;
-        }
         entitiesPt.add_child("entity", ePt);
     });
     pt.add_child("entities", entitiesPt);

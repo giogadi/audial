@@ -37,6 +37,16 @@ bool ModelComponent::DrawImGui() {
     return needReconnect;
 }
 
+void ModelComponent::Save(ptree& pt) const {
+    pt.put("model_id", _modelId);
+    serial::SaveInNewChildOf(pt, "color", _color);
+}
+
+void ModelComponent::Load(ptree const& pt) {
+    _modelId = pt.get<std::string>("model_id");
+    _color.Load(pt.get_child("color"));
+}
+
 bool LightComponent::ConnectComponents(EntityId id, Entity& e, GameManager& g) {
     _transform = e.FindComponentOfType<TransformComponent>();
     _mgr = g._sceneManager;

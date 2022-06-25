@@ -202,9 +202,24 @@ struct Vec4 {
         struct {
             float _x, _y, _z, _w;
         };
+        struct {
+            float _r, _g, _b, _a;
+        };
     };
     static float Dot(Vec4 const& a, Vec4 const& b) {
         return a._x*b._x + a._y*b._y + a._z*b._z + a._w*b._w;
+    }
+    void Save(ptree& pt) const {
+        pt.put<float>("x", _x);
+        pt.put<float>("y", _y);
+        pt.put<float>("z", _z);
+        pt.put<float>("w", _w);
+    }
+    void Load(ptree const& pt) {
+        _x = pt.get<float>("x");
+        _y = pt.get<float>("y");
+        _z = pt.get<float>("z");
+        _w = pt.get<float>("w");
     }
 };
 

@@ -1,10 +1,14 @@
 #pragma once
 
-#include "SPSCQueue.h"
 #include <array>
+
+#include "SPSCQueue.h"
+#include "boost/property_tree/ptree.hpp"
 
 #include "enums/audio_EventType.h"
 #include "enums/audio_SynthParamType.h"
+
+using boost::property_tree::ptree;
 
 namespace audio {
 
@@ -31,6 +35,9 @@ struct Event {
             double newParamValue;
         };
     };
+
+    void Save(ptree& pt) const;
+    void Load(ptree const& pt);
 };
 
 static inline int const kEventQueueLength = 64;

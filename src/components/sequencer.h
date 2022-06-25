@@ -23,14 +23,14 @@ public:
             return e1._beatTime < e2._beatTime;
         });
     }
-    
+
     // Keeps event sorted by time
     void AddToSequence(BeatTimeEvent const& newEvent) {
         _events.push_back(newEvent);
         SortEventsByTime();
     }
-    
-    void Update(float const dt) override {        
+
+    void Update(float const dt) override {
         if (_events.empty()) {
             return;
         }
@@ -42,7 +42,7 @@ public:
             if (_currentIx < 0) {
                 if (_currentLoopStartBeatTime < 0.0) {
                     // This is the first loop iteration. Just start the loop on the next beat.
-                    _currentLoopStartBeatTime = BeatClock::GetNextBeatDenomTime(currentBeatTime, /*denom=*/1.0);                    
+                    _currentLoopStartBeatTime = BeatClock::GetNextBeatDenomTime(currentBeatTime, /*denom=*/1.0);
                 }
                 _currentIx = 0;
             }
@@ -91,11 +91,11 @@ public:
             if (ImGui::CollapsingHeader(headerName)) {
                 if (ImGui::Button("Remove##")) {
                     _events.erase(_events.begin() + i);
-                    --i;                    
+                    --i;
                 } else {
                     ImGui::InputScalar("Beat time##", ImGuiDataType_Double, &_events[i]._beatTime, /*step=*/nullptr, /*???*/nullptr, "%f");
                     audio::EventDrawImGuiNoTime(_events[i]._e);
-                }                
+                }
             }
             ImGui::PopID();
         }
@@ -106,11 +106,27 @@ public:
         return false;
     }
 
+    void Save(ptree& pt) const override {
+        ptree eventsPt;
+        for (BeatTimeEvent const& b_e : _events) {
+            serial::SaveInNewChildOf(eventsPt, "beat_event", b_e);
+        }
+        pt.add_child("beat_events", eventsPt);
+    }
+
+    void Load(ptree const& pt) override {
+        for (auto const& item : pt.get_child("beat_events")) {
+            _events.emplace_back();
+            BeatTimeEvent &b_e = _events.back();
+            b_e.Load(item.second);
+        }
+    }
+
     // Serialized
     std::vector<BeatTimeEvent> _events;
 
     audio::Context* _audio = nullptr;
-    BeatClock const* _beatClock = nullptr; 
+    BeatClock const* _beatClock = nullptr;
     bool _editUpdateEnabled = false;
     int _currentIx = -1;
     double _currentLoopStartBeatTime = -1.0;

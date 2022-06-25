@@ -17,12 +17,16 @@ public:
     virtual ~ModelComponent() {}
     virtual bool ConnectComponents(EntityId id, Entity& e, GameManager& g) override;
     virtual bool DrawImGui() override;
+    virtual void Save(ptree& pt) const override;
+    virtual void Load(ptree const& pt) override;
 
+    // serialized
     std::string _modelId;
+    Vec4 _color;
+
     std::weak_ptr<TransformComponent const> _transform;
     BoundMesh const* _mesh = nullptr;
     SceneManager* _mgr = nullptr;
-    Vec4 _color;
 };
 
 class LightComponent : public Component {
