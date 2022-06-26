@@ -19,8 +19,17 @@ public:
 
     virtual bool DrawImGui() override;
 
+    void Save(ptree& pt) const override {
+        pt.put("hits_remaining", _hitsRemaining);
+    }
+    void Load(ptree const& pt) override {
+        _hitsRemaining = pt.get<int>("hits_remaining");
+    }
+
+    // Serialize
+    int _hitsRemaining = 0;
+
     std::weak_ptr<TransformComponent> _t;
     std::weak_ptr<RigidBodyComponent> _rb;
     bool _wasHit = false;
-    int _hitsRemaining = 0;
 };

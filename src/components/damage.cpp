@@ -9,7 +9,7 @@ bool DamageComponent::ConnectComponents(EntityId id, Entity& e, GameManager& g) 
     if (_rb.expired()) {
         return false;
     }
-    auto pThisComp = e.FindComponentOfType<DamageComponent>();    
+    auto pThisComp = e.FindComponentOfType<DamageComponent>();
     RigidBodyComponent& rb = *_rb.lock();
     rb.AddOnHitCallback(std::bind(&DamageComponent::OnHit, pThisComp, std::placeholders::_1));
 
@@ -35,4 +35,12 @@ void DamageComponent::Update(float const dt) {
 bool DamageComponent::DrawImGui() {
     ImGui::InputScalar("HP##", ImGuiDataType_S32, &_hp, /*step=*/nullptr, /*???*/nullptr, "%d");
     return false;
+}
+
+void DamageComponent::Save(ptree& pt) const {
+    pt.put("hp", _hp);
+}
+
+void DamageComponent::Load(ptree const& pt) {
+    _hp = pt.get<int>("hp");
 }

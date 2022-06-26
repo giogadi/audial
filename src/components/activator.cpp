@@ -36,3 +36,13 @@ void ActivatorComponent::Update(float dt) {
         _haveActivated = true;
     }
 }
+
+void ActivatorComponent::Save(ptree& pt) const {
+    pt.put("entity_name", _entityName);
+    pt.put("beat_time", _activationBeatTime);
+}
+
+void ActivatorComponent::Load(ptree const& pt) {
+    _entityName = pt.get<std::string>("entity_name");
+    _activationBeatTime = pt.get<double>("beat_time");
+}
