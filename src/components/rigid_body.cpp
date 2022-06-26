@@ -25,3 +25,15 @@ bool RigidBodyComponent::DrawImGui() {
 
     return false;
 }
+
+void RigidBodyComponent::Save(ptree& pt) const {
+    pt.put("static", _static);
+    pt.put("layer", CollisionLayerToString(_layer));
+    serial::SaveInNewChildOf(pt, "aabb", _localAabb);
+}
+
+void RigidBodyComponent::Load(ptree const& pt) {
+    _static = pt.get<bool>("static");
+    _layer = StringToCollisionLayer(pt.get<std::string>("layer").c_str());
+    _localAabb.Load(pt.get_child("aabb"));
+}

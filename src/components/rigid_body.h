@@ -10,6 +10,15 @@ class CollisionManager;
 struct Aabb {
     Vec3 _min;
     Vec3 _max;
+
+    void Save(ptree& pt) const {
+        serial::SaveInNewChildOf(pt, "min", _min);
+        serial::SaveInNewChildOf(pt, "max", _max);
+    }
+    void Load(ptree const& pt) {
+        _min.Load(pt.get_child("min"));
+        _max.Load(pt.get_child("max"));
+    }
 };
 
 inline Aabb MakeCubeAabb(float half_width) {
@@ -43,6 +52,9 @@ public:
         }
     }
 
+    void Save(ptree& pt) const override;
+    void Load(ptree const& pt) override;
+
     // Serialized
 
     // If static, then collision manager won't move this component if there's a collision.
@@ -50,9 +62,9 @@ public:
     CollisionLayer _layer = CollisionLayer::Solid;
     Aabb _localAabb;  // Aabb assuming position = (0,0,0)
 
-    Vec3 _velocity;    
+    Vec3 _velocity;
     std::weak_ptr<TransformComponent> _transform;
     CollisionManager* _collisionMgr;
-    std::vector<OnHitCallback> _onHitCallbacks;    
-    
+    std::vector<OnHitCallback> _onHitCallbacks;
+
 };

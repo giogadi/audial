@@ -160,10 +160,10 @@ void serialize(Archive& ar, BeatTimeEvent& e) {
 
 template<typename Archive>
 void save(Archive& ar, OnDestroyEventComponent const& e) {
-    SaveActions(ar, e._actions);
+    // SaveActions(ar, e._actions);
 }
 
 template<typename Archive>
 void load(Archive& ar, OnDestroyEventComponent& e) {
-    LoadActions(ar, e._actions);
+    // LoadActions(ar, e._actions);
 }

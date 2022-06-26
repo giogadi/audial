@@ -24,7 +24,7 @@ bool EventsOnHitComponent::ConnectComponents(EntityId id, Entity& e, GameManager
     if (_rb.expired()) {
         return false;
     }
-    auto pThisComp = e.FindComponentOfType<EventsOnHitComponent>();    
+    auto pThisComp = e.FindComponentOfType<EventsOnHitComponent>();
     RigidBodyComponent& rb = *_rb.lock();
     rb.AddOnHitCallback(std::bind(&EventsOnHitComponent::OnHit, pThisComp, std::placeholders::_1));
     rb._layer = CollisionLayer::None;
@@ -81,4 +81,22 @@ bool EventsOnHitComponent::DrawImGui() {
 
 void EventsOnHitComponent::OnEditPick() {
     PlayEventsOnNextDenom(_denom);
+}
+
+void EventsOnHitComponent::Save(ptree& pt) const {
+    pt.put("denom", _denom);
+    ptree eventsPt;
+    for (BeatTimeEvent const& b_e : _events) {
+        serial::SaveInNewChildOf(eventsPt, "beat_event", b_e);
+    }
+    pt.add_child("beat_events", eventsPt);
+}
+
+void EventsOnHitComponent::Load(ptree const& pt) {
+    _denom = pt.get<double>("denom");
+    for (auto const& item : pt.get_child("beat_events")) {
+        _events.emplace_back();
+        BeatTimeEvent& b_e = _events.back();
+        b_e.Load(item.second);
+    }
 }

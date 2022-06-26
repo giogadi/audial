@@ -44,10 +44,38 @@ void DrawScriptActionListImGui(std::vector<std::unique_ptr<ScriptAction>>& actio
     }
 }
 
+void ScriptAction::SaveActions(ptree& pt, std::vector<std::unique_ptr<ScriptAction>> const& actions)  {
+    for (auto const& action : actions) {
+        ptree actionPt;
+        actionPt.put("script_action_type", ScriptActionTypeToString(action->Type()));
+        action->Save(actionPt);
+        pt.add_child("script_action", actionPt);
+    }
+}
+
+void ScriptAction::LoadActions(ptree const& pt, std::vector<std::unique_ptr<ScriptAction>>& actions) {
+    for (auto const& item : pt) {
+        ptree const& actionPt = item.second;
+        ScriptActionType actionType =
+            StringToScriptActionType(actionPt.get<std::string>("script_action_type").c_str());
+        std::unique_ptr<ScriptAction> newAction = MakeScriptActionOfType(actionType);
+        newAction->Load(actionPt);
+        actions.push_back(std::move(newAction));
+    }
+}
+
  void ScriptActionActivateEntity::DrawImGui() {
     char name[128];
     strcpy(name, _entityName.c_str());
     if (ImGui::InputText("Name##", name, 128)) {
         _entityName = name;
     }
+}
+
+void ScriptActionActivateEntity::Save(ptree& pt) const {
+    pt.put("entity_name", _entityName);
+}
+
+void ScriptActionActivateEntity::Load(ptree const& pt) {
+    _entityName = pt.get<std::string>("entity_name");
 }

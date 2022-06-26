@@ -14,6 +14,11 @@ public:
     virtual ScriptActionType Type() const = 0;
     virtual void Execute(GameManager& g) const = 0;
     virtual void DrawImGui() {}
+    virtual void Save(ptree& pt) const {}
+    virtual void Load(ptree const& pt) {}
+
+    static void SaveActions(ptree& pt, std::vector<std::unique_ptr<ScriptAction>> const& actions);
+    static void LoadActions(ptree const& pt, std::vector<std::unique_ptr<ScriptAction>>& actions);
 };
 
 class ScriptActionDestroyAllPlanets : public ScriptAction {
@@ -25,7 +30,7 @@ public:
             bool hasPlanet = !entity->FindComponentOfType<OrbitableComponent>().expired();
             if (hasPlanet) {
                 g._entityManager->TagEntityForDestroy(id);
-            }            
+            }
         });
     }
 
@@ -48,34 +53,37 @@ public:
         ar(cereal::make_nvp("entity_name", _entityName));
     }
 
+    void Save(ptree& pt) const override;
+    void Load(ptree const& pt) override;
+
     std::string _entityName;
 };
 
 std::unique_ptr<ScriptAction> MakeScriptActionOfType(ScriptActionType actionType);
 void DrawScriptActionListImGui(std::vector<std::unique_ptr<ScriptAction>>& actions);
 
-template<typename Archive>
-inline void SaveActions(Archive& ar, std::vector<std::unique_ptr<ScriptAction>> const& actions) {
-    ar(cereal::make_nvp("num_actions", actions.size()));
-    for (std::unique_ptr<ScriptAction> const& action : actions) {
-        ar(cereal::make_nvp("action_type", action->Type()));
-        switch (action->Type()) {
-            case ScriptActionType::DestroyAllPlanets: {
-                auto const* pAction = dynamic_cast<ScriptActionDestroyAllPlanets const*>(action.get());
-                ar(cereal::make_nvp("action", *pAction));
-                break;
-            }
-            case ScriptActionType::ActivateEntity: {
-                auto const* pAction = dynamic_cast<ScriptActionActivateEntity const*>(action.get());
-                ar(cereal::make_nvp("action", *pAction));
-                break;
-            }
-            case ScriptActionType::Count: {
-                assert(false);
-            }
-        }
-    }
-}
+// template<typename Archive>
+// inline void SaveActions(Archive& ar, std::vector<std::unique_ptr<ScriptAction>> const& actions) {
+//     ar(cereal::make_nvp("num_actions", actions.size()));
+//     for (std::unique_ptr<ScriptAction> const& action : actions) {
+//         ar(cereal::make_nvp("action_type", action->Type()));
+//         switch (action->Type()) {
+//             case ScriptActionType::DestroyAllPlanets: {
+//                 auto const* pAction = dynamic_cast<ScriptActionDestroyAllPlanets const*>(action.get());
+//                 ar(cereal::make_nvp("action", *pAction));
+//                 break;
+//             }
+//             case ScriptActionType::ActivateEntity: {
+//                 auto const* pAction = dynamic_cast<ScriptActionActivateEntity const*>(action.get());
+//                 ar(cereal::make_nvp("action", *pAction));
+//                 break;
+//             }
+//             case ScriptActionType::Count: {
+//                 assert(false);
+//             }
+//         }
+//     }
+// }
 
 template<typename Archive>
 inline void LoadActions(Archive& ar, std::vector<std::unique_ptr<ScriptAction>>& actions) {

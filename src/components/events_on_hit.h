@@ -28,13 +28,18 @@ public:
 
     virtual void OnEditPick() override;
 
+    void Save(ptree& pt) const override;
+    void Load(ptree const& pt) override;
+
+    // Serialized
+    double _denom = 0.25;
+    std::vector<BeatTimeEvent> _events;
+
     std::weak_ptr<TransformComponent> _t;
     std::weak_ptr<RigidBodyComponent> _rb;
     audio::Context* _audio = nullptr;
     BeatClock const* _beatClock = nullptr;
     bool _wasHit = false;
-    double _denom = 0.25;
-    std::vector<BeatTimeEvent> _events;
 
 private:
     void PlayEventsOnNextDenom(double denom);

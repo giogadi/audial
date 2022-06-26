@@ -10,16 +10,8 @@ public:
     OrbitableComponent() {}
     virtual bool ConnectComponents(EntityId id, Entity& e, GameManager& g) override;
 
-    // static void OnHit(
-    //     std::weak_ptr<OrbitableComponent> thisComp, std::weak_ptr<RigidBodyComponent> other);
-
-    // virtual void Update(float const dt) override;
-
     virtual void Destroy() override {}
 
-    // virtual bool DrawImGui() override;
-
     std::weak_ptr<TransformComponent> _t;
-    std::weak_ptr<RigidBodyComponent> _rb;    
-    // bool _wasHit = false;
+    std::weak_ptr<RigidBodyComponent> _rb;
 };

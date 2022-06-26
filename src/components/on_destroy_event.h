@@ -25,6 +25,13 @@ public:
         return false;  // no reconnect
     }
 
+    virtual void Save(ptree& pt) const override {
+        ScriptAction::SaveActions(pt.add_child("script_actions", ptree()), _actions);
+    }
+    virtual void Load(ptree const& pt) override {
+        ScriptAction::LoadActions(pt.get_child("script_actions"), _actions);
+    }
+
     // Serialized
     std::vector<std::unique_ptr<ScriptAction>> _actions;
 

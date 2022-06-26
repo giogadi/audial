@@ -28,6 +28,11 @@
             <component>
                 <component_type>Camera</component_type>
             </component>
+            <component>
+                <component_type>CameraController</component_type>
+                <tracking_factor>0.0500000007</tracking_factor>
+                <target_entity_name>cube</target_entity_name>
+            </component>
         </components>
     </entity>
     <entity>
@@ -125,6 +130,57 @@
                         <beat_time>0.5</beat_time>
                     </beat_event>
                 </beat_events>
+            </component>
+            <component>
+                <component_type>EventsOnHit</component_type>
+                <denom>0.5</denom>
+                <beat_events>
+                    <beat_event>
+                        <event_type>NoteOn</event_type>
+                        <channel>0</channel>
+                        <tick_time>0</tick_time>
+                        <midi_note>69</midi_note>
+                        <velocity>1</velocity>
+                        <beat_time>0</beat_time>
+                    </beat_event>
+                    <beat_event>
+                        <event_type>NoteOff</event_type>
+                        <channel>0</channel>
+                        <tick_time>0</tick_time>
+                        <midi_note>69</midi_note>
+                        <velocity>1</velocity>
+                        <beat_time>0.25</beat_time>
+                    </beat_event>
+                </beat_events>
+            </component>
+            <component>
+                <component_type>RigidBody</component_type>
+                <static>false</static>
+                <layer>None</layer>
+                <aabb>
+                    <min>
+                        <x>-0.100000001</x>
+                        <y>-0.200000003</y>
+                        <z>-0.300000012</z>
+                    </min>
+                    <max>
+                        <x>0.400000006</x>
+                        <y>0.5</y>
+                        <z>0.600000024</z>
+                    </max>
+                </aabb>
+            </component>
+            <component>
+                <component_type>OnDestroyEvent</component_type>
+                <script_actions>
+                    <script_action>
+                        <script_action_type>DestroyAllPlanets</script_action_type>
+                    </script_action>
+                    <script_action>
+                        <script_action_type>ActivateEntity</script_action_type>
+                        <entity_name>light</entity_name>
+                    </script_action>
+                </script_actions>
             </component>
         </components>
     </entity>

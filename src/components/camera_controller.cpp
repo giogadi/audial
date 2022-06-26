@@ -6,7 +6,7 @@ bool CameraControllerComponent::ConnectComponents(EntityId id, Entity& e, GameMa
     _transform = e.FindComponentOfType<TransformComponent>();
     if (_transform.expired()) {
         return false;
-    }    
+    }
     EntityId targetEntityId = g._entityManager->FindActiveEntityByName(_targetName.c_str());
     if (!targetEntityId.IsValid()) {
         return false;
@@ -40,4 +40,14 @@ void CameraControllerComponent::Update(float dt) {
 
     Vec3 newOffset = targetToCameraOffset + _trackingFactor * (_desiredTargetToCameraOffset - targetToCameraOffset);
     _transform.lock()->SetPos(targetPos + newOffset);
+}
+
+void CameraControllerComponent::Save(ptree& pt) const {
+    pt.put("tracking_factor", _trackingFactor);
+    pt.put("target_entity_name", _targetName);
+}
+
+void CameraControllerComponent::Load(ptree const& pt) {
+    _trackingFactor = pt.get<float>("tracking_factor");
+    _targetName = pt.get<std::string>("target_entity_name");
 }

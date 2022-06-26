@@ -96,7 +96,7 @@ void EntityEditingContext::DrawEntityImGui(EntityId id, GameManager& g, int* sel
         }
     }
 
-    for (int i = 0; i < e.GetNumComponents(); ++i) {            
+    for (int i = 0; i < e.GetNumComponents(); ++i) {
         Component& comp = e.GetComponent(i);
         char const* compName = ComponentTypeToString(comp.Type());
         if (ImGui::CollapsingHeader(compName)) {
@@ -105,7 +105,7 @@ void EntityEditingContext::DrawEntityImGui(EntityId id, GameManager& g, int* sel
                 e.RemoveComponent(i);
                 if (connectComponents) {
                     e.ConnectComponentsOrDeactivate(id, g);
-                }                
+                }
                 --i;
                 ImGui::PopID();
                 continue;
@@ -203,16 +203,16 @@ void EntityEditingContext::DrawEntitiesWindow(EntityManager& entities, GameManag
     // Duplicate Entity
     if (_selectedEntityId.IsValid()) {
         if (ImGui::Button("Duplicate Entity")) {
-            Entity const& entity = *entities.GetEntity(_selectedEntityId);            
-            std::stringstream entityData;
-            SaveEntity(entityData, entity);
+            Entity const& entity = *entities.GetEntity(_selectedEntityId);
+            ptree entityData;
+            entity.Save(entityData);
             EntityId newEntityId = entities.AddEntityToBack(entities.IsActive(_selectedEntityId));
             Entity& newEntity = *entities.GetEntity(newEntityId);
-            LoadEntity(entityData, newEntity);
+            newEntity.Load(entityData);
             newEntity._name += "(dupe)";
             if (entities.IsActive(newEntityId)) {
                 newEntity.ConnectComponentsOrDeactivate(newEntityId, g, /*failures=*/nullptr);
-            }            
+            }
         }
     }
 

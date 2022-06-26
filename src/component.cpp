@@ -41,6 +41,52 @@ bool Component::DrawImGui() {
     return false;
 }
 
+void Entity::ConnectComponentsOrDie(EntityId id, GameManager& g) {
+    for (auto& compAndStatus : _components) {
+        if (compAndStatus->_active) {
+            assert(compAndStatus->_c->ConnectComponents(id, *this, g));
+        }
+    }
+}
+
+void Entity::ConnectComponentsOrDeactivate(
+    EntityId id, GameManager& g, std::vector<ComponentType>* failures) {
+    if (_components.empty()) {
+        return;
+    }
+    std::vector<bool> active(_components.size());
+    for (int i = 0; i < _components.size(); ++i) {
+        active[i] = _components[i]->_active;
+    }
+    bool allActiveSucceeded = false;
+    for (int roundIx = 0; !allActiveSucceeded && roundIx < _components.size() + 1; ++roundIx) {
+        // Clone components into a parallel vector, delete the original, start over.
+        ptree entityData;
+        this->Save(entityData);
+        _components.clear();
+        _componentTypeMap.clear();
+        this->Load(entityData);
+
+        // std::stringstream entityData;
+        // SaveEntity(entityData, *this);
+        // _components.clear();
+        // _componentTypeMap.clear();
+        // LoadEntity(entityData, *this);
+
+        allActiveSucceeded = true;
+        for (int i = 0; i < _components.size(); ++i) {
+            if (active[i]) {
+                bool success = _components[i]->_c->ConnectComponents(id, *this, g);
+                if (!success) {
+                    active[i] = false;
+                    allActiveSucceeded = false;
+                }
+            }
+        }
+    }
+    assert(allActiveSucceeded);
+}
+
 std::weak_ptr<Component> Entity::TryAddComponentOfType(ComponentType c) {
     switch (c) {
 #       define X(name) \
@@ -127,6 +173,17 @@ void load(Archive& ar, Entity& e) {
     }
 }
 
+void EntityManager::ConnectComponents(GameManager& g, bool dieOnConnectFailure) {
+    ForEveryActiveEntity([&](EntityId id) {
+        Entity* e = this->GetEntity(id);
+        if (dieOnConnectFailure) {
+            e->ConnectComponentsOrDie(id, g);
+        } else {
+            e->ConnectComponentsOrDeactivate(id, g, /*failures=*/nullptr);
+        }
+    });
+}
+
 void EntityManager::Save(ptree& pt) const {
     ptree entitiesPt;
     this->ForEveryActiveAndInactiveEntity([&](EntityId id) {
@@ -178,15 +235,15 @@ void load(Archive& ar, EntityManager& eMgr) {
     }
 }
 
-void SaveEntity(std::ostream& output, Entity const& e) {
-    cereal::XMLOutputArchive archive(output);
-    archive(CEREAL_NVP(e));
-}
+// void SaveEntity(std::ostream& output, Entity const& e) {
+//     cereal::XMLOutputArchive archive(output);
+//     archive(CEREAL_NVP(e));
+// }
 
-void LoadEntity(std::istream& input, Entity& e) {
-    cereal::XMLInputArchive archive(input);
-    archive(e);
-}
+// void LoadEntity(std::istream& input, Entity& e) {
+//     cereal::XMLInputArchive archive(input);
+//     archive(e);
+// }
 
 // bool LoadEntities(char const* filename, bool dieOnConnectFailure, EntityManager& e, GameManager& g) {
 //     std::ifstream inFile(filename);

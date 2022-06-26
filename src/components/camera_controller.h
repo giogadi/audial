@@ -9,11 +9,16 @@ public:
     virtual void Update(float dt) override;
     virtual bool DrawImGui() override;
 
-    std::weak_ptr<TransformComponent> _transform;
-    std::weak_ptr<TransformComponent> _target;
-    Vec3 _desiredTargetToCameraOffset;  // Must be initialized in ConnectComponents
+    virtual void Save(ptree& pt) const override;
+    virtual void Load(ptree const& pt) override;
+
+    // Serialized
     float _trackingFactor = 0.05f;
     // NOTE: this is currently only read during ConnectComponents. Setting it
     // will not cause the target to automatically update.
     std::string _targetName;
+
+    std::weak_ptr<TransformComponent> _transform;
+    std::weak_ptr<TransformComponent> _target;
+    Vec3 _desiredTargetToCameraOffset;  // Must be initialized in ConnectComponents
 };
