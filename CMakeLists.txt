@@ -33,7 +33,7 @@ target_link_libraries(game PortAudio)
 target_include_directories(game PUBLIC src/portaudio/include)
 
 target_include_directories(game PUBLIC
-    ./ ./src src/cereal src/glfw/include src/glad/include src/imgui)
+    ./ ./src src/glfw/include src/glad/include src/imgui)
 
 ## TEST SHIT ##
 add_executable(ptree_test src/ptree_test.cpp)

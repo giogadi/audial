@@ -34,10 +34,6 @@ def generateEnumFromJson(dataFilename):
     sourceOutputFilename = outputFilenamePrefix + ".cpp"
     renderFromTemplateFile(sourceTemplateFilename, dataDict, sourceOutputFilename)
 
-    cerealTemplateFilename = "codegen/templates/enum_cereal.h.jinja"
-    cerealOutputFilename = outputFilenamePrefix + "_cereal.h"
-    renderFromTemplateFile(cerealTemplateFilename, dataDict, cerealOutputFilename)
-
 if __name__ == "__main__":
     import sys
     generateEnumFromJson(sys.argv[1])

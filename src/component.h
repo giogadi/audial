@@ -17,9 +17,6 @@
 
 using boost::property_tree::ptree;
 
-namespace cereal {
-    class access;
-}
 class Entity;
 class EntityManager;
 
@@ -90,12 +87,10 @@ private:
     int64_t _id;
 };
 
-// MUST BE PURE or else Cereal won't work. Need at least one = 0 function in there.
 class Component {
 public:
     virtual ~Component() {}
     virtual void Update(float dt) {}
-    // MUST BE PURE or else Cereal won't work
     virtual void Destroy() {};
     virtual bool ConnectComponents(EntityId id, Entity& e, GameManager& g) { return true; }
     virtual ComponentType Type() const = 0;
@@ -230,7 +225,6 @@ private:
     // reallocated.
     std::vector<std::unique_ptr<ComponentAndStatus>> _components;
     std::unordered_map<std::type_index, ComponentAndStatus*> _componentTypeMap;
-    friend class cereal::access;
 };
 
 class TransformComponent : public Component {

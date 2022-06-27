@@ -4,13 +4,23 @@
 #include <fstream>
 
 #include "imgui/imgui.h"
-#include "cereal/types/string.hpp"
-#include "cereal/archives/xml.hpp"
 
 #include "boost/property_tree/xml_parser.hpp"
 
-#include "serialize.h"
-#include "audio_serialize.h"
+// Here we go
+#include "renderer.h"
+#include "components/rigid_body.h"
+#include "components/player_controller.h"
+#include "components/beep_on_hit.h"
+#include "components/sequencer.h"
+#include "components/player_orbit_controller.h"
+#include "components/camera_controller.h"
+#include "components/hit_counter.h"
+#include "components/orbitable.h"
+#include "components/events_on_hit.h"
+#include "components/activator.h"
+#include "components/damage.h"
+#include "components/on_destroy_event.h"
 
 namespace {
 
@@ -123,56 +133,6 @@ void Entity::Load(ptree const& pt) {
     }
 }
 
-template<typename Archive>
-void save(Archive& ar, Entity const& e) {
-    ar(CEREAL_NVP(e._name));
-    int const numComponents = e.GetNumComponents();
-    ar(cereal::make_nvp("num_components", numComponents));
-    for (int compIx = 0; compIx < numComponents; ++compIx) {
-        Component const& comp = e.GetComponent(compIx);
-        ComponentType compType = comp.Type();
-        ar(cereal::make_nvp("component_type", compType));
-        switch (compType) {
-#           define X(name) \
-            case ComponentType::name: { \
-                name##Component const* c = dynamic_cast<name##Component const*>(&comp); \
-                assert(c != nullptr); \
-                ar(cereal::make_nvp(#name, *c)); \
-                break; \
-            }
-            M_COMPONENT_TYPES
-#           undef X
-            case ComponentType::NumTypes:
-                assert(false);
-                break;
-        }
-    }
-}
-
-template<typename Archive>
-void load(Archive& ar, Entity& e) {
-    ar(e._name);
-    int numComponents = 0;
-    ar(numComponents);
-    for (int i = 0; i < numComponents; ++i) {
-        ComponentType compType;
-        ar(compType);
-        switch (compType) {
-#           define X(name) \
-            case ComponentType::name: { \
-                auto c = e.AddComponentOrDie<name##Component>().lock(); \
-                ar(*c); \
-                break; \
-            }
-            M_COMPONENT_TYPES
-#           undef X
-            case ComponentType::NumTypes:
-                assert(false);
-                break;
-        }
-    }
-}
-
 void EntityManager::ConnectComponents(GameManager& g, bool dieOnConnectFailure) {
     ForEveryActiveEntity([&](EntityId id) {
         Entity* e = this->GetEntity(id);
@@ -205,68 +165,6 @@ void EntityManager::Load(ptree const& pt) {
         entity->Load(entityPt);
     }
 }
-
-template<typename Archive>
-void save(Archive& ar, EntityManager const& eMgr) {
-    int numEntities = 0;
-    eMgr.ForEveryActiveAndInactiveEntity([&numEntities](EntityId id) {
-        ++numEntities;
-    });
-
-    ar(cereal::make_nvp("num_entities", numEntities));
-
-    eMgr.ForEveryActiveAndInactiveEntity([&ar, &eMgr](EntityId id) {
-        Entity const* e = eMgr.GetEntity(id);
-        ar(cereal::make_nvp("active", eMgr.IsActive(id)));
-        ar(cereal::make_nvp("entity", *e));
-    });
-}
-
-template<typename Archive>
-void load(Archive& ar, EntityManager& eMgr) {
-    int numEntities = 0;
-    ar(numEntities);
-    for (int i = 0; i < numEntities; ++i) {
-        bool active;
-        ar(active);
-        EntityId id = eMgr.AddEntity(active);
-        Entity* entity = eMgr.GetEntity(id);
-        ar(*entity);
-    }
-}
-
-// void SaveEntity(std::ostream& output, Entity const& e) {
-//     cereal::XMLOutputArchive archive(output);
-//     archive(CEREAL_NVP(e));
-// }
-
-// void LoadEntity(std::istream& input, Entity& e) {
-//     cereal::XMLInputArchive archive(input);
-//     archive(e);
-// }
-
-// bool LoadEntities(char const* filename, bool dieOnConnectFailure, EntityManager& e, GameManager& g) {
-//     std::ifstream inFile(filename);
-//     if (!inFile.is_open()) {
-//         std::cout << "Couldn't open file " << filename << " for loading." << std::endl;
-//         return false;
-//     }
-//     cereal::XMLInputArchive archive(inFile);
-//     archive(e);
-//     e.ConnectComponents(g, dieOnConnectFailure);
-//     return true;
-// }
-
-// bool SaveEntities(char const* filename, EntityManager const& entities) {
-//     std::ofstream outFile(filename);
-//     if (!outFile.is_open()) {
-//         std::cout << "Couldn't open file " << filename << " for saving. Not saving." << std::endl;
-//         return false;
-//     }
-//     cereal::XMLOutputArchive archive(outFile);
-//     archive(CEREAL_NVP(entities));
-//     return true;
-// }
 
 bool LoadEntities(char const* filename, bool dieOnConnectFailure, EntityManager& e, GameManager& g) {
     std::ifstream inFile(filename);
