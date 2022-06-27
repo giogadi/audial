@@ -9,6 +9,7 @@
 #include "matrix.h"
 #include "constants.h"
 #include "resource_manager.h"
+#include "serial.h"
 
 bool ModelComponent::ConnectComponents(EntityId id, Entity& e, GameManager& g) {
     _transform = e.FindComponentOfType<TransformComponent>();

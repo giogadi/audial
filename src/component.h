@@ -517,13 +517,3 @@ private:
     std::vector<EntityAndStatus> _entities;
     std::vector<EntityIndex> _freeList;
 };
-
-// TODO: move this to some more general "serial.h" file.
-namespace serial {
-    template <typename T>
-    inline void SaveInNewChildOf(ptree& pt, char const* childName, T const& v) {
-        ptree childPt;
-        v.Save(childPt);
-        pt.add_child(childName, childPt);
-    }
-}

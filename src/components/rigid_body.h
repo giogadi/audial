@@ -4,6 +4,7 @@
 
 #include "component.h"
 #include "enums/CollisionLayer.h"
+#include "serial.h"
 
 class CollisionManager;
 

@@ -68,9 +68,9 @@ namespace synth {
         patch.cutoffK = 0.0f;
         patch.pitchLFOFreq = 1.0f;
         patch.pitchLFOGain = 0.0f;
-        
+
         patch.cutoffLFOFreq = 10.0f;
-        patch.cutoffLFOGain = 0.0f;        
+        patch.cutoffLFOGain = 0.0f;
 
         patch.ampEnvSpec.attackTime = 0.01f;
         patch.ampEnvSpec.decayTime = 0.1f;
@@ -111,8 +111,8 @@ namespace synth {
                 //         state.multiplier = 1.f;
                 //     } else {
                 //         state.currentValue = spec.minValue;
-                //         state.multiplier = calcMultiplier(spec.minValue, 1.f, spec.attackTimeInTicks);                            
-                //     }                    
+                //         state.multiplier = calcMultiplier(spec.minValue, 1.f, spec.attackTimeInTicks);
+                //     }
                 // }
                 // state.currentValue *= state.multiplier;
                 // ++state.ticksSincePhaseStart;
@@ -136,7 +136,7 @@ namespace synth {
                 }
                 break;
             case ADSRPhase::Decay:
-                if (state.ticksSincePhaseStart == 0) {                    
+                if (state.ticksSincePhaseStart == 0) {
                     if (spec.decayTime == 0) {
                         state.currentValue = spec.sustainLevel;
                         state.multiplier = 1.f;
@@ -156,8 +156,8 @@ namespace synth {
                 // Do nothing. waiting for external signal to enter Release.
                 break;
             case ADSRPhase::Release: {
-                if (state.ticksSincePhaseStart == 0) {                    
-                    if (spec.releaseTime == 0) {                        
+                if (state.ticksSincePhaseStart == 0) {
+                    if (spec.releaseTime == 0) {
                         state.multiplier = 0.f;
                     } else {
                         // Keep current level. might have hit release before hitting sustain level
@@ -286,8 +286,8 @@ namespace synth {
         float* outputBuffer, int const numChannels, int const samplesPerFrame,
         int const sampleRate, unsigned long frameStartTickTime) {
 
-        Patch& patch = state->patch;     
-                
+        Patch& patch = state->patch;
+
         int currentEventIx = 0;
         for(int i = 0; i < samplesPerFrame; ++i)
         {
@@ -300,12 +300,12 @@ namespace synth {
                 if (e.timeInTicks > frameStartTickTime + i) {
                     // This event gets handled later.
                     break;
-                }             
+                }
                 if (e.channel != state->channel) {
                     // Not meant for this channel. Skip this message.
                     ++currentEventIx;
                     continue;
-                }        
+                }
                 ++currentEventIx;
                 switch (e.type) {
                     case audio::EventType::NoteOn: {
@@ -319,7 +319,7 @@ namespace synth {
                             v->cutoffEnvState.ticksSincePhaseStart = 0;
                         } else {
                             std::cout << "couldn't find a note for noteon" << std::endl;
-                        }  
+                        }
                         break;
                     }
                     case audio::EventType::NoteOff: {
@@ -339,7 +339,7 @@ namespace synth {
                                 v.ampEnvState.ticksSincePhaseStart = 0;
                                 v.cutoffEnvState.phase = synth::ADSRPhase::Release;
                                 v.cutoffEnvState.ticksSincePhaseStart = 0;
-                            }                 
+                            }
                         }
                         break;
                     }
@@ -410,7 +410,7 @@ namespace synth {
                 state->pitchLFOPhase -= 2*kPi;
             }
             // Make LFO a sine wave for now.
-            
+
             float const pitchLFOValue = patch.pitchLFOGain * sinf(state->pitchLFOPhase);
             state->pitchLFOPhase += (patch.pitchLFOFreq * 2*kPi / sampleRate);
 
@@ -442,7 +442,7 @@ namespace synth {
             }
 
             for (int channelIx = 0; channelIx < numChannels; ++channelIx) {
-                *outputBuffer++ += v;    
+                *outputBuffer++ += v;
             }
         }
     }

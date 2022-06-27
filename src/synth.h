@@ -8,6 +8,9 @@
 #include "boost/circular_buffer.hpp"
 
 #include "audio_util.h"
+#include "serial.h"
+
+using boost::property_tree::ptree;
 
 namespace synth {
     static inline float const kSemitoneRatio = 1.05946309f;
@@ -38,9 +41,24 @@ namespace synth {
         float sustainLevel = 0.f;
         float releaseTime = 0.f;
         float minValue = kSmallAmplitude;
+
+        void Save(ptree& pt) const {
+            pt.put("attack_time", attackTime);
+            pt.put("decay_time", decayTime);
+            pt.put("sustain_level", sustainLevel);
+            pt.put("release_time", releaseTime);
+            pt.put("min_value", minValue);
+        }
+        void Load(ptree const& pt) {
+            attackTime = pt.get<float>("attack_time");
+            decayTime = pt.get<float>("decay_time");
+            sustainLevel = pt.get<float>("sustain_level");
+            releaseTime = pt.get<float>("release_time");
+            minValue = pt.get<float>("min_value");
+        }
     };
 
-    struct Patch {        
+    struct Patch {
         std::string name;
         // This is interpreted linearly from [0,1]. This will get mapped later to [-80db,0db].
         // TODO: consider just having this be a decibel value capped at 0db.
@@ -53,12 +71,39 @@ namespace synth {
         float pitchLFOFreq = 0.0f;
 
         float cutoffLFOGain = 0.0f;
-        float cutoffLFOFreq = 0.0f;        
+        float cutoffLFOFreq = 0.0f;
 
         ADSREnvSpec ampEnvSpec;
 
         ADSREnvSpec cutoffEnvSpec;
         float cutoffEnvGain = 0.f;
+
+        void Save(ptree& pt) const {
+            pt.put("name", name);
+            pt.put("gain_factor", gainFactor);
+            pt.put("cutoff_freq", cutoffFreq);
+            pt.put("cutoff_k", cutoffK);
+            pt.put("pitch_lfo_gain", pitchLFOGain);
+            pt.put("pitch_lfo_freq", pitchLFOFreq);
+            pt.put("cutoff_lfo_gain", cutoffLFOGain);
+            pt.put("cutoff_lfo_freq", cutoffLFOFreq);
+            serial::SaveInNewChildOf(pt, "amp_env_spec", ampEnvSpec);
+            pt.put("cutoff_env_gain", cutoffEnvGain);
+            serial::SaveInNewChildOf(pt, "cutoff_env_spec", cutoffEnvSpec);
+        }
+        void Load(ptree const& pt) {
+            name = pt.get<std::string>("name");
+            gainFactor = pt.get<float>("gain_factor");
+            cutoffFreq = pt.get<float>("cutoff_freq");
+            cutoffK = pt.get<float>("cutoff_k");
+            pitchLFOGain = pt.get<float>("pitch_lfo_gain");
+            pitchLFOFreq = pt.get<float>("pitch_lfo_freq");
+            cutoffLFOGain = pt.get<float>("cutoff_lfo_gain");
+            cutoffLFOFreq = pt.get<float>("cutoff_lfo_freq");
+            ampEnvSpec.Load(pt.get_child("amp_env_spec"));
+            cutoffEnvGain = pt.get<float>("cutoff_env_gain");
+            cutoffEnvSpec.Load(pt.get_child("cutoff_env_spec"));
+        }
     };
 
     struct Voice {
