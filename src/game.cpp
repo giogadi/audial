@@ -10,7 +10,7 @@
 
 #include <portaudio.h>
 
-#include <glad/glad.h> 
+#include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
 #include "imgui.h"
@@ -111,7 +111,7 @@ void DrawSynthGuiAndUpdatePatch(SynthGuiState& synthGuiState, audio::Context& au
     ImGui::Begin("Synth settings");
     {
         // kill sound
-        if (ImGui::Button("All notes off")) {            
+        if (ImGui::Button("All notes off")) {
             for (int i = 0; i < audioContext._state.synths.size(); ++i) {
                 audio::Event e;
                 e.type = audio::EventType::AllNotesOff;
@@ -132,7 +132,7 @@ void DrawSynthGuiAndUpdatePatch(SynthGuiState& synthGuiState, audio::Context& au
             }
         }
     }
-    
+
     // TODO: consider caching this.
     std::vector<char const*> listNames;
     listNames.reserve(synthGuiState._synthPatches.size());
@@ -232,7 +232,7 @@ void LoadSoundData(std::vector<audio::PcmSound>& sounds) {
     for (char const* filename : soundFilenames) {
         audio::PcmSound sound;
         unsigned int numChannels;
-        unsigned int sampleRate;    
+        unsigned int sampleRate;
         sound._buffer = drwav_open_file_and_read_pcm_frames_f32(
             filename, &numChannels, &sampleRate, &sound._bufferLength, /*???*/NULL);
         assert(numChannels == 1);
@@ -240,7 +240,7 @@ void LoadSoundData(std::vector<audio::PcmSound>& sounds) {
         assert(sound._buffer != nullptr);
         std::cout << filename << ": " << numChannels << " channels, " << sound._bufferLength << " samples." << std::endl;
         sounds.push_back(std::move(sound));
-    } 
+    }
 }
 
 struct CommandLineInputs {
@@ -257,7 +257,7 @@ void ParseCommandLine(CommandLineInputs& inputs, std::vector<std::string> const&
                 std::cout << "Need a command line filename with -f. Ignoring." << std::endl;
                 continue;
             }
-            std::vector<std::string> fileArgv;            
+            std::vector<std::string> fileArgv;
             {
                 std::ifstream cmdLineFile(argv[argIx]);
                 if (!cmdLineFile.is_open()) {
@@ -271,7 +271,7 @@ void ParseCommandLine(CommandLineInputs& inputs, std::vector<std::string> const&
                     fileArgv.push_back(std::move(arg));
                 }
             }
-            ParseCommandLine(inputs, fileArgv);            
+            ParseCommandLine(inputs, fileArgv);
         } else if (argv[argIx] == "-s") {
             ++argIx;
             if (argIx >= argv.size()) {
@@ -288,7 +288,7 @@ void ParseCommandLine(CommandLineInputs& inputs, std::vector<std::string> const&
             inputs._synthPatchesFilename = argv[argIx];
         } else if (argv[argIx] == "-e") {
             std::cout << "Edit mode enabled!" << std::endl;
-            inputs._editMode = true;            
+            inputs._editMode = true;
         }
     }
 }
@@ -309,7 +309,7 @@ int main(int argc, char** argv) {
     std::vector<audio::PcmSound> pcmSounds;
     LoadSoundData(pcmSounds);
 
-    // Init audio    
+    // Init audio
     audio::Context audioContext;
     {
         // Load in synth patch data if we have it
@@ -333,7 +333,22 @@ int main(int argc, char** argv) {
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 #endif
 
-    GLFWwindow* window = glfwCreateWindow(800, 600, "Audial", nullptr, nullptr);
+    GLFWwindow* window;
+    {
+        GLFWmonitor* monitor = glfwGetPrimaryMonitor();
+        GLFWvidmode const* mode = glfwGetVideoMode(monitor);
+
+        glfwWindowHint(GLFW_RED_BITS, mode->redBits);
+        glfwWindowHint(GLFW_GREEN_BITS, mode->greenBits);
+        glfwWindowHint(GLFW_BLUE_BITS, mode->blueBits);
+        glfwWindowHint(GLFW_REFRESH_RATE, mode->refreshRate);
+
+        // Full screen
+        // window = glfwCreateWindow(mode->width, mode->height, "Audial", monitor, NULL);
+
+        window = glfwCreateWindow(mode->width, mode->height, "Audial", NULL, NULL);
+    }
+
     if (window == nullptr) {
         std::cout << "Failed to create GLFW window" << std::endl;
         glfwTerminate();
@@ -439,19 +454,19 @@ int main(int argc, char** argv) {
     bool showDemoWindow = false;
     bool showHitCounters = false;
     float const fixedTimeStep = 1.f / 60.f;
-    bool paused = false;    
+    bool paused = false;
     while(!glfwWindowShouldClose(window)) {
 
         int windowWidth, windowHeight;
         glfwGetWindowSize(window, &windowWidth, &windowHeight);
 
         beatClock.Update();
-        
+
         {
             ImGuiIO& io = ImGui::GetIO();
             if (!io.WantCaptureMouse && !io.WantCaptureKeyboard) {
                 inputManager.Update();
-            }            
+            }
         }
 
         if (inputManager.IsKeyPressedThisFrame(InputManager::Key::Space)) {
@@ -515,7 +530,7 @@ int main(int argc, char** argv) {
         if (showDemoWindow) {
             ImGui::ShowDemoWindow(&showDemoWindow);
         }
-        ImGui::Render();    
+        ImGui::Render();
 
         // Rendering
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);

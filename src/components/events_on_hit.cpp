@@ -68,8 +68,14 @@ bool EventsOnHitComponent::DrawImGui() {
     char headerName[128];
     for (int i = 0; i < _events.size(); ++i) {
         ImGui::PushID(i);
-        sprintf(headerName, "%s##Header", audio::EventTypeToString(_events[i]._e.type));
+        sprintf(headerName, "%s###Header", audio::EventTypeToString(_events[i]._e.type));
         if (ImGui::CollapsingHeader(headerName)) {
+            if (ImGui::Button("Delete Event")) {
+                _events.erase(_events.begin() + i);
+                --i;
+                ImGui::PopID();
+                continue;
+            }
             ImGui::InputScalar("Beat time##", ImGuiDataType_Double, &_events[i]._beatTime, /*step=*/nullptr, /*???*/nullptr, "%f");
             audio::EventDrawImGuiNoTime(_events[i]._e);
         }

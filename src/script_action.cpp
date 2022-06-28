@@ -27,8 +27,14 @@ void DrawScriptActionListImGui(std::vector<std::unique_ptr<ScriptAction>>& actio
     char headerName[128];
     for (int i = 0; i < actions.size(); ++i) {
         ImGui::PushID(i);
-        sprintf(headerName, "%s##Header", ScriptActionTypeToString(actions[i]->Type()));
+        sprintf(headerName, "%s###Header", ScriptActionTypeToString(actions[i]->Type()));
         if (ImGui::CollapsingHeader(headerName)) {
+            if (ImGui::Button("Delete Action")) {
+                actions.erase(actions.begin() + i);
+                --i;
+                ImGui::PopID();
+                continue;
+            }
             int selectedActionTypeIx = static_cast<int>(actions[i]->Type());
             bool changed = ImGui::Combo(
                 "Type##", &selectedActionTypeIx, gScriptActionTypeStrings,
