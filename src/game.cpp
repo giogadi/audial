@@ -265,10 +265,22 @@ void ParseCommandLine(CommandLineInputs& inputs, std::vector<std::string> const&
                         "\", but could not open file. Skipping." << std::endl;
                     continue;
                 }
+                // read from the cmdline file line-by-line so we can filter out // comments
                 while (!cmdLineFile.eof()) {
-                    std::string arg;
-                    cmdLineFile >> arg;
-                    fileArgv.push_back(std::move(arg));
+                    std::string line;
+                    std::getline(cmdLineFile, line);
+                    if (line.size() >= 2 && line[0] == '/' && line[1] == '/') {
+                        // comment. skip line.
+                        continue;
+                    }
+
+                    std::stringstream ss(line);
+                    ss.str(line);
+                    while (!ss.eof()) {
+                        std::string arg;
+                        ss >> arg;
+                        fileArgv.push_back(std::move(arg));
+                    }
                 }
             }
             ParseCommandLine(inputs, fileArgv);
