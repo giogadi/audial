@@ -224,6 +224,28 @@ void EntityEditingContext::DrawEntitiesWindow(EntityManager& entities, GameManag
         }
     }
 
+    // Save Entity as prefab
+    if (_selectedEntityId.IsValid()) {
+        char filename[256];
+        strncpy(filename, _prefabFilename.c_str(), 255);
+        bool changed = ImGui::InputText("Prefab filename##FilenamePrefab", filename, 255);
+        if (changed) {
+            _prefabFilename = filename;
+        }
+
+        if (ImGui::Button("Save Prefab##")) {
+            SaveEntity(_prefabFilename.c_str(), *entities.GetEntity(_selectedEntityId));
+        }
+        if (ImGui::Button("Load Prefab##")) {
+            Entity& e = *entities.GetEntity(_selectedEntityId);
+            e.ResetWithoutComponentDestroy();
+            LoadEntity(_prefabFilename.c_str(), e);
+            if (entities.IsActive(_selectedEntityId)) {
+                e.ConnectComponentsOrDeactivate(_selectedEntityId, g, /*failures=*/nullptr);
+            }
+        }
+    }
+
     // Now show a little panel for each component on the selected entity.
     if (_selectedEntityId.IsValid()) {
         bool active = entities.IsActive(_selectedEntityId);

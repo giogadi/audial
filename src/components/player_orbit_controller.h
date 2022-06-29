@@ -15,7 +15,7 @@ public:
     PlayerOrbitControllerComponent()
         : _attackDir(0.f,0.f,0.f) {}
     virtual bool ConnectComponents(EntityId id, Entity& e, GameManager& g) override;
-        
+
     virtual ~PlayerOrbitControllerComponent() {}
 
     virtual void Update(float dt) override;
@@ -35,11 +35,12 @@ public:
     enum class State {
         Idle, Attacking
     };
-    
+
     std::weak_ptr<TransformComponent> _transform;
     std::weak_ptr<RigidBodyComponent> _rb;
     std::weak_ptr<OrbitableComponent> _planetWeOrbit;
     InputManager const* _input = nullptr;
+    GameManager* _g = nullptr;
     // For finding planets to orbit. Maybe we'll want a PlanetManager for this later.
     EntityManager* _entityMgr = nullptr;
     State _state = State::Idle;

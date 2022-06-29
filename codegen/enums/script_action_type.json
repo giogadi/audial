@@ -3,6 +3,7 @@
     "enumName": "ScriptActionType",
     "enumItems": [
         "DestroyAllPlanets",
-        "ActivateEntity"
+        "ActivateEntity",
+        "AudioEvent"
     ]
 }

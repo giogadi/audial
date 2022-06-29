@@ -13,8 +13,9 @@ public:
     EntityId _selectedEntityId = EntityId::InvalidId();
     int _selectedComponentIx = 0;
     std::string _saveFilename;
+    std::string _prefabFilename;
 
-    void Update(float dt, bool editMode, GameManager const& g, int windowWidth, int windowHeight);    
+    void Update(float dt, bool editMode, GameManager const& g, int windowWidth, int windowHeight);
     void DrawEntitiesWindow(EntityManager& entities, GameManager& g);
     static void DrawEntityImGui(EntityId id, GameManager& g, int* selectedComponentIx, bool connectComponents);
 

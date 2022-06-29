@@ -145,15 +145,13 @@ void EntityManager::ConnectComponents(GameManager& g, bool dieOnConnectFailure) 
 }
 
 void EntityManager::Save(ptree& pt) const {
-    ptree entitiesPt;
     this->ForEveryActiveAndInactiveEntity([&](EntityId id) {
         Entity const* e = this->GetEntity(id);
         ptree ePt;
         ePt.put("entity_active", this->IsActive(id));
         e->Save(ePt);
-        entitiesPt.add_child("entity", ePt);
+        pt.add_child("entity", ePt);
     });
-    pt.add_child("entities", entitiesPt);
 }
 
 void EntityManager::Load(ptree const& pt) {
@@ -186,9 +184,40 @@ bool SaveEntities(char const* filename, EntityManager const& entities) {
         return false;
     }
     ptree pt;
-    entities.Save(pt);
+    {
+        ptree& entitiesPt = pt.add_child("entities", ptree());
+        entities.Save(entitiesPt);
+    }
     boost::property_tree::xml_parser::xml_writer_settings<std::string> settings(' ', 4);
-    boost::property_tree::write_xml(filename, pt.add_child("entities", pt), std::locale(), settings);
+    boost::property_tree::write_xml(outFile, pt, settings);
+    return true;
+}
+
+bool SaveEntity(char const* filename, Entity const& e) {
+    std::ofstream outFile(filename);
+    if (!outFile.is_open()) {
+        std::cout << "Couldn't open file " << filename << " for saving. Not saving." << std::endl;
+        return false;
+    }
+    ptree pt;
+    {
+        ptree& entityPt = pt.add_child("entity", ptree());
+        e.Save(entityPt);
+    }
+    boost::property_tree::xml_parser::xml_writer_settings<std::string> settings(' ', 4);
+    boost::property_tree::write_xml(outFile, pt, settings);
+    return true;
+}
+
+bool LoadEntity(char const* filename, Entity& e) {
+    std::ifstream inFile(filename);
+    if (!inFile.is_open()) {
+        std::cout << "Couldn't open file " << filename << " for loading." << std::endl;
+        return false;
+    }
+    ptree pt;
+    boost::property_tree::read_xml(inFile, pt);
+    e.Load(pt.get_child("entity"));
     return true;
 }
 

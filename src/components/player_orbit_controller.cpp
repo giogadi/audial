@@ -29,9 +29,10 @@ bool PlayerOrbitControllerComponent::ConnectComponents(EntityId id, Entity& e, G
             e.FindComponentOfType<PlayerOrbitControllerComponent>();
         _rb.lock()->AddOnHitCallback(
             std::bind(&PlayerOrbitControllerComponent::OnHit, pComp, std::placeholders::_1));
-    }    
+    }
     _input = g._inputManager;
     _entityMgr = g._entityManager;
+    _g = &g;
     return success;
 }
 
@@ -53,7 +54,7 @@ void PlayerOrbitControllerComponent::Update(float dt) {
 }
 
 namespace {
-    
+
     Vec3 GetInputVec(InputManager const& input) {
         Vec3 inputVec(0.0f,0.f,0.f);
             if (input.IsKeyPressed(InputManager::Key::W)) {
@@ -114,7 +115,7 @@ bool PlayerOrbitControllerComponent::UpdateIdleState(float dt, bool newState) {
         // get current angle with planet
         // These 2D angles are defined about the y-axis, where angle=0 is the +x axis and angle=pi/2 is the -z axis.
         float currentAngle = XZToAngle(planetToPlayer._x, planetToPlayer._z);
-        float newAngle = currentAngle + kOrbitSpeed*dt;        
+        float newAngle = currentAngle + kOrbitSpeed*dt;
         float newRange = currentRange + 0.05f*(kDesiredRange - currentRange);
         Vec3 newPos(0.f, 0.f, 0.f);
         AngleToXZ(newAngle, newPos._x, newPos._z);
@@ -123,14 +124,14 @@ bool PlayerOrbitControllerComponent::UpdateIdleState(float dt, bool newState) {
         rb._velocity *= kIdleSpeed;
         return false;
     }
-    
+
     if (inputVec.IsZero()) {
         rb._velocity = Vec3(0.f,0.f,0.f);
         return false;
     }
 
     rb._velocity = inputVec * kIdleSpeed;
-    
+
     return false;
 }
 
@@ -145,7 +146,7 @@ bool PlayerOrbitControllerComponent::PickNextPlanetToOrbit(Vec3 const& inputVec,
             return true;
         } else {
             return false;
-        }        
+        }
     }
 
     // WE USE CURRENTLY ORBITED PLANET AS REFERENCE, NOT PLAYER
@@ -178,8 +179,8 @@ bool PlayerOrbitControllerComponent::PickNextPlanetToOrbit(Vec3 const& inputVec,
             return;
         }
 
-        if (dist < closestDist) {            
-            closestDist = dist;        
+        if (dist < closestDist) {
+            closestDist = dist;
             potentialNewPlanet = planet;
             dashDir = (planetPos - _transform.lock()->GetPos()).GetNormalized();
         }
@@ -187,10 +188,11 @@ bool PlayerOrbitControllerComponent::PickNextPlanetToOrbit(Vec3 const& inputVec,
 
     if (currentPlanet) {
         currentPlanet->_rb.lock()->_layer = CollisionLayer::None;
+        currentPlanet->OnLeaveOrbit(*_g);
     }
     if (potentialNewPlanet) {
         potentialNewPlanet->_rb.lock()->_layer = CollisionLayer::Solid;
-    }    
+    }
     _planetWeOrbit = potentialNewPlanet;
 
     return true;
@@ -229,10 +231,10 @@ bool PlayerOrbitControllerComponent::UpdateAttackState(float dt, bool newState) 
     if (_dribbleRadialSpeed.has_value()) {
         Vec3 const planetPos = _planetWeOrbit.lock()->_t.lock()->GetPos();
         Vec3 const playerPos = _transform.lock()->GetPos();
-        Vec3 const planetToPlayer = playerPos - planetPos;        
+        Vec3 const planetToPlayer = playerPos - planetPos;
 
         float currentAngle = XZToAngle(planetToPlayer._x, planetToPlayer._z);
-        float newAngle = currentAngle + kOrbitSpeed*dt; 
+        float newAngle = currentAngle + kOrbitSpeed*dt;
         if (_dribbleRadialSpeed.value() > 0) {
             *_dribbleRadialSpeed -= kDecel * dt;
         } else {
@@ -244,9 +246,9 @@ bool PlayerOrbitControllerComponent::UpdateAttackState(float dt, bool newState) 
             return true;
         }
 
-        // 
+        //
         Vec3 newPlanetToPlayerDir(0.f,0.f,0.f);
-        AngleToXZ(newAngle, newPlanetToPlayerDir._x, newPlanetToPlayerDir._z);        
+        AngleToXZ(newAngle, newPlanetToPlayerDir._x, newPlanetToPlayerDir._z);
         Vec3 playerRadialVel = newPlanetToPlayerDir * _dribbleRadialSpeed.value();
 
         float currentRadius = planetToPlayer.Length();
@@ -265,7 +267,7 @@ bool PlayerOrbitControllerComponent::UpdateAttackState(float dt, bool newState) 
         Vec3 decel = -_attackDir * kDecel;
         Vec3 newVel = rb._velocity + dt * decel;
         if (Vec3::Dot(newVel, _attackDir) <= 0.5f*kIdleSpeed) {
-            _state = State::Idle;            
+            _state = State::Idle;
             return true;
         } else {
             rb._velocity = newVel;
@@ -289,10 +291,10 @@ void PlayerOrbitControllerComponent::OnHit(
             (player->_transform.lock()->GetPos() - player->_planetWeOrbit.lock()->_t.lock()->GetPos()).GetNormalized();
         rb._velocity = planetToPlayerDir * player->_dribbleRadialSpeed.value();
     } else {
-        player->_attackDir = -player->_attackDir;        
+        player->_attackDir = -player->_attackDir;
         // float currentSpeed = rb._velocity.Length();
         // float newSpeed = std::max(30.f,currentSpeed);
         float newSpeed = 30.f;
         rb._velocity = player->_attackDir * newSpeed;
-    }        
+    }
 }

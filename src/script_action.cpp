@@ -2,6 +2,10 @@
 
 #include "imgui/imgui.h"
 
+#include "audio_event_imgui.h"
+#include "serial.h"
+#include "audio.h"
+
 std::unique_ptr<ScriptAction> MakeScriptActionOfType(ScriptActionType actionType) {
     switch (actionType) {
         case ScriptActionType::DestroyAllPlanets: {
@@ -10,6 +14,10 @@ std::unique_ptr<ScriptAction> MakeScriptActionOfType(ScriptActionType actionType
         }
         case ScriptActionType::ActivateEntity: {
             return std::make_unique<ScriptActionActivateEntity>();
+            break;
+        }
+        case ScriptActionType::AudioEvent: {
+            return std::make_unique<ScriptActionAudioEvent>();
             break;
         }
         case ScriptActionType::Count: {
@@ -84,4 +92,36 @@ void ScriptActionActivateEntity::Save(ptree& pt) const {
 
 void ScriptActionActivateEntity::Load(ptree const& pt) {
     _entityName = pt.get<std::string>("entity_name");
+}
+
+namespace {
+audio::Event GetEventAtBeatOffsetFromNextDenom(double denom, BeatTimeEvent const& b_e, BeatClock const& beatClock) {
+    double beatTime = beatClock.GetBeatTime();
+    double startTime = BeatClock::GetNextBeatDenomTime(beatTime, denom);
+    unsigned long startTickTime = beatClock.BeatTimeToTickTime(startTime);
+    audio::Event e = b_e._e;
+    e.timeInTicks = beatClock.BeatTimeToTickTime(b_e._beatTime) + startTickTime;
+    return e;
+}
+}
+
+void ScriptActionAudioEvent::Execute(GameManager& g) const {
+    audio::Event e = GetEventAtBeatOffsetFromNextDenom(_denom, _event, *g._beatClock);
+    g._audioContext->AddEvent(e);
+}
+
+void ScriptActionAudioEvent::DrawImGui() {
+    ImGui::InputScalar("Denom##", ImGuiDataType_Double, &_denom);
+    ImGui::InputScalar("Beat time##", ImGuiDataType_Double, &_event._beatTime);
+    audio::EventDrawImGuiNoTime(_event._e);
+}
+
+void ScriptActionAudioEvent::Save(ptree& pt) const {
+    pt.put("denom", _denom);
+    serial::SaveInNewChildOf(pt, "beat_event", _event);
+}
+
+void ScriptActionAudioEvent::Load(ptree const& pt) {
+    _denom = pt.get<double>("denom");
+    _event.Load(pt.get_child("beat_event"));
 }

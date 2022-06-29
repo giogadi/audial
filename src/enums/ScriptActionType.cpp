@@ -11,7 +11,9 @@ std::unordered_map<std::string, ScriptActionType> const gStringToScriptActionTyp
     
     { "DestroyAllPlanets", ScriptActionType::DestroyAllPlanets },
     
-    { "ActivateEntity", ScriptActionType::ActivateEntity }
+    { "ActivateEntity", ScriptActionType::ActivateEntity },
+    
+    { "AudioEvent", ScriptActionType::AudioEvent }
     
 };
 
@@ -21,7 +23,9 @@ char const* gScriptActionTypeStrings[] = {
 	
     "DestroyAllPlanets",
     
-    "ActivateEntity"
+    "ActivateEntity",
+    
+    "AudioEvent"
     
 };
 

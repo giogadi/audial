@@ -7,6 +7,12 @@ struct BeatTimeEvent {
     audio::Event _e;  // timeInTicks is ignored.
     double _beatTime = 0.0;
 
+    audio::Event ToTickTimeEvent(BeatClock const& beatClock) const {
+        audio::Event e = _e;
+        e.timeInTicks = beatClock.BeatTimeToTickTime(_beatTime);
+        return e;
+    }
+
     void Save(ptree& pt) const {
         _e.Save(pt);
         pt.put("beat_time", _beatTime);

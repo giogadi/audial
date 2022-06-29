@@ -8,6 +8,8 @@ enum class ScriptActionType : int {
     
     ActivateEntity,
     
+    AudioEvent,
+    
     Count
 };
 extern char const* gScriptActionTypeStrings[];

@@ -54,8 +54,9 @@ char const* ComponentTypeToString(ComponentType c);
 ComponentType StringToComponentType(char const* s);
 
 bool LoadEntities(char const* filename, bool dieOnConnectFailure, EntityManager& e, GameManager& g);
-
 bool SaveEntities(char const* filename, EntityManager const& e);
+bool SaveEntity(char const* filename, Entity const& e);
+bool LoadEntity(char const* filename, Entity& e);
 
 typedef int32_t EntityIndex;
 typedef int32_t EntityVersion;

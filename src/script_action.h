@@ -4,6 +4,7 @@
 #include "component.h"
 #include "enums/ScriptActionType.h"
 #include "components/orbitable.h"
+#include "beat_time_event.h"
 
 class ScriptAction {
 public:
@@ -49,6 +50,22 @@ public:
     void Load(ptree const& pt) override;
 
     std::string _entityName;
+};
+
+// TODO: need to think about how to specify denom + beattimeoffset etc. not
+// doing that currently. Look at EventsOnHit::PlayEventsOnNextDenom.
+class ScriptActionAudioEvent : public ScriptAction {
+    virtual ScriptActionType Type() const override { return ScriptActionType::AudioEvent; }
+    virtual void Execute(GameManager& g) const override;
+
+    virtual void DrawImGui() override;
+
+    void Save(ptree& pt) const override;
+    void Load(ptree const& pt) override;
+
+    // serialize
+    double _denom = 0.25;
+    BeatTimeEvent _event;
 };
 
 std::unique_ptr<ScriptAction> MakeScriptActionOfType(ScriptActionType actionType);
