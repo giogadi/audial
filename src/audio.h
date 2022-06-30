@@ -15,7 +15,7 @@
 
 namespace audio {
 
-int constexpr kNumSynths = 2;
+int constexpr kNumSynths = 3;
 int constexpr kNumPcmSounds = 2;
 int constexpr kNumPcmVoices = 8;
 
@@ -34,7 +34,7 @@ struct StateData {
     std::array<synth::StateData,kNumSynths> synths;
 
     std::array<PcmSound,kNumPcmSounds> pcmSounds;
-    std::array<PcmVoice,kNumPcmVoices> pcmVoices;    
+    std::array<PcmVoice,kNumPcmVoices> pcmVoices;
 
     EventQueue* events = nullptr;
     boost::circular_buffer<Event> pendingEvents;

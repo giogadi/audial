@@ -164,6 +164,16 @@ void DrawSynthGuiAndUpdatePatch(SynthGuiState& synthGuiState, audio::Context& au
             RequestSynthParamChange(synthGuiState._currentSynthIx, audio::SynthParamType::Peak, patch.cutoffK, audioContext);
         }
 
+        changed = ImGui::SliderFloat("PitchLFOGain", &patch.pitchLFOGain, 0.f, 1.f);
+        if (changed) {
+            RequestSynthParamChange(synthGuiState._currentSynthIx, audio::SynthParamType::PitchLFOGain, patch.pitchLFOGain, audioContext);
+        }
+
+        changed = ImGui::SliderFloat("PitchLFOFreq", &patch.pitchLFOFreq, 0.f, 100.f);
+        if (changed) {
+            RequestSynthParamChange(synthGuiState._currentSynthIx, audio::SynthParamType::PitchLFOFreq, patch.pitchLFOFreq, audioContext);
+        }
+
         changed = ImGui::SliderFloat("AmpEnvAtk", &patch.ampEnvSpec.attackTime, 0.f, 1.f);
         if (changed) {
             RequestSynthParamChange(synthGuiState._currentSynthIx, audio::SynthParamType::AmpEnvAttack, patch.ampEnvSpec.attackTime, audioContext);

@@ -38,9 +38,9 @@ namespace synth {
     struct ADSREnvSpec {
         float attackTime = 0.f;
         float decayTime = 0.f;
-        float sustainLevel = 0.f;
+        float sustainLevel = 1.f;
         float releaseTime = 0.f;
-        float minValue = kSmallAmplitude;
+        float minValue = 0.01f;
 
         void Save(ptree& pt) const {
             pt.put("attack_time", attackTime);
@@ -58,15 +58,26 @@ namespace synth {
         }
     };
 
+    enum class Waveform {
+        Saw, Square
+    };
+
     struct Patch {
         std::string name;
         // This is interpreted linearly from [0,1]. This will get mapped later to [-80db,0db].
         // TODO: consider just having this be a decibel value capped at 0db.
-        float gainFactor = 0.5f;
+        float gainFactor = 0.7f;
 
-        float cutoffFreq = 0.0f;
+        Waveform osc1Waveform = Waveform::Square;
+        Waveform osc2Waveform = Waveform::Square;
+
+        float detune = 0.f;   // 1.0f is a whole octave.
+        float oscFader = 0.5f;  // 0.f is fully Osc1, 1.f is fully Osc2.
+
+        float cutoffFreq = 44100.0f;
         float cutoffK = 0.0f;  // [0,4] but 4 is unstable
 
+        // gain of 1.0 coincides with the wave varying across 2 octaves (one octave up and one octave down).
         float pitchLFOGain = 0.0f;
         float pitchLFOFreq = 0.0f;
 
@@ -79,8 +90,13 @@ namespace synth {
         float cutoffEnvGain = 0.f;
 
         void Save(ptree& pt) const {
+            pt.put("version", kVersion);
             pt.put("name", name);
             pt.put("gain_factor", gainFactor);
+            pt.put("osc1_waveform", static_cast<int>(osc1Waveform));
+            pt.put("osc2_waveform", static_cast<int>(osc2Waveform));
+            pt.put("detune", detune);
+            pt.put("osc_fader", oscFader);
             pt.put("cutoff_freq", cutoffFreq);
             pt.put("cutoff_k", cutoffK);
             pt.put("pitch_lfo_gain", pitchLFOGain);
@@ -92,8 +108,16 @@ namespace synth {
             serial::SaveInNewChildOf(pt, "cutoff_env_spec", cutoffEnvSpec);
         }
         void Load(ptree const& pt) {
+            int const version = pt.get_optional<int>("version").value_or(0);
+
             name = pt.get<std::string>("name");
             gainFactor = pt.get<float>("gain_factor");
+            if (version >= 1) {
+                osc1Waveform = static_cast<Waveform>(pt.get<int>("osc1_waveform"));
+                osc2Waveform = static_cast<Waveform>(pt.get<int>("osc2_waveform"));
+                detune = pt.get<float>("detune");
+                oscFader = pt.get<float>("osc_fader");
+            }
             cutoffFreq = pt.get<float>("cutoff_freq");
             cutoffK = pt.get<float>("cutoff_k");
             pitchLFOGain = pt.get<float>("pitch_lfo_gain");
@@ -104,12 +128,20 @@ namespace synth {
             cutoffEnvGain = pt.get<float>("cutoff_env_gain");
             cutoffEnvSpec.Load(pt.get_child("cutoff_env_spec"));
         }
+
+        static int constexpr kVersion = 1;
+    };
+
+    int constexpr kNumOscillators = 2;
+
+    struct Oscillator {
+        float f = 440.f;
+        float phase = 0.f;
     };
 
     struct Voice {
-        float f = 440.0f;
-        float left_phase = 0.0f;
-        float right_phase = 0.0f;
+        // We assign the voice's "center" frequency using oscillators[0]. I know, this is gross.
+        std::array<Oscillator, kNumOscillators> oscillators;
 
         ADSREnvState ampEnvState;
         ADSREnvState cutoffEnvState;

@@ -46,39 +46,8 @@ namespace synth {
     }  // namespace
 
     void InitStateData(StateData& state, int channel) {
+        state = StateData();
         state.channel = channel;
-
-        for (int i = 0; i < state.voices.size(); ++i) {
-            Voice& v = state.voices[i];
-            v.left_phase = v.right_phase = 0.0f;
-            v.f = 440.0f;
-            v.lp0 = 0.0f;
-            v.lp1 = 0.0f;
-            v.lp2 = 0.0f;
-            v.lp3 = 0.0f;
-        }
-
-        state.pitchLFOPhase = 0.0f;
-        state.cutoffLFOPhase = 0.0f;
-
-        Patch& patch = state.patch;
-        patch.name = "synth";
-        patch.gainFactor = 0.7f;
-        patch.cutoffFreq = 44100.0f;
-        patch.cutoffK = 0.0f;
-        patch.pitchLFOFreq = 1.0f;
-        patch.pitchLFOGain = 0.0f;
-
-        patch.cutoffLFOFreq = 10.0f;
-        patch.cutoffLFOGain = 0.0f;
-
-        patch.ampEnvSpec.attackTime = 0.01f;
-        patch.ampEnvSpec.decayTime = 0.1f;
-        patch.ampEnvSpec.sustainLevel = 0.5f;
-        patch.ampEnvSpec.releaseTime = 0.5f;
-        patch.ampEnvSpec.minValue = 0.01f;
-
-        patch.cutoffEnvSpec.minValue = 0.01f;
     }
 
     float calcMultiplier(float startLevel, float endLevel, long numSamples) {
@@ -95,7 +64,7 @@ namespace synth {
         long decayTime = 0l;
         float sustainLevel = 0.f;
         long releaseTime = 0l;
-        float minValue = kSmallAmplitude;
+        float minValue = 0.01f;
     };
 
     void adsrEnvelope(ADSREnvSpecInTicks const& spec, ADSREnvState& state) {
@@ -183,36 +152,63 @@ namespace synth {
 
     // TODO: make this process an entire buffer.
     // TODO: early exit if envelope is closed.
+    // TODO: remove redundant args now that we pass Patch in.
     float ProcessVoice(
         Voice& voice, int const sampleRate, float pitchLFOValue, float modulatedCutoff, float cutoffK,
-        ADSREnvSpecInTicks const& ampEnvSpec, ADSREnvSpecInTicks const& cutoffEnvSpec, float const cutoffEnvGain) {
+        ADSREnvSpecInTicks const& ampEnvSpec, ADSREnvSpecInTicks const& cutoffEnvSpec, float const cutoffEnvGain,
+        Patch const& patch) {
         float const dt = 1.0f / sampleRate;
 
         // Now use the LFO value to get a new frequency.
-        float const modulatedF = voice.f * powf(2.0f, pitchLFOValue);
-
-        // use left phase for both channels for now.
-        if (voice.left_phase >= 2*kPi) {
-            voice.left_phase -= 2*kPi;
-        }
-
-        float phaseChange = 2*kPi*modulatedF / sampleRate;
+        float const modulatedF = voice.oscillators[0].f * powf(2.0f, pitchLFOValue);
 
         float v = 0.0f;
-        {
-            // v = GenerateSquare(voice.left_phase, phaseChange);
-            v = GenerateSaw(voice.left_phase, phaseChange);
-            voice.left_phase += phaseChange;
+        for (int oscIx = 0; oscIx < voice.oscillators.size(); ++oscIx) {
+            Oscillator& osc = voice.oscillators[oscIx];
+
+            if (osc.phase >= 2*kPi) {
+                osc.phase -= 2*kPi;
+            }
+
+            float oscF = modulatedF;
+            if (oscIx > 0) {
+                oscF = modulatedF * powf(2.f, patch.detune);
+            }
+
+            float phaseChange = 2 * kPi * oscF / sampleRate;
+            float oscGain;
+            if (oscIx == 0) {
+                oscGain = 1.f - patch.oscFader;
+            } else {
+                oscGain = patch.oscFader;
+            }
+
+            float oscV = 0.f;
+            Waveform waveform = (oscIx == 0) ? patch.osc1Waveform : patch.osc2Waveform;
+            switch (waveform) {
+                case Waveform::Saw: {
+                    oscV = GenerateSaw(osc.phase, phaseChange);
+                    break;
+                }
+                case Waveform::Square: {
+                    oscV = GenerateSquare(osc.phase, phaseChange);
+                    break;
+                }
+            }
+
+            float oscWithGain = oscV * oscGain;
+            v += oscWithGain;
+            osc.phase += phaseChange;
         }
 
         // Cutoff envelope
         adsrEnvelope(cutoffEnvSpec, voice.cutoffEnvState);
-        modulatedCutoff += cutoffEnvGain * voice.cutoffEnvState.currentValue;
+        modulatedCutoff += patch.cutoffEnvGain * voice.cutoffEnvState.currentValue;
 
         // ladder filter
         float const rc = 1 / modulatedCutoff;
         float const a = dt / (rc + dt);
-        v -= cutoffK*voice.lp3;
+        v -= patch.cutoffK * voice.lp3;
 
         voice.lp0 = a*v + (1-a)*voice.lp0;
         voice.lp1 = a*(voice.lp0) + (1-a)*voice.lp1;
@@ -311,7 +307,7 @@ namespace synth {
                     case audio::EventType::NoteOn: {
                         Voice* v = FindVoiceForNoteOn(*state, e.midiNote);
                         if (v != nullptr) {
-                            v->f = synth::MidiToFreq(e.midiNote);
+                            v->oscillators[0].f = synth::MidiToFreq(e.midiNote);
                             v->currentMidiNote = e.midiNote;
                             v->ampEnvState.phase = synth::ADSRPhase::Attack;
                             v->ampEnvState.ticksSincePhaseStart = 0;
@@ -430,7 +426,7 @@ namespace synth {
             float v = 0.0f;
             for (Voice& voice : state->voices) {
                 v += ProcessVoice(
-                    voice, sampleRate, pitchLFOValue, modulatedCutoff, patch.cutoffK, ampEnvSpec, cutoffEnvSpec, patch.cutoffEnvGain);
+                    voice, sampleRate, pitchLFOValue, modulatedCutoff, patch.cutoffK, ampEnvSpec, cutoffEnvSpec, patch.cutoffEnvGain, patch);
             }
 
             // Apply final gain. Map from linear [0,1] to exponential from -80db to 0db.

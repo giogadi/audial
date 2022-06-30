@@ -424,7 +424,7 @@
         </components>
     </entity>
     <entity>
-        <entity_active>false</entity_active>
+        <entity_active>true</entity_active>
         <name>r0_sustain</name>
         <components>
             <component>
@@ -498,17 +498,17 @@
                 <beat_events>
                     <beat_event>
                         <event_type>NoteOn</event_type>
-                        <channel>0</channel>
+                        <channel>2</channel>
                         <tick_time>0</tick_time>
-                        <midi_note>31</midi_note>
+                        <midi_note>79</midi_note>
                         <velocity>1</velocity>
                         <beat_time>0</beat_time>
                     </beat_event>
                     <beat_event>
                         <event_type>NoteOn</event_type>
-                        <channel>43</channel>
+                        <channel>81</channel>
                         <tick_time>0</tick_time>
-                        <midi_note>0</midi_note>
+                        <midi_note>2</midi_note>
                         <velocity>1</velocity>
                         <beat_time>0</beat_time>
                     </beat_event>
