@@ -13,6 +13,14 @@ std::unordered_map<std::string, SynthParamType> const gStringToSynthParamType = 
     
     { "Gain", SynthParamType::Gain },
     
+    { "Osc1Waveform", SynthParamType::Osc1Waveform },
+    
+    { "Osc2Waveform", SynthParamType::Osc2Waveform },
+    
+    { "Detune", SynthParamType::Detune },
+    
+    { "OscFader", SynthParamType::OscFader },
+    
     { "Cutoff", SynthParamType::Cutoff },
     
     { "Peak", SynthParamType::Peak },
@@ -50,6 +58,14 @@ std::unordered_map<std::string, SynthParamType> const gStringToSynthParamType = 
 char const* gSynthParamTypeStrings[] = {
 	
     "Gain",
+    
+    "Osc1Waveform",
+    
+    "Osc2Waveform",
+    
+    "Detune",
+    
+    "OscFader",
     
     "Cutoff",
     

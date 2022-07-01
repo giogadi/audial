@@ -93,6 +93,16 @@ void RequestSynthParamChange(int synthIx, audio::SynthParamType const& param, do
     audioContext.AddEvent(e);
 }
 
+void RequestSynthParamChangeInt(int synthIx, audio::SynthParamType const& param, int value, audio::Context& audioContext) {
+    audio::Event e;
+    e.channel = synthIx;
+    e.timeInTicks = 0;
+    e.type = audio::EventType::SynthParam;
+    e.param = param;
+    e.newParamValueInt = value;
+    audioContext.AddEvent(e);
+}
+
 struct SynthGuiState {
     std::vector<synth::Patch> _synthPatches;
     std::string _saveFilename;
@@ -154,6 +164,35 @@ void DrawSynthGuiAndUpdatePatch(SynthGuiState& synthGuiState, audio::Context& au
             RequestSynthParamChange(synthGuiState._currentSynthIx, audio::SynthParamType::Gain, patch.gainFactor, audioContext);
         }
 
+        int const numWaveforms = static_cast<int>(synth::Waveform::Count);
+        {
+            int currentWaveIx = static_cast<int>(patch.osc1Waveform);
+            changed = ImGui::Combo("Osc1 Wave", &currentWaveIx, synth::gWaveformStrings, numWaveforms);
+            patch.osc1Waveform = static_cast<synth::Waveform>(currentWaveIx);
+            if (changed) {
+                RequestSynthParamChangeInt(synthGuiState._currentSynthIx, audio::SynthParamType::Osc1Waveform, currentWaveIx, audioContext);
+            }
+        }
+
+        {
+            int currentWaveIx = static_cast<int>(patch.osc2Waveform);
+            changed = ImGui::Combo("Osc2 Wave", &currentWaveIx, synth::gWaveformStrings, numWaveforms);
+            patch.osc2Waveform = static_cast<synth::Waveform>(currentWaveIx);
+            if (changed) {
+                RequestSynthParamChangeInt(synthGuiState._currentSynthIx, audio::SynthParamType::Osc2Waveform, currentWaveIx, audioContext);
+            }
+        }
+
+        changed = ImGui::SliderFloat("Detune", &patch.detune, 0.f, 1.f);
+        if (changed) {
+            RequestSynthParamChange(synthGuiState._currentSynthIx, audio::SynthParamType::Detune, patch.detune, audioContext);
+        }
+
+        changed = ImGui::SliderFloat("OscFader", &patch.oscFader, 0.f, 1.f);
+        if (changed) {
+            RequestSynthParamChange(synthGuiState._currentSynthIx, audio::SynthParamType::OscFader, patch.oscFader, audioContext);
+        }
+
         changed = ImGui::SliderFloat("LPF Cutoff", &patch.cutoffFreq, 0.f, 44100.f);
         if (changed) {
             RequestSynthParamChange(synthGuiState._currentSynthIx, audio::SynthParamType::Cutoff, patch.cutoffFreq, audioContext);
@@ -172,6 +211,16 @@ void DrawSynthGuiAndUpdatePatch(SynthGuiState& synthGuiState, audio::Context& au
         changed = ImGui::SliderFloat("PitchLFOFreq", &patch.pitchLFOFreq, 0.f, 100.f);
         if (changed) {
             RequestSynthParamChange(synthGuiState._currentSynthIx, audio::SynthParamType::PitchLFOFreq, patch.pitchLFOFreq, audioContext);
+        }
+
+        changed = ImGui::SliderFloat("CutoffLFOGain", &patch.cutoffLFOGain, 0.f, 1.f);
+        if (changed) {
+            RequestSynthParamChange(synthGuiState._currentSynthIx, audio::SynthParamType::CutoffLFOGain, patch.cutoffLFOGain, audioContext);
+        }
+
+        changed = ImGui::SliderFloat("CutoffLFOFreq", &patch.cutoffLFOFreq, 0.f, 100.f);
+        if (changed) {
+            RequestSynthParamChange(synthGuiState._currentSynthIx, audio::SynthParamType::CutoffLFOFreq, patch.cutoffLFOFreq, audioContext);
         }
 
         changed = ImGui::SliderFloat("AmpEnvAtk", &patch.ampEnvSpec.attackTime, 0.f, 1.f);

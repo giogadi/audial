@@ -194,6 +194,10 @@ namespace synth {
                     oscV = GenerateSquare(osc.phase, phaseChange);
                     break;
                 }
+                case Waveform::Count: {
+                    std::cout << "Invalid waveform" << std::endl;
+                    assert(false);
+                }
             }
 
             float oscWithGain = oscV * oscGain;
@@ -343,6 +347,18 @@ namespace synth {
                         switch (e.param) {
                             case audio::SynthParamType::Gain:
                                 patch.gainFactor = e.newParamValue;
+                                break;
+                            case audio::SynthParamType::Osc1Waveform:
+                                patch.osc1Waveform = static_cast<synth::Waveform>(e.newParamValueInt);
+                                break;
+                            case audio::SynthParamType::Osc2Waveform:
+                                patch.osc2Waveform = static_cast<synth::Waveform>(e.newParamValueInt);
+                                break;
+                            case audio::SynthParamType::Detune:
+                                patch.detune = e.newParamValue;
+                                break;
+                            case audio::SynthParamType::OscFader:
+                                patch.oscFader = e.newParamValue;
                                 break;
                             case audio::SynthParamType::Cutoff:
                                 patch.cutoffFreq = e.newParamValue;

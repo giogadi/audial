@@ -3,6 +3,10 @@
     "enumName": "SynthParamType",
     "enumItems": [
         "Gain",
+        "Osc1Waveform",
+        "Osc2Waveform",
+        "Detune",
+        "OscFader",
         "Cutoff",
         "Peak",
         "PitchLFOGain",

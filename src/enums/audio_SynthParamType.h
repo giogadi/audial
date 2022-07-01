@@ -8,6 +8,14 @@ enum class SynthParamType : int {
     
     Gain,
     
+    Osc1Waveform,
+    
+    Osc2Waveform,
+    
+    Detune,
+    
+    OscFader,
+    
     Cutoff,
     
     Peak,

@@ -4,8 +4,8 @@
         <version>1</version>
         <name>bass</name>
         <gain_factor>0.83099997</gain_factor>
-        <osc1_waveform>1</osc1_waveform>
-        <osc2_waveform>1</osc2_waveform>
+        <osc1_waveform>Saw</osc1_waveform>
+        <osc2_waveform>Saw</osc2_waveform>
         <detune>0</detune>
         <osc_fader>0.5</osc_fader>
         <cutoff_freq>3071.64209</cutoff_freq>
@@ -34,8 +34,8 @@
         <version>1</version>
         <name>pad</name>
         <gain_factor>0.412999988</gain_factor>
-        <osc1_waveform>1</osc1_waveform>
-        <osc2_waveform>1</osc2_waveform>
+        <osc1_waveform>Saw</osc1_waveform>
+        <osc2_waveform>Saw</osc2_waveform>
         <detune>0</detune>
         <osc_fader>0.5</osc_fader>
         <cutoff_freq>6801.49219</cutoff_freq>
@@ -63,22 +63,22 @@
     <patch>
         <version>1</version>
         <name>string</name>
-        <gain_factor>0.412999988</gain_factor>
-        <osc1_waveform>0</osc1_waveform>
-        <osc2_waveform>0</osc2_waveform>
-        <detune>0.01</detune>
-        <osc_fader>0.5</osc_fader>
-        <cutoff_freq>36859.7031</cutoff_freq>
-        <cutoff_k>0</cutoff_k>
-        <pitch_lfo_gain>0</pitch_lfo_gain>
-        <pitch_lfo_freq>1</pitch_lfo_freq>
-        <cutoff_lfo_gain>0</cutoff_lfo_gain>
-        <cutoff_lfo_freq>10</cutoff_lfo_freq>
+        <gain_factor>0.407999992</gain_factor>
+        <osc1_waveform>Saw</osc1_waveform>
+        <osc2_waveform>Square</osc2_waveform>
+        <detune>0.00999999978</detune>
+        <osc_fader>0.377999991</osc_fader>
+        <cutoff_freq>23914.9238</cutoff_freq>
+        <cutoff_k>0.397000015</cutoff_k>
+        <pitch_lfo_gain>0.00999999978</pitch_lfo_gain>
+        <pitch_lfo_freq>7.46299982</pitch_lfo_freq>
+        <cutoff_lfo_gain>0.328000009</cutoff_lfo_gain>
+        <cutoff_lfo_freq>4.47800016</cutoff_lfo_freq>
         <amp_env_spec>
-            <attack_time>0.00999999978</attack_time>
+            <attack_time>0.48300001</attack_time>
             <decay_time>0.100000001</decay_time>
-            <sustain_level>0.5</sustain_level>
-            <release_time>0.5</release_time>
+            <sustain_level>1</sustain_level>
+            <release_time>0.939999998</release_time>
             <min_value>0.00999999978</min_value>
         </amp_env_spec>
         <cutoff_env_gain>0</cutoff_env_gain>

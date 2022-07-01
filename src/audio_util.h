@@ -33,6 +33,7 @@ struct Event {
             // valid under SynthParam type
             SynthParamType param;
             double newParamValue;
+            int newParamValueInt;
         };
     };
 

@@ -9,6 +9,7 @@
 
 #include "audio_util.h"
 #include "serial.h"
+#include "enums/synth_Waveform.h"
 
 using boost::property_tree::ptree;
 
@@ -58,10 +59,6 @@ namespace synth {
         }
     };
 
-    enum class Waveform {
-        Saw, Square
-    };
-
     struct Patch {
         std::string name;
         // This is interpreted linearly from [0,1]. This will get mapped later to [-80db,0db].
@@ -81,6 +78,7 @@ namespace synth {
         float pitchLFOGain = 0.0f;
         float pitchLFOFreq = 0.0f;
 
+        // gain of 1.0 coincides with cutoff frequency doubling at LFO peak and halving at LFO valley.
         float cutoffLFOGain = 0.0f;
         float cutoffLFOFreq = 0.0f;
 
@@ -93,8 +91,8 @@ namespace synth {
             pt.put("version", kVersion);
             pt.put("name", name);
             pt.put("gain_factor", gainFactor);
-            pt.put("osc1_waveform", static_cast<int>(osc1Waveform));
-            pt.put("osc2_waveform", static_cast<int>(osc2Waveform));
+            pt.put("osc1_waveform", WaveformToString(osc1Waveform));
+            pt.put("osc2_waveform", WaveformToString(osc2Waveform));
             pt.put("detune", detune);
             pt.put("osc_fader", oscFader);
             pt.put("cutoff_freq", cutoffFreq);
@@ -113,8 +111,8 @@ namespace synth {
             name = pt.get<std::string>("name");
             gainFactor = pt.get<float>("gain_factor");
             if (version >= 1) {
-                osc1Waveform = static_cast<Waveform>(pt.get<int>("osc1_waveform"));
-                osc2Waveform = static_cast<Waveform>(pt.get<int>("osc2_waveform"));
+                osc1Waveform = StringToWaveform(pt.get<std::string>("osc1_waveform").c_str());
+                osc2Waveform = StringToWaveform(pt.get<std::string>("osc2_waveform").c_str());
                 detune = pt.get<float>("detune");
                 oscFader = pt.get<float>("osc_fader");
             }
