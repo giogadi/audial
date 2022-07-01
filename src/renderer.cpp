@@ -10,6 +10,9 @@
 #include "constants.h"
 #include "resource_manager.h"
 #include "serial.h"
+#include "entity.h"
+#include "game_manager.h"
+#include "components/transform.h"
 
 bool ModelComponent::ConnectComponents(EntityId id, Entity& e, GameManager& g) {
     _transform = e.FindComponentOfType<TransformComponent>();

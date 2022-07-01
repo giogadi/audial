@@ -497,7 +497,7 @@ int main(int argc, char** argv) {
     if (cmdLineInputs._scriptFilename.has_value()) {
         std::cout << "loading " << cmdLineInputs._scriptFilename.value() << std::endl;
         bool dieOnConnectFail = !cmdLineInputs._editMode;
-        if (!LoadEntities(cmdLineInputs._scriptFilename->c_str(), dieOnConnectFail, entityManager, gameManager)) {
+        if (!entityManager.LoadAndConnect(cmdLineInputs._scriptFilename->c_str(), dieOnConnectFail, gameManager)) {
             std::cout << "Load failed. Exiting" << std::endl;
             return 1;
         }

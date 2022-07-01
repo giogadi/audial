@@ -2,6 +2,10 @@
 
 #include "imgui/imgui.h"
 
+#include "components/transform.h"
+#include "entity_manager.h"
+#include "game_manager.h"
+
 bool CameraControllerComponent::ConnectComponents(EntityId id, Entity& e, GameManager& g) {
     _transform = e.FindComponentOfType<TransformComponent>();
     if (_transform.expired()) {

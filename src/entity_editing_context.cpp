@@ -2,11 +2,15 @@
 
 #include "imgui/imgui.h"
 
-#include "component.h"
+#include "serial.h"
+#include "matrix.h"
+#include "entity_manager.h"
+#include "game_manager.h"
 #include "input_manager.h"
 #include "entity_picking.h"
 #include "renderer.h"
 #include "constants.h"
+#include "components/transform.h"
 
 void EntityEditingContext::Update(
     float dt, bool editMode, GameManager const& g, int windowWidth, int windowHeight) {
@@ -130,7 +134,7 @@ void EntityEditingContext::DrawEntitiesWindow(EntityManager& entities, GameManag
         _saveFilename = filenameBuffer;
 
         if (ImGui::Button("Save")) {
-            if (SaveEntities(_saveFilename.c_str(), entities)) {
+            if (entities.Save(_saveFilename.c_str())) {
                 std::cout << "Saved entities to \"" << _saveFilename << "\"." << std::endl;
             }
         }
@@ -234,12 +238,13 @@ void EntityEditingContext::DrawEntitiesWindow(EntityManager& entities, GameManag
         }
 
         if (ImGui::Button("Save Prefab##")) {
-            SaveEntity(_prefabFilename.c_str(), *entities.GetEntity(_selectedEntityId));
+            Entity const& entity = *entities.GetEntity(_selectedEntityId);
+            entity.Save(_prefabFilename.c_str());
         }
         if (ImGui::Button("Load Prefab##")) {
             Entity& e = *entities.GetEntity(_selectedEntityId);
             e.ResetWithoutComponentDestroy();
-            LoadEntity(_prefabFilename.c_str(), e);
+            e.Load(_prefabFilename.c_str());
             if (entities.IsActive(_selectedEntityId)) {
                 e.ConnectComponentsOrDeactivate(_selectedEntityId, g, /*failures=*/nullptr);
             }

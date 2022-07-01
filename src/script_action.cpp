@@ -5,6 +5,8 @@
 #include "audio_event_imgui.h"
 #include "serial.h"
 #include "audio.h"
+#include "game_manager.h"
+#include "entity_manager.h"
 
 std::unique_ptr<ScriptAction> MakeScriptActionOfType(ScriptActionType actionType) {
     switch (actionType) {
@@ -78,7 +80,22 @@ void ScriptAction::LoadActions(ptree const& pt, std::vector<std::unique_ptr<Scri
     }
 }
 
- void ScriptActionActivateEntity::DrawImGui() {
+void ScriptActionDestroyAllPlanets::Execute(GameManager& g) const {
+    g._entityManager->ForEveryActiveEntity([&g](EntityId id) {
+        Entity* entity = g._entityManager->GetEntity(id);
+        bool hasPlanet = !entity->FindComponentOfType<OrbitableComponent>().expired();
+        if (hasPlanet) {
+            g._entityManager->TagEntityForDestroy(id);
+        }
+    });
+}
+
+void ScriptActionActivateEntity::Execute(GameManager& g) const {
+    EntityId id = g._entityManager->FindInactiveEntityByName(_entityName.c_str());
+    g._entityManager->ActivateEntity(id, g);
+}
+
+void ScriptActionActivateEntity::DrawImGui() {
     char name[128];
     strcpy(name, _entityName.c_str());
     if (ImGui::InputText("Name##", name, 128)) {

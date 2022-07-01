@@ -2,11 +2,14 @@
 
 #include <vector>
 
+#include "imgui/imgui.h"
+
 #include "component.h"
 #include "beat_clock.h"
 #include "beat_time_event.h"
 #include "audio_event_imgui.h"
 #include "audio.h"
+#include "game_manager.h"
 
 class SequencerComponent : public Component {
 public:

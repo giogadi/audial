@@ -2,7 +2,8 @@
 
 #include <optional>
 
-#include "component.h"
+#include "components/transform.h"
+#include "entity_manager.h"
 
 namespace {
 
@@ -23,7 +24,7 @@ std::optional<float> sphereRayCast(Vec3 const& rayStart, Vec3 const& normalizedR
     float rootDisc = sqrt(discriminant);
     float t1 = (-b + rootDisc) / (2*a);
     float t2 = (-b - rootDisc) / (2*a);
-    
+
     // Return the t >= 0 that is lower in magnitude. If t2 is >= 0 it's guaranteed to be the closer hit.
     if (t2 >= 0) {
         return t2;

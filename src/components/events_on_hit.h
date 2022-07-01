@@ -10,6 +10,7 @@ namespace audio {
     class Context;
 }
 class RigidBodyComponent;
+class TransformComponent;
 
 class EventsOnHitComponent : public Component {
 public:

@@ -4,11 +4,13 @@
 #include <string>
 
 #include "component.h"
+#include "matrix.h"
 
 class SceneManager;
 class BoundMesh;
 class InputManager;
 class GameManager;
+class TransformComponent;
 
 class ModelComponent : public Component {
 public:

@@ -3,6 +3,8 @@
 #include "imgui/imgui.h"
 
 #include "beat_clock.h"
+#include "game_manager.h"
+#include "entity_manager.h"
 
 bool ActivatorComponent::ConnectComponents(EntityId id, Entity& e, GameManager& g) {
     _gameManager = &g;

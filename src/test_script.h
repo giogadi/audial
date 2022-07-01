@@ -1,5 +1,8 @@
 #pragma once
 
+#include "entity_manager.h"
+#include "components/transform.h"
+
 void LoadTestScript(GameManager& g) {
     // Camera
     Entity* camera = g._entityManager->GetEntity(g._entityManager->AddEntity());

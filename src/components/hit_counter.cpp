@@ -5,6 +5,8 @@
 #include "imgui/imgui.h"
 
 #include "rigid_body.h"
+#include "components/transform.h"
+#include "entity.h"
 
 bool HitCounterComponent::ConnectComponents(EntityId id, Entity& e, GameManager& g) {
     _t = e.FindComponentOfType<TransformComponent>();
@@ -15,7 +17,7 @@ bool HitCounterComponent::ConnectComponents(EntityId id, Entity& e, GameManager&
     if (_rb.expired()) {
         return false;
     }
-    auto pThisComp = e.FindComponentOfType<HitCounterComponent>();    
+    auto pThisComp = e.FindComponentOfType<HitCounterComponent>();
     _rb.lock()->AddOnHitCallback(std::bind(&HitCounterComponent::OnHit, pThisComp, std::placeholders::_1));
     return true;
 }

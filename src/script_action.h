@@ -22,27 +22,13 @@ public:
 class ScriptActionDestroyAllPlanets : public ScriptAction {
 public:
     virtual ScriptActionType Type() const override { return ScriptActionType::DestroyAllPlanets; }
-    virtual void Execute(GameManager& g) const override {
-        g._entityManager->ForEveryActiveEntity([&g](EntityId id) {
-            Entity* entity = g._entityManager->GetEntity(id);
-            bool hasPlanet = !entity->FindComponentOfType<OrbitableComponent>().expired();
-            if (hasPlanet) {
-                g._entityManager->TagEntityForDestroy(id);
-            }
-        });
-    }
-
-    template<typename Archive>
-    void serialize(Archive& ar) {}
+    virtual void Execute(GameManager& g) const override;
 };
 
 class ScriptActionActivateEntity : public ScriptAction {
 public:
     virtual ScriptActionType Type() const override { return ScriptActionType::ActivateEntity; }
-    virtual void Execute(GameManager& g) const override {
-        EntityId id = g._entityManager->FindInactiveEntityByName(_entityName.c_str());
-        g._entityManager->ActivateEntity(id, g);
-    }
+    virtual void Execute(GameManager& g) const override;
 
     virtual void DrawImGui() override;
 

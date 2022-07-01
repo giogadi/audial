@@ -6,6 +6,9 @@
 #include "input_manager.h"
 #include "components/orbitable.h"
 #include "constants.h"
+#include "components/transform.h"
+#include "entity_manager.h"
+#include "game_manager.h"
 
 namespace {
     float constexpr kIdleSpeed = 10.f;

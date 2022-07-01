@@ -1,6 +1,7 @@
 #pragma once
 
 #include <array>
+#include <iostream>
 
 #include "component.h"
 
@@ -9,6 +10,7 @@ namespace audio {
     class Context;
 }
 class RigidBodyComponent;
+class TransformComponent;
 
 class BeepOnHitComponent : public Component {
 public:

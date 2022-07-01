@@ -8,6 +8,7 @@
 class RigidBodyComponent;
 class InputManager;
 class OrbitableComponent;
+class TransformComponent;
 
 class PlayerOrbitControllerComponent : public Component {
 public:

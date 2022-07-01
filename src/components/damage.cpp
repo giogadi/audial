@@ -3,6 +3,8 @@
 #include "imgui/imgui.h"
 
 #include "rigid_body.h"
+#include "entity_manager.h"
+#include "game_manager.h"
 
 bool DamageComponent::ConnectComponents(EntityId id, Entity& e, GameManager& g) {
     _rb = e.FindComponentOfType<RigidBodyComponent>();

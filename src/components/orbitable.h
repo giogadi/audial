@@ -4,6 +4,7 @@
 
 class RigidBodyComponent;
 class ScriptAction;
+class TransformComponent;
 
 class OrbitableComponent : public Component {
 public:

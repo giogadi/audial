@@ -7,6 +7,7 @@
 
 class RigidBodyComponent;
 class InputManager;
+class TransformComponent;
 
 class PlayerControllerComponent : public Component {
 public:
@@ -14,7 +15,7 @@ public:
     PlayerControllerComponent()
         : _attackDir(0.f,0.f,0.f) {}
     virtual bool ConnectComponents(EntityId id, Entity& e, GameManager& g) override;
-        
+
     virtual ~PlayerControllerComponent() {}
 
     virtual void Update(float dt) override;
@@ -35,7 +36,7 @@ public:
 
     static inline float const kIdleSpeed = 5.f;
     static inline float const kAttackSpeed = 40.f;
-    
+
     std::weak_ptr<TransformComponent> _transform;
     std::weak_ptr<RigidBodyComponent> _rb;
     InputManager const* _input = nullptr;

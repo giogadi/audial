@@ -1,9 +1,13 @@
 #include "orbitable.h"
 
+#include <iostream>
+
 #include "imgui/imgui.h"
 
 #include "rigid_body.h"
 #include "script_action.h"
+#include "entity.h"
+#include "components/transform.h"
 
 bool OrbitableComponent::ConnectComponents(EntityId id, Entity& e, GameManager& g) {
     _t = e.FindComponentOfType<TransformComponent>();

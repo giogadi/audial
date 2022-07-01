@@ -7,6 +7,9 @@
 #include "beat_clock.h"
 #include "audio.h"
 #include "rigid_body.h"
+#include "components/transform.h"
+#include "entity.h"
+#include "game_manager.h"
 
 bool BeepOnHitComponent::ConnectComponents(EntityId id, Entity& e, GameManager& g) {
     _t = e.FindComponentOfType<TransformComponent>();
@@ -19,7 +22,7 @@ bool BeepOnHitComponent::ConnectComponents(EntityId id, Entity& e, GameManager& 
     }
     _audio = g._audioContext;
     _beatClock = g._beatClock;
-    auto pThisComp = e.FindComponentOfType<BeepOnHitComponent>();  
+    auto pThisComp = e.FindComponentOfType<BeepOnHitComponent>();
     RigidBodyComponent& rb = *_rb.lock();
     rb.AddOnHitCallback(std::bind(&BeepOnHitComponent::OnHit, pThisComp, std::placeholders::_1));
     rb._layer = CollisionLayer::None;
@@ -68,7 +71,7 @@ void BeepOnHitComponent::Update(float dt) {
 bool BeepOnHitComponent::DrawImGui() {
     ImGui::InputScalar("Channel", ImGuiDataType_S32, &_synthChannel, /*step=*/nullptr, /*???*/NULL, "%d");
     char label[] = "Note XXX";
-    for (int i = 0; i < _midiNotes.size(); ++i) {        
+    for (int i = 0; i < _midiNotes.size(); ++i) {
         sprintf(label, "Note %d", i);
         ImGui::InputScalar(
             label, ImGuiDataType_S32, &(_midiNotes[i]), /*step=*/nullptr, /*???*/NULL, "%d");

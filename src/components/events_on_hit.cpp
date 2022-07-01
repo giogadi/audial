@@ -8,6 +8,9 @@
 #include "audio.h"
 #include "rigid_body.h"
 #include "audio_event_imgui.h"
+#include "components/transform.h"
+#include "entity.h"
+#include "game_manager.h"
 
 bool EventsOnHitComponent::ConnectComponents(EntityId id, Entity& e, GameManager& g) {
     _t = e.FindComponentOfType<TransformComponent>();

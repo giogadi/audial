@@ -3,6 +3,7 @@
 #include "component.h"
 
 class RigidBodyComponent;
+class TransformComponent;
 
 class HitCounterComponent : public Component {
 public:

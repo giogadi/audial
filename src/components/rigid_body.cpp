@@ -3,6 +3,9 @@
 #include "imgui/imgui.h"
 
 #include "collisions.h"
+#include "transform.h"
+#include "entity.h"
+#include "game_manager.h"
 
 bool RigidBodyComponent::ConnectComponents(EntityId id, Entity& e, GameManager& g) {
     _transform = e.FindComponentOfType<TransformComponent>();

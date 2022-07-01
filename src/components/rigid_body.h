@@ -5,8 +5,10 @@
 #include "component.h"
 #include "enums/CollisionLayer.h"
 #include "serial.h"
+#include "matrix.h"
 
 class CollisionManager;
+class TransformComponent;
 
 struct Aabb {
     Vec3 _min;

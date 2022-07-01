@@ -4,6 +4,9 @@
 
 #include "components/rigid_body.h"
 #include "input_manager.h"
+#include "components/transform.h"
+#include "entity.h"
+#include "game_manager.h"
 
 bool PlayerControllerComponent::ConnectComponents(EntityId id, Entity& e, GameManager& g) {
     bool success = true;
@@ -19,7 +22,7 @@ bool PlayerControllerComponent::ConnectComponents(EntityId id, Entity& e, GameMa
             e.FindComponentOfType<PlayerControllerComponent>();
         _rb.lock()->AddOnHitCallback(
             std::bind(&PlayerControllerComponent::OnHit, pComp, std::placeholders::_1));
-    }    
+    }
     _input = g._inputManager;
     return success;
 }
@@ -74,7 +77,7 @@ bool PlayerControllerComponent::UpdateIdleState(float dt, bool newState) {
     }
 
     rb._velocity = inputVec.GetNormalized() * kIdleSpeed;
-    
+
     return false;
 }
 
@@ -93,7 +96,7 @@ bool PlayerControllerComponent::UpdateAttackState(float dt, bool newState) {
         Vec3 decel = -_attackDir * decelAmount;
         Vec3 newVel = rb._velocity + dt * decel;
         if (Vec3::Dot(newVel, _attackDir) <= 0.5*kIdleSpeed) {
-            _state = State::Idle;            
+            _state = State::Idle;
             return true;
         } else {
             rb._velocity = newVel;

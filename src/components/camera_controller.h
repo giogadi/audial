@@ -2,6 +2,10 @@
 
 #include "component.h"
 
+#include "matrix.h"
+
+class TransformComponent;
+
 class CameraControllerComponent : public Component {
 public:
     virtual ComponentType Type() const override { return ComponentType::CameraController; }
