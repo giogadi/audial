@@ -19,9 +19,9 @@
                     <m12>0.707106769</m12>
                     <m22>0.707106769</m22>
                     <m32>0</m32>
-                    <m03>0</m03>
+                    <m03>-0.136396408</m03>
                     <m13>10.6066017</m13>
-                    <m23>10.6066017</m23>
+                    <m23>9.57019997</m23>
                     <m33>1</m33>
                 </mat4>
             </component>
@@ -313,15 +313,19 @@
                 <script_actions>
                     <script_action>
                         <script_action_type>ActivateEntity</script_action_type>
-                        <entity_name>r0_bass_g</entity_name>
+                        <entity_name>r0_sustain_g</entity_name>
                     </script_action>
                     <script_action>
                         <script_action_type>ActivateEntity</script_action_type>
-                        <entity_name>kick_seq</entity_name>
+                        <entity_name>r0_sustain_d</entity_name>
                     </script_action>
                     <script_action>
                         <script_action_type>ActivateEntity</script_action_type>
-                        <entity_name>r0_sustain</entity_name>
+                        <entity_name>r0_sustain_c</entity_name>
+                    </script_action>
+                    <script_action>
+                        <script_action_type>ActivateEntity</script_action_type>
+                        <entity_name>r0_sustain_g0</entity_name>
                     </script_action>
                 </script_actions>
             </component>
@@ -424,8 +428,8 @@
         </components>
     </entity>
     <entity>
-        <entity_active>true</entity_active>
-        <name>r0_sustain</name>
+        <entity_active>false</entity_active>
+        <name>r0_sustain_g</name>
         <components>
             <component>
                 <component_type>Transform</component_type>
@@ -442,9 +446,102 @@
                     <m12>0</m12>
                     <m22>1</m22>
                     <m32>0</m32>
-                    <m03>0.0328423269</m03>
+                    <m03>-4.89350176</m03>
                     <m13>0</m13>
-                    <m23>5.46752787</m23>
+                    <m23>0.262506247</m23>
+                    <m33>1</m33>
+                </mat4>
+            </component>
+            <component>
+                <component_type>Model</component_type>
+                <model_id>wood_box</model_id>
+                <color>
+                    <x>0.985294104</x>
+                    <y>0.960576534</y>
+                    <z>0.144896209</z>
+                    <w>1</w>
+                </color>
+            </component>
+            <component>
+                <component_type>RigidBody</component_type>
+                <static>true</static>
+                <layer>None</layer>
+                <aabb>
+                    <min>
+                        <x>-0.5</x>
+                        <y>-0.5</y>
+                        <z>-0.5</z>
+                    </min>
+                    <max>
+                        <x>0.5</x>
+                        <y>0.5</y>
+                        <z>0.5</z>
+                    </max>
+                </aabb>
+            </component>
+            <component>
+                <component_type>Orbitable</component_type>
+                <on_leave_actions>
+                    <script_action>
+                        <script_action_type>AudioEvent</script_action_type>
+                        <denom>0.25</denom>
+                        <beat_event>
+                            <event_type>AllNotesOff</event_type>
+                            <channel>2</channel>
+                            <tick_time>0</tick_time>
+                            <midi_note>0</midi_note>
+                            <velocity>1</velocity>
+                            <beat_time>0</beat_time>
+                        </beat_event>
+                    </script_action>
+                </on_leave_actions>
+            </component>
+            <component>
+                <component_type>EventsOnHit</component_type>
+                <denom>0.25</denom>
+                <beat_events>
+                    <beat_event>
+                        <event_type>NoteOn</event_type>
+                        <channel>2</channel>
+                        <tick_time>0</tick_time>
+                        <midi_note>79</midi_note>
+                        <velocity>1</velocity>
+                        <beat_time>0</beat_time>
+                    </beat_event>
+                    <beat_event>
+                        <event_type>NoteOn</event_type>
+                        <channel>2</channel>
+                        <tick_time>0</tick_time>
+                        <midi_note>91</midi_note>
+                        <velocity>1</velocity>
+                        <beat_time>0</beat_time>
+                    </beat_event>
+                </beat_events>
+            </component>
+        </components>
+    </entity>
+    <entity>
+        <entity_active>false</entity_active>
+        <name>r0_sustain_d</name>
+        <components>
+            <component>
+                <component_type>Transform</component_type>
+                <mat4>
+                    <m00>1</m00>
+                    <m10>0</m10>
+                    <m20>0</m20>
+                    <m30>0</m30>
+                    <m01>0</m01>
+                    <m11>1</m11>
+                    <m21>0</m21>
+                    <m31>0</m31>
+                    <m02>0</m02>
+                    <m12>0</m12>
+                    <m22>1</m22>
+                    <m32>0</m32>
+                    <m03>-8.43199825</m03>
+                    <m13>0</m13>
+                    <m23>-6.21507645</m23>
                     <m33>1</m33>
                 </mat4>
             </component>
@@ -483,7 +580,7 @@
                         <denom>0.25</denom>
                         <beat_event>
                             <event_type>AllNotesOff</event_type>
-                            <channel>0</channel>
+                            <channel>2</channel>
                             <tick_time>0</tick_time>
                             <midi_note>0</midi_note>
                             <velocity>1</velocity>
@@ -500,15 +597,201 @@
                         <event_type>NoteOn</event_type>
                         <channel>2</channel>
                         <tick_time>0</tick_time>
-                        <midi_note>79</midi_note>
+                        <midi_note>74</midi_note>
                         <velocity>1</velocity>
                         <beat_time>0</beat_time>
                     </beat_event>
                     <beat_event>
                         <event_type>NoteOn</event_type>
-                        <channel>81</channel>
+                        <channel>2</channel>
                         <tick_time>0</tick_time>
-                        <midi_note>2</midi_note>
+                        <midi_note>86</midi_note>
+                        <velocity>1</velocity>
+                        <beat_time>0</beat_time>
+                    </beat_event>
+                </beat_events>
+            </component>
+        </components>
+    </entity>
+    <entity>
+        <entity_active>false</entity_active>
+        <name>r0_sustain_c</name>
+        <components>
+            <component>
+                <component_type>Transform</component_type>
+                <mat4>
+                    <m00>1</m00>
+                    <m10>0</m10>
+                    <m20>0</m20>
+                    <m30>0</m30>
+                    <m01>0</m01>
+                    <m11>1</m11>
+                    <m21>0</m21>
+                    <m31>0</m31>
+                    <m02>0</m02>
+                    <m12>0</m12>
+                    <m22>1</m22>
+                    <m32>0</m32>
+                    <m03>-6.9985342</m03>
+                    <m13>0</m13>
+                    <m23>-13.10567</m23>
+                    <m33>1</m33>
+                </mat4>
+            </component>
+            <component>
+                <component_type>Model</component_type>
+                <model_id>wood_box</model_id>
+                <color>
+                    <x>0.985294104</x>
+                    <y>0.540377557</y>
+                    <z>0.144896209</z>
+                    <w>1</w>
+                </color>
+            </component>
+            <component>
+                <component_type>RigidBody</component_type>
+                <static>true</static>
+                <layer>None</layer>
+                <aabb>
+                    <min>
+                        <x>-0.5</x>
+                        <y>-0.5</y>
+                        <z>-0.5</z>
+                    </min>
+                    <max>
+                        <x>0.5</x>
+                        <y>0.5</y>
+                        <z>0.5</z>
+                    </max>
+                </aabb>
+            </component>
+            <component>
+                <component_type>Orbitable</component_type>
+                <on_leave_actions>
+                    <script_action>
+                        <script_action_type>AudioEvent</script_action_type>
+                        <denom>0.25</denom>
+                        <beat_event>
+                            <event_type>AllNotesOff</event_type>
+                            <channel>2</channel>
+                            <tick_time>0</tick_time>
+                            <midi_note>0</midi_note>
+                            <velocity>1</velocity>
+                            <beat_time>0</beat_time>
+                        </beat_event>
+                    </script_action>
+                </on_leave_actions>
+            </component>
+            <component>
+                <component_type>EventsOnHit</component_type>
+                <denom>0.25</denom>
+                <beat_events>
+                    <beat_event>
+                        <event_type>NoteOn</event_type>
+                        <channel>2</channel>
+                        <tick_time>0</tick_time>
+                        <midi_note>72</midi_note>
+                        <velocity>1</velocity>
+                        <beat_time>0</beat_time>
+                    </beat_event>
+                    <beat_event>
+                        <event_type>NoteOn</event_type>
+                        <channel>2</channel>
+                        <tick_time>0</tick_time>
+                        <midi_note>84</midi_note>
+                        <velocity>1</velocity>
+                        <beat_time>0</beat_time>
+                    </beat_event>
+                </beat_events>
+            </component>
+        </components>
+    </entity>
+    <entity>
+        <entity_active>false</entity_active>
+        <name>r0_sustain_g0</name>
+        <components>
+            <component>
+                <component_type>Transform</component_type>
+                <mat4>
+                    <m00>1</m00>
+                    <m10>0</m10>
+                    <m20>0</m20>
+                    <m30>0</m30>
+                    <m01>0</m01>
+                    <m11>1</m11>
+                    <m21>0</m21>
+                    <m31>0</m31>
+                    <m02>0</m02>
+                    <m12>0</m12>
+                    <m22>1</m22>
+                    <m32>0</m32>
+                    <m03>-0.937682152</m03>
+                    <m13>0</m13>
+                    <m23>-13.9883327</m23>
+                    <m33>1</m33>
+                </mat4>
+            </component>
+            <component>
+                <component_type>Model</component_type>
+                <model_id>wood_box</model_id>
+                <color>
+                    <x>0.985294104</x>
+                    <y>0.960576534</y>
+                    <z>0.144896209</z>
+                    <w>1</w>
+                </color>
+            </component>
+            <component>
+                <component_type>RigidBody</component_type>
+                <static>true</static>
+                <layer>None</layer>
+                <aabb>
+                    <min>
+                        <x>-0.5</x>
+                        <y>-0.5</y>
+                        <z>-0.5</z>
+                    </min>
+                    <max>
+                        <x>0.5</x>
+                        <y>0.5</y>
+                        <z>0.5</z>
+                    </max>
+                </aabb>
+            </component>
+            <component>
+                <component_type>Orbitable</component_type>
+                <on_leave_actions>
+                    <script_action>
+                        <script_action_type>AudioEvent</script_action_type>
+                        <denom>0.25</denom>
+                        <beat_event>
+                            <event_type>AllNotesOff</event_type>
+                            <channel>2</channel>
+                            <tick_time>0</tick_time>
+                            <midi_note>0</midi_note>
+                            <velocity>1</velocity>
+                            <beat_time>0</beat_time>
+                        </beat_event>
+                    </script_action>
+                </on_leave_actions>
+            </component>
+            <component>
+                <component_type>EventsOnHit</component_type>
+                <denom>0.25</denom>
+                <beat_events>
+                    <beat_event>
+                        <event_type>NoteOn</event_type>
+                        <channel>2</channel>
+                        <tick_time>0</tick_time>
+                        <midi_note>67</midi_note>
+                        <velocity>1</velocity>
+                        <beat_time>0</beat_time>
+                    </beat_event>
+                    <beat_event>
+                        <event_type>NoteOn</event_type>
+                        <channel>2</channel>
+                        <tick_time>0</tick_time>
+                        <midi_note>79</midi_note>
                         <velocity>1</velocity>
                         <beat_time>0</beat_time>
                     </beat_event>

@@ -238,7 +238,7 @@ void DrawSynthGuiAndUpdatePatch(SynthGuiState& synthGuiState, audio::Context& au
             RequestSynthParamChange(synthGuiState._currentSynthIx, audio::SynthParamType::AmpEnvSustain, patch.ampEnvSpec.sustainLevel, audioContext);
         }
 
-        changed = ImGui::SliderFloat("AmpEnvRelease", &patch.ampEnvSpec.releaseTime, 0.f, 1.f);
+        changed = ImGui::SliderFloat("AmpEnvRelease", &patch.ampEnvSpec.releaseTime, 0.f, 5.f);
         if (changed) {
             RequestSynthParamChange(synthGuiState._currentSynthIx, audio::SynthParamType::AmpEnvRelease, patch.ampEnvSpec.releaseTime, audioContext);
         }

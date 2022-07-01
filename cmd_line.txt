@@ -1,1 +1,2 @@
--s ../data/breeze.xml -y ../data/synth_patches_breeze.xml
+// -s ../data/breeze.xml -y ../data/synth_patches_breeze.xml
+-s ../data/breeze_rhythmic.xml -y ../data/synth_patches_breeze.xml
