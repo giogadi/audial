@@ -3,12 +3,10 @@
 #include <typeinfo>
 #include <typeindex>
 #include <unordered_map>
-#include <iostream>
 
 #include "entity_id.h"
 #include "component.h"
 
-class Component;
 class GameManager;
 
 class Entity {
@@ -93,7 +91,6 @@ public:
     bool Save(char const* filename) const;
     void Load(ptree const& pt);
     bool Load(char const* filename);
-
 
     std::string _name;
 private:

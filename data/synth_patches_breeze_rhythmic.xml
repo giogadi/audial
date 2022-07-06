@@ -75,7 +75,7 @@
         <cutoff_lfo_gain>0.328000009</cutoff_lfo_gain>
         <cutoff_lfo_freq>4.47800016</cutoff_lfo_freq>
         <amp_env_spec>
-            <attack_time>0.48300001</attack_time>
+            <attack_time>0.104000002</attack_time>
             <decay_time>0.100000001</decay_time>
             <sustain_level>1</sustain_level>
             <release_time>2.81100011</release_time>

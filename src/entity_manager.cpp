@@ -1,5 +1,7 @@
 #include "entity_manager.h"
 
+#include <iostream>
+
 #include "boost/property_tree/xml_parser.hpp"
 
 EntityId EntityManager::AddEntity(bool active) {
