@@ -110,8 +110,8 @@ bool PlayerOrbitControllerComponent::UpdateIdleState(float dt, bool newState) {
 
     if (std::shared_ptr<OrbitableComponent> planet = _planetWeOrbit.lock()) {
         // Gradually push/pull ourselves into the desired range of the planet.
-        Vec3 const playerPos = _transform.lock()->GetPos();
-        Vec3 const planetPos = planet->_t.lock()->GetPos();
+        Vec3 const playerPos = _transform.lock()->GetWorldPos();
+        Vec3 const planetPos = planet->_t.lock()->GetWorldPos();
         Vec3 planetToPlayer = playerPos - planetPos;
         float currentRange = planetToPlayer.Length();
         float kDesiredRange = 3.f;
@@ -139,12 +139,12 @@ bool PlayerOrbitControllerComponent::UpdateIdleState(float dt, bool newState) {
 }
 
 bool PlayerOrbitControllerComponent::PickNextPlanetToOrbit(Vec3 const& inputVec, Vec3& dashDir) {
-    Vec3 playerPos = _transform.lock()->GetPos();
+    Vec3 playerPos = _transform.lock()->GetWorldPos();
     if (inputVec.IsZero()) {
         // Don't change planets
         auto currentPlanet = _planetWeOrbit.lock();
         if (currentPlanet) {
-            Vec3 const& planetPos = currentPlanet->_t.lock()->GetPos();
+            Vec3 const& planetPos = currentPlanet->_t.lock()->GetWorldPos();
             dashDir = (planetPos - playerPos).GetNormalized();
             return true;
         } else {
@@ -159,7 +159,7 @@ bool PlayerOrbitControllerComponent::PickNextPlanetToOrbit(Vec3 const& inputVec,
     std::shared_ptr<OrbitableComponent> currentPlanet = _planetWeOrbit.lock();
     std::shared_ptr<OrbitableComponent> potentialNewPlanet;
     if (currentPlanet) {
-        playerPos = currentPlanet->_t.lock()->GetPos();
+        playerPos = currentPlanet->_t.lock()->GetWorldPos();
     }
     _entityMgr->ForEveryActiveEntity([&](EntityId id) {
         Entity& e = *_entityMgr->GetEntity(id);
@@ -170,7 +170,7 @@ bool PlayerOrbitControllerComponent::PickNextPlanetToOrbit(Vec3 const& inputVec,
         if (planet == currentPlanet) {
             return;
         }
-        Vec3 const& planetPos = planet->_t.lock()->GetPos();
+        Vec3 const& planetPos = planet->_t.lock()->GetWorldPos();
         Vec3 fromPlayerToPlanetDir = planetPos - playerPos;
         float dist = fromPlayerToPlanetDir.Length();
         if (dist == 0.f) {
@@ -185,7 +185,7 @@ bool PlayerOrbitControllerComponent::PickNextPlanetToOrbit(Vec3 const& inputVec,
         if (dist < closestDist) {
             closestDist = dist;
             potentialNewPlanet = planet;
-            dashDir = (planetPos - _transform.lock()->GetPos()).GetNormalized();
+            dashDir = (planetPos - _transform.lock()->GetWorldPos()).GetNormalized();
         }
     });
 
@@ -232,8 +232,8 @@ bool PlayerOrbitControllerComponent::UpdateAttackState(float dt, bool newState) 
     }
 
     if (_dribbleRadialSpeed.has_value()) {
-        Vec3 const planetPos = _planetWeOrbit.lock()->_t.lock()->GetPos();
-        Vec3 const playerPos = _transform.lock()->GetPos();
+        Vec3 const planetPos = _planetWeOrbit.lock()->_t.lock()->GetWorldPos();
+        Vec3 const playerPos = _transform.lock()->GetWorldPos();
         Vec3 const planetToPlayer = playerPos - planetPos;
 
         float currentAngle = XZToAngle(planetToPlayer._x, planetToPlayer._z);
@@ -291,7 +291,7 @@ void PlayerOrbitControllerComponent::OnHit(
         // TODO: add tangent component of speed here
         // TODO: why do we need to update velocity AND dribble radial / attackdir?
         Vec3 const planetToPlayerDir =
-            (player->_transform.lock()->GetPos() - player->_planetWeOrbit.lock()->_t.lock()->GetPos()).GetNormalized();
+            (player->_transform.lock()->GetWorldPos() - player->_planetWeOrbit.lock()->_t.lock()->GetWorldPos()).GetNormalized();
         rb._velocity = planetToPlayerDir * player->_dribbleRadialSpeed.value();
     } else {
         player->_attackDir = -player->_attackDir;

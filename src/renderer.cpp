@@ -89,9 +89,9 @@ bool CameraComponent::ConnectComponents(EntityId id, Entity& e, GameManager& g) 
 
 Mat4 CameraComponent::GetViewMatrix() const {
     auto transform = _transform.lock();
-    Vec3 p = transform->GetPos();
-    Vec3 forward = -transform->GetZAxis();  // Z-axis points backward
-    Vec3 up = transform->GetYAxis();
+    Vec3 p = transform->GetWorldPos();
+    Vec3 forward = -transform->GetWorldZAxis();  // Z-axis points backward
+    Vec3 up = transform->GetWorldYAxis();
     return Mat4::LookAt(p, p + forward, up);
 }
 
@@ -159,11 +159,11 @@ void SceneManager::Draw(int windowWidth, int windowHeight) {
     for (auto const& pModel : _models) {
         auto const m = *pModel.lock();
         m._mesh->_mat->_shader.Use();
-        Mat4 transMat = m._transform.lock()->GetMat4();
+        Mat4 transMat = m._transform.lock()->GetWorldMat4();
         m._mesh->_mat->_shader.SetMat4("uMvpTrans", viewProjTransform * transMat);
         m._mesh->_mat->_shader.SetMat4("uModelTrans", transMat);
         m._mesh->_mat->_shader.SetMat3("uModelInvTrans", transMat.GetMat3());
-        m._mesh->_mat->_shader.SetVec3("uLightPos", light->_transform.lock()->GetPos());
+        m._mesh->_mat->_shader.SetVec3("uLightPos", light->_transform.lock()->GetWorldPos());
         m._mesh->_mat->_shader.SetVec3("uAmbient", light->_ambient);
         m._mesh->_mat->_shader.SetVec3("uDiffuse", light->_diffuse);
         m._mesh->_mat->_shader.SetVec4("uColor", m._color);

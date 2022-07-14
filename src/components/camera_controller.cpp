@@ -21,7 +21,7 @@ bool CameraControllerComponent::ConnectComponents(EntityId id, Entity& e, GameMa
         return false;
     }
 
-    _desiredTargetToCameraOffset = _transform.lock()->GetPos() - _target.lock()->GetPos();
+    _desiredTargetToCameraOffset = _transform.lock()->GetWorldPos() - _target.lock()->GetWorldPos();
 
     return true;
 }
@@ -38,12 +38,12 @@ bool CameraControllerComponent::DrawImGui() {
 
 // TODO: make this framerate independent!!!
 void CameraControllerComponent::Update(float dt) {
-    Vec3 cameraPos = _transform.lock()->GetPos();
-    Vec3 targetPos = _target.lock()->GetPos();
+    Vec3 cameraPos = _transform.lock()->GetWorldPos();
+    Vec3 targetPos = _target.lock()->GetWorldPos();
     Vec3 targetToCameraOffset = cameraPos - targetPos;
 
     Vec3 newOffset = targetToCameraOffset + _trackingFactor * (_desiredTargetToCameraOffset - targetToCameraOffset);
-    _transform.lock()->SetPos(targetPos + newOffset);
+    _transform.lock()->SetWorldPos(targetPos + newOffset);
 }
 
 void CameraControllerComponent::Save(ptree& pt) const {

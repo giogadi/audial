@@ -10,10 +10,11 @@ public:
 
     virtual void Update(float dt) override {
         std::shared_ptr<TransformComponent> transform = _transform.lock();
-        transform->SetPos(transform->GetPos() + dt * _linear);
-        Mat3 rot = transform->GetRot();
+        assert(!transform->HasParent());
+        transform->SetWorldPos(transform->GetWorldPos() + dt * _linear);
+        Mat3 rot = transform->GetWorldRot();
         rot = Mat3::FromAxisAngle(Vec3(0.f, 1.f, 0.f), dt * _angularY) * rot;
-        transform->SetRot(rot);
+        transform->SetWorldRot(rot);
     }
 
     virtual void Destroy() override {}

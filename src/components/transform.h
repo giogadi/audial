@@ -7,40 +7,92 @@ class TransformComponent : public Component {
 public:
     virtual ComponentType Type() const override { return ComponentType::Transform; }
     TransformComponent()
-        : _transform(Mat4::Identity()) {}
+        : _localTransform(Mat4::Identity()) {}
 
     virtual ~TransformComponent() {}
 
-    // TODO make these return const& to memory in Mat4
-    Vec3 GetPos() const {
-        return _transform.GetCol3(3);
+    virtual bool ConnectComponents(EntityId id, Entity& e, GameManager& g) override;
+
+    Mat4 const& GetLocalMat4() const {
+        return _localTransform;
     }
-    void SetPos(Vec3 const& p) {
-        _transform._col3 = Vec4(p._x, p._y, p._z, 1.f);
-    }
-    Vec3 GetXAxis() const {
-        return _transform.GetCol3(0);
-    }
-    Vec3 GetYAxis() const {
-        return _transform.GetCol3(1);
-    }
-    Vec3 GetZAxis() const {
-        return _transform.GetCol3(2);
-    }
-    Mat4 GetMat4() const {
-        return _transform;
+    Mat4 GetWorldMat4() const {
+        if (auto const& parent = _parent.lock()) {
+            return _localTransform * parent->GetWorldMat4();
+        }
+        return _localTransform;
     }
 
-    Mat3 GetRot() const {
-        return _transform.GetMat3();
+    // TODO make these return const& to memory in Mat4
+    Vec3 GetWorldPos() const {
+        return GetWorldMat4().GetCol3(3);
     }
-    void SetRot(Mat3 const& rot) {
-        _transform.SetTopLeftMat3(rot);
+    void SetLocalPos(Vec3 const& p) {
+        _localTransform._col3 = Vec4(p._x, p._y, p._z, 1.f);
+    }
+    void SetWorldPos(Vec3 const& p) {
+        if (auto const& parent = _parent.lock()) {
+            Mat4 parentInv = parent->GetWorldMat4().InverseAffine();
+            Vec3 newLocalPos = p + parentInv.GetCol3(3);
+            SetLocalPos(newLocalPos);
+        } else {
+            SetLocalPos(p);
+        }
+    }
+    Vec3 GetLocalXAxis() const {
+        return _localTransform.GetCol3(0);
+    }
+    Vec3 GetLocalYAxis() const {
+        return _localTransform.GetCol3(1);
+    }
+    Vec3 GetLocalZAxis() const {
+        return _localTransform.GetCol3(2);
+    }
+
+    Vec3 GetWorldXAxis() const {
+        return GetWorldRot().GetCol(0);
+    }
+    Vec3 GetWorldYAxis() const {
+        return GetWorldRot().GetCol(1);
+    }
+    Vec3 GetWorldZAxis() const {
+        return GetWorldRot().GetCol(2);
+    }
+
+    Mat3 GetWorldRot() const {
+        if (auto const& parent = _parent.lock()) {
+            return GetLocalRot() * parent->GetWorldRot();
+        }
+        return GetLocalRot();
+    }
+    Mat3 GetLocalRot() const {
+        return _localTransform.GetMat3();
+    }
+    void SetLocalRot(Mat3 const& rot) {
+        _localTransform.SetTopLeftMat3(rot);
+    }
+    void SetWorldRot(Mat3 const& rot) {
+        if (auto const& parent = _parent.lock()) {
+            Mat4 parentInv = parent->GetWorldMat4().InverseAffine();
+            Mat3 newLocalRot = rot * parentInv.GetMat3();
+            SetLocalRot(newLocalRot);
+        } else {
+            SetLocalRot(rot);
+        }
+    }
+
+    bool HasParent() const {
+        return !_parent.expired();
     }
 
     virtual void Save(ptree& pt) const override;
     virtual void Load(ptree const& pt) override;
 
+    // Serialize
     // TODO store separate rot and pos
-    Mat4 _transform;
+    Mat4 _localTransform;
+    std::string _parentEntityName;
+
+    // TODO consider caching the world transform and using a generation ID to know when the parent has changed.
+    std::weak_ptr<TransformComponent const> _parent;
 };

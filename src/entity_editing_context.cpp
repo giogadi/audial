@@ -73,7 +73,7 @@ void EntityEditingContext::UpdateSelectedPositionFromInput(float dt, InputManage
     }
 
     float moveSpeed = 3.f;
-    transform->SetPos(transform->GetPos() + inputVec.GetNormalized() * moveSpeed * dt);
+    transform->SetWorldPos(transform->GetWorldPos() + inputVec.GetNormalized() * moveSpeed * dt);
 }
 
 void EntityEditingContext::DrawEntityImGui(EntityId id, GameManager& g, int* selectedComponentIx, bool connectComponents) {

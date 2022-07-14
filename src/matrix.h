@@ -289,6 +289,15 @@ struct Mat4 {
         }
     }
 
+    // Assumes the mat is just a simple rotation and translation. No scaling.
+    Mat4 InverseAffine() const {
+        Mat4 inverse = Mat4::Identity();
+        inverse.SetTopLeftMat3(GetMat3().GetTranspose());
+        Vec3 newPos = -(inverse.GetMat3() * GetCol3(3));
+        inverse.SetTranslation(newPos);
+        return inverse;
+    }
+
     static Mat4 LookAt(Vec3 const& eye, Vec3 const& at, Vec3 const& up);
     static Mat4 Frustrum(float left, float right, float bottom, float top, float znear, float zfar);
     static Mat4 Perspective(float fovyRadians, float aspectRatio, float znear, float zfar);
@@ -297,6 +306,12 @@ struct Mat4 {
         _m03 += t._x;
         _m13 += t._y;
         _m23 += t._z;
+    }
+
+    void SetTranslation(Vec3 const& t) {
+        _m03 = t._x;
+        _m13 = t._y;
+        _m23 = t._z;
     }
 
     void Save(ptree& pt) const {
@@ -345,29 +360,29 @@ inline Mat4 operator*(Mat4 const& a, Mat4 const& b) {
     return result;
 }
 
-struct Transform {
-    Transform() {}
-    Transform(Mat3 const& rot, Vec3 const& p)
-        : _rot(rot)
-        , _pos(p) {}
+// struct Transform {
+//     Transform() {}
+//     Transform(Mat3 const& rot, Vec3 const& p)
+//         : _rot(rot)
+//         , _pos(p) {}
 
-    Mat4 MakeMat4() const {
-        Mat4 m = Mat4::Identity();
-        for (int c = 0; c < 3; ++c) {
-            Vec4& v4 = m.GetCol(c);
-            Vec3 const& v3 = _rot.GetCol(c);
-            v4._x = v3._x;
-            v4._y = v3._y;
-            v4._z = v3._z;
-        }
-        Vec4& p4 = m.GetCol(3);
-        p4._x = _pos._x;
-        p4._y = _pos._y;
-        p4._z = _pos._z;
-        return m;
-    }
+//     Mat4 MakeMat4() const {
+//         Mat4 m = Mat4::Identity();
+//         for (int c = 0; c < 3; ++c) {
+//             Vec4& v4 = m.GetCol(c);
+//             Vec3 const& v3 = _rot.GetCol(c);
+//             v4._x = v3._x;
+//             v4._y = v3._y;
+//             v4._z = v3._z;
+//         }
+//         Vec4& p4 = m.GetCol(3);
+//         p4._x = _pos._x;
+//         p4._y = _pos._y;
+//         p4._z = _pos._z;
+//         return m;
+//     }
 
-    Mat3 _rot;
-    Vec3 _pos;
-    // float _scale;
-};
+//     Mat3 _rot;
+//     Vec3 _pos;
+//     // float _scale;
+// };

@@ -14,9 +14,9 @@ void LoadTestScript(GameManager& g) {
         float angle = 45.f * kDeg2Rad;
         Vec3 dir(0.f, sin(angle), cos(angle));
         float dist = 15.f;
-        pTrans->SetPos(dist * dir);
+        pTrans->SetLocalPos(dist * dir);
         Mat3 rot = Mat3::FromAxisAngle(Vec3(1.f, 0.f, 0.f), -angle);
-        pTrans->SetRot(rot);
+        pTrans->SetLocalRot(rot);
 
         auto pCamera = camera->AddComponentOrDie<CameraComponent>().lock();
     }
@@ -27,7 +27,7 @@ void LoadTestScript(GameManager& g) {
         light->_name = "light";
 
         auto pTrans = light->AddComponentOrDie<TransformComponent>().lock();
-        pTrans->SetPos(Vec3(0.f, 3.f, 0.f));
+        pTrans->SetLocalPos(Vec3(0.f, 3.f, 0.f));
 
         auto pLight = light->AddComponentOrDie<LightComponent>().lock();
         pLight->_ambient.Set(0.2f, 0.2f, 0.2f);
