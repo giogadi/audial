@@ -6,68 +6,9 @@
 #include "component.h"
 #include "matrix.h"
 
-class SceneManager;
-class BoundMesh;
-class InputManager;
-class GameManager;
-class TransformComponent;
-
-class ModelComponent : public Component {
-public:
-    virtual ComponentType Type() const override { return ComponentType::Model; }
-    ModelComponent() : _color(1.f, 1.f, 1.f, 1.f) {}
-    virtual ~ModelComponent() {}
-    virtual bool ConnectComponents(EntityId id, Entity& e, GameManager& g) override;
-    virtual bool DrawImGui() override;
-    virtual void Save(ptree& pt) const override;
-    virtual void Load(ptree const& pt) override;
-
-    // serialized
-    std::string _modelId;
-    Vec4 _color;
-
-    std::weak_ptr<TransformComponent const> _transform;
-    BoundMesh const* _mesh = nullptr;
-    SceneManager* _mgr = nullptr;
-};
-
-class LightComponent : public Component {
-public:
-    virtual ComponentType Type() const override { return ComponentType::Light; }
-    LightComponent()
-        : _ambient(0.1f,0.1f,0.1f)
-        , _diffuse(1.f,1.f,1.f)
-        {}
-    virtual ~LightComponent() {}
-    virtual bool ConnectComponents(EntityId id, Entity& e, GameManager& g) override;
-    virtual bool DrawImGui() override;
-    virtual void Save(ptree& pt) const override;
-    virtual void Load(ptree const& pt) override;
-
-    std::weak_ptr<TransformComponent const> _transform;
-    Vec3 _ambient;
-    Vec3 _diffuse;
-    SceneManager* _mgr = nullptr;
-};
-
-class CameraComponent : public Component {
-public:
-    virtual ComponentType Type() const override { return ComponentType::Camera; }
-    CameraComponent() {}
-    virtual bool ConnectComponents(EntityId id, Entity& e, GameManager& g) override;
-
-    virtual ~CameraComponent() {}
-
-    Mat4 GetViewMatrix() const;
-
-    // TODO: make movement relative to camera viewpoint
-    // TODO: break movement out into its own component
-    virtual void Update(float const dt) override;
-
-    std::weak_ptr<TransformComponent> _transform;
-    InputManager const* _input = nullptr;
-    SceneManager* _mgr = nullptr;
-};
+class ModelComponent;
+class LightComponent;
+class CameraComponent;
 
 class SceneManager {
 public:

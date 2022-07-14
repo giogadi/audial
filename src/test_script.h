@@ -2,6 +2,9 @@
 
 #include "entity_manager.h"
 #include "components/transform.h"
+#include "components/model_instance.h"
+#include "components/light.h"
+#include "components/camera.h"
 
 void LoadTestScript(GameManager& g) {
     // Camera

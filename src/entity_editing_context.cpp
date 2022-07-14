@@ -11,6 +11,7 @@
 #include "renderer.h"
 #include "constants.h"
 #include "components/transform.h"
+#include "components/camera.h"
 
 void EntityEditingContext::Update(
     float dt, bool editMode, GameManager const& g, int windowWidth, int windowHeight) {

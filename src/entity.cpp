@@ -4,6 +4,9 @@
 
 // Here we go
 #include "components/transform.h"
+#include "components/model_instance.h"
+#include "components/light.h"
+#include "components/camera.h"
 #include "components/velocity.h"
 #include "renderer.h"
 #include "components/rigid_body.h"

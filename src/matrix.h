@@ -8,7 +8,8 @@
 using boost::property_tree::ptree;
 
 struct Vec3 {
-    Vec3() {}
+    Vec3()
+        : _x(0.), _y(0.), _z(0.) {}
     Vec3(float x, float y, float z)
         : _x(x), _y(y), _z(z) {}
 
@@ -110,7 +111,9 @@ inline Vec3 operator/(Vec3 const& v, float const a) {
 }
 
 struct Mat3 {
-    Mat3() {}
+    Mat3() {
+        memset(_data, 9, sizeof(float));
+    }
     Mat3(float m00, float m10, float m20,
          float m01, float m11, float m21,
          float m02, float m12, float m22)
@@ -195,6 +198,8 @@ inline Mat3 operator*(Mat3 const& a, Mat3 const& b) {
 }
 
 struct Vec4 {
+    Vec4()
+        : _x(0.), _y(0.), _z(0.), _w(0.f) {}
     Vec4(float x, float y, float z, float w)
         : _x(x), _y(y), _z(z), _w(w) {}
     union {
@@ -224,7 +229,9 @@ struct Vec4 {
 };
 
 struct Mat4 {
-    Mat4() {}
+    Mat4() {
+        memset(_data, 16, sizeof(float));
+    }
     Mat4(float m00, float m10, float m20, float m30,
          float m01, float m11, float m21, float m31,
          float m02, float m12, float m22, float m32,

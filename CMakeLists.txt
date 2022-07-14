@@ -16,6 +16,7 @@ add_executable(game
     src/component.cpp src/entity.cpp src/entity_manager.cpp
     src/renderer.cpp src/collisions.cpp
     src/components/transform.cpp
+    src/components/model_instance.cpp src/components/camera.cpp src/components/light.cpp
     src/components/rigid_body.cpp src/components/beep_on_hit.cpp src/components/player_controller.cpp
     src/components/player_orbit_controller.cpp src/components/camera_controller.cpp src/components/hit_counter.cpp
     src/components/orbitable.cpp src/components/events_on_hit.cpp src/components/activator.cpp src/components/damage.cpp
