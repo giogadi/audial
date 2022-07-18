@@ -11,6 +11,7 @@ add_executable(game
     src/imgui/backends/imgui_impl_opengl3.cpp
     src/glad/src/glad.cpp
     src/audio_loader.cpp src/game.cpp src/audio_util.cpp src/audio.cpp src/audio_event_imgui.cpp
+    src/memory_pool.cpp
     src/entity_picking.cpp src/entity_editing_context.cpp src/script_action.cpp
     src/shader.cpp src/synth.cpp  src/matrix.cpp
     src/component.cpp src/entity.cpp src/entity_manager.cpp
@@ -39,7 +40,15 @@ target_include_directories(game PUBLIC src/portaudio/include)
 target_include_directories(game PUBLIC
     ./ ./src src/glfw/include src/glad/include src/imgui)
 
+##
 ## TEST SHIT ##
+##
+
 add_executable(ptree_test src/ptree_test.cpp)
 target_include_directories(ptree_test PUBLIC
+    ./src)
+
+add_executable(memory_pool_test
+    src/memory_pool_test.cpp src/memory_pool.cpp)
+target_include_directories(memory_pool_test PUBLIC
     ./src)
