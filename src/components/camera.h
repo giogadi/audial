@@ -4,7 +4,9 @@
 #include "matrix.h"
 
 class TransformComponent;
-class SceneManager;
+namespace renderer {
+    class Scene;
+}
 
 class CameraComponent : public Component {
 public:
@@ -17,5 +19,5 @@ public:
     Mat4 GetViewMatrix() const;
 
     std::weak_ptr<TransformComponent> _transform;
-    SceneManager* _mgr = nullptr;
+    renderer::Scene* _mgr = nullptr;
 };

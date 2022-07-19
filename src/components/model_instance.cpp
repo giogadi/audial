@@ -19,7 +19,7 @@ bool ModelComponent::ConnectComponents(EntityId id, Entity& e, GameManager& g) {
     auto meshIter = modelManager->_modelMap.find(_modelId);
     if (meshIter != modelManager->_modelMap.end()) {
         _mesh = meshIter->second.get();
-        _mgr = g._sceneManager;
+        _mgr = g._scene;
         _mgr->AddModel(e.FindComponentOfType<ModelComponent>());
         return true;
     } else {

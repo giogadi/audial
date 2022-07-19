@@ -1,6 +1,8 @@
 #pragma once
 
-class SceneManager;
+namespace renderer {
+    class Scene;
+}
 class InputManager;
 namespace audio {
     class Context;
@@ -11,7 +13,7 @@ class ModelManager;
 class BeatClock;
 
 struct GameManager {
-    SceneManager* _sceneManager = nullptr;
+    renderer::Scene* _scene = nullptr;
     InputManager* _inputManager = nullptr;
     audio::Context* _audioContext = nullptr;
     EntityManager* _entityManager = nullptr;

@@ -1,13 +1,13 @@
-#include "memory_pool.h"
+#include "version_id_list_simple.h"
 
 #include <vector>
 
-class MemoryPoolInternal {
+class VersionIdListInternal {
 public:
     std::vector<int> _freeIndices;
 };
 
-MemoryPool::MemoryPool(int itemSizeInBytes, int maxNumItems)
+VersionIdList::VersionIdList(int itemSizeInBytes, int maxNumItems)
     : _itemSizeInBytes(itemSizeInBytes)
     , _maxNumItems(maxNumItems)
     , _count(0) {
@@ -19,10 +19,10 @@ MemoryPool::MemoryPool(int itemSizeInBytes, int maxNumItems)
     memset(_pVersions, -1, maxNumItems);
     _pDataIndices = new int32_t[maxNumItems];
     memset(_pDataIndices, -1, maxNumItems);
-    _pInternal = new MemoryPoolInternal;
+    _pInternal = new VersionIdListInternal;
 }
 
-MemoryPool::~MemoryPool() {
+VersionIdList::~VersionIdList() {
     delete[] _pData;
     delete[] _pSparseIndices;
     delete[] _pVersions;
@@ -30,7 +30,7 @@ MemoryPool::~MemoryPool() {
     delete _pInternal;
 }
 
-void* MemoryPool::GetItem(VersionId id) {
+void* VersionIdList::GetItem(VersionId id) {
     assert(id.IsValid());
     int32_t index = id.GetIndex();
     assert(index < _maxNumItems);
@@ -43,7 +43,7 @@ void* MemoryPool::GetItem(VersionId id) {
     return nullptr;
 }
 
-VersionId MemoryPool::AddItem(void** pOutItem) {
+VersionId VersionIdList::AddItem(void** pOutItem) {
     if (_pInternal->_freeIndices.empty()) {
         int index = _count;
         VersionId newId(index, 0);
@@ -70,7 +70,7 @@ VersionId MemoryPool::AddItem(void** pOutItem) {
     }
 }
 
-bool MemoryPool::RemoveItem(VersionId id) {
+bool VersionIdList::RemoveItem(VersionId id) {
     assert(id.IsValid());
     int index = id.GetIndex();
     assert(index < _maxNumItems);
@@ -97,6 +97,6 @@ bool MemoryPool::RemoveItem(VersionId id) {
     return false;
 }
 
-void* MemoryPool::GetItemAtIndex(int dataIndex) {
+void* VersionIdList::GetItemAtIndex(int dataIndex) {
     return _pData + (_itemSizeInBytes * dataIndex);
 }

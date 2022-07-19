@@ -1,7 +1,8 @@
 #include <cstdio>
 #include <cassert>
 
-#include "memory_pool.h"
+#include "version_id_list.h"
+#include "version_id_list_simple.h"
 
 struct Foo {
     int x, y, z;
@@ -72,7 +73,7 @@ struct Foo {
 int main() {
     int const N = 200;
 
-    MemoryPool pool(sizeof(Foo), N*2);
+    VersionIdList pool(sizeof(Foo), N*2);
 
     VersionId ids[N];
     for (int i = 0; i < N; ++i) {
@@ -136,7 +137,7 @@ int main() {
 }
 
 // int main() {
-//     TMemoryPool<Foo> pool(100);
+//     TVersionIdList<Foo> pool(100);
 
 //     VersionId ids[50];
 //     for (int i = 0; i < 50; ++i) {
@@ -198,7 +199,7 @@ int main() {
 //     //     newItem->bar[0] = (float) i;
 //     // }
 
-//     TMemoryPool<Foo> pool;
+//     TVersionIdList<Foo> pool;
 
 //     VersionId ids[N];
 //     for (int i = 0; i < N; ++i) {

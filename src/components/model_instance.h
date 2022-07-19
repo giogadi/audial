@@ -4,7 +4,9 @@
 #include "matrix.h"
 
 class BoundMesh;
-class SceneManager;
+namespace renderer {
+    class Scene;
+}
 class TransformComponent;
 
 class ModelComponent : public Component {
@@ -23,5 +25,5 @@ public:
 
     std::weak_ptr<TransformComponent const> _transform;
     BoundMesh const* _mesh = nullptr;
-    SceneManager* _mgr = nullptr;
+    renderer::Scene* _mgr = nullptr;
 };

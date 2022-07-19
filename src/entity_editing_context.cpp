@@ -28,7 +28,7 @@ void EntityEditingContext::Update(
         float const zNear = 0.1f;
 
         TransformComponent const& cameraTransform =
-            *(g._sceneManager->_cameras.front().lock()->_transform.lock());
+            *(g._scene->_cameras.front().lock()->_transform.lock());
         _selectedEntityId = PickEntity(
             *g._entityManager, mouseX, mouseY, windowWidth, windowHeight, fovy, aspectRatio, zNear,
             cameraTransform);

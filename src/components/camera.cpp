@@ -8,7 +8,7 @@
 
 bool CameraComponent::ConnectComponents(EntityId id, Entity& e, GameManager& g) {
     _transform = e.FindComponentOfType<TransformComponent>();
-    _mgr = g._sceneManager;
+    _mgr = g._scene;
     _mgr->AddCamera(e.FindComponentOfType<CameraComponent>());
     return !_transform.expired();
 }

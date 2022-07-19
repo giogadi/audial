@@ -10,9 +10,28 @@
 
 bool LightComponent::ConnectComponents(EntityId id, Entity& e, GameManager& g) {
     _transform = e.FindComponentOfType<TransformComponent>();
-    _mgr = g._sceneManager;
-    _mgr->AddLight(e.FindComponentOfType<LightComponent>());
+    _scene = g._scene;
+    std::pair<VersionId, renderer::PointLight*> item = _scene->AddPointLight();
+    _lightId = item.first;
+    renderer::PointLight* l = item.second;
+    Vec3 p = _transform.lock()->GetWorldPos();
+    l->Set(p, _ambient, _diffuse);    
     return !_transform.expired();
+}
+
+void LightComponent::Update(float dt) {
+    // TODO: maybe use a dirty flag so we only do this if this light has been changed.
+    renderer::PointLight* l = _scene->GetPointLight(_lightId);
+    Vec3 p = _transform.lock()->GetWorldPos();
+    l->Set(_transform.lock()->GetWorldPos(), _ambient, _diffuse);
+}
+
+void LightComponent::EditModeUpdate(float dt) {
+    Update(dt);
+}
+
+void LightComponent::Destroy() {
+    _scene->RemovePointLight(_lightId);
 }
 
 bool LightComponent::DrawImGui() {

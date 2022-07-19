@@ -485,7 +485,7 @@ int main(int argc, char** argv) {
 
     InputManager inputManager(window);
 
-    SceneManager sceneManager;
+    renderer::Scene sceneManager;
 
     EntityManager entityManager;
 
