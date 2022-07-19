@@ -285,8 +285,8 @@ void ShowHitCounterWindow(EntityManager& entityMgr) {
 
 void LoadSoundData(std::vector<audio::PcmSound>& sounds) {
     std::vector<char const*> soundFilenames = {
-        "../data/sounds/kick_deep.wav"
-        , "../data/sounds/woodblock_reverb_mono.wav"
+        "data/sounds/kick_deep.wav"
+        , "data/sounds/woodblock_reverb_mono.wav"
     };
     for (char const* filename : soundFilenames) {
         audio::PcmSound sound;
@@ -455,12 +455,12 @@ int main(int argc, char** argv) {
     ImGui_ImplOpenGL3_Init(/*glsl_version=*/NULL);
 
     Shader shaderProgram;
-    if (!shaderProgram.Init("../shaders/shader.vert", "../shaders/color.frag")) {
+    if (!shaderProgram.Init("shaders/shader.vert", "shaders/color.frag")) {
         return 1;
     }
 
     std::unique_ptr<Texture> texture =
-        Texture::CreateTextureFromFile("../data/textures/wood_container.jpg");
+        Texture::CreateTextureFromFile("data/textures/wood_container.jpg");
     if (texture == nullptr) {
         return 1;
     }
