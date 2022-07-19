@@ -5,6 +5,7 @@
 
 #include "component.h"
 #include "matrix.h"
+#include "constants.h"
 
 class ModelComponent;
 class LightComponent;
@@ -26,15 +27,31 @@ public:
     Vec3 _diffuse;    
 };
 
+class Camera {
+public:
+    void Set(Mat4 const& t, float fovyRad, float zNear, float zFar) {
+        _transform = t;
+        _fovyRad = fovyRad;
+        _zNear = zNear;
+        _zFar = zFar;
+    }
+
+    Mat4 GetViewMatrix() const;
+
+    Mat4 _transform;
+    float _fovyRad = 45.f * kPi / 180.f;
+    float _zNear = 0.1f;
+    float _zFar = 100.f;
+};
+
 class SceneInternal;
 class Scene {
 public:
     Scene();
     virtual ~Scene();
 
-    void AddModel(std::weak_ptr<ModelComponent const> m) { _models.push_back(m); }
-    // void AddLight(std::weak_ptr<LightComponent const> l) { _lights.push_back(l); }    
-    void AddCamera(std::weak_ptr<CameraComponent const> c) { _cameras.push_back(c); }
+    void AddModel(std::weak_ptr<ModelComponent const> m) { _models.push_back(m); }  
+    // void AddCamera(std::weak_ptr<CameraComponent const> c) { _cameras.push_back(c); }
 
     // DON'T STORE THE POINTER!!!
     std::pair<VersionId, PointLight*> AddPointLight();
@@ -44,9 +61,9 @@ public:
     void Draw(int windowWidth, int windowHeight);
     
     std::vector<std::weak_ptr<ModelComponent const>> _models;
-    // std::vector<std::weak_ptr<LightComponent const>> _lights;    
-    std::vector<std::weak_ptr<CameraComponent const>> _cameras;
+    // std::vector<std::weak_ptr<CameraComponent const>> _cameras;
 
+    Camera _camera;
 private:
     std::unique_ptr<SceneInternal> _pInternal;
 };

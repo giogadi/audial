@@ -320,6 +320,19 @@ struct Mat4 {
         _m13 = t._y;
         _m23 = t._z;
     }
+    
+    Vec3 GetXAxis() const {
+        return GetCol3(0);
+    }
+    Vec3 GetYAxis() const {
+        return GetCol3(1);
+    }
+    Vec3 GetZAxis() const {
+        return GetCol3(2);
+    }
+    Vec3 GetPos() const {
+        return GetCol3(3);
+    }
 
     void Save(ptree& pt) const {
         char name[] = "mXX";

@@ -2,10 +2,13 @@
 
 #include <memory>
 
-#include "component.h"
+#include "entity_manager.h"
+#include "matrix.h"
 
-class TransformComponent;
+namespace renderer {
+    class Camera;
+}
 
 EntityId PickEntity(
     EntityManager& entities, double clickX, double clickY, int windowWidth, int windowHeight,
-    float fovy, float aspectRatio, float zNear, TransformComponent const& cameraTransform);
+    renderer::Camera const& camera);

@@ -14,11 +14,17 @@
 #include "game_manager.h"
 #include "components/transform.h"
 #include "components/model_instance.h"
-#include "components/light.h"
 #include "components/camera.h"
 #include "version_id_list.h"
 
 namespace renderer {
+
+Mat4 Camera::GetViewMatrix() const {
+    Vec3 p = _transform.GetPos();
+    Vec3 forward = -_transform.GetZAxis();  // Z-axis points backward
+    Vec3 up = _transform.GetYAxis();
+    return Mat4::LookAt(p, p + forward, up);
+}
 
 class SceneInternal {
 public:
@@ -51,27 +57,15 @@ void Scene::Draw(int windowWidth, int windowHeight) {
         [](std::weak_ptr<ModelComponent const> const& p) {
             return p.expired();
         }), _models.end());
-    _cameras.erase(std::remove_if(_cameras.begin(), _cameras.end(),
-        [](std::weak_ptr<CameraComponent const> const& p) {
-            return p.expired();
-        }), _cameras.end());
-    // _lights.erase(std::remove_if(_lights.begin(), _lights.end(),
-    //     [](std::weak_ptr<LightComponent const> const& p) {
-    //         return p.expired();
-    //     }), _lights.end());
 
 
-    assert(_cameras.size() == 1);
     assert(_pInternal->_pointLights.GetCount() == 1);
-    auto const camera = _cameras.front().lock();
-    //auto const light = _pointLights.front().lock();
     PointLight const& light = *(_pInternal->_pointLights.GetItemAtIndex(0));
 
-    float fovy = 45.f * kPi / 180.f;
     float aspectRatio = (float)windowWidth / windowHeight;
     Mat4 viewProjTransform = Mat4::Perspective(
-        fovy, aspectRatio, /*near=*/0.1f, /*far=*/100.f);
-    Mat4 camMatrix = camera->GetViewMatrix();
+        _camera._fovyRad, aspectRatio, /*near=*/_camera._zNear, /*far=*/_camera._zFar);
+    Mat4 camMatrix = _camera.GetViewMatrix();
     viewProjTransform = viewProjTransform * camMatrix;
 
     // TODO: group them by Material

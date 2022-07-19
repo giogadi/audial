@@ -8,15 +8,15 @@
 
 bool CameraComponent::ConnectComponents(EntityId id, Entity& e, GameManager& g) {
     _transform = e.FindComponentOfType<TransformComponent>();
-    _mgr = g._scene;
-    _mgr->AddCamera(e.FindComponentOfType<CameraComponent>());
+    _camera = &g._scene->_camera;
     return !_transform.expired();
 }
 
-Mat4 CameraComponent::GetViewMatrix() const {
-    auto transform = _transform.lock();
-    Vec3 p = transform->GetWorldPos();
-    Vec3 forward = -transform->GetWorldZAxis();  // Z-axis points backward
-    Vec3 up = transform->GetWorldYAxis();
-    return Mat4::LookAt(p, p + forward, up);
+void CameraComponent::Update(float dt) {
+    // _camera->Set(_transform.lock()->GetWorldMat4(), 45.f * kPi / 180.f, 0.1f, 100.f);
+    _camera->_transform = _transform.lock()->GetWorldMat4();
+}
+
+void CameraComponent::EditModeUpdate(float dt) {
+    Update(dt);
 }

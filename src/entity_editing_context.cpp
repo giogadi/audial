@@ -22,16 +22,8 @@ void EntityEditingContext::Update(
     double mouseX, mouseY;
     g._inputManager->GetMousePos(mouseX, mouseY);
     if (g._inputManager->IsKeyPressedThisFrame(InputManager::MouseButton::Left)) {
-        // TODO: ENSURE RENDERER USES THESE SAME VALUES
-        float const fovy = 45.f * kPi / 180.f;
-        float const aspectRatio = float(windowWidth) / float(windowHeight);
-        float const zNear = 0.1f;
-
-        TransformComponent const& cameraTransform =
-            *(g._scene->_cameras.front().lock()->_transform.lock());
         _selectedEntityId = PickEntity(
-            *g._entityManager, mouseX, mouseY, windowWidth, windowHeight, fovy, aspectRatio, zNear,
-            cameraTransform);
+            *g._entityManager, mouseX, mouseY, windowWidth, windowHeight, g._scene->_camera);
         if (_selectedEntityId.IsValid()) {
             Entity& entity = *g._entityManager->GetEntity(_selectedEntityId);
             // std::cout << "PICKED " << entity._name << std::endl;

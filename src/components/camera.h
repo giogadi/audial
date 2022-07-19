@@ -5,7 +5,7 @@
 
 class TransformComponent;
 namespace renderer {
-    class Scene;
+    class Camera;
 }
 
 class CameraComponent : public Component {
@@ -13,11 +13,10 @@ public:
     virtual ComponentType Type() const override { return ComponentType::Camera; }
     CameraComponent() {}
     virtual bool ConnectComponents(EntityId id, Entity& e, GameManager& g) override;
-
-    virtual ~CameraComponent() {}
-
-    Mat4 GetViewMatrix() const;
+    virtual void Update(float dt) override;
+    virtual void EditModeUpdate(float dt) override;
+    virtual ~CameraComponent() override {}
 
     std::weak_ptr<TransformComponent> _transform;
-    renderer::Scene* _mgr = nullptr;
+    renderer::Camera* _camera = nullptr;
 };

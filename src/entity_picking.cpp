@@ -4,6 +4,7 @@
 
 #include "components/transform.h"
 #include "entity_manager.h"
+#include "renderer.h"
 
 namespace {
 
@@ -39,30 +40,33 @@ std::optional<float> sphereRayCast(Vec3 const& rayStart, Vec3 const& normalizedR
 
 EntityId PickEntity(
     EntityManager& entities, double clickX, double clickY, int windowWidth, int windowHeight,
-    float fovy, float aspectRatio, float zNear,
-    TransformComponent const& cameraTransform) {
+    renderer::Camera const& camera) {
+    Mat4 const& cameraTransform = camera._transform;
+
+    float aspectRatio = (float) windowWidth / (float) windowHeight;
+
     // First we find the world-space position of the top-left corner of the near clipping plane.
-    Vec3 nearPlaneCenter = cameraTransform.GetWorldPos() - cameraTransform.GetWorldZAxis() * zNear;
-    float nearPlaneHalfHeight = zNear * tan(0.5f * fovy);
+    Vec3 nearPlaneCenter = cameraTransform.GetPos() - cameraTransform.GetZAxis() * camera._zNear;
+    float nearPlaneHalfHeight = camera._zNear * tan(0.5f * camera._fovyRad);
     float nearPlaneHalfWidth = nearPlaneHalfHeight * aspectRatio;
     Vec3 nearPlaneTopLeft = nearPlaneCenter;
-    nearPlaneTopLeft -= nearPlaneHalfWidth * cameraTransform.GetWorldXAxis();
-    nearPlaneTopLeft += nearPlaneHalfHeight * cameraTransform.GetWorldYAxis();
+    nearPlaneTopLeft -= nearPlaneHalfWidth * cameraTransform.GetXAxis();
+    nearPlaneTopLeft += nearPlaneHalfHeight * cameraTransform.GetYAxis();
 
     // Now map clicked point from [0,windowWidth] -> [0,1]
     float xFactor = clickX / windowWidth;
     float yFactor = clickY / windowHeight;
 
     Vec3 clickedPointOnNearPlane = nearPlaneTopLeft;
-    clickedPointOnNearPlane += (xFactor * 2 * nearPlaneHalfWidth) * cameraTransform.GetWorldXAxis();
-    clickedPointOnNearPlane -= (yFactor * 2 * nearPlaneHalfHeight) * cameraTransform.GetWorldYAxis();
+    clickedPointOnNearPlane += (xFactor * 2 * nearPlaneHalfWidth) * cameraTransform.GetXAxis();
+    clickedPointOnNearPlane -= (yFactor * 2 * nearPlaneHalfHeight) * cameraTransform.GetYAxis();
 
     std::optional<float> closestPickDist;
     EntityId closestPickItem = EntityId::InvalidId();
     float pickSphereRad = 1.f;
-    Vec3 rayDir = (clickedPointOnNearPlane - cameraTransform.GetWorldPos()).GetNormalized();
+    Vec3 rayDir = (clickedPointOnNearPlane - cameraTransform.GetPos()).GetNormalized();
     // Start ray forward of the camera a bit so we don't just pick the camera
-    Vec3 rayStart = cameraTransform.GetWorldPos() + rayDir * (pickSphereRad + 0.1f);
+    Vec3 rayStart = cameraTransform.GetPos() + rayDir * (pickSphereRad + 0.1f);
     entities.ForEveryActiveEntity([&](EntityId id) {
         Entity& entity = *entities.GetEntity(id);
         std::weak_ptr<TransformComponent> pTrans = entity.FindComponentOfType<TransformComponent>();
