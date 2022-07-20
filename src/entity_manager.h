@@ -4,7 +4,7 @@
 
 // TODO: move these inside EntityManager
 enum class EntityDestroyType {
-    None, DestroyComponents, ResetWithoutDestroy
+    None, DestroyComponents, EditDestroyComponents
 };
 struct EntityAndStatus {
     std::shared_ptr<Entity> _e;
@@ -41,6 +41,7 @@ public:
 
     EntityId FindInactiveEntityByName(char const* name);
 
+    // USES EditDestroy() on deactivate!!!!
     void DeactivateEntity(EntityId id);
 
     void ActivateEntity(EntityId id, GameManager& g);

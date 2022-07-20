@@ -2,19 +2,11 @@
 
 #include <algorithm>
 
-#include "imgui/imgui.h"
-
 #include "model.h"
-#include "input_manager.h"
 #include "matrix.h"
 #include "constants.h"
 #include "resource_manager.h"
-#include "serial.h"
-#include "entity.h"
 #include "game_manager.h"
-#include "components/transform.h"
-#include "components/model_instance.h"
-#include "components/camera.h"
 #include "version_id_list.h"
 
 namespace renderer {
@@ -28,8 +20,11 @@ Mat4 Camera::GetViewMatrix() const {
 
 class SceneInternal {
 public:
-    SceneInternal() : _pointLights(100) {}
+    SceneInternal() :
+        _pointLights(100),
+        _modelInstances(100) {}
     TVersionIdList<PointLight> _pointLights;
+    TVersionIdList<ModelInstance> _modelInstances;
 };
 
 Scene::Scene() {
@@ -50,15 +45,19 @@ bool Scene::RemovePointLight(VersionId id) {
     return _pInternal->_pointLights.RemoveItem(id);
 }
 
+std::pair<VersionId, ModelInstance*> Scene::AddModelInstance() {
+    ModelInstance* m = nullptr;
+    VersionId newId = _pInternal->_modelInstances.AddItem(&m);
+    return std::make_pair(newId, m);
+}
+ModelInstance* Scene::GetModelInstance(VersionId id) {
+    return _pInternal->_modelInstances.GetItem(id);
+}
+bool Scene::RemoveModelInstance(VersionId id) {
+    return _pInternal->_modelInstances.RemoveItem(id);
+}
 
 void Scene::Draw(int windowWidth, int windowHeight) {
-    // Update our lists of models, cameras, and lights if any of them were deleted.
-    _models.erase(std::remove_if(_models.begin(), _models.end(),
-        [](std::weak_ptr<ModelComponent const> const& p) {
-            return p.expired();
-        }), _models.end());
-
-
     assert(_pInternal->_pointLights.GetCount() == 1);
     PointLight const& light = *(_pInternal->_pointLights.GetItemAtIndex(0));
 
@@ -69,21 +68,22 @@ void Scene::Draw(int windowWidth, int windowHeight) {
     viewProjTransform = viewProjTransform * camMatrix;
 
     // TODO: group them by Material
-    for (auto const& pModel : _models) {
-        auto const m = *pModel.lock();
-        m._mesh->_mat->_shader.Use();
-        Mat4 transMat = m._transform.lock()->GetWorldMat4();
-        m._mesh->_mat->_shader.SetMat4("uMvpTrans", viewProjTransform * transMat);
-        m._mesh->_mat->_shader.SetMat4("uModelTrans", transMat);
-        m._mesh->_mat->_shader.SetMat3("uModelInvTrans", transMat.GetMat3());
-        m._mesh->_mat->_shader.SetVec3("uLightPos", light._p);
-        m._mesh->_mat->_shader.SetVec3("uAmbient", light._ambient);
-        m._mesh->_mat->_shader.SetVec3("uDiffuse", light._diffuse);
-        m._mesh->_mat->_shader.SetVec4("uColor", m._color);
+    for (int modelIx = 0; modelIx < _pInternal->_modelInstances.GetCount(); ++modelIx) {
+        ModelInstance const* m = _pInternal->_modelInstances.GetItemAtIndex(modelIx);
+        m->_mesh->_mat->_shader.Use();
+        Mat4 const& transMat = m->_transform;
+        Shader const& shader = m->_mesh->_mat->_shader;
+        shader.SetMat4("uMvpTrans", viewProjTransform * transMat);
+        shader.SetMat4("uModelTrans", transMat);
+        shader.SetMat3("uModelInvTrans", transMat.GetMat3());
+        shader.SetVec3("uLightPos", light._p);
+        shader.SetVec3("uAmbient", light._ambient);
+        shader.SetVec3("uDiffuse", light._diffuse);
+        shader.SetVec4("uColor", m->_color);
         glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_2D, m._mesh->_mat->_texture->_handle);
-        glBindVertexArray(m._mesh->_vao);
-        glDrawArrays(GL_TRIANGLES, /*startIndex=*/0, m._mesh->_numVerts);
+        glBindTexture(GL_TEXTURE_2D, m->_mesh->_mat->_texture->_handle);
+        glBindVertexArray(m->_mesh->_vao);
+        glDrawArrays(GL_TRIANGLES, /*startIndex=*/0, m->_mesh->_numVerts);
     }
 }
 

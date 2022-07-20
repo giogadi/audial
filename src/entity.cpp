@@ -46,6 +46,14 @@ void Entity::Destroy() {
     ResetWithoutComponentDestroy();
 }
 
+void Entity::EditDestroy() {
+    for (auto& c : _components) {
+        // TODO: do I need to consider component._active here?
+        c->_c->EditDestroy();
+    }
+    ResetWithoutComponentDestroy();
+}
+
 void Entity::ResetWithoutComponentDestroy() {
     _components.clear();
     _componentTypeMap.clear();
@@ -76,30 +84,22 @@ void Entity::ConnectComponentsOrDeactivate(
     if (_components.empty()) {
         return;
     }
-    std::vector<bool> active(_components.size());
-    for (int i = 0; i < _components.size(); ++i) {
-        active[i] = _components[i]->_active;
-    }
+    std::vector<bool> active(_components.size(), true);
     bool allActiveSucceeded = false;
     for (int roundIx = 0; !allActiveSucceeded && roundIx < _components.size() + 1; ++roundIx) {
         // Clone components into a parallel vector, delete the original, start over.
         ptree entityData;
         this->Save(entityData);
-        _components.clear();
-        _componentTypeMap.clear();
+        this->EditDestroy();
         this->Load(entityData);
-
-        // std::stringstream entityData;
-        // SaveEntity(entityData, *this);
-        // _components.clear();
-        // _componentTypeMap.clear();
-        // LoadEntity(entityData, *this);
 
         allActiveSucceeded = true;
         for (int i = 0; i < _components.size(); ++i) {
+            _components[i]->_active = active[i];
             if (active[i]) {
                 bool success = _components[i]->_c->ConnectComponents(id, *this, g);
                 if (!success) {
+                    _components[i]->_active = false;
                     active[i] = false;
                     allActiveSucceeded = false;
                 }

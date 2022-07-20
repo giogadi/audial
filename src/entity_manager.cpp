@@ -80,7 +80,7 @@ void EntityManager::DeactivateEntity(EntityId id) {
     }
     ptree entityData;
     e_s->_e->Save(entityData);
-    e_s->_e->ResetWithoutComponentDestroy();
+    e_s->_e->EditDestroy();
     e_s->_e->Load(entityData);
     e_s->_active = false;
 }
@@ -106,8 +106,8 @@ void EntityManager::DestroyTaggedEntities() {
             case EntityDestroyType::DestroyComponents:
                 e_s._e->Destroy();
                 break;
-            case EntityDestroyType::ResetWithoutDestroy:
-                e_s._e->ResetWithoutComponentDestroy();
+            case EntityDestroyType::EditDestroyComponents:
+                e_s._e->EditDestroy();
                 break;
         }
         // TODO: We don't need to delete the entity yet, right? It should

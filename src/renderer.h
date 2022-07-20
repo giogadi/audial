@@ -1,16 +1,10 @@
 #pragma once
 
-#include <vector>
-#include <string>
-
-#include "component.h"
 #include "matrix.h"
 #include "constants.h"
+#include "version_id.h"
 
-class ModelComponent;
-class LightComponent;
-class CameraComponent;
-class SceneManagerInternal;
+class BoundMesh;
 
 namespace renderer {
 
@@ -44,24 +38,37 @@ public:
     float _zFar = 100.f;
 };
 
+class ModelInstance {
+public:
+    void Set(Mat4 const& t, BoundMesh const* mesh, Vec4 const& color) {
+        _transform = t;
+        _mesh = mesh;
+        _color = color;
+    }
+
+    Mat4 _transform;
+    BoundMesh const* _mesh = nullptr;
+    Vec4 _color;
+};
+
 class SceneInternal;
 class Scene {
 public:
     Scene();
     virtual ~Scene();
 
-    void AddModel(std::weak_ptr<ModelComponent const> m) { _models.push_back(m); }  
-    // void AddCamera(std::weak_ptr<CameraComponent const> c) { _cameras.push_back(c); }
+    // void AddModel(std::weak_ptr<ModelComponent const> m) { _models.push_back(m); }  
 
-    // DON'T STORE THE POINTER!!!
+    // DON'T STORE THE POINTERS!!!
     std::pair<VersionId, PointLight*> AddPointLight();
     PointLight* GetPointLight(VersionId id);
     bool RemovePointLight(VersionId id);
 
+    std::pair<VersionId, ModelInstance*> AddModelInstance();
+    ModelInstance* GetModelInstance(VersionId id);
+    bool RemoveModelInstance(VersionId id);
+
     void Draw(int windowWidth, int windowHeight);
-    
-    std::vector<std::weak_ptr<ModelComponent const>> _models;
-    // std::vector<std::weak_ptr<CameraComponent const>> _cameras;
 
     Camera _camera;
 private:

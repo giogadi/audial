@@ -21,6 +21,7 @@ public:
     virtual void EditModeUpdate(float dt) override;
     virtual bool ConnectComponents(EntityId id, Entity& e, GameManager& g) override;
     virtual void Destroy() override;
+    virtual void EditDestroy() override;
     virtual bool DrawImGui() override;
     virtual void Save(ptree& pt) const override;
     virtual void Load(ptree const& pt) override;

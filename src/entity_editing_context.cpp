@@ -216,7 +216,7 @@ void EntityEditingContext::DrawEntitiesWindow(EntityManager& entities, GameManag
     // Remove Entity
     if (_selectedEntityId.IsValid()) {
         if (ImGui::Button("Remove Entity")) {
-            entities.TagEntityForDestroy(_selectedEntityId, EntityDestroyType::ResetWithoutDestroy);
+            entities.TagEntityForDestroy(_selectedEntityId, EntityDestroyType::EditDestroyComponents);
             _selectedEntityId = EntityId::InvalidId();
         }
     }
@@ -236,7 +236,7 @@ void EntityEditingContext::DrawEntitiesWindow(EntityManager& entities, GameManag
         }
         if (ImGui::Button("Load Prefab##")) {
             Entity& e = *entities.GetEntity(_selectedEntityId);
-            e.ResetWithoutComponentDestroy();
+            e.EditDestroy();
             e.Load(_prefabFilename.c_str());
             if (entities.IsActive(_selectedEntityId)) {
                 e.ConnectComponentsOrDeactivate(_selectedEntityId, g, /*failures=*/nullptr);

@@ -31,7 +31,13 @@ void LightComponent::EditModeUpdate(float dt) {
 }
 
 void LightComponent::Destroy() {
-    _scene->RemovePointLight(_lightId);
+    if (_scene) {
+        _scene->RemovePointLight(_lightId);
+    }    
+}
+
+void LightComponent::EditDestroy() {
+    Destroy();
 }
 
 bool LightComponent::DrawImGui() {

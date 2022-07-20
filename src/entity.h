@@ -32,8 +32,11 @@ public:
     void EditModeUpdate(float dt);
 
     void Destroy();
+    // Used when deleting/reconnecting entities in edit mode. can deregister stuff from renderer here,
+    // but maybe leave out game logic like OnDestroyEvents.
+    void EditDestroy();
 
-    // Used for edit mode to not invoke event logic and such when deleting an entity.
+    // TODO: MAYBE MAKE THIS PRIVATE
     void ResetWithoutComponentDestroy();
 
     // NOTE: DOES NOT CALL DESTROY ON REMOVED COMPONENT.

@@ -18,13 +18,35 @@ bool ModelComponent::ConnectComponents(EntityId id, Entity& e, GameManager& g) {
     ModelManager* modelManager = g._modelManager;
     auto meshIter = modelManager->_modelMap.find(_modelId);
     if (meshIter != modelManager->_modelMap.end()) {
-        _mesh = meshIter->second.get();
-        _mgr = g._scene;
-        _mgr->AddModel(e.FindComponentOfType<ModelComponent>());
+        BoundMesh const* mesh = meshIter->second.get();
+        _scene = g._scene;
+        std::pair<VersionId, renderer::ModelInstance*> item = _scene->AddModelInstance();
+        _modelInstanceId = item.first;
+        item.second->Set(_transform.lock()->GetWorldMat4(), mesh, _color);
         return true;
     } else {
         return false;
     }
+}
+
+void ModelComponent::Destroy() {
+    if (_scene) {
+        _scene->RemoveModelInstance(_modelInstanceId);
+    }    
+}
+
+void ModelComponent::EditDestroy() {
+    Destroy();
+}
+
+void ModelComponent::Update(float dt) {
+    renderer::ModelInstance* m = _scene->GetModelInstance(_modelInstanceId);
+    m->_transform = _transform.lock()->GetWorldMat4();
+    m->_color = _color;
+}
+
+void ModelComponent::EditModeUpdate(float dt) {
+    Update(dt);
 }
 
 bool ModelComponent::DrawImGui() {
