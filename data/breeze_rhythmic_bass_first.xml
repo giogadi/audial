@@ -102,7 +102,7 @@
             </component>
             <component>
                 <component_type>Model</component_type>
-                <model_id>wood_box</model_id>
+                <model_id>axes</model_id>
                 <color>
                     <x>1</x>
                     <y>1</y>
@@ -237,7 +237,7 @@
             </component>
             <component>
                 <component_type>Model</component_type>
-                <model_id>wood_box</model_id>
+                <model_id>cube</model_id>
                 <color>
                     <x>0.144896209</x>
                     <y>0.169614047</y>
@@ -328,7 +328,7 @@
             </component>
             <component>
                 <component_type>Model</component_type>
-                <model_id>wood_box</model_id>
+                <model_id>cube</model_id>
                 <color>
                     <x>0.985294104</x>
                     <y>0.144896209</y>
@@ -408,7 +408,7 @@
             </component>
             <component>
                 <component_type>Model</component_type>
-                <model_id>wood_box</model_id>
+                <model_id>cube</model_id>
                 <color>
                     <x>0.985294104</x>
                     <y>0.960576534</y>
@@ -501,7 +501,7 @@
             </component>
             <component>
                 <component_type>Model</component_type>
-                <model_id>wood_box</model_id>
+                <model_id>cube</model_id>
                 <color>
                     <x>0.317919374</x>
                     <y>0.985294104</y>
@@ -594,7 +594,7 @@
             </component>
             <component>
                 <component_type>Model</component_type>
-                <model_id>wood_box</model_id>
+                <model_id>cube</model_id>
                 <color>
                     <x>0.985294104</x>
                     <y>0.540377557</y>
@@ -687,7 +687,7 @@
             </component>
             <component>
                 <component_type>Model</component_type>
-                <model_id>wood_box</model_id>
+                <model_id>cube</model_id>
                 <color>
                     <x>0.985294104</x>
                     <y>0.960576534</y>
@@ -1183,7 +1183,7 @@
             </component>
             <component>
                 <component_type>Model</component_type>
-                <model_id>wood_box</model_id>
+                <model_id>cube</model_id>
                 <color>
                     <x>0.985294104</x>
                     <y>0.935858965</y>
@@ -1263,7 +1263,7 @@
             </component>
             <component>
                 <component_type>Model</component_type>
-                <model_id>wood_box</model_id>
+                <model_id>cube</model_id>
                 <color>
                     <x>0.144896209</x>
                     <y>0.441507101</y>
@@ -1343,7 +1343,7 @@
             </component>
             <component>
                 <component_type>Model</component_type>
-                <model_id>wood_box</model_id>
+                <model_id>cube</model_id>
                 <color>
                     <x>0.985294104</x>
                     <y>0.144896209</y>
@@ -1423,7 +1423,7 @@
             </component>
             <component>
                 <component_type>Model</component_type>
-                <model_id>wood_box</model_id>
+                <model_id>cube</model_id>
                 <color>
                     <x>0.144896209</x>
                     <y>0.985294104</y>

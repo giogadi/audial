@@ -9,7 +9,7 @@ namespace audio {
 }
 class EntityManager;
 class CollisionManager;
-class ModelManager;
+class MeshManager;
 class BeatClock;
 
 struct GameManager {
@@ -18,6 +18,6 @@ struct GameManager {
     audio::Context* _audioContext = nullptr;
     EntityManager* _entityManager = nullptr;
     CollisionManager* _collisionManager = nullptr;
-    ModelManager* _modelManager = nullptr;
+    MeshManager* _meshManager = nullptr;
     BeatClock* _beatClock = nullptr;
 };

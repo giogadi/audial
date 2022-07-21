@@ -4,7 +4,7 @@
 #include "constants.h"
 #include "version_id.h"
 
-class BoundMesh;
+class BoundMeshPNU;
 
 namespace renderer {
 
@@ -38,24 +38,39 @@ public:
     float _zFar = 100.f;
 };
 
-class ModelInstance {
+class ColorModelInstance {
 public:
-    void Set(Mat4 const& t, BoundMesh const* mesh, Vec4 const& color) {
+    void Set(Mat4 const& t, BoundMeshPNU const* mesh, Vec4 const& color) {
         _transform = t;
         _mesh = mesh;
         _color = color;
     }
 
     Mat4 _transform;
-    BoundMesh const* _mesh = nullptr;
+    BoundMeshPNU const* _mesh = nullptr;
     Vec4 _color;
+};
+
+class TexturedModelInstance {
+public:
+    void Set(Mat4 const& t, BoundMeshPNU const* mesh, unsigned int textureId) {
+        _transform = t;
+        _mesh = mesh;
+        _textureId = textureId;
+    }
+
+    Mat4 _transform;
+    BoundMeshPNU const* _mesh = nullptr;
+    unsigned int _textureId = 0;
 };
 
 class SceneInternal;
 class Scene {
 public:
-    Scene();
+    Scene();    
     virtual ~Scene();
+
+    bool Init();
 
     // void AddModel(std::weak_ptr<ModelComponent const> m) { _models.push_back(m); }  
 
@@ -64,9 +79,13 @@ public:
     PointLight* GetPointLight(VersionId id);
     bool RemovePointLight(VersionId id);
 
-    std::pair<VersionId, ModelInstance*> AddModelInstance();
-    ModelInstance* GetModelInstance(VersionId id);
-    bool RemoveModelInstance(VersionId id);
+    std::pair<VersionId, ColorModelInstance*> AddColorModelInstance();
+    ColorModelInstance* GetColorModelInstance(VersionId id);
+    bool RemoveColorModelInstance(VersionId id);
+
+    std::pair<VersionId, TexturedModelInstance*> AddTexturedModelInstance();
+    TexturedModelInstance* GetTexturedModelInstance(VersionId id);
+    bool RemoveTexturedModelInstance(VersionId id);
 
     void Draw(int windowWidth, int windowHeight);
 

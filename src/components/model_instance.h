@@ -24,7 +24,7 @@ public:
     virtual void Load(ptree const& pt) override;
 
     // serialized
-    std::string _modelId;
+    std::string _meshId;
     Vec4 _color;
 
     std::weak_ptr<TransformComponent const> _transform;

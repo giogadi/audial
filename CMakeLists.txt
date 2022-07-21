@@ -13,7 +13,7 @@ add_executable(game
     src/audio_loader.cpp src/game.cpp src/audio_util.cpp src/audio.cpp src/audio_event_imgui.cpp
     src/version_id_list_simple.cpp
     src/entity_picking.cpp src/entity_editing_context.cpp src/script_action.cpp
-    src/shader.cpp src/synth.cpp  src/matrix.cpp
+    src/shader.cpp src/synth.cpp  src/matrix.cpp src/mesh.cpp
     src/component.cpp src/entity.cpp src/entity_manager.cpp
     src/renderer.cpp src/collisions.cpp
     src/components/transform.cpp

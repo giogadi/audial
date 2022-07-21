@@ -1,8 +1,13 @@
 #include "renderer.h"
 
 #include <algorithm>
+#include <iostream>
 
-#include "model.h"
+#include "stb_image.h"
+#include <glad/glad.h>
+
+#include "mesh.h"
+#include "shader.h"
 #include "matrix.h"
 #include "constants.h"
 #include "resource_manager.h"
@@ -18,20 +23,75 @@ Mat4 Camera::GetViewMatrix() const {
     return Mat4::LookAt(p, p + forward, up);
 }
 
+namespace {
+bool CreateTextureFromFile(char const* filename, unsigned int& textureId) {
+    stbi_set_flip_vertically_on_load(true);
+    int texWidth, texHeight, texNumChannels;
+    unsigned char *texData = stbi_load(filename, &texWidth, &texHeight, &texNumChannels, 0);
+    if (texData == nullptr) {
+        std::cout << "Error: could not load texture " << filename << std::endl;
+        return false;
+    }
+
+    glGenTextures(1, &textureId);
+    // TODO: Do I need this here, or only in rendering?
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D, textureId);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glTexImage2D(
+        GL_TEXTURE_2D, /*mipmapLevel=*/0, /*textureFormat=*/GL_RGB, texWidth, texHeight, /*legacy=*/0,
+        /*sourceFormat=*/GL_RGB, /*sourceDataType=*/GL_UNSIGNED_BYTE, texData);
+    glGenerateMipmap(GL_TEXTURE_2D);
+    stbi_image_free(texData);
+
+    return true;
+}
+}
+
 class SceneInternal {
 public:
     SceneInternal() :
         _pointLights(100),
-        _modelInstances(100) {}
+        _colorModelInstances(100),
+        _texturedModelInstances(100) {}
+    bool Init();
     TVersionIdList<PointLight> _pointLights;
-    TVersionIdList<ModelInstance> _modelInstances;
+    TVersionIdList<ColorModelInstance> _colorModelInstances;
+    TVersionIdList<TexturedModelInstance> _texturedModelInstances;
+    std::unordered_map<std::string, unsigned int> _textureIdMap;
+    Shader _colorShader;
+    Shader _textureShader;
 };
+
+bool SceneInternal::Init() {    
+    if (!_colorShader.Init("shaders/shader.vert", "shaders/color.frag")) {
+        return false;
+    }
+
+    if (!_textureShader.Init("shaders/shader.vert", "shaders/shader.frag")) {
+        return false;
+    }
+
+    unsigned int woodboxTextureId = 0;
+    if (!CreateTextureFromFile("data/textures/wood_container.jpg", woodboxTextureId)) {
+        return false;
+    }
+    _textureIdMap.emplace("wood_box", woodboxTextureId);
+    return true;
+}
 
 Scene::Scene() {
     _pInternal = std::make_unique<SceneInternal>();
 };
 
 Scene::~Scene() {}
+
+bool Scene::Init() {
+    return _pInternal->Init();
+}
 
 std::pair<VersionId, PointLight*> Scene::AddPointLight() {
     PointLight* light = nullptr;
@@ -45,16 +105,28 @@ bool Scene::RemovePointLight(VersionId id) {
     return _pInternal->_pointLights.RemoveItem(id);
 }
 
-std::pair<VersionId, ModelInstance*> Scene::AddModelInstance() {
-    ModelInstance* m = nullptr;
-    VersionId newId = _pInternal->_modelInstances.AddItem(&m);
+std::pair<VersionId, ColorModelInstance*> Scene::AddColorModelInstance() {
+    ColorModelInstance* m = nullptr;
+    VersionId newId = _pInternal->_colorModelInstances.AddItem(&m);
     return std::make_pair(newId, m);
 }
-ModelInstance* Scene::GetModelInstance(VersionId id) {
-    return _pInternal->_modelInstances.GetItem(id);
+ColorModelInstance* Scene::GetColorModelInstance(VersionId id) {
+    return _pInternal->_colorModelInstances.GetItem(id);
 }
-bool Scene::RemoveModelInstance(VersionId id) {
-    return _pInternal->_modelInstances.RemoveItem(id);
+bool Scene::RemoveColorModelInstance(VersionId id) {
+    return _pInternal->_colorModelInstances.RemoveItem(id);
+}
+
+std::pair<VersionId, TexturedModelInstance*> Scene::AddTexturedModelInstance() {
+    TexturedModelInstance* m = nullptr;
+    VersionId newId = _pInternal->_texturedModelInstances.AddItem(&m);
+    return std::make_pair(newId, m);
+}
+TexturedModelInstance* Scene::GetTexturedModelInstance(VersionId id) {
+    return _pInternal->_texturedModelInstances.GetItem(id);
+}
+bool Scene::RemoveTexturedModelInstance(VersionId id) {
+    return _pInternal->_texturedModelInstances.RemoveItem(id);
 }
 
 void Scene::Draw(int windowWidth, int windowHeight) {
@@ -67,23 +139,59 @@ void Scene::Draw(int windowWidth, int windowHeight) {
     Mat4 camMatrix = _camera.GetViewMatrix();
     viewProjTransform = viewProjTransform * camMatrix;
 
-    // TODO: group them by Material
-    for (int modelIx = 0; modelIx < _pInternal->_modelInstances.GetCount(); ++modelIx) {
-        ModelInstance const* m = _pInternal->_modelInstances.GetItemAtIndex(modelIx);
-        m->_mesh->_mat->_shader.Use();
-        Mat4 const& transMat = m->_transform;
-        Shader const& shader = m->_mesh->_mat->_shader;
-        shader.SetMat4("uMvpTrans", viewProjTransform * transMat);
-        shader.SetMat4("uModelTrans", transMat);
-        shader.SetMat3("uModelInvTrans", transMat.GetMat3());
+    // Color models
+    {
+        Shader& shader = _pInternal->_colorShader;
+        shader.Use();
         shader.SetVec3("uLightPos", light._p);
         shader.SetVec3("uAmbient", light._ambient);
         shader.SetVec3("uDiffuse", light._diffuse);
-        shader.SetVec4("uColor", m->_color);
-        glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_2D, m->_mesh->_mat->_texture->_handle);
-        glBindVertexArray(m->_mesh->_vao);
-        glDrawArrays(GL_TRIANGLES, /*startIndex=*/0, m->_mesh->_numVerts);
+        for (int modelIx = 0; modelIx < _pInternal->_colorModelInstances.GetCount(); ++modelIx) {
+            ColorModelInstance const* m = _pInternal->_colorModelInstances.GetItemAtIndex(modelIx);
+            Mat4 const& transMat = m->_transform;
+            shader.SetMat4("uMvpTrans", viewProjTransform * transMat);
+            shader.SetMat4("uModelTrans", transMat);
+            Mat3 modelTransInv;
+            assert(transMat.GetMat3().TransposeInverse(modelTransInv));
+            shader.SetMat3("uModelInvTrans", modelTransInv);
+
+            // TEMPORARY! What we really want is to use the submeshes always unless the outer Model
+            // has defined some overrides.
+            if (m->_mesh->_subMeshes.size() == 0) {
+                shader.SetVec4("uColor", m->_color);
+                glBindVertexArray(m->_mesh->_vao);
+                glDrawArrays(GL_TRIANGLES, /*startIndex=*/0, m->_mesh->_numVerts);
+            } else {
+                for (int subMeshIx = 0; subMeshIx < m->_mesh->_subMeshes.size(); ++subMeshIx) {
+                    BoundMeshPNU::SubMesh const& subMesh = m->_mesh->_subMeshes[subMeshIx];
+                    shader.SetVec4("uColor", subMesh._color);
+                    glBindVertexArray(m->_mesh->_vao);
+                    glDrawArrays(GL_TRIANGLES, subMesh._startIndex, subMesh._numVerts);
+                }
+            }
+        }
+    }    
+
+    // Textured models
+    {
+        Shader& shader = _pInternal->_textureShader;
+        shader.Use();
+        shader.SetVec3("uLightPos", light._p);
+        shader.SetVec3("uAmbient", light._ambient);
+        shader.SetVec3("uDiffuse", light._diffuse);
+        for (int modelIx = 0; modelIx < _pInternal->_texturedModelInstances.GetCount(); ++modelIx) {
+            TexturedModelInstance const* m = _pInternal->_texturedModelInstances.GetItemAtIndex(modelIx);
+            Mat4 const& transMat = m->_transform;
+            shader.SetMat4("uMvpTrans", viewProjTransform * transMat);
+            shader.SetMat4("uModelTrans", transMat);
+            Mat3 modelTransInv;
+            assert(transMat.GetMat3().TransposeInverse(modelTransInv));
+            shader.SetMat3("uModelInvTrans", modelTransInv);
+            glActiveTexture(GL_TEXTURE0);
+            glBindTexture(GL_TEXTURE_2D, m->_textureId);
+            glBindVertexArray(m->_mesh->_vao);
+            glDrawArrays(GL_TRIANGLES, /*startIndex=*/0, m->_mesh->_numVerts);
+        }
     }
 }
 

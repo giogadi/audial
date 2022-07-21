@@ -159,6 +159,9 @@ struct Mat3 {
         return _col0;
     }
 
+    // Takes inverse then transpose of this matrix and returns result in "out".
+    bool TransposeInverse(Mat3& out);
+
     union {
         float _data[9];
         struct {

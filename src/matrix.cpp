@@ -32,6 +32,33 @@ Mat3 Mat3::FromAxisAngle(Vec3 const& axis, float angleRad) {
     );
 }
 
+// From https://en.wikipedia.org/wiki/Invertible_matrix#Methods_of_matrix_inversion
+bool Mat3::TransposeInverse(Mat3& out) {
+    float A = _m11*_m22 - _m12*_m21;
+    float B = -(_m10*_m22 - _m12*_m20);
+    float C = _m10*_m21 - _m11*_m20;
+    
+    float det = _m00*A + _m01*B + _m02*C;
+    if (det < 0.00001) {
+        return false;
+    }
+    float invDet = 1.f / det;
+
+    out._m00 = A * invDet;
+    out._m01 = B * invDet;
+    out._m02 = C * invDet;
+
+    out._m10 = -(_m01*_m22 - _m02*_m21) * invDet;
+    out._m11 = (_m00*_m22 - _m02*_m20) * invDet;
+    out._m12 = -(_m00*_m21 - _m01*_m20) * invDet;
+
+    out._m20 = (_m01*_m12 - _m02*_m11) * invDet;
+    out._m21 = -(_m00*_m12 - _m02*_m10) * invDet;
+    out._m22 = (_m00*_m11 - _m01*_m10) * invDet;
+
+    return true;
+}
+
 Mat4 Mat4::LookAt(Vec3 const& eye, Vec3 const& at, Vec3 const& up) {
     Mat3 r;
     r._col2 = (at - eye).GetNormalized();

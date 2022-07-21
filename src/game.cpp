@@ -20,19 +20,16 @@
 #define DR_WAV_IMPLEMENTATION
 #include "dr_wav.h"
 
-#include "stb_image.h"
-
 #include "constants.h"
 #include "game_manager.h"
 #include "resource_manager.h"
 #include "audio.h"
 #include "beat_clock.h"
-#include "shader.h"
 #include "cube_verts.h"
 #include "input_manager.h"
 #include "collisions.h"
 #include "component.h"
-#include "model.h"
+#include "mesh.h"
 #include "renderer.h"
 #include "components/player_controller.h"
 #include "components/beep_on_hit.h"
@@ -453,31 +450,19 @@ int main(int argc, char** argv) {
     ImGui_ImplGlfw_InitForOpenGL(window, true);
     // TODO: should I be setting this? imgui_impl_opengl3.h says it's ok to be null.
     ImGui_ImplOpenGL3_Init(/*glsl_version=*/NULL);
-
-    Shader shaderProgram;
-    if (!shaderProgram.Init("shaders/shader.vert", "shaders/color.frag")) {
-        return 1;
-    }
-
-    std::unique_ptr<Texture> texture =
-        Texture::CreateTextureFromFile("data/textures/wood_container.jpg");
-    if (texture == nullptr) {
-        return 1;
-    }
-
-    Material material;
-    material._shader = shaderProgram;
-    material._texture = texture.get();
-
-    ModelManager modelManager;
-
+    
+    MeshManager meshManager;
     {
         std::array<float,kCubeVertsNumValues> cubeVerts;
         GetCubeVertices(&cubeVerts);
         int const numCubeVerts = 36;
-        auto mesh = std::make_unique<BoundMesh>();
-        mesh->Init(cubeVerts.data(), numCubeVerts, &material);
-        assert(modelManager._modelMap.emplace("wood_box", std::move(mesh)).second);
+        auto mesh = std::make_unique<BoundMeshPNU>();
+        mesh->Init(cubeVerts.data(), numCubeVerts);
+        assert(meshManager._meshMap.emplace("cube", std::move(mesh)).second);
+
+        mesh = std::make_unique<BoundMeshPNU>();
+        assert(mesh->Init("data/models/axes.obj"));
+        assert(meshManager._meshMap.emplace("axes", std::move(mesh)).second);
     }
 
     BeatClock beatClock(/*bpm=*/120.0, SAMPLE_RATE, audioContext._stream);
@@ -486,13 +471,17 @@ int main(int argc, char** argv) {
     InputManager inputManager(window);
 
     renderer::Scene sceneManager;
+    if (!sceneManager.Init()) {
+        std::cout << "scene failed to init. exiting" << std::endl;
+        return 1;
+    }
 
     EntityManager entityManager;
 
     CollisionManager collisionManager;
 
     GameManager gameManager {
-        &sceneManager, &inputManager, &audioContext, &entityManager, &collisionManager, &modelManager, &beatClock };
+        &sceneManager, &inputManager, &audioContext, &entityManager, &collisionManager, &meshManager, &beatClock };
 
     if (cmdLineInputs._scriptFilename.has_value()) {
         std::cout << "loading " << cmdLineInputs._scriptFilename.value() << std::endl;
