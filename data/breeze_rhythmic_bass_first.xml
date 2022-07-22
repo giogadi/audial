@@ -102,7 +102,7 @@
             </component>
             <component>
                 <component_type>Model</component_type>
-                <model_id>axes</model_id>
+                <model_id>cube</model_id>
                 <color>
                     <x>1</x>
                     <y>1</y>

@@ -2,6 +2,8 @@
 
 #include <unordered_map>
 #include <memory>
+// TODO: for some reason we need to include this for _meshMap. I don't get it. Maybe do a map of raw pointers.
+#include "mesh.h"
 
 class BoundMeshPNU;
 

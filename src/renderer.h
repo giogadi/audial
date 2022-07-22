@@ -49,6 +49,8 @@ public:
     Mat4 _transform;
     BoundMeshPNU const* _mesh = nullptr;
     Vec4 _color;
+    bool _visible = true;
+    bool _topLayer = false;
 };
 
 class TexturedModelInstance {

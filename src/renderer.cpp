@@ -56,7 +56,8 @@ public:
     SceneInternal() :
         _pointLights(100),
         _colorModelInstances(100),
-        _texturedModelInstances(100) {}
+        _texturedModelInstances(100),
+        _topLayerColorModels(100) {}
     bool Init();
     TVersionIdList<PointLight> _pointLights;
     TVersionIdList<ColorModelInstance> _colorModelInstances;
@@ -64,6 +65,9 @@ public:
     std::unordered_map<std::string, unsigned int> _textureIdMap;
     Shader _colorShader;
     Shader _textureShader;
+
+    // boring cached things
+    std::vector<ColorModelInstance const*> _topLayerColorModels;
 };
 
 bool SceneInternal::Init() {    
@@ -139,6 +143,9 @@ void Scene::Draw(int windowWidth, int windowHeight) {
     Mat4 camMatrix = _camera.GetViewMatrix();
     viewProjTransform = viewProjTransform * camMatrix;
 
+    auto& topLayerModels = _pInternal->_topLayerColorModels;
+    topLayerModels.clear();
+
     // Color models
     {
         Shader& shader = _pInternal->_colorShader;
@@ -148,6 +155,12 @@ void Scene::Draw(int windowWidth, int windowHeight) {
         shader.SetVec3("uDiffuse", light._diffuse);
         for (int modelIx = 0; modelIx < _pInternal->_colorModelInstances.GetCount(); ++modelIx) {
             ColorModelInstance const* m = _pInternal->_colorModelInstances.GetItemAtIndex(modelIx);
+            if (!m->_visible) {
+                continue;
+            }
+            if (m->_topLayer) {
+                topLayerModels.push_back(m);
+            }
             Mat4 const& transMat = m->_transform;
             shader.SetMat4("uMvpTrans", viewProjTransform * transMat);
             shader.SetMat4("uModelTrans", transMat);
@@ -193,6 +206,47 @@ void Scene::Draw(int windowWidth, int windowHeight) {
             glDrawArrays(GL_TRIANGLES, /*startIndex=*/0, m->_mesh->_numVerts);
         }
     }
+
+    // TODO: maybe we should move all glClear()'s into renderer.cpp and save
+    // game.cpp from including any GL code?
+    glClear(GL_DEPTH_BUFFER_BIT);
+
+    // Top layer color models.
+    // TODO prolly refactor both color draws into a common function
+    // Color models
+    {
+        Shader& shader = _pInternal->_colorShader;
+        shader.Use();
+        shader.SetVec3("uLightPos", light._p);
+        shader.SetVec3("uAmbient", light._ambient);
+        shader.SetVec3("uDiffuse", light._diffuse);
+        for (ColorModelInstance const* m : _pInternal->_topLayerColorModels) {
+            if (!m->_visible) {
+                continue;
+            }
+            Mat4 const& transMat = m->_transform;
+            shader.SetMat4("uMvpTrans", viewProjTransform * transMat);
+            shader.SetMat4("uModelTrans", transMat);
+            Mat3 modelTransInv;
+            assert(transMat.GetMat3().TransposeInverse(modelTransInv));
+            shader.SetMat3("uModelInvTrans", modelTransInv);
+
+            // TEMPORARY! What we really want is to use the submeshes always unless the outer Model
+            // has defined some overrides.
+            if (m->_mesh->_subMeshes.size() == 0) {
+                shader.SetVec4("uColor", m->_color);
+                glBindVertexArray(m->_mesh->_vao);
+                glDrawArrays(GL_TRIANGLES, /*startIndex=*/0, m->_mesh->_numVerts);
+            } else {
+                for (int subMeshIx = 0; subMeshIx < m->_mesh->_subMeshes.size(); ++subMeshIx) {
+                    BoundMeshPNU::SubMesh const& subMesh = m->_mesh->_subMeshes[subMeshIx];
+                    shader.SetVec4("uColor", subMesh._color);
+                    glBindVertexArray(m->_mesh->_vao);
+                    glDrawArrays(GL_TRIANGLES, subMesh._startIndex, subMesh._numVerts);
+                }
+            }
+        }
+    }  
 }
 
 } // namespace renderer

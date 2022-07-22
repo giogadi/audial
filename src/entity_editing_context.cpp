@@ -12,9 +12,24 @@
 #include "constants.h"
 #include "components/transform.h"
 #include "components/camera.h"
+#include "resource_manager.h"
+
+bool EntityEditingContext::Init(GameManager& g) {
+    BoundMeshPNU* model = g._meshManager->_meshMap["axes"].get();
+    assert(model != nullptr);
+
+    auto result = g._scene->AddColorModelInstance();
+    _axesModelId = result.first;
+    renderer::ColorModelInstance* modelInstance = result.second;    
+    modelInstance->_mesh = model;
+    modelInstance->_visible = false;
+    modelInstance->_topLayer = true;
+
+    return true;
+}
 
 void EntityEditingContext::Update(
-    float dt, bool editMode, GameManager const& g, int windowWidth, int windowHeight) {
+    float dt, bool editMode, GameManager& g, int windowWidth, int windowHeight) {
     // if (!editMode) {
     //     return;
     // }
@@ -32,20 +47,27 @@ void EntityEditingContext::Update(
         }
     }
 
-    UpdateSelectedPositionFromInput(dt, *g._inputManager, *g._entityManager);
+    UpdateSelectedPositionFromInput(dt, g);
 }
 
-void EntityEditingContext::UpdateSelectedPositionFromInput(float dt, InputManager const& input, EntityManager& entities) {
+void EntityEditingContext::UpdateSelectedPositionFromInput(float dt, GameManager& g) {
+    EntityManager& entities = *g._entityManager;
     Entity* entity = entities.GetEntity(_selectedEntityId);
+    renderer::ColorModelInstance* axesModel = g._scene->GetColorModelInstance(_axesModelId);
+    assert(axesModel != nullptr);
     if (entity == nullptr) {
         _selectedEntityId = EntityId::InvalidId();
+        axesModel->_visible = false;
         return;
     }
 
     auto transform = entity->FindComponentOfType<TransformComponent>().lock();
     if (transform == nullptr) {
+        axesModel->_visible = false;
         return;
     }
+
+    InputManager const& input = *g._inputManager;
 
     Vec3 inputVec(0.0f,0.f,0.f);
     if (input.IsKeyPressed(InputManager::Key::W)) {
@@ -62,11 +84,13 @@ void EntityEditingContext::UpdateSelectedPositionFromInput(float dt, InputManage
     }
 
     if (inputVec._x == 0.f && inputVec._y == 0.f && inputVec._z == 0.f) {
-        return;
-    }
+        float moveSpeed = 3.f;
+        transform->SetWorldPos(transform->GetWorldPos() + inputVec.GetNormalized() * moveSpeed * dt);
+    }    
 
-    float moveSpeed = 3.f;
-    transform->SetWorldPos(transform->GetWorldPos() + inputVec.GetNormalized() * moveSpeed * dt);
+    // Update axes cursor    
+    axesModel->_visible = true;
+    axesModel->_transform = transform->GetWorldMat4();
 }
 
 void EntityEditingContext::DrawEntityImGui(EntityId id, GameManager& g, int* selectedComponentIx, bool connectComponents) {

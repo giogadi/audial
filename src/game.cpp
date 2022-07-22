@@ -505,6 +505,7 @@ int main(int argc, char** argv) {
     }
 
     EntityEditingContext entityEditingContext;
+    assert(entityEditingContext.Init(gameManager));
     if (cmdLineInputs._scriptFilename.has_value()) {
         entityEditingContext._saveFilename = *cmdLineInputs._scriptFilename;
     }
