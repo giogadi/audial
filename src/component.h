@@ -28,7 +28,8 @@ class GameManager;
     X(EventsOnHit) \
     X(Activator) \
     X(Damage) \
-    X(OnDestroyEvent)
+    X(OnDestroyEvent) \
+    X(WaypointFollow)
 
 enum class ComponentType: int {
 #   define X(a) a,
@@ -48,8 +49,9 @@ class Component {
 public:
     virtual ~Component() {}
     virtual void Update(float dt) {}
+    virtual void EditUpdate(float dt) {}
     virtual void Destroy() {};
-    virtual void EditDestroy() {};
+    virtual void EditDestroy() { Destroy(); };
     virtual bool ConnectComponents(EntityId id, Entity& e, GameManager& g) { return true; }
     virtual ComponentType Type() const = 0;
     // If true, request that we try reconnecting the entity's components.

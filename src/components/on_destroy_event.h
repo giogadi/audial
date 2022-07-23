@@ -20,6 +20,8 @@ public:
         }
     }
 
+    virtual void EditDestroy() override {}
+
     virtual bool DrawImGui() override {
         DrawScriptActionListImGui(_actions);
         return false;  // no reconnect

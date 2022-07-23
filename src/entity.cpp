@@ -21,6 +21,7 @@
 #include "components/activator.h"
 #include "components/damage.h"
 #include "components/on_destroy_event.h"
+#include "components/waypoint_follow.h"
 
 void Entity::Update(float dt) {
     for (auto& c : _components) {
