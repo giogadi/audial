@@ -83,7 +83,8 @@ void EntityEditingContext::UpdateSelectedPositionFromInput(float dt, GameManager
         inputVec._x += 1.0f;
     }
 
-    if (inputVec._x == 0.f && inputVec._y == 0.f && inputVec._z == 0.f) {
+    bool hasInput = inputVec._x != 0.f || inputVec._y != 0.f || inputVec._z != 0.f;
+    if (hasInput) {
         float moveSpeed = 3.f;
         transform->SetWorldPos(transform->GetWorldPos() + inputVec.GetNormalized() * moveSpeed * dt);
     }    
