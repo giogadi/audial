@@ -11,7 +11,6 @@
 #include "matrix.h"
 #include "constants.h"
 #include "resource_manager.h"
-#include "game_manager.h"
 #include "version_id_list.h"
 
 namespace renderer {

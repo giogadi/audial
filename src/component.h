@@ -49,7 +49,6 @@ class Component {
 public:
     virtual ~Component() {}
     virtual void Update(float dt) {}
-    virtual void EditUpdate(float dt) {}
     virtual void Destroy() {};
     virtual void EditDestroy() { Destroy(); };
     virtual bool ConnectComponents(EntityId id, Entity& e, GameManager& g) { return true; }

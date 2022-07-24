@@ -112,7 +112,7 @@ inline Vec3 operator/(Vec3 const& v, float const a) {
 
 struct Mat3 {
     Mat3() {
-        memset(_data, 9, sizeof(float));
+        *this = Identity();
     }
     Mat3(float m00, float m10, float m20,
          float m01, float m11, float m21,
@@ -233,7 +233,7 @@ struct Vec4 {
 
 struct Mat4 {
     Mat4() {
-        memset(_data, 16, sizeof(float));
+        *this = Identity();
     }
     Mat4(float m00, float m10, float m20, float m30,
          float m01, float m11, float m21, float m31,

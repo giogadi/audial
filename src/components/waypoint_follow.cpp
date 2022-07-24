@@ -6,6 +6,7 @@
 #include "entity_manager.h"
 #include "components/transform.h"
 #include "renderer.h"
+#include "resource_manager.h"
 
 void WaypointFollowComponent::Update(float dt) {
     if (_currentWaypointIx >= _waypointIds.size()) {
@@ -41,7 +42,7 @@ void WaypointFollowComponent::Update(float dt) {
     }
 }
 
-void WaypointFollowComponent::EditUpdate(float dt) {
+void WaypointFollowComponent::EditModeUpdate(float dt) {
     // Update debug models
     for (int i = 0; i < _waypointIds.size(); ++i) {
         Entity* e = _g->_entityManager->GetEntity(_waypointIds[i]);
@@ -62,6 +63,9 @@ bool WaypointFollowComponent::ConnectComponents(EntityId id, Entity& e, GameMana
     _g = &g;
     _waypointIds.clear();
     _waypointIds.reserve(_waypointNames.size());
+    for (VersionId modelId : _wpModelIds) {
+        _g->_scene->RemoveColorModelInstance(modelId);
+    }
     _wpModelIds.clear();
     _wpModelIds.reserve(_waypointNames.size());
     for (std::string const& wpName : _waypointNames) {
@@ -77,8 +81,13 @@ bool WaypointFollowComponent::ConnectComponents(EntityId id, Entity& e, GameMana
         _waypointIds.push_back(waypointId);
         
         // Add model for this waypoint to renderer.
-        std::pair<VersionId, renderer::ColorModelInstance*> item = _g->_scene->AddColorModelInstance();
+        std::pair<VersionId, renderer::ColorModelInstance*> item = _g->_scene->AddColorModelInstance();        
         _wpModelIds.push_back(item.first);
+        renderer::ColorModelInstance* m = item.second;
+        auto meshIter = _g->_meshManager->_meshMap.find("cube");
+        assert(meshIter != _g->_meshManager->_meshMap.end());
+        m->_mesh = meshIter->second.get();
+        m->_color = Vec4(1.f, 1.f, 1.f, 1.f);
     }
     return true;
 }

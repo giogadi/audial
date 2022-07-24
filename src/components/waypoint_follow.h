@@ -11,7 +11,7 @@ class WaypointFollowComponent : public Component {
 public:
     virtual ComponentType Type() const override { return ComponentType::WaypointFollow; }
     virtual void Update(float dt) override;
-    virtual void EditUpdate(float dt) override;
+    virtual void EditModeUpdate(float dt) override;
     virtual bool ConnectComponents(EntityId id, Entity& e, GameManager& g) override;
     virtual bool DrawImGui() override;
     virtual void Save(boost::property_tree::ptree& pt) const override;
