@@ -14,16 +14,8 @@
 #include "components/camera.h"
 
 bool EntityEditingContext::Init(GameManager& g) {
-    BoundMeshPNU const* model = g._scene->GetMesh("axes");
-    assert(model != nullptr);
-
-    auto result = g._scene->AddColorModelInstance();
-    _axesModelId = result.first;
-    renderer::ColorModelInstance* modelInstance = result.second;    
-    modelInstance->_mesh = model;
-    modelInstance->_visible = false;
-    modelInstance->_topLayer = true;
-
+    _axesModel = g._scene->GetMesh("axes");
+    assert(_axesModel != nullptr);
     return true;
 }
 
@@ -52,17 +44,13 @@ void EntityEditingContext::Update(
 void EntityEditingContext::UpdateSelectedPositionFromInput(float dt, GameManager& g) {
     EntityManager& entities = *g._entityManager;
     Entity* entity = entities.GetEntity(_selectedEntityId);
-    renderer::ColorModelInstance* axesModel = g._scene->GetColorModelInstance(_axesModelId);
-    assert(axesModel != nullptr);
     if (entity == nullptr) {
         _selectedEntityId = EntityId::InvalidId();
-        axesModel->_visible = false;
         return;
     }
 
     auto transform = entity->FindComponentOfType<TransformComponent>().lock();
     if (transform == nullptr) {
-        axesModel->_visible = false;
         return;
     }
 
@@ -88,9 +76,11 @@ void EntityEditingContext::UpdateSelectedPositionFromInput(float dt, GameManager
         transform->SetWorldPos(transform->GetWorldPos() + inputVec.GetNormalized() * moveSpeed * dt);
     }    
 
-    // Update axes cursor    
-    axesModel->_visible = true;
-    axesModel->_transform = transform->GetWorldMat4();
+    // Update axes cursor
+    renderer::ColorModelInstance& m = g._scene->DrawMesh();
+    m._mesh = _axesModel;
+    m._transform = transform->GetWorldMat4();
+    m._topLayer = true;
 }
 
 void EntityEditingContext::DrawEntityImGui(EntityId id, GameManager& g, int* selectedComponentIx, bool connectComponents) {

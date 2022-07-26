@@ -90,7 +90,9 @@ public:
     void Draw(int windowWidth, int windowHeight);
 
     BoundMeshPNU const* GetMesh(std::string const& meshName) const;
+    // TODO: inline or remove some of the call depth here
     void DrawMesh(BoundMeshPNU const* m, Mat4 const& t, Vec4 const& color);
+    renderer::ColorModelInstance& DrawMesh();
     void DrawCube(Mat4 const& t, Vec4 const& color);
 
     Camera _camera;

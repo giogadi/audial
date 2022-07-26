@@ -127,14 +127,16 @@ BoundMeshPNU const* Scene::GetMesh(std::string const& meshName) const {
     }
 }
 
-void Scene::DrawMesh(BoundMeshPNU const* m, Mat4 const& t, Vec4 const& color) {
+renderer::ColorModelInstance& Scene::DrawMesh() {
     _pInternal->_modelsToDraw.emplace_back();
-    ColorModelInstance& model = _pInternal->_modelsToDraw.back();
+    return _pInternal->_modelsToDraw.back();
+}
+
+void Scene::DrawMesh(BoundMeshPNU const* mesh, Mat4 const& t, Vec4 const& color) {
+    ColorModelInstance& model = DrawMesh();
     model._transform = t;
-    model._visible = true;
-    model._topLayer = false;
+    model._mesh = mesh;
     model._color = color;
-    model._mesh = m;
 }
 
 void Scene::DrawCube(Mat4 const& t, Vec4 const& color) {

@@ -8,6 +8,7 @@
 #include "game_manager.h"
 
 class GameManager;
+class BoundMeshPNU;
 
 class EntityEditingContext {
 public:
@@ -23,6 +24,6 @@ public:
 
 private:
     void UpdateSelectedPositionFromInput(float dt, GameManager& gameManager);
-    
-    VersionId _axesModelId;
+
+    BoundMeshPNU const* _axesModel = nullptr;
 };
