@@ -2,6 +2,7 @@
 
 #include <algorithm>
 #include <iostream>
+#include <unordered_map>
 
 #include "stb_image.h"
 #include <glad/glad.h>
@@ -10,8 +11,8 @@
 #include "shader.h"
 #include "matrix.h"
 #include "constants.h"
-#include "resource_manager.h"
 #include "version_id_list.h"
+#include "cube_verts.h"
 
 namespace renderer {
 
@@ -56,20 +57,39 @@ public:
         _pointLights(100),
         _colorModelInstances(100),
         _texturedModelInstances(100),
-        _topLayerColorModels(100) {}
+        _topLayerColorModels(100) {
+            _modelsToDraw.reserve(100);
+    }
     bool Init();
     TVersionIdList<PointLight> _pointLights;
     TVersionIdList<ColorModelInstance> _colorModelInstances;
     TVersionIdList<TexturedModelInstance> _texturedModelInstances;
+    std::vector<ColorModelInstance> _modelsToDraw;
+
+    std::unordered_map<std::string, std::unique_ptr<BoundMeshPNU>> _meshMap;
     std::unordered_map<std::string, unsigned int> _textureIdMap;
     Shader _colorShader;
     Shader _textureShader;
 
     // boring cached things
     std::vector<ColorModelInstance const*> _topLayerColorModels;
+    BoundMeshPNU const* _cubeMesh = nullptr;
 };
 
 bool SceneInternal::Init() {    
+    {
+        std::array<float,kCubeVertsNumValues> cubeVerts;
+        GetCubeVertices(&cubeVerts);
+        int const numCubeVerts = 36;
+        auto mesh = std::make_unique<BoundMeshPNU>();
+        mesh->Init(cubeVerts.data(), numCubeVerts);
+        assert(_meshMap.emplace("cube", std::move(mesh)).second);
+
+        mesh = std::make_unique<BoundMeshPNU>();
+        assert(mesh->Init("data/models/axes.obj"));
+        assert(_meshMap.emplace("axes", std::move(mesh)).second);
+    }
+
     if (!_colorShader.Init("shaders/shader.vert", "shaders/color.frag")) {
         return false;
     }
@@ -83,6 +103,8 @@ bool SceneInternal::Init() {
         return false;
     }
     _textureIdMap.emplace("wood_box", woodboxTextureId);
+
+    _cubeMesh = _meshMap["cube"].get();
     return true;
 }
 
@@ -94,6 +116,29 @@ Scene::~Scene() {}
 
 bool Scene::Init() {
     return _pInternal->Init();
+}
+
+BoundMeshPNU const* Scene::GetMesh(std::string const& meshName) const {
+    auto meshIter = _pInternal->_meshMap.find(meshName);
+    if (meshIter == _pInternal->_meshMap.end()) {
+        return nullptr;
+    } else {
+        return meshIter->second.get();
+    }
+}
+
+void Scene::DrawMesh(BoundMeshPNU const* m, Mat4 const& t, Vec4 const& color) {
+    _pInternal->_modelsToDraw.emplace_back();
+    ColorModelInstance& model = _pInternal->_modelsToDraw.back();
+    model._transform = t;
+    model._visible = true;
+    model._topLayer = false;
+    model._color = color;
+    model._mesh = m;
+}
+
+void Scene::DrawCube(Mat4 const& t, Vec4 const& color) {
+    DrawMesh(_pInternal->_cubeMesh, t, color);
 }
 
 std::pair<VersionId, PointLight*> Scene::AddPointLight() {
@@ -144,6 +189,46 @@ void Scene::Draw(int windowWidth, int windowHeight) {
 
     auto& topLayerModels = _pInternal->_topLayerColorModels;
     topLayerModels.clear();
+
+    // buffered Color models (immediate API)
+    {
+        Shader& shader = _pInternal->_colorShader;
+        shader.Use();
+        shader.SetVec3("uLightPos", light._p);
+        shader.SetVec3("uAmbient", light._ambient);
+        shader.SetVec3("uDiffuse", light._diffuse);
+        for (ColorModelInstance const& m : _pInternal->_modelsToDraw) {
+            if (!m._visible) {
+                continue;
+            }
+            if (m._topLayer) {
+                topLayerModels.push_back(&m);
+            }
+            Mat4 const& transMat = m._transform;
+            shader.SetMat4("uMvpTrans", viewProjTransform * transMat);
+            shader.SetMat4("uModelTrans", transMat);
+            Mat3 modelTransInv;
+            assert(transMat.GetMat3().TransposeInverse(modelTransInv));
+            shader.SetMat3("uModelInvTrans", modelTransInv);
+
+            // TEMPORARY! What we really want is to use the submeshes always unless the outer Model
+            // has defined some overrides.
+            if (m._mesh->_subMeshes.size() == 0) {
+                shader.SetVec4("uColor", m._color);
+                glBindVertexArray(m._mesh->_vao);
+                glDrawArrays(GL_TRIANGLES, /*startIndex=*/0, m._mesh->_numVerts);
+            } else {
+                for (int subMeshIx = 0; subMeshIx < m._mesh->_subMeshes.size(); ++subMeshIx) {
+                    BoundMeshPNU::SubMesh const& subMesh = m._mesh->_subMeshes[subMeshIx];
+                    shader.SetVec4("uColor", subMesh._color);
+                    glBindVertexArray(m._mesh->_vao);
+                    glDrawArrays(GL_TRIANGLES, subMesh._startIndex, subMesh._numVerts);
+                }
+            }
+        }
+
+        _pInternal->_modelsToDraw.clear();
+    }    
 
     // Color models
     {

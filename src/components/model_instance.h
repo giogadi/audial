@@ -3,7 +3,7 @@
 #include "component.h"
 #include "matrix.h"
 
-class BoundMesh;
+class BoundMeshPNU;
 namespace renderer {
     class Scene;
 }
@@ -29,5 +29,5 @@ public:
 
     std::weak_ptr<TransformComponent const> _transform;
     renderer::Scene* _scene = nullptr;
-    VersionId _modelInstanceId;
+    BoundMeshPNU const* _mesh = nullptr;
 };

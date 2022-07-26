@@ -22,10 +22,8 @@
 
 #include "constants.h"
 #include "game_manager.h"
-#include "resource_manager.h"
 #include "audio.h"
 #include "beat_clock.h"
-#include "cube_verts.h"
 #include "input_manager.h"
 #include "collisions.h"
 #include "component.h"
@@ -450,20 +448,6 @@ int main(int argc, char** argv) {
     ImGui_ImplGlfw_InitForOpenGL(window, true);
     // TODO: should I be setting this? imgui_impl_opengl3.h says it's ok to be null.
     ImGui_ImplOpenGL3_Init(/*glsl_version=*/NULL);
-    
-    MeshManager meshManager;
-    {
-        std::array<float,kCubeVertsNumValues> cubeVerts;
-        GetCubeVertices(&cubeVerts);
-        int const numCubeVerts = 36;
-        auto mesh = std::make_unique<BoundMeshPNU>();
-        mesh->Init(cubeVerts.data(), numCubeVerts);
-        assert(meshManager._meshMap.emplace("cube", std::move(mesh)).second);
-
-        mesh = std::make_unique<BoundMeshPNU>();
-        assert(mesh->Init("data/models/axes.obj"));
-        assert(meshManager._meshMap.emplace("axes", std::move(mesh)).second);
-    }
 
     BeatClock beatClock(/*bpm=*/120.0, SAMPLE_RATE, audioContext._stream);
     beatClock.Update();
@@ -481,7 +465,7 @@ int main(int argc, char** argv) {
     CollisionManager collisionManager;
 
     GameManager gameManager {
-        &sceneManager, &inputManager, &audioContext, &entityManager, &collisionManager, &meshManager, &beatClock };
+        &sceneManager, &inputManager, &audioContext, &entityManager, &collisionManager, &beatClock };
 
     if (cmdLineInputs._scriptFilename.has_value()) {
         std::cout << "loading " << cmdLineInputs._scriptFilename.value() << std::endl;

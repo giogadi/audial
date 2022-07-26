@@ -7,7 +7,6 @@
 #include "serial.h"
 #include "entity.h"
 #include "game_manager.h"
-#include "resource_manager.h"
 #include "components/transform.h"
 
 bool ModelComponent::ConnectComponents(EntityId id, Entity& e, GameManager& g) {
@@ -15,24 +14,15 @@ bool ModelComponent::ConnectComponents(EntityId id, Entity& e, GameManager& g) {
     if (_transform.expired()) {
         return false;
     }
-    MeshManager* meshManager = g._meshManager;
-    auto meshIter = meshManager->_meshMap.find(_meshId);
-    if (meshIter != meshManager->_meshMap.end()) {
-        BoundMeshPNU const* mesh = meshIter->second.get();
-        _scene = g._scene;
-        std::pair<VersionId, renderer::ColorModelInstance*> item = _scene->AddColorModelInstance();
-        _modelInstanceId = item.first;
-        item.second->Set(_transform.lock()->GetWorldMat4(), mesh, _color);
-        return true;
-    } else {
+    _scene = g._scene;
+    _mesh = g._scene->GetMesh(_meshId);
+    if (_mesh == nullptr) {
         return false;
     }
+    return true;
 }
 
 void ModelComponent::Destroy() {
-    if (_scene) {
-        _scene->RemoveColorModelInstance(_modelInstanceId);
-    }    
 }
 
 void ModelComponent::EditDestroy() {
@@ -40,9 +30,7 @@ void ModelComponent::EditDestroy() {
 }
 
 void ModelComponent::Update(float dt) {
-    renderer::ColorModelInstance* m = _scene->GetColorModelInstance(_modelInstanceId);
-    m->_transform = _transform.lock()->GetWorldMat4();
-    m->_color = _color;
+    _scene->DrawMesh(_mesh, _transform.lock()->GetWorldMat4(), _color);
 }
 
 void ModelComponent::EditModeUpdate(float dt) {

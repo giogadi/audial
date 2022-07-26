@@ -3,6 +3,7 @@
 #include "component.h"
 
 class TransformComponent;
+class BoundMeshPNU;
 namespace renderer {
     class ColorModelInstance;
 };
@@ -16,7 +17,7 @@ public:
     virtual bool DrawImGui() override;
     virtual void Save(boost::property_tree::ptree& pt) const override;
     virtual void Load(boost::property_tree::ptree const& pt) override;
-    virtual void EditDestroy() override;
+
 
     // Serialized
     std::vector<std::string> _waypointNames;
@@ -24,7 +25,7 @@ public:
     // Not serialized
     std::weak_ptr<TransformComponent> _t;
     std::vector<EntityId> _waypointIds;
-    std::vector<VersionId> _wpModelIds;
     int _currentWaypointIx = 0;
     GameManager* _g;
+    BoundMeshPNU const* _debugMesh = nullptr;
 };

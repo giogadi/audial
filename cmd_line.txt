@@ -1,3 +1,4 @@
 // -s ../data/breeze.xml -y ../data/synth_patches_breeze.xml
 // -s ../data/breeze_rhythmic.xml -y ../data/synth_patches_breeze_rhythmic.xml
--s data/breeze_rhythmic_bass_first.xml -y data/synth_patches_breeze_rhythmic.xml
+// -s data/breeze_rhythmic_bass_first.xml -y data/synth_patches_breeze_rhythmic.xml
+-s data/wp_test.xml -y data/synth_patches_breeze_rhythmic.xml

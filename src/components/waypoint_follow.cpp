@@ -6,7 +6,6 @@
 #include "entity_manager.h"
 #include "components/transform.h"
 #include "renderer.h"
-#include "resource_manager.h"
 
 void WaypointFollowComponent::Update(float dt) {
     if (_currentWaypointIx >= _waypointIds.size()) {
@@ -21,6 +20,7 @@ void WaypointFollowComponent::Update(float dt) {
     Vec3 wpPos = wpTrans->GetWorldPos();
     
     std::shared_ptr<TransformComponent> myTrans = _t.lock();
+    assert(myTrans != nullptr);
     Vec3 myPos = myTrans->GetWorldPos();
     Vec3 fromMeToWaypoint = wpPos - myPos;
     
@@ -53,21 +53,18 @@ void WaypointFollowComponent::EditModeUpdate(float dt) {
         if (wpTrans == nullptr) {
             continue;
         }
-        renderer::ColorModelInstance* m = _g->_scene->GetColorModelInstance(_wpModelIds[i]);
-        assert(m != nullptr);
-        m->_transform = wpTrans->GetWorldMat4();
+        _g->_scene->DrawMesh(_debugMesh, wpTrans->GetWorldMat4(), Vec4(1.f, 0.f, 0.f, 1.f));
     }
 }
 
 bool WaypointFollowComponent::ConnectComponents(EntityId id, Entity& e, GameManager& g) {
     _g = &g;
+    _t = e.FindComponentOfType<TransformComponent>();
+    if (_t.expired()) {
+        return false;
+    }
     _waypointIds.clear();
     _waypointIds.reserve(_waypointNames.size());
-    for (VersionId modelId : _wpModelIds) {
-        _g->_scene->RemoveColorModelInstance(modelId);
-    }
-    _wpModelIds.clear();
-    _wpModelIds.reserve(_waypointNames.size());
     for (std::string const& wpName : _waypointNames) {
         EntityId waypointId = g._entityManager->FindActiveEntityByName(wpName.c_str());
         if (!waypointId.IsValid()) {
@@ -79,30 +76,16 @@ bool WaypointFollowComponent::ConnectComponents(EntityId id, Entity& e, GameMana
             continue;
         }        
         _waypointIds.push_back(waypointId);
-        
-        // Add model for this waypoint to renderer.
-        std::pair<VersionId, renderer::ColorModelInstance*> item = _g->_scene->AddColorModelInstance();        
-        _wpModelIds.push_back(item.first);
-        renderer::ColorModelInstance* m = item.second;
-        auto meshIter = _g->_meshManager->_meshMap.find("cube");
-        assert(meshIter != _g->_meshManager->_meshMap.end());
-        m->_mesh = meshIter->second.get();
-        m->_color = Vec4(1.f, 1.f, 1.f, 1.f);
     }
+    _debugMesh = _g->_scene->GetMesh("cube");
+    assert(_debugMesh != nullptr);
     return true;
-}
-
-void WaypointFollowComponent::EditDestroy() {
-    // disconnect wpModels from renderer
-    for (VersionId modelId : _wpModelIds) {
-        _g->_scene->RemoveColorModelInstance(modelId);
-    }
 }
 
 bool WaypointFollowComponent::DrawImGui() {
     bool needReconnect = false;
     if (ImGui::Button("Add Waypoint##")) {
-        _waypointNames.push_back("");
+        _waypointNames.push_back("change_me");
         needReconnect = true;
     }
     char buf[128];
@@ -124,7 +107,8 @@ bool WaypointFollowComponent::DrawImGui() {
 void WaypointFollowComponent::Save(boost::property_tree::ptree& pt) const {
     ptree& waypointsPt = pt.add_child("waypoints", ptree());
     for (std::string const& wpName : _waypointNames) {
-        waypointsPt.put("waypoint_name", wpName);
+        ptree& wpPt = waypointsPt.add_child("waypoint_name", ptree());
+        wpPt.put_value(wpName);
     }
 }
 

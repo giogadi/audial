@@ -74,8 +74,6 @@ public:
 
     bool Init();
 
-    // void AddModel(std::weak_ptr<ModelComponent const> m) { _models.push_back(m); }  
-
     // DON'T STORE THE POINTERS!!!
     std::pair<VersionId, PointLight*> AddPointLight();
     PointLight* GetPointLight(VersionId id);
@@ -90,6 +88,10 @@ public:
     bool RemoveTexturedModelInstance(VersionId id);
 
     void Draw(int windowWidth, int windowHeight);
+
+    BoundMeshPNU const* GetMesh(std::string const& meshName) const;
+    void DrawMesh(BoundMeshPNU const* m, Mat4 const& t, Vec4 const& color);
+    void DrawCube(Mat4 const& t, Vec4 const& color);
 
     Camera _camera;
 private:

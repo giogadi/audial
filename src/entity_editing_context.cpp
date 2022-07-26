@@ -12,10 +12,9 @@
 #include "constants.h"
 #include "components/transform.h"
 #include "components/camera.h"
-#include "resource_manager.h"
 
 bool EntityEditingContext::Init(GameManager& g) {
-    BoundMeshPNU* model = g._meshManager->_meshMap["axes"].get();
+    BoundMeshPNU const* model = g._scene->GetMesh("axes");
     assert(model != nullptr);
 
     auto result = g._scene->AddColorModelInstance();
