@@ -542,6 +542,8 @@ int main(int argc, char** argv) {
             showHitCounters = !showHitCounters;
         }
 
+        entityEditingContext.Update(dt, cmdLineInputs._editMode, gameManager, windowWidth, windowHeight);
+
         if (cmdLineInputs._editMode) {
             entityManager.EditModeUpdate(dt);
         } else {
@@ -549,8 +551,6 @@ int main(int argc, char** argv) {
             // TODO do we wanna run collision manager during edit mode?
             collisionManager.Update(dt);
         }
-
-        entityEditingContext.Update(dt, cmdLineInputs._editMode, gameManager, windowWidth, windowHeight);
 
         // TODO: where in the frame should entity removal happen? idk
         entityManager.DestroyTaggedEntities();
