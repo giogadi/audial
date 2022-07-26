@@ -299,6 +299,8 @@ struct Mat4 {
         }
     }
 
+    void Scale(float x);
+
     // Assumes the mat is just a simple rotation and translation. No scaling.
     Mat4 InverseAffine() const {
         Mat4 inverse = Mat4::Identity();

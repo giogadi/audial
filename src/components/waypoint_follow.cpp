@@ -53,7 +53,9 @@ void WaypointFollowComponent::EditModeUpdate(float dt) {
         if (wpTrans == nullptr) {
             continue;
         }
-        _g->_scene->DrawMesh(_debugMesh, wpTrans->GetWorldMat4(), Vec4(1.f, 0.f, 0.f, 1.f));
+        Mat4 wpMeshTrans = wpTrans->GetWorldMat4();
+        wpMeshTrans.Scale(0.25f);
+        _g->_scene->DrawMesh(_debugMesh, wpMeshTrans, Vec4(1.f, 0.f, 0.f, 1.f));
     }
 }
 

@@ -118,3 +118,15 @@ Mat4 Mat4::Perspective(
     xmax = ymax * aspectRatio;
     return Frustrum(-xmax, xmax, -ymax, ymax, znear, zfar);
 }
+
+void Mat4::Scale(float x) {
+    _m00 *= x;
+    _m01 *= x;
+    _m02 *= x;
+    _m10 *= x;
+    _m11 *= x;
+    _m12 *= x;
+    _m20 *= x;
+    _m21 *= x;
+    _m22 *= x;
+}
