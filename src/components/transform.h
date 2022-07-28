@@ -80,6 +80,14 @@ public:
             SetLocalRot(rot);
         }
     }
+    void SetWorldMat4(Mat4 const& m) {
+        if (auto const& parent = _parent.lock()) {
+            Mat4 parentInv = parent->GetWorldMat4().InverseAffine();
+            _localTransform = m * parentInv;
+        } else {
+            _localTransform = m;
+        }
+    }
 
     bool HasParent() const {
         return !_parent.expired();

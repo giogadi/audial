@@ -1,5 +1,7 @@
 #include "components/camera.h"
 
+#include "imgui/imgui.h"
+
 #include "serial.h"
 #include "entity.h"
 #include "game_manager.h"
@@ -13,10 +15,19 @@ bool CameraComponent::ConnectComponents(EntityId id, Entity& e, GameManager& g) 
 }
 
 void CameraComponent::Update(float dt) {
-    // _camera->Set(_transform.lock()->GetWorldMat4(), 45.f * kPi / 180.f, 0.1f, 100.f);
     _camera->_transform = _transform.lock()->GetWorldMat4();
 }
 
 void CameraComponent::EditModeUpdate(float dt) {
-    Update(dt);
+    // In edit mode, we don't drive the renderer's camera using this component.
+}
+
+bool CameraComponent::DrawImGui() {
+    if (ImGui::Button("Move Debug Camera to This")) {
+        _camera->_transform = _transform.lock()->GetWorldMat4();
+    }
+    if (ImGui::Button("Move This to Debug Camera")) {
+        _transform.lock()->SetWorldMat4(_camera->_transform);
+    }
+    return false;
 }

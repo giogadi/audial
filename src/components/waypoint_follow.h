@@ -21,6 +21,7 @@ public:
 
     // Serialized
     std::vector<std::string> _waypointNames;
+    bool _loop = false;
 
     // Not serialized
     std::weak_ptr<TransformComponent> _t;

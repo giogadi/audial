@@ -16,14 +16,27 @@
 bool EntityEditingContext::Init(GameManager& g) {
     _axesModel = g._scene->GetMesh("axes");
     assert(_axesModel != nullptr);
+    // Initialize the debug camera's position by looking for an arbitrary camera
+    // component in the Scene.
+    g._entityManager->ForEveryActiveEntity([&g](EntityId eId) {
+        Entity* entity = g._entityManager->GetEntity(eId);
+        assert(entity != nullptr);
+        std::shared_ptr<CameraComponent> camComp = entity->FindComponentOfType<CameraComponent>().lock();
+        if (camComp == nullptr) {
+            return;
+        }
+        std::shared_ptr<TransformComponent> camTransComp = camComp->_transform.lock();
+        assert(camTransComp != nullptr);
+        g._scene->_camera._transform = camTransComp->GetWorldMat4();
+    });
     return true;
 }
 
 void EntityEditingContext::Update(
     float dt, bool editMode, GameManager& g, int windowWidth, int windowHeight) {
-    // if (!editMode) {
-    //     return;
-    // }
+    if (!editMode) {
+        return;
+    }
 
     double mouseX, mouseY;
     g._inputManager->GetMousePos(mouseX, mouseY);
@@ -39,6 +52,31 @@ void EntityEditingContext::Update(
     }
 
     UpdateSelectedPositionFromInput(dt, g);
+
+    // If no entity is selected, update debug camera from user input.
+    if (!_selectedEntityId.IsValid()) {
+        InputManager const& input = *g._inputManager;
+
+        Vec3 inputVec(0.0f,0.f,0.f);
+        if (input.IsKeyPressed(InputManager::Key::W)) {
+            inputVec._z -= 1.0f;
+        }
+        if (input.IsKeyPressed(InputManager::Key::S)) {
+            inputVec._z += 1.0f;
+        }
+        if (input.IsKeyPressed(InputManager::Key::A)) {
+            inputVec._x -= 1.0f;
+        }
+        if (input.IsKeyPressed(InputManager::Key::D)) {
+            inputVec._x += 1.0f;
+        }
+
+        bool hasInput = inputVec._x != 0.f || inputVec._y != 0.f || inputVec._z != 0.f;
+        if (hasInput) {
+            float moveSpeed = 3.f;
+            g._scene->_camera._transform.Translate(inputVec.GetNormalized() * moveSpeed * dt);
+        }
+    }
 }
 
 void EntityEditingContext::UpdateSelectedPositionFromInput(float dt, GameManager& g) {

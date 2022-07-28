@@ -18,4 +18,5 @@ struct GameManager {
     EntityManager* _entityManager = nullptr;
     CollisionManager* _collisionManager = nullptr;
     BeatClock* _beatClock = nullptr;
+    bool _editMode = false;
 };

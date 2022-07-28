@@ -16,6 +16,7 @@ public:
     virtual void Update(float dt) override;
     virtual void EditModeUpdate(float dt) override;
     virtual ~CameraComponent() override {}
+    virtual bool DrawImGui() override;
 
     std::weak_ptr<TransformComponent> _transform;
     renderer::Camera* _camera = nullptr;

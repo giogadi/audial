@@ -465,7 +465,8 @@ int main(int argc, char** argv) {
     CollisionManager collisionManager;
 
     GameManager gameManager {
-        &sceneManager, &inputManager, &audioContext, &entityManager, &collisionManager, &beatClock };
+        &sceneManager, &inputManager, &audioContext, &entityManager, &collisionManager, &beatClock,
+        cmdLineInputs._editMode };
 
     if (cmdLineInputs._scriptFilename.has_value()) {
         std::cout << "loading " << cmdLineInputs._scriptFilename.value() << std::endl;
@@ -514,7 +515,7 @@ int main(int argc, char** argv) {
             }
         }
 
-        if (inputManager.IsKeyPressedThisFrame(InputManager::Key::Space)) {
+        if (!cmdLineInputs._editMode && inputManager.IsKeyPressedThisFrame(InputManager::Key::Space)) {
             paused = !paused;
         }
 
