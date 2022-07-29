@@ -79,10 +79,12 @@ void CollisionManager::Update(float dt) {
     std::vector<std::weak_ptr<RigidBodyComponent>> hitOthers(_bodies.size());
     for (int i = 0; i < _bodies.size(); ++i) {
         RigidBodyComponent& rb = *_bodies[i].lock();
-        Vec3 const rbTranslate = dt * rb._velocity;
-        Vec3 newPos = rb._transform.lock()->GetWorldPos() + rbTranslate;
-        Aabb newAabb = translateAabb(rb._localAabb, newPos);
-        newPositions[i] = newPos;
+        TransformComponent const& rbTrans = *rb._transform.lock();
+        Vec3 const rbTranslateLocal = dt * rb._velocity;
+        Vec3 newPosLocal = rbTrans.GetLocalPos() + rbTranslateLocal;
+        Vec3 newPosWorld = rbTrans.TransformLocalToWorld(newPosLocal);
+        Aabb newAabb = translateAabb(rb._localAabb, newPosWorld);
+        newPositions[i] = newPosWorld;
         newAabbs[i] = newAabb;
     }
 

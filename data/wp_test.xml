@@ -110,6 +110,8 @@
             </component>
             <component>
                 <component_type>WaypointFollow</component_type>
+                <loop>true</loop>
+                <speed>5.0</speed>
                 <waypoints>
                     <waypoint_name>wp1</waypoint_name>
                     <waypoint_name>wp2</waypoint_name>

@@ -37,7 +37,10 @@ struct Vec3 {
         return sqrt(Length2());
     }
 
+    // Returns 0,0,0 if input vector is 0.
     Vec3 GetNormalized() const;
+    // Return length before normalizing.
+    float Normalize();
 
     float IsZero() const {
         return _x == 0.f && _y == 0.f && _z == 0.f;
@@ -383,6 +386,14 @@ inline Mat4 operator*(Mat4 const& a, Mat4 const& b) {
         }
     }
     return result;
+}
+
+inline Vec4 operator*(Mat4 const& m, Vec4 const& v) {
+    return Vec4(
+        m._m00*v._x + m._m01*v._y + m._m02*v._z + m._m03*v._w,
+        m._m10*v._x + m._m11*v._y + m._m12*v._z + m._m13*v._w,
+        m._m20*v._x + m._m21*v._y + m._m22*v._z + m._m23*v._w,
+        m._m30*v._x + m._m31*v._y + m._m32*v._z + m._m33*v._w);
 }
 
 // struct Transform {

@@ -48,6 +48,9 @@ public:
     Vec3 GetLocalZAxis() const {
         return _localTransform.GetCol3(2);
     }
+    Vec3 GetLocalPos() const {
+        return _localTransform.GetCol3(3);
+    }
 
     Vec3 GetWorldXAxis() const {
         return GetWorldRot().GetCol(0);
@@ -92,6 +95,12 @@ public:
     bool HasParent() const {
         return !_parent.expired();
     }
+    // Both of these preserve this transform's world transform.
+    void Unparent();
+    // Handles re-parenting as well, if previously parented.
+    void Parent(std::shared_ptr<TransformComponent const> const& parent);
+
+    Vec3 TransformLocalToWorld(Vec3 const& localVec) const;
 
     virtual void Save(ptree& pt) const override;
     virtual void Load(ptree const& pt) override;

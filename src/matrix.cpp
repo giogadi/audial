@@ -1,12 +1,28 @@
 #include "matrix.h"
 
 Vec3 Vec3::GetNormalized() const {
-    float length = Length();
-    if (length == 0.f) {
-        return Vec3(0.f, 0.f, 0.f);
-    } else {
-        return *this / length;
+    // float length = Length();
+    // if (length == 0.f) {
+    //     return Vec3(0.f, 0.f, 0.f);
+    // } else {
+    //     return *this / length;
+    // }
+    Vec3 n = *this;
+    n.Normalize();
+    return n;
+}
+
+float Vec3::Normalize() {
+    float length2 = Length2();
+    if (length2 == 0.f) {
+        Set(0.f, 0.f, 0.f);
+        return 0.f;
     }
+    float length = sqrt(length2);
+    _x /= length;
+    _y /= length;
+    _z /= length;
+    return length;
 }
 
 Mat3 Mat3::FromAxisAngle(Vec3 const& axis, float angleRad) {

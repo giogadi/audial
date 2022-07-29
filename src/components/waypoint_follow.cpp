@@ -16,7 +16,6 @@ void WaypointFollowComponent::Update(float dt) {
             return;
         }
     }
-    float constexpr kSpeed = 2.f;
     EntityId wpId = _waypointIds[_currentWaypointIx];
     Entity* wp = _g->_entityManager->GetEntity(wpId);
     assert(wp != nullptr);
@@ -30,7 +29,7 @@ void WaypointFollowComponent::Update(float dt) {
     
 
     float distToWp = fromMeToWaypoint.Length();
-    float stepSize = kSpeed * dt;
+    float stepSize = _speed * dt;
     if (stepSize > distToWp) {
         // If we're gonna step past dest wp
         if (_currentWaypointIx + 1 == _waypointIds.size()) {
@@ -91,6 +90,7 @@ bool WaypointFollowComponent::ConnectComponents(EntityId id, Entity& e, GameMana
 bool WaypointFollowComponent::DrawImGui() {
     bool needReconnect = false;
     ImGui::Checkbox("Loop##", &_loop);
+    ImGui::InputScalar("Speed##", ImGuiDataType_Float, &_speed);
     if (ImGui::Button("Add Waypoint##")) {
         _waypointNames.push_back("change_me");
         needReconnect = true;
@@ -113,6 +113,7 @@ bool WaypointFollowComponent::DrawImGui() {
 
 void WaypointFollowComponent::Save(boost::property_tree::ptree& pt) const {
     pt.put("loop", _loop);
+    pt.put("speed", _speed);
     ptree& waypointsPt = pt.add_child("waypoints", ptree());
     for (std::string const& wpName : _waypointNames) {
         ptree& wpPt = waypointsPt.add_child("waypoint_name", ptree());
@@ -121,10 +122,8 @@ void WaypointFollowComponent::Save(boost::property_tree::ptree& pt) const {
 }
 
 void WaypointFollowComponent::Load(boost::property_tree::ptree const& pt) {
-    auto const& maybe_loop = pt.get_optional<bool>("loop");
-    if (maybe_loop.has_value()) {
-        _loop = maybe_loop.value();
-    }
+    _loop = pt.get<bool>("loop");
+    _speed = pt.get<float>("speed");
     _waypointNames.clear();
     ptree const& waypointsPt = pt.get_child("waypoints");
     for (auto const& wpPt : waypointsPt) {
