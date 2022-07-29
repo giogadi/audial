@@ -15,7 +15,9 @@ namespace {
     float constexpr kAttackSpeed = 60.f;
     float constexpr kDecel = 125.f;
     float constexpr kOrbitRange = 5.f;
-    float constexpr kOrbitSpeed = 2*kPi;  // rads per second
+    float constexpr kOrbitAngularSpeed = 3*kPi;  // rads per second
+    float constexpr kDesiredRange = 3.f;
+    float constexpr kIdleSpeedTowardDesiredRange = 20.f;
 }
 
 bool PlayerOrbitControllerComponent::ConnectComponents(EntityId id, Entity& e, GameManager& g) {
@@ -94,6 +96,8 @@ namespace {
     }
 }
 
+static bool gApproaching = false;
+
 bool PlayerOrbitControllerComponent::UpdateIdleState(float dt, bool newState) {
     Vec3 const inputVec = GetInputVec(*_input);
 
@@ -103,29 +107,111 @@ bool PlayerOrbitControllerComponent::UpdateIdleState(float dt, bool newState) {
     }
 
     // Check for attack transition
+    // HOWDY
+    // if (WasDashKeyPressedThisFrame(*_input)) {
+    //     _state = State::Attacking;
+    //     return true;
+    // }
+
     if (WasDashKeyPressedThisFrame(*_input)) {
-        _state = State::Attacking;
-        return true;
+        Vec3 const inputVec = GetInputVec(*_input);
+        Vec3 dashDir;
+        PickNextPlanetToOrbit(inputVec, dashDir);
+        if (std::shared_ptr<OrbitableComponent> planet = _planetWeOrbit.lock()) {
+            TransformComponent& playerTransform = *_transform.lock();
+            std::shared_ptr<TransformComponent> pPlanetTransform = planet->_t.lock();
+            gApproaching = true;
+            playerTransform.Parent(pPlanetTransform);
+        }        
     }
 
     if (std::shared_ptr<OrbitableComponent> planet = _planetWeOrbit.lock()) {
-        // Gradually push/pull ourselves into the desired range of the planet.
-        Vec3 const playerPos = _transform.lock()->GetWorldPos();
-        Vec3 const planetPos = planet->_t.lock()->GetWorldPos();
-        Vec3 planetToPlayer = playerPos - planetPos;
-        float currentRange = planetToPlayer.Length();
-        float kDesiredRange = 3.f;
-        // get current angle with planet
-        // These 2D angles are defined about the y-axis, where angle=0 is the +x axis and angle=pi/2 is the -z axis.
-        float currentAngle = XZToAngle(planetToPlayer._x, planetToPlayer._z);
-        float newAngle = currentAngle + kOrbitSpeed*dt;
-        float newRange = currentRange + 0.05f*(kDesiredRange - currentRange);
-        Vec3 newPos(0.f, 0.f, 0.f);
-        AngleToXZ(newAngle, newPos._x, newPos._z);
-        newPos = newPos*newRange + planetPos;
-        rb._velocity = (newPos - playerPos).GetNormalized();
-        rb._velocity *= kIdleSpeed;
+        //
+        // NEWEST WITH PARENTING
+        //
+        // We approach the planet radially first, and once we're within the
+        // desired distance we start rotating. Later we'll deal with the hit and
+        // bounce.
+        std::shared_ptr<TransformComponent> playerTrans = _transform.lock();
+        Vec3 planetToPlayerLocal = playerTrans->GetLocalPos();
+        float const distFromPlanet = planetToPlayerLocal.Normalize();
+        if (gApproaching && distFromPlanet > kDesiredRange) {
+            // Set velocity in local space. Later, collisions will consider it in local space.
+            rb._velocity = -planetToPlayerLocal * kIdleSpeedTowardDesiredRange;
+        } else {
+            gApproaching = false;
+            // Start rotating around.
+            Vec3 orbitDir = Vec3::Cross(-planetToPlayerLocal, Vec3(0.f, 1.f, 0.f));
+            Vec3 orbitVel = orbitDir * (distFromPlanet * kOrbitAngularSpeed);
+            rb._velocity = orbitVel;
+
+            // Also add a vel component to maintain the distance at desiredRange. Combats drift.
+            float rangeDiff = distFromPlanet - kDesiredRange;  // + if farther than desired.
+            float correctionSpeed = rangeDiff / dt;
+            Vec3 correctionVel = -correctionSpeed * planetToPlayerLocal;
+            rb._velocity += correctionVel;
+        }
         return false;
+
+        //
+        // NEWER UPDATE
+        //
+
+        //
+        // First select the velocity for getting to the desired range.
+        //
+
+        // Vec3 velTowardRange;
+        // Vec3 const playerPos = _transform.lock()->GetWorldPos();
+        // Vec3 const planetPos = planet->_t.lock()->GetWorldPos();
+        // Vec3 playerToPlanet = planetPos - playerPos;
+        // float const currentRange = playerToPlanet.Length();
+        // playerToPlanet = playerToPlanet / currentRange;
+        // float stepSize = kIdleSpeedTowardDesiredRange * dt;
+        // if (currentRange > kDesiredRange) {
+        //     if (stepSize > currentRange - kDesiredRange) {
+        //         velTowardRange = (playerToPlanet * ((currentRange - kDesiredRange) / dt));
+        //     } else {
+        //         velTowardRange = kIdleSpeedTowardDesiredRange * playerToPlanet;
+        //     }
+        // } else {
+        //     if (stepSize > kDesiredRange - currentRange) {
+        //         velTowardRange = (playerToPlanet * ((currentRange - kDesiredRange) / dt));
+        //     } else {
+        //         velTowardRange = -kIdleSpeedTowardDesiredRange * playerToPlanet;
+        //     }
+        // }
+
+        // //
+        // // NOW let's find the vel component from orbit angular velocity
+        // //
+        // Vec3 orbitDir = Vec3::Cross(playerToPlanet, Vec3(0.f, 1.f, 0.f));
+        // Vec3 orbitVel = orbitDir * (currentRange * kOrbitAngularSpeed);
+
+        // rb._velocity = velTowardRange + orbitVel;
+
+        // return false;
+        
+        //
+        // OLD UPDATE
+        //
+
+        // Gradually push/pull ourselves into the desired range of the planet.
+        // Vec3 const playerPos = _transform.lock()->GetWorldPos();
+        // Vec3 const planetPos = planet->_t.lock()->GetWorldPos();
+        // Vec3 planetToPlayer = playerPos - planetPos;
+        // float currentRange = planetToPlayer.Length();
+        // // get current angle with planet
+        // // These 2D angles are defined about the y-axis, where angle=0 is the +x axis and angle=pi/2 is the -z axis.
+        // float currentAngle = XZToAngle(planetToPlayer._x, planetToPlayer._z);
+        // float newAngle = currentAngle + kOrbitSpeed*dt;
+        // float newRange = currentRange + 0.05f*(kDesiredRange - currentRange);
+        // Vec3 newPos(0.f, 0.f, 0.f);
+        // AngleToXZ(newAngle, newPos._x, newPos._z);
+        // newPos = newPos*newRange + planetPos;
+        // rb._velocity = (newPos - playerPos).GetNormalized();
+        // rb._velocity *= kIdleSpeed;
+        // return false;
     }
 
     if (inputVec.IsZero()) {
@@ -237,7 +323,7 @@ bool PlayerOrbitControllerComponent::UpdateAttackState(float dt, bool newState) 
         Vec3 const planetToPlayer = playerPos - planetPos;
 
         float currentAngle = XZToAngle(planetToPlayer._x, planetToPlayer._z);
-        float newAngle = currentAngle + kOrbitSpeed*dt;
+        float newAngle = currentAngle + kOrbitAngularSpeed*dt;
         if (_dribbleRadialSpeed.value() > 0) {
             *_dribbleRadialSpeed -= kDecel * dt;
         } else {
@@ -257,7 +343,7 @@ bool PlayerOrbitControllerComponent::UpdateAttackState(float dt, bool newState) 
         float currentRadius = planetToPlayer.Length();
         float newRadius = currentRadius + *_dribbleRadialSpeed * dt;
         Vec3 tangentDir = Vec3::Cross(Vec3(0.f,1.f,0.f), newPlanetToPlayerDir);
-        Vec3 playerTangentVel = newRadius * kOrbitSpeed * tangentDir;
+        Vec3 playerTangentVel = newRadius * kOrbitAngularSpeed * tangentDir;
 
         // this part ensures that our overall velocity tracks the general
         // accel-decel curve on dribbleRadialSpeed. This makes dribbles feel
