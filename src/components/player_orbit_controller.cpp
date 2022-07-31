@@ -28,15 +28,15 @@ bool PlayerOrbitControllerComponent::ConnectComponents(EntityId id, Entity& e, G
     if (_transform.expired()) {
         success = false;
     }
-    _rb = e.FindComponentOfType<RigidBodyComponent>();
-    if (_rb.expired()) {
-        success = false;
-    } else {
-        std::weak_ptr<PlayerOrbitControllerComponent> pComp =
-            e.FindComponentOfType<PlayerOrbitControllerComponent>();
-        _rb.lock()->AddOnHitCallback(
-            std::bind(&PlayerOrbitControllerComponent::OnHit, pComp, std::placeholders::_1));
-    }
+    // _rb = e.FindComponentOfType<RigidBodyComponent>();
+    // if (_rb.expired()) {
+    //     success = false;
+    // } else {
+    //     std::weak_ptr<PlayerOrbitControllerComponent> pComp =
+    //         e.FindComponentOfType<PlayerOrbitControllerComponent>();
+    //     _rb.lock()->AddOnHitCallback(
+    //         std::bind(&PlayerOrbitControllerComponent::OnHit, pComp, std::placeholders::_1));
+    // }
     _input = g._inputManager;
     _entityMgr = g._entityManager;
     _g = &g;
@@ -101,6 +101,79 @@ namespace {
 static bool gApproaching = false;
 
 bool PlayerOrbitControllerComponent::UpdateIdleState(float dt, bool newState) {
+    if (dt == 0.f) {
+        return false;
+    }
+
+    Vec3 const inputVec = GetInputVec(*_input);
+
+    if (WasDashKeyPressedThisFrame(*_input)) {
+        Vec3 const inputVec = GetInputVec(*_input);
+        Vec3 dashDir;
+        PickNextPlanetToOrbit(inputVec, dashDir);
+        if (std::shared_ptr<OrbitableComponent> planet = _planetWeOrbit.lock()) {            
+            gApproaching = true;
+            std::shared_ptr<TransformComponent> playerTrans = _transform.lock();
+            if (std::shared_ptr<TransformComponent const> currentParent = playerTrans->_parent.lock()) {
+                if (currentParent != planet->_t.lock()) {
+                    playerTrans->Unparent();
+                }
+            }
+        }
+    }
+
+    if (std::shared_ptr<OrbitableComponent> planet = _planetWeOrbit.lock()) {            
+        std::shared_ptr<TransformComponent> playerTrans = _transform.lock();
+        std::shared_ptr<TransformComponent> planetTrans = planet->_t.lock();        
+        if (gApproaching) {
+            float constexpr kRadius = 0.5f;
+            if (playerTrans->_parent.lock() == planetTrans) {
+                // just do first-order-lag on the radius.
+                float lagFactor = 0.2f;
+                Vec3 const& playerLocalPos = playerTrans->GetLocalPos();
+                Vec3 planetToPlayerDirLocal = playerTrans->GetLocalPos();
+                float currentRadius = planetToPlayerDirLocal.Normalize();
+                // 1st order lag to desired radius.
+                float desiredRad = 0.f;
+                float newRadius = currentRadius + lagFactor * (desiredRad - currentRadius);
+                if (newRadius < 2*kRadius) {
+                    newRadius = 2*kRadius;
+                    gApproaching = false;
+                }
+                Vec3 newLocalPos = planetToPlayerDirLocal * newRadius;
+                playerTrans->SetLocalPos(newLocalPos);
+            } else {
+                float lagFactor = 0.2f;
+                Vec3 const& playerPos = playerTrans->GetWorldPos();
+                Vec3 const& planetPos = planetTrans->GetWorldPos();       
+                Vec3 playerToPlanet = planetPos - playerPos;
+                Vec3 newPos = playerPos + lagFactor * playerToPlanet;
+                Vec3 planetToNewPos = newPos - planetPos;
+                float newDist = planetToNewPos.Normalize();
+                float constexpr kRadius = 0.5f;
+                if (newDist < 2*kRadius) {
+                    newPos = planetPos + planetToNewPos * (2*kRadius);
+                    gApproaching = false;
+                }
+                playerTrans->SetWorldPos(newPos);
+                playerTrans->Parent(planetTrans);
+            }            
+        } else {
+            float lagFactor = 0.2f;
+            Vec3 const& playerLocalPos = playerTrans->GetLocalPos();
+            Vec3 planetToPlayerDirLocal = playerTrans->GetLocalPos();
+            float currentRadius = planetToPlayerDirLocal.Normalize();
+            // 1st order lag to desired radius.
+            float newRadius = currentRadius + lagFactor * (kDesiredRange - currentRadius);
+            Vec3 newLocalPos = planetToPlayerDirLocal * newRadius;
+            playerTrans->SetLocalPos(newLocalPos);
+        }
+    }
+
+    return false;
+}
+
+bool PlayerOrbitControllerComponent::UpdateIdleStateOld(float dt, bool newState) {    
     Vec3 const inputVec = GetInputVec(*_input);
 
     RigidBodyComponent& rb = *_rb.lock();

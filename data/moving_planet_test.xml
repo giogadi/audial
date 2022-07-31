@@ -111,23 +111,6 @@
             <component>
                 <component_type>PlayerOrbitController</component_type>
             </component>
-            <component>
-                <component_type>RigidBody</component_type>
-                <static>false</static>
-                <layer>Solid</layer>
-                <aabb>
-                    <min>
-                        <x>-0.5</x>
-                        <y>-0.5</y>
-                        <z>-0.5</z>
-                    </min>
-                    <max>
-                        <x>0.5</x>
-                        <y>0.5</y>
-                        <z>0.5</z>
-                    </max>
-                </aabb>
-            </component>
         </components>
     </entity>
     <entity>
@@ -169,7 +152,7 @@
             <component>
                 <component_type>WaypointFollow</component_type>
                 <loop>true</loop>
-                <speed>10.0</speed>
+                <speed>10</speed>
                 <waypoints>
                     <waypoint_name>wp1</waypoint_name>
                     <waypoint_name>wp2</waypoint_name>
