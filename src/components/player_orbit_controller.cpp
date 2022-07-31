@@ -16,8 +16,10 @@ namespace {
     float constexpr kDecel = 125.f;
     float constexpr kOrbitRange = 5.f;
     float constexpr kOrbitAngularSpeed = 3*kPi;  // rads per second
+    // float constexpr kOrbitAngularSpeed = 0.f;  // rads per second
     float constexpr kDesiredRange = 3.f;
     float constexpr kIdleSpeedTowardDesiredRange = 20.f;
+    // float constexpr kIdleSpeedTowardDesiredRange = 5.f;
 }
 
 bool PlayerOrbitControllerComponent::ConnectComponents(EntityId id, Entity& e, GameManager& g) {
@@ -135,7 +137,7 @@ bool PlayerOrbitControllerComponent::UpdateIdleState(float dt, bool newState) {
         std::shared_ptr<TransformComponent> playerTrans = _transform.lock();
         Vec3 planetToPlayerLocal = playerTrans->GetLocalPos();
         float const distFromPlanet = planetToPlayerLocal.Normalize();
-        if (gApproaching && distFromPlanet > kDesiredRange) {
+        if (gApproaching /*&& distFromPlanet > kDesiredRange*/) {
             // Set velocity in local space. Later, collisions will consider it in local space.
             rb._velocity = -planetToPlayerLocal * kIdleSpeedTowardDesiredRange;
         } else {
@@ -145,9 +147,17 @@ bool PlayerOrbitControllerComponent::UpdateIdleState(float dt, bool newState) {
             Vec3 orbitVel = orbitDir * (distFromPlanet * kOrbitAngularSpeed);
             rb._velocity = orbitVel;
 
-            // Also add a vel component to maintain the distance at desiredRange. Combats drift.
+            // Also add a vel component to maintain the distance at desiredRange. Mitigates drift.
             float rangeDiff = distFromPlanet - kDesiredRange;  // + if farther than desired.
-            float correctionSpeed = rangeDiff / dt;
+            float correctionSpeed;
+            float stepSize = kIdleSpeedTowardDesiredRange * dt;
+            if (stepSize > std::abs(rangeDiff)) {
+                correctionSpeed = rangeDiff / dt;
+            } else {
+                correctionSpeed = ((rangeDiff > 0.f) ? 1.f : -1.f) * kIdleSpeedTowardDesiredRange;
+            }
+
+            // float correctionSpeed = rangeDiff / dt;
             Vec3 correctionVel = -correctionSpeed * planetToPlayerLocal;
             rb._velocity += correctionVel;
         }
@@ -372,18 +382,20 @@ void PlayerOrbitControllerComponent::OnHit(
     std::weak_ptr<RigidBodyComponent> /*other*/) {
     auto player = thisComp.lock();
     RigidBodyComponent& rb = *player->_rb.lock();
-    if (player->_dribbleRadialSpeed.has_value()) {
-        player->_dribbleRadialSpeed = 30.f;
-        // TODO: add tangent component of speed here
-        // TODO: why do we need to update velocity AND dribble radial / attackdir?
-        Vec3 const planetToPlayerDir =
-            (player->_transform.lock()->GetWorldPos() - player->_planetWeOrbit.lock()->_t.lock()->GetWorldPos()).GetNormalized();
-        rb._velocity = planetToPlayerDir * player->_dribbleRadialSpeed.value();
-    } else {
-        player->_attackDir = -player->_attackDir;
-        // float currentSpeed = rb._velocity.Length();
-        // float newSpeed = std::max(30.f,currentSpeed);
-        float newSpeed = 30.f;
-        rb._velocity = player->_attackDir * newSpeed;
-    }
+    gApproaching = false;
+    rb._velocity.Set(0.f, 0.f, 0.f);
+    // if (player->_dribbleRadialSpeed.has_value()) {
+    //     player->_dribbleRadialSpeed = 30.f;
+    //     // TODO: add tangent component of speed here
+    //     // TODO: why do we need to update velocity AND dribble radial / attackdir?
+    //     Vec3 const planetToPlayerDir =
+    //         (player->_transform.lock()->GetWorldPos() - player->_planetWeOrbit.lock()->_t.lock()->GetWorldPos()).GetNormalized();
+    //     rb._velocity = planetToPlayerDir * player->_dribbleRadialSpeed.value();
+    // } else {
+    //     player->_attackDir = -player->_attackDir;
+    //     // float currentSpeed = rb._velocity.Length();
+    //     // float newSpeed = std::max(30.f,currentSpeed);
+    //     float newSpeed = 30.f;
+    //     rb._velocity = player->_attackDir * newSpeed;
+    // }
 }
