@@ -9,6 +9,7 @@ class RigidBodyComponent;
 class InputManager;
 class OrbitableComponent;
 class TransformComponent;
+class CameraControllerComponent;
 
 class PlayerOrbitControllerComponent : public Component {
 public:
@@ -41,6 +42,7 @@ public:
     std::weak_ptr<TransformComponent> _transform;
     std::weak_ptr<RigidBodyComponent> _rb;
     std::weak_ptr<OrbitableComponent> _planetWeOrbit;
+    std::weak_ptr<CameraControllerComponent> _camera;
     InputManager const* _input = nullptr;
     GameManager* _g = nullptr;
     // For finding planets to orbit. Maybe we'll want a PlanetManager for this later.

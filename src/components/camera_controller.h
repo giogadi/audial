@@ -13,6 +13,8 @@ public:
     virtual void Update(float dt) override;
     virtual bool DrawImGui() override;
 
+    void SetTarget(std::shared_ptr<TransformComponent> const& newTarget);
+
     virtual void Save(ptree& pt) const override;
     virtual void Load(ptree const& pt) override;
 

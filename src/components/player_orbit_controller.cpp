@@ -9,6 +9,7 @@
 #include "components/transform.h"
 #include "entity_manager.h"
 #include "game_manager.h"
+#include "components/camera_controller.h"
 
 namespace {
     float constexpr kIdleSpeed = 10.f;
@@ -40,6 +41,16 @@ bool PlayerOrbitControllerComponent::ConnectComponents(EntityId id, Entity& e, G
     _input = g._inputManager;
     _entityMgr = g._entityManager;
     _g = &g;
+    // Find a camera controller if it exists
+    // TODO THIS IS GROSS
+    _entityMgr->ForEveryActiveEntity([&](EntityId eId) {
+        Entity* e = _entityMgr->GetEntity(eId);
+        assert(e);
+        auto pComp = e->FindComponentOfType<CameraControllerComponent>();
+        if (!pComp.expired()) {
+            _camera = pComp;
+        }
+    });
     return success;
 }
 
@@ -117,6 +128,10 @@ bool PlayerOrbitControllerComponent::UpdateIdleState(float dt, bool newState) {
             if (std::shared_ptr<TransformComponent const> currentParent = playerTrans->_parent.lock()) {
                 if (currentParent != planet->_t.lock()) {
                     playerTrans->Unparent();
+                    // When we unparent from a planet, the camera goes back to following the player.
+                    if (std::shared_ptr<CameraControllerComponent> camera = _camera.lock()) {
+                        camera->SetTarget(playerTrans);
+                    }
                 }
             }
         }
@@ -142,7 +157,7 @@ bool PlayerOrbitControllerComponent::UpdateIdleState(float dt, bool newState) {
                 newRadius = currentRadius + lagFactor * (desiredRad - currentRadius);
                 if (newRadius < kMinDist) {
                     newRadius = kMinDist;
-                    gApproaching = false;
+                    gApproaching = false;                    
                 }
             } else {
                 float lagFactor = 0.2f;
@@ -171,11 +186,14 @@ bool PlayerOrbitControllerComponent::UpdateIdleState(float dt, bool newState) {
             float newDist = planetToNewPos.Normalize();
             if (newDist < kMinDist) {
                 newPos = planetPos + planetToNewPos * kMinDist;
-                playerTrans->Parent(planetTrans);  // TODO: THIS USED TO BE BELOW.
+                playerTrans->Parent(planetTrans);
                 gApproaching = false;
+                // When we parent to a new planet, the camera controller should follow the planet.
+                if (std::shared_ptr<CameraControllerComponent> camera = _camera.lock()) {
+                    camera->SetTarget(planetTrans);
+                }
             }
             playerTrans->SetWorldPos(newPos);
-            // playerTrans->Parent(planetTrans);
         }
     }
 
