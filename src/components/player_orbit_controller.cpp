@@ -15,7 +15,7 @@ namespace {
     float constexpr kAttackSpeed = 60.f;
     float constexpr kDecel = 125.f;
     float constexpr kOrbitRange = 5.f;
-    float constexpr kOrbitAngularSpeed = 3*kPi;  // rads per second
+    float constexpr kOrbitAngularSpeed = 2*kPi;  // rads per second
     // float constexpr kOrbitAngularSpeed = 0.f;  // rads per second
     float constexpr kDesiredRange = 3.f;
     float constexpr kIdleSpeedTowardDesiredRange = 20.f;
@@ -124,49 +124,58 @@ bool PlayerOrbitControllerComponent::UpdateIdleState(float dt, bool newState) {
 
     if (std::shared_ptr<OrbitableComponent> planet = _planetWeOrbit.lock()) {            
         std::shared_ptr<TransformComponent> playerTrans = _transform.lock();
-        std::shared_ptr<TransformComponent> planetTrans = planet->_t.lock();        
-        if (gApproaching) {
-            float constexpr kRadius = 0.5f;
-            if (playerTrans->_parent.lock() == planetTrans) {
-                // just do first-order-lag on the radius.
-                float lagFactor = 0.2f;
-                Vec3 const& playerLocalPos = playerTrans->GetLocalPos();
-                Vec3 planetToPlayerDirLocal = playerTrans->GetLocalPos();
-                float currentRadius = planetToPlayerDirLocal.Normalize();
-                // 1st order lag to desired radius.
-                float desiredRad = 0.f;
-                float newRadius = currentRadius + lagFactor * (desiredRad - currentRadius);
-                if (newRadius < 2*kRadius) {
-                    newRadius = 2*kRadius;
-                    gApproaching = false;
-                }
-                Vec3 newLocalPos = planetToPlayerDirLocal * newRadius;
-                playerTrans->SetLocalPos(newLocalPos);
-            } else {
-                float lagFactor = 0.2f;
-                Vec3 const& playerPos = playerTrans->GetWorldPos();
-                Vec3 const& planetPos = planetTrans->GetWorldPos();       
-                Vec3 playerToPlanet = planetPos - playerPos;
-                Vec3 newPos = playerPos + lagFactor * playerToPlanet;
-                Vec3 planetToNewPos = newPos - planetPos;
-                float newDist = planetToNewPos.Normalize();
-                float constexpr kRadius = 0.5f;
-                if (newDist < 2*kRadius) {
-                    newPos = planetPos + planetToNewPos * (2*kRadius);
-                    gApproaching = false;
-                }
-                playerTrans->SetWorldPos(newPos);
-                playerTrans->Parent(planetTrans);
-            }            
-        } else {
-            float lagFactor = 0.2f;
+        std::shared_ptr<TransformComponent> planetTrans = planet->_t.lock();
+        
+        float constexpr kPlayerRadius = 0.5f;
+        float constexpr kPlanetRadius = 0.5f;
+        float constexpr kMinDist = kPlayerRadius + kPlanetRadius;
+        if (std::shared_ptr<TransformComponent const> parent = playerTrans->_parent.lock()) {
+            // Decide new radius
             Vec3 const& playerLocalPos = playerTrans->GetLocalPos();
             Vec3 planetToPlayerDirLocal = playerTrans->GetLocalPos();
             float currentRadius = planetToPlayerDirLocal.Normalize();
-            // 1st order lag to desired radius.
-            float newRadius = currentRadius + lagFactor * (kDesiredRange - currentRadius);
-            Vec3 newLocalPos = planetToPlayerDirLocal * newRadius;
+            float newRadius = currentRadius;
+            if (gApproaching) {
+                float lagFactor = 0.2f;                
+                // 1st order lag to desired radius.
+                float desiredRad = 0.f;
+                newRadius = currentRadius + lagFactor * (desiredRad - currentRadius);
+                if (newRadius < kMinDist) {
+                    newRadius = kMinDist;
+                    gApproaching = false;
+                }
+            } else {
+                float lagFactor = 0.2f;
+                // 1st order lag to desired radius.
+                newRadius = currentRadius + lagFactor * (kDesiredRange - currentRadius);
+            }
+
+            // Now decide new angle.
+            // These 2D angles are defined about the y-axis, where angle=0 is the +x axis and angle=pi/2 is the -z axis.
+            float currentAngle = XZToAngle(planetToPlayerDirLocal._x, planetToPlayerDirLocal._z);
+            float newAngle = currentAngle + kOrbitAngularSpeed * dt;
+            Vec3 newPlanetToPlayerDir;
+            AngleToXZ(newAngle, newPlanetToPlayerDir._x, newPlanetToPlayerDir._z);
+
+            Vec3 newLocalPos = newPlanetToPlayerDir * newRadius;
             playerTrans->SetLocalPos(newLocalPos);
+        } else {
+            // No parent. We better be approaching!
+            assert(gApproaching);
+            float lagFactor = 0.2f;
+            Vec3 const& playerPos = playerTrans->GetWorldPos();
+            Vec3 const& planetPos = planetTrans->GetWorldPos();       
+            Vec3 playerToPlanet = planetPos - playerPos;
+            Vec3 newPos = playerPos + lagFactor * playerToPlanet;
+            Vec3 planetToNewPos = newPos - planetPos;
+            float newDist = planetToNewPos.Normalize();
+            if (newDist < kMinDist) {
+                newPos = planetPos + planetToNewPos * kMinDist;
+                playerTrans->Parent(planetTrans);  // TODO: THIS USED TO BE BELOW.
+                gApproaching = false;
+            }
+            playerTrans->SetWorldPos(newPos);
+            // playerTrans->Parent(planetTrans);
         }
     }
 

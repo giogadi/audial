@@ -29,6 +29,11 @@
             <component>
                 <component_type>Camera</component_type>
             </component>
+            <component>
+                <component_type>CameraController</component_type>
+                <tracking_factor>0.0500000007</tracking_factor>
+                <target_entity_name>player</target_entity_name>
+            </component>
         </components>
     </entity>
     <entity>
@@ -234,6 +239,82 @@
                     <m33>1</m33>
                 </mat4>
                 <parent_name/>
+            </component>
+        </components>
+    </entity>
+    <entity>
+        <entity_active>true</entity_active>
+        <name>foo</name>
+        <components>
+            <component>
+                <component_type>Transform</component_type>
+                <mat4>
+                    <m00>1</m00>
+                    <m10>0</m10>
+                    <m20>0</m20>
+                    <m30>0</m30>
+                    <m01>0</m01>
+                    <m11>1</m11>
+                    <m21>0</m21>
+                    <m31>0</m31>
+                    <m02>0</m02>
+                    <m12>0</m12>
+                    <m22>1</m22>
+                    <m32>0</m32>
+                    <m03>-0.150000274</m03>
+                    <m13>0</m13>
+                    <m23>-4.82990265</m23>
+                    <m33>1</m33>
+                </mat4>
+                <parent_name/>
+            </component>
+            <component>
+                <component_type>Model</component_type>
+                <mesh_id>cube</mesh_id>
+                <color>
+                    <x>0</x>
+                    <y>0.965686262</y>
+                    <z>0.312427759</z>
+                    <w>1</w>
+                </color>
+            </component>
+        </components>
+    </entity>
+    <entity>
+        <entity_active>true</entity_active>
+        <name>bar</name>
+        <components>
+            <component>
+                <component_type>Transform</component_type>
+                <mat4>
+                    <m00>1</m00>
+                    <m10>0</m10>
+                    <m20>0</m20>
+                    <m30>0</m30>
+                    <m01>0</m01>
+                    <m11>1</m11>
+                    <m21>0</m21>
+                    <m31>0</m31>
+                    <m02>0</m02>
+                    <m12>0</m12>
+                    <m22>1</m22>
+                    <m32>0</m32>
+                    <m03>0.251040637</m03>
+                    <m13>0</m13>
+                    <m23>4.45312166</m23>
+                    <m33>1</m33>
+                </mat4>
+                <parent_name/>
+            </component>
+            <component>
+                <component_type>Model</component_type>
+                <mesh_id>cube</mesh_id>
+                <color>
+                    <x>0</x>
+                    <y>1</y>
+                    <z>0.470588207</z>
+                    <w>1</w>
+                </color>
             </component>
         </components>
     </entity>
