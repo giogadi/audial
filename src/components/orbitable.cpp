@@ -8,17 +8,19 @@
 #include "script_action.h"
 #include "entity.h"
 #include "components/transform.h"
+#include "components/damage.h"
 
 bool OrbitableComponent::ConnectComponents(EntityId id, Entity& e, GameManager& g) {
     _t = e.FindComponentOfType<TransformComponent>();
     if (_t.expired()) {
         return false;
     }
-    _rb = e.FindComponentOfType<RigidBodyComponent>();
-    if (_rb.expired()) {
-        return false;
-    }
-    _rb.lock()->_layer = CollisionLayer::None;
+    _damage = e.FindComponentOfType<DamageComponent>();
+    // _rb = e.FindComponentOfType<RigidBodyComponent>();
+    // if (_rb.expired()) {
+    //     return false;
+    // }
+    // _rb.lock()->_layer = CollisionLayer::None;
     return true;
 }
 

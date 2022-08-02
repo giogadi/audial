@@ -102,6 +102,9 @@
                     <m33>1</m33>
                 </mat4>
                 <parent_name/>
+            </component>            
+            <component>
+                <component_type>PlayerOrbitController</component_type>
             </component>
             <component>
                 <component_type>Model</component_type>
@@ -112,9 +115,6 @@
                     <z>1</z>
                     <w>1</w>
                 </color>
-            </component>
-            <component>
-                <component_type>PlayerOrbitController</component_type>
             </component>
         </components>
     </entity>
@@ -183,6 +183,18 @@
                         <z>0.5</z>
                     </max>
                 </aabb>
+            </component>
+            <component>
+                <component_type>Damage</component_type>
+                <hp>1</hp>
+            </component>
+            <component>
+                <component_type>OnDestroyEvent</component_type>
+                <script_actions>
+                    <script_action>
+                        <script_action_type>DestroyAllPlanets</script_action_type>
+                    </script_action>
+                </script_actions>
             </component>
         </components>
     </entity>

@@ -10,11 +10,13 @@
 #include "entity_manager.h"
 #include "game_manager.h"
 #include "components/camera_controller.h"
+#include "components/damage.h"
 
 namespace {
     float constexpr kIdleSpeed = 10.f;
     float constexpr kAttackSpeed = 60.f;
-    float constexpr kDecel = 125.f;
+    // float constexpr kDecel = 125.f;
+    float constexpr kDecel = 25.f;
     float constexpr kOrbitRange = 5.f;
     float constexpr kOrbitAngularSpeed = 2*kPi;  // rads per second
     // float constexpr kOrbitAngularSpeed = 0.f;  // rads per second
@@ -64,9 +66,9 @@ void PlayerOrbitControllerComponent::Update(float dt) {
             case State::Idle:
                 evalStateMachine = UpdateIdleState(dt, newState);
                 break;
-            case State::Attacking:
-                evalStateMachine = UpdateAttackState(dt, newState);
-                break;
+            // case State::Attacking:
+            //     evalStateMachine = UpdateAttackState(dt, newState);
+            //     break;
         }
     }
 }
@@ -119,6 +121,7 @@ bool PlayerOrbitControllerComponent::UpdateIdleState(float dt, bool newState) {
         return false;
     }
 
+    printf("player update!\n");
     Vec3 const inputVec = GetInputVec(*_input);    
 
     if (WasDashKeyPressedThisFrame(*_input)) {
@@ -160,8 +163,12 @@ bool PlayerOrbitControllerComponent::UpdateIdleState(float dt, bool newState) {
                 float desiredRad = 0.f;
                 newRadius = currentRadius + lagFactor * (desiredRad - currentRadius);
                 if (newRadius < kMinDist) {
+                    // It's a hit!
                     newRadius = kMinDist;
-                    gApproaching = false;                    
+                    gApproaching = false;
+                    if (std::shared_ptr<DamageComponent> damage = planet->_damage.lock()) {
+                        damage->OnHit();
+                    }
                 }
             } else {
                 float lagFactor = 0.2f;
@@ -198,6 +205,8 @@ bool PlayerOrbitControllerComponent::UpdateIdleState(float dt, bool newState) {
             Vec3 planetToNewPos = newPos - planetPos;
             float newDist = planetToNewPos.Normalize();
             if (newDist < kMinDist) {
+                printf("hit!\n");
+                // It's a hit!
                 newPos = planetPos + planetToNewPos * kMinDist;
                 playerTrans->Parent(planetTrans);
                 gApproaching = false;
@@ -205,8 +214,14 @@ bool PlayerOrbitControllerComponent::UpdateIdleState(float dt, bool newState) {
                 if (std::shared_ptr<CameraControllerComponent> camera = _camera.lock()) {
                     camera->SetTarget(planetTrans);
                 }
-            }
-            gLastVelocity = (newPos - playerPos) / dt;
+                if (std::shared_ptr<DamageComponent> damage = planet->_damage.lock()) {
+                    damage->OnHit();
+                }
+                // HACK: giving player a velocity so he can bounce away even if planet dies
+                gLastVelocity = -playerToPlanet.GetNormalized() * 30.f;
+            } else {
+                gLastVelocity = (newPos - playerPos) / dt;
+            }            
             playerTrans->SetWorldPos(newPos);
             gLastWorldPos = newPos;
         }
@@ -221,158 +236,27 @@ bool PlayerOrbitControllerComponent::UpdateIdleState(float dt, bool newState) {
         }
         // In case we were parented to the destroyed planet, reset the planet's world position.
         assert(playerTrans->_parent.expired());
-        playerTrans->SetWorldPos(gLastWorldPos);
+        playerTrans->SetWorldPos(gLastWorldPos);        
+    }
 
+    if (!gAssociatedWithAPlanet) {
         // Get new position by applying first-order-lag to last velocity toward 0.
         float lagFactor = 0.2f;
         gLastVelocity -= lagFactor * gLastVelocity;
 
-        Vec3 newPos = gLastWorldPos + gLastVelocity * dt;
+        auto playerTrans = _transform.lock();
+        Vec3 newPos = playerTrans->GetWorldPos() + gLastVelocity * dt;
         playerTrans->SetWorldPos(newPos);
         gLastWorldPos = newPos;
-
-        // if (gLastVelocity._x > 0.f) {
-        //     gLastVelocity
-        // }
-
-        // float lastSpeed = gLastVelocity.Length();
-        // float newSpeed = lastSpeed - kDecel * dt;
-
     }
 
-    return false;
-}
+    // HOWDY DEBUG
+    Vec3 playerWorldPos = _transform.lock()->GetWorldPos();
+    gLastWorldPos = playerWorldPos;
 
-bool PlayerOrbitControllerComponent::UpdateIdleStateOld(float dt, bool newState) {    
-    Vec3 const inputVec = GetInputVec(*_input);
-
-    RigidBodyComponent& rb = *_rb.lock();
-    if (newState) {
-        rb._layer = CollisionLayer::Solid;
-    }
-
-    // Check for attack transition
-    // HOWDY
-    // if (WasDashKeyPressedThisFrame(*_input)) {
-    //     _state = State::Attacking;
-    //     return true;
-    // }
-
-    if (WasDashKeyPressedThisFrame(*_input)) {
-        Vec3 const inputVec = GetInputVec(*_input);
-        Vec3 dashDir;
-        PickNextPlanetToOrbit(inputVec, dashDir);
-        if (std::shared_ptr<OrbitableComponent> planet = _planetWeOrbit.lock()) {
-            TransformComponent& playerTransform = *_transform.lock();
-            std::shared_ptr<TransformComponent> pPlanetTransform = planet->_t.lock();
-            gApproaching = true;
-            playerTransform.Parent(pPlanetTransform);
-        }        
-    }
-
-    if (std::shared_ptr<OrbitableComponent> planet = _planetWeOrbit.lock()) {
-        //
-        // NEWEST WITH PARENTING
-        //
-        // We approach the planet radially first, and once we're within the
-        // desired distance we start rotating. Later we'll deal with the hit and
-        // bounce.
-        std::shared_ptr<TransformComponent> playerTrans = _transform.lock();
-        Vec3 planetToPlayerLocal = playerTrans->GetLocalPos();
-        float const distFromPlanet = planetToPlayerLocal.Normalize();
-        if (gApproaching /*&& distFromPlanet > kDesiredRange*/) {
-            // Set velocity in local space. Later, collisions will consider it in local space.
-            rb._velocity = -planetToPlayerLocal * kIdleSpeedTowardDesiredRange;
-        } else {
-            gApproaching = false;
-            // Start rotating around.
-            Vec3 orbitDir = Vec3::Cross(-planetToPlayerLocal, Vec3(0.f, 1.f, 0.f));
-            Vec3 orbitVel = orbitDir * (distFromPlanet * kOrbitAngularSpeed);
-            rb._velocity = orbitVel;
-
-            // Also add a vel component to maintain the distance at desiredRange. Mitigates drift.
-            float rangeDiff = distFromPlanet - kDesiredRange;  // + if farther than desired.
-            float correctionSpeed;
-            float stepSize = kIdleSpeedTowardDesiredRange * dt;
-            if (stepSize > std::abs(rangeDiff)) {
-                correctionSpeed = rangeDiff / dt;
-            } else {
-                correctionSpeed = ((rangeDiff > 0.f) ? 1.f : -1.f) * kIdleSpeedTowardDesiredRange;
-            }
-
-            // float correctionSpeed = rangeDiff / dt;
-            Vec3 correctionVel = -correctionSpeed * planetToPlayerLocal;
-            rb._velocity += correctionVel;
-        }
-        return false;
-
-        //
-        // NEWER UPDATE
-        //
-
-        //
-        // First select the velocity for getting to the desired range.
-        //
-
-        // Vec3 velTowardRange;
-        // Vec3 const playerPos = _transform.lock()->GetWorldPos();
-        // Vec3 const planetPos = planet->_t.lock()->GetWorldPos();
-        // Vec3 playerToPlanet = planetPos - playerPos;
-        // float const currentRange = playerToPlanet.Length();
-        // playerToPlanet = playerToPlanet / currentRange;
-        // float stepSize = kIdleSpeedTowardDesiredRange * dt;
-        // if (currentRange > kDesiredRange) {
-        //     if (stepSize > currentRange - kDesiredRange) {
-        //         velTowardRange = (playerToPlanet * ((currentRange - kDesiredRange) / dt));
-        //     } else {
-        //         velTowardRange = kIdleSpeedTowardDesiredRange * playerToPlanet;
-        //     }
-        // } else {
-        //     if (stepSize > kDesiredRange - currentRange) {
-        //         velTowardRange = (playerToPlanet * ((currentRange - kDesiredRange) / dt));
-        //     } else {
-        //         velTowardRange = -kIdleSpeedTowardDesiredRange * playerToPlanet;
-        //     }
-        // }
-
-        // //
-        // // NOW let's find the vel component from orbit angular velocity
-        // //
-        // Vec3 orbitDir = Vec3::Cross(playerToPlanet, Vec3(0.f, 1.f, 0.f));
-        // Vec3 orbitVel = orbitDir * (currentRange * kOrbitAngularSpeed);
-
-        // rb._velocity = velTowardRange + orbitVel;
-
-        // return false;
-        
-        //
-        // OLD UPDATE
-        //
-
-        // Gradually push/pull ourselves into the desired range of the planet.
-        // Vec3 const playerPos = _transform.lock()->GetWorldPos();
-        // Vec3 const planetPos = planet->_t.lock()->GetWorldPos();
-        // Vec3 planetToPlayer = playerPos - planetPos;
-        // float currentRange = planetToPlayer.Length();
-        // // get current angle with planet
-        // // These 2D angles are defined about the y-axis, where angle=0 is the +x axis and angle=pi/2 is the -z axis.
-        // float currentAngle = XZToAngle(planetToPlayer._x, planetToPlayer._z);
-        // float newAngle = currentAngle + kOrbitSpeed*dt;
-        // float newRange = currentRange + 0.05f*(kDesiredRange - currentRange);
-        // Vec3 newPos(0.f, 0.f, 0.f);
-        // AngleToXZ(newAngle, newPos._x, newPos._z);
-        // newPos = newPos*newRange + planetPos;
-        // rb._velocity = (newPos - playerPos).GetNormalized();
-        // rb._velocity *= kIdleSpeed;
-        // return false;
-    }
-
-    if (inputVec.IsZero()) {
-        rb._velocity = Vec3(0.f,0.f,0.f);
-        return false;
-    }
-
-    rb._velocity = inputVec * kIdleSpeed;
+    // printf("gLastWorldPos: %f, %f, %f\n", gLastWorldPos._x, gLastWorldPos._y, gLastWorldPos._z);
+    // Vec3 playerWorldPos = _transform.lock()->GetWorldPos();
+    // printf("playerWorldPos: %f, %f, %f\n", playerWorldPos._x, playerWorldPos._y, playerWorldPos._z);
 
     return false;
 }
@@ -429,116 +313,93 @@ bool PlayerOrbitControllerComponent::PickNextPlanetToOrbit(Vec3 const& inputVec,
     });
 
     if (currentPlanet) {
-        currentPlanet->_rb.lock()->_layer = CollisionLayer::None;
+        // currentPlanet->_rb.lock()->_layer = CollisionLayer::None;
         currentPlanet->OnLeaveOrbit(*_g);
     }
     if (potentialNewPlanet) {
-        potentialNewPlanet->_rb.lock()->_layer = CollisionLayer::Solid;
+        // potentialNewPlanet->_rb.lock()->_layer = CollisionLayer::Solid;
     }
     _planetWeOrbit = potentialNewPlanet;
 
     return true;
 }
 
-bool PlayerOrbitControllerComponent::UpdateAttackState(float dt, bool newState) {
-    RigidBodyComponent& rb = *_rb.lock();
-    // triple the speed for a brief time, then decelerate.
-    // Also pick the new planet to orbit
-    if (newState || WasDashKeyPressedThisFrame(*_input)) {
-        _stateTimer = 0.f;
-        // TODO: compute inputVec only once before state machine
-        Vec3 const inputVec = GetInputVec(*_input);
+// bool PlayerOrbitControllerComponent::UpdateAttackState(float dt, bool newState) {
+//     RigidBodyComponent& rb = *_rb.lock();
+//     // triple the speed for a brief time, then decelerate.
+//     // Also pick the new planet to orbit
+//     if (newState || WasDashKeyPressedThisFrame(*_input)) {
+//         _stateTimer = 0.f;
+//         // TODO: compute inputVec only once before state machine
+//         Vec3 const inputVec = GetInputVec(*_input);
 
-        Vec3 dashDir(0.f,0.f,0.f);
-        if (!PickNextPlanetToOrbit(inputVec, dashDir)) {
-            // Not dashing. just skip this update this frame and then we'll go
-            // back to idle. NOTE: we don't go immediately back to idle here
-            // because it might cause an infinite loop of the state machine,
-            // lmao.
-            _state = State::Idle;
-            return false;
-        }
+//         Vec3 dashDir(0.f,0.f,0.f);
+//         if (!PickNextPlanetToOrbit(inputVec, dashDir)) {
+//             // Not dashing. just skip this update this frame and then we'll go
+//             // back to idle. NOTE: we don't go immediately back to idle here
+//             // because it might cause an infinite loop of the state machine,
+//             // lmao.
+//             _state = State::Idle;
+//             return false;
+//         }
 
-        _attackDir = dashDir;
-        if (inputVec.IsZero()) {
-            _dribbleRadialSpeed = -kAttackSpeed;
-        } else {
-            _dribbleRadialSpeed.reset();
-            rb._velocity = _attackDir * kAttackSpeed;
-        }
+//         _attackDir = dashDir;
+//         if (inputVec.IsZero()) {
+//             _dribbleRadialSpeed = -kAttackSpeed;
+//         } else {
+//             _dribbleRadialSpeed.reset();
+//             rb._velocity = _attackDir * kAttackSpeed;
+//         }
 
-        rb._layer = CollisionLayer::BodyAttack;
-    }
+//         rb._layer = CollisionLayer::BodyAttack;
+//     }
 
-    if (_dribbleRadialSpeed.has_value()) {
-        Vec3 const planetPos = _planetWeOrbit.lock()->_t.lock()->GetWorldPos();
-        Vec3 const playerPos = _transform.lock()->GetWorldPos();
-        Vec3 const planetToPlayer = playerPos - planetPos;
+//     if (_dribbleRadialSpeed.has_value()) {
+//         Vec3 const planetPos = _planetWeOrbit.lock()->_t.lock()->GetWorldPos();
+//         Vec3 const playerPos = _transform.lock()->GetWorldPos();
+//         Vec3 const planetToPlayer = playerPos - planetPos;
 
-        float currentAngle = XZToAngle(planetToPlayer._x, planetToPlayer._z);
-        float newAngle = currentAngle + kOrbitAngularSpeed*dt;
-        if (_dribbleRadialSpeed.value() > 0) {
-            *_dribbleRadialSpeed -= kDecel * dt;
-        } else {
-            *_dribbleRadialSpeed += kDecel * dt;
-        }
-        if (fabs(*_dribbleRadialSpeed) < 0.5f*kIdleSpeed) {
-            _state = State::Idle;
-            _dribbleRadialSpeed.reset();
-            return true;
-        }
+//         float currentAngle = XZToAngle(planetToPlayer._x, planetToPlayer._z);
+//         float newAngle = currentAngle + kOrbitAngularSpeed*dt;
+//         if (_dribbleRadialSpeed.value() > 0) {
+//             *_dribbleRadialSpeed -= kDecel * dt;
+//         } else {
+//             *_dribbleRadialSpeed += kDecel * dt;
+//         }
+//         if (fabs(*_dribbleRadialSpeed) < 0.5f*kIdleSpeed) {
+//             _state = State::Idle;
+//             _dribbleRadialSpeed.reset();
+//             return true;
+//         }
 
-        //
-        Vec3 newPlanetToPlayerDir(0.f,0.f,0.f);
-        AngleToXZ(newAngle, newPlanetToPlayerDir._x, newPlanetToPlayerDir._z);
-        Vec3 playerRadialVel = newPlanetToPlayerDir * _dribbleRadialSpeed.value();
+//         //
+//         Vec3 newPlanetToPlayerDir(0.f,0.f,0.f);
+//         AngleToXZ(newAngle, newPlanetToPlayerDir._x, newPlanetToPlayerDir._z);
+//         Vec3 playerRadialVel = newPlanetToPlayerDir * _dribbleRadialSpeed.value();
 
-        float currentRadius = planetToPlayer.Length();
-        float newRadius = currentRadius + *_dribbleRadialSpeed * dt;
-        Vec3 tangentDir = Vec3::Cross(Vec3(0.f,1.f,0.f), newPlanetToPlayerDir);
-        Vec3 playerTangentVel = newRadius * kOrbitAngularSpeed * tangentDir;
+//         float currentRadius = planetToPlayer.Length();
+//         float newRadius = currentRadius + *_dribbleRadialSpeed * dt;
+//         Vec3 tangentDir = Vec3::Cross(Vec3(0.f,1.f,0.f), newPlanetToPlayerDir);
+//         Vec3 playerTangentVel = newRadius * kOrbitAngularSpeed * tangentDir;
 
-        // this part ensures that our overall velocity tracks the general
-        // accel-decel curve on dribbleRadialSpeed. This makes dribbles feel
-        // consistent with regular dashes.
-        rb._velocity = playerRadialVel + playerTangentVel;
-        float maxVel = std::min(rb._velocity.Length(), fabs(*_dribbleRadialSpeed));
-        rb._velocity = rb._velocity.GetNormalized() * maxVel;
-    } else {
-        // Non-dribble
-        Vec3 decel = -_attackDir * kDecel;
-        Vec3 newVel = rb._velocity + dt * decel;
-        if (Vec3::Dot(newVel, _attackDir) <= 0.5f*kIdleSpeed) {
-            _state = State::Idle;
-            return true;
-        } else {
-            rb._velocity = newVel;
-        }
-    }
+//         // this part ensures that our overall velocity tracks the general
+//         // accel-decel curve on dribbleRadialSpeed. This makes dribbles feel
+//         // consistent with regular dashes.
+//         rb._velocity = playerRadialVel + playerTangentVel;
+//         float maxVel = std::min(rb._velocity.Length(), fabs(*_dribbleRadialSpeed));
+//         rb._velocity = rb._velocity.GetNormalized() * maxVel;
+//     } else {
+//         // Non-dribble
+//         Vec3 decel = -_attackDir * kDecel;
+//         Vec3 newVel = rb._velocity + dt * decel;
+//         if (Vec3::Dot(newVel, _attackDir) <= 0.5f*kIdleSpeed) {
+//             _state = State::Idle;
+//             return true;
+//         } else {
+//             rb._velocity = newVel;
+//         }
+//     }
 
-    _stateTimer += dt;
-    return false;
-}
-
-void PlayerOrbitControllerComponent::OnHit(
-    std::weak_ptr<PlayerOrbitControllerComponent> thisComp,
-    std::weak_ptr<RigidBodyComponent> /*other*/) {
-    auto player = thisComp.lock();
-    RigidBodyComponent& rb = *player->_rb.lock();
-    gApproaching = false;
-    rb._velocity.Set(0.f, 0.f, 0.f);
-    // if (player->_dribbleRadialSpeed.has_value()) {
-    //     player->_dribbleRadialSpeed = 30.f;
-    //     // TODO: add tangent component of speed here
-    //     // TODO: why do we need to update velocity AND dribble radial / attackdir?
-    //     Vec3 const planetToPlayerDir =
-    //         (player->_transform.lock()->GetWorldPos() - player->_planetWeOrbit.lock()->_t.lock()->GetWorldPos()).GetNormalized();
-    //     rb._velocity = planetToPlayerDir * player->_dribbleRadialSpeed.value();
-    // } else {
-    //     player->_attackDir = -player->_attackDir;
-    //     // float currentSpeed = rb._velocity.Length();
-    //     // float newSpeed = std::max(30.f,currentSpeed);
-    //     float newSpeed = 30.f;
-    //     rb._velocity = player->_attackDir * newSpeed;
-    // }
-}
+//     _stateTimer += dt;
+//     return false;
+// }

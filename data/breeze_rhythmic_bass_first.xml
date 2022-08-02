@@ -24,6 +24,7 @@
                     <m23>9.56474876</m23>
                     <m33>1</m33>
                 </mat4>
+                <parent_name/>
             </component>
             <component>
                 <component_type>Camera</component_type>
@@ -59,6 +60,7 @@
                     <m23>0</m23>
                     <m33>1</m33>
                 </mat4>
+                <parent_name/>
             </component>
             <component>
                 <component_type>Light</component_type>
@@ -99,10 +101,11 @@
                     <m23>0</m23>
                     <m33>1</m33>
                 </mat4>
+                <parent_name/>
             </component>
             <component>
                 <component_type>Model</component_type>
-                <model_id>cube</model_id>
+                <mesh_id>cube</mesh_id>
                 <color>
                     <x>1</x>
                     <y>1</y>
@@ -112,23 +115,6 @@
             </component>
             <component>
                 <component_type>PlayerOrbitController</component_type>
-            </component>
-            <component>
-                <component_type>RigidBody</component_type>
-                <static>false</static>
-                <layer>Solid</layer>
-                <aabb>
-                    <min>
-                        <x>-0.5</x>
-                        <y>-0.5</y>
-                        <z>-0.5</z>
-                    </min>
-                    <max>
-                        <x>0.5</x>
-                        <y>0.5</y>
-                        <z>0.5</z>
-                    </max>
-                </aabb>
             </component>
         </components>
     </entity>
@@ -234,33 +220,17 @@
                     <m23>-6.75000763</m23>
                     <m33>1</m33>
                 </mat4>
+                <parent_name/>
             </component>
             <component>
                 <component_type>Model</component_type>
-                <model_id>cube</model_id>
+                <mesh_id>cube</mesh_id>
                 <color>
                     <x>0.144896209</x>
                     <y>0.169614047</y>
                     <z>0.985294104</z>
                     <w>1</w>
                 </color>
-            </component>
-            <component>
-                <component_type>RigidBody</component_type>
-                <static>true</static>
-                <layer>None</layer>
-                <aabb>
-                    <min>
-                        <x>-0.5</x>
-                        <y>-0.5</y>
-                        <z>-0.5</z>
-                    </min>
-                    <max>
-                        <x>0.5</x>
-                        <y>0.5</y>
-                        <z>0.5</z>
-                    </max>
-                </aabb>
             </component>
             <component>
                 <component_type>Orbitable</component_type>
@@ -325,10 +295,11 @@
                     <m23>-0.100854114</m23>
                     <m33>1</m33>
                 </mat4>
+                <parent_name/>
             </component>
             <component>
                 <component_type>Model</component_type>
-                <model_id>cube</model_id>
+                <mesh_id>cube</mesh_id>
                 <color>
                     <x>0.985294104</x>
                     <y>0.144896209</y>
@@ -405,10 +376,11 @@
                     <m23>0.262506247</m23>
                     <m33>1</m33>
                 </mat4>
+                <parent_name/>
             </component>
             <component>
                 <component_type>Model</component_type>
-                <model_id>cube</model_id>
+                <mesh_id>cube</mesh_id>
                 <color>
                     <x>0.985294104</x>
                     <y>0.960576534</y>
@@ -498,10 +470,11 @@
                     <m23>-6.21507645</m23>
                     <m33>1</m33>
                 </mat4>
+                <parent_name/>
             </component>
             <component>
                 <component_type>Model</component_type>
-                <model_id>cube</model_id>
+                <mesh_id>cube</mesh_id>
                 <color>
                     <x>0.317919374</x>
                     <y>0.985294104</y>
@@ -591,10 +564,11 @@
                     <m23>-13.10567</m23>
                     <m33>1</m33>
                 </mat4>
+                <parent_name/>
             </component>
             <component>
                 <component_type>Model</component_type>
-                <model_id>cube</model_id>
+                <mesh_id>cube</mesh_id>
                 <color>
                     <x>0.985294104</x>
                     <y>0.540377557</y>
@@ -684,10 +658,11 @@
                     <m23>-13.9883327</m23>
                     <m33>1</m33>
                 </mat4>
+                <parent_name/>
             </component>
             <component>
                 <component_type>Model</component_type>
-                <model_id>cube</model_id>
+                <mesh_id>cube</mesh_id>
                 <color>
                     <x>0.985294104</x>
                     <y>0.960576534</y>
@@ -1180,10 +1155,11 @@
                     <m23>-4.63118458</m23>
                     <m33>1</m33>
                 </mat4>
+                <parent_name/>
             </component>
             <component>
                 <component_type>Model</component_type>
-                <model_id>cube</model_id>
+                <mesh_id>cube</mesh_id>
                 <color>
                     <x>0.985294104</x>
                     <y>0.935858965</y>
@@ -1260,10 +1236,11 @@
                     <m23>-7.76716375</m23>
                     <m33>1</m33>
                 </mat4>
+                <parent_name/>
             </component>
             <component>
                 <component_type>Model</component_type>
-                <model_id>cube</model_id>
+                <mesh_id>cube</mesh_id>
                 <color>
                     <x>0.144896209</x>
                     <y>0.441507101</y>
@@ -1340,10 +1317,11 @@
                     <m23>-10.2405834</m23>
                     <m33>1</m33>
                 </mat4>
+                <parent_name/>
             </component>
             <component>
                 <component_type>Model</component_type>
-                <model_id>cube</model_id>
+                <mesh_id>cube</mesh_id>
                 <color>
                     <x>0.985294104</x>
                     <y>0.144896209</y>
@@ -1420,10 +1398,11 @@
                     <m23>-3.58369136</m23>
                     <m33>1</m33>
                 </mat4>
+                <parent_name/>
             </component>
             <component>
                 <component_type>Model</component_type>
-                <model_id>cube</model_id>
+                <mesh_id>cube</mesh_id>
                 <color>
                     <x>0.144896209</x>
                     <y>0.985294104</y>

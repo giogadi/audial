@@ -5,13 +5,14 @@
 class RigidBodyComponent;
 class ScriptAction;
 class TransformComponent;
+class DamageComponent;
 
 class OrbitableComponent : public Component {
 public:
     virtual ComponentType Type() const override { return ComponentType::Orbitable; }
     virtual bool ConnectComponents(EntityId id, Entity& e, GameManager& g) override;
     virtual void Destroy() override {
-        printf("howdy!\n");
+        printf("orbitable destroyed!\n");
     }
 
     virtual void Save(ptree& pt) const override;
@@ -26,4 +27,5 @@ public:
 
     std::weak_ptr<TransformComponent> _t;
     std::weak_ptr<RigidBodyComponent> _rb;
+    std::weak_ptr<DamageComponent> _damage;
 };

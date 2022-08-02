@@ -180,6 +180,7 @@ bool Scene::RemoveTexturedModelInstance(VersionId id) {
 }
 
 void Scene::Draw(int windowWidth, int windowHeight) {
+    printf("drawing!\n");
     assert(_pInternal->_pointLights.GetCount() == 1);
     PointLight const& light = *(_pInternal->_pointLights.GetItemAtIndex(0));
 

@@ -25,15 +25,14 @@ public:
     virtual void Destroy() override {}
 
     // Returns true if we need to re-evaluate state machine
-    bool UpdateIdleStateOld(float dt, bool newState);
     bool UpdateIdleState(float dt, bool newState);
 
-    bool UpdateAttackState(float dt, bool newState);
+    // bool UpdateAttackState(float dt, bool newState);
 
     bool PickNextPlanetToOrbit(Vec3 const& inputVec, Vec3& dashDir);
 
-    static void OnHit(
-        std::weak_ptr<PlayerOrbitControllerComponent> thisComp, std::weak_ptr<RigidBodyComponent> other);
+    // static void OnHit(
+    //     std::weak_ptr<PlayerOrbitControllerComponent> thisComp, std::weak_ptr<RigidBodyComponent> other);
 
     enum class State {
         Idle, Attacking
