@@ -38,8 +38,12 @@ bool CameraControllerComponent::DrawImGui() {
 
 // TODO: make this framerate independent!!!
 void CameraControllerComponent::Update(float dt) {
+    std::shared_ptr<TransformComponent> target = _target.lock();
+    if (target == nullptr) {
+        return;
+    }
     Vec3 cameraPos = _transform.lock()->GetWorldPos();
-    Vec3 targetPos = _target.lock()->GetWorldPos();
+    Vec3 targetPos = target->GetWorldPos();
     Vec3 targetToCameraOffset = cameraPos - targetPos;
 
     Vec3 newOffset = targetToCameraOffset + _trackingFactor * (_desiredTargetToCameraOffset - targetToCameraOffset);

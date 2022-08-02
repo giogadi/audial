@@ -110,13 +110,16 @@ namespace {
 }
 
 static bool gApproaching = false;
+static bool gAssociatedWithAPlanet = false;
+static Vec3 gLastVelocity;
+static Vec3 gLastWorldPos;
 
 bool PlayerOrbitControllerComponent::UpdateIdleState(float dt, bool newState) {
     if (dt == 0.f) {
         return false;
     }
 
-    Vec3 const inputVec = GetInputVec(*_input);
+    Vec3 const inputVec = GetInputVec(*_input);    
 
     if (WasDashKeyPressedThisFrame(*_input)) {
         Vec3 const inputVec = GetInputVec(*_input);
@@ -124,6 +127,7 @@ bool PlayerOrbitControllerComponent::UpdateIdleState(float dt, bool newState) {
         PickNextPlanetToOrbit(inputVec, dashDir);
         if (std::shared_ptr<OrbitableComponent> planet = _planetWeOrbit.lock()) {            
             gApproaching = true;
+            gAssociatedWithAPlanet = true;
             std::shared_ptr<TransformComponent> playerTrans = _transform.lock();
             if (std::shared_ptr<TransformComponent const> currentParent = playerTrans->_parent.lock()) {
                 if (currentParent != planet->_t.lock()) {
@@ -173,7 +177,16 @@ bool PlayerOrbitControllerComponent::UpdateIdleState(float dt, bool newState) {
             AngleToXZ(newAngle, newPlanetToPlayerDir._x, newPlanetToPlayerDir._z);
 
             Vec3 newLocalPos = newPlanetToPlayerDir * newRadius;
+
+            // Record for velocity calc
+            Vec3 prevWorldPos = playerTrans->GetWorldPos();
+            
             playerTrans->SetLocalPos(newLocalPos);
+
+            Vec3 newWorldPos = playerTrans->GetWorldPos();
+
+            gLastVelocity = (newWorldPos - prevWorldPos) / dt;
+            gLastWorldPos = newWorldPos;
         } else {
             // No parent. We better be approaching!
             assert(gApproaching);
@@ -193,8 +206,38 @@ bool PlayerOrbitControllerComponent::UpdateIdleState(float dt, bool newState) {
                     camera->SetTarget(planetTrans);
                 }
             }
+            gLastVelocity = (newPos - playerPos) / dt;
             playerTrans->SetWorldPos(newPos);
+            gLastWorldPos = newPos;
         }
+    }
+
+    // If the planet disappeared while we were tracking it, decel to a stop and have the camera track the player.
+    if (gAssociatedWithAPlanet && _planetWeOrbit.expired()) {
+        gAssociatedWithAPlanet = false;
+        std::shared_ptr<TransformComponent> playerTrans = _transform.lock();        
+        if (std::shared_ptr<CameraControllerComponent> camera = _camera.lock()) {
+            camera->SetTarget(playerTrans);
+        }
+        // In case we were parented to the destroyed planet, reset the planet's world position.
+        assert(playerTrans->_parent.expired());
+        playerTrans->SetWorldPos(gLastWorldPos);
+
+        // Get new position by applying first-order-lag to last velocity toward 0.
+        float lagFactor = 0.2f;
+        gLastVelocity -= lagFactor * gLastVelocity;
+
+        Vec3 newPos = gLastWorldPos + gLastVelocity * dt;
+        playerTrans->SetWorldPos(newPos);
+        gLastWorldPos = newPos;
+
+        // if (gLastVelocity._x > 0.f) {
+        //     gLastVelocity
+        // }
+
+        // float lastSpeed = gLastVelocity.Length();
+        // float newSpeed = lastSpeed - kDecel * dt;
+
     }
 
     return false;

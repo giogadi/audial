@@ -551,10 +551,7 @@ int main(int argc, char** argv) {
             entityManager.Update(dt);
             // TODO do we wanna run collision manager during edit mode?
             collisionManager.Update(dt);
-        }
-
-        // TODO: where in the frame should entity removal happen? idk
-        entityManager.DestroyTaggedEntities();
+        }        
 
         if (inputManager.IsKeyPressed(InputManager::Key::Escape)) {
             glfwSetWindowShouldClose(window, true);
@@ -593,6 +590,15 @@ int main(int argc, char** argv) {
         // - When io.WantCaptureKeyboard is true, do not dispatch keyboard input data to your main application, or clear/overwrite your copy of the keyboard data.
         // Generally you may always pass all inputs to dear imgui, and hide them from your application based on those two flags.
         glfwPollEvents();
+
+        // We're doing this last so that it's not possible for the following to happen:
+        // 1. player hits planet with 1hp
+        // 2. planet gets deleted
+        // 3. player's position is wacky
+        // 4. renderer takes wacky position
+        //
+        // Rule here is: We ALWAYS have at least one frame to deal with a deleted reference before a render happens. Not a bad rule!
+        entityManager.DestroyTaggedEntities();
     }
 
     ImGui_ImplOpenGL3_Shutdown();

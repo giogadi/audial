@@ -10,7 +10,9 @@ class OrbitableComponent : public Component {
 public:
     virtual ComponentType Type() const override { return ComponentType::Orbitable; }
     virtual bool ConnectComponents(EntityId id, Entity& e, GameManager& g) override;
-    virtual void Destroy() override {}
+    virtual void Destroy() override {
+        printf("howdy!\n");
+    }
 
     virtual void Save(ptree& pt) const override;
     virtual void Load(ptree const& pt) override;
