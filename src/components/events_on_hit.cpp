@@ -11,101 +11,49 @@
 #include "components/transform.h"
 #include "entity.h"
 #include "game_manager.h"
+#include "script_action.h"
+
+EventsOnHitComponent::EventsOnHitComponent() {}
 
 bool EventsOnHitComponent::ConnectComponents(EntityId id, Entity& e, GameManager& g) {
-    _t = e.FindComponentOfType<TransformComponent>();
-    if (_t.expired()) {
-        return false;
-    }
-    _rb = e.FindComponentOfType<RigidBodyComponent>();
-    if (_rb.expired()) {
-        return false;
-    }
-    _audio = g._audioContext;
-    _beatClock = g._beatClock;
-    _rb = e.FindComponentOfType<RigidBodyComponent>();
-    if (_rb.expired()) {
-        return false;
-    }
-    auto pThisComp = e.FindComponentOfType<EventsOnHitComponent>();
-    RigidBodyComponent& rb = *_rb.lock();
-    rb.AddOnHitCallback(std::bind(&EventsOnHitComponent::OnHit, pThisComp, std::placeholders::_1));
-    rb._layer = CollisionLayer::None;
+    _g = &g;
     return true;
 }
 
-void EventsOnHitComponent::OnHit(
-    std::weak_ptr<EventsOnHitComponent> thisComp, std::weak_ptr<RigidBodyComponent> other) {
-    // Assumes neither object got destroyed. But at least we are able to handle this case later.
-    thisComp.lock()->_wasHit = other.lock()->_layer == CollisionLayer::BodyAttack;
+void EventsOnHitComponent::AddOnHitCallback(OnHitCallback callback) {
+    _callbacks.push_back(std::move(callback));
 }
 
-void EventsOnHitComponent::PlayEventsOnNextDenom(double denom) {
-    double beatTime = _beatClock->GetBeatTime();
-    double startTime = BeatClock::GetNextBeatDenomTime(beatTime, denom);
-    unsigned long startTickTime = _beatClock->BeatTimeToTickTime(startTime);
-    // std::cout << "TIME: " << startTickTime << std::endl;
-    for (BeatTimeEvent const& event : _events) {
-        audio::Event e = event._e;
-        e.timeInTicks = _beatClock->BeatTimeToTickTime(event._beatTime) + startTickTime;
-        _audio->AddEvent(e);
+void EventsOnHitComponent::OnHit(EntityId other) const {
+    for (auto const& action : _actions) {
+        action->Execute(*_g);
     }
-}
-
-void EventsOnHitComponent::Update(float dt) {
-    if (!_wasHit) {
-        return;
+    for (auto const& callback : _callbacks) {
+        callback(other);
     }
-    _wasHit = false;
-
-    PlayEventsOnNextDenom(_denom);
 }
 
 bool EventsOnHitComponent::DrawImGui() {
-    ImGui::InputScalar("Denom##", ImGuiDataType_Double, &_denom, /*step=*/nullptr, /*???*/nullptr, "%f");
-
-    if (ImGui::Button("Add Event##")) {
-        _events.emplace_back();
-    }
-
-    char headerName[128];
-    for (int i = 0; i < _events.size(); ++i) {
-        ImGui::PushID(i);
-        sprintf(headerName, "%s###Header", audio::EventTypeToString(_events[i]._e.type));
-        if (ImGui::CollapsingHeader(headerName)) {
-            if (ImGui::Button("Delete Event")) {
-                _events.erase(_events.begin() + i);
-                --i;
-                ImGui::PopID();
-                continue;
-            }
-            ImGui::InputScalar("Beat time##", ImGuiDataType_Double, &_events[i]._beatTime, /*step=*/nullptr, /*???*/nullptr, "%f");
-            audio::EventDrawImGuiNoTime(_events[i]._e);
-        }
-        ImGui::PopID();
-    }
-
-    return false;
+    ImGui::PushID(static_cast<int>(Type()));
+    DrawScriptActionListImGui(_actions);
+    ImGui::PopID();
+    return false;  // no reconnect
 }
 
 void EventsOnHitComponent::OnEditPick() {
-    PlayEventsOnNextDenom(_denom);
+    for (auto const& action : _actions) {
+        action->Execute(*_g);
+    }
+    // TODO: add option to maybe call callbacks on edit pick?
+    // for (auto const& callback : _callbacks) {
+    //     callback(other);
+    // }
 }
 
 void EventsOnHitComponent::Save(ptree& pt) const {
-    pt.put("denom", _denom);
-    ptree eventsPt;
-    for (BeatTimeEvent const& b_e : _events) {
-        serial::SaveInNewChildOf(eventsPt, "beat_event", b_e);
-    }
-    pt.add_child("beat_events", eventsPt);
+    ScriptAction::SaveActions(pt.add_child("script_actions", ptree()), _actions);
 }
 
 void EventsOnHitComponent::Load(ptree const& pt) {
-    _denom = pt.get<double>("denom");
-    for (auto const& item : pt.get_child("beat_events")) {
-        _events.emplace_back();
-        BeatTimeEvent& b_e = _events.back();
-        b_e.Load(item.second);
-    }
+    ScriptAction::LoadActions(pt.get_child("script_actions"), _actions);
 }

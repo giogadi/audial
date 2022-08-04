@@ -5,7 +5,6 @@
 #include "component.h"
 #include "matrix.h"
 
-class RigidBodyComponent;
 class InputManager;
 class OrbitableComponent;
 class TransformComponent;
@@ -14,8 +13,7 @@ class CameraControllerComponent;
 class PlayerOrbitControllerComponent : public Component {
 public:
     virtual ComponentType Type() const override { return ComponentType::PlayerOrbitController; }
-    PlayerOrbitControllerComponent()
-        : _attackDir(0.f,0.f,0.f) {}
+    PlayerOrbitControllerComponent() {}
     virtual bool ConnectComponents(EntityId id, Entity& e, GameManager& g) override;
 
     virtual ~PlayerOrbitControllerComponent() {}
@@ -27,20 +25,16 @@ public:
     // Returns true if we need to re-evaluate state machine
     bool UpdateIdleState(float dt, bool newState);
 
-    // bool UpdateAttackState(float dt, bool newState);
-
     bool PickNextPlanetToOrbit(Vec3 const& inputVec, Vec3& dashDir);
 
-    // static void OnHit(
-    //     std::weak_ptr<PlayerOrbitControllerComponent> thisComp, std::weak_ptr<RigidBodyComponent> other);
-
     enum class State {
-        Idle, Attacking
+        Idle
     };
 
+    EntityId _myId;
     std::weak_ptr<TransformComponent> _transform;
-    std::weak_ptr<RigidBodyComponent> _rb;
     std::weak_ptr<OrbitableComponent> _planetWeOrbit;
+    EntityId _planetWeOrbitId;
     std::weak_ptr<CameraControllerComponent> _camera;
     InputManager const* _input = nullptr;
     GameManager* _g = nullptr;
@@ -48,7 +42,4 @@ public:
     EntityManager* _entityMgr = nullptr;
     State _state = State::Idle;
     float _stateTimer = 0.f;
-    Vec3 _attackDir;
-    // negative is moving closer to center.
-    std::optional<float> _dribbleRadialSpeed;
 };

@@ -179,8 +179,7 @@ bool Scene::RemoveTexturedModelInstance(VersionId id) {
     return _pInternal->_texturedModelInstances.RemoveItem(id);
 }
 
-void Scene::Draw(int windowWidth, int windowHeight) {
-    printf("drawing!\n");
+void Scene::Draw(int windowWidth, int windowHeight) {    
     assert(_pInternal->_pointLights.GetCount() == 1);
     PointLight const& light = *(_pInternal->_pointLights.GetItemAtIndex(0));
 

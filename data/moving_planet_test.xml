@@ -102,7 +102,7 @@
                     <m33>1</m33>
                 </mat4>
                 <parent_name/>
-            </component>            
+            </component>
             <component>
                 <component_type>PlayerOrbitController</component_type>
             </component>
@@ -193,6 +193,23 @@
                 <script_actions>
                     <script_action>
                         <script_action_type>DestroyAllPlanets</script_action_type>
+                    </script_action>
+                </script_actions>
+            </component>
+            <component>
+                <component_type>EventsOnHit</component_type>
+                <script_actions>
+                    <script_action>
+                        <script_action_type>AudioEvent</script_action_type>
+                        <denom>0.25</denom>
+                        <beat_event>
+                            <event_type>NoteOn</event_type>
+                            <channel>0</channel>
+                            <tick_time>0</tick_time>
+                            <midi_note>69</midi_note>
+                            <velocity>1</velocity>
+                            <beat_time>0</beat_time>
+                        </beat_event>
                     </script_action>
                 </script_actions>
             </component>

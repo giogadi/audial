@@ -16,9 +16,7 @@ public:
 
     virtual bool DrawImGui() override;
 
-    // static void OnHit(
-    //     std::weak_ptr<DamageComponent> damageComp, std::weak_ptr<RigidBodyComponent> other);
-    void OnHit();
+    void OnHit(EntityId other);
 
     void Save(ptree& pt) const override;
     void Load(ptree const& pt) override;
@@ -26,7 +24,6 @@ public:
     // Serialize
     int _hp = -1;
 
-    // std::weak_ptr<RigidBodyComponent> _rb;
     EntityId _entityId = EntityId::InvalidId();
     EntityManager* _entityManager = nullptr;
     bool _wasHit = false;

@@ -5,25 +5,21 @@
 #include "rigid_body.h"
 #include "entity_manager.h"
 #include "game_manager.h"
+#include "components/events_on_hit.h"
 
 bool DamageComponent::ConnectComponents(EntityId id, Entity& e, GameManager& g) {
-    // _rb = e.FindComponentOfType<RigidBodyComponent>();
-    // if (_rb.expired()) {
-    //     return false;
-    // }
-    auto pThisComp = e.FindComponentOfType<DamageComponent>();
-    // RigidBodyComponent& rb = *_rb.lock();
-    // rb.AddOnHitCallback(std::bind(&DamageComponent::OnHit, pThisComp, std::placeholders::_1));
+    auto const onHit = e.FindComponentOfType<EventsOnHitComponent>().lock();
+    if (onHit == nullptr) {
+        return false;
+    }
+    onHit->AddOnHitCallback(std::bind(&DamageComponent::OnHit, this, std::placeholders::_1));
 
     _entityManager = g._entityManager;
     _entityId = id;
     return true;
 }
 
-// void DamageComponent::OnHit(std::weak_ptr<DamageComponent> damageComp, std::weak_ptr<RigidBodyComponent> other) {
-//     damageComp.lock()->_wasHit = true;
-// }
-void DamageComponent::OnHit() {
+void DamageComponent::OnHit(EntityId other) {
     _wasHit = true;
 }
 
