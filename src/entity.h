@@ -62,10 +62,16 @@ public:
             auto compAndStatus = std::make_unique<ComponentAndStatus>();
             compAndStatus->_c = component;
             compAndStatus->_active = true;
+            iter.first->second = compAndStatus.get();
+
             _components.push_back(std::move(compAndStatus));
+            // Sort components by the Type enum. This is their update order.
+            std::sort(_components.begin(), _components.end(),
+                [](std::unique_ptr<ComponentAndStatus> const& c1, std::unique_ptr<ComponentAndStatus> const& c2) {
+                    return static_cast<int>(c1->_c->Type()) < static_cast<int>(c2->_c->Type());
+                });
         }
 
-        iter.first->second = _components.back().get();
         return component;
     }
 

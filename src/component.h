@@ -14,10 +14,9 @@ class GameManager;
 #define M_COMPONENT_TYPES \
     X(Transform) \
     X(Velocity) \
-    X(Model) \
+    X(RigidBody) \
     X(Light) \
     X(Camera) \
-    X(RigidBody) \
     X(PlayerController) \
     X(BeepOnHit) \
     X(Sequencer) \
@@ -29,7 +28,8 @@ class GameManager;
     X(Activator) \
     X(Damage) \
     X(OnDestroyEvent) \
-    X(WaypointFollow)
+    X(WaypointFollow) \
+    X(Model)
 
 enum class ComponentType: int {
 #   define X(a) a,
