@@ -53,3 +53,8 @@ add_executable(version_id_list_test
     src/version_id_list_test.cpp src/version_id_list_simple.cpp)
 target_include_directories(version_id_list_test PUBLIC
     ./src)
+
+add_executable(ecs_test
+    src/ecs_test.cpp)
+target_include_directories(version_id_list_test PUBLIC
+    ./src)
