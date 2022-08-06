@@ -298,14 +298,12 @@ bool PlayerOrbitControllerComponent::PickNextPlanetToOrbit(Vec3 const& inputVec,
     });
 
     if (currentPlanet) {
-        // currentPlanet->_rb.lock()->_layer = CollisionLayer::None;
         currentPlanet->OnLeaveOrbit(*_g);
     }
     if (potentialNewPlanet) {
-        // potentialNewPlanet->_rb.lock()->_layer = CollisionLayer::Solid;
-    }
-    _planetWeOrbit = potentialNewPlanet;
-    _planetWeOrbitId = potentialNewPlanetId;
+        _planetWeOrbit = potentialNewPlanet;
+        _planetWeOrbitId = potentialNewPlanetId;
+    }    
 
     return true;
 }
