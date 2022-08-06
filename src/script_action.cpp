@@ -7,6 +7,7 @@
 #include "audio.h"
 #include "game_manager.h"
 #include "entity_manager.h"
+#include "components/waypoint_follow.h"
 
 std::unique_ptr<ScriptAction> MakeScriptActionOfType(ScriptActionType actionType) {
     switch (actionType) {
@@ -20,6 +21,10 @@ std::unique_ptr<ScriptAction> MakeScriptActionOfType(ScriptActionType actionType
         }
         case ScriptActionType::AudioEvent: {
             return std::make_unique<ScriptActionAudioEvent>();
+            break;
+        }
+        case ScriptActionType::StartWaypointFollow: {
+            return std::make_unique<ScriptActionStartWaypointFollow>();
             break;
         }
         case ScriptActionType::Count: {
@@ -141,4 +146,37 @@ void ScriptActionAudioEvent::Save(ptree& pt) const {
 void ScriptActionAudioEvent::Load(ptree const& pt) {
     _denom = pt.get<double>("denom");
     _event.Load(pt.get_child("beat_event"));
+}
+
+void ScriptActionStartWaypointFollow::Execute(GameManager& g) const {
+    EntityId id = g._entityManager->FindActiveEntityByName(_entityName.c_str());
+    if (!id.IsValid()) {
+        printf("ScriptActionStartWaypointFollow: entity not found: %s\n", _entityName.c_str());
+        return;
+    }
+    Entity* e = g._entityManager->GetEntity(id);
+    assert(e != nullptr);
+
+    std::shared_ptr<WaypointFollowComponent> comp = e->FindComponentOfType<WaypointFollowComponent>().lock();
+    if (comp == nullptr) {
+        printf("ScriptActionStartWaypointFollow: entity \"%s\" has no WaypointFollowComponent.\n", _entityName.c_str());
+    }
+
+    comp->_running = true;
+}
+
+void ScriptActionStartWaypointFollow::Save(ptree& pt) const {
+    pt.put("entity_name", _entityName);
+}
+
+void ScriptActionStartWaypointFollow::Load(ptree const& pt) {
+    _entityName = pt.get<std::string>("entity_name");
+}
+
+void ScriptActionStartWaypointFollow::DrawImGui() {
+    char name[128];
+    strcpy(name, _entityName.c_str());
+    if (ImGui::InputText("Name##", name, 128)) {
+        _entityName = name;
+    }
 }

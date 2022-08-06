@@ -145,29 +145,6 @@
                 <parent_name/>
             </component>
             <component>
-                <component_type>Model</component_type>
-                <mesh_id>cube</mesh_id>
-                <color>
-                    <x>0.936274529</x>
-                    <y>0.169814467</y>
-                    <z>0.169814467</z>
-                    <w>1</w>
-                </color>
-            </component>
-            <component>
-                <component_type>WaypointFollow</component_type>
-                <loop>true</loop>
-                <speed>10</speed>
-                <waypoints>
-                    <waypoint_name>wp1</waypoint_name>
-                    <waypoint_name>wp2</waypoint_name>
-                </waypoints>
-            </component>
-            <component>
-                <component_type>Orbitable</component_type>
-                <on_leave_actions/>
-            </component>
-            <component>
                 <component_type>RigidBody</component_type>
                 <static>true</static>
                 <layer>None</layer>
@@ -185,16 +162,8 @@
                 </aabb>
             </component>
             <component>
-                <component_type>Damage</component_type>
-                <hp>1</hp>
-            </component>
-            <component>
-                <component_type>OnDestroyEvent</component_type>
-                <script_actions>
-                    <script_action>
-                        <script_action_type>DestroyAllPlanets</script_action_type>
-                    </script_action>
-                </script_actions>
+                <component_type>Orbitable</component_type>
+                <on_leave_actions/>
             </component>
             <component>
                 <component_type>EventsOnHit</component_type>
@@ -211,7 +180,43 @@
                             <beat_time>0</beat_time>
                         </beat_event>
                     </script_action>
+                    <script_action>
+                        <script_action_type>StartWaypointFollow</script_action_type>
+                        <entity_name>planet</entity_name>
+                    </script_action>
                 </script_actions>
+            </component>
+            <component>
+                <component_type>Damage</component_type>
+                <hp>5</hp>
+            </component>
+            <component>
+                <component_type>OnDestroyEvent</component_type>
+                <script_actions>
+                    <script_action>
+                        <script_action_type>DestroyAllPlanets</script_action_type>
+                    </script_action>
+                </script_actions>
+            </component>
+            <component>
+                <component_type>WaypointFollow</component_type>
+                <auto_start>false</auto_start>
+                <loop>true</loop>
+                <speed>10</speed>
+                <waypoints>
+                    <waypoint_name>wp1</waypoint_name>
+                    <waypoint_name>wp2</waypoint_name>
+                </waypoints>
+            </component>
+            <component>
+                <component_type>Model</component_type>
+                <mesh_id>cube</mesh_id>
+                <color>
+                    <x>0.936274529</x>
+                    <y>0.169814467</y>
+                    <z>0.169814467</z>
+                    <w>1</w>
+                </color>
             </component>
         </components>
     </entity>

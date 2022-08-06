@@ -4,6 +4,7 @@
     "enumItems": [
         "DestroyAllPlanets",
         "ActivateEntity",
-        "AudioEvent"
+        "AudioEvent",
+        "StartWaypointFollow"
     ]
 }

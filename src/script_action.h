@@ -54,5 +54,19 @@ class ScriptActionAudioEvent : public ScriptAction {
     BeatTimeEvent _event;
 };
 
+
+class ScriptActionStartWaypointFollow : public ScriptAction {
+    virtual ScriptActionType Type() const override { return ScriptActionType::StartWaypointFollow; }
+    virtual void Execute(GameManager& g) const override;
+
+    virtual void DrawImGui() override;
+
+    void Save(ptree& pt) const override;
+    void Load(ptree const& pt) override;
+
+    // serialize
+    std::string _entityName;
+};
+
 std::unique_ptr<ScriptAction> MakeScriptActionOfType(ScriptActionType actionType);
 void DrawScriptActionListImGui(std::vector<std::unique_ptr<ScriptAction>>& actions);

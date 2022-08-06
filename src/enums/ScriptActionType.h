@@ -10,6 +10,8 @@ enum class ScriptActionType : int {
     
     AudioEvent,
     
+    StartWaypointFollow,
+    
     Count
 };
 extern char const* gScriptActionTypeStrings[];

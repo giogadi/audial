@@ -23,6 +23,7 @@ public:
     std::vector<std::string> _waypointNames;
     bool _loop = false;
     float _speed = 1.f;
+    bool _autoStart = true;
 
     // Not serialized
     std::weak_ptr<TransformComponent> _t;
@@ -30,4 +31,5 @@ public:
     int _currentWaypointIx = 0;
     GameManager* _g;
     BoundMeshPNU const* _debugMesh = nullptr;
+    bool _running = false;
 };

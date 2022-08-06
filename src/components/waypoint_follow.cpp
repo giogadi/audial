@@ -8,6 +8,10 @@
 #include "renderer.h"
 
 void WaypointFollowComponent::Update(float dt) {
+    if (!_running) {
+        return;
+    }
+
     if (_currentWaypointIx >= _waypointIds.size()) {
         if (_loop) {
             _currentWaypointIx = 0;
@@ -84,11 +88,18 @@ bool WaypointFollowComponent::ConnectComponents(EntityId id, Entity& e, GameMana
     }
     _debugMesh = _g->_scene->GetMesh("cube");
     assert(_debugMesh != nullptr);
+
+    if (_autoStart) {
+        _running = true;
+    } else {
+        _running = false;
+    }
     return true;
 }
 
 bool WaypointFollowComponent::DrawImGui() {
     bool needReconnect = false;
+    ImGui::Checkbox("Auto Start##", &_autoStart);
     ImGui::Checkbox("Loop##", &_loop);
     ImGui::InputScalar("Speed##", ImGuiDataType_Float, &_speed);
     if (ImGui::Button("Add Waypoint##")) {
@@ -112,6 +123,7 @@ bool WaypointFollowComponent::DrawImGui() {
 }
 
 void WaypointFollowComponent::Save(boost::property_tree::ptree& pt) const {
+    pt.put("auto_start", _autoStart);
     pt.put("loop", _loop);
     pt.put("speed", _speed);
     ptree& waypointsPt = pt.add_child("waypoints", ptree());
@@ -122,6 +134,12 @@ void WaypointFollowComponent::Save(boost::property_tree::ptree& pt) const {
 }
 
 void WaypointFollowComponent::Load(boost::property_tree::ptree const& pt) {
+    auto const& maybeAutoStart = pt.get_optional<bool>("auto_start");
+    if (maybeAutoStart.has_value()) {
+        _autoStart = pt.get<bool>("auto_start");
+    } else {
+        _autoStart = true;
+    }
     _loop = pt.get<bool>("loop");
     _speed = pt.get<float>("speed");
     _waypointNames.clear();
