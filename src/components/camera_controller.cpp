@@ -38,7 +38,7 @@ bool CameraControllerComponent::DrawImGui() {
 
 // TODO: make this framerate independent!!!
 void CameraControllerComponent::Update(float dt) {
-    std::shared_ptr<TransformComponent> target = _target.lock();
+    std::shared_ptr<TransformComponent const> target = _target.lock();
     if (target == nullptr) {
         return;
     }
@@ -50,7 +50,7 @@ void CameraControllerComponent::Update(float dt) {
     _transform.lock()->SetWorldPos(targetPos + newOffset);
 }
 
-void CameraControllerComponent::SetTarget(std::shared_ptr<TransformComponent> const& newTarget) {
+void CameraControllerComponent::SetTarget(std::shared_ptr<TransformComponent const> const& newTarget) {
     _target = newTarget;
     // FOR NOW, we just keep the previous target-to-camera offset. Later we might want to specify that here too.
 }

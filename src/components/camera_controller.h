@@ -13,7 +13,7 @@ public:
     virtual void Update(float dt) override;
     virtual bool DrawImGui() override;
 
-    void SetTarget(std::shared_ptr<TransformComponent> const& newTarget);
+    void SetTarget(std::shared_ptr<TransformComponent const> const& newTarget);
 
     virtual void Save(ptree& pt) const override;
     virtual void Load(ptree const& pt) override;
@@ -25,6 +25,6 @@ public:
     std::string _targetName;
 
     std::weak_ptr<TransformComponent> _transform;
-    std::weak_ptr<TransformComponent> _target;
+    std::weak_ptr<TransformComponent const> _target;
     Vec3 _desiredTargetToCameraOffset;  // Must be initialized in ConnectComponents
 };

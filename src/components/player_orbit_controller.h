@@ -25,7 +25,10 @@ public:
     // Returns true if we need to re-evaluate state machine
     bool UpdateIdleState(float dt, bool newState);
 
-    bool PickNextPlanetToOrbit(Vec3 const& inputVec, Vec3& dashDir);
+    // TODO DELETE ME PLS
+    bool PickNextPlanetToOrbit(Vec3 const& inputVec);
+
+    EntityId GetNextPlanetFromInput(Vec3 const& inputVec) const;
 
     enum class State {
         Idle
@@ -33,8 +36,9 @@ public:
 
     EntityId _myId;
     std::weak_ptr<TransformComponent> _transform;
-    std::weak_ptr<OrbitableComponent> _planetWeOrbit;
+
     EntityId _planetWeOrbitId;
+
     std::weak_ptr<CameraControllerComponent> _camera;
     InputManager const* _input = nullptr;
     GameManager* _g = nullptr;
