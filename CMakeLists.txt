@@ -21,7 +21,7 @@ add_executable(game
     src/components/rigid_body.cpp src/components/beep_on_hit.cpp src/components/player_controller.cpp
     src/components/player_orbit_controller.cpp src/components/camera_controller.cpp src/components/hit_counter.cpp
     src/components/orbitable.cpp src/components/events_on_hit.cpp src/components/activator.cpp src/components/damage.cpp
-    src/components/waypoint_follow.cpp
+    src/components/waypoint_follow.cpp src/components/recorder_balloon.cpp
     src/enums/audio_EventType.cpp src/enums/audio_SynthParamType.cpp src/enums/CollisionLayer.cpp
     src/enums/ScriptActionType.cpp src/enums/synth_Waveform.cpp)
 

@@ -22,6 +22,7 @@
 #include "components/damage.h"
 #include "components/on_destroy_event.h"
 #include "components/waypoint_follow.h"
+#include "components/recorder_balloon.h"
 
 void Entity::Update(float dt) {
     for (auto& c : _components) {

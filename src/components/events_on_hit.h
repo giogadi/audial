@@ -9,6 +9,7 @@ public:
     // Takes entity ID of other object that did the hitting.
     typedef std::function<void(EntityId)> OnHitCallback;
 
+    // TODO: return an ID that can be used to unregister callbacks.
     void AddOnHitCallback(OnHitCallback f);
 
     virtual ComponentType Type() const override { return ComponentType::EventsOnHit; }

@@ -160,6 +160,7 @@ void ScriptActionStartWaypointFollow::Execute(GameManager& g) const {
     std::shared_ptr<WaypointFollowComponent> comp = e->FindComponentOfType<WaypointFollowComponent>().lock();
     if (comp == nullptr) {
         printf("ScriptActionStartWaypointFollow: entity \"%s\" has no WaypointFollowComponent.\n", _entityName.c_str());
+        return;
     }
 
     comp->_running = true;

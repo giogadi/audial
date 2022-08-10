@@ -29,6 +29,7 @@ class GameManager;
     X(Damage) \
     X(OnDestroyEvent) \
     X(WaypointFollow) \
+    X(RecorderBalloon) \
     X(Model)
 
 enum class ComponentType: int {
