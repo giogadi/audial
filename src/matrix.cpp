@@ -135,14 +135,18 @@ Mat4 Mat4::Perspective(
     return Frustrum(-xmax, xmax, -ymax, ymax, znear, zfar);
 }
 
-void Mat4::Scale(float x) {
+void Mat4::ScaleUniform(float x) {
+    Scale(x, x, x);
+}
+
+void Mat4::Scale(float x, float y, float z) {
     _m00 *= x;
-    _m01 *= x;
-    _m02 *= x;
     _m10 *= x;
-    _m11 *= x;
-    _m12 *= x;
     _m20 *= x;
-    _m21 *= x;
-    _m22 *= x;
+    _m01 *= y;
+    _m11 *= y;
+    _m21 *= y;
+    _m02 *= z;    
+    _m12 *= z;    
+    _m22 *= z;
 }

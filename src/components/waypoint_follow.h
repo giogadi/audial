@@ -32,4 +32,7 @@ public:
     GameManager* _g;
     BoundMeshPNU const* _debugMesh = nullptr;
     bool _running = false;
+
+private:
+    void DrawLinesThroughWaypoints();
 };

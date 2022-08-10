@@ -224,7 +224,7 @@
                     <m32>0</m32>
                     <m03>4.71482706</m03>
                     <m13>0</m13>
-                    <m23>-25.6147213</m23>
+                    <m23>-33.8645973</m23>
                     <m33>1</m33>
                 </mat4>
                 <parent_name/>
@@ -233,7 +233,94 @@
     </entity>
     <entity>
         <entity_active>true</entity_active>
-        <name>eb</name>
+        <name>snare1</name>
+        <components>
+            <component>
+                <component_type>Transform</component_type>
+                <mat4>
+                    <m00>1</m00>
+                    <m10>0</m10>
+                    <m20>0</m20>
+                    <m30>0</m30>
+                    <m01>0</m01>
+                    <m11>1</m11>
+                    <m21>0</m21>
+                    <m31>0</m31>
+                    <m02>0</m02>
+                    <m12>0</m12>
+                    <m22>1</m22>
+                    <m32>0</m32>
+                    <m03>9.06987</m03>
+                    <m13>0</m13>
+                    <m23>-17.4228172</m23>
+                    <m33>1</m33>
+                </mat4>
+                <parent_name/>
+            </component>
+            <component>
+                <component_type>Orbitable</component_type>
+                <on_leave_actions/>
+            </component>
+            <component>
+                <component_type>EventsOnHit</component_type>
+                <script_actions>
+                    <script_action>
+                        <script_action_type>AudioEvent</script_action_type>
+                        <denom>0.25</denom>
+                        <beat_event>
+                            <event_type>PlayPcm</event_type>
+                            <channel>0</channel>
+                            <tick_time>0</tick_time>
+                            <midi_note>2</midi_note>
+                            <velocity>0.25</velocity>
+                            <beat_time>0</beat_time>
+                        </beat_event>
+                    </script_action>
+                </script_actions>
+            </component>
+            <component>
+                <component_type>Model</component_type>
+                <mesh_id>cube</mesh_id>
+                <color>
+                    <x>0.936274529</x>
+                    <y>0.778473973</y>
+                    <z>0.169814467</z>
+                    <w>1</w>
+                </color>
+            </component>
+        </components>
+    </entity>
+    <entity>
+        <entity_active>true</entity_active>
+        <name>wp2</name>
+        <components>
+            <component>
+                <component_type>Transform</component_type>
+                <mat4>
+                    <m00>1</m00>
+                    <m10>0</m10>
+                    <m20>0</m20>
+                    <m30>0</m30>
+                    <m01>0</m01>
+                    <m11>1</m11>
+                    <m21>0</m21>
+                    <m31>0</m31>
+                    <m02>0</m02>
+                    <m12>0</m12>
+                    <m22>1</m22>
+                    <m32>0</m32>
+                    <m03>4.54999924</m03>
+                    <m13>0</m13>
+                    <m23>-0.150000006</m23>
+                    <m33>1</m33>
+                </mat4>
+                <parent_name/>
+            </component>
+        </components>
+    </entity>
+    <entity>
+        <entity_active>true</entity_active>
+        <name>snare1(dupe)</name>
         <components>
             <component>
                 <component_type>Transform</component_type>
@@ -268,24 +355,12 @@
                         <script_action_type>AudioEvent</script_action_type>
                         <denom>0.25</denom>
                         <beat_event>
-                            <event_type>NoteOn</event_type>
+                            <event_type>PlayPcm</event_type>
                             <channel>0</channel>
                             <tick_time>0</tick_time>
-                            <midi_note>39</midi_note>
-                            <velocity>1</velocity>
+                            <midi_note>2</midi_note>
+                            <velocity>0.25</velocity>
                             <beat_time>0</beat_time>
-                        </beat_event>
-                    </script_action>
-                    <script_action>
-                        <script_action_type>AudioEvent</script_action_type>
-                        <denom>0.25</denom>
-                        <beat_event>
-                            <event_type>NoteOff</event_type>
-                            <channel>0</channel>
-                            <tick_time>0</tick_time>
-                            <midi_note>39</midi_note>
-                            <velocity>1</velocity>
-                            <beat_time>0.10000000000000001</beat_time>
                         </beat_event>
                     </script_action>
                 </script_actions>
@@ -304,7 +379,7 @@
     </entity>
     <entity>
         <entity_active>true</entity_active>
-        <name>g</name>
+        <name>snare1(dupe)</name>
         <components>
             <component>
                 <component_type>Transform</component_type>
@@ -321,9 +396,9 @@
                     <m12>0</m12>
                     <m22>1</m22>
                     <m32>0</m32>
-                    <m03>1.54852962</m03>
+                    <m03>9.06987</m03>
                     <m13>0</m13>
-                    <m23>-15.3270054</m23>
+                    <m23>-28.772644</m23>
                     <m33>1</m33>
                 </mat4>
                 <parent_name/>
@@ -339,24 +414,12 @@
                         <script_action_type>AudioEvent</script_action_type>
                         <denom>0.25</denom>
                         <beat_event>
-                            <event_type>NoteOn</event_type>
+                            <event_type>PlayPcm</event_type>
                             <channel>0</channel>
                             <tick_time>0</tick_time>
-                            <midi_note>43</midi_note>
-                            <velocity>1</velocity>
+                            <midi_note>2</midi_note>
+                            <velocity>0.25</velocity>
                             <beat_time>0</beat_time>
-                        </beat_event>
-                    </script_action>
-                    <script_action>
-                        <script_action_type>AudioEvent</script_action_type>
-                        <denom>0.25</denom>
-                        <beat_event>
-                            <event_type>NoteOff</event_type>
-                            <channel>0</channel>
-                            <tick_time>0</tick_time>
-                            <midi_note>43</midi_note>
-                            <velocity>1</velocity>
-                            <beat_time>0.10000000000000001</beat_time>
                         </beat_event>
                     </script_action>
                 </script_actions>
@@ -365,8 +428,8 @@
                 <component_type>Model</component_type>
                 <mesh_id>cube</mesh_id>
                 <color>
-                    <x>0.575587451</x>
-                    <y>0.936274529</y>
+                    <x>0.936274529</x>
+                    <y>0.778473973</y>
                     <z>0.169814467</z>
                     <w>1</w>
                 </color>
@@ -375,100 +438,28 @@
     </entity>
     <entity>
         <entity_active>true</entity_active>
-        <name>bb</name>
+        <name>kick_seq</name>
         <components>
             <component>
-                <component_type>Transform</component_type>
-                <mat4>
-                    <m00>1</m00>
-                    <m10>0</m10>
-                    <m20>0</m20>
-                    <m30>0</m30>
-                    <m01>0</m01>
-                    <m11>1</m11>
-                    <m21>0</m21>
-                    <m31>0</m31>
-                    <m02>0</m02>
-                    <m12>0</m12>
-                    <m22>1</m22>
-                    <m32>0</m32>
-                    <m03>8.57213879</m03>
-                    <m13>0</m13>
-                    <m23>-22.4504547</m23>
-                    <m33>1</m33>
-                </mat4>
-                <parent_name/>
-            </component>
-            <component>
-                <component_type>Orbitable</component_type>
-                <on_leave_actions/>
-            </component>
-            <component>
-                <component_type>EventsOnHit</component_type>
-                <script_actions>
-                    <script_action>
-                        <script_action_type>AudioEvent</script_action_type>
-                        <denom>0.25</denom>
-                        <beat_event>
-                            <event_type>NoteOn</event_type>
-                            <channel>0</channel>
-                            <tick_time>0</tick_time>
-                            <midi_note>46</midi_note>
-                            <velocity>1</velocity>
-                            <beat_time>0</beat_time>
-                        </beat_event>
-                    </script_action>
-                    <script_action>
-                        <script_action_type>AudioEvent</script_action_type>
-                        <denom>0.25</denom>
-                        <beat_event>
-                            <event_type>NoteOff</event_type>
-                            <channel>0</channel>
-                            <tick_time>0</tick_time>
-                            <midi_note>46</midi_note>
-                            <velocity>1</velocity>
-                            <beat_time>0.10000000000000001</beat_time>
-                        </beat_event>
-                    </script_action>
-                </script_actions>
-            </component>
-            <component>
-                <component_type>Model</component_type>
-                <mesh_id>cube</mesh_id>
-                <color>
-                    <x>0.0291234404</x>
-                    <y>0.990196049</y>
-                    <z>0.424859166</z>
-                    <w>1</w>
-                </color>
-            </component>
-        </components>
-    </entity>
-    <entity>
-        <entity_active>true</entity_active>
-        <name>wp2</name>
-        <components>
-            <component>
-                <component_type>Transform</component_type>
-                <mat4>
-                    <m00>1</m00>
-                    <m10>0</m10>
-                    <m20>0</m20>
-                    <m30>0</m30>
-                    <m01>0</m01>
-                    <m11>1</m11>
-                    <m21>0</m21>
-                    <m31>0</m31>
-                    <m02>0</m02>
-                    <m12>0</m12>
-                    <m22>1</m22>
-                    <m32>0</m32>
-                    <m03>4.54999924</m03>
-                    <m13>0</m13>
-                    <m23>-0.150000006</m23>
-                    <m33>1</m33>
-                </mat4>
-                <parent_name/>
+                <component_type>Sequencer</component_type>
+                <beat_events>
+                    <beat_event>
+                        <event_type>PlayPcm</event_type>
+                        <channel>0</channel>
+                        <tick_time>0</tick_time>
+                        <midi_note>0</midi_note>
+                        <velocity>0.800000012</velocity>
+                        <beat_time>0</beat_time>
+                    </beat_event>
+                    <beat_event>
+                        <event_type>None</event_type>
+                        <channel>0</channel>
+                        <tick_time>0</tick_time>
+                        <midi_note>0</midi_note>
+                        <velocity>1</velocity>
+                        <beat_time>1</beat_time>
+                    </beat_event>
+                </beat_events>
             </component>
         </components>
     </entity>

@@ -7,7 +7,55 @@
 #include "components/transform.h"
 #include "renderer.h"
 
+void WaypointFollowComponent::DrawLinesThroughWaypoints() {
+    for (int i = 0, n = _waypointIds.size(); i < n - 1; ++i) {
+        Entity* e = _g->_entityManager->GetEntity(_waypointIds[i]);
+        if (e == nullptr) {
+            continue;
+        }
+        Vec3 p0 = e->FindComponentOfType<TransformComponent>().lock()->GetWorldPos();
+
+        e = _g->_entityManager->GetEntity(_waypointIds[i+1]);
+        if (e == nullptr) {
+            continue;
+        }
+        Vec3 p1 = e->FindComponentOfType<TransformComponent>().lock()->GetWorldPos();
+
+        // Cube mesh is [-0.5,0.5]
+        // We arbitrarily choose to orient the local-x of the cube to point from p0 to p1.
+        Vec3 xAxis = (p1 - p0);
+        float segmentLength = xAxis.Normalize();
+        if (segmentLength < 0.0001f) {
+            continue;
+        }        
+
+        // Find arbitrary vector orthogonal to xAxis and call it Y.
+        Vec3 xOrtho = Vec3::Cross(xAxis, Vec3(0.f, 1.f, 0.f));
+        if (xOrtho.Length2() < 0.0001f * 0.0001f) {
+            // xAxis was super close to World Y Axis. Ok, let's try World X instead.
+            xOrtho = Vec3::Cross(xAxis, Vec3(1.f, 0.f, 0.f));
+        }
+        Vec3 yAxis = xOrtho.GetNormalized();
+        Vec3 zAxis = Vec3::Cross(xAxis, yAxis);
+
+        Mat4 trans;
+        trans.Scale(segmentLength, 0.1f, 0.1f);
+
+        Mat4 rot;
+        rot.SetTopLeftMat3(Mat3(xAxis, yAxis, zAxis));
+
+        trans = rot * trans;
+
+        Vec3 pos = (p0 + p1) * 0.5f;
+        trans.SetTranslation(pos);
+
+        _g->_scene->DrawMesh(_debugMesh, trans, Vec4(0.f, 0.f, 0.f, 1.f));
+    }
+}
+
 void WaypointFollowComponent::Update(float dt) {
+    DrawLinesThroughWaypoints();
+
     if (!_running) {
         return;
     }
@@ -50,6 +98,8 @@ void WaypointFollowComponent::Update(float dt) {
 }
 
 void WaypointFollowComponent::EditModeUpdate(float dt) {
+    DrawLinesThroughWaypoints();
+
     // Update debug models
     for (int i = 0; i < _waypointIds.size(); ++i) {
         Entity* e = _g->_entityManager->GetEntity(_waypointIds[i]);
@@ -61,7 +111,7 @@ void WaypointFollowComponent::EditModeUpdate(float dt) {
             continue;
         }
         Mat4 wpMeshTrans = wpTrans->GetWorldMat4();
-        wpMeshTrans.Scale(0.25f);
+        wpMeshTrans.ScaleUniform(0.25f);
         _g->_scene->DrawMesh(_debugMesh, wpMeshTrans, Vec4(1.f, 0.f, 0.f, 1.f));
     }
 }

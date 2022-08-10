@@ -17,6 +17,8 @@ namespace {
     float constexpr kOrbitRange = 5.f;
     float constexpr kOrbitAngularSpeed = 2*kPi;  // rads per second
     float constexpr kDesiredRange = 3.f;
+
+
 }
 
 bool PlayerOrbitControllerComponent::ConnectComponents(EntityId id, Entity& e, GameManager& g) {
@@ -155,10 +157,10 @@ bool PlayerOrbitControllerComponent::UpdateIdleState(float dt, bool newState) {
             float currentRadius = planetToPlayerDirLocal.Normalize();
             float newRadius = currentRadius;
             {
-                float lagFactor = 0.2f;                
+                float lagFactor = 0.3f * 60.f;                
                 // 1st order lag to desired radius.
                 float desiredRad = 0.f;
-                newRadius = currentRadius + lagFactor * (desiredRad - currentRadius);
+                newRadius = currentRadius + lagFactor * dt * (desiredRad - currentRadius);
                 if (newRadius < kMinDist) {
                     // It's a hit! Clear approaching planet, but leave orbiting planet alone.
                     newRadius = kMinDist;
@@ -190,11 +192,11 @@ bool PlayerOrbitControllerComponent::UpdateIdleState(float dt, bool newState) {
             gLastWorldPos = newWorldPos;
         } else {
             // Not parented to any planet. Just First-order-lag straight to planet.
-            float lagFactor = 0.2f;
+            float lagFactor = 0.3f * 60.f;
             Vec3 const playerPos = playerTrans->GetWorldPos();
             Vec3 const planetPos = planetTrans->GetWorldPos();       
             Vec3 playerToPlanet = planetPos - playerPos;
-            Vec3 newPos = playerPos + lagFactor * playerToPlanet;
+            Vec3 newPos = playerPos + lagFactor * dt * playerToPlanet;
             Vec3 planetToNewPos = newPos - planetPos;
             float newDist = planetToNewPos.Normalize();
             if (newDist < kMinDist) {
@@ -246,9 +248,9 @@ bool PlayerOrbitControllerComponent::UpdateIdleState(float dt, bool newState) {
                 // Decide new radius
                 Vec3 planetToPlayerDirLocal = playerTrans->GetLocalPos();
                 float currentRadius = planetToPlayerDirLocal.Normalize();
-                float lagFactor = 0.2f;                
+                float lagFactor = 0.3f * 60.f;                
                 // 1st order lag to desired radius.
-                float newRadius = currentRadius + lagFactor * (kDesiredRange - currentRadius);
+                float newRadius = currentRadius + lagFactor * dt * (kDesiredRange - currentRadius);
 
                 // Now decide new angle.
                 // These 2D angles are defined about the y-axis, where angle=0 is the +x axis and angle=pi/2 is the -z axis.
@@ -271,19 +273,19 @@ bool PlayerOrbitControllerComponent::UpdateIdleState(float dt, bool newState) {
 
             } else {
                 // Not yet parented; just do first-order lag to planet position.
-                float lagFactor = 0.2f;
+                float lagFactor = 0.3f * 60.f;
                 Vec3 const playerPos = playerTrans->GetWorldPos();
                 Vec3 const planetPos = planetTrans->GetWorldPos();       
                 Vec3 playerToPlanet = planetPos - playerPos;
-                Vec3 newPos = playerPos + lagFactor * playerToPlanet;
+                Vec3 newPos = playerPos + lagFactor * dt * playerToPlanet;
                 playerTrans->SetWorldPos(newPos);
                 gLastWorldPos = newPos;
                 gLastVelocity = (newPos - playerPos) / dt;
             }
         } else {
             // Just fade current velocity to 0.        
-            float lagFactor = 0.2f;
-            gLastVelocity -= lagFactor * gLastVelocity;
+            float lagFactor = 0.2f * 60.f;
+            gLastVelocity -= lagFactor * dt * gLastVelocity;
 
             auto playerTrans = _transform.lock();
             Vec3 newPos = playerTrans->GetWorldPos() + gLastVelocity * dt;
@@ -297,149 +299,6 @@ bool PlayerOrbitControllerComponent::UpdateIdleState(float dt, bool newState) {
 
 static bool gApproaching = false;
 static bool gAssociatedWithAPlanet = false;
-// static Vec3 gLastVelocity;
-// static Vec3 gLastWorldPos;
-
-// bool PlayerOrbitControllerComponent::UpdateIdleStateOld(float dt, bool newState) {
-//     if (dt == 0.f) {
-//         return false;
-//     }
-
-//     Vec3 const inputVec = GetInputVec(*_input);    
-
-//     if (WasDashKeyPressedThisFrame(*_input)) {
-//         Vec3 const inputVec = GetInputVec(*_input);
-//         Vec3 dashDir;
-//         PickNextPlanetToOrbit(inputVec, dashDir);
-//         if (std::shared_ptr<OrbitableComponent> planet = _planetWeOrbit.lock()) {            
-//             gApproaching = true;
-//             gAssociatedWithAPlanet = true;
-//             std::shared_ptr<TransformComponent> playerTrans = _transform.lock();
-//             if (std::shared_ptr<TransformComponent const> currentParent = playerTrans->_parent.lock()) {
-//                 if (currentParent != planet->_t.lock()) {
-//                     playerTrans->Unparent();
-//                     // When we unparent from a planet, the camera goes back to following the player.
-//                     if (std::shared_ptr<CameraControllerComponent> camera = _camera.lock()) {
-//                         camera->SetTarget(playerTrans);
-//                     }
-//                 }
-//             }
-//         }
-//     }
-
-//     if (std::shared_ptr<OrbitableComponent> planet = _planetWeOrbit.lock()) {            
-//         std::shared_ptr<TransformComponent> playerTrans = _transform.lock();
-//         std::shared_ptr<TransformComponent> planetTrans = planet->_t.lock();
-        
-//         float constexpr kPlayerRadius = 0.5f;
-//         float constexpr kPlanetRadius = 0.5f;
-//         float constexpr kMinDist = kPlayerRadius + kPlanetRadius;
-//         if (std::shared_ptr<TransformComponent const> parent = playerTrans->_parent.lock()) {
-//             // Decide new radius
-//             Vec3 const& playerLocalPos = playerTrans->GetLocalPos();
-//             Vec3 planetToPlayerDirLocal = playerTrans->GetLocalPos();
-//             float currentRadius = planetToPlayerDirLocal.Normalize();
-//             float newRadius = currentRadius;
-//             if (gApproaching) {
-//                 float lagFactor = 0.2f;                
-//                 // 1st order lag to desired radius.
-//                 float desiredRad = 0.f;
-//                 newRadius = currentRadius + lagFactor * (desiredRad - currentRadius);
-//                 if (newRadius < kMinDist) {
-//                     // It's a hit!
-//                     newRadius = kMinDist;
-//                     gApproaching = false;
-//                     Entity* planetEntity = _entityMgr->GetEntity(_planetWeOrbitId);
-//                     assert(planetEntity != nullptr);
-//                     auto const comp = planetEntity->FindComponentOfType<EventsOnHitComponent>().lock();
-//                     if (comp != nullptr) {
-//                         comp->OnHit(_myId);
-//                     }
-//                 }
-//             } else {
-//                 float lagFactor = 0.2f;
-//                 // 1st order lag to desired radius.
-//                 newRadius = currentRadius + lagFactor * (kDesiredRange - currentRadius);
-//             }
-
-//             // Now decide new angle.
-//             // These 2D angles are defined about the y-axis, where angle=0 is the +x axis and angle=pi/2 is the -z axis.
-//             float currentAngle = XZToAngle(planetToPlayerDirLocal._x, planetToPlayerDirLocal._z);
-//             float newAngle = currentAngle + kOrbitAngularSpeed * dt;
-//             Vec3 newPlanetToPlayerDir;
-//             AngleToXZ(newAngle, newPlanetToPlayerDir._x, newPlanetToPlayerDir._z);
-
-//             Vec3 newLocalPos = newPlanetToPlayerDir * newRadius;
-
-//             // Record for velocity calc
-//             Vec3 prevWorldPos = playerTrans->GetWorldPos();
-            
-//             playerTrans->SetLocalPos(newLocalPos);
-
-//             Vec3 newWorldPos = playerTrans->GetWorldPos();
-
-//             gLastVelocity = (newWorldPos - prevWorldPos) / dt;
-//             gLastWorldPos = newWorldPos;
-//         } else {
-//             // No parent. We better be approaching!
-//             assert(gApproaching);
-//             float lagFactor = 0.2f;
-//             Vec3 const& playerPos = playerTrans->GetWorldPos();
-//             Vec3 const& planetPos = planetTrans->GetWorldPos();       
-//             Vec3 playerToPlanet = planetPos - playerPos;
-//             Vec3 newPos = playerPos + lagFactor * playerToPlanet;
-//             Vec3 planetToNewPos = newPos - planetPos;
-//             float newDist = planetToNewPos.Normalize();
-//             if (newDist < kMinDist) {
-//                 // It's a hit!
-//                 newPos = planetPos + planetToNewPos * kMinDist;
-//                 playerTrans->Parent(planetTrans);
-//                 gApproaching = false;
-//                 // When we parent to a new planet, the camera controller should follow the planet.
-//                 if (std::shared_ptr<CameraControllerComponent> camera = _camera.lock()) {
-//                     camera->SetTarget(planetTrans);
-//                 }
-//                 Entity* planetEntity = _entityMgr->GetEntity(_planetWeOrbitId);
-//                 assert(planetEntity != nullptr);
-//                 auto const comp = planetEntity->FindComponentOfType<EventsOnHitComponent>().lock();
-//                 if (comp != nullptr) {
-//                     comp->OnHit(_myId);
-//                 }
-//                 // HACK: giving player a velocity so he can bounce away even if planet dies
-//                 gLastVelocity = -playerToPlanet.GetNormalized() * 30.f;
-//             } else {
-//                 gLastVelocity = (newPos - playerPos) / dt;
-//             }            
-//             playerTrans->SetWorldPos(newPos);
-//             gLastWorldPos = newPos;
-//         }
-//     }
-
-//     // If the planet disappeared while we were tracking it, decel to a stop and have the camera track the player.
-//     if (gAssociatedWithAPlanet && _planetWeOrbit.expired()) {
-//         gAssociatedWithAPlanet = false;
-//         std::shared_ptr<TransformComponent> playerTrans = _transform.lock();        
-//         if (std::shared_ptr<CameraControllerComponent> camera = _camera.lock()) {
-//             camera->SetTarget(playerTrans);
-//         }
-//         // In case we were parented to the destroyed planet, reset the planet's world position.
-//         assert(playerTrans->_parent.expired());
-//         playerTrans->SetWorldPos(gLastWorldPos);        
-//     }
-
-//     if (!gAssociatedWithAPlanet) {
-//         // Get new position by applying first-order-lag to last velocity toward 0.
-//         float lagFactor = 0.2f;
-//         gLastVelocity -= lagFactor * gLastVelocity;
-
-//         auto playerTrans = _transform.lock();
-//         Vec3 newPos = playerTrans->GetWorldPos() + gLastVelocity * dt;
-//         playerTrans->SetWorldPos(newPos);
-//         gLastWorldPos = newPos;
-//     }
-
-//     return false;
-// }
 
 EntityId PlayerOrbitControllerComponent::GetNextPlanetFromInput(Vec3 const& inputVec) const {
     Vec3 playerPos = _transform.lock()->GetWorldPos();
@@ -493,63 +352,3 @@ EntityId PlayerOrbitControllerComponent::GetNextPlanetFromInput(Vec3 const& inpu
 
     return potentialNewPlanetId;
 }
-
-// bool PlayerOrbitControllerComponent::PickNextPlanetToOrbit(Vec3 const& inputVec) {
-//     Vec3 playerPos = _transform.lock()->GetWorldPos();
-//     if (inputVec.IsZero()) {
-//         // Don't change planets
-//         auto currentPlanet = _planetWeOrbit.lock();
-//         if (currentPlanet) {
-//             return true;
-//         } else {
-//             return false;
-//         }
-//     }
-//
-//     // WE USE CURRENTLY ORBITED PLANET AS REFERENCE, NOT PLAYER
-//     float constexpr kMinDotWithInput = 0.707106781f;
-//     float closestDist = std::numeric_limits<float>::max();
-//     std::shared_ptr<OrbitableComponent> currentPlanet = _planetWeOrbit.lock();
-//     std::shared_ptr<OrbitableComponent> potentialNewPlanet;
-//     EntityId potentialNewPlanetId;
-//     if (currentPlanet) {
-//         playerPos = currentPlanet->_t.lock()->GetWorldPos();
-//     }
-//     _entityMgr->ForEveryActiveEntity([&](EntityId id) {
-//         Entity& e = *_entityMgr->GetEntity(id);
-//         std::shared_ptr<OrbitableComponent> planet = e.FindComponentOfType<OrbitableComponent>().lock();
-//         if (planet == nullptr) {
-//             return;
-//         }
-//         if (planet == currentPlanet) {
-//             return;
-//         }
-//         Vec3 const& planetPos = planet->_t.lock()->GetWorldPos();
-//         Vec3 fromPlayerToPlanetDir = planetPos - playerPos;
-//         float dist = fromPlayerToPlanetDir.Length();
-//         if (dist == 0.f) {
-//             return;
-//         }
-//         fromPlayerToPlanetDir *= (1.f / dist);
-//         float dotWithInput = Vec3::Dot(fromPlayerToPlanetDir, inputVec);
-//         if (dotWithInput < kMinDotWithInput) {
-//             return;
-//         }
-
-//         if (dist < closestDist) {
-//             closestDist = dist;
-//             potentialNewPlanet = planet;
-//             potentialNewPlanetId = id;
-//         }
-//     });
-
-//     if (currentPlanet) {
-//         currentPlanet->OnLeaveOrbit(*_g);
-//     }
-//     if (potentialNewPlanet) {
-//         _planetWeOrbit = potentialNewPlanet;
-//         _planetWeOrbitId = potentialNewPlanetId;
-//     }    
-
-//     return true;
-// }

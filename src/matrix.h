@@ -302,7 +302,9 @@ struct Mat4 {
         }
     }
 
-    void Scale(float x);
+    // NOTE!!!! These only apply to the 3x3 rot matrix
+    void ScaleUniform(float x);
+    void Scale(float x, float y, float z);
 
     // Assumes the mat is just a simple rotation and translation. No scaling.
     Mat4 InverseAffine() const {

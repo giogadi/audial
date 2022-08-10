@@ -16,7 +16,7 @@
 namespace audio {
 
 int constexpr kNumSynths = 3;
-int constexpr kNumPcmSounds = 2;
+int constexpr kNumPcmSounds = 3;
 int constexpr kNumPcmVoices = 8;
 
 struct PcmSound {

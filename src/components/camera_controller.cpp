@@ -46,7 +46,8 @@ void CameraControllerComponent::Update(float dt) {
     Vec3 targetPos = target->GetWorldPos();
     Vec3 targetToCameraOffset = cameraPos - targetPos;
 
-    Vec3 newOffset = targetToCameraOffset + _trackingFactor * (_desiredTargetToCameraOffset - targetToCameraOffset);
+    float k = _trackingFactor * 60.f;
+    Vec3 newOffset = targetToCameraOffset + k * dt * (_desiredTargetToCameraOffset - targetToCameraOffset);
     _transform.lock()->SetWorldPos(targetPos + newOffset);
 }
 

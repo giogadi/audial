@@ -282,6 +282,7 @@ void LoadSoundData(std::vector<audio::PcmSound>& sounds) {
     std::vector<char const*> soundFilenames = {
         "data/sounds/kick_deep.wav"
         , "data/sounds/woodblock_reverb_mono.wav"
+        , "data/sounds/snare2.wav"
     };
     for (char const* filename : soundFilenames) {
         audio::PcmSound sound;
