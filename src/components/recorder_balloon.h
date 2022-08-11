@@ -3,11 +3,13 @@
 #include "component.h"
 
 class ModelComponent;
+class TransformComponent;
+class SequencerComponent;
 
 class RecorderBalloonComponent : public Component {
 public:
     virtual ~RecorderBalloonComponent() override {}
-    
+
     virtual ComponentType Type() const override {
         return ComponentType::RecorderBalloon;
     };
@@ -30,9 +32,23 @@ public:
 
     void OnHit(EntityId other);
 
+    void MaybeCommitSequence();
+
     // serialized
+    int _numDesiredHits = 1;
+    double _denom = 0.25;
 
     // non-serialized
-    float _heat = 0.f;
-    std::weak_ptr<ModelComponent> _model;
+    bool _wasHit = false;
+    std::weak_ptr<TransformComponent> _transform;
+    std::weak_ptr<ModelComponent> _model;    
+    std::weak_ptr<SequencerComponent> _sequencer;
+    GameManager* _g = nullptr;
+
+    int _numHits = 0;
+    struct RecordInfo {
+        bool _hit = false;
+        int _measureNumber = -1;
+    };
+    std::vector<RecordInfo> _recordedNotes;
 };

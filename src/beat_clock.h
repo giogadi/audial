@@ -2,27 +2,16 @@
 
 #include <cmath>
 
-#include <portaudio.h>
+// typedef PaStream;
 
 class BeatClock {
 public:
-    BeatClock(double bpm, double sampleRate, PaStream* stream)
+    BeatClock(double bpm, double sampleRate, void* stream)
         : _bpm(bpm)
         , _sampleRate(sampleRate)
         , _paStream(stream) {}
 
-    void Update() {
-        double audioTime = Pa_GetStreamTime(_paStream);
-        double beatTime = audioTime * (_bpm / 60.0);
-        double downBeat = std::floor(beatTime);
-        _newBeat = false;
-        if (downBeat != std::floor(_currentBeatTime)) {
-            _newBeat = true;
-        }
-        _currentBeatTime = beatTime;
-        _currentAudioTime = audioTime;
-        _currentTickTime = (unsigned long) std::round(audioTime * _sampleRate);
-    }
+    void Update();
 
     bool IsNewBeat() const { return _newBeat; }
 
@@ -60,6 +49,6 @@ private:
     double _currentAudioTime = -1.0;
     unsigned long _currentTickTime = 0;
     bool _newBeat = false;
-    PaStream* _paStream = nullptr;
+    void* _paStream = nullptr;
     double _sampleRate = 44100.0;
 };

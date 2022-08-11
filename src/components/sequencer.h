@@ -31,6 +31,22 @@ public:
     void AddToSequence(BeatTimeEvent const& newEvent) {
         _events.push_back(newEvent);
         SortEventsByTime();
+        Reset();
+    }
+
+    void AddToSequenceDangerous(BeatTimeEvent const& newEvent) {
+        _events.push_back(newEvent);
+    }
+
+    void ClearSequence() {
+        _events.clear();
+        Reset();
+    }
+
+    // Keeps the current sequence, but resets all other state.
+    void Reset() {
+        _currentIx = -1;
+        _currentLoopStartBeatTime = -1.0;
     }
 
     void Update(float const dt) override {
@@ -53,11 +69,13 @@ public:
                 BeatTimeEvent const& b_e = _events[_currentIx];
                 double absBeatTime = _currentLoopStartBeatTime + b_e._beatTime;
                 if (absBeatTime <= maxBeatTime) {
-                    // queue it up!
-                    long tickTime = _beatClock->BeatTimeToTickTime(absBeatTime);
-                    audio::Event e = b_e._e;
-                    e.timeInTicks = tickTime;
-                    _audio->AddEvent(e);
+                    if (!_muted) {
+                        // queue it up!
+                        long tickTime = _beatClock->BeatTimeToTickTime(absBeatTime);
+                        audio::Event e = b_e._e;
+                        e.timeInTicks = tickTime;
+                        _audio->AddEvent(e);
+                    }                    
                 } else {
                     // not time yet. quit.
                     break;
@@ -127,6 +145,7 @@ public:
 
     // Serialized
     std::vector<BeatTimeEvent> _events;
+    bool _muted = false;
 
     audio::Context* _audio = nullptr;
     BeatClock const* _beatClock = nullptr;

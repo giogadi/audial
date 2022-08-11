@@ -145,6 +145,10 @@
                 <parent_name/>
             </component>
             <component>
+                <component_type>Sequencer</component_type>
+                <beat_events/>
+            </component>
+            <component>
                 <component_type>Orbitable</component_type>
                 <on_leave_actions/>
             </component>
@@ -155,24 +159,12 @@
                         <script_action_type>AudioEvent</script_action_type>
                         <denom>0.25</denom>
                         <beat_event>
-                            <event_type>NoteOn</event_type>
+                            <event_type>PlayPcm</event_type>
                             <channel>0</channel>
                             <tick_time>0</tick_time>
-                            <midi_note>36</midi_note>
+                            <midi_note>0</midi_note>
                             <velocity>1</velocity>
                             <beat_time>0</beat_time>
-                        </beat_event>
-                    </script_action>
-                    <script_action>
-                        <script_action_type>AudioEvent</script_action_type>
-                        <denom>0.25</denom>
-                        <beat_event>
-                            <event_type>NoteOff</event_type>
-                            <channel>0</channel>
-                            <tick_time>0</tick_time>
-                            <midi_note>36</midi_note>
-                            <velocity>1</velocity>
-                            <beat_time>0.10000000000000001</beat_time>
                         </beat_event>
                     </script_action>
                 </script_actions>

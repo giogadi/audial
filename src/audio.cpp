@@ -252,13 +252,23 @@ int PortAudioCallback(
                         std::cout << "PCM SOUND AT NOTE " << e.midiNote << " IS NULL" << std::endl;
                         break;
                     }
-                    // Find free voice
+                    // Find free voice. Also check that there isn't another voice playing the exact same sample at the same time.
                     int voiceIx = -1;
+                    bool foundCopy = false;
                     for (int i = 0; i < state->pcmVoices.size(); ++i) {
-                        if (state->pcmVoices[i]._soundBufferIx < 0) {
+                        PcmVoice const& pcmVoice = state->pcmVoices[i];
+                        if (pcmVoice._soundBufferIx < 0) {
                             voiceIx = i;
-                            break;
-                        }
+                        } else {
+                            if (pcmVoice._soundIx == e.midiNote && pcmVoice._soundBufferIx <= 0) {
+                                voiceIx = -1;
+                                foundCopy = true;
+                                break;
+                            }
+                        } 
+                    }
+                    if (foundCopy) {
+                        break;
                     }
                     if (voiceIx < 0) {
                         std::cout << "NO MORE PCM VOICES" << std::endl;
