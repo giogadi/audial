@@ -14,7 +14,7 @@ add_executable(game
     src/version_id_list_simple.cpp
     src/entity_picking.cpp src/entity_editing_context.cpp src/script_action.cpp
     src/shader.cpp src/synth.cpp  src/matrix.cpp src/mesh.cpp
-    src/beat_clock.cpp
+    src/beat_clock.cpp src/input_manager.cpp
     src/component.cpp src/entity.cpp src/entity_manager.cpp
     src/renderer.cpp src/collisions.cpp
     src/components/transform.cpp

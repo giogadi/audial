@@ -9,6 +9,10 @@ namespace renderer {
     class Camera;
 }
 
+void GetPickRay(
+    double screenX, double screenY, int windowWidth, int windowHeight, renderer::Camera const& camera,
+    Vec3* rayStart, Vec3* rayDir);
+
 EntityId PickEntity(
     EntityManager& entities, double clickX, double clickY, int windowWidth, int windowHeight,
     renderer::Camera const& camera);

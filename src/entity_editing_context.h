@@ -23,7 +23,7 @@ public:
     static void DrawEntityImGui(EntityId id, GameManager& g, int* selectedComponentIx, bool connectComponents);
 
 private:
-    void UpdateSelectedPositionFromInput(float dt, GameManager& gameManager);
+    void UpdateSelectedPositionFromInput(float dt, GameManager& gameManager, int windowWidth, int windowHeight);
 
     BoundMeshPNU const* _axesModel = nullptr;
 };

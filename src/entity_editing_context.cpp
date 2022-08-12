@@ -1,5 +1,7 @@
 #include "entity_editing_context.h"
 
+#include <iostream>
+
 #include "imgui/imgui.h"
 
 #include "serial.h"
@@ -12,6 +14,8 @@
 #include "constants.h"
 #include "components/transform.h"
 #include "components/camera.h"
+
+static float gScrollFactorForDebugCameraMove = 1.f;
 
 bool EntityEditingContext::Init(GameManager& g) {
     _axesModel = g._scene->GetMesh("axes");
@@ -51,35 +55,43 @@ void EntityEditingContext::Update(
         }
     }
 
-    UpdateSelectedPositionFromInput(dt, g);
+    UpdateSelectedPositionFromInput(dt, g, windowWidth, windowHeight);
 
-    // If no entity is selected, update debug camera from user input.
-    if (!_selectedEntityId.IsValid()) {
-        InputManager const& input = *g._inputManager;
-
-        Vec3 inputVec(0.0f,0.f,0.f);
-        if (input.IsKeyPressed(InputManager::Key::W)) {
-            inputVec._z -= 1.0f;
-        }
-        if (input.IsKeyPressed(InputManager::Key::S)) {
-            inputVec._z += 1.0f;
-        }
-        if (input.IsKeyPressed(InputManager::Key::A)) {
-            inputVec._x -= 1.0f;
-        }
-        if (input.IsKeyPressed(InputManager::Key::D)) {
-            inputVec._x += 1.0f;
-        }
-
-        bool hasInput = inputVec._x != 0.f || inputVec._y != 0.f || inputVec._z != 0.f;
-        if (hasInput) {
-            float moveSpeed = 3.f;
-            g._scene->_camera._transform.Translate(inputVec.GetNormalized() * moveSpeed * dt);
-        }
+    // Use scroll input to move debug camera around.
+    double scrollX = 0.0, scrollY = 0.0;
+    g._inputManager->GetMouseScroll(scrollX, scrollY);
+    if (scrollX != 0.0 || scrollY != 0.0) {
+        Vec3 camMotionVec = gScrollFactorForDebugCameraMove * Vec3(-scrollX, 0.f, -scrollY);
+        g._scene->_camera._transform.Translate(camMotionVec);
     }
+
+    // // If no entity is selected, update debug camera from user input.
+    // if (!_selectedEntityId.IsValid()) {
+    //     InputManager const& input = *g._inputManager;
+
+    //     Vec3 inputVec(0.0f,0.f,0.f);
+    //     if (input.IsKeyPressed(InputManager::Key::W)) {
+    //         inputVec._z -= 1.0f;
+    //     }
+    //     if (input.IsKeyPressed(InputManager::Key::S)) {
+    //         inputVec._z += 1.0f;
+    //     }
+    //     if (input.IsKeyPressed(InputManager::Key::A)) {
+    //         inputVec._x -= 1.0f;
+    //     }
+    //     if (input.IsKeyPressed(InputManager::Key::D)) {
+    //         inputVec._x += 1.0f;
+    //     }
+
+    //     bool hasInput = inputVec._x != 0.f || inputVec._y != 0.f || inputVec._z != 0.f;
+    //     if (hasInput) {
+    //         float moveSpeed = 3.f;
+    //         g._scene->_camera._transform.Translate(inputVec.GetNormalized() * moveSpeed * dt);
+    //     }
+    // }
 }
 
-void EntityEditingContext::UpdateSelectedPositionFromInput(float dt, GameManager& g) {
+void EntityEditingContext::UpdateSelectedPositionFromInput(float dt, GameManager& g, int windowWidth, int windowHeight) {
     EntityManager& entities = *g._entityManager;
     Entity* entity = entities.GetEntity(_selectedEntityId);
     if (entity == nullptr) {
@@ -93,6 +105,25 @@ void EntityEditingContext::UpdateSelectedPositionFromInput(float dt, GameManager
     }
 
     InputManager const& input = *g._inputManager;
+
+    // If user is dragging mouse around, use mouse motion to move object.
+    if (input.IsKeyPressed(InputManager::MouseButton::Left)) {
+        // Can we translate mouse position to world position? Well, the "simple"
+        // way is to just project the mouse position onto the XZ plane.
+        double screenX, screenY;
+        input.GetMousePos(screenX, screenY);
+        Vec3 rayStart, rayDir;
+        GetPickRay(screenX, screenY, windowWidth, windowHeight, g._scene->_camera, &rayStart, &rayDir);
+
+        // Find where the ray intersects the XZ plane. This is where on the ray the y-value hits 0.
+        if (std::abs(rayDir._y) > 0.0001) {
+            float rayParamAtXZPlane = -rayStart._y / rayDir._y;
+            if (rayParamAtXZPlane > 0.0) {
+                Vec3 projOnXZPlane = rayStart + (rayDir * rayParamAtXZPlane);
+                transform->SetWorldPos(projOnXZPlane);
+            }            
+        }
+    }
 
     Vec3 inputVec(0.0f,0.f,0.f);
     if (input.IsKeyPressed(InputManager::Key::W)) {

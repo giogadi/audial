@@ -38,6 +38,36 @@ std::optional<float> sphereRayCast(Vec3 const& rayStart, Vec3 const& normalizedR
 
 }  // end namespace
 
+// TODO: Have PickEntity use this.
+void GetPickRay(double screenX, double screenY, int windowWidth, int windowHeight, renderer::Camera const& camera,
+    Vec3* rayStart, Vec3* rayDir) {
+    assert(rayStart != nullptr);
+    assert(rayDir != nullptr);
+
+    Mat4 const& cameraTransform = camera._transform;
+
+    float aspectRatio = (float) windowWidth / (float) windowHeight;
+
+    // First we find the world-space position of the top-left corner of the near clipping plane.
+    Vec3 nearPlaneCenter = cameraTransform.GetPos() - cameraTransform.GetZAxis() * camera._zNear;
+    float nearPlaneHalfHeight = camera._zNear * tan(0.5f * camera._fovyRad);
+    float nearPlaneHalfWidth = nearPlaneHalfHeight * aspectRatio;
+    Vec3 nearPlaneTopLeft = nearPlaneCenter;
+    nearPlaneTopLeft -= nearPlaneHalfWidth * cameraTransform.GetXAxis();
+    nearPlaneTopLeft += nearPlaneHalfHeight * cameraTransform.GetYAxis();
+
+    // Now map clicked point from [0,windowWidth] -> [0,1]
+    float xFactor = screenX / windowWidth;
+    float yFactor = screenY / windowHeight;
+
+    Vec3 clickedPointOnNearPlane = nearPlaneTopLeft;
+    clickedPointOnNearPlane += (xFactor * 2 * nearPlaneHalfWidth) * cameraTransform.GetXAxis();
+    clickedPointOnNearPlane -= (yFactor * 2 * nearPlaneHalfHeight) * cameraTransform.GetYAxis();
+
+    *rayDir = (clickedPointOnNearPlane - cameraTransform.GetPos()).GetNormalized();
+    *rayStart = cameraTransform.GetPos();
+}
+
 EntityId PickEntity(
     EntityManager& entities, double clickX, double clickY, int windowWidth, int windowHeight,
     renderer::Camera const& camera) {
