@@ -3,5 +3,6 @@
 // -s data/breeze_rhythmic_bass_first.xml -y data/synth_patches_breeze_rhythmic.xml
 // -s data/wp_test.xml -y data/synth_patches_breeze_rhythmic.xml
 // -s data/moving_planet_test.xml -y data/synth_patches_breeze_rhythmic.xml
--s data/moving_bass.xml -y data/synth_patches_breeze_rhythmic.xml
+// -s data/moving_bass.xml -y data/synth_patches_breeze_rhythmic.xml
 // -s data/recorder_balloon_test.xml -y data/synth_patches_breeze_rhythmic.xml
+-s data/song1.xml -y data/synth_patches_breeze_rhythmic.xml

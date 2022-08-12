@@ -252,6 +252,7 @@ void EntityEditingContext::DrawEntitiesWindow(EntityManager& entities, GameManag
             t->SetWorldPos(pos);
         }
         newEntity.ConnectComponentsOrDie(newId, g);
+        _selectedEntityId = newId;
     }
 
     int numEntities = 0;
