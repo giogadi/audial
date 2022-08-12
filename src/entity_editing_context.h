@@ -18,12 +18,12 @@ public:
     std::string _saveFilename;
     std::string _prefabFilename;
 
-    void Update(float dt, bool editMode, GameManager& g, int windowWidth, int windowHeight);
+    void Update(float dt, bool editMode, GameManager& g);
     void DrawEntitiesWindow(EntityManager& entities, GameManager& g);
     static void DrawEntityImGui(EntityId id, GameManager& g, int* selectedComponentIx, bool connectComponents);
 
 private:
-    void UpdateSelectedPositionFromInput(float dt, GameManager& gameManager, int windowWidth, int windowHeight);
+    void UpdateSelectedPositionFromInput(float dt, GameManager& gameManager);
 
     BoundMeshPNU const* _axesModel = nullptr;
 };

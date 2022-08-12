@@ -504,8 +504,8 @@ int main(int argc, char** argv) {
     bool paused = false;
     while(!glfwWindowShouldClose(window)) {
 
-        int windowWidth, windowHeight;
-        glfwGetWindowSize(window, &windowWidth, &windowHeight);
+        // int windowWidth, windowHeight;
+        glfwGetWindowSize(window, &gameManager._windowWidth, &gameManager._windowHeight);
 
         beatClock.Update();
 
@@ -543,7 +543,7 @@ int main(int argc, char** argv) {
             showHitCounters = !showHitCounters;
         }
 
-        entityEditingContext.Update(dt, cmdLineInputs._editMode, gameManager, windowWidth, windowHeight);
+        entityEditingContext.Update(dt, cmdLineInputs._editMode, gameManager);
 
         if (cmdLineInputs._editMode) {
             entityManager.EditModeUpdate(dt);
@@ -579,7 +579,7 @@ int main(int argc, char** argv) {
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        sceneManager.Draw(windowWidth, windowHeight);
+        sceneManager.Draw(gameManager._windowWidth, gameManager._windowHeight);
 
         ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 

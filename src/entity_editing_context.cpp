@@ -37,7 +37,7 @@ bool EntityEditingContext::Init(GameManager& g) {
 }
 
 void EntityEditingContext::Update(
-    float dt, bool editMode, GameManager& g, int windowWidth, int windowHeight) {
+    float dt, bool editMode, GameManager& g) {
     if (!editMode) {
         return;
     }
@@ -46,7 +46,7 @@ void EntityEditingContext::Update(
     g._inputManager->GetMousePos(mouseX, mouseY);
     if (g._inputManager->IsKeyPressedThisFrame(InputManager::MouseButton::Left)) {
         _selectedEntityId = PickEntity(
-            *g._entityManager, mouseX, mouseY, windowWidth, windowHeight, g._scene->_camera);
+            *g._entityManager, mouseX, mouseY, g._windowWidth, g._windowHeight, g._scene->_camera);
         if (_selectedEntityId.IsValid()) {
             Entity& entity = *g._entityManager->GetEntity(_selectedEntityId);
             // std::cout << "PICKED " << entity._name << std::endl;
@@ -55,7 +55,7 @@ void EntityEditingContext::Update(
         }
     }
 
-    UpdateSelectedPositionFromInput(dt, g, windowWidth, windowHeight);
+    UpdateSelectedPositionFromInput(dt, g);
 
     // Use scroll input to move debug camera around.
     double scrollX = 0.0, scrollY = 0.0;
@@ -91,7 +91,26 @@ void EntityEditingContext::Update(
     // }
 }
 
-void EntityEditingContext::UpdateSelectedPositionFromInput(float dt, GameManager& g, int windowWidth, int windowHeight) {
+namespace {
+bool ProjectScreenPointToXZPlane(
+    int screenX, int screenY, int windowWidth, int windowHeight, renderer::Camera const& camera, Vec3* outPoint) {
+    Vec3 rayStart, rayDir;
+    GetPickRay(screenX, screenY, windowWidth, windowHeight, camera, &rayStart, &rayDir);
+
+    // Find where the ray intersects the XZ plane. This is where on the ray the y-value hits 0.
+    if (std::abs(rayDir._y) > 0.0001) {
+        float rayParamAtXZPlane = -rayStart._y / rayDir._y;
+        if (rayParamAtXZPlane > 0.0) {
+            *outPoint = rayStart + (rayDir * rayParamAtXZPlane);
+            return true;
+        }            
+    }
+
+    return false;
+}
+}
+
+void EntityEditingContext::UpdateSelectedPositionFromInput(float dt, GameManager& g) {
     EntityManager& entities = *g._entityManager;
     Entity* entity = entities.GetEntity(_selectedEntityId);
     if (entity == nullptr) {
@@ -112,17 +131,21 @@ void EntityEditingContext::UpdateSelectedPositionFromInput(float dt, GameManager
         // way is to just project the mouse position onto the XZ plane.
         double screenX, screenY;
         input.GetMousePos(screenX, screenY);
-        Vec3 rayStart, rayDir;
-        GetPickRay(screenX, screenY, windowWidth, windowHeight, g._scene->_camera, &rayStart, &rayDir);
-
-        // Find where the ray intersects the XZ plane. This is where on the ray the y-value hits 0.
-        if (std::abs(rayDir._y) > 0.0001) {
-            float rayParamAtXZPlane = -rayStart._y / rayDir._y;
-            if (rayParamAtXZPlane > 0.0) {
-                Vec3 projOnXZPlane = rayStart + (rayDir * rayParamAtXZPlane);
-                transform->SetWorldPos(projOnXZPlane);
-            }            
+        Vec3 pickedPosOnXZPlane;
+        if (ProjectScreenPointToXZPlane(screenX, screenY, g._windowWidth, g._windowHeight, g._scene->_camera, &pickedPosOnXZPlane)) {
+            transform->SetWorldPos(pickedPosOnXZPlane);
         }
+        // Vec3 rayStart, rayDir;
+        // GetPickRay(screenX, screenY, windowWidth, windowHeight, g._scene->_camera, &rayStart, &rayDir);
+
+        // // Find where the ray intersects the XZ plane. This is where on the ray the y-value hits 0.
+        // if (std::abs(rayDir._y) > 0.0001) {
+        //     float rayParamAtXZPlane = -rayStart._y / rayDir._y;
+        //     if (rayParamAtXZPlane > 0.0) {
+        //         Vec3 projOnXZPlane = rayStart + (rayDir * rayParamAtXZPlane);
+        //         transform->SetWorldPos(projOnXZPlane);
+        //     }            
+        // }
     }
 
     Vec3 inputVec(0.0f,0.f,0.f);
@@ -221,7 +244,13 @@ void EntityEditingContext::DrawEntitiesWindow(EntityManager& entities, GameManag
         EntityId newId = entities.AddEntityToBack();
         Entity& newEntity = *entities.GetEntity(newId);
         newEntity._name = "new_entity";
-        newEntity.AddComponentOrDie<TransformComponent>();
+        {
+            std::shared_ptr<TransformComponent> t = newEntity.AddComponentOrDie<TransformComponent>().lock();
+            // Place new entity at center of current debug camera view.
+            Vec3 pos(0.f, 0.f, 0.f);
+            ProjectScreenPointToXZPlane(g._windowWidth / 2, g._windowHeight / 2, g._windowWidth, g._windowHeight, g._scene->_camera, &pos);
+            t->SetWorldPos(pos);
+        }
         newEntity.ConnectComponentsOrDie(newId, g);
     }
 

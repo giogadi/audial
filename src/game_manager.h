@@ -19,4 +19,7 @@ struct GameManager {
     CollisionManager* _collisionManager = nullptr;
     BeatClock* _beatClock = nullptr;
     bool _editMode = false;
+
+    int _windowWidth = -1;
+    int _windowHeight = -1;
 };
