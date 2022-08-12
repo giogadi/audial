@@ -511,9 +511,8 @@ int main(int argc, char** argv) {
 
         {
             ImGuiIO& io = ImGui::GetIO();
-            if (!io.WantCaptureMouse && !io.WantCaptureKeyboard) {
-                inputManager.Update();
-            }
+            bool inputEnabled = !io.WantCaptureMouse && !io.WantCaptureKeyboard;
+            inputManager.Update(inputEnabled);
         }
 
         if (!cmdLineInputs._editMode && inputManager.IsKeyPressedThisFrame(InputManager::Key::Space)) {

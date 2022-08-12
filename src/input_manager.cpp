@@ -3,12 +3,14 @@
 #include <iostream>
 
 #include <GLFW/glfw3.h>
+#include "imgui/backends/imgui_impl_glfw.h"
 
 InputManager* InputManager::_gInputManager = nullptr;
 
 // static
 void InputManager::ScrollCallback(GLFWwindow* window, double xOffset, double yOffset) {
     assert(_gInputManager != nullptr);
+    ImGui_ImplGlfw_ScrollCallback(window, xOffset, yOffset);
     _gInputManager->_haveScrollInputThisFrame = true;
     _gInputManager->_mouseScrollX = xOffset;
     _gInputManager->_mouseScrollY = yOffset;
@@ -27,22 +29,22 @@ InputManager::InputManager(GLFWwindow* window)
     glfwSetScrollCallback(window, &InputManager::ScrollCallback);
 }
 
-void InputManager::Update() {
+void InputManager::Update(bool enabled) {
     for (int i = 0; i < (int)Key::NumKeys; ++i) {
         Key k = (Key) i;
-        bool pressed = glfwGetKey(_window, MapToGlfw(k));
+        bool pressed = enabled && glfwGetKey(_window, MapToGlfw(k));
         _keyNewStates[i] = (pressed != _keyStates[i]);
         _keyStates[i] = pressed;
     }
     for (int i = 0; i < (int)MouseButton::Count; ++i) {
         MouseButton k = (MouseButton) i;
-        bool pressed = glfwGetMouseButton(_window, MapToGlfw(k));
+        bool pressed = enabled && glfwGetMouseButton(_window, MapToGlfw(k));
         _mouseButtonNewStates[i] = (pressed != _mouseButtonStates[i]);
         _mouseButtonStates[i] = pressed;
     }
     glfwGetCursorPos(_window, &_mouseX, &_mouseY);
 
-    if (!_haveScrollInputThisFrame) {
+    if (!enabled || !_haveScrollInputThisFrame) {
         _mouseScrollX = 0.0;
         _mouseScrollY = 0.0;
     }

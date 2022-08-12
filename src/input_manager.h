@@ -15,7 +15,7 @@ public:
 
     InputManager(GLFWwindow* window);
 
-    void Update();
+    void Update(bool enabled);
 
     bool IsKeyPressed(Key k) const {
         return _keyStates[(int)k];
