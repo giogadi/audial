@@ -30,7 +30,7 @@ bool LoadSynthPatches(char const* filename, std::vector<synth::Patch>& patches) 
     }
     ptree pt;
     boost::property_tree::read_xml(inFile, pt);
-    for (auto const item : pt.get_child("patches")) {
+    for (auto const& item : pt.get_child("patches")) {
         ptree const& patchPt = item.second;
         patches.emplace_back();
         synth::Patch& patch = patches.back();

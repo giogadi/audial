@@ -23,7 +23,7 @@ void LightComponent::Update(float dt) {
     // TODO: maybe use a dirty flag so we only do this if this light has been changed.
     renderer::PointLight* l = _scene->GetPointLight(_lightId);
     Vec3 p = _transform.lock()->GetWorldPos();
-    l->Set(_transform.lock()->GetWorldPos(), _ambient, _diffuse);
+    l->Set(p, _ambient, _diffuse);
 }
 
 void LightComponent::EditModeUpdate(float dt) {

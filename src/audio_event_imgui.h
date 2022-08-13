@@ -4,7 +4,7 @@ class BeatClock;
 
 namespace audio {
 
-class Event;
+struct Event;
 
 void EventDrawImGuiNoTime(Event& event);
 

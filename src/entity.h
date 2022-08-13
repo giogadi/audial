@@ -7,7 +7,7 @@
 #include "entity_id.h"
 #include "component.h"
 
-class GameManager;
+struct GameManager;
 
 class Entity {
 public:

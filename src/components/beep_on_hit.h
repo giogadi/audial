@@ -7,7 +7,7 @@
 
 class BeatClock;
 namespace audio {
-    class Context;
+    struct Context;
 }
 class RigidBodyComponent;
 class TransformComponent;

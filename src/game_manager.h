@@ -5,7 +5,7 @@ namespace renderer {
 }
 class InputManager;
 namespace audio {
-    class Context;
+    struct Context;
 }
 class EntityManager;
 class CollisionManager;

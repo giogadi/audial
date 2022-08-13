@@ -127,7 +127,6 @@ Mat4 Mat4::Perspective(
     float znear, float zfar) {
     
     float ymax, xmax;
-    float temp, temp2, temp3, temp4;
     ymax = znear * tanf(0.5f * fovyRadians);
     // ymin = -ymax;
     // xmin = -ymax * aspectRatio;

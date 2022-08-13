@@ -10,6 +10,7 @@ add_executable(game
     src/imgui/imgui_tables.cpp src/imgui/imgui_widgets.cpp src/imgui/backends/imgui_impl_glfw.cpp
     src/imgui/backends/imgui_impl_opengl3.cpp
     src/glad/src/glad.cpp
+    src/serial.cpp
     src/audio_loader.cpp src/game.cpp src/audio_util.cpp src/audio.cpp src/audio_event_imgui.cpp
     src/version_id_list_simple.cpp
     src/entity_picking.cpp src/entity_editing_context.cpp src/script_action.cpp
@@ -25,6 +26,12 @@ add_executable(game
     src/components/waypoint_follow.cpp src/components/recorder_balloon.cpp
     src/enums/audio_EventType.cpp src/enums/audio_SynthParamType.cpp src/enums/CollisionLayer.cpp
     src/enums/ScriptActionType.cpp src/enums/synth_Waveform.cpp)
+
+if(MSVC)
+  target_compile_options(game PRIVATE /Wall)
+else()
+  target_compile_options(game PRIVATE -Wall)
+endif()
 
 ## GLFW ##
 set(GLFW_BUILD_DOCS OFF CACHE BOOL "" FORCE)
@@ -48,6 +55,10 @@ target_include_directories(game PUBLIC
 
 add_executable(ptree_test src/ptree_test.cpp)
 target_include_directories(ptree_test PUBLIC
+    ./src)
+
+add_executable(ptree_pimpl_test src/ptree_pimpl_test.cpp)
+target_include_directories(ptree_pimpl_test PUBLIC
     ./src)
 
 add_executable(version_id_list_test

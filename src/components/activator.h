@@ -4,7 +4,7 @@
 
 #include "component.h"
 
-class GameManager;
+struct GameManager;
 class BeatClock;
 
 class ActivatorComponent : public Component {

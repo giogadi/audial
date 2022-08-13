@@ -35,8 +35,8 @@ class RigidBodyComponent : public Component {
 public:
     virtual ComponentType Type() const override { return ComponentType::RigidBody; }
     RigidBodyComponent()
-        : _velocity(0.f,0.f,0.f)
-        , _localAabb(MakeCubeAabb(0.5f)) {}
+        : _localAabb(MakeCubeAabb(0.5f))
+        , _velocity(0.f,0.f,0.f) {}
     virtual ~RigidBodyComponent() {}
     virtual bool ConnectComponents(EntityId id, Entity& e, GameManager& g) override;
     virtual bool DrawImGui() override;

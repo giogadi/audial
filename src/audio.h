@@ -53,16 +53,6 @@ int PortAudioCallback(
     PaStreamCallbackFlags statusFlags,
     void *userData);
 
-/*
- * This routine is called by portaudio when playback is done.
- */
-static void StreamFinished( void* userData )
-{
-//    paTestData *data = (paTestData *) userData;
-//    printf( "Stream Completed: %s\n", data->message );
-    printf("Stream completed\n");
-}
-
 struct Context {
     PaStreamParameters _outputParameters;
     PaStream* _stream = nullptr;

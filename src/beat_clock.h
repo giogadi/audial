@@ -8,8 +8,8 @@ class BeatClock {
 public:
     BeatClock(double bpm, double sampleRate, void* stream)
         : _bpm(bpm)
-        , _sampleRate(sampleRate)
-        , _paStream(stream) {}
+        , _paStream(stream)
+        , _sampleRate(sampleRate) {}
 
     void Update();
 

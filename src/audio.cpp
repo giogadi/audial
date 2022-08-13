@@ -53,6 +53,16 @@ void InitStateData(
     state.pendingEvents.set_capacity(256);
 }
 
+/*
+ * This routine is called by portaudio when playback is done.
+ */
+static void StreamFinished( void* userData )
+{
+//    paTestData *data = (paTestData *) userData;
+//    printf( "Stream Completed: %s\n", data->message );
+    printf("Stream completed\n");
+}
+
 PaError Init(
     Context& context, std::vector<synth::Patch> const& synthPatches, std::vector<PcmSound> const& pcmSounds) {
 
@@ -242,7 +252,6 @@ int PortAudioCallback(
             }
             switch (e.type) {
                 case EventType::PlayPcm: {
-                    bool valid = true;
                     if (e.midiNote >= state->pcmSounds.size()) {
                         std::cout << "NO PCM SOUND FOR NOTE " << e.midiNote << std::endl;
                         break;

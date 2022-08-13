@@ -7,7 +7,7 @@
 #include "version_id.h"
 #include "game_manager.h"
 
-class GameManager;
+struct GameManager;
 class BoundMeshPNU;
 
 class EntityEditingContext {

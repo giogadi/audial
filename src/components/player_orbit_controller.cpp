@@ -13,7 +13,6 @@
 #include "components/events_on_hit.h"
 
 namespace {
-    float constexpr kDecel = 25.f;
     float constexpr kOrbitRange = 5.f;
     float constexpr kOrbitAngularSpeed = 2*kPi;  // rads per second
     float constexpr kDesiredRange = 3.f;
@@ -296,9 +295,6 @@ bool PlayerOrbitControllerComponent::UpdateIdleState(float dt, bool newState) {
 
     return false;
 }
-
-static bool gApproaching = false;
-static bool gAssociatedWithAPlanet = false;
 
 EntityId PlayerOrbitControllerComponent::GetNextPlanetFromInput(Vec3 const& inputVec) const {
     Vec3 playerPos = _transform.lock()->GetWorldPos();

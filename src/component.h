@@ -9,7 +9,7 @@ using boost::property_tree::ptree;
 
 class Entity;
 class EntityManager;
-class GameManager;
+struct GameManager;
 
 #define M_COMPONENT_TYPES \
     X(Transform) \
