@@ -2,6 +2,9 @@
 
 #include "component.h"
 
+#include <vector>
+#include <memory>
+
 class RigidBodyComponent;
 class ScriptAction;
 class TransformComponent;
@@ -12,9 +15,7 @@ public:
     virtual ComponentType Type() const override { return ComponentType::Orbitable; }
     virtual bool ConnectComponents(EntityId id, Entity& e, GameManager& g) override;
 
-    virtual void Save(ptree& pt) const override;
     virtual void Save(serial::Ptree pt) const override;
-    virtual void Load(ptree const& pt) override;
     virtual void Load(serial::Ptree pt) override;
 
     virtual bool DrawImGui() override;

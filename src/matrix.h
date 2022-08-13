@@ -3,11 +3,7 @@
 #include <cmath>
 #include <cassert>
 
-#include "boost/property_tree/ptree.hpp"
-
 #include "serial.h"
-
-using boost::property_tree::ptree;
 
 struct Vec3 {
     Vec3()
@@ -73,20 +69,10 @@ struct Vec3 {
         return *this;
     }
 
-    void Save(ptree& pt) const {
-        pt.put<float>("x", _x);
-        pt.put<float>("y", _y);
-        pt.put<float>("z", _z);
-    }
     void Save(serial::Ptree pt) const {
         pt.PutFloat("x", _x);
         pt.PutFloat("y", _y);
         pt.PutFloat("z", _z);
-    }
-    void Load(ptree const& pt) {
-        _x = pt.get<float>("x");
-        _y = pt.get<float>("y");
-        _z = pt.get<float>("z");
     }
     void Load(serial::Ptree pt) {
         _x = pt.GetFloat("x");
@@ -232,23 +218,11 @@ struct Vec4 {
     static float Dot(Vec4 const& a, Vec4 const& b) {
         return a._x*b._x + a._y*b._y + a._z*b._z + a._w*b._w;
     }
-    void Save(ptree& pt) const {
-        pt.put<float>("x", _x);
-        pt.put<float>("y", _y);
-        pt.put<float>("z", _z);
-        pt.put<float>("w", _w);
-    }
     void Save(serial::Ptree pt) const {
         pt.PutFloat("x", _x);
         pt.PutFloat("y", _y);
         pt.PutFloat("z", _z);
         pt.PutFloat("w", _w);
-    }
-    void Load(ptree const& pt) {
-        _x = pt.get<float>("x");
-        _y = pt.get<float>("y");
-        _z = pt.get<float>("z");
-        _w = pt.get<float>("w");
     }
     void Load(serial::Ptree pt) {
         _x = pt.GetFloat("x");
@@ -368,30 +342,12 @@ struct Mat4 {
         return GetCol3(3);
     }
 
-    void Save(ptree& pt) const {
-        char name[] = "mXX";
-        for (int i = 0; i < 4; ++i) {
-            for (int j = 0; j < 4; ++j) {
-                snprintf(name, 4, "m%d%d", j, i);
-                pt.put<float>(name, _data[4*i + j]);
-            }
-        }
-    }
     void Save(serial::Ptree pt) const {
         char name[] = "mXX";
         for (int i = 0; i < 4; ++i) {
             for (int j = 0; j < 4; ++j) {
                 snprintf(name, 4, "m%d%d", j, i);
                 pt.PutFloat(name, _data[4*i + j]);
-            }
-        }
-    }
-    void Load(ptree const& pt) {
-        char name[] = "mXX";
-        for (int i = 0; i < 4; ++i) {
-            for (int j = 0; j < 4; ++j) {
-                snprintf(name, 4, "m%d%d", j, i);
-                _data[4*i + j] = pt.get<float>(name);
             }
         }
     }

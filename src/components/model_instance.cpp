@@ -47,26 +47,11 @@ bool ModelComponent::DrawImGui() {
     return needReconnect;
 }
 
-void ModelComponent::Save(ptree& pt) const {
-    pt.put("mesh_id", _meshId);
-    serial::SaveInNewChildOf(pt, "color", _color);
-}
-
 void ModelComponent::Save(serial::Ptree pt) const {
     pt.PutString("mesh_id", _meshId.c_str());
     serial::SaveInNewChildOf(pt, "color", _color);
 }
 
-void ModelComponent::Load(ptree const& pt) {
-    auto const& maybeMeshId = pt.get_optional<std::string>("mesh_id");
-    if (maybeMeshId.has_value()) {
-        _meshId = maybeMeshId.value();
-    } else {
-        // old version used "model_id"
-        _meshId = pt.get<std::string>("model_id");
-    }
-    _color.Load(pt.get_child("color"));
-}
 void ModelComponent::Load(serial::Ptree pt) {
     if (!pt.TryGetString("mesh_id", &_meshId)) {
         // old version used "model_id"

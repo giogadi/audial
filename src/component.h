@@ -1,12 +1,7 @@
 #pragma once
 
-// TODO: try to remove this include
-#include "boost/property_tree/ptree.hpp"
-
 #include "entity_id.h"
 #include "serial.h"
-
-using boost::property_tree::ptree;
 
 class Entity;
 class EntityManager;
@@ -59,8 +54,6 @@ public:
     virtual bool DrawImGui();
     virtual void OnEditPick() {}
     virtual void EditModeUpdate(float dt) {}
-    virtual void Save(boost::property_tree::ptree& pt) const {}
-    virtual void Load(boost::property_tree::ptree const& pt) {}
 
     virtual void Save(serial::Ptree pt) const {}
     virtual void Load(serial::Ptree pt) {}

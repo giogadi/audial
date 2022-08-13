@@ -1,8 +1,6 @@
 #pragma once
 
-#include "boost/property_tree/ptree.hpp"
-
-using boost::property_tree::ptree;
+#include <string>
 
 namespace serial {
 
@@ -57,8 +55,8 @@ public:
     bool WriteToFile(char const* filename);
     bool LoadFromFile(char const* filename);
 
-private:    
-    ptree* _internal = nullptr;
+private:
+    void* _internal = nullptr;
     bool _owned = false;
 };
 
@@ -66,13 +64,6 @@ struct NameTreePair {
     char const* _name;
     Ptree _pt;
 };
-
-template <typename T>
-inline void SaveInNewChildOf(ptree& pt, char const* childName, T const& v) {
-    ptree childPt;
-    v.Save(childPt);
-    pt.add_child(childName, childPt);
-}
 
 template <typename T>
 inline void SaveInNewChildOf(Ptree pt, char const* childName, T const& v) {

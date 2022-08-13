@@ -1,3 +1,5 @@
+#include <array>
+
 // (x,y,z,s,t)
 static inline int const kCubeVertsNumValues = 6*2*3*8;
 inline void GetCubeVertices(std::array<float,kCubeVertsNumValues>* vertices) {

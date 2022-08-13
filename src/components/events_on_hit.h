@@ -1,5 +1,7 @@
 #pragma once
 
+#include <vector>
+
 #include "component.h"
 
 class ScriptAction;
@@ -23,10 +25,7 @@ public:
 
     virtual bool DrawImGui() override;
 
-    virtual void OnEditPick() override;
-
-    void Save(ptree& pt) const override;
-    void Load(ptree const& pt) override;
+    virtual void OnEditPick() override;    
 
     void Save(serial::Ptree pt) const override;
     void Load(serial::Ptree pt) override;

@@ -1,5 +1,7 @@
 #pragma once
 
+#include <vector>
+
 #include "component.h"
 
 class ModelComponent;
@@ -26,9 +28,6 @@ public:
 
     // virtual void OnEditPick() {}
     // virtual void EditModeUpdate(float dt) {}
-
-    // virtual void Save(boost::property_tree::ptree& pt) const override;
-    // virtual void Load(boost::property_tree::ptree const& pt) override;
 
     void OnHit(EntityId other);
 

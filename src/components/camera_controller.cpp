@@ -56,19 +56,9 @@ void CameraControllerComponent::SetTarget(std::shared_ptr<TransformComponent con
     // FOR NOW, we just keep the previous target-to-camera offset. Later we might want to specify that here too.
 }
 
-void CameraControllerComponent::Save(ptree& pt) const {
-    pt.put("tracking_factor", _trackingFactor);
-    pt.put("target_entity_name", _targetName);
-}
-
 void CameraControllerComponent::Save(serial::Ptree pt) const {
     pt.PutFloat("tracking_factor", _trackingFactor);
     pt.PutString("target_entity_name", _targetName.c_str());
-}
-
-void CameraControllerComponent::Load(ptree const& pt) {
-    _trackingFactor = pt.get<float>("tracking_factor");
-    _targetName = pt.get<std::string>("target_entity_name");
 }
 
 void CameraControllerComponent::Load(serial::Ptree pt) {

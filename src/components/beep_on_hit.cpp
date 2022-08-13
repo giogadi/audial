@@ -1,7 +1,5 @@
 #include "beep_on_hit.h"
 
-#include <sstream>
-
 #include "imgui/imgui.h"
 
 #include "beat_clock.h"

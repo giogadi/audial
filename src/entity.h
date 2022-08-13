@@ -3,6 +3,8 @@
 #include <typeinfo>
 #include <typeindex>
 #include <unordered_map>
+#include <vector>
+#include <memory>
 
 #include "entity_id.h"
 #include "component.h"
@@ -97,10 +99,8 @@ public:
     }
 
     void Save(serial::Ptree pt) const;
-    void Save(ptree& pt) const;
     bool Save(char const* filename) const;
     void Load(serial::Ptree pt);
-    void Load(ptree const& pt);
     bool Load(char const* filename);
     // DO NOT SUBMIT WITHOUT A NEWPTRE VERSION OF SAVE/LOAD WITH FILENAMES
 

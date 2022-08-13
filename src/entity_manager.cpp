@@ -1,9 +1,5 @@
 #include "entity_manager.h"
 
-#include <iostream>
-
-#include "boost/property_tree/xml_parser.hpp"
-
 EntityId EntityManager::AddEntity(bool active) {
     EntityAndStatus* e_s;
     if (_freeList.empty()) {
@@ -34,7 +30,7 @@ void EntityManager::TagEntityForDestroy(
     }
     EntityAndStatus& e_s = _entities[indexToDestroy];
     if (e_s._id != idToDestroy) {
-        std::cout << "ALREADY DESTROYED THIS DUDE" << std::endl;
+        printf("ALREADY DESTROYED THIS DUDE\n");
         return;
     }
     e_s._destroy = destroyType;
@@ -78,11 +74,11 @@ void EntityManager::DeactivateEntity(EntityId id) {
     if (!e_s->_active) {
         return;
     }
-    ptree entityData;
+    serial::Ptree entityData = serial::Ptree::MakeNew();
     e_s->_e->Save(entityData);
     e_s->_e->EditDestroy();
     e_s->_e->Load(entityData);
-    e_s->_active = false;
+    e_s->_active = false;    
 }
 
 void EntityManager::ActivateEntity(EntityId id, GameManager& g) {
@@ -169,16 +165,6 @@ void EntityManager::ConnectComponents(GameManager& g, bool dieOnConnectFailure) 
     });
 }
 
-void EntityManager::Save(ptree& pt) const {
-    this->ForEveryActiveAndInactiveEntity([&](EntityId id) {
-        Entity const* e = this->GetEntity(id);
-        ptree ePt;
-        ePt.put("entity_active", this->IsActive(id));
-        e->Save(ePt);
-        pt.add_child("entity", ePt);
-    });
-}
-
 void EntityManager::Save(serial::Ptree pt) const {
     this->ForEveryActiveAndInactiveEntity([&](EntityId id) {
         Entity const* e = this->GetEntity(id);        
@@ -186,16 +172,6 @@ void EntityManager::Save(serial::Ptree pt) const {
         ePt.PutBool("entity_active", this->IsActive(id));
         e->Save(ePt);
     });
-}
-
-void EntityManager::Load(ptree const& pt) {
-    for (auto const& item : pt.get_child("entities")) {
-        ptree const& entityPt = item.second;
-        bool active = entityPt.get<bool>("entity_active");
-        EntityId id = this->AddEntity(active);
-        Entity* entity = this->GetEntity(id);
-        entity->Load(entityPt);
-    }
 }
 
 void EntityManager::Load(serial::Ptree pt) {
@@ -209,21 +185,11 @@ void EntityManager::Load(serial::Ptree pt) {
         Entity* entity = this->GetEntity(id);
         entity->Load(entityPt);
     }
-    free(children);
+    // free(children);
+    delete[] children;
 }
 
 bool EntityManager::LoadAndConnect(char const* filename, bool dieOnConnectFailure, GameManager& g) {
-    // std::ifstream inFile(filename);
-    // if (!inFile.is_open()) {
-    //     std::cout << "Couldn't open file " << filename << " for loading." << std::endl;
-    //     return false;
-    // }
-    // ptree pt;
-    // boost::property_tree::read_xml(inFile, pt);
-    // this->Load(pt);
-    // this->ConnectComponents(g, dieOnConnectFailure);
-    // return true;
-
     serial::Ptree pt = serial::Ptree::MakeNew();
     if (pt.LoadFromFile(filename)) {
         this->Load(pt);
@@ -234,28 +200,11 @@ bool EntityManager::LoadAndConnect(char const* filename, bool dieOnConnectFailur
 }
 
 bool EntityManager::Save(char const* filename) const {
-    std::ofstream outFile(filename);
-    if (!outFile.is_open()) {
-        std::cout << "Couldn't open file " << filename << " for saving. Not saving." << std::endl;
-        return false;
-    }
-    ptree pt;
-    {
-        ptree& entitiesPt = pt.add_child("entities", ptree());
-        this->Save(entitiesPt);
-    }
-    boost::property_tree::xml_parser::xml_writer_settings<std::string> settings(' ', 4);
-    boost::property_tree::write_xml(outFile, pt, settings);
+    serial::Ptree pt = serial::Ptree::MakeNew();
+    serial::Ptree entitiesPt = pt.AddChild("entities");;
+    this->Save(entitiesPt);
 
-    {
-        serial::Ptree pt = serial::Ptree::MakeNew();
-        serial::Ptree entitiesPt = pt.AddChild("entities");;
-        this->Save(entitiesPt);
-
-        return pt.WriteToFile("data/pimpl_ptree_test.xml");
-    }
-    
-    return true;
+    return pt.WriteToFile(filename);
 }
 
 EntityAndStatus* EntityManager::GetEntityAndStatus(EntityId id) {

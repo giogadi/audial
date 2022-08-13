@@ -1,7 +1,5 @@
 #pragma once
 
-#include <memory>
-
 #include "component.h"
 
 struct GameManager;
@@ -18,9 +16,6 @@ public:
     virtual void Destroy() override {}
 
     virtual bool DrawImGui() override;
-
-    void Save(ptree& pt) const override;
-    void Load(ptree const& pt) override;
 
     void Save(serial::Ptree pt) const override;
     void Load(serial::Ptree pt) override;

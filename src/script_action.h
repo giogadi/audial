@@ -12,15 +12,11 @@ public:
     virtual ScriptActionType Type() const = 0;
     virtual void Execute(GameManager& g) const = 0;
     virtual void DrawImGui() {}
-    virtual void Save(ptree& pt) const {}
-    virtual void Load(ptree const& pt) {}
 
     virtual void Save(serial::Ptree pt) const {}
     virtual void Load(serial::Ptree pt) {}
 
-    static void SaveActions(ptree& pt, std::vector<std::unique_ptr<ScriptAction>> const& actions);
     static void SaveActions(serial::Ptree pt, std::vector<std::unique_ptr<ScriptAction>> const& actions);
-    static void LoadActions(ptree const& pt, std::vector<std::unique_ptr<ScriptAction>>& actions);
     static void LoadActions(serial::Ptree pt, std::vector<std::unique_ptr<ScriptAction>>& actions);
 };
 
@@ -37,9 +33,6 @@ public:
 
     virtual void DrawImGui() override;
 
-    void Save(ptree& pt) const override;
-    void Load(ptree const& pt) override;
-
     void Save(serial::Ptree pt) const override;
     void Load(serial::Ptree pt) override;
 
@@ -53,9 +46,6 @@ class ScriptActionAudioEvent : public ScriptAction {
     virtual void Execute(GameManager& g) const override;
 
     virtual void DrawImGui() override;
-
-    void Save(ptree& pt) const override;
-    void Load(ptree const& pt) override;
 
     void Save(serial::Ptree pt) const override;
     void Load(serial::Ptree pt) override;
@@ -71,9 +61,6 @@ class ScriptActionStartWaypointFollow : public ScriptAction {
     virtual void Execute(GameManager& g) const override;
 
     virtual void DrawImGui() override;
-
-    void Save(ptree& pt) const override;
-    void Load(ptree const& pt) override;
 
     void Save(serial::Ptree pt) const override;
     void Load(serial::Ptree pt) override;

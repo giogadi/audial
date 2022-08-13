@@ -1,7 +1,5 @@
 #include "entity.h"
 
-#include "boost/property_tree/xml_parser.hpp"
-
 // Here we go
 #include "components/transform.h"
 #include "components/model_instance.h"
@@ -89,8 +87,8 @@ void Entity::ConnectComponentsOrDeactivate(
     std::vector<bool> active(_components.size(), true);
     bool allActiveSucceeded = false;
     for (int roundIx = 0; !allActiveSucceeded && roundIx < _components.size() + 1; ++roundIx) {
-        // Clone components into a parallel vector, delete the original, start over.
-        ptree entityData;
+        // Clone components into a parallel vector, delete the original, start over.        
+        serial::Ptree entityData = serial::Ptree::MakeNew();
         this->Save(entityData);
         this->EditDestroy();
         this->Load(entityData);
@@ -136,17 +134,6 @@ void Entity::Save(serial::Ptree pt) const {
     }
 }
 
-void Entity::Save(ptree& pt) const {
-    pt.put("name", _name);
-    ptree& compsPt = pt.add_child("components", ptree());
-    for (const auto& c_s : _components) {
-        auto const& component = c_s->_c;
-        ptree& compPt = compsPt.add_child("component", ptree());
-        compPt.put("component_type", ComponentTypeToString(component->Type()));
-        component->Save(compPt);
-    }
-}
-
 void Entity::Load(serial::Ptree pt) {
     _name = pt.GetString("name");
     serial::Ptree componentsPt = pt.GetChild("components");
@@ -159,35 +146,11 @@ void Entity::Load(serial::Ptree pt) {
         std::shared_ptr<Component> newComp = TryAddComponentOfType(compType).lock();
         newComp->Load(compPt);
     }
-    free(children);
-}
-
-void Entity::Load(ptree const& pt) {
-    _name = pt.get<std::string>("name");
-    for (auto const& item : pt.get_child("components")) {
-        ptree const& compPt = item.second;
-        std::string typeName = compPt.get<std::string>("component_type");
-        ComponentType compType = StringToComponentType(typeName.c_str());
-        std::shared_ptr<Component> newComp = TryAddComponentOfType(compType).lock();
-        newComp->Load(compPt);
-    }
+    // free(children);
+    delete[] children;
 }
 
 bool Entity::Save(char const* filename) const {
-    // std::ofstream outFile(filename);
-    // if (!outFile.is_open()) {
-    //     std::cout << "Couldn't open file " << filename << " for saving. Not saving." << std::endl;
-    //     return false;
-    // }
-    // ptree pt;
-    // {
-    //     ptree& entityPt = pt.add_child("entity", ptree());
-    //     this->Save(entityPt);
-    // }
-    // boost::property_tree::xml_parser::xml_writer_settings<std::string> settings(' ', 4);
-    // boost::property_tree::write_xml(outFile, pt, settings);
-    // return true;
-
     serial::Ptree pt = serial::Ptree::MakeNew();
     {
         serial::Ptree entityPt = pt.AddChild("entity");
@@ -197,16 +160,6 @@ bool Entity::Save(char const* filename) const {
 }
 
 bool Entity::Load(char const* filename) {
-    // std::ifstream inFile(filename);
-    // if (!inFile.is_open()) {
-    //     std::cout << "Couldn't open file " << filename << " for loading." << std::endl;
-    //     return false;
-    // }
-    // ptree pt;
-    // boost::property_tree::read_xml(inFile, pt);
-    // this->Load(pt.get_child("entity"));
-    // return true;
-
     serial::Ptree pt = serial::Ptree::MakeNew();
     return pt.LoadFromFile(filename);
 }

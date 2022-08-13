@@ -172,17 +172,6 @@ bool WaypointFollowComponent::DrawImGui() {
     return needReconnect;
 }
 
-void WaypointFollowComponent::Save(boost::property_tree::ptree& pt) const {
-    pt.put("auto_start", _autoStart);
-    pt.put("loop", _loop);
-    pt.put("speed", _speed);
-    ptree& waypointsPt = pt.add_child("waypoints", ptree());
-    for (std::string const& wpName : _waypointNames) {
-        ptree& wpPt = waypointsPt.add_child("waypoint_name", ptree());
-        wpPt.put_value(wpName);
-    }
-}
-
 void WaypointFollowComponent::Save(serial::Ptree pt) const {
     pt.PutBool("auto_start", _autoStart);
     pt.PutBool("loop", _loop);
@@ -190,22 +179,6 @@ void WaypointFollowComponent::Save(serial::Ptree pt) const {
     serial::Ptree waypointsPt = pt.AddChild("waypoints");
     for (std::string const& wpName : _waypointNames) {
         waypointsPt.PutString("waypoint_name", wpName.c_str());
-    }
-}
-
-void WaypointFollowComponent::Load(boost::property_tree::ptree const& pt) {
-    auto const& maybeAutoStart = pt.get_optional<bool>("auto_start");
-    if (maybeAutoStart.has_value()) {
-        _autoStart = pt.get<bool>("auto_start");
-    } else {
-        _autoStart = true;
-    }
-    _loop = pt.get<bool>("loop");
-    _speed = pt.get<float>("speed");
-    _waypointNames.clear();
-    ptree const& waypointsPt = pt.get_child("waypoints");
-    for (auto const& wpPt : waypointsPt) {
-        _waypointNames.push_back(wpPt.second.get_value<std::string>());
     }
 }
 

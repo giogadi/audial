@@ -314,7 +314,7 @@ void EntityEditingContext::DrawEntitiesWindow(EntityManager& entities, GameManag
     if (_selectedEntityId.IsValid()) {
         if (ImGui::Button("Duplicate Entity")) {
             Entity const& entity = *entities.GetEntity(_selectedEntityId);
-            ptree entityData;
+            serial::Ptree entityData = serial::Ptree::MakeNew();
             entity.Save(entityData);
             EntityId newEntityId = entities.AddEntityToBack(entities.IsActive(_selectedEntityId));
             Entity& newEntity = *entities.GetEntity(newEntityId);

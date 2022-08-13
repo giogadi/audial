@@ -1,7 +1,5 @@
 #include "hit_counter.h"
 
-#include <sstream>
-
 #include "imgui/imgui.h"
 
 #include "rigid_body.h"

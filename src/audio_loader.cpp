@@ -13,7 +13,8 @@ bool SaveSynthPatches(char const* filename, std::vector<synth::Patch> const& syn
     }
     ptree patchesPt;
     for (synth::Patch const& patch : synthPatches) {
-        serial::SaveInNewChildOf(patchesPt, "patch", patch);
+        ptree& child = patchesPt.add_child("patch", ptree());
+        patch.Save(child);
     }
     ptree pt;
     pt.add_child("patches", patchesPt);

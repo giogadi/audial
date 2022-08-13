@@ -1,7 +1,6 @@
 #pragma once
 
 #include "component.h"
-#include "matrix.h"
 
 class TransformComponent;
 namespace renderer {

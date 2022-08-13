@@ -6,6 +6,7 @@
 #include <string>
 
 #include "boost/circular_buffer.hpp"
+#include "boost/property_tree/ptree.hpp"
 
 #include "audio_util.h"
 #include "serial.h"
@@ -101,9 +102,15 @@ namespace synth {
             pt.put("pitch_lfo_freq", pitchLFOFreq);
             pt.put("cutoff_lfo_gain", cutoffLFOGain);
             pt.put("cutoff_lfo_freq", cutoffLFOFreq);
-            serial::SaveInNewChildOf(pt, "amp_env_spec", ampEnvSpec);
+            {
+                ptree& newChild = pt.add_child("amp_env_spec", ptree());
+                ampEnvSpec.Save(newChild);
+            }
             pt.put("cutoff_env_gain", cutoffEnvGain);
-            serial::SaveInNewChildOf(pt, "cutoff_env_spec", cutoffEnvSpec);
+            {
+                ptree& newChild = pt.add_child("cutoff_env_spec", ptree());
+                cutoffEnvSpec.Save(newChild);
+            }
         }
         void Load(ptree const& pt) {
             int const version = pt.get_optional<int>("version").value_or(0);

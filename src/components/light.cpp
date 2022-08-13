@@ -2,7 +2,6 @@
 
 #include "imgui/imgui.h"
 
-#include "serial.h"
 #include "entity.h"
 #include "game_manager.h"
 #include "components/transform.h"
@@ -52,17 +51,9 @@ bool LightComponent::DrawImGui() {
     return false;
 }
 
-void LightComponent::Save(ptree& pt) const {
-    serial::SaveInNewChildOf(pt, "ambient", _ambient);
-    serial::SaveInNewChildOf(pt, "diffuse", _diffuse);
-}
 void LightComponent::Save(serial::Ptree pt) const {
     serial::SaveInNewChildOf(pt, "ambient", _ambient);
     serial::SaveInNewChildOf(pt, "diffuse", _diffuse);
-}
-void LightComponent::Load(ptree const& pt) {
-    _ambient.Load(pt.get_child("ambient"));
-    _diffuse.Load(pt.get_child("diffuse"));
 }
 void LightComponent::Load(serial::Ptree pt) {
     _ambient.Load(pt.GetChild("ambient"));

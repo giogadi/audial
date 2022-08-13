@@ -127,26 +127,10 @@ public:
         return false;
     }
 
-    void Save(ptree& pt) const override {
-        ptree eventsPt;
-        for (BeatTimeEvent const& b_e : _events) {
-            serial::SaveInNewChildOf(eventsPt, "beat_event", b_e);
-        }
-        pt.add_child("beat_events", eventsPt);
-    }
-
     void Save(serial::Ptree pt) const override {
         serial::Ptree eventsPt = pt.AddChild("beat_events");
         for (BeatTimeEvent const& b_e : _events) {
             serial::SaveInNewChildOf(eventsPt, "beat_event", b_e);
-        }
-    }
-
-    void Load(ptree const& pt) override {
-        for (auto const& item : pt.get_child("beat_events")) {
-            _events.emplace_back();
-            BeatTimeEvent &b_e = _events.back();
-            b_e.Load(item.second);
         }
     }
 
@@ -159,7 +143,8 @@ public:
             BeatTimeEvent &b_e = _events.back();
             b_e.Load(children[i]._pt);
         }
-        free(children);
+        // free(children);
+        delete[] children;
     }
 
     // Serialized

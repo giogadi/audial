@@ -30,22 +30,9 @@ void OrbitableComponent::OnLeaveOrbit(GameManager& g) {
     }
 }
 
-void OrbitableComponent::Save(ptree& pt) const {
-    ScriptAction::SaveActions(pt.add_child("on_leave_actions", ptree()), _onLeaveActions);
-}
-
 void OrbitableComponent::Save(serial::Ptree pt) const {
     serial::Ptree actionsPt = pt.AddChild("on_leave_actions");
     ScriptAction::SaveActions(actionsPt, _onLeaveActions);
-}
-
-void OrbitableComponent::Load(ptree const& pt) {
-    boost::optional<ptree const&> onLeaveActionsPt = pt.get_child_optional("on_leave_actions");
-    if (onLeaveActionsPt.has_value()) {
-        ScriptAction::LoadActions(onLeaveActionsPt.value(), _onLeaveActions);
-    } else {
-        std::cout << "WARNING: OrbitableComponent missing on_leave_actions" << std::endl;
-    }
 }
 
 void OrbitableComponent::Load(serial::Ptree pt) {

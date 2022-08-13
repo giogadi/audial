@@ -2,7 +2,6 @@
 
 #include "entity_manager.h"
 #include "game_manager.h"
-#include "serial.h"
 
 bool TransformComponent::ConnectComponents(EntityId id, Entity& e, GameManager& g) {
     if (_parentEntityName != "") {
@@ -24,20 +23,9 @@ bool TransformComponent::ConnectComponents(EntityId id, Entity& e, GameManager& 
     return true;
 }
 
-void TransformComponent::Save(ptree& pt) const {
-    _localTransform.Save(pt.add_child("mat4", ptree()));
-    pt.put("parent_name", _parentEntityName);
-}
 void TransformComponent::Save(serial::Ptree pt) const {
     serial::SaveInNewChildOf(pt, "mat4", _localTransform);
     pt.PutString("parent_name", _parentEntityName.c_str());
-}
-void TransformComponent::Load(ptree const& pt) {
-    _localTransform.Load(pt.get_child("mat4"));
-    boost::optional<std::string> maybe_parent = pt.get_optional<std::string>("parent_name");
-    if (maybe_parent) {
-        _parentEntityName = *maybe_parent;
-    }
 }
 void TransformComponent::Load(serial::Ptree pt) {
     _localTransform.Load(pt.GetChild("mat4"));

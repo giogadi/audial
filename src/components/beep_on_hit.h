@@ -1,7 +1,6 @@
 #pragma once
 
 #include <array>
-#include <iostream>
 
 #include "component.h"
 
@@ -30,13 +29,6 @@ public:
     virtual bool DrawImGui() override;
 
     virtual void OnEditPick() override;
-
-    // void Save(ptree& pt) const override {
-    //     std::cout << "BeepOnHitComponent::Save: UNIMPLEMENTED" << std::endl;
-    // }
-    // void Load(ptree const& pt) override {
-    //     std::cout << "BeepOnHitComponent::Load: UNIMPLEMENTED" << std::endl;
-    // }
 
     std::weak_ptr<TransformComponent> _t;
     std::weak_ptr<RigidBodyComponent> _rb;

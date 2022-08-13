@@ -2,7 +2,6 @@
 
 #include "imgui/imgui.h"
 
-#include "serial.h"
 #include "entity.h"
 #include "game_manager.h"
 #include "components/transform.h"

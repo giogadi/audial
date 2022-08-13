@@ -27,16 +27,11 @@ public:
         return false;  // no reconnect
     }
 
-    virtual void Save(ptree& pt) const override {
-        ScriptAction::SaveActions(pt.add_child("script_actions", ptree()), _actions);
-    }
     virtual void Save(serial::Ptree pt) const override {
         serial::Ptree actionsPt = pt.AddChild("script_actions");
         ScriptAction::SaveActions(actionsPt, _actions);
     }
-    virtual void Load(ptree const& pt) override {
-        ScriptAction::LoadActions(pt.get_child("script_actions"), _actions);
-    }
+
     virtual void Load(serial::Ptree pt) override {
         ScriptAction::LoadActions(pt.GetChild("script_actions"), _actions);
     }

@@ -1,6 +1,7 @@
 #pragma once
 
 #include <functional>
+#include <vector>
 
 #include "component.h"
 #include "enums/CollisionLayer.h"
@@ -14,17 +15,9 @@ struct Aabb {
     Vec3 _min;
     Vec3 _max;
 
-    void Save(ptree& pt) const {
-        serial::SaveInNewChildOf(pt, "min", _min);
-        serial::SaveInNewChildOf(pt, "max", _max);
-    }
     void Save(serial::Ptree pt) const {
         serial::SaveInNewChildOf(pt, "min", _min);
         serial::SaveInNewChildOf(pt, "max", _max);
-    }
-    void Load(ptree const& pt) {
-        _min.Load(pt.get_child("min"));
-        _max.Load(pt.get_child("max"));
     }
     void Load(serial::Ptree pt) {
         _min.Load(pt.GetChild("min"));
@@ -63,9 +56,7 @@ public:
         }
     }
 
-    void Save(ptree& pt) const override;
     void Save(serial::Ptree pt) const override;
-    void Load(ptree const& pt) override;
     void Load(serial::Ptree pt) override;
 
     // Serialized

@@ -3,13 +3,10 @@
 #include <array>
 
 #include "SPSCQueue.h"
-#include "boost/property_tree/ptree.hpp"
 
 #include "enums/audio_EventType.h"
 #include "enums/audio_SynthParamType.h"
 #include "serial.h"
-
-using boost::property_tree::ptree;
 
 namespace audio {
 
@@ -38,9 +35,7 @@ struct Event {
         };
     };
 
-    void Save(ptree& pt) const;
     void Save(serial::Ptree pt) const;
-    void Load(ptree const& pt);
     void Load(serial::Ptree pt);
 };
 

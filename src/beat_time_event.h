@@ -13,17 +13,9 @@ struct BeatTimeEvent {
         return e;
     }
 
-    void Save(ptree& pt) const {
-        _e.Save(pt);
-        pt.put("beat_time", _beatTime);
-    }
     void Save(serial::Ptree pt) const {
         _e.Save(pt);
         pt.PutDouble("beat_time", _beatTime);
-    }
-    void Load(ptree const& pt) {
-        _e.Load(pt);
-        _beatTime = pt.get<double>("beat_time");
     }
     void Load(serial::Ptree pt) {
         _e.Load(pt);
