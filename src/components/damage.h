@@ -19,6 +19,7 @@ public:
     void OnHit(EntityId other);
 
     void Save(ptree& pt) const override;
+    void Save(serial::Ptree pt) const override;
     void Load(ptree const& pt) override;
 
     // Serialize

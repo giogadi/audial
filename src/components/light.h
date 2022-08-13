@@ -24,6 +24,7 @@ public:
     virtual void EditDestroy() override;
     virtual bool DrawImGui() override;
     virtual void Save(ptree& pt) const override;
+    virtual void Save(serial::Ptree pt) const override;
     virtual void Load(ptree const& pt) override;
 
     std::weak_ptr<TransformComponent const> _transform;

@@ -74,6 +74,14 @@ void ScriptAction::SaveActions(ptree& pt, std::vector<std::unique_ptr<ScriptActi
     }
 }
 
+void ScriptAction::SaveActions(serial::Ptree pt, std::vector<std::unique_ptr<ScriptAction>> const& actions) {
+    for (auto const& action : actions) {
+        serial::Ptree actionPt = pt.AddChild("script_action");
+        actionPt.PutString("script_action_type", ScriptActionTypeToString(action->Type()));
+        action->Save(actionPt);
+    }
+}
+
 void ScriptAction::LoadActions(ptree const& pt, std::vector<std::unique_ptr<ScriptAction>>& actions) {
     for (auto const& item : pt) {
         ptree const& actionPt = item.second;
@@ -112,6 +120,10 @@ void ScriptActionActivateEntity::Save(ptree& pt) const {
     pt.put("entity_name", _entityName);
 }
 
+void ScriptActionActivateEntity::Save(serial::Ptree pt) const {
+    pt.PutString("entity_name", _entityName.c_str());
+}
+
 void ScriptActionActivateEntity::Load(ptree const& pt) {
     _entityName = pt.get<std::string>("entity_name");
 }
@@ -143,6 +155,11 @@ void ScriptActionAudioEvent::Save(ptree& pt) const {
     serial::SaveInNewChildOf(pt, "beat_event", _event);
 }
 
+void ScriptActionAudioEvent::Save(serial::Ptree pt) const {
+    pt.PutDouble("denom", _denom);
+    serial::SaveInNewChildOf(pt, "beat_event", _event);
+}
+
 void ScriptActionAudioEvent::Load(ptree const& pt) {
     _denom = pt.get<double>("denom");
     _event.Load(pt.get_child("beat_event"));
@@ -168,6 +185,10 @@ void ScriptActionStartWaypointFollow::Execute(GameManager& g) const {
 
 void ScriptActionStartWaypointFollow::Save(ptree& pt) const {
     pt.put("entity_name", _entityName);
+}
+
+void ScriptActionStartWaypointFollow::Save(serial::Ptree pt) const {
+    pt.PutString("entity_name", _entityName.c_str());
 }
 
 void ScriptActionStartWaypointFollow::Load(ptree const& pt) {

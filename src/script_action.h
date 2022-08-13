@@ -15,7 +15,10 @@ public:
     virtual void Save(ptree& pt) const {}
     virtual void Load(ptree const& pt) {}
 
+    virtual void Save(serial::Ptree pt) const {}
+
     static void SaveActions(ptree& pt, std::vector<std::unique_ptr<ScriptAction>> const& actions);
+    static void SaveActions(serial::Ptree pt, std::vector<std::unique_ptr<ScriptAction>> const& actions);
     static void LoadActions(ptree const& pt, std::vector<std::unique_ptr<ScriptAction>>& actions);
 };
 
@@ -35,6 +38,8 @@ public:
     void Save(ptree& pt) const override;
     void Load(ptree const& pt) override;
 
+    void Save(serial::Ptree pt) const override;
+
     std::string _entityName;
 };
 
@@ -48,6 +53,8 @@ class ScriptActionAudioEvent : public ScriptAction {
 
     void Save(ptree& pt) const override;
     void Load(ptree const& pt) override;
+
+    void Save(serial::Ptree pt) const override;
 
     // serialize
     double _denom = 0.25;
@@ -63,6 +70,8 @@ class ScriptActionStartWaypointFollow : public ScriptAction {
 
     void Save(ptree& pt) const override;
     void Load(ptree const& pt) override;
+
+    void Save(serial::Ptree pt) const override;
 
     // serialize
     std::string _entityName;

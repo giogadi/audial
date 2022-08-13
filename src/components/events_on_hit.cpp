@@ -57,3 +57,8 @@ void EventsOnHitComponent::Save(ptree& pt) const {
 void EventsOnHitComponent::Load(ptree const& pt) {
     ScriptAction::LoadActions(pt.get_child("script_actions"), _actions);
 }
+
+void EventsOnHitComponent::Save(serial::Ptree pt) const {
+    serial::Ptree actionsPt = pt.AddChild("script_actions");
+    ScriptAction::SaveActions(actionsPt, _actions);    
+}

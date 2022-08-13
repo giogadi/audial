@@ -6,3 +6,4 @@
 // -s data/moving_bass.xml -y data/synth_patches_breeze_rhythmic.xml
 // -s data/recorder_balloon_test.xml -y data/synth_patches_breeze_rhythmic.xml
 -s data/song1.xml -y data/synth_patches_breeze_rhythmic.xml
+// -s data/pimpl_ptree_test.xml -y data/synth_patches_breeze_rhythmic.xml

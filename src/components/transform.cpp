@@ -28,6 +28,10 @@ void TransformComponent::Save(ptree& pt) const {
     _localTransform.Save(pt.add_child("mat4", ptree()));
     pt.put("parent_name", _parentEntityName);
 }
+void TransformComponent::Save(serial::Ptree pt) const {
+    serial::SaveInNewChildOf(pt, "mat4", _localTransform);
+    pt.PutString("parent_name", _parentEntityName.c_str());
+}
 void TransformComponent::Load(ptree const& pt) {
     _localTransform.Load(pt.get_child("mat4"));
     boost::optional<std::string> maybe_parent = pt.get_optional<std::string>("parent_name");

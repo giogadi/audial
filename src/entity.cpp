@@ -125,6 +125,17 @@ std::weak_ptr<Component> Entity::TryAddComponentOfType(ComponentType c) {
     }
 }
 
+void Entity::Save(serial::Ptree pt) const {
+    pt.PutString("name", _name.c_str());
+    serial::Ptree compsPt = pt.AddChild("components");
+    for (auto const& c_s : _components) {
+        auto const& component = c_s->_c;
+        serial::Ptree compPt = compsPt.AddChild("component");
+        compPt.PutString("component_type", ComponentTypeToString(component->Type()));
+        component->Save(compPt);
+    }
+}
+
 void Entity::Save(ptree& pt) const {
     pt.put("name", _name);
     ptree& compsPt = pt.add_child("components", ptree());

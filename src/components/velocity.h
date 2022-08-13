@@ -28,6 +28,10 @@ public:
         _linear.Save(pt.add_child("linear", ptree()));
         pt.put<float>("angularY", _angularY);
     }
+    virtual void Save(serial::Ptree pt) const override {
+        serial::SaveInNewChildOf(pt, "linear", _linear);        
+        pt.PutFloat("angularY", _angularY);
+    }
     virtual void Load(ptree const& pt) override {
         _linear.Load(pt.get_child("linear"));
         _angularY = pt.get<float>("angularY");

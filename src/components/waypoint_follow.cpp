@@ -183,6 +183,16 @@ void WaypointFollowComponent::Save(boost::property_tree::ptree& pt) const {
     }
 }
 
+void WaypointFollowComponent::Save(serial::Ptree pt) const {
+    pt.PutBool("auto_start", _autoStart);
+    pt.PutBool("loop", _loop);
+    pt.PutFloat("speed", _speed);
+    serial::Ptree waypointsPt = pt.AddChild("waypoints");
+    for (std::string const& wpName : _waypointNames) {
+        waypointsPt.PutString("waypoint_name", wpName.c_str());
+    }
+}
+
 void WaypointFollowComponent::Load(boost::property_tree::ptree const& pt) {
     auto const& maybeAutoStart = pt.get_optional<bool>("auto_start");
     if (maybeAutoStart.has_value()) {

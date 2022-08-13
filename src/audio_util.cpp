@@ -13,6 +13,19 @@ void audio::Event::Save(ptree& pt) const {
         pt.put("velocity", velocity);
     }
 }
+void audio::Event::Save(serial::Ptree pt) const {
+    std::string eventTypeStr = EventTypeToString(type);
+    pt.PutString("event_type", eventTypeStr.c_str());
+    pt.PutInt("channel", channel);
+    pt.PutLong("tick_time", timeInTicks);
+    if (type == EventType::SynthParam) {
+        pt.PutString("synth_param", SynthParamTypeToString(param));
+        pt.PutDouble("value", newParamValue);
+    } else {
+        pt.PutInt("midi_note", midiNote);
+        pt.PutFloat("velocity", velocity);
+    }
+}
 void audio::Event::Load(ptree const& pt) {
     std::string eventTypeStr = pt.get<std::string>("event_type");
     type = StringToEventType(eventTypeStr.c_str());

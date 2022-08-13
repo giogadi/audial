@@ -48,3 +48,13 @@ void ActivatorComponent::Load(ptree const& pt) {
     _entityName = pt.get<std::string>("entity_name");
     _activationBeatTime = pt.get<double>("beat_time");
 }
+
+void ActivatorComponent::Save(serial::Ptree pt) const {
+    pt.PutString("entity_name", _entityName.c_str());
+    pt.PutDouble("beat_time", _activationBeatTime);
+}
+
+void ActivatorComponent::Load(serial::Ptree pt) {
+    _entityName = pt.GetString("entity_name");
+    // _activationBeatTime = pt.get<double>("beat_time");
+}

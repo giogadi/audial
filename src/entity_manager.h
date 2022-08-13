@@ -58,6 +58,7 @@ public:
     bool IsActive(EntityId id) const;
 
     void Save(ptree& pt) const;
+    void Save(serial::Ptree pt) const;
     bool Save(char const* filename) const;
     void Load(ptree const& pt);
     bool LoadAndConnect(char const* filename, bool dieOnConnectFailure, GameManager& g);

@@ -18,6 +18,10 @@ struct Aabb {
         serial::SaveInNewChildOf(pt, "min", _min);
         serial::SaveInNewChildOf(pt, "max", _max);
     }
+    void Save(serial::Ptree pt) const {
+        serial::SaveInNewChildOf(pt, "min", _min);
+        serial::SaveInNewChildOf(pt, "max", _max);
+    }
     void Load(ptree const& pt) {
         _min.Load(pt.get_child("min"));
         _max.Load(pt.get_child("max"));
@@ -56,6 +60,7 @@ public:
     }
 
     void Save(ptree& pt) const override;
+    void Save(serial::Ptree pt) const override;
     void Load(ptree const& pt) override;
 
     // Serialized

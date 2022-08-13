@@ -179,6 +179,15 @@ void EntityManager::Save(ptree& pt) const {
     });
 }
 
+void EntityManager::Save(serial::Ptree pt) const {
+    this->ForEveryActiveAndInactiveEntity([&](EntityId id) {
+        Entity const* e = this->GetEntity(id);        
+        serial::Ptree ePt = pt.AddChild("entity");
+        ePt.PutBool("entity_active", this->IsActive(id));
+        e->Save(ePt);
+    });
+}
+
 void EntityManager::Load(ptree const& pt) {
     for (auto const& item : pt.get_child("entities")) {
         ptree const& entityPt = item.second;
@@ -215,6 +224,15 @@ bool EntityManager::Save(char const* filename) const {
     }
     boost::property_tree::xml_parser::xml_writer_settings<std::string> settings(' ', 4);
     boost::property_tree::write_xml(outFile, pt, settings);
+
+    {
+        serial::Ptree pt = serial::Ptree::MakeNew();
+        serial::Ptree entitiesPt = pt.AddChild("entities");;
+        this->Save(entitiesPt);
+
+        return pt.WriteToFile("data/pimpl_ptree_test.xml");
+    }
+    
     return true;
 }
 

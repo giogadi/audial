@@ -35,6 +35,12 @@ void RigidBodyComponent::Save(ptree& pt) const {
     serial::SaveInNewChildOf(pt, "aabb", _localAabb);
 }
 
+void RigidBodyComponent::Save(serial::Ptree pt) const {
+    pt.PutBool("static", _static);
+    pt.PutString("layer", CollisionLayerToString(_layer));
+    serial::SaveInNewChildOf(pt, "aabb", _localAabb);
+}
+
 void RigidBodyComponent::Load(ptree const& pt) {
     _static = pt.get<bool>("static");
     _layer = StringToCollisionLayer(pt.get<std::string>("layer").c_str());

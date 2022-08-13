@@ -13,6 +13,7 @@ public:
     virtual bool ConnectComponents(EntityId id, Entity& e, GameManager& g) override;
 
     virtual void Save(ptree& pt) const override;
+    virtual void Save(serial::Ptree pt) const override;
     virtual void Load(ptree const& pt) override;
 
     virtual bool DrawImGui() override;

@@ -52,6 +52,11 @@ void ModelComponent::Save(ptree& pt) const {
     serial::SaveInNewChildOf(pt, "color", _color);
 }
 
+void ModelComponent::Save(serial::Ptree pt) const {
+    pt.PutString("mesh_id", _meshId.c_str());
+    serial::SaveInNewChildOf(pt, "color", _color);
+}
+
 void ModelComponent::Load(ptree const& pt) {
     auto const& maybeMeshId = pt.get_optional<std::string>("mesh_id");
     if (maybeMeshId.has_value()) {

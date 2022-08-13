@@ -22,6 +22,9 @@ public:
     void Save(ptree& pt) const override;
     void Load(ptree const& pt) override;
 
+    void Save(serial::Ptree pt) const override;
+    void Load(serial::Ptree pt) override;
+
     // Serialize
     std::string _entityName;
     // THIS IS TIME SINCE THE FIRST UPDATE() CALL ON THIS DUDE

@@ -23,6 +23,9 @@ public:
     void Save(ptree& pt) const override {
         pt.put("hits_remaining", _hitsRemaining);
     }
+    void Save(serial::Ptree pt) const override {
+        pt.PutInt("hits_remaining", _hitsRemaining);
+    }
     void Load(ptree const& pt) override {
         _hitsRemaining = pt.get<int>("hits_remaining");
     }

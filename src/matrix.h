@@ -5,6 +5,8 @@
 
 #include "boost/property_tree/ptree.hpp"
 
+#include "serial.h"
+
 using boost::property_tree::ptree;
 
 struct Vec3 {
@@ -75,6 +77,11 @@ struct Vec3 {
         pt.put<float>("x", _x);
         pt.put<float>("y", _y);
         pt.put<float>("z", _z);
+    }
+    void Save(serial::Ptree pt) const {
+        pt.PutFloat("x", _x);
+        pt.PutFloat("y", _y);
+        pt.PutFloat("z", _z);
     }
     void Load(ptree const& pt) {
         _x = pt.get<float>("x");
@@ -226,6 +233,12 @@ struct Vec4 {
         pt.put<float>("z", _z);
         pt.put<float>("w", _w);
     }
+    void Save(serial::Ptree pt) const {
+        pt.PutFloat("x", _x);
+        pt.PutFloat("y", _y);
+        pt.PutFloat("z", _z);
+        pt.PutFloat("w", _w);
+    }
     void Load(ptree const& pt) {
         _x = pt.get<float>("x");
         _y = pt.get<float>("y");
@@ -350,6 +363,15 @@ struct Mat4 {
             for (int j = 0; j < 4; ++j) {
                 snprintf(name, 4, "m%d%d", j, i);
                 pt.put<float>(name, _data[4*i + j]);
+            }
+        }
+    }
+    void Save(serial::Ptree pt) const {
+        char name[] = "mXX";
+        for (int i = 0; i < 4; ++i) {
+            for (int j = 0; j < 4; ++j) {
+                snprintf(name, 4, "m%d%d", j, i);
+                pt.PutFloat(name, _data[4*i + j]);
             }
         }
     }

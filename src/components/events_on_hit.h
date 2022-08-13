@@ -28,6 +28,8 @@ public:
     void Save(ptree& pt) const override;
     void Load(ptree const& pt) override;
 
+    void Save(serial::Ptree pt) const override;
+
     // Serialized
     std::vector<std::unique_ptr<ScriptAction>> _actions;
     

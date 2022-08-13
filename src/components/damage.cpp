@@ -41,6 +41,9 @@ bool DamageComponent::DrawImGui() {
 void DamageComponent::Save(ptree& pt) const {
     pt.put("hp", _hp);
 }
+void DamageComponent::Save(serial::Ptree pt) const {
+    pt.PutInt("hp", _hp);
+}
 
 void DamageComponent::Load(ptree const& pt) {
     _hp = pt.get<int>("hp");

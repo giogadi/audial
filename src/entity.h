@@ -96,10 +96,12 @@ public:
         }
     }
 
+    void Save(serial::Ptree pt) const;
     void Save(ptree& pt) const;
     bool Save(char const* filename) const;
     void Load(ptree const& pt);
     bool Load(char const* filename);
+    // DO NOT SUBMIT WITHOUT A NEWPTRE VERSION OF SAVE/LOAD WITH FILENAMES
 
     std::string _name;
 private:
