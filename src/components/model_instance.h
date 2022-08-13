@@ -23,6 +23,7 @@ public:
     virtual void Save(ptree& pt) const override;
     virtual void Save(serial::Ptree pt) const override;
     virtual void Load(ptree const& pt) override;
+    virtual void Load(serial::Ptree pt) override;
 
     // serialized
     std::string _meshId;

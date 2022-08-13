@@ -25,6 +25,10 @@ struct BeatTimeEvent {
         _e.Load(pt);
         _beatTime = pt.get<double>("beat_time");
     }
+    void Load(serial::Ptree pt) {
+        _e.Load(pt);
+        _beatTime = pt.GetDouble("beat_time");
+    }
 };
 
 inline audio::Event BeatTimeToTickTimeEvent(BeatTimeEvent const& b_e, BeatClock const& beatClock) {

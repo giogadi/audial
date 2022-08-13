@@ -198,17 +198,39 @@ void EntityManager::Load(ptree const& pt) {
     }
 }
 
-bool EntityManager::LoadAndConnect(char const* filename, bool dieOnConnectFailure, GameManager& g) {
-    std::ifstream inFile(filename);
-    if (!inFile.is_open()) {
-        std::cout << "Couldn't open file " << filename << " for loading." << std::endl;
-        return false;
+void EntityManager::Load(serial::Ptree pt) {
+    serial::Ptree entitiesPt = pt.GetChild("entities");
+    int numChildren = 0;
+    serial::NameTreePair* children = entitiesPt.GetChildren(&numChildren);
+    for (int i = 0; i < numChildren; ++i) {
+        serial::Ptree& entityPt = children[i]._pt;
+        bool active = entityPt.GetBool("entity_active");
+        EntityId id = this->AddEntity(active);
+        Entity* entity = this->GetEntity(id);
+        entity->Load(entityPt);
     }
-    ptree pt;
-    boost::property_tree::read_xml(inFile, pt);
-    this->Load(pt);
-    this->ConnectComponents(g, dieOnConnectFailure);
-    return true;
+    free(children);
+}
+
+bool EntityManager::LoadAndConnect(char const* filename, bool dieOnConnectFailure, GameManager& g) {
+    // std::ifstream inFile(filename);
+    // if (!inFile.is_open()) {
+    //     std::cout << "Couldn't open file " << filename << " for loading." << std::endl;
+    //     return false;
+    // }
+    // ptree pt;
+    // boost::property_tree::read_xml(inFile, pt);
+    // this->Load(pt);
+    // this->ConnectComponents(g, dieOnConnectFailure);
+    // return true;
+
+    serial::Ptree pt = serial::Ptree::MakeNew();
+    if (pt.LoadFromFile(filename)) {
+        this->Load(pt);
+        this->ConnectComponents(g, dieOnConnectFailure);
+        return true;
+    }
+    return false;
 }
 
 bool EntityManager::Save(char const* filename) const {

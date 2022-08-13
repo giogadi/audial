@@ -29,6 +29,9 @@ public:
     void Load(ptree const& pt) override {
         _hitsRemaining = pt.get<int>("hits_remaining");
     }
+    void Load(serial::Ptree pt) override {
+        _hitsRemaining = pt.GetInt("hits_remaining");
+    }
 
     // Serialize
     int _hitsRemaining = 0;

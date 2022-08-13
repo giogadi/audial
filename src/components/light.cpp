@@ -64,3 +64,7 @@ void LightComponent::Load(ptree const& pt) {
     _ambient.Load(pt.get_child("ambient"));
     _diffuse.Load(pt.get_child("diffuse"));
 }
+void LightComponent::Load(serial::Ptree pt) {
+    _ambient.Load(pt.GetChild("ambient"));
+    _diffuse.Load(pt.GetChild("diffuse"));
+}

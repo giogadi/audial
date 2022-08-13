@@ -26,6 +26,10 @@ struct Aabb {
         _min.Load(pt.get_child("min"));
         _max.Load(pt.get_child("max"));
     }
+    void Load(serial::Ptree pt) {
+        _min.Load(pt.GetChild("min"));
+        _max.Load(pt.GetChild("max"));
+    }
 };
 
 inline Aabb MakeCubeAabb(float half_width) {
@@ -62,6 +66,7 @@ public:
     void Save(ptree& pt) const override;
     void Save(serial::Ptree pt) const override;
     void Load(ptree const& pt) override;
+    void Load(serial::Ptree pt) override;
 
     // Serialized
 

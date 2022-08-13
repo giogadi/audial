@@ -70,3 +70,8 @@ void CameraControllerComponent::Load(ptree const& pt) {
     _trackingFactor = pt.get<float>("tracking_factor");
     _targetName = pt.get<std::string>("target_entity_name");
 }
+
+void CameraControllerComponent::Load(serial::Ptree pt) {
+    _trackingFactor = pt.GetFloat("tracking_factor");
+    _targetName = pt.GetString("target_entity_name");
+}

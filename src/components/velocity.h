@@ -36,6 +36,10 @@ public:
         _linear.Load(pt.get_child("linear"));
         _angularY = pt.get<float>("angularY");
     }
+    virtual void Load(serial::Ptree pt) override {
+        _linear.Load(pt.GetChild("linear"));
+        _angularY = pt.GetFloat("angularY");
+    }
 
     std::weak_ptr<TransformComponent> _transform;
     Vec3 _linear;

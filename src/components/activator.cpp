@@ -56,5 +56,5 @@ void ActivatorComponent::Save(serial::Ptree pt) const {
 
 void ActivatorComponent::Load(serial::Ptree pt) {
     _entityName = pt.GetString("entity_name");
-    // _activationBeatTime = pt.get<double>("beat_time");
+    _activationBeatTime = pt.GetDouble("beat_time");
 }

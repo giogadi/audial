@@ -39,6 +39,10 @@ void TransformComponent::Load(ptree const& pt) {
         _parentEntityName = *maybe_parent;
     }
 }
+void TransformComponent::Load(serial::Ptree pt) {
+    _localTransform.Load(pt.GetChild("mat4"));
+    pt.TryGetString("parent_name", &_parentEntityName);
+}
 
 void TransformComponent::Unparent() {
     if (_parent.expired()) {

@@ -18,6 +18,7 @@ public:
     virtual void Save(boost::property_tree::ptree& pt) const override;
     virtual void Save(serial::Ptree pt) const override;
     virtual void Load(boost::property_tree::ptree const& pt) override;
+    virtual void Load(serial::Ptree pt) override;
 
 
     // Serialized

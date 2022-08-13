@@ -67,3 +67,10 @@ void ModelComponent::Load(ptree const& pt) {
     }
     _color.Load(pt.get_child("color"));
 }
+void ModelComponent::Load(serial::Ptree pt) {
+    if (!pt.TryGetString("mesh_id", &_meshId)) {
+        // old version used "model_id"
+        _meshId = pt.GetString("model_id");
+    }
+    _color.Load(pt.GetChild("color"));
+}

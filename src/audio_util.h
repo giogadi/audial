@@ -41,6 +41,7 @@ struct Event {
     void Save(ptree& pt) const;
     void Save(serial::Ptree pt) const;
     void Load(ptree const& pt);
+    void Load(serial::Ptree pt);
 };
 
 static inline int const kEventQueueLength = 64;

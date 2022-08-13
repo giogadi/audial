@@ -48,6 +48,15 @@ void OrbitableComponent::Load(ptree const& pt) {
     }
 }
 
+void OrbitableComponent::Load(serial::Ptree pt) {
+    serial::Ptree onLeaveActionsPt = pt.TryGetChild("on_leave_actions");
+    if (onLeaveActionsPt.IsValid()) {
+        ScriptAction::LoadActions(onLeaveActionsPt, _onLeaveActions);
+    } else {
+        printf("WARNING: OrbitableComponent missing on_leave_actions\n");
+    }
+}
+
 bool OrbitableComponent::DrawImGui() {
     DrawScriptActionListImGui(_onLeaveActions);
     return false;

@@ -208,3 +208,19 @@ void WaypointFollowComponent::Load(boost::property_tree::ptree const& pt) {
         _waypointNames.push_back(wpPt.second.get_value<std::string>());
     }
 }
+
+void WaypointFollowComponent::Load(serial::Ptree pt) {
+    if (!pt.TryGetBool("auto_start", &_autoStart)) {
+        _autoStart = true;
+    }
+    _loop = pt.GetBool("loop");
+    _speed = pt.GetFloat("speed");
+    serial::Ptree waypointsPt = pt.GetChild("waypoints");
+    int numChildren = 0;
+    serial::NameTreePair* children = waypointsPt.GetChildren(&numChildren);
+    for (int i = 0; i < numChildren; ++i) {
+        _waypointNames.push_back(children[i]._pt.GetStringValue());
+    }
+    //free(children);
+    delete[] children;
+}

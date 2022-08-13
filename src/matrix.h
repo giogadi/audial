@@ -88,6 +88,11 @@ struct Vec3 {
         _y = pt.get<float>("y");
         _z = pt.get<float>("z");
     }
+    void Load(serial::Ptree pt) {
+        _x = pt.GetFloat("x");
+        _y = pt.GetFloat("y");
+        _z = pt.GetFloat("z");
+    }
 
     union {
         float _data[3];
@@ -245,6 +250,12 @@ struct Vec4 {
         _z = pt.get<float>("z");
         _w = pt.get<float>("w");
     }
+    void Load(serial::Ptree pt) {
+        _x = pt.GetFloat("x");
+        _y = pt.GetFloat("y");
+        _z = pt.GetFloat("z");
+        _w = pt.GetFloat("w");
+    }
 };
 
 struct Mat4 {
@@ -381,6 +392,15 @@ struct Mat4 {
             for (int j = 0; j < 4; ++j) {
                 snprintf(name, 4, "m%d%d", j, i);
                 _data[4*i + j] = pt.get<float>(name);
+            }
+        }
+    }
+    void Load(serial::Ptree pt) {
+        char name[] = "mXX";
+        for (int i = 0; i < 4; ++i) {
+            for (int j = 0; j < 4; ++j) {
+                snprintf(name, 4, "m%d%d", j, i);
+                _data[4*i + j] = pt.GetFloat(name);
             }
         }
     }

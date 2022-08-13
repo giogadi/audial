@@ -150,6 +150,18 @@ public:
         }
     }
 
+    void Load(serial::Ptree pt) override {
+        serial::Ptree eventsPt = pt.GetChild("beat_events");
+        int numChildren = 0;
+        serial::NameTreePair* children = eventsPt.GetChildren(&numChildren);
+        for (int i = 0; i < numChildren; ++i) {
+            _events.emplace_back();
+            BeatTimeEvent &b_e = _events.back();
+            b_e.Load(children[i]._pt);
+        }
+        free(children);
+    }
+
     // Serialized
     std::vector<BeatTimeEvent> _events;
     bool _muted = false;

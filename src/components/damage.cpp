@@ -48,3 +48,7 @@ void DamageComponent::Save(serial::Ptree pt) const {
 void DamageComponent::Load(ptree const& pt) {
     _hp = pt.get<int>("hp");
 }
+
+void DamageComponent::Load(serial::Ptree pt) {
+    _hp = pt.GetInt("hp");
+}

@@ -93,6 +93,20 @@ void ScriptAction::LoadActions(ptree const& pt, std::vector<std::unique_ptr<Scri
     }
 }
 
+void ScriptAction::LoadActions(serial::Ptree pt, std::vector<std::unique_ptr<ScriptAction>>& actions) {
+    int numChildren = 0;
+    serial::NameTreePair* children = pt.GetChildren(&numChildren);
+    for (int i = 0; i < numChildren; ++i) {
+        serial::Ptree& actionPt = children[i]._pt;
+        ScriptActionType actionType =
+            StringToScriptActionType(actionPt.GetString("script_action_type").c_str());
+        std::unique_ptr<ScriptAction> newAction = MakeScriptActionOfType(actionType);
+        newAction->Load(actionPt);
+        actions.push_back(std::move(newAction));
+    }
+    free(children);
+}
+
 void ScriptActionDestroyAllPlanets::Execute(GameManager& g) const {
     g._entityManager->ForEveryActiveEntity([&g](EntityId id) {
         Entity* entity = g._entityManager->GetEntity(id);
@@ -119,13 +133,15 @@ void ScriptActionActivateEntity::DrawImGui() {
 void ScriptActionActivateEntity::Save(ptree& pt) const {
     pt.put("entity_name", _entityName);
 }
-
 void ScriptActionActivateEntity::Save(serial::Ptree pt) const {
     pt.PutString("entity_name", _entityName.c_str());
 }
 
 void ScriptActionActivateEntity::Load(ptree const& pt) {
     _entityName = pt.get<std::string>("entity_name");
+}
+void ScriptActionActivateEntity::Load(serial::Ptree pt) {
+    _entityName = pt.GetString("entity_name");
 }
 
 namespace {
@@ -165,6 +181,11 @@ void ScriptActionAudioEvent::Load(ptree const& pt) {
     _event.Load(pt.get_child("beat_event"));
 }
 
+void ScriptActionAudioEvent::Load(serial::Ptree pt) {
+    _denom = pt.GetDouble("denom");
+    _event.Load(pt.GetChild("beat_event"));
+}
+
 void ScriptActionStartWaypointFollow::Execute(GameManager& g) const {
     EntityId id = g._entityManager->FindActiveEntityByName(_entityName.c_str());
     if (!id.IsValid()) {
@@ -193,6 +214,10 @@ void ScriptActionStartWaypointFollow::Save(serial::Ptree pt) const {
 
 void ScriptActionStartWaypointFollow::Load(ptree const& pt) {
     _entityName = pt.get<std::string>("entity_name");
+}
+
+void ScriptActionStartWaypointFollow::Load(serial::Ptree pt) {
+    _entityName = pt.GetString("entity_name");
 }
 
 void ScriptActionStartWaypointFollow::DrawImGui() {

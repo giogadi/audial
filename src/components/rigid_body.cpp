@@ -46,3 +46,9 @@ void RigidBodyComponent::Load(ptree const& pt) {
     _layer = StringToCollisionLayer(pt.get<std::string>("layer").c_str());
     _localAabb.Load(pt.get_child("aabb"));
 }
+
+void RigidBodyComponent::Load(serial::Ptree pt) {
+    _static = pt.GetBool("static");
+    _layer = StringToCollisionLayer(pt.GetString("layer").c_str());
+    _localAabb.Load(pt.GetChild("aabb"));
+}

@@ -61,6 +61,7 @@ public:
     void Save(serial::Ptree pt) const;
     bool Save(char const* filename) const;
     void Load(ptree const& pt);
+    void Load(serial::Ptree pt);
     bool LoadAndConnect(char const* filename, bool dieOnConnectFailure, GameManager& g);
 
 private:

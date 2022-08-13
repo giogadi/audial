@@ -147,6 +147,21 @@ void Entity::Save(ptree& pt) const {
     }
 }
 
+void Entity::Load(serial::Ptree pt) {
+    _name = pt.GetString("name");
+    serial::Ptree componentsPt = pt.GetChild("components");
+    int numChildren = 0;
+    serial::NameTreePair* children = componentsPt.GetChildren(&numChildren);
+    for (int i = 0; i < numChildren; ++i) {
+        serial::Ptree& compPt = children[i]._pt;
+        std::string typeName = compPt.GetString("component_type");
+        ComponentType compType = StringToComponentType(typeName.c_str());
+        std::shared_ptr<Component> newComp = TryAddComponentOfType(compType).lock();
+        newComp->Load(compPt);
+    }
+    free(children);
+}
+
 void Entity::Load(ptree const& pt) {
     _name = pt.get<std::string>("name");
     for (auto const& item : pt.get_child("components")) {
@@ -159,29 +174,39 @@ void Entity::Load(ptree const& pt) {
 }
 
 bool Entity::Save(char const* filename) const {
-    std::ofstream outFile(filename);
-    if (!outFile.is_open()) {
-        std::cout << "Couldn't open file " << filename << " for saving. Not saving." << std::endl;
-        return false;
-    }
-    ptree pt;
+    // std::ofstream outFile(filename);
+    // if (!outFile.is_open()) {
+    //     std::cout << "Couldn't open file " << filename << " for saving. Not saving." << std::endl;
+    //     return false;
+    // }
+    // ptree pt;
+    // {
+    //     ptree& entityPt = pt.add_child("entity", ptree());
+    //     this->Save(entityPt);
+    // }
+    // boost::property_tree::xml_parser::xml_writer_settings<std::string> settings(' ', 4);
+    // boost::property_tree::write_xml(outFile, pt, settings);
+    // return true;
+
+    serial::Ptree pt = serial::Ptree::MakeNew();
     {
-        ptree& entityPt = pt.add_child("entity", ptree());
+        serial::Ptree entityPt = pt.AddChild("entity");
         this->Save(entityPt);
     }
-    boost::property_tree::xml_parser::xml_writer_settings<std::string> settings(' ', 4);
-    boost::property_tree::write_xml(outFile, pt, settings);
-    return true;
+    return pt.WriteToFile(filename);
 }
 
 bool Entity::Load(char const* filename) {
-    std::ifstream inFile(filename);
-    if (!inFile.is_open()) {
-        std::cout << "Couldn't open file " << filename << " for loading." << std::endl;
-        return false;
-    }
-    ptree pt;
-    boost::property_tree::read_xml(inFile, pt);
-    this->Load(pt.get_child("entity"));
-    return true;
+    // std::ifstream inFile(filename);
+    // if (!inFile.is_open()) {
+    //     std::cout << "Couldn't open file " << filename << " for loading." << std::endl;
+    //     return false;
+    // }
+    // ptree pt;
+    // boost::property_tree::read_xml(inFile, pt);
+    // this->Load(pt.get_child("entity"));
+    // return true;
+
+    serial::Ptree pt = serial::Ptree::MakeNew();
+    return pt.LoadFromFile(filename);
 }

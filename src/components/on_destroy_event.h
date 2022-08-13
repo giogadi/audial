@@ -37,6 +37,9 @@ public:
     virtual void Load(ptree const& pt) override {
         ScriptAction::LoadActions(pt.get_child("script_actions"), _actions);
     }
+    virtual void Load(serial::Ptree pt) override {
+        ScriptAction::LoadActions(pt.GetChild("script_actions"), _actions);
+    }
 
     // Serialized
     std::vector<std::unique_ptr<ScriptAction>> _actions;
