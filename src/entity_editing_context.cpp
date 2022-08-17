@@ -110,6 +110,10 @@ bool ProjectScreenPointToXZPlane(
 }
 }
 
+double gClickX = 0.f;
+double gClickY = 0.f;
+bool gMovingObject = false;
+
 void EntityEditingContext::UpdateSelectedPositionFromInput(float dt, GameManager& g) {
     EntityManager& entities = *g._entityManager;
     Entity* entity = entities.GetEntity(_selectedEntityId);
@@ -125,27 +129,31 @@ void EntityEditingContext::UpdateSelectedPositionFromInput(float dt, GameManager
 
     InputManager const& input = *g._inputManager;
 
-    // If user is dragging mouse around, use mouse motion to move object.
-    if (input.IsKeyPressed(InputManager::MouseButton::Left)) {
-        // Can we translate mouse position to world position? Well, the "simple"
-        // way is to just project the mouse position onto the XZ plane.
+    if (input.IsKeyPressedThisFrame(InputManager::MouseButton::Left)) {
+        gMovingObject = false;
+        input.GetMousePos(gClickX, gClickY);
+    } else if (input.IsKeyPressed(InputManager::MouseButton::Left)) {
         double screenX, screenY;
         input.GetMousePos(screenX, screenY);
-        Vec3 pickedPosOnXZPlane;
-        if (ProjectScreenPointToXZPlane(screenX, screenY, g._windowWidth, g._windowHeight, g._scene->_camera, &pickedPosOnXZPlane)) {
-            transform->SetWorldPos(pickedPosOnXZPlane);
+        if (!gMovingObject) {
+            double screenX, screenY;
+            input.GetMousePos(screenX, screenY);
+            float const kMinDistBeforeMove = 0.01 * g._windowWidth;
+            float dx = gClickX - screenX;
+            float dy = gClickY - screenY;
+            float distFromClick2 = dx*dx + dy*dy;
+            if (distFromClick2 >= kMinDistBeforeMove*kMinDistBeforeMove) {
+                gMovingObject = true;
+            }
         }
-        // Vec3 rayStart, rayDir;
-        // GetPickRay(screenX, screenY, windowWidth, windowHeight, g._scene->_camera, &rayStart, &rayDir);
-
-        // // Find where the ray intersects the XZ plane. This is where on the ray the y-value hits 0.
-        // if (std::abs(rayDir._y) > 0.0001) {
-        //     float rayParamAtXZPlane = -rayStart._y / rayDir._y;
-        //     if (rayParamAtXZPlane > 0.0) {
-        //         Vec3 projOnXZPlane = rayStart + (rayDir * rayParamAtXZPlane);
-        //         transform->SetWorldPos(projOnXZPlane);
-        //     }            
-        // }
+        if (gMovingObject) {
+            Vec3 pickedPosOnXZPlane;
+            if (ProjectScreenPointToXZPlane(screenX, screenY, g._windowWidth, g._windowHeight, g._scene->_camera, &pickedPosOnXZPlane)) {
+                transform->SetWorldPos(pickedPosOnXZPlane);
+            }
+        }
+    } else {
+        gMovingObject = false;
     }
 
     Vec3 inputVec(0.0f,0.f,0.f);

@@ -104,6 +104,7 @@ public:
 
     virtual void Save(serial::Ptree pt) const override;
     virtual void Load(serial::Ptree pt) override;
+    virtual bool DrawImGui() override;
 
     // Serialize
     // TODO store separate rot and pos

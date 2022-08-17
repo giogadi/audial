@@ -1,5 +1,7 @@
 #include "transform.h"
 
+#include "imgui/imgui.h"
+
 #include "entity_manager.h"
 #include "game_manager.h"
 
@@ -30,6 +32,17 @@ void TransformComponent::Save(serial::Ptree pt) const {
 void TransformComponent::Load(serial::Ptree pt) {
     _localTransform.Load(pt.GetChild("mat4"));
     pt.TryGetString("parent_name", &_parentEntityName);
+}
+
+bool TransformComponent::DrawImGui() {
+    char buf[128];
+    strncpy(buf, _parentEntityName.c_str(), 128);
+    bool changed = ImGui::InputText("Parent name", buf, 128);
+    if (changed) {
+        _parentEntityName = buf;
+        Unparent();
+    }
+    return changed;
 }
 
 void TransformComponent::Unparent() {
