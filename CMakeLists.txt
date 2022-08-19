@@ -24,6 +24,7 @@ add_executable(game
     src/components/player_orbit_controller.cpp src/components/camera_controller.cpp src/components/hit_counter.cpp
     src/components/orbitable.cpp src/components/events_on_hit.cpp src/components/activator.cpp src/components/damage.cpp
     src/components/waypoint_follow.cpp src/components/recorder_balloon.cpp
+    ## src/components/area_recorder.cpp
     src/enums/audio_EventType.cpp src/enums/audio_SynthParamType.cpp src/enums/CollisionLayer.cpp
     src/enums/ScriptActionType.cpp src/enums/synth_Waveform.cpp)
 
@@ -53,20 +54,20 @@ target_include_directories(game PUBLIC
 ## TEST SHIT ##
 ##
 
-add_executable(ptree_test src/ptree_test.cpp)
+add_executable(ptree_test EXCLUDE_FROM_ALL src/ptree_test.cpp)
 target_include_directories(ptree_test PUBLIC
     ./src)
 
-add_executable(ptree_pimpl_test src/ptree_pimpl_test.cpp)
+add_executable(ptree_pimpl_test EXCLUDE_FROM_ALL src/ptree_pimpl_test.cpp)
 target_include_directories(ptree_pimpl_test PUBLIC
     ./src)
 
-add_executable(version_id_list_test
+add_executable(version_id_list_test EXCLUDE_FROM_ALL
     src/version_id_list_test.cpp src/version_id_list_simple.cpp)
 target_include_directories(version_id_list_test PUBLIC
     ./src)
 
-add_executable(ecs_test
+add_executable(ecs_test EXCLUDE_FROM_ALL
     src/ecs_test.cpp)
 target_include_directories(version_id_list_test PUBLIC
     ./src)

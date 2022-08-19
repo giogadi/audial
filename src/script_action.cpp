@@ -88,7 +88,7 @@ void ScriptAction::LoadActions(serial::Ptree pt, std::vector<std::unique_ptr<Scr
     delete[] children;
 }
 
-void ScriptActionDestroyAllPlanets::Execute(GameManager& g) const {
+void ScriptActionDestroyAllPlanets::ExecuteImpl(GameManager& g) const {
     g._entityManager->ForEveryActiveEntity([&g](EntityId id) {
         Entity* entity = g._entityManager->GetEntity(id);
         bool hasPlanet = !entity->FindComponentOfType<OrbitableComponent>().expired();
@@ -98,7 +98,7 @@ void ScriptActionDestroyAllPlanets::Execute(GameManager& g) const {
     });
 }
 
-void ScriptActionActivateEntity::Execute(GameManager& g) const {
+void ScriptActionActivateEntity::ExecuteImpl(GameManager& g) const {
     EntityId id = g._entityManager->FindInactiveEntityByName(_entityName.c_str());
     g._entityManager->ActivateEntity(id, g);
 }
@@ -130,7 +130,7 @@ audio::Event GetEventAtBeatOffsetFromNextDenom(double denom, BeatTimeEvent const
 }
 }
 
-void ScriptActionAudioEvent::Execute(GameManager& g) const {
+void ScriptActionAudioEvent::ExecuteImpl(GameManager& g) const {
     audio::Event e = GetEventAtBeatOffsetFromNextDenom(_denom, _event, *g._beatClock);
     g._audioContext->AddEvent(e);
 }
@@ -151,7 +151,7 @@ void ScriptActionAudioEvent::Load(serial::Ptree pt) {
     _event.Load(pt.GetChild("beat_event"));
 }
 
-void ScriptActionStartWaypointFollow::Execute(GameManager& g) const {
+void ScriptActionStartWaypointFollow::ExecuteImpl(GameManager& g) const {
     EntityId id = g._entityManager->FindActiveEntityByName(_entityName.c_str());
     if (!id.IsValid()) {
         printf("ScriptActionStartWaypointFollow: entity not found: %s\n", _entityName.c_str());

@@ -7,36 +7,16 @@
 #include "enums/CollisionLayer.h"
 #include "serial.h"
 #include "matrix.h"
+#include "aabb.h"
 
 class CollisionManager;
 class TransformComponent;
-
-struct Aabb {
-    Vec3 _min;
-    Vec3 _max;
-
-    void Save(serial::Ptree pt) const {
-        serial::SaveInNewChildOf(pt, "min", _min);
-        serial::SaveInNewChildOf(pt, "max", _max);
-    }
-    void Load(serial::Ptree pt) {
-        _min.Load(pt.GetChild("min"));
-        _max.Load(pt.GetChild("max"));
-    }
-};
-
-inline Aabb MakeCubeAabb(float half_width) {
-    Aabb a;
-    a._min = Vec3(-half_width, -half_width, -half_width);
-    a._max = Vec3(half_width, half_width, half_width);
-    return a;
-}
 
 class RigidBodyComponent : public Component {
 public:
     virtual ComponentType Type() const override { return ComponentType::RigidBody; }
     RigidBodyComponent()
-        : _localAabb(MakeCubeAabb(0.5f))
+        : _localAabb(Aabb::MakeCube(0.5f))
         , _velocity(0.f,0.f,0.f) {}
     virtual ~RigidBodyComponent() {}
     virtual bool ConnectComponents(EntityId id, Entity& e, GameManager& g) override;
