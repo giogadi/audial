@@ -38,8 +38,8 @@ public:
     void ConnectComponents(GameManager& g, bool dieOnConnectFailure);
 
     EntityId FindActiveEntityByName(char const* name);
-
     EntityId FindInactiveEntityByName(char const* name);
+    EntityId FindActiveOrInactiveEntityByName(char const* name);
 
     // USES EditDestroy() on deactivate!!!!
     void DeactivateEntity(EntityId id);
@@ -52,6 +52,8 @@ public:
     void ForEveryActiveAndInactiveEntity(std::function<void(EntityId)> f) const;
 
     // DO NOT STORE POINTER!!!
+    // NOTE: these return both active and inactive entities.
+    // TODO: Should these consider Active status before returning?
     Entity* GetEntity(EntityId id);
     Entity const* GetEntity(EntityId id) const;
 

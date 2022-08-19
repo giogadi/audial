@@ -63,6 +63,8 @@ public:
 
 class ScriptActionAudioEvent : public ScriptAction {
     virtual ScriptActionType Type() const override { return ScriptActionType::AudioEvent; }
+
+    virtual void InitImpl(GameManager& g) override;
     virtual void ExecuteImpl(GameManager& g) const override;
 
     virtual void DrawImGui() override;
@@ -74,6 +76,9 @@ class ScriptActionAudioEvent : public ScriptAction {
     double _denom = 0.25;
     BeatTimeEvent _event;
     std::string _recorderName;
+
+    // Non-serialize
+    EntityId _recorderId;
 };
 
 

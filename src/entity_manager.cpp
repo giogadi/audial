@@ -66,6 +66,15 @@ EntityId EntityManager::FindInactiveEntityByName(char const* name) {
     return EntityId::InvalidId();
 }
 
+EntityId EntityManager::FindActiveOrInactiveEntityByName(char const* name) {
+    for (auto const& entity : _entities) {
+        if (entity._id.IsValid() && entity._e->_name == name) {
+            return entity._id;
+        }
+    }
+    return EntityId::InvalidId();
+}
+
 void EntityManager::DeactivateEntity(EntityId id) {
     EntityAndStatus* e_s = GetEntityAndStatus(id);
     if (e_s == nullptr) {

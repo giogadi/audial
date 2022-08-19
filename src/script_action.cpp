@@ -8,6 +8,8 @@
 #include "game_manager.h"
 #include "entity_manager.h"
 #include "components/waypoint_follow.h"
+#include "imgui_util.h"
+#include "components/area_recorder.h"
 
 std::unique_ptr<ScriptAction> MakeScriptActionOfType(ScriptActionType actionType) {
     switch (actionType) {
@@ -133,14 +135,27 @@ audio::Event GetEventAtBeatOffsetFromNextDenom(double denom, BeatTimeEvent const
 }
 }
 
+void ScriptActionAudioEvent::InitImpl(GameManager& g) {
+    _recorderId = g._entityManager->FindActiveOrInactiveEntityByName(_recorderName.c_str());
+}
+
 void ScriptActionAudioEvent::ExecuteImpl(GameManager& g) const {
     audio::Event e = GetEventAtBeatOffsetFromNextDenom(_denom, _event, *g._beatClock);
     g._audioContext->AddEvent(e);
+    Entity* recorderEntity = g._entityManager->GetEntity(_recorderId);
+    if (recorderEntity != nullptr) {
+        std::shared_ptr<AreaRecorderComponent> recorder =
+            recorderEntity->FindComponentOfType<AreaRecorderComponent>().lock();
+        if (recorder != nullptr) {
+            recorder->Record(e);
+        }
+    }
 }
 
 void ScriptActionAudioEvent::DrawImGui() {
     ImGui::InputScalar("Denom##", ImGuiDataType_Double, &_denom);
     ImGui::InputScalar("Beat time##", ImGuiDataType_Double, &_event._beatTime);
+    imgui_util::InputText128("Recorder name##", &_recorderName);
     audio::EventDrawImGuiNoTime(_event._e);
 }
 
