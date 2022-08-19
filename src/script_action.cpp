@@ -98,9 +98,12 @@ void ScriptActionDestroyAllPlanets::ExecuteImpl(GameManager& g) const {
     });
 }
 
+void ScriptActionActivateEntity::InitImpl(GameManager& g) {
+    _entityId = g._entityManager->FindInactiveEntityByName(_entityName.c_str());
+}
+
 void ScriptActionActivateEntity::ExecuteImpl(GameManager& g) const {
-    EntityId id = g._entityManager->FindInactiveEntityByName(_entityName.c_str());
-    g._entityManager->ActivateEntity(id, g);
+    g._entityManager->ActivateEntity(_entityId, g);
 }
 
 void ScriptActionActivateEntity::DrawImGui() {
@@ -151,13 +154,16 @@ void ScriptActionAudioEvent::Load(serial::Ptree pt) {
     _event.Load(pt.GetChild("beat_event"));
 }
 
+void ScriptActionStartWaypointFollow::InitImpl(GameManager& g) {
+    _entityId = g._entityManager->FindActiveEntityByName(_entityName.c_str());
+}
+
 void ScriptActionStartWaypointFollow::ExecuteImpl(GameManager& g) const {
-    EntityId id = g._entityManager->FindActiveEntityByName(_entityName.c_str());
-    if (!id.IsValid()) {
+    if (!_entityId.IsValid()) {
         printf("ScriptActionStartWaypointFollow: entity not found: %s\n", _entityName.c_str());
         return;
     }
-    Entity* e = g._entityManager->GetEntity(id);
+    Entity* e = g._entityManager->GetEntity(_entityId);
     assert(e != nullptr);
 
     std::shared_ptr<WaypointFollowComponent> comp = e->FindComponentOfType<WaypointFollowComponent>().lock();
