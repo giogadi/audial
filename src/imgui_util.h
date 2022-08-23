@@ -1,7 +1,7 @@
 #pragma once
 
 namespace imgui_util {
-    bool InputText128(char const* label, std::string* value) {
+    inline bool InputText128(char const* label, std::string* value) {
         char buf[128];
         strncpy(buf, value->c_str(), 128);        
         bool changed = ImGui::InputText(label, buf, 128);

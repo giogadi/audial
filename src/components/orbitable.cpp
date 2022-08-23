@@ -9,6 +9,7 @@
 #include "entity.h"
 #include "components/transform.h"
 #include "components/damage.h"
+#include "imgui_util.h"
 
 bool OrbitableComponent::ConnectComponents(EntityId id, Entity& e, GameManager& g) {
     _t = e.FindComponentOfType<TransformComponent>();
@@ -33,6 +34,7 @@ void OrbitableComponent::OnLeaveOrbit(GameManager& g) {
 void OrbitableComponent::Save(serial::Ptree pt) const {
     serial::Ptree actionsPt = pt.AddChild("on_leave_actions");
     ScriptAction::SaveActions(actionsPt, _onLeaveActions);
+    pt.PutString("recorder_name", _recorderName.c_str());
 }
 
 void OrbitableComponent::Load(serial::Ptree pt) {
@@ -42,9 +44,11 @@ void OrbitableComponent::Load(serial::Ptree pt) {
     } else {
         printf("WARNING: OrbitableComponent missing on_leave_actions\n");
     }
+    pt.TryGetString("recorder_name", &_recorderName);
 }
 
 bool OrbitableComponent::DrawImGui() {
+    imgui_util::InputText128("Recorder name##", &_recorderName);
     DrawScriptActionListImGui(_onLeaveActions);
     return false;
 }

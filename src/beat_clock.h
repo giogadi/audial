@@ -29,7 +29,10 @@ public:
         return _currentBeatTime;
     }
     double GetDownBeatTime() const {
-        return std::floor(_currentBeatTime);
+        return GetLastDownBeatTime(_currentBeatTime);
+    }
+    static double GetLastDownBeatTime(double beatTime) {
+        return std::floor(beatTime);
     }
     // Denom == 1: next quarter note (beat)
     // Denom == 0.5: next 8th note. etc

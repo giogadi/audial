@@ -24,6 +24,7 @@ public:
 
     // serialize
     std::vector<std::unique_ptr<ScriptAction>> _onLeaveActions;
+    std::string _recorderName;
 
     std::weak_ptr<TransformComponent> _t;
     std::weak_ptr<RigidBodyComponent> _rb;

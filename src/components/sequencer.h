@@ -143,7 +143,6 @@ public:
             BeatTimeEvent &b_e = _events.back();
             b_e.Load(children[i]._pt);
         }
-        // free(children);
         delete[] children;
     }
 

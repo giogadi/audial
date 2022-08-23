@@ -12,6 +12,14 @@ struct BeatTimeEvent {
         e.timeInTicks = beatClock.BeatTimeToTickTime(_beatTime);
         return e;
     }
+    void FromTickTimeEvent(audio::Event const& e, BeatClock const& beatClock) {
+        _e = e;
+        _beatTime = beatClock.TickTimeToBeatTime(e.timeInTicks);
+    }
+
+    void MakeTimeRelativeTo(double beatTimeReference) {
+        _beatTime = _beatTime - beatTimeReference;
+    }
 
     void Save(serial::Ptree pt) const {
         _e.Save(pt);

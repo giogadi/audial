@@ -11,10 +11,11 @@ public:
     virtual ~ScriptAction() {}
     virtual ScriptActionType Type() const = 0;
 
-    // Expected to be run during ConnectComponents() in components.
-    // TODO: Is this the right place to run it?
-    void Init(GameManager& g) { 
-        InitImpl(g);
+    // Expected to be run during ConnectComponents() in components. The input
+    // entityId is populated if this ScriptAction is owned by a component
+    // attached to an entity. It may not always be populated.
+    void Init(EntityId entityId, GameManager& g) { 
+        InitImpl(entityId, g);
         _init = true;
     }
 
@@ -33,7 +34,7 @@ public:
 
 protected:
     virtual void ExecuteImpl(GameManager& g) const = 0;
-    virtual void InitImpl(GameManager& g) {};
+    virtual void InitImpl(EntityId entityId, GameManager& g) {};
     bool _init = false;
 };
 
@@ -46,7 +47,7 @@ public:
 class ScriptActionActivateEntity : public ScriptAction {
 public:
     virtual ScriptActionType Type() const override { return ScriptActionType::ActivateEntity; }
-    virtual void InitImpl(GameManager& g) override;
+    virtual void InitImpl(EntityId entityId, GameManager& g) override;
     virtual void ExecuteImpl(GameManager& g) const override;
 
     virtual void DrawImGui() override;
@@ -64,7 +65,7 @@ public:
 class ScriptActionAudioEvent : public ScriptAction {
     virtual ScriptActionType Type() const override { return ScriptActionType::AudioEvent; }
 
-    virtual void InitImpl(GameManager& g) override;
+    virtual void InitImpl(EntityId entityId, GameManager& g) override;
     virtual void ExecuteImpl(GameManager& g) const override;
 
     virtual void DrawImGui() override;
@@ -75,7 +76,6 @@ class ScriptActionAudioEvent : public ScriptAction {
     // serialize
     double _denom = 0.25;
     BeatTimeEvent _event;
-    std::string _recorderName;
 
     // Non-serialize
     EntityId _recorderId;
@@ -85,7 +85,7 @@ class ScriptActionAudioEvent : public ScriptAction {
 class ScriptActionStartWaypointFollow : public ScriptAction {
     virtual ScriptActionType Type() const override { return ScriptActionType::StartWaypointFollow; }
 
-    virtual void InitImpl(GameManager& g) override;
+    virtual void InitImpl(EntityId entityId, GameManager& g) override;
     virtual void ExecuteImpl(GameManager& g) const override;
 
     virtual void DrawImGui() override;

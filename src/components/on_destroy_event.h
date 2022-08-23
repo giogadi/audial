@@ -12,7 +12,7 @@ public:
     virtual bool ConnectComponents(EntityId id, Entity& e, GameManager& g) override {
         _g = &g;
         for (auto& action : _actions) {
-            action->Init(g);
+            action->Init(id, g);
         }
         return true;
     }

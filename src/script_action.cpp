@@ -86,7 +86,6 @@ void ScriptAction::LoadActions(serial::Ptree pt, std::vector<std::unique_ptr<Scr
         newAction->Load(actionPt);
         actions.push_back(std::move(newAction));
     }
-    // free(children);
     delete[] children;
 }
 
@@ -100,7 +99,7 @@ void ScriptActionDestroyAllPlanets::ExecuteImpl(GameManager& g) const {
     });
 }
 
-void ScriptActionActivateEntity::InitImpl(GameManager& g) {
+void ScriptActionActivateEntity::InitImpl(EntityId /*entityId*/, GameManager& g) {
     _entityId = g._entityManager->FindInactiveEntityByName(_entityName.c_str());
 }
 
@@ -135,8 +134,17 @@ audio::Event GetEventAtBeatOffsetFromNextDenom(double denom, BeatTimeEvent const
 }
 }
 
-void ScriptActionAudioEvent::InitImpl(GameManager& g) {
-    _recorderId = g._entityManager->FindActiveOrInactiveEntityByName(_recorderName.c_str());
+void ScriptActionAudioEvent::InitImpl(EntityId entityId, GameManager& g) {
+    // Look for an orbitable component on this entity, and see if it has the recorder name populated.
+    if (Entity* entity = g._entityManager->GetEntity(entityId)) {
+        std::shared_ptr<OrbitableComponent> orbitable = entity->FindComponentOfType<OrbitableComponent>().lock();
+        if (orbitable != nullptr && !orbitable->_recorderName.empty()) {
+            _recorderId = g._entityManager->FindActiveOrInactiveEntityByName(orbitable->_recorderName.c_str());
+            if (!_recorderId.IsValid()) {
+                printf("Couldn't find recorder of name \"%s\"\n.", orbitable->_recorderName.c_str());
+            }
+        }
+    }
 }
 
 void ScriptActionAudioEvent::ExecuteImpl(GameManager& g) const {
@@ -155,7 +163,6 @@ void ScriptActionAudioEvent::ExecuteImpl(GameManager& g) const {
 void ScriptActionAudioEvent::DrawImGui() {
     ImGui::InputScalar("Denom##", ImGuiDataType_Double, &_denom);
     ImGui::InputScalar("Beat time##", ImGuiDataType_Double, &_event._beatTime);
-    imgui_util::InputText128("Recorder name##", &_recorderName);
     audio::EventDrawImGuiNoTime(_event._e);
 }
 
@@ -169,7 +176,7 @@ void ScriptActionAudioEvent::Load(serial::Ptree pt) {
     _event.Load(pt.GetChild("beat_event"));
 }
 
-void ScriptActionStartWaypointFollow::InitImpl(GameManager& g) {
+void ScriptActionStartWaypointFollow::InitImpl(EntityId /*entityId*/, GameManager& g) {
     _entityId = g._entityManager->FindActiveEntityByName(_entityName.c_str());
 }
 

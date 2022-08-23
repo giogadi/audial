@@ -12,7 +12,7 @@ EventsOnHitComponent::EventsOnHitComponent() {}
 bool EventsOnHitComponent::ConnectComponents(EntityId id, Entity& e, GameManager& g) {
     _g = &g;
     for (auto& action : _actions) {
-        action->Init(g);
+        action->Init(id, g);
     }
     return true;
 }
