@@ -37,9 +37,7 @@ public:
     // Non-serialize
     std::vector<audio::Event> _recordedEvents;
     bool _recording = false;
-    int _currentBeatNum = 0;
     double _currentRecordingMeasureStart = -1.0;
-    int _currentPlaybackIndex = 0;
     std::vector<BeatTimeEvent> _sequence;
     GameManager* _g = nullptr;
 };
