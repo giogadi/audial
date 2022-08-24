@@ -4,6 +4,7 @@
 
 #include "audio_util.h"
 #include "constants.h"
+#include "math_util.h"
 
 namespace synth {
     namespace {
@@ -433,7 +434,9 @@ namespace synth {
             // Make LFO a sine wave for now.
             float const cutoffLFOValue = patch.cutoffLFOGain * sinf(state->cutoffLFOPhase);
             state->cutoffLFOPhase += (patch.cutoffLFOFreq * 2*kPi / sampleRate);
-            float const modulatedCutoff = patch.cutoffFreq * powf(2.0f, cutoffLFOValue);
+            // float const modulatedCutoff = patch.cutoffFreq * powf(2.0f, cutoffLFOValue);
+            float const modulatedCutoff = math_util::Clamp(patch.cutoffFreq + 20000*cutoffLFOValue, 0.f, 44100.f);
+
 
             ADSREnvSpecInTicks ampEnvSpec, cutoffEnvSpec;
             ConvertADSREnvSpec(patch.ampEnvSpec, ampEnvSpec, sampleRate);
