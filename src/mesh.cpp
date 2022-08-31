@@ -6,6 +6,16 @@
 #include "OBJ_Loader.h"
 
 void BoundMeshPNU::Init(float* vertexData, int numVertices) {
+    int numIndices = numVertices;
+    uint32_t* indices = new uint32_t[numVertices];
+    for (int i = 0; i < numIndices; ++i) {
+        indices[i] = (uint32_t)i;
+    }
+    Init(vertexData, numVertices, indices, numIndices);
+    delete[] indices;
+}
+
+void BoundMeshPNU::Init(float* vertexData, int numVertices, uint32_t* indexData, int numIndices) {
     _numVerts = numVertices;
 
     glGenVertexArrays(1, &_vao);
@@ -16,6 +26,11 @@ void BoundMeshPNU::Init(float* vertexData, int numVertices) {
     glBufferData(
         GL_ARRAY_BUFFER, sizeof(float) * kNumValuesPerVertex * numVertices, vertexData,
         GL_STATIC_DRAW);
+    
+    _numIndices = numIndices;
+    glGenBuffers(1, &_ebo);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _ebo);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint32_t) * numIndices, indexData, GL_STATIC_DRAW);
 
     // Position attribute
     glVertexAttribPointer(
@@ -46,20 +61,22 @@ bool BoundMeshPNU::Init(char const* objFilename) {
     if (!success) {
         return false;
     }
-    int numIndices = 0;
+    _numIndices = 0;
     _subMeshes.reserve(loader.LoadedMeshes.size());
     for (objl::Mesh const& mesh : loader.LoadedMeshes) {
         _subMeshes.emplace_back();
         SubMesh& subMesh = _subMeshes.back(); 
-        subMesh._startIndex = numIndices;        
-        subMesh._numVerts = mesh.Indices.size();
-        numIndices += mesh.Indices.size();
+        subMesh._startIndex = _numIndices;        
+        subMesh._numIndices = mesh.Indices.size();
+        _numIndices += mesh.Indices.size();
         subMesh._color = Vec4(
             mesh.MeshMaterial.Kd.X, mesh.MeshMaterial.Kd.Y, mesh.MeshMaterial.Kd.Z, 1.f);
     }
 
+    // TODO: JUST USE THE MINIMUM NUMBER OF VERTICES AND INDICES
+
     std::vector<float> vertexData;
-    vertexData.reserve(kNumValuesPerVertex * numIndices);
+    vertexData.reserve(kNumValuesPerVertex * _numIndices);
     for (objl::Mesh const& mesh : loader.LoadedMeshes) {
         for (unsigned int index : mesh.Indices) {
             objl::Vertex const& v = mesh.Vertices[index];
@@ -76,7 +93,7 @@ bool BoundMeshPNU::Init(char const* objFilename) {
         }        
     }
 
-    Init(vertexData.data(), numIndices);
+    Init(vertexData.data(), _numIndices);
 
     return true;
 }

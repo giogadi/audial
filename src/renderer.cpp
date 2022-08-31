@@ -218,13 +218,14 @@ void Scene::Draw(int windowWidth, int windowHeight) {
             if (m._mesh->_subMeshes.size() == 0) {
                 shader.SetVec4("uColor", m._color);
                 glBindVertexArray(m._mesh->_vao);
-                glDrawArrays(GL_TRIANGLES, /*startIndex=*/0, m._mesh->_numVerts);
+                glDrawElements(GL_TRIANGLES, /*count=*/m._mesh->_numIndices, GL_UNSIGNED_INT, /*start_offset=*/0);
             } else {
                 for (int subMeshIx = 0; subMeshIx < m._mesh->_subMeshes.size(); ++subMeshIx) {
                     BoundMeshPNU::SubMesh const& subMesh = m._mesh->_subMeshes[subMeshIx];
                     shader.SetVec4("uColor", subMesh._color);
                     glBindVertexArray(m._mesh->_vao);
-                    glDrawArrays(GL_TRIANGLES, subMesh._startIndex, subMesh._numVerts);
+                    glDrawElements(GL_TRIANGLES, /*count=*/subMesh._numIndices, GL_UNSIGNED_INT,
+                        /*start_offset=*/(void*)(sizeof(uint32_t) * subMesh._startIndex));
                 }
             }
         }
@@ -259,13 +260,14 @@ void Scene::Draw(int windowWidth, int windowHeight) {
             if (m->_mesh->_subMeshes.size() == 0) {
                 shader.SetVec4("uColor", m->_color);
                 glBindVertexArray(m->_mesh->_vao);
-                glDrawArrays(GL_TRIANGLES, /*startIndex=*/0, m->_mesh->_numVerts);
+                glDrawElements(GL_TRIANGLES, /*count=*/m->_mesh->_numIndices, GL_UNSIGNED_INT, /*start_offset=*/0);
             } else {
                 for (int subMeshIx = 0; subMeshIx < m->_mesh->_subMeshes.size(); ++subMeshIx) {
                     BoundMeshPNU::SubMesh const& subMesh = m->_mesh->_subMeshes[subMeshIx];
                     shader.SetVec4("uColor", subMesh._color);
                     glBindVertexArray(m->_mesh->_vao);
-                    glDrawArrays(GL_TRIANGLES, subMesh._startIndex, subMesh._numVerts);
+                    glDrawElements(GL_TRIANGLES, /*count=*/subMesh._numIndices, GL_UNSIGNED_INT,
+                        /*start_offset=*/(void*)(sizeof(uint32_t) * subMesh._startIndex));
                 }
             }
         }
@@ -289,7 +291,7 @@ void Scene::Draw(int windowWidth, int windowHeight) {
             glActiveTexture(GL_TEXTURE0);
             glBindTexture(GL_TEXTURE_2D, m->_textureId);
             glBindVertexArray(m->_mesh->_vao);
-            glDrawArrays(GL_TRIANGLES, /*startIndex=*/0, m->_mesh->_numVerts);
+            glDrawElements(GL_TRIANGLES, /*count=*/m->_mesh->_numIndices, GL_UNSIGNED_INT, /*start_offset=*/0);
         }
     }
 
@@ -322,13 +324,14 @@ void Scene::Draw(int windowWidth, int windowHeight) {
             if (m->_mesh->_subMeshes.size() == 0) {
                 shader.SetVec4("uColor", m->_color);
                 glBindVertexArray(m->_mesh->_vao);
-                glDrawArrays(GL_TRIANGLES, /*startIndex=*/0, m->_mesh->_numVerts);
+                glDrawElements(GL_TRIANGLES, /*count=*/m->_mesh->_numIndices, GL_UNSIGNED_INT, /*start_offset=*/0);
             } else {
                 for (int subMeshIx = 0; subMeshIx < m->_mesh->_subMeshes.size(); ++subMeshIx) {
                     BoundMeshPNU::SubMesh const& subMesh = m->_mesh->_subMeshes[subMeshIx];
                     shader.SetVec4("uColor", subMesh._color);
                     glBindVertexArray(m->_mesh->_vao);
-                    glDrawArrays(GL_TRIANGLES, subMesh._startIndex, subMesh._numVerts);
+                    glDrawElements(GL_TRIANGLES, /*count=*/subMesh._numIndices, GL_UNSIGNED_INT,
+                        /*start_offset=*/(void*)(sizeof(uint32_t) * subMesh._startIndex));
                 }
             }
         }
