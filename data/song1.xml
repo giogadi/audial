@@ -924,7 +924,7 @@
                 <script_actions>
                     <script_action>
                         <script_action_type>AudioEvent</script_action_type>
-                        <denom>0.25</denom>
+                        <denom>0.5</denom>
                         <beat_event>
                             <event_type>AllNotesOff</event_type>
                             <channel>1</channel>
@@ -936,7 +936,7 @@
                     </script_action>
                     <script_action>
                         <script_action_type>AudioEvent</script_action_type>
-                        <denom>0.25</denom>
+                        <denom>0.5</denom>
                         <beat_event>
                             <event_type>NoteOn</event_type>
                             <channel>1</channel>
@@ -1068,7 +1068,7 @@
                 <script_actions>
                     <script_action>
                         <script_action_type>AudioEvent</script_action_type>
-                        <denom>0.25</denom>
+                        <denom>0.5</denom>
                         <beat_event>
                             <event_type>AllNotesOff</event_type>
                             <channel>1</channel>
@@ -1080,7 +1080,7 @@
                     </script_action>
                     <script_action>
                         <script_action_type>AudioEvent</script_action_type>
-                        <denom>0.25</denom>
+                        <denom>0.5</denom>
                         <beat_event>
                             <event_type>NoteOn</event_type>
                             <channel>1</channel>
@@ -1140,7 +1140,7 @@
                 <script_actions>
                     <script_action>
                         <script_action_type>AudioEvent</script_action_type>
-                        <denom>0.25</denom>
+                        <denom>0.5</denom>
                         <beat_event>
                             <event_type>AllNotesOff</event_type>
                             <channel>1</channel>
@@ -1152,7 +1152,7 @@
                     </script_action>
                     <script_action>
                         <script_action_type>AudioEvent</script_action_type>
-                        <denom>0.25</denom>
+                        <denom>0.5</denom>
                         <beat_event>
                             <event_type>NoteOn</event_type>
                             <channel>1</channel>
@@ -1212,7 +1212,7 @@
                 <script_actions>
                     <script_action>
                         <script_action_type>AudioEvent</script_action_type>
-                        <denom>0.25</denom>
+                        <denom>0.5</denom>
                         <beat_event>
                             <event_type>AllNotesOff</event_type>
                             <channel>1</channel>
@@ -1224,7 +1224,7 @@
                     </script_action>
                     <script_action>
                         <script_action_type>AudioEvent</script_action_type>
-                        <denom>0.25</denom>
+                        <denom>0.5</denom>
                         <beat_event>
                             <event_type>NoteOn</event_type>
                             <channel>1</channel>
