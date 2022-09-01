@@ -61,25 +61,23 @@ bool BoundMeshPNU::Init(char const* objFilename) {
     if (!success) {
         return false;
     }
+    
     _numIndices = 0;
+    _numVerts = 0;
     _subMeshes.reserve(loader.LoadedMeshes.size());
+    std::vector<uint32_t> indexData;    
+    indexData.reserve(loader.LoadedIndices.size());
+    std::vector<float> vertexData;
+    vertexData.reserve(kNumValuesPerVertex * loader.LoadedVertices.size());
     for (objl::Mesh const& mesh : loader.LoadedMeshes) {
         _subMeshes.emplace_back();
         SubMesh& subMesh = _subMeshes.back(); 
         subMesh._startIndex = _numIndices;        
         subMesh._numIndices = mesh.Indices.size();
-        _numIndices += mesh.Indices.size();
         subMesh._color = Vec4(
             mesh.MeshMaterial.Kd.X, mesh.MeshMaterial.Kd.Y, mesh.MeshMaterial.Kd.Z, 1.f);
-    }
 
-    // TODO: JUST USE THE MINIMUM NUMBER OF VERTICES AND INDICES
-
-    std::vector<float> vertexData;
-    vertexData.reserve(kNumValuesPerVertex * _numIndices);
-    for (objl::Mesh const& mesh : loader.LoadedMeshes) {
-        for (unsigned int index : mesh.Indices) {
-            objl::Vertex const& v = mesh.Vertices[index];
+        for (objl::Vertex const& v : mesh.Vertices) {
             vertexData.push_back(v.Position.X);
             vertexData.push_back(v.Position.Y);
             vertexData.push_back(v.Position.Z);
@@ -90,10 +88,20 @@ bool BoundMeshPNU::Init(char const* objFilename) {
 
             vertexData.push_back(v.TextureCoordinate.X);
             vertexData.push_back(v.TextureCoordinate.Y);
-        }        
+        }
+
+        for (uint32_t index : mesh.Indices) {
+            indexData.push_back(index + _numVerts);
+        }
+
+        _numVerts += mesh.Vertices.size();
+        _numIndices += mesh.Indices.size();
     }
 
-    Init(vertexData.data(), _numIndices);
+    assert(_numVerts == loader.LoadedVertices.size());
+    assert(indexData.size() == _numIndices);
+
+    Init(vertexData.data(), _numVerts, indexData.data(), _numIndices);
 
     return true;
 }

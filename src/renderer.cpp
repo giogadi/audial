@@ -330,8 +330,8 @@ void Scene::Draw(int windowWidth, int windowHeight) {
                     BoundMeshPNU::SubMesh const& subMesh = m->_mesh->_subMeshes[subMeshIx];
                     shader.SetVec4("uColor", subMesh._color);
                     glBindVertexArray(m->_mesh->_vao);
-                    glDrawElements(GL_TRIANGLES, /*count=*/subMesh._numIndices, GL_UNSIGNED_INT,
-                        /*start_offset=*/(void*)(sizeof(uint32_t) * subMesh._startIndex));
+                    int offset = sizeof(uint32_t) * subMesh._startIndex;
+                    glDrawElements(GL_TRIANGLES, /*count=*/subMesh._numIndices, GL_UNSIGNED_INT, (void*) offset);
                 }
             }
         }
