@@ -42,6 +42,11 @@ public:
         mouseY = _mouseY;
     }
 
+    void GetMouseMotion(double& motionX, double& motionY) const {
+        motionX = _mouseMotionX;
+        motionY = _mouseMotionY;
+    }
+
     // Units: window pixels (with potential subpixel accuracy)
     // +x: touchpad scroll with fingers moving RIGHT
     // +y: touchpad scroll with fingers moving DOWN
@@ -63,6 +68,8 @@ private:
     std::array<bool,static_cast<int>(MouseButton::Count)> _mouseButtonNewStates;
     double _mouseX = 0.0;
     double _mouseY = 0.0;
+    double _mouseMotionX = 0.0;
+    double _mouseMotionY = 0.0;
     bool _haveScrollInputThisFrame = false;
     double _mouseScrollX = 0.0;
     double _mouseScrollY = 0.0;

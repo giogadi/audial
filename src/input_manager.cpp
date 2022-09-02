@@ -42,7 +42,13 @@ void InputManager::Update(bool enabled) {
         _mouseButtonNewStates[i] = (pressed != _mouseButtonStates[i]);
         _mouseButtonStates[i] = pressed;
     }
-    glfwGetCursorPos(_window, &_mouseX, &_mouseY);
+    double newMouseX;
+    double newMouseY;
+    glfwGetCursorPos(_window, &newMouseX, &newMouseY);
+    _mouseMotionX = newMouseX - _mouseX;
+    _mouseMotionY = newMouseY - _mouseY;
+    _mouseX = newMouseX;
+    _mouseY = newMouseY;
 
     if (!enabled || !_haveScrollInputThisFrame) {
         _mouseScrollX = 0.0;

@@ -1319,6 +1319,7 @@
             </component>
             <component>
                 <component_type>PianoPlanet</component_type>
+                <pixel_range>300.0</pixel_range>
                 <notes>
                     <note>60</note>
                     <note>63</note>

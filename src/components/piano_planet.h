@@ -20,6 +20,7 @@ public:
     virtual void Load(serial::Ptree pt) override;
 
     // Serialized
+    float _valueRangeInPixels = 300.f;
     std::vector<int> _midiNotes;
 
     // Non-serialized
