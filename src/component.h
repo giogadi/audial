@@ -27,6 +27,7 @@ struct GameManager;
     X(WaypointFollow) \
     X(RecorderBalloon) \
     X(AreaRecorder) \
+    X(PianoPlanet) \
     X(Model)
 
 enum class ComponentType: int {

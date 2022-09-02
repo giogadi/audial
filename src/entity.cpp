@@ -22,6 +22,7 @@
 #include "components/waypoint_follow.h"
 #include "components/recorder_balloon.h"
 #include "components/area_recorder.h"
+#include "components/piano_planet.h"
 
 void Entity::Update(float dt) {
     for (auto& c : _components) {

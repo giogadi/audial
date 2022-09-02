@@ -42,6 +42,7 @@ public:
         mouseY = _mouseY;
     }
 
+    // Units: window pixels (with potential subpixel accuracy)
     // +x: touchpad scroll with fingers moving RIGHT
     // +y: touchpad scroll with fingers moving DOWN
     void GetMouseScroll(double& scrollX, double& scrollY) const {
