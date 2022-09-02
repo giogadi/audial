@@ -40,6 +40,7 @@ public:
     double GetDouble(char const* name);
 
     std::string GetStringValue();
+    int GetIntValue();
 
     // Returns pointer to allocated memory. Up to user to delete.
     NameTreePair* GetChildren(int* numChildren);

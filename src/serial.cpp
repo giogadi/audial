@@ -153,6 +153,11 @@ std::string Ptree::GetStringValue() {
     return GetInternal(_internal)->get_value<std::string>();
 }
 
+int Ptree::GetIntValue() {
+    assert(IsValid());
+    return GetInternal(_internal)->get_value<int>();
+}
+
 NameTreePair* Ptree::GetChildren(int* numChildren) {
     assert(IsValid());
     NameTreePair* children = new NameTreePair[GetInternal(_internal)->size()];

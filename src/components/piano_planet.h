@@ -1,5 +1,7 @@
 #pragma once
 
+#include <vector>
+
 #include "component.h"
 
 class PianoPlanetComponent : public Component {
@@ -10,7 +12,7 @@ public:
     // virtual void EditDestroy() { Destroy(); };
     virtual bool ConnectComponents(EntityId id, Entity& e, GameManager& g) override;
     // // If true, request that we try reconnecting the entity's components.
-    // virtual bool DrawImGui();
+    virtual bool DrawImGui() override;
     // virtual void OnEditPick() {}
     // virtual void EditModeUpdate(float dt) {}
 
@@ -18,9 +20,11 @@ public:
     virtual void Load(serial::Ptree pt) override;
 
     // Serialized
+    std::vector<int> _midiNotes;
 
     // Non-serialized
     float _currentValue = 0.5f;  // [0,1]
+    int _currentNote = -1;
     GameManager* _g = nullptr;
     EntityId _entityId;
 };

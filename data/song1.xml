@@ -1319,6 +1319,14 @@
             </component>
             <component>
                 <component_type>PianoPlanet</component_type>
+                <notes>
+                    <note>60</note>
+                    <note>63</note>
+                    <note>65</note>
+                    <note>67</note>
+                    <note>70</note>
+                    <note>72</note>
+                </notes>
             </component>
             <component>
                 <component_type>Model</component_type>
