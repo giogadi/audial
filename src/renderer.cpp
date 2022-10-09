@@ -70,11 +70,80 @@ public:
     std::unordered_map<std::string, unsigned int> _textureIdMap;
     Shader _colorShader;
     Shader _textureShader;
+    Shader _waterShader;
 
     // boring cached things
     std::vector<ColorModelInstance const*> _topLayerColorModels;
     BoundMeshPNU const* _cubeMesh = nullptr;
 };
+
+namespace {
+std::unique_ptr<BoundMeshPNU> MakeWaterMesh() {
+    // 10 points across (+x) and 10 points down (+z), each point spaced a unit apart
+    // Should be indexed row-major, with +x direction being the rows.
+    // origin of plane is top-left corner.
+    int numPointsX = 100;
+    int numPointsZ = 100;
+    float spacing = 0.1f;
+
+    assert(numPointsX >= 2);
+    assert(numPointsZ >= 2);
+
+    std::vector<float> vertexData;
+    int const numVerts = numPointsX * numPointsZ;
+    int const vertexDataSize = numVerts * BoundMeshPNU::kNumValuesPerVertex;
+    vertexData.reserve(vertexDataSize);
+    float zPos = 0.f;
+    for (int z = 0; z < numPointsZ; ++z) {
+        float xPos = 0.f;
+        for (int x = 0; x < numPointsX; ++x) {
+            // Pos
+            vertexData.push_back(xPos);
+            vertexData.push_back(0.f);
+            vertexData.push_back(zPos);
+
+            // Normal
+            vertexData.push_back(0.f);
+            vertexData.push_back(1.f);
+            vertexData.push_back(0.f);
+
+            // UV
+            vertexData.push_back(0.f);
+            vertexData.push_back(0.f);
+
+            xPos += spacing;
+        }
+        zPos += spacing;
+    }
+    assert(vertexData.size() == vertexDataSize);
+
+    // Index time.
+    std::vector<uint32_t> indices;
+    int const indicesSize = (numPointsX - 1) * (numPointsZ - 1) * 2 * 3;
+    indices.reserve(indicesSize);
+    for (int z = 0; z < numPointsZ - 1; ++z) {
+        for (int x = 0; x < numPointsX - 1; ++x) {
+            uint32_t startIndex = z * numPointsX + x;
+            uint32_t start10 = startIndex + numPointsX;
+            uint32_t start01 = startIndex + 1;
+            uint32_t start11 = start10 + 1;
+            // Tri 1
+            indices.push_back(startIndex);
+            indices.push_back(start10);
+            indices.push_back(start01);
+            // Tri 2
+            indices.push_back(start01);
+            indices.push_back(start10);
+            indices.push_back(start11);
+        }
+    }
+    assert(indices.size() == indicesSize);
+
+    auto mesh = std::make_unique<BoundMeshPNU>();
+    mesh->Init(vertexData.data(), numVerts, indices.data(), indicesSize);
+    return mesh;
+}
+}
 
 bool SceneInternal::Init() {    
     {
@@ -88,6 +157,9 @@ bool SceneInternal::Init() {
         mesh = std::make_unique<BoundMeshPNU>();
         assert(mesh->Init("data/models/axes.obj"));
         assert(_meshMap.emplace("axes", std::move(mesh)).second);
+
+        mesh = MakeWaterMesh();
+        assert(_meshMap.emplace("water", std::move(mesh)).second);
     }
 
     if (!_colorShader.Init("shaders/shader.vert", "shaders/color.frag")) {
@@ -95,6 +167,10 @@ bool SceneInternal::Init() {
     }
 
     if (!_textureShader.Init("shaders/shader.vert", "shaders/shader.frag")) {
+        return false;
+    }
+
+    if (!_waterShader.Init("shaders/water.vert", "shaders/water.frag")) {
         return false;
     }
 
@@ -179,7 +255,7 @@ bool Scene::RemoveTexturedModelInstance(VersionId id) {
     return _pInternal->_texturedModelInstances.RemoveItem(id);
 }
 
-void Scene::Draw(int windowWidth, int windowHeight) {    
+void Scene::Draw(int windowWidth, int windowHeight, float timeInSecs) {    
     assert(_pInternal->_pointLights.GetCount() == 1);
     PointLight const& light = *(_pInternal->_pointLights.GetItemAtIndex(0));
 
@@ -191,6 +267,29 @@ void Scene::Draw(int windowWidth, int windowHeight) {
 
     auto& topLayerModels = _pInternal->_topLayerColorModels;
     topLayerModels.clear();
+
+    // WATER
+#if 0
+    {
+        Mat4 const transMat = Mat4::Identity();
+        Mat3 modelTransInv;
+        assert(transMat.GetMat3().TransposeInverse(modelTransInv));
+
+        Shader& shader = _pInternal->_waterShader;
+        shader.Use();
+        shader.SetVec3("uLightPos", light._p);
+        shader.SetVec3("uAmbient", light._ambient);
+        shader.SetVec3("uDiffuse", light._diffuse);
+        shader.SetMat4("uMvpTrans", viewProjTransform * transMat);
+        shader.SetMat4("uModelTrans", transMat);
+        shader.SetMat3("uModelInvTrans", modelTransInv);
+        shader.SetVec4("uColor", Vec4(0.f, 0.f, 1.f, 1.f));
+        shader.SetFloat("uTime", timeInSecs);
+        BoundMeshPNU const* waterMesh = GetMesh("water");
+        glBindVertexArray(waterMesh->_vao);
+        glDrawElements(GL_TRIANGLES, /*count=*/waterMesh->_numIndices, GL_UNSIGNED_INT, /*start_offset=*/0);
+    }
+#endif    
 
     // buffered Color models (immediate API)
     {
@@ -330,7 +429,7 @@ void Scene::Draw(int windowWidth, int windowHeight) {
                     BoundMeshPNU::SubMesh const& subMesh = m->_mesh->_subMeshes[subMeshIx];
                     shader.SetVec4("uColor", subMesh._color);
                     glBindVertexArray(m->_mesh->_vao);
-                    int offset = sizeof(uint32_t) * subMesh._startIndex;
+                    uint64_t offset = sizeof(uint32_t) * subMesh._startIndex;
                     glDrawElements(GL_TRIANGLES, /*count=*/subMesh._numIndices, GL_UNSIGNED_INT, (void*) offset);
                 }
             }

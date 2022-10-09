@@ -87,7 +87,7 @@ public:
     TexturedModelInstance* GetTexturedModelInstance(VersionId id);
     bool RemoveTexturedModelInstance(VersionId id);
 
-    void Draw(int windowWidth, int windowHeight);
+    void Draw(int windowWidth, int windowHeight, float timeInSecs);
 
     BoundMeshPNU const* GetMesh(std::string const& meshName) const;
     // TODO: inline or remove some of the call depth here
