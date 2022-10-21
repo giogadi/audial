@@ -17,7 +17,6 @@ class SoundBank;
 namespace audio {
 
 int constexpr kNumSynths = 3;
-int constexpr kNumPcmSounds = 3;
 int constexpr kNumPcmVoices = 8;
 
 struct PcmVoice {

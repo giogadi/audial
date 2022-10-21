@@ -8,11 +8,13 @@ void SoundBank::LoadSounds() {
         "kick"
         , "block"
         , "snare"
+        , "liquid_dnb_loop"
     };
     std::vector<char const*> soundFilenames = {
         "data/sounds/kick_deep.wav"
         , "data/sounds/woodblock_reverb_mono.wav"
         , "data/sounds/snare2.wav"
+        , "data/sounds/liquid_dnb.wav"
     };
     assert(soundFilenames.size() == _soundNames.size());
     for (int i = 0, n = soundFilenames.size(); i < n; ++i) {
