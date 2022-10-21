@@ -12,6 +12,7 @@ add_executable(game
     src/glad/src/glad.cpp
     src/serial.cpp
     src/audio_loader.cpp src/game.cpp src/audio_util.cpp src/audio.cpp src/audio_event_imgui.cpp
+    src/sound_bank.cpp
     src/version_id_list_simple.cpp
     src/entity_picking.cpp src/entity_editing_context.cpp src/script_action.cpp
     src/shader.cpp src/synth.cpp  src/matrix.cpp src/mesh.cpp

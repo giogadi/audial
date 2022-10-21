@@ -17,9 +17,6 @@
 #include "backends/imgui_impl_glfw.h"
 #include "backends/imgui_impl_opengl3.h"
 
-#define DR_WAV_IMPLEMENTATION
-#include "dr_wav.h"
-
 #include "constants.h"
 #include "game_manager.h"
 #include "audio.h"
@@ -36,6 +33,7 @@
 #include "components/hit_counter.h"
 #include "audio_loader.h"
 #include "entity_editing_context.h"
+#include "sound_bank.h"
 
 #include "test_script.h"
 
@@ -278,26 +276,6 @@ void ShowHitCounterWindow(EntityManager& entityMgr) {
     ImGui::End();
 }
 
-void LoadSoundData(std::vector<audio::PcmSound>& sounds) {
-    std::vector<char const*> soundFilenames = {
-        "data/sounds/kick_deep.wav"
-        , "data/sounds/woodblock_reverb_mono.wav"
-        , "data/sounds/snare2.wav"
-    };
-    for (char const* filename : soundFilenames) {
-        audio::PcmSound sound;
-        unsigned int numChannels;
-        unsigned int sampleRate;
-        sound._buffer = drwav_open_file_and_read_pcm_frames_f32(
-            filename, &numChannels, &sampleRate, &sound._bufferLength, /*???*/NULL);
-        assert(numChannels == 1);
-        assert(sampleRate == 44100);
-        assert(sound._buffer != nullptr);
-        std::cout << filename << ": " << numChannels << " channels, " << sound._bufferLength << " samples." << std::endl;
-        sounds.push_back(std::move(sound));
-    }
-}
-
 struct CommandLineInputs {
     std::optional<std::string> _scriptFilename;
     std::optional<std::string> _synthPatchesFilename;
@@ -369,12 +347,14 @@ void ParseCommandLine(CommandLineInputs& inputs, int argc, char** argv) {
     ParseCommandLine(inputs, argVec);
 }
 
+GameManager gGameManager;
+
 int main(int argc, char** argv) {
     CommandLineInputs cmdLineInputs;
     ParseCommandLine(cmdLineInputs, argc, argv);
 
-    std::vector<audio::PcmSound> pcmSounds;
-    LoadSoundData(pcmSounds);
+    SoundBank soundBank;
+    soundBank.LoadSounds();
 
     // Init audio
     audio::Context audioContext;
@@ -387,7 +367,7 @@ int main(int argc, char** argv) {
             }
         }
 
-        if (audio::Init(audioContext, patches, pcmSounds) != paNoError) {
+        if (audio::Init(audioContext, patches, soundBank) != paNoError) {
             return 1;
         }
     }
@@ -465,20 +445,20 @@ int main(int argc, char** argv) {
 
     CollisionManager collisionManager;
 
-    GameManager gameManager {
-        &sceneManager, &inputManager, &audioContext, &entityManager, &collisionManager, &beatClock,
+    gGameManager = GameManager {
+        &sceneManager, &inputManager, &audioContext, &entityManager, &collisionManager, &beatClock, &soundBank,
         cmdLineInputs._editMode };
 
     if (cmdLineInputs._scriptFilename.has_value()) {
         std::cout << "loading " << cmdLineInputs._scriptFilename.value() << std::endl;
         bool dieOnConnectFail = !cmdLineInputs._editMode;
-        if (!entityManager.LoadAndConnect(cmdLineInputs._scriptFilename->c_str(), dieOnConnectFail, gameManager)) {
+        if (!entityManager.LoadAndConnect(cmdLineInputs._scriptFilename->c_str(), dieOnConnectFail, gGameManager)) {
             std::cout << "Load failed. Exiting" << std::endl;
             return 1;
         }
     } else {
         std::cout << "loading hardcoded script" << std::endl;
-        LoadTestScript(gameManager);
+        LoadTestScript(gGameManager);
     }
 
     SynthGuiState synthGuiState;
@@ -491,7 +471,7 @@ int main(int argc, char** argv) {
     }
 
     EntityEditingContext entityEditingContext;
-    assert(entityEditingContext.Init(gameManager));
+    assert(entityEditingContext.Init(gGameManager));
     if (cmdLineInputs._scriptFilename.has_value()) {
         entityEditingContext._saveFilename = *cmdLineInputs._scriptFilename;
     }
@@ -504,8 +484,7 @@ int main(int argc, char** argv) {
     bool paused = false;
     while(!glfwWindowShouldClose(window)) {
 
-        // int windowWidth, windowHeight;
-        glfwGetWindowSize(window, &gameManager._windowWidth, &gameManager._windowHeight);
+        glfwGetWindowSize(window, &gGameManager._windowWidth, &gGameManager._windowHeight);
 
         beatClock.Update();
 
@@ -543,7 +522,7 @@ int main(int argc, char** argv) {
             showHitCounters = !showHitCounters;
         }
 
-        entityEditingContext.Update(dt, cmdLineInputs._editMode, gameManager);
+        entityEditingContext.Update(dt, cmdLineInputs._editMode, gGameManager);
 
         if (cmdLineInputs._editMode) {
             entityManager.EditModeUpdate(dt);
@@ -565,7 +544,7 @@ int main(int argc, char** argv) {
             DrawSynthGuiAndUpdatePatch(synthGuiState, audioContext);
         }
         if (showEntitiesWindow) {
-            entityEditingContext.DrawEntitiesWindow(entityManager, gameManager);
+            entityEditingContext.DrawEntitiesWindow(entityManager, gGameManager);
         }
         if (showHitCounters) {
             ShowHitCounterWindow(entityManager);
@@ -580,7 +559,7 @@ int main(int argc, char** argv) {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         float timeInSecs = (float) glfwGetTime();
-        sceneManager.Draw(gameManager._windowWidth, gameManager._windowHeight, timeInSecs);
+        sceneManager.Draw(gGameManager._windowWidth, gGameManager._windowHeight, timeInSecs);
 
         ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
@@ -613,9 +592,7 @@ int main(int argc, char** argv) {
         return 1;
     }
 
-    for (audio::PcmSound& sound : pcmSounds) {
-        drwav_free(sound._buffer, /*???*/NULL);
-    }
+    soundBank.Destroy();
 
     return 0;
 }

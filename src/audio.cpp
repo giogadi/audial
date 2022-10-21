@@ -6,6 +6,7 @@
 
 #include "audio_util.h"
 #include "synth.h"
+#include "sound_bank.h"
 
 using std::chrono::high_resolution_clock;
 
@@ -23,7 +24,7 @@ void OnPortAudioError(PaError const& err) {
 } // namespace
 
 void InitStateData(
-    StateData& state, std::vector<synth::Patch> const& synthPatches, std::vector<PcmSound> const& pcmSounds,
+    StateData& state, std::vector<synth::Patch> const& synthPatches, SoundBank const& soundBank,
     EventQueue* eventQueue, int sampleRate) {
 
     bool useInputPatches = true;
@@ -40,13 +41,7 @@ void InitStateData(
         }
     }
 
-    for (int i = 0; i < pcmSounds.size(); ++i) {
-        if (i >= state.pcmSounds.size()) {
-            std::cout << "Trying to load too many sounds. Ignoring some sounds." << std::endl;
-            break;
-        }
-        state.pcmSounds[i] = pcmSounds[i];
-    }
+    state.soundBank = &soundBank;
 
     state.events = eventQueue;
 
@@ -58,19 +53,17 @@ void InitStateData(
  */
 static void StreamFinished( void* userData )
 {
-//    paTestData *data = (paTestData *) userData;
-//    printf( "Stream Completed: %s\n", data->message );
     printf("Stream completed\n");
 }
 
 PaError Init(
-    Context& context, std::vector<synth::Patch> const& synthPatches, std::vector<PcmSound> const& pcmSounds) {
+    Context& context, std::vector<synth::Patch> const& synthPatches, SoundBank const& soundBank) {
 
     PaError err;
 
     printf("PortAudio Test: output sine wave. SR = %d, BufSize = %d\n", SAMPLE_RATE, FRAMES_PER_BUFFER);
 
-    InitStateData(context._state, synthPatches, pcmSounds, &context._eventQueue, SAMPLE_RATE);
+    InitStateData(context._state, synthPatches, soundBank, &context._eventQueue, SAMPLE_RATE);
 
     err = Pa_Initialize();
     if( err != paNoError ) {
@@ -252,13 +245,13 @@ int PortAudioCallback(
             }
             switch (e.type) {
                 case EventType::PlayPcm: {
-                    if (e.midiNote >= state->pcmSounds.size()) {
-                        std::cout << "NO PCM SOUND FOR NOTE " << e.midiNote << std::endl;
+                    if (e.pcmSoundIx >= state->soundBank->_sounds.size()) {
+                        std::cout << "NO PCM SOUND FOR NOTE " << e.pcmSoundIx << std::endl;
                         break;
                     }
-                    PcmSound const& sound = state->pcmSounds[e.midiNote];
+                    PcmSound const& sound = state->soundBank->_sounds[e.pcmSoundIx];
                     if (sound._buffer == nullptr) {
-                        std::cout << "PCM SOUND AT NOTE " << e.midiNote << " IS NULL" << std::endl;
+                        std::cout << "PCM SOUND AT NOTE " << e.pcmSoundIx << " IS NULL" << std::endl;
                         break;
                     }
                     // Find free voice. Also check that there isn't another voice playing the exact same sample at the same time.
@@ -269,7 +262,7 @@ int PortAudioCallback(
                         if (pcmVoice._soundBufferIx < 0) {
                             voiceIx = i;
                         } else {
-                            if (pcmVoice._soundIx == e.midiNote && pcmVoice._soundBufferIx <= 0) {
+                            if (pcmVoice._soundIx == e.pcmSoundIx && pcmVoice._soundBufferIx <= 0) {
                                 voiceIx = -1;
                                 foundCopy = true;
                                 break;
@@ -283,9 +276,9 @@ int PortAudioCallback(
                         std::cout << "NO MORE PCM VOICES" << std::endl;
                         break;
                     } else {
-                        state->pcmVoices[voiceIx]._soundIx = e.midiNote;
+                        state->pcmVoices[voiceIx]._soundIx = e.pcmSoundIx;
                         state->pcmVoices[voiceIx]._soundBufferIx = 0;
-                        state->pcmVoices[voiceIx]._gain = e.velocity;
+                        state->pcmVoices[voiceIx]._gain = e.pcmVelocity;
                     }
 
                     break;
@@ -304,7 +297,7 @@ int PortAudioCallback(
                 assert(voice._soundBufferIx < 0);
                 continue;
             }
-            PcmSound const& sound = state->pcmSounds[voice._soundIx];
+            PcmSound const& sound = state->soundBank->_sounds[voice._soundIx];
             if (sound._buffer == nullptr) {
                 std::cout << "VOICE TRYING TO PLAY NULL BUFFER" << std::endl;
                 continue;

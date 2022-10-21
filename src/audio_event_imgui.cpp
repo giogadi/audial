@@ -4,10 +4,11 @@
 
 #include "audio_util.h"
 #include "beat_clock.h"
+#include "sound_bank.h"
 
 namespace audio {
 
-void EventDrawImGuiNoTime(Event& event) {
+void EventDrawImGuiNoTime(Event& event, SoundBank const& soundBank) {
     int selectedEventTypeIx = static_cast<int>(event.type);
     bool changed = ImGui::Combo(
         "EventType##", &selectedEventTypeIx, gEventTypeStrings, static_cast<int>(EventType::Count));
@@ -32,8 +33,9 @@ void EventDrawImGuiNoTime(Event& event) {
             break;
         }
         case audio::EventType::PlayPcm: {
-            ImGui::InputScalar("Sound##", ImGuiDataType_S32, &event.midiNote, /*step=*/nullptr, /*???*/nullptr, "%d");
-            ImGui::InputScalar("Vel##", ImGuiDataType_Float, &event.velocity);
+            ImGui::Combo("Sound##", &event.pcmSoundIx, soundBank._soundNames.data(), soundBank._soundNames.size());
+            ImGui::InputScalar("Vel##", ImGuiDataType_Float, &event.pcmVelocity);
+            ImGui::Checkbox("Loop##", &event.loop);
             break;
         }
         case audio::EventType::None:

@@ -22,10 +22,15 @@ struct Event {
     int channel;
     long timeInTicks;
     union {
-        // If type is pcm, midiNote is the index of the sound to play.
         struct {
             int midiNote;
             float velocity;
+        };
+        // valid under pcm type
+        struct {
+            int pcmSoundIx;
+            float pcmVelocity;
+            bool loop;
         };
         struct {
             // valid under SynthParam type
@@ -48,5 +53,10 @@ struct FrameEvent {
 };
 
 typedef std::array<FrameEvent, 256> EventsThisFrame;
+
+struct PcmSound {
+    float* _buffer = nullptr;
+    uint64_t _bufferLength = 0;
+};
 
 }  // namespace audio

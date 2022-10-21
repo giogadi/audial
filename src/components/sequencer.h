@@ -18,6 +18,7 @@ public:
     virtual bool ConnectComponents(EntityId id, Entity& e, GameManager& g) override {
         _audio = g._audioContext;
         _beatClock = g._beatClock;
+        _gameManager = &g;
         return true;
     }
 
@@ -115,7 +116,7 @@ public:
                     --i;
                 } else {
                     ImGui::InputScalar("Beat time##", ImGuiDataType_Double, &_events[i]._beatTime, /*step=*/nullptr, /*???*/nullptr, "%f");
-                    audio::EventDrawImGuiNoTime(_events[i]._e);
+                    audio::EventDrawImGuiNoTime(_events[i]._e, *_gameManager->_soundBank);
                 }
             }
             ImGui::PopID();
@@ -155,4 +156,5 @@ public:
     bool _editUpdateEnabled = false;
     int _currentIx = -1;
     double _currentLoopStartBeatTime = -1.0;
+    GameManager* _gameManager = nullptr;
 };

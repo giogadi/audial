@@ -1292,7 +1292,7 @@
         </components>
     </entity>
     <entity>
-        <entity_active>true</entity_active>
+        <entity_active>false</entity_active>
         <name>piano</name>
         <components>
             <component>
@@ -1319,7 +1319,7 @@
             </component>
             <component>
                 <component_type>PianoPlanet</component_type>
-                <pixel_range>300.0</pixel_range>
+                <pixel_range>300</pixel_range>
                 <notes>
                     <note>60</note>
                     <note>63</note>

@@ -1,11 +1,11 @@
 #pragma once
 
-class BeatClock;
+class SoundBank;
 
 namespace audio {
 
 struct Event;
 
-void EventDrawImGuiNoTime(Event& event);
+void EventDrawImGuiNoTime(Event& event, SoundBank const& soundBank);
 
 }

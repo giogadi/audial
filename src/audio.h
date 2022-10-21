@@ -8,7 +8,8 @@
 #include "audio_util.h"
 #include "synth.h"
 
-#define NUM_SECONDS   (5)
+class SoundBank;
+
 #define SAMPLE_RATE   (44100)
 #define FRAMES_PER_BUFFER  (64)
 #define NUM_OUTPUT_CHANNELS (2)
@@ -19,11 +20,6 @@ int constexpr kNumSynths = 3;
 int constexpr kNumPcmSounds = 3;
 int constexpr kNumPcmVoices = 8;
 
-struct PcmSound {
-    float* _buffer = nullptr;
-    uint64_t _bufferLength = 0;
-};
-
 struct PcmVoice {
     int _soundIx = -1;
     int _soundBufferIx = -1;
@@ -33,7 +29,7 @@ struct PcmVoice {
 struct StateData {
     std::array<synth::StateData,kNumSynths> synths;
 
-    std::array<PcmSound,kNumPcmSounds> pcmSounds;
+    SoundBank const* soundBank = nullptr;
     std::array<PcmVoice,kNumPcmVoices> pcmVoices;
 
     EventQueue* events = nullptr;
@@ -43,7 +39,8 @@ struct StateData {
 };
 
 void InitStateData(
-    StateData& state, std::vector<synth::Patch> const& synthPatches, std::vector<PcmSound> const& pcmSounds,
+    StateData& state, std::vector<synth::Patch> const& synthPatches,
+    SoundBank const& soundBank,
     EventQueue* eventQueue, int sampleRate);
 
 int PortAudioCallback(
@@ -72,7 +69,7 @@ struct Context {
 };
 
 PaError Init(
-    Context& context, std::vector<synth::Patch> const& synthPatches, std::vector<PcmSound> const& pcmSounds);
+    Context& context, std::vector<synth::Patch> const& synthPatches, SoundBank const& soundBank);
 
 PaError ShutDown(Context& stream);
 

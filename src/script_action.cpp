@@ -11,6 +11,8 @@
 #include "imgui_util.h"
 #include "components/area_recorder.h"
 
+extern GameManager gGameManager;
+
 std::unique_ptr<ScriptAction> MakeScriptActionOfType(ScriptActionType actionType) {
     switch (actionType) {
         case ScriptActionType::DestroyAllPlanets: {
@@ -163,7 +165,7 @@ void ScriptActionAudioEvent::ExecuteImpl(GameManager& g) const {
 void ScriptActionAudioEvent::DrawImGui() {
     ImGui::InputScalar("Denom##", ImGuiDataType_Double, &_denom);
     ImGui::InputScalar("Beat time##", ImGuiDataType_Double, &_event._beatTime);
-    audio::EventDrawImGuiNoTime(_event._e);
+    audio::EventDrawImGuiNoTime(_event._e, *gGameManager._soundBank);
 }
 
 void ScriptActionAudioEvent::Save(serial::Ptree pt) const {

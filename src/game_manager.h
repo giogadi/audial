@@ -10,6 +10,7 @@ namespace audio {
 class EntityManager;
 class CollisionManager;
 class BeatClock;
+class SoundBank;
 
 struct GameManager {
     renderer::Scene* _scene = nullptr;
@@ -18,6 +19,8 @@ struct GameManager {
     EntityManager* _entityManager = nullptr;
     CollisionManager* _collisionManager = nullptr;
     BeatClock* _beatClock = nullptr;
+    SoundBank* _soundBank = nullptr;
+
     bool _editMode = false;
 
     int _windowWidth = -1;
