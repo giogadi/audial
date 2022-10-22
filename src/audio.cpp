@@ -279,8 +279,20 @@ int PortAudioCallback(
                         state->pcmVoices[voiceIx]._soundIx = e.pcmSoundIx;
                         state->pcmVoices[voiceIx]._soundBufferIx = 0;
                         state->pcmVoices[voiceIx]._gain = e.pcmVelocity;
+                        state->pcmVoices[voiceIx]._loop = e.loop;
                     }
 
+                    break;
+                }
+                case EventType::StopPcm: {
+                    // Stop all voices currently playing the given sound.
+                    for (int i = 0, n = state->pcmVoices.size(); i < n; ++i) {
+                        PcmVoice& voice = state->pcmVoices[i];
+                        if (voice._soundIx == e.pcmSoundIx) {
+                            voice._soundBufferIx = -1;
+                            voice._soundIx = -1;
+                        }
+                    }
                     break;
                 }
                 default: {
@@ -307,8 +319,12 @@ int PortAudioCallback(
             v += sound._buffer[voice._soundBufferIx] * voice._gain;
             ++voice._soundBufferIx;
             if (voice._soundBufferIx >= sound._bufferLength) {
-                voice._soundBufferIx = -1;
-                voice._soundIx = -1;
+                if (voice._loop) {
+                    voice._soundBufferIx = 0;
+                } else {
+                    voice._soundBufferIx = -1;
+                    voice._soundIx = -1;
+                }                
             }
         }
 

@@ -18,6 +18,8 @@ enum class EventType : int {
     
     PlayPcm,
     
+    StopPcm,
+    
     Count
 };
 extern char const* gEventTypeStrings[];

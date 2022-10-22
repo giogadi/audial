@@ -23,6 +23,7 @@ struct PcmVoice {
     int _soundIx = -1;
     int _soundBufferIx = -1;
     float _gain = 1.f;
+    bool _loop = false;
 };
 
 struct StateData {

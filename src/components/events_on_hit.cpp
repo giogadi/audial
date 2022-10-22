@@ -32,9 +32,9 @@ void EventsOnHitComponent::OnHit(EntityId other) const {
 
 bool EventsOnHitComponent::DrawImGui() {
     ImGui::PushID(static_cast<int>(Type()));
-    DrawScriptActionListImGui(_actions);
+    bool needReconnect = DrawScriptActionListImGui(_actions);
     ImGui::PopID();
-    return false;  // no reconnect
+    return needReconnect;
 }
 
 void EventsOnHitComponent::OnEditPick() {

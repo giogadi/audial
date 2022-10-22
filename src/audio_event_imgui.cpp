@@ -38,6 +38,10 @@ void EventDrawImGuiNoTime(Event& event, SoundBank const& soundBank) {
             ImGui::Checkbox("Loop##", &event.loop);
             break;
         }
+        case audio::EventType::StopPcm: {
+            ImGui::Combo("Sound##", &event.pcmSoundIx, soundBank._soundNames.data(), soundBank._soundNames.size());
+            break;
+        }
         case audio::EventType::None:
         case audio::EventType::SynthParam:        
         case audio::EventType::Count:

@@ -38,9 +38,12 @@ std::unique_ptr<ScriptAction> MakeScriptActionOfType(ScriptActionType actionType
     }
 }
 
-void DrawScriptActionListImGui(std::vector<std::unique_ptr<ScriptAction>>& actions) {
+bool DrawScriptActionListImGui(std::vector<std::unique_ptr<ScriptAction>>& actions) {
+    bool shouldReInit = false;
+
     if (ImGui::Button("Add Action##")) {
         actions.emplace_back(MakeScriptActionOfType(ScriptActionType::DestroyAllPlanets));
+        shouldReInit = true;
     }
 
     char headerName[128];
@@ -62,11 +65,15 @@ void DrawScriptActionListImGui(std::vector<std::unique_ptr<ScriptAction>>& actio
                 // When type changes, we have to rebuild the action.
                 ScriptActionType newType = static_cast<ScriptActionType>(selectedActionTypeIx);
                 actions[i] = MakeScriptActionOfType(newType);
+                shouldReInit = true;
             }
-            actions[i]->DrawImGui();
+            bool thisActionNeedsReInit = actions[i]->DrawImGui();
+            shouldReInit = shouldReInit || thisActionNeedsReInit;
         }
         ImGui::PopID();
     }
+
+    return shouldReInit;
 }
 
 void ScriptAction::SaveActions(serial::Ptree pt, std::vector<std::unique_ptr<ScriptAction>> const& actions) {
@@ -109,12 +116,13 @@ void ScriptActionActivateEntity::ExecuteImpl(GameManager& g) const {
     g._entityManager->ActivateEntity(_entityId, g);
 }
 
-void ScriptActionActivateEntity::DrawImGui() {
+bool ScriptActionActivateEntity::DrawImGui() {
     char name[128];
     strcpy(name, _entityName.c_str());
     if (ImGui::InputText("Name##", name, 128)) {
         _entityName = name;
     }
+    return false;
 }
 
 void ScriptActionActivateEntity::Save(serial::Ptree pt) const {
@@ -162,10 +170,11 @@ void ScriptActionAudioEvent::ExecuteImpl(GameManager& g) const {
     }
 }
 
-void ScriptActionAudioEvent::DrawImGui() {
+bool ScriptActionAudioEvent::DrawImGui() {
     ImGui::InputScalar("Denom##", ImGuiDataType_Double, &_denom);
     ImGui::InputScalar("Beat time##", ImGuiDataType_Double, &_event._beatTime);
     audio::EventDrawImGuiNoTime(_event._e, *gGameManager._soundBank);
+    return false;
 }
 
 void ScriptActionAudioEvent::Save(serial::Ptree pt) const {
@@ -207,10 +216,12 @@ void ScriptActionStartWaypointFollow::Load(serial::Ptree pt) {
     _entityName = pt.GetString("entity_name");
 }
 
-void ScriptActionStartWaypointFollow::DrawImGui() {
+bool ScriptActionStartWaypointFollow::DrawImGui() {
     char name[128];
     strcpy(name, _entityName.c_str());
     if (ImGui::InputText("Name##", name, 128)) {
         _entityName = name;
+        return true;
     }
+    return false;
 }

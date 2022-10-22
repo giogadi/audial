@@ -49,6 +49,5 @@ void OrbitableComponent::Load(serial::Ptree pt) {
 
 bool OrbitableComponent::DrawImGui() {
     imgui_util::InputText128("Recorder name##", &_recorderName);
-    DrawScriptActionListImGui(_onLeaveActions);
-    return false;
+    return DrawScriptActionListImGui(_onLeaveActions);
 }

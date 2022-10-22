@@ -24,7 +24,8 @@ public:
         ExecuteImpl(g);
     }
     
-    virtual void DrawImGui() {}
+    // Return true if we should re-init this script action.
+    virtual bool DrawImGui() { return false; }
 
     virtual void Save(serial::Ptree pt) const {}
     virtual void Load(serial::Ptree pt) {}
@@ -50,7 +51,7 @@ public:
     virtual void InitImpl(EntityId entityId, GameManager& g) override;
     virtual void ExecuteImpl(GameManager& g) const override;
 
-    virtual void DrawImGui() override;
+    virtual bool DrawImGui() override;
 
     void Save(serial::Ptree pt) const override;
     void Load(serial::Ptree pt) override;
@@ -68,7 +69,7 @@ class ScriptActionAudioEvent : public ScriptAction {
     virtual void InitImpl(EntityId entityId, GameManager& g) override;
     virtual void ExecuteImpl(GameManager& g) const override;
 
-    virtual void DrawImGui() override;
+    virtual bool DrawImGui() override;
 
     void Save(serial::Ptree pt) const override;
     void Load(serial::Ptree pt) override;
@@ -88,7 +89,7 @@ class ScriptActionStartWaypointFollow : public ScriptAction {
     virtual void InitImpl(EntityId entityId, GameManager& g) override;
     virtual void ExecuteImpl(GameManager& g) const override;
 
-    virtual void DrawImGui() override;
+    virtual bool DrawImGui() override;
 
     void Save(serial::Ptree pt) const override;
     void Load(serial::Ptree pt) override;
@@ -101,4 +102,6 @@ class ScriptActionStartWaypointFollow : public ScriptAction {
 };
 
 std::unique_ptr<ScriptAction> MakeScriptActionOfType(ScriptActionType actionType);
-void DrawScriptActionListImGui(std::vector<std::unique_ptr<ScriptAction>>& actions);
+
+// Return true if we should reinitialize the script actions.
+bool DrawScriptActionListImGui(std::vector<std::unique_ptr<ScriptAction>>& actions);

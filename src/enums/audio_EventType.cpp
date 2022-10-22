@@ -21,7 +21,9 @@ std::unordered_map<std::string, EventType> const gStringToEventType = {
     
     { "SynthParam", EventType::SynthParam },
     
-    { "PlayPcm", EventType::PlayPcm }
+    { "PlayPcm", EventType::PlayPcm },
+    
+    { "StopPcm", EventType::StopPcm }
     
 };
 
@@ -39,7 +41,9 @@ char const* gEventTypeStrings[] = {
     
     "SynthParam",
     
-    "PlayPcm"
+    "PlayPcm",
+    
+    "StopPcm"
     
 };
 

@@ -15,6 +15,9 @@ void audio::Event::Save(serial::Ptree pt) const {
             pt.PutFloat("velocity", velocity);
             pt.PutBool("loop", loop);
             break;
+        case EventType::StopPcm:
+            pt.PutInt("sound_ix", pcmSoundIx);
+            break;
         case EventType::NoteOn:
             pt.PutInt("midi_note", midiNote);
             pt.PutInt("velocity", velocity);
@@ -48,6 +51,9 @@ void audio::Event::Load(serial::Ptree pt) {
             pcmVelocity = pt.GetFloat("velocity");
             loop = false;
             pt.TryGetBool("loop", &loop);
+            break;
+        case EventType::StopPcm:
+            pcmSoundIx = pt.GetInt("sound_ix");
             break;
         case EventType::NoteOn:
             midiNote = pt.GetInt("midi_note");

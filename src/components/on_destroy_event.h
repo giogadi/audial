@@ -26,8 +26,7 @@ public:
     virtual void EditDestroy() override {}
 
     virtual bool DrawImGui() override {
-        DrawScriptActionListImGui(_actions);
-        return false;  // no reconnect
+        return DrawScriptActionListImGui(_actions);
     }
 
     virtual void Save(serial::Ptree pt) const override {
