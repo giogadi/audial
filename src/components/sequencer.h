@@ -55,6 +55,10 @@ public:
             return;
         }
 
+        if (_done) {
+            return;
+        }
+
         // Queue up events up to 1 beat before they should be played.
         double currentBeatTime = _beatClock->GetBeatTime();
         double maxBeatTime = currentBeatTime + 1.0;
@@ -84,11 +88,14 @@ public:
             }
             if (_currentIx < _events.size()) {
                 break;
-            } else {
+            } else if (_loop) {
                 _currentIx = -1;
                 double lastEventTime = _events.back()._beatTime;
                 assert(lastEventTime > 0.0);  // avoids infinite loop
                 _currentLoopStartBeatTime += lastEventTime;
+            } else {
+                _done = true;
+                break;
             }
         }
     }
@@ -101,6 +108,8 @@ public:
 
     bool DrawImGui() override {
         ImGui::Checkbox("Update in edit mode##", &_editUpdateEnabled);
+
+        ImGui::Checkbox("Loop##", &_loop);
 
         if (ImGui::Button("Add Event##")) {
             _events.emplace_back();
@@ -129,6 +138,7 @@ public:
     }
 
     void Save(serial::Ptree pt) const override {
+        pt.PutBool("loop", _loop);
         serial::Ptree eventsPt = pt.AddChild("beat_events");
         for (BeatTimeEvent const& b_e : _events) {
             serial::SaveInNewChildOf(eventsPt, "beat_event", b_e);
@@ -136,6 +146,8 @@ public:
     }
 
     void Load(serial::Ptree pt) override {
+        _loop = true;
+        pt.TryGetBool("loop", &_loop);
         serial::Ptree eventsPt = pt.GetChild("beat_events");
         int numChildren = 0;
         serial::NameTreePair* children = eventsPt.GetChildren(&numChildren);
@@ -150,6 +162,7 @@ public:
     // Serialized
     std::vector<BeatTimeEvent> _events;
     bool _muted = false;
+    bool _loop = true;
 
     audio::Context* _audio = nullptr;
     BeatClock const* _beatClock = nullptr;
@@ -157,4 +170,5 @@ public:
     int _currentIx = -1;
     double _currentLoopStartBeatTime = -1.0;
     GameManager* _gameManager = nullptr;
+    bool _done = false;
 };

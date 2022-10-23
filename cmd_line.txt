@@ -5,4 +5,5 @@
 // -s data/moving_planet_test.xml -y data/synth_patches_breeze_rhythmic.xml
 // -s data/moving_bass.xml -y data/synth_patches_breeze_rhythmic.xml
 // -s data/recorder_balloon_test.xml -y data/synth_patches_breeze_rhythmic.xml
--s data/song1.xml -y data/synth_patches_squidge.xml
+// -s data/song1.xml -y data/synth_patches_squidge.xml
+-s data/liquid_song.xml -y data/synth_patches_squidge.xml
