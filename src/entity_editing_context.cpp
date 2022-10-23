@@ -14,6 +14,7 @@
 #include "constants.h"
 #include "components/transform.h"
 #include "components/camera.h"
+#include "beat_clock.h"
 
 static float gScrollFactorForDebugCameraMove = 1.f;
 
@@ -241,8 +242,15 @@ void EntityEditingContext::DrawEntitiesWindow(EntityManager& entities, GameManag
         _saveFilename = filenameBuffer;
 
         if (ImGui::Button("Save")) {
-            if (entities.Save(_saveFilename.c_str())) {
-                std::cout << "Saved entities to \"" << _saveFilename << "\"." << std::endl;
+            serial::Ptree pt = serial::Ptree::MakeNew();
+            serial::Ptree scriptPt = pt.AddChild("script");
+            scriptPt.PutDouble("bpm", g._beatClock->GetBpm());
+            serial::Ptree entitiesPt = scriptPt.AddChild("entities");
+            entities.Save(entitiesPt);
+            if (pt.WriteToFile(_saveFilename.c_str())) {
+                printf("Saved script to \"%s\".\n", _saveFilename.c_str());
+            } else {
+                printf("FAILED to save script to \"%s\".\n", _saveFilename.c_str());
             }
         }
     }

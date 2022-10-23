@@ -60,9 +60,8 @@ public:
     bool IsActive(EntityId id) const;
 
     void Save(serial::Ptree pt) const;
-    bool Save(char const* filename) const;
     void Load(serial::Ptree pt);
-    bool LoadAndConnect(char const* filename, bool dieOnConnectFailure, GameManager& g);
+    bool LoadAndConnect(serial::Ptree pt, bool dieOnConnectFailure, GameManager& g);
 
 private:
     // DON'T STORE THIS POINTER! Maybe should be edit-only or something

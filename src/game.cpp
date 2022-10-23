@@ -430,9 +430,6 @@ int main(int argc, char** argv) {
     // TODO: should I be setting this? imgui_impl_opengl3.h says it's ok to be null.
     ImGui_ImplOpenGL3_Init(/*glsl_version=*/NULL);
 
-    BeatClock beatClock(/*bpm=*/120.0, SAMPLE_RATE, audioContext._stream);
-    beatClock.Update();
-
     InputManager inputManager(window);
 
     renderer::Scene sceneManager;
@@ -445,19 +442,35 @@ int main(int argc, char** argv) {
 
     CollisionManager collisionManager;
 
+    BeatClock beatClock;
+
     gGameManager = GameManager {
         &sceneManager, &inputManager, &audioContext, &entityManager, &collisionManager, &beatClock, &soundBank,
         cmdLineInputs._editMode };
 
+    // SCRIPT LOADING
     if (cmdLineInputs._scriptFilename.has_value()) {
         std::cout << "loading " << cmdLineInputs._scriptFilename.value() << std::endl;
         bool dieOnConnectFail = !cmdLineInputs._editMode;
-        if (!entityManager.LoadAndConnect(cmdLineInputs._scriptFilename->c_str(), dieOnConnectFail, gGameManager)) {
-            std::cout << "Load failed. Exiting" << std::endl;
+        serial::Ptree pt = serial::Ptree::MakeNew();
+        if (!pt.LoadFromFile(cmdLineInputs._scriptFilename->c_str())) {
+            printf("Script ptree load failed. Exiting.\n");
+            return 1;
+        }
+
+        double bpm = pt.GetDouble("script.bpm");
+        beatClock.Init(bpm, SAMPLE_RATE, audioContext._stream);
+        beatClock.Update();
+
+        serial::Ptree entitiesPt = pt.GetChild("script.entities");
+        if (!entityManager.LoadAndConnect(entitiesPt, dieOnConnectFail, gGameManager)) {
+            printf("Entities load failed. Exiting.\n");
             return 1;
         }
     } else {
         std::cout << "loading hardcoded script" << std::endl;
+        beatClock.Init(/*bpm=*/120.0, /*sampleRate=*/SAMPLE_RATE, audioContext._stream);
+        beatClock.Update();
         LoadTestScript(gGameManager);
     }
 

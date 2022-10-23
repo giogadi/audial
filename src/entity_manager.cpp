@@ -184,9 +184,8 @@ void EntityManager::Save(serial::Ptree pt) const {
 }
 
 void EntityManager::Load(serial::Ptree pt) {
-    serial::Ptree entitiesPt = pt.GetChild("entities");
     int numChildren = 0;
-    serial::NameTreePair* children = entitiesPt.GetChildren(&numChildren);
+    serial::NameTreePair* children = pt.GetChildren(&numChildren);
     for (int i = 0; i < numChildren; ++i) {
         serial::Ptree& entityPt = children[i]._pt;
         bool active = entityPt.GetBool("entity_active");
@@ -194,26 +193,13 @@ void EntityManager::Load(serial::Ptree pt) {
         Entity* entity = this->GetEntity(id);
         entity->Load(entityPt);
     }
-    // free(children);
     delete[] children;
 }
 
-bool EntityManager::LoadAndConnect(char const* filename, bool dieOnConnectFailure, GameManager& g) {
-    serial::Ptree pt = serial::Ptree::MakeNew();
-    if (pt.LoadFromFile(filename)) {
-        this->Load(pt);
-        this->ConnectComponents(g, dieOnConnectFailure);
-        return true;
-    }
-    return false;
-}
-
-bool EntityManager::Save(char const* filename) const {
-    serial::Ptree pt = serial::Ptree::MakeNew();
-    serial::Ptree entitiesPt = pt.AddChild("entities");;
-    this->Save(entitiesPt);
-
-    return pt.WriteToFile(filename);
+bool EntityManager::LoadAndConnect(serial::Ptree pt, bool dieOnConnectFailure, GameManager& g) {
+    this->Load(pt);
+    this->ConnectComponents(g, dieOnConnectFailure);
+    return true;
 }
 
 EntityAndStatus* EntityManager::GetEntityAndStatus(EntityId id) {

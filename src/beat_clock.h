@@ -2,14 +2,13 @@
 
 #include <cmath>
 
-// typedef PaStream;
-
 class BeatClock {
 public:
-    BeatClock(double bpm, double sampleRate, void* stream)
-        : _bpm(bpm)
-        , _paStream(stream)
-        , _sampleRate(sampleRate) {}
+    void Init(double bpm, double sampleRate, void* stream) {
+        _bpm = bpm;
+        _paStream = stream;
+        _sampleRate = sampleRate;
+    }
 
     void Update();
 
@@ -47,6 +46,9 @@ public:
     }
     double GetAudioTime() const {
         return _currentAudioTime;
+    }
+    double const GetBpm() const {
+        return _bpm;
     }
 
 private:
