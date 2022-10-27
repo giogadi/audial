@@ -72,3 +72,8 @@ add_executable(ecs_test EXCLUDE_FROM_ALL
     src/ecs_test.cpp)
 target_include_directories(version_id_list_test PUBLIC
     ./src)
+
+add_executable(new_entity_test EXCLUDE_FROM_ALL
+    src/new_entity_test.cpp src/new_entity.cpp)
+target_include_directories(new_entity_test PUBLIC
+    ./src)
