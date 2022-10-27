@@ -1,10 +1,11 @@
 #pragma once
 
 namespace imgui_util {
-    inline bool InputText128(char const* label, std::string* value) {
-        char buf[128];
-        strncpy(buf, value->c_str(), 128);        
-        bool changed = ImGui::InputText(label, buf, 128);
+    template<int N>
+    inline bool InputText(char const* label, std::string* value) {
+        char buf[N];
+        strncpy(buf, value->c_str(), N);
+        bool changed = ImGui::InputText(label, buf, N);
         if (changed) {
             *value = buf;
         }

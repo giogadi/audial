@@ -59,16 +59,32 @@ void InputManager::Update(bool enabled) {
 
 int InputManager::MapToGlfw(Key k) {
     switch (k) {
-        case Key::W: return GLFW_KEY_W;
-        case Key::S: return GLFW_KEY_S;
         case Key::A: return GLFW_KEY_A;
+        case Key::B: return GLFW_KEY_B;
+        case Key::C: return GLFW_KEY_C;
         case Key::D: return GLFW_KEY_D;
         case Key::E: return GLFW_KEY_E;
-        case Key::Q: return GLFW_KEY_Q;
-        case Key::J: return GLFW_KEY_J;
-        case Key::Y: return GLFW_KEY_Y;
+        case Key::F: return GLFW_KEY_F;
+        case Key::G: return GLFW_KEY_G;
         case Key::H: return GLFW_KEY_H;
+        case Key::I: return GLFW_KEY_I;
+        case Key::J: return GLFW_KEY_J;
         case Key::K: return GLFW_KEY_K;
+        case Key::L: return GLFW_KEY_L;
+        case Key::M: return GLFW_KEY_M;
+        case Key::N: return GLFW_KEY_N;
+        case Key::O: return GLFW_KEY_O;
+        case Key::P: return GLFW_KEY_P;
+        case Key::Q: return GLFW_KEY_Q;
+        case Key::R: return GLFW_KEY_R;
+        case Key::S: return GLFW_KEY_S;
+        case Key::T: return GLFW_KEY_T;
+        case Key::U: return GLFW_KEY_U;
+        case Key::V: return GLFW_KEY_V;
+        case Key::W: return GLFW_KEY_W;
+        case Key::X: return GLFW_KEY_X;
+        case Key::Y: return GLFW_KEY_Y;
+        case Key::Z: return GLFW_KEY_Z;
         case Key::Escape: return GLFW_KEY_ESCAPE;
         case Key::Space: return GLFW_KEY_SPACE;
         case Key::Right: return GLFW_KEY_RIGHT;

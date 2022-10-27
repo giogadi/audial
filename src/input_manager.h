@@ -7,7 +7,8 @@ struct GLFWwindow;
 class InputManager {
 public:
     enum class Key : int {
-        W,S,A,D,E,Q,J,Y,H,K,Escape,Space,Right,NumKeys
+        A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z,
+        Escape,Space,Right,NumKeys
     };
     enum class MouseButton : int {
         Left,Right,Middle,Count
