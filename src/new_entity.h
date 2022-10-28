@@ -1,24 +1,31 @@
 #pragma once
 
-#include <vector>
 #include <unordered_map>
+#include <memory>
 
 #include "matrix.h"
 #include "serial.h"
-#include "version_id.h"
 
 struct GameManager;
 
 namespace ne {
 
-enum class EntityType {
-    Base,
-    Light,
+#define M_ENTITY_TYPES \
+    X(Base) \
+    X(Light) \
+    X(Camera)
+
+enum class EntityType: int {
+#   define X(a) a,
+    M_ENTITY_TYPES
+#   undef X
     Count
 };
+
 static inline constexpr int gkNumEntityTypes = (int)EntityType::Count;
 extern char const* const gkEntityTypeNames[];
 EntityType StringToEntityType(char const* s);
+extern std::size_t const gkEntitySizes[];
 
 struct EntityId {
     bool IsValid() { return _id >= 0; }
@@ -26,26 +33,24 @@ struct EntityId {
     EntityType _type;
 };
 
-struct Entity {
+struct BaseEntity {
     // serialized
     Mat4 _transform;
     std::string _name;
 
     EntityId _id;
-
-    virtual void DebugPrint();    
+    
     void Save(serial::Ptree pt) const;
     void Load(serial::Ptree pt);
     void ImGui();
-    virtual ~Entity() {}
+    virtual ~BaseEntity() {}
 
-    // Intended to be called after Load(). Load should not touch anything
+    // Init() is intended to be called after Load(). Load should not touch anything
     // outside this class. Everything else should happen here.
     virtual void Init(GameManager& g) {}
-
     virtual void Update(GameManager& g, float dt) {}
-
     virtual void Destroy(GameManager& g) {}
+    virtual void DebugPrint();
 
 protected:
     // Used by derived classes to save/load child-specific data.
@@ -54,25 +59,12 @@ protected:
     virtual void ImGuiDerived() {}
 };
 
-struct LightEntity : public Entity {
-    // serialized
-    Vec3 _ambient;
-    Vec3 _diffuse;
-
-    VersionId _lightId;
-    virtual void Init(GameManager& g) override;
-    virtual void Update(GameManager& g, float dt) override;
-    virtual void Destroy(GameManager& g) override;
-
-    virtual void DebugPrint() override;
-    virtual void SaveDerived(serial::Ptree pt) const override;
-    virtual void LoadDerived(serial::Ptree pt) override;
-    virtual void ImGuiDerived() override;
-};
-
-extern std::size_t const gkEntitySizes[];
+typedef BaseEntity Entity;
 
 struct EntityManager {
+    EntityManager();
+    ~EntityManager();
+
     void Init();
     Entity* AddEntity(EntityType entityType);    
     Entity* GetEntity(EntityId id);
@@ -106,10 +98,7 @@ struct EntityManager {
         friend EntityManager;
         AllIterator() {}
     };
-    AllIterator GetAllIterator();
-    
-    std::vector<Entity> _baseEntities;
-    std::vector<LightEntity> _lightEntities;
+    AllIterator GetAllIterator();    
 
 private:
     struct MapEntry {
@@ -118,6 +107,9 @@ private:
     };
     std::unordered_map<int, MapEntry> _entityIdMap;
     int _nextId = 0;
+
+    struct Internal;
+    std::unique_ptr<Internal> _p;
 
     // THIS IS UNSAFE! CAN'T ITERATE OVER THIS LIKE YOU THINK
     std::pair<Entity*, int> GetEntitiesOfType(EntityType entityType);

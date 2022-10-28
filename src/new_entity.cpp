@@ -1,62 +1,74 @@
 #include "new_entity.h"
 
 #include <cassert>
+#include <vector>
 
 #include "imgui/imgui.h"
 #include "imgui_util.h"
 #include "game_manager.h"
 #include "renderer.h"
 
+#include "entities/light.h"
+#include "entities/camera.h"
+
 namespace ne {
 
 namespace {
-    std::size_t GetEntitySize(EntityType entityType) {
-        switch (entityType) {
-            case EntityType::Base: return sizeof(Entity);
-            case EntityType::Light: return sizeof(LightEntity);
-            case EntityType::Count: {
-                assert(false);
-                return 0;
-            }
-        }
-        return 0;
-    }
-
     std::unordered_map<std::string, EntityType> const gkStringToEntityType = {
-        {"Base", EntityType::Base},
-        {"Light", EntityType::Light}
+#       define X(name) {#name, EntityType::name},
+        M_ENTITY_TYPES
+#       undef X
     };
 }
 
+std::size_t const gkEntitySizes[] = {
+#   define X(a) sizeof(a##Entity),
+    M_ENTITY_TYPES
+#   undef X
+};
+
 char const* const gkEntityTypeNames[] = {
-    "Base", "LightEntity"
+#   define X(name) #name,
+    M_ENTITY_TYPES
+#   undef X
 };
 
 EntityType StringToEntityType(char const* s) {
     return gkStringToEntityType.at(s);
 }
 
+struct EntityManager::Internal {
+    // Entity lists
+#   define X(NAME) std::vector<NAME##Entity> _entities##NAME;
+    M_ENTITY_TYPES
+#   undef X
+};
+
+EntityManager::EntityManager() {}
+
+EntityManager::~EntityManager() {}
+
+
 void EntityManager::Init() {
-    _baseEntities.reserve(100);
-    _lightEntities.reserve(100);
+    _p = std::make_unique<Internal>();
+    _p->_entitiesBase.reserve(100);
+    _p->_entitiesLight.reserve(100);
 }
 
 Entity* EntityManager::AddEntity(EntityType entityType) {
     Entity* e = nullptr;
     int entityIx = -1;
     switch (entityType) {
-        case EntityType::Base: {
-            _baseEntities.emplace_back();
-            e = &(_baseEntities.back());
-            entityIx = _baseEntities.size() - 1;
-            break;
+#       define X(NAME) \
+        case EntityType::NAME: { \
+            auto& entities = _p->_entities##NAME; \
+            entities.emplace_back(); \
+            e = &(entities.back()); \
+            entityIx = entities.size() - 1; \
+            break; \
         }
-        case EntityType::Light: {
-            _lightEntities.emplace_back();
-            e = &(_lightEntities.back());
-            entityIx = _lightEntities.size() - 1;
-            break;
-        }
+        M_ENTITY_TYPES
+#       undef X
         case EntityType::Count: {
             assert(false);
             return nullptr;
@@ -74,12 +86,13 @@ Entity* EntityManager::AddEntity(EntityType entityType) {
 
 std::pair<Entity*, int> EntityManager::GetEntitiesOfType(EntityType type) {
     switch (type) {
-        case EntityType::Base: {
-            return std::make_pair(_baseEntities.data(), _baseEntities.size());
+#       define X(NAME) \
+        case EntityType::NAME: { \
+            auto& entities = _p->_entities##NAME; \
+            return std::make_pair(entities.data(), entities.size()); \
         }
-        case EntityType::Light: {
-            return std::make_pair(_lightEntities.data(), _lightEntities.size());
-        }
+        M_ENTITY_TYPES
+#       undef X        
         case EntityType::Count: {
             assert(false);
             return std::make_pair(nullptr, 0);
@@ -99,7 +112,7 @@ std::pair<Entity*, int> EntityManager::GetEntityWithIndex(EntityId id) {
     assert(entry._typeIx == (int)id._type);
     auto [pEntityList, numEntities] = GetEntitiesOfType(id._type);
     assert(entry._entityIx < numEntities);
-    Entity* e = (Entity*) (((char*)pEntityList) + (entry._entityIx * GetEntitySize(id._type)));    
+    Entity* e = (Entity*) (((char*)pEntityList) + (entry._entityIx * gkEntitySizes[(int)id._type]));
     if (e->_id._id == id._id) {
         assert(e->_id._type == id._type);
         return std::make_pair(e, entry._entityIx);
@@ -122,24 +135,19 @@ bool EntityManager::RemoveEntity(EntityId idToRemove) {
     //     *e = std::move(entities.back());
     Entity* entryToUpdate = nullptr;
     switch (idToRemove._type) {
-        case EntityType::Base: {
-            Entity* e = (Entity*)toRemove;  
-            if (_baseEntities.size() > 1) {
-                std::swap(*e, _baseEntities.back());
-                entryToUpdate = e;
-            }
-            _baseEntities.pop_back();
-            break;
+#       define X(NAME) \
+        case EntityType::NAME: { \
+            NAME##Entity* e = (NAME##Entity*)toRemove; \
+            auto& entities = _p->_entities##NAME; \
+            if (entities.size() > 1) { \
+                std::swap(*e, entities.back()); \
+                entryToUpdate = e; \
+            } \
+            entities.pop_back(); \
+            break; \
         }
-        case EntityType::Light: {
-            LightEntity* e = (LightEntity*)toRemove;
-            if (_lightEntities.size() > 1) {
-                std::swap(*e, _lightEntities.back());
-                entryToUpdate = e;
-            }
-            _lightEntities.pop_back();
-            break;
-        }
+        M_ENTITY_TYPES
+#       undef X        
         case EntityType::Count: {
             assert(false);
             break;
@@ -159,7 +167,7 @@ bool EntityManager::RemoveEntity(EntityId idToRemove) {
 EntityManager::Iterator EntityManager::GetIterator(EntityType type, int* outNumEntities) {
     Iterator iter;
     auto [entityList, numEntities] = GetEntitiesOfType(type);
-    iter._stride = GetEntitySize(type);
+    iter._stride = gkEntitySizes[(int)type];
     iter._current = entityList;
     char* p = (char*) entityList;
     char* end = p + numEntities * iter._stride;
@@ -244,40 +252,11 @@ void Entity::Load(serial::Ptree pt) {
 void Entity::ImGui() {
     imgui_util::InputText<128>("Entity name##TopLevel", &_name);
     ImGui::Text("Entity type: %s", ne::gkEntityTypeNames[(int)_id._type]);
+    Vec3 p = _transform.GetPos();
+    if (ImGui::InputFloat3("Pos##Entity", p._data, "%.3f", ImGuiInputTextFlags_EnterReturnsTrue)) {
+        _transform.SetTranslation(p);
+    }
     ImGuiDerived();
-}
-
-void LightEntity::DebugPrint() {
-    Entity::DebugPrint();
-    printf("ambient: %f %f %f\n", _ambient._x, _ambient._y, _ambient._z);
-    printf("diffuse: %f %f %f\n", _diffuse._x, _diffuse._y, _diffuse._z);
-}
-void LightEntity::SaveDerived(serial::Ptree pt) const {
-    serial::SaveInNewChildOf(pt, "ambient", _ambient);
-    serial::SaveInNewChildOf(pt, "diffuse", _diffuse);
-}
-void LightEntity::LoadDerived(serial::Ptree pt) {
-    _ambient.Load(pt.GetChild("ambient"));
-    _diffuse.Load(pt.GetChild("diffuse"));
-}
-void LightEntity::ImGuiDerived() {
-    ImGui::InputScalar("Diffuse R", ImGuiDataType_Float, &_diffuse._x);
-    ImGui::InputScalar("Diffuse G", ImGuiDataType_Float, &_diffuse._y);
-    ImGui::InputScalar("Diffuse B", ImGuiDataType_Float, &_diffuse._z);
-
-    ImGui::InputScalar("Ambient R", ImGuiDataType_Float, &_ambient._x);
-    ImGui::InputScalar("Ambient G", ImGuiDataType_Float, &_ambient._y);
-    ImGui::InputScalar("Ambient B", ImGuiDataType_Float, &_ambient._z);
-}
-void LightEntity::Init(GameManager& g) {
-    _lightId = g._scene->AddPointLight().first;
-}
-void LightEntity::Update(GameManager& g, float dt) {
-    renderer::PointLight* light = g._scene->GetPointLight(_lightId);
-    light->Set(_transform.GetPos(), _ambient, _diffuse);
-}
-void LightEntity::Destroy(GameManager& g) {
-    g._scene->RemovePointLight(_lightId);
 }
 
 }  // namespace ne

@@ -441,6 +441,7 @@ int main(int argc, char** argv) {
 
     EntityManager entityManager;
     ne::EntityManager neEntityManager;
+    neEntityManager.Init();
 
     CollisionManager collisionManager;
 

@@ -5,14 +5,39 @@
 #include "new_entity.h"
 #include "input_manager.h"
 #include "beat_clock.h"
+#include "renderer.h"
 
 void Editor::Init(GameManager* g) {
     _g = g;
+    _axesMesh = _g->_scene->GetMesh("axes");
 }
 
 void Editor::Update() {
     if (_g->_inputManager->IsKeyPressedThisFrame(InputManager::Key::I)) {
         _visible = !_visible;
+    }
+    
+    // double mouseX, mouseY;
+    // _g->_inputManager->GetMousePos(mouseX, mouseY);
+    // if (_g->_inputManager->IsKeyPressedThisFrame(InputManager::MouseButton::Left)) {
+    //     _selectedEntityId = PickEntity(
+    //         *g._entityManager, mouseX, mouseY, g._windowWidth, g._windowHeight, g._scene->_camera);
+    //     if (_selectedEntityId.IsValid()) {
+    //         Entity& entity = *g._entityManager->GetEntity(_selectedEntityId);
+    //         // std::cout << "PICKED " << entity._name << std::endl;
+    //         // Call each components' on-pick code.
+    //         entity.OnEditPickComponents();
+    //     }
+    // }
+
+    // UpdateSelectedPositionFromInput(dt, g);
+
+    // Draw axes
+    if (ne::Entity* selectedEntity = _g->_neEntityManager->GetEntity(_selectedEntityId)) {
+        renderer::ColorModelInstance& axesModel = _g->_scene->DrawMesh();
+        axesModel._mesh = _axesMesh;
+        axesModel._topLayer = true;
+        axesModel._transform = selectedEntity->_transform;
     }
 
     if (_visible) {

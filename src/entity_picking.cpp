@@ -115,3 +115,48 @@ EntityId PickEntity(
 
     return closestPickItem;
 }
+
+ne::Entity* PickEntity(
+    ne::EntityManager& entityMgr, double clickX, double clickY, int windowWidth, int windowHeight,
+    renderer::Camera const& camera) {
+    Mat4 const& cameraTransform = camera._transform;
+
+    float aspectRatio = (float) windowWidth / (float) windowHeight;
+
+    // First we find the world-space position of the top-left corner of the near clipping plane.
+    Vec3 nearPlaneCenter = cameraTransform.GetPos() - cameraTransform.GetZAxis() * camera._zNear;
+    float nearPlaneHalfHeight = camera._zNear * tan(0.5f * camera._fovyRad);
+    float nearPlaneHalfWidth = nearPlaneHalfHeight * aspectRatio;
+    Vec3 nearPlaneTopLeft = nearPlaneCenter;
+    nearPlaneTopLeft -= nearPlaneHalfWidth * cameraTransform.GetXAxis();
+    nearPlaneTopLeft += nearPlaneHalfHeight * cameraTransform.GetYAxis();
+
+    // Now map clicked point from [0,windowWidth] -> [0,1]
+    float xFactor = clickX / windowWidth;
+    float yFactor = clickY / windowHeight;
+
+    Vec3 clickedPointOnNearPlane = nearPlaneTopLeft;
+    clickedPointOnNearPlane += (xFactor * 2 * nearPlaneHalfWidth) * cameraTransform.GetXAxis();
+    clickedPointOnNearPlane -= (yFactor * 2 * nearPlaneHalfHeight) * cameraTransform.GetYAxis();
+
+    std::optional<float> closestPickDist;
+    // ne::EntityId closestPickItem;
+    ne::Entity* closestPickItem = nullptr;
+    float pickSphereRad = 1.f;
+    Vec3 rayDir = (clickedPointOnNearPlane - cameraTransform.GetPos()).GetNormalized();
+    // Start ray forward of the camera a bit so we don't just pick the camera
+    Vec3 rayStart = cameraTransform.GetPos() + rayDir * (pickSphereRad + 0.1f);
+    for (auto iter = entityMgr.GetAllIterator(); !iter.Finished(); iter.Next()) {
+        ne::Entity& entity = *iter.GetEntity();
+        Vec3 pos = entity._transform.GetPos();
+        std::optional<float> hitDist = sphereRayCast(rayStart, rayDir, pos, pickSphereRad);
+        if (hitDist.has_value()) {
+            if (!closestPickDist.has_value() || *hitDist < *closestPickDist) {
+                *closestPickDist = *hitDist;
+                closestPickItem = &entity;
+            }
+        }
+    }
+
+    return closestPickItem;
+}
