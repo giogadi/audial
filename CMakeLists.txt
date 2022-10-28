@@ -13,11 +13,12 @@ add_executable(game
     src/serial.cpp
     src/audio_loader.cpp src/game.cpp src/audio_util.cpp src/audio.cpp src/audio_event_imgui.cpp
     src/sound_bank.cpp
+    src/editor.cpp
     src/version_id_list_simple.cpp
     src/entity_picking.cpp src/entity_editing_context.cpp src/script_action.cpp
     src/shader.cpp src/synth.cpp  src/matrix.cpp src/mesh.cpp
     src/beat_clock.cpp src/input_manager.cpp
-    src/component.cpp src/entity.cpp src/entity_manager.cpp
+    src/component.cpp src/entity.cpp src/entity_manager.cpp src/new_entity.cpp
     src/renderer.cpp src/collisions.cpp
     src/components/transform.cpp
     src/components/model_instance.cpp src/components/camera.cpp src/components/light.cpp
@@ -74,6 +75,6 @@ target_include_directories(version_id_list_test PUBLIC
     ./src)
 
 add_executable(new_entity_test EXCLUDE_FROM_ALL
-    src/new_entity_test.cpp src/new_entity.cpp)
+    src/new_entity_test.cpp src/new_entity.cpp src/serial.cpp)
 target_include_directories(new_entity_test PUBLIC
     ./src)

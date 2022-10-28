@@ -2,6 +2,8 @@
 
 #include "new_entity.h"
 
+using namespace ne;
+
 int main() {
     EntityManager mgr;
     EntityId base;
@@ -11,7 +13,7 @@ int main() {
         base = e->_id;
     }
 
-    EntityId light;
+    EntityId light, light2;
     {
         LightEntity* e = (LightEntity*) mgr.AddEntity(EntityType::Light);
         e->_transform.SetTranslation(Vec3(-1.f, -2.f, -3.f));
@@ -23,6 +25,7 @@ int main() {
         e->_transform.SetTranslation(Vec3(0.f, 0.f, 0.f));
         e->_ambient.Set(0.f, 0.f, 0.f);
         e->_diffuse.Set(0.2f, 0.2f, 0.2f);
+        light2 = e->_id;
     }
 
     Entity* pBase = mgr.GetEntity(base);
@@ -61,6 +64,14 @@ int main() {
         Entity* e = iter.GetEntity();
         e->DebugPrint();
     }
+
+    printf("************\n");
+
+    pLight = (LightEntity*)mgr.GetEntity(light2);
+    pLight->DebugPrint();
+
+    assert(mgr.GetEntity(base) == nullptr);
+    assert(mgr.GetEntity(light) == nullptr);
 
     return 0;
 }

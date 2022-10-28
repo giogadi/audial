@@ -33,6 +33,7 @@
 #include "components/hit_counter.h"
 #include "audio_loader.h"
 #include "entity_editing_context.h"
+#include "editor.h"
 #include "sound_bank.h"
 
 #include "test_script.h"
@@ -439,14 +440,18 @@ int main(int argc, char** argv) {
     }
 
     EntityManager entityManager;
+    ne::EntityManager neEntityManager;
 
     CollisionManager collisionManager;
 
     BeatClock beatClock;
 
     gGameManager = GameManager {
-        &sceneManager, &inputManager, &audioContext, &entityManager, &collisionManager, &beatClock, &soundBank,
+        &sceneManager, &inputManager, &audioContext, &entityManager, &neEntityManager, &collisionManager, &beatClock, &soundBank,
         cmdLineInputs._editMode };
+
+    Editor editor;
+    editor.Init(&gGameManager);    
 
     // SCRIPT LOADING
     if (cmdLineInputs._scriptFilename.has_value()) {
@@ -462,11 +467,36 @@ int main(int argc, char** argv) {
         beatClock.Init(bpm, SAMPLE_RATE, audioContext._stream);
         beatClock.Update();
 
-        serial::Ptree entitiesPt = pt.GetChild("script.entities");
-        if (!entityManager.LoadAndConnect(entitiesPt, dieOnConnectFail, gGameManager)) {
-            printf("Entities load failed. Exiting.\n");
-            return 1;
+        {
+            // New entity loading. Manually add them in this order to the editor to keep ordering consistent.
+            // TODO: make this less shit
+            editor._saveFilename = *cmdLineInputs._scriptFilename;
+            serial::Ptree entitiesPt = pt.GetChild("script.new_entities");
+            int numEntities = 0;
+            serial::NameTreePair* children = entitiesPt.GetChildren(&numEntities);
+            for (int i = 0; i < numEntities; ++i) {
+                ne::EntityType entityType = ne::StringToEntityType(children[i]._name);
+                ne::Entity* entity = gGameManager._neEntityManager->AddEntity(entityType);
+                entity->Load(children[i]._pt);
+                editor._entityIds.push_back(entity->_id);
+            }
+            delete[] children;
+
+            // Now go through and initialize everything.
+            for (auto iter = gGameManager._neEntityManager->GetAllIterator(); !iter.Finished(); iter.Next()) {
+                iter.GetEntity()->Init(gGameManager);
+            }
         }
+
+        serial::Ptree entitiesPt = pt.TryGetChild("script.entities");
+        if (entitiesPt.IsValid()) {
+            if (!entityManager.LoadAndConnect(entitiesPt, dieOnConnectFail, gGameManager)) {
+                printf("Entities load failed. Exiting.\n");
+                return 1;
+            }
+        } else {
+            printf("No old-school entities!\n");
+        }    
     } else {
         std::cout << "loading hardcoded script" << std::endl;
         beatClock.Init(/*bpm=*/120.0, /*sampleRate=*/SAMPLE_RATE, audioContext._stream);
@@ -487,7 +517,7 @@ int main(int argc, char** argv) {
     assert(entityEditingContext.Init(gGameManager));
     if (cmdLineInputs._scriptFilename.has_value()) {
         entityEditingContext._saveFilename = *cmdLineInputs._scriptFilename;
-    }
+    }    
 
     bool showSynthWindow = false;
     bool showEntitiesWindow = false;
@@ -535,7 +565,7 @@ int main(int argc, char** argv) {
             showHitCounters = !showHitCounters;
         }
 
-        entityEditingContext.Update(dt, cmdLineInputs._editMode, gGameManager);
+        entityEditingContext.Update(dt, cmdLineInputs._editMode, gGameManager);        
 
         if (cmdLineInputs._editMode) {
             entityManager.EditModeUpdate(dt);
@@ -543,7 +573,11 @@ int main(int argc, char** argv) {
             entityManager.Update(dt);
             // TODO do we wanna run collision manager during edit mode?
             collisionManager.Update(dt);
-        }        
+        }
+
+        for (auto iter = gGameManager._neEntityManager->GetAllIterator(); !iter.Finished(); iter.Next()) {
+            iter.GetEntity()->Update(gGameManager, dt);
+        }
 
         if (inputManager.IsKeyPressed(InputManager::Key::Escape)) {
             glfwSetWindowShouldClose(window, true);
@@ -553,12 +587,14 @@ int main(int argc, char** argv) {
         ImGui_ImplOpenGL3_NewFrame();
         ImGui_ImplGlfw_NewFrame();
         ImGui::NewFrame();
+
+        editor.Update();
         if (showSynthWindow) {
             DrawSynthGuiAndUpdatePatch(synthGuiState, audioContext);
         }
         if (showEntitiesWindow) {
             entityEditingContext.DrawEntitiesWindow(entityManager, gGameManager);
-        }
+        }        
         if (showHitCounters) {
             ShowHitCounterWindow(entityManager);
         }
