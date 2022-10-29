@@ -6,10 +6,14 @@
 struct EnemyEntity : public ne::Entity {
     // serialized
     std::vector<BeatTimeEvent> _events;
+    double _eventStartDenom = 0.25;
 
     // virtual void Init(GameManager& g) override;
     // virtual void Update(GameManager& g, float dt) override;
     // virtual void Destroy(GameManager& g) override;    
+    virtual void OnEditPick(GameManager& g) override;
+
+    void SendEvents(GameManager& g);
 
 protected:
     // Used by derived classes to save/load child-specific data.

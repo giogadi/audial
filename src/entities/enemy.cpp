@@ -7,6 +7,8 @@
 #include "game_manager.h"
 #include "sound_bank.h"
 #include "serial.h"
+#include "beat_time_event.h"
+#include "audio.h"
 
 namespace {
 
@@ -217,6 +219,7 @@ void EnemyEntity::LoadDerived(serial::Ptree pt) {
 }
 
 ne::Entity::ImGuiResult EnemyEntity::ImGuiDerived(GameManager& g) {
+    ImGui::InputDouble("Event start denom", &_eventStartDenom);
     ImGui::InputTextMultiline("Audio events", gAudioEventScriptBuf.data(), gAudioEventScriptBuf.size());
     if (ImGui::Button("Apply Script to Entity")) {
         ReadFromScript(_events, *g._soundBank);
@@ -225,4 +228,15 @@ ne::Entity::ImGuiResult EnemyEntity::ImGuiDerived(GameManager& g) {
         WriteToScript(_events, *g._soundBank);
     }
     return ImGuiResult::Done;
+}
+
+void EnemyEntity::OnEditPick(GameManager& g) {
+    SendEvents(g);
+}
+
+void EnemyEntity::SendEvents(GameManager& g) {
+    for (BeatTimeEvent const& b_e : _events) {
+        audio::Event e = GetEventAtBeatOffsetFromNextDenom(_eventStartDenom, b_e, *g._beatClock);
+        g._audioContext->AddEvent(e);
+    }    
 }

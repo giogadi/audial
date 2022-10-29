@@ -6,6 +6,7 @@
 #include "input_manager.h"
 #include "beat_clock.h"
 #include "renderer.h"
+#include "entity_picking.h"
 
 void Editor::Init(GameManager* g) {
     _g = g;
@@ -17,18 +18,18 @@ void Editor::Update() {
         _visible = !_visible;
     }
     
-    // double mouseX, mouseY;
-    // _g->_inputManager->GetMousePos(mouseX, mouseY);
-    // if (_g->_inputManager->IsKeyPressedThisFrame(InputManager::MouseButton::Left)) {
-    //     _selectedEntityId = PickEntity(
-    //         *g._entityManager, mouseX, mouseY, g._windowWidth, g._windowHeight, g._scene->_camera);
-    //     if (_selectedEntityId.IsValid()) {
-    //         Entity& entity = *g._entityManager->GetEntity(_selectedEntityId);
-    //         // std::cout << "PICKED " << entity._name << std::endl;
-    //         // Call each components' on-pick code.
-    //         entity.OnEditPickComponents();
-    //     }
-    // }
+    double mouseX, mouseY;
+    _g->_inputManager->GetMousePos(mouseX, mouseY);
+    if (_g->_inputManager->IsKeyPressedThisFrame(InputManager::MouseButton::Left)) {
+        ne::Entity* picked = PickEntity(
+            *_g->_neEntityManager, mouseX, mouseY, _g->_windowWidth, _g->_windowHeight, _g->_scene->_camera);
+        if (picked == nullptr) {
+            _selectedEntityId = ne::EntityId();
+        } else {
+            _selectedEntityId = picked->_id;
+            picked->OnEditPick(*_g);
+        }       
+    }
 
     // UpdateSelectedPositionFromInput(dt, g);
 

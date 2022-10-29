@@ -59,6 +59,7 @@ struct BaseEntity {
     virtual void Init(GameManager& g);
     virtual void Update(GameManager& g, float dt);
     virtual void Destroy(GameManager& g) {}
+    virtual void OnEditPick(GameManager& g) {}
     virtual void DebugPrint();
 
 protected:
