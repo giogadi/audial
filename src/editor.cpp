@@ -111,16 +111,20 @@ void Editor::DrawWindow() {
         ne::Entity* entity = _g->_neEntityManager->AddEntity((ne::EntityType)_selectedEntityTypeIx);
         entity->_name = "new_entity";
         _entityIds.push_back(entity->_id);
+        entity->Init(*_g);
     }
 
     if (ne::Entity* selectedEntity = _g->_neEntityManager->GetEntity(_selectedEntityId)) {        
         if (ImGui::Button("Remove Entity")) {
-            assert(_g->_neEntityManager->RemoveEntity(_selectedEntityId));
+            assert(_g->_neEntityManager->TagForDestroy(_selectedEntityId));
         }
     }
 
     if (ne::Entity* selectedEntity = _g->_neEntityManager->GetEntity(_selectedEntityId)) {
-        selectedEntity->ImGui();
+        if (selectedEntity->ImGui(*_g) == ne::Entity::ImGuiResult::NeedsInit) {
+            selectedEntity->Destroy(*_g);
+            selectedEntity->Init(*_g);
+        }
     }
 
     ImGui::End();

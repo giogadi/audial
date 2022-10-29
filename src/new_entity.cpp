@@ -10,6 +10,7 @@
 
 #include "entities/light.h"
 #include "entities/camera.h"
+#include "entities/enemy.h"
 
 namespace ne {
 
@@ -164,6 +165,24 @@ bool EntityManager::RemoveEntity(EntityId idToRemove) {
     return true;
 }
 
+bool EntityManager::TagForDestroy(EntityId idToDestroy) {
+    if (Entity* e = GetEntity(idToDestroy)) {
+        _toDestroy.push_back(idToDestroy);
+        return true;
+    }
+    return false;
+}
+
+void EntityManager::DestroyTaggedEntities(GameManager& g) {
+    for (EntityId& id : _toDestroy) {
+        if (Entity* e = GetEntity(id)) {
+            e->Destroy(g);
+        }
+        RemoveEntity(id);
+    }
+    _toDestroy.clear();
+}
+
 EntityManager::Iterator EntityManager::GetIterator(EntityType type, int* outNumEntities) {
     Iterator iter;
     auto [entityList, numEntities] = GetEntitiesOfType(type);
@@ -235,6 +254,14 @@ Entity* EntityManager::AllIterator::GetEntity() {
     return _typeIter._current;
 }
 
+void Entity::Init(GameManager& g) {
+    _model = g._scene->GetMesh(_modelName);
+}
+void Entity::Update(GameManager& g, float dt) {
+    if (_model != nullptr) {
+        g._scene->DrawMesh(_model, _transform, _modelColor);
+    }
+}
 void Entity::DebugPrint() {
     Vec3 p = _transform.GetPos();
     printf("pos: %f %f %f\n", p._x, p._y, p._z);
@@ -242,21 +269,35 @@ void Entity::DebugPrint() {
 void Entity::Save(serial::Ptree pt) const {
     pt.PutString("name", _name.c_str());
     serial::SaveInNewChildOf(pt, "transform_mat4", _transform);
+    pt.PutString("model_name", _modelName.c_str());
+    serial::SaveInNewChildOf(pt, "model_color_vec4", _modelColor);
     SaveDerived(pt);
 }
 void Entity::Load(serial::Ptree pt) {
     _name = pt.GetString("name");
     _transform.Load(pt.GetChild("transform_mat4"));
+    pt.TryGetString("model_name", &_modelName);
+    serial::Ptree colorPt = pt.TryGetChild("model_color_vec4");
+    if (colorPt.IsValid()) {
+        _modelColor.Load(colorPt);
+    }
     LoadDerived(pt);
 }
-void Entity::ImGui() {
+Entity::ImGuiResult Entity::ImGui(GameManager& g) {
     imgui_util::InputText<128>("Entity name##TopLevel", &_name);
     ImGui::Text("Entity type: %s", ne::gkEntityTypeNames[(int)_id._type]);
     Vec3 p = _transform.GetPos();
     if (ImGui::InputFloat3("Pos##Entity", p._data, "%.3f", ImGuiInputTextFlags_EnterReturnsTrue)) {
         _transform.SetTranslation(p);
     }
-    ImGuiDerived();
+    bool modelChanged = imgui_util::InputText<64>("Model name##Entity", &_modelName, /*trueOnReturnOnly=*/true);
+    ImGui::ColorEdit4("Model color##Entity", _modelColor._data);    
+    bool derivedNeedsInit = ImGuiDerived(g) == ImGuiResult::NeedsInit;
+    if (modelChanged || derivedNeedsInit) {
+        return ImGuiResult::NeedsInit;
+    } else {
+        return ImGuiResult::Done;
+    }
 }
 
 }  // namespace ne

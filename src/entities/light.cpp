@@ -18,9 +18,10 @@ void LightEntity::LoadDerived(serial::Ptree pt) {
     _ambient.Load(pt.GetChild("ambient"));
     _diffuse.Load(pt.GetChild("diffuse"));
 }
-void LightEntity::ImGuiDerived() {
+ne::Entity::ImGuiResult LightEntity::ImGuiDerived(GameManager& g) {
     ImGui::ColorEdit3("Diffuse", _diffuse._data);
     ImGui::ColorEdit3("Ambient", _ambient._data);
+    return ImGuiResult::Done;
 }
 void LightEntity::Init(GameManager& g) {
     _lightId = g._scene->AddPointLight().first;

@@ -21,11 +21,12 @@ void CameraEntity::Update(GameManager& g, float dt) {
     _camera->_transform = _transform;
 }
 
-void CameraEntity::ImGuiDerived() {
+ne::Entity::ImGuiResult CameraEntity::ImGuiDerived(GameManager& g) {
     if (ImGui::Button("Move Debug Camera to This")) {
         _camera->_transform = _transform;
     }
     if (ImGui::Button("Move This to Debug Camera")) {
         _transform = _camera->_transform;
     }
+    return ImGuiResult::Done;
 }

@@ -629,6 +629,7 @@ int main(int argc, char** argv) {
         //
         // Rule here is: We ALWAYS have at least one frame to deal with a deleted reference before a render happens. Not a bad rule!
         entityManager.DestroyTaggedEntities();
+        neEntityManager.DestroyTaggedEntities(gGameManager);
     }
 
     ImGui_ImplOpenGL3_Shutdown();

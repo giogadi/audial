@@ -16,5 +16,5 @@ struct LightEntity : public ne::Entity {
     virtual void DebugPrint() override;
     virtual void SaveDerived(serial::Ptree pt) const override;
     virtual void LoadDerived(serial::Ptree pt) override;
-    virtual void ImGuiDerived() override;
+    virtual ImGuiResult ImGuiDerived(GameManager& g) override;
 };

@@ -1,19 +1,22 @@
 #pragma once
 
 #include <unordered_map>
+#include <vector>
 #include <memory>
 
 #include "matrix.h"
 #include "serial.h"
 
 struct GameManager;
+class BoundMeshPNU;
 
 namespace ne {
 
 #define M_ENTITY_TYPES \
     X(Base) \
     X(Light) \
-    X(Camera)
+    X(Camera) \
+    X(Enemy)
 
 enum class EntityType: int {
 #   define X(a) a,
@@ -37,18 +40,24 @@ struct BaseEntity {
     // serialized
     Mat4 _transform;
     std::string _name;
+    std::string _modelName;
+    Vec4 _modelColor;
 
     EntityId _id;
+    BoundMeshPNU const* _model = nullptr;
     
     void Save(serial::Ptree pt) const;
     void Load(serial::Ptree pt);
-    void ImGui();
+
+    enum class ImGuiResult { Done, NeedsInit };
+    ImGuiResult ImGui(GameManager& g);
+
     virtual ~BaseEntity() {}
 
     // Init() is intended to be called after Load(). Load should not touch anything
     // outside this class. Everything else should happen here.
-    virtual void Init(GameManager& g) {}
-    virtual void Update(GameManager& g, float dt) {}
+    virtual void Init(GameManager& g);
+    virtual void Update(GameManager& g, float dt);
     virtual void Destroy(GameManager& g) {}
     virtual void DebugPrint();
 
@@ -56,7 +65,7 @@ protected:
     // Used by derived classes to save/load child-specific data.
     virtual void SaveDerived(serial::Ptree pt) const {};
     virtual void LoadDerived(serial::Ptree pt) {};
-    virtual void ImGuiDerived() {}
+    virtual ImGuiResult ImGuiDerived(GameManager& g) { return ImGuiResult::Done; }
 };
 
 typedef BaseEntity Entity;
@@ -68,9 +77,10 @@ struct EntityManager {
     void Init();
     Entity* AddEntity(EntityType entityType);    
     Entity* GetEntity(EntityId id);
-    // Returns true if the given ID was indeed found and deleted.
-    // Does not preserve ordering.
-    bool RemoveEntity(EntityId idToRemove);
+    bool TagForDestroy(EntityId id);
+
+    // Calls Destroy() on removed entities.
+    void DestroyTaggedEntities(GameManager& g);
 
     // Iterates over all entities of a given type.
     struct Iterator {
@@ -107,6 +117,7 @@ private:
     };
     std::unordered_map<int, MapEntry> _entityIdMap;
     int _nextId = 0;
+    std::vector<EntityId> _toDestroy;
 
     struct Internal;
     std::unique_ptr<Internal> _p;
@@ -115,6 +126,11 @@ private:
     std::pair<Entity*, int> GetEntitiesOfType(EntityType entityType);
 
     std::pair<Entity*, int> GetEntityWithIndex(EntityId id);
+
+    // Returns true if the given ID was indeed found and deleted.
+    // Does not preserve ordering.
+    // Does NOT call Destroy() on entity.
+    bool RemoveEntity(EntityId idToRemove);
 };
 
 }  // namespace ne

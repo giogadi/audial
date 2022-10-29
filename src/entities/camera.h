@@ -12,7 +12,7 @@ struct CameraEntity : ne::Entity {
 protected:
     // virtual void SaveDerived(serial::Ptree pt) const {};
     // virtual void LoadDerived(serial::Ptree pt) {};
-    virtual void ImGuiDerived() override;
+    virtual ImGuiResult ImGuiDerived(GameManager& g) override;
 
     renderer::Camera* _camera = nullptr;
 };

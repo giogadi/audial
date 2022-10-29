@@ -20,7 +20,7 @@ void audio::Event::Save(serial::Ptree pt) const {
             break;
         case EventType::NoteOn:
             pt.PutInt("midi_note", midiNote);
-            pt.PutInt("velocity", velocity);
+            pt.PutFloat("velocity", velocity);
             break;
         case EventType::NoteOff:
             pt.PutInt("midi_note", midiNote);

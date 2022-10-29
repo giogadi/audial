@@ -37,3 +37,12 @@ void SoundBank::Destroy() {
         drwav_free(sound._buffer, /*???*/NULL);
     }
 }
+
+int SoundBank::GetSoundIx(char const* soundName) const {
+    for (int i = 0, n = _soundNames.size(); i < n; ++i) {
+        if (strcmp(soundName, _soundNames[i]) == 0) {
+            return i;
+        }
+    }
+    return -1;
+}
