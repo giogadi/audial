@@ -2,6 +2,7 @@
 
 #include <array>
 #include <sstream>
+#include <cctype>
 
 #include "imgui/imgui.h"
 #include "game_manager.h"
@@ -218,7 +219,32 @@ void EnemyEntity::LoadDerived(serial::Ptree pt) {
     }    
 }
 
-ne::Entity::ImGuiResult EnemyEntity::ImGuiDerived(GameManager& g) {
+namespace {
+std::array<char, 8> gButtonNameText;
+
+InputManager::Key GetKeyFromString(char const* keyName) {
+    if (keyName[0] == '\0') {
+        return InputManager::Key::NumKeys;
+    }
+    if (keyName[1] == '\0') {
+        char c = tolower(keyName[0]);
+        int keyIx = c - 'a';
+        if (keyIx < 0 || keyIx > 25) {
+            return InputManager::Key::NumKeys;
+        }
+        return (InputManager::Key) keyIx;
+    }
+    // TODO handle space/etc
+    return InputManager::Key::NumKeys;
+}
+}  // namespace
+
+ne::Entity::ImGuiResult EnemyEntity::ImGuiDerived(GameManager& g) {    
+    bool changed = ImGui::InputText("Shoot button", gButtonNameText.data(), gButtonNameText.size());
+    if (changed) {
+        _shootButton = GetKeyFromString(gButtonNameText.data());
+    }
+
     ImGui::InputDouble("Event start denom", &_eventStartDenom);
     ImGui::InputTextMultiline("Audio events", gAudioEventScriptBuf.data(), gAudioEventScriptBuf.size());
     if (ImGui::Button("Apply Script to Entity")) {
@@ -239,4 +265,8 @@ void EnemyEntity::SendEvents(GameManager& g) {
         audio::Event e = GetEventAtBeatOffsetFromNextDenom(_eventStartDenom, b_e, *g._beatClock);
         g._audioContext->AddEvent(e);
     }    
+}
+
+void EnemyEntity::OnShot(GameManager& g) {
+    SendEvents(g);
 }

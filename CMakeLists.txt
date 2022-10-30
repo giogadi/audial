@@ -31,6 +31,7 @@ add_executable(game
     src/entities/light.cpp
     src/entities/camera.cpp
     src/entities/enemy.cpp
+    src/entities/player.cpp
     src/enums/audio_EventType.cpp src/enums/audio_SynthParamType.cpp src/enums/CollisionLayer.cpp
     src/enums/ScriptActionType.cpp src/enums/synth_Waveform.cpp)
 

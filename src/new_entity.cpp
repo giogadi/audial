@@ -11,6 +11,7 @@
 #include "entities/light.h"
 #include "entities/camera.h"
 #include "entities/enemy.h"
+#include "entities/player.h"
 
 namespace ne {
 
@@ -52,8 +53,9 @@ EntityManager::~EntityManager() {}
 
 void EntityManager::Init() {
     _p = std::make_unique<Internal>();
-    _p->_entitiesBase.reserve(100);
-    _p->_entitiesLight.reserve(100);
+    // _p->_entitiesBase.reserve(100);
+    // _p->_entitiesLight.reserve(1);
+    _p->_entitiesEnemy.reserve(100);
 }
 
 Entity* EntityManager::AddEntity(EntityType entityType) {

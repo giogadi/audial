@@ -2,11 +2,15 @@
 
 #include "new_entity.h"
 #include "beat_time_event.h"
+#include "input_manager.h"
 
 struct EnemyEntity : public ne::Entity {
     // serialized
     std::vector<BeatTimeEvent> _events;
     double _eventStartDenom = 0.25;
+    InputManager::Key _shootButton = InputManager::Key::A;
+
+    void OnShot(GameManager& g);
 
     // virtual void Init(GameManager& g) override;
     // virtual void Update(GameManager& g, float dt) override;
