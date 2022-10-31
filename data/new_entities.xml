@@ -111,13 +111,6 @@
                     <midi_note>63</midi_note>
                     <beat_time>0.5</beat_time>
                 </beat_event>
-                <beat_event>
-                    <event_type>NoteOff</event_type>
-                    <channel>0</channel>
-                    <tick_time>0</tick_time>
-                    <midi_note>63</midi_note>
-                    <beat_time>0.5</beat_time>
-                </beat_event>
             </events>
         </Enemy>
         <Player>

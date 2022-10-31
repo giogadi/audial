@@ -14,7 +14,7 @@ struct EnemyEntity : public ne::Entity {
 
     // virtual void Init(GameManager& g) override;
     // virtual void Update(GameManager& g, float dt) override;
-    // virtual void Destroy(GameManager& g) override;    
+    // virtual void Destroy(GameManager& g) override;
     virtual void OnEditPick(GameManager& g) override;
 
     void SendEvents(GameManager& g);

@@ -17,7 +17,8 @@ namespace ne {
     X(Light) \
     X(Camera) \
     X(Player) \
-    X(Enemy)
+    X(Enemy) \
+    X(Sequencer)
 
 enum class EntityType: int {
 #   define X(a) a,

@@ -17,7 +17,7 @@ add_executable(game
     src/version_id_list_simple.cpp
     src/entity_picking.cpp src/entity_editing_context.cpp src/script_action.cpp
     src/shader.cpp src/synth.cpp  src/matrix.cpp src/mesh.cpp
-    src/beat_clock.cpp src/input_manager.cpp
+    src/beat_clock.cpp src/input_manager.cpp src/beat_time_event.cpp
     src/component.cpp src/entity.cpp src/entity_manager.cpp
     src/new_entity.cpp    
     src/renderer.cpp src/collisions.cpp
@@ -32,6 +32,7 @@ add_executable(game
     src/entities/camera.cpp
     src/entities/enemy.cpp
     src/entities/player.cpp
+    src/entities/sequencer.cpp
     src/enums/audio_EventType.cpp src/enums/audio_SynthParamType.cpp src/enums/CollisionLayer.cpp
     src/enums/ScriptActionType.cpp src/enums/synth_Waveform.cpp)
 

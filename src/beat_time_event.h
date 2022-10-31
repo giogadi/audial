@@ -1,7 +1,11 @@
 #pragma once
 
+#include <vector>
+
 #include "audio_util.h"
 #include "beat_clock.h"
+
+class SoundBank;
 
 struct BeatTimeEvent {
     audio::Event _e;  // timeInTicks is ignored.
@@ -36,3 +40,11 @@ inline audio::Event BeatTimeToTickTimeEvent(BeatTimeEvent const& b_e, BeatClock 
     e.timeInTicks = beatClock.BeatTimeToTickTime(b_e._beatTime);
     return e;
 }
+
+void ReadBeatEventsFromScript(
+    std::vector<BeatTimeEvent>& events, SoundBank const& soundBank, char const* scriptBuf, int scriptBufLength);
+void WriteBeatEventsToScript(
+    std::vector<BeatTimeEvent> const& events, SoundBank const& soundBank, char* scriptBuf, int scriptBufLength);
+// Find the time of the next instance of the given denomination, and generate an
+// event that is at the given beat time offset from that denom.
+audio::Event GetEventAtBeatOffsetFromNextDenom(double denom, BeatTimeEvent const& b_e, BeatClock const& beatClock);

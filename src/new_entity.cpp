@@ -12,6 +12,7 @@
 #include "entities/camera.h"
 #include "entities/enemy.h"
 #include "entities/player.h"
+#include "entities/sequencer.h"
 
 namespace ne {
 

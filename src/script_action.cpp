@@ -133,17 +133,6 @@ void ScriptActionActivateEntity::Load(serial::Ptree pt) {
     _entityName = pt.GetString("entity_name");
 }
 
-namespace {
-audio::Event GetEventAtBeatOffsetFromNextDenom(double denom, BeatTimeEvent const& b_e, BeatClock const& beatClock) {
-    double beatTime = beatClock.GetBeatTime();
-    double startTime = BeatClock::GetNextBeatDenomTime(beatTime, denom);
-    unsigned long startTickTime = beatClock.BeatTimeToTickTime(startTime);
-    audio::Event e = b_e._e;
-    e.timeInTicks = beatClock.BeatTimeToTickTime(b_e._beatTime) + startTickTime;
-    return e;
-}
-}
-
 void ScriptActionAudioEvent::InitImpl(EntityId entityId, GameManager& g) {
     // Look for an orbitable component on this entity, and see if it has the recorder name populated.
     if (Entity* entity = g._entityManager->GetEntity(entityId)) {
