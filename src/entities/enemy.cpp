@@ -237,9 +237,21 @@ InputManager::Key GetKeyFromString(char const* keyName) {
     // TODO handle space/etc
     return InputManager::Key::NumKeys;
 }
+
+// Assume outStr can hold at least 7 chars (not counting null terminator)
+void GetStringFromKey(InputManager::Key key, char* outStr) {
+    int keyIx = (int)key;
+    if (keyIx < 26) {
+        outStr[0] = 'a' + keyIx;
+        outStr[1] = '\0';
+    } else {
+        // TODO not supported
+    }
+}
 }  // namespace
 
-ne::Entity::ImGuiResult EnemyEntity::ImGuiDerived(GameManager& g) {    
+ne::Entity::ImGuiResult EnemyEntity::ImGuiDerived(GameManager& g) {
+    GetStringFromKey(_shootButton, gButtonNameText.data());
     bool changed = ImGui::InputText("Shoot button", gButtonNameText.data(), gButtonNameText.size());
     if (changed) {
         _shootButton = GetKeyFromString(gButtonNameText.data());
