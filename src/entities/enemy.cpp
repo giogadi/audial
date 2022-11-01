@@ -93,7 +93,7 @@ void EnemyEntity::OnEditPick(GameManager& g) {
 
 void EnemyEntity::SendEvents(GameManager& g) {
     for (BeatTimeEvent const& b_e : _events) {
-        audio::Event e = GetEventAtBeatOffsetFromNextDenom(_eventStartDenom, b_e, *g._beatClock);
+        audio::Event e = GetEventAtBeatOffsetFromNextDenom(_eventStartDenom, b_e, *g._beatClock, /*slack=*/0.0);
         g._audioContext->AddEvent(e);
     }    
 }

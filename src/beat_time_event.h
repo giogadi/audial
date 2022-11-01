@@ -47,4 +47,5 @@ void WriteBeatEventsToScript(
     std::vector<BeatTimeEvent> const& events, SoundBank const& soundBank, char* scriptBuf, int scriptBufLength);
 // Find the time of the next instance of the given denomination, and generate an
 // event that is at the given beat time offset from that denom.
-audio::Event GetEventAtBeatOffsetFromNextDenom(double denom, BeatTimeEvent const& b_e, BeatClock const& beatClock);
+audio::Event GetEventAtBeatOffsetFromNextDenom(
+    double denom, BeatTimeEvent const& b_e, BeatClock const& beatClock, double slack = 0.0);

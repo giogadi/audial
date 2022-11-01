@@ -196,9 +196,13 @@ void WriteBeatEventsToScript(
     strncpy(scriptBuf, result.c_str(), scriptBufLength);
 }
 
-audio::Event GetEventAtBeatOffsetFromNextDenom(double denom, BeatTimeEvent const& b_e, BeatClock const& beatClock) {
+audio::Event GetEventAtBeatOffsetFromNextDenom(
+    double denom, BeatTimeEvent const& b_e, BeatClock const& beatClock, double slack) {
     double beatTime = beatClock.GetBeatTime();
     double startTime = BeatClock::GetNextBeatDenomTime(beatTime, denom);
+    if (startTime - beatTime <= slack) {
+        startTime = beatTime;
+    }
     unsigned long startTickTime = beatClock.BeatTimeToTickTime(startTime);
     audio::Event e = b_e._e;
     e.timeInTicks = beatClock.BeatTimeToTickTime(b_e._beatTime) + startTickTime;
