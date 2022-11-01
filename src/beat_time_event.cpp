@@ -57,6 +57,8 @@ void ReadBeatEventsFromScript(
                     b_e._e.type = audio::EventType::PlayPcm;
                 } else if (value == "stop") {
                     b_e._e.type = audio::EventType::StopPcm;
+                } else if (value == "none") {
+                    b_e._e.type = audio::EventType::None;
                 } else {
                     printf("Unrecognized audio event type: %s\n", value.c_str());
                     break;
@@ -154,6 +156,9 @@ void WriteBeatEventsToScript(
                 break;
             case audio::EventType::StopPcm:
                 ss << "e:stop ";
+                break;
+            case audio::EventType::None:
+                ss << "e:none ";
                 break;
             default:
                 printf("unsupported event type %s\n", audio::EventTypeToString(b_e._e.type));

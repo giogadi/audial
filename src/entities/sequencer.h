@@ -12,7 +12,6 @@ struct SequencerEntity : ne::Entity {
     bool _playing = true;
     int _currentIx = -1;
     double _currentLoopStartBeatTime = -1.0;
-    bool _done = false;
 
     void Reset();
 

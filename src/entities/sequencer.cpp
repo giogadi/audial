@@ -20,7 +20,6 @@ void SequencerEntity::Init(GameManager& g) {
 void SequencerEntity::Reset() {
     _currentIx = -1;
     _currentLoopStartBeatTime = -1.0;
-    _done = false;
 }
 
 void SequencerEntity::Update(GameManager& g, float dt) {
@@ -28,7 +27,7 @@ void SequencerEntity::Update(GameManager& g, float dt) {
         return;
     }
 
-    if (_done) {
+    if (!_playing) {
         return;
     }
 
@@ -65,7 +64,7 @@ void SequencerEntity::Update(GameManager& g, float dt) {
             assert(lastEventTime > 0.0);  // avoids infinite loop
             _currentLoopStartBeatTime += lastEventTime;
         } else {
-            _done = true;
+            _playing = false;
             break;
         }
     }
