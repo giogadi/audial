@@ -8,12 +8,103 @@
 #include "renderer.h"
 #include "entity_picking.h"
 
+static float gScrollFactorForDebugCameraMove = 1.f;
+
 void Editor::Init(GameManager* g) {
     _g = g;
     _axesMesh = _g->_scene->GetMesh("axes");
 }
 
-void Editor::Update() {
+namespace {
+bool ProjectScreenPointToXZPlane(
+    int screenX, int screenY, int windowWidth, int windowHeight, renderer::Camera const& camera, Vec3* outPoint) {
+    Vec3 rayStart, rayDir;
+    GetPickRay(screenX, screenY, windowWidth, windowHeight, camera, &rayStart, &rayDir);
+
+    // Find where the ray intersects the XZ plane. This is where on the ray the y-value hits 0.
+    if (std::abs(rayDir._y) > 0.0001) {
+        float rayParamAtXZPlane = -rayStart._y / rayDir._y;
+        if (rayParamAtXZPlane > 0.0) {
+            *outPoint = rayStart + (rayDir * rayParamAtXZPlane);
+            return true;
+        }            
+    }
+
+    return false;
+}
+
+double gClickX = 0.f;
+double gClickY = 0.f;
+bool gMovingObject = false;
+}
+
+void Editor::UpdateSelectedPositionFromInput(float dt) {
+    ne::EntityManager& entities = *_g->_neEntityManager;
+    ne::Entity* entity = entities.GetEntity(_selectedEntityId);
+    if (entity == nullptr) {
+        _selectedEntityId = ne::EntityId();
+        return;
+    }
+
+    InputManager const& input = *_g->_inputManager;
+
+    if (input.IsKeyPressedThisFrame(InputManager::MouseButton::Left)) {
+        gMovingObject = false;
+        input.GetMousePos(gClickX, gClickY);
+    } else if (input.IsKeyPressed(InputManager::MouseButton::Left)) {
+        double screenX, screenY;
+        input.GetMousePos(screenX, screenY);
+        if (!gMovingObject) {
+            double screenX, screenY;
+            input.GetMousePos(screenX, screenY);
+            float const kMinDistBeforeMove = 0.01 * _g->_windowWidth;
+            float dx = gClickX - screenX;
+            float dy = gClickY - screenY;
+            float distFromClick2 = dx*dx + dy*dy;
+            if (distFromClick2 >= kMinDistBeforeMove*kMinDistBeforeMove) {
+                gMovingObject = true;
+            }
+        }
+        if (gMovingObject) {
+            Vec3 pickedPosOnXZPlane;
+            if (ProjectScreenPointToXZPlane(
+                screenX, screenY, _g->_windowWidth, _g->_windowHeight, _g->_scene->_camera, &pickedPosOnXZPlane)) {
+                entity->_transform.SetTranslation(pickedPosOnXZPlane);
+            }
+        }
+    } else {
+        gMovingObject = false;
+    }
+
+    Vec3 inputVec(0.0f,0.f,0.f);
+    if (input.IsKeyPressed(InputManager::Key::W)) {
+        inputVec._z -= 1.0f;
+    }
+    if (input.IsKeyPressed(InputManager::Key::S)) {
+        inputVec._z += 1.0f;
+    }
+    if (input.IsKeyPressed(InputManager::Key::A)) {
+        inputVec._x -= 1.0f;
+    }
+    if (input.IsKeyPressed(InputManager::Key::D)) {
+        inputVec._x += 1.0f;
+    }
+
+    bool hasInput = inputVec._x != 0.f || inputVec._y != 0.f || inputVec._z != 0.f;
+    if (hasInput) {
+        float moveSpeed = 3.f;
+        Vec3 p = entity->_transform.GetPos() + inputVec.GetNormalized() * moveSpeed * dt;
+        entity->_transform.SetTranslation(p);
+    }    
+
+    // // Update axes cursor
+    // renderer::ColorModelInstance& m = _g->_scene->DrawMesh();
+    // m._mesh = _axesModel;
+    // m._transform = transform->GetWorldMat4();
+    // m._topLayer = true;
+}
+
+void Editor::Update(float dt) {
     if (_g->_inputManager->IsKeyPressedThisFrame(InputManager::Key::I)) {
         _visible = !_visible;
     }
@@ -31,7 +122,15 @@ void Editor::Update() {
         }       
     }
 
-    // UpdateSelectedPositionFromInput(dt, g);
+    UpdateSelectedPositionFromInput(dt);
+
+    // Use scroll input to move debug camera around.
+    double scrollX = 0.0, scrollY = 0.0;
+    _g->_inputManager->GetMouseScroll(scrollX, scrollY);
+    if (scrollX != 0.0 || scrollY != 0.0) {
+        Vec3 camMotionVec = gScrollFactorForDebugCameraMove * Vec3(-scrollX, 0.f, -scrollY);
+        _g->_scene->_camera._transform.Translate(camMotionVec);
+    }
 
     // Draw axes
     if (ne::Entity* selectedEntity = _g->_neEntityManager->GetEntity(_selectedEntityId)) {

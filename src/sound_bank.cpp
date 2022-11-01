@@ -9,12 +9,16 @@ void SoundBank::LoadSounds() {
         , "block"
         , "snare"
         , "liquid_dnb_loop"
+        , "liquid_dnb_chords"
+        , "liquid_dnb_drums"
     };
     std::vector<char const*> soundFilenames = {
         "data/sounds/kick_deep.wav"
         , "data/sounds/woodblock_reverb_mono.wav"
         , "data/sounds/snare2.wav"
         , "data/sounds/liquid_dnb.wav"
+        , "data/sounds/liquid_chords.wav"
+        , "data/sounds/liquid_dnb_drums.wav"
     };
     assert(soundFilenames.size() == _soundNames.size());
     for (int i = 0, n = soundFilenames.size(); i < n; ++i) {

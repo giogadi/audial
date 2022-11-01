@@ -148,6 +148,9 @@ ne::Entity* PickEntity(
     Vec3 rayStart = cameraTransform.GetPos() + rayDir * (pickSphereRad + 0.1f);
     for (auto iter = entityMgr.GetAllIterator(); !iter.Finished(); iter.Next()) {
         ne::Entity& entity = *iter.GetEntity();
+        if (!entity._pickable) {
+            continue;
+        }
         Vec3 pos = entity._transform.GetPos();
         std::optional<float> hitDist = sphereRayCast(rayStart, rayDir, pos, pickSphereRad);
         if (hitDist.has_value()) {

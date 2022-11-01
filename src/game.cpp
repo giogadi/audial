@@ -562,9 +562,9 @@ int main(int argc, char** argv) {
         if (inputManager.IsKeyPressedThisFrame(InputManager::Key::Space)) {
             showDemoWindow = !showDemoWindow;
         }
-        if (inputManager.IsKeyPressedThisFrame(InputManager::Key::H)) {
-            showHitCounters = !showHitCounters;
-        }
+        // if (inputManager.IsKeyPressedThisFrame(InputManager::Key::H)) {
+        //     showHitCounters = !showHitCounters;
+        // }
 
         entityEditingContext.Update(dt, cmdLineInputs._editMode, gGameManager);        
 
@@ -589,7 +589,7 @@ int main(int argc, char** argv) {
         ImGui_ImplGlfw_NewFrame();
         ImGui::NewFrame();
 
-        editor.Update();
+        editor.Update(dt);
         if (showSynthWindow) {
             DrawSynthGuiAndUpdatePatch(synthGuiState, audioContext);
         }

@@ -13,32 +13,6 @@
 namespace {
 
 std::array<char,1024> gAudioEventScriptBuf;
-
-} // end namespace
-
-// TODO: consider using the text format we made above for this.
-void EnemyEntity::SaveDerived(serial::Ptree pt) const {
-    serial::Ptree eventsPt = pt.AddChild("events");
-    for (BeatTimeEvent const& b_e : _events) {
-        serial::Ptree eventPt = eventsPt.AddChild("beat_event");
-        b_e.Save(eventPt);
-    }
-}
-
-void EnemyEntity::LoadDerived(serial::Ptree pt) {
-    serial::Ptree eventsPt = pt.TryGetChild("events");
-    if (eventsPt.IsValid()) {
-        int numChildren = 0;
-        serial::NameTreePair* children = eventsPt.GetChildren(&numChildren);
-        for (int i = 0; i < numChildren; ++i) {
-            _events.emplace_back();
-            _events.back().Load(children[i]._pt);
-        }
-        delete[] children;
-    }    
-}
-
-namespace {
 std::array<char, 8> gButtonNameText;
 
 InputManager::Key GetKeyFromString(char const* keyName) {
@@ -67,7 +41,36 @@ void GetStringFromKey(InputManager::Key key, char* outStr) {
         // TODO not supported
     }
 }
-}  // namespace
+
+} // end namespace
+
+// TODO: consider using the text format we made above for this.
+void EnemyEntity::SaveDerived(serial::Ptree pt) const {
+    char keyStr[8];
+    GetStringFromKey(_shootButton, keyStr);
+    pt.PutString("shoot_button", keyStr);
+    serial::Ptree eventsPt = pt.AddChild("events");
+    for (BeatTimeEvent const& b_e : _events) {
+        serial::Ptree eventPt = eventsPt.AddChild("beat_event");
+        b_e.Save(eventPt);
+    }
+}
+
+void EnemyEntity::LoadDerived(serial::Ptree pt) {
+    std::string keyStr;
+    pt.TryGetString("shoot_button", &keyStr);
+    _shootButton = GetKeyFromString(keyStr.c_str());
+    serial::Ptree eventsPt = pt.TryGetChild("events");
+    if (eventsPt.IsValid()) {
+        int numChildren = 0;
+        serial::NameTreePair* children = eventsPt.GetChildren(&numChildren);
+        for (int i = 0; i < numChildren; ++i) {
+            _events.emplace_back();
+            _events.back().Load(children[i]._pt);
+        }
+        delete[] children;
+    }    
+}
 
 ne::Entity::ImGuiResult EnemyEntity::ImGuiDerived(GameManager& g) {
     GetStringFromKey(_shootButton, gButtonNameText.data());

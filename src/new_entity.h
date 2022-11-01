@@ -42,6 +42,7 @@ struct BaseEntity {
     // serialized
     Mat4 _transform;
     std::string _name;
+    bool _pickable = true;
     std::string _modelName;
     Vec4 _modelColor;
 

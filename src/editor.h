@@ -9,8 +9,9 @@ class BoundMeshPNU;
 
 struct Editor {
     void Init(GameManager* g);
-    void Update();
+    void Update(float dt);
     void DrawWindow();
+    void UpdateSelectedPositionFromInput(float dt);
 
     GameManager* _g = nullptr;
     bool _visible = false;

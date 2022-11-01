@@ -271,6 +271,7 @@ void Entity::DebugPrint() {
 }
 void Entity::Save(serial::Ptree pt) const {
     pt.PutString("name", _name.c_str());
+    pt.PutBool("pickable", _pickable);
     serial::SaveInNewChildOf(pt, "transform_mat4", _transform);
     pt.PutString("model_name", _modelName.c_str());
     serial::SaveInNewChildOf(pt, "model_color_vec4", _modelColor);
@@ -278,6 +279,7 @@ void Entity::Save(serial::Ptree pt) const {
 }
 void Entity::Load(serial::Ptree pt) {
     _name = pt.GetString("name");
+    pt.TryGetBool("pickable", &_pickable);
     _transform.Load(pt.GetChild("transform_mat4"));
     pt.TryGetString("model_name", &_modelName);
     serial::Ptree colorPt = pt.TryGetChild("model_color_vec4");
@@ -289,6 +291,7 @@ void Entity::Load(serial::Ptree pt) {
 Entity::ImGuiResult Entity::ImGui(GameManager& g) {
     imgui_util::InputText<128>("Entity name##TopLevel", &_name);
     ImGui::Text("Entity type: %s", ne::gkEntityTypeNames[(int)_id._type]);
+    ImGui::Checkbox("Pickable", &_pickable);
     Vec3 p = _transform.GetPos();
     if (ImGui::InputFloat3("Pos##Entity", p._data, "%.3f", ImGuiInputTextFlags_EnterReturnsTrue)) {
         _transform.SetTranslation(p);
