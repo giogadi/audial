@@ -295,6 +295,15 @@ int PortAudioCallback(
                     }
                     break;
                 }
+                case EventType::AllNotesOff: {
+                    // Stop all voices, period.
+                    for (int i = 0, n = state->pcmVoices.size(); i < n; ++i) {
+                        PcmVoice& voice = state->pcmVoices[i];
+                        voice._soundBufferIx = -1;
+                        voice._soundIx = -1;
+                    }
+                    break;
+                }
                 default: {
                     break;
                 }

@@ -8,7 +8,7 @@ struct EnemyEntity : public ne::Entity {
     // serialized
     std::vector<BeatTimeEvent> _events;
     double _eventStartDenom = 0.125;
-    InputManager::Key _shootButton = InputManager::Key::A;
+    InputManager::Key _shootButton = InputManager::Key::NumKeys;
     double _activeBeatTime = 0.0;  // read as an offset from the downbeat when this entity is initialized.
     float _motionAngleDegrees = 0.0f;  // +x is 0 degrees, + is ccw about y axis
     float _motionSpeed = 0.f;

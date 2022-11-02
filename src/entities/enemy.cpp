@@ -116,9 +116,9 @@ bool EnemyEntity::IsActive(GameManager& g) const {
 
 void EnemyEntity::OnShot(GameManager& g) {
     SendEvents(g);
-    if (!g._editMode) {
-        g._neEntityManager->TagForDestroy(_id);
-    }    
+    // if (!g._editMode) {
+    //     g._neEntityManager->TagForDestroy(_id);
+    // }
 }
 
 void EnemyEntity::Init(GameManager& g) {
