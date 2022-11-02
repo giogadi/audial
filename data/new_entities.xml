@@ -212,9 +212,9 @@
                 <m12>0</m12>
                 <m22>1</m22>
                 <m32>0</m32>
-                <m03>0.130974695</m03>
+                <m03>-0.263909429</m03>
                 <m13>0</m13>
-                <m23>0.335636139</m23>
+                <m23>-9.38150978</m23>
                 <m33>1</m33>
             </transform_mat4>
             <model_name>cube</model_name>
@@ -225,6 +225,9 @@
                 <w>0</w>
             </model_color_vec4>
             <shoot_button>h</shoot_button>
+            <active_beat_time>8</active_beat_time>
+            <motion_angle_degrees>270</motion_angle_degrees>
+            <motion_speed>3</motion_speed>
             <events>
                 <beat_event>
                     <event_type>NoteOn</event_type>
@@ -259,9 +262,9 @@
                 <m12>0</m12>
                 <m22>1</m22>
                 <m32>0</m32>
-                <m03>0.201012909</m03>
-                <m13>9.53674316e-07</m13>
-                <m23>-4.42033863</m23>
+                <m03>-11.7341337</m03>
+                <m13>0</m13>
+                <m23>-9.1388588</m23>
                 <m33>1</m33>
             </transform_mat4>
             <model_name>cube</model_name>
@@ -272,6 +275,9 @@
                 <w>0</w>
             </model_color_vec4>
             <shoot_button>a</shoot_button>
+            <active_beat_time>0</active_beat_time>
+            <motion_angle_degrees>270</motion_angle_degrees>
+            <motion_speed>3</motion_speed>
             <events>
                 <beat_event>
                     <event_type>NoteOn</event_type>
@@ -306,9 +312,9 @@
                 <m12>0</m12>
                 <m22>1</m22>
                 <m32>0</m32>
-                <m03>3.09560394</m03>
-                <m13>9.53674316e-07</m13>
-                <m23>-4.42033863</m23>
+                <m03>-7.49746895</m03>
+                <m13>0</m13>
+                <m23>-9.1388588</m23>
                 <m33>1</m33>
             </transform_mat4>
             <model_name>cube</model_name>
@@ -319,6 +325,9 @@
                 <w>0</w>
             </model_color_vec4>
             <shoot_button>s</shoot_button>
+            <active_beat_time>0</active_beat_time>
+            <motion_angle_degrees>270</motion_angle_degrees>
+            <motion_speed>3</motion_speed>
             <events>
                 <beat_event>
                     <event_type>NoteOn</event_type>
@@ -353,9 +362,9 @@
                 <m12>0</m12>
                 <m22>1</m22>
                 <m32>0</m32>
-                <m03>2.91369939</m03>
+                <m03>3.5940249</m03>
                 <m13>0</m13>
-                <m23>0.221116066</m23>
+                <m23>-9.1388588</m23>
                 <m33>1</m33>
             </transform_mat4>
             <model_name>cube</model_name>
@@ -366,6 +375,9 @@
                 <w>0</w>
             </model_color_vec4>
             <shoot_button>j</shoot_button>
+            <active_beat_time>8</active_beat_time>
+            <motion_angle_degrees>270</motion_angle_degrees>
+            <motion_speed>3</motion_speed>
             <events>
                 <beat_event>
                     <event_type>NoteOn</event_type>
@@ -400,9 +412,9 @@
                 <m12>0</m12>
                 <m22>1</m22>
                 <m32>0</m32>
-                <m03>5.97446442</m03>
+                <m03>-4.01772213</m03>
                 <m13>0</m13>
-                <m23>-4.35201073</m23>
+                <m23>-9.28363037</m23>
                 <m33>1</m33>
             </transform_mat4>
             <model_name>cube</model_name>
@@ -413,6 +425,9 @@
                 <w>0</w>
             </model_color_vec4>
             <shoot_button>d</shoot_button>
+            <active_beat_time>0</active_beat_time>
+            <motion_angle_degrees>270</motion_angle_degrees>
+            <motion_speed>3</motion_speed>
             <events>
                 <beat_event>
                     <event_type>NoteOn</event_type>
@@ -447,9 +462,9 @@
                 <m12>0</m12>
                 <m22>1</m22>
                 <m32>0</m32>
-                <m03>5.57622051</m03>
+                <m03>7.16211653</m03>
                 <m13>0</m13>
-                <m23>0.175066948</m23>
+                <m23>-9.33278656</m23>
                 <m33>1</m33>
             </transform_mat4>
             <model_name>cube</model_name>
@@ -460,6 +475,9 @@
                 <w>0</w>
             </model_color_vec4>
             <shoot_button>k</shoot_button>
+            <active_beat_time>8</active_beat_time>
+            <motion_angle_degrees>270</motion_angle_degrees>
+            <motion_speed>3</motion_speed>
             <events>
                 <beat_event>
                     <event_type>NoteOn</event_type>
@@ -494,9 +512,9 @@
                 <m12>0</m12>
                 <m22>1</m22>
                 <m32>0</m32>
-                <m03>8.35516453</m03>
+                <m03>10.2461147</m03>
                 <m13>0</m13>
-                <m23>0.198116302</m23>
+                <m23>-8.6178894</m23>
                 <m33>1</m33>
             </transform_mat4>
             <model_name>cube</model_name>
@@ -507,6 +525,9 @@
                 <w>0</w>
             </model_color_vec4>
             <shoot_button>l</shoot_button>
+            <active_beat_time>8</active_beat_time>
+            <motion_angle_degrees>270</motion_angle_degrees>
+            <motion_speed>3</motion_speed>
             <events>
                 <beat_event>
                     <event_type>NoteOn</event_type>

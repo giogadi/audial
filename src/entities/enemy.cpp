@@ -4,6 +4,7 @@
 #include <sstream>
 #include <cctype>
 
+#include "constants.h"
 #include "imgui/imgui.h"
 #include "game_manager.h"
 #include "sound_bank.h"
@@ -49,6 +50,9 @@ void EnemyEntity::SaveDerived(serial::Ptree pt) const {
     char keyStr[8];
     GetStringFromKey(_shootButton, keyStr);
     pt.PutString("shoot_button", keyStr);
+    pt.PutDouble("active_beat_time", _activeBeatTime);
+    pt.PutFloat("motion_angle_degrees", _motionAngleDegrees);
+    pt.PutFloat("motion_speed", _motionSpeed);
     serial::Ptree eventsPt = pt.AddChild("events");
     for (BeatTimeEvent const& b_e : _events) {
         serial::Ptree eventPt = eventsPt.AddChild("beat_event");
@@ -60,6 +64,9 @@ void EnemyEntity::LoadDerived(serial::Ptree pt) {
     std::string keyStr;
     pt.TryGetString("shoot_button", &keyStr);
     _shootButton = GetKeyFromString(keyStr.c_str());
+    pt.TryGetDouble("active_beat_time", &_activeBeatTime);
+    pt.TryGetFloat("motion_angle_degrees", &_motionAngleDegrees);
+    pt.TryGetFloat("motion_speed", &_motionSpeed);    
     serial::Ptree eventsPt = pt.TryGetChild("events");
     if (eventsPt.IsValid()) {
         int numChildren = 0;
@@ -78,8 +85,10 @@ ne::Entity::ImGuiResult EnemyEntity::ImGuiDerived(GameManager& g) {
     if (changed) {
         _shootButton = GetKeyFromString(gButtonNameText.data());
     }
-
+    ImGui::InputDouble("Active beat time", &_activeBeatTime);
     ImGui::InputDouble("Event start denom", &_eventStartDenom);
+    ImGui::InputFloat("Motion angle (deg)", &_motionAngleDegrees);
+    ImGui::InputFloat("Motion speed", &_motionSpeed);
     ImGui::InputTextMultiline("Audio events", gAudioEventScriptBuf.data(), gAudioEventScriptBuf.size());
     if (ImGui::Button("Apply Script to Entity")) {
         ReadBeatEventsFromScript(_events, *g._soundBank, gAudioEventScriptBuf.data(), gAudioEventScriptBuf.size());
@@ -101,6 +110,36 @@ void EnemyEntity::SendEvents(GameManager& g) {
     }    
 }
 
+bool EnemyEntity::IsActive(GameManager& g) const {
+    return g._beatClock->GetBeatTime() >= _activeBeatTimeAbsolute;
+}
+
 void EnemyEntity::OnShot(GameManager& g) {
     SendEvents(g);
+    if (!g._editMode) {
+        g._neEntityManager->TagForDestroy(_id);
+    }    
+}
+
+void EnemyEntity::Init(GameManager& g) {
+    ne::Entity::Init(g);
+    _activeBeatTimeAbsolute = g._beatClock->GetDownBeatTime() + _activeBeatTime;
+}
+
+void EnemyEntity::Update(GameManager& g, float dt) {
+    if (g._editMode) {
+        ne::Entity::Update(g, dt);
+        return;
+    }
+    if (!IsActive(g)) {
+        return;
+    }
+    float angleRad = _motionAngleDegrees * kDeg2Rad;
+    Vec3 velocity(cos(angleRad), 0.f, -sin(angleRad));
+    velocity *= _motionSpeed;
+
+    Vec3 p = _transform.GetPos();
+    p += velocity * dt;
+    _transform.SetTranslation(p);
+    ne::Entity::Update(g, dt);  // draw mesh    
 }

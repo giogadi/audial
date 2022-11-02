@@ -2,7 +2,7 @@
 
 #include "new_entity.h"
 
-struct PlayerEntity : ne::Entity {
+struct PlayerEntity : public ne::Entity {
     // virtual void Init(GameManager& g);
     virtual void Update(GameManager& g, float dt);
     // virtual void Destroy(GameManager& g) {}

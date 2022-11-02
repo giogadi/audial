@@ -14,6 +14,9 @@ void PlayerEntity::Update(GameManager& g, float dt) {
     ne::EntityManager::Iterator enemyIter = g._neEntityManager->GetIterator(ne::EntityType::Enemy);
     for (; !enemyIter.Finished(); enemyIter.Next()) {
         EnemyEntity* enemy = (EnemyEntity*) enemyIter.GetEntity();
+        if (!enemy->IsActive(g)) {
+            continue;
+        }
         InputManager::Key enemyKey = enemy->_shootButton;
         if (!g._inputManager->IsKeyPressedThisFrame(enemyKey)) {
             continue;
