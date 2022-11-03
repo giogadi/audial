@@ -10,7 +10,7 @@ void CameraEntity::Init(GameManager& g) {
     if (g._editMode) {
         // If in edit mode, initialize the debug camera location to this location.
         _camera->_transform = _transform;
-    }
+    }    
 }
 
 void CameraEntity::Update(GameManager& g, float dt) {
@@ -19,6 +19,9 @@ void CameraEntity::Update(GameManager& g, float dt) {
         return;
     }
     _camera->_transform = _transform;
+    _camera->_projectionType = 
+        _ortho ? renderer::Camera::ProjectionType::Orthographic :
+            renderer::Camera::ProjectionType::Perspective;
 }
 
 ne::Entity::ImGuiResult CameraEntity::ImGuiDerived(GameManager& g) {

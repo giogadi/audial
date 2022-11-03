@@ -323,6 +323,7 @@ struct Mat4 {
     static Mat4 LookAt(Vec3 const& eye, Vec3 const& at, Vec3 const& up);
     static Mat4 Frustrum(float left, float right, float bottom, float top, float znear, float zfar);
     static Mat4 Perspective(float fovyRadians, float aspectRatio, float znear, float zfar);
+    static Mat4 Ortho(float width, float aspect, float zNear, float zFar);
 
     void Translate(Vec3 const& t) {
         _m03 += t._x;

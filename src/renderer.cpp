@@ -260,8 +260,16 @@ void Scene::Draw(int windowWidth, int windowHeight, float timeInSecs) {
     PointLight const& light = *(_pInternal->_pointLights.GetItemAtIndex(0));
 
     float aspectRatio = (float)windowWidth / windowHeight;
-    Mat4 viewProjTransform = Mat4::Perspective(
-        _camera._fovyRad, aspectRatio, /*near=*/_camera._zNear, /*far=*/_camera._zFar);
+    Mat4 viewProjTransform;
+    switch (_camera._projectionType) {
+        case Camera::ProjectionType::Perspective:
+            viewProjTransform = Mat4::Perspective(
+                _camera._fovyRad, aspectRatio, /*near=*/_camera._zNear, /*far=*/_camera._zFar);
+            break;
+        case Camera::ProjectionType::Orthographic:
+            viewProjTransform = Mat4::Ortho(/*width=*/20.f, aspectRatio, _camera._zNear, _camera._zFar);
+            break;
+    }
     Mat4 camMatrix = _camera.GetViewMatrix();
     viewProjTransform = viewProjTransform * camMatrix;
 

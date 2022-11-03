@@ -7,6 +7,8 @@ namespace renderer {
 }
 
 struct CameraEntity : ne::Entity {
+    bool _ortho = false;
+
     virtual void Init(GameManager& g) override;
     virtual void Update(GameManager& g, float dt) override;
 protected:

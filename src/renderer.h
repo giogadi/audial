@@ -23,6 +23,8 @@ public:
 
 class Camera {
 public:
+    enum class ProjectionType { Perspective, Orthographic };    
+
     void Set(Mat4 const& t, float fovyRad, float zNear, float zFar) {
         _transform = t;
         _fovyRad = fovyRad;
@@ -33,6 +35,7 @@ public:
     Mat4 GetViewMatrix() const;
 
     Mat4 _transform;
+    ProjectionType _projectionType = ProjectionType::Perspective;
     float _fovyRad = 45.f * kPi / 180.f;
     float _zNear = 0.1f;
     float _zFar = 100.f;

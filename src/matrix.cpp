@@ -149,3 +149,17 @@ void Mat4::Scale(float x, float y, float z) {
     _m12 *= z;    
     _m22 *= z;
 }
+
+// Derivation inspired by:
+// https://www.scratchapixel.com/lessons/3d-basic-rendering/perspective-and-orthographic-projection-matrix/orthographic-projection-matrix
+//
+// Important to note: this generates a z value that is more negative the closer
+// to the camera it is. This is to match GL's default depth-testing.
+Mat4 Mat4::Ortho(float width, float aspect, float zNear, float zFar) {
+    Mat4 m;
+    m._m00 = 2.f / width;
+    m._m11 = 2.f * aspect / width;
+    m._m22 = -2.f / (zFar - zNear);
+    m._m23 = -(zFar + zNear) / (zFar - zNear);
+    return m;
+}
