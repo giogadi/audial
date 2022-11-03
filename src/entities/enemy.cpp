@@ -134,6 +134,9 @@ void EnemyEntity::Update(GameManager& g, float dt) {
     if (!IsActive(g)) {
         return;
     }
+    if (_transform.GetPos()._z > 7.f) {
+        g._neEntityManager->TagForDestroy(_id);
+    }
     float angleRad = _motionAngleDegrees * kDeg2Rad;
     Vec3 velocity(cos(angleRad), 0.f, -sin(angleRad));
     velocity *= _motionSpeed;

@@ -2,6 +2,14 @@
 
 #include <portaudio.h>
 
+void BeatClock::Init(double bpm, double sampleRate, void* stream) {
+    _bpm = bpm;
+    _paStream = stream;
+    _sampleRate = sampleRate;
+    unsigned long epochTickTime = Pa_GetStreamTime(_paStream);
+    _epochBeatTime = epochTickTime * (_bpm / 60.0);
+}
+
 void BeatClock::Update() {
     double audioTime = Pa_GetStreamTime(_paStream);
     double beatTime = audioTime * (_bpm / 60.0);
@@ -13,4 +21,8 @@ void BeatClock::Update() {
     _currentBeatTime = beatTime;
     _currentAudioTime = audioTime;
     _currentTickTime = (unsigned long) std::round(audioTime * _sampleRate);
+}
+
+double BeatClock::GetBeatTimeFromEpoch() const {
+    return GetBeatTime() - _epochBeatTime;
 }

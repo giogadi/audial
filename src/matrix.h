@@ -206,6 +206,13 @@ struct Vec4 {
         : _x(0.), _y(0.), _z(0.), _w(0.f) {}
     Vec4(float x, float y, float z, float w)
         : _x(x), _y(y), _z(z), _w(w) {}
+    
+    void Set(float x, float y, float z, float w) {
+        _x = x;
+        _y = y;
+        _z = z;
+        _w = w;
+    }
     union {
         float _data[4];
         struct {

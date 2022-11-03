@@ -4,11 +4,7 @@
 
 class BeatClock {
 public:
-    void Init(double bpm, double sampleRate, void* stream) {
-        _bpm = bpm;
-        _paStream = stream;
-        _sampleRate = sampleRate;
-    }
+    void Init(double bpm, double sampleRate, void* stream);
 
     void Update();
 
@@ -27,6 +23,7 @@ public:
     double GetBeatTime() const {
         return _currentBeatTime;
     }
+    double GetBeatTimeFromEpoch() const;
     double GetDownBeatTime() const {
         return GetLastDownBeatTime(_currentBeatTime);
     }
@@ -52,6 +49,7 @@ public:
     }
 
 private:
+    double _epochBeatTime = -1.0;
     double _bpm = 120.0;
     double _currentBeatTime = -1.0;
     double _currentAudioTime = -1.0;

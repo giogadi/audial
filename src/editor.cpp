@@ -214,6 +214,19 @@ void Editor::DrawWindow() {
         entity->Init(*_g);
     }
 
+    // Duplicate entities
+    if (ImGui::Button("Duplicate Entity")) {
+        if (ne::Entity* selectedEntity = _g->_neEntityManager->GetEntity(_selectedEntityId)) {
+            ne::Entity* newEntity = _g->_neEntityManager->AddEntity(selectedEntity->_id._type);
+            serial::Ptree pt = serial::Ptree::MakeNew();
+            selectedEntity->Save(pt);
+            newEntity->Load(pt);
+            newEntity->_name += " (copy)";
+            _entityIds.push_back(newEntity->_id);
+            newEntity->Init(*_g);
+        }
+    }
+
     if (ne::Entity* selectedEntity = _g->_neEntityManager->GetEntity(_selectedEntityId)) {        
         if (ImGui::Button("Remove Entity")) {
             assert(_g->_neEntityManager->TagForDestroy(_selectedEntityId));
