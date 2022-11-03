@@ -36,7 +36,13 @@ public:
 
     Mat4 _transform;
     ProjectionType _projectionType = ProjectionType::Perspective;
+
+    // Only used in perspective
     float _fovyRad = 45.f * kPi / 180.f;
+
+    // Only used in ortho
+    float _width = 20.f;
+
     float _zNear = 0.1f;
     float _zFar = 100.f;
 };

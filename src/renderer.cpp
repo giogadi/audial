@@ -267,7 +267,7 @@ void Scene::Draw(int windowWidth, int windowHeight, float timeInSecs) {
                 _camera._fovyRad, aspectRatio, /*near=*/_camera._zNear, /*far=*/_camera._zFar);
             break;
         case Camera::ProjectionType::Orthographic:
-            viewProjTransform = Mat4::Ortho(/*width=*/20.f, aspectRatio, _camera._zNear, _camera._zFar);
+            viewProjTransform = Mat4::Ortho(/*width=*/_camera._width, aspectRatio, _camera._zNear, _camera._zFar);
             break;
     }
     Mat4 camMatrix = _camera.GetViewMatrix();
