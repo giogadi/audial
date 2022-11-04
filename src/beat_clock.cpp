@@ -6,8 +6,9 @@ void BeatClock::Init(double bpm, double sampleRate, void* stream) {
     _bpm = bpm;
     _paStream = stream;
     _sampleRate = sampleRate;
-    unsigned long epochTickTime = Pa_GetStreamTime(_paStream);
-    _epochBeatTime = epochTickTime * (_bpm / 60.0);
+    double audioTimeNow = Pa_GetStreamTime(_paStream);
+    double beatTimeNow = audioTimeNow * (_bpm / 60.0);
+    _epochBeatTime = GetNextDownBeatTime(beatTimeNow);
 }
 
 void BeatClock::Update() {

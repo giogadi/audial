@@ -12,6 +12,7 @@ int constexpr kNumLanes = 8;
 float constexpr kLaneWidth = 2.2f;
 float constexpr kLaneBoundaryWidth = 0.25f;
 
+// Draw them in 2 sets of 4.
 void DrawLanes(GameManager& g) {
     float startX = -0.5f * kNumLanes * kLaneWidth;
     Vec4 color(0.f, 0.f, 0.f, 1.f);
@@ -125,8 +126,9 @@ int gSpawnsIx = 0;
 }
 
 void PlayerEntity::Init(GameManager& g) {
+    double startBeatTime = 4.0;
     for (Spawn const& spawn : gSpawns) {
-        MakeNoteEnemy(g, spawn._noteName, spawn._laneIx, spawn._spawnBeatTime, spawn._despawnBeatTime);
+        MakeNoteEnemy(g, spawn._noteName, spawn._laneIx, startBeatTime + spawn._spawnBeatTime, startBeatTime + spawn._despawnBeatTime);
     }
 }
 

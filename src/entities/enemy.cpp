@@ -122,6 +122,7 @@ static double constexpr gSpawnPredelayBeatTime = 0.5;
 void EnemyEntity::Init(GameManager& g) {
     ne::Entity::Init(g);
     _desiredSpawnY = _transform._m13;
+    _modelColor = Vec4(0.3f, 0.3f, 0.3f, 1.f);
 }
 
 void EnemyEntity::Update(GameManager& g, float dt) {
@@ -143,7 +144,9 @@ void EnemyEntity::Update(GameManager& g, float dt) {
     } else if (beatTime > _inactiveBeatTime - gSpawnPredelayBeatTime) {
         float param = (_inactiveBeatTime - beatTime) / gSpawnPredelayBeatTime;  // 0: inactive beat time; 1: predelay start
         _transform._m13 = _desiredSpawnY + (1.0-param) * gSpawnYOffset;
+        _modelColor = Vec4(0.3f, 0.3f, 0.3f, 1.f);
     } else {
+        _modelColor = Vec4(1.f, 0.647f, 0.f, 1.f);  // orange
         _transform._m13 = _desiredSpawnY;
     }
 

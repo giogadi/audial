@@ -183,7 +183,7 @@
                     <sound_ix>4</sound_ix>
                     <velocity>0.200000003</velocity>
                     <loop>true</loop>
-                    <beat_time>0</beat_time>
+                    <beat_time>4</beat_time>
                 </beat_event>
                 <beat_event>
                     <event_type>PlayPcm</event_type>
@@ -192,7 +192,7 @@
                     <sound_ix>5</sound_ix>
                     <velocity>0.200000003</velocity>
                     <loop>true</loop>
-                    <beat_time>0</beat_time>
+                    <beat_time>4</beat_time>
                 </beat_event>
             </events>
         </Sequencer>    
