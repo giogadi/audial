@@ -57,7 +57,7 @@ int GetMidiNote(char const* noteName) {
     return note;
 }
 
-ne::Entity* MakeNoteEnemy(GameManager& g, char const* noteName, int laneIx) {
+ne::Entity* MakeNoteEnemy(GameManager& g, char const* noteName, int laneIx, double activeTime, double despawnTime) {
     EnemyEntity* enemy = (EnemyEntity*) g._neEntityManager->AddEntity(ne::EntityType::Enemy);
     enemy->_modelName = "cube";
     enemy->_modelColor.Set(0.3f, 0.3f, 0.3f, 1.f);
@@ -86,12 +86,12 @@ ne::Entity* MakeNoteEnemy(GameManager& g, char const* noteName, int laneIx) {
         default: assert(false); break;
     }
 
-    enemy->_motionAngleDegrees = 270.0f;
-    enemy->_motionSpeed = 6.f;
-
     float leftMostLaneX = -0.5f * kNumLanes * kLaneWidth + 0.5f*kLaneWidth;
     Vec3 p(leftMostLaneX + kLaneWidth * laneIx, 0.f, -10.f);
     enemy->_transform.SetTranslation(p);
+
+    enemy->_activeBeatTime = activeTime;
+    enemy->_inactiveBeatTime = despawnTime;
 
     enemy->Init(g);
 
@@ -100,35 +100,42 @@ ne::Entity* MakeNoteEnemy(GameManager& g, char const* noteName, int laneIx) {
 }
 
 struct Spawn {
-    double _beatTime;
+    double _spawnBeatTime;
+    double _despawnBeatTime;
     char const* _noteName;
-    int laneIx;
+    int _laneIx;
 };
 
 namespace {
 std::vector<Spawn> const gSpawns = {
-    {0., "C1", 0},
-    {0., "G1", 4},
-    {8., "C1", 0},
-    {8., "G1", 4},
-    {8., "B1-", 6},
-    {8., "C2", 7},
-    {16., "C1", 0},
-    {16., "G1", 4},
-    {24., "C1", 0},
-    {24., "G1", 4},
-    {24., "B1-", 6},
-    {24., "C2", 7},
+    {0., 4., "C1", 0},
+    {0., 4., "G1", 4},
+    {8., 12., "C1", 0},
+    {8., 12., "G1", 4},
+    {8., 12., "B1-", 6},
+    {8., 12., "C2", 7},
+    {16., 20., "C1", 0},
+    {16., 20., "G1", 4},
+    {24., 28., "C1", 0},
+    {24., 28., "G1", 4},
+    {24., 28., "B1-", 6},
+    {24., 28., "C2", 7},
 };
 int gSpawnsIx = 0;
 }
 
-void PlayerEntity::ScriptUpdate(GameManager& g) {
-    double beatTime = g._beatClock->GetBeatTimeFromEpoch();
-    while (gSpawnsIx < gSpawns.size() && beatTime >= gSpawns[gSpawnsIx]._beatTime) {
-        MakeNoteEnemy(g, gSpawns[gSpawnsIx]._noteName, gSpawns[gSpawnsIx].laneIx);
-        ++gSpawnsIx;
+void PlayerEntity::Init(GameManager& g) {
+    for (Spawn const& spawn : gSpawns) {
+        MakeNoteEnemy(g, spawn._noteName, spawn._laneIx, spawn._spawnBeatTime, spawn._despawnBeatTime);
     }
+}
+
+void PlayerEntity::ScriptUpdate(GameManager& g) {
+    // double beatTime = g._beatClock->GetBeatTimeFromEpoch();
+    // while (gSpawnsIx < gSpawns.size() && beatTime >= gSpawns[gSpawnsIx]._spawnBeatTime) {
+    //     MakeNoteEnemy(g, gSpawns[gSpawnsIx]._noteName, gSpawns[gSpawnsIx]._laneIx,);
+    //     ++gSpawnsIx;
+    // }
 }
 
 void PlayerEntity::Update(GameManager& g, float dt) {

@@ -51,8 +51,6 @@ void EnemyEntity::SaveDerived(serial::Ptree pt) const {
     GetStringFromKey(_shootButton, keyStr);
     pt.PutString("shoot_button", keyStr);
     pt.PutDouble("active_beat_time", _activeBeatTime);
-    pt.PutFloat("motion_angle_degrees", _motionAngleDegrees);
-    pt.PutFloat("motion_speed", _motionSpeed);
     serial::Ptree eventsPt = pt.AddChild("events");
     for (BeatTimeEvent const& b_e : _events) {
         serial::Ptree eventPt = eventsPt.AddChild("beat_event");
@@ -65,8 +63,6 @@ void EnemyEntity::LoadDerived(serial::Ptree pt) {
     pt.TryGetString("shoot_button", &keyStr);
     _shootButton = GetKeyFromString(keyStr.c_str());
     pt.TryGetDouble("active_beat_time", &_activeBeatTime);
-    pt.TryGetFloat("motion_angle_degrees", &_motionAngleDegrees);
-    pt.TryGetFloat("motion_speed", &_motionSpeed);    
     serial::Ptree eventsPt = pt.TryGetChild("events");
     if (eventsPt.IsValid()) {
         int numChildren = 0;
@@ -87,8 +83,6 @@ ne::Entity::ImGuiResult EnemyEntity::ImGuiDerived(GameManager& g) {
     }
     ImGui::InputDouble("Active beat time", &_activeBeatTime);
     ImGui::InputDouble("Event start denom", &_eventStartDenom);
-    ImGui::InputFloat("Motion angle (deg)", &_motionAngleDegrees);
-    ImGui::InputFloat("Motion speed", &_motionSpeed);
     ImGui::InputTextMultiline("Audio events", gAudioEventScriptBuf.data(), gAudioEventScriptBuf.size());
     if (ImGui::Button("Apply Script to Entity")) {
         ReadBeatEventsFromScript(_events, *g._soundBank, gAudioEventScriptBuf.data(), gAudioEventScriptBuf.size());
@@ -111,7 +105,8 @@ void EnemyEntity::SendEvents(GameManager& g) {
 }
 
 bool EnemyEntity::IsActive(GameManager& g) const {
-    return g._beatClock->GetBeatTime() >= _activeBeatTimeAbsolute;
+    double beatTime = g._beatClock->GetBeatTimeFromEpoch();
+    return beatTime >= _activeBeatTime && beatTime < _inactiveBeatTime;
 }
 
 void EnemyEntity::OnShot(GameManager& g) {
@@ -121,9 +116,12 @@ void EnemyEntity::OnShot(GameManager& g) {
     // }
 }
 
+static float constexpr gSpawnYOffset = -10.f;
+static double constexpr gSpawnPredelayBeatTime = 0.5;
+
 void EnemyEntity::Init(GameManager& g) {
     ne::Entity::Init(g);
-    _activeBeatTimeAbsolute = g._beatClock->GetDownBeatTime() + _activeBeatTime;
+    _desiredSpawnY = _transform._m13;
 }
 
 void EnemyEntity::Update(GameManager& g, float dt) {
@@ -131,18 +129,29 @@ void EnemyEntity::Update(GameManager& g, float dt) {
         ne::Entity::Update(g, dt);
         return;
     }
-    if (!IsActive(g)) {
+    
+    // If beatTime < activeBeatTime - predelay, don't draw this entity, we done.
+    // for beatTime in [activeBeatTime - predelay, activeBeatTime], animate from spawn position to desired position.
+    double beatTime = g._beatClock->GetBeatTimeFromEpoch();
+    if (beatTime < _activeBeatTime - gSpawnPredelayBeatTime ||
+        beatTime >= _inactiveBeatTime) {
         return;
     }
-    if (_transform.GetPos()._z > 7.f) {
-        g._neEntityManager->TagForDestroy(_id);
+    if (beatTime < _activeBeatTime) {
+        float param = (_activeBeatTime - beatTime) / gSpawnPredelayBeatTime;  // 0: active beat time; 1: predelay start
+        _transform._m13 = _desiredSpawnY + param * gSpawnYOffset;
+    } else if (beatTime > _inactiveBeatTime - gSpawnPredelayBeatTime) {
+        float param = (_inactiveBeatTime - beatTime) / gSpawnPredelayBeatTime;  // 0: inactive beat time; 1: predelay start
+        _transform._m13 = _desiredSpawnY + (1.0-param) * gSpawnYOffset;
+    } else {
+        _transform._m13 = _desiredSpawnY;
     }
-    float angleRad = _motionAngleDegrees * kDeg2Rad;
-    Vec3 velocity(cos(angleRad), 0.f, -sin(angleRad));
-    velocity *= _motionSpeed;
 
-    Vec3 p = _transform.GetPos();
-    p += velocity * dt;
-    _transform.SetTranslation(p);
+    // Want to hit 2pi every 4 beats.
+    double beatFrac = fmod(beatTime, 4.0);
+    float angle = (beatFrac / 4.0) * 2 * kPi;
+    Mat3 rot = Mat3::FromAxisAngle(Vec3(0.f, 1.f, 0.f), angle);
+    _transform.SetTopLeftMat3(rot);
+    
     ne::Entity::Update(g, dt);  // draw mesh    
 }

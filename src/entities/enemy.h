@@ -10,19 +10,21 @@ struct EnemyEntity : public ne::Entity {
     double _eventStartDenom = 0.125;
     InputManager::Key _shootButton = InputManager::Key::NumKeys;
     double _activeBeatTime = 0.0;  // read as an offset from the downbeat when this entity is initialized.
-    float _motionAngleDegrees = 0.0f;  // +x is 0 degrees, + is ccw about y axis
-    float _motionSpeed = 0.f;
+    double _inactiveBeatTime = -1.0;  // < 0 means it stays active once active.
 
-    double _activeBeatTimeAbsolute = 0.0;
+    float _desiredSpawnY = 0.f;
 
     void OnShot(GameManager& g);
 
+    // _transform should contain the desired spawn position *before* calling Init() for the spawn to work properly.
     virtual void Init(GameManager& g) override;
     virtual void Update(GameManager& g, float dt) override;
     // virtual void Destroy(GameManager& g) override;
     virtual void OnEditPick(GameManager& g) override;
 
     void SendEvents(GameManager& g);
+
+    // returns true if it can be hit by the player
     bool IsActive(GameManager& g) const;
 
 protected:
