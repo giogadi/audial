@@ -10,6 +10,7 @@
 #include "sound_bank.h"
 #include "serial.h"
 #include "audio.h"
+#include "renderer.h"
 
 namespace {
 
@@ -109,13 +110,6 @@ bool EnemyEntity::IsActive(GameManager& g) const {
     return beatTime >= _activeBeatTime && beatTime < _inactiveBeatTime;
 }
 
-void EnemyEntity::OnShot(GameManager& g) {
-    SendEvents(g);
-    // if (!g._editMode) {
-    //     g._neEntityManager->TagForDestroy(_id);
-    // }
-}
-
 static float constexpr gSpawnYOffset = -10.f;
 static double constexpr gSpawnPredelayBeatTime = 0.5;
 
@@ -123,6 +117,33 @@ void EnemyEntity::Init(GameManager& g) {
     ne::Entity::Init(g);
     _desiredSpawnY = _transform._m13;
     _modelColor = Vec4(0.3f, 0.3f, 0.3f, 1.f);
+}
+
+float SmoothStep(float x) {
+    if (x <= 0) { return 0.f; }
+    if (x >= 1.f) { return 1.f; }
+    float x2 = x*x;
+    return 3*x2 - 2*x2*x;
+}
+
+// Maps [0..1] to [0..1..0]
+float Triangle(float x) {
+    return -std::abs(2.f*(x - 0.5f)) + 1.f;
+}
+
+float SmoothUpAndDown(float x) {
+    if (x < 0.5f) {
+        return SmoothStep(2*x);
+    }
+    return 1.f-SmoothStep(2*(x - 0.5f));
+}
+
+void EnemyEntity::OnShot(GameManager& g) {
+    SendEvents(g);
+    _shotBeatTime = g._beatClock->GetBeatTimeFromEpoch();
+    if (!g._editMode) {
+        g._neEntityManager->TagForDestroy(_id);
+    }
 }
 
 void EnemyEntity::Update(GameManager& g, float dt) {
@@ -148,13 +169,34 @@ void EnemyEntity::Update(GameManager& g, float dt) {
     } else {
         _modelColor = Vec4(1.f, 0.647f, 0.f, 1.f);  // orange
         _transform._m13 = _desiredSpawnY;
+
+        // float constexpr moveSpeed = 2.f;
+        // _transform._m23 += moveSpeed * dt;
+    }    
+
+    Mat4 renderTrans = _transform;
+
+    if (_shotBeatTime >= 0.0) {
+        double timeSinceShot = beatTime - _shotBeatTime;
+        float constexpr bounceBeatTime = 0.3f;
+        float param = timeSinceShot / bounceBeatTime;
+        // param: [0,1]. Want to map this to [0...1...0]
+        param = Triangle(param);
+        // For some reason, smoothing doesn't look good.
+        // param = SmoothStep(param);
+        renderTrans._m23 += -param * 1.5f;
+        if (timeSinceShot >= bounceBeatTime) {
+            _shotBeatTime = -1.0;
+        }
     }
 
     // Want to hit 2pi every 4 beats.
     double beatFrac = fmod(beatTime, 4.0);
     float angle = (beatFrac / 4.0) * 2 * kPi;
     Mat3 rot = Mat3::FromAxisAngle(Vec3(0.f, 1.f, 0.f), angle);
-    _transform.SetTopLeftMat3(rot);
+    renderTrans.SetTopLeftMat3(rot);
     
-    ne::Entity::Update(g, dt);  // draw mesh    
+    if (_model != nullptr) {
+        g._scene->DrawMesh(_model, renderTrans, _modelColor);
+    }
 }

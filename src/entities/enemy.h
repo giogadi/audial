@@ -13,6 +13,7 @@ struct EnemyEntity : public ne::Entity {
     double _inactiveBeatTime = -1.0;  // < 0 means it stays active once active.
 
     float _desiredSpawnY = 0.f;
+    double _shotBeatTime = -1.0;
 
     void OnShot(GameManager& g);
 
