@@ -9,8 +9,6 @@ struct PlayerEntity : public ne::Entity {
     // virtual void OnEditPick(GameManager& g) {}
     // virtual void DebugPrint();
 
-    void ScriptUpdate(GameManager& g);
-
 protected:
     virtual void SaveDerived(serial::Ptree pt) const {};
     virtual void LoadDerived(serial::Ptree pt) {};

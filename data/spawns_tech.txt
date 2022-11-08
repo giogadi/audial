@@ -1,12 +1,38 @@
 offset 3.0
-s 0. 12. C2 0 -10
-s 0. 12. C2 0 -8
-s 0. 12. C2 0 -6
-s 0. 12. G2 4 -10
-s 0. 12. G2 4 -8
-s 10. 16. E2- 2 -10
-s 10. 16. G2 4 -10
-s 10. 16. B2- 6 -10
-s 16. 24. F2 3 -10
-s 16. 24. A2 5 -10
-s 16. 24. C3 7 -10
+s on:0 off:24 note:C2 lane:0 z:-10 beh:
+s on:0 off:24 note:C2 lane:0 z:-8 beh:
+s on:0 off:24 note:C2 lane:0 z:-6 beh:
+
+s on:0 off:24 note:F2 lane:3 z:-10 beh:
+s on:0 off:24 note:F2 lane:3 z:-8 beh:
+s on:0 off:24 note:F2 lane:3 z:-6 beh:
+
+s on:0 off:24 note:G2 lane:4 z:-10 beh:
+s on:0 off:24 note:G2 lane:4 z:-8 beh:
+s on:0 off:24 note:G2 lane:4 z:-6 beh:
+
+s on:0 off:24 note:B2- lane:6 z:-10 beh:
+s on:0 off:24 note:B2- lane:6 z:-8 beh:
+s on:0 off:24 note:B2- lane:6 z:-6 beh:
+
+
+#s on:0 off:24 note:C2 lane:0 z:-10 beh:zig
+#s 0 0. 24. C2 0 -10
+#s 0 0. 24. C2 0 -8
+#s 0 0. 24. C2 0 -6
+#s 0 0. 24. F2 3 -10
+#s 0 0. 24. F2 3 -8
+#s 0 0. 24. F2 3 -6
+#s 0 0. 24. G2 4 -10
+#s 0 0. 24. G2 4 -8
+#s 0 0. 24. G2 4 -6
+#s 0 0. 24. B2- 6 -10
+#s 0 0. 24. B2- 6 -8
+#s 0 0. 24. B2- 6 -6
+
+#s 1 10. 16. E2- 2 -10
+#s 1 10. 16. G2 4 -10
+#s 1 10. 16. B2- 6 -10
+#s 1 16. 24. F2 3 -10
+#s 1 16. 24. A2 5 -10
+#s 1 16. 24. C3 7 -10

@@ -10,4 +10,14 @@ namespace math_util {
         }
         return x;
     }
+
+    inline int Clamp(int x, int low, int high) {
+        if (x < low) {
+            return low;
+        }
+        if (x > high) {
+            return high;
+        }
+        return x;
+    }
 }

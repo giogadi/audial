@@ -11,6 +11,7 @@
 #include "serial.h"
 #include "audio.h"
 #include "renderer.h"
+#include "math_util.h"
 
 namespace {
 
@@ -106,6 +107,9 @@ void EnemyEntity::SendEvents(GameManager& g) {
 }
 
 bool EnemyEntity::IsActive(GameManager& g) const {
+    if (g._editMode) {
+        return true;
+    }
     double beatTime = g._beatClock->GetBeatTimeFromEpoch();
     return beatTime >= _activeBeatTime && beatTime < _inactiveBeatTime;
 }
@@ -142,8 +146,17 @@ void EnemyEntity::OnShot(GameManager& g) {
     SendEvents(g);
     _shotBeatTime = g._beatClock->GetBeatTimeFromEpoch();
     if (!g._editMode) {
-        g._neEntityManager->TagForDestroy(_id);
+        if (_hp > 0) {
+            --_hp;
+            if (_hp <= 0) {
+                g._neEntityManager->TagForDestroy(_id);
+            }
+        }        
     }
+}
+
+namespace {
+    std::array<int, 8> gMinorScaleNotes = {0, 2, 3, 5, 7, 8, 10, 12};
 }
 
 void EnemyEntity::Update(GameManager& g, float dt) {
@@ -154,6 +167,7 @@ void EnemyEntity::Update(GameManager& g, float dt) {
     
     // If beatTime < activeBeatTime - predelay, don't draw this entity, we done.
     // for beatTime in [activeBeatTime - predelay, activeBeatTime], animate from spawn position to desired position.
+    bool active = false;
     double beatTime = g._beatClock->GetBeatTimeFromEpoch();
     if (beatTime < _activeBeatTime - gSpawnPredelayBeatTime ||
         beatTime >= _inactiveBeatTime) {
@@ -169,10 +183,65 @@ void EnemyEntity::Update(GameManager& g, float dt) {
     } else {
         _modelColor = Vec4(1.f, 0.647f, 0.f, 1.f);  // orange
         _transform._m13 = _desiredSpawnY;
+        active = true; 
+    }
 
-        // float constexpr moveSpeed = 2.f;
-        // _transform._m23 += moveSpeed * dt;
-    }    
+    float const minX = -kLaneWidth * (kNumLanes / 2);
+    float const maxX = kLaneWidth * (kNumLanes / 2);
+    float const xOffset = _transform._m03 - minX;
+    int const currentLaneIx = math_util::Clamp((int)(xOffset / kLaneWidth), 0, kNumLanes - 1);
+
+    if (active) {
+        switch (_behavior) {
+            case Behavior::None:
+                break;
+            case Behavior::Zigging: {
+                _zigPhaseTime += dt;
+                double const kPhaseTimeInBeats = 1.0;
+                double const phaseTimeInSecs = kPhaseTimeInBeats * 60.0 / g._beatClock->GetBpm();
+                if (_zigPhaseTime > phaseTimeInSecs) {
+                    _zigPhaseTime -= phaseTimeInSecs;
+                    _zigMoving = !_zigMoving;
+                    if (_zigMoving) {
+                        // pick a new target
+                        _zigSource = _transform.GetPos();              
+                        int newLaneIx = (currentLaneIx + 5) % kNumLanes;
+                        float newX = minX + (0.5f * kLaneWidth) + (newLaneIx * kLaneWidth);
+                        float newZ = _zigSource._z + 2.f;
+                        _zigTarget.Set(newX, 0.f, newZ);                        
+                    }
+                }
+                if (_zigMoving) {
+                    float param = SmoothStep(_zigPhaseTime / phaseTimeInSecs);
+                    _transform.SetTranslation(_zigSource + (_zigTarget - _zigSource) * param);
+                }
+                break;
+            }
+        }
+    }
+
+    // update shoot button and midi note from lateral position
+    {        
+        int laneIx = math_util::Clamp((int)(xOffset / kLaneWidth), 0, kNumLanes - 1);
+        switch (laneIx) {
+            case 0: _shootButton = InputManager::Key::A; break;
+            case 1: _shootButton = InputManager::Key::S; break;
+            case 2: _shootButton = InputManager::Key::D; break;
+            case 3: _shootButton = InputManager::Key::F; break;
+            case 4: _shootButton = InputManager::Key::H; break;
+            case 5: _shootButton = InputManager::Key::J; break;
+            case 6: _shootButton = InputManager::Key::K; break;
+            case 7: _shootButton = InputManager::Key::L; break;
+            default: assert(false); break;
+        }
+        // HACK: just assume we're in C2->C3
+        int midiNote = 36 + gMinorScaleNotes[laneIx];
+        for (BeatTimeEvent& b_e : _events) {
+            if (b_e._e.type == audio::EventType::NoteOn || b_e._e.type == audio::EventType::NoteOff) {
+                b_e._e.midiNote = midiNote;
+            }            
+        }
+    }
 
     Mat4 renderTrans = _transform;
 

@@ -8,11 +8,9 @@
 #include "input_manager.h"
 #include "entities/enemy.h"
 #include "renderer.h"
+#include "constants.h"
 
 namespace {
-int constexpr kNumLanes = 8;
-float constexpr kLaneWidth = 2.2f;
-float constexpr kLaneBoundaryWidth = 0.25f;
 
 // Draw them in 2 sets of 4.
 void DrawLanes(GameManager& g) {
@@ -61,24 +59,38 @@ int GetMidiNote(char const* noteName) {
     return note;
 }
 
-ne::Entity* MakeNoteEnemy(GameManager& g, char const* noteName, int laneIx, double activeTime, double despawnTime, float z) {
+struct Spawn {
+    double _spawnBeatTime = 0.0;
+    double _despawnBeatTime = -1.0;
+    std::string _noteName = "C2";
+    int _channel = 0;
+    int _laneIx = 0;
+    float _z = 0.f;
+    EnemyEntity::Behavior _behavior = EnemyEntity::Behavior::None;
+    int _hp = 1;
+};
+
+ne::Entity* MakeNoteEnemy(GameManager& g, Spawn const& spawnInfo) {
     EnemyEntity* enemy = (EnemyEntity*) g._neEntityManager->AddEntity(ne::EntityType::Enemy);
     enemy->_modelName = "cube";
     enemy->_modelColor.Set(0.3f, 0.3f, 0.3f, 1.f);
+    enemy->_eventStartDenom = 0.25;
+    enemy->_behavior = spawnInfo._behavior;
+    enemy->_hp = spawnInfo._hp;
 
-    int midiNote = GetMidiNote(noteName);
+    int midiNote = GetMidiNote(spawnInfo._noteName.c_str());
 
     BeatTimeEvent b_e;
     b_e._e.type = audio::EventType::NoteOn;
-    b_e._e.channel = 0;
+    b_e._e.channel = spawnInfo._channel;
     b_e._e.midiNote = midiNote;
     b_e._beatTime = 0.0;
     enemy->_events.push_back(b_e);
     b_e._e.type = audio::EventType::NoteOff;
-    b_e._beatTime = 0.5;
+    b_e._beatTime = 0.25;
     enemy->_events.push_back(b_e);
 
-    switch (laneIx) {
+    switch (spawnInfo._laneIx) {
         case 0: enemy->_shootButton = InputManager::Key::A; break;
         case 1: enemy->_shootButton = InputManager::Key::S; break;
         case 2: enemy->_shootButton = InputManager::Key::D; break;
@@ -91,25 +103,17 @@ ne::Entity* MakeNoteEnemy(GameManager& g, char const* noteName, int laneIx, doub
     }
 
     float leftMostLaneX = -0.5f * kNumLanes * kLaneWidth + 0.5f*kLaneWidth;
-    Vec3 p(leftMostLaneX + kLaneWidth * laneIx, 0.f, z);
+    Vec3 p(leftMostLaneX + kLaneWidth * spawnInfo._laneIx, 0.f, spawnInfo._z);
     enemy->_transform.SetTranslation(p);
 
-    enemy->_activeBeatTime = activeTime;
-    enemy->_inactiveBeatTime = despawnTime;
+    enemy->_activeBeatTime = spawnInfo._spawnBeatTime;
+    enemy->_inactiveBeatTime = spawnInfo._despawnBeatTime;
 
     enemy->Init(g);
 
     return enemy;
 }
 }
-
-struct Spawn {
-    double _spawnBeatTime;
-    double _despawnBeatTime;
-    std::string _noteName;
-    int _laneIx;
-    float _z;
-};
 
 namespace {
 
@@ -132,6 +136,10 @@ void LoadSpawnsFromFile(char const* fileName, std::vector<Spawn>* spawns) {
     std::string token;
     while (!inFile.eof()) {
         std::getline(inFile, line);
+        // If it's empty, skip.
+        if (line.empty()) {
+            continue;
+        }
         // If it's only whitespace, just skip.
         bool onlySpaces = true;
         for (char c : line) {
@@ -144,22 +152,60 @@ void LoadSpawnsFromFile(char const* fileName, std::vector<Spawn>* spawns) {
             continue;
         }
 
+        // skip commented-out lines
+        if (line[0] == '#') {
+            continue;
+        }
+
         std::stringstream lineStream(line);
         lineStream >> token;
         if (token == "offset") {
             lineStream >> beatTimeOffset;
             continue;
-        }     
+        }
 
-        spawns->emplace_back();
-        Spawn& spawn = spawns->back();        
-        lineStream >> spawn._spawnBeatTime;
-        lineStream >> spawn._despawnBeatTime;
-        lineStream >> spawn._noteName;
-        lineStream >> spawn._laneIx;
-        lineStream >> spawn._z;
-        spawn._spawnBeatTime += beatTimeOffset;
-        spawn._despawnBeatTime += beatTimeOffset;
+        Spawn spawn;
+
+        while (!lineStream.eof()) {
+            std::string key, value;
+            {
+                lineStream >> token;
+                std::size_t delimIx = token.find_first_of(':');
+                if (delimIx == std::string::npos) {
+                    printf("Token missing \":\" - \"%s\"\n", token.c_str());
+                    continue;
+                }
+
+                key = token.substr(0, delimIx);
+                value = token.substr(delimIx+1);
+            }
+            // If value is empty, just skip to the next thing.
+            if (value.empty()) {
+                continue;
+            }
+
+            if (key == "on") {
+                spawn._spawnBeatTime = std::stod(value) + beatTimeOffset;
+            } else if (key == "off") {
+                spawn._despawnBeatTime = std::stod(value) + beatTimeOffset;
+            } else if (key == "ch") {
+                spawn._channel = std::stoi(value);
+            } else if (key == "note") {
+                spawn._noteName = value;
+            } else if (key == "lane") {
+                spawn._laneIx = std::stoi(value);
+            } else if (key == "z") {
+                spawn._z = std::stof(value);
+            } else if (key == "beh") {
+                if (value == "zig") {
+                    spawn._behavior = EnemyEntity::Behavior::Zigging;
+                }
+            } else if (key == "hp") {
+                spawn._hp = std::stoi(value);
+            }
+        }
+
+        spawns->push_back(spawn);
     }
 }
 }
@@ -168,16 +214,8 @@ void PlayerEntity::Init(GameManager& g) {
     std::vector<Spawn> spawns;
     LoadSpawnsFromFile("data/spawns_tech.txt", &spawns);
     for (Spawn const& spawn : spawns) {
-        MakeNoteEnemy(g, spawn._noteName.c_str(), spawn._laneIx, spawn._spawnBeatTime, spawn._despawnBeatTime, spawn._z);
+        MakeNoteEnemy(g, spawn);
     }
-}
-
-void PlayerEntity::ScriptUpdate(GameManager& g) {
-    // double beatTime = g._beatClock->GetBeatTimeFromEpoch();
-    // while (gSpawnsIx < gSpawns.size() && beatTime >= gSpawns[gSpawnsIx]._spawnBeatTime) {
-    //     MakeNoteEnemy(g, gSpawns[gSpawnsIx]._noteName, gSpawns[gSpawnsIx]._laneIx,);
-    //     ++gSpawnsIx;
-    // }
 }
 
 void PlayerEntity::Update(GameManager& g, float dt) {
@@ -226,9 +264,5 @@ void PlayerEntity::Update(GameManager& g, float dt) {
 
     for (int i = 0; i < numKeysShot; ++i) {
         keysShot[i]._nearest->OnShot(g);
-    }
-
-    if (!g._editMode) {
-        ScriptUpdate(g);
     }
 }

@@ -5,15 +5,30 @@
 #include "input_manager.h"
 
 struct EnemyEntity : public ne::Entity {
+    enum class Behavior {
+        None,
+        Zigging
+    };
+
     // serialized
     std::vector<BeatTimeEvent> _events;
     double _eventStartDenom = 0.125;
     InputManager::Key _shootButton = InputManager::Key::NumKeys;
-    double _activeBeatTime = 0.0;  // read as an offset from the downbeat when this entity is initialized.
+    double _activeBeatTime = 0.0;
     double _inactiveBeatTime = -1.0;  // < 0 means it stays active once active.
+    Behavior _behavior = Behavior::None;
+    int _hp = -1;
+
 
     float _desiredSpawnY = 0.f;
     double _shotBeatTime = -1.0;
+
+    // specific to zigging
+    // bool _zigLeft = true;
+    float _zigPhaseTime = 0.f;
+    bool _zigMoving = false;
+    Vec3 _zigSource;
+    Vec3 _zigTarget;
 
     void OnShot(GameManager& g);
 
