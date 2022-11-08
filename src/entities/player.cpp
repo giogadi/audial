@@ -68,6 +68,7 @@ struct Spawn {
     float _z = 0.f;
     EnemyEntity::Behavior _behavior = EnemyEntity::Behavior::None;
     int _hp = 1;
+    float _downSpeed = 2.f;
 };
 
 ne::Entity* MakeNoteEnemy(GameManager& g, Spawn const& spawnInfo) {
@@ -77,6 +78,7 @@ ne::Entity* MakeNoteEnemy(GameManager& g, Spawn const& spawnInfo) {
     enemy->_eventStartDenom = 0.25;
     enemy->_behavior = spawnInfo._behavior;
     enemy->_hp = spawnInfo._hp;
+    enemy->_downSpeed = spawnInfo._downSpeed;
 
     int midiNote = GetMidiNote(spawnInfo._noteName.c_str());
 
@@ -199,9 +201,13 @@ void LoadSpawnsFromFile(char const* fileName, std::vector<Spawn>* spawns) {
             } else if (key == "beh") {
                 if (value == "zig") {
                     spawn._behavior = EnemyEntity::Behavior::Zigging;
+                } else if (value == "down") {
+                    spawn._behavior = EnemyEntity::Behavior::Down;
                 }
             } else if (key == "hp") {
                 spawn._hp = std::stoi(value);
+            } else if (key == "downv") {
+                spawn._downSpeed = std::stof(value);
             }
         }
 

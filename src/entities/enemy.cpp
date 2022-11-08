@@ -195,6 +195,10 @@ void EnemyEntity::Update(GameManager& g, float dt) {
         switch (_behavior) {
             case Behavior::None:
                 break;
+            case Behavior::Down: {
+                _transform._m23 += _downSpeed * dt;
+                break;
+            }
             case Behavior::Zigging: {
                 _zigPhaseTime += dt;
                 double const kPhaseTimeInBeats = 1.0;
@@ -218,6 +222,12 @@ void EnemyEntity::Update(GameManager& g, float dt) {
                 break;
             }
         }
+    }
+
+    // Despawn if below a certain point
+    float constexpr kDespawnZ = 7.f;
+    if (_transform._m23 >= kDespawnZ) {
+        g._neEntityManager->TagForDestroy(_id);
     }
 
     // update shoot button and midi note from lateral position

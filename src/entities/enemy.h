@@ -7,6 +7,7 @@
 struct EnemyEntity : public ne::Entity {
     enum class Behavior {
         None,
+        Down,
         Zigging
     };
 
@@ -18,6 +19,8 @@ struct EnemyEntity : public ne::Entity {
     double _inactiveBeatTime = -1.0;  // < 0 means it stays active once active.
     Behavior _behavior = Behavior::None;
     int _hp = -1;
+    // Down-specific
+    float _downSpeed = 2.f;
 
 
     float _desiredSpawnY = 0.f;
