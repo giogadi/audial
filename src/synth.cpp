@@ -209,8 +209,12 @@ namespace synth {
         // Cutoff envelope
         adsrEnvelope(cutoffEnvSpec, voice.cutoffEnvState);
         modulatedCutoff += patch.cutoffEnvGain * voice.cutoffEnvState.currentValue;
+	// The fancy filter below blows up for some reason if we don't include
+	// this line.
+	modulatedCutoff = math_util::Clamp(modulatedCutoff, 0.f, 22050.f);
 
         // ladder filter
+#if 0
         float const rc = 1 / modulatedCutoff;
         float const a = dt / (rc + dt);
         v -= patch.cutoffK * voice.lp3;
@@ -221,6 +225,31 @@ namespace synth {
         voice.lp3 = a*(voice.lp2) + (1-a)*voice.lp3;
         v = voice.lp3;
 
+#else	
+	// https://www.cytomic.com/files/dsp/SvfLinearTrapOptimised2.pdf
+	{
+	    float res = cutoffK / 4.f;
+	    float g = tan(kPi * modulatedCutoff * dt);
+	    float k = 2 - 2*res;
+	    assert((1 + g*(g+k)) != 0.f);
+	    float a1 = 1 / (1 + g*(g+k));
+	    float a2 = g*a1;
+	    float a3 = g*a2;
+	    
+	    float v3 = v - voice.ic2eq;
+	    float v1 = a1*voice.ic1eq + a2*v3;
+	    float v2 = voice.ic2eq + a2*voice.ic1eq + a3*v3;
+	    voice.ic1eq = 2*v1 - voice.ic1eq;
+	    voice.ic2eq = 2*v2 - voice.ic2eq;
+
+	    if (v2 != 0.f) {
+		res = 1.f;
+	    }
+
+	    v = v2;
+	}
+#endif
+	
         // Amplitude envelope
         // TODO: move this up top so we can early-exit if the envelope is closed and save some computation.
         // TODO: consider only doing the envelope computation once per buffer frame.
@@ -229,6 +258,10 @@ namespace synth {
             voice.currentMidiNote = -1;
         }
         v *= voice.ampEnvState.currentValue;
+
+	if (v != 0.f) {
+	    v *= 1.f;
+	}
 
         return v;
     }

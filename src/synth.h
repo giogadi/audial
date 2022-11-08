@@ -156,6 +156,10 @@ namespace synth {
         float lp1 = 0.0f;
         float lp2 = 0.0f;
         float lp3 = 0.0f;
+
+	// NEW FILTER LET'S GO
+	float ic1eq = 0.f;
+	float ic2eq = 0.f;
     };
 
     struct StateData {

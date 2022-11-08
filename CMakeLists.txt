@@ -5,6 +5,9 @@ project(Audial)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
+# STK
+add_subdirectory(src/stk)
+
 add_executable(game
     src/stb_image.cpp src/imgui/imgui.cpp src/imgui/imgui_demo.cpp src/imgui/imgui_draw.cpp
     src/imgui/imgui_tables.cpp src/imgui/imgui_widgets.cpp src/imgui/backends/imgui_impl_glfw.cpp
@@ -84,3 +87,13 @@ add_executable(new_entity_test EXCLUDE_FROM_ALL
     src/new_entity_test.cpp src/new_entity.cpp src/serial.cpp)
 target_include_directories(new_entity_test PUBLIC
     ./src)
+
+add_executable(stk_test EXCLUDE_FROM_ALL
+    src/stk_test.cpp src/glad/src/glad.cpp)
+target_link_libraries(stk_test glfw)
+target_include_directories(stk_test PUBLIC
+    src/glfw/include src/glad/include)
+target_link_libraries(stk_test PortAudio)
+target_include_directories(stk_test PUBLIC src/portaudio/include)
+target_link_libraries(stk_test stk)
+target_include_directories(stk_test PUBLIC src/)
