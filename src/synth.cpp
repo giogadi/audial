@@ -155,17 +155,31 @@ namespace synth {
     // TODO: early exit if envelope is closed.
     // TODO: remove redundant args now that we pass Patch in.
     float ProcessVoice(
-        Voice& voice, int const sampleRate, float pitchLFOValue, float modulatedCutoff, float cutoffK,
-        ADSREnvSpecInTicks const& ampEnvSpec, ADSREnvSpecInTicks const& cutoffEnvSpec, float const cutoffEnvGain,
+        Voice& voice, int const sampleRate, float pitchLFOValue,
+	float modulatedCutoff, float cutoffK,
+        ADSREnvSpecInTicks const& ampEnvSpec,
+	ADSREnvSpecInTicks const& cutoffEnvSpec, float const cutoffEnvGain,
+	ADSREnvSpecInTicks const& pitchEnvSpec, float const pitchEnvGain,
         Patch const& patch) {
         float const dt = 1.0f / sampleRate;
 
         // Now use the LFO value to get a new frequency.
-        float const modulatedF = voice.oscillators[0].f * powf(2.0f, pitchLFOValue);
+        float modulatedF = voice.oscillators[0].f * powf(2.0f, pitchLFOValue);
+
+	// Modulate by pitch envelope.
+	// HOWDY
+	if (voice.ampEnvState.currentValue > 0.5f) {
+	    modulatedF = modulatedF;
+	}
+	adsrEnvelope(pitchEnvSpec, voice.pitchEnvState);
+	modulatedF *= powf(2.f, pitchEnvGain * voice.pitchEnvState.currentValue);
+	// TODO: clamp F?
 
         float v = 0.0f;
         for (int oscIx = 0; oscIx < voice.oscillators.size(); ++oscIx) {
             Oscillator& osc = voice.oscillators[oscIx];
+
+	    
 
             if (osc.phase >= 2*kPi) {
                 osc.phase -= 2*kPi;
@@ -351,6 +365,8 @@ namespace synth {
                             v->ampEnvState.ticksSincePhaseStart = 0;
                             v->cutoffEnvState.phase = synth::ADSRPhase::Attack;
                             v->cutoffEnvState.ticksSincePhaseStart = 0;
+			    v->pitchEnvState.phase = synth::ADSRPhase::Attack;
+			    v->pitchEnvState.ticksSincePhaseStart = 0;
                         } else {
                             std::cout << "couldn't find a note for noteon" << std::endl;
                         }
@@ -363,6 +379,8 @@ namespace synth {
                             v->ampEnvState.ticksSincePhaseStart = 0;
                             v->cutoffEnvState.phase = synth::ADSRPhase::Release;
                             v->cutoffEnvState.ticksSincePhaseStart = 0;
+			    v->pitchEnvState.phase = synth::ADSRPhase::Release;
+                            v->pitchEnvState.ticksSincePhaseStart = 0;
                         }
                         break;
                     }
@@ -373,6 +391,8 @@ namespace synth {
                                 v.ampEnvState.ticksSincePhaseStart = 0;
                                 v.cutoffEnvState.phase = synth::ADSRPhase::Release;
                                 v.cutoffEnvState.ticksSincePhaseStart = 0;
+				v.pitchEnvState.phase = synth::ADSRPhase::Release;
+                                v.pitchEnvState.ticksSincePhaseStart = 0;
                             }
                         }
                         break;
@@ -439,6 +459,21 @@ namespace synth {
                             case audio::SynthParamType::CutoffEnvRelease:
                                 patch.cutoffEnvSpec.releaseTime = e.newParamValue;
                                 break;
+			    case audio::SynthParamType::PitchEnvGain:
+                                patch.pitchEnvGain = e.newParamValue;
+                                break;
+                            case audio::SynthParamType::PitchEnvAttack:
+                                patch.pitchEnvSpec.attackTime = e.newParamValue;
+                                break;
+                            case audio::SynthParamType::PitchEnvDecay:
+                                patch.pitchEnvSpec.decayTime = e.newParamValue;
+                                break;
+                            case audio::SynthParamType::PitchEnvSustain:
+                                patch.pitchEnvSpec.sustainLevel = e.newParamValue;
+                                break;
+                            case audio::SynthParamType::PitchEnvRelease:
+                                patch.pitchEnvSpec.releaseTime = e.newParamValue;
+                                break;
                             default:
                                 std::cout << "Received unsupported synth param " << static_cast<int>(e.param) << std::endl;
                                 break;
@@ -471,14 +506,17 @@ namespace synth {
             float const modulatedCutoff = math_util::Clamp(patch.cutoffFreq + 20000*cutoffLFOValue, 0.f, 44100.f);
 
 
-            ADSREnvSpecInTicks ampEnvSpec, cutoffEnvSpec;
+            ADSREnvSpecInTicks ampEnvSpec, cutoffEnvSpec, pitchEnvSpec;
             ConvertADSREnvSpec(patch.ampEnvSpec, ampEnvSpec, sampleRate);
             ConvertADSREnvSpec(patch.cutoffEnvSpec, cutoffEnvSpec, sampleRate);
+	    ConvertADSREnvSpec(patch.pitchEnvSpec, pitchEnvSpec, sampleRate);
 
             float v = 0.0f;
             for (Voice& voice : state->voices) {
                 v += ProcessVoice(
-                    voice, sampleRate, pitchLFOValue, modulatedCutoff, patch.cutoffK, ampEnvSpec, cutoffEnvSpec, patch.cutoffEnvGain, patch);
+                    voice, sampleRate, pitchLFOValue, modulatedCutoff, patch.cutoffK,
+		    ampEnvSpec, cutoffEnvSpec, patch.cutoffEnvGain,
+		    pitchEnvSpec, patch.pitchEnvGain, patch);
             }
 
             // Apply final gain. Map from linear [0,1] to exponential from -80db to 0db.

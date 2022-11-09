@@ -49,7 +49,17 @@ std::unordered_map<std::string, SynthParamType> const gStringToSynthParamType = 
     
     { "CutoffEnvSustain", SynthParamType::CutoffEnvSustain },
     
-    { "CutoffEnvRelease", SynthParamType::CutoffEnvRelease }
+    { "CutoffEnvRelease", SynthParamType::CutoffEnvRelease },
+    
+    { "PitchEnvGain", SynthParamType::PitchEnvGain },
+    
+    { "PitchEnvAttack", SynthParamType::PitchEnvAttack },
+    
+    { "PitchEnvDecay", SynthParamType::PitchEnvDecay },
+    
+    { "PitchEnvSustain", SynthParamType::PitchEnvSustain },
+    
+    { "PitchEnvRelease", SynthParamType::PitchEnvRelease }
     
 };
 
@@ -95,7 +105,17 @@ char const* gSynthParamTypeStrings[] = {
     
     "CutoffEnvSustain",
     
-    "CutoffEnvRelease"
+    "CutoffEnvRelease",
+    
+    "PitchEnvGain",
+    
+    "PitchEnvAttack",
+    
+    "PitchEnvDecay",
+    
+    "PitchEnvSustain",
+    
+    "PitchEnvRelease"
     
 };
 

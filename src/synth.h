@@ -88,6 +88,9 @@ namespace synth {
         ADSREnvSpec cutoffEnvSpec;
         float cutoffEnvGain = 0.f;
 
+	ADSREnvSpec pitchEnvSpec;
+	float pitchEnvGain = 0.f;
+
         void Save(ptree& pt) const {
             pt.put("version", kVersion);
             pt.put("name", name);
@@ -111,6 +114,11 @@ namespace synth {
                 ptree& newChild = pt.add_child("cutoff_env_spec", ptree());
                 cutoffEnvSpec.Save(newChild);
             }
+	    pt.put("pitch_env_gain", pitchEnvGain);
+	    {
+		ptree& newChild = pt.add_child("pitch_env_spec", ptree());
+                pitchEnvSpec.Save(newChild);
+	    }
         }
         void Load(ptree const& pt) {
             int const version = pt.get_optional<int>("version").value_or(0);
@@ -132,9 +140,13 @@ namespace synth {
             ampEnvSpec.Load(pt.get_child("amp_env_spec"));
             cutoffEnvGain = pt.get<float>("cutoff_env_gain");
             cutoffEnvSpec.Load(pt.get_child("cutoff_env_spec"));
+	    if (version >= 2) {
+		pitchEnvGain = pt.get<float>("pitch_env_gain");
+		pitchEnvSpec.Load(pt.get_child("pitch_env_spec"));
+	    }
         }
 
-        static int constexpr kVersion = 1;
+        static int constexpr kVersion = 2;
     };
 
     int constexpr kNumOscillators = 2;
@@ -150,12 +162,13 @@ namespace synth {
 
         ADSREnvState ampEnvState;
         ADSREnvState cutoffEnvState;
+	ADSREnvState pitchEnvState;
         int currentMidiNote = -1;
 
-        float lp0 = 0.0f;
-        float lp1 = 0.0f;
-        float lp2 = 0.0f;
-        float lp3 = 0.0f;
+        // float lp0 = 0.0f;
+        // float lp1 = 0.0f;
+        // float lp2 = 0.0f;
+        // float lp3 = 0.0f;
 
 	// NEW FILTER LET'S GO
 	float ic1eq = 0.f;

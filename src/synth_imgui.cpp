@@ -186,6 +186,31 @@ void DrawSynthGuiAndUpdatePatch(SynthGuiState& synthGuiState, audio::Context& au
         if (changed) {
             RequestSynthParamChange(synthGuiState._currentSynthIx, audio::SynthParamType::CutoffEnvRelease, patch.cutoffEnvSpec.releaseTime, audioContext);
         }
+
+	changed = ImGui::SliderFloat("PitchEnvGain", &patch.pitchEnvGain, 0.f, 1.f);
+        if (changed) {
+            RequestSynthParamChange(synthGuiState._currentSynthIx, audio::SynthParamType::PitchEnvGain, patch.pitchEnvGain, audioContext);
+        }
+
+        changed = ImGui::SliderFloat("PitchEnvAtk", &patch.pitchEnvSpec.attackTime, 0.f, 1.f);
+        if (changed) {
+            RequestSynthParamChange(synthGuiState._currentSynthIx, audio::SynthParamType::PitchEnvAttack, patch.pitchEnvSpec.attackTime, audioContext);
+        }
+
+        changed = ImGui::SliderFloat("PitchEnvDecay", &patch.pitchEnvSpec.decayTime, 0.f, 1.f);
+        if (changed) {
+            RequestSynthParamChange(synthGuiState._currentSynthIx, audio::SynthParamType::PitchEnvDecay, patch.pitchEnvSpec.decayTime, audioContext);
+        }
+
+        changed = ImGui::SliderFloat("PitchEnvSustain", &patch.pitchEnvSpec.sustainLevel, 0.f, 1.f);
+        if (changed) {
+            RequestSynthParamChange(synthGuiState._currentSynthIx, audio::SynthParamType::PitchEnvSustain, patch.pitchEnvSpec.sustainLevel, audioContext);
+        }
+
+        changed = ImGui::SliderFloat("PitchEnvRelease", &patch.pitchEnvSpec.releaseTime, 0.f, 1.f);
+        if (changed) {
+            RequestSynthParamChange(synthGuiState._currentSynthIx, audio::SynthParamType::PitchEnvRelease, patch.pitchEnvSpec.releaseTime, audioContext);
+        }
     }
     ImGui::End();
 }

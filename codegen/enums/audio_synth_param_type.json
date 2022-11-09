@@ -21,6 +21,11 @@
         "CutoffEnvAttack",
         "CutoffEnvDecay",
         "CutoffEnvSustain",
-        "CutoffEnvRelease"
+        "CutoffEnvRelease",
+	"PitchEnvGain",
+        "PitchEnvAttack",
+        "PitchEnvDecay",
+        "PitchEnvSustain",
+        "PitchEnvRelease"
     ]
 }

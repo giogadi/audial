@@ -46,6 +46,16 @@ enum class SynthParamType : int {
     
     CutoffEnvRelease,
     
+    PitchEnvGain,
+    
+    PitchEnvAttack,
+    
+    PitchEnvDecay,
+    
+    PitchEnvSustain,
+    
+    PitchEnvRelease,
+    
     Count
 };
 extern char const* gSynthParamTypeStrings[];
