@@ -231,7 +231,7 @@ void EnemyEntity::Update(GameManager& g, float dt) {
     }
 
     // update shoot button and midi note from lateral position
-    {        
+    if (_laneNoteBehavior == LaneNoteBehavior::Minor) {        
         int laneIx = math_util::Clamp((int)(xOffset / kLaneWidth), 0, kNumLanes - 1);
         switch (laneIx) {
             case 0: _shootButton = InputManager::Key::A; break;
@@ -244,10 +244,11 @@ void EnemyEntity::Update(GameManager& g, float dt) {
             case 7: _shootButton = InputManager::Key::L; break;
             default: assert(false); break;
         }
-        // HACK: just assume we're in C2->C3
-        int midiNote = 36 + gMinorScaleNotes[laneIx];
+
+        int midiNote = _laneRootNote + gMinorScaleNotes[laneIx];
         for (BeatTimeEvent& b_e : _events) {
-            if (b_e._e.type == audio::EventType::NoteOn || b_e._e.type == audio::EventType::NoteOff) {
+            if (b_e._e.type == audio::EventType::NoteOn ||
+		b_e._e.type == audio::EventType::NoteOff) {
                 b_e._e.midiNote = midiNote;
             }            
         }

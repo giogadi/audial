@@ -2,89 +2,102 @@
 
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
-#include <portaudio.h>
 
-#include <stk/BlitSaw.h>
-#include <stk/ADSR.h>
-#include <stk/BiQuad.h>
+#include <imgui.h>
+#include <backends/imgui_impl_glfw.h>
+#include <backends/imgui_impl_opengl3.h>
 
-static int gKeyState = 0;  // 0: nothing new; 1: on; 2: off
+#include <audio.h>
+#include <audio_loader.h>
+#include <sound_bank.h>
+#include <synth_imgui.h>
+
+bool gGetPianoInput = true;
+
+int GetNoteIndexFromKey(int glfwKey) {
+    switch (glfwKey) {
+	case GLFW_KEY_A: { return 0; }
+	case GLFW_KEY_W: { return 1; }
+	case GLFW_KEY_S: { return 2; }
+	case GLFW_KEY_E: { return 3; }
+	case GLFW_KEY_D: { return 4; }
+	case GLFW_KEY_F: { return 5; }
+	case GLFW_KEY_T: { return 6; }
+	case GLFW_KEY_G: { return 7; }
+	case GLFW_KEY_Y: { return 8; }
+	case GLFW_KEY_H: { return 9; }
+	case GLFW_KEY_U: { return 10; }
+	case GLFW_KEY_J: { return 11; }
+	case GLFW_KEY_K: { return 12; }
+    }
+    return -1;
+}
+
+int GetMidiNoteFromKey(int glfwKey, int octave) {
+    assert(octave >= 0);
+    int offset = GetNoteIndexFromKey(glfwKey);
+    if (offset < 0) {
+	return -1;
+    }
+    int midiNote = 12 * (octave + 1) + offset;
+    return midiNote;
+}
+
+audio::Context* gpContext = nullptr;
+int gOctave = 2;
+int gCurrentSynthIx = 0;
 
 void KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mods) {
-    if (key == GLFW_KEY_SPACE) {
-	if (action == GLFW_PRESS) {
-	    gKeyState = 1;
-	} else if (action == GLFW_RELEASE) {
-	    gKeyState = 2;
+    if (action == GLFW_RELEASE) {
+	if (key == GLFW_KEY_LEFT) {
+	    gOctave = std::max(0, gOctave - 1);
+	} else if (key == GLFW_KEY_RIGHT) {
+	    gOctave = std::min(7, gOctave + 1);
 	}
+    }
+    
+    int midiNote = GetMidiNoteFromKey(key, gOctave);
+    if (midiNote < 0) {
+	return;
+    }
+    audio::Event e;
+    e.channel = gCurrentSynthIx;
+    if (action == GLFW_PRESS) {
+	e.type = audio::EventType::NoteOn;
+	e.midiNote = midiNote;	
+    } else if (action == GLFW_RELEASE) {
+	e.type = audio::EventType::NoteOff;
+	e.midiNote = midiNote;
+    }
+    if (gpContext != nullptr) {
+	gpContext->AddEvent(e);
     }
 }
 
-float constexpr kPi = 3.14159265359f;
-
-struct AudioData {
-    stk::ADSR _adsr;
-    stk::BlitSaw _saw;
-    stk::BiQuad _biquad;
-    float _phase = 0.f;
-};
-
-int PortAudioCallback( const void *inputBuffer, void *outputBuffer,
-		       unsigned long samplesPerBuffer,
-		       const PaStreamCallbackTimeInfo* timeInfo,
-		       PaStreamCallbackFlags statusFlags,
-		       void *userData )
-{
-    /* Cast data passed through stream to our structure. */
-    AudioData *data = (AudioData*)userData;
-    float *out = (float*)outputBuffer;
-    (void) inputBuffer; /* Prevent unused variable warning. */
-
-    // Check for control inputs.
-    if (gKeyState == 1) {
-	data->_adsr.keyOn();
-	gKeyState = 0;
-    } else if (gKeyState == 2) {
-	data->_adsr.keyOff();
-	gKeyState = 0;
-    }
-
-    // Modulate biquad resonance from 0 to 0.5*sampleRate
-    // lfo: let's say we want the period to be 1 second.
-    // function: 0.5*sin(x - pi/2) + 0.5
-    float const kLfoRate = 2.f;  // hertz
-    float const lfoPhaseChange = kLfoRate * 2 * kPi / 44100.f;
-
-    for(int i = 0; i < samplesPerBuffer; ++i)
-    {
-	float f = data->_saw.tick();
-
-	// float lfo = 0.5f * sin(data->_phase - 0.5f*kPi) + 0.5f;
-	{
-	    
-	}
-	data->_phase += lfoPhaseChange;
-	if (data->_phase > 2 * kPi) {
-	    data->_phase -= 2 * kPi;
-	}
-	data->_biquad.setResonance(lfo * 0.5f*44100.f, 0.98f, true);	
-	f = data->_biquad.tick(f);
-	
-	float env = data->_adsr.tick();
-	f *= env;
-	*out++ = f;
-	*out++ = f;
-    }
-    return 0;
+void FramebufferSizeCallback(GLFWwindow* window, int width, int height) {
+    glViewport(0, 0, width, height);
 }
 
-int main() {
-    GLFWwindow* window;
+int main(int argc, char** argv) {
+    if (argc != 2) {
+	printf("Expecting exactly one argument: a synth patch filename.\n");
+	return 0;
+    }
 
-    /* Initialize the library */
-    if (!glfwInit())
-        return -1;
+    audio::Context audioContext;
+    gpContext = &audioContext;
 
+    std::vector<synth::Patch> patches;
+    if (LoadSynthPatches(argv[1], patches)) {
+	printf("Loaded synth patch data from %s.\n", argv[1]);
+    }
+
+    SoundBank soundBank;
+    if (audio::Init(audioContext, patches, soundBank) != paNoError) {
+	return 1;
+    }
+
+    glfwInit();
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
@@ -92,70 +105,97 @@ int main() {
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 #endif
 
-    /* Create a windowed mode window and its OpenGL context */
-    window = glfwCreateWindow(640, 480, "Hello World", NULL, NULL);
-    if (!window)
+    GLFWwindow* window;
     {
+        GLFWmonitor* monitor = glfwGetPrimaryMonitor();
+        GLFWvidmode const* mode = glfwGetVideoMode(monitor);
+
+        glfwWindowHint(GLFW_RED_BITS, mode->redBits);
+        glfwWindowHint(GLFW_GREEN_BITS, mode->greenBits);
+        glfwWindowHint(GLFW_BLUE_BITS, mode->blueBits);
+        glfwWindowHint(GLFW_REFRESH_RATE, mode->refreshRate);
+
+        // Full screen
+        // window = glfwCreateWindow(mode->width, mode->height, "Audial", monitor, NULL);
+
+        window = glfwCreateWindow(mode->width, mode->height, "Audial", NULL, NULL);
+    }
+
+    if (window == nullptr) {
+        std::cout << "Failed to create GLFW window" << std::endl;
         glfwTerminate();
         return -1;
     }
-
-    /* Make the window's context current */
     glfwMakeContextCurrent(window);
+    glfwSwapInterval(1);  // vsync?
+    // glfwSwapInterval(0);  // disable vsync?
 
     if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
-        printf("Failed to initialize GLAD\n");
+        std::cout << "Failed to initialize GLAD" << std::endl;
         return -1;
     }
 
+    glfwSetFramebufferSizeCallback(window, FramebufferSizeCallback);
     glfwSetKeyCallback(window, KeyCallback);
 
-    // Audio
-    double constexpr kSampleRate = 44100.0;
-    unsigned long constexpr kSamplesPerAudioBuffer = 64;
-    stk::Stk::setSampleRate(kSampleRate);
-    
-    PaStream *stream;
-    PaError err;
-    err = Pa_Initialize();
-    AudioData audioData;
-    audioData._adsr.setAttackTime(0.05f);
-    audioData._adsr.setReleaseTime(0.5f);
-    audioData._biquad.setResonance(440.f, 0.98f, true);
-    
+    glEnable(GL_DEPTH_TEST);
 
-    err = Pa_OpenDefaultStream( &stream,
-                                0,          /* no input channels */
-                                2,          /* stereo output */
-                                paFloat32,  /* 32 bit floating point output */
-                                kSampleRate,
-                                kSamplesPerAudioBuffer,        /* frames per buffer */
-                                PortAudioCallback,
-                                &audioData );
-    assert(err == paNoError);
+    // Setup Dear ImGui context
+    IMGUI_CHECKVERSION();
+    ImGui::CreateContext();
+    ImGuiIO& io = ImGui::GetIO(); (void)io;
+    //io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
+    //io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
 
-    err = Pa_StartStream( stream );
-    assert(err == paNoError);
+    // Setup Dear ImGui style
+    ImGui::StyleColorsDark();
+    //ImGui::StyleColorsClassic();
 
-    /* Loop until the user closes the window */
-    while (!glfwWindowShouldClose(window))
-    {
-        /* Render here */
-        glClear(GL_COLOR_BUFFER_BIT);
+    // Setup Platform/Renderer backends
+    ImGui_ImplGlfw_InitForOpenGL(window, true);
+    // TODO: should I be setting this? imgui_impl_opengl3.h says it's ok to be null.
+    ImGui_ImplOpenGL3_Init(/*glsl_version=*/NULL);
 
-        /* Swap front and back buffers */
+    SynthGuiState synthGuiState;
+    InitSynthGuiState(audioContext, argv[1], synthGuiState);
+
+    bool showSynthWindow = true;
+    while (!glfwWindowShouldClose(window)) {
+	{
+            ImGuiIO& io = ImGui::GetIO();
+            bool inputEnabled = !io.WantCaptureMouse && !io.WantCaptureKeyboard;
+	    gGetPianoInput = inputEnabled;
+        }
+
+	ImGui_ImplOpenGL3_NewFrame();
+        ImGui_ImplGlfw_NewFrame();
+        ImGui::NewFrame();
+	if (showSynthWindow) {
+	    DrawSynthGuiAndUpdatePatch(synthGuiState, audioContext);
+	    gCurrentSynthIx = synthGuiState._currentSynthIx;
+	}
+	ImGui::Render();
+
+	glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+        ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+
         glfwSwapBuffers(window);
 
-        /* Poll for and process events */
-        glfwPollEvents();
+	glfwPollEvents();
     }
 
-    assert(Pa_StopStream(stream) == paNoError);
-    assert(Pa_CloseStream(stream) == paNoError);
-    Pa_Terminate();
-    
+    ImGui_ImplOpenGL3_Shutdown();
+    ImGui_ImplGlfw_Shutdown();
+    ImGui::DestroyContext();
 
     glfwTerminate();
-    
+
+    if (audio::ShutDown(audioContext) != paNoError) {
+        return 1;
+    }
+
     return 0;
 }
+

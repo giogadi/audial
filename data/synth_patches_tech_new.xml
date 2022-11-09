@@ -63,16 +63,16 @@
     <patch>
         <version>1</version>
         <name>string</name>
-        <gain_factor>0.407999992</gain_factor>
-        <osc1_waveform>Square</osc1_waveform>
-        <osc2_waveform>Square</osc2_waveform>
-        <detune>0.00999999978</detune>
-        <osc_fader>0.402999997</osc_fader>
-        <cutoff_freq>19526.8652</cutoff_freq>
-        <cutoff_k>0.397000015</cutoff_k>
-        <pitch_lfo_gain>0.00999999978</pitch_lfo_gain>
+        <gain_factor>0.572000027</gain_factor>
+        <osc1_waveform>Saw</osc1_waveform>
+        <osc2_waveform>Saw</osc2_waveform>
+        <detune>0.0130000003</detune>
+        <osc_fader>0.5</osc_fader>
+        <cutoff_freq>2802.96606</cutoff_freq>
+        <cutoff_k>0</cutoff_k>
+        <pitch_lfo_gain>0.0130000003</pitch_lfo_gain>
         <pitch_lfo_freq>7.46299982</pitch_lfo_freq>
-        <cutoff_lfo_gain>0.328000009</cutoff_lfo_gain>
+        <cutoff_lfo_gain>0.0170000009</cutoff_lfo_gain>
         <cutoff_lfo_freq>4.47800016</cutoff_lfo_freq>
         <amp_env_spec>
             <attack_time>0.104000002</attack_time>

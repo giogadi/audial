@@ -62,13 +62,18 @@ int GetMidiNote(char const* noteName) {
 struct Spawn {
     double _spawnBeatTime = 0.0;
     double _despawnBeatTime = -1.0;
+    // NOTE: if laneNoteBehavior != None, this noteName is actually the ROOT
+    // NOTE for the left-most lane.
     std::string _noteName = "C2";
     int _channel = 0;
     int _laneIx = 0;
     float _z = 0.f;
     EnemyEntity::Behavior _behavior = EnemyEntity::Behavior::None;
+    EnemyEntity::LaneNoteBehavior _laneNoteBehavior =
+	EnemyEntity::LaneNoteBehavior::None;
     int _hp = 1;
     float _downSpeed = 2.f;
+    double _noteLength = 0.25;
 };
 
 ne::Entity* MakeNoteEnemy(GameManager& g, Spawn const& spawnInfo) {
@@ -79,9 +84,12 @@ ne::Entity* MakeNoteEnemy(GameManager& g, Spawn const& spawnInfo) {
     enemy->_behavior = spawnInfo._behavior;
     enemy->_hp = spawnInfo._hp;
     enemy->_downSpeed = spawnInfo._downSpeed;
+    enemy->_laneNoteBehavior = spawnInfo._laneNoteBehavior;
 
     int midiNote = GetMidiNote(spawnInfo._noteName.c_str());
+    enemy->_laneRootNote = midiNote;
 
+    // MAYBE TODO: for non-none lane-note-behaviors, maybe we should initialize this to the correct lane-corrected note?
     BeatTimeEvent b_e;
     b_e._e.type = audio::EventType::NoteOn;
     b_e._e.channel = spawnInfo._channel;
@@ -89,7 +97,7 @@ ne::Entity* MakeNoteEnemy(GameManager& g, Spawn const& spawnInfo) {
     b_e._beatTime = 0.0;
     enemy->_events.push_back(b_e);
     b_e._e.type = audio::EventType::NoteOff;
-    b_e._beatTime = 0.25;
+    b_e._beatTime = spawnInfo._noteLength;
     enemy->_events.push_back(b_e);
 
     switch (spawnInfo._laneIx) {
@@ -194,7 +202,9 @@ void LoadSpawnsFromFile(char const* fileName, std::vector<Spawn>* spawns) {
                 spawn._channel = std::stoi(value);
             } else if (key == "note") {
                 spawn._noteName = value;
-            } else if (key == "lane") {
+            } else if (key == "note_len") {
+		spawn._noteLength = std::stof(value);
+	    } else if (key == "lane") {
                 spawn._laneIx = std::stoi(value);
             } else if (key == "z") {
                 spawn._z = std::stof(value);
@@ -208,7 +218,13 @@ void LoadSpawnsFromFile(char const* fileName, std::vector<Spawn>* spawns) {
                 spawn._hp = std::stoi(value);
             } else if (key == "downv") {
                 spawn._downSpeed = std::stof(value);
-            }
+            } else if (key == "note_beh") {
+		if (value == "minor") {
+		    spawn._laneNoteBehavior = EnemyEntity::LaneNoteBehavior::Minor;
+		}
+	    } else {
+		printf("Unrecognized key \"%s\".\n", key.c_str());
+	    }
         }
 
         spawns->push_back(spawn);

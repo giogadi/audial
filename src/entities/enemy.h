@@ -10,6 +10,10 @@ struct EnemyEntity : public ne::Entity {
         Down,
         Zigging
     };
+    enum class LaneNoteBehavior {
+	None, // don't change note based on position/lane
+	Minor, // Minor scale starting at _laneRootNote
+    };
 
     // serialized
     std::vector<BeatTimeEvent> _events;
@@ -19,8 +23,11 @@ struct EnemyEntity : public ne::Entity {
     double _inactiveBeatTime = -1.0;  // < 0 means it stays active once active.
     Behavior _behavior = Behavior::None;
     int _hp = -1;
+    LaneNoteBehavior _laneNoteBehavior = LaneNoteBehavior::None;
     // Down-specific
     float _downSpeed = 2.f;
+    // LaneNote-specific
+    int _laneRootNote = 36;  // C2
 
 
     float _desiredSpawnY = 0.f;

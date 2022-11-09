@@ -21,6 +21,7 @@ add_executable(game
     src/entity_picking.cpp src/entity_editing_context.cpp src/script_action.cpp
     src/shader.cpp src/synth.cpp  src/matrix.cpp src/mesh.cpp
     src/beat_clock.cpp src/input_manager.cpp src/beat_time_event.cpp
+    src/synth_imgui.cpp
     src/component.cpp src/entity.cpp src/entity_manager.cpp
     src/new_entity.cpp    
     src/renderer.cpp src/collisions.cpp
@@ -87,6 +88,24 @@ add_executable(new_entity_test EXCLUDE_FROM_ALL
     src/new_entity_test.cpp src/new_entity.cpp src/serial.cpp)
 target_include_directories(new_entity_test PUBLIC
     ./src)
+
+add_executable(synth_test EXCLUDE_FROM_ALL
+    src/synth_test.cpp src/glad/src/glad.cpp
+    src/imgui/imgui.cpp src/imgui/imgui_demo.cpp src/imgui/imgui_draw.cpp
+    src/imgui/imgui_tables.cpp src/imgui/imgui_widgets.cpp src/imgui/backends/imgui_impl_glfw.cpp
+    src/imgui/backends/imgui_impl_opengl3.cpp
+    src/audio_loader.cpp src/audio_util.cpp src/audio.cpp src/audio_event_imgui.cpp
+    src/sound_bank.cpp src/synth.cpp
+    src/serial.cpp
+    src/synth_imgui.cpp
+    src/enums/audio_EventType.cpp src/enums/audio_SynthParamType.cpp src/enums/synth_Waveform.cpp)
+target_link_libraries(synth_test glfw)
+target_include_directories(synth_test PUBLIC
+    src/glfw/include src/glad/include)
+target_link_libraries(synth_test PortAudio)
+target_include_directories(synth_test PUBLIC src/portaudio/include)
+target_link_libraries(synth_test stk)
+target_include_directories(synth_test PUBLIC src/ src/imgui/ ./)
 
 add_executable(stk_test EXCLUDE_FROM_ALL
     src/stk_test.cpp src/glad/src/glad.cpp)
