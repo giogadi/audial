@@ -12,6 +12,7 @@
 #include "audio.h"
 #include "renderer.h"
 #include "math_util.h"
+#include "beat_time_event.h"
 
 namespace {
 
@@ -53,11 +54,6 @@ void EnemyEntity::SaveDerived(serial::Ptree pt) const {
     GetStringFromKey(_shootButton, keyStr);
     pt.PutString("shoot_button", keyStr);
     pt.PutDouble("active_beat_time", _activeBeatTime);
-    serial::Ptree eventsPt = pt.AddChild("events");
-    for (BeatTimeEvent const& b_e : _events) {
-        serial::Ptree eventPt = eventsPt.AddChild("beat_event");
-        b_e.Save(eventPt);
-    }
 }
 
 void EnemyEntity::LoadDerived(serial::Ptree pt) {
@@ -65,16 +61,6 @@ void EnemyEntity::LoadDerived(serial::Ptree pt) {
     pt.TryGetString("shoot_button", &keyStr);
     _shootButton = GetKeyFromString(keyStr.c_str());
     pt.TryGetDouble("active_beat_time", &_activeBeatTime);
-    serial::Ptree eventsPt = pt.TryGetChild("events");
-    if (eventsPt.IsValid()) {
-        int numChildren = 0;
-        serial::NameTreePair* children = eventsPt.GetChildren(&numChildren);
-        for (int i = 0; i < numChildren; ++i) {
-            _events.emplace_back();
-            _events.back().Load(children[i]._pt);
-        }
-        delete[] children;
-    }    
 }
 
 ne::Entity::ImGuiResult EnemyEntity::ImGuiDerived(GameManager& g) {
@@ -86,25 +72,17 @@ ne::Entity::ImGuiResult EnemyEntity::ImGuiDerived(GameManager& g) {
     ImGui::InputDouble("Active beat time", &_activeBeatTime);
     ImGui::InputDouble("Event start denom", &_eventStartDenom);
     ImGui::InputTextMultiline("Audio events", gAudioEventScriptBuf.data(), gAudioEventScriptBuf.size());
-    if (ImGui::Button("Apply Script to Entity")) {
-        ReadBeatEventsFromScript(_events, *g._soundBank, gAudioEventScriptBuf.data(), gAudioEventScriptBuf.size());
-    }
-    if (ImGui::Button("Apply Entity to Script")) {
-        WriteBeatEventsToScript(_events, *g._soundBank, gAudioEventScriptBuf.data(), gAudioEventScriptBuf.size());
-    }
+    // if (ImGui::Button("Apply Script to Entity")) {
+    //     ReadBeatEventsFromScript(_events, *g._soundBank, gAudioEventScriptBuf.data(), gAudioEventScriptBuf.size());
+    // }
+    // if (ImGui::Button("Apply Entity to Script")) {
+    //     WriteBeatEventsToScript(_events, *g._soundBank, gAudioEventScriptBuf.data(), gAudioEventScriptBuf.size());
+    // }
     return ImGuiResult::Done;
 }
 
 void EnemyEntity::OnEditPick(GameManager& g) {
-    SendEvents(g, _events);
-}
-
-void EnemyEntity::SendEvents(
-    GameManager& g, std::vector<BeatTimeEvent> const& events) {
-    for (BeatTimeEvent const& b_e : events) {
-        audio::Event e = GetEventAtBeatOffsetFromNextDenom(_eventStartDenom, b_e, *g._beatClock, /*slack=*/0.0);
-        g._audioContext->AddEvent(e);
-    }    
+    SendEventsFromLaneNoteTable(g);
 }
 
 bool EnemyEntity::IsActive(GameManager& g) const {
@@ -176,11 +154,7 @@ void EnemyEntity::SendEventsFromLaneNoteTable(GameManager& g) {
 }
 
 void EnemyEntity::OnShot(GameManager& g) {
-    if (_laneNoteBehavior == LaneNoteBehavior::Table) {
-        SendEventsFromLaneNoteTable(g);
-    } else {
-        SendEvents(g, _events);
-    }    
+    SendEventsFromLaneNoteTable(g);
     _shotBeatTime = g._beatClock->GetBeatTimeFromEpoch();
     if (!g._editMode) {
         if (_hp > 0) {
@@ -206,15 +180,6 @@ void EnemyEntity::OnShot(GameManager& g) {
             }
         }
     }
-}
-
-namespace {
-    std::array<int, 22> gMinorScaleNotes = {
-        0,   2,  3,  5,  7,  8, 10,
-        12, 14, 15, 17, 19, 20, 22,
-        24, 26, 27, 29, 31, 32, 34,
-        36
-    };
 }
 
 void EnemyEntity::Update(GameManager& g, float dt) {
@@ -298,25 +263,6 @@ void EnemyEntity::Update(GameManager& g, float dt) {
         case 7: _shootButton = InputManager::Key::L; break;
         default: assert(false); break;
     }
-
-    // update shoot button and midi note from lateral position
-    if (_laneNoteBehavior == LaneNoteBehavior::Minor) {                
-        assert(_events.size() == 2 * _laneNoteOffsets.size());
-        for (int ii = 0; ii < _laneNoteOffsets.size(); ++ii) {
-            int const laneNoteOffset = _laneNoteOffsets[ii];
-            int minorScaleIndex = currentLaneIx + laneNoteOffset;
-            assert(minorScaleIndex >= 0);
-            assert(minorScaleIndex < gMinorScaleNotes.size());
-            int midiNote = _laneRootNote + gMinorScaleNotes[minorScaleIndex];
-            assert(_events[2*ii]._e.type == audio::EventType::NoteOn);
-            assert(_events[2*ii+1]._e.type == audio::EventType::NoteOff);
-            _events[2*ii]._e.midiNote = midiNote;
-            _events[2*ii+1]._e.midiNote = midiNote;
-        }
-    }
-
-    // This is all done in the OnShot() function
-    // if (_laneNoteBehavior == LaneNoteBehavior::Table) {}
 
     Mat4 renderTrans = _transform;
 

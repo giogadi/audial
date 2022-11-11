@@ -1,27 +1,28 @@
 offset 3.0
-s on:0 off:24 lane:0 z:-10 ch:1 note_len:2 note_beh:table table:alpha
-s on:0 off:24 lane:1 z:-10 ch:1 note_len:2 note_beh:table table:alpha
-s on:0 off:24 lane:2 z:-10 ch:1 note_len:2 note_beh:table table:alpha
-s on:0 off:24 lane:3 z:-10 ch:1 note_len:2 note_beh:table table:alpha
-s on:0 off:24 lane:4 z:-10 ch:1 note_len:2 note_beh:table table:alpha
-s on:0 off:24 lane:5 z:-10 ch:1 note_len:2 note_beh:table table:alpha
-s on:0 off:24 lane:6 z:-10 ch:1 note_len:2 note_beh:table table:alpha
-s on:0 off:24 lane:7 z:-10 ch:1 note_len:2 note_beh:table table:alpha
-# s on:0 off:24 note:C2 lane:0 z:-10 beh:down downv:3
-# s on:0 off:24 note:C2 lane:0 z:-8 beh:down downv:3
-# s on:0 off:24 note:C2 lane:0 z:-6 beh:down downv:3
+# s on:0 off:24 lane:0 z:-10 ch:1 note_len:2 table:alpha
+# s on:0 off:24 lane:1 z:-10 ch:1 note_len:2 table:alpha
+# s on:0 off:24 lane:2 z:-10 ch:1 note_len:2 table:alpha
+# s on:0 off:24 lane:3 z:-10 ch:1 note_len:2 table:alpha
+# s on:0 off:24 lane:4 z:-10 ch:1 note_len:2 table:alpha
+# s on:0 off:24 lane:5 z:-10 ch:1 note_len:2 table:alpha
+# s on:0 off:24 lane:6 z:-10 ch:1 note_len:2 table:alpha
+# s on:0 off:24 lane:7 z:-10 ch:1 note_len:2 table:alpha
 
-# s on:0 off:24 note:F2 lane:3 z:-10 beh:down downv:3
-# s on:0 off:24 note:F2 lane:3 z:-8 beh:down downv:3
-# s on:0 off:24 note:F2 lane:3 z:-6 beh:down downv:3
+s on:0 off:24 lane:0 z:-10 beh:down downv:3 table:c2_dorian
+s on:0 off:24 lane:0 z:-8 beh:down downv:3 table:c2_dorian
+s on:0 off:24 lane:0 z:-6 beh:down downv:3 table:c2_dorian
 
-# s on:0 off:24 note:G2 lane:4 z:-10 beh:down downv:3
-# s on:0 off:24 note:G2 lane:4 z:-8 beh:down downv:3
-# s on:0 off:24 note:G2 lane:4 z:-6 beh:down downv:3
+s on:0 off:24 lane:3 z:-10 beh:down downv:3 table:c2_dorian
+s on:0 off:24 lane:3 z:-8 beh:down downv:3 table:c2_dorian
+s on:0 off:24 lane:3 z:-6 beh:down downv:3 table:c2_dorian
 
-# s on:0 off:24 note:B2- lane:6 z:-10 beh:down downv:3
-# s on:0 off:24 note:B2- lane:6 z:-8 beh:down downv:3
-# s on:0 off:24 note:B2- lane:6 z:-6 beh:down downv:3
+s on:0 off:24 lane:4 z:-10 beh:down downv:3 table:c2_dorian
+s on:0 off:24 lane:4 z:-8 beh:down downv:3 table:c2_dorian
+s on:0 off:24 lane:4 z:-6 beh:down downv:3 table:c2_dorian
+
+s on:0 off:24 lane:6 z:-10 beh:down downv:3 table:c2_dorian
+s on:0 off:24 lane:6 z:-8 beh:down downv:3 table:c2_dorian
+s on:0 off:24 lane:6 z:-6 beh:down downv:3 table:c2_dorian
 
 # s on:8 ch:2 off:24 note:F3 note_len:1 lane:3 z:-10 beh:down downv:3
 # s on:8 ch:2 off:24 note:G3 note_len:1 lane:4 z:-8 beh:down downv:3

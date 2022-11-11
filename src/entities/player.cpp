@@ -63,20 +63,14 @@ int GetMidiNote(char const* noteName) {
 struct Spawn {
     double _spawnBeatTime = 0.0;
     double _despawnBeatTime = -1.0;
-    // NOTE: if laneNoteBehavior != None, this noteName is actually the ROOT
-    // NOTE for the left-most lane.
-    std::string _noteName = "C2";
     int _channel = 0;
     int _laneIx = 0;
     float _z = 0.f;
     EnemyEntity::Behavior _behavior = EnemyEntity::Behavior::None;
-    EnemyEntity::LaneNoteBehavior _laneNoteBehavior =
-    EnemyEntity::LaneNoteBehavior::None;
     EnemyEntity::OnHitBehavior _onHitBehavior = EnemyEntity::OnHitBehavior::Default;
     int _hp = 1;
     float _downSpeed = 2.f;
     double _noteLength = 0.25;
-    std::vector<int> _laneNoteOffsets;
     std::string _laneNoteTableName;
 };
 
@@ -89,60 +83,18 @@ ne::Entity* MakeNoteEnemy(
     enemy->_behavior = spawnInfo._behavior;
     enemy->_hp = spawnInfo._hp;
     enemy->_downSpeed = spawnInfo._downSpeed;
-    enemy->_laneNoteBehavior = spawnInfo._laneNoteBehavior;
     enemy->_onHitBehavior = spawnInfo._onHitBehavior;
 
     enemy->_channel = spawnInfo._channel;
     enemy->_noteLength = spawnInfo._noteLength;
 
-    int midiNote = GetMidiNote(spawnInfo._noteName.c_str());
-    enemy->_laneRootNote = midiNote;
-    enemy->_laneNoteOffsets = spawnInfo._laneNoteOffsets;
-
-    // MAYBE TODO: for non-none lane-note-behaviors, maybe we should initialize this to the correct lane-corrected note?
-    if (enemy->_laneNoteBehavior == EnemyEntity::LaneNoteBehavior::None) {
-        BeatTimeEvent b_e;
-        b_e._e.type = audio::EventType::NoteOn;
-        b_e._e.channel = spawnInfo._channel;
-        b_e._e.midiNote = midiNote;
-        b_e._beatTime = 0.0;
-        enemy->_events.push_back(b_e);
-        b_e._e.type = audio::EventType::NoteOff;
-        b_e._beatTime = spawnInfo._noteLength;
-        enemy->_events.push_back(b_e);
-    } else if (enemy->_laneNoteBehavior == EnemyEntity::LaneNoteBehavior::Minor) {
-        for (int const laneNoteOffset : enemy->_laneNoteOffsets) {
-            (void) laneNoteOffset;
-            BeatTimeEvent b_e;
-            b_e._e.type = audio::EventType::NoteOn;
-            b_e._e.channel = spawnInfo._channel;
-            b_e._e.midiNote = midiNote;
-            b_e._beatTime = 0.0;
-            enemy->_events.push_back(b_e);
-            b_e._e.type = audio::EventType::NoteOff;
-            b_e._beatTime = spawnInfo._noteLength;
-            enemy->_events.push_back(b_e);
-        }
-    } else if (enemy->_laneNoteBehavior == EnemyEntity::LaneNoteBehavior::Table) {
+    {
         auto result = laneNotesTableMap.find(spawnInfo._laneNoteTableName);
         if (result == laneNotesTableMap.end()) {
             printf("WARNING: lane-note-table enemy refers to non-existent table \"%s\"!\n", spawnInfo._laneNoteTableName.c_str());
         } else {
             enemy->_laneNotesTable = &(result->second);
         }
-    }
-
-    // HOWDY HACK!!!!!
-    if (spawnInfo._onHitBehavior == EnemyEntity::OnHitBehavior::MultiPhase) {
-        BeatTimeEvent b_e;
-        b_e._e.type = audio::EventType::NoteOn;
-        b_e._e.channel = 1;
-        b_e._e.midiNote = midiNote;
-        b_e._beatTime = 0.0;
-        enemy->_events.push_back(b_e);
-        b_e._e.type = audio::EventType::NoteOff;
-        b_e._beatTime = 2.f;
-        enemy->_events.push_back(b_e);
     }
 
     switch (spawnInfo._laneIx) {
@@ -300,8 +252,6 @@ void LoadSpawnsFromFile(char const* fileName, std::vector<Spawn>* spawns) {
                 spawn._despawnBeatTime = std::stod(value) + beatTimeOffset;
             } else if (key == "ch") {
                 spawn._channel = std::stoi(value);
-            } else if (key == "note") {
-                spawn._noteName = value;
             } else if (key == "note_len") {
                 spawn._noteLength = std::stof(value);
             } else if (key == "lane") {
@@ -318,18 +268,10 @@ void LoadSpawnsFromFile(char const* fileName, std::vector<Spawn>* spawns) {
                 spawn._hp = std::stoi(value);
             } else if (key == "downv") {
                 spawn._downSpeed = std::stof(value);
-            } else if (key == "note_beh") {
-                if (value == "minor") {
-                    spawn._laneNoteBehavior = EnemyEntity::LaneNoteBehavior::Minor;
-                } else if (value == "table") {
-                    spawn._laneNoteBehavior = EnemyEntity::LaneNoteBehavior::Table;
-                }
             } else if (key == "hit_beh") {
                 if (value == "multiphase") {
                     spawn._onHitBehavior = EnemyEntity::OnHitBehavior::MultiPhase;
                 }
-            } else if (key == "lane_note") {
-                spawn._laneNoteOffsets.push_back(std::stoi(value));
             } else if (key == "table") {
                 spawn._laneNoteTableName = value;
             } else {
