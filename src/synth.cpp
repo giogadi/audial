@@ -167,10 +167,6 @@ namespace synth {
         float modulatedF = voice.oscillators[0].f * powf(2.0f, pitchLFOValue);
 
 	// Modulate by pitch envelope.
-	// HOWDY
-	if (voice.ampEnvState.currentValue > 0.5f) {
-	    modulatedF = modulatedF;
-	}
 	adsrEnvelope(pitchEnvSpec, voice.pitchEnvState);
 	modulatedF *= powf(2.f, pitchEnvGain * voice.pitchEnvState.currentValue);
 	// TODO: clamp F?

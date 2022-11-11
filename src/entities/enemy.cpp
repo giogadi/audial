@@ -96,11 +96,12 @@ ne::Entity::ImGuiResult EnemyEntity::ImGuiDerived(GameManager& g) {
 }
 
 void EnemyEntity::OnEditPick(GameManager& g) {
-    SendEvents(g);
+    SendEvents(g, _events);
 }
 
-void EnemyEntity::SendEvents(GameManager& g) {
-    for (BeatTimeEvent const& b_e : _events) {
+void EnemyEntity::SendEvents(
+    GameManager& g, std::vector<BeatTimeEvent> const& events) {
+    for (BeatTimeEvent const& b_e : events) {
         audio::Event e = GetEventAtBeatOffsetFromNextDenom(_eventStartDenom, b_e, *g._beatClock, /*slack=*/0.0);
         g._audioContext->AddEvent(e);
     }    
@@ -143,20 +144,41 @@ float SmoothUpAndDown(float x) {
 }
 
 void EnemyEntity::OnShot(GameManager& g) {
-    SendEvents(g);
+    SendEvents(g, _events);
     _shotBeatTime = g._beatClock->GetBeatTimeFromEpoch();
     if (!g._editMode) {
         if (_hp > 0) {
             --_hp;
             if (_hp <= 0) {
-                g._neEntityManager->TagForDestroy(_id);
+                switch (_onHitBehavior) {
+                    case OnHitBehavior::Default: {
+                        g._neEntityManager->TagForDestroy(_id);
+                        break;
+                    }
+                    case OnHitBehavior::MultiPhase: {
+                        --_numHpBars;
+                        if (_numHpBars > 0) {
+                            _hp = 3;  // HACK OMG HACK
+                            // SendEvents(g, _phaseEvents);
+                        } else {
+                            g._neEntityManager->TagForDestroy(_id);
+                            // SendEvents(g, _deathEvents);
+                        }
+                        break;
+                    }
+                }
             }
-        }        
+        }
     }
 }
 
 namespace {
-    std::array<int, 8> gMinorScaleNotes = {0, 2, 3, 5, 7, 8, 10, 12};
+    std::array<int, 22> gMinorScaleNotes = {
+        0,   2,  3,  5,  7,  8, 10,
+        12, 14, 15, 17, 19, 20, 22,
+        24, 26, 27, 29, 31, 32, 34,
+        36
+    };
 }
 
 void EnemyEntity::Update(GameManager& g, float dt) {
@@ -245,13 +267,26 @@ void EnemyEntity::Update(GameManager& g, float dt) {
             default: assert(false); break;
         }
 
-        int midiNote = _laneRootNote + gMinorScaleNotes[laneIx];
-        for (BeatTimeEvent& b_e : _events) {
-            if (b_e._e.type == audio::EventType::NoteOn ||
-		b_e._e.type == audio::EventType::NoteOff) {
-                b_e._e.midiNote = midiNote;
-            }            
+        assert(_events.size() == 2 * _laneNoteOffsets.size());
+        for (int ii = 0; ii < _laneNoteOffsets.size(); ++ii) {
+            int const laneNoteOffset = _laneNoteOffsets[ii];
+            int minorScaleIndex = laneIx + laneNoteOffset;
+            assert(minorScaleIndex >= 0);
+            assert(minorScaleIndex < gMinorScaleNotes.size());
+            int midiNote = _laneRootNote + gMinorScaleNotes[minorScaleIndex];
+            assert(_events[2*ii]._e.type == audio::EventType::NoteOn);
+            assert(_events[2*ii+1]._e.type == audio::EventType::NoteOff);
+            _events[2*ii]._e.midiNote = midiNote;
+            _events[2*ii+1]._e.midiNote = midiNote;
         }
+
+        // int midiNote = _laneRootNote + gMinorScaleNotes[laneIx];
+        // for (BeatTimeEvent& b_e : _events) {
+        //     if (b_e._e.type == audio::EventType::NoteOn ||
+        //         b_e._e.type == audio::EventType::NoteOff) {
+        //         b_e._e.midiNote = midiNote;
+        //     }
+        // }
     }
 
     Mat4 renderTrans = _transform;

@@ -8,11 +8,15 @@ struct EnemyEntity : public ne::Entity {
     enum class Behavior {
         None,
         Down,
-        Zigging
+        Zigging,
     };
     enum class LaneNoteBehavior {
-	None, // don't change note based on position/lane
-	Minor, // Minor scale starting at _laneRootNote
+        None, // don't change note based on position/lane
+        Minor, // Minor scale starting at _laneRootNote
+    };
+    enum class OnHitBehavior {
+        Default, // decrement hp, doot, die at 0 hp
+        MultiPhase, // decrement hp, doot, increment phase at 0 hp, phase doot
     };
 
     // serialized
@@ -24,31 +28,39 @@ struct EnemyEntity : public ne::Entity {
     Behavior _behavior = Behavior::None;
     int _hp = -1;
     LaneNoteBehavior _laneNoteBehavior = LaneNoteBehavior::None;
+    OnHitBehavior _onHitBehavior = OnHitBehavior::Default;
     // Down-specific
     float _downSpeed = 2.f;
     // LaneNote-specific
     int _laneRootNote = 36;  // C2
+    std::vector<int> _laneNoteOffsets;
+    // MultiPhase-specific
+    // Note: _events is used for every hit
+    int _numHpBars = 1;
+    // std::vector<BeatTimeEvent> _phaseEvents;
+    // std::vector<BeatTimeEvent> _deathEvents;
 
 
     float _desiredSpawnY = 0.f;
     double _shotBeatTime = -1.0;
 
     // specific to zigging
-    // bool _zigLeft = true;
-    float _zigPhaseTime = 0.f;
     bool _zigMoving = false;
+    bool _zigLeft = true;
     Vec3 _zigSource;
     Vec3 _zigTarget;
+    float _zigPhaseTime = 0.f;
 
     void OnShot(GameManager& g);
 
-    // _transform should contain the desired spawn position *before* calling Init() for the spawn to work properly.
+    // _transform should contain the desired spawn position *before* calling
+    // Init() for the spawn to work properly.
     virtual void Init(GameManager& g) override;
     virtual void Update(GameManager& g, float dt) override;
     // virtual void Destroy(GameManager& g) override;
     virtual void OnEditPick(GameManager& g) override;
 
-    void SendEvents(GameManager& g);
+    void SendEvents(GameManager& g, std::vector<BeatTimeEvent> const& events);
 
     // returns true if it can be hit by the player
     bool IsActive(GameManager& g) const;
