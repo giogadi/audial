@@ -1,5 +1,12 @@
 offset 3.0
-s on:0 off:24 ch:1 note:C3 note_len:2 lane:4 z:-10 note_beh:minor lane_note:0 lane_note:4 lane_note:7
+s on:0 off:24 lane:0 z:-10 ch:1 note_len:2 note_beh:table table:alpha
+s on:0 off:24 lane:1 z:-10 ch:1 note_len:2 note_beh:table table:alpha
+s on:0 off:24 lane:2 z:-10 ch:1 note_len:2 note_beh:table table:alpha
+s on:0 off:24 lane:3 z:-10 ch:1 note_len:2 note_beh:table table:alpha
+s on:0 off:24 lane:4 z:-10 ch:1 note_len:2 note_beh:table table:alpha
+s on:0 off:24 lane:5 z:-10 ch:1 note_len:2 note_beh:table table:alpha
+s on:0 off:24 lane:6 z:-10 ch:1 note_len:2 note_beh:table table:alpha
+s on:0 off:24 lane:7 z:-10 ch:1 note_len:2 note_beh:table table:alpha
 # s on:0 off:24 note:C2 lane:0 z:-10 beh:down downv:3
 # s on:0 off:24 note:C2 lane:0 z:-8 beh:down downv:3
 # s on:0 off:24 note:C2 lane:0 z:-6 beh:down downv:3

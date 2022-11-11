@@ -143,8 +143,44 @@ float SmoothUpAndDown(float x) {
     return 1.f-SmoothStep(2*(x - 0.5f));
 }
 
+int EnemyEntity::GetLaneIxFromCurrentPos() {
+    float const minX = -kLaneWidth * (kNumLanes / 2);
+    float const xOffset = _transform._m03 - minX;
+    int laneIx = math_util::Clamp((int)(xOffset / kLaneWidth), 0, kNumLanes - 1);
+    return laneIx;
+}
+
+void EnemyEntity::SendEventsFromLaneNoteTable(GameManager& g) {
+    int const laneIx = GetLaneIxFromCurrentPos();
+    
+    assert(_laneNotesTable != nullptr);
+    assert(laneIx < kNumLanes);
+    assert(laneIx >= 0);
+    auto const& notes = (*_laneNotesTable)[laneIx];
+    for (int noteIx = 0, n = notes.size(); noteIx < n; ++noteIx) {
+        int midiNote = notes[noteIx];
+        if (midiNote < 0) { continue; }
+        BeatTimeEvent b_e;
+        b_e._e.type = audio::EventType::NoteOn;
+        b_e._e.channel = _channel;
+        b_e._e.midiNote = midiNote;
+        b_e._beatTime = 0.0;
+        audio::Event e = GetEventAtBeatOffsetFromNextDenom(_eventStartDenom, b_e, *g._beatClock, /*slack=*/0.0);
+        g._audioContext->AddEvent(e);
+
+        b_e._e.type = audio::EventType::NoteOff;
+        b_e._beatTime = _noteLength;
+        e = GetEventAtBeatOffsetFromNextDenom(_eventStartDenom, b_e, *g._beatClock, /*slack=*/0.0);
+        g._audioContext->AddEvent(e);
+    }
+}
+
 void EnemyEntity::OnShot(GameManager& g) {
-    SendEvents(g, _events);
+    if (_laneNoteBehavior == LaneNoteBehavior::Table) {
+        SendEventsFromLaneNoteTable(g);
+    } else {
+        SendEvents(g, _events);
+    }    
     _shotBeatTime = g._beatClock->GetBeatTimeFromEpoch();
     if (!g._editMode) {
         if (_hp > 0) {
@@ -209,9 +245,7 @@ void EnemyEntity::Update(GameManager& g, float dt) {
     }
 
     float const minX = -kLaneWidth * (kNumLanes / 2);
-    float const maxX = kLaneWidth * (kNumLanes / 2);
-    float const xOffset = _transform._m03 - minX;
-    int const currentLaneIx = math_util::Clamp((int)(xOffset / kLaneWidth), 0, kNumLanes - 1);
+    int const currentLaneIx = GetLaneIxFromCurrentPos();
 
     if (active) {
         switch (_behavior) {
@@ -252,25 +286,25 @@ void EnemyEntity::Update(GameManager& g, float dt) {
         g._neEntityManager->TagForDestroy(_id);
     }
 
-    // update shoot button and midi note from lateral position
-    if (_laneNoteBehavior == LaneNoteBehavior::Minor) {        
-        int laneIx = math_util::Clamp((int)(xOffset / kLaneWidth), 0, kNumLanes - 1);
-        switch (laneIx) {
-            case 0: _shootButton = InputManager::Key::A; break;
-            case 1: _shootButton = InputManager::Key::S; break;
-            case 2: _shootButton = InputManager::Key::D; break;
-            case 3: _shootButton = InputManager::Key::F; break;
-            case 4: _shootButton = InputManager::Key::H; break;
-            case 5: _shootButton = InputManager::Key::J; break;
-            case 6: _shootButton = InputManager::Key::K; break;
-            case 7: _shootButton = InputManager::Key::L; break;
-            default: assert(false); break;
-        }
+    // Update shot button and get current lane ix
+    switch (currentLaneIx) {
+        case 0: _shootButton = InputManager::Key::A; break;
+        case 1: _shootButton = InputManager::Key::S; break;
+        case 2: _shootButton = InputManager::Key::D; break;
+        case 3: _shootButton = InputManager::Key::F; break;
+        case 4: _shootButton = InputManager::Key::H; break;
+        case 5: _shootButton = InputManager::Key::J; break;
+        case 6: _shootButton = InputManager::Key::K; break;
+        case 7: _shootButton = InputManager::Key::L; break;
+        default: assert(false); break;
+    }
 
+    // update shoot button and midi note from lateral position
+    if (_laneNoteBehavior == LaneNoteBehavior::Minor) {                
         assert(_events.size() == 2 * _laneNoteOffsets.size());
         for (int ii = 0; ii < _laneNoteOffsets.size(); ++ii) {
             int const laneNoteOffset = _laneNoteOffsets[ii];
-            int minorScaleIndex = laneIx + laneNoteOffset;
+            int minorScaleIndex = currentLaneIx + laneNoteOffset;
             assert(minorScaleIndex >= 0);
             assert(minorScaleIndex < gMinorScaleNotes.size());
             int midiNote = _laneRootNote + gMinorScaleNotes[minorScaleIndex];
@@ -279,15 +313,10 @@ void EnemyEntity::Update(GameManager& g, float dt) {
             _events[2*ii]._e.midiNote = midiNote;
             _events[2*ii+1]._e.midiNote = midiNote;
         }
-
-        // int midiNote = _laneRootNote + gMinorScaleNotes[laneIx];
-        // for (BeatTimeEvent& b_e : _events) {
-        //     if (b_e._e.type == audio::EventType::NoteOn ||
-        //         b_e._e.type == audio::EventType::NoteOff) {
-        //         b_e._e.midiNote = midiNote;
-        //     }
-        // }
     }
+
+    // This is all done in the OnShot() function
+    // if (_laneNoteBehavior == LaneNoteBehavior::Table) {}
 
     Mat4 renderTrans = _transform;
 

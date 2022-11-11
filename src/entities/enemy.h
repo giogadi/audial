@@ -3,6 +3,7 @@
 #include "new_entity.h"
 #include "beat_time_event.h"
 #include "input_manager.h"
+#include "constants.h"
 
 struct EnemyEntity : public ne::Entity {
     enum class Behavior {
@@ -13,11 +14,14 @@ struct EnemyEntity : public ne::Entity {
     enum class LaneNoteBehavior {
         None, // don't change note based on position/lane
         Minor, // Minor scale starting at _laneRootNote
+        Table, // Use a lane-note mapping from a table
     };
     enum class OnHitBehavior {
         Default, // decrement hp, doot, die at 0 hp
         MultiPhase, // decrement hp, doot, increment phase at 0 hp, phase doot
     };
+    static int constexpr kMaxNumNotesPerLane = 4;
+    typedef std::array<std::array<int, kMaxNumNotesPerLane>, kNumLanes> LaneNotesTable;
 
     // serialized
     std::vector<BeatTimeEvent> _events;
@@ -31,7 +35,7 @@ struct EnemyEntity : public ne::Entity {
     OnHitBehavior _onHitBehavior = OnHitBehavior::Default;
     // Down-specific
     float _downSpeed = 2.f;
-    // LaneNote-specific
+    // LaneNote::Minor-specific
     int _laneRootNote = 36;  // C2
     std::vector<int> _laneNoteOffsets;
     // MultiPhase-specific
@@ -39,6 +43,8 @@ struct EnemyEntity : public ne::Entity {
     int _numHpBars = 1;
     // std::vector<BeatTimeEvent> _phaseEvents;
     // std::vector<BeatTimeEvent> _deathEvents;
+    int _channel = 0;
+    double _noteLength = 0.25;
 
 
     float _desiredSpawnY = 0.f;
@@ -51,7 +57,12 @@ struct EnemyEntity : public ne::Entity {
     Vec3 _zigTarget;
     float _zigPhaseTime = 0.f;
 
+    // specific to LaneNoteBehavior::Table
+    LaneNotesTable const* _laneNotesTable = nullptr;
+
     void OnShot(GameManager& g);
+    void SendEventsFromLaneNoteTable(GameManager& g);
+    int GetLaneIxFromCurrentPos();
 
     // _transform should contain the desired spawn position *before* calling
     // Init() for the spawn to work properly.

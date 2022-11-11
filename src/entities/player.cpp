@@ -77,9 +77,11 @@ struct Spawn {
     float _downSpeed = 2.f;
     double _noteLength = 0.25;
     std::vector<int> _laneNoteOffsets;
+    std::string _laneNoteTableName;
 };
 
-ne::Entity* MakeNoteEnemy(GameManager& g, Spawn const& spawnInfo) {
+ne::Entity* MakeNoteEnemy(
+    GameManager& g, Spawn const& spawnInfo, std::map<std::string, EnemyEntity::LaneNotesTable> const& laneNotesTableMap) {
     EnemyEntity* enemy = (EnemyEntity*) g._neEntityManager->AddEntity(ne::EntityType::Enemy);
     enemy->_modelName = "cube";
     enemy->_modelColor.Set(0.3f, 0.3f, 0.3f, 1.f);
@@ -89,6 +91,9 @@ ne::Entity* MakeNoteEnemy(GameManager& g, Spawn const& spawnInfo) {
     enemy->_downSpeed = spawnInfo._downSpeed;
     enemy->_laneNoteBehavior = spawnInfo._laneNoteBehavior;
     enemy->_onHitBehavior = spawnInfo._onHitBehavior;
+
+    enemy->_channel = spawnInfo._channel;
+    enemy->_noteLength = spawnInfo._noteLength;
 
     int midiNote = GetMidiNote(spawnInfo._noteName.c_str());
     enemy->_laneRootNote = midiNote;
@@ -117,6 +122,13 @@ ne::Entity* MakeNoteEnemy(GameManager& g, Spawn const& spawnInfo) {
             b_e._e.type = audio::EventType::NoteOff;
             b_e._beatTime = spawnInfo._noteLength;
             enemy->_events.push_back(b_e);
+        }
+    } else if (enemy->_laneNoteBehavior == EnemyEntity::LaneNoteBehavior::Table) {
+        auto result = laneNotesTableMap.find(spawnInfo._laneNoteTableName);
+        if (result == laneNotesTableMap.end()) {
+            printf("WARNING: lane-note-table enemy refers to non-existent table \"%s\"!\n", spawnInfo._laneNoteTableName.c_str());
+        } else {
+            enemy->_laneNotesTable = &(result->second);
         }
     }
 
@@ -180,11 +192,8 @@ namespace {
         return true;
     }
 
-int constexpr kMaxNumNotesPerLane = 4;
-typedef std::array<std::array<int, kMaxNumNotesPerLane>, kNumLanes> LaneNotesTable;
-
 void LoadLaneNoteTablesFromFile(
-    char const* fileName, std::map<std::string, LaneNotesTable>& laneNotesTables) {
+    char const* fileName, std::map<std::string, EnemyEntity::LaneNotesTable>& laneNotesTables) {
     std::ifstream inFile(fileName);
     std::string line;
     std::string tableName;
@@ -208,13 +217,13 @@ void LoadLaneNoteTablesFromFile(
             continue;
         }
 
-        LaneNotesTable& table = laneNotesTables[tableName];
+        EnemyEntity::LaneNotesTable& table = laneNotesTables[tableName];
         for (int laneIx = 0; laneIx < kNumLanes; ++laneIx) {
             table[laneIx].fill(-1);
             std::getline(inFile, line);
             ++lineNumber;
             std::stringstream lineSs(line);
-            for (int noteIx = 0; noteIx < kMaxNumNotesPerLane && !lineSs.eof(); ++noteIx) {
+            for (int noteIx = 0; noteIx < EnemyEntity::kMaxNumNotesPerLane && !lineSs.eof(); ++noteIx) {
                 std::string noteName;
                 lineSs >> noteName;
                 if (IsOnlyWhitespace(noteName)) {
@@ -312,6 +321,8 @@ void LoadSpawnsFromFile(char const* fileName, std::vector<Spawn>* spawns) {
             } else if (key == "note_beh") {
                 if (value == "minor") {
                     spawn._laneNoteBehavior = EnemyEntity::LaneNoteBehavior::Minor;
+                } else if (value == "table") {
+                    spawn._laneNoteBehavior = EnemyEntity::LaneNoteBehavior::Table;
                 }
             } else if (key == "hit_beh") {
                 if (value == "multiphase") {
@@ -319,6 +330,8 @@ void LoadSpawnsFromFile(char const* fileName, std::vector<Spawn>* spawns) {
                 }
             } else if (key == "lane_note") {
                 spawn._laneNoteOffsets.push_back(std::stoi(value));
+            } else if (key == "table") {
+                spawn._laneNoteTableName = value;
             } else {
                 printf("Unrecognized key \"%s\".\n", key.c_str());
             }
@@ -330,13 +343,12 @@ void LoadSpawnsFromFile(char const* fileName, std::vector<Spawn>* spawns) {
 }
 
 void PlayerEntity::Init(GameManager& g) {
-    std::map<std::string, LaneNotesTable> laneNotesTables;
-    LoadLaneNoteTablesFromFile("data/lane_note_tables.txt", laneNotesTables);
+    LoadLaneNoteTablesFromFile("data/lane_note_tables.txt", _laneNotesTables);
     
     std::vector<Spawn> spawns;
     LoadSpawnsFromFile("data/spawns_tech.txt", &spawns);
     for (Spawn const& spawn : spawns) {
-        MakeNoteEnemy(g, spawn);
+        MakeNoteEnemy(g, spawn, _laneNotesTables);
     }
 }
 
