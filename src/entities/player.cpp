@@ -3,6 +3,7 @@
 #include <array>
 #include <fstream>
 #include <sstream>
+#include <map>
 
 #include "game_manager.h"
 #include "input_manager.h"
@@ -170,6 +171,64 @@ namespace {
 //     }
 //     return true;
 // }
+    bool IsOnlyWhitespace(std::string const& str) {
+        for (char c : str) {
+            if (!isspace(c)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+int constexpr kMaxNumNotesPerLane = 4;
+typedef std::array<std::array<int, kMaxNumNotesPerLane>, kNumLanes> LaneNotesTable;
+
+void LoadLaneNoteTablesFromFile(
+    char const* fileName, std::map<std::string, LaneNotesTable>& laneNotesTables) {
+    std::ifstream inFile(fileName);
+    std::string line;
+    std::string tableName;
+    int lineNumber = 0;
+    while (!inFile.eof()) {
+        std::getline(inFile, line);
+        ++lineNumber;
+        std::string tableName;
+        // skip commented-out lines
+        if (line[0] == '#') {
+            continue;
+        }
+        std::stringstream lineSs(line);
+        lineSs >> tableName;
+        // If it's empty, skip.
+        if (tableName.empty()) {
+            continue;
+        }
+        // If it's only whitespace, just skip.
+        if (IsOnlyWhitespace(tableName)) {
+            continue;
+        }
+
+        LaneNotesTable& table = laneNotesTables[tableName];
+        for (int laneIx = 0; laneIx < kNumLanes; ++laneIx) {
+            table[laneIx].fill(-1);
+            std::getline(inFile, line);
+            ++lineNumber;
+            std::stringstream lineSs(line);
+            for (int noteIx = 0; noteIx < kMaxNumNotesPerLane && !lineSs.eof(); ++noteIx) {
+                std::string noteName;
+                lineSs >> noteName;
+                if (IsOnlyWhitespace(noteName)) {
+                    continue;
+                }
+                int midiNote = GetMidiNote(noteName.c_str());
+                table[laneIx][noteIx] = midiNote;
+            }
+            if (!lineSs.eof()) {
+                printf("WARNING: Already read 4 notes but there was still data left in line %d!\n", lineNumber);
+            }
+        }
+    }
+}
 
 void LoadSpawnsFromFile(char const* fileName, std::vector<Spawn>* spawns) {
     std::ifstream inFile(fileName);
@@ -271,6 +330,9 @@ void LoadSpawnsFromFile(char const* fileName, std::vector<Spawn>* spawns) {
 }
 
 void PlayerEntity::Init(GameManager& g) {
+    std::map<std::string, LaneNotesTable> laneNotesTables;
+    LoadLaneNoteTablesFromFile("data/lane_note_tables.txt", laneNotesTables);
+    
     std::vector<Spawn> spawns;
     LoadSpawnsFromFile("data/spawns_tech.txt", &spawns);
     for (Spawn const& spawn : spawns) {
