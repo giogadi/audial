@@ -1,4 +1,4 @@
-c2_dorian
+c2_dorian ch:0 note_length:0.25
 C2
 D2
 E2-
@@ -8,7 +8,7 @@ A2
 B2-
 C3
 
-alpha
+alpha ch:1 note_length:2
 C3 G3 C4
 C3 G3 B3-
 C3 F3 B3-

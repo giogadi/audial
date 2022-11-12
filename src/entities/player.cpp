@@ -63,15 +63,16 @@ int GetMidiNote(char const* noteName) {
 struct Spawn {
     double _spawnBeatTime = 0.0;
     double _despawnBeatTime = -1.0;
-    int _channel = 0;
     int _laneIx = 0;
     float _z = 0.f;
     EnemyEntity::Behavior _behavior = EnemyEntity::Behavior::None;
     EnemyEntity::OnHitBehavior _onHitBehavior = EnemyEntity::OnHitBehavior::Default;
     int _hp = 1;
+    int _numHpBars = 1;
     float _downSpeed = 2.f;
-    double _noteLength = 0.25;
     std::string _laneNoteTableName;
+    std::string _phaseTableName;
+    std::string _deathTableName;
 };
 
 ne::Entity* MakeNoteEnemy(
@@ -81,12 +82,10 @@ ne::Entity* MakeNoteEnemy(
     enemy->_modelColor.Set(0.3f, 0.3f, 0.3f, 1.f);
     enemy->_eventStartDenom = 0.25;
     enemy->_behavior = spawnInfo._behavior;
-    enemy->_hp = spawnInfo._hp;
+    enemy->_initialHp = spawnInfo._hp;
     enemy->_downSpeed = spawnInfo._downSpeed;
     enemy->_onHitBehavior = spawnInfo._onHitBehavior;
-
-    enemy->_channel = spawnInfo._channel;
-    enemy->_noteLength = spawnInfo._noteLength;
+    enemy->_numHpBars = spawnInfo._numHpBars;
 
     {
         auto result = laneNotesTableMap.find(spawnInfo._laneNoteTableName);
@@ -94,6 +93,20 @@ ne::Entity* MakeNoteEnemy(
             printf("WARNING: lane-note-table enemy refers to non-existent table \"%s\"!\n", spawnInfo._laneNoteTableName.c_str());
         } else {
             enemy->_laneNotesTable = &(result->second);
+        }
+
+        result = laneNotesTableMap.find(spawnInfo._phaseTableName);
+        if (result == laneNotesTableMap.end()) {
+            printf("WARNING: lane-note-table enemy refers to non-existent table \"%s\"!\n", spawnInfo._phaseTableName.c_str());
+        } else {
+            enemy->_phaseNotesTable = &(result->second);
+        }
+
+        result = laneNotesTableMap.find(spawnInfo._deathTableName);
+        if (result == laneNotesTableMap.end()) {
+            printf("WARNING: lane-note-table enemy refers to non-existent table \"%s\"!\n", spawnInfo._deathTableName.c_str());
+        } else {
+            enemy->_deathNotesTable = &(result->second);
         }
     }
 
@@ -170,8 +183,33 @@ void LoadLaneNoteTablesFromFile(
         }
 
         EnemyEntity::LaneNotesTable& table = laneNotesTables[tableName];
+
+        // After table name, on same line, we do some key,value pairs.
+        std::string token;
+        while (!lineSs.eof()) {
+            std::string key, value;
+            {
+                lineSs >> token;
+                std::size_t delimIx = token.find_first_of(':');
+                if (delimIx == std::string::npos) {
+                    printf("Token missing \":\" - \"%s\"\n", token.c_str());
+                    continue;
+                }
+
+                key = token.substr(0, delimIx);
+                value = token.substr(delimIx+1);
+            }
+            if (key == "ch") {
+                table._channel = std::stoi(value);
+            } else if (key == "note_length") {
+                table._noteLength = std::stod(value);
+            } else {
+                printf("Unrecognized key \"%s\".\n", key.c_str());
+            }
+        }
+        
         for (int laneIx = 0; laneIx < kNumLanes; ++laneIx) {
-            table[laneIx].fill(-1);
+            table._table[laneIx].fill(-1);
             std::getline(inFile, line);
             ++lineNumber;
             std::stringstream lineSs(line);
@@ -182,7 +220,7 @@ void LoadLaneNoteTablesFromFile(
                     continue;
                 }
                 int midiNote = GetMidiNote(noteName.c_str());
-                table[laneIx][noteIx] = midiNote;
+                table._table[laneIx][noteIx] = midiNote;
             }
             if (!lineSs.eof()) {
                 printf("WARNING: Already read 4 notes but there was still data left in line %d!\n", lineNumber);
@@ -250,10 +288,6 @@ void LoadSpawnsFromFile(char const* fileName, std::vector<Spawn>* spawns) {
                 spawn._spawnBeatTime = std::stod(value) + beatTimeOffset;
             } else if (key == "off") {
                 spawn._despawnBeatTime = std::stod(value) + beatTimeOffset;
-            } else if (key == "ch") {
-                spawn._channel = std::stoi(value);
-            } else if (key == "note_len") {
-                spawn._noteLength = std::stof(value);
             } else if (key == "lane") {
                 spawn._laneIx = std::stoi(value);
             } else if (key == "z") {
@@ -272,8 +306,15 @@ void LoadSpawnsFromFile(char const* fileName, std::vector<Spawn>* spawns) {
                 if (value == "multiphase") {
                     spawn._onHitBehavior = EnemyEntity::OnHitBehavior::MultiPhase;
                 }
+            } else if (key == "num_phases") {
+                // multiphase only
+                spawn._numHpBars = std::stoi(value);
             } else if (key == "table") {
                 spawn._laneNoteTableName = value;
+            } else if (key == "phase_table") {
+                spawn._phaseTableName = value;
+            } else if (key == "death_table") {
+                spawn._deathTableName = value;
             } else {
                 printf("Unrecognized key \"%s\".\n", key.c_str());
             }

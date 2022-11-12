@@ -82,7 +82,8 @@ ne::Entity::ImGuiResult EnemyEntity::ImGuiDerived(GameManager& g) {
 }
 
 void EnemyEntity::OnEditPick(GameManager& g) {
-    SendEventsFromLaneNoteTable(g);
+    assert(_laneNotesTable != nullptr);
+    SendEventsFromLaneNoteTable(g, *_laneNotesTable);
 }
 
 bool EnemyEntity::IsActive(GameManager& g) const {
@@ -100,6 +101,7 @@ void EnemyEntity::Init(GameManager& g) {
     ne::Entity::Init(g);
     _desiredSpawnY = _transform._m13;
     _modelColor = Vec4(0.3f, 0.3f, 0.3f, 1.f);
+    _hp = _initialHp;
 }
 
 float SmoothStep(float x) {
@@ -128,33 +130,34 @@ int EnemyEntity::GetLaneIxFromCurrentPos() {
     return laneIx;
 }
 
-void EnemyEntity::SendEventsFromLaneNoteTable(GameManager& g) {
+void EnemyEntity::SendEventsFromLaneNoteTable(
+    GameManager& g, LaneNotesTable const& laneNotesTable) {
     int const laneIx = GetLaneIxFromCurrentPos();
     
-    assert(_laneNotesTable != nullptr);
     assert(laneIx < kNumLanes);
     assert(laneIx >= 0);
-    auto const& notes = (*_laneNotesTable)[laneIx];
+    auto const& notes = laneNotesTable._table[laneIx];
     for (int noteIx = 0, n = notes.size(); noteIx < n; ++noteIx) {
         int midiNote = notes[noteIx];
         if (midiNote < 0) { continue; }
         BeatTimeEvent b_e;
         b_e._e.type = audio::EventType::NoteOn;
-        b_e._e.channel = _channel;
+        b_e._e.channel = laneNotesTable._channel;
         b_e._e.midiNote = midiNote;
         b_e._beatTime = 0.0;
         audio::Event e = GetEventAtBeatOffsetFromNextDenom(_eventStartDenom, b_e, *g._beatClock, /*slack=*/0.0);
         g._audioContext->AddEvent(e);
 
         b_e._e.type = audio::EventType::NoteOff;
-        b_e._beatTime = _noteLength;
+        b_e._beatTime = laneNotesTable._noteLength;
         e = GetEventAtBeatOffsetFromNextDenom(_eventStartDenom, b_e, *g._beatClock, /*slack=*/0.0);
         g._audioContext->AddEvent(e);
     }
 }
 
 void EnemyEntity::OnShot(GameManager& g) {
-    SendEventsFromLaneNoteTable(g);
+    assert(_laneNotesTable != nullptr);
+    SendEventsFromLaneNoteTable(g, *_laneNotesTable);
     _shotBeatTime = g._beatClock->GetBeatTimeFromEpoch();
     if (!g._editMode) {
         if (_hp > 0) {
@@ -168,11 +171,19 @@ void EnemyEntity::OnShot(GameManager& g) {
                     case OnHitBehavior::MultiPhase: {
                         --_numHpBars;
                         if (_numHpBars > 0) {
-                            _hp = 3;  // HACK OMG HACK
-                            // SendEvents(g, _phaseEvents);
+                            _hp = _initialHp;
+                            if (_phaseNotesTable) {
+                                SendEventsFromLaneNoteTable(g, *_phaseNotesTable);
+                            } else {
+                                printf("WARNING!! No phase note table!\n");
+                            }
                         } else {
                             g._neEntityManager->TagForDestroy(_id);
-                            // SendEvents(g, _deathEvents);
+                            if (_deathNotesTable) {
+                                SendEventsFromLaneNoteTable(g, *_deathNotesTable);
+                            } else {
+                                printf("WARNING!! No death note table!\n");
+                            }
                         }
                         break;
                     }

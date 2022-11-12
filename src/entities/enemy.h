@@ -15,7 +15,11 @@ struct EnemyEntity : public ne::Entity {
         MultiPhase, // decrement hp, doot, increment phase at 0 hp, phase doot
     };
     static int constexpr kMaxNumNotesPerLane = 4;
-    typedef std::array<std::array<int, kMaxNumNotesPerLane>, kNumLanes> LaneNotesTable;
+    struct LaneNotesTable {
+        double _noteLength = 0.25;
+        int _channel = 0;
+        std::array<std::array<int, kMaxNumNotesPerLane>, kNumLanes> _table;
+    };
 
     // serialized
     double _eventStartDenom = 0.125;
@@ -23,18 +27,16 @@ struct EnemyEntity : public ne::Entity {
     double _activeBeatTime = 0.0;
     double _inactiveBeatTime = -1.0;  // < 0 means it stays active once active.
     Behavior _behavior = Behavior::None;
-    int _channel = 0;
-    double _noteLength = 0.25;
-    int _hp = -1;
     OnHitBehavior _onHitBehavior = OnHitBehavior::Default;
+    int _initialHp = -1;
     // Down-specific
     float _downSpeed = 2.f;
     // MultiPhase-specific
     int _numHpBars = 1;
 
-
     float _desiredSpawnY = 0.f;
     double _shotBeatTime = -1.0;
+    int _hp = -1;
 
     // specific to zigging
     bool _zigMoving = false;
@@ -44,9 +46,13 @@ struct EnemyEntity : public ne::Entity {
     float _zigPhaseTime = 0.f;
 
     LaneNotesTable const* _laneNotesTable = nullptr;
+    // Only used in Multiphase
+    LaneNotesTable const* _phaseNotesTable = nullptr;
+    LaneNotesTable const* _deathNotesTable = nullptr;
 
     void OnShot(GameManager& g);
-    void SendEventsFromLaneNoteTable(GameManager& g);
+    void SendEventsFromLaneNoteTable(
+        GameManager& g, LaneNotesTable const& laneNotesTable);
     int GetLaneIxFromCurrentPos();
 
     // _transform should contain the desired spawn position *before* calling
