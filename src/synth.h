@@ -6,13 +6,10 @@
 #include <string>
 
 #include "boost/circular_buffer.hpp"
-#include "boost/property_tree/ptree.hpp"
 
 #include "audio_util.h"
 #include "serial.h"
 #include "enums/synth_Waveform.h"
-
-using boost::property_tree::ptree;
 
 namespace synth {
     static inline float const kSemitoneRatio = 1.05946309f;
@@ -44,20 +41,8 @@ namespace synth {
         float releaseTime = 0.f;
         float minValue = 0.01f;
 
-        void Save(ptree& pt) const {
-            pt.put("attack_time", attackTime);
-            pt.put("decay_time", decayTime);
-            pt.put("sustain_level", sustainLevel);
-            pt.put("release_time", releaseTime);
-            pt.put("min_value", minValue);
-        }
-        void Load(ptree const& pt) {
-            attackTime = pt.get<float>("attack_time");
-            decayTime = pt.get<float>("decay_time");
-            sustainLevel = pt.get<float>("sustain_level");
-            releaseTime = pt.get<float>("release_time");
-            minValue = pt.get<float>("min_value");
-        }
+        void Save(serial::Ptree pt) const;
+        void Load(serial::Ptree pt);
     };
 
     struct Patch {
@@ -88,63 +73,11 @@ namespace synth {
         ADSREnvSpec cutoffEnvSpec;
         float cutoffEnvGain = 0.f;
 
-	ADSREnvSpec pitchEnvSpec;
-	float pitchEnvGain = 0.f;
+        ADSREnvSpec pitchEnvSpec;
+        float pitchEnvGain = 0.f;
 
-        void Save(ptree& pt) const {
-            pt.put("version", kVersion);
-            pt.put("name", name);
-            pt.put("gain_factor", gainFactor);
-            pt.put("osc1_waveform", WaveformToString(osc1Waveform));
-            pt.put("osc2_waveform", WaveformToString(osc2Waveform));
-            pt.put("detune", detune);
-            pt.put("osc_fader", oscFader);
-            pt.put("cutoff_freq", cutoffFreq);
-            pt.put("cutoff_k", cutoffK);
-            pt.put("pitch_lfo_gain", pitchLFOGain);
-            pt.put("pitch_lfo_freq", pitchLFOFreq);
-            pt.put("cutoff_lfo_gain", cutoffLFOGain);
-            pt.put("cutoff_lfo_freq", cutoffLFOFreq);
-            {
-                ptree& newChild = pt.add_child("amp_env_spec", ptree());
-                ampEnvSpec.Save(newChild);
-            }
-            pt.put("cutoff_env_gain", cutoffEnvGain);
-            {
-                ptree& newChild = pt.add_child("cutoff_env_spec", ptree());
-                cutoffEnvSpec.Save(newChild);
-            }
-	    pt.put("pitch_env_gain", pitchEnvGain);
-	    {
-		ptree& newChild = pt.add_child("pitch_env_spec", ptree());
-                pitchEnvSpec.Save(newChild);
-	    }
-        }
-        void Load(ptree const& pt) {
-            int const version = pt.get_optional<int>("version").value_or(0);
-
-            name = pt.get<std::string>("name");
-            gainFactor = pt.get<float>("gain_factor");
-            if (version >= 1) {
-                osc1Waveform = StringToWaveform(pt.get<std::string>("osc1_waveform").c_str());
-                osc2Waveform = StringToWaveform(pt.get<std::string>("osc2_waveform").c_str());
-                detune = pt.get<float>("detune");
-                oscFader = pt.get<float>("osc_fader");
-            }
-            cutoffFreq = pt.get<float>("cutoff_freq");
-            cutoffK = pt.get<float>("cutoff_k");
-            pitchLFOGain = pt.get<float>("pitch_lfo_gain");
-            pitchLFOFreq = pt.get<float>("pitch_lfo_freq");
-            cutoffLFOGain = pt.get<float>("cutoff_lfo_gain");
-            cutoffLFOFreq = pt.get<float>("cutoff_lfo_freq");
-            ampEnvSpec.Load(pt.get_child("amp_env_spec"));
-            cutoffEnvGain = pt.get<float>("cutoff_env_gain");
-            cutoffEnvSpec.Load(pt.get_child("cutoff_env_spec"));
-	    if (version >= 2) {
-		pitchEnvGain = pt.get<float>("pitch_env_gain");
-		pitchEnvSpec.Load(pt.get_child("pitch_env_spec"));
-	    }
-        }
+        void Save(serial::Ptree pt) const;
+        void Load(serial::Ptree pt);
 
         static int constexpr kVersion = 2;
     };

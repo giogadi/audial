@@ -1,41 +1,34 @@
 #include "audio_loader.h"
 
-#include <fstream>
-#include <iostream>
-
-#include "boost/property_tree/xml_parser.hpp"
-
 bool SaveSynthPatches(char const* filename, std::vector<synth::Patch> const& synthPatches) {
-    std::ofstream outFile(filename);
-    if (!outFile.is_open()) {
-        std::cout << "Failed to open patch filename \"" << filename << "\" for saving." << std::endl;
+    serial::Ptree pt = serial::Ptree::MakeNew();
+    serial::Ptree patchesPt = pt.AddChild("patches");
+    for (synth::Patch const& patch : synthPatches) {
+        serial::Ptree patchPt = patchesPt.AddChild("patch");
+        patch.Save(patchPt);
+    }
+    bool success = pt.WriteToFile(filename);
+    if (!success) {
+        printf("Failed to save patches to filename \"%s\".\n", filename);
         return false;
     }
-    ptree patchesPt;
-    for (synth::Patch const& patch : synthPatches) {
-        ptree& child = patchesPt.add_child("patch", ptree());
-        patch.Save(child);
-    }
-    ptree pt;
-    pt.add_child("patches", patchesPt);
-    boost::property_tree::xml_parser::xml_writer_settings<std::string> settings(' ', 4);
-    boost::property_tree::write_xml(outFile, pt, settings);
     return true;
 }
 
 bool LoadSynthPatches(char const* filename, std::vector<synth::Patch>& patches) {
-    std::ifstream inFile(filename);
-    if (!inFile.is_open()) {
-        std::cout << "Failed to open patch filename \"" << filename << "\" for loading." << std::endl;
+    serial::Ptree pt = serial::Ptree::MakeNew();
+    if (!pt.LoadFromFile(filename)) {
+        printf("Failed to load patches from file \"%s\".\n", filename);
         return false;
     }
-    ptree pt;
-    boost::property_tree::read_xml(inFile, pt);
-    for (auto const& item : pt.get_child("patches")) {
-        ptree const& patchPt = item.second;
+    serial::Ptree patchesPt = pt.GetChild("patches");
+    int numPatches = 0;
+    serial::NameTreePair* children = patchesPt.GetChildren(&numPatches);
+    for (int i = 0; i < numPatches; ++i) {
         patches.emplace_back();
         synth::Patch& patch = patches.back();
-        patch.Load(patchPt);
+        patch.Load(children[i]._pt);
     }
+    delete[] children;
     return true;
 }

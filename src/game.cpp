@@ -7,6 +7,7 @@
 #include <memory>
 #include <unordered_map>
 #include <optional>
+#include <sstream>
 
 #include <portaudio.h>
 

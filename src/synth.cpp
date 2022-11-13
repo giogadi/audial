@@ -46,6 +46,68 @@ namespace synth {
         }
     }  // namespace
 
+    void ADSREnvSpec::Save(serial::Ptree pt) const {
+        pt.PutFloat("attack_time", attackTime);
+        pt.PutFloat("decay_time", decayTime);
+        pt.PutFloat("sustain_level", sustainLevel);
+        pt.PutFloat("release_time", releaseTime);
+        pt.PutFloat("min_value", minValue);
+    }
+    void ADSREnvSpec::Load(serial::Ptree pt) {
+        attackTime = pt.GetFloat("attack_time");
+        decayTime = pt.GetFloat("decay_time");
+        sustainLevel = pt.GetFloat("sustain_level");
+        releaseTime = pt.GetFloat("release_time");
+        minValue = pt.GetFloat("min_value");
+    }
+
+    void Patch::Save(serial::Ptree pt) const {
+        pt.PutInt("version", kVersion);
+        pt.PutString("name", name.c_str());
+        pt.PutFloat("gain_factor", gainFactor);
+        pt.PutString("osc1_waveform", WaveformToString(osc1Waveform));
+        pt.PutString("osc2_waveform", WaveformToString(osc2Waveform));
+        pt.PutFloat("detune", detune);
+        pt.PutFloat("osc_fader", oscFader);
+        pt.PutFloat("cutoff_freq", cutoffFreq);
+        pt.PutFloat("cutoff_k", cutoffK);
+        pt.PutFloat("pitch_lfo_gain", pitchLFOGain);
+        pt.PutFloat("pitch_lfo_freq", pitchLFOFreq);
+        pt.PutFloat("cutoff_lfo_gain", cutoffLFOGain);
+        pt.PutFloat("cutoff_lfo_freq", cutoffLFOFreq);
+        serial::SaveInNewChildOf(pt, "amp_env_spec", ampEnvSpec);
+        pt.PutFloat("cutoff_env_gain", cutoffEnvGain);
+        serial::SaveInNewChildOf(pt, "cutoff_env_spec", cutoffEnvSpec);
+	    pt.PutFloat("pitch_env_gain", pitchEnvGain);
+        serial::SaveInNewChildOf(pt, "pitch_env_spec", pitchEnvSpec);
+    }
+    void Patch::Load(serial::Ptree pt) {
+        int version = 0;
+        pt.TryGetInt("version", &version);
+
+        name = pt.GetString("name");
+        gainFactor = pt.GetFloat("gain_factor");
+        if (version >= 1) {
+            osc1Waveform = StringToWaveform(pt.GetString("osc1_waveform").c_str());
+            osc2Waveform = StringToWaveform(pt.GetString("osc2_waveform").c_str());
+            detune = pt.GetFloat("detune");
+            oscFader = pt.GetFloat("osc_fader");
+        }
+        cutoffFreq = pt.GetFloat("cutoff_freq");
+        cutoffK = pt.GetFloat("cutoff_k");
+        pitchLFOGain = pt.GetFloat("pitch_lfo_gain");
+        pitchLFOFreq = pt.GetFloat("pitch_lfo_freq");
+        cutoffLFOGain = pt.GetFloat("cutoff_lfo_gain");
+        cutoffLFOFreq = pt.GetFloat("cutoff_lfo_freq");
+        ampEnvSpec.Load(pt.GetChild("amp_env_spec"));
+        cutoffEnvGain = pt.GetFloat("cutoff_env_gain");
+        cutoffEnvSpec.Load(pt.GetChild("cutoff_env_spec"));
+	    if (version >= 2) {
+            pitchEnvGain = pt.GetFloat("pitch_env_gain");
+            pitchEnvSpec.Load(pt.GetChild("pitch_env_spec"));
+	    }
+    }
+
     void InitStateData(StateData& state, int channel) {
         state = StateData();
         state.channel = channel;

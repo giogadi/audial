@@ -2,6 +2,7 @@
 
 #include <synth.h>
 #include <audio.h>
+#include <vector>
 
 struct SynthGuiState {
     std::vector<synth::Patch> _synthPatches;
