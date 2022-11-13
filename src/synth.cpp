@@ -420,7 +420,7 @@ namespace synth {
                             v->oscillators[0].f = synth::MidiToFreq(e.midiNote);
                             v->currentMidiNote = e.midiNote;
                             if (v->ampEnvState.phase != synth::ADSRPhase::Closed) {
-                                v->ampEnvState.ticksSincePhaseStart = (unsigned long) (v->ampEnvState.currentValue * patch.ampEnvSpec.attackTime * 44100.f);
+                                v->ampEnvState.ticksSincePhaseStart = (unsigned long) (v->ampEnvState.currentValue * patch.ampEnvSpec.attackTime * sampleRate);
                             } else {
                                 v->ampEnvState.ticksSincePhaseStart = 0;
                             }
