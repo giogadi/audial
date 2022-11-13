@@ -419,12 +419,16 @@ namespace synth {
                         if (v != nullptr) {
                             v->oscillators[0].f = synth::MidiToFreq(e.midiNote);
                             v->currentMidiNote = e.midiNote;
+                            if (v->ampEnvState.phase != synth::ADSRPhase::Closed) {
+                                v->ampEnvState.ticksSincePhaseStart = (unsigned long) (v->ampEnvState.currentValue * patch.ampEnvSpec.attackTime * 44100.f);
+                            } else {
+                                v->ampEnvState.ticksSincePhaseStart = 0;
+                            }
                             v->ampEnvState.phase = synth::ADSRPhase::Attack;
-                            v->ampEnvState.ticksSincePhaseStart = 0;
                             v->cutoffEnvState.phase = synth::ADSRPhase::Attack;
-                            v->cutoffEnvState.ticksSincePhaseStart = 0;
-			    v->pitchEnvState.phase = synth::ADSRPhase::Attack;
-			    v->pitchEnvState.ticksSincePhaseStart = 0;
+                            v->cutoffEnvState.ticksSincePhaseStart = v->ampEnvState.ticksSincePhaseStart;
+                            v->pitchEnvState.phase = synth::ADSRPhase::Attack;
+                            v->pitchEnvState.ticksSincePhaseStart = v->ampEnvState.ticksSincePhaseStart;
                         } else {
                             std::cout << "couldn't find a note for noteon" << std::endl;
                         }
