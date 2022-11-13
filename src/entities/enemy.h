@@ -38,12 +38,10 @@ struct EnemyEntity : public ne::Entity {
     double _shotBeatTime = -1.0;
     int _hp = -1;
 
-    // specific to zigging
-    bool _zigMoving = false;
-    bool _zigLeft = true;
-    Vec3 _zigSource;
-    Vec3 _zigTarget;
-    float _zigPhaseTime = 0.f;
+    Vec3 _motionSource;
+    Vec3 _motionTarget;
+    double _motionStartBeatTime = -1.0;
+    double _motionEndBeatTime = -1.0;
 
     LaneNotesTable const* _laneNotesTable = nullptr;
     // Only used in Multiphase

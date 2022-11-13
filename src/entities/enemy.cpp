@@ -202,7 +202,7 @@ void EnemyEntity::Update(GameManager& g, float dt) {
     // If beatTime < activeBeatTime - predelay, don't draw this entity, we done.
     // for beatTime in [activeBeatTime - predelay, activeBeatTime], animate from spawn position to desired position.
     bool active = false;
-    double beatTime = g._beatClock->GetBeatTimeFromEpoch();
+    double const beatTime = g._beatClock->GetBeatTimeFromEpoch();
     if (beatTime < _activeBeatTime - gSpawnPredelayBeatTime ||
         beatTime >= _inactiveBeatTime) {
         return;
@@ -232,27 +232,44 @@ void EnemyEntity::Update(GameManager& g, float dt) {
                 break;
             }
             case Behavior::Zigging: {
-                _zigPhaseTime += dt;
-                double const kPhaseTimeInBeats = 1.0;
-                double const phaseTimeInSecs = kPhaseTimeInBeats * 60.0 / g._beatClock->GetBpm();
-                if (_zigPhaseTime > phaseTimeInSecs) {
-                    _zigPhaseTime -= phaseTimeInSecs;
-                    _zigMoving = !_zigMoving;
-                    if (_zigMoving) {
-                        // pick a new target
-                        _zigSource = _transform.GetPos();              
+                if (_motionStartBeatTime >= 0.0) {
+                    
+                } else {
+                    double constexpr kWaitBeatTime = 1.0;
+                    double constexpr kMoveBeatTime = 1.0;
+                    if (_motionEndBeatTime < 0.0) {
+                        _motionEndBeatTime = g._beatClock->GetNextBeatDenomTime(beatTime, 4.0) - kWaitBeatTime;
+                        _motionEndBeatTime = std::max(_motionEndBeatTime, 0.0);
+                    }
+                    double waitEndTime = _motionEndBeatTime + kWaitBeatTime;
+                    if (beatTime >= waitEndTime) {
+                        _motionStartBeatTime = waitEndTime;
+                        _motionEndBeatTime = _motionStartBeatTime + kMoveBeatTime;
+                        _motionSource = _transform.GetPos();
                         int newLaneIx = (currentLaneIx + 5) % kNumLanes;
                         float newX = minX + (0.5f * kLaneWidth) + (newLaneIx * kLaneWidth);
-                        float newZ = _zigSource._z + 2.f;
-                        _zigTarget.Set(newX, 0.f, newZ);                        
+                        float newZ = _motionSource._z + 2.f;
+                        _motionTarget.Set(newX, 0.f, newZ);
                     }
-                }
-                if (_zigMoving) {
-                    float param = SmoothStep(_zigPhaseTime / phaseTimeInSecs);
-                    _transform.SetTranslation(_zigSource + (_zigTarget - _zigSource) * param);
                 }
                 break;
             }
+        }
+    }
+
+    // Beat motion
+    if (_motionStartBeatTime >= 0.0) {
+        double timeSinceStart = beatTime - _motionStartBeatTime;
+        assert(timeSinceStart >= 0.0);
+        double totalMotionTime = _motionEndBeatTime - _motionStartBeatTime;
+        assert(totalMotionTime >= 0.0);
+        double param = timeSinceStart / totalMotionTime;
+        param = std::min(param, 1.0);
+        param = SmoothStep(param);
+        Vec3 newPos = _motionSource + (_motionTarget - _motionSource) * param;
+        _transform.SetTranslation(newPos);
+        if (beatTime >= _motionEndBeatTime) {
+            _motionStartBeatTime = -1.0;
         }
     }
 
