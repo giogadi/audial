@@ -13,6 +13,7 @@
 #include "renderer.h"
 #include "math_util.h"
 #include "beat_time_event.h"
+#include "rng.h"
 
 namespace {
 
@@ -123,8 +124,14 @@ float SmoothUpAndDown(float x) {
     return 1.f-SmoothStep(2*(x - 0.5f));
 }
 
+static float GetCenterXOfLane(int laneIx) {
+    float constexpr minX = -kLaneWidth * (kNumLanes / 2);
+    float centerX = minX + (0.5f * kLaneWidth) + (laneIx * kLaneWidth);
+    return centerX;
+}
+
 int EnemyEntity::GetLaneIxFromCurrentPos() {
-    float const minX = -kLaneWidth * (kNumLanes / 2);
+    float constexpr minX = -kLaneWidth * (kNumLanes / 2);
     float const xOffset = _transform._m03 - minX;
     int laneIx = math_util::Clamp((int)(xOffset / kLaneWidth), 0, kNumLanes - 1);
     return laneIx;
@@ -174,6 +181,17 @@ void EnemyEntity::OnShot(GameManager& g) {
                             _hp = _initialHp;
                             if (_phaseNotesTable) {
                                 SendEventsFromLaneNoteTable(g, *_phaseNotesTable);
+                                if (_behavior == Behavior::MoveOnPhase) {
+                                    _motionSource = _transform.GetPos();
+                                    int currentLaneIx = GetLaneIxFromCurrentPos();
+                                    //currentLaneIx  = (currentLaneIx + 4) % kNumLanes;
+                                    currentLaneIx = rng::GetInt(0, kNumLanes-1);
+                                    float newX = GetCenterXOfLane(currentLaneIx);
+                                    float newZ = _motionSource._z + 1.f;
+                                    _motionTarget.Set(newX, 0.f, newZ);
+                                    _motionStartBeatTime = g._beatClock->GetBeatTimeFromEpoch();
+                                    _motionEndBeatTime = g._beatClock->GetNextDownBeatTime(_motionStartBeatTime) + 2.0;
+                                }
                             } else {
                                 printf("WARNING!! No phase note table!\n");
                             }
@@ -253,6 +271,9 @@ void EnemyEntity::Update(GameManager& g, float dt) {
                     }
                 }
                 break;
+            }
+            case Behavior::MoveOnPhase: {
+                // handled during on-shot?
             }
         }
     }

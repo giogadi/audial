@@ -13,7 +13,7 @@ add_executable(game
     src/imgui/imgui_tables.cpp src/imgui/imgui_widgets.cpp src/imgui/backends/imgui_impl_glfw.cpp
     src/imgui/backends/imgui_impl_opengl3.cpp
     src/glad/src/glad.cpp
-    src/serial.cpp
+    src/serial.cpp src/rng.cpp
     src/audio_loader.cpp src/game.cpp src/audio_util.cpp src/audio.cpp src/audio_event_imgui.cpp
     src/sound_bank.cpp
     src/editor.cpp

@@ -1,5 +1,5 @@
 offset 3.0
-s on:0 off:100 lane:0 z:-10 table:c2_dorian phase_table:alpha death_table:alpha hit_beh:multiphase num_phases:3 hp:3 beh:zig
+s on:0 off:100 lane:0 z:-10 table:c2_dorian phase_table:alpha death_table:alpha hit_beh:multiphase num_phases:3 hp:3 beh:move_on_phase
 # s on:0 off:24 lane:1 z:-10 ch:1 note_len:2 table:alpha
 # s on:0 off:24 lane:2 z:-10 ch:1 note_len:2 table:alpha
 # s on:0 off:24 lane:3 z:-10 ch:1 note_len:2 table:alpha

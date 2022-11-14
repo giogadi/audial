@@ -21,7 +21,11 @@ void DrawLanes(GameManager& g) {
         Mat4 transform;
         transform.SetTranslation(Vec3(startX, 0.f, -2.f));
         transform.Scale(kLaneBoundaryWidth, kLaneBoundaryWidth, 20.f);
-        g._scene->DrawCube(transform, color);
+        if (i == kNumLanes / 2) {
+            g._scene->DrawCube(transform, Vec4(1.f, 1.f, 1.f, 1.f));
+        } else {
+            g._scene->DrawCube(transform, color);
+        }        
         startX += kLaneWidth;
     }
 }
@@ -297,6 +301,8 @@ void LoadSpawnsFromFile(char const* fileName, std::vector<Spawn>* spawns) {
                     spawn._behavior = EnemyEntity::Behavior::Zigging;
                 } else if (value == "down") {
                     spawn._behavior = EnemyEntity::Behavior::Down;
+                } else if (value == "move_on_phase") {
+                    spawn._behavior = EnemyEntity::Behavior::MoveOnPhase;
                 }
             } else if (key == "hp") {
                 spawn._hp = std::stoi(value);

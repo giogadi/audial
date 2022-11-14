@@ -9,6 +9,7 @@ struct EnemyEntity : public ne::Entity {
         None,
         Down,
         Zigging,
+        MoveOnPhase,
     };
     enum class OnHitBehavior {
         Default, // decrement hp, doot, die at 0 hp
