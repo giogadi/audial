@@ -26,7 +26,7 @@ struct EnemyEntity : public ne::Entity {
     double _eventStartDenom = 0.125;
     InputManager::Key _shootButton = InputManager::Key::NumKeys;
     double _activeBeatTime = 0.0;
-    double _inactiveBeatTime = -1.0;  // < 0 means it stays active once active.
+    double _inactiveBeatTime = -1.0;
     Behavior _behavior = Behavior::None;
     OnHitBehavior _onHitBehavior = OnHitBehavior::Default;
     int _initialHp = -1;

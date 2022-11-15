@@ -17,3 +17,13 @@ C2 F2 B2-
 C2 G2 B2-
 C2 E2 G2
 C2 E2- G2
+
+four_tones ch:2 note_length:1
+C2
+E2-
+B2-
+C3
+C3
+E3-
+B3-
+C4

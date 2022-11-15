@@ -99,18 +99,22 @@ ne::Entity* MakeNoteEnemy(
             enemy->_laneNotesTable = &(result->second);
         }
 
-        result = laneNotesTableMap.find(spawnInfo._phaseTableName);
-        if (result == laneNotesTableMap.end()) {
-            printf("WARNING: lane-note-table enemy refers to non-existent table \"%s\"!\n", spawnInfo._phaseTableName.c_str());
-        } else {
-            enemy->_phaseNotesTable = &(result->second);
+        if (!spawnInfo._phaseTableName.empty()) {
+            result = laneNotesTableMap.find(spawnInfo._phaseTableName);
+            if (result == laneNotesTableMap.end()) {
+                printf("WARNING: lane-note-table enemy refers to non-existent table \"%s\"!\n", spawnInfo._phaseTableName.c_str());
+            } else {
+                enemy->_phaseNotesTable = &(result->second);
+            }
         }
 
-        result = laneNotesTableMap.find(spawnInfo._deathTableName);
-        if (result == laneNotesTableMap.end()) {
-            printf("WARNING: lane-note-table enemy refers to non-existent table \"%s\"!\n", spawnInfo._deathTableName.c_str());
-        } else {
-            enemy->_deathNotesTable = &(result->second);
+        if (!spawnInfo._deathTableName.empty()) {
+            result = laneNotesTableMap.find(spawnInfo._deathTableName);
+            if (result == laneNotesTableMap.end()) {
+                printf("WARNING: lane-note-table enemy refers to non-existent table \"%s\"!\n", spawnInfo._deathTableName.c_str());
+            } else {
+                enemy->_deathNotesTable = &(result->second);
+            }
         }
     }
 

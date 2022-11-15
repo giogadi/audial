@@ -1,62 +1,177 @@
-offset 3.0
-s on:0 off:100 lane:0 z:-10 table:c2_dorian phase_table:alpha death_table:alpha hit_beh:multiphase num_phases:3 hp:3 beh:move_on_phase
-# s on:0 off:24 lane:1 z:-10 ch:1 note_len:2 table:alpha
-# s on:0 off:24 lane:2 z:-10 ch:1 note_len:2 table:alpha
-# s on:0 off:24 lane:3 z:-10 ch:1 note_len:2 table:alpha
-# s on:0 off:24 lane:4 z:-10 ch:1 note_len:2 table:alpha
-# s on:0 off:24 lane:5 z:-10 ch:1 note_len:2 table:alpha
-# s on:0 off:24 lane:6 z:-10 ch:1 note_len:2 table:alpha
-# s on:0 off:24 lane:7 z:-10 ch:1 note_len:2 table:alpha
+# offset 3
+# s on:0 off:100 lane:0 z:-8 beh:down downv:6 table:c2_dorian
+# s on:0.5 off:100 lane:0 z:-8 beh:down downv:6 table:c2_dorian
+# s on:1 off:100 lane:0 z:-8 beh:down downv:6 table:c2_dorian
+# s on:2 off:100 lane:0 z:-8 beh:down downv:6 table:c2_dorian
+# s on:3 off:100 lane:0 z:-8 beh:down downv:6 table:c2_dorian
 
-# s on:0 off:24 lane:0 z:-10 beh:down downv:3 table:c2_dorian
-# s on:0 off:24 lane:0 z:-8 beh:down downv:3 table:c2_dorian
-# s on:0 off:24 lane:0 z:-6 beh:down downv:3 table:c2_dorian
+# offset 7
+# s on:0 off:100 lane:0 z:-8 beh:down downv:6 table:c2_dorian
+# s on:0.5 off:100 lane:0 z:-8 beh:down downv:6 table:c2_dorian
+# s on:1 off:100 lane:0 z:-8 beh:down downv:6 table:c2_dorian
+# s on:2 off:100 lane:0 z:-8 beh:down downv:6 table:c2_dorian
+# s on:3 off:100 lane:0 z:-8 beh:down downv:6 table:c2_dorian
 
-# s on:0 off:24 lane:3 z:-10 beh:down downv:3 table:c2_dorian
-# s on:0 off:24 lane:3 z:-8 beh:down downv:3 table:c2_dorian
-# s on:0 off:24 lane:3 z:-6 beh:down downv:3 table:c2_dorian
+# offset 11
+# s on:0 off:100 lane:0 z:-8 beh:down downv:6 table:c2_dorian
+# s on:0.5 off:100 lane:0 z:-8 beh:down downv:6 table:c2_dorian
+# s on:1 off:100 lane:0 z:-8 beh:down downv:6 table:c2_dorian
+# s on:2 off:100 lane:0 z:-8 beh:down downv:6 table:c2_dorian
+# s on:3 off:100 lane:0 z:-8 beh:down downv:6 table:c2_dorian
 
-# s on:0 off:24 lane:4 z:-10 beh:down downv:3 table:c2_dorian
-# s on:0 off:24 lane:4 z:-8 beh:down downv:3 table:c2_dorian
-# s on:0 off:24 lane:4 z:-6 beh:down downv:3 table:c2_dorian
+# s on:0 off:100 lane:4 z:-8 beh:down downv:6 table:four_tones
+# s on:1 off:100 lane:6 z:-8 beh:down downv:6 table:four_tones
+# s on:2 off:100 lane:7 z:-8 beh:down downv:6 table:four_tones
 
-# s on:0 off:24 lane:6 z:-10 beh:down downv:3 table:c2_dorian
-# s on:0 off:24 lane:6 z:-8 beh:down downv:3 table:c2_dorian
-# s on:0 off:24 lane:6 z:-6 beh:down downv:3 table:c2_dorian
+# offset 15
+# s on:0 off:100 lane:0 z:-8 beh:down downv:6 table:c2_dorian
+# s on:0.5 off:100 lane:0 z:-8 beh:down downv:6 table:c2_dorian
+# s on:1 off:100 lane:0 z:-8 beh:down downv:6 table:c2_dorian
+# s on:2 off:100 lane:0 z:-8 beh:down downv:6 table:c2_dorian
+# s on:3 off:100 lane:0 z:-8 beh:down downv:6 table:c2_dorian
 
-# s on:8 ch:2 off:24 note:F3 note_len:1 lane:3 z:-10 beh:down downv:3
-# s on:8 ch:2 off:24 note:G3 note_len:1 lane:4 z:-8 beh:down downv:3
-# s on:8 ch:2 off:24 note:A3 note_len:1 lane:5 z:-6 beh:down downv:3
+# s on:0 off:100 lane:4 z:-8 beh:down downv:6 table:four_tones
+# s on:1 off:100 lane:6 z:-8 beh:down downv:6 table:four_tones
+# s on:2 off:100 lane:5 z:-8 beh:down downv:6 table:four_tones
 
-# # WAVE 2
 # offset 19
-# s on:0 off:24 note:C2 lane:0 z:-10 beh:down downv:3
-# s on:0 off:24 note:C2 lane:0 z:-8 beh:down downv:3
-# s on:0 off:24 note:C2 lane:0 z:-6 beh:down downv:3
+# s on:0 off:100 lane:0 z:-8 beh:down downv:6 table:c2_dorian
+# s on:0.5 off:100 lane:0 z:-8 beh:down downv:6 table:c2_dorian
+# s on:1 off:100 lane:0 z:-8 beh:down downv:6 table:c2_dorian
+# s on:2 off:100 lane:0 z:-8 beh:down downv:6 table:c2_dorian
+# s on:3 off:100 lane:0 z:-8 beh:down downv:6 table:c2_dorian
 
-# s on:0 off:24 note:F2 lane:3 z:-10 beh:down downv:3
-# s on:0 off:24 note:F2 lane:3 z:-8 beh:down downv:3
-# s on:0 off:24 note:F2 lane:3 z:-6 beh:down downv:3
+# s on:0 off:100 lane:4 z:-8 beh:down downv:6 table:four_tones
+# s on:1 off:100 lane:6 z:-8 beh:down downv:6 table:four_tones
+# s on:2 off:100 lane:7 z:-8 beh:down downv:6 table:four_tones
 
-# s on:0 off:24 note:G2 lane:4 z:-10 beh:down downv:3
-# s on:0 off:24 note:G2 lane:4 z:-8 beh:down downv:3
-# s on:0 off:24 note:G2 lane:4 z:-6 beh:down downv:3
+# offset 23
+# s on:0 off:100 lane:0 z:-8 beh:down downv:6 table:c2_dorian
+# s on:0.5 off:100 lane:0 z:-8 beh:down downv:6 table:c2_dorian
+# s on:1 off:100 lane:0 z:-8 beh:down downv:6 table:c2_dorian
+# s on:2 off:100 lane:0 z:-8 beh:down downv:6 table:c2_dorian
+# s on:3 off:100 lane:0 z:-8 beh:down downv:6 table:c2_dorian
 
-# s on:0 off:24 note:B2- lane:6 z:-10 beh:down downv:3
-# s on:0 off:24 note:B2- lane:6 z:-8 beh:down downv:3
-# s on:0 off:24 note:B2- lane:6 z:-6 beh:down downv:3
+# s on:0 off:100 lane:4 z:-8 beh:down downv:6 table:four_tones
+# s on:1 off:100 lane:6 z:-8 beh:down downv:6 table:four_tones
+# s on:2 off:100 lane:5 z:-8 beh:down downv:6 table:four_tones
 
-# # WAVE 3
-# offset 35
+offset 3.0
+# s on:0 off:100 lane:0 z:-10 table:c2_dorian phase_table:alpha death_table:alpha hit_beh:multiphase num_phases:3 hp:3 beh:move_on_phase 
 
-# s on:0 off:24 note:F2 lane:3 z:-10 beh:down downv:4
-# s on:0 off:24 note:F2 lane:3 z:-8 beh:down downv:4
-# s on:0 off:24 note:F2 lane:3 z:-6 beh:down downv:4
+s on:0 off:100 lane:0 z:-6 beh:down downv:3 table:c2_dorian
+s on:1 off:100 lane:2 z:-6 beh:down downv:3 table:c2_dorian
+s on:2 off:100 lane:3 z:-6 beh:down downv:3 table:c2_dorian
+s on:3 off:100 lane:6 z:-6 beh:down downv:3 table:c2_dorian
+s on:3.5 off:100 lane:7 z:-6 beh:down downv:3 table:c2_dorian
 
-# s on:0 off:24 note:G2 lane:4 z:-10 beh:down downv:4
-# s on:0 off:24 note:G2 lane:4 z:-8 beh:down downv:4
-# s on:0 off:24 note:G2 lane:4 z:-6 beh:down downv:4
+s on:4 off:100 lane:0 z:-6 beh:down downv:3 table:c2_dorian
+s on:4 off:100 lane:0 z:-4 beh:down downv:3 table:c2_dorian
+s on:5 off:100 lane:2 z:-6 beh:down downv:3 table:c2_dorian
+s on:5 off:100 lane:2 z:-4 beh:down downv:3 table:c2_dorian
+s on:6 off:100 lane:3 z:-6 beh:down downv:3 table:c2_dorian
+s on:6.5 off:100 lane:6 z:-6 beh:down downv:3 table:c2_dorian
+s on:7 off:100 lane:7 z:-6 beh:down downv:3 table:c2_dorian
 
-# s on:0 off:24 note:B2- lane:6 z:-10 beh:down downv:4
-# s on:0 off:24 note:B2- lane:6 z:-8 beh:down downv:4
-# s on:0 off:24 note:B2- lane:6 z:-6 beh:down downv:4
+offset 11
+s on:0 off:100 lane:0 z:-6 beh:down downv:3 table:c2_dorian
+s on:1 off:100 lane:2 z:-6 beh:down downv:3 table:c2_dorian
+s on:2 off:100 lane:3 z:-6 beh:down downv:3 table:c2_dorian
+s on:3 off:100 lane:6 z:-6 beh:down downv:3 table:c2_dorian
+s on:3.5 off:100 lane:7 z:-6 beh:down downv:3 table:c2_dorian
+
+s on:4 off:100 lane:0 z:-6 beh:down downv:3 table:c2_dorian
+s on:4 off:100 lane:0 z:-4 beh:down downv:3 table:c2_dorian
+s on:5 off:100 lane:2 z:-6 beh:down downv:3 table:c2_dorian
+s on:5 off:100 lane:2 z:-4 beh:down downv:3 table:c2_dorian
+s on:6 off:100 lane:3 z:-6 beh:down downv:3 table:c2_dorian
+s on:6.5 off:100 lane:6 z:-6 beh:down downv:3 table:c2_dorian
+s on:7 off:100 lane:7 z:-6 beh:down downv:3 table:c2_dorian
+
+offset 19
+s on:0 off:100 lane:0 z:-6 beh:down downv:3 table:c2_dorian
+s on:1 off:100 lane:2 z:-6 beh:down downv:3 table:c2_dorian
+s on:2 off:100 lane:3 z:-6 beh:down downv:3 table:c2_dorian
+s on:3 off:100 lane:6 z:-6 beh:down downv:3 table:c2_dorian
+s on:3.5 off:100 lane:7 z:-6 beh:down downv:3 table:c2_dorian
+
+s on:4 off:100 lane:0 z:-6 beh:down downv:3 table:c2_dorian
+s on:4 off:100 lane:0 z:-4 beh:down downv:3 table:c2_dorian
+s on:5 off:100 lane:2 z:-6 beh:down downv:3 table:c2_dorian
+s on:5 off:100 lane:2 z:-4 beh:down downv:3 table:c2_dorian
+s on:6 off:100 lane:3 z:-6 beh:down downv:3 table:c2_dorian
+s on:6.5 off:100 lane:6 z:-6 beh:down downv:3 table:c2_dorian
+s on:7 off:100 lane:7 z:-6 beh:down downv:3 table:c2_dorian
+
+offset 27
+s on:0 off:100 lane:0 z:-6 beh:down downv:3 table:c2_dorian
+s on:1 off:100 lane:2 z:-6 beh:down downv:3 table:c2_dorian
+s on:2 off:100 lane:3 z:-6 beh:down downv:3 table:c2_dorian
+s on:3 off:100 lane:6 z:-6 beh:down downv:3 table:c2_dorian
+s on:3.5 off:100 lane:7 z:-6 beh:down downv:3 table:c2_dorian
+
+s on:4 off:100 lane:0 z:-6 beh:down downv:3 table:c2_dorian
+s on:4 off:100 lane:0 z:-4 beh:down downv:3 table:c2_dorian
+s on:5 off:100 lane:2 z:-6 beh:down downv:3 table:c2_dorian
+s on:5 off:100 lane:2 z:-4 beh:down downv:3 table:c2_dorian
+s on:6 off:100 lane:3 z:-6 beh:down downv:3 table:c2_dorian
+s on:6.5 off:100 lane:6 z:-6 beh:down downv:3 table:c2_dorian
+s on:7 off:100 lane:7 z:-6 beh:down downv:3 table:c2_dorian
+
+offset 35
+s on:0 off:100 lane:0 z:-8 beh:down downv:6 table:c2_dorian
+s on:0.5 off:100 lane:0 z:-8 beh:down downv:6 table:c2_dorian
+s on:1 off:100 lane:0 z:-8 beh:down downv:6 table:c2_dorian
+s on:2 off:100 lane:0 z:-8 beh:down downv:6 table:c2_dorian
+s on:3 off:100 lane:0 z:-8 beh:down downv:6 table:c2_dorian
+
+offset 39
+s on:0 off:100 lane:0 z:-8 beh:down downv:6 table:c2_dorian
+s on:0.5 off:100 lane:0 z:-8 beh:down downv:6 table:c2_dorian
+s on:1 off:100 lane:0 z:-8 beh:down downv:6 table:c2_dorian
+s on:2 off:100 lane:0 z:-8 beh:down downv:6 table:c2_dorian
+s on:3 off:100 lane:0 z:-8 beh:down downv:6 table:c2_dorian
+
+offset 43
+s on:0 off:100 lane:0 z:-8 beh:down downv:6 table:c2_dorian
+s on:0.5 off:100 lane:0 z:-8 beh:down downv:6 table:c2_dorian
+s on:1 off:100 lane:0 z:-8 beh:down downv:6 table:c2_dorian
+s on:2 off:100 lane:0 z:-8 beh:down downv:6 table:c2_dorian
+s on:3 off:100 lane:0 z:-8 beh:down downv:6 table:c2_dorian
+
+s on:0 off:100 lane:4 z:-8 beh:down downv:6 table:four_tones
+s on:1 off:100 lane:6 z:-8 beh:down downv:6 table:four_tones
+s on:2 off:100 lane:7 z:-8 beh:down downv:6 table:four_tones
+
+offset 47
+s on:0 off:100 lane:0 z:-8 beh:down downv:6 table:c2_dorian
+s on:0.5 off:100 lane:0 z:-8 beh:down downv:6 table:c2_dorian
+s on:1 off:100 lane:0 z:-8 beh:down downv:6 table:c2_dorian
+s on:2 off:100 lane:0 z:-8 beh:down downv:6 table:c2_dorian
+s on:3 off:100 lane:0 z:-8 beh:down downv:6 table:c2_dorian
+
+s on:0 off:100 lane:4 z:-8 beh:down downv:6 table:four_tones
+s on:1 off:100 lane:6 z:-8 beh:down downv:6 table:four_tones
+s on:2 off:100 lane:5 z:-8 beh:down downv:6 table:four_tones
+
+offset 51
+s on:0 off:100 lane:0 z:-8 beh:down downv:6 table:c2_dorian
+s on:0.5 off:100 lane:0 z:-8 beh:down downv:6 table:c2_dorian
+s on:1 off:100 lane:0 z:-8 beh:down downv:6 table:c2_dorian
+s on:2 off:100 lane:0 z:-8 beh:down downv:6 table:c2_dorian
+s on:3 off:100 lane:0 z:-8 beh:down downv:6 table:c2_dorian
+
+s on:0 off:100 lane:4 z:-8 beh:down downv:6 table:four_tones
+s on:1 off:100 lane:6 z:-8 beh:down downv:6 table:four_tones
+s on:2 off:100 lane:7 z:-8 beh:down downv:6 table:four_tones
+
+offset 55
+s on:0 off:100 lane:0 z:-8 beh:down downv:6 table:c2_dorian
+s on:0.5 off:100 lane:0 z:-8 beh:down downv:6 table:c2_dorian
+s on:1 off:100 lane:0 z:-8 beh:down downv:6 table:c2_dorian
+s on:2 off:100 lane:0 z:-8 beh:down downv:6 table:c2_dorian
+s on:3 off:100 lane:0 z:-8 beh:down downv:6 table:c2_dorian
+
+s on:0 off:100 lane:4 z:-8 beh:down downv:6 table:four_tones
+s on:1 off:100 lane:6 z:-8 beh:down downv:6 table:four_tones
+s on:2 off:100 lane:5 z:-8 beh:down downv:6 table:four_tones

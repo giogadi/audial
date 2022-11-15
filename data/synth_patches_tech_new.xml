@@ -79,7 +79,7 @@
     <patch>
         <version>2</version>
         <name>bell</name>
-        <gain_factor>0.838999987</gain_factor>
+        <gain_factor>0.610000014</gain_factor>
         <osc1_waveform>Square</osc1_waveform>
         <osc2_waveform>Square</osc2_waveform>
         <detune>1</detune>

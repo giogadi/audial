@@ -152,12 +152,12 @@ void EnemyEntity::SendEventsFromLaneNoteTable(
         b_e._e.channel = laneNotesTable._channel;
         b_e._e.midiNote = midiNote;
         b_e._beatTime = 0.0;
-        audio::Event e = GetEventAtBeatOffsetFromNextDenom(_eventStartDenom, b_e, *g._beatClock, /*slack=*/0.0);
+        audio::Event e = GetEventAtBeatOffsetFromNextDenom(_eventStartDenom, b_e, *g._beatClock, /*slack=*/0.125);
         g._audioContext->AddEvent(e);
 
         b_e._e.type = audio::EventType::NoteOff;
         b_e._beatTime = laneNotesTable._noteLength;
-        e = GetEventAtBeatOffsetFromNextDenom(_eventStartDenom, b_e, *g._beatClock, /*slack=*/0.0);
+        e = GetEventAtBeatOffsetFromNextDenom(_eventStartDenom, b_e, *g._beatClock, /*slack=*/0.125);
         g._audioContext->AddEvent(e);
     }
 }
@@ -233,7 +233,11 @@ void EnemyEntity::Update(GameManager& g, float dt) {
         _transform._m13 = _desiredSpawnY + (1.0-param) * gSpawnYOffset;
         _modelColor = Vec4(0.3f, 0.3f, 0.3f, 1.f);
     } else {
-        _modelColor = Vec4(1.f, 0.647f, 0.f, 1.f);  // orange
+        if (_behavior == Behavior::MoveOnPhase) {
+            _modelColor = Vec4(0.f, 0.8f, 0.8f, 1.f); // cyan-ish
+        } else {
+            _modelColor = Vec4(1.f, 0.647f, 0.f, 1.f);  // orange   
+        }
         _transform._m13 = _desiredSpawnY;
         active = true; 
     }
