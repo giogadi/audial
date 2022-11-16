@@ -200,7 +200,9 @@ audio::Event GetEventAtBeatOffsetFromNextDenom(
     double denom, BeatTimeEvent const& b_e, BeatClock const& beatClock, double slack) {
     double beatTime = beatClock.GetBeatTime();
     double startTime = BeatClock::GetNextBeatDenomTime(beatTime, denom);
-    if (startTime - beatTime <= slack) {
+    double prevDenom = startTime - denom;
+    double timeSincePrevDenom = beatTime - prevDenom;
+    if (timeSincePrevDenom >= 0.0 && timeSincePrevDenom <= slack) {
         startTime = beatTime;
     }
     unsigned long startTickTime = beatClock.BeatTimeToTickTime(startTime);

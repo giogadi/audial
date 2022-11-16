@@ -152,12 +152,13 @@ void EnemyEntity::SendEventsFromLaneNoteTable(
         b_e._e.channel = laneNotesTable._channel;
         b_e._e.midiNote = midiNote;
         b_e._beatTime = 0.0;
-        audio::Event e = GetEventAtBeatOffsetFromNextDenom(_eventStartDenom, b_e, *g._beatClock, /*slack=*/0.125);
+        double constexpr kSlack = 0.0625;
+        audio::Event e = GetEventAtBeatOffsetFromNextDenom(_eventStartDenom, b_e, *g._beatClock, kSlack);
         g._audioContext->AddEvent(e);
 
         b_e._e.type = audio::EventType::NoteOff;
         b_e._beatTime = laneNotesTable._noteLength;
-        e = GetEventAtBeatOffsetFromNextDenom(_eventStartDenom, b_e, *g._beatClock, /*slack=*/0.125);
+        e = GetEventAtBeatOffsetFromNextDenom(_eventStartDenom, b_e, *g._beatClock, kSlack);
         g._audioContext->AddEvent(e);
     }
 }
