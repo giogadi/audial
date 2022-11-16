@@ -37,8 +37,14 @@ add_executable(game
     src/entities/enemy.cpp
     src/entities/player.cpp
     src/entities/sequencer.cpp
-    src/enums/audio_EventType.cpp src/enums/audio_SynthParamType.cpp src/enums/CollisionLayer.cpp
-    src/enums/ScriptActionType.cpp src/enums/synth_Waveform.cpp)
+    
+    src/enums/audio_EventType.cpp
+    src/enums/audio_SynthParamType.cpp
+    src/enums/CollisionLayer.cpp
+    src/enums/ScriptActionType.cpp
+    src/enums/synth_Waveform.cpp
+    src/enums/ColorPreset.cpp
+)
 
 if(MSVC)
   target_compile_options(game PRIVATE /Wall)

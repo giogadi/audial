@@ -10,6 +10,7 @@
 #include "entities/enemy.h"
 #include "renderer.h"
 #include "constants.h"
+#include "color_presets.h"
 
 namespace {
 
@@ -77,13 +78,14 @@ struct Spawn {
     std::string _laneNoteTableName;
     std::string _phaseTableName;
     std::string _deathTableName;
+    Vec4 _color = ToColor4(ColorPreset::Orange);
 };
 
 ne::Entity* MakeNoteEnemy(
     GameManager& g, Spawn const& spawnInfo, std::map<std::string, EnemyEntity::LaneNotesTable> const& laneNotesTableMap) {
     EnemyEntity* enemy = (EnemyEntity*) g._neEntityManager->AddEntity(ne::EntityType::Enemy);
     enemy->_modelName = "cube";
-    enemy->_modelColor.Set(0.3f, 0.3f, 0.3f, 1.f);
+    enemy->_modelColor = spawnInfo._color;
     enemy->_eventStartDenom = 0.25;
     enemy->_behavior = spawnInfo._behavior;
     enemy->_initialHp = spawnInfo._hp;
@@ -325,6 +327,8 @@ void LoadSpawnsFromFile(char const* fileName, std::vector<Spawn>* spawns) {
                 spawn._phaseTableName = value;
             } else if (key == "death_table") {
                 spawn._deathTableName = value;
+            } else if (key == "color") {
+                spawn._color = ToColor4(StringToColorPreset(value.c_str()));
             } else {
                 printf("Unrecognized key \"%s\".\n", key.c_str());
             }

@@ -101,7 +101,6 @@ static double constexpr gSpawnPredelayBeatTime = 0.5;
 void EnemyEntity::Init(GameManager& g) {
     ne::Entity::Init(g);
     _desiredSpawnY = _transform._m13;
-    _modelColor = Vec4(0.3f, 0.3f, 0.3f, 1.f);
     _hp = _initialHp;
 }
 
@@ -226,19 +225,17 @@ void EnemyEntity::Update(GameManager& g, float dt) {
         beatTime >= _inactiveBeatTime) {
         return;
     }
+    bool useModelColor = false;
     if (beatTime < _activeBeatTime) {
         float param = (_activeBeatTime - beatTime) / gSpawnPredelayBeatTime;  // 0: active beat time; 1: predelay start
         _transform._m13 = _desiredSpawnY + param * gSpawnYOffset;
+        useModelColor = false;
     } else if (beatTime > _inactiveBeatTime - gSpawnPredelayBeatTime) {
         float param = (_inactiveBeatTime - beatTime) / gSpawnPredelayBeatTime;  // 0: inactive beat time; 1: predelay start
         _transform._m13 = _desiredSpawnY + (1.0-param) * gSpawnYOffset;
-        _modelColor = Vec4(0.3f, 0.3f, 0.3f, 1.f);
-    } else {
-        if (_behavior == Behavior::MoveOnPhase) {
-            _modelColor = Vec4(0.f, 0.8f, 0.8f, 1.f); // cyan-ish
-        } else {
-            _modelColor = Vec4(1.f, 0.647f, 0.f, 1.f);  // orange   
-        }
+        useModelColor = false;
+    } else {        
+        useModelColor = true;
         _transform._m13 = _desiredSpawnY;
         active = true; 
     }
@@ -341,6 +338,10 @@ void EnemyEntity::Update(GameManager& g, float dt) {
     renderTrans.SetTopLeftMat3(rot);
     
     if (_model != nullptr) {
-        g._scene->DrawMesh(_model, renderTrans, _modelColor);
+        if (useModelColor) {
+            g._scene->DrawMesh(_model, renderTrans, _modelColor);
+        } else {
+            g._scene->DrawMesh(_model, renderTrans, Vec4(0.3f, 0.3f, 0.3f, 1.f));
+        }
     }
 }

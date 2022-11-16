@@ -139,9 +139,9 @@ s on:1 off:100 lane:0 z:-8 beh:down downv:6 table:c2_dorian
 s on:2 off:100 lane:0 z:-8 beh:down downv:6 table:c2_dorian
 s on:3 off:100 lane:0 z:-8 beh:down downv:6 table:c2_dorian
 
-s on:0 off:100 lane:4 z:-8 beh:down downv:6 table:four_tones
-s on:1 off:100 lane:6 z:-8 beh:down downv:6 table:four_tones
-s on:2 off:100 lane:7 z:-8 beh:down downv:6 table:four_tones
+s on:0 off:100 lane:4 z:-8 beh:down downv:6 table:four_tones color:Cyan
+s on:1 off:100 lane:6 z:-8 beh:down downv:6 table:four_tones color:Cyan
+s on:2 off:100 lane:7 z:-8 beh:down downv:6 table:four_tones color:Cyan
 
 offset 47
 s on:0 off:100 lane:0 z:-8 beh:down downv:6 table:c2_dorian
@@ -150,9 +150,9 @@ s on:1 off:100 lane:0 z:-8 beh:down downv:6 table:c2_dorian
 s on:2 off:100 lane:0 z:-8 beh:down downv:6 table:c2_dorian
 s on:3 off:100 lane:0 z:-8 beh:down downv:6 table:c2_dorian
 
-s on:0 off:100 lane:4 z:-8 beh:down downv:6 table:four_tones
-s on:1 off:100 lane:6 z:-8 beh:down downv:6 table:four_tones
-s on:2 off:100 lane:5 z:-8 beh:down downv:6 table:four_tones
+s on:0 off:100 lane:4 z:-8 beh:down downv:6 table:four_tones color:Cyan
+s on:1 off:100 lane:6 z:-8 beh:down downv:6 table:four_tones color:Cyan
+s on:2 off:100 lane:5 z:-8 beh:down downv:6 table:four_tones color:Cyan
 
 offset 51
 s on:0 off:100 lane:0 z:-8 beh:down downv:6 table:c2_dorian
@@ -161,9 +161,9 @@ s on:1 off:100 lane:0 z:-8 beh:down downv:6 table:c2_dorian
 s on:2 off:100 lane:0 z:-8 beh:down downv:6 table:c2_dorian
 s on:3 off:100 lane:0 z:-8 beh:down downv:6 table:c2_dorian
 
-s on:0 off:100 lane:4 z:-8 beh:down downv:6 table:four_tones
-s on:1 off:100 lane:6 z:-8 beh:down downv:6 table:four_tones
-s on:2 off:100 lane:7 z:-8 beh:down downv:6 table:four_tones
+s on:0 off:100 lane:4 z:-8 beh:down downv:6 table:four_tones color:Cyan
+s on:1 off:100 lane:6 z:-8 beh:down downv:6 table:four_tones color:Cyan
+s on:2 off:100 lane:7 z:-8 beh:down downv:6 table:four_tones color:Cyan
 
 offset 55
 s on:0 off:100 lane:0 z:-8 beh:down downv:6 table:c2_dorian
@@ -172,6 +172,6 @@ s on:1 off:100 lane:0 z:-8 beh:down downv:6 table:c2_dorian
 s on:2 off:100 lane:0 z:-8 beh:down downv:6 table:c2_dorian
 s on:3 off:100 lane:0 z:-8 beh:down downv:6 table:c2_dorian
 
-s on:0 off:100 lane:4 z:-8 beh:down downv:6 table:four_tones
-s on:1 off:100 lane:6 z:-8 beh:down downv:6 table:four_tones
-s on:2 off:100 lane:5 z:-8 beh:down downv:6 table:four_tones
+s on:0 off:100 lane:4 z:-8 beh:down downv:6 table:four_tones color:Cyan
+s on:1 off:100 lane:6 z:-8 beh:down downv:6 table:four_tones color:Cyan
+s on:2 off:100 lane:5 z:-8 beh:down downv:6 table:four_tones color:Cyan
