@@ -6,6 +6,9 @@
 #include "entities/enemy.h"
 
 struct PlayerEntity : public ne::Entity {
+    // serialized
+    std::string _spawnsFilename;
+    
     std::map<std::string, EnemyEntity::LaneNotesTable> _laneNotesTables;
     
     virtual void Init(GameManager& g);
@@ -15,7 +18,7 @@ struct PlayerEntity : public ne::Entity {
     // virtual void DebugPrint();
 
 protected:
-    virtual void SaveDerived(serial::Ptree pt) const {};
-    virtual void LoadDerived(serial::Ptree pt) {};
+    virtual void SaveDerived(serial::Ptree pt) const;
+    virtual void LoadDerived(serial::Ptree pt);
     virtual ImGuiResult ImGuiDerived(GameManager& g) { return ImGuiResult::Done; }
 };

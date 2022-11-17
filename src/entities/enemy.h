@@ -3,6 +3,7 @@
 #include "new_entity.h"
 #include "input_manager.h"
 #include "constants.h"
+#include "beat_time_event.h"
 
 struct EnemyEntity : public ne::Entity {
     enum class Behavior {
@@ -14,6 +15,10 @@ struct EnemyEntity : public ne::Entity {
     enum class OnHitBehavior {
         Default, // decrement hp, doot, die at 0 hp
         MultiPhase, // decrement hp, doot, increment phase at 0 hp, phase doot
+    };
+    enum class LaneNoteBehavior {
+        Table, // use lane notes tables
+        Events // use _events
     };
     static int constexpr kMaxNumNotesPerLane = 4;
     struct LaneNotesTable {
@@ -29,6 +34,7 @@ struct EnemyEntity : public ne::Entity {
     double _inactiveBeatTime = -1.0;
     Behavior _behavior = Behavior::None;
     OnHitBehavior _onHitBehavior = OnHitBehavior::Default;
+    LaneNoteBehavior _laneNoteBehavior = LaneNoteBehavior::Table;
     int _initialHp = -1;
     // Down-specific
     float _downSpeed = 2.f;
@@ -49,9 +55,12 @@ struct EnemyEntity : public ne::Entity {
     LaneNotesTable const* _phaseNotesTable = nullptr;
     LaneNotesTable const* _deathNotesTable = nullptr;
 
+    std::vector<BeatTimeEvent> _events;
+
     void OnShot(GameManager& g);
     void SendEventsFromLaneNoteTable(
         GameManager& g, LaneNotesTable const& laneNotesTable);
+    void SendEventsFromEventsList(GameManager& g);
     int GetLaneIxFromCurrentPos();
 
     // _transform should contain the desired spawn position *before* calling

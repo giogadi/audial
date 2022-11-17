@@ -1,0 +1,15 @@
+{
+    "namespaces": [],
+    "enumName": "ColorPreset",
+    "enumItems": [
+        "White",
+        "Black",
+        "Red",
+        "Orange",
+        "Yellow",
+        "Green",
+        "Blue",
+        "Magenta",
+        "Cyan"
+    ]
+}

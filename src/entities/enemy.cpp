@@ -12,7 +12,6 @@
 #include "audio.h"
 #include "renderer.h"
 #include "math_util.h"
-#include "beat_time_event.h"
 #include "rng.h"
 
 namespace {
@@ -83,8 +82,12 @@ ne::Entity::ImGuiResult EnemyEntity::ImGuiDerived(GameManager& g) {
 }
 
 void EnemyEntity::OnEditPick(GameManager& g) {
-    assert(_laneNotesTable != nullptr);
-    SendEventsFromLaneNoteTable(g, *_laneNotesTable);
+    if (_laneNoteBehavior == LaneNoteBehavior::Table) {
+        assert(_laneNotesTable != nullptr);
+        SendEventsFromLaneNoteTable(g, *_laneNotesTable);
+    } else if (_laneNoteBehavior == LaneNoteBehavior::Events) {
+        SendEventsFromEventsList(g);
+    }
 }
 
 bool EnemyEntity::IsActive(GameManager& g) const {
@@ -136,6 +139,8 @@ int EnemyEntity::GetLaneIxFromCurrentPos() {
     return laneIx;
 }
 
+static double constexpr kSlack = 0.0625;
+
 void EnemyEntity::SendEventsFromLaneNoteTable(
     GameManager& g, LaneNotesTable const& laneNotesTable) {
     int const laneIx = GetLaneIxFromCurrentPos();
@@ -151,7 +156,6 @@ void EnemyEntity::SendEventsFromLaneNoteTable(
         b_e._e.channel = laneNotesTable._channel;
         b_e._e.midiNote = midiNote;
         b_e._beatTime = 0.0;
-        double constexpr kSlack = 0.0625;
         audio::Event e = GetEventAtBeatOffsetFromNextDenom(_eventStartDenom, b_e, *g._beatClock, kSlack);
         g._audioContext->AddEvent(e);
 
@@ -162,9 +166,20 @@ void EnemyEntity::SendEventsFromLaneNoteTable(
     }
 }
 
+void EnemyEntity::SendEventsFromEventsList(GameManager& g) {    
+    for (BeatTimeEvent const& b_e : _events) {
+        audio::Event e = GetEventAtBeatOffsetFromNextDenom(_eventStartDenom, b_e, *g._beatClock, kSlack);
+        g._audioContext->AddEvent(e);
+    }
+}
+
 void EnemyEntity::OnShot(GameManager& g) {
-    assert(_laneNotesTable != nullptr);
-    SendEventsFromLaneNoteTable(g, *_laneNotesTable);
+    if (_laneNoteBehavior == LaneNoteBehavior::Table) {
+        assert(_laneNotesTable != nullptr);
+        SendEventsFromLaneNoteTable(g, *_laneNotesTable);   
+    } else if (_laneNoteBehavior == LaneNoteBehavior::Events) {
+        SendEventsFromEventsList(g);
+    }
     _shotBeatTime = g._beatClock->GetBeatTimeFromEpoch();
     if (!g._editMode) {
         if (_hp > 0) {

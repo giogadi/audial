@@ -11,6 +11,7 @@
 #include "renderer.h"
 #include "constants.h"
 #include "color_presets.h"
+#include "sound_bank.h"
 
 namespace {
 
@@ -78,6 +79,7 @@ struct Spawn {
     std::string _laneNoteTableName;
     std::string _phaseTableName;
     std::string _deathTableName;
+    std::string _pcmName;
     Vec4 _color = ToColor4(ColorPreset::Orange);
 };
 
@@ -93,16 +95,32 @@ ne::Entity* MakeNoteEnemy(
     enemy->_onHitBehavior = spawnInfo._onHitBehavior;
     enemy->_numHpBars = spawnInfo._numHpBars;
 
-    {
-        auto result = laneNotesTableMap.find(spawnInfo._laneNoteTableName);
-        if (result == laneNotesTableMap.end()) {
-            printf("WARNING: lane-note-table enemy refers to non-existent table \"%s\"!\n", spawnInfo._laneNoteTableName.c_str());
+    if (!spawnInfo._pcmName.empty()) {
+        enemy->_laneNoteBehavior = EnemyEntity::LaneNoteBehavior::Events;
+        int soundIx = g._soundBank->GetSoundIx(spawnInfo._pcmName.c_str());
+        if (soundIx < 0) {
+            printf("WARNING: unrecognized sound \"%s\".", spawnInfo._pcmName.c_str());
         } else {
-            enemy->_laneNotesTable = &(result->second);
+            enemy->_events.emplace_back();
+            BeatTimeEvent& b_e = enemy->_events.back();
+            b_e._e.type = audio::EventType::PlayPcm;
+            b_e._e.pcmSoundIx = soundIx;
+            b_e._beatTime = 0.0;
         }
+    }
+
+    {
+        if (!spawnInfo._laneNoteTableName.empty()) {
+            auto result = laneNotesTableMap.find(spawnInfo._laneNoteTableName);
+            if (result == laneNotesTableMap.end()) {
+                printf("WARNING: lane-note-table enemy refers to non-existent table \"%s\"!\n", spawnInfo._laneNoteTableName.c_str());
+            } else {
+                enemy->_laneNotesTable = &(result->second);
+            }
+        }        
 
         if (!spawnInfo._phaseTableName.empty()) {
-            result = laneNotesTableMap.find(spawnInfo._phaseTableName);
+            auto result = laneNotesTableMap.find(spawnInfo._phaseTableName);
             if (result == laneNotesTableMap.end()) {
                 printf("WARNING: lane-note-table enemy refers to non-existent table \"%s\"!\n", spawnInfo._phaseTableName.c_str());
             } else {
@@ -111,7 +129,7 @@ ne::Entity* MakeNoteEnemy(
         }
 
         if (!spawnInfo._deathTableName.empty()) {
-            result = laneNotesTableMap.find(spawnInfo._deathTableName);
+            auto result = laneNotesTableMap.find(spawnInfo._deathTableName);
             if (result == laneNotesTableMap.end()) {
                 printf("WARNING: lane-note-table enemy refers to non-existent table \"%s\"!\n", spawnInfo._deathTableName.c_str());
             } else {
@@ -329,6 +347,8 @@ void LoadSpawnsFromFile(char const* fileName, std::vector<Spawn>* spawns) {
                 spawn._deathTableName = value;
             } else if (key == "color") {
                 spawn._color = ToColor4(StringToColorPreset(value.c_str()));
+            } else if (key == "pcm") {
+                spawn._pcmName = value;
             } else {
                 printf("Unrecognized key \"%s\".\n", key.c_str());
             }
@@ -343,7 +363,7 @@ void PlayerEntity::Init(GameManager& g) {
     LoadLaneNoteTablesFromFile("data/lane_note_tables.txt", _laneNotesTables);
     
     std::vector<Spawn> spawns;
-    LoadSpawnsFromFile("data/spawns_tech.txt", &spawns);
+    LoadSpawnsFromFile(_spawnsFilename.c_str(), &spawns);
     for (Spawn const& spawn : spawns) {
         MakeNoteEnemy(g, spawn, _laneNotesTables);
     }
@@ -396,4 +416,12 @@ void PlayerEntity::Update(GameManager& g, float dt) {
     for (int i = 0; i < numKeysShot; ++i) {
         keysShot[i]._nearest->OnShot(g);
     }
+}
+
+void PlayerEntity::SaveDerived(serial::Ptree pt) const {
+    pt.PutString("spawns_filename", _spawnsFilename.c_str());
+}
+
+void PlayerEntity::LoadDerived(serial::Ptree pt) {
+    _spawnsFilename = pt.GetString("spawns_filename");
 }
