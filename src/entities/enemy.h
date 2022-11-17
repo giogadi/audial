@@ -8,7 +8,7 @@
 struct EnemyEntity : public ne::Entity {
     enum class Behavior {
         None,
-        Down,
+        ConstVel,
         Zigging,
         MoveOnPhase,
     };
@@ -36,8 +36,9 @@ struct EnemyEntity : public ne::Entity {
     OnHitBehavior _onHitBehavior = OnHitBehavior::Default;
     LaneNoteBehavior _laneNoteBehavior = LaneNoteBehavior::Table;
     int _initialHp = -1;
-    // Down-specific
-    float _downSpeed = 2.f;
+    // ConstVel-specific
+    float _constVelX = 0.f;
+    float _constVelZ = 0.f;
     // MultiPhase-specific
     int _numHpBars = 1;
 

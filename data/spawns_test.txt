@@ -1,18 +1,2 @@
 offset 3
-s on:0 off:100 lane:3 z:-10 pcm:snare v:0.8
-s on:0 off:100 lane:3 z:-8 pcm:snare v:0.8
-s on:0 off:100 lane:3 z:-6 pcm:snare v:0.8
-s on:0 off:100 lane:3 z:-4 pcm:snare v:0.8
-s on:0 off:100 lane:3 z:-2 pcm:snare v:0.8
-s on:0 off:100 lane:3 z:0 pcm:snare v:0.8
-s on:0 off:100 lane:3 z:2 pcm:snare v:0.8
-s on:0 off:100 lane:3 z:-4 pcm:snare v:0.8
-
-s on:0 off:100 lane:4 z:-10 pcm:snare v:0.8
-s on:0 off:100 lane:4 z:-8 pcm:snare v:0.8
-s on:0 off:100 lane:4 z:-6 pcm:snare v:0.8
-s on:0 off:100 lane:4 z:-4 pcm:snare v:0.8
-s on:0 off:100 lane:4 z:-2 pcm:snare v:0.8
-s on:0 off:100 lane:4 z:0 pcm:snare v:0.8
-s on:0 off:100 lane:4 z:2 pcm:snare v:0.8
-s on:0 off:100 lane:4 z:-4 pcm:snare v:0.8
+s on:0 off:100 lane:0 z:-10 beh:const_vel xvel:5 pcm:snare v:0.8

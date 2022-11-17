@@ -98,7 +98,7 @@
                 <z>0</z>
                 <w>0</w>
             </model_color_vec4>
-            <spawns_filename>data/spawns_tech.txt</spawns_filename>
+            <spawns_filename>data/spawns_test.txt</spawns_filename>
         </Player>
         <Sequencer>
             <name>tech_chords</name>

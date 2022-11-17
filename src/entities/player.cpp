@@ -75,7 +75,8 @@ struct Spawn {
     EnemyEntity::OnHitBehavior _onHitBehavior = EnemyEntity::OnHitBehavior::Default;
     int _hp = 1;
     int _numHpBars = 1;
-    float _downSpeed = 2.f;
+    float _constVelX = 0.f;
+    float _constVelZ = 0.f;
     std::string _laneNoteTableName;
     std::string _phaseTableName;
     std::string _deathTableName;
@@ -92,7 +93,8 @@ ne::Entity* MakeNoteEnemy(
     enemy->_eventStartDenom = 0.25;
     enemy->_behavior = spawnInfo._behavior;
     enemy->_initialHp = spawnInfo._hp;
-    enemy->_downSpeed = spawnInfo._downSpeed;
+    enemy->_constVelX = spawnInfo._constVelX;
+    enemy->_constVelZ = spawnInfo._constVelZ;
     enemy->_onHitBehavior = spawnInfo._onHitBehavior;
     enemy->_numHpBars = spawnInfo._numHpBars;
 
@@ -325,16 +327,24 @@ void LoadSpawnsFromFile(char const* fileName, std::vector<Spawn>* spawns) {
             } else if (key == "beh") {
                 if (value == "zig") {
                     spawn._behavior = EnemyEntity::Behavior::Zigging;
-                } else if (value == "down") {
-                    spawn._behavior = EnemyEntity::Behavior::Down;
+                } else if (value == "const_vel") {
+                    spawn._behavior = EnemyEntity::Behavior::ConstVel;
                 } else if (value == "move_on_phase") {
                     spawn._behavior = EnemyEntity::Behavior::MoveOnPhase;
+                } else if (value == "down") {
+                    spawn._behavior = EnemyEntity::Behavior::ConstVel;
+                } else {
+                    printf("Unrecognized behavior \"%s\".", value.c_str());
                 }
             } else if (key == "hp") {
                 spawn._hp = std::stoi(value);
+            } else if (key == "xvel") {
+                spawn._constVelX = std::stof(value);
+            } else if (key == "zvel") {
+                spawn._constVelZ = std::stof(value);
             } else if (key == "downv") {
-                spawn._downSpeed = std::stof(value);
-            } else if (key == "hit_beh") {
+                spawn._constVelZ = std::stof(value);
+            }else if (key == "hit_beh") {
                 if (value == "multiphase") {
                     spawn._onHitBehavior = EnemyEntity::OnHitBehavior::MultiPhase;
                 }

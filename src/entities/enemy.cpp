@@ -262,8 +262,9 @@ void EnemyEntity::Update(GameManager& g, float dt) {
         switch (_behavior) {
             case Behavior::None:
                 break;
-            case Behavior::Down: {
-                _transform._m23 += _downSpeed * dt;
+            case Behavior::ConstVel: {
+                _transform._m03 += _constVelX * dt;
+                _transform._m23 += _constVelZ * dt;
                 break;
             }
             case Behavior::Zigging: {
@@ -311,11 +312,15 @@ void EnemyEntity::Update(GameManager& g, float dt) {
         }
     }
 
-    // Despawn if below a certain point
-    float constexpr kDespawnZ = 7.f;
-    if (_transform._m23 >= kDespawnZ) {
+    // Despawn if beyond screen bounds
+    float constexpr kDespawnMinZ = -13.f;
+    float constexpr kDespawnMaxZ = 7.f;
+    float constexpr kDespawnMaxX = 10.f;
+    if (_transform._m23 > kDespawnMaxZ ||
+        _transform._m23 < kDespawnMinZ ||
+        std::abs(_transform._m03) > kDespawnMaxX) {
         g._neEntityManager->TagForDestroy(_id);
-    }
+    } 
 
     // Update shot button and get current lane ix
     switch (currentLaneIx) {
