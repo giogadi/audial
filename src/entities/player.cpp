@@ -81,6 +81,7 @@ struct Spawn {
     std::string _deathTableName;
     std::string _pcmName;
     Vec4 _color = ToColor4(ColorPreset::Orange);
+    float _velocity = 1.f;
 };
 
 ne::Entity* MakeNoteEnemy(
@@ -106,6 +107,7 @@ ne::Entity* MakeNoteEnemy(
             b_e._e.type = audio::EventType::PlayPcm;
             b_e._e.pcmSoundIx = soundIx;
             b_e._beatTime = 0.0;
+            b_e._e.pcmVelocity = spawnInfo._velocity;
         }
     }
 
@@ -349,6 +351,8 @@ void LoadSpawnsFromFile(char const* fileName, std::vector<Spawn>* spawns) {
                 spawn._color = ToColor4(StringToColorPreset(value.c_str()));
             } else if (key == "pcm") {
                 spawn._pcmName = value;
+            } else if (key == "v") {
+                spawn._velocity = std::stof(value);
             } else {
                 printf("Unrecognized key \"%s\".\n", key.c_str());
             }

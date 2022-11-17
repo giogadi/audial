@@ -139,7 +139,7 @@ int EnemyEntity::GetLaneIxFromCurrentPos() {
     return laneIx;
 }
 
-static double constexpr kSlack = 0.0625;
+static double constexpr kSlack = 0.0625*2;
 
 void EnemyEntity::SendEventsFromLaneNoteTable(
     GameManager& g, LaneNotesTable const& laneNotesTable) {

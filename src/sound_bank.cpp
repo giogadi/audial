@@ -17,7 +17,7 @@ void SoundBank::LoadSounds() {
     std::vector<char const*> soundFilenames = {
         "data/sounds/kick_deep.wav"
         , "data/sounds/woodblock_reverb_mono.wav"
-        , "data/sounds/snare2.wav"
+        , "data/sounds/snare_909.wav"
         , "data/sounds/liquid_dnb.wav"
         , "data/sounds/liquid_chords.wav"
         , "data/sounds/liquid_dnb_drums.wav"
