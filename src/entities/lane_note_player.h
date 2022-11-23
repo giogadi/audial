@@ -3,13 +3,13 @@
 #include <map>
 
 #include "new_entity.h"
-#include "entities/enemy.h"
+#include "entities/lane_note_enemy.h"
 
-struct PlayerEntity : public ne::Entity {
+struct LaneNotePlayerEntity : public ne::Entity {
     // serialized
     std::string _spawnsFilename;
     
-    std::map<std::string, EnemyEntity::LaneNotesTable> _laneNotesTables;
+    std::map<std::string, LaneNoteEnemyEntity::LaneNotesTable> _laneNotesTables;
     
     virtual void Init(GameManager& g);
     virtual void Update(GameManager& g, float dt);

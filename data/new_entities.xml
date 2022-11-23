@@ -70,7 +70,7 @@
                 <w>0</w>
             </model_color_vec4>
         </Camera>
-        <Player>
+        <LaneNotePlayer>
             <name>player</name>
             <pickable>false</pickable>
             <transform_mat4>
@@ -98,7 +98,7 @@
                 <z>0</z>
                 <w>0</w>
             </model_color_vec4>
-        </Player>
+        </LaneNotePlayer>
         <Sequencer>
             <name>metronome</name>
             <pickable>false</pickable>
@@ -196,7 +196,7 @@
                 </beat_event>
             </events>
         </Sequencer>
-        <Enemy>
+        <LaneNoteEnemy>
             <name>F1</name>
             <pickable>true</pickable>
             <transform_mat4>
@@ -245,8 +245,8 @@
                     <beat_time>0.5</beat_time>
                 </beat_event>
             </events>
-        </Enemy>
-        <Enemy>
+        </LaneNoteEnemy>
+        <LaneNoteEnemy>
             <name>C1</name>
             <pickable>true</pickable>
             <transform_mat4>
@@ -295,8 +295,8 @@
                     <beat_time>0.5</beat_time>
                 </beat_event>
             </events>
-        </Enemy>
-        <Enemy>
+        </LaneNoteEnemy>
+        <LaneNoteEnemy>
             <name>Eb1</name>
             <pickable>true</pickable>
             <transform_mat4>
@@ -345,8 +345,8 @@
                     <beat_time>0.5</beat_time>
                 </beat_event>
             </events>
-        </Enemy>
-        <Enemy>
+        </LaneNoteEnemy>
+        <LaneNoteEnemy>
             <name>G1</name>
             <pickable>true</pickable>
             <transform_mat4>
@@ -395,8 +395,8 @@
                     <beat_time>0.5</beat_time>
                 </beat_event>
             </events>
-        </Enemy>
-        <Enemy>
+        </LaneNoteEnemy>
+        <LaneNoteEnemy>
             <name>Bb1</name>
             <pickable>true</pickable>
             <transform_mat4>
@@ -445,8 +445,8 @@
                     <beat_time>0.5</beat_time>
                 </beat_event>
             </events>
-        </Enemy>
-        <Enemy>
+        </LaneNoteEnemy>
+        <LaneNoteEnemy>
             <name>Ab</name>
             <pickable>true</pickable>
             <transform_mat4>
@@ -495,8 +495,8 @@
                     <beat_time>0.5</beat_time>
                 </beat_event>
             </events>
-        </Enemy>
-        <Enemy>
+        </LaneNoteEnemy>
+        <LaneNoteEnemy>
             <name>D1</name>
             <pickable>true</pickable>
             <transform_mat4>
@@ -545,8 +545,8 @@
                     <beat_time>0.5</beat_time>
                 </beat_event>
             </events>
-        </Enemy>
-        <Enemy>
+        </LaneNoteEnemy>
+        <LaneNoteEnemy>
             <name>C2</name>
             <pickable>true</pickable>
             <transform_mat4>
@@ -595,8 +595,8 @@
                     <beat_time>0.5</beat_time>
                 </beat_event>
             </events>
-        </Enemy>
-        <Enemy>
+        </LaneNoteEnemy>
+        <LaneNoteEnemy>
             <name>E1_2</name>
             <pickable>true</pickable>
             <transform_mat4>
@@ -645,8 +645,8 @@
                     <beat_time>0.5</beat_time>
                 </beat_event>
             </events>
-        </Enemy>
-        <Enemy>
+        </LaneNoteEnemy>
+        <LaneNoteEnemy>
             <name>F#_2</name>
             <pickable>true</pickable>
             <transform_mat4>
@@ -695,8 +695,8 @@
                     <beat_time>0.5</beat_time>
                 </beat_event>
             </events>
-        </Enemy>
-        <Enemy>
+        </LaneNoteEnemy>
+        <LaneNoteEnemy>
             <name>G_2</name>
             <pickable>true</pickable>
             <transform_mat4>
@@ -745,8 +745,8 @@
                     <beat_time>0.5</beat_time>
                 </beat_event>
             </events>
-        </Enemy>
-        <Enemy>
+        </LaneNoteEnemy>
+        <LaneNoteEnemy>
             <name>A_2</name>
             <pickable>true</pickable>
             <transform_mat4>
@@ -795,8 +795,8 @@
                     <beat_time>0.5</beat_time>
                 </beat_event>
             </events>
-        </Enemy>
-        <Enemy>
+        </LaneNoteEnemy>
+        <LaneNoteEnemy>
             <name>B_2</name>
             <pickable>true</pickable>
             <transform_mat4>
@@ -845,8 +845,8 @@
                     <beat_time>0.5</beat_time>
                 </beat_event>
             </events>
-        </Enemy>
-        <Enemy>
+        </LaneNoteEnemy>
+        <LaneNoteEnemy>
             <name>C2_2</name>
             <pickable>true</pickable>
             <transform_mat4>
@@ -895,8 +895,8 @@
                     <beat_time>0.5</beat_time>
                 </beat_event>
             </events>
-        </Enemy>
-        <Enemy>
+        </LaneNoteEnemy>
+        <LaneNoteEnemy>
             <name>D2_2</name>
             <pickable>true</pickable>
             <transform_mat4>
@@ -945,8 +945,8 @@
                     <beat_time>0.5</beat_time>
                 </beat_event>
             </events>
-        </Enemy>
-        <Enemy>
+        </LaneNoteEnemy>
+        <LaneNoteEnemy>
             <name>E2_2</name>
             <pickable>true</pickable>
             <transform_mat4>
@@ -995,6 +995,6 @@
                     <beat_time>0.5</beat_time>
                 </beat_event>
             </events>
-        </Enemy>
+        </LaneNoteEnemy>
     </new_entities>
 </script>

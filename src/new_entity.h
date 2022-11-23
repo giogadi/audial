@@ -16,8 +16,8 @@ namespace ne {
     X(Base) \
     X(Light) \
     X(Camera) \
-    X(Player) \
-    X(Enemy) \
+    X(LaneNotePlayer) \
+    X(LaneNoteEnemy) \
     X(Sequencer)
 
 enum class EntityType: int {

@@ -70,7 +70,7 @@
                 <w>0</w>
             </model_color_vec4>
         </Camera>
-        <Player>
+        <LaneNotePlayer>
             <name>player</name>
             <pickable>false</pickable>
             <transform_mat4>
@@ -99,7 +99,7 @@
                 <w>0</w>
             </model_color_vec4>
             <spawns_filename>data/spawns_test.txt</spawns_filename>
-        </Player>
+        </LaneNotePlayer>
         <Sequencer>
             <name>tech_chords</name>
             <pickable>false</pickable>

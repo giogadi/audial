@@ -5,7 +5,7 @@
 #include "constants.h"
 #include "beat_time_event.h"
 
-struct EnemyEntity : public ne::Entity {
+struct LaneNoteEnemyEntity : public ne::Entity {
     enum class Behavior {
         None,
         ConstVel,

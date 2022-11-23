@@ -34,8 +34,8 @@ add_executable(game
     src/components/piano_planet.cpp
     src/entities/light.cpp
     src/entities/camera.cpp
-    src/entities/enemy.cpp
-    src/entities/player.cpp
+    src/entities/lane_note_enemy.cpp
+    src/entities/lane_note_player.cpp
     src/entities/sequencer.cpp
     
     src/enums/audio_EventType.cpp

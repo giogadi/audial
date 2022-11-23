@@ -70,7 +70,7 @@
                 <w>0</w>
             </model_color_vec4>
         </Camera>
-        <Player>
+        <LaneNotePlayer>
             <name>player</name>
             <pickable>false</pickable>
             <transform_mat4>
@@ -98,7 +98,7 @@
                 <z>0</z>
                 <w>0</w>
             </model_color_vec4>
-        </Player>
+        </LaneNotePlayer>
         <Sequencer>
             <name>metronome</name>
             <pickable>false</pickable>

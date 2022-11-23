@@ -1,4 +1,4 @@
-#include "player.h"
+#include "lane_note_player.h"
 
 #include <array>
 #include <fstream>
@@ -7,7 +7,6 @@
 
 #include "game_manager.h"
 #include "input_manager.h"
-#include "entities/enemy.h"
 #include "renderer.h"
 #include "constants.h"
 #include "color_presets.h"
@@ -71,8 +70,8 @@ struct Spawn {
     double _despawnBeatTime = -1.0;
     int _laneIx = 0;
     float _z = 0.f;
-    EnemyEntity::Behavior _behavior = EnemyEntity::Behavior::None;
-    EnemyEntity::OnHitBehavior _onHitBehavior = EnemyEntity::OnHitBehavior::Default;
+    LaneNoteEnemyEntity::Behavior _behavior = LaneNoteEnemyEntity::Behavior::None;
+    LaneNoteEnemyEntity::OnHitBehavior _onHitBehavior = LaneNoteEnemyEntity::OnHitBehavior::Default;
     int _hp = 1;
     int _numHpBars = 1;
     float _constVelX = 0.f;
@@ -86,8 +85,8 @@ struct Spawn {
 };
 
 ne::Entity* MakeNoteEnemy(
-    GameManager& g, Spawn const& spawnInfo, std::map<std::string, EnemyEntity::LaneNotesTable> const& laneNotesTableMap) {
-    EnemyEntity* enemy = (EnemyEntity*) g._neEntityManager->AddEntity(ne::EntityType::Enemy);
+    GameManager& g, Spawn const& spawnInfo, std::map<std::string, LaneNoteEnemyEntity::LaneNotesTable> const& laneNotesTableMap) {
+    LaneNoteEnemyEntity* enemy = (LaneNoteEnemyEntity*) g._neEntityManager->AddEntity(ne::EntityType::LaneNoteEnemy);
     enemy->_modelName = "cube";
     enemy->_modelColor = spawnInfo._color;
     enemy->_eventStartDenom = 0.25;
@@ -99,7 +98,7 @@ ne::Entity* MakeNoteEnemy(
     enemy->_numHpBars = spawnInfo._numHpBars;
 
     if (!spawnInfo._pcmName.empty()) {
-        enemy->_laneNoteBehavior = EnemyEntity::LaneNoteBehavior::Events;
+        enemy->_laneNoteBehavior = LaneNoteEnemyEntity::LaneNoteBehavior::Events;
         int soundIx = g._soundBank->GetSoundIx(spawnInfo._pcmName.c_str());
         if (soundIx < 0) {
             printf("WARNING: unrecognized sound \"%s\".", spawnInfo._pcmName.c_str());
@@ -190,7 +189,7 @@ namespace {
     }
 
 void LoadLaneNoteTablesFromFile(
-    char const* fileName, std::map<std::string, EnemyEntity::LaneNotesTable>& laneNotesTables) {
+    char const* fileName, std::map<std::string, LaneNoteEnemyEntity::LaneNotesTable>& laneNotesTables) {
     std::ifstream inFile(fileName);
     std::string line;
     std::string tableName;
@@ -214,7 +213,7 @@ void LoadLaneNoteTablesFromFile(
             continue;
         }
 
-        EnemyEntity::LaneNotesTable& table = laneNotesTables[tableName];
+        LaneNoteEnemyEntity::LaneNotesTable& table = laneNotesTables[tableName];
 
         // After table name, on same line, we do some key,value pairs.
         std::string token;
@@ -245,7 +244,7 @@ void LoadLaneNoteTablesFromFile(
             std::getline(inFile, line);
             ++lineNumber;
             std::stringstream lineSs(line);
-            for (int noteIx = 0; noteIx < EnemyEntity::kMaxNumNotesPerLane && !lineSs.eof(); ++noteIx) {
+            for (int noteIx = 0; noteIx < LaneNoteEnemyEntity::kMaxNumNotesPerLane && !lineSs.eof(); ++noteIx) {
                 std::string noteName;
                 lineSs >> noteName;
                 if (IsOnlyWhitespace(noteName)) {
@@ -326,13 +325,13 @@ void LoadSpawnsFromFile(char const* fileName, std::vector<Spawn>* spawns) {
                 spawn._z = std::stof(value);
             } else if (key == "beh") {
                 if (value == "zig") {
-                    spawn._behavior = EnemyEntity::Behavior::Zigging;
+                    spawn._behavior = LaneNoteEnemyEntity::Behavior::Zigging;
                 } else if (value == "const_vel") {
-                    spawn._behavior = EnemyEntity::Behavior::ConstVel;
+                    spawn._behavior = LaneNoteEnemyEntity::Behavior::ConstVel;
                 } else if (value == "move_on_phase") {
-                    spawn._behavior = EnemyEntity::Behavior::MoveOnPhase;
+                    spawn._behavior = LaneNoteEnemyEntity::Behavior::MoveOnPhase;
                 } else if (value == "down") {
-                    spawn._behavior = EnemyEntity::Behavior::ConstVel;
+                    spawn._behavior = LaneNoteEnemyEntity::Behavior::ConstVel;
                 } else {
                     printf("Unrecognized behavior \"%s\".", value.c_str());
                 }
@@ -346,7 +345,7 @@ void LoadSpawnsFromFile(char const* fileName, std::vector<Spawn>* spawns) {
                 spawn._constVelZ = std::stof(value);
             }else if (key == "hit_beh") {
                 if (value == "multiphase") {
-                    spawn._onHitBehavior = EnemyEntity::OnHitBehavior::MultiPhase;
+                    spawn._onHitBehavior = LaneNoteEnemyEntity::OnHitBehavior::MultiPhase;
                 }
             } else if (key == "num_phases") {
                 // multiphase only
@@ -373,7 +372,7 @@ void LoadSpawnsFromFile(char const* fileName, std::vector<Spawn>* spawns) {
 }
 }
 
-void PlayerEntity::Init(GameManager& g) {
+void LaneNotePlayerEntity::Init(GameManager& g) {
     LoadLaneNoteTablesFromFile("data/lane_note_tables.txt", _laneNotesTables);
     
     std::vector<Spawn> spawns;
@@ -383,21 +382,21 @@ void PlayerEntity::Init(GameManager& g) {
     }
 }
 
-void PlayerEntity::Update(GameManager& g, float dt) {
+void LaneNotePlayerEntity::Update(GameManager& g, float dt) {
     DrawLanes(g);
 
     // assume only a few keys can be pressed at once.
     int constexpr kNumSimulKeys = 4;
     struct KeyInfo {
         InputManager::Key _key;
-        EnemyEntity* _nearest = nullptr;
+        LaneNoteEnemyEntity* _nearest = nullptr;
         float _dist = 0.f;
     };
     std::array<KeyInfo, kNumSimulKeys> keysShot;
     int numKeysShot = 0;
-    ne::EntityManager::Iterator enemyIter = g._neEntityManager->GetIterator(ne::EntityType::Enemy);
+    ne::EntityManager::Iterator enemyIter = g._neEntityManager->GetIterator(ne::EntityType::LaneNoteEnemy);
     for (; !enemyIter.Finished(); enemyIter.Next()) {
-        EnemyEntity* enemy = (EnemyEntity*) enemyIter.GetEntity();
+        LaneNoteEnemyEntity* enemy = (LaneNoteEnemyEntity*) enemyIter.GetEntity();
         if (!enemy->IsActive(g)) {
             continue;
         }
@@ -432,10 +431,10 @@ void PlayerEntity::Update(GameManager& g, float dt) {
     }
 }
 
-void PlayerEntity::SaveDerived(serial::Ptree pt) const {
+void LaneNotePlayerEntity::SaveDerived(serial::Ptree pt) const {
     pt.PutString("spawns_filename", _spawnsFilename.c_str());
 }
 
-void PlayerEntity::LoadDerived(serial::Ptree pt) {
+void LaneNotePlayerEntity::LoadDerived(serial::Ptree pt) {
     _spawnsFilename = pt.GetString("spawns_filename");
 }

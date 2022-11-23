@@ -1,4 +1,4 @@
-#include "entities/enemy.h"
+#include "lane_note_enemy.h"
 
 #include <array>
 #include <sstream>
@@ -49,21 +49,21 @@ void GetStringFromKey(InputManager::Key key, char* outStr) {
 } // end namespace
 
 // TODO: consider using the text format we made above for this.
-void EnemyEntity::SaveDerived(serial::Ptree pt) const {
+void LaneNoteEnemyEntity::SaveDerived(serial::Ptree pt) const {
     char keyStr[8];
     GetStringFromKey(_shootButton, keyStr);
     pt.PutString("shoot_button", keyStr);
     pt.PutDouble("active_beat_time", _activeBeatTime);
 }
 
-void EnemyEntity::LoadDerived(serial::Ptree pt) {
+void LaneNoteEnemyEntity::LoadDerived(serial::Ptree pt) {
     std::string keyStr;
     pt.TryGetString("shoot_button", &keyStr);
     _shootButton = GetKeyFromString(keyStr.c_str());
     pt.TryGetDouble("active_beat_time", &_activeBeatTime);
 }
 
-ne::Entity::ImGuiResult EnemyEntity::ImGuiDerived(GameManager& g) {
+ne::Entity::ImGuiResult LaneNoteEnemyEntity::ImGuiDerived(GameManager& g) {
     GetStringFromKey(_shootButton, gButtonNameText.data());
     bool changed = ImGui::InputText("Shoot button", gButtonNameText.data(), gButtonNameText.size());
     if (changed) {
@@ -81,7 +81,7 @@ ne::Entity::ImGuiResult EnemyEntity::ImGuiDerived(GameManager& g) {
     return ImGuiResult::Done;
 }
 
-void EnemyEntity::OnEditPick(GameManager& g) {
+void LaneNoteEnemyEntity::OnEditPick(GameManager& g) {
     if (_laneNoteBehavior == LaneNoteBehavior::Table) {
         assert(_laneNotesTable != nullptr);
         SendEventsFromLaneNoteTable(g, *_laneNotesTable);
@@ -90,7 +90,7 @@ void EnemyEntity::OnEditPick(GameManager& g) {
     }
 }
 
-bool EnemyEntity::IsActive(GameManager& g) const {
+bool LaneNoteEnemyEntity::IsActive(GameManager& g) const {
     if (g._editMode) {
         return true;
     }
@@ -101,7 +101,7 @@ bool EnemyEntity::IsActive(GameManager& g) const {
 static float constexpr gSpawnYOffset = -10.f;
 static double constexpr gSpawnPredelayBeatTime = 0.5;
 
-void EnemyEntity::Init(GameManager& g) {
+void LaneNoteEnemyEntity::Init(GameManager& g) {
     ne::Entity::Init(g);
     _desiredSpawnY = _transform._m13;
     _hp = _initialHp;
@@ -132,7 +132,7 @@ static float GetCenterXOfLane(int laneIx) {
     return centerX;
 }
 
-int EnemyEntity::GetLaneIxFromCurrentPos() {
+int LaneNoteEnemyEntity::GetLaneIxFromCurrentPos() {
     float constexpr minX = -kLaneWidth * (kNumLanes / 2);
     float const xOffset = _transform._m03 - minX;
     int laneIx = math_util::Clamp((int)(xOffset / kLaneWidth), 0, kNumLanes - 1);
@@ -141,7 +141,7 @@ int EnemyEntity::GetLaneIxFromCurrentPos() {
 
 static double constexpr kSlack = 0.0625*2;
 
-void EnemyEntity::SendEventsFromLaneNoteTable(
+void LaneNoteEnemyEntity::SendEventsFromLaneNoteTable(
     GameManager& g, LaneNotesTable const& laneNotesTable) {
     int const laneIx = GetLaneIxFromCurrentPos();
     
@@ -166,14 +166,14 @@ void EnemyEntity::SendEventsFromLaneNoteTable(
     }
 }
 
-void EnemyEntity::SendEventsFromEventsList(GameManager& g) {    
+void LaneNoteEnemyEntity::SendEventsFromEventsList(GameManager& g) {    
     for (BeatTimeEvent const& b_e : _events) {
         audio::Event e = GetEventAtBeatOffsetFromNextDenom(_eventStartDenom, b_e, *g._beatClock, kSlack);
         g._audioContext->AddEvent(e);
     }
 }
 
-void EnemyEntity::OnShot(GameManager& g) {
+void LaneNoteEnemyEntity::OnShot(GameManager& g) {
     if (_laneNoteBehavior == LaneNoteBehavior::Table) {
         assert(_laneNotesTable != nullptr);
         SendEventsFromLaneNoteTable(g, *_laneNotesTable);   
@@ -226,7 +226,7 @@ void EnemyEntity::OnShot(GameManager& g) {
     }
 }
 
-void EnemyEntity::Update(GameManager& g, float dt) {
+void LaneNoteEnemyEntity::Update(GameManager& g, float dt) {
     if (g._editMode) {
         ne::Entity::Update(g, dt);
         return;
