@@ -8,6 +8,7 @@ bool SaveSynthPatches(char const* filename, std::vector<synth::Patch> const& syn
         patch.Save(patchPt);
     }
     bool success = pt.WriteToFile(filename);
+    pt.DeleteData();
     if (!success) {
         printf("Failed to save patches to filename \"%s\".\n", filename);
         return false;
@@ -18,6 +19,7 @@ bool SaveSynthPatches(char const* filename, std::vector<synth::Patch> const& syn
 bool LoadSynthPatches(char const* filename, std::vector<synth::Patch>& patches) {
     serial::Ptree pt = serial::Ptree::MakeNew();
     if (!pt.LoadFromFile(filename)) {
+        pt.DeleteData();
         printf("Failed to load patches from file \"%s\".\n", filename);
         return false;
     }
@@ -30,5 +32,6 @@ bool LoadSynthPatches(char const* filename, std::vector<synth::Patch>& patches) 
         patch.Load(children[i]._pt);
     }
     delete[] children;
+    pt.DeleteData();
     return true;
 }

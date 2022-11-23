@@ -1,2 +1,42 @@
 offset 3
 s on:0 off:100 lane:0 z:-10 beh:const_vel xvel:5 pcm:snare v:0.8
+s on:1 off:100 lane:7 z:-8 beh:const_vel xvel:-5 pcm:snare v:0.8
+s on:2 off:100 lane:0 z:-6 beh:const_vel xvel:5 pcm:snare v:0.8
+s on:3 off:100 lane:7 z:-4 beh:const_vel xvel:-5 pcm:snare v:0.8
+s on:4 off:100 lane:0 z:-2 beh:const_vel xvel:5 pcm:snare v:0.8
+s on:5 off:100 lane:7 z:0 beh:const_vel xvel:-5 pcm:snare v:0.8
+s on:6 off:100 lane:0 z:2 beh:const_vel xvel:5 pcm:snare v:0.8
+s on:7 off:100 lane:7 z:4 beh:const_vel xvel:-5 pcm:snare v:0.8
+
+s on:4 off:100 lane:3 z:-10 beh:move_on_phase hit_beh:multiphase table:c2_dorian phase_table:alpha death_table:alpha num_phases:3 hp:3 color:Red
+
+offset 11
+s on:0 off:100 lane:0 z:-10 beh:const_vel xvel:5 pcm:snare v:0.8
+s on:1 off:100 lane:7 z:-8 beh:const_vel xvel:-5 pcm:snare v:0.8
+s on:2 off:100 lane:0 z:-6 beh:const_vel xvel:5 pcm:snare v:0.8
+s on:3 off:100 lane:7 z:-4 beh:const_vel xvel:-5 pcm:snare v:0.8
+s on:4 off:100 lane:0 z:-2 beh:const_vel xvel:5 pcm:snare v:0.8
+s on:5 off:100 lane:7 z:0 beh:const_vel xvel:-5 pcm:snare v:0.8
+s on:6 off:100 lane:0 z:2 beh:const_vel xvel:5 pcm:snare v:0.8
+s on:7 off:100 lane:7 z:4 beh:const_vel xvel:-5 pcm:snare v:0.8
+
+offset 19
+s on:0 off:100 lane:0 z:-10 beh:const_vel xvel:5 pcm:snare v:0.8
+s on:1 off:100 lane:7 z:-8 beh:const_vel xvel:-5 pcm:snare v:0.8
+s on:2 off:100 lane:0 z:-6 beh:const_vel xvel:5 pcm:snare v:0.8
+s on:3 off:100 lane:7 z:-4 beh:const_vel xvel:-5 pcm:snare v:0.8
+s on:4 off:100 lane:0 z:-2 beh:const_vel xvel:5 pcm:snare v:0.8
+s on:5 off:100 lane:7 z:0 beh:const_vel xvel:-5 pcm:snare v:0.8
+s on:6 off:100 lane:0 z:2 beh:const_vel xvel:5 pcm:snare v:0.8
+s on:7 off:100 lane:7 z:4 beh:const_vel xvel:-5 pcm:snare v:0.8
+
+offset 27
+s on:0 off:100 lane:0 z:-10 beh:const_vel xvel:5 pcm:snare v:0.8
+s on:1 off:100 lane:7 z:-8 beh:const_vel xvel:-5 pcm:snare v:0.8
+s on:2 off:100 lane:0 z:-6 beh:const_vel xvel:5 pcm:snare v:0.8
+s on:3 off:100 lane:7 z:-4 beh:const_vel xvel:-5 pcm:snare v:0.8
+s on:4 off:100 lane:0 z:-2 beh:const_vel xvel:5 pcm:snare v:0.8
+s on:5 off:100 lane:7 z:0 beh:const_vel xvel:-5 pcm:snare v:0.8
+s on:6 off:100 lane:0 z:2 beh:const_vel xvel:5 pcm:snare v:0.8
+s on:7 off:100 lane:7 z:4 beh:const_vel xvel:-5 pcm:snare v:0.8
+

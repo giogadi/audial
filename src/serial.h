@@ -48,17 +48,15 @@ public:
     Ptree(Ptree const& other);
     Ptree& operator=(Ptree const& other);
     static Ptree MakeNew();
+    void DeleteData();
 
     bool IsValid() { return _internal != nullptr; }
-
-    ~Ptree();
 
     bool WriteToFile(char const* filename);
     bool LoadFromFile(char const* filename);
 
 private:
     void* _internal = nullptr;
-    bool _owned = false;
 };
 
 struct NameTreePair {    

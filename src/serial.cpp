@@ -168,7 +168,6 @@ NameTreePair* Ptree::GetChildren(int* numChildren) {
     for (auto& item : *internal) {
         NameTreePair& c = children[index];
         c._name = item.first.c_str();
-        c._pt._owned = false;
         c._pt._internal = (void*)(&item.second);
         ++index;
     }
@@ -177,33 +176,23 @@ NameTreePair* Ptree::GetChildren(int* numChildren) {
 }
 
 Ptree::Ptree(Ptree const& other) {
-    if (_owned) {
-        delete GetInternal(_internal);
-    }
-    _owned = false;
     _internal = other._internal;
 }
 
 Ptree& Ptree::operator=(Ptree const& other) {
-    if (_owned) {
-        delete GetInternal(_internal);
-    }
-    _owned = false;
     _internal = other._internal;
     return *this;
 }
 
-Ptree::~Ptree() {
-    if (_owned) {
-        delete GetInternal(_internal);
-    }
-}
-
 Ptree Ptree::MakeNew() {
     Ptree pt;
-    pt._owned = true;
     pt._internal = (void*)(new ptree);
     return pt;
+}
+
+void Ptree::DeleteData() {
+    delete GetInternal(_internal);
+    _internal = nullptr;
 }
 
 bool Ptree::WriteToFile(char const* filename) {

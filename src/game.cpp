@@ -275,6 +275,7 @@ int main(int argc, char** argv) {
         serial::Ptree pt = serial::Ptree::MakeNew();
         if (!pt.LoadFromFile(cmdLineInputs._scriptFilename->c_str())) {
             printf("Script ptree load failed. Exiting.\n");
+            pt.DeleteData();
             return 1;
         }
 
@@ -311,7 +312,9 @@ int main(int argc, char** argv) {
             }
         } else {
             printf("No old-school entities!\n");
-        }    
+        }
+
+        pt.DeleteData();
     } else {
         std::cout << "loading hardcoded script" << std::endl;
         beatClock.Init(/*bpm=*/120.0, /*sampleRate=*/SAMPLE_RATE, audioContext._stream);

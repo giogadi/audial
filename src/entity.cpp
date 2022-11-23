@@ -158,10 +158,14 @@ bool Entity::Save(char const* filename) const {
         serial::Ptree entityPt = pt.AddChild("entity");
         this->Save(entityPt);
     }
-    return pt.WriteToFile(filename);
+    bool success = pt.WriteToFile(filename);
+    pt.DeleteData();
+    return success;
 }
 
 bool Entity::Load(char const* filename) {
     serial::Ptree pt = serial::Ptree::MakeNew();
-    return pt.LoadFromFile(filename);
+    bool success = pt.LoadFromFile(filename);
+    pt.DeleteData();
+    return success;
 }
