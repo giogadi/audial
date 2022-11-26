@@ -163,3 +163,18 @@ Mat4 Mat4::Ortho(float width, float aspect, float zNear, float zFar) {
     m._m23 = -(zFar + zNear) / (zFar - zNear);
     return m;
 }
+
+Mat4 Mat4::Ortho(float left, float right, float top, float bottom, float zNear, float zFar) {
+    assert(right - left != 0.f);
+    assert(top - bottom != 0.f);
+    assert(zFar - zNear != 0.f);
+    Mat4 m;
+    m._m00 = 2.f / (right - left);
+    m._m11 = 2.f / (top - bottom);
+    m._m22 = -2.f / (zFar - zNear);
+
+    m._m03 = -(right + left) / (right - left);
+    m._m13 = -(top + bottom) / (top - bottom);
+    m._m23 = -(zFar + zNear) / (zFar - zNear);
+    return m;
+}

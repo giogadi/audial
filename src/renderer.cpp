@@ -3,8 +3,11 @@
 #include <algorithm>
 #include <iostream>
 #include <unordered_map>
+#include <sstream>
+#include <fstream>
 
 #include "stb_image.h"
+#include "stb_truetype.h"
 #include <glad/glad.h>
 
 #include "mesh.h"
@@ -13,6 +16,7 @@
 #include "constants.h"
 #include "version_id_list.h"
 #include "cube_verts.h"
+#include "game_manager.h"
 
 namespace renderer {
 
@@ -49,6 +53,36 @@ bool CreateTextureFromFile(char const* filename, unsigned int& textureId) {
 
     return true;
 }
+
+bool CreateFontTextureFromBitmap(char const* filename, unsigned int& textureId) {
+int texWidth, texHeight, texNumChannels;
+    unsigned char *texData = stbi_load(filename, &texWidth, &texHeight, &texNumChannels, 0);
+    if (texData == nullptr) {
+        std::cout << "Error: could not load texture " << filename << std::endl;
+        return false;
+    }
+
+    glGenTextures(1, &textureId);
+    // TODO: Do I need this here, or only in rendering?
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D, textureId);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glTexImage2D(
+        GL_TEXTURE_2D, /*mipmapLevel=*/0, /*textureFormat=*/GL_RED, texWidth, texHeight, /*legacy=*/0,
+        /*sourceFormat=*/GL_RED, /*sourceDataType=*/GL_UNSIGNED_BYTE, texData);
+    stbi_image_free(texData);
+
+    return true;    
+}
+
+struct TextInstance {
+    std::string _text;
+    int _screenX = -1;
+    int _screenY = -1;
+};
 }
 
 class SceneInternal {
@@ -58,23 +92,32 @@ public:
         _colorModelInstances(100),
         _texturedModelInstances(100),
         _topLayerColorModels(100) {
-            _modelsToDraw.reserve(100);
+        
+        _modelsToDraw.reserve(100);
     }
-    bool Init();
+    bool Init(GameManager& g);
     TVersionIdList<PointLight> _pointLights;
     TVersionIdList<ColorModelInstance> _colorModelInstances;
     TVersionIdList<TexturedModelInstance> _texturedModelInstances;
     std::vector<ColorModelInstance> _modelsToDraw;
+    std::vector<TextInstance> _textsToDraw;
 
     std::unordered_map<std::string, std::unique_ptr<BoundMeshPNU>> _meshMap;
     std::unordered_map<std::string, unsigned int> _textureIdMap;
     Shader _colorShader;
     Shader _textureShader;
     Shader _waterShader;
+    Shader _textShader;
+
+    unsigned int _textVao = 0;
+    unsigned int _textVbo = 0;
+    std::vector<stbtt_bakedchar> _fontCharInfo;
 
     // boring cached things
     std::vector<ColorModelInstance const*> _topLayerColorModels;
     BoundMeshPNU const* _cubeMesh = nullptr;
+
+    GameManager* _g = nullptr;
 };
 
 namespace {
@@ -145,7 +188,8 @@ std::unique_ptr<BoundMeshPNU> MakeWaterMesh() {
 }
 }
 
-bool SceneInternal::Init() {    
+bool SceneInternal::Init(GameManager& g) {
+    _g = &g;
     {
         std::array<float,kCubeVertsNumValues> cubeVerts;
         GetCubeVertices(&cubeVerts);
@@ -174,11 +218,53 @@ bool SceneInternal::Init() {
         return false;
     }
 
+    if (!_textShader.Init("shaders/water.vert", "shaders/water.frag")) {
+        return false;
+    }
+
     unsigned int woodboxTextureId = 0;
     if (!CreateTextureFromFile("data/textures/wood_container.jpg", woodboxTextureId)) {
         return false;
     }
     _textureIdMap.emplace("wood_box", woodboxTextureId);
+
+    unsigned int fontTextureId = 0;
+    if (!CreateFontTextureFromBitmap("data/fonts/videotype/videotype.bmp", fontTextureId)) {
+        return false;
+    }
+    _textureIdMap.emplace("font", fontTextureId);
+
+    {
+        // read in font info
+        std::ifstream fontInfo("data/fonts/videotype/videotype.info");
+        if (!fontInfo.is_open()) {
+            printf("Couldn't find font info file!\n");
+            return false;
+        }
+        while (!fontInfo.eof()) {
+            std::string line;
+            std::getline(fontInfo, line);
+            if (line == "") {
+                continue;
+            }
+            std::stringstream lineStream(line);
+            stbtt_bakedchar charInfo;
+            lineStream >> charInfo.x0 >> charInfo.y0 >> charInfo.x1 >> charInfo.y1 >> charInfo.xoff >> charInfo.yoff >> charInfo.xadvance;
+            _fontCharInfo.push_back(charInfo);
+        }
+        assert(_fontCharInfo.size() == 58);
+    }
+
+    // DO THE FONT VAO/VBO HERE
+    glGenVertexArrays(1, &_textVao);
+    glGenBuffers(1, &_textVbo);
+    glBindVertexArray(_textVao);
+    glBindBuffer(GL_ARRAY_BUFFER, _textVbo);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 4 * 4, NULL, GL_DYNAMIC_DRAW);
+    glEnableVertexAttribArray(0);
+    glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 4 * sizeof(float), 0);
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+    glBindVertexArray(0);
 
     _cubeMesh = _meshMap["cube"].get();
     return true;
@@ -190,8 +276,8 @@ Scene::Scene() {
 
 Scene::~Scene() {}
 
-bool Scene::Init() {
-    return _pInternal->Init();
+bool Scene::Init(GameManager& g) {
+    return _pInternal->Init(g);
 }
 
 BoundMeshPNU const* Scene::GetMesh(std::string const& meshName) const {
@@ -217,6 +303,14 @@ void Scene::DrawMesh(BoundMeshPNU const* mesh, Mat4 const& t, Vec4 const& color)
 
 void Scene::DrawCube(Mat4 const& t, Vec4 const& color) {
     DrawMesh(_pInternal->_cubeMesh, t, color);
+}
+
+void Scene::DrawText(char const* str, int screenX, int screenY) {
+    _pInternal->_textsToDraw.emplace_back();
+    TextInstance& t = _pInternal->_textsToDraw.back();
+    t._text = str;
+    t._screenX = screenX;
+    t._screenY = screenY;
 }
 
 std::pair<VersionId, PointLight*> Scene::AddPointLight() {
@@ -400,6 +494,54 @@ void Scene::Draw(int windowWidth, int windowHeight, float timeInSecs) {
             glBindVertexArray(m->_mesh->_vao);
             glDrawElements(GL_TRIANGLES, /*count=*/m->_mesh->_numIndices, GL_UNSIGNED_INT, /*start_offset=*/0);
         }
+    }
+
+    // TEXT RENDERING
+    {
+        glClear(GL_DEPTH_BUFFER_BIT);
+        glEnable(GL_BLEND);
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+        Mat4 projection = Mat4::Ortho(0.f, _pInternal->_g->_windowWidth, 0.f, _pInternal->_g->_windowHeight, -1.f, 1.f);
+        
+
+        unsigned int fontTextureId = _pInternal->_textureIdMap.at("font");
+
+        Shader& shader = _pInternal->_textShader;
+        shader.Use();
+        shader.SetMat4("uProjection", projection);
+        glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_2D, fontTextureId);
+        glBindVertexArray(_pInternal->_textVao);
+        Vec4 quadVertices[4];
+        for (TextInstance const& textInstance : _pInternal->_textsToDraw) {
+            shader.SetVec3("uTextColor", Vec3(1.f, 1.f, 1.f));
+            Vec3 origin(textInstance._screenX, textInstance._screenY, 0.f);
+            for (char c : textInstance._text) {
+                char constexpr kFirstChar = 65;  // 'A'
+                int constexpr kNumChars = 58;
+                int constexpr kBmpWidth = 512;
+                int constexpr kBmpHeight = 128;
+                int charIndex = c - kFirstChar;
+                if (charIndex >= kNumChars) {
+                    printf("ERROR: character \'%c\' not in font!\n", c);
+                    continue;
+                }
+                stbtt_aligned_quad quad;
+                stbtt_GetBakedQuad(&_pInternal->_fontCharInfo[charIndex], kBmpWidth, kBmpHeight, charIndex, &origin._x, &origin._y, &quad, /*opengl_fillrule=*/1);
+                quadVertices[0].Set(quad.x0, quad.y0, quad.s0, quad.t0);
+                quadVertices[1].Set(quad.x0, quad.y1, quad.s0, quad.t1);
+                quadVertices[2].Set(quad.x1, quad.y0, quad.s1, quad.t0);
+                quadVertices[3].Set(quad.x1, quad.y1, quad.s1, quad.t1);
+                glBindBuffer(GL_ARRAY_BUFFER, _pInternal->_textVbo);
+                glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(quadVertices), quadVertices);
+                glBindBuffer(GL_ARRAY_BUFFER, 0);
+                glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);                
+            }
+        }
+
+        _pInternal->_textsToDraw.clear();
+        glDisable(GL_BLEND);
     }
 
     // TODO: maybe we should move all glClear()'s into renderer.cpp and save

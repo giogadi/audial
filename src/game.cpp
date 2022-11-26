@@ -248,14 +248,9 @@ int main(int argc, char** argv) {
     InputManager inputManager(window);
 
     renderer::Scene sceneManager;
-    if (!sceneManager.Init()) {
-        std::cout << "scene failed to init. exiting" << std::endl;
-        return 1;
-    }
 
     EntityManager entityManager;
     ne::EntityManager neEntityManager;
-    neEntityManager.Init();
 
     CollisionManager collisionManager;
 
@@ -264,6 +259,13 @@ int main(int argc, char** argv) {
     gGameManager = GameManager {
         &sceneManager, &inputManager, &audioContext, &entityManager, &neEntityManager, &collisionManager, &beatClock, &soundBank,
         cmdLineInputs._editMode };
+
+    if (!sceneManager.Init(gGameManager)) {
+        std::cout << "scene failed to init. exiting" << std::endl;
+        return 1;
+    }
+
+    neEntityManager.Init();
 
     Editor editor;
     editor.Init(&gGameManager);    

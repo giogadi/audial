@@ -4,6 +4,8 @@
 #include "constants.h"
 #include "version_id.h"
 
+struct GameManager;
+
 class BoundMeshPNU;
 
 namespace renderer {
@@ -79,9 +81,9 @@ class SceneInternal;
 class Scene {
 public:
     Scene();    
-    virtual ~Scene();
+    ~Scene();
 
-    bool Init();
+    bool Init(GameManager& g);
 
     // DON'T STORE THE POINTERS!!!
     std::pair<VersionId, PointLight*> AddPointLight();
@@ -103,6 +105,8 @@ public:
     void DrawMesh(BoundMeshPNU const* m, Mat4 const& t, Vec4 const& color);
     renderer::ColorModelInstance& DrawMesh();
     void DrawCube(Mat4 const& t, Vec4 const& color);
+
+    void DrawText(char const* text, int screenX, int screenY);
 
     Camera _camera;
 private:

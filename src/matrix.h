@@ -324,7 +324,8 @@ struct Mat4 {
     static Mat4 Frustrum(float left, float right, float bottom, float top, float znear, float zfar);
     static Mat4 Perspective(float fovyRadians, float aspectRatio, float znear, float zfar);
     static Mat4 Ortho(float width, float aspect, float zNear, float zFar);
-
+    static Mat4 Ortho(float left, float right, float top, float bottom, float zNear, float zFar);
+    
     void Translate(Vec3 const& t) {
         _m03 += t._x;
         _m13 += t._y;

@@ -25,6 +25,8 @@ add_executable(game
     src/component.cpp src/entity.cpp src/entity_manager.cpp
     src/new_entity.cpp    
     src/renderer.cpp src/collisions.cpp
+    src/stb_truetype.cpp
+    
     src/components/transform.cpp
     src/components/model_instance.cpp src/components/camera.cpp src/components/light.cpp
     src/components/rigid_body.cpp src/components/beep_on_hit.cpp src/components/player_controller.cpp
@@ -67,6 +69,8 @@ target_include_directories(game PUBLIC src/portaudio/include)
 
 target_include_directories(game PUBLIC
     ./ ./src src/glfw/include src/glad/include src/imgui)
+
+add_executable(font_tool EXCLUDE_FROM_ALL src/font_tool.cpp)
 
 ##
 ## TEST SHIT ##
