@@ -520,7 +520,8 @@ void Scene::Draw(int windowWidth, int windowHeight, float timeInSecs) {
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, fontTextureId);
         glBindVertexArray(_pInternal->_textVao);
-        Vec4 quadVertices[4];       
+        Vec4 quadVertices[4];
+        float scale = 2.f;
         for (TextInstance const& textInstance : _pInternal->_textsToDraw) {
             shader.SetVec3("uTextColor", Vec3(1.f, 1.f, 1.f));
             Vec3 origin(textInstance._screenX, textInstance._screenY, 0.f);
@@ -535,11 +536,20 @@ void Scene::Draw(int windowWidth, int windowHeight, float timeInSecs) {
                     continue;
                 }
                 stbtt_aligned_quad quad;
-                stbtt_GetBakedQuad(_pInternal->_fontCharInfo.data(), kBmpWidth, kBmpHeight, charIndex, &origin._x, &origin._y, &quad, /*opengl_fillrule=*/1);
-                quadVertices[0].Set(quad.x0, quad.y0, quad.s0, quad.t0);
-                quadVertices[1].Set(quad.x0, quad.y1, quad.s0, quad.t1);
-                quadVertices[2].Set(quad.x1, quad.y0, quad.s1, quad.t0);
-                quadVertices[3].Set(quad.x1, quad.y1, quad.s1, quad.t1);
+                Vec3 outPos = origin;
+                stbtt_GetBakedQuad(_pInternal->_fontCharInfo.data(), kBmpWidth, kBmpHeight, charIndex, &outPos._x, &outPos._y, &quad, /*opengl_fillrule=*/1);
+                Vec3 scaledMin;
+                Vec3 scaledMax;
+                scaledMin._x = origin._x + scale * (quad.x0 - origin._x);
+                scaledMin._y = origin._y + scale * (quad.y0 - origin._y);
+                scaledMax._x = scaledMin._x + scale * (quad.x1 - quad.x0);
+                scaledMax._y = scaledMin._y + scale * (quad.y1 - quad.y0);                
+                origin += scale * (outPos - origin);
+                quadVertices[0].Set(scaledMin._x, scaledMin._y, quad.s0, quad.t0);
+                quadVertices[1].Set(scaledMin._x, scaledMax._y, quad.s0, quad.t1);
+                quadVertices[2].Set(scaledMax._x, scaledMin._y, quad.s1, quad.t0);
+                quadVertices[3].Set(scaledMax._x, scaledMax._y, quad.s1, quad.t1);
+
                 glBindBuffer(GL_ARRAY_BUFFER, _pInternal->_textVbo);
                 glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(quadVertices), quadVertices);
                 glBindBuffer(GL_ARRAY_BUFFER, 0);
