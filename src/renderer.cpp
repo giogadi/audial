@@ -55,7 +55,8 @@ bool CreateTextureFromFile(char const* filename, unsigned int& textureId) {
 }
 
 bool CreateFontTextureFromBitmap(char const* filename, unsigned int& textureId) {
-int texWidth, texHeight, texNumChannels;
+    int texWidth, texHeight, texNumChannels;
+    // stbi_set_flip_vertically_on_load(false);
     unsigned char *texData = stbi_load(filename, &texWidth, &texHeight, &texNumChannels, 0);
     if (texData == nullptr) {
         std::cout << "Error: could not load texture " << filename << std::endl;
@@ -190,6 +191,12 @@ std::unique_ptr<BoundMeshPNU> MakeWaterMesh() {
 
 bool SceneInternal::Init(GameManager& g) {
     _g = &g;
+
+    // More OpenGL stuff
+    glEnable(GL_CULL_FACE);
+    glCullFace(GL_BACK);
+    glFrontFace(GL_CCW);
+    
     {
         std::array<float,kCubeVertsNumValues> cubeVerts;
         GetCubeVertices(&cubeVerts);
@@ -218,7 +225,7 @@ bool SceneInternal::Init(GameManager& g) {
         return false;
     }
 
-    if (!_textShader.Init("shaders/water.vert", "shaders/water.frag")) {
+    if (!_textShader.Init("shaders/text.vert", "shaders/text.frag")) {
         return false;
     }
 
@@ -514,6 +521,18 @@ void Scene::Draw(int windowWidth, int windowHeight, float timeInSecs) {
         glBindTexture(GL_TEXTURE_2D, fontTextureId);
         glBindVertexArray(_pInternal->_textVao);
         Vec4 quadVertices[4];
+        {
+            shader.SetVec3("uTextColor", Vec3(1.f, 0.f, 1.f));
+            quadVertices[0].Set(0, 0, 0, 0);
+            quadVertices[1].Set(0, 200, 0, 0);
+            quadVertices[2].Set(200, 0, 0, 0);
+            quadVertices[3].Set(200, 200, 0, 0);
+            glBindBuffer(GL_ARRAY_BUFFER, _pInternal->_textVbo);
+            glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(quadVertices), quadVertices);
+            glBindBuffer(GL_ARRAY_BUFFER, 0);
+            glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);                
+        }
+#if 0       
         for (TextInstance const& textInstance : _pInternal->_textsToDraw) {
             shader.SetVec3("uTextColor", Vec3(1.f, 1.f, 1.f));
             Vec3 origin(textInstance._screenX, textInstance._screenY, 0.f);
@@ -539,6 +558,7 @@ void Scene::Draw(int windowWidth, int windowHeight, float timeInSecs) {
                 glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);                
             }
         }
+#endif        
 
         _pInternal->_textsToDraw.clear();
         glDisable(GL_BLEND);
