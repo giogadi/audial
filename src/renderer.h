@@ -106,7 +106,7 @@ public:
     renderer::ColorModelInstance& DrawMesh();
     void DrawCube(Mat4 const& t, Vec4 const& color);
 
-    void DrawText(char const* text, int screenX, int screenY);
+    void DrawText(char const* text, int screenX, int screenY, float scale=1.f, Vec4 const& colorRgba = Vec4(1.f, 1.f, 1.f, 1.f));
 
     Camera _camera;
 private:

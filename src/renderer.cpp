@@ -84,6 +84,8 @@ struct TextInstance {
     std::string _text;
     int _screenX = -1;
     int _screenY = -1;
+    Vec4 _colorRgba = Vec4(1.f, 1.f, 1.f, 1.f);
+    float _scale = 1.f;
 };
 }
 
@@ -313,12 +315,14 @@ void Scene::DrawCube(Mat4 const& t, Vec4 const& color) {
     DrawMesh(_pInternal->_cubeMesh, t, color);
 }
 
-void Scene::DrawText(char const* str, int screenX, int screenY) {
+void Scene::DrawText(char const* str, int screenX, int screenY, float scale, Vec4 const& colorRgba) {
     _pInternal->_textsToDraw.emplace_back();
     TextInstance& t = _pInternal->_textsToDraw.back();
     t._text = str;
     t._screenX = screenX;
     t._screenY = screenY;
+    t._scale = scale;
+    t._colorRgba = colorRgba;
 }
 
 std::pair<VersionId, PointLight*> Scene::AddPointLight() {
@@ -521,9 +525,9 @@ void Scene::Draw(int windowWidth, int windowHeight, float timeInSecs) {
         glBindTexture(GL_TEXTURE_2D, fontTextureId);
         glBindVertexArray(_pInternal->_textVao);
         Vec4 quadVertices[4];
-        float scale = 2.f;
         for (TextInstance const& textInstance : _pInternal->_textsToDraw) {
-            shader.SetVec3("uTextColor", Vec3(1.f, 1.f, 1.f));
+            float const scale = textInstance._scale;
+            shader.SetVec4("uTextColor", textInstance._colorRgba);
             Vec3 origin(textInstance._screenX, textInstance._screenY, 0.f);
             for (char c : textInstance._text) {
                 char constexpr kFirstChar = 65;  // 'A'
