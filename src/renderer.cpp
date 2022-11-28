@@ -56,8 +56,9 @@ bool CreateTextureFromFile(char const* filename, unsigned int& textureId) {
 
 bool CreateFontTextureFromBitmap(char const* filename, unsigned int& textureId) {
     int texWidth, texHeight, texNumChannels;
-    // stbi_set_flip_vertically_on_load(false);
-    unsigned char *texData = stbi_load(filename, &texWidth, &texHeight, &texNumChannels, 0);
+    stbi_set_flip_vertically_on_load(false);
+    int desiredChannels = 1;
+    unsigned char *texData = stbi_load(filename, &texWidth, &texHeight, &texNumChannels, desiredChannels);
     if (texData == nullptr) {
         std::cout << "Error: could not load texture " << filename << std::endl;
         return false;
@@ -509,8 +510,7 @@ void Scene::Draw(int windowWidth, int windowHeight, float timeInSecs) {
         glEnable(GL_BLEND);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-        Mat4 projection = Mat4::Ortho(0.f, _pInternal->_g->_windowWidth, 0.f, _pInternal->_g->_windowHeight, -1.f, 1.f);
-        
+        Mat4 projection = Mat4::Ortho(0.f, _pInternal->_g->_windowWidth, 0.f, _pInternal->_g->_windowHeight, -1.f, 1.f);        
 
         unsigned int fontTextureId = _pInternal->_textureIdMap.at("font");
 
@@ -520,19 +520,7 @@ void Scene::Draw(int windowWidth, int windowHeight, float timeInSecs) {
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, fontTextureId);
         glBindVertexArray(_pInternal->_textVao);
-        Vec4 quadVertices[4];
-        {
-            shader.SetVec3("uTextColor", Vec3(1.f, 0.f, 1.f));
-            quadVertices[0].Set(0, 0, 0, 0);
-            quadVertices[1].Set(0, 200, 0, 0);
-            quadVertices[2].Set(200, 0, 0, 0);
-            quadVertices[3].Set(200, 200, 0, 0);
-            glBindBuffer(GL_ARRAY_BUFFER, _pInternal->_textVbo);
-            glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(quadVertices), quadVertices);
-            glBindBuffer(GL_ARRAY_BUFFER, 0);
-            glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);                
-        }
-#if 0       
+        Vec4 quadVertices[4];       
         for (TextInstance const& textInstance : _pInternal->_textsToDraw) {
             shader.SetVec3("uTextColor", Vec3(1.f, 1.f, 1.f));
             Vec3 origin(textInstance._screenX, textInstance._screenY, 0.f);
@@ -542,12 +530,12 @@ void Scene::Draw(int windowWidth, int windowHeight, float timeInSecs) {
                 int constexpr kBmpWidth = 512;
                 int constexpr kBmpHeight = 128;
                 int charIndex = c - kFirstChar;
-                if (charIndex >= kNumChars) {
+                if (charIndex >= kNumChars || charIndex < 0) {
                     printf("ERROR: character \'%c\' not in font!\n", c);
                     continue;
                 }
                 stbtt_aligned_quad quad;
-                stbtt_GetBakedQuad(&_pInternal->_fontCharInfo[charIndex], kBmpWidth, kBmpHeight, charIndex, &origin._x, &origin._y, &quad, /*opengl_fillrule=*/1);
+                stbtt_GetBakedQuad(_pInternal->_fontCharInfo.data(), kBmpWidth, kBmpHeight, charIndex, &origin._x, &origin._y, &quad, /*opengl_fillrule=*/1);
                 quadVertices[0].Set(quad.x0, quad.y0, quad.s0, quad.t0);
                 quadVertices[1].Set(quad.x0, quad.y1, quad.s0, quad.t1);
                 quadVertices[2].Set(quad.x1, quad.y0, quad.s1, quad.t0);
@@ -558,7 +546,6 @@ void Scene::Draw(int windowWidth, int windowHeight, float timeInSecs) {
                 glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);                
             }
         }
-#endif        
 
         _pInternal->_textsToDraw.clear();
         glDisable(GL_BLEND);
