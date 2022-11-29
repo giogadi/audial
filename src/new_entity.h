@@ -18,7 +18,8 @@ namespace ne {
     X(Camera) \
     X(LaneNotePlayer) \
     X(LaneNoteEnemy) \
-    X(Sequencer)
+    X(Sequencer) \
+    X(TypingEnemy)
 
 enum class EntityType: int {
 #   define X(a) a,

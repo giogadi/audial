@@ -237,6 +237,13 @@ struct Vec4 {
         _z = pt.GetFloat("z");
         _w = pt.GetFloat("w");
     }
+
+    bool operator==(Vec4 const& rhs) const {
+        return _x == rhs._x && _y == rhs._y && _z == rhs._z && _w == rhs._w;
+    }
+    bool operator!=(Vec4 const& rhs) const {
+        return !(*this == rhs);
+    }
 };
 
 struct Mat4 {

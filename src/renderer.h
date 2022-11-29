@@ -1,5 +1,7 @@
 #pragma once
 
+#include <string_view>
+
 #include "matrix.h"
 #include "constants.h"
 #include "version_id.h"
@@ -106,9 +108,11 @@ public:
     renderer::ColorModelInstance& DrawMesh();
     void DrawCube(Mat4 const& t, Vec4 const& color);
 
-    void DrawText(char const* text, int screenX, int screenY, float scale=1.f, Vec4 const& colorRgba = Vec4(1.f, 1.f, 1.f, 1.f));
+    void DrawText(std::string_view str, float& screenX, float& screenY, float scale=1.f, Vec4 const& colorRgba = Vec4(1.f, 1.f, 1.f, 1.f));
 
     Camera _camera;
+
+    Mat4 GetViewProjTransform() const;
 private:
     std::unique_ptr<SceneInternal> _pInternal;
 };

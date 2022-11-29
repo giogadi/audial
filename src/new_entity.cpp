@@ -13,6 +13,7 @@
 #include "entities/lane_note_enemy.h"
 #include "entities/lane_note_player.h"
 #include "entities/sequencer.h"
+#include "entities/typing_enemy.h"
 
 namespace ne {
 

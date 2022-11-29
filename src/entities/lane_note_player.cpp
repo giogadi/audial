@@ -385,9 +385,6 @@ void LaneNotePlayerEntity::Init(GameManager& g) {
 void LaneNotePlayerEntity::Update(GameManager& g, float dt) {
     DrawLanes(g);
 
-    // HOWDY DEBUG TEXT
-    g._scene->DrawText("Howdy", 200, 200, 2.f, Vec4(1.f, 0.f, 0.f, 1.f));
-
     // assume only a few keys can be pressed at once.
     int constexpr kNumSimulKeys = 4;
     struct KeyInfo {

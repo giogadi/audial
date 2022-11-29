@@ -82,11 +82,17 @@ bool CreateFontTextureFromBitmap(char const* filename, unsigned int& textureId) 
 
 struct TextInstance {
     std::string _text;
-    int _screenX = -1;
-    int _screenY = -1;
+    float _screenX = -1;
+    float _screenY = -1;
     Vec4 _colorRgba = Vec4(1.f, 1.f, 1.f, 1.f);
     float _scale = 1.f;
 };
+
+struct GlyphInstance {
+    Vec4 _colorRgba;
+    stbtt_aligned_quad _quad;
+};
+
 }
 
 class SceneInternal {
@@ -105,6 +111,7 @@ public:
     TVersionIdList<TexturedModelInstance> _texturedModelInstances;
     std::vector<ColorModelInstance> _modelsToDraw;
     std::vector<TextInstance> _textsToDraw;
+    std::vector<GlyphInstance> _glyphsToDraw;
 
     std::unordered_map<std::string, std::unique_ptr<BoundMeshPNU>> _meshMap;
     std::unordered_map<std::string, unsigned int> _textureIdMap;
@@ -315,14 +322,39 @@ void Scene::DrawCube(Mat4 const& t, Vec4 const& color) {
     DrawMesh(_pInternal->_cubeMesh, t, color);
 }
 
-void Scene::DrawText(char const* str, int screenX, int screenY, float scale, Vec4 const& colorRgba) {
-    _pInternal->_textsToDraw.emplace_back();
-    TextInstance& t = _pInternal->_textsToDraw.back();
-    t._text = str;
-    t._screenX = screenX;
-    t._screenY = screenY;
-    t._scale = scale;
-    t._colorRgba = colorRgba;
+void Scene::DrawText(std::string_view str, float& screenX, float& screenY, float scale, Vec4 const& colorRgba) {
+    Vec3 origin(screenX, screenY, 0.f);
+    for (char c : str) {
+        char constexpr kFirstChar = 65;  // 'A'
+        int constexpr kNumChars = 58;
+        int constexpr kBmpWidth = 512;
+        int constexpr kBmpHeight = 128;
+        int charIndex = c - kFirstChar;
+        if (charIndex >= kNumChars || charIndex < 0) {
+            printf("ERROR: character \'%c\' not in font!\n", c);
+            continue;
+        }
+        stbtt_aligned_quad quad;
+        Vec3 outPos = origin;
+        stbtt_GetBakedQuad(_pInternal->_fontCharInfo.data(), kBmpWidth, kBmpHeight, charIndex, &outPos._x, &outPos._y, &quad, /*opengl_fillrule=*/1);
+        
+        _pInternal->_glyphsToDraw.emplace_back();
+        GlyphInstance& t = _pInternal->_glyphsToDraw.back();
+        t._colorRgba = colorRgba;
+        t._quad.x0 = origin._x + scale * (quad.x0 - origin._x);
+        t._quad.y0 = origin._y + scale * (quad.y0 - origin._y);
+        t._quad.x1 = t._quad.x0 + scale * (quad.x1 - quad.x0);
+        t._quad.y1 = t._quad.y0 + scale * (quad.y1 - quad.y0);
+        t._quad.s0 = quad.s0;
+        t._quad.s1 = quad.s1;
+        t._quad.t0 = quad.t0;
+        t._quad.t1 = quad.t1;
+
+        origin += scale * (outPos - origin);
+    }
+
+    screenX = origin._x;
+    screenY = origin._y;
 }
 
 std::pair<VersionId, PointLight*> Scene::AddPointLight() {
@@ -361,11 +393,8 @@ bool Scene::RemoveTexturedModelInstance(VersionId id) {
     return _pInternal->_texturedModelInstances.RemoveItem(id);
 }
 
-void Scene::Draw(int windowWidth, int windowHeight, float timeInSecs) {    
-    assert(_pInternal->_pointLights.GetCount() == 1);
-    PointLight const& light = *(_pInternal->_pointLights.GetItemAtIndex(0));
-
-    float aspectRatio = (float)windowWidth / windowHeight;
+Mat4 Scene::GetViewProjTransform() const {
+    float aspectRatio = (float)_pInternal->_g->_windowWidth / _pInternal->_g->_windowHeight;
     Mat4 viewProjTransform;
     switch (_camera._projectionType) {
         case Camera::ProjectionType::Perspective:
@@ -378,6 +407,27 @@ void Scene::Draw(int windowWidth, int windowHeight, float timeInSecs) {
     }
     Mat4 camMatrix = _camera.GetViewMatrix();
     viewProjTransform = viewProjTransform * camMatrix;
+    return viewProjTransform;
+}
+
+void Scene::Draw(int windowWidth, int windowHeight, float timeInSecs) {    
+    assert(_pInternal->_pointLights.GetCount() == 1);
+    PointLight const& light = *(_pInternal->_pointLights.GetItemAtIndex(0));
+
+    // float aspectRatio = (float)windowWidth / windowHeight;
+    // Mat4 viewProjTransform;
+    // switch (_camera._projectionType) {
+    //     case Camera::ProjectionType::Perspective:
+    //         viewProjTransform = Mat4::Perspective(
+    //             _camera._fovyRad, aspectRatio, /*near=*/_camera._zNear, /*far=*/_camera._zFar);
+    //         break;
+    //     case Camera::ProjectionType::Orthographic:
+    //         viewProjTransform = Mat4::Ortho(/*width=*/_camera._width, aspectRatio, _camera._zNear, _camera._zFar);
+    //         break;
+    // }
+    // Mat4 camMatrix = _camera.GetViewMatrix();
+    // viewProjTransform = viewProjTransform * camMatrix;
+    Mat4 viewProjTransform = GetViewProjTransform();
 
     auto& topLayerModels = _pInternal->_topLayerColorModels;
     topLayerModels.clear();
@@ -525,43 +575,25 @@ void Scene::Draw(int windowWidth, int windowHeight, float timeInSecs) {
         glBindTexture(GL_TEXTURE_2D, fontTextureId);
         glBindVertexArray(_pInternal->_textVao);
         Vec4 quadVertices[4];
-        for (TextInstance const& textInstance : _pInternal->_textsToDraw) {
-            float const scale = textInstance._scale;
-            shader.SetVec4("uTextColor", textInstance._colorRgba);
-            Vec3 origin(textInstance._screenX, textInstance._screenY, 0.f);
-            for (char c : textInstance._text) {
-                char constexpr kFirstChar = 65;  // 'A'
-                int constexpr kNumChars = 58;
-                int constexpr kBmpWidth = 512;
-                int constexpr kBmpHeight = 128;
-                int charIndex = c - kFirstChar;
-                if (charIndex >= kNumChars || charIndex < 0) {
-                    printf("ERROR: character \'%c\' not in font!\n", c);
-                    continue;
-                }
-                stbtt_aligned_quad quad;
-                Vec3 outPos = origin;
-                stbtt_GetBakedQuad(_pInternal->_fontCharInfo.data(), kBmpWidth, kBmpHeight, charIndex, &outPos._x, &outPos._y, &quad, /*opengl_fillrule=*/1);
-                Vec3 scaledMin;
-                Vec3 scaledMax;
-                scaledMin._x = origin._x + scale * (quad.x0 - origin._x);
-                scaledMin._y = origin._y + scale * (quad.y0 - origin._y);
-                scaledMax._x = scaledMin._x + scale * (quad.x1 - quad.x0);
-                scaledMax._y = scaledMin._y + scale * (quad.y1 - quad.y0);                
-                origin += scale * (outPos - origin);
-                quadVertices[0].Set(scaledMin._x, scaledMin._y, quad.s0, quad.t0);
-                quadVertices[1].Set(scaledMin._x, scaledMax._y, quad.s0, quad.t1);
-                quadVertices[2].Set(scaledMax._x, scaledMin._y, quad.s1, quad.t0);
-                quadVertices[3].Set(scaledMax._x, scaledMax._y, quad.s1, quad.t1);
-
-                glBindBuffer(GL_ARRAY_BUFFER, _pInternal->_textVbo);
-                glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(quadVertices), quadVertices);
-                glBindBuffer(GL_ARRAY_BUFFER, 0);
-                glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);                
+        Vec4 cachedColor(-1.f, -1.f, -1.f, -1.f);
+        for (GlyphInstance const& glyph : _pInternal->_glyphsToDraw) {
+            if (glyph._colorRgba != cachedColor) {
+                cachedColor = glyph._colorRgba;
+                shader.SetVec4("uTextColor", cachedColor);
             }
-        }
+            stbtt_aligned_quad const& q = glyph._quad;
+            quadVertices[0].Set(q.x0, q.y0, q.s0, q.t0);
+            quadVertices[1].Set(q.x0, q.y1, q.s0, q.t1);
+            quadVertices[2].Set(q.x1, q.y0, q.s1, q.t0);
+            quadVertices[3].Set(q.x1, q.y1, q.s1, q.t1);
 
-        _pInternal->_textsToDraw.clear();
+            glBindBuffer(GL_ARRAY_BUFFER, _pInternal->_textVbo);
+            glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(quadVertices), quadVertices);
+            glBindBuffer(GL_ARRAY_BUFFER, 0);
+            glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+        }
+        
+        _pInternal->_glyphsToDraw.clear();       
         glDisable(GL_BLEND);
     }
 
