@@ -2,6 +2,7 @@
 
 #include "game_manager.h"
 #include "renderer.h"
+#include "audio.h"
 
 namespace {
 
@@ -16,12 +17,16 @@ void ProjectWorldPointToScreenSpace(Vec3 const& worldPos, Mat4 const& viewProjMa
 
 }
 
-void TypingEnemyEntity::Update(GameManager& g, float dt) {
-    ne::BaseEntity::Update(g, dt);
+void TypingEnemyEntity::Init(GameManager& g) {
+    ne::Entity::Init(g);
+}
 
-    // HOWDY DEBUG
-    _text = "howdy";
-    //_numHits = 2;
+void TypingEnemyEntity::Update(GameManager& g, float dt) {
+    if (!IsActive(g)) {
+        return;
+    }
+    
+    ne::BaseEntity::Update(g, dt);
 
     float screenX, screenY;
     Mat4 viewProjTransform = g._scene->GetViewProjTransform();
@@ -39,11 +44,38 @@ void TypingEnemyEntity::Update(GameManager& g, float dt) {
     }
 }
 
+namespace {
+static double constexpr kSlack = 0.0625;
+void SendEventsFromEventsList(TypingEnemyEntity const& enemy, GameManager& g, std::vector<BeatTimeEvent> const& events) {
+    for (BeatTimeEvent const& b_e : events) {
+        audio::Event e = GetEventAtBeatOffsetFromNextDenom(enemy._eventStartDenom, b_e, *g._beatClock, kSlack);
+        g._audioContext->AddEvent(e);
+    }
+}
+}
+
+bool TypingEnemyEntity::IsActive(GameManager& g) const {
+    if (g._editMode) {
+        return true;
+    }
+    double beatTime = g._beatClock->GetBeatTimeFromEpoch();
+    if (_activeBeatTime >= 0.0 && beatTime < _activeBeatTime) {
+        return false;
+    }
+    if (_inactiveBeatTime >= 0.0 && beatTime > _inactiveBeatTime) {
+        return false;
+    }
+    return true;
+}
+
 void TypingEnemyEntity::OnHit(GameManager& g) {
     if (_numHits < _text.length()) {
         ++_numHits;
         if (_numHits == _text.length()) {
+            SendEventsFromEventsList(*this, g, _deathEvents);
             assert(g._neEntityManager->TagForDestroy(_id));
+        } else {
+            SendEventsFromEventsList(*this, g, _hitEvents);
         }
     }
 }

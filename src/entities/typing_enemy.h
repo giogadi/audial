@@ -8,14 +8,19 @@
 struct TypingEnemyEntity : public ne::Entity {
     // serialized
     std::string _text;
-    std::vector<BeatTimeEvent> _events;
+    double _eventStartDenom = 0.125;
+    std::vector<BeatTimeEvent> _hitEvents;
+    std::vector<BeatTimeEvent> _deathEvents;
+    double _activeBeatTime = -1.0;
+    double _inactiveBeatTime = -1.0;
     
     // non-serialized
     int _numHits = 0;
 
+    bool IsActive(GameManager& g) const;
     void OnHit(GameManager& g);
     
-    /* virtual void Init(GameManager& g); */
+    virtual void Init(GameManager& g) override;
     virtual void Update(GameManager& g, float dt) override;
     /* virtual void Destroy(GameManager& g) {} */
     /* virtual void OnEditPick(GameManager& g) {} */
