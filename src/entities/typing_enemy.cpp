@@ -20,8 +20,8 @@ void TypingEnemyEntity::Update(GameManager& g, float dt) {
     ne::BaseEntity::Update(g, dt);
 
     // HOWDY DEBUG
-    _text = "Howdy";
-    _numHits = 2;
+    _text = "howdy";
+    //_numHits = 2;
 
     float screenX, screenY;
     Mat4 viewProjTransform = g._scene->GetViewProjTransform();
@@ -36,5 +36,14 @@ void TypingEnemyEntity::Update(GameManager& g, float dt) {
     if (_numHits < _text.length()) {
         std::string_view substr = std::string_view(_text).substr(_numHits);
         g._scene->DrawText(substr, screenX, screenY, /*scale=*/1.f, Vec4(1.f,1.f,1.f,1.f));
+    }
+}
+
+void TypingEnemyEntity::OnHit(GameManager& g) {
+    if (_numHits < _text.length()) {
+        ++_numHits;
+        if (_numHits == _text.length()) {
+            assert(g._neEntityManager->TagForDestroy(_id));
+        }
     }
 }

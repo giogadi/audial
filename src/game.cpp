@@ -372,18 +372,15 @@ int main(int argc, char** argv) {
             dt = fixedTimeStep;
         }
 
-        if (inputManager.IsKeyPressedThisFrame(InputManager::Key::Y)) {
+        if (gGameManager._editMode && inputManager.IsKeyPressedThisFrame(InputManager::Key::Y)) {
             showSynthWindow = !showSynthWindow;
         }
-        if (/*editMode &&*/ inputManager.IsKeyPressedThisFrame(InputManager::Key::E)) {
+        if (gGameManager._editMode && inputManager.IsKeyPressedThisFrame(InputManager::Key::E)) {
             showEntitiesWindow = !showEntitiesWindow;
         }
-        if (inputManager.IsKeyPressedThisFrame(InputManager::Key::Space)) {
+        if (gGameManager._editMode && inputManager.IsKeyPressedThisFrame(InputManager::Key::Space)) {
             showDemoWindow = !showDemoWindow;
         }
-        // if (inputManager.IsKeyPressedThisFrame(InputManager::Key::H)) {
-        //     showHitCounters = !showHitCounters;
-        // }
 
         entityEditingContext.Update(dt, cmdLineInputs._editMode, gGameManager);        
 

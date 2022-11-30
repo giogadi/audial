@@ -19,6 +19,7 @@ namespace ne {
     X(LaneNotePlayer) \
     X(LaneNoteEnemy) \
     X(Sequencer) \
+    X(TypingPlayer) \
     X(TypingEnemy)
 
 enum class EntityType: int {

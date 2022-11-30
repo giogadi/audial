@@ -39,6 +39,7 @@ add_executable(game
     src/entities/lane_note_enemy.cpp
     src/entities/lane_note_player.cpp
     src/entities/sequencer.cpp
+    src/entities/typing_player.cpp
     src/entities/typing_enemy.cpp
     
     src/enums/audio_EventType.cpp

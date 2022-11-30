@@ -10,4 +10,5 @@
 // -s data/new_entities.xml -y data/synth_patches_jungle.xml
 // -s data/lanes_liquid_level.xml -y data/synth_patches_jungle.xml
 // -s data/tech_level.xml -y data/synth_patches_tech.xml
--s data/tech_level.xml -y data/synth_patches_tech_new.xml
+// -s data/tech_level.xml -y data/synth_patches_tech_new.xml
+-s data/typing_level.xml -y data/synth_patches_tech_new.xml

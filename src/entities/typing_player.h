@@ -1,19 +1,8 @@
 #pragma once
 
-#include <vector>
-
 #include "new_entity.h"
-#include "beat_time_event.h"
 
-struct TypingEnemyEntity : public ne::Entity {
-    // serialized
-    std::string _text;
-    std::vector<BeatTimeEvent> _events;
-    
-    // non-serialized
-    int _numHits = 0;
-
-    void OnHit(GameManager& g);
+struct TypingPlayerEntity : public ne::Entity {
     
     /* virtual void Init(GameManager& g); */
     virtual void Update(GameManager& g, float dt) override;
