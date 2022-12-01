@@ -105,6 +105,10 @@ void Editor::UpdateSelectedPositionFromInput(float dt) {
 }
 
 void Editor::Update(float dt) {
+    if (!_g->_editMode) {
+        return;
+    }
+    
     if (_g->_inputManager->IsKeyPressedThisFrame(InputManager::Key::I)) {
         _visible = !_visible;
     }

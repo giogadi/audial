@@ -1,1 +1,2 @@
-e text:howdy on:4 note:A3 channel:0 length:0.5
+# e text:howdy on:4 note:A3 channel:0 length:0.5
+e text:hithereiamalongstring on:4 osc_fader:0.75 length:0.25

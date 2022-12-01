@@ -4,6 +4,7 @@
 #include <iostream>
 
 #include "sound_bank.h"
+#include "midi_util.h"
 
 void ReadBeatEventsFromScript(
     std::vector<BeatTimeEvent>& events, SoundBank const& soundBank,
@@ -85,6 +86,13 @@ void ReadBeatEventsFromScript(
                     b_e._e.midiNote = std::stoi(value);
                 } catch (std::exception& e) {
                     printf("Failed to parse midi note: %s\n", value.c_str());
+                    break;
+                }
+            } else if (key == "mm") {
+                // midi note (string rep)
+                b_e._e. midiNote = GetMidiNote(value.c_str());
+                if (b_e._e.midiNote < 0) {
+                    printf("Failed to parse midi string: %s\n", value.c_str());
                     break;
                 }
             } else if (key == "s") {
