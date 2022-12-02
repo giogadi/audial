@@ -25,8 +25,11 @@ void TypingEnemyEntity::Update(GameManager& g, float dt) {
     if (!IsActive(g)) {
         return;
     }
-    
-    ne::BaseEntity::Update(g, dt);
+
+    Vec3 p  = _transform.GetPos();
+    Vec3 dp = _velocity * dt;
+    p += dp;
+    _transform.SetTranslation(p);
 
     float screenX, screenY;
     Mat4 viewProjTransform = g._scene->GetViewProjTransform();
@@ -42,6 +45,7 @@ void TypingEnemyEntity::Update(GameManager& g, float dt) {
         std::string_view substr = std::string_view(_text).substr(_numHits);
         g._scene->DrawText(substr, screenX, screenY, /*scale=*/1.f, Vec4(1.f,1.f,1.f,1.f));
     }
+    ne::BaseEntity::Update(g, dt);
 }
 
 namespace {

@@ -16,6 +16,7 @@ struct TypingEnemyEntity : public ne::Entity {
     
     // non-serialized
     int _numHits = 0;
+    Vec3 _velocity;
 
     bool IsActive(GameManager& g) const;
     void OnHit(GameManager& g);

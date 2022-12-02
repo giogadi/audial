@@ -3,30 +3,30 @@
     <patch>
         <version>2</version>
         <name>bass</name>
-        <gain_factor>0.924000025</gain_factor>
+        <gain_factor>0.931999981</gain_factor>
         <osc1_waveform>Square</osc1_waveform>
         <osc2_waveform>Square</osc2_waveform>
         <detune>1</detune>
-        <osc_fader>0.407000005</osc_fader>
-        <cutoff_freq>0</cutoff_freq>
-        <cutoff_k>2.23200011</cutoff_k>
+        <osc_fader>0.381000012</osc_fader>
+        <cutoff_freq>373.729004</cutoff_freq>
+        <cutoff_k>0</cutoff_k>
         <pitch_lfo_gain>0</pitch_lfo_gain>
         <pitch_lfo_freq>1</pitch_lfo_freq>
         <cutoff_lfo_gain>0</cutoff_lfo_gain>
         <cutoff_lfo_freq>8.05099964</cutoff_lfo_freq>
         <amp_env_spec>
-            <attack_time>0.00400000019</attack_time>
+            <attack_time>0.00800000038</attack_time>
             <decay_time>0.114</decay_time>
-            <sustain_level>0.284000009</sustain_level>
-            <release_time>0.148000002</release_time>
+            <sustain_level>0.152999997</sustain_level>
+            <release_time>0.191</release_time>
             <min_value>0.00999999978</min_value>
         </amp_env_spec>
-        <cutoff_env_gain>934.322021</cutoff_env_gain>
+        <cutoff_env_gain>0</cutoff_env_gain>
         <cutoff_env_spec>
-            <attack_time>0.0170000009</attack_time>
-            <decay_time>0.114</decay_time>
-            <sustain_level>0.317999989</sustain_level>
-            <release_time>0.0810000002</release_time>
+            <attack_time>0.00400000019</attack_time>
+            <decay_time>0.148000002</decay_time>
+            <sustain_level>0.143999994</sustain_level>
+            <release_time>0.119000003</release_time>
             <min_value>0.00999999978</min_value>
         </cutoff_env_spec>
         <pitch_env_gain>0</pitch_env_gain>

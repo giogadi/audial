@@ -10,6 +10,8 @@
 #include "entities/typing_enemy.h"
 #include "audio.h"
 #include "midi_util.h"
+#include "rng.h"
+#include "constants.h"
 
 namespace {
 
@@ -25,6 +27,7 @@ struct SpawnInfo {
     // If oscFaderValue >= 0, then this takes precedence over midi notes.
     // If _noteLength >= 0, add another event to revert to previous value.
     double _oscFaderValue = -1.0;
+    Vec3 _velocity;
 };
 
 void SpawnEnemy(GameManager& g, SpawnInfo const& spawn) {
@@ -38,6 +41,10 @@ void SpawnEnemy(GameManager& g, SpawnInfo const& spawn) {
     enemy->_transform._m23 = spawn._z;
     enemy->_activeBeatTime = spawn._activeBeatTime;
     enemy->_inactiveBeatTime = spawn._inactiveBeatTime;
+
+    enemy->_eventStartDenom = 0.25;
+
+    enemy->_velocity = spawn._velocity;
 
     if (spawn._oscFaderValue >= 0.0) {
         {
@@ -133,10 +140,6 @@ void SpawnEnemiesFromFile(std::string_view filename, GameManager& g) {
                 key = token.substr(0, delimIx);
                 value = token.substr(delimIx+1);
             }
-            // If value is empty, just skip to the next thing.
-            if (value.empty()) {
-                continue;
-            }
             if (key == "on") {
                 spawn._activeBeatTime = std::stod(value) + beatTimeOffset;
             } else if (key == "off") {
@@ -156,6 +159,21 @@ void SpawnEnemiesFromFile(std::string_view filename, GameManager& g) {
                 spawn._noteLength = std::stod(value);
             } else if (key == "osc_fader") {
                 spawn._oscFaderValue = std::stod(value);
+            } else if (key == "rand_pos") {
+                spawn._x = rng::GetFloat(-8.f, 8.f);
+                spawn._z = rng::GetFloat(-5.f, 5.f);                
+            } else if (key == "rand_pv") {                
+                float constexpr kSpeed = 5.f;
+                float constexpr kSpawnRadius = 6.f;
+                float randAngle = rng::GetFloat(-kPi, kPi);                
+                spawn._x = cos(randAngle);
+                spawn._z = sin(randAngle);
+
+                spawn._velocity.Set(-spawn._x, 0.f, -spawn._z);
+                
+                spawn._x *= kSpawnRadius;
+                spawn._z *= kSpawnRadius;
+                spawn._velocity = spawn._velocity * kSpeed;               
             } else {
                 printf("Unrecognized key \"%s\".\n", key.c_str());
             }
