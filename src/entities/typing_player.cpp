@@ -4,6 +4,7 @@
 #include <string_view>
 #include <fstream>
 #include <sstream>
+#include <map>
 
 #include "input_manager.h"
 #include "game_manager.h"
@@ -28,7 +29,21 @@ struct SpawnInfo {
     // If _noteLength >= 0, add another event to revert to previous value.
     double _oscFaderValue = -1.0;
     Vec3 _velocity;
+    std::string _seqEntityName;
+    std::vector<int>* _randNoteTable = nullptr;
 };
+
+std::map<std::string, std::vector<int>> gRandNoteTables;
+
+void LoadRandNoteTables() {
+    std::vector<int>& table = gRandNoteTables["bass1"];
+    table.push_back(GetMidiNote("G2"));
+    table.push_back(GetMidiNote("B2-"));
+    table.push_back(GetMidiNote("C3"));
+    table.push_back(GetMidiNote("E3-"));
+    table.push_back(GetMidiNote("G3"));
+    table.push_back(GetMidiNote("B3-"));
+}
 
 void SpawnEnemy(GameManager& g, SpawnInfo const& spawn) {
     TypingEnemyEntity* enemy = static_cast<TypingEnemyEntity*>(g._neEntityManager->AddEntity(ne::EntityType::TypingEnemy));
@@ -68,6 +83,22 @@ void SpawnEnemy(GameManager& g, SpawnInfo const& spawn) {
         }
         // BLAH
         enemy->_deathEvents = enemy->_hitEvents;
+    } else if (!spawn._seqEntityName.empty()) {
+        ne::Entity* seqEntity = g._neEntityManager->FindEntityByName(spawn._seqEntityName);
+        if (seqEntity) {
+            enemy->_hitActions.emplace_back();
+            TypingEnemyEntity::Action& action = enemy->_hitActions.back();
+            action._type = TypingEnemyEntity::Action::Type::Seq;
+            action._seqId = seqEntity->_id;
+            if (spawn._randNoteTable) {
+                int randNoteIx = rng::GetInt(0, spawn._randNoteTable->size()-1);
+                action._seqMidiNote = spawn._randNoteTable->at(randNoteIx);
+            } else {
+                action._seqMidiNote = spawn._midiNote;
+            }            
+        } else {
+            printf("could not find seq entity with name \"%s\".\n", spawn._seqEntityName.c_str());
+        }
     } else {
         {
             enemy->_hitEvents.emplace_back();
@@ -146,7 +177,7 @@ void SpawnEnemiesFromFile(std::string_view filename, GameManager& g) {
                 spawn._inactiveBeatTime = std::stod(value) + beatTimeOffset;
             } else if (key == "text") {
                 spawn._text = value;
-            }else if (key == "x") {
+            } else if (key == "x") {
                 spawn._x = std::stof(value);
             } else if (key == "z") {
                 spawn._z = std::stof(value);
@@ -163,17 +194,45 @@ void SpawnEnemiesFromFile(std::string_view filename, GameManager& g) {
                 spawn._x = rng::GetFloat(-8.f, 8.f);
                 spawn._z = rng::GetFloat(-5.f, 5.f);                
             } else if (key == "rand_pv") {                
-                float constexpr kSpeed = 5.f;
-                float constexpr kSpawnRadius = 6.f;
-                float randAngle = rng::GetFloat(-kPi, kPi);                
-                spawn._x = cos(randAngle);
-                spawn._z = sin(randAngle);
+                // float constexpr kSpeed = 5.f;
+                // float constexpr kSpawnRadius = 6.f;
+                // float randAngle = rng::GetFloat(-kPi, kPi);                
+                // spawn._x = cos(randAngle);
+                // spawn._z = sin(randAngle);
 
-                spawn._velocity.Set(-spawn._x, 0.f, -spawn._z);
+                // spawn._velocity.Set(-spawn._x, 0.f, -spawn._z);
                 
-                spawn._x *= kSpawnRadius;
-                spawn._z *= kSpawnRadius;
-                spawn._velocity = spawn._velocity * kSpeed;               
+                // spawn._x *= kSpawnRadius;
+                // spawn._z *= kSpawnRadius;
+                // spawn._velocity = spawn._velocity * kSpeed;
+                static bool gHorizontal = true;
+                float constexpr kSpeed = 5.f;
+                float constexpr kHorizLimit = 7.f;
+                float constexpr kZMin = -10.f;
+                float constexpr kZMax = 5.5f;
+                if (gHorizontal) {                    
+                    bool leftSide = rng::GetInt(0, 1) == 1;
+                    
+                    spawn._x = (leftSide ? -1 : 1) * kHorizLimit;
+                    spawn._z = rng::GetFloat(kZMin, kZMax);
+                    spawn._velocity.Set(kSpeed * (leftSide ? 1.f : -1.f), 0.f, 0.f);
+                } else {
+                    bool topSide = rng::GetInt(0, 1) == 1;
+
+                    spawn._x = rng::GetFloat(-kHorizLimit, kHorizLimit);
+                    spawn._z = topSide ? kZMin : kZMax;
+                    spawn._velocity.Set(0.f, 0.f, kSpeed * (topSide ? 1.f : -1.f));
+                }
+                gHorizontal = !gHorizontal;
+            } else if (key == "seq") {
+                spawn._seqEntityName = value;
+            } else if (key == "rand_note") {
+                auto result = gRandNoteTables.find(value);
+                if (result == gRandNoteTables.end()) {
+                    printf("ERROR: no rand note table named %s\n", value.c_str());
+                } else {
+                    spawn._randNoteTable = &(result->second);
+                }
             } else {
                 printf("Unrecognized key \"%s\".\n", key.c_str());
             }
@@ -185,6 +244,7 @@ void SpawnEnemiesFromFile(std::string_view filename, GameManager& g) {
 }
 
 void TypingPlayerEntity::Init(GameManager& g) {
+    LoadRandNoteTables();
     if (!_spawnFilename.empty()) {
         SpawnEnemiesFromFile(_spawnFilename, g);
     }

@@ -3,6 +3,7 @@
 #include <unordered_map>
 #include <vector>
 #include <memory>
+#include <string_view>
 
 #include "matrix.h"
 #include "serial.h"
@@ -20,7 +21,8 @@ namespace ne {
     X(LaneNoteEnemy) \
     X(Sequencer) \
     X(TypingPlayer) \
-    X(TypingEnemy)
+    X(TypingEnemy) \
+    X(StepSequencer)
 
 enum class EntityType: int {
 #   define X(a) a,
@@ -83,6 +85,7 @@ struct EntityManager {
     void Init();
     Entity* AddEntity(EntityType entityType);    
     Entity* GetEntity(EntityId id);
+    Entity* FindEntityByName(std::string_view name);
     bool TagForDestroy(EntityId id);
 
     // Calls Destroy() on removed entities.

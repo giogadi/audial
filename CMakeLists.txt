@@ -41,6 +41,7 @@ add_executable(game
     src/entities/sequencer.cpp
     src/entities/typing_player.cpp
     src/entities/typing_enemy.cpp
+    src/entities/step_sequencer.cpp
     
     src/enums/audio_EventType.cpp
     src/enums/audio_SynthParamType.cpp

@@ -1,23 +1,43 @@
-#e text:hithereiamaverylongstring on:4 note:A3 channel:0 length:0.5
+# e text:hithereiamaverylongstring on:4 note:C3 channel:0 seq:bass_seq
 
 #e text:hithereiamaverylongstring on:4 osc_fader:0.75 length:0.25
 
-# e text:a on:4 osc_fader:0.75 length:0.25 x:0 z:0
-# e text:i on:4 osc_fader:0.75 length:0.25 x:2 z:0
-# e text:d on:4 osc_fader:0.75 length:0.25 x:-2 z:0
-# e text:n on:4 osc_fader:0.75 length:0.25 x:0 z:2
-# e text:e on:4 osc_fader:0.75 length:0.25 x:-4 z:-4
-# e text:s on:4 osc_fader:0.75 length:0.25 x:4 z:4
-# e text:f on:4 osc_fader:0.75 length:0.25 x:3 z:-3
-# e text:k on:4 osc_fader:0.75 length:0.25 x:-2 z:2
-# e text:c on:4 osc_fader:0.75 length:0.25 x:2 z:-2
+# e text:a on:4 osc_fader:0.75 length:0.25 rand_pv:
+# e text:i on:6 osc_fader:0.75 length:0.25 rand_pv:
+# e text:d on:8 osc_fader:0.75 length:0.25 rand_pv:
+# e text:n on:10 osc_fader:0.75 length:0.25 rand_pv:
+# e text:e on:12 osc_fader:0.75 length:0.25 rand_pv:
+# e text:s on:14 osc_fader:0.75 length:0.25 rand_pv:
+# e text:f on:16 osc_fader:0.75 length:0.25 rand_pv:
+# e text:k on:18 osc_fader:0.75 length:0.25 rand_pv:
+# e text:c on:20 osc_fader:0.75 length:0.25 rand_pv:
 
-e text:a on:4 osc_fader:0.75 length:0.25 rand_pv:
-e text:i on:6 osc_fader:0.75 length:0.25 rand_pv:
-e text:d on:8 osc_fader:0.75 length:0.25 rand_pv:
-e text:n on:10 osc_fader:0.75 length:0.25 rand_pv:
-e text:e on:12 osc_fader:0.75 length:0.25 rand_pv:
-e text:s on:14 osc_fader:0.75 length:0.25 rand_pv:
-e text:f on:16 osc_fader:0.75 length:0.25 rand_pv:
-e text:k on:18 osc_fader:0.75 length:0.25 rand_pv:
-e text:c on:20 osc_fader:0.75 length:0.25 rand_pv:
+e text:a on:4 rand_note:bass1 channel:0 seq:bass_seq rand_pv:
+e text:i on:4 rand_note:bass1 channel:0 seq:bass_seq rand_pv:
+e text:d on:4 rand_note:bass1 channel:0 seq:bass_seq rand_pv:
+e text:n on:6 rand_note:bass1 channel:0 seq:bass_seq rand_pv:
+e text:e on:6 rand_note:bass1 channel:0 seq:bass_seq rand_pv:
+e text:s on:6 rand_note:bass1 channel:0 seq:bass_seq rand_pv:
+e text:f on:8 rand_note:bass1 channel:0 seq:bass_seq rand_pv:
+e text:k on:8 rand_note:bass1 channel:0 seq:bass_seq rand_pv:
+e text:c on:8 rand_note:bass1 channel:0 seq:bass_seq rand_pv:
+
+e text:a on:10 rand_note:bass1 channel:0 seq:bass_seq rand_pv:
+e text:i on:10 rand_note:bass1 channel:0 seq:bass_seq rand_pv:
+e text:d on:10 rand_note:bass1 channel:0 seq:bass_seq rand_pv:
+e text:n on:12 rand_note:bass1 channel:0 seq:bass_seq rand_pv:
+e text:e on:12 rand_note:bass1 channel:0 seq:bass_seq rand_pv:
+e text:s on:12 rand_note:bass1 channel:0 seq:bass_seq rand_pv:
+e text:f on:14 rand_note:bass1 channel:0 seq:bass_seq rand_pv:
+e text:k on:14 rand_note:bass1 channel:0 seq:bass_seq rand_pv:
+e text:c on:14 rand_note:bass1 channel:0 seq:bass_seq rand_pv:
+
+e text:a on:16 rand_note:bass1 channel:0 seq:bass_seq rand_pv:
+e text:i on:16 rand_note:bass1 channel:0 seq:bass_seq rand_pv:
+e text:d on:16 rand_note:bass1 channel:0 seq:bass_seq rand_pv:
+e text:n on:18 rand_note:bass1 channel:0 seq:bass_seq rand_pv:
+e text:e on:18 rand_note:bass1 channel:0 seq:bass_seq rand_pv:
+e text:s on:18 rand_note:bass1 channel:0 seq:bass_seq rand_pv:
+e text:f on:20 rand_note:bass1 channel:0 seq:bass_seq rand_pv:
+e text:k on:20 rand_note:bass1 channel:0 seq:bass_seq rand_pv:
+e text:c on:20 rand_note:bass1 channel:0 seq:bass_seq rand_pv:

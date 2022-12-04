@@ -6,11 +6,28 @@
 #include "beat_time_event.h"
 
 struct TypingEnemyEntity : public ne::Entity {
+    struct Action {
+        enum class Type { Seq };
+        Action() {
+            _type = Type::Seq;
+            _seqMidiNote = -1;
+        }
+        
+        Type _type = Type::Seq;
+        union {
+            struct {
+                ne::EntityId _seqId;
+                int _seqMidiNote;
+            };
+        };
+    };
+    
     // serialized
     std::string _text;
     double _eventStartDenom = 0.125;
     std::vector<BeatTimeEvent> _hitEvents;
     std::vector<BeatTimeEvent> _deathEvents;
+    std::vector<Action> _hitActions;
     double _activeBeatTime = -1.0;
     double _inactiveBeatTime = -1.0;
     

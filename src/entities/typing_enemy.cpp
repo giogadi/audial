@@ -3,6 +3,7 @@
 #include "game_manager.h"
 #include "renderer.h"
 #include "audio.h"
+#include "step_sequencer.h"
 
 namespace {
 
@@ -80,6 +81,20 @@ void TypingEnemyEntity::OnHit(GameManager& g) {
             assert(g._neEntityManager->TagForDestroy(_id));
         } else {
             SendEventsFromEventsList(*this, g, _hitEvents);
+        }
+
+        for (Action const& a : _hitActions) {
+            switch (a._type) {
+                case Action::Type::Seq: {
+                    StepSequencerEntity* seq = static_cast<StepSequencerEntity*>(g._neEntityManager->GetEntity(a._seqId));
+                    if (seq == nullptr) {
+                        printf("seq-type hit action could not find seq entity!\n");
+                        continue;
+                    }
+                    seq->SetNextSeqStep(a._seqMidiNote);
+                    break;
+                }
+            }
         }
     }
 }

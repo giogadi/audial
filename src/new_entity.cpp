@@ -15,6 +15,7 @@
 #include "entities/sequencer.h"
 #include "entities/typing_player.h"
 #include "entities/typing_enemy.h"
+#include "entities/step_sequencer.h"
 
 namespace ne {
 
@@ -127,6 +128,16 @@ std::pair<Entity*, int> EntityManager::GetEntityWithIndex(EntityId id) {
 
 Entity* EntityManager::GetEntity(EntityId id) {
     return GetEntityWithIndex(id).first;
+}
+
+Entity* EntityManager::FindEntityByName(std::string_view name) {
+    for (AllIterator iter = GetAllIterator(); !iter.Finished(); iter.Next()) {
+        Entity* e = iter.GetEntity();
+        if (e->_name == name) {
+            return e;
+        }
+    }
+    return nullptr;
 }
 
 bool EntityManager::RemoveEntity(EntityId idToRemove) {
