@@ -24,25 +24,38 @@ struct SpawnInfo {
     double _inactiveBeatTime = -1.0;
     int _channel = 0;
     int _midiNote = -1;
+    float _noteVelocity = 1.f;
     double _noteLength = -1.0;
     // If oscFaderValue >= 0, then this takes precedence over midi notes.
     // If _noteLength >= 0, add another event to revert to previous value.
     double _oscFaderValue = -1.0;
     Vec3 _velocity;
     std::string _seqEntityName;
-    std::vector<int>* _randNoteTable = nullptr;
+    std::vector<int>* _noteTable = nullptr;
+    enum class NoteTableType {
+        Random, HitSeq        
+    };
+    NoteTableType _noteTableType = NoteTableType::Random;
 };
 
-std::map<std::string, std::vector<int>> gRandNoteTables;
+std::map<std::string, std::vector<int>> gNoteTables;
 
-void LoadRandNoteTables() {
-    std::vector<int>& table = gRandNoteTables["bass1"];
-    table.push_back(GetMidiNote("G2"));
-    table.push_back(GetMidiNote("B2-"));
-    table.push_back(GetMidiNote("C3"));
-    table.push_back(GetMidiNote("E3-"));
-    table.push_back(GetMidiNote("G3"));
-    table.push_back(GetMidiNote("B3-"));
+void LoadNoteTables() {
+    {
+        std::vector<int>& table = gNoteTables["bass1"];
+        table.push_back(GetMidiNote("G2"));
+        table.push_back(GetMidiNote("B2-"));
+        table.push_back(GetMidiNote("C3"));
+        table.push_back(GetMidiNote("E3-"));
+        table.push_back(GetMidiNote("G3"));
+        table.push_back(GetMidiNote("B3-"));
+    }
+
+    {
+        std::vector<int>& table = gNoteTables["bass2"];
+        table.push_back(GetMidiNote("C2"));
+        table.push_back(GetMidiNote("C3"));
+    }
 }
 
 void SpawnEnemy(GameManager& g, SpawnInfo const& spawn) {
@@ -60,6 +73,11 @@ void SpawnEnemy(GameManager& g, SpawnInfo const& spawn) {
     enemy->_eventStartDenom = 0.25;
 
     enemy->_velocity = spawn._velocity;
+
+    ne::Entity* seqEntity = nullptr;
+    if (!spawn._seqEntityName.empty()) {
+        seqEntity = g._neEntityManager->FindEntityByName(spawn._seqEntityName);
+    }    
 
     if (spawn._oscFaderValue >= 0.0) {
         {
@@ -83,42 +101,63 @@ void SpawnEnemy(GameManager& g, SpawnInfo const& spawn) {
         }
         // BLAH
         enemy->_deathEvents = enemy->_hitEvents;
-    } else if (!spawn._seqEntityName.empty()) {
-        ne::Entity* seqEntity = g._neEntityManager->FindEntityByName(spawn._seqEntityName);
-        if (seqEntity) {
-            enemy->_hitActions.emplace_back();
-            TypingEnemyEntity::Action& action = enemy->_hitActions.back();
-            action._type = TypingEnemyEntity::Action::Type::Seq;
-            action._seqId = seqEntity->_id;
-            if (spawn._randNoteTable) {
-                int randNoteIx = rng::GetInt(0, spawn._randNoteTable->size()-1);
-                action._seqMidiNote = spawn._randNoteTable->at(randNoteIx);
-            } else {
-                action._seqMidiNote = spawn._midiNote;
-            }            
-        } else {
-            printf("could not find seq entity with name \"%s\".\n", spawn._seqEntityName.c_str());
+        
+    } else if (spawn._noteTable) {
+        
+        switch (spawn._noteTableType) {
+            case SpawnInfo::NoteTableType::Random: {
+                int randNoteIx = rng::GetInt(0, spawn._noteTable->size()-1);
+                int midiNote = spawn._noteTable->at(randNoteIx);
+                enemy->_hitActions.emplace_back();
+                TypingEnemyEntity::Action& a = enemy->_hitActions.back();
+                if (seqEntity) {
+                    a._type = TypingEnemyEntity::Action::Type::Seq;
+                    a._seqId = seqEntity->_id;
+                    a._seqMidiNote = midiNote;   
+                } else {
+                    a._type = TypingEnemyEntity::Action::Type::Note;
+                    a._noteChannel = spawn._channel;
+                    a._noteMidiNote = midiNote;
+                    a._noteLength = spawn._noteLength;
+                    a._velocity = spawn._noteVelocity;
+                }                
+                break;
+            }
+            case SpawnInfo::NoteTableType::HitSeq: {
+                for (int midiNote : *spawn._noteTable) {
+                    enemy->_hitActions.emplace_back();
+                    TypingEnemyEntity::Action& a = enemy->_hitActions.back();
+                    if (seqEntity) {
+                        a._type = TypingEnemyEntity::Action::Type::Seq;
+                        a._seqId = seqEntity->_id;
+                        a._seqMidiNote = midiNote;                        
+                    } else {
+                        a._type = TypingEnemyEntity::Action::Type::Note;
+                        a._noteChannel = spawn._channel;
+                        a._noteMidiNote = midiNote;
+                        a._noteLength = spawn._noteLength;
+                        a._velocity = spawn._noteVelocity;
+                    }
+                }
+                break;
+            }
         }
     } else {
-        {
-            enemy->_hitEvents.emplace_back();
-            BeatTimeEvent& b_e = enemy->_hitEvents.back();
-            b_e._beatTime = 0.0;
-            b_e._e.type = audio::EventType::NoteOn;
-            b_e._e.channel = spawn._channel;
-            b_e._e.midiNote = spawn._midiNote;
+        // No note table, just use the one note.
+        enemy->_hitActions.emplace_back();
+        TypingEnemyEntity::Action& a = enemy->_hitActions.back();
+        if (seqEntity) {
+            a._type = TypingEnemyEntity::Action::Type::Seq;
+            a._seqId = seqEntity->_id;
+            a._seqMidiNote = spawn._midiNote;
+        } else {
+            a._type = TypingEnemyEntity::Action::Type::Note;
+            a._noteChannel = spawn._channel;
+            a._noteMidiNote = spawn._midiNote;
+            a._noteLength = spawn._noteLength;
+            a._velocity = spawn._noteVelocity;
         }
-        {
-            enemy->_hitEvents.emplace_back();
-            BeatTimeEvent& b_e = enemy->_hitEvents.back();
-            b_e._beatTime = spawn._noteLength;
-            b_e._e.type = audio::EventType::NoteOff;
-            b_e._e.channel = spawn._channel;
-            b_e._e.midiNote = spawn._midiNote;
-        }
-        // BLAH
-        enemy->_deathEvents = enemy->_hitEvents;
-    }
+    }   
 }
 
 void SpawnEnemiesFromFile(std::string_view filename, GameManager& g) {
@@ -181,11 +220,17 @@ void SpawnEnemiesFromFile(std::string_view filename, GameManager& g) {
                 spawn._x = std::stof(value);
             } else if (key == "z") {
                 spawn._z = std::stof(value);
+            } else if (key == "vx") {
+                spawn._velocity._x = std::stof(value);
+            } else if (key == "vz") {
+                spawn._velocity._z = std::stof(value);
             } else if (key == "note") {
                 int midiNote = GetMidiNote(value.c_str());
                 spawn._midiNote = midiNote;
             } else if (key == "channel") {
                 spawn._channel = std::stoi(value);
+            } else if (key == "note_vel") {
+                spawn._noteVelocity = std::stof(value);
             } else if (key == "length") {
                 spawn._noteLength = std::stod(value);
             } else if (key == "osc_fader") {
@@ -227,11 +272,20 @@ void SpawnEnemiesFromFile(std::string_view filename, GameManager& g) {
             } else if (key == "seq") {
                 spawn._seqEntityName = value;
             } else if (key == "rand_note") {
-                auto result = gRandNoteTables.find(value);
-                if (result == gRandNoteTables.end()) {
-                    printf("ERROR: no rand note table named %s\n", value.c_str());
+                auto result = gNoteTables.find(value);
+                if (result == gNoteTables.end()) {
+                    printf("ERROR: no note table named %s\n", value.c_str());
                 } else {
-                    spawn._randNoteTable = &(result->second);
+                    spawn._noteTable = &(result->second);
+                    spawn._noteTableType = SpawnInfo::NoteTableType::Random;
+                }
+            } else if (key == "hit_seq") {
+                auto result = gNoteTables.find(value);
+                if (result == gNoteTables.end()) {
+                    printf("ERROR: no note table named %s\n", value.c_str());
+                } else {
+                    spawn._noteTable = &(result->second);
+                    spawn._noteTableType = SpawnInfo::NoteTableType::HitSeq;
                 }
             } else {
                 printf("Unrecognized key \"%s\".\n", key.c_str());
@@ -244,7 +298,7 @@ void SpawnEnemiesFromFile(std::string_view filename, GameManager& g) {
 }
 
 void TypingPlayerEntity::Init(GameManager& g) {
-    LoadRandNoteTables();
+    LoadNoteTables();
     if (!_spawnFilename.empty()) {
         SpawnEnemiesFromFile(_spawnFilename, g);
     }

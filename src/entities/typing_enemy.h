@@ -7,7 +7,7 @@
 
 struct TypingEnemyEntity : public ne::Entity {
     struct Action {
-        enum class Type { Seq };
+        enum class Type { Seq, Note };
         Action() {
             _type = Type::Seq;
             _seqMidiNote = -1;
@@ -19,6 +19,12 @@ struct TypingEnemyEntity : public ne::Entity {
                 ne::EntityId _seqId;
                 int _seqMidiNote;
             };
+            struct {
+                int _noteChannel = 0;
+                int _noteMidiNote = 0;
+                double _noteLength = 0.25;
+                float _velocity = 1.f;
+            };
         };
     };
     
@@ -27,6 +33,7 @@ struct TypingEnemyEntity : public ne::Entity {
     double _eventStartDenom = 0.125;
     std::vector<BeatTimeEvent> _hitEvents;
     std::vector<BeatTimeEvent> _deathEvents;
+    // Each time enemy gets hit, we switch to the next action in this list.
     std::vector<Action> _hitActions;
     double _activeBeatTime = -1.0;
     double _inactiveBeatTime = -1.0;

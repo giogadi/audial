@@ -202,7 +202,7 @@
                 <z>0</z>
                 <w>0</w>
             </model_color_vec4>
-            <sequence>36 36 36 36 36 36 36 36 36 36 36 36 36 36 36 36</sequence>
+            <sequence>36 -1 36 -1 36 -1 36 -1 36 -1 36 -1 36 -1 36 -1</sequence>
             <step_length>0.25</step_length>
             <channel>0</channel>
             <note_length>0.125</note_length>

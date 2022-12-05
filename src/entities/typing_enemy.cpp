@@ -83,17 +83,40 @@ void TypingEnemyEntity::OnHit(GameManager& g) {
             SendEventsFromEventsList(*this, g, _hitEvents);
         }
 
-        for (Action const& a : _hitActions) {
-            switch (a._type) {
-                case Action::Type::Seq: {
-                    StepSequencerEntity* seq = static_cast<StepSequencerEntity*>(g._neEntityManager->GetEntity(a._seqId));
-                    if (seq == nullptr) {
-                        printf("seq-type hit action could not find seq entity!\n");
-                        continue;
-                    }
-                    seq->SetNextSeqStep(a._seqMidiNote);
+        int hitActionIx = (_numHits - 1) % _hitActions.size();
+        Action const& a = _hitActions[hitActionIx];
+
+        switch (a._type) {
+            case Action::Type::Seq: {
+                StepSequencerEntity* seq = static_cast<StepSequencerEntity*>(g._neEntityManager->GetEntity(a._seqId));
+                if (seq == nullptr) {
+                    printf("seq-type hit action could not find seq entity!\n");
                     break;
                 }
+                seq->SetNextSeqStep(a._seqMidiNote);
+                break;
+            }
+            case Action::Type::Note: {
+                BeatTimeEvent b_e;
+                b_e._beatTime = 0.0;
+                b_e._e.type = audio::EventType::NoteOn;
+                b_e._e.channel = a._noteChannel;
+                b_e._e.midiNote = a._noteMidiNote;
+                b_e._e.velocity = a._velocity;
+                
+                audio::Event e = GetEventAtBeatOffsetFromNextDenom(_eventStartDenom, b_e, *g._beatClock, /*slack=*/0.0625);
+                g._audioContext->AddEvent(e);
+                // b_e._e.timeInTicks = 0;
+                // g._audioContext->AddEvent(b_e._e);
+
+                b_e._e.type = audio::EventType::NoteOff;
+                b_e._beatTime = a._noteLength;
+                e = GetEventAtBeatOffsetFromNextDenom(_eventStartDenom, b_e, *g._beatClock, /*slack=*/0.0625);
+                g._audioContext->AddEvent(e);
+                // b_e._e.timeInTicks = g._beatClock->GetTimeInTicks() + g._beatClock->BeatTimeToTickTime(a._noteLength);
+                // g._audioContext->AddEvent(b_e._e);
+                    
+                break;
             }
         }
     }
