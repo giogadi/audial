@@ -1,5 +1,7 @@
 #pragma once
 
+#include <queue>
+
 #include "new_entity.h"
 #include "beat_time_event.h"
 
@@ -15,8 +17,9 @@ struct StepSequencerEntity : ne::Entity {
     // non-serialized
     int _currentIx = 0;
     std::vector<int> _midiSequence;
+    std::queue<int> _changeQueue;
 
-    void SetNextSeqStep(int midiNote);  
+    void SetNextSeqStep(GameManager& g, int midiNote);  
 
     virtual void Init(GameManager& g) override;
     virtual void Update(GameManager& g, float dt) override;

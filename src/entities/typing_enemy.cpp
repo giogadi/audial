@@ -76,12 +76,12 @@ bool TypingEnemyEntity::IsActive(GameManager& g) const {
 void TypingEnemyEntity::OnHit(GameManager& g) {
     if (_numHits < _text.length()) {
         ++_numHits;
-        if (_numHits == _text.length()) {
-            SendEventsFromEventsList(*this, g, _deathEvents);
-            assert(g._neEntityManager->TagForDestroy(_id));
-        } else {
-            SendEventsFromEventsList(*this, g, _hitEvents);
-        }
+        // if (_numHits == _text.length()) {
+        //     SendEventsFromEventsList(*this, g, _deathEvents);
+        //     assert(g._neEntityManager->TagForDestroy(_id));
+        // } else {
+        //     SendEventsFromEventsList(*this, g, _hitEvents);
+        // }
 
         int hitActionIx = (_numHits - 1) % _hitActions.size();
         Action const& a = _hitActions[hitActionIx];
@@ -93,7 +93,7 @@ void TypingEnemyEntity::OnHit(GameManager& g) {
                     printf("seq-type hit action could not find seq entity!\n");
                     break;
                 }
-                seq->SetNextSeqStep(a._seqMidiNote);
+                seq->SetNextSeqStep(g, a._seqMidiNote);
                 break;
             }
             case Action::Type::Note: {
@@ -103,6 +103,9 @@ void TypingEnemyEntity::OnHit(GameManager& g) {
                 b_e._e.channel = a._noteChannel;
                 b_e._e.midiNote = a._noteMidiNote;
                 b_e._e.velocity = a._velocity;
+
+                // Should we push to next denom?
+                // GetNextBeatDenomTime
                 
                 audio::Event e = GetEventAtBeatOffsetFromNextDenom(_eventStartDenom, b_e, *g._beatClock, /*slack=*/0.0625);
                 g._audioContext->AddEvent(e);

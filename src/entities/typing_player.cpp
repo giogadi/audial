@@ -56,6 +56,32 @@ void LoadNoteTables() {
         table.push_back(GetMidiNote("C2"));
         table.push_back(GetMidiNote("C3"));
     }
+    
+    {
+        std::vector<int>& table = gNoteTables["bassDGA"];
+        table.push_back(GetMidiNote("D2"));
+        table.push_back(GetMidiNote("G2"));
+        table.push_back(GetMidiNote("A2"));
+    }
+
+    {
+        std::vector<int>& table = gNoteTables["bassGA"];
+        table.push_back(GetMidiNote("G2"));
+        table.push_back(GetMidiNote("A2"));
+    }
+
+    {
+        std::vector<int>& table = gNoteTables["bassGB-"];
+        table.push_back(GetMidiNote("G2"));
+        table.push_back(GetMidiNote("B2-"));
+    }
+
+    {
+        std::vector<int>& table = gNoteTables["bassDGB-"];
+        table.push_back(GetMidiNote("D2"));
+        table.push_back(GetMidiNote("G2"));
+        table.push_back(GetMidiNote("B2-"));
+    }
 }
 
 void SpawnEnemy(GameManager& g, SpawnInfo const& spawn) {
@@ -320,7 +346,7 @@ void TypingPlayerEntity::Update(GameManager& g, float dt) {
     TypingEnemyEntity* nearest = nullptr;
     float nearestDist2 = -1.f;
     ne::EntityManager::Iterator enemyIter = g._neEntityManager->GetIterator(ne::EntityType::TypingEnemy);
-    Vec3 const& playerPos = _transform.GetPos();
+    // Vec3 const& playerPos = _transform.GetPos();
     for (; !enemyIter.Finished(); enemyIter.Next()) {
         TypingEnemyEntity* enemy = (TypingEnemyEntity*) enemyIter.GetEntity();
         if (!enemy->IsActive(g)) {
@@ -337,15 +363,15 @@ void TypingPlayerEntity::Update(GameManager& g, float dt) {
         }
         InputManager::Key nextKey = static_cast<InputManager::Key>(charIx);
         if (g._inputManager->IsKeyPressedThisFrame(nextKey)) {
+            // Vec3 dp = playerPos - enemy->_transform.GetPos();
+            // float dist2 = dp.Length2();
+            float dist2 = -enemy->_transform.GetPos()._z;
             if (nearest == nullptr) {
                 nearest = enemy;
-            } else {
-                Vec3 dp = playerPos - enemy->_transform.GetPos();
-                float dist2 = dp.Length2();
-                if (dist2 < nearestDist2) {
-                    nearest = enemy;
-                    nearestDist2 = dist2;
-                }
+                nearestDist2 = dist2;
+            } else if (dist2 < nearestDist2) {
+                nearest = enemy;
+                nearestDist2 = dist2;
             }
         }
     }

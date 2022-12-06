@@ -5,8 +5,19 @@
 #include "audio.h"
 #include "game_manager.h"
 
-void StepSequencerEntity::SetNextSeqStep(int midiNote) {
-    _midiSequence[_currentIx] = midiNote;
+void StepSequencerEntity::SetNextSeqStep(GameManager& g, int midiNote) {
+    // BeatClock const& beatClock = *g._beatClock;
+    // double const beatTime = beatClock.GetBeatTimeFromEpoch();
+    // double nextStepBeatTime = _loopStartBeatTime + _currentIx * _stepBeatLength;
+    // if (nextStepBeatTime - beatTime > 0.75 * _stepBeatLength) {
+    //     // If this happens, just cancel the other note being played.
+    //     if (_currentIx > 0) {
+    //         // Shut off other sound now!!
+    //         --_currentIx;            
+    //     }
+    // }
+    // _midiSequence[_currentIx] = midiNote;
+    _changeQueue.push(midiNote);
 }
 
 void StepSequencerEntity::Init(GameManager& g) {
@@ -29,13 +40,20 @@ void StepSequencerEntity::Update(GameManager& g, float dt) {
         return;
     }
 
+    int midiNote = _midiSequence[_currentIx];
+    if (!_changeQueue.empty()) {
+        midiNote = _changeQueue.front();
+        _midiSequence[_currentIx] = midiNote;
+        _changeQueue.pop();
+    }
+
     // Play the sound
     if (_midiSequence[_currentIx] >= 0) {
         audio::Event e;
         e.type = audio::EventType::NoteOn;
         e.channel = _channel;
         e.timeInTicks = 0;
-        e.midiNote = _midiSequence[_currentIx];
+        e.midiNote = midiNote;
         g._audioContext->AddEvent(e);
 
         double noteOffBeatTime = beatClock.GetBeatTime() + _noteLength;        

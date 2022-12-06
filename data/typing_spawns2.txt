@@ -1,0 +1,5 @@
+e text:fj on:4 off:99 channel:0 hit_seq:bassGA seq:bass_seq length:0.25 x:-4 z:-10 vz:1
+e text:fj on:4 off:99 channel:0 hit_seq:bassGA seq:bass_seq length:0.25 x:0 z:-10 vz:1
+e text:fj on:4 off:99 channel:0 hit_seq:bassGA seq:bass_seq length:0.25 x:4 z:-10 vz:1
+e text:fj on:4 off:99 channel:0 hit_seq:bassGA seq:bass_seq length:0.25 x:-4 z:-7 vz:1
+e text:fj on:4 off:99 channel:0 hit_seq:bassGA seq:bass_seq length:0.25 x:0 z:-7 vz:1
