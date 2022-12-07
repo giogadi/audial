@@ -6,20 +6,27 @@
 #include "beat_time_event.h"
 
 struct StepSequencerEntity : ne::Entity {
+    struct SeqStep {
+        SeqStep() {}
+        SeqStep(int m, float v) : _midiNote(m), _velocity(v) {}
+        int _midiNote = -1;
+        float _velocity = 1.f;
+    };
     // Serialized
-    std::vector<int> _initialMidiSequence;
+    std::vector<SeqStep> _initialMidiSequence;
     double _stepBeatLength = 0.25;
     int _channel = 0;
     double _noteLength = 0.25;
-    double _loopStartBeatTime = 4.0;
+    double _initialLoopStartBeatTime = 4.0;
     bool _resetToInitialAfterPlay = true;
 
     // non-serialized
     int _currentIx = 0;
-    std::vector<int> _midiSequence;
-    std::queue<int> _changeQueue;
+    double _loopStartBeatTime = 0.0;
+    std::vector<SeqStep> _midiSequence;
+    std::queue<SeqStep> _changeQueue;
 
-    void SetNextSeqStep(GameManager& g, int midiNote);  
+    void SetNextSeqStep(GameManager& g, int midiNote, float velocity);
 
     virtual void Init(GameManager& g) override;
     virtual void Update(GameManager& g, float dt) override;

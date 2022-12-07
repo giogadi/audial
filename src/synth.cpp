@@ -331,10 +331,10 @@ namespace synth {
         }
         v *= voice.ampEnvState.currentValue;
 
-	if (v != 0.f) {
-	    v *= 1.f;
-	}
 
+        // Apply velocity
+        v *= voice.velocity;
+        
         return v;
     }
 
@@ -419,6 +419,7 @@ namespace synth {
                         if (v != nullptr) {
                             v->oscillators[0].f = synth::MidiToFreq(e.midiNote);
                             v->currentMidiNote = e.midiNote;
+                            v->velocity = e.velocity;
                             if (v->ampEnvState.phase != synth::ADSRPhase::Closed) {
                                 v->ampEnvState.ticksSincePhaseStart = (unsigned long) (v->ampEnvState.currentValue * patch.ampEnvSpec.attackTime * sampleRate);
                             } else {

@@ -1,11 +1,13 @@
 #include "step_sequencer.h"
 
 #include <sstream>
+#include <string_view>
+#include <charconv>
 
 #include "audio.h"
 #include "game_manager.h"
 
-void StepSequencerEntity::SetNextSeqStep(GameManager& g, int midiNote) {
+void StepSequencerEntity::SetNextSeqStep(GameManager& g, int midiNote, float velocity) {
     // BeatClock const& beatClock = *g._beatClock;
     // double const beatTime = beatClock.GetBeatTimeFromEpoch();
     // double nextStepBeatTime = _loopStartBeatTime + _currentIx * _stepBeatLength;
@@ -17,11 +19,12 @@ void StepSequencerEntity::SetNextSeqStep(GameManager& g, int midiNote) {
     //     }
     // }
     // _midiSequence[_currentIx] = midiNote;
-    _changeQueue.push(midiNote);
+    _changeQueue.emplace(midiNote, velocity);
 }
 
 void StepSequencerEntity::Init(GameManager& g) {
-    _midiSequence = _initialMidiSequence;    
+    _midiSequence = _initialMidiSequence;
+    _loopStartBeatTime = _initialLoopStartBeatTime;
 }
 
 void StepSequencerEntity::Update(GameManager& g, float dt) {
@@ -40,20 +43,21 @@ void StepSequencerEntity::Update(GameManager& g, float dt) {
         return;
     }
 
-    int midiNote = _midiSequence[_currentIx];
+    SeqStep seqStep = _midiSequence[_currentIx];
     if (!_changeQueue.empty()) {
-        midiNote = _changeQueue.front();
-        _midiSequence[_currentIx] = midiNote;
+        seqStep = _changeQueue.front();
+        _midiSequence[_currentIx] = seqStep;
         _changeQueue.pop();
     }
 
     // Play the sound
-    if (_midiSequence[_currentIx] >= 0) {
+    if (seqStep._midiNote >= 0) {
         audio::Event e;
         e.type = audio::EventType::NoteOn;
         e.channel = _channel;
         e.timeInTicks = 0;
-        e.midiNote = midiNote;
+        e.midiNote = seqStep._midiNote;
+        e.velocity = seqStep._velocity;
         g._audioContext->AddEvent(e);
 
         double noteOffBeatTime = beatClock.GetBeatTime() + _noteLength;        
@@ -78,27 +82,60 @@ void StepSequencerEntity::Update(GameManager& g, float dt) {
 
 void StepSequencerEntity::SaveDerived(serial::Ptree pt) const {
     std::stringstream seqSs;
-    for (int m : _initialMidiSequence) {
-        seqSs << m << " ";
+    for (int ix = 0; ix < _initialMidiSequence.size(); ++ix) {
+        if (ix > 0) {
+            seqSs << " ";
+        }
+        SeqStep const& s = _initialMidiSequence[ix];
+        seqSs << s._midiNote << ":" << s._velocity;
     }
     pt.PutString("sequence", seqSs.str().c_str());
     pt.PutDouble("step_length", _stepBeatLength);
     pt.PutInt("channel", _channel);
     pt.PutDouble("note_length", _noteLength);
-    pt.PutDouble("start_time", _loopStartBeatTime);
+    pt.PutDouble("start_time", _initialLoopStartBeatTime);
+}
+
+namespace {
+int StoiOrDie(std::string_view str) {
+    int x;
+    auto [ptr, ec] = std::from_chars(str.data(), str.data()+str.length(), x);
+    assert(ec == std::errc());
+    return x;
+}
+float StofOrDie(std::string_view str) {
+    // WTF, doesn't work yet???
+    // float x;
+    // auto [ptr, ec] = std::from_chars(str.data(), str.data()+str.length(), x);
+    // assert(ec == std::errc());
+    // return x;
+    std::string ownedStr(str);
+    return std::stof(ownedStr);
+}
 }
 
 void StepSequencerEntity::LoadDerived(serial::Ptree pt) {
     std::string seq = pt.GetString("sequence");    
     std::stringstream seqSs(seq);
     while (!seqSs.eof()) {
-        int m;
-        seqSs >> m;
-        _initialMidiSequence.push_back(m);
+        SeqStep step;
+        std::string stepStr;
+        seqSs >> stepStr;
+        std::size_t delimIx = stepStr.find_first_of(':');
+        if (delimIx == std::string::npos) {
+            step._midiNote = std::stoi(stepStr);
+            step._velocity = 1.f;
+        } else {                        
+            std::string_view midiNoteStr(stepStr.c_str(), delimIx);
+            step._midiNote = StoiOrDie(midiNoteStr);
+            std::string_view velStr = std::string_view(stepStr).substr(delimIx+1);
+            step._velocity = StofOrDie(velStr);
+        }
+        _initialMidiSequence.push_back(step);
     }
     
     _stepBeatLength = pt.GetDouble("step_length");
     _channel = pt.GetInt("channel");
     _noteLength = pt.GetDouble("note_length");
-    _loopStartBeatTime = pt.GetDouble("start_time");
+    _initialLoopStartBeatTime = pt.GetDouble("start_time");
 }

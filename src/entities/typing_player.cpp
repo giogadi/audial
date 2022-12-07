@@ -139,7 +139,8 @@ void SpawnEnemy(GameManager& g, SpawnInfo const& spawn) {
                 if (seqEntity) {
                     a._type = TypingEnemyEntity::Action::Type::Seq;
                     a._seqId = seqEntity->_id;
-                    a._seqMidiNote = midiNote;   
+                    a._seqMidiNote = midiNote;
+                    a._seqVelocity = 1.f;
                 } else {
                     a._type = TypingEnemyEntity::Action::Type::Note;
                     a._noteChannel = spawn._channel;
@@ -176,6 +177,7 @@ void SpawnEnemy(GameManager& g, SpawnInfo const& spawn) {
             a._type = TypingEnemyEntity::Action::Type::Seq;
             a._seqId = seqEntity->_id;
             a._seqMidiNote = spawn._midiNote;
+            a._seqVelocity = 1.f;
         } else {
             a._type = TypingEnemyEntity::Action::Type::Note;
             a._noteChannel = spawn._channel;

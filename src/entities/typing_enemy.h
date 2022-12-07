@@ -11,6 +11,7 @@ struct TypingEnemyEntity : public ne::Entity {
         Action() {
             _type = Type::Seq;
             _seqMidiNote = -1;
+            _seqVelocity = 1.f;
         }
         
         Type _type = Type::Seq;
@@ -18,12 +19,13 @@ struct TypingEnemyEntity : public ne::Entity {
             struct {
                 ne::EntityId _seqId;
                 int _seqMidiNote;
+                float _seqVelocity;
             };
             struct {
-                int _noteChannel = 0;
-                int _noteMidiNote = 0;
-                double _noteLength = 0.25;
-                float _velocity = 1.f;
+                int _noteChannel;
+                int _noteMidiNote;
+                double _noteLength;
+                float _velocity;
             };
         };
     };
