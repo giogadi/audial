@@ -18,6 +18,7 @@ namespace {
 
 struct SpawnInfo {
     std::string _text;
+    int _randTextLength = -1;  // -1 means no random text
     float _x = 0.f;
     float _z = 0.f;
     double _activeBeatTime = -1.0;
@@ -82,6 +83,17 @@ void LoadNoteTables() {
         table.push_back(GetMidiNote("G2"));
         table.push_back(GetMidiNote("B2-"));
     }
+}
+
+std::string GenerateRandomText(int numChars) {
+    std::string text;
+    text.reserve(numChars);
+    for (int i = 0; i < numChars; ++i) {
+        int randCharIx = rng::GetInt(0, 25);
+        char randChar = 'a' + (char) randCharIx;
+        text.push_back(randChar);
+    }
+    return text;
 }
 
 void SpawnEnemy(GameManager& g, SpawnInfo const& spawn) {
@@ -244,6 +256,9 @@ void SpawnEnemiesFromFile(std::string_view filename, GameManager& g) {
                 spawn._inactiveBeatTime = std::stod(value) + beatTimeOffset;
             } else if (key == "text") {
                 spawn._text = value;
+            } else if (key == "rand_text_len") {
+                int numChars = std::stoi(value);
+                spawn._text = GenerateRandomText(numChars);
             } else if (key == "x") {
                 spawn._x = std::stof(value);
             } else if (key == "z") {

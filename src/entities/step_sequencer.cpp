@@ -54,16 +54,22 @@ void StepSequencerEntity::Update(GameManager& g, float dt) {
     if (seqStep._midiNote >= 0) {
         audio::Event e;
         e.type = audio::EventType::NoteOn;
-        e.channel = _channel;
         e.timeInTicks = 0;
         e.midiNote = seqStep._midiNote;
         e.velocity = seqStep._velocity;
-        g._audioContext->AddEvent(e);
+
+        for (int channel : _channels) {
+            e.channel = channel;
+            g._audioContext->AddEvent(e);
+        }
 
         double noteOffBeatTime = beatClock.GetBeatTime() + _noteLength;        
         e.type = audio::EventType::NoteOff;
         e.timeInTicks = beatClock.BeatTimeToTickTime(noteOffBeatTime);
-        g._audioContext->AddEvent(e);
+        for (int channel : _channels) {
+            e.channel = channel;
+            g._audioContext->AddEvent(e);
+        }
     }
 
     // After the playing the sound, maybe reset that seq element to the initial
@@ -90,8 +96,12 @@ void StepSequencerEntity::SaveDerived(serial::Ptree pt) const {
         seqSs << s._midiNote << ":" << s._velocity;
     }
     pt.PutString("sequence", seqSs.str().c_str());
+    
+    serial::Ptree channelsPt = pt.AddChild("channels");
+    for (int c : _channels) {
+        channelsPt.PutInt("channel", c);
+    }
     pt.PutDouble("step_length", _stepBeatLength);
-    pt.PutInt("channel", _channel);
     pt.PutDouble("note_length", _noteLength);
     pt.PutDouble("start_time", _initialLoopStartBeatTime);
 }
@@ -135,7 +145,20 @@ void StepSequencerEntity::LoadDerived(serial::Ptree pt) {
     }
     
     _stepBeatLength = pt.GetDouble("step_length");
-    _channel = pt.GetInt("channel");
+    int channel = 0;
+    if (pt.TryGetInt("channel", &channel)) {
+        _channels.push_back(channel);
+    } else {
+        serial::Ptree channelsPt = pt.GetChild("channels");
+        int numChildren = 0;
+        serial::NameTreePair* children = channelsPt.GetChildren(&numChildren);
+        _channels.reserve(numChildren);
+        for (int i = 0; i < numChildren; ++i) {
+            int channel = children[i]._pt.GetIntValue();
+            _channels.push_back(channel);
+        }
+        delete[] children;
+    }
     _noteLength = pt.GetDouble("note_length");
     _initialLoopStartBeatTime = pt.GetDouble("start_time");
 }

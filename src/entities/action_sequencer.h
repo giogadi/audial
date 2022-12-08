@@ -5,33 +5,6 @@
 #include "new_entity.h"
 #include "beat_time_event.h"
 
-/* struct SeqAction { */
-/*     // virtual void Init(GameManager& g) {}; */
-/*     enum class Result { Continue, Done }; */
-/*     enum class Type { */
-/*         AutomateParam */
-/*     }; */
-/*     virtual Type GetType() const = 0; */
-/*     virtual Result Execute(GameManager& g) = 0; */
-/*     virtual void Load(std::istream& input) {}; */
-/*     // virtual void Save(std::ostream& output) const {}; */
-/* }; */
-
-/* struct AutomateParamSeqAction : public SeqAction { */
-/*     Type GetType() const override { return Type::AutomateParam; } */
-/*     Result Execute(GameManager& g) override; */
-/*     void Load(std::istream& input) override; */
-/*     // void Save(std::ostream& output) const override; */
-    
-/*     //serialized */
-/*     double _initialValue = 0.0; */
-/*     int _lengthInFrames = 0; */
-
-/*     //non-serialized */
-/*     int _frameIx = 0; */
-/*     double _currentValue = 0.0; */
-/* }; */
-
 struct SeqAction {
     enum class Type {
         SpawnAutomator
@@ -44,9 +17,12 @@ struct SeqAction {
 };
 
 struct SpawnAutomatorSeqAction : public SeqAction {
-    float _startVelocity = 0.f;
-    float _endVelocity = 1.f;
+    float _startValue = 0.f;
+    float _endValue = 1.f;
     double _desiredAutomateTime = 1.0;
+    bool _synth = false;
+    audio::SynthParamType _synthParam = audio::SynthParamType::Gain;
+    int _channel = 0;  // only if _synth == true
     std::string _seqEntityName;
     
     virtual Type GetType() const override { return Type::SpawnAutomator; }

@@ -202,9 +202,12 @@
                 <z>0</z>
                 <w>0</w>
             </model_color_vec4>
-            <sequence>38:0.0 38:0.0 38:0.0 38:0.0 38:0.0 38:0.0 38:0.0 38:0.0 38:0.0 38:0.0 38:0.0 38:0.0</sequence>
+            <sequence>38:0 38:0 38:0 38:0 38:0 38:0 38:0 38:0 38:0 38:0 38:0 38:0</sequence>
+            <channels>
+              <channel>0</channel>
+              <channel>3</channel>
+            </channels>
             <step_length>0.25</step_length>
-            <channel>0</channel>
             <note_length>0.125</note_length>
             <start_time>4</start_time>
         </StepSequencer>

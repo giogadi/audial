@@ -1,34 +1,16 @@
-# e text:thisisalongstringtotype on:4 channel:3 hit_seq:bass2 length:0.25
-# e text:fjfjfjfjfjfjfjfjfjfjfjf on:4 channel:3 hit_seq:bass2 length:0.25 z:4.0
-
-e text:f on:4 off:12 channel:0 note:G2 seq:bass_seq length:0.25 x:-4 z:-10 vz:1
-e text:f on:4 off:12 channel:0 note:G2 seq:bass_seq length:0.25 x:0 z:-10 vz:1
-e text:f on:4 off:12 channel:0 note:G2 seq:bass_seq length:0.25 x:4 z:-10 vz:1
-e text:f on:4 off:12 channel:0 note:G2 seq:bass_seq length:0.25 x:-4 z:-7 vz:1
-e text:f on:4 off:12 channel:0 note:G2 seq:bass_seq length:0.25 x:0 z:-7 vz:1
-e text:f on:4 off:12 channel:0 note:G2 seq:bass_seq length:0.25 x:4 z:-7 vz:1
-e text:f on:4 off:12 channel:0 note:G2 seq:bass_seq length:0.25 x:-4 z:-3 vz:1
-e text:f on:4 off:12 channel:0 note:G2 seq:bass_seq length:0.25 x:0 z:-3 vz:1
-e text:f on:4 off:12 channel:0 note:G2 seq:bass_seq length:0.25 x:4 z:-3 vz:1
-e text:f on:4 off:12 channel:0 note:G2 seq:bass_seq length:0.25 x:0 z:-0 vz:1
-
-# e text:fj on:4 channel:0 hit_seq:bassDGA length:0.25 x:-0 z:-10 vz:1
-# e text:fj on:4 channel:0 hit_seq:bassDGA length:0.25 x:4 z:-10 vz:1
-# e text:fj on:4 channel:0 hit_seq:bassDGA length:0.25 x:-4 z:-7 vz:1
-# e text:fj on:4 channel:0 hit_seq:bassDGA length:0.25 x:0 z:-7 vz:1
-# e text:fj on:4 channel:0 hit_seq:bassDGA length:0.25 x:4 z:-7 vz:1
-# e text:fj on:4 channel:0 hit_seq:bassDGA length:0.25 x:-4 z:-3 vz:1
-# e text:fj on:4 channel:0 hit_seq:bassDGA length:0.25 x:0 z:-3 vz:1
-# e text:fj on:4 channel:0 hit_seq:bassDGA length:0.25 x:4 z:-3 vz:1
-# e text:fj on:4 channel:0 hit_seq:bassDGA length:0.25 x:0 z:0 vz:1
+e rand_text_len:1 on:4 off:12 channel:0 note:G2 seq:bass_seq length:0.25 x:-4 z:-10 vz:1
+e rand_text_len:1 on:4 off:12 channel:0 note:G2 seq:bass_seq length:0.25 x:0 z:-10 vz:1
+e rand_text_len:1 on:4 off:12 channel:0 note:G2 seq:bass_seq length:0.25 x:4 z:-10 vz:1
+e rand_text_len:1 on:4 off:12 channel:0 note:G2 seq:bass_seq length:0.25 x:-4 z:-7 vz:1
+e rand_text_len:1 on:4 off:12 channel:0 note:G2 seq:bass_seq length:0.25 x:0 z:-7 vz:1
+e rand_text_len:1 on:4 off:12 channel:0 note:G2 seq:bass_seq length:0.25 x:4 z:-7 vz:1
+e rand_text_len:1 on:4 off:12 channel:0 note:G2 seq:bass_seq length:0.25 x:-4 z:-3 vz:1
+e rand_text_len:1 on:4 off:12 channel:0 note:G2 seq:bass_seq length:0.25 x:0 z:-3 vz:1
+e rand_text_len:1 on:4 off:12 channel:0 note:G2 seq:bass_seq length:0.25 x:4 z:-3 vz:1
+e rand_text_len:1 on:4 off:12 channel:0 note:G2 seq:bass_seq length:0.25 x:0 z:-0 vz:1
 
 offset 8
 
-# e text:fjk on:4 channel:0 hit_seq:bassDGA length:0.25 x:-4 z:-10 vz:1
-# e text:fjk on:4 channel:0 hit_seq:bassDGA length:0.25 x:-0 z:-10 vz:1
-# e text:fjk on:4 channel:0 hit_seq:bassDGA length:0.25 x:4 z:-10 vz:1
-# e text:fjk on:4 channel:0 hit_seq:bassDGA length:0.25 x:-4 z:-7 vz:1
-# e text:fjk on:4 channel:0 hit_seq:bassDGA length:0.25 x:0 z:-7 vz:1
 
 e text:fj on:4 off:8 channel:0 hit_seq:bassGA seq:bass_seq length:0.25 x:-4 z:-10 vz:1
 e text:fj on:4 off:8 channel:0 hit_seq:bassGA seq:bass_seq length:0.25 x:0 z:-10 vz:1
@@ -38,12 +20,6 @@ e text:fj on:4 off:8 channel:0 hit_seq:bassGA seq:bass_seq length:0.25 x:0 z:-7 
 
 offset 12
 
-# e text:fji on:4 channel:0 hit_seq:bassDGB- length:0.25 x:-4 z:-10 vz:1
-# e text:fji on:4 channel:0 hit_seq:bassDGB- length:0.25 x:-0 z:-10 vz:1
-# e text:fji on:4 channel:0 hit_seq:bassDGB- length:0.25 x:4 z:-10 vz:1
-# e text:fji on:4 channel:0 hit_seq:bassDGB- length:0.25 x:-4 z:-7 vz:1
-# e text:fji on:4 channel:0 hit_seq:bassDGB- length:0.25 x:0 z:-7 vz:1
-
 e text:ji on:4 off:8 channel:0 hit_seq:bassGB- seq:bass_seq length:0.25 x:-4 z:-10 vz:1
 e text:ji on:4 off:8 channel:0 hit_seq:bassGB- seq:bass_seq length:0.25 x:0 z:-10 vz:1
 e text:ji on:4 off:8 channel:0 hit_seq:bassGB- seq:bass_seq length:0.25 x:4 z:-10 vz:1
@@ -52,97 +28,62 @@ e text:ji on:4 off:8 channel:0 hit_seq:bassGB- seq:bass_seq length:0.25 x:0 z:-7
 
 offset 16
 
-# e text:fj on:4 channel:0 hit_seq:bassDGA length:0.25 x:-4 z:-10 vz:1
-# e text:fj on:4 channel:0 hit_seq:bassDGA length:0.25 x:-0 z:-10 vz:1
-# e text:fj on:4 channel:0 hit_seq:bassDGA length:0.25 x:4 z:-10 vz:1
-# e text:fj on:4 channel:0 hit_seq:bassDGA length:0.25 x:-4 z:-7 vz:1
-# e text:fj on:4 channel:0 hit_seq:bassDGA length:0.25 x:0 z:-7 vz:1
-# e text:fj on:4 channel:0 hit_seq:bassDGA length:0.25 x:4 z:-7 vz:1
-# e text:fj on:4 channel:0 hit_seq:bassDGA length:0.25 x:-4 z:-3 vz:1
-# e text:fj on:4 channel:0 hit_seq:bassDGA length:0.25 x:0 z:-3 vz:1
-# e text:fj on:4 channel:0 hit_seq:bassDGA length:0.25 x:4 z:-3 vz:1
-# e text:fj on:4 channel:0 hit_seq:bassDGA length:0.25 x:0 z:0 vz:1
+e rand_text_len:1 on:4 channel:0 note:G2 seq:bass_seq length:0.25 x:-4 z:-10 vz:1
+e rand_text_len:1 on:4 channel:0 note:G2 seq:bass_seq length:0.25 x:0 z:-10 vz:1
+e rand_text_len:1 on:4 channel:0 note:G2 seq:bass_seq length:0.25 x:4 z:-10 vz:1
+e rand_text_len:1 on:4 channel:0 note:G2 seq:bass_seq length:0.25 x:-4 z:-7 vz:1
+e rand_text_len:1 on:4 channel:0 note:G2 seq:bass_seq length:0.25 x:0 z:-7 vz:1
+e rand_text_len:1 on:4 channel:0 note:G2 seq:bass_seq length:0.25 x:4 z:-7 vz:1
+e rand_text_len:1 on:4 channel:0 note:G2 seq:bass_seq length:0.25 x:-4 z:-3 vz:1
+e rand_text_len:1 on:4 channel:0 note:G2 seq:bass_seq length:0.25 x:0 z:-3 vz:1
+e rand_text_len:1 on:4 channel:0 note:G2 seq:bass_seq length:0.25 x:4 z:-3 vz:1
+e rand_text_len:1 on:4 channel:0 note:G2 seq:bass_seq length:0.25 x:0 z:-0 vz:1
+e rand_text_len:1 on:4 channel:0 note:G2 seq:bass_seq length:0.25 x:-4 z:-0 vz:1
+e rand_text_len:1 on:4 channel:0 note:G2 seq:bass_seq length:0.25 x:4 z:-0 vz:1
 
-e text:f on:4 channel:0 note:G2 seq:bass_seq length:0.25 x:-4 z:-10 vz:1
-e text:f on:4 channel:0 note:G2 seq:bass_seq length:0.25 x:0 z:-10 vz:1
-e text:f on:4 channel:0 note:G2 seq:bass_seq length:0.25 x:4 z:-10 vz:1
-e text:f on:4 channel:0 note:G2 seq:bass_seq length:0.25 x:-4 z:-7 vz:1
-e text:f on:4 channel:0 note:G2 seq:bass_seq length:0.25 x:0 z:-7 vz:1
-e text:f on:4 channel:0 note:G2 seq:bass_seq length:0.25 x:4 z:-7 vz:1
-e text:f on:4 channel:0 note:G2 seq:bass_seq length:0.25 x:-4 z:-3 vz:1
-e text:f on:4 channel:0 note:G2 seq:bass_seq length:0.25 x:0 z:-3 vz:1
-e text:f on:4 channel:0 note:G2 seq:bass_seq length:0.25 x:4 z:-3 vz:1
-e text:f on:4 channel:0 note:G2 seq:bass_seq length:0.25 x:0 z:-0 vz:1
+offset 24
 
+e text:fj on:4 off:8 channel:0 hit_seq:bassGA seq:bass_seq length:0.25 x:-4 z:-10 vz:1
+e text:fj on:4 off:8 channel:0 hit_seq:bassGA seq:bass_seq length:0.25 x:0 z:-10 vz:1
+e text:fj on:4 off:8 channel:0 hit_seq:bassGA seq:bass_seq length:0.25 x:4 z:-10 vz:1
+e text:fj on:4 off:8 channel:0 hit_seq:bassGA seq:bass_seq length:0.25 x:-4 z:-7 vz:1
+e text:fj on:4 off:8 channel:0 hit_seq:bassGA seq:bass_seq length:0.25 x:0 z:-7 vz:1
 
-# e text:a on:4 osc_fader:0.75 length:0.25 rand_pv:
-# e text:i on:6 osc_fader:0.75 length:0.25 rand_pv:
-# e text:d on:8 osc_fader:0.75 length:0.25 rand_pv:
-# e text:n on:10 osc_fader:0.75 length:0.25 rand_pv:
-# e text:e on:12 osc_fader:0.75 length:0.25 rand_pv:
-# e text:s on:14 osc_fader:0.75 length:0.25 rand_pv:
-# e text:f on:16 osc_fader:0.75 length:0.25 rand_pv:
-# e text:k on:18 osc_fader:0.75 length:0.25 rand_pv:
-# e text:c on:20 osc_fader:0.75 length:0.25 rand_pv:
+offset 28
 
-# e text:a on:4 rand_note:bass1 channel:0 seq:bass_seq rand_pv:
-# e text:i on:4 rand_note:bass1 channel:0 seq:bass_seq rand_pv:
-# e text:d on:4 rand_note:bass1 channel:0 seq:bass_seq rand_pv:
-# e text:n on:6 rand_note:bass1 channel:0 seq:bass_seq rand_pv:
-# e text:e on:6 rand_note:bass1 channel:0 seq:bass_seq rand_pv:
-# e text:s on:6 rand_note:bass1 channel:0 seq:bass_seq rand_pv:
-# e text:f on:8 rand_note:bass1 channel:0 seq:bass_seq rand_pv:
-# e text:k on:8 rand_note:bass1 channel:0 seq:bass_seq rand_pv:
-# e text:c on:8 rand_note:bass1 channel:0 seq:bass_seq rand_pv:
+e text:ji on:4 off:8 channel:0 hit_seq:bassGB- seq:bass_seq length:0.25 x:-4 z:-10 vz:1
+e text:ji on:4 off:8 channel:0 hit_seq:bassGB- seq:bass_seq length:0.25 x:0 z:-10 vz:1
+e text:ji on:4 off:8 channel:0 hit_seq:bassGB- seq:bass_seq length:0.25 x:4 z:-10 vz:1
+e text:ji on:4 off:8 channel:0 hit_seq:bassGB- seq:bass_seq length:0.25 x:-4 z:-7 vz:1
+e text:ji on:4 off:8 channel:0 hit_seq:bassGB- seq:bass_seq length:0.25 x:0 z:-7 vz:1
 
-# e text:a on:10 rand_note:bass1 channel:0 seq:bass_seq rand_pv:
-# e text:i on:10 rand_note:bass1 channel:0 seq:bass_seq rand_pv:
-# e text:d on:10 rand_note:bass1 channel:0 seq:bass_seq rand_pv:
-# e text:n on:12 rand_note:bass1 channel:0 seq:bass_seq rand_pv:
-# e text:e on:12 rand_note:bass1 channel:0 seq:bass_seq rand_pv:
-# e text:s on:12 rand_note:bass1 channel:0 seq:bass_seq rand_pv:
-# e text:f on:14 rand_note:bass1 channel:0 seq:bass_seq rand_pv:
-# e text:k on:14 rand_note:bass1 channel:0 seq:bass_seq rand_pv:
-# e text:c on:14 rand_note:bass1 channel:0 seq:bass_seq rand_pv:
+offset 32
 
-# e text:a on:16 rand_note:bass1 channel:0 seq:bass_seq rand_pv:
-# e text:i on:16 rand_note:bass1 channel:0 seq:bass_seq rand_pv:
-# e text:d on:16 rand_note:bass1 channel:0 seq:bass_seq rand_pv:
-# e text:n on:18 rand_note:bass1 channel:0 seq:bass_seq rand_pv:
-# e text:e on:18 rand_note:bass1 channel:0 seq:bass_seq rand_pv:
-# e text:s on:18 rand_note:bass1 channel:0 seq:bass_seq rand_pv:
-# e text:f on:20 rand_note:bass1 channel:0 seq:bass_seq rand_pv:
-# e text:k on:20 rand_note:bass1 channel:0 seq:bass_seq rand_pv:
-# e text:c on:20 rand_note:bass1 channel:0 seq:bass_seq rand_pv:
+e rand_text_len:1 on:4 channel:0 note:G2 seq:bass_seq length:0.25 x:-4 z:-10 vz:1
+e rand_text_len:1 on:4 channel:0 note:G2 seq:bass_seq length:0.25 x:0 z:-10 vz:1
+e rand_text_len:1 on:4 channel:0 note:G2 seq:bass_seq length:0.25 x:4 z:-10 vz:1
+e rand_text_len:1 on:4 channel:0 note:G2 seq:bass_seq length:0.25 x:-4 z:-7 vz:1
+e rand_text_len:1 on:4 channel:0 note:G2 seq:bass_seq length:0.25 x:0 z:-7 vz:1
+e rand_text_len:1 on:4 channel:0 note:G2 seq:bass_seq length:0.25 x:4 z:-7 vz:1
+e rand_text_len:1 on:4 channel:0 note:G2 seq:bass_seq length:0.25 x:-4 z:-3 vz:1
+e rand_text_len:1 on:4 channel:0 note:G2 seq:bass_seq length:0.25 x:0 z:-3 vz:1
+e rand_text_len:1 on:4 channel:0 note:G2 seq:bass_seq length:0.25 x:4 z:-3 vz:1
+e rand_text_len:1 on:4 channel:0 note:G2 seq:bass_seq length:0.25 x:0 z:-0 vz:1
+e rand_text_len:1 on:4 channel:0 note:G2 seq:bass_seq length:0.25 x:-4 z:-0 vz:1
+e rand_text_len:1 on:4 channel:0 note:G2 seq:bass_seq length:0.25 x:4 z:-0 vz:1
 
-# e text:aaa on:6 note:G2 channel:0 seq:bass_seq x:-4 z:-10 vz:4
-# e text:fff on:6 note:B2- channel:0 seq:bass_seq x:0 z:-10 vz:4
-# e text:jjj on:6 note:C3 channel:0 seq:bass_seq x:4 z:-10 vz:4
+offset 40
 
-# e text:s on:12 note:C4 length:1.0 channel:2 x:6 z:-4
-# e text:g on:12 note:E4- length:1.0 channel:2 x:6 z:0
-# e text:i on:12 note:B4- length:1.0 channel:2 x:6 z:4
+e text:fj on:4 off:8 channel:0 hit_seq:bassGA seq:bass_seq length:0.25 x:-4 z:-10 vz:1
+e text:fj on:4 off:8 channel:0 hit_seq:bassGA seq:bass_seq length:0.25 x:0 z:-10 vz:1
+e text:fj on:4 off:8 channel:0 hit_seq:bassGA seq:bass_seq length:0.25 x:4 z:-10 vz:1
+e text:fj on:4 off:8 channel:0 hit_seq:bassGA seq:bass_seq length:0.25 x:-4 z:-7 vz:1
+e text:fj on:4 off:8 channel:0 hit_seq:bassGA seq:bass_seq length:0.25 x:0 z:-7 vz:1
 
-# e text:qqq on:14 note:G2 channel:0 seq:bass_seq x:-4 z:-10 vz:4
-# e text:ppp on:14 note:B2- channel:0 seq:bass_seq x:0 z:-10 vz:4
-# e text:kkk on:14 note:C3 channel:0 seq:bass_seq x:4 z:-10 vz:4
+offset 44
 
-# e text:s on:20 note:E4- length:1.0 channel:2 x:-6 z:-4
-# e text:g on:20 note:G4 length:1.0 channel:2 x:-6 z:0
-# e text:k on:20 note:C5 length:1.0 channel:2 x:-6 z:4
-
-# e text:ccc on:22 note:G2 channel:0 seq:bass_seq x:-4 z:-10 vz:4
-# e text:ddd on:22 note:B2- channel:0 seq:bass_seq x:0 z:-10 vz:4
-# e text:ppp on:22 note:C3 channel:0 seq:bass_seq x:4 z:-10 vz:4
-
-# e text:s on:28 note:G4 length:1.0 channel:2 x:6 z:-4
-# e text:g on:28 note:C4 length:1.0 channel:2 x:6 z:0
-# e text:i on:28 note:G3 length:1.0 channel:2 x:6 z:4
-
-# e text:ccc on:30 note:G2 channel:0 seq:bass_seq x:-4 z:-10 vz:4
-# e text:ddd on:30 note:B2- channel:0 seq:bass_seq x:0 z:-10 vz:4
-# e text:ppp on:30 note:C3 channel:0 seq:bass_seq x:4 z:-10 vz:4
-
-# e text:s on:36 note:G4 length:1.0 channel:2 x:6 z:-4
-# e text:g on:36 note:F4 length:1.0 channel:2 x:6 z:0
-# e text:i on:36 note:C4 length:1.0 channel:2 x:6 z:4
+e text:ji on:4 off:8 channel:0 hit_seq:bassGB- seq:bass_seq length:0.25 x:-4 z:-10 vz:1
+e text:ji on:4 off:8 channel:0 hit_seq:bassGB- seq:bass_seq length:0.25 x:0 z:-10 vz:1
+e text:ji on:4 off:8 channel:0 hit_seq:bassGB- seq:bass_seq length:0.25 x:4 z:-10 vz:1
+e text:ji on:4 off:8 channel:0 hit_seq:bassGB- seq:bass_seq length:0.25 x:-4 z:-7 vz:1
+e text:ji on:4 off:8 channel:0 hit_seq:bassGB- seq:bass_seq length:0.25 x:0 z:-7 vz:1

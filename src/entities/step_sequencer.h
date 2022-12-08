@@ -15,7 +15,7 @@ struct StepSequencerEntity : ne::Entity {
     // Serialized
     std::vector<SeqStep> _initialMidiSequence;
     double _stepBeatLength = 0.25;
-    int _channel = 0;
+    std::vector<int> _channels;
     double _noteLength = 0.25;
     double _initialLoopStartBeatTime = 4.0;
     bool _resetToInitialAfterPlay = true;

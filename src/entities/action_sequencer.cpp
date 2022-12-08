@@ -6,42 +6,30 @@
 #include "entities/param_automator.h"
 #include "game_manager.h"
 
-// void AutomateParamSeqAction::Load(std::istream& input) {
-//     input >> _lengthInFrames;
-//     input >> _initialValue;
-
-//     _currentValue = _initialValue;
-// }
-
-// SeqAction::Result AutomateParamSeqAction::Execute(GameManager& g) {
-//     _currentValue += 0.01;
-
-//     audio::Event e;
-//     e.type = audio::EventType::SynthParam;
-//     e.param = audio::SynthParamType::Gain;
-//     e.newParamValue = _currentValue;
-//     g._audioContext->AddEvent(e);
-    
-//     ++_currentIx;
-//     if (_currentIx >= _lengthInFrames) {
-//         return SeqAction::Result::Done;
-//     } else {
-//         return SeqAction::Result::Continue;
-//     }
-// }
-
 void SpawnAutomatorSeqAction::Load(std::istream& input) {
-    input >> _seqEntityName;
-    input >> _startVelocity;
-    input >> _endVelocity;
+    std::string paramName;
+    input >> paramName;
+    if (paramName == "seq_velocity") {
+        _synth = false;
+        input >> _seqEntityName;
+    } else {
+        _synth = true;
+        _synthParam = audio::StringToSynthParamType(paramName.c_str());
+        input >> _channel;
+    }
+    input >> _startValue;
+    input >> _endValue;
     input >> _desiredAutomateTime;
 }
 
 void SpawnAutomatorSeqAction::Execute(GameManager& g) {
     ParamAutomatorEntity* e = static_cast<ParamAutomatorEntity*>(g._neEntityManager->AddEntity(ne::EntityType::ParamAutomator));
-    e->_startVelocity = _startVelocity;
-    e->_endVelocity = _endVelocity;
+    e->_startValue = _startValue;
+    e->_endValue = _endValue;
     e->_desiredAutomateTime = _desiredAutomateTime;
+    e->_synth = _synth;
+    e->_synthParam = _synthParam;
+    e->_channel = _channel;
     e->_seqEntityName = _seqEntityName;
     e->Init(g);
 }
