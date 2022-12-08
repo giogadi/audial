@@ -1,0 +1,1 @@
+automate 4.0 bass_seq 0.0 1.0 16.0

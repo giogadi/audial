@@ -22,7 +22,9 @@ namespace ne {
     X(Sequencer) \
     X(TypingPlayer) \
     X(TypingEnemy) \
-    X(StepSequencer)
+    X(StepSequencer) \
+    X(ActionSequencer) \
+    X(ParamAutomator)
 
 enum class EntityType: int {
 #   define X(a) a,
