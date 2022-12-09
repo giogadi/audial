@@ -82,15 +82,101 @@ e text:fj on:4 off:8 channel:0 hit_seq:bassGA seq:bass_seq length:0.25 x:0 z:-7 
 
 offset 44
 
-e rand_text_len:4 on:4 off:16 channel:0 hit_seq:bassSoloA seq:bass_seq length:0.25 x:-5 z:0
-e rand_text_len:4 on:4 off:16 channel:0 hit_seq:bassSoloB seq:bass_seq length:0.25 x:5 z:0
-e rand_text_len:4 on:4 off:16 channel:0 hit_seq:bassSoloA seq:bass_seq length:0.25 x:0 z:-5
-e rand_text_len:4 on:4 off:16 channel:0 hit_seq:bassSoloB seq:bass_seq length:0.25 x:0 z:5
+e rand_text_len:4 on:4 off:9 channel:0 hit_seq:bassSoloA seq:bass_seq length:0.25 x:-5 z:0 vz:1
+e rand_text_len:4 on:4 off:9 channel:0 hit_seq:bassSoloB seq:bass_seq length:0.25 x:-2.5 z:0 vz:1
+e rand_text_len:4 on:4 off:9 channel:0 hit_seq:bassSoloA seq:bass_seq length:0.25 x:2.5 z:0 vz:1
+e rand_text_len:4 on:4 off:9 channel:0 hit_seq:bassSoloB seq:bass_seq length:0.25 x:5 z:0 vz:1
 
+offset 48
 
+e text:a on:4 off:12 channel:0 note:G2 seq:bass_seq length:0.25 x:-5 z:-10
+e text:a on:4 off:12 channel:0 note:G2 seq:bass_seq length:0.25 x:-5 z:-8
+e text:a on:4 off:12 channel:0 note:G2 seq:bass_seq length:0.25 x:-5 z:-6
+e text:a on:4 off:12 channel:0 note:G2 seq:bass_seq length:0.25 x:-5 z:-4
+e text:a on:4 off:12 channel:0 note:G2 seq:bass_seq length:0.25 x:-5 z:-2
+e text:a on:4 off:12 channel:0 note:G2 seq:bass_seq length:0.25 x:-5 z:0
+e text:a on:4 off:12 channel:0 note:G2 seq:bass_seq length:0.25 x:-5 z:2
+e text:a on:4 off:12 channel:0 note:G2 seq:bass_seq length:0.25 x:-5 z:4
 
-# e text:ji on:4 off:8 channel:0 hit_seq:bassGB- seq:bass_seq length:0.25 x:-4 z:-10 vz:1
-# e text:ji on:4 off:8 channel:0 hit_seq:bassGB- seq:bass_seq length:0.25 x:0 z:-10 vz:1
-# e text:ji on:4 off:8 channel:0 hit_seq:bassGB- seq:bass_seq length:0.25 x:4 z:-10 vz:1
-# e text:ji on:4 off:8 channel:0 hit_seq:bassGB- seq:bass_seq length:0.25 x:-4 z:-7 vz:1
-# e text:ji on:4 off:8 channel:0 hit_seq:bassGB- seq:bass_seq length:0.25 x:0 z:-7 vz:1
+e text:i on:4 off:12 channel:0 rand_note:bass1 seq:bass_seq length:0.25 x:0 z:-4
+e text:y on:4 off:12 channel:0 rand_note:bass1 seq:bass_seq length:0.25 x:2 z:-4
+e text:m on:4 off:12 channel:0 rand_note:bass1 seq:bass_seq length:0.25 x:4 z:-4
+e text:j on:4 off:12 channel:0 rand_note:bass1 seq:bass_seq length:0.25 x:0 z:0
+e text:m on:4 off:12 channel:0 rand_note:bass1 seq:bass_seq length:0.25 x:2 z:0
+e text:k on:4 off:12 channel:0 rand_note:bass1 seq:bass_seq length:0.25 x:4 z:0
+e text:o on:4 off:12 channel:0 rand_note:bass1 seq:bass_seq length:0.25 x:0 z:2
+e text:h on:4 off:12 channel:0 rand_note:bass1 seq:bass_seq length:0.25 x:2 z:2
+
+offset 56
+
+e text:a on:4 off:8 channel:0 note:G2 seq:bass_seq length:0.25 x:-5 z:-10
+e text:a on:4 off:8 channel:0 note:G2 seq:bass_seq length:0.25 x:-5 z:-8
+e text:a on:4 off:8 channel:0 note:G2 seq:bass_seq length:0.25 x:-5 z:-6
+e text:a on:4 off:8 channel:0 note:G2 seq:bass_seq length:0.25 x:-5 z:-4
+e text:f on:4 off:8 channel:0 note:D3 seq:bass_seq length:0.25 x:-2.5 z:-10
+e text:f on:4 off:8 channel:0 note:D3 seq:bass_seq length:0.25 x:-2.5 z:-8
+e text:f on:4 off:8 channel:0 note:D3 seq:bass_seq length:0.25 x:-2.5 z:-6
+e text:f on:4 off:8 channel:0 note:D3 seq:bass_seq length:0.25 x:-2.5 z:-4
+
+e text:i on:4 off:8 channel:0 rand_note:bass1 seq:bass_seq length:0.25 x:0 z:-4
+e text:y on:4 off:8 channel:0 rand_note:bass1 seq:bass_seq length:0.25 x:2 z:-4
+e text:m on:4 off:8 channel:0 rand_note:bass1 seq:bass_seq length:0.25 x:4 z:-4
+e text:j on:4 off:8 channel:0 rand_note:bass1 seq:bass_seq length:0.25 x:0 z:0
+e text:m on:4 off:8 channel:0 rand_note:bass1 seq:bass_seq length:0.25 x:2 z:0
+e text:k on:4 off:8 channel:0 rand_note:bass1 seq:bass_seq length:0.25 x:4 z:0
+e text:o on:4 off:8 channel:0 rand_note:bass1 seq:bass_seq length:0.25 x:0 z:2
+e text:h on:4 off:8 channel:0 rand_note:bass1 seq:bass_seq length:0.25 x:2 z:2
+
+offset 60
+
+e rand_text_len:4 on:4 off:9 channel:0 hit_seq:bassSoloA seq:bass_seq length:0.25 x:-5 z:0 vz:1
+e rand_text_len:4 on:4 off:9 channel:0 hit_seq:bassSoloB seq:bass_seq length:0.25 x:-2.5 z:0 vz:1
+e rand_text_len:4 on:4 off:9 channel:0 hit_seq:bassSoloA seq:bass_seq length:0.25 x:2.5 z:0 vz:1
+e rand_text_len:4 on:4 off:9 channel:0 hit_seq:bassSoloB seq:bass_seq length:0.25 x:5 z:0 vz:1
+
+offset 64
+
+e text:a on:4 off:12 channel:0 note:G2 seq:bass_seq length:0.25 x:-5 z:-10
+e text:a on:4 off:12 channel:0 note:G2 seq:bass_seq length:0.25 x:-5 z:-8
+e text:a on:4 off:12 channel:0 note:G2 seq:bass_seq length:0.25 x:-5 z:-6
+e text:a on:4 off:12 channel:0 note:G2 seq:bass_seq length:0.25 x:-5 z:-4
+e text:a on:4 off:12 channel:0 note:G2 seq:bass_seq length:0.25 x:-5 z:-2
+e text:a on:4 off:12 channel:0 note:G2 seq:bass_seq length:0.25 x:-5 z:0
+e text:a on:4 off:12 channel:0 note:G2 seq:bass_seq length:0.25 x:-5 z:2
+e text:a on:4 off:12 channel:0 note:G2 seq:bass_seq length:0.25 x:-5 z:4
+
+e text:i on:4 off:12 channel:0 rand_note:bass1 seq:bass_seq length:0.25 x:0 z:-4
+e text:y on:4 off:12 channel:0 rand_note:bass1 seq:bass_seq length:0.25 x:2 z:-4
+e text:m on:4 off:12 channel:0 rand_note:bass1 seq:bass_seq length:0.25 x:4 z:-4
+e text:j on:4 off:12 channel:0 rand_note:bass1 seq:bass_seq length:0.25 x:0 z:0
+e text:m on:4 off:12 channel:0 rand_note:bass1 seq:bass_seq length:0.25 x:2 z:0
+e text:k on:4 off:12 channel:0 rand_note:bass1 seq:bass_seq length:0.25 x:4 z:0
+e text:o on:4 off:12 channel:0 rand_note:bass1 seq:bass_seq length:0.25 x:0 z:2
+e text:h on:4 off:12 channel:0 rand_note:bass1 seq:bass_seq length:0.25 x:2 z:2
+
+offset 72
+
+e text:a on:4 off:8 channel:0 note:G2 seq:bass_seq length:0.25 x:-5 z:-10
+e text:a on:4 off:8 channel:0 note:G2 seq:bass_seq length:0.25 x:-5 z:-8
+e text:a on:4 off:8 channel:0 note:G2 seq:bass_seq length:0.25 x:-5 z:-6
+e text:a on:4 off:8 channel:0 note:G2 seq:bass_seq length:0.25 x:-5 z:-4
+e text:f on:4 off:8 channel:0 note:D3 seq:bass_seq length:0.25 x:-2.5 z:-10
+e text:f on:4 off:8 channel:0 note:D3 seq:bass_seq length:0.25 x:-2.5 z:-8
+e text:f on:4 off:8 channel:0 note:D3 seq:bass_seq length:0.25 x:-2.5 z:-6
+e text:f on:4 off:8 channel:0 note:D3 seq:bass_seq length:0.25 x:-2.5 z:-4
+
+e text:i on:4 off:8 channel:0 rand_note:bass1 seq:bass_seq length:0.25 x:0 z:-4
+e text:y on:4 off:8 channel:0 rand_note:bass1 seq:bass_seq length:0.25 x:2 z:-4
+e text:m on:4 off:8 channel:0 rand_note:bass1 seq:bass_seq length:0.25 x:4 z:-4
+e text:j on:4 off:8 channel:0 rand_note:bass1 seq:bass_seq length:0.25 x:0 z:0
+e text:m on:4 off:8 channel:0 rand_note:bass1 seq:bass_seq length:0.25 x:2 z:0
+e text:k on:4 off:8 channel:0 rand_note:bass1 seq:bass_seq length:0.25 x:4 z:0
+e text:o on:4 off:8 channel:0 rand_note:bass1 seq:bass_seq length:0.25 x:0 z:2
+e text:h on:4 off:8 channel:0 rand_note:bass1 seq:bass_seq length:0.25 x:2 z:2
+
+offset 76
+
+e rand_text_len:4 on:4 off:9 channel:0 hit_seq:bassSoloA seq:bass_seq length:0.25 x:-5 z:0 vz:1
+e rand_text_len:4 on:4 off:9 channel:0 hit_seq:bassSoloB seq:bass_seq length:0.25 x:-2.5 z:0 vz:1
+e rand_text_len:4 on:4 off:9 channel:0 hit_seq:bassSoloA seq:bass_seq length:0.25 x:2.5 z:0 vz:1
+e rand_text_len:4 on:4 off:9 channel:0 hit_seq:bassSoloB seq:bass_seq length:0.25 x:5 z:0 vz:1

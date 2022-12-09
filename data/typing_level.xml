@@ -270,8 +270,8 @@
                 <z>0</z>
                 <w>0</w>
             </model_color_vec4>
-            <loop>false</loop>
-            <start_beat_time>0</start_beat_time>
+            <loop>true</loop>
+            <start_beat_time>36</start_beat_time>
             <events>
                 <beat_event>
                     <event_type>NoteOn</event_type>
@@ -279,7 +279,7 @@
                     <tick_time>0</tick_time>
                     <midi_note>53</midi_note>
                     <velocity>0.5</velocity>
-                    <beat_time>36</beat_time>
+                    <beat_time>0</beat_time>
                 </beat_event>
                 <beat_event>
                     <event_type>NoteOn</event_type>
@@ -287,7 +287,7 @@
                     <tick_time>0</tick_time>
                     <midi_note>57</midi_note>
                     <velocity>0.5</velocity>
-                    <beat_time>36</beat_time>
+                    <beat_time>0</beat_time>
                 </beat_event>
                 <beat_event>
                     <event_type>NoteOn</event_type>
@@ -295,7 +295,7 @@
                     <tick_time>0</tick_time>
                     <midi_note>58</midi_note>
                     <velocity>0.5</velocity>
-                    <beat_time>36</beat_time>
+                    <beat_time>0</beat_time>
                 </beat_event>
                 <beat_event>
                     <event_type>NoteOn</event_type>
@@ -303,89 +303,19 @@
                     <tick_time>0</tick_time>
                     <midi_note>62</midi_note>
                     <velocity>0.5</velocity>
-                    <beat_time>36</beat_time>
+                    <beat_time>0</beat_time>
                 </beat_event>
                 <beat_event>
                     <event_type>AllNotesOff</event_type>
                     <channel>2</channel>
                     <tick_time>0</tick_time>
-                    <beat_time>43</beat_time>
+                    <beat_time>7</beat_time>
                 </beat_event>
                 <beat_event>
-                    <event_type>NoteOn</event_type>
+                    <event_type>None</event_type>
                     <channel>2</channel>
                     <tick_time>0</tick_time>
-                    <midi_note>53</midi_note>
-                    <velocity>0.5</velocity>
-                    <beat_time>44</beat_time>
-                </beat_event>
-                <beat_event>
-                    <event_type>NoteOn</event_type>
-                    <channel>2</channel>
-                    <tick_time>0</tick_time>
-                    <midi_note>57</midi_note>
-                    <velocity>0.5</velocity>
-                    <beat_time>44</beat_time>
-                </beat_event>
-                <beat_event>
-                    <event_type>NoteOn</event_type>
-                    <channel>2</channel>
-                    <tick_time>0</tick_time>
-                    <midi_note>58</midi_note>
-                    <velocity>0.5</velocity>
-                    <beat_time>44</beat_time>
-                </beat_event>
-                <beat_event>
-                    <event_type>NoteOn</event_type>
-                    <channel>2</channel>
-                    <tick_time>0</tick_time>
-                    <midi_note>62</midi_note>
-                    <velocity>0.5</velocity>
-                    <beat_time>44</beat_time>
-                </beat_event>
-                <beat_event>
-                    <event_type>AllNotesOff</event_type>
-                    <channel>2</channel>
-                    <tick_time>0</tick_time>
-                    <beat_time>51</beat_time>
-                </beat_event>
-                <beat_event>
-                    <event_type>NoteOn</event_type>
-                    <channel>2</channel>
-                    <tick_time>0</tick_time>
-                    <midi_note>53</midi_note>
-                    <velocity>0.5</velocity>
-                    <beat_time>52</beat_time>
-                </beat_event>
-                <beat_event>
-                    <event_type>NoteOn</event_type>
-                    <channel>2</channel>
-                    <tick_time>0</tick_time>
-                    <midi_note>57</midi_note>
-                    <velocity>0.5</velocity>
-                    <beat_time>52</beat_time>
-                </beat_event>
-                <beat_event>
-                    <event_type>NoteOn</event_type>
-                    <channel>2</channel>
-                    <tick_time>0</tick_time>
-                    <midi_note>58</midi_note>
-                    <velocity>0.5</velocity>
-                    <beat_time>52</beat_time>
-                </beat_event>
-                <beat_event>
-                    <event_type>NoteOn</event_type>
-                    <channel>2</channel>
-                    <tick_time>0</tick_time>
-                    <midi_note>62</midi_note>
-                    <velocity>0.5</velocity>
-                    <beat_time>52</beat_time>
-                </beat_event>
-                <beat_event>
-                    <event_type>AllNotesOff</event_type>
-                    <channel>2</channel>
-                    <tick_time>0</tick_time>
-                    <beat_time>59</beat_time>
+                    <beat_time>8</beat_time>
                 </beat_event>
             </events>
         </Sequencer>

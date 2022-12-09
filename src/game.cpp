@@ -357,9 +357,9 @@ int main(int argc, char** argv) {
             inputManager.Update(inputEnabled);
         }
 
-        if (!cmdLineInputs._editMode && inputManager.IsKeyPressedThisFrame(InputManager::Key::Space)) {
-            paused = !paused;
-        }
+        // if (!cmdLineInputs._editMode && inputManager.IsKeyPressedThisFrame(InputManager::Key::Space)) {
+        //     paused = !paused;
+        // }
 
         float dt = 0.f;
         if (paused) {
