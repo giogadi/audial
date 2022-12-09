@@ -34,6 +34,19 @@ void SpawnAutomatorSeqAction::Execute(GameManager& g) {
     e->Init(g);
 }
 
+void RemoveEntitySeqAction::Load(std::istream& input) {
+    input >> _entityName;
+}
+
+void RemoveEntitySeqAction::Execute(GameManager& g) {
+    ne::Entity* e = g._neEntityManager->FindEntityByName(_entityName);
+    if (e) {
+        g._neEntityManager->TagForDestroy(e->_id);
+    } else {
+        printf("RemoveEntitySeqAction could not find entity with name \"%s\"\n", _entityName.c_str());
+    }
+}
+
 void ActionSequencerEntity::Init(GameManager& g) {
     _currentIx = 0;
     _actions.clear();
@@ -74,6 +87,8 @@ void ActionSequencerEntity::Init(GameManager& g) {
             std::unique_ptr<SeqAction> pAction;
             if (actionType == "automate") {
                 pAction = std::make_unique<SpawnAutomatorSeqAction>();
+            } else if (actionType == "remove_entity") {
+                pAction = std::make_unique<RemoveEntitySeqAction>();
             } else {
                 printf("ERROR: Unrecognized action type \"%s\".\n", actionType.c_str());
                 break;
@@ -100,6 +115,9 @@ void ActionSequencerEntity::Init(GameManager& g) {
 }
 
 void ActionSequencerEntity::Update(GameManager& g, float dt) {
+    if (g._editMode) {
+        return;
+    }
     if (_actions.empty()) {
         return;
     }

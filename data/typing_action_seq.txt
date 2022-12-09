@@ -1,5 +1,6 @@
 automate 0.0 Gain 3 0.0 0.0 0.1
 automate 16.0 seq_velocity bass_seq 0.0 1.0 4.0
 automate 32.0 Gain 3 0.0 0.6 4.0
+automate 32.0 seq_velocity bass_seq 1.0 0.6 4.0
 automate 32.0 Gain 0 1.0 0.0 4.0
-
+remove_entity 36.0 kick

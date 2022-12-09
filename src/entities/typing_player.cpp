@@ -83,6 +83,25 @@ void LoadNoteTables() {
         table.push_back(GetMidiNote("G2"));
         table.push_back(GetMidiNote("B2-"));
     }
+
+    {
+        std::vector<int>& table = gNoteTables["bassSoloA"];
+        table = {
+            GetMidiNote("C3"),
+            GetMidiNote("G3"),
+            GetMidiNote("F3"),
+            GetMidiNote("E3-")
+        };
+    }
+    {
+        std::vector<int>& table = gNoteTables["bassSoloB"];
+        table = {
+            GetMidiNote("G3"),
+            GetMidiNote("B3-"),
+            GetMidiNote("C4"),
+            GetMidiNote("C3")
+        };
+    }
 }
 
 std::string GenerateRandomText(int numChars) {

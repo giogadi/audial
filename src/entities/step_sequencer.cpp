@@ -23,7 +23,7 @@ void StepSequencerEntity::SetNextSeqStep(GameManager& g, int midiNote, float vel
 }
 
 void StepSequencerEntity::Init(GameManager& g) {
-    _midiSequence = _initialMidiSequence;
+    _midiSequence = _initialMidiSequence = _initialMidiSequenceDoNotChange;
     _loopStartBeatTime = _initialLoopStartBeatTime;
 }
 
@@ -92,7 +92,7 @@ void StepSequencerEntity::SaveDerived(serial::Ptree pt) const {
         if (ix > 0) {
             seqSs << " ";
         }
-        SeqStep const& s = _initialMidiSequence[ix];
+        SeqStep const& s = _initialMidiSequenceDoNotChange[ix];
         seqSs << s._midiNote << ":" << s._velocity;
     }
     pt.PutString("sequence", seqSs.str().c_str());
@@ -141,7 +141,7 @@ void StepSequencerEntity::LoadDerived(serial::Ptree pt) {
             std::string_view velStr = std::string_view(stepStr).substr(delimIx+1);
             step._velocity = StofOrDie(velStr);
         }
-        _initialMidiSequence.push_back(step);
+        _initialMidiSequenceDoNotChange.push_back(step);
     }
     
     _stepBeatLength = pt.GetDouble("step_length");

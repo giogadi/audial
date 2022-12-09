@@ -7,7 +7,7 @@
 
 struct SeqAction {
     enum class Type {
-        SpawnAutomator
+        SpawnAutomator, RemoveEntity            
     };
     virtual Type GetType() const = 0;
     virtual void Execute(GameManager& g) = 0;
@@ -26,6 +26,14 @@ struct SpawnAutomatorSeqAction : public SeqAction {
     std::string _seqEntityName;
     
     virtual Type GetType() const override { return Type::SpawnAutomator; }
+    virtual void Execute(GameManager& g) override;
+    virtual void Load(std::istream& input) override;
+};
+
+struct RemoveEntitySeqAction : public SeqAction {
+    std::string _entityName;
+
+    virtual Type GetType() const override { return Type::RemoveEntity; }
     virtual void Execute(GameManager& g) override;
     virtual void Load(std::istream& input) override;
 };

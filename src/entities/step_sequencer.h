@@ -13,7 +13,7 @@ struct StepSequencerEntity : ne::Entity {
         float _velocity = 1.f;
     };
     // Serialized
-    std::vector<SeqStep> _initialMidiSequence;
+    std::vector<SeqStep> _initialMidiSequenceDoNotChange;
     double _stepBeatLength = 0.25;
     std::vector<int> _channels;
     double _noteLength = 0.25;
@@ -23,6 +23,7 @@ struct StepSequencerEntity : ne::Entity {
     // non-serialized
     int _currentIx = 0;
     double _loopStartBeatTime = 0.0;
+    std::vector<SeqStep> _initialMidiSequence;
     std::vector<SeqStep> _midiSequence;
     std::queue<SeqStep> _changeQueue;
 

@@ -31,6 +31,13 @@ void SequencerEntity::Update(GameManager& g, float dt) {
         return;
     }
 
+    {
+        double beatTime = g._beatClock->GetBeatTimeFromEpoch();
+        if (beatTime < _startBeatTime) {
+            return;
+        }
+    }
+
     // Queue up events up to 1 beat before they should be played.
     double currentBeatTime = g._beatClock->GetBeatTime();
     double maxBeatTime = currentBeatTime + 1.0;
@@ -73,6 +80,7 @@ void SequencerEntity::Update(GameManager& g, float dt) {
 // TODO: consider using the text format we made above for this.
 void SequencerEntity::SaveDerived(serial::Ptree pt) const {
     pt.PutBool("loop", _loop);
+    pt.PutDouble("start_beat_time", _startBeatTime);
     serial::Ptree eventsPt = pt.AddChild("events");
     for (BeatTimeEvent const& b_e : _events) {
         serial::Ptree eventPt = eventsPt.AddChild("beat_event");
@@ -81,7 +89,9 @@ void SequencerEntity::SaveDerived(serial::Ptree pt) const {
 }
 
 void SequencerEntity::LoadDerived(serial::Ptree pt) {
-    _loop = pt.GetBool("loop");    
+    _loop = pt.GetBool("loop");
+    _startBeatTime = 0.0;
+    pt.TryGetDouble("start_beat_time", &_startBeatTime);
     serial::Ptree eventsPt = pt.TryGetChild("events");
     if (eventsPt.IsValid()) {
         int numChildren = 0;
@@ -96,6 +106,7 @@ void SequencerEntity::LoadDerived(serial::Ptree pt) {
 
 ne::Entity::ImGuiResult SequencerEntity::ImGuiDerived(GameManager& g) {
     ImGui::Checkbox("Loop", &_loop);
+    ImGui::InputDouble("Start beat time", &_startBeatTime);
     if (_playing) {
         if (ImGui::Button("Stop")) {
             Reset();

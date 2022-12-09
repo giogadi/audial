@@ -12,11 +12,11 @@ e rand_text_len:1 on:4 off:12 channel:0 note:G2 seq:bass_seq length:0.25 x:0 z:-
 offset 8
 
 
-e text:fj on:4 off:8 channel:0 hit_seq:bassGA seq:bass_seq length:0.25 x:-4 z:-10 vz:1
-e text:fj on:4 off:8 channel:0 hit_seq:bassGA seq:bass_seq length:0.25 x:0 z:-10 vz:1
-e text:fj on:4 off:8 channel:0 hit_seq:bassGA seq:bass_seq length:0.25 x:4 z:-10 vz:1
-e text:fj on:4 off:8 channel:0 hit_seq:bassGA seq:bass_seq length:0.25 x:-4 z:-7 vz:1
-e text:fj on:4 off:8 channel:0 hit_seq:bassGA seq:bass_seq length:0.25 x:0 z:-7 vz:1
+e text:fj on:4 off:9 channel:0 hit_seq:bassGA seq:bass_seq length:0.25 x:-4 z:-10 vz:2
+e text:fj on:4 off:9 channel:0 hit_seq:bassGA seq:bass_seq length:0.25 x:0 z:-10 vz:2
+e text:fj on:4 off:9 channel:0 hit_seq:bassGA seq:bass_seq length:0.25 x:4 z:-10 vz:2
+e text:fj on:4 off:9 channel:0 hit_seq:bassGA seq:bass_seq length:0.25 x:-4 z:-7 vz:2
+e text:fj on:4 off:9 channel:0 hit_seq:bassGA seq:bass_seq length:0.25 x:0 z:-7 vz:2
 
 offset 12
 
@@ -82,8 +82,15 @@ e text:fj on:4 off:8 channel:0 hit_seq:bassGA seq:bass_seq length:0.25 x:0 z:-7 
 
 offset 44
 
-e text:ji on:4 off:8 channel:0 hit_seq:bassGB- seq:bass_seq length:0.25 x:-4 z:-10 vz:1
-e text:ji on:4 off:8 channel:0 hit_seq:bassGB- seq:bass_seq length:0.25 x:0 z:-10 vz:1
-e text:ji on:4 off:8 channel:0 hit_seq:bassGB- seq:bass_seq length:0.25 x:4 z:-10 vz:1
-e text:ji on:4 off:8 channel:0 hit_seq:bassGB- seq:bass_seq length:0.25 x:-4 z:-7 vz:1
-e text:ji on:4 off:8 channel:0 hit_seq:bassGB- seq:bass_seq length:0.25 x:0 z:-7 vz:1
+e rand_text_len:4 on:4 off:16 channel:0 hit_seq:bassSoloA seq:bass_seq length:0.25 x:-5 z:0
+e rand_text_len:4 on:4 off:16 channel:0 hit_seq:bassSoloB seq:bass_seq length:0.25 x:5 z:0
+e rand_text_len:4 on:4 off:16 channel:0 hit_seq:bassSoloA seq:bass_seq length:0.25 x:0 z:-5
+e rand_text_len:4 on:4 off:16 channel:0 hit_seq:bassSoloB seq:bass_seq length:0.25 x:0 z:5
+
+
+
+# e text:ji on:4 off:8 channel:0 hit_seq:bassGB- seq:bass_seq length:0.25 x:-4 z:-10 vz:1
+# e text:ji on:4 off:8 channel:0 hit_seq:bassGB- seq:bass_seq length:0.25 x:0 z:-10 vz:1
+# e text:ji on:4 off:8 channel:0 hit_seq:bassGB- seq:bass_seq length:0.25 x:4 z:-10 vz:1
+# e text:ji on:4 off:8 channel:0 hit_seq:bassGB- seq:bass_seq length:0.25 x:-4 z:-7 vz:1
+# e text:ji on:4 off:8 channel:0 hit_seq:bassGB- seq:bass_seq length:0.25 x:0 z:-7 vz:1
