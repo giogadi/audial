@@ -20,6 +20,10 @@ enum class SynthParamType : int {
     
     Peak,
     
+    HpfCutoff,
+    
+    HpfPeak,
+    
     PitchLFOGain,
     
     PitchLFOFreq,

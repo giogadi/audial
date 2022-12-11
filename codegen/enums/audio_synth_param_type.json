@@ -9,6 +9,8 @@
         "OscFader",
         "Cutoff",
         "Peak",
+        "HpfCutoff",
+        "HpfPeak",
         "PitchLFOGain",
         "PitchLFOFreq",
         "CutoffLFOGain",

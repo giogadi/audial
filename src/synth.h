@@ -12,118 +12,125 @@
 #include "enums/synth_Waveform.h"
 
 namespace synth {
-    static inline float const kSemitoneRatio = 1.05946309f;
-    static inline float const kFifthRatio = 1.49830703f;
+static inline float const kSemitoneRatio = 1.05946309f;
+static inline float const kFifthRatio = 1.49830703f;
 
-    static inline float const kSmallAmplitude = 0.0001f;
+static inline float const kSmallAmplitude = 0.0001f;
 
-    // TODO: use a lookup table!!!
-    inline float MidiToFreq(int midi) {
-        int const a4 = 69;  // 440Hz
-        return 440.0f * pow(2.0f, (midi - a4) / 12.0f);
-    }
+// TODO: use a lookup table!!!
+inline float MidiToFreq(int midi) {
+    int const a4 = 69;  // 440Hz
+    return 440.0f * pow(2.0f, (midi - a4) / 12.0f);
+}
 
-    enum class ADSRPhase {
-        Closed, Attack, Decay, Sustain, Release
-    };
+enum class ADSRPhase {
+    Closed, Attack, Decay, Sustain, Release
+};
 
-    struct ADSREnvState {
-        ADSRPhase phase = ADSRPhase::Closed;
-        float currentValue = 0.f;
-        float multiplier = 0.f;
-        long ticksSincePhaseStart = -1;
-    };
+struct ADSREnvState {
+    ADSRPhase phase = ADSRPhase::Closed;
+    float currentValue = 0.f;
+    float multiplier = 0.f;
+    long ticksSincePhaseStart = -1;
+};
 
-    struct ADSREnvSpec {
-        float attackTime = 0.f;
-        float decayTime = 0.f;
-        float sustainLevel = 1.f;
-        float releaseTime = 0.f;
-        float minValue = 0.01f;
+struct ADSREnvSpec {
+    float attackTime = 0.f;
+    float decayTime = 0.f;
+    float sustainLevel = 1.f;
+    float releaseTime = 0.f;
+    float minValue = 0.01f;
 
-        void Save(serial::Ptree pt) const;
-        void Load(serial::Ptree pt);
-    };
+    void Save(serial::Ptree pt) const;
+    void Load(serial::Ptree pt);
+};
 
-    struct Patch {
-        std::string name;
-        // This is interpreted linearly from [0,1]. This will get mapped later to [-80db,0db].
-        // TODO: consider just having this be a decibel value capped at 0db.
-        float gainFactor = 0.7f;
+struct Patch {
+    std::string name;
+    // This is interpreted linearly from [0,1]. This will get mapped later to [-80db,0db].
+    // TODO: consider just having this be a decibel value capped at 0db.
+    float gainFactor = 0.7f;
 
-        Waveform osc1Waveform = Waveform::Square;
-        Waveform osc2Waveform = Waveform::Square;
+    Waveform osc1Waveform = Waveform::Square;
+    Waveform osc2Waveform = Waveform::Square;
 
-        float detune = 0.f;   // 1.0f is a whole octave.
-        float oscFader = 0.5f;  // 0.f is fully Osc1, 1.f is fully Osc2.
+    float detune = 0.f;   // 1.0f is a whole octave.
+    float oscFader = 0.5f;  // 0.f is fully Osc1, 1.f is fully Osc2.
 
-        float cutoffFreq = 44100.0f;
-        float cutoffK = 0.0f;  // [0,4] but 4 is unstable
+    float cutoffFreq = 44100.0f;
+    float cutoffK = 0.0f;  // [0,4] but 4 is unstable
 
-        // gain of 1.0 coincides with the wave varying across 2 octaves (one octave up and one octave down).
-        float pitchLFOGain = 0.0f;
-        float pitchLFOFreq = 0.0f;
+    float hpfCutoffFreq = 0.0f;
+    float hpfPeak = 0.0f;
 
-        // gain of 1.0 coincides with cutoff frequency doubling at LFO peak and halving at LFO valley.
-        float cutoffLFOGain = 0.0f;
-        float cutoffLFOFreq = 0.0f;
+    // gain of 1.0 coincides with the wave varying across 2 octaves (one octave up and one octave down).
+    float pitchLFOGain = 0.0f;
+    float pitchLFOFreq = 0.0f;
 
-        ADSREnvSpec ampEnvSpec;
+    // gain of 1.0 coincides with cutoff frequency doubling at LFO peak and halving at LFO valley.
+    float cutoffLFOGain = 0.0f;
+    float cutoffLFOFreq = 0.0f;
 
-        ADSREnvSpec cutoffEnvSpec;
-        float cutoffEnvGain = 0.f;
+    ADSREnvSpec ampEnvSpec;
 
-        ADSREnvSpec pitchEnvSpec;
-        float pitchEnvGain = 0.f;
+    ADSREnvSpec cutoffEnvSpec;
+    float cutoffEnvGain = 0.f;
 
-        void Save(serial::Ptree pt) const;
-        void Load(serial::Ptree pt);
+    ADSREnvSpec pitchEnvSpec;
+    float pitchEnvGain = 0.f;
 
-        static int constexpr kVersion = 2;
-    };
+    void Save(serial::Ptree pt) const;
+    void Load(serial::Ptree pt);
 
-    int constexpr kNumOscillators = 2;
+    static int constexpr kVersion = 3;
+};
 
-    struct Oscillator {
-        float f = 440.f;
-        float phase = 0.f;
-    };
+int constexpr kNumOscillators = 2;
 
-    struct Voice {
-        // We assign the voice's "center" frequency using oscillators[0]. I know, this is gross.
-        std::array<Oscillator, kNumOscillators> oscillators;
+struct Oscillator {
+    float f = 440.f;
+    float phase = 0.f;
+};
 
-        ADSREnvState ampEnvState;
-        ADSREnvState cutoffEnvState;
-        ADSREnvState pitchEnvState;
-        int currentMidiNote = -1;
-        float velocity = 1.f;
+struct FilterState {
+    float ic1eq = 0.f;
+    float ic2eq = 0.f;
+};
 
-        // float lp0 = 0.0f;
-        // float lp1 = 0.0f;
-        // float lp2 = 0.0f;
-        // float lp3 = 0.0f;
+struct Voice {
+    // We assign the voice's "center" frequency using oscillators[0]. I know, this is gross.
+    std::array<Oscillator, kNumOscillators> oscillators;
 
-        // NEW FILTER LET'S GO
-        float ic1eq = 0.f;
-        float ic2eq = 0.f;
-    };
+    ADSREnvState ampEnvState;
+    ADSREnvState cutoffEnvState;
+    ADSREnvState pitchEnvState;
+    int currentMidiNote = -1;
+    float velocity = 1.f;
 
-    struct StateData {
-        int channel = -1;
+    // float lp0 = 0.0f;
+    // float lp1 = 0.0f;
+    // float lp2 = 0.0f;
+    // float lp3 = 0.0f;
 
-        std::array<Voice, 6> voices;
+    FilterState lpfState;
+    FilterState hpfState;
+};
 
-        Patch patch;
+struct StateData {
+    int channel = -1;
 
-        float pitchLFOPhase = 0.0f;
-        float cutoffLFOPhase = 0.0f;
-    };
+    std::array<Voice, 6> voices;
 
-    void InitStateData(StateData& state, int channel);
+    Patch patch;
 
-    void Process(
-        StateData* state, boost::circular_buffer<audio::Event> const& pendingEvents,
-        float* outputBuffer, int const numChannels, int const framesPerBuffer,
-        int const sampleRate, unsigned long frameStartTickTime);
+    float pitchLFOPhase = 0.0f;
+    float cutoffLFOPhase = 0.0f;
+};
+
+void InitStateData(StateData& state, int channel);
+
+void Process(
+    StateData* state, boost::circular_buffer<audio::Event> const& pendingEvents,
+    float* outputBuffer, int const numChannels, int const framesPerBuffer,
+    int const sampleRate, unsigned long frameStartTickTime);
 }

@@ -122,6 +122,16 @@ void DrawSynthGuiAndUpdatePatch(SynthGuiState& synthGuiState, audio::Context& au
             RequestSynthParamChange(synthGuiState._currentSynthIx, audio::SynthParamType::Peak, patch.cutoffK, audioContext);
         }
 
+        changed = ImGui::SliderFloat("HPF Cutoff", &patch.hpfCutoffFreq, 0.f, 44100.f);
+        if (changed) {
+            RequestSynthParamChange(synthGuiState._currentSynthIx, audio::SynthParamType::HpfCutoff, patch.hpfCutoffFreq, audioContext);
+        }
+
+        changed = ImGui::SliderFloat("HPF Peak", &patch.hpfPeak, 0.f, 3.99f);
+        if (changed) {
+            RequestSynthParamChange(synthGuiState._currentSynthIx, audio::SynthParamType::HpfPeak, patch.hpfPeak, audioContext);
+        }
+
         changed = ImGui::SliderFloat("PitchLFOGain", &patch.pitchLFOGain, 0.f, 1.f);
         if (changed) {
             RequestSynthParamChange(synthGuiState._currentSynthIx, audio::SynthParamType::PitchLFOGain, patch.pitchLFOGain, audioContext);

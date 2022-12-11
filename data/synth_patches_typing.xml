@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <patches>
     <patch>
-        <version>2</version>
+        <version>3</version>
         <name>bass</name>
         <gain_factor>0.931999981</gain_factor>
         <osc1_waveform>Square</osc1_waveform>
@@ -10,6 +10,8 @@
         <osc_fader>0.381000012</osc_fader>
         <cutoff_freq>373.729004</cutoff_freq>
         <cutoff_k>0</cutoff_k>
+        <hpf_cutoff_freq>0</hpf_cutoff_freq>
+        <hpf_peak>0</hpf_peak>
         <pitch_lfo_gain>0</pitch_lfo_gain>
         <pitch_lfo_freq>1</pitch_lfo_freq>
         <cutoff_lfo_gain>0</cutoff_lfo_gain>
@@ -39,7 +41,7 @@
         </pitch_env_spec>
     </patch>
     <patch>
-        <version>2</version>
+        <version>3</version>
         <name>lead</name>
         <gain_factor>0.677999973</gain_factor>
         <osc1_waveform>Saw</osc1_waveform>
@@ -48,6 +50,8 @@
         <osc_fader>0.597000003</osc_fader>
         <cutoff_freq>2055.50903</cutoff_freq>
         <cutoff_k>1.60599995</cutoff_k>
+        <hpf_cutoff_freq>0</hpf_cutoff_freq>
+        <hpf_peak>0</hpf_peak>
         <pitch_lfo_gain>0</pitch_lfo_gain>
         <pitch_lfo_freq>9.32199955</pitch_lfo_freq>
         <cutoff_lfo_gain>0</cutoff_lfo_gain>
@@ -77,15 +81,17 @@
         </pitch_env_spec>
     </patch>
     <patch>
-        <version>2</version>
+        <version>3</version>
         <name>pad</name>
-        <gain_factor>0.4</gain_factor>
+        <gain_factor>0.600000024</gain_factor>
         <osc1_waveform>Saw</osc1_waveform>
         <osc2_waveform>Square</osc2_waveform>
         <detune>0</detune>
         <osc_fader>0</osc_fader>
         <cutoff_freq>934.322021</cutoff_freq>
         <cutoff_k>0.202999994</cutoff_k>
+        <hpf_cutoff_freq>373.729004</hpf_cutoff_freq>
+        <hpf_peak>0</hpf_peak>
         <pitch_lfo_gain>0</pitch_lfo_gain>
         <pitch_lfo_freq>4.23699999</pitch_lfo_freq>
         <cutoff_lfo_gain>0.0130000003</cutoff_lfo_gain>
@@ -115,7 +121,7 @@
         </pitch_env_spec>
     </patch>
     <patch>
-        <version>2</version>
+        <version>3</version>
         <name>acid_bass</name>
         <gain_factor>0.630999982</gain_factor>
         <osc1_waveform>Saw</osc1_waveform>
@@ -124,6 +130,8 @@
         <osc_fader>0.479000002</osc_fader>
         <cutoff_freq>186.863998</cutoff_freq>
         <cutoff_k>3.21199989</cutoff_k>
+        <hpf_cutoff_freq>0</hpf_cutoff_freq>
+        <hpf_peak>0</hpf_peak>
         <pitch_lfo_gain>0</pitch_lfo_gain>
         <pitch_lfo_freq>7.46299982</pitch_lfo_freq>
         <cutoff_lfo_gain>0</cutoff_lfo_gain>

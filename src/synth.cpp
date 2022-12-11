@@ -7,395 +7,413 @@
 #include "math_util.h"
 
 namespace synth {
-    namespace {
-        float Polyblep(float t, float dt) {
-            if (t < dt) {
-                t /= dt;
-                return t+t - t*t - 1.0f;
-            } else if (t > 1.0f - dt) {
-                t = (t - 1.0f) / dt;
-                return t*t + t+t + 1.0f;
-            }
-            else {
-                return 0.0f;
-            }
-        }
-
-        float GenerateSquare(float const phase, float const phaseChange) {
-            float v = 0.0f;
-            if (phase < M_PI) {
-                v = 1.0f;
-            } else {
-                v = -1.0f;
-            }
-            // polyblep
-            float dt = phaseChange / (2*M_PI);
-            float t = phase / (2*M_PI);
-            v += Polyblep(t, dt);
-            v -= Polyblep(fmod(t + 0.5f, 1.0f), dt);
-            return v;
-        }
-
-        float GenerateSaw(float const phase, float const phaseChange) {
-            float v = (phase / M_PI) - 1.0f;
-            // polyblep
-            float dt = phaseChange / (2*M_PI);
-            float t = phase / (2*M_PI);
-            v -= Polyblep(t, dt);
-            return v;
-        }
-    }  // namespace
-
-    void ADSREnvSpec::Save(serial::Ptree pt) const {
-        pt.PutFloat("attack_time", attackTime);
-        pt.PutFloat("decay_time", decayTime);
-        pt.PutFloat("sustain_level", sustainLevel);
-        pt.PutFloat("release_time", releaseTime);
-        pt.PutFloat("min_value", minValue);
+namespace {
+float Polyblep(float t, float dt) {
+    if (t < dt) {
+        t /= dt;
+        return t+t - t*t - 1.0f;
+    } else if (t > 1.0f - dt) {
+        t = (t - 1.0f) / dt;
+        return t*t + t+t + 1.0f;
     }
-    void ADSREnvSpec::Load(serial::Ptree pt) {
-        attackTime = pt.GetFloat("attack_time");
-        decayTime = pt.GetFloat("decay_time");
-        sustainLevel = pt.GetFloat("sustain_level");
-        releaseTime = pt.GetFloat("release_time");
-        minValue = pt.GetFloat("min_value");
+    else {
+        return 0.0f;
     }
+}
 
-    void Patch::Save(serial::Ptree pt) const {
-        pt.PutInt("version", kVersion);
-        pt.PutString("name", name.c_str());
-        pt.PutFloat("gain_factor", gainFactor);
-        pt.PutString("osc1_waveform", WaveformToString(osc1Waveform));
-        pt.PutString("osc2_waveform", WaveformToString(osc2Waveform));
-        pt.PutFloat("detune", detune);
-        pt.PutFloat("osc_fader", oscFader);
-        pt.PutFloat("cutoff_freq", cutoffFreq);
-        pt.PutFloat("cutoff_k", cutoffK);
-        pt.PutFloat("pitch_lfo_gain", pitchLFOGain);
-        pt.PutFloat("pitch_lfo_freq", pitchLFOFreq);
-        pt.PutFloat("cutoff_lfo_gain", cutoffLFOGain);
-        pt.PutFloat("cutoff_lfo_freq", cutoffLFOFreq);
-        serial::SaveInNewChildOf(pt, "amp_env_spec", ampEnvSpec);
-        pt.PutFloat("cutoff_env_gain", cutoffEnvGain);
-        serial::SaveInNewChildOf(pt, "cutoff_env_spec", cutoffEnvSpec);
-	    pt.PutFloat("pitch_env_gain", pitchEnvGain);
-        serial::SaveInNewChildOf(pt, "pitch_env_spec", pitchEnvSpec);
+float GenerateSquare(float const phase, float const phaseChange) {
+    float v = 0.0f;
+    if (phase < M_PI) {
+        v = 1.0f;
+    } else {
+        v = -1.0f;
     }
-    void Patch::Load(serial::Ptree pt) {
-        int version = 0;
-        pt.TryGetInt("version", &version);
+    // polyblep
+    float dt = phaseChange / (2*M_PI);
+    float t = phase / (2*M_PI);
+    v += Polyblep(t, dt);
+    v -= Polyblep(fmod(t + 0.5f, 1.0f), dt);
+    return v;
+}
 
-        name = pt.GetString("name");
-        gainFactor = pt.GetFloat("gain_factor");
-        if (version >= 1) {
-            osc1Waveform = StringToWaveform(pt.GetString("osc1_waveform").c_str());
-            osc2Waveform = StringToWaveform(pt.GetString("osc2_waveform").c_str());
-            detune = pt.GetFloat("detune");
-            oscFader = pt.GetFloat("osc_fader");
-        }
-        cutoffFreq = pt.GetFloat("cutoff_freq");
-        cutoffK = pt.GetFloat("cutoff_k");
-        pitchLFOGain = pt.GetFloat("pitch_lfo_gain");
-        pitchLFOFreq = pt.GetFloat("pitch_lfo_freq");
-        cutoffLFOGain = pt.GetFloat("cutoff_lfo_gain");
-        cutoffLFOFreq = pt.GetFloat("cutoff_lfo_freq");
-        ampEnvSpec.Load(pt.GetChild("amp_env_spec"));
-        cutoffEnvGain = pt.GetFloat("cutoff_env_gain");
-        cutoffEnvSpec.Load(pt.GetChild("cutoff_env_spec"));
-	    if (version >= 2) {
-            pitchEnvGain = pt.GetFloat("pitch_env_gain");
-            pitchEnvSpec.Load(pt.GetChild("pitch_env_spec"));
-	    }
+float GenerateSaw(float const phase, float const phaseChange) {
+    float v = (phase / M_PI) - 1.0f;
+    // polyblep
+    float dt = phaseChange / (2*M_PI);
+    float t = phase / (2*M_PI);
+    v -= Polyblep(t, dt);
+    return v;
+}
+}  // namespace
+
+void ADSREnvSpec::Save(serial::Ptree pt) const {
+    pt.PutFloat("attack_time", attackTime);
+    pt.PutFloat("decay_time", decayTime);
+    pt.PutFloat("sustain_level", sustainLevel);
+    pt.PutFloat("release_time", releaseTime);
+    pt.PutFloat("min_value", minValue);
+}
+void ADSREnvSpec::Load(serial::Ptree pt) {
+    attackTime = pt.GetFloat("attack_time");
+    decayTime = pt.GetFloat("decay_time");
+    sustainLevel = pt.GetFloat("sustain_level");
+    releaseTime = pt.GetFloat("release_time");
+    minValue = pt.GetFloat("min_value");
+}
+
+void Patch::Save(serial::Ptree pt) const {
+    pt.PutInt("version", kVersion);
+    pt.PutString("name", name.c_str());
+    pt.PutFloat("gain_factor", gainFactor);
+    pt.PutString("osc1_waveform", WaveformToString(osc1Waveform));
+    pt.PutString("osc2_waveform", WaveformToString(osc2Waveform));
+    pt.PutFloat("detune", detune);
+    pt.PutFloat("osc_fader", oscFader);
+    pt.PutFloat("cutoff_freq", cutoffFreq);
+    pt.PutFloat("cutoff_k", cutoffK);
+    pt.PutFloat("hpf_cutoff_freq", hpfCutoffFreq);
+    pt.PutFloat("hpf_peak", hpfPeak);
+    pt.PutFloat("pitch_lfo_gain", pitchLFOGain);
+    pt.PutFloat("pitch_lfo_freq", pitchLFOFreq);
+    pt.PutFloat("cutoff_lfo_gain", cutoffLFOGain);
+    pt.PutFloat("cutoff_lfo_freq", cutoffLFOFreq);
+    serial::SaveInNewChildOf(pt, "amp_env_spec", ampEnvSpec);
+    pt.PutFloat("cutoff_env_gain", cutoffEnvGain);
+    serial::SaveInNewChildOf(pt, "cutoff_env_spec", cutoffEnvSpec);
+    pt.PutFloat("pitch_env_gain", pitchEnvGain);
+    serial::SaveInNewChildOf(pt, "pitch_env_spec", pitchEnvSpec);
+}
+void Patch::Load(serial::Ptree pt) {
+    int version = 0;
+    pt.TryGetInt("version", &version);
+
+    name = pt.GetString("name");
+    gainFactor = pt.GetFloat("gain_factor");
+    if (version >= 1) {
+        osc1Waveform = StringToWaveform(pt.GetString("osc1_waveform").c_str());
+        osc2Waveform = StringToWaveform(pt.GetString("osc2_waveform").c_str());
+        detune = pt.GetFloat("detune");
+        oscFader = pt.GetFloat("osc_fader");
     }
-
-    void InitStateData(StateData& state, int channel) {
-        state = StateData();
-        state.channel = channel;
+    cutoffFreq = pt.GetFloat("cutoff_freq");
+    cutoffK = pt.GetFloat("cutoff_k");
+    if (version >= 3) {
+        hpfCutoffFreq = pt.GetFloat("hpf_cutoff_freq");
+        hpfPeak = pt.GetFloat("hpf_peak");
     }
-
-    float calcMultiplier(float startLevel, float endLevel, long numSamples) {
-        assert(numSamples > 0l);
-        assert(startLevel > 0.f);
-        double recip = 1.0 / numSamples;
-        double endOverStart = endLevel / startLevel;
-        double val = pow(endOverStart, recip);
-        return (float) val;
+    pitchLFOGain = pt.GetFloat("pitch_lfo_gain");
+    pitchLFOFreq = pt.GetFloat("pitch_lfo_freq");
+    cutoffLFOGain = pt.GetFloat("cutoff_lfo_gain");
+    cutoffLFOFreq = pt.GetFloat("cutoff_lfo_freq");
+    ampEnvSpec.Load(pt.GetChild("amp_env_spec"));
+    cutoffEnvGain = pt.GetFloat("cutoff_env_gain");
+    cutoffEnvSpec.Load(pt.GetChild("cutoff_env_spec"));
+    if (version >= 2) {
+        pitchEnvGain = pt.GetFloat("pitch_env_gain");
+        pitchEnvSpec.Load(pt.GetChild("pitch_env_spec"));
     }
+}
 
-    struct ADSREnvSpecInTicks {
-        long attackTime = 0l;
-        long decayTime = 0l;
-        float sustainLevel = 0.f;
-        long releaseTime = 0l;
-        float minValue = 0.01f;
-    };
+void InitStateData(StateData& state, int channel) {
+    state = StateData();
+    state.channel = channel;
+}
 
-    void adsrEnvelope(ADSREnvSpecInTicks const& spec, ADSREnvState& state) {
-        switch (state.phase) {
-            case ADSRPhase::Closed:
+float calcMultiplier(float startLevel, float endLevel, long numSamples) {
+    assert(numSamples > 0l);
+    assert(startLevel > 0.f);
+    double recip = 1.0 / numSamples;
+    double endOverStart = endLevel / startLevel;
+    double val = pow(endOverStart, recip);
+    return (float) val;
+}
+
+struct ADSREnvSpecInTicks {
+    long attackTime = 0l;
+    long decayTime = 0l;
+    float sustainLevel = 0.f;
+    long releaseTime = 0l;
+    float minValue = 0.01f;
+};
+
+void adsrEnvelope(ADSREnvSpecInTicks const& spec, ADSREnvState& state) {
+    switch (state.phase) {
+        case ADSRPhase::Closed:
+            state.currentValue = 0.f;
+            break;
+        case ADSRPhase::Attack:
+            // EXPONENTIAL ATTACK
+            // if (state.ticksSincePhaseStart == 0) {
+            //     if (spec.attackTimeInTicks == 0) {
+            //         state.currentValue = 1.f;
+            //         state.multiplier = 1.f;
+            //     } else {
+            //         state.currentValue = spec.minValue;
+            //         state.multiplier = calcMultiplier(spec.minValue, 1.f, spec.attackTimeInTicks);
+            //     }
+            // }
+            // state.currentValue *= state.multiplier;
+            // ++state.ticksSincePhaseStart;
+            // if (state.ticksSincePhaseStart >= spec.attackTimeInTicks) {
+            //     state.phase = ADSRPhase::Decay;
+            //     state.ticksSincePhaseStart = 0;
+            // }
+            // LINEAR ATTACK code
+            if (state.ticksSincePhaseStart == 0) {
                 state.currentValue = 0.f;
-                break;
-            case ADSRPhase::Attack:
-                // EXPONENTIAL ATTACK
-                // if (state.ticksSincePhaseStart == 0) {
-                //     if (spec.attackTimeInTicks == 0) {
-                //         state.currentValue = 1.f;
-                //         state.multiplier = 1.f;
-                //     } else {
-                //         state.currentValue = spec.minValue;
-                //         state.multiplier = calcMultiplier(spec.minValue, 1.f, spec.attackTimeInTicks);
-                //     }
-                // }
-                // state.currentValue *= state.multiplier;
-                // ++state.ticksSincePhaseStart;
-                // if (state.ticksSincePhaseStart >= spec.attackTimeInTicks) {
-                //     state.phase = ADSRPhase::Decay;
-                //     state.ticksSincePhaseStart = 0;
-                // }
-                // LINEAR ATTACK code
-                if (state.ticksSincePhaseStart == 0) {
-                    state.currentValue = 0.f;
-                    if (spec.attackTime == 0) {
-                        state.currentValue = 1.f;
-                    }
-                } else {
-                    state.currentValue = (float)state.ticksSincePhaseStart / (float)spec.attackTime;
+                if (spec.attackTime == 0) {
+                    state.currentValue = 1.f;
                 }
-                ++state.ticksSincePhaseStart;
-                if (state.ticksSincePhaseStart >= spec.attackTime) {
-                    state.phase = ADSRPhase::Decay;
-                    state.ticksSincePhaseStart = 0;
-                }
-                break;
-            case ADSRPhase::Decay:
-                if (state.ticksSincePhaseStart == 0) {
-                    if (spec.decayTime == 0) {
-                        state.currentValue = spec.sustainLevel;
-                        state.multiplier = 1.f;
-                    } else {
-                        state.currentValue = 1.f;
-                        state.multiplier = calcMultiplier(1.f, spec.sustainLevel, spec.decayTime);
-                    }
-                }
-                state.currentValue *= state.multiplier;
-                ++state.ticksSincePhaseStart;
-                if (state.ticksSincePhaseStart >= spec.decayTime) {
-                    state.phase = ADSRPhase::Sustain;
-                    state.ticksSincePhaseStart = 0;
-                }
-                break;
-            case ADSRPhase::Sustain:
-                // Do nothing. waiting for external signal to enter Release.
-                break;
-            case ADSRPhase::Release: {
-                if (state.ticksSincePhaseStart == 0) {
-                    if (spec.releaseTime == 0) {
-                        state.multiplier = 0.f;
-                    } else {
-                        // Keep current level. might have hit release before hitting sustain level
-                        // TODO: calculate release from sustain to 0, or from current level to 0? I like sustain better.
-                        state.multiplier = calcMultiplier(spec.sustainLevel, spec.minValue, spec.releaseTime);
-                    }
-                }
-                state.currentValue *= state.multiplier;
-                ++state.ticksSincePhaseStart;
-                if (state.ticksSincePhaseStart >= spec.releaseTime) {
-                    state.phase = ADSRPhase::Closed;
-                    state.ticksSincePhaseStart = -1;
-                    state.currentValue = 0.f;
-                }
-                break;
+            } else {
+                state.currentValue = (float)state.ticksSincePhaseStart / (float)spec.attackTime;
             }
+            ++state.ticksSincePhaseStart;
+            if (state.ticksSincePhaseStart >= spec.attackTime) {
+                state.phase = ADSRPhase::Decay;
+                state.ticksSincePhaseStart = 0;
+            }
+            break;
+        case ADSRPhase::Decay:
+            if (state.ticksSincePhaseStart == 0) {
+                if (spec.decayTime == 0) {
+                    state.currentValue = spec.sustainLevel;
+                    state.multiplier = 1.f;
+                } else {
+                    state.currentValue = 1.f;
+                    state.multiplier = calcMultiplier(1.f, spec.sustainLevel, spec.decayTime);
+                }
+            }
+            state.currentValue *= state.multiplier;
+            ++state.ticksSincePhaseStart;
+            if (state.ticksSincePhaseStart >= spec.decayTime) {
+                state.phase = ADSRPhase::Sustain;
+                state.ticksSincePhaseStart = 0;
+            }
+            break;
+        case ADSRPhase::Sustain:
+            // Do nothing. waiting for external signal to enter Release.
+            break;
+        case ADSRPhase::Release: {
+            if (state.ticksSincePhaseStart == 0) {
+                if (spec.releaseTime == 0) {
+                    state.multiplier = 0.f;
+                } else {
+                    // Keep current level. might have hit release before hitting
+                    // sustain level
+                    //
+                    // TODO: calculate release from sustain to 0, or from
+                    // current level to 0? I like sustain better.
+                    state.multiplier = calcMultiplier(spec.sustainLevel, spec.minValue, spec.releaseTime);
+                }
+            }
+            state.currentValue *= state.multiplier;
+            ++state.ticksSincePhaseStart;
+            if (state.ticksSincePhaseStart >= spec.releaseTime) {
+                state.phase = ADSRPhase::Closed;
+                state.ticksSincePhaseStart = -1;
+                state.currentValue = 0.f;
+            }
+            break;
         }
-        // This is important right now because when we modify attack times, it
-        // can cause the precomputed multiplier to be applied for longer than
-        // expected and thus result in gains > 1.
-        state.currentValue = std::min(1.f, state.currentValue);
     }
+    // This is important right now because when we modify attack times, it
+    // can cause the precomputed multiplier to be applied for longer than
+    // expected and thus result in gains > 1.
+    state.currentValue = std::min(1.f, state.currentValue);
+}
 
-    // TODO: make this process an entire buffer.
-    // TODO: early exit if envelope is closed.
-    // TODO: remove redundant args now that we pass Patch in.
-    float ProcessVoice(
-        Voice& voice, int const sampleRate, float pitchLFOValue,
+// https://www.cytomic.com/files/dsp/SvfLinearTrapOptimised2.pdf
+//
+// For now assumes peak is 0,4
+enum class FilterType { LowPass, HighPass };
+float UpdateFilter(float const dt, float const cutoff, float const peak, float const input, FilterType const filterType, FilterState& state) {
+    float res = peak / 4.f;
+    float g = tan(kPi * cutoff * dt);
+    float k = 2 - 2*res;
+    assert((1 + g*(g+k)) != 0.f);
+    float a1 = 1 / (1 + g*(g+k));
+    float a2 = g*a1;
+    float a3 = g*a2;
+	    
+    float v3 = input - state.ic2eq;
+    float v1 = a1*state.ic1eq + a2*v3;
+    float v2 = state.ic2eq + a2*state.ic1eq + a3*v3;
+    state.ic1eq = 2*v1 - state.ic1eq;
+    state.ic2eq = 2*v2 - state.ic2eq;
+
+    switch (filterType) {
+        case FilterType::LowPass: return v2;
+        case FilterType::HighPass: {
+            float output = input - k*v1 - v2;
+            return output;
+        }
+    }
+}
+
+// TODO: make this process an entire buffer.
+// TODO: early exit if envelope is closed.
+// TODO: remove redundant args now that we pass Patch in.
+float ProcessVoice(
+    Voice& voice, int const sampleRate, float pitchLFOValue,
 	float modulatedCutoff, float cutoffK,
-        ADSREnvSpecInTicks const& ampEnvSpec,
+    ADSREnvSpecInTicks const& ampEnvSpec,
 	ADSREnvSpecInTicks const& cutoffEnvSpec, float const cutoffEnvGain,
 	ADSREnvSpecInTicks const& pitchEnvSpec, float const pitchEnvGain,
-        Patch const& patch) {
-        float const dt = 1.0f / sampleRate;
+    Patch const& patch) {
+    float const dt = 1.0f / sampleRate;
 
-        // Now use the LFO value to get a new frequency.
-        float modulatedF = voice.oscillators[0].f * powf(2.0f, pitchLFOValue);
+    // Now use the LFO value to get a new frequency.
+    float modulatedF = voice.oscillators[0].f * powf(2.0f, pitchLFOValue);
 
 	// Modulate by pitch envelope.
 	adsrEnvelope(pitchEnvSpec, voice.pitchEnvState);
 	modulatedF *= powf(2.f, pitchEnvGain * voice.pitchEnvState.currentValue);
 	// TODO: clamp F?
 
-        float v = 0.0f;
-        for (int oscIx = 0; oscIx < voice.oscillators.size(); ++oscIx) {
-            Oscillator& osc = voice.oscillators[oscIx];
+    float v = 0.0f;
+    for (int oscIx = 0; oscIx < voice.oscillators.size(); ++oscIx) {
+        Oscillator& osc = voice.oscillators[oscIx];
 
 	    
 
-            if (osc.phase >= 2*kPi) {
-                osc.phase -= 2*kPi;
-            }
-
-            float oscF = modulatedF;
-            if (oscIx > 0) {
-                oscF = modulatedF * powf(2.f, patch.detune);
-            }
-
-            float phaseChange = 2 * kPi * oscF / sampleRate;
-            float oscGain;
-            if (oscIx == 0) {
-                oscGain = 1.f - patch.oscFader;
-            } else {
-                oscGain = patch.oscFader;
-            }
-
-            float oscV = 0.f;
-            Waveform waveform = (oscIx == 0) ? patch.osc1Waveform : patch.osc2Waveform;
-            switch (waveform) {
-                case Waveform::Saw: {
-                    oscV = GenerateSaw(osc.phase, phaseChange);
-                    break;
-                }
-                case Waveform::Square: {
-                    oscV = GenerateSquare(osc.phase, phaseChange);
-                    break;
-                }
-                case Waveform::Count: {
-                    std::cout << "Invalid waveform" << std::endl;
-                    assert(false);
-                }
-            }
-
-            float oscWithGain = oscV * oscGain;
-            v += oscWithGain;
-            osc.phase += phaseChange;
+        if (osc.phase >= 2*kPi) {
+            osc.phase -= 2*kPi;
         }
 
-        // Cutoff envelope
-        adsrEnvelope(cutoffEnvSpec, voice.cutoffEnvState);
-        modulatedCutoff += patch.cutoffEnvGain * voice.cutoffEnvState.currentValue;
+        float oscF = modulatedF;
+        if (oscIx > 0) {
+            oscF = modulatedF * powf(2.f, patch.detune);
+        }
+
+        float phaseChange = 2 * kPi * oscF / sampleRate;
+        float oscGain;
+        if (oscIx == 0) {
+            oscGain = 1.f - patch.oscFader;
+        } else {
+            oscGain = patch.oscFader;
+        }
+
+        float oscV = 0.f;
+        Waveform waveform = (oscIx == 0) ? patch.osc1Waveform : patch.osc2Waveform;
+        switch (waveform) {
+            case Waveform::Saw: {
+                oscV = GenerateSaw(osc.phase, phaseChange);
+                break;
+            }
+            case Waveform::Square: {
+                oscV = GenerateSquare(osc.phase, phaseChange);
+                break;
+            }
+            case Waveform::Count: {
+                std::cout << "Invalid waveform" << std::endl;
+                assert(false);
+            }
+        }
+
+        float oscWithGain = oscV * oscGain;
+        v += oscWithGain;
+        osc.phase += phaseChange;
+    }
+
+    // Cutoff envelope
+    adsrEnvelope(cutoffEnvSpec, voice.cutoffEnvState);
+    modulatedCutoff += patch.cutoffEnvGain * voice.cutoffEnvState.currentValue;
 	// The fancy filter below blows up for some reason if we don't include
 	// this line.
 	modulatedCutoff = math_util::Clamp(modulatedCutoff, 0.f, 22050.f);
 
-        // ladder filter
+    // ladder filter
 #if 0
-        float const rc = 1 / modulatedCutoff;
-        float const a = dt / (rc + dt);
-        v -= patch.cutoffK * voice.lp3;
+    float const rc = 1 / modulatedCutoff;
+    float const a = dt / (rc + dt);
+    v -= patch.cutoffK * voice.lp3;
 
-        voice.lp0 = a*v + (1-a)*voice.lp0;
-        voice.lp1 = a*(voice.lp0) + (1-a)*voice.lp1;
-        voice.lp2 = a*(voice.lp1) + (1-a)*voice.lp2;
-        voice.lp3 = a*(voice.lp2) + (1-a)*voice.lp3;
-        v = voice.lp3;
+    voice.lp0 = a*v + (1-a)*voice.lp0;
+    voice.lp1 = a*(voice.lp0) + (1-a)*voice.lp1;
+    voice.lp2 = a*(voice.lp1) + (1-a)*voice.lp2;
+    voice.lp3 = a*(voice.lp2) + (1-a)*voice.lp3;
+    v = voice.lp3;
 
 #else	
-	// https://www.cytomic.com/files/dsp/SvfLinearTrapOptimised2.pdf
-	{
-	    float res = cutoffK / 4.f;
-	    float g = tan(kPi * modulatedCutoff * dt);
-	    float k = 2 - 2*res;
-	    assert((1 + g*(g+k)) != 0.f);
-	    float a1 = 1 / (1 + g*(g+k));
-	    float a2 = g*a1;
-	    float a3 = g*a2;
-	    
-	    float v3 = v - voice.ic2eq;
-	    float v1 = a1*voice.ic1eq + a2*v3;
-	    float v2 = voice.ic2eq + a2*voice.ic1eq + a3*v3;
-	    voice.ic1eq = 2*v1 - voice.ic1eq;
-	    voice.ic2eq = 2*v2 - voice.ic2eq;
+    v = UpdateFilter(dt, modulatedCutoff, cutoffK, v, FilterType::LowPass, voice.lpfState);
 
-	    if (v2 != 0.f) {
-		res = 1.f;
-	    }
-
-	    v = v2;
-	}
+    v = UpdateFilter(dt, patch.hpfCutoffFreq, patch.hpfPeak, v, FilterType::HighPass, voice.hpfState);
 #endif
 	
-        // Amplitude envelope
-        // TODO: move this up top so we can early-exit if the envelope is closed and save some computation.
-        // TODO: consider only doing the envelope computation once per buffer frame.
-        adsrEnvelope(ampEnvSpec, voice.ampEnvState);
-        if (voice.ampEnvState.phase == ADSRPhase::Closed) {
-            voice.currentMidiNote = -1;
-        }
-        v *= voice.ampEnvState.currentValue;
+    // Amplitude envelope
+    // TODO: move this up top so we can early-exit if the envelope is closed and save some computation.
+    // TODO: consider only doing the envelope computation once per buffer frame.
+    adsrEnvelope(ampEnvSpec, voice.ampEnvState);
+    if (voice.ampEnvState.phase == ADSRPhase::Closed) {
+        voice.currentMidiNote = -1;
+    }
+    v *= voice.ampEnvState.currentValue;
 
 
-        // Apply velocity
-        v *= voice.velocity;
+    // Apply velocity
+    v *= voice.velocity;
         
-        return v;
-    }
+    return v;
+}
 
-    Voice* FindVoiceForNoteOn(StateData& state, int const midiNote) {
-        // First, look for a voice already playing the note we want to play and
-        // use that. If no such voice, look for any voices with closed
-        // envelopes. If no such voice, look for voice that started closing the
-        // longest time ago. If no such voice, then we don't play this note,
-        // sorry bro
-        int oldestClosingIx = -1;
-        int oldestClosingAge = -1;
-        for (int i = 0; i < state.voices.size(); ++i) {
-            Voice& v = state.voices[i];
-            if (v.currentMidiNote == midiNote) {
-                return &v;
-            }
-            if (v.ampEnvState.phase == ADSRPhase::Closed) {
-                oldestClosingIx = i;
-                oldestClosingAge = std::numeric_limits<int>::max();
-            } else if (v.ampEnvState.phase == ADSRPhase::Release && v.ampEnvState.ticksSincePhaseStart >= oldestClosingAge/*v.ampEnvTicksSinceNoteOff >= oldestClosingAge*/) {
-                oldestClosingIx = i;
-                oldestClosingAge = v.ampEnvState.ticksSincePhaseStart;
-            }
+Voice* FindVoiceForNoteOn(StateData& state, int const midiNote) {
+    // First, look for a voice already playing the note we want to play and
+    // use that. If no such voice, look for any voices with closed
+    // envelopes. If no such voice, look for voice that started closing the
+    // longest time ago. If no such voice, then we don't play this note,
+    // sorry bro
+    int oldestClosingIx = -1;
+    int oldestClosingAge = -1;
+    for (int i = 0; i < state.voices.size(); ++i) {
+        Voice& v = state.voices[i];
+        if (v.currentMidiNote == midiNote) {
+            return &v;
         }
-        if (oldestClosingIx >= 0) {
-            return &state.voices[oldestClosingIx];
+        if (v.ampEnvState.phase == ADSRPhase::Closed) {
+            oldestClosingIx = i;
+            oldestClosingAge = std::numeric_limits<int>::max();
+        } else if (v.ampEnvState.phase == ADSRPhase::Release && v.ampEnvState.ticksSincePhaseStart >= oldestClosingAge/*v.ampEnvTicksSinceNoteOff >= oldestClosingAge*/) {
+            oldestClosingIx = i;
+            oldestClosingAge = v.ampEnvState.ticksSincePhaseStart;
         }
-        return nullptr;
     }
+    if (oldestClosingIx >= 0) {
+        return &state.voices[oldestClosingIx];
+    }
+    return nullptr;
+}
 
-    Voice* FindVoiceForNoteOff(StateData& state, int midiNote) {
-        // NOTE: we should be able to return as soon as we find a voice matching
-        // the given note, but I'm doing the full iteration to check for
-        // correctness for now.
-        Voice* resultVoice = nullptr;
-        for (Voice& v : state.voices) {
-            if (v.currentMidiNote == midiNote) {
-                assert(resultVoice == nullptr);
-                resultVoice = &v;
-            }
+Voice* FindVoiceForNoteOff(StateData& state, int midiNote) {
+    // NOTE: we should be able to return as soon as we find a voice matching
+    // the given note, but I'm doing the full iteration to check for
+    // correctness for now.
+    Voice* resultVoice = nullptr;
+    for (Voice& v : state.voices) {
+        if (v.currentMidiNote == midiNote) {
+            assert(resultVoice == nullptr);
+            resultVoice = &v;
         }
-        return resultVoice;
     }
+    return resultVoice;
+}
 
-    void ConvertADSREnvSpec(ADSREnvSpec const& spec, ADSREnvSpecInTicks& specInTicks, int sampleRate) {
-        specInTicks.attackTime = (long)(spec.attackTime * sampleRate);
-        specInTicks.decayTime = (long)(spec.decayTime * sampleRate);
-        specInTicks.sustainLevel = spec.sustainLevel;
-        specInTicks.releaseTime = (long)(spec.releaseTime * sampleRate);
-        specInTicks.minValue = spec.minValue;
-    }
+void ConvertADSREnvSpec(ADSREnvSpec const& spec, ADSREnvSpecInTicks& specInTicks, int sampleRate) {
+    specInTicks.attackTime = (long)(spec.attackTime * sampleRate);
+    specInTicks.decayTime = (long)(spec.decayTime * sampleRate);
+    specInTicks.sustainLevel = spec.sustainLevel;
+    specInTicks.releaseTime = (long)(spec.releaseTime * sampleRate);
+    specInTicks.minValue = spec.minValue;
+}
 
-    void Process(
-        StateData* state, boost::circular_buffer<audio::Event> const& pendingEvents,
-        float* outputBuffer, int const numChannels, int const samplesPerFrame,
-        int const sampleRate, unsigned long frameStartTickTime) {
+void Process(
+    StateData* state, boost::circular_buffer<audio::Event> const& pendingEvents,
+    float* outputBuffer, int const numChannels, int const samplesPerFrame,
+    int const sampleRate, unsigned long frameStartTickTime) {
 
-        Patch& patch = state->patch;
+    Patch& patch = state->patch;
 
-        int currentEventIx = 0;
-        for(int i = 0; i < samplesPerFrame; ++i)
+    int currentEventIx = 0;
+    for(int i = 0; i < samplesPerFrame; ++i)
         {
             // Handle events
             while (true) {
@@ -442,7 +460,7 @@ namespace synth {
                             v->ampEnvState.ticksSincePhaseStart = 0;
                             v->cutoffEnvState.phase = synth::ADSRPhase::Release;
                             v->cutoffEnvState.ticksSincePhaseStart = 0;
-			    v->pitchEnvState.phase = synth::ADSRPhase::Release;
+                            v->pitchEnvState.phase = synth::ADSRPhase::Release;
                             v->pitchEnvState.ticksSincePhaseStart = 0;
                         }
                         break;
@@ -454,7 +472,7 @@ namespace synth {
                                 v.ampEnvState.ticksSincePhaseStart = 0;
                                 v.cutoffEnvState.phase = synth::ADSRPhase::Release;
                                 v.cutoffEnvState.ticksSincePhaseStart = 0;
-				v.pitchEnvState.phase = synth::ADSRPhase::Release;
+                                v.pitchEnvState.phase = synth::ADSRPhase::Release;
                                 v.pitchEnvState.ticksSincePhaseStart = 0;
                             }
                         }
@@ -482,6 +500,12 @@ namespace synth {
                                 break;
                             case audio::SynthParamType::Peak:
                                 patch.cutoffK = e.newParamValue;
+                                break;
+                            case audio::SynthParamType::HpfCutoff:
+                                patch.hpfCutoffFreq = e.newParamValue;
+                                break;
+                            case audio::SynthParamType::HpfPeak:
+                                patch.hpfPeak = e.newParamValue;
                                 break;
                             case audio::SynthParamType::PitchLFOGain:
                                 patch.pitchLFOGain = e.newParamValue;
@@ -522,7 +546,7 @@ namespace synth {
                             case audio::SynthParamType::CutoffEnvRelease:
                                 patch.cutoffEnvSpec.releaseTime = e.newParamValue;
                                 break;
-			    case audio::SynthParamType::PitchEnvGain:
+                            case audio::SynthParamType::PitchEnvGain:
                                 patch.pitchEnvGain = e.newParamValue;
                                 break;
                             case audio::SynthParamType::PitchEnvAttack:
@@ -572,14 +596,14 @@ namespace synth {
             ADSREnvSpecInTicks ampEnvSpec, cutoffEnvSpec, pitchEnvSpec;
             ConvertADSREnvSpec(patch.ampEnvSpec, ampEnvSpec, sampleRate);
             ConvertADSREnvSpec(patch.cutoffEnvSpec, cutoffEnvSpec, sampleRate);
-	    ConvertADSREnvSpec(patch.pitchEnvSpec, pitchEnvSpec, sampleRate);
+            ConvertADSREnvSpec(patch.pitchEnvSpec, pitchEnvSpec, sampleRate);
 
             float v = 0.0f;
             for (Voice& voice : state->voices) {
                 v += ProcessVoice(
                     voice, sampleRate, pitchLFOValue, modulatedCutoff, patch.cutoffK,
-		    ampEnvSpec, cutoffEnvSpec, patch.cutoffEnvGain,
-		    pitchEnvSpec, patch.pitchEnvGain, patch);
+                    ampEnvSpec, cutoffEnvSpec, patch.cutoffEnvGain,
+                    pitchEnvSpec, patch.pitchEnvGain, patch);
             }
 
             // Apply final gain. Map from linear [0,1] to exponential from -80db to 0db.
@@ -594,5 +618,5 @@ namespace synth {
                 *outputBuffer++ += v;
             }
         }
-    }
+}
 }

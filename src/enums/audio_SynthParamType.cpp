@@ -25,6 +25,10 @@ std::unordered_map<std::string, SynthParamType> const gStringToSynthParamType = 
     
     { "Peak", SynthParamType::Peak },
     
+    { "HpfCutoff", SynthParamType::HpfCutoff },
+    
+    { "HpfPeak", SynthParamType::HpfPeak },
+    
     { "PitchLFOGain", SynthParamType::PitchLFOGain },
     
     { "PitchLFOFreq", SynthParamType::PitchLFOFreq },
@@ -80,6 +84,10 @@ char const* gSynthParamTypeStrings[] = {
     "Cutoff",
     
     "Peak",
+    
+    "HpfCutoff",
+    
+    "HpfPeak",
     
     "PitchLFOGain",
     
