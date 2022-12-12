@@ -7,10 +7,15 @@
 
 #include "game_manager.h"
 #include "new_entity.h"
+#include "beat_time_event.h"
 
 struct SeqAction {
     enum class Type {
-        SpawnAutomator, RemoveEntity, ChangeStepSequencer, NoteOnOff
+        SpawnAutomator,
+        RemoveEntity,
+        ChangeStepSequencer,
+        NoteOnOff,
+        BeatTimeEvent
     };
     virtual Type GetType() const = 0;
     virtual void Execute(GameManager& g) = 0;
@@ -57,6 +62,14 @@ struct NoteOnOffSeqAction : public SeqAction {
     float _velocity = 1.f;
     double _quantizeDenom = 0.25;
     virtual Type GetType() const override { return Type::NoteOnOff; }
+    virtual void Execute(GameManager& g) override;
+    virtual void Load(GameManager& g, std::istream& input) override;
+};
+
+struct BeatTimeEventSeqAction : public SeqAction {
+    BeatTimeEvent _b_e;
+    double _quantizeDenom = 0.25;
+    virtual Type GetType() const override { return Type::BeatTimeEvent; }
     virtual void Execute(GameManager& g) override;
     virtual void Load(GameManager& g, std::istream& input) override;
 };

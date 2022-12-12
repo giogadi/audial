@@ -115,3 +115,12 @@ void NoteOnOffSeqAction::Load(GameManager& g, std::istream& input) {
         }
     }
 }
+
+void BeatTimeEventSeqAction::Execute(GameManager& g) {
+    audio::Event e = GetEventAtBeatOffsetFromNextDenom(_quantizeDenom, _b_e, *g._beatClock, /*slack=*/0.0625);
+    g._audioContext->AddEvent(e);
+}
+
+void BeatTimeEventSeqAction::Load(GameManager& g, std::istream& input) {
+    ReadBeatEventFromTextLine(*g._soundBank, input, _b_e);
+}
