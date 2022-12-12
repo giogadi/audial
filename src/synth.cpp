@@ -405,6 +405,192 @@ void ConvertADSREnvSpec(ADSREnvSpec const& spec, ADSREnvSpecInTicks& specInTicks
     specInTicks.minValue = spec.minValue;
 }
 
+float& GetSynthParam(Patch& patch, audio::SynthParamType paramType) {
+    switch (paramType) {
+        case audio::SynthParamType::Gain:
+            return patch.gainFactor;
+            break;
+        case audio::SynthParamType::Osc1Waveform:
+            assert(false);
+            // return static_cast<double>(static_cast<int>(patch.osc1Waveform));
+            break;
+        case audio::SynthParamType::Osc2Waveform:
+            assert(false);
+            // return static_cast<double>(static_cast<int>(patch.osc2Waveform));
+            break;
+        case audio::SynthParamType::Detune:
+            return patch.detune;
+            break;
+        case audio::SynthParamType::OscFader:
+            return patch.oscFader;
+            break;
+        case audio::SynthParamType::Cutoff:
+            return patch.cutoffFreq;
+            break;
+        case audio::SynthParamType::Peak:
+            return patch.cutoffK;
+            break;
+        case audio::SynthParamType::HpfCutoff:
+            return patch.hpfCutoffFreq;
+            break;
+        case audio::SynthParamType::HpfPeak:
+            return patch.hpfPeak;
+            break;
+        case audio::SynthParamType::PitchLFOGain:
+            return patch.pitchLFOGain;
+            break;
+        case audio::SynthParamType::PitchLFOFreq:
+            return patch.pitchLFOFreq;
+            break;
+        case audio::SynthParamType::CutoffLFOGain:
+            return patch.cutoffLFOGain;
+            break;
+        case audio::SynthParamType::CutoffLFOFreq:
+            return patch.cutoffLFOFreq;
+            break;
+        case audio::SynthParamType::AmpEnvAttack:
+            return patch.ampEnvSpec.attackTime;
+            break;
+        case audio::SynthParamType::AmpEnvDecay:
+            return patch.ampEnvSpec.decayTime;
+            break;
+        case audio::SynthParamType::AmpEnvSustain:
+            return patch.ampEnvSpec.sustainLevel;
+            break;
+        case audio::SynthParamType::AmpEnvRelease:
+            return patch.ampEnvSpec.releaseTime;
+            break;
+        case audio::SynthParamType::CutoffEnvGain:
+            return patch.cutoffEnvGain;
+            break;
+        case audio::SynthParamType::CutoffEnvAttack:
+            return patch.cutoffEnvSpec.attackTime;
+            break;
+        case audio::SynthParamType::CutoffEnvDecay:
+            return patch.cutoffEnvSpec.decayTime;
+            break;
+        case audio::SynthParamType::CutoffEnvSustain:
+            return patch.cutoffEnvSpec.sustainLevel;
+            break;
+        case audio::SynthParamType::CutoffEnvRelease:
+            return patch.cutoffEnvSpec.releaseTime;
+            break;
+        case audio::SynthParamType::PitchEnvGain:
+            return patch.pitchEnvGain;
+            break;
+        case audio::SynthParamType::PitchEnvAttack:
+            return patch.pitchEnvSpec.attackTime;
+            break;
+        case audio::SynthParamType::PitchEnvDecay:
+            return patch.pitchEnvSpec.decayTime;
+            break;
+        case audio::SynthParamType::PitchEnvSustain:
+            return patch.pitchEnvSpec.sustainLevel;
+            break;
+        case audio::SynthParamType::PitchEnvRelease:
+            return patch.pitchEnvSpec.releaseTime;
+            break;
+        default:
+            std::cout << "Received unsupported synth param " << static_cast<int>(paramType) << std::endl;
+            assert(false);
+            break;
+    }    
+}
+
+void SetSynthParam(audio::SynthParamType paramType, double newValue, int newValueInt, Patch& patch) {
+    switch (paramType) {
+        case audio::SynthParamType::Gain:
+            patch.gainFactor = newValue;
+            break;
+        case audio::SynthParamType::Osc1Waveform:
+            // int newValueInt = static_cast<int>(newValue);
+            // patch.osc1Waveform = newValueInt;
+            patch.osc1Waveform = static_cast<synth::Waveform>(newValueInt);
+            break;
+        case audio::SynthParamType::Osc2Waveform:
+            // int newValueInt = static_cast<int>(newValue);
+            // patch.osc2Waveform = newValueInt;
+            patch.osc2Waveform = static_cast<synth::Waveform>(newValueInt);
+            break;
+        case audio::SynthParamType::Detune:
+            patch.detune = newValue;
+            break;
+        case audio::SynthParamType::OscFader:
+            patch.oscFader = newValue;
+            break;
+        case audio::SynthParamType::Cutoff:
+            patch.cutoffFreq = newValue;
+            break;
+        case audio::SynthParamType::Peak:
+            patch.cutoffK = newValue;
+            break;
+        case audio::SynthParamType::HpfCutoff:
+            patch.hpfCutoffFreq = newValue;
+            break;
+        case audio::SynthParamType::HpfPeak:
+            patch.hpfPeak = newValue;
+            break;
+        case audio::SynthParamType::PitchLFOGain:
+            patch.pitchLFOGain = newValue;
+            break;
+        case audio::SynthParamType::PitchLFOFreq:
+            patch.pitchLFOFreq = newValue;
+            break;
+        case audio::SynthParamType::CutoffLFOGain:
+            patch.cutoffLFOGain = newValue;
+            break;
+        case audio::SynthParamType::CutoffLFOFreq:
+            patch.cutoffLFOFreq = newValue;
+            break;
+        case audio::SynthParamType::AmpEnvAttack:
+            patch.ampEnvSpec.attackTime = newValue;
+            break;
+        case audio::SynthParamType::AmpEnvDecay:
+            patch.ampEnvSpec.decayTime = newValue;
+            break;
+        case audio::SynthParamType::AmpEnvSustain:
+            patch.ampEnvSpec.sustainLevel = newValue;
+            break;
+        case audio::SynthParamType::AmpEnvRelease:
+            patch.ampEnvSpec.releaseTime = newValue;
+            break;
+        case audio::SynthParamType::CutoffEnvGain:
+            patch.cutoffEnvGain = newValue;
+            break;
+        case audio::SynthParamType::CutoffEnvAttack:
+            patch.cutoffEnvSpec.attackTime = newValue;
+            break;
+        case audio::SynthParamType::CutoffEnvDecay:
+            patch.cutoffEnvSpec.decayTime = newValue;
+            break;
+        case audio::SynthParamType::CutoffEnvSustain:
+            patch.cutoffEnvSpec.sustainLevel = newValue;
+            break;
+        case audio::SynthParamType::CutoffEnvRelease:
+            patch.cutoffEnvSpec.releaseTime = newValue;
+            break;
+        case audio::SynthParamType::PitchEnvGain:
+            patch.pitchEnvGain = newValue;
+            break;
+        case audio::SynthParamType::PitchEnvAttack:
+            patch.pitchEnvSpec.attackTime = newValue;
+            break;
+        case audio::SynthParamType::PitchEnvDecay:
+            patch.pitchEnvSpec.decayTime = newValue;
+            break;
+        case audio::SynthParamType::PitchEnvSustain:
+            patch.pitchEnvSpec.sustainLevel = newValue;
+            break;
+        case audio::SynthParamType::PitchEnvRelease:
+            patch.pitchEnvSpec.releaseTime = newValue;
+            break;
+        default:
+            std::cout << "Received unsupported synth param " << static_cast<int>(paramType) << std::endl;
+            break;
+    }
+}
+    
+
 void Process(
     StateData* state, boost::circular_buffer<audio::Event> const& pendingEvents,
     float* outputBuffer, int const numChannels, int const samplesPerFrame,
@@ -413,210 +599,153 @@ void Process(
     Patch& patch = state->patch;
 
     int currentEventIx = 0;
-    for(int i = 0; i < samplesPerFrame; ++i)
-        {
-            // Handle events
-            while (true) {
-                if (currentEventIx >= pendingEvents.size()) {
-                    break;
-                }
-                audio::Event const& e = pendingEvents[currentEventIx];
-                if (e.timeInTicks > frameStartTickTime + i) {
-                    // This event gets handled later.
-                    break;
-                }
-                if (e.channel != state->channel) {
-                    // Not meant for this channel. Skip this message.
-                    ++currentEventIx;
-                    continue;
-                }
+    for(int i = 0; i < samplesPerFrame; ++i) {
+        // Handle events
+        while (true) {
+            if (currentEventIx >= pendingEvents.size()) {
+                break;
+            }
+            audio::Event const& e = pendingEvents[currentEventIx];
+            if (e.timeInTicks > frameStartTickTime + i) {
+                // This event gets handled later.
+                break;
+            }
+            if (e.channel != state->channel) {
+                // Not meant for this channel. Skip this message.
                 ++currentEventIx;
-                switch (e.type) {
-                    case audio::EventType::NoteOn: {
-                        Voice* v = FindVoiceForNoteOn(*state, e.midiNote);
-                        if (v != nullptr) {
-                            v->oscillators[0].f = synth::MidiToFreq(e.midiNote);
-                            v->currentMidiNote = e.midiNote;
-                            v->velocity = e.velocity;
-                            if (v->ampEnvState.phase != synth::ADSRPhase::Closed) {
-                                v->ampEnvState.ticksSincePhaseStart = (unsigned long) (v->ampEnvState.currentValue * patch.ampEnvSpec.attackTime * sampleRate);
-                            } else {
-                                v->ampEnvState.ticksSincePhaseStart = 0;
-                            }
-                            v->ampEnvState.phase = synth::ADSRPhase::Attack;
-                            v->cutoffEnvState.phase = synth::ADSRPhase::Attack;
-                            v->cutoffEnvState.ticksSincePhaseStart = v->ampEnvState.ticksSincePhaseStart;
-                            v->pitchEnvState.phase = synth::ADSRPhase::Attack;
-                            v->pitchEnvState.ticksSincePhaseStart = v->ampEnvState.ticksSincePhaseStart;
+                continue;
+            }
+            ++currentEventIx;
+            switch (e.type) {
+                case audio::EventType::NoteOn: {
+                    Voice* v = FindVoiceForNoteOn(*state, e.midiNote);
+                    if (v != nullptr) {
+                        v->oscillators[0].f = synth::MidiToFreq(e.midiNote);
+                        v->currentMidiNote = e.midiNote;
+                        v->velocity = e.velocity;
+                        if (v->ampEnvState.phase != synth::ADSRPhase::Closed) {
+                            v->ampEnvState.ticksSincePhaseStart = (unsigned long) (v->ampEnvState.currentValue * patch.ampEnvSpec.attackTime * sampleRate);
                         } else {
-                            std::cout << "couldn't find a note for noteon" << std::endl;
-                        }
-                        break;
-                    }
-                    case audio::EventType::NoteOff: {
-                        Voice* v = FindVoiceForNoteOff(*state, e.midiNote);
-                        if (v != nullptr) {
-                            v->ampEnvState.phase = synth::ADSRPhase::Release;
                             v->ampEnvState.ticksSincePhaseStart = 0;
-                            v->cutoffEnvState.phase = synth::ADSRPhase::Release;
-                            v->cutoffEnvState.ticksSincePhaseStart = 0;
-                            v->pitchEnvState.phase = synth::ADSRPhase::Release;
-                            v->pitchEnvState.ticksSincePhaseStart = 0;
                         }
-                        break;
+                        v->ampEnvState.phase = synth::ADSRPhase::Attack;
+                        v->cutoffEnvState.phase = synth::ADSRPhase::Attack;
+                        v->cutoffEnvState.ticksSincePhaseStart = v->ampEnvState.ticksSincePhaseStart;
+                        v->pitchEnvState.phase = synth::ADSRPhase::Attack;
+                        v->pitchEnvState.ticksSincePhaseStart = v->ampEnvState.ticksSincePhaseStart;
+                    } else {
+                        std::cout << "couldn't find a note for noteon" << std::endl;
                     }
-                    case audio::EventType::AllNotesOff: {
-                        for (Voice& v : state->voices) {
-                            if (v.currentMidiNote != -1) {
-                                v.ampEnvState.phase = synth::ADSRPhase::Release;
-                                v.ampEnvState.ticksSincePhaseStart = 0;
-                                v.cutoffEnvState.phase = synth::ADSRPhase::Release;
-                                v.cutoffEnvState.ticksSincePhaseStart = 0;
-                                v.pitchEnvState.phase = synth::ADSRPhase::Release;
-                                v.pitchEnvState.ticksSincePhaseStart = 0;
+                    break;
+                }
+                case audio::EventType::NoteOff: {
+                    Voice* v = FindVoiceForNoteOff(*state, e.midiNote);
+                    if (v != nullptr) {
+                        v->ampEnvState.phase = synth::ADSRPhase::Release;
+                        v->ampEnvState.ticksSincePhaseStart = 0;
+                        v->cutoffEnvState.phase = synth::ADSRPhase::Release;
+                        v->cutoffEnvState.ticksSincePhaseStart = 0;
+                        v->pitchEnvState.phase = synth::ADSRPhase::Release;
+                        v->pitchEnvState.ticksSincePhaseStart = 0;
+                    }
+                    break;
+                }
+                case audio::EventType::AllNotesOff: {
+                    for (Voice& v : state->voices) {
+                        if (v.currentMidiNote != -1) {
+                            v.ampEnvState.phase = synth::ADSRPhase::Release;
+                            v.ampEnvState.ticksSincePhaseStart = 0;
+                            v.cutoffEnvState.phase = synth::ADSRPhase::Release;
+                            v.cutoffEnvState.ticksSincePhaseStart = 0;
+                            v.pitchEnvState.phase = synth::ADSRPhase::Release;
+                            v.pitchEnvState.ticksSincePhaseStart = 0;
+                        }
+                    }
+                    break;
+                }
+                case audio::EventType::SynthParam: {
+                    if (e.paramChangeTime != 0) {
+                        // Find a free automation
+                        Automation* pA = nullptr;
+                        for (Automation& a : state->automations) {
+                            if (a._active) {
+                                pA = &a;
+                                break;
                             }
                         }
-                        break;
-                    }
-                    case audio::EventType::SynthParam: {
-                        switch (e.param) {
-                            case audio::SynthParamType::Gain:
-                                patch.gainFactor = e.newParamValue;
-                                break;
-                            case audio::SynthParamType::Osc1Waveform:
-                                patch.osc1Waveform = static_cast<synth::Waveform>(e.newParamValueInt);
-                                break;
-                            case audio::SynthParamType::Osc2Waveform:
-                                patch.osc2Waveform = static_cast<synth::Waveform>(e.newParamValueInt);
-                                break;
-                            case audio::SynthParamType::Detune:
-                                patch.detune = e.newParamValue;
-                                break;
-                            case audio::SynthParamType::OscFader:
-                                patch.oscFader = e.newParamValue;
-                                break;
-                            case audio::SynthParamType::Cutoff:
-                                patch.cutoffFreq = e.newParamValue;
-                                break;
-                            case audio::SynthParamType::Peak:
-                                patch.cutoffK = e.newParamValue;
-                                break;
-                            case audio::SynthParamType::HpfCutoff:
-                                patch.hpfCutoffFreq = e.newParamValue;
-                                break;
-                            case audio::SynthParamType::HpfPeak:
-                                patch.hpfPeak = e.newParamValue;
-                                break;
-                            case audio::SynthParamType::PitchLFOGain:
-                                patch.pitchLFOGain = e.newParamValue;
-                                break;
-                            case audio::SynthParamType::PitchLFOFreq:
-                                patch.pitchLFOFreq = e.newParamValue;
-                                break;
-                            case audio::SynthParamType::CutoffLFOGain:
-                                patch.cutoffLFOGain = e.newParamValue;
-                                break;
-                            case audio::SynthParamType::CutoffLFOFreq:
-                                patch.cutoffLFOFreq = e.newParamValue;
-                                break;
-                            case audio::SynthParamType::AmpEnvAttack:
-                                patch.ampEnvSpec.attackTime = e.newParamValue;
-                                break;
-                            case audio::SynthParamType::AmpEnvDecay:
-                                patch.ampEnvSpec.decayTime = e.newParamValue;
-                                break;
-                            case audio::SynthParamType::AmpEnvSustain:
-                                patch.ampEnvSpec.sustainLevel = e.newParamValue;
-                                break;
-                            case audio::SynthParamType::AmpEnvRelease:
-                                patch.ampEnvSpec.releaseTime = e.newParamValue;
-                                break;
-                            case audio::SynthParamType::CutoffEnvGain:
-                                patch.cutoffEnvGain = e.newParamValue;
-                                break;
-                            case audio::SynthParamType::CutoffEnvAttack:
-                                patch.cutoffEnvSpec.attackTime = e.newParamValue;
-                                break;
-                            case audio::SynthParamType::CutoffEnvDecay:
-                                patch.cutoffEnvSpec.decayTime = e.newParamValue;
-                                break;
-                            case audio::SynthParamType::CutoffEnvSustain:
-                                patch.cutoffEnvSpec.sustainLevel = e.newParamValue;
-                                break;
-                            case audio::SynthParamType::CutoffEnvRelease:
-                                patch.cutoffEnvSpec.releaseTime = e.newParamValue;
-                                break;
-                            case audio::SynthParamType::PitchEnvGain:
-                                patch.pitchEnvGain = e.newParamValue;
-                                break;
-                            case audio::SynthParamType::PitchEnvAttack:
-                                patch.pitchEnvSpec.attackTime = e.newParamValue;
-                                break;
-                            case audio::SynthParamType::PitchEnvDecay:
-                                patch.pitchEnvSpec.decayTime = e.newParamValue;
-                                break;
-                            case audio::SynthParamType::PitchEnvSustain:
-                                patch.pitchEnvSpec.sustainLevel = e.newParamValue;
-                                break;
-                            case audio::SynthParamType::PitchEnvRelease:
-                                patch.pitchEnvSpec.releaseTime = e.newParamValue;
-                                break;
-                            default:
-                                std::cout << "Received unsupported synth param " << static_cast<int>(e.param) << std::endl;
-                                break;
+                        if (pA == nullptr) {
+                            printf("Failed to find a free automation!\n");
+                            break;
                         }
+                        pA->_active = true;
+                        pA->_synthParamType = e.param;
+                        pA->_desiredValue = e.newParamValue;
+                        pA->_desiredTickTime = e.paramChangeTime;
                         break;
                     }
-                    default: {
-                        break;
-                    }
+                    SetSynthParam(e.param, e.newParamValue, e.newParamValueInt, patch);
                 }
-            }
-
-            // Get pitch LFO value
-            if (state->pitchLFOPhase >= 2*kPi) {
-                state->pitchLFOPhase -= 2*kPi;
-            }
-            // Make LFO a sine wave for now.
-
-            float const pitchLFOValue = patch.pitchLFOGain * sinf(state->pitchLFOPhase);
-            state->pitchLFOPhase += (patch.pitchLFOFreq * 2*kPi / sampleRate);
-
-            // Get cutoff LFO value
-            if (state->cutoffLFOPhase >= 2*kPi) {
-                state->cutoffLFOPhase -= 2*kPi;
-            }
-            // Make LFO a sine wave for now.
-            float const cutoffLFOValue = patch.cutoffLFOGain * sinf(state->cutoffLFOPhase);
-            state->cutoffLFOPhase += (patch.cutoffLFOFreq * 2*kPi / sampleRate);
-            // float const modulatedCutoff = patch.cutoffFreq * powf(2.0f, cutoffLFOValue);
-            float const modulatedCutoff = math_util::Clamp(patch.cutoffFreq + 20000*cutoffLFOValue, 0.f, 44100.f);
-
-
-            ADSREnvSpecInTicks ampEnvSpec, cutoffEnvSpec, pitchEnvSpec;
-            ConvertADSREnvSpec(patch.ampEnvSpec, ampEnvSpec, sampleRate);
-            ConvertADSREnvSpec(patch.cutoffEnvSpec, cutoffEnvSpec, sampleRate);
-            ConvertADSREnvSpec(patch.pitchEnvSpec, pitchEnvSpec, sampleRate);
-
-            float v = 0.0f;
-            for (Voice& voice : state->voices) {
-                v += ProcessVoice(
-                    voice, sampleRate, pitchLFOValue, modulatedCutoff, patch.cutoffK,
-                    ampEnvSpec, cutoffEnvSpec, patch.cutoffEnvGain,
-                    pitchEnvSpec, patch.pitchEnvGain, patch);
-            }
-
-            // Apply final gain. Map from linear [0,1] to exponential from -80db to 0db.
-            {
-                float const startAmp = 0.01f;
-                float const factor = 1.0f / startAmp;
-                float gain = startAmp*powf(factor, patch.gainFactor);
-                v *= gain;
-            }
-
-            for (int channelIx = 0; channelIx < numChannels; ++channelIx) {
-                *outputBuffer++ += v;
+                default: {
+                    break;
+                }
             }
         }
+
+        // Now apply automations!
+        for (Automation& a : state->automations) {
+            // use first order lag for now
+            if (!a._active) {
+                continue;
+            }
+            float& currentValue = GetSynthParam(patch, a._synthParamType);
+            // TODO ACTUALLY USE _desiredTickTime!!!
+            currentValue += 0.01 * (a._desiredValue - currentValue);
+        }
+
+        // Get pitch LFO value
+        if (state->pitchLFOPhase >= 2*kPi) {
+            state->pitchLFOPhase -= 2*kPi;
+        }
+        // Make LFO a sine wave for now.
+
+        float const pitchLFOValue = patch.pitchLFOGain * sinf(state->pitchLFOPhase);
+        state->pitchLFOPhase += (patch.pitchLFOFreq * 2*kPi / sampleRate);
+
+        // Get cutoff LFO value
+        if (state->cutoffLFOPhase >= 2*kPi) {
+            state->cutoffLFOPhase -= 2*kPi;
+        }
+        // Make LFO a sine wave for now.
+        float const cutoffLFOValue = patch.cutoffLFOGain * sinf(state->cutoffLFOPhase);
+        state->cutoffLFOPhase += (patch.cutoffLFOFreq * 2*kPi / sampleRate);
+        // float const modulatedCutoff = patch.cutoffFreq * powf(2.0f, cutoffLFOValue);
+        float const modulatedCutoff = math_util::Clamp(patch.cutoffFreq + 20000*cutoffLFOValue, 0.f, 44100.f);
+
+
+        ADSREnvSpecInTicks ampEnvSpec, cutoffEnvSpec, pitchEnvSpec;
+        ConvertADSREnvSpec(patch.ampEnvSpec, ampEnvSpec, sampleRate);
+        ConvertADSREnvSpec(patch.cutoffEnvSpec, cutoffEnvSpec, sampleRate);
+        ConvertADSREnvSpec(patch.pitchEnvSpec, pitchEnvSpec, sampleRate);
+
+        float v = 0.0f;
+        for (Voice& voice : state->voices) {
+            v += ProcessVoice(
+                voice, sampleRate, pitchLFOValue, modulatedCutoff, patch.cutoffK,
+                ampEnvSpec, cutoffEnvSpec, patch.cutoffEnvGain,
+                pitchEnvSpec, patch.pitchEnvGain, patch);
+        }
+
+        // Apply final gain. Map from linear [0,1] to exponential from -80db to 0db.
+        {
+            float const startAmp = 0.01f;
+            float const factor = 1.0f / startAmp;
+            float gain = startAmp*powf(factor, patch.gainFactor);
+            v *= gain;
+        }
+
+        for (int channelIx = 0; channelIx < numChannels; ++channelIx) {
+            *outputBuffer++ += v;
+        }
+    }
 }
 }

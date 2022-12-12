@@ -35,7 +35,8 @@ struct Event {
         struct {
             // valid under SynthParam type
             SynthParamType param;
-            double newParamValue;
+            long paramChangeTime;  // if 0, param gets changed instantly.
+            float newParamValue;
             int newParamValueInt;
         };
     };

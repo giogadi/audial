@@ -8,7 +8,9 @@ void audio::Event::Save(serial::Ptree pt) const {
     switch (type) {
         case EventType::SynthParam:
             pt.PutString("synth_param", SynthParamTypeToString(param));
-            pt.PutDouble("value", newParamValue);
+            pt.PutLong("change_time", paramChangeTime);
+            // THIS IS BROKEN AND BADDDDDDDDDDDDD not handling int case
+            pt.PutFloat("value", newParamValue);
             break;
         case EventType::PlayPcm:
             pt.PutInt("sound_ix", pcmSoundIx);
@@ -41,7 +43,10 @@ void audio::Event::Load(serial::Ptree pt) {
         case EventType::SynthParam: {
             std::string synthParamStr = pt.GetString("synth_param");
             param = StringToSynthParamType(synthParamStr.c_str());
-            newParamValue = pt.GetDouble("value");
+            paramChangeTime = 0;
+            pt.TryGetLong("change_time", &paramChangeTime);
+            // THIS IS BROKEN AND BADDDDDDDDDDDDD not handling int case
+            newParamValue = pt.GetFloat("value");            
             break;
         }            
         case EventType::PlayPcm:

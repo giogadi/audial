@@ -12,6 +12,7 @@ void RequestSynthParamChange(
     e.type = audio::EventType::SynthParam;
     e.param = param;
     e.newParamValue = value;
+    e.paramChangeTime = 0;
     audioContext.AddEvent(e);
 }
 

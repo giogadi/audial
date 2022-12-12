@@ -38,7 +38,7 @@ void ParamAutomatorEntity::Update(GameManager& g, float dt) {
     double factor = automateTime / _desiredAutomateTime;
     assert(factor >= 0.0);
     assert(factor <= 1.0);
-    double newValue = _startValue + factor * (_endValue - _startValue);
+    float newValue = _startValue + factor * (_endValue - _startValue);
     
     if (_synth) {
         audio::Event e;
@@ -47,6 +47,7 @@ void ParamAutomatorEntity::Update(GameManager& g, float dt) {
         e.timeInTicks = 0;
         e.param = _synthParam;
         e.newParamValue = newValue;
+        e.paramChangeTime = 0;
         g._audioContext->AddEvent(e);
     } else {
         StepSequencerEntity* seq = static_cast<StepSequencerEntity*>(g._neEntityManager->GetEntity(_seqId));
@@ -54,7 +55,7 @@ void ParamAutomatorEntity::Update(GameManager& g, float dt) {
             printf("ParamAutomator (\"%s\"): Sequencer was destroyed!\n", _name.c_str());
         } else {
             for (StepSequencerEntity::SeqStep& s : seq->_initialMidiSequence) {
-                s._velocity = (float) newValue;
+                s._velocity = newValue;
             }
         }
     }

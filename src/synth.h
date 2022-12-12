@@ -116,10 +116,19 @@ struct Voice {
     FilterState hpfState;
 };
 
+struct Automation {
+    // serialized
+    bool _active = false;
+    audio::SynthParamType _synthParamType;
+    float _desiredValue = 0.0;
+    long _desiredTickTime = 0;
+};
+
 struct StateData {
     int channel = -1;
 
     std::array<Voice, 6> voices;
+    std::array<Automation, 6> automations;
 
     Patch patch;
 
