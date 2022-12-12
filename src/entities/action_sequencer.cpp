@@ -5,47 +5,7 @@
 
 #include "entities/param_automator.h"
 #include "game_manager.h"
-
-void SpawnAutomatorSeqAction::Load(std::istream& input) {
-    std::string paramName;
-    input >> paramName;
-    if (paramName == "seq_velocity") {
-        _synth = false;
-        input >> _seqEntityName;
-    } else {
-        _synth = true;
-        _synthParam = audio::StringToSynthParamType(paramName.c_str());
-        input >> _channel;
-    }
-    input >> _startValue;
-    input >> _endValue;
-    input >> _desiredAutomateTime;
-}
-
-void SpawnAutomatorSeqAction::Execute(GameManager& g) {
-    ParamAutomatorEntity* e = static_cast<ParamAutomatorEntity*>(g._neEntityManager->AddEntity(ne::EntityType::ParamAutomator));
-    e->_startValue = _startValue;
-    e->_endValue = _endValue;
-    e->_desiredAutomateTime = _desiredAutomateTime;
-    e->_synth = _synth;
-    e->_synthParam = _synthParam;
-    e->_channel = _channel;
-    e->_seqEntityName = _seqEntityName;
-    e->Init(g);
-}
-
-void RemoveEntitySeqAction::Load(std::istream& input) {
-    input >> _entityName;
-}
-
-void RemoveEntitySeqAction::Execute(GameManager& g) {
-    ne::Entity* e = g._neEntityManager->FindEntityByName(_entityName);
-    if (e) {
-        g._neEntityManager->TagForDestroy(e->_id);
-    } else {
-        printf("RemoveEntitySeqAction could not find entity with name \"%s\"\n", _entityName.c_str());
-    }
-}
+#include "beat_clock.h"
 
 void ActionSequencerEntity::Init(GameManager& g) {
     _currentIx = 0;
@@ -89,6 +49,10 @@ void ActionSequencerEntity::Init(GameManager& g) {
                 pAction = std::make_unique<SpawnAutomatorSeqAction>();
             } else if (actionType == "remove_entity") {
                 pAction = std::make_unique<RemoveEntitySeqAction>();
+            } else if (actionType == "change_step") {
+                pAction = std::make_unique<ChangeStepSequencerSeqAction>();
+            } else if (actionType == "note_on_off") {
+                pAction = std::make_unique<NoteOnOffSeqAction>();
             } else {
                 printf("ERROR: Unrecognized action type \"%s\".\n", actionType.c_str());
                 break;
@@ -99,7 +63,7 @@ void ActionSequencerEntity::Init(GameManager& g) {
             double beatTime;
             lineStream >> beatTime;
 
-            pAction->Load(lineStream);
+            pAction->Load(g, lineStream);
 
             _actions.emplace_back();
             BeatTimeAction& newBta = _actions.back();

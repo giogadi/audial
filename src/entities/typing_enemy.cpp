@@ -52,16 +52,6 @@ void TypingEnemyEntity::Update(GameManager& g, float dt) {
     ne::BaseEntity::Update(g, dt);
 }
 
-namespace {
-static double constexpr kSlack = 0.0625;
-void SendEventsFromEventsList(TypingEnemyEntity const& enemy, GameManager& g, std::vector<BeatTimeEvent> const& events) {
-    for (BeatTimeEvent const& b_e : events) {
-        audio::Event e = GetEventAtBeatOffsetFromNextDenom(enemy._eventStartDenom, b_e, *g._beatClock, kSlack);
-        g._audioContext->AddEvent(e);
-    }
-}
-}
-
 bool TypingEnemyEntity::IsActive(GameManager& g) const {
     if (g._editMode) {
         return true;
@@ -80,47 +70,13 @@ void TypingEnemyEntity::OnHit(GameManager& g) {
     if (_numHits < _text.length()) {
         ++_numHits;        
         if (_numHits == _text.length()) {
-            //SendEventsFromEventsList(*this, g, _deathEvents);
             bool success = g._neEntityManager->TagForDestroy(_id);
             assert(success);
         }
 
         int hitActionIx = (_numHits - 1) % _hitActions.size();
-        Action const& a = _hitActions[hitActionIx];
+        SeqAction& a = *_hitActions[hitActionIx];
 
-        switch (a._type) {
-            case Action::Type::Seq: {
-                StepSequencerEntity* seq = static_cast<StepSequencerEntity*>(g._neEntityManager->GetEntity(a._seqId));
-                if (seq == nullptr) {
-                    printf("seq-type hit action could not find seq entity!\n");
-                    break;
-                }
-                assert(a._seqVelocity == 1.f);
-                seq->SetNextSeqStep(g, a._seqMidiNote, a._seqVelocity);
-                break;
-            }
-            case Action::Type::Note: {
-                BeatTimeEvent b_e;
-                b_e._beatTime = 0.0;
-                b_e._e.type = audio::EventType::NoteOn;
-                b_e._e.channel = a._noteChannel;
-                b_e._e.midiNote = a._noteMidiNote;
-                b_e._e.velocity = a._velocity;
-                
-                audio::Event e = GetEventAtBeatOffsetFromNextDenom(_eventStartDenom, b_e, *g._beatClock, /*slack=*/0.0625);
-                g._audioContext->AddEvent(e);
-                // b_e._e.timeInTicks = 0;
-                // g._audioContext->AddEvent(b_e._e);
-
-                b_e._e.type = audio::EventType::NoteOff;
-                b_e._beatTime = a._noteLength;
-                e = GetEventAtBeatOffsetFromNextDenom(_eventStartDenom, b_e, *g._beatClock, /*slack=*/0.0625);
-                g._audioContext->AddEvent(e);
-                // b_e._e.timeInTicks = g._beatClock->GetTimeInTicks() + g._beatClock->BeatTimeToTickTime(a._noteLength);
-                // g._audioContext->AddEvent(b_e._e);
-                    
-                break;
-            }
-        }
+        a.Execute(g);
     }
 }

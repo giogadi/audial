@@ -32,6 +32,7 @@ struct SpawnInfo {
     double _oscFaderValue = -1.0;
     Vec3 _velocity;
     std::string _seqEntityName;
+    // std::vector<BeatTimeEvent>* _eventSeq = nullptr;
     std::vector<int>* _noteTable = nullptr;
     enum class NoteTableType {
         Random, HitSeq        
@@ -127,7 +128,8 @@ void SpawnEnemy(GameManager& g, SpawnInfo const& spawn) {
     enemy->_activeBeatTime = spawn._activeBeatTime;
     enemy->_inactiveBeatTime = spawn._inactiveBeatTime;
 
-    enemy->_eventStartDenom = 0.25;
+    // enemy->_eventStartDenom = 0.25;
+    double constexpr kEventStartDenom = 0.25;
 
     enemy->_velocity = spawn._velocity;
 
@@ -136,87 +138,96 @@ void SpawnEnemy(GameManager& g, SpawnInfo const& spawn) {
         seqEntity = g._neEntityManager->FindEntityByName(spawn._seqEntityName);
     }    
 
-    if (spawn._oscFaderValue >= 0.0) {
-        {
-            enemy->_hitEvents.emplace_back();
-            BeatTimeEvent& b_e = enemy->_hitEvents.back();
-            b_e._beatTime = 0.0;
-            b_e._e.type = audio::EventType::SynthParam;
-            b_e._e.channel = spawn._channel;
-            b_e._e.param = audio::SynthParamType::OscFader;
-            b_e._e.newParamValue = spawn._oscFaderValue;
-        }
-        if (spawn._noteLength >= 0.0) {
-            float currValue = g._audioContext->_state.synths[spawn._channel].patch.oscFader;
-            enemy->_hitEvents.emplace_back();
-            BeatTimeEvent& b_e = enemy->_hitEvents.back();
-            b_e._beatTime = spawn._noteLength;
-            b_e._e.type = audio::EventType::SynthParam;
-            b_e._e.channel = spawn._channel;
-            b_e._e.param = audio::SynthParamType::OscFader;
-            b_e._e.newParamValue = currValue;
-        }
-        // BLAH
-        enemy->_deathEvents = enemy->_hitEvents;
+    // if (spawn._oscFaderValue >= 0.0) {
+    //     {
+    //         enemy->_hitEvents.emplace_back();
+    //         BeatTimeEvent& b_e = enemy->_hitEvents.back();
+    //         b_e._beatTime = 0.0;
+    //         b_e._e.type = audio::EventType::SynthParam;
+    //         b_e._e.channel = spawn._channel;
+    //         b_e._e.param = audio::SynthParamType::OscFader;
+    //         b_e._e.newParamValue = spawn._oscFaderValue;
+    //     }
+    //     if (spawn._noteLength >= 0.0) {
+    //         float currValue = g._audioContext->_state.synths[spawn._channel].patch.oscFader;
+    //         enemy->_hitEvents.emplace_back();
+    //         BeatTimeEvent& b_e = enemy->_hitEvents.back();
+    //         b_e._beatTime = spawn._noteLength;
+    //         b_e._e.type = audio::EventType::SynthParam;
+    //         b_e._e.channel = spawn._channel;
+    //         b_e._e.param = audio::SynthParamType::OscFader;
+    //         b_e._e.newParamValue = currValue;
+    //     }
+    //     // BLAH
+    //     enemy->_deathEvents = enemy->_hitEvents;
         
-    } else if (spawn._noteTable) {
+    // } else if (spawn._noteTable) {
+    if (spawn._noteTable) {
         
         switch (spawn._noteTableType) {
             case SpawnInfo::NoteTableType::Random: {
                 int randNoteIx = rng::GetInt(0, spawn._noteTable->size()-1);
                 int midiNote = spawn._noteTable->at(randNoteIx);
-                enemy->_hitActions.emplace_back();
-                TypingEnemyEntity::Action& a = enemy->_hitActions.back();
+                std::unique_ptr<SeqAction> pAction;
                 if (seqEntity) {
-                    a._type = TypingEnemyEntity::Action::Type::Seq;
-                    a._seqId = seqEntity->_id;
-                    a._seqMidiNote = midiNote;
-                    a._seqVelocity = 1.f;
+                    auto pA = std::make_unique<ChangeStepSequencerSeqAction>();
+                    pA->_seqId = seqEntity->_id;
+                    pA->_midiNote = midiNote;
+                    pA->_velocity = 1.f;
+                    pAction = std::move(pA);
                 } else {
-                    a._type = TypingEnemyEntity::Action::Type::Note;
-                    a._noteChannel = spawn._channel;
-                    a._noteMidiNote = midiNote;
-                    a._noteLength = spawn._noteLength;
-                    a._velocity = spawn._noteVelocity;
-                }                
+                    auto pA = std::make_unique<NoteOnOffSeqAction>();
+                    pA->_channel = spawn._channel;
+                    pA->_midiNote = midiNote;
+                    pA->_noteLength = spawn._noteLength;
+                    pA->_velocity = spawn._noteVelocity;
+                    pA->_quantizeDenom = kEventStartDenom;
+                    pAction = std::move(pA);
+                }
+                enemy->_hitActions.push_back(std::move(pAction));
                 break;
             }
-            case SpawnInfo::NoteTableType::HitSeq: {
+            case SpawnInfo::NoteTableType::HitSeq: {                
                 for (int midiNote : *spawn._noteTable) {
-                    enemy->_hitActions.emplace_back();
-                    TypingEnemyEntity::Action& a = enemy->_hitActions.back();
+                    std::unique_ptr<SeqAction> pAction;
                     if (seqEntity) {
-                        a._type = TypingEnemyEntity::Action::Type::Seq;
-                        a._seqId = seqEntity->_id;
-                        a._seqMidiNote = midiNote;                        
+                        auto pA = std::make_unique<ChangeStepSequencerSeqAction>();
+                        pA->_seqId = seqEntity->_id;
+                        pA->_midiNote = midiNote;
+                        pA->_velocity = 1.f;  // TODO: was this actually 0 before????
+                        pAction = std::move(pA);                        
                     } else {
-                        a._type = TypingEnemyEntity::Action::Type::Note;
-                        a._noteChannel = spawn._channel;
-                        a._noteMidiNote = midiNote;
-                        a._noteLength = spawn._noteLength;
-                        a._velocity = spawn._noteVelocity;
+                        auto pA = std::make_unique<NoteOnOffSeqAction>();
+                        pA->_channel = spawn._channel;
+                        pA->_midiNote = midiNote;
+                        pA->_noteLength = spawn._noteLength;
+                        pA->_velocity = spawn._noteVelocity;
+                        pAction = std::move(pA);
                     }
+                    enemy->_hitActions.push_back(std::move(pAction));
                 }
                 break;
             }
         }
     } else {
         // No note table, just use the one note.
-        enemy->_hitActions.emplace_back();
-        TypingEnemyEntity::Action& a = enemy->_hitActions.back();
+        std::unique_ptr<SeqAction> pAction;           
         if (seqEntity) {
-            a._type = TypingEnemyEntity::Action::Type::Seq;
-            a._seqId = seqEntity->_id;
-            a._seqMidiNote = spawn._midiNote;
-            a._seqVelocity = 1.f;
+            auto pA = std::make_unique<ChangeStepSequencerSeqAction>();
+            pA->_seqId = seqEntity->_id;
+            pA->_midiNote = spawn._midiNote;
+            pA->_velocity = 1.f;
+            pAction = std::move(pA);
         } else {
-            a._type = TypingEnemyEntity::Action::Type::Note;
-            a._noteChannel = spawn._channel;
-            a._noteMidiNote = spawn._midiNote;
-            a._noteLength = spawn._noteLength;
-            a._velocity = spawn._noteVelocity;
+            auto pA = std::make_unique<NoteOnOffSeqAction>();
+            pA->_channel = spawn._channel;
+            pA->_midiNote = spawn._midiNote;
+            pA->_noteLength = spawn._noteLength;
+            pA->_velocity = spawn._noteVelocity;
+            pAction = std::move(pA);
         }
-    }   
+        enemy->_hitActions.push_back(std::move(pAction));
+    }
 }
 
 void SpawnEnemiesFromFile(std::string_view filename, GameManager& g) {
@@ -269,7 +280,9 @@ void SpawnEnemiesFromFile(std::string_view filename, GameManager& g) {
                 key = token.substr(0, delimIx);
                 value = token.substr(delimIx+1);
             }
-            if (key == "on") {
+            if (key == "template") {
+                
+            } else if (key == "on") {
                 spawn._activeBeatTime = std::stod(value) + beatTimeOffset;
             } else if (key == "off") {
                 spawn._inactiveBeatTime = std::stod(value) + beatTimeOffset;

@@ -3,40 +3,7 @@
 #include <istream>
 
 #include "new_entity.h"
-#include "beat_time_event.h"
-
-struct SeqAction {
-    enum class Type {
-        SpawnAutomator, RemoveEntity            
-    };
-    virtual Type GetType() const = 0;
-    virtual void Execute(GameManager& g) = 0;
-    virtual void Load(std::istream& input) {}
-
-    virtual ~SeqAction() {}
-};
-
-struct SpawnAutomatorSeqAction : public SeqAction {
-    float _startValue = 0.f;
-    float _endValue = 1.f;
-    double _desiredAutomateTime = 1.0;
-    bool _synth = false;
-    audio::SynthParamType _synthParam = audio::SynthParamType::Gain;
-    int _channel = 0;  // only if _synth == true
-    std::string _seqEntityName;
-    
-    virtual Type GetType() const override { return Type::SpawnAutomator; }
-    virtual void Execute(GameManager& g) override;
-    virtual void Load(std::istream& input) override;
-};
-
-struct RemoveEntitySeqAction : public SeqAction {
-    std::string _entityName;
-
-    virtual Type GetType() const override { return Type::RemoveEntity; }
-    virtual void Execute(GameManager& g) override;
-    virtual void Load(std::istream& input) override;
-};
+#include "seq_action.h"
 
 struct ActionSequencerEntity : ne::Entity {
     struct BeatTimeAction {

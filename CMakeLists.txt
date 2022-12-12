@@ -34,6 +34,9 @@ add_executable(game
     src/components/orbitable.cpp src/components/events_on_hit.cpp src/components/activator.cpp src/components/damage.cpp
     src/components/waypoint_follow.cpp src/components/recorder_balloon.cpp src/components/area_recorder.cpp
     src/components/piano_planet.cpp
+
+    src/seq_action.cpp
+    
     src/entities/light.cpp
     src/entities/camera.cpp
     src/entities/lane_note_enemy.cpp

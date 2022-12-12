@@ -3,46 +3,23 @@
 #include <vector>
 
 #include "new_entity.h"
-#include "beat_time_event.h"
+#include "seq_action.h"
 
 struct TypingEnemyEntity : public ne::Entity {
-    struct Action {
-        enum class Type { Seq, Note };
-        Action() {
-            _type = Type::Seq;
-            _seqMidiNote = -1;
-            _seqVelocity = 1.f;
-        }
-        
-        Type _type = Type::Seq;
-        union {
-            struct {
-                ne::EntityId _seqId;
-                int _seqMidiNote;
-                float _seqVelocity;
-            };
-            struct {
-                int _noteChannel;
-                int _noteMidiNote;
-                double _noteLength;
-                float _velocity;
-            };
-        };
-    };
+    TypingEnemyEntity() = default;
+    TypingEnemyEntity(TypingEnemyEntity const&) = delete;
+    TypingEnemyEntity(TypingEnemyEntity&&) = default;
+    TypingEnemyEntity& operator=(TypingEnemyEntity&&) = default;
     
     // serialized
     std::string _text;
-    double _eventStartDenom = 0.125;
-    std::vector<BeatTimeEvent> _hitEvents;
-    std::vector<BeatTimeEvent> _deathEvents;
-    // Each time enemy gets hit, we switch to the next action in this list.
-    std::vector<Action> _hitActions;
+    std::vector<std::unique_ptr<SeqAction>> _hitActions;
     double _activeBeatTime = -1.0;
     double _inactiveBeatTime = -1.0;
     
     // non-serialized
     int _numHits = 0;
-    Vec3 _velocity;
+    Vec3 _velocity; // spatial, not audio
 
     bool IsActive(GameManager& g) const;
     void OnHit(GameManager& g);
