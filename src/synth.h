@@ -117,11 +117,12 @@ struct Voice {
 };
 
 struct Automation {
-    // serialized
     bool _active = false;
     audio::SynthParamType _synthParamType;
-    float _desiredValue = 0.0;
-    long _desiredTickTime = 0;
+    float _startValue = 0.f;
+    float _desiredValue = 0.f;
+    long _startTickTime = 0;
+    long _endTickTime = 0;    
 };
 
 struct StateData {

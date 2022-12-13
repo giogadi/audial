@@ -600,13 +600,14 @@ void Process(
 
     int currentEventIx = 0;
     for(int i = 0; i < samplesPerFrame; ++i) {
+        unsigned long currentTickTime = frameStartTickTime + i;
         // Handle events
         while (true) {
             if (currentEventIx >= pendingEvents.size()) {
                 break;
             }
             audio::Event const& e = pendingEvents[currentEventIx];
-            if (e.timeInTicks > frameStartTickTime + i) {
+            if (e.timeInTicks > currentTickTime) {
                 // This event gets handled later.
                 break;
             }
@@ -664,13 +665,18 @@ void Process(
                     break;
                 }
                 case audio::EventType::SynthParam: {
-                    if (e.paramChangeTime != 0) {
-                        // Find a free automation
+                    if (e.paramChangeTime != 0) {                        
+                        // Find a free automation. Also, ensure that there's no
+                        // existing automation on this param.
                         Automation* pA = nullptr;
                         for (Automation& a : state->automations) {
-                            if (!a._active) {
+                            if (a._active) {
+                                if (a._synthParamType == e.param) {
+                                    pA = nullptr;
+                                    break;
+                                }
+                            } else if (pA == nullptr) {
                                 pA = &a;
-                                break;
                             }
                         }
                         if (pA == nullptr) {
@@ -679,8 +685,10 @@ void Process(
                         }
                         pA->_active = true;
                         pA->_synthParamType = e.param;
+                        pA->_startValue = GetSynthParam(patch, e.param);
                         pA->_desiredValue = e.newParamValue;
-                        pA->_desiredTickTime = e.paramChangeTime;
+                        pA->_startTickTime = currentTickTime;
+                        pA->_endTickTime = pA->_startTickTime + e.paramChangeTime;
                         break;
                     }
                     SetSynthParam(e.param, e.newParamValue, e.newParamValueInt, patch);
@@ -693,19 +701,20 @@ void Process(
 
         // Now apply automations!
         for (Automation& a : state->automations) {
-            // use first order lag for now
             if (!a._active) {
                 continue;
             }
-            float& currentValue = GetSynthParam(patch, a._synthParamType);
-            float d = a._desiredValue - currentValue;
-            if (std::abs(d) < 0.001f) {
-                currentValue = a._desiredValue;
+            if (currentTickTime > a._endTickTime) {
                 a._active = false;
-            } else {
-                // TODO ACTUALLY USE _desiredTickTime!!!
-                currentValue += 0.05 * (a._desiredValue - currentValue);
-            }            
+                continue;
+            }
+            double totalTime = a._endTickTime - a._startTickTime;
+            assert(totalTime != 0.0);
+            double timeSoFar = currentTickTime - a._startTickTime;
+            double factor = timeSoFar / totalTime;
+            float& currentValue = GetSynthParam(patch, a._synthParamType);
+            float newValue = a._startValue + factor * (a._desiredValue - a._startValue);
+            currentValue = newValue;  
         }
 
         // Get pitch LFO value

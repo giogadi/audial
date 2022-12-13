@@ -1,0 +1,9 @@
+e rand_text_len:1 on:4 off:99 channel:2 x:-4 z:-4 duck:
+e rand_text_len:1 on:4 off:99 channel:2 x:0 z:-4 duck:
+e rand_text_len:1 on:4 off:99 channel:2 x:4 z:-4 duck:
+e rand_text_len:1 on:4 off:99 channel:2 x:-4 z:0 duck:
+e rand_text_len:1 on:4 off:99 channel:2 x:0 z:0 duck:
+e rand_text_len:1 on:4 off:99 channel:2 x:4 z:0 duck:
+e rand_text_len:1 on:4 off:99 channel:2 x:-4 z:4 duck:
+e rand_text_len:1 on:4 off:99 channel:2 x:0 z:4 duck:
+e rand_text_len:1 on:4 off:99 channel:2 x:4 z:4 duck:
