@@ -74,9 +74,20 @@ void TypingEnemyEntity::OnHit(GameManager& g) {
             assert(success);
         }
 
-        int hitActionIx = (_numHits - 1) % _hitActions.size();
-        SeqAction& a = *_hitActions[hitActionIx];
+        switch (_hitBehavior) {
+            case HitBehavior::SingleAction: {
+                int hitActionIx = (_numHits - 1) % _hitActions.size();
+                SeqAction& a = *_hitActions[hitActionIx];
 
-        a.Execute(g);
+                a.Execute(g);
+                break;
+            }
+            case HitBehavior::AllActions: {
+                for (auto const& pAction : _hitActions) {
+                    pAction->Execute(g);
+                }
+                break;
+            }
+        }       
     }
 }

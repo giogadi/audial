@@ -668,7 +668,7 @@ void Process(
                         // Find a free automation
                         Automation* pA = nullptr;
                         for (Automation& a : state->automations) {
-                            if (a._active) {
+                            if (!a._active) {
                                 pA = &a;
                                 break;
                             }
@@ -698,8 +698,14 @@ void Process(
                 continue;
             }
             float& currentValue = GetSynthParam(patch, a._synthParamType);
-            // TODO ACTUALLY USE _desiredTickTime!!!
-            currentValue += 0.01 * (a._desiredValue - currentValue);
+            float d = a._desiredValue - currentValue;
+            if (std::abs(d) < 0.001f) {
+                currentValue = a._desiredValue;
+                a._active = false;
+            } else {
+                // TODO ACTUALLY USE _desiredTickTime!!!
+                currentValue += 0.05 * (a._desiredValue - currentValue);
+            }            
         }
 
         // Get pitch LFO value

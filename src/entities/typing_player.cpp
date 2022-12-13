@@ -27,9 +27,12 @@ struct SpawnInfo {
     int _midiNote = -1;
     float _noteVelocity = 1.f;
     double _noteLength = -1.0;
+    // If "duck" = true, then we ignore midiNote, noteVelocity, noteLength, etc and just apply a quick ducking to the gain. This is a hack obviously.
+    bool _duck = false;
+    
     // If oscFaderValue >= 0, then this takes precedence over midi notes.
     // If _noteLength >= 0, add another event to revert to previous value.
-    double _oscFaderValue = -1.0;
+    // double _oscFaderValue = -1.0;
     Vec3 _velocity;
     std::string _seqEntityName;
     // std::vector<BeatTimeEvent>* _eventSeq = nullptr;
@@ -162,7 +165,29 @@ void SpawnEnemy(GameManager& g, SpawnInfo const& spawn) {
     //     enemy->_deathEvents = enemy->_hitEvents;
         
     // } else if (spawn._noteTable) {
-    if (spawn._noteTable) {
+    if (spawn._duck) {
+        enemy->_hitBehavior = TypingEnemyEntity::HitBehavior::AllActions;
+        
+        auto pA = std::make_unique<BeatTimeEventSeqAction>();
+        pA->_b_e._beatTime = 0.0;
+        pA->_b_e._e.type = audio::EventType::SynthParam;
+        pA->_b_e._e.channel = spawn._channel;
+        pA->_b_e._e.param = audio::SynthParamType::Gain;
+        double constexpr kChangeSeconds = 0.05;
+        long constexpr kChangeTicks = (long)(kChangeSeconds * SAMPLE_RATE);
+        pA->_b_e._e.paramChangeTime = kChangeTicks;
+        pA->_b_e._e.newParamValue = 0.0f;
+        enemy->_hitActions.push_back(std::move(pA));
+
+        pA = std::make_unique<BeatTimeEventSeqAction>();
+        pA->_b_e._beatTime = 0.25;
+        pA->_b_e._e.type = audio::EventType::SynthParam;
+        pA->_b_e._e.channel = spawn._channel;
+        pA->_b_e._e.param = audio::SynthParamType::Gain;
+        pA->_b_e._e.paramChangeTime = kChangeTicks;
+        pA->_b_e._e.newParamValue = 0.677999973f;
+        enemy->_hitActions.push_back(std::move(pA));
+    } else if (spawn._noteTable) {
         
         switch (spawn._noteTableType) {
             case SpawnInfo::NoteTableType::Random: {
@@ -280,9 +305,7 @@ void SpawnEnemiesFromFile(std::string_view filename, GameManager& g) {
                 key = token.substr(0, delimIx);
                 value = token.substr(delimIx+1);
             }
-            if (key == "template") {
-                
-            } else if (key == "on") {
+            if (key == "on") {
                 spawn._activeBeatTime = std::stod(value) + beatTimeOffset;
             } else if (key == "off") {
                 spawn._inactiveBeatTime = std::stod(value) + beatTimeOffset;
@@ -308,9 +331,10 @@ void SpawnEnemiesFromFile(std::string_view filename, GameManager& g) {
                 spawn._noteVelocity = std::stof(value);
             } else if (key == "length") {
                 spawn._noteLength = std::stod(value);
-            } else if (key == "osc_fader") {
+            } /*else if (key == "osc_fader") {
                 spawn._oscFaderValue = std::stod(value);
-            } else if (key == "rand_pos") {
+                }*/
+            else if (key == "rand_pos") {
                 spawn._x = rng::GetFloat(-8.f, 8.f);
                 spawn._z = rng::GetFloat(-5.f, 5.f);                
             } else if (key == "rand_pv") {                
@@ -362,6 +386,8 @@ void SpawnEnemiesFromFile(std::string_view filename, GameManager& g) {
                     spawn._noteTable = &(result->second);
                     spawn._noteTableType = SpawnInfo::NoteTableType::HitSeq;
                 }
+            } else if (key == "duck") {
+                spawn._duck = true;
             } else {
                 printf("Unrecognized key \"%s\".\n", key.c_str());
             }

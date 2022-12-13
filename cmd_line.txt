@@ -13,4 +13,5 @@
 // -s data/tech_level.xml -y data/synth_patches_tech_new.xml
 // -s data/typing_level.xml -y data/synth_patches_tech_new.xml
 // -s data/typing_level_old_seq.xml -y data/synth_patches_typing.xml
--s data/typing_level.xml -y data/synth_patches_typing.xml
+// -s data/typing_level.xml -y data/synth_patches_typing.xml
+-s data/test_level.xml -y data/synth_patches_typing.xml

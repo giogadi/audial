@@ -6,14 +6,12 @@
 #include "seq_action.h"
 
 struct TypingEnemyEntity : public ne::Entity {
-    TypingEnemyEntity() = default;
-    TypingEnemyEntity(TypingEnemyEntity const&) = delete;
-    TypingEnemyEntity(TypingEnemyEntity&&) = default;
-    TypingEnemyEntity& operator=(TypingEnemyEntity&&) = default;
+    enum class HitBehavior { SingleAction, AllActions };
     
     // serialized
     std::string _text;
     std::vector<std::unique_ptr<SeqAction>> _hitActions;
+    HitBehavior _hitBehavior = HitBehavior::SingleAction;;
     double _activeBeatTime = -1.0;
     double _inactiveBeatTime = -1.0;
     
@@ -33,4 +31,9 @@ struct TypingEnemyEntity : public ne::Entity {
     /* virtual void SaveDerived(serial::Ptree pt) const {}; */
     /* virtual void LoadDerived(serial::Ptree pt) {}; */
     /* virtual ImGuiResult ImGuiDerived(GameManager& g) { return ImGuiResult::Done; } */
+
+    TypingEnemyEntity() = default;
+    TypingEnemyEntity(TypingEnemyEntity const&) = delete;
+    TypingEnemyEntity(TypingEnemyEntity&&) = default;
+    TypingEnemyEntity& operator=(TypingEnemyEntity&&) = default;
 };
