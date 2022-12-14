@@ -36,6 +36,7 @@ add_executable(game
     src/components/piano_planet.cpp
 
     src/seq_action.cpp
+    src/seq_actions/spawn_enemy.cpp
     
     src/entities/light.cpp
     src/entities/camera.cpp

@@ -13,6 +13,7 @@
 #include "midi_util.h"
 #include "rng.h"
 #include "constants.h"
+#include "string_util.h"
 
 namespace {
 
@@ -108,17 +109,6 @@ void LoadNoteTables() {
     }
 }
 
-std::string GenerateRandomText(int numChars) {
-    std::string text;
-    text.reserve(numChars);
-    for (int i = 0; i < numChars; ++i) {
-        int randCharIx = rng::GetInt(0, 25);
-        char randChar = 'a' + (char) randCharIx;
-        text.push_back(randChar);
-    }
-    return text;
-}
-
 void SpawnEnemy(GameManager& g, SpawnInfo const& spawn) {
     TypingEnemyEntity* enemy = static_cast<TypingEnemyEntity*>(g._neEntityManager->AddEntity(ne::EntityType::TypingEnemy));
 
@@ -173,14 +163,14 @@ void SpawnEnemy(GameManager& g, SpawnInfo const& spawn) {
         pA->_b_e._e.type = audio::EventType::SynthParam;
         pA->_b_e._e.channel = spawn._channel;
         pA->_b_e._e.param = audio::SynthParamType::Gain;
-        double constexpr kChangeSeconds = 0.05;
+        double constexpr kChangeSeconds = 0.01;
         long constexpr kChangeTicks = (long)(kChangeSeconds * SAMPLE_RATE);
         pA->_b_e._e.paramChangeTime = kChangeTicks;
         pA->_b_e._e.newParamValue = 0.0f;
         enemy->_hitActions.push_back(std::move(pA));
 
         pA = std::make_unique<BeatTimeEventSeqAction>();
-        pA->_b_e._beatTime = 0.25;
+        pA->_b_e._beatTime = 0.125;
         pA->_b_e._e.type = audio::EventType::SynthParam;
         pA->_b_e._e.channel = spawn._channel;
         pA->_b_e._e.param = audio::SynthParamType::Gain;
@@ -313,7 +303,7 @@ void SpawnEnemiesFromFile(std::string_view filename, GameManager& g) {
                 spawn._text = value;
             } else if (key == "rand_text_len") {
                 int numChars = std::stoi(value);
-                spawn._text = GenerateRandomText(numChars);
+                spawn._text = string_util::GenerateRandomText(numChars);
             } else if (key == "x") {
                 spawn._x = std::stof(value);
             } else if (key == "z") {

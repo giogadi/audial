@@ -5,7 +5,7 @@
 #include "audio.h"
 #include "midi_util.h"
 
-void SpawnAutomatorSeqAction::Load(GameManager& g, std::istream& input) {
+void SpawnAutomatorSeqAction::Load(GameManager& g, LoadInputs const& loadInputs, std::istream& input) {
     std::string paramName;
     input >> paramName;
     if (paramName == "seq_velocity") {
@@ -33,7 +33,7 @@ void SpawnAutomatorSeqAction::Execute(GameManager& g) {
     e->Init(g);
 }
 
-void RemoveEntitySeqAction::Load(GameManager& g, std::istream& input) {
+void RemoveEntitySeqAction::Load(GameManager& g, LoadInputs const& loadInputs, std::istream& input) {
     input >> _entityName;
 }
 
@@ -56,7 +56,7 @@ void ChangeStepSequencerSeqAction::Execute(GameManager& g) {
     }
 }
 
-void ChangeStepSequencerSeqAction::Load(GameManager& g, std::istream& input) {
+void ChangeStepSequencerSeqAction::Load(GameManager& g, LoadInputs const& loadInputs, std::istream& input) {
     std::string seqName;
     input >> seqName;
     ne::Entity* e = g._neEntityManager->FindEntityByName(seqName);
@@ -86,7 +86,7 @@ void NoteOnOffSeqAction::Execute(GameManager& g) {
     g._audioContext->AddEvent(e);
 }
 
-void NoteOnOffSeqAction::Load(GameManager& g, std::istream& input) {
+void NoteOnOffSeqAction::Load(GameManager& g, LoadInputs const& loadInputs, std::istream& input) {
     std::string token, key, value;
     while (!input.eof()) {
         {
@@ -121,6 +121,7 @@ void BeatTimeEventSeqAction::Execute(GameManager& g) {
     g._audioContext->AddEvent(e);
 }
 
-void BeatTimeEventSeqAction::Load(GameManager& g, std::istream& input) {
+void BeatTimeEventSeqAction::Load(GameManager& g, LoadInputs const& loadInputs, std::istream& input) {
+    assert(false);  // TODO: how to consider loadInputs?
     ReadBeatEventFromTextLine(*g._soundBank, input, _b_e);
 }

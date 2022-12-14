@@ -6,6 +6,7 @@
 #include "entities/param_automator.h"
 #include "game_manager.h"
 #include "beat_clock.h"
+#include "seq_actions/spawn_enemy.h"
 
 void ActionSequencerEntity::Init(GameManager& g) {
     _currentIx = 0;
@@ -16,6 +17,8 @@ void ActionSequencerEntity::Init(GameManager& g) {
         printf("Action Sequencer %s could not find seq file %s\n", _name.c_str(), _seqFilename.c_str());
         return;
     }
+    SeqAction::LoadInputs loadInputs;
+    loadInputs._beatTimeOffset = 0.0;
     std::string line;
     while (!inFile.eof()) {
         std::getline(inFile, line);
@@ -53,6 +56,8 @@ void ActionSequencerEntity::Init(GameManager& g) {
                 pAction = std::make_unique<ChangeStepSequencerSeqAction>();
             } else if (actionType == "note_on_off") {
                 pAction = std::make_unique<NoteOnOffSeqAction>();
+            } else if (actionType == "spawn_enemy") {
+                pAction = std::make_unique<SpawnEnemySeqAction>();
             } else {
                 printf("ERROR: Unrecognized action type \"%s\".\n", actionType.c_str());
                 break;
@@ -63,7 +68,7 @@ void ActionSequencerEntity::Init(GameManager& g) {
             double beatTime;
             lineStream >> beatTime;
 
-            pAction->Load(g, lineStream);
+            pAction->Load(g, loadInputs, lineStream);
 
             _actions.emplace_back();
             BeatTimeAction& newBta = _actions.back();

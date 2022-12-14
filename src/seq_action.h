@@ -15,11 +15,16 @@ struct SeqAction {
         RemoveEntity,
         ChangeStepSequencer,
         NoteOnOff,
-        BeatTimeEvent
+        BeatTimeEvent,
+        SpawnEnemy,
     };
     virtual Type GetType() const = 0;
     virtual void Execute(GameManager& g) = 0;
-    virtual void Load(GameManager& g, std::istream& input) {}
+    struct LoadInputs {
+        double _beatTimeOffset = 0.0;
+    };
+    virtual void Load(
+        GameManager& g, LoadInputs const& loadInputs, std::istream& input) {}
 
     virtual ~SeqAction() {}
 };
@@ -35,7 +40,8 @@ struct SpawnAutomatorSeqAction : public SeqAction {
     
     virtual Type GetType() const override { return Type::SpawnAutomator; }
     virtual void Execute(GameManager& g) override;
-    virtual void Load(GameManager& g, std::istream& input) override;
+    virtual void Load(
+        GameManager& g, LoadInputs const& loadInputs, std::istream& input) override;
 };
 
 struct RemoveEntitySeqAction : public SeqAction {
@@ -43,7 +49,8 @@ struct RemoveEntitySeqAction : public SeqAction {
 
     virtual Type GetType() const override { return Type::RemoveEntity; }
     virtual void Execute(GameManager& g) override;
-    virtual void Load(GameManager& g, std::istream& input) override;
+    virtual void Load(
+        GameManager& g, LoadInputs const& loadInputs, std::istream& input) override;
 };
 
 struct ChangeStepSequencerSeqAction : public SeqAction {
@@ -52,7 +59,8 @@ struct ChangeStepSequencerSeqAction : public SeqAction {
     float _velocity = 0.f;
     virtual Type GetType() const override { return Type::ChangeStepSequencer; }
     virtual void Execute(GameManager& g) override;
-    virtual void Load(GameManager& g, std::istream& input) override;
+    virtual void Load(
+        GameManager& g, LoadInputs const& loadInputs, std::istream& input) override;
 };
 
 struct NoteOnOffSeqAction : public SeqAction {
@@ -63,7 +71,8 @@ struct NoteOnOffSeqAction : public SeqAction {
     double _quantizeDenom = 0.25;
     virtual Type GetType() const override { return Type::NoteOnOff; }
     virtual void Execute(GameManager& g) override;
-    virtual void Load(GameManager& g, std::istream& input) override;
+    virtual void Load(
+        GameManager& g, LoadInputs const& loadInputs, std::istream& input) override;
 };
 
 struct BeatTimeEventSeqAction : public SeqAction {
@@ -71,5 +80,6 @@ struct BeatTimeEventSeqAction : public SeqAction {
     double _quantizeDenom = 0.25;
     virtual Type GetType() const override { return Type::BeatTimeEvent; }
     virtual void Execute(GameManager& g) override;
-    virtual void Load(GameManager& g, std::istream& input) override;
+    virtual void Load(
+        GameManager& g, LoadInputs const& loadInputs, std::istream& input) override;
 };
