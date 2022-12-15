@@ -1,6 +1,190 @@
-automate 0.0 Gain 3 0.0 0.0 0.1
-automate 16.0 seq_velocity bass_seq 0.0 1.0 4.0
-#automate 32.0 Gain 3 0.0 0.6 4.0
-#automate 32.0 seq_velocity bass_seq 1.0 0.6 4.0
-#automate 32.0 Gain 0 1.0 0.0 4.0
-remove_entity 36.0 kick
+# automations
+
+0 automate Gain 3 0.0 0.0 0.1
+16 automate seq_velocity bass_seq 0.0 1.0 4.0
+#32 automate Gain 3 0.0 0.6 4.0
+#32 automate seq_velocity bass_seq 1.0 0.6 4.0
+#32 automate Gain 0 1.0 0.0 4.0
+36 remove_entity kick
+
+# enemies
+
+offset 4
+
+0 e rand_text_len:1 off:8 x:-4 z:-10 vz:1 type:seq note:G2 seq:bass_seq
+0 e rand_text_len:1 off:8 x:0 z:-10 vz:1 type:seq note:G2 seq:bass_seq
+0 e rand_text_len:1 off:8 x:4 z:-10 vz:1 type:seq note:G2 seq:bass_seq 
+0 e rand_text_len:1 off:8 x:-4 z:-7 vz:1 type:seq note:G2 seq:bass_seq
+0 e rand_text_len:1 off:8 x:0 z:-7 vz:1 type:seq note:G2 seq:bass_seq
+0 e rand_text_len:1 off:8 x:4 z:-7 vz:1 type:seq note:G2 seq:bass_seq
+0 e rand_text_len:1 off:8 x:-4 z:-3 vz:1 type:seq note:G2 seq:bass_seq
+0 e rand_text_len:1 off:8 x:0 z:-3 vz:1 type:seq note:G2 seq:bass_seq
+0 e rand_text_len:1 off:8 x:4 z:-3 vz:1 type:seq note:G2 seq:bass_seq
+0 e rand_text_len:1 off:8 x:0 z:-0 vz:1 type:seq note:G2 seq:bass_seq
+
+offset 12
+
+0 e text:fj off:5 x:-4 z:-10 vz:2 type:seq note_list:bassGA seq:bass_seq
+0 e text:fj off:5 x:0 z:-10 vz:2 type:seq note_list:bassGA seq:bass_seq
+0 e text:fj off:5 x:4 z:-10 vz:2 type:seq note_list:bassGA seq:bass_seq
+0 e text:fj off:5 x:-4 z:-7 vz:2 type:seq note_list:bassGA seq:bass_seq
+0 e text:fj off:5 x:0 z:-7 vz:2 type:seq note_list:bassGA seq:bass_seq
+
+offset 16
+
+0 e text:ji off:4 x:-4 z:-10 vz:1 type:seq note_list:bassGB- seq:bass_seq 
+0 e text:ji off:4 x:0 z:-10 vz:1 type:seq note_list:bassGB- seq:bass_seq
+0 e text:ji off:4 x:4 z:-10 vz:1 type:seq note_list:bassGB- seq:bass_seq
+0 e text:ji off:4 x:-4 z:-7 vz:1 type:seq note_list:bassGB- seq:bass_seq
+0 e text:ji off:4 x:0 z:-7 vz:1 type:seq note_list:bassGB- seq:bass_seq
+
+offset 20
+
+0 e rand_text_len:1 off:8 x:-4 z:-10 vz:1 type:seq note:G2 seq:bass_seq
+0 e rand_text_len:1 off:8 x:0 z:-10 vz:1 type:seq note:G2 seq:bass_seq
+0 e rand_text_len:1 off:8 x:4 z:-10 vz:1 type:seq note:G2 seq:bass_seq 
+0 e rand_text_len:1 off:8 x:-4 z:-7 vz:1 type:seq note:G2 seq:bass_seq
+0 e rand_text_len:1 off:8 x:0 z:-7 vz:1 type:seq note:G2 seq:bass_seq
+0 e rand_text_len:1 off:8 x:4 z:-7 vz:1 type:seq note:G2 seq:bass_seq
+0 e rand_text_len:1 off:8 x:-4 z:-3 vz:1 type:seq note:G2 seq:bass_seq
+0 e rand_text_len:1 off:8 x:0 z:-3 vz:1 type:seq note:G2 seq:bass_seq
+0 e rand_text_len:1 off:8 x:4 z:-3 vz:1 type:seq note:G2 seq:bass_seq
+0 e rand_text_len:1 off:8 x:0 z:-0 vz:1 type:seq note:G2 seq:bass_seq
+
+offset 28
+
+0 e text:fj off:5 x:-4 z:-10 vz:2 type:seq note_list:bassGA seq:bass_seq
+0 e text:fj off:5 x:0 z:-10 vz:2 type:seq note_list:bassGA seq:bass_seq
+0 e text:fj off:5 x:4 z:-10 vz:2 type:seq note_list:bassGA seq:bass_seq
+0 e text:fj off:5 x:-4 z:-7 vz:2 type:seq note_list:bassGA seq:bass_seq
+0 e text:fj off:5 x:0 z:-7 vz:2 type:seq note_list:bassGA seq:bass_seq
+
+offset 32
+
+0 e text:ji off:4 x:-4 z:-10 vz:1 type:seq note_list:bassGB- seq:bass_seq 
+0 e text:ji off:4 x:0 z:-10 vz:1 type:seq note_list:bassGB- seq:bass_seq
+0 e text:ji off:4 x:4 z:-10 vz:1 type:seq note_list:bassGB- seq:bass_seq
+0 e text:ji off:4 x:-4 z:-7 vz:1 type:seq note_list:bassGB- seq:bass_seq
+0 e text:ji off:4 x:0 z:-7 vz:1 type:seq note_list:bassGB- seq:bass_seq
+
+offset 36
+
+0 e rand_text_len:1 off:8 x:-4 z:-10 vz:1 type:seq note:G2 seq:bass_seq
+0 e rand_text_len:1 off:8 x:0 z:-10 vz:1 type:seq note:G2 seq:bass_seq
+0 e rand_text_len:1 off:8 x:4 z:-10 vz:1 type:seq note:G2 seq:bass_seq 
+0 e rand_text_len:1 off:8 x:-4 z:-7 vz:1 type:seq note:G2 seq:bass_seq
+0 e rand_text_len:1 off:8 x:0 z:-7 vz:1 type:seq note:G2 seq:bass_seq
+0 e rand_text_len:1 off:8 x:4 z:-7 vz:1 type:seq note:G2 seq:bass_seq
+0 e rand_text_len:1 off:8 x:-4 z:-3 vz:1 type:seq note:G2 seq:bass_seq
+0 e rand_text_len:1 off:8 x:0 z:-3 vz:1 type:seq note:G2 seq:bass_seq
+0 e rand_text_len:1 off:8 x:4 z:-3 vz:1 type:seq note:G2 seq:bass_seq
+0 e rand_text_len:1 off:8 x:0 z:-0 vz:1 type:seq note:G2 seq:bass_seq
+
+offset 44
+
+0 e text:fj off:5 x:-4 z:-10 vz:2 type:seq note_list:bassGA seq:bass_seq
+0 e text:fj off:5 x:0 z:-10 vz:2 type:seq note_list:bassGA seq:bass_seq
+0 e text:fj off:5 x:4 z:-10 vz:2 type:seq note_list:bassGA seq:bass_seq
+0 e text:fj off:5 x:-4 z:-7 vz:2 type:seq note_list:bassGA seq:bass_seq
+0 e text:fj off:5 x:0 z:-7 vz:2 type:seq note_list:bassGA seq:bass_seq
+
+offset 48
+
+0 e rand_text_len:4 off:5 x:-5 z:0 vz:1 type:seq note_list:bassSoloA seq:bass_seq
+0 e rand_text_len:4 off:5 x:-2.5 z:0 vz:1 type:seq note_list:bassSoloA seq:bass_seq
+0 e rand_text_len:4 off:5 x:2.5 z:0 vz:1 type:seq note_list:bassSoloA seq:bass_seq
+0 e rand_text_len:4 off:5 x:5 z:0 vz:1 type:seq note_list:bassSoloA seq:bass_seq
+
+offset 52
+
+0 e text:a off:8 x:-5 z:-10 type:seq note:G2 seq:bass_seq
+0 e text:a off:8 x:-5 z:-8 type:seq note:G2 seq:bass_seq
+0 e text:a off:8 x:-5 z:-6 type:seq note:G2 seq:bass_seq
+0 e text:a off:8 x:-5 z:-4 type:seq note:G2 seq:bass_seq
+0 e text:a off:8 x:-5 z:-2 type:seq note:G2 seq:bass_seq
+0 e text:a off:8 x:-5 z:0 type:seq note:G2 seq:bass_seq
+0 e text:a off:8 x:-5 z:2 type:seq note:G2 seq:bass_seq
+0 e text:a off:8 x:-5 z:4 type:seq note:G2 seq:bass_seq
+
+0 e text:i off:8 x:0 z:-4 type:seq rand_note:bass1 seq:bass_seq
+0 e text:y off:8 x:2 z:-4 type:seq rand_note:bass1 seq:bass_seq
+0 e text:m off:8 x:4 z:-4 type:seq rand_note:bass1 seq:bass_seq
+0 e text:j off:8 x:0 z:0 type:seq rand_note:bass1 seq:bass_seq
+0 e text:n off:8 x:2 z:0 type:seq rand_note:bass1 seq:bass_seq
+0 e text:k off:8 x:4 z:0 type:seq rand_note:bass1 seq:bass_seq
+0 e text:o off:8 x:0 z:2 type:seq rand_note:bass1 seq:bass_seq
+0 e text:h off:8 x:2 z:2 type:seq rand_note:bass1 seq:bass_seq
+
+offset 60
+
+0 e text:a off:4 x:-5 z:-10 type:seq note:G2 seq:bass_seq
+0 e text:a off:4 x:-5 z:-8 type:seq note:G2 seq:bass_seq
+0 e text:a off:4 x:-5 z:-6 type:seq note:G2 seq:bass_seq
+0 e text:a off:4 x:-5 z:-4 type:seq note:G2 seq:bass_seq
+0 e text:f off:4 x:-2.5 z:-10 type:seq note:G2 seq:bass_seq
+0 e text:f off:4 x:-2.5 z:-8 type:seq note:G2 seq:bass_seq
+0 e text:f off:4 x:-2.5 z:-6 type:seq note:G2 seq:bass_seq
+0 e text:f off:4 x:-2.5 z:-4 type:seq note:G2 seq:bass_seq
+
+0 e text:i off:4 x:0 z:-4 type:seq rand_note:bass1 seq:bass_seq
+0 e text:y off:4 x:2 z:-4 type:seq rand_note:bass1 seq:bass_seq
+0 e text:m off:4 x:4 z:-4 type:seq rand_note:bass1 seq:bass_seq
+0 e text:j off:4 x:0 z:0 type:seq rand_note:bass1 seq:bass_seq
+0 e text:n off:4 x:2 z:0 type:seq rand_note:bass1 seq:bass_seq
+0 e text:k off:4 x:4 z:0 type:seq rand_note:bass1 seq:bass_seq
+0 e text:o off:4 x:0 z:2 type:seq rand_note:bass1 seq:bass_seq
+0 e text:h off:4 x:2 z:2 type:seq rand_note:bass1 seq:bass_seq
+
+offset 64
+
+0 e rand_text_len:4 off:5 x:-5 z:0 vz:1 type:seq note_list:bassSoloA seq:bass_seq
+0 e rand_text_len:4 off:5 x:-2.5 z:0 vz:1 type:seq note_list:bassSoloA seq:bass_seq
+0 e rand_text_len:4 off:5 x:2.5 z:0 vz:1 type:seq note_list:bassSoloA seq:bass_seq
+0 e rand_text_len:4 off:5 x:5 z:0 vz:1 type:seq note_list:bassSoloA seq:bass_seq
+
+offset 68
+
+0 e text:a off:8 x:-5 z:-10 type:seq note:G2 seq:bass_seq
+0 e text:a off:8 x:-5 z:-8 type:seq note:G2 seq:bass_seq
+0 e text:a off:8 x:-5 z:-6 type:seq note:G2 seq:bass_seq
+0 e text:a off:8 x:-5 z:-4 type:seq note:G2 seq:bass_seq
+0 e text:a off:8 x:-5 z:-2 type:seq note:G2 seq:bass_seq
+0 e text:a off:8 x:-5 z:0 type:seq note:G2 seq:bass_seq
+0 e text:a off:8 x:-5 z:2 type:seq note:G2 seq:bass_seq
+0 e text:a off:8 x:-5 z:4 type:seq note:G2 seq:bass_seq
+
+0 e text:i off:8 x:0 z:-4 type:seq rand_note:bass1 seq:bass_seq
+0 e text:y off:8 x:2 z:-4 type:seq rand_note:bass1 seq:bass_seq
+0 e text:m off:8 x:4 z:-4 type:seq rand_note:bass1 seq:bass_seq
+0 e text:j off:8 x:0 z:0 type:seq rand_note:bass1 seq:bass_seq
+0 e text:n off:8 x:2 z:0 type:seq rand_note:bass1 seq:bass_seq
+0 e text:k off:8 x:4 z:0 type:seq rand_note:bass1 seq:bass_seq
+0 e text:o off:8 x:0 z:2 type:seq rand_note:bass1 seq:bass_seq
+0 e text:h off:8 x:2 z:2 type:seq rand_note:bass1 seq:bass_seq
+
+offset 76
+
+0 e text:a off:4 x:-5 z:-10 type:seq note:G2 seq:bass_seq
+0 e text:a off:4 x:-5 z:-8 type:seq note:G2 seq:bass_seq
+0 e text:a off:4 x:-5 z:-6 type:seq note:G2 seq:bass_seq
+0 e text:a off:4 x:-5 z:-4 type:seq note:G2 seq:bass_seq
+0 e text:f off:4 x:-2.5 z:-10 type:seq note:G2 seq:bass_seq
+0 e text:f off:4 x:-2.5 z:-8 type:seq note:G2 seq:bass_seq
+0 e text:f off:4 x:-2.5 z:-6 type:seq note:G2 seq:bass_seq
+0 e text:f off:4 x:-2.5 z:-4 type:seq note:G2 seq:bass_seq
+
+0 e text:i off:4 x:0 z:-4 type:seq rand_note:bass1 seq:bass_seq
+0 e text:y off:4 x:2 z:-4 type:seq rand_note:bass1 seq:bass_seq
+0 e text:m off:4 x:4 z:-4 type:seq rand_note:bass1 seq:bass_seq
+0 e text:j off:4 x:0 z:0 type:seq rand_note:bass1 seq:bass_seq
+0 e text:n off:4 x:2 z:0 type:seq rand_note:bass1 seq:bass_seq
+0 e text:k off:4 x:4 z:0 type:seq rand_note:bass1 seq:bass_seq
+0 e text:o off:4 x:0 z:2 type:seq rand_note:bass1 seq:bass_seq
+0 e text:h off:4 x:2 z:2 type:seq rand_note:bass1 seq:bass_seq
+
+offset 80
+
+0 e rand_text_len:4 off:5 x:-5 z:0 vz:1 type:seq note_list:bassSoloA seq:bass_seq
+0 e rand_text_len:4 off:5 x:-2.5 z:0 vz:1 type:seq note_list:bassSoloA seq:bass_seq
+0 e rand_text_len:4 off:5 x:2.5 z:0 vz:1 type:seq note_list:bassSoloA seq:bass_seq
+0 e rand_text_len:4 off:5 x:5 z:0 vz:1 type:seq note_list:bassSoloA seq:bass_seq

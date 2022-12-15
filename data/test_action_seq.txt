@@ -1,22 +1,22 @@
-0 spawn_enemy rand_text_len:1 on:4 off:99 x:-4 z:-4 type:param param:Gain channel:2 fade_t:0.01 v:0 t:0 v:0.677999973 t:0.125
-0 spawn_enemy  rand_text_len:1 on:4 off:99 x:0 z:-4 type:param param:Gain channel:2 fade_t:0.01 v:0 t:0 v:0.677999973 t:0.125
-0 spawn_enemy  rand_text_len:1 on:4 off:99 x:4 z:-4 type:param param:Gain channel:2 fade_t:0.01 v:0 t:0 v:0.677999973 t:0.125
-0 spawn_enemy  rand_text_len:1 on:4 off:99 x:-4 z:0 type:param param:Gain channel:2 fade_t:0.01 v:0 t:0 v:0.677999973 t:0.125
-0 spawn_enemy  rand_text_len:1 on:4 off:99 x:0 z:0 type:param param:Gain channel:2 fade_t:0.01 v:0 t:0 v:0.677999973 t:0.125
-0 spawn_enemy  rand_text_len:1 on:4 off:99 x:4 z:0 type:param param:Gain channel:2 fade_t:0.01 v:0 t:0 v:0.677999973 t:0.125
-0 spawn_enemy  rand_text_len:1 on:4 off:99 x:-4 z:4 type:param param:Gain channel:2 fade_t:0.01 v:0 t:0 v:0.677999973 t:0.125
-0 spawn_enemy  rand_text_len:1 on:4 off:99 x:0 z:4 type:param param:Gain channel:2 fade_t:0.01 v:0 t:0 v:0.677999973 t:0.125
-0 spawn_enemy  rand_text_len:1 on:4 off:99 x:4 z:4 type:param param:Gain channel:2 fade_t:0.01 v:0 t:0 v:0.677999973 t:0.125
+0 e rand_text_len:1 on:4 off:99 x:-4 z:-4 type:param param:Gain channel:2 fade_t:0.01 v:0 t:0 v:0.677999973 t:0.125
+0 e  rand_text_len:1 on:4 off:99 x:0 z:-4 type:param param:Gain channel:2 fade_t:0.01 v:0 t:0 v:0.677999973 t:0.125
+0 e  rand_text_len:1 on:4 off:99 x:4 z:-4 type:param param:Gain channel:2 fade_t:0.01 v:0 t:0 v:0.677999973 t:0.125
+0 e  rand_text_len:1 on:4 off:99 x:-4 z:0 type:param param:Gain channel:2 fade_t:0.01 v:0 t:0 v:0.677999973 t:0.125
+0 e  rand_text_len:1 on:4 off:99 x:0 z:0 type:param param:Gain channel:2 fade_t:0.01 v:0 t:0 v:0.677999973 t:0.125
+0 e  rand_text_len:1 on:4 off:99 x:4 z:0 type:param param:Gain channel:2 fade_t:0.01 v:0 t:0 v:0.677999973 t:0.125
+0 e  rand_text_len:1 on:4 off:99 x:-4 z:4 type:param param:Gain channel:2 fade_t:0.01 v:0 t:0 v:0.677999973 t:0.125
+0 e  rand_text_len:1 on:4 off:99 x:0 z:4 type:param param:Gain channel:2 fade_t:0.01 v:0 t:0 v:0.677999973 t:0.125
+0 e  rand_text_len:1 on:4 off:99 x:4 z:4 type:param param:Gain channel:2 fade_t:0.01 v:0 t:0 v:0.677999973 t:0.125
 
 offset 12
 
-0 spawn_enemy rand_text_len:1 on:0 off:99 x:-4 z:-4 type:seq seq:bass_seq rand_note:bass1
-0 spawn_enemy rand_text_len:1 on:0 off:99 x:0 z:-4 type:seq seq:bass_seq rand_note:bass1
-0 spawn_enemy rand_text_len:1 on:0 off:99 x:4 z:-4 type:seq seq:bass_seq rand_note:bass1
-0 spawn_enemy rand_text_len:1 on:0 off:99 x:-4 z:0 type:seq seq:bass_seq rand_note:bass1
-0 spawn_enemy rand_text_len:1 on:0 off:99 x:0 z:0 type:seq seq:bass_seq rand_note:bass1
-0 spawn_enemy rand_text_len:1 on:0 off:99 x:4 z:0 type:seq seq:bass_seq rand_note:bass1
+0 e rand_text_len:1 on:0 off:99 x:-4 z:-4 type:seq seq:bass_seq rand_note:bass1
+0 e rand_text_len:1 on:0 off:99 x:0 z:-4 type:seq seq:bass_seq rand_note:bass1
+0 e rand_text_len:1 on:0 off:99 x:4 z:-4 type:seq seq:bass_seq rand_note:bass1
+0 e rand_text_len:1 on:0 off:99 x:-4 z:0 type:seq seq:bass_seq rand_note:bass1
+0 e rand_text_len:1 on:0 off:99 x:0 z:0 type:seq seq:bass_seq rand_note:bass1
+0 e rand_text_len:1 on:0 off:99 x:4 z:0 type:seq seq:bass_seq rand_note:bass1
 
-4 spawn_enemy rand_text_len:5 on:4 off:99 x:4 z:4 type:seq seq:bass_seq note_list:bass1
+4 e rand_text_len:5 on:4 off:99 x:4 z:4 type:seq seq:bass_seq note_list:bass1
 
 4 automate seq_velocity bass_seq 0.0 1.0 4.0

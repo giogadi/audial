@@ -65,7 +65,7 @@ void ActionSequencerEntity::Init(GameManager& g) {
             pAction = std::make_unique<ChangeStepSequencerSeqAction>();
         } else if (token == "note_on_off") {
             pAction = std::make_unique<NoteOnOffSeqAction>();
-        } else if (token == "spawn_enemy") {
+        } else if (token == "e") {
             pAction = std::make_unique<SpawnEnemySeqAction>();
         } else {
             printf("ERROR: Unrecognized action type \"%s\".\n", token.c_str());
