@@ -220,8 +220,75 @@ void LoadSeqEnemy(GameManager& g, TypingEnemyEntity& enemy, std::istream& lineSt
 }
 
 void LoadNoteEnemy(TypingEnemyEntity& enemy, std::istream& lineStream) {
+    int midiNote = -1;
+    std::vector<int>* noteTable = nullptr;
+    float velocity = 1.f;
+    int channel = 0;
+    double noteLength = 0.25;
+    
+    std::string token, key, value;
+    while (!lineStream.eof()) {
+        {
+            lineStream >> token;
+            std::size_t delimIx = token.find_first_of(':');
+            if (delimIx == std::string::npos) {
+                printf("LoadNoteEnemy: Token missing \":\" - \"%s\"\n", token.c_str());
+                continue;
+            }
+
+            key = token.substr(0, delimIx);
+            value = token.substr(delimIx+1);
+        }
+
+        if (key == "note") {
+            midiNote = GetMidiNote(value.c_str());
+        } else if (key == "rand_note") {
+            auto result = gNoteTables.find(value);
+            if (result == gNoteTables.end()) {
+                printf("ERROR: no note table named %s\n", value.c_str());
+            } else {
+                auto const& randNoteTable = result->second;
+                int randNoteIx = rng::GetInt(0, randNoteTable.size()-1);
+                midiNote = randNoteTable.at(randNoteIx);
+            }
+        } else if (key == "note_list") {
+            auto result = gNoteTables.find(value);
+            if (result == gNoteTables.end()) {
+                printf("ERROR: no note table named %s\n", value.c_str());
+            } else {
+                noteTable = &(result->second);
+            }
+        } else if (key == "note_vel") {
+            velocity = std::stof(value);
+        } else if (key == "channel") {
+            channel = std::stoi(value);
+        } else if (key == "length") {
+            noteLength = std::stod(value);
+        } else {
+            printf("LoadNoteEnemy: unrecognized key \"%s\"\n", key.c_str());
+        }
+    }
+
+    if (noteTable) {
+        for (int n : *noteTable) {
+            auto pAction = std::make_unique<NoteOnOffSeqAction>();
+            pAction->_channel = channel;
+            pAction->_midiNote = n;
+            pAction->_noteLength = noteLength;
+            pAction->_velocity = velocity;
+            enemy._hitActions.push_back(std::move(pAction));
+        }
+    } else {
+        auto pAction = std::make_unique<NoteOnOffSeqAction>();
+        pAction->_channel = channel;
+        pAction->_midiNote = midiNote;
+        pAction->_noteLength = noteLength;
+        pAction->_velocity = velocity;
+        enemy._hitActions.push_back(std::move(pAction));
+    }
 }
-}
+
+} // namespace
 
 void SpawnEnemySeqAction::Load(GameManager& g, LoadInputs const& loadInputs, std::istream& lineStream) {
     if (!_sStaticDataLoaded) {
