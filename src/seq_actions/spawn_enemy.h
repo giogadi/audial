@@ -10,4 +10,6 @@ struct SpawnEnemySeqAction : public SeqAction {
     virtual Type GetType() const override { return Type::SpawnEnemy; }
     virtual void Execute(GameManager& g) override;
     virtual void Load(GameManager& g, LoadInputs const& loadInputs, std::istream& input) override;
+
+    static bool _sStaticDataLoaded;
 };

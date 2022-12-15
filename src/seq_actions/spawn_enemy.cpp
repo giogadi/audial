@@ -1,8 +1,11 @@
 #include "spawn_enemy.h"
 
+#include <map>
+
 #include "string_util.h"
 #include "rng.h"
 #include "audio.h"
+#include "midi_util.h"
 
 void SpawnEnemySeqAction::Execute(GameManager& g) {
     assert(!_done);
@@ -15,15 +18,87 @@ void SpawnEnemySeqAction::Execute(GameManager& g) {
     _done = true;
 }
 
+bool SpawnEnemySeqAction::_sStaticDataLoaded = false;
+
 namespace {
+
+std::map<std::string, std::vector<int>> gNoteTables;
+
+void LoadNoteTables() {
+    {
+        std::vector<int>& table = gNoteTables["bass1"];
+        table.push_back(GetMidiNote("G2"));
+        table.push_back(GetMidiNote("B2-"));
+        table.push_back(GetMidiNote("C3"));
+        table.push_back(GetMidiNote("E3-"));
+        table.push_back(GetMidiNote("G3"));
+        table.push_back(GetMidiNote("B3-"));
+    }
+
+    {
+        std::vector<int>& table = gNoteTables["bass2"];
+        table.push_back(GetMidiNote("C2"));
+        table.push_back(GetMidiNote("C3"));
+    }
+    
+    {
+        std::vector<int>& table = gNoteTables["bassDGA"];
+        table.push_back(GetMidiNote("D2"));
+        table.push_back(GetMidiNote("G2"));
+        table.push_back(GetMidiNote("A2"));
+    }
+
+    {
+        std::vector<int>& table = gNoteTables["bassGA"];
+        table.push_back(GetMidiNote("G2"));
+        table.push_back(GetMidiNote("A2"));
+    }
+
+    {
+        std::vector<int>& table = gNoteTables["bassGB-"];
+        table.push_back(GetMidiNote("G2"));
+        table.push_back(GetMidiNote("B2-"));
+    }
+
+    {
+        std::vector<int>& table = gNoteTables["bassDGB-"];
+        table.push_back(GetMidiNote("D2"));
+        table.push_back(GetMidiNote("G2"));
+        table.push_back(GetMidiNote("B2-"));
+    }
+
+    {
+        std::vector<int>& table = gNoteTables["bassSoloA"];
+        table = {
+            GetMidiNote("C3"),
+            GetMidiNote("G3"),
+            GetMidiNote("F3"),
+            GetMidiNote("E3-")
+        };
+    }
+    {
+        std::vector<int>& table = gNoteTables["bassSoloB"];
+        table = {
+            GetMidiNote("G3"),
+            GetMidiNote("B3-"),
+            GetMidiNote("C4"),
+            GetMidiNote("C3")
+        };
+    }
+
+    SpawnEnemySeqAction::_sStaticDataLoaded = true;
+}
+
 // TODO!!!!!! are we going to consider beatTimeOffset?
 void LoadParamEnemy(TypingEnemyEntity& enemy, std::istream& lineStream) {
-    std::string token, key, value;
+    
     audio::SynthParamType paramType;
     std::vector<float> values;
     std::vector<float> times;
     int channel = 0;
     float fadeTime = 0.f;
+    
+    std::string token, key, value;
     while (!lineStream.eof()) {
         {
             lineStream >> token;
@@ -72,8 +147,76 @@ void LoadParamEnemy(TypingEnemyEntity& enemy, std::istream& lineStream) {
     }
 }
 
-void LoadSeqEnemy(TypingEnemyEntity& enemy, std::istream& lineStream) {
+void LoadSeqEnemy(GameManager& g, TypingEnemyEntity& enemy, std::istream& lineStream) {
+    ne::Entity* seqEntity = nullptr;
+    int midiNote = -1;
+    std::vector<int>* noteTable = nullptr;
+    float velocity = 1.f;
     
+    std::string token, key, value;
+    while (!lineStream.eof()) {
+        {
+            lineStream >> token;
+            std::size_t delimIx = token.find_first_of(':');
+            if (delimIx == std::string::npos) {
+                printf("LoadSeqEnemy: Token missing \":\" - \"%s\"\n", token.c_str());
+                continue;
+            }
+
+            key = token.substr(0, delimIx);
+            value = token.substr(delimIx+1);
+        }
+
+        if (key == "seq") {
+            seqEntity = g._neEntityManager->FindEntityByName(value);
+            if (seqEntity == nullptr) {
+                printf("LoadSeqEnemy: can't find seq entity \"%s\"\n", value.c_str());
+            }
+        } else if (key == "note") {
+            midiNote = GetMidiNote(value.c_str());
+        } else if (key == "rand_note") {
+            auto result = gNoteTables.find(value);
+            if (result == gNoteTables.end()) {
+                printf("ERROR: no note table named %s\n", value.c_str());
+            } else {
+                auto const& randNoteTable = result->second;
+                int randNoteIx = rng::GetInt(0, randNoteTable.size()-1);
+                midiNote = randNoteTable.at(randNoteIx);
+            }
+        } else if (key == "note_list") {
+            auto result = gNoteTables.find(value);
+            if (result == gNoteTables.end()) {
+                printf("ERROR: no note table named %s\n", value.c_str());
+            } else {
+                noteTable = &(result->second);
+            }
+        } else if (key == "note_vel") {
+            velocity = std::stof(value);
+        } else {
+            printf("LoadSeqEnemy: unrecognized key \"%s\"\n", key.c_str());
+        }
+    }
+
+    if (seqEntity == nullptr) {
+        printf("LoadSeqEnemy: ERROR: could not find seq entity.\n");
+        return;
+    }
+
+    if (noteTable) {
+        for (int n : *noteTable) {
+            auto pAction = std::make_unique<ChangeStepSequencerSeqAction>();
+            pAction->_seqId = seqEntity->_id;
+            pAction->_midiNote = n;
+            pAction->_velocity = velocity;
+            enemy._hitActions.push_back(std::move(pAction));
+        }
+    } else {
+        auto pAction = std::make_unique<ChangeStepSequencerSeqAction>();
+        pAction->_seqId = seqEntity->_id;
+        pAction->_midiNote = midiNote;
+        pAction->_velocity = velocity;
+        enemy._hitActions.push_back(std::move(pAction));
+    }
 }
 
 void LoadNoteEnemy(TypingEnemyEntity& enemy, std::istream& lineStream) {
@@ -81,6 +224,10 @@ void LoadNoteEnemy(TypingEnemyEntity& enemy, std::istream& lineStream) {
 }
 
 void SpawnEnemySeqAction::Load(GameManager& g, LoadInputs const& loadInputs, std::istream& lineStream) {
+    if (!_sStaticDataLoaded) {
+        LoadNoteTables();
+    }
+
 
     _enemy._modelName = "cube";
     _enemy._modelColor.Set(1.f, 0.f, 0.f, 1.f);
@@ -110,7 +257,7 @@ void SpawnEnemySeqAction::Load(GameManager& g, LoadInputs const& loadInputs, std
             } else if (value == "note") {
                 LoadNoteEnemy(_enemy, lineStream);
             } else if (value == "seq") {
-                LoadSeqEnemy(_enemy, lineStream);
+                LoadSeqEnemy(g, _enemy, lineStream);
             }
             break;
         } else if (key == "on") {
