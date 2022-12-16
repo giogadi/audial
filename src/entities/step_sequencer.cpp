@@ -28,6 +28,10 @@ void StepSequencerEntity::Init(GameManager& g) {
 }
 
 void StepSequencerEntity::Update(GameManager& g, float dt) {
+    if (g._editMode) {
+        return;
+    }
+    
     if (_midiSequence.empty()) {
         return;
     }
