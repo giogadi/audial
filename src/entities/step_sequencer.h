@@ -8,8 +8,8 @@
 struct StepSequencerEntity : ne::Entity {
     struct SeqStep {
         SeqStep() {}
-        SeqStep(int m, float v) : _midiNote(m), _velocity(v) {}
-        int _midiNote = -1;
+        // SeqStep(int m, float v) : _midiNote(m), _velocity(v) {}
+        std::array<int,4> _midiNote = {-1, -1, -1, -1};
         float _velocity = 1.f;
     };
     // Serialized
@@ -27,7 +27,7 @@ struct StepSequencerEntity : ne::Entity {
     std::vector<SeqStep> _midiSequence;
     std::queue<SeqStep> _changeQueue;
 
-    void SetNextSeqStep(GameManager& g, int midiNote, float velocity);
+    void SetNextSeqStep(GameManager& g, SeqStep step);
 
     virtual void Init(GameManager& g) override;
     virtual void Update(GameManager& g, float dt) override;

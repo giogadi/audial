@@ -1,5 +1,7 @@
 #pragma once
 
+#include <string_view>
+
 inline int GetMidiNote(char noteName, int octaveNum) {
     noteName = tolower(noteName);
     assert(noteName >= 'a' && noteName <= 'g');
@@ -20,16 +22,85 @@ inline int GetMidiNote(char noteName, int octaveNum) {
     return midiNum;
 }
 
-inline int GetMidiNote(char const* noteName) {
-    assert(noteName[0] != '\0' && noteName[1] != '\0');
+inline int GetMidiNote(std::string_view noteName) {
+    assert(noteName.length() == 2 || noteName.length() == 3);
     char octaveChar = noteName[1];
     int octaveNum = octaveChar - '0';
     int modifier = 0;
-    if (noteName[2] == '+') {
-        modifier = 1;
-    } else if (noteName[2] == '-') {
-        modifier = -1;
+    if (noteName.length() == 3) {
+        if (noteName[2] == '+') {
+            modifier = 1;
+        } else if (noteName[2] == '-') {
+            modifier = -1;
+        }
     }
     int note = GetMidiNote(noteName[0], octaveNum) + modifier;
     return note;
+}
+
+inline void GetNoteName(int midiNote, std::string& name) {
+    int octave = (midiNote - 12) / 12;
+    char octaveChar = '0' + octave;
+    int offsetFromC = midiNote % 12;
+    name.clear();
+    name.reserve(3);
+    switch (offsetFromC) {
+        case 0:
+            name.push_back('C');            
+            name.push_back(octaveChar);
+            break;
+        case 1:
+            name.push_back('D');     
+            name.push_back(octaveChar);
+            name.push_back('-');
+            break;
+        case 2:
+            name.push_back('D');            
+            name.push_back(octaveChar);
+            break;
+        case 3:
+            name.push_back('E');     
+            name.push_back(octaveChar);
+            name.push_back('-');
+            break;
+        case 4:
+            name.push_back('E');            
+            name.push_back(octaveChar);
+            break;
+        case 5:
+            name.push_back('F');            
+            name.push_back(octaveChar);
+            break;
+        case 6:
+            name.push_back('G');
+            name.push_back(octaveChar);
+            name.push_back('-');
+            break;
+        case 7:
+            name.push_back('G');
+            name.push_back(octaveChar);
+            break;
+        case 8:
+            name.push_back('A');
+            name.push_back(octaveChar);
+            name.push_back('-');
+            break;
+        case 9:
+            name.push_back('A');
+            name.push_back(octaveChar);
+            break;
+        case 10:
+            name.push_back('B');
+            name.push_back(octaveChar);
+            name.push_back('-');
+            break;
+        case 11:
+            name.push_back('B');
+            name.push_back(octaveChar);
+            break;
+        default:
+            assert(false);
+            name = "***";
+            break;
+    }
 }

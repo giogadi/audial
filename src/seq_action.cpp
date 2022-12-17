@@ -49,7 +49,10 @@ void RemoveEntitySeqAction::Execute(GameManager& g) {
 void ChangeStepSequencerSeqAction::Execute(GameManager& g) {
     StepSequencerEntity* seq = static_cast<StepSequencerEntity*>(g._neEntityManager->GetEntity(_seqId));
     if (seq) {
-        seq->SetNextSeqStep(g, _midiNote, _velocity);
+        StepSequencerEntity::SeqStep step;
+        step._midiNote[0] = _midiNote;
+        step._velocity = _velocity;
+        seq->SetNextSeqStep(g, std::move(step));
     } else {
         printf("ChangeStepSequencerSeqAction: no seq entity!!\n");
         return;

@@ -6,24 +6,28 @@
 
 offset 4
 
-0 e rand_text_len:1 x:-4 z:-10 vz:2 type:param param:Gain channel:2 fade_t:0.01 t:0 v:0.6 t:0.25 v:0.0
-0 e rand_text_len:1 x:0 z:-10 vz:2 type:param param:Gain channel:2 fade_t:0.01 t:0 v:0.6 t:0.25 v:0.0
-0 e rand_text_len:1 x:4 z:-10 vz:2 type:param param:Gain channel:2 fade_t:0.01 t:0 v:0.6 t:0.25 v:0.0
-0 e rand_text_len:1 x:-4 z:-8 vz:2 type:param param:Gain channel:2 fade_t:0.01 t:0 v:0.6 t:0.25 v:0.0
-0 e rand_text_len:1  x:0 z:-8 vz:2 type:param param:Gain channel:2 fade_t:0.01 t:0 v:0.6 t:0.25 v:0.0
-0 e rand_text_len:1  x:4 z:-8 vz:2 type:param param:Gain channel:2 fade_t:0.01 t:0 v:0.6 t:0.25 v:0.0
-0 e rand_text_len:1  x:-4 z:-6 vz:2 type:param param:Gain channel:2 fade_t:0.01 t:0 v:0.6 t:0.25 v:0.0
-0 e rand_text_len:1  x:0 z:-6 vz:2 type:param param:Gain channel:2 fade_t:0.01 t:0 v:0.6 t:0.25 v:0.0
-0 e rand_text_len:1  x:4 z:-6 vz:2 type:param param:Gain channel:2 fade_t:0.01 t:0 v:0.6 t:0.25 v:0.0
+0 e rand_text_len:10 x:-4 z:-10 vz:3 type:param param:Gain channel:2 fade_t:0.02 t:0 v:0.6 t:0.2 v:0.0
+
+# 0 e rand_text_len:1 x:-4 z:-10 vz:3 type:param param:Gain channel:2 fade_t:0.01 t:0 v:0.6 t:0.25 v:0.0
+# 0 e rand_text_len:1 x:0 z:-10 vz:3 type:param param:Gain channel:2 fade_t:0.01 t:0 v:0.6 t:0.25 v:0.0
+# 0 e rand_text_len:1 x:4 z:-10 vz:3 type:param param:Gain channel:2 fade_t:0.01 t:0 v:0.6 t:0.25 v:0.0
+# 0 e rand_text_len:1 x:-4 z:-8 vz:3 type:param param:Gain channel:2 fade_t:0.01 t:0 v:0.6 t:0.25 v:0.0
+# 0 e rand_text_len:1  x:0 z:-8 vz:3 type:param param:Gain channel:2 fade_t:0.01 t:0 v:0.6 t:0.25 v:0.0
+# 0 e rand_text_len:1  x:4 z:-8 vz:3 type:param param:Gain channel:2 fade_t:0.01 t:0 v:0.6 t:0.25 v:0.0
+# 0 e rand_text_len:1  x:-4 z:-6 vz:3 type:param param:Gain channel:2 fade_t:0.01 t:0 v:0.6 t:0.25 v:0.0
+# 0 e rand_text_len:1  x:0 z:-6 vz:3 type:param param:Gain channel:2 fade_t:0.01 t:0 v:0.6 t:0.25 v:0.0
+# 0 e rand_text_len:1  x:4 z:-6 vz:3 type:param param:Gain channel:2 fade_t:0.01 t:0 v:0.6 t:0.25 v:0.0
 
 offset 8
 
-0 e rand_text_len:1 x:-4 z:-10 vz:2 type:param param:Gain channel:2 fade_t:0.01 t:0 v:0.6 t:0.25 v:0.0
-0 e rand_text_len:1 x:0 z:-10 vz:2 type:param param:Gain channel:2 fade_t:0.01 t:0 v:0.6 t:0.25 v:0.0
-0 e rand_text_len:1 x:4 z:-10 vz:2 type:param param:Gain channel:2 fade_t:0.01 t:0 v:0.6 t:0.25 v:0.0
-0 e rand_text_len:1 x:-4 z:-8 vz:2 type:param param:Gain channel:2 fade_t:0.01 t:0 v:0.6 t:0.25 v:0.0
-0 e rand_text_len:1  x:0 z:-8 vz:2 type:param param:Gain channel:2 fade_t:0.01 t:0 v:0.6 t:0.25 v:0.0
-0 e rand_text_len:1  x:4 z:-8 vz:2 type:param param:Gain channel:2 fade_t:0.01 t:0 v:0.6 t:0.25 v:0.0
-0 e rand_text_len:1  x:-4 z:-6 vz:2 type:param param:Gain channel:2 fade_t:0.01 t:0 v:0.6 t:0.25 v:0.0
-0 e rand_text_len:1  x:0 z:-6 vz:2 type:param param:Gain channel:2 fade_t:0.01 t:0 v:0.6 t:0.25 v:0.0
-0 e rand_text_len:1  x:4 z:-6 vz:2 type:param param:Gain channel:2 fade_t:0.01 t:0 v:0.6 t:0.25 v:0.0
+0 e rand_text_len:10 x:44 z:-10 vz:3 type:param param:Gain channel:2 fade_t:0.02 t:0 v:0.6 t:0.2 v:0.0
+
+# 0 e rand_text_len:1 x:-4 z:-10 vz:3 type:param param:Gain channel:2 fade_t:0.01 t:0 v:0.6 t:0.25 v:0.0
+# 0 e rand_text_len:1 x:0 z:-10 vz:3 type:param param:Gain channel:2 fade_t:0.01 t:0 v:0.6 t:0.25 v:0.0
+# 0 e rand_text_len:1 x:4 z:-10 vz:3 type:param param:Gain channel:2 fade_t:0.01 t:0 v:0.6 t:0.25 v:0.0
+# 0 e rand_text_len:1 x:-4 z:-8 vz:3 type:param param:Gain channel:2 fade_t:0.01 t:0 v:0.6 t:0.25 v:0.0
+# 0 e rand_text_len:1  x:0 z:-8 vz:3 type:param param:Gain channel:2 fade_t:0.01 t:0 v:0.6 t:0.25 v:0.0
+# 0 e rand_text_len:1  x:4 z:-8 vz:3 type:param param:Gain channel:2 fade_t:0.01 t:0 v:0.6 t:0.25 v:0.0
+# 0 e rand_text_len:1  x:-4 z:-6 vz:3 type:param param:Gain channel:2 fade_t:0.01 t:0 v:0.6 t:0.25 v:0.0
+# 0 e rand_text_len:1  x:0 z:-6 vz:3 type:param param:Gain channel:2 fade_t:0.01 t:0 v:0.6 t:0.25 v:0.0
+# 0 e rand_text_len:1  x:4 z:-6 vz:3 type:param param:Gain channel:2 fade_t:0.01 t:0 v:0.6 t:0.25 v:0.0

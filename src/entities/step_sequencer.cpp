@@ -6,8 +6,9 @@
 
 #include "audio.h"
 #include "game_manager.h"
+#include "midi_util.h"
 
-void StepSequencerEntity::SetNextSeqStep(GameManager& g, int midiNote, float velocity) {
+void StepSequencerEntity::SetNextSeqStep(GameManager& g, SeqStep step) {
     // BeatClock const& beatClock = *g._beatClock;
     // double const beatTime = beatClock.GetBeatTimeFromEpoch();
     // double nextStepBeatTime = _loopStartBeatTime + _currentIx * _stepBeatLength;
@@ -19,7 +20,7 @@ void StepSequencerEntity::SetNextSeqStep(GameManager& g, int midiNote, float vel
     //     }
     // }
     // _midiSequence[_currentIx] = midiNote;
-    _changeQueue.emplace(midiNote, velocity);
+    _changeQueue.push(std::move(step));
 }
 
 void StepSequencerEntity::Init(GameManager& g) {
@@ -55,25 +56,32 @@ void StepSequencerEntity::Update(GameManager& g, float dt) {
     }
 
     // Play the sound
-    if (seqStep._midiNote >= 0) {
-        audio::Event e;
-        e.type = audio::EventType::NoteOn;
-        e.timeInTicks = 0;
-        e.midiNote = seqStep._midiNote;
-        e.velocity = seqStep._velocity;
-
+    audio::Event e;
+    e.timeInTicks = 0;
+    e.velocity = seqStep._velocity;
+    e.type = audio::EventType::NoteOn;
+    for (int i = 0; i < seqStep._midiNote.size(); ++i) {
+        if (seqStep._midiNote[i] < 0) {
+            break;
+        }
+        e.midiNote = seqStep._midiNote[i];
         for (int channel : _channels) {
             e.channel = channel;
             g._audioContext->AddEvent(e);
         }
-
-        double noteOffBeatTime = beatClock.GetBeatTime() + _noteLength;        
-        e.type = audio::EventType::NoteOff;
-        e.timeInTicks = beatClock.BeatTimeToTickTime(noteOffBeatTime);
+    }
+    double noteOffBeatTime = beatClock.GetBeatTime() + _noteLength;        
+    e.type = audio::EventType::NoteOff;
+    e.timeInTicks = beatClock.BeatTimeToTickTime(noteOffBeatTime);
+    for (int i = 0; i < seqStep._midiNote.size(); ++i) {
+        if (seqStep._midiNote[i] < 0) {
+            break;
+        }
+        e.midiNote = seqStep._midiNote[i];
         for (int channel : _channels) {
             e.channel = channel;
             g._audioContext->AddEvent(e);
-        }
+        }        
     }
 
     // After the playing the sound, maybe reset that seq element to the initial
@@ -92,12 +100,24 @@ void StepSequencerEntity::Update(GameManager& g, float dt) {
 
 void StepSequencerEntity::SaveDerived(serial::Ptree pt) const {
     std::stringstream seqSs;
+    std::string noteName;
     for (int ix = 0; ix < _initialMidiSequence.size(); ++ix) {
         if (ix > 0) {
             seqSs << " ";
         }
         SeqStep const& s = _initialMidiSequenceDoNotChange[ix];
-        seqSs << s._midiNote << ":" << s._velocity;
+        seqSs << "m";
+        for (int noteIx = 0; noteIx < s._midiNote.size(); ++noteIx) {
+            if (s._midiNote[noteIx] < 0 && noteIx > 0) {
+                break;
+            }
+            if (noteIx > 0) {
+                seqSs << ",";
+            }
+            GetNoteName(s._midiNote[noteIx], noteName);
+            seqSs << noteName;
+        }
+        seqSs << ":" << s._velocity;
     }
     pt.PutString("sequence", seqSs.str().c_str());
     
@@ -135,16 +155,47 @@ void StepSequencerEntity::LoadDerived(serial::Ptree pt) {
         SeqStep step;
         std::string stepStr;
         seqSs >> stepStr;
-        std::size_t delimIx = stepStr.find_first_of(':');
-        if (delimIx == std::string::npos) {
-            step._midiNote = std::stoi(stepStr);
-            step._velocity = 1.f;
-        } else {                        
-            std::string_view midiNoteStr(stepStr.c_str(), delimIx);
-            step._midiNote = StoiOrDie(midiNoteStr);
-            std::string_view velStr = std::string_view(stepStr).substr(delimIx+1);
+        // Chars [0,delimIx) are the notes delimited by ,
+        int currentNoteIx = 0;
+        int curIx = 0;
+        bool continueLoop = true;
+        while (continueLoop && curIx < stepStr.size()) {
+            std::size_t noteDelimIx = stepStr.find_first_of(",:", curIx);
+            if (noteDelimIx == curIx) {
+                break;
+            }
+            std::string_view noteStr;
+            if (noteDelimIx == std::string::npos) {
+                noteStr = std::string_view(stepStr).substr(curIx);
+                continueLoop = false;
+            } else {
+                noteStr = std::string_view(stepStr).substr(curIx, noteDelimIx - curIx);
+                if (stepStr[noteDelimIx] == ':') {
+                    continueLoop = false;
+                } else {
+                    curIx = noteDelimIx + 1;
+                }
+            }            
+            int midiNote = -1;
+            if (noteStr[0] == 'm') {
+                midiNote = GetMidiNote(noteStr);
+            } else {
+                midiNote = StoiOrDie(noteStr);
+            }
+            if (currentNoteIx >= step._midiNote.size()) {
+                printf("StepSequencer::Load: Too many notes!\n");
+                break;
+            }
+            step._midiNote[currentNoteIx] = midiNote;
+            ++currentNoteIx;
+        }
+
+        std::size_t velDelimIx = stepStr.find_first_of(':');
+        if (velDelimIx != std::string::npos) {
+            std::string_view velStr = std::string_view(stepStr).substr(velDelimIx+1);
             step._velocity = StofOrDie(velStr);
         }
+       
         _initialMidiSequenceDoNotChange.push_back(step);
     }
     
