@@ -152,7 +152,7 @@ void LoadSeqEnemy(GameManager& g, TypingEnemyEntity& enemy, std::istream& lineSt
     int midiNote = -1;
     std::vector<int>* noteTable = nullptr;
     float velocity = 1.f;
-    
+    bool velOnly = false;
     std::string token, key, value;
     while (!lineStream.eof()) {
         {
@@ -192,6 +192,8 @@ void LoadSeqEnemy(GameManager& g, TypingEnemyEntity& enemy, std::istream& lineSt
             }
         } else if (key == "note_vel") {
             velocity = std::stof(value);
+        } else if (key == "vel_only") {
+            velOnly = true;
         } else {
             printf("LoadSeqEnemy: unrecognized key \"%s\"\n", key.c_str());
         }
@@ -208,6 +210,7 @@ void LoadSeqEnemy(GameManager& g, TypingEnemyEntity& enemy, std::istream& lineSt
             pAction->_seqId = seqEntity->_id;
             pAction->_midiNote = n;
             pAction->_velocity = velocity;
+            pAction->_velOnly = velOnly;
             enemy._hitActions.push_back(std::move(pAction));
         }
     } else {
@@ -215,6 +218,7 @@ void LoadSeqEnemy(GameManager& g, TypingEnemyEntity& enemy, std::istream& lineSt
         pAction->_seqId = seqEntity->_id;
         pAction->_midiNote = midiNote;
         pAction->_velocity = velocity;
+        pAction->_velOnly = velOnly;
         enemy._hitActions.push_back(std::move(pAction));
     }
 }

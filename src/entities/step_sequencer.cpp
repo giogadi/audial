@@ -20,7 +20,16 @@ void StepSequencerEntity::SetNextSeqStep(GameManager& g, SeqStep step) {
     //     }
     // }
     // _midiSequence[_currentIx] = midiNote;
-    _changeQueue.push(std::move(step));
+    SeqStepChange change;
+    change._step = step;
+    _changeQueue.push(std::move(change));
+}
+
+void StepSequencerEntity::SetNextSeqStepVelocity(GameManager& g, float v) {
+    SeqStepChange change;
+    change._step._velocity = v;
+    change._changeNote = false;
+    _changeQueue.push(std::move(change));
 }
 
 void StepSequencerEntity::Init(GameManager& g) {
@@ -50,7 +59,13 @@ void StepSequencerEntity::Update(GameManager& g, float dt) {
 
     SeqStep seqStep = _midiSequence[_currentIx];
     if (!_changeQueue.empty()) {
-        seqStep = _changeQueue.front();
+        SeqStepChange const& change = _changeQueue.front();
+        if (change._changeNote) {
+            seqStep._midiNote = change._step._midiNote;
+        }
+        if (change._changeVelocity) {
+            seqStep._velocity = change._step._velocity;
+        }
         _midiSequence[_currentIx] = seqStep;
         _changeQueue.pop();
     }

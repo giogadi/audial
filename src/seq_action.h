@@ -54,9 +54,10 @@ struct RemoveEntitySeqAction : public SeqAction {
 };
 
 struct ChangeStepSequencerSeqAction : public SeqAction {
-    ne::EntityId _seqId;
+    ne::EntityId _seqId;    
     int _midiNote = -1;
     float _velocity = 0.f;
+    bool _velOnly = false;
     virtual Type GetType() const override { return Type::ChangeStepSequencer; }
     virtual void Execute(GameManager& g) override;
     virtual void Load(

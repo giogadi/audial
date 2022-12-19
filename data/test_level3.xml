@@ -250,7 +250,7 @@
                 <z>0</z>
                 <w>0</w>
             </model_color_vec4>
-            <sequence>mA3,mB3-,mD4:1 mA3-,mA3,mD4-:1 mA3,mB3-,mD4:1 mA3,mB3-,mD4:1 mB3-,mB3,mE4-:1 mB3-,mB3,mE4-:1 mA3,mB3-,mD4:1 mA3,mB3-,mD4:1 mA3,mB3-,mD4:1 mA3,mB3-,mD4:1 mA3,mB3-,mD4:1 mA3,mB3-,mD4:1 mG3,mA3-,mC4:1 mG3,mA3-,mC4:1 mA3-,mA3,mD4-:1 mA3-,mA3,mD4-:1</sequence>
+            <sequence>mA3,mB3-,mD4:0 mA3-,mA3,mD4-:0 mA3,mB3-,mD4:0 mA3,mB3-,mD4:0 mB3-,mB3,mE4-:0 mB3-,mB3,mE4-:0 mA3,mB3-,mD4:0 mA3,mB3-,mD4:0 mA3,mB3-,mD4:0 mA3,mB3-,mD4:0 mA3,mB3-,mD4:0 mA3,mB3-,mD4:0 mG3,mA3-,mC4:0 mG3,mA3-,mC4:0 mA3-,mA3,mD4-:0 mA3-,mA3,mD4-:0</sequence>
             <channels>
                 <channel>2</channel>
             </channels>
