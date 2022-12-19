@@ -106,7 +106,6 @@ void StepSequencerEntity::SaveDerived(serial::Ptree pt) const {
             seqSs << " ";
         }
         SeqStep const& s = _initialMidiSequenceDoNotChange[ix];
-        seqSs << "m";
         for (int noteIx = 0; noteIx < s._midiNote.size(); ++noteIx) {
             if (s._midiNote[noteIx] < 0 && noteIx > 0) {
                 break;
@@ -115,7 +114,7 @@ void StepSequencerEntity::SaveDerived(serial::Ptree pt) const {
                 seqSs << ",";
             }
             GetNoteName(s._midiNote[noteIx], noteName);
-            seqSs << noteName;
+            seqSs << "m" << noteName;
         }
         seqSs << ":" << s._velocity;
     }
@@ -178,7 +177,7 @@ void StepSequencerEntity::LoadDerived(serial::Ptree pt) {
             }            
             int midiNote = -1;
             if (noteStr[0] == 'm') {
-                midiNote = GetMidiNote(noteStr);
+                midiNote = GetMidiNote(noteStr.substr(1));
             } else {
                 midiNote = StoiOrDie(noteStr);
             }
