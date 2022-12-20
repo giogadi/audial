@@ -83,11 +83,11 @@
     <patch>
         <version>3</version>
         <name>pad</name>
-        <gain_factor>0.600000024</gain_factor>
+        <gain_factor>0.639999986</gain_factor>
         <osc1_waveform>Saw</osc1_waveform>
-        <osc2_waveform>Square</osc2_waveform>
-        <detune>0</detune>
-        <osc_fader>0</osc_fader>
+        <osc2_waveform>Saw</osc2_waveform>
+        <detune>0.0130000003</detune>
+        <osc_fader>0.508000016</osc_fader>
         <cutoff_freq>934.322021</cutoff_freq>
         <cutoff_k>0.202999994</cutoff_k>
         <hpf_cutoff_freq>373.729004</hpf_cutoff_freq>
@@ -100,14 +100,14 @@
             <attack_time>0.00800000038</attack_time>
             <decay_time>0.287999988</decay_time>
             <sustain_level>0.76700002</sustain_level>
-            <release_time>0.995999992</release_time>
+            <release_time>0.275000006</release_time>
             <min_value>0.00999999978</min_value>
         </amp_env_spec>
         <cutoff_env_gain>3550.42407</cutoff_env_gain>
         <cutoff_env_spec>
             <attack_time>0.0810000002</attack_time>
             <decay_time>0.335000008</decay_time>
-            <sustain_level>0.0340000018</sustain_level>
+            <sustain_level>0.123000003</sustain_level>
             <release_time>0</release_time>
             <min_value>0.00999999978</min_value>
         </cutoff_env_spec>

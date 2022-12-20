@@ -76,7 +76,7 @@ void StepSequencerEntity::Update(GameManager& g, float dt) {
     e.velocity = seqStep._velocity;
     e.type = audio::EventType::NoteOn;
     for (int i = 0; i < seqStep._midiNote.size(); ++i) {
-        if (seqStep._midiNote[i] < 0) {
+        if (seqStep._midiNote[i] < 0 || seqStep._velocity == 0.f) {
             break;
         }
         e.midiNote = seqStep._midiNote[i];
@@ -89,7 +89,7 @@ void StepSequencerEntity::Update(GameManager& g, float dt) {
     e.type = audio::EventType::NoteOff;
     e.timeInTicks = beatClock.BeatTimeToTickTime(noteOffBeatTime);
     for (int i = 0; i < seqStep._midiNote.size(); ++i) {
-        if (seqStep._midiNote[i] < 0) {
+        if (seqStep._midiNote[i] < 0 || seqStep._velocity == 0.f) {
             break;
         }
         e.midiNote = seqStep._midiNote[i];
