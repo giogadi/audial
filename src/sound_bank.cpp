@@ -13,6 +13,8 @@ void SoundBank::LoadSounds() {
         , "liquid_dnb_drums"
         , "tech_chords"
         , "tech_drum_groove"
+        , "hihat_open_909"
+        , "clap_909"
     };
     std::vector<char const*> soundFilenames = {
         "data/sounds/kick_deep.wav"
@@ -23,6 +25,8 @@ void SoundBank::LoadSounds() {
         , "data/sounds/liquid_dnb_drums.wav"
         , "data/sounds/tech_chords.wav"
         , "data/sounds/tech_drum_groove.wav"
+        , "data/sounds/hihat_open_909.wav"
+        , "data/sounds/clap_909.wav"
     };
     assert(soundFilenames.size() == _soundNames.size());
     for (int i = 0, n = soundFilenames.size(); i < n; ++i) {
