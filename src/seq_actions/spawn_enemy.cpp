@@ -22,67 +22,75 @@ bool SpawnEnemySeqAction::_sStaticDataLoaded = false;
 
 namespace {
 
-std::map<std::string, std::vector<int>> gNoteTables;
+std::map<std::string, std::vector<std::array<int,4>>> gNoteTables;
 
 void LoadNoteTables() {
     {
-        std::vector<int>& table = gNoteTables["bass1"];
-        table.push_back(GetMidiNote("G2"));
-        table.push_back(GetMidiNote("B2-"));
-        table.push_back(GetMidiNote("C3"));
-        table.push_back(GetMidiNote("E3-"));
-        table.push_back(GetMidiNote("G3"));
-        table.push_back(GetMidiNote("B3-"));
+        std::vector<std::array<int,4>>& table = gNoteTables["bass1"];
+        table.push_back({GetMidiNote("G2"),-1,-1,-1});
+        table.push_back({GetMidiNote("B2-"),-1,-1,-1});
+        table.push_back({GetMidiNote("C3"),-1,-1,-1});
+        table.push_back({GetMidiNote("E3-"),-1,-1,-1});
+        table.push_back({GetMidiNote("G3"),-1,-1,-1});
+        table.push_back({GetMidiNote("B3-"),-1,-1,-1});
     }
 
     {
-        std::vector<int>& table = gNoteTables["bass2"];
-        table.push_back(GetMidiNote("C2"));
-        table.push_back(GetMidiNote("C3"));
+        std::vector<std::array<int,4>>& table = gNoteTables["bass2"];
+        table.push_back({GetMidiNote("C2"),-1,-1,-1});
+        table.push_back({GetMidiNote("C3"),-1,-1,-1});
     }
     
     {
-        std::vector<int>& table = gNoteTables["bassDGA"];
-        table.push_back(GetMidiNote("D2"));
-        table.push_back(GetMidiNote("G2"));
-        table.push_back(GetMidiNote("A2"));
+        std::vector<std::array<int,4>>& table = gNoteTables["bassDGA"];
+        table.push_back({GetMidiNote("D2"),-1,-1,-1});
+        table.push_back({GetMidiNote("G2"),-1,-1,-1});
+        table.push_back({GetMidiNote("A2"),-1,-1,-1});
     }
 
     {
-        std::vector<int>& table = gNoteTables["bassGA"];
-        table.push_back(GetMidiNote("G2"));
-        table.push_back(GetMidiNote("A2"));
+        std::vector<std::array<int,4>>& table = gNoteTables["bassGA"];
+        table.push_back({GetMidiNote("G2"),-1,-1,-1});
+        table.push_back({GetMidiNote("A2"),-1,-1,-1});
     }
 
     {
-        std::vector<int>& table = gNoteTables["bassGB-"];
-        table.push_back(GetMidiNote("G2"));
-        table.push_back(GetMidiNote("B2-"));
+        std::vector<std::array<int,4>>& table = gNoteTables["bassGB-"];
+        table.push_back({GetMidiNote("G2"),-1,-1,-1});
+        table.push_back({GetMidiNote("B2-"),-1,-1,-1});
     }
 
     {
-        std::vector<int>& table = gNoteTables["bassDGB-"];
-        table.push_back(GetMidiNote("D2"));
-        table.push_back(GetMidiNote("G2"));
-        table.push_back(GetMidiNote("B2-"));
+        std::vector<std::array<int,4>>& table = gNoteTables["bassDGB-"];
+        table.push_back({GetMidiNote("D2"),-1,-1,-1});
+        table.push_back({GetMidiNote("G2"),-1,-1,-1});
+        table.push_back({GetMidiNote("B2-"),-1,-1,-1});
     }
 
     {
-        std::vector<int>& table = gNoteTables["bassSoloA"];
+        std::vector<std::array<int,4>>& table = gNoteTables["bassSoloA"];
         table = {
-            GetMidiNote("C3"),
-            GetMidiNote("G3"),
-            GetMidiNote("F3"),
-            GetMidiNote("E3-")
+            {GetMidiNote("C3"),-1,-1,-1},
+            {GetMidiNote("G3"),-1,-1,-1},
+            {GetMidiNote("F3"),-1,-1,-1},
+            {GetMidiNote("E3-"),-1,-1,-1}
         };
     }
     {
-        std::vector<int>& table = gNoteTables["bassSoloB"];
+        std::vector<std::array<int,4>>& table = gNoteTables["bassSoloB"];
         table = {
-            GetMidiNote("G3"),
-            GetMidiNote("B3-"),
-            GetMidiNote("C4"),
-            GetMidiNote("C3")
+            {GetMidiNote("G3"),-1,-1,-1},
+            {GetMidiNote("B3-"),-1,-1,-1},
+            {GetMidiNote("C4"),-1,-1,-1},
+            {GetMidiNote("C3"),-1,-1,-1}
+        };
+    }
+    {
+        std::vector<std::array<int,4>>& table = gNoteTables["chordSeq1"];
+        table = {
+            {GetMidiNote("G3"), GetMidiNote("A3-"), GetMidiNote("C4"),-1},
+            {GetMidiNote("A3-"), GetMidiNote("A3"), GetMidiNote("D4-"),-1},
+            {GetMidiNote("A3"), GetMidiNote("B3-"), GetMidiNote("D4"),-1},
         };
     }
 
@@ -149,8 +157,9 @@ void LoadParamEnemy(TypingEnemyEntity& enemy, std::istream& lineStream) {
 
 void LoadSeqEnemy(GameManager& g, TypingEnemyEntity& enemy, std::istream& lineStream) {
     ne::Entity* seqEntity = nullptr;
-    int midiNote = -1;
-    std::vector<int>* noteTable = nullptr;
+    std::array<int, 4> midiNotes = {-1, -1, -1, -1};
+    int currentNoteIx = 0;
+    std::vector<std::array<int,4>>* noteTable = nullptr;
     float velocity = 1.f;
     bool velOnly = false;
     std::string token, key, value;
@@ -173,7 +182,12 @@ void LoadSeqEnemy(GameManager& g, TypingEnemyEntity& enemy, std::istream& lineSt
                 printf("LoadSeqEnemy: can't find seq entity \"%s\"\n", value.c_str());
             }
         } else if (key == "note") {
-            midiNote = GetMidiNote(value.c_str());
+            if (currentNoteIx >= midiNotes.size()) {
+                printf("LoadSeqEnemy: too many notes!\n");
+            } else {
+                midiNotes[currentNoteIx] = GetMidiNote(value.c_str());
+                ++currentNoteIx;
+            }
         } else if (key == "rand_note") {
             auto result = gNoteTables.find(value);
             if (result == gNoteTables.end()) {
@@ -181,7 +195,7 @@ void LoadSeqEnemy(GameManager& g, TypingEnemyEntity& enemy, std::istream& lineSt
             } else {
                 auto const& randNoteTable = result->second;
                 int randNoteIx = rng::GetInt(0, randNoteTable.size()-1);
-                midiNote = randNoteTable.at(randNoteIx);
+                midiNotes = randNoteTable.at(randNoteIx);
             }
         } else if (key == "note_list") {
             auto result = gNoteTables.find(value);
@@ -205,10 +219,10 @@ void LoadSeqEnemy(GameManager& g, TypingEnemyEntity& enemy, std::istream& lineSt
     }
 
     if (noteTable) {
-        for (int n : *noteTable) {
+        for (std::array<int,4> const& n : *noteTable) {
             auto pAction = std::make_unique<ChangeStepSequencerSeqAction>();
             pAction->_seqId = seqEntity->_id;
-            pAction->_midiNote = n;
+            pAction->_midiNotes = n;
             pAction->_velocity = velocity;
             pAction->_velOnly = velOnly;
             enemy._hitActions.push_back(std::move(pAction));
@@ -216,16 +230,17 @@ void LoadSeqEnemy(GameManager& g, TypingEnemyEntity& enemy, std::istream& lineSt
     } else {
         auto pAction = std::make_unique<ChangeStepSequencerSeqAction>();
         pAction->_seqId = seqEntity->_id;
-        pAction->_midiNote = midiNote;
+        pAction->_midiNotes = midiNotes;
         pAction->_velocity = velocity;
         pAction->_velOnly = velOnly;
         enemy._hitActions.push_back(std::move(pAction));
     }
 }
 
+// TODO: make this support chords
 void LoadNoteEnemy(TypingEnemyEntity& enemy, std::istream& lineStream) {
     int midiNote = -1;
-    std::vector<int>* noteTable = nullptr;
+    std::vector<std::array<int, 4>>* noteTable = nullptr;
     float velocity = 1.f;
     int channel = 0;
     double noteLength = 0.25;
@@ -253,7 +268,8 @@ void LoadNoteEnemy(TypingEnemyEntity& enemy, std::istream& lineStream) {
             } else {
                 auto const& randNoteTable = result->second;
                 int randNoteIx = rng::GetInt(0, randNoteTable.size()-1);
-                midiNote = randNoteTable.at(randNoteIx);
+                // HOWDYYYYY
+                midiNote = randNoteTable.at(randNoteIx)[0];
             }
         } else if (key == "note_list") {
             auto result = gNoteTables.find(value);
@@ -274,10 +290,11 @@ void LoadNoteEnemy(TypingEnemyEntity& enemy, std::istream& lineStream) {
     }
 
     if (noteTable) {
-        for (int n : *noteTable) {
+        for (std::array<int, 4> const& n : *noteTable) {
             auto pAction = std::make_unique<NoteOnOffSeqAction>();
             pAction->_channel = channel;
-            pAction->_midiNote = n;
+            // HOWDYYYYY
+            pAction->_midiNote = n[0];
             pAction->_noteLength = noteLength;
             pAction->_velocity = velocity;
             enemy._hitActions.push_back(std::move(pAction));

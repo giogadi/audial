@@ -53,7 +53,7 @@ void ChangeStepSequencerSeqAction::Execute(GameManager& g) {
             seq->SetNextSeqStepVelocity(g, _velocity);
         } else {
             StepSequencerEntity::SeqStep step;
-            step._midiNote[0] = _midiNote;
+            step._midiNote = _midiNotes;
             step._velocity = _velocity;
             seq->SetNextSeqStep(g, std::move(step));
         }
@@ -64,6 +64,7 @@ void ChangeStepSequencerSeqAction::Execute(GameManager& g) {
 }
 
 void ChangeStepSequencerSeqAction::Load(GameManager& g, LoadInputs const& loadInputs, std::istream& input) {
+    printf("WARNING! I DON'T SUPPORT MULTIPLE MIDI NOTES YET\n");
     std::string seqName;
     input >> seqName;
     ne::Entity* e = g._neEntityManager->FindEntityByName(seqName);
@@ -72,7 +73,7 @@ void ChangeStepSequencerSeqAction::Load(GameManager& g, LoadInputs const& loadIn
     } else {
         printf("ChangeStepSequencerSeqAction: could not find seq entity \"%s\"\n", seqName.c_str());
     }
-    input >> _midiNote;
+    input >> _midiNotes[0];
     input >> _velocity;
 }
 

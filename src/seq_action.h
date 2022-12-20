@@ -54,8 +54,8 @@ struct RemoveEntitySeqAction : public SeqAction {
 };
 
 struct ChangeStepSequencerSeqAction : public SeqAction {
-    ne::EntityId _seqId;    
-    int _midiNote = -1;
+    ne::EntityId _seqId;
+    std::array<int, 4> _midiNotes = {-1, -1, -1, -1};
     float _velocity = 0.f;
     bool _velOnly = false;
     virtual Type GetType() const override { return Type::ChangeStepSequencer; }

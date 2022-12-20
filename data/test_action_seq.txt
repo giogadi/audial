@@ -1,15 +1,20 @@
 # 0 automate Gain 2 0.0 0.0 0.1
 # 0 automate Gain 0 0 0 0.1
-0 automate AmpEnvSustain 2 1.0 1.0 0.1
-0 automate Cutoff 2 0 2700 0.1
-0 automate CutoffEnvGain 2 0 0.0 0.1
+# 0 automate AmpEnvSustain 2 1.0 1.0 0.1
+# 0 automate Cutoff 2 0 2700 0.1
+# 0 automate CutoffEnvGain 2 0 0.0 0.1
 
 offset 4
 
-#0 e rand_text_len:20 x:-4 z:-10 vz:1 type:param param:Gain channel:2 fade_t:0.02 t:0 v:0.6 t:0.2 v:0.0
+0 e rand_text_len:1 x:-4 z:-10 type:seq seq:chord_seq note_vel:1 note:A3 note:B3- note:D4
+0 e rand_text_len:1 x:-2 z:-10 type:seq seq:chord_seq note_vel:1 note:A3 note:B3- note:D4
+0 e rand_text_len:1 x:0 z:-10 type:seq seq:chord_seq note_vel:1 note:A3 note:B3- note:D4
+0 e rand_text_len:1 x:2 z:-10 type:seq seq:chord_seq note_vel:1 note:A3 note:B3- note:D4
+0 e rand_text_len:3 x:0 z:-8 type:seq seq:chord_seq note_vel:1 note_list:chordSeq1
 
-0 e rand_text_len:20 off:8 x:-4 z:-10 vz:2 type:seq seq:chord_seq note_vel:1 vel_only:
 
-0 e rand_text_len:20 on:7 off:16 x:-4 z:-10 vz:2 type:seq seq:chord_seq note_vel:1 vel_only:
+# 0 e rand_text_len:20 off:8 x:-4 z:-10 vz:2 type:seq seq:chord_seq note_vel:1 vel_only:
 
-0 e rand_text_len:20 on:15 off:32 x:-4 z:-10 vz:2 type:seq seq:chord_seq note_vel:1 vel_only:
+# 0 e rand_text_len:20 on:7 off:16 x:-4 z:-10 vz:2 type:seq seq:chord_seq note_vel:1 vel_only:
+
+# 0 e rand_text_len:20 on:15 off:32 x:-4 z:-10 vz:2 type:seq seq:chord_seq note_vel:1 vel_only:
