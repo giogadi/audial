@@ -77,6 +77,28 @@ void ChangeStepSequencerSeqAction::Load(GameManager& g, LoadInputs const& loadIn
     input >> _velocity;
 }
 
+void SetStepSequencerSaveSeqAction::Execute(GameManager& g) {
+    StepSequencerEntity* seq = static_cast<StepSequencerEntity*>(g._neEntityManager->GetEntity(_seqId));
+    if (seq) {
+        seq->_resetToInitialAfterPlay = !_save;
+    } else {
+        printf("SetStepSequencerSaveSeqAction: no seq entity!!\n");
+        return;
+    }
+}
+
+void SetStepSequencerSaveSeqAction::Load(GameManager& g, LoadInputs const& loadInputs, std::istream& input) {
+    std::string seqName;
+    input >> seqName;
+    ne::Entity* e = g._neEntityManager->FindEntityByName(seqName);
+    if (e) {
+        _seqId = e->_id;
+    } else {
+        printf("ChangeStepSequencerSeqAction: could not find seq entity \"%s\"\n", seqName.c_str());
+    }
+    input >> _save;
+}
+
 void NoteOnOffSeqAction::Execute(GameManager& g) {
     BeatTimeEvent b_e;
     b_e._beatTime = 0.0;

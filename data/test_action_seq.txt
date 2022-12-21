@@ -6,15 +6,108 @@
 
 offset 4
 
-0 e rand_text_len:1 x:-4 z:-10 type:seq seq:chord_seq note_vel:1 note:A3 note:B3- note:D4
-0 e rand_text_len:1 x:-2 z:-10 type:seq seq:chord_seq note_vel:1 note:A3 note:B3- note:D4
-0 e rand_text_len:1 x:0 z:-10 type:seq seq:chord_seq note_vel:1 note:A3 note:B3- note:D4
-0 e rand_text_len:1 x:2 z:-10 type:seq seq:chord_seq note_vel:1 note:A3 note:B3- note:D4
-0 e rand_text_len:3 x:0 z:-8 type:seq seq:chord_seq note_vel:1 note_list:chordSeq1
+0 e off:4 text:w x:-4 z:-10 type:seq seq:chord_seq note_vel:1 note:A3 note:B3- note:D4
+0 e off:4 text:o x:-2 z:-10 type:seq seq:chord_seq note_vel:1 note:A3 note:B3- note:D4
+0 e off:4 text:z x:0 z:-10 type:seq seq:chord_seq note_vel:1 note:A3 note:B3- note:D4
+0 e off:4 text:i x:2 z:-10 type:seq seq:chord_seq note_vel:1 note:A3 note:B3- note:D4
+0 e off:4 text:a x:-4 z:-8 type:seq seq:chord_seq note_vel:1 note:A3 note:B3- note:D4
+0 e off:4 text:k x:-2 z:-8 type:seq seq:chord_seq note_vel:1 note:A3 note:B3- note:D4
+0 e off:4 text:e x:0 z:-8 type:seq seq:chord_seq note_vel:1 note:A3 note:B3- note:D4
+0 e off:4 text:n x:2 z:-8 type:seq seq:chord_seq note_vel:1 note:A3 note:B3- note:D4
 
+0 e on:1 off:5 text:fgh x:0 z:-6 type:seq seq:chord_seq note_vel:1 note_list:chordSeq1
 
-# 0 e rand_text_len:20 off:8 x:-4 z:-10 vz:2 type:seq seq:chord_seq note_vel:1 vel_only:
+offset 8
 
-# 0 e rand_text_len:20 on:7 off:16 x:-4 z:-10 vz:2 type:seq seq:chord_seq note_vel:1 vel_only:
+0 e off:4 text:w x:-4 z:-10 type:seq seq:chord_seq note_vel:1 note:A3 note:B3- note:D4
+0 e off:4 text:o x:-2 z:-10 type:seq seq:chord_seq note_vel:1 note:A3 note:B3- note:D4
+0 e off:4 text:z x:0 z:-10 type:seq seq:chord_seq note_vel:1 note:A3 note:B3- note:D4
+0 e off:4 text:i x:2 z:-10 type:seq seq:chord_seq note_vel:1 note:A3 note:B3- note:D4
+0 e off:4 text:a x:-4 z:-8 type:seq seq:chord_seq note_vel:1 note:A3 note:B3- note:D4
+0 e off:4 text:k x:-2 z:-8 type:seq seq:chord_seq note_vel:1 note:A3 note:B3- note:D4
+0 e off:4 text:e x:0 z:-8 type:seq seq:chord_seq note_vel:1 note:A3 note:B3- note:D4
+0 e off:4 text:n x:2 z:-8 type:seq seq:chord_seq note_vel:1 note:A3 note:B3- note:D4
 
-# 0 e rand_text_len:20 on:15 off:32 x:-4 z:-10 vz:2 type:seq seq:chord_seq note_vel:1 vel_only:
+0 e on:1 off:5 text:fgh x:0 z:-6 type:seq seq:chord_seq note_vel:1 note_list:chordSeq1
+
+offset 12
+
+0 e off:4 text:w x:-4 z:-10 type:seq seq:chord_seq note_vel:1 note:A3 note:B3- note:D4
+0 e off:4 text:o x:-2 z:-10 type:seq seq:chord_seq note_vel:1 note:A3 note:B3- note:D4
+0 e off:4 text:z x:0 z:-10 type:seq seq:chord_seq note_vel:1 note:A3 note:B3- note:D4
+0 e off:4 text:i x:2 z:-10 type:seq seq:chord_seq note_vel:1 note:A3 note:B3- note:D4
+0 e off:4 text:a x:-4 z:-8 type:seq seq:chord_seq note_vel:1 note:A3 note:B3- note:D4
+0 e off:4 text:k x:-2 z:-8 type:seq seq:chord_seq note_vel:1 note:A3 note:B3- note:D4
+0 e off:4 text:e x:0 z:-8 type:seq seq:chord_seq note_vel:1 note:A3 note:B3- note:D4
+0 e off:4 text:n x:2 z:-8 type:seq seq:chord_seq note_vel:1 note:A3 note:B3- note:D4
+
+0 e on:1 off:5 text:fgh x:0 z:-6 type:seq seq:chord_seq note_vel:1 note_list:chordSeq1
+
+offset 16
+
+0 e off:4 text:w x:-4 z:-10 type:seq seq:chord_seq note_vel:1 note:A3 note:B3- note:D4
+0 e off:4 text:o x:-2 z:-10 type:seq seq:chord_seq note_vel:1 note:A3 note:B3- note:D4
+0 e off:4 text:z x:0 z:-10 type:seq seq:chord_seq note_vel:1 note:A3 note:B3- note:D4
+0 e off:4 text:i x:2 z:-10 type:seq seq:chord_seq note_vel:1 note:A3 note:B3- note:D4
+0 e off:4 text:a x:-4 z:-8 type:seq seq:chord_seq note_vel:1 note:A3 note:B3- note:D4
+0 e off:4 text:k x:-2 z:-8 type:seq seq:chord_seq note_vel:1 note:A3 note:B3- note:D4
+0 e off:4 text:e x:0 z:-8 type:seq seq:chord_seq note_vel:1 note:A3 note:B3- note:D4
+0 e off:4 text:n x:2 z:-8 type:seq seq:chord_seq note_vel:1 note:A3 note:B3- note:D4
+
+0 e on:1 off:5 text:fgh x:0 z:-6 type:seq seq:chord_seq note_vel:1 note_list:chordSeq1
+
+offset 20
+
+0 set_seq_save chord_seq 1
+
+0 e off:4 text:w x:-4 z:-10 type:seq seq:chord_seq note_vel:1 note:A3 note:B3- note:D4
+0 e off:4 text:o x:-2 z:-10 type:seq seq:chord_seq note_vel:1 note:A3 note:B3- note:D4
+0 e off:4 text:z x:0 z:-10 type:seq seq:chord_seq note_vel:1 note:A3 note:B3- note:D4
+0 e off:4 text:i x:2 z:-10 type:seq seq:chord_seq note_vel:1 note:A3 note:B3- note:D4
+0 e off:4 text:a x:-4 z:-8 type:seq seq:chord_seq note_vel:1 note:A3 note:B3- note:D4
+0 e off:4 text:k x:-2 z:-8 type:seq seq:chord_seq note_vel:1 note:A3 note:B3- note:D4
+0 e off:4 text:e x:0 z:-8 type:seq seq:chord_seq note_vel:1 note:A3 note:B3- note:D4
+0 e off:4 text:n x:2 z:-8 type:seq seq:chord_seq note_vel:1 note:A3 note:B3- note:D4
+
+0 e on:1 off:5 text:fgh x:0 z:-6 type:seq seq:chord_seq note_vel:1 note_list:chordSeq1
+
+offset 24
+
+0 e text:fffj x:0 z:0 type:seq seq:bass_seq note_vel:1 note_list:bassSeq2
+
+# 0 e off:4 text:w x:-4 z:-10 type:seq seq:chord_seq note_vel:1 note:A3 note:B3- note:D4
+# 0 e off:4 text:o x:-2 z:-10 type:seq seq:chord_seq note_vel:1 note:A3 note:B3- note:D4
+# 0 e off:4 text:z x:0 z:-10 type:seq seq:chord_seq note_vel:1 note:A3 note:B3- note:D4
+# 0 e off:4 text:i x:2 z:-10 type:seq seq:chord_seq note_vel:1 note:A3 note:B3- note:D4
+# 0 e off:4 text:a x:-4 z:-8 type:seq seq:chord_seq note_vel:1 note:A3 note:B3- note:D4
+# 0 e off:4 text:k x:-2 z:-8 type:seq seq:chord_seq note_vel:1 note:A3 note:B3- note:D4
+# 0 e off:4 text:e x:0 z:-8 type:seq seq:chord_seq note_vel:1 note:A3 note:B3- note:D4
+# 0 e off:4 text:n x:2 z:-8 type:seq seq:chord_seq note_vel:1 note:A3 note:B3- note:D4
+
+# 0 e on:1 off:5 text:fgh x:0 z:-6 type:seq seq:chord_seq note_vel:1 note_list:chordSeq1
+
+# offset 28
+
+# 0 e off:4 text:w x:-4 z:-10 type:seq seq:chord_seq note_vel:1 note:A3 note:B3- note:D4
+# 0 e off:4 text:o x:-2 z:-10 type:seq seq:chord_seq note_vel:1 note:A3 note:B3- note:D4
+# 0 e off:4 text:z x:0 z:-10 type:seq seq:chord_seq note_vel:1 note:A3 note:B3- note:D4
+# 0 e off:4 text:i x:2 z:-10 type:seq seq:chord_seq note_vel:1 note:A3 note:B3- note:D4
+# 0 e off:4 text:a x:-4 z:-8 type:seq seq:chord_seq note_vel:1 note:A3 note:B3- note:D4
+# 0 e off:4 text:k x:-2 z:-8 type:seq seq:chord_seq note_vel:1 note:A3 note:B3- note:D4
+# 0 e off:4 text:e x:0 z:-8 type:seq seq:chord_seq note_vel:1 note:A3 note:B3- note:D4
+# 0 e off:4 text:n x:2 z:-8 type:seq seq:chord_seq note_vel:1 note:A3 note:B3- note:D4
+
+# 0 e on:1 off:5 text:fgh x:0 z:-6 type:seq seq:chord_seq note_vel:1 note_list:chordSeq1
+
+# offset 32
+
+# 0 e off:4 text:w x:-4 z:-10 type:seq seq:chord_seq note_vel:1 note:A3 note:B3- note:D4
+# 0 e off:4 text:o x:-2 z:-10 type:seq seq:chord_seq note_vel:1 note:A3 note:B3- note:D4
+# 0 e off:4 text:z x:0 z:-10 type:seq seq:chord_seq note_vel:1 note:A3 note:B3- note:D4
+# 0 e off:4 text:i x:2 z:-10 type:seq seq:chord_seq note_vel:1 note:A3 note:B3- note:D4
+# 0 e off:4 text:a x:-4 z:-8 type:seq seq:chord_seq note_vel:1 note:A3 note:B3- note:D4
+# 0 e off:4 text:k x:-2 z:-8 type:seq seq:chord_seq note_vel:1 note:A3 note:B3- note:D4
+# 0 e off:4 text:e x:0 z:-8 type:seq seq:chord_seq note_vel:1 note:A3 note:B3- note:D4
+# 0 e off:4 text:n x:2 z:-8 type:seq seq:chord_seq note_vel:1 note:A3 note:B3- note:D4
+
+# 0 e on:1 off:5 text:fgh x:0 z:-6 type:seq seq:chord_seq note_vel:1 note_list:chordSeq1
