@@ -6,6 +6,7 @@
 #include "rng.h"
 #include "audio.h"
 #include "midi_util.h"
+#include "sound_bank.h"
 
 void SpawnEnemySeqAction::Execute(GameManager& g) {
     assert(!_done);
@@ -319,6 +320,49 @@ void LoadNoteEnemy(TypingEnemyEntity& enemy, std::istream& lineStream) {
     }
 }
 
+void LoadPcmEnemy(GameManager& g, TypingEnemyEntity& enemy, std::istream& lineStream) {
+    float velocity = 1.f;
+    int soundIx = -1;
+    
+    std::string token, key, value;
+    while (!lineStream.eof()) {
+        {
+            lineStream >> token;
+            std::size_t delimIx = token.find_first_of(':');
+            if (delimIx == std::string::npos) {
+                printf("LoadNoteEnemy: Token missing \":\" - \"%s\"\n", token.c_str());
+                continue;
+            }
+
+            key = token.substr(0, delimIx);
+            value = token.substr(delimIx+1);
+        }
+
+        if (key == "sound") {
+            soundIx = g._soundBank->GetSoundIx(value.c_str());
+            if (soundIx < 0) {
+                printf("ERROR: no sound with name \"%s\"\n", value.c_str());
+            }
+        } else if (key == "vel") {
+            velocity = std::stof(value);
+        } else {
+            printf("LoadPcmEnemy: unrecognized key \"%s\"\n", key.c_str());
+        }
+    }
+
+    if (soundIx >= 0) {
+        auto pAction = std::make_unique<BeatTimeEventSeqAction>();
+        pAction->_b_e._beatTime = 0.0;
+        pAction->_b_e._e.type = audio::EventType::PlayPcm;
+        pAction->_b_e._e.pcmSoundIx = soundIx;
+        pAction->_b_e._e.pcmVelocity = velocity;
+        pAction->_b_e._e.loop = false;
+        enemy._hitActions.push_back(std::move(pAction));
+    } else {
+        printf("LoadPcmEnemy: no valid sound index!\n");
+    }   
+}
+
 } // namespace
 
 void SpawnEnemySeqAction::Load(GameManager& g, LoadInputs const& loadInputs, std::istream& lineStream) {
@@ -356,6 +400,8 @@ void SpawnEnemySeqAction::Load(GameManager& g, LoadInputs const& loadInputs, std
                 LoadNoteEnemy(_enemy, lineStream);
             } else if (value == "seq") {
                 LoadSeqEnemy(g, _enemy, lineStream);
+            } else if (value == "pcm") {
+                LoadPcmEnemy(g, _enemy, lineStream);
             }
             break;
         } else if (key == "on") {

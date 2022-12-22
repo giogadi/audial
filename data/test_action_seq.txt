@@ -73,7 +73,12 @@ offset 20
 
 offset 24
 
-0 e text:fffj x:0 z:0 type:seq seq:bass_seq note_vel:1 note_list:bassSeq2
+0 e text:a x:-4 z:0 type:pcm sound:feel_vox_1 vel:0.3
+0 e text:f x:-2 z:0 type:pcm sound:feel_vox_2 vel:0.3
+0 e text:j x:-0 z:0 type:pcm sound:feel_vox_3 vel:0.3
+0 e text:k x:2 z:0 type:pcm sound:feel_vox_4 vel:0.3
+
+#0 e text:fffj x:0 z:0 type:seq seq:bass_seq note_vel:1 note_list:bassSeq2
 
 # 0 e off:4 text:w x:-4 z:-10 type:seq seq:chord_seq note_vel:1 note:A3 note:B3- note:D4
 # 0 e off:4 text:o x:-2 z:-10 type:seq seq:chord_seq note_vel:1 note:A3 note:B3- note:D4
