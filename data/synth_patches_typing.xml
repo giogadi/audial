@@ -123,12 +123,12 @@
     <patch>
         <version>3</version>
         <name>acid_bass</name>
-        <gain_factor>0.630999982</gain_factor>
+        <gain_factor>0.75</gain_factor>
         <osc1_waveform>Saw</osc1_waveform>
         <osc2_waveform>Saw</osc2_waveform>
         <detune>0.00800000038</detune>
         <osc_fader>0.479000002</osc_fader>
-        <cutoff_freq>186.863998</cutoff_freq>
+        <cutoff_freq>560.593018</cutoff_freq>
         <cutoff_k>3.21199989</cutoff_k>
         <hpf_cutoff_freq>0</hpf_cutoff_freq>
         <hpf_peak>0</hpf_peak>
@@ -143,7 +143,7 @@
             <release_time>0.720000029</release_time>
             <min_value>0.00999999978</min_value>
         </amp_env_spec>
-        <cutoff_env_gain>3363.55908</cutoff_env_gain>
+        <cutoff_env_gain>373.729004</cutoff_env_gain>
         <cutoff_env_spec>
             <attack_time>0.0810000002</attack_time>
             <decay_time>0.0890000015</decay_time>
