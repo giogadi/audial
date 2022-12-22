@@ -145,7 +145,7 @@
         </amp_env_spec>
         <cutoff_env_gain>3363.55908</cutoff_env_gain>
         <cutoff_env_spec>
-            <attack_time>0.00400000019</attack_time>
+            <attack_time>0.0810000002</attack_time>
             <decay_time>0.0890000015</decay_time>
             <sustain_level>0.101999998</sustain_level>
             <release_time>0.208000004</release_time>

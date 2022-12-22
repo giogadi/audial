@@ -256,7 +256,7 @@
             </channels>
             <step_length>0.25</step_length>
             <note_length>0.125</note_length>
-            <start_time>5</start_time>
+            <start_time>0</start_time>
         </StepSequencer>
         <StepSequencer>
             <name>bass_seq</name>
@@ -288,7 +288,7 @@
             </model_color_vec4>
             <sequence>-1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1</sequence>
             <channels>
-                <channel>0</channel>
+                <channel>3</channel>
             </channels>
             <step_length>0.25</step_length>
             <note_length>0.125</note_length>

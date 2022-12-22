@@ -31,21 +31,20 @@ void SequencerEntity::Update(GameManager& g, float dt) {
         return;
     }
 
-    {
-        double beatTime = g._beatClock->GetBeatTimeFromEpoch();
-        if (beatTime < _startBeatTime) {
-            return;
-        }
+    // TODO Can we rewrite sequencer to be a little simpler to understand?
+    double currentBeatTime = g._beatClock->GetBeatTimeFromEpoch();
+    if (currentBeatTime < _startBeatTime) {
+        return;
     }
 
     // Queue up events up to 1 beat before they should be played.
-    double currentBeatTime = g._beatClock->GetBeatTime();
+    // double currentBeatTime = g._beatClock->GetBeatTime();
     double maxBeatTime = currentBeatTime + 1.0;
     while (true) {
         if (_currentIx < 0) {
             if (_currentLoopStartBeatTime < 0.0) {
                 // This is the first loop iteration. Just start the loop on the next beat.
-                _currentLoopStartBeatTime = BeatClock::GetNextBeatDenomTime(currentBeatTime, /*denom=*/1.0);
+                _currentLoopStartBeatTime = _startBeatTime;
             }
             _currentIx = 0;
         }
@@ -54,7 +53,8 @@ void SequencerEntity::Update(GameManager& g, float dt) {
             double absBeatTime = _currentLoopStartBeatTime + b_e._beatTime;
             if (absBeatTime <= maxBeatTime) {
                 // queue it up!
-                long tickTime = g._beatClock->BeatTimeToTickTime(absBeatTime);
+                double epochAdjust = g._beatClock->GetBeatTime() - currentBeatTime;
+                long tickTime = g._beatClock->BeatTimeToTickTime(absBeatTime + epochAdjust);
                 audio::Event e = b_e._e;
                 e.timeInTicks = tickTime;
                 g._audioContext->AddEvent(e);
