@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <patches>
     <patch>
-        <version>3</version>
+        <version>4</version>
         <name>bass</name>
         <gain_factor>0.931999981</gain_factor>
+        <mono>true</mono>
         <osc1_waveform>Square</osc1_waveform>
         <osc2_waveform>Square</osc2_waveform>
         <detune>1</detune>
@@ -41,9 +42,10 @@
         </pitch_env_spec>
     </patch>
     <patch>
-        <version>3</version>
+        <version>4</version>
         <name>lead</name>
         <gain_factor>0.677999973</gain_factor>
+        <mono>false</mono>
         <osc1_waveform>Saw</osc1_waveform>
         <osc2_waveform>Saw</osc2_waveform>
         <detune>0.986999989</detune>
@@ -81,9 +83,10 @@
         </pitch_env_spec>
     </patch>
     <patch>
-        <version>3</version>
+        <version>4</version>
         <name>pad</name>
         <gain_factor>0.639999986</gain_factor>
+        <mono>false</mono>
         <osc1_waveform>Saw</osc1_waveform>
         <osc2_waveform>Saw</osc2_waveform>
         <detune>0</detune>
@@ -121,8 +124,9 @@
         </pitch_env_spec>
     </patch>
     <patch>
-        <version>3</version>
+        <version>4</version>
         <name>acid_bass</name>
+        <mono>true</mono>
         <gain_factor>0.75</gain_factor>
         <osc1_waveform>Square</osc1_waveform>
         <osc2_waveform>Square</osc2_waveform>

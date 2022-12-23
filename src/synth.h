@@ -51,6 +51,8 @@ struct Patch {
     // TODO: consider just having this be a decibel value capped at 0db.
     float gainFactor = 0.7f;
 
+    bool mono = false;
+
     Waveform osc1Waveform = Waveform::Square;
     Waveform osc2Waveform = Waveform::Square;
 
@@ -82,7 +84,7 @@ struct Patch {
     void Save(serial::Ptree pt) const;
     void Load(serial::Ptree pt);
 
-    static int constexpr kVersion = 3;
+    static int constexpr kVersion = 4;
 };
 
 int constexpr kNumOscillators = 2;

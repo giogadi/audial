@@ -103,6 +103,22 @@ void LoadNoteTables() {
             {GetMidiNote("A2-"), -1, -1, -1},
         };
     }
+
+    {
+        std::vector<std::array<int,4>>& table = gNoteTables["bassPair1"];
+        table = {
+            {GetMidiNote("F2"), -1, -1, -1},
+            {GetMidiNote("F2+"), -1, -1, -1},
+        };
+    }
+
+    {
+        std::vector<std::array<int,4>>& table = gNoteTables["bassPair2"];
+        table = {
+            {GetMidiNote("G1+"), -1, -1, -1},
+            {GetMidiNote("A1"), -1, -1, -1},
+        };
+    }
     
 
     SpawnEnemySeqAction::_sStaticDataLoaded = true;

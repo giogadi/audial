@@ -65,6 +65,7 @@ void Patch::Save(serial::Ptree pt) const {
     pt.PutInt("version", kVersion);
     pt.PutString("name", name.c_str());
     pt.PutFloat("gain_factor", gainFactor);
+    pt.PutBool("mono", mono);
     pt.PutString("osc1_waveform", WaveformToString(osc1Waveform));
     pt.PutString("osc2_waveform", WaveformToString(osc2Waveform));
     pt.PutFloat("detune", detune);
@@ -89,6 +90,9 @@ void Patch::Load(serial::Ptree pt) {
 
     name = pt.GetString("name");
     gainFactor = pt.GetFloat("gain_factor");
+    if (version >= 4) {
+        mono = pt.GetBool("mono");
+    }
     if (version >= 1) {
         osc1Waveform = StringToWaveform(pt.GetString("osc1_waveform").c_str());
         osc2Waveform = StringToWaveform(pt.GetString("osc2_waveform").c_str());
@@ -364,7 +368,11 @@ Voice* FindVoiceForNoteOn(StateData& state, int const midiNote) {
     // sorry bro
     int oldestClosingIx = -1;
     int oldestClosingAge = -1;
-    for (int i = 0; i < state.voices.size(); ++i) {
+    int numVoices = 1;
+    if (!state.patch.mono) {
+        numVoices = state.voices.size();
+    }
+    for (int i = 0; i < numVoices; ++i) {
         Voice& v = state.voices[i];
         if (v.currentMidiNote == midiNote) {
             return &v;

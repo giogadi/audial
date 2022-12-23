@@ -88,8 +88,11 @@ offset 26
 
 0 e off:6 text:q x:-4 z:-2 type:seq seq:bass_seq note:F1+ note_vel:1.0
 0 e off:6 text:d x:-2 z:-2 type:seq seq:bass_seq note:F2+ note_vel:1.0
+##### TODO: MOVE THESE CUTE CHROMATIC GUYS INTO A LATER BASSLINE. start simple first
+0 e off:6 text:er x:-2 z:-4 type:seq seq:bass_seq note_list:bassPair1 note_vel:1.0
 0 e off:6 text:u x:0 z:-2 type:seq seq:bass_seq note:F1+ note_vel:1.0
 0 e off:6 text:c x:2 z:-2 type:seq seq:bass_seq note:A1 note_vel:1.0
+0 e off:6 text:io x:2 z:-4 type:seq seq:bass_seq note_list:bassPair2 note_vel:1.0
 
 0 e off:6 text:f x:-4 z:0 type:seq seq:bass_seq note:F1+ note_vel:1.0
 0 e off:6 text:j x:-2 z:0 type:seq seq:bass_seq note:A1 note_vel:1.0
