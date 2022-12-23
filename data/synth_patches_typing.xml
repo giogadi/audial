@@ -124,12 +124,12 @@
         <version>3</version>
         <name>acid_bass</name>
         <gain_factor>0.75</gain_factor>
-        <osc1_waveform>Saw</osc1_waveform>
-        <osc2_waveform>Saw</osc2_waveform>
-        <detune>0.00800000038</detune>
-        <osc_fader>0.479000002</osc_fader>
-        <cutoff_freq>560.593018</cutoff_freq>
-        <cutoff_k>3.21199989</cutoff_k>
+        <osc1_waveform>Square</osc1_waveform>
+        <osc2_waveform>Square</osc2_waveform>
+        <detune>1</detune>
+        <osc_fader>0.462000012</osc_fader>
+        <cutoff_freq>373.729004</cutoff_freq>
+        <cutoff_k>1.52199996</cutoff_k>
         <hpf_cutoff_freq>0</hpf_cutoff_freq>
         <hpf_peak>0</hpf_peak>
         <pitch_lfo_gain>0</pitch_lfo_gain>
@@ -140,15 +140,15 @@
             <attack_time>0.00800000038</attack_time>
             <decay_time>0.100000001</decay_time>
             <sustain_level>1</sustain_level>
-            <release_time>0.720000029</release_time>
+            <release_time>1.25</release_time>
             <min_value>0.00999999978</min_value>
         </amp_env_spec>
-        <cutoff_env_gain>373.729004</cutoff_env_gain>
+        <cutoff_env_gain>1868.64404</cutoff_env_gain>
         <cutoff_env_spec>
-            <attack_time>0.0810000002</attack_time>
-            <decay_time>0.0890000015</decay_time>
-            <sustain_level>0.101999998</sustain_level>
-            <release_time>0.208000004</release_time>
+            <attack_time>0.00800000038</attack_time>
+            <decay_time>0.127000004</decay_time>
+            <sustain_level>0.0469999984</sustain_level>
+            <release_time>0.287999988</release_time>
             <min_value>0.00999999978</min_value>
         </cutoff_env_spec>
         <pitch_env_gain>0</pitch_env_gain>

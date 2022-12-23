@@ -60,11 +60,15 @@ offset 15
 
 offset 20
 
-0 automate CutoffEnvGain 2 3550.42407 1000 4
-0 automate Cutoff 2 934.322021 500 4
-0 automate Gain 2 0.6 0.7 4
+# 0 automate CutoffEnvGain 2 3550.42407 1000 4
+# 0 automate Cutoff 2 934.322021 500 4
+# 0 automate Gain 2 0.6 0.7 2
 
 offset 22
+
+1.75 automate Gain 2 0 0 0.1
+1.75 automate seq_velocity clap_seq 0 0 0.1
+1.75 automate seq_velocity kick 0 0 0.1
 
 0 e off:6 text:q x:-4 z:2 type:pcm sound:feel_vox_1 vel:0.3
 0 e off:6 text:j x:-2 z:2 type:pcm sound:feel_vox_2 vel:0.3
@@ -77,6 +81,10 @@ offset 22
 0 e off:6 text:o x:2 z:4 type:pcm sound:feel_vox_8 vel:0.3
 
 offset 26
+
+1.75 automate Gain 2 0 0.64 0.1
+1.75 automate seq_velocity clap_seq 0 0.5 0.1
+1.75 automate seq_velocity kick 0 1 0.1
 
 0 e off:6 text:q x:-4 z:-2 type:seq seq:bass_seq note:F1+ note_vel:1.0
 0 e off:6 text:d x:-2 z:-2 type:seq seq:bass_seq note:F2+ note_vel:1.0
@@ -97,6 +105,10 @@ offset 30
 
 offset 34
 
+1.75 automate Gain 2 0 0 0.1
+1.75 automate seq_velocity clap_seq 0 0 0.1
+1.75 automate seq_velocity kick 0 0 0.1
+
 0 e off:6 text:q x:-4 z:2 type:pcm sound:feel_vox_1 vel:0.3
 0 e off:6 text:j x:-2 z:2 type:pcm sound:feel_vox_2 vel:0.3
 0 e off:6 text:p x:-0 z:2 type:pcm sound:feel_vox_3 vel:0.3
@@ -108,6 +120,10 @@ offset 34
 0 e off:6 text:o x:2 z:4 type:pcm sound:feel_vox_8 vel:0.3
 
 offset 38
+
+1.75 automate Gain 2 0 0.64 0.1
+1.75 automate seq_velocity clap_seq 0 0.5 0.1
+1.75 automate seq_velocity kick 0 1 0.1
 
 0 e off:6 text:k x:-4 z:-2 vz:1 type:seq seq:bass_seq note:F1+ note_vel:1.0
 0 e off:6 text:d x:-2 z:-2 vz:1 type:seq seq:bass_seq note:F2+ note_vel:1.0
@@ -128,15 +144,25 @@ offset 42
 
 offset 46
 
+1.75 automate Gain 2 0 0 0.1
+1.75 automate seq_velocity clap_seq 0 0 0.1
+1.75 automate seq_velocity kick 0 0 0.1
+
 0 e off:6 text:q x:-4 z:2 type:pcm sound:feel_vox_1 vel:0.3
 0 e off:6 text:j x:-2 z:2 type:pcm sound:feel_vox_2 vel:0.3
-0 e off:6 text:p x:-0 z:2 type:pcm sound:feel_vox_3 vel:0.3
+0 e off:6 text:k x:-0 z:2 type:pcm sound:feel_vox_3 vel:0.3
 0 e off:6 text:d x:2 z:2 type:pcm sound:feel_vox_4 vel:0.3
 
 0 e off:6 text:i x:-4 z:4 type:pcm sound:feel_vox_5 vel:0.3
 0 e off:6 text:s x:-2 z:4 type:pcm sound:feel_vox_6 vel:0.3
 0 e off:6 text:a x:-0 z:4 type:pcm sound:feel_vox_7 vel:0.3
-0 e off:6 text:o x:2 z:4 type:pcm sound:feel_vox_8 vel:0.3
+0 e off:6 text:v x:2 z:4 type:pcm sound:feel_vox_8 vel:0.3
+
+offset 50
+
+1.75 automate Gain 2 0 0.64 0.1
+1.75 automate seq_velocity clap_seq 0 0.5 0.1
+1.75 automate seq_velocity kick 0 1 0.1
 
 #0 e text:fffj x:0 z:0 type:seq seq:bass_seq note_vel:1 note_list:bassSeq2
 

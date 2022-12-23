@@ -292,7 +292,7 @@
             </channels>
             <step_length>0.25</step_length>
             <note_length>0.125</note_length>
-            <start_time>5</start_time>
+            <start_time>0</start_time>
         </StepSequencer>
         <ActionSequencer>
             <name>action_seq</name>

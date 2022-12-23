@@ -1,8 +1,10 @@
 #include "param_automator.h"
 
+#include "math_util.h"
 #include "game_manager.h"
 #include "beat_clock.h"
 #include "step_sequencer.h"
+#include "sequencer.h"
 #include "audio.h"
 
 void ParamAutomatorEntity::Init(GameManager& g) {
@@ -12,7 +14,8 @@ void ParamAutomatorEntity::Init(GameManager& g) {
             printf("ParamAutomatorEntity::Init (\"%s\"): could not find entity with name \"%s\"\n", _name.c_str(), _seqEntityName.c_str());
             return;
         }
-        if (e->_id._type != ne::EntityType::StepSequencer) {
+        if (e->_id._type != ne::EntityType::Sequencer &&
+            e->_id._type != ne::EntityType::StepSequencer) {
             printf("ParamAutomatorEntity::Init: (\"%s\"): entity found of name \"%s\" was not a seq entity!\n", _name.c_str(), _seqEntityName.c_str());
             return;
         }
@@ -33,11 +36,9 @@ void ParamAutomatorEntity::Update(GameManager& g, float dt) {
     // TODO: This early return might cause us to never get to _endVelocity.
     if (automateTime >= _desiredAutomateTime) {
         g._neEntityManager->TagForDestroy(_id);
-        return;
+        // return;
     }
-    double factor = automateTime / _desiredAutomateTime;
-    assert(factor >= 0.0);
-    assert(factor <= 1.0);
+    double factor = math_util::Clamp(automateTime / _desiredAutomateTime, 0.0, 1.0);
     float newValue = _startValue + factor * (_endValue - _startValue);
     
     if (_synth) {
@@ -50,13 +51,31 @@ void ParamAutomatorEntity::Update(GameManager& g, float dt) {
         e.paramChangeTime = 0;
         g._audioContext->AddEvent(e);
     } else {
-        StepSequencerEntity* seq = static_cast<StepSequencerEntity*>(g._neEntityManager->GetEntity(_seqId));
-        if (seq == nullptr) {
-            printf("ParamAutomator (\"%s\"): Sequencer was destroyed!\n", _name.c_str());
-        } else {
-            for (StepSequencerEntity::SeqStep& s : seq->_initialMidiSequence) {
-                s._velocity = newValue;
+        ne::Entity* seqBaseEntity = g._neEntityManager->GetEntity(_seqId);
+        if (seqBaseEntity->_id._type == ne::EntityType::StepSequencer) {
+            StepSequencerEntity* seq = static_cast<StepSequencerEntity*>(g._neEntityManager->GetEntity(_seqId));
+            if (seq == nullptr) {
+                printf("ParamAutomator (\"%s\"): Sequencer was destroyed!\n", _name.c_str());
+            } else {
+                for (StepSequencerEntity::SeqStep& s : seq->_initialMidiSequence) {
+                    s._velocity = newValue;
+                }
             }
+        } else if (seqBaseEntity->_id._type == ne::EntityType::Sequencer) {
+            SequencerEntity* seq = static_cast<SequencerEntity*>(g._neEntityManager->GetEntity(_seqId));
+            if (seq == nullptr) {
+                printf("ParamAutomator (\"%s\"): Sequencer was destroyed!\n", _name.c_str());
+            } else {
+                for (BeatTimeEvent& b_e : seq->_events) {
+                    if (b_e._e.type == audio::EventType::NoteOn) {
+                        b_e._e.velocity = newValue;
+                    } else if (b_e._e.type == audio::EventType::PlayPcm) {
+                        b_e._e.pcmVelocity = newValue;
+                    }
+                }
+            }
+        } else {
+            assert(false);
         }
     }
 }
