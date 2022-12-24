@@ -147,11 +147,19 @@ void NoteOnOffSeqAction::Load(GameManager& g, LoadInputs const& loadInputs, std:
 }
 
 void BeatTimeEventSeqAction::Execute(GameManager& g) {
-    audio::Event e = GetEventAtBeatOffsetFromNextDenom(_quantizeDenom, _b_e, *g._beatClock, /*slack=*/0.0625);
+    audio::Event e;
+    if (_quantizeDenom >= 0) {
+        e = GetEventAtBeatOffsetFromNextDenom(_quantizeDenom, _b_e, *g._beatClock, /*slack=*/0.0625);
+    } else {
+        e = _b_e._e;
+        e.timeInTicks = g._beatClock->EpochBeatTimeToTickTime(_b_e._beatTime);
+    }
     g._audioContext->AddEvent(e);
 }
 
 void BeatTimeEventSeqAction::Load(GameManager& g, LoadInputs const& loadInputs, std::istream& input) {
-    assert(false);  // TODO: how to consider loadInputs?
+    // quantize denom first
+    input >> _quantizeDenom;
     ReadBeatEventFromTextLine(*g._soundBank, input, _b_e);
+    _b_e._beatTime += loadInputs._beatTimeOffset;   
 }

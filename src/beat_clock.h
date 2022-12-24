@@ -18,6 +18,10 @@ public:
         return (double)(tickTime * _bpm) / (60.0 * _sampleRate);
     }
 
+    unsigned long EpochBeatTimeToTickTime(double beatTime) const {
+        return BeatTimeToTickTime(beatTime + _epochBeatTime);
+    }
+
     // These all return the values computed when Update() was called on the
     // clock. So they remain constant throughout the game frame.
     double GetBeatTime() const {

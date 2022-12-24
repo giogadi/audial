@@ -69,6 +69,8 @@ void ActionSequencerEntity::Init(GameManager& g) {
             pAction = std::make_unique<NoteOnOffSeqAction>();
         } else if (token == "e") {
             pAction = std::make_unique<SpawnEnemySeqAction>();
+        } else if (token == "b_e") {
+            pAction = std::make_unique<BeatTimeEventSeqAction>();
         } else {
             printf("ERROR: Unrecognized action type \"%s\".\n", token.c_str());
             continue;

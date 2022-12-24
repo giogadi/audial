@@ -3,6 +3,7 @@
 # 0 automate AmpEnvSustain 2 1.0 1.0 0.1
 # 0 automate Cutoff 2 0 2700 0.1
 # 0 automate CutoffEnvGain 2 0 0.0 0.1
+# 0 automate seq_velocity snare_fill_seq 0.0 0.0 0.1
 
 offset 2
 
@@ -69,6 +70,24 @@ offset 22
 1.75 automate Gain 2 0 0 0.1
 1.75 automate seq_velocity clap_seq 0 0 0.1
 1.75 automate seq_velocity kick 0 0 0.1
+
+2.00 b_e -1 e:play s:snare v:0.0625
+2.25 b_e -1 e:play s:snare v:0.0625
+2.5 b_e -1 e:play s:snare v:0.125
+2.75 b_e -1 e:play s:snare v:0.1875
+3.00 b_e -1 e:play s:snare v:0.25
+3.25 b_e -1 e:play s:snare v:0.3125
+3.5 b_e -1 e:play s:snare v:0.375
+3.75 b_e -1 e:play s:snare v:0.4375
+4.0  b_e -1 e:play s:snare v:0.5625
+4.25 b_e -1 e:play s:snare v:0.625
+4.5  b_e -1 e:play s:snare v:0.6875
+4.75 b_e -1 e:play s:snare v:0.75
+5.00 b_e -1 e:play s:snare v:0.8125
+5.25 b_e -1 e:play s:snare v:0.875
+5.55 b_e -1 e:play s:snare v:0.9375
+5.75 b_e -1 e:play s:snare v:1.0
+6.0 b_e -1 e:play s:snare v:1.0
 
 0 e off:6 text:q x:-4 z:2 type:pcm sound:feel_vox_1 vel:0.3
 0 e off:6 text:j x:-2 z:2 type:pcm sound:feel_vox_2 vel:0.3
