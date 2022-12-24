@@ -203,7 +203,7 @@
                 <w>0</w>
             </model_color_vec4>
             <loop>true</loop>
-            <start_beat_time>16</start_beat_time>
+            <start_beat_time>4</start_beat_time>
             <events>
                 <beat_event>
                     <event_type>PlayPcm</event_type>
@@ -353,7 +353,7 @@
                 <w>0</w>
             </model_color_vec4>
             <loop>true</loop>
-            <start_beat_time>8</start_beat_time>
+            <start_beat_time>4</start_beat_time>
             <events>
                 <beat_event>
                     <event_type>PlayPcm</event_type>

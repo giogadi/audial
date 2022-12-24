@@ -245,7 +245,7 @@ int PortAudioCallback(
             }
             switch (e.type) {
                 case EventType::PlayPcm: {
-                    if (e.pcmSoundIx >= state->soundBank->_sounds.size()) {
+                    if (e.pcmSoundIx >= state->soundBank->_sounds.size() || e.pcmSoundIx < 0) {
                         std::cout << "NO PCM SOUND FOR NOTE " << e.pcmSoundIx << std::endl;
                         break;
                     }
@@ -254,34 +254,36 @@ int PortAudioCallback(
                         std::cout << "PCM SOUND AT NOTE " << e.pcmSoundIx << " IS NULL" << std::endl;
                         break;
                     }
-                    // Find free voice. Also check that there isn't another voice playing the exact same sample at the same time.
+                    // Find free voice. If this sample is already playing, or if
+                    // the new sample is in the same exclusive group as the
+                    // previous one, cancel the other one and play the new one.
                     int voiceIx = -1;
-                    bool foundCopy = false;
                     for (int i = 0; i < state->pcmVoices.size(); ++i) {
                         PcmVoice const& pcmVoice = state->pcmVoices[i];
                         if (pcmVoice._soundBufferIx < 0) {
-                            voiceIx = i;
-                        } else {
-                            if (pcmVoice._soundIx == e.pcmSoundIx && pcmVoice._soundBufferIx <= 0) {
-                                voiceIx = -1;
-                                foundCopy = true;
-                                break;
+                            if (voiceIx < 0) {
+                                voiceIx = i;
                             }
-                        } 
-                    }
-                    if (foundCopy) {
-                        break;
+                        } else if (pcmVoice._soundIx == e.pcmSoundIx) {
+                            voiceIx = i;                            
+                        } else {
+                            int prevGroup = state->soundBank->_exclusiveGroups[pcmVoice._soundIx];
+                            int newGroup = state->soundBank->_exclusiveGroups[e.pcmSoundIx];
+                            if (prevGroup >= 0 && prevGroup == newGroup) {
+                                voiceIx = i;
+                            }
+                        }
+                        
                     }
                     if (voiceIx < 0) {
-                        std::cout << "NO MORE PCM VOICES" << std::endl;
+                        printf("NO MORE PCM VOICES!\n");
                         break;
-                    } else {
-                        state->pcmVoices[voiceIx]._soundIx = e.pcmSoundIx;
-                        state->pcmVoices[voiceIx]._soundBufferIx = 0;
-                        state->pcmVoices[voiceIx]._gain = e.pcmVelocity;
-                        state->pcmVoices[voiceIx]._loop = e.loop;
                     }
-
+                    state->pcmVoices[voiceIx]._soundIx = e.pcmSoundIx;
+                    state->pcmVoices[voiceIx]._soundBufferIx = 0;
+                    state->pcmVoices[voiceIx]._gain = e.pcmVelocity;
+                    state->pcmVoices[voiceIx]._loop = e.loop;
+                    
                     break;
                 }
                 case EventType::StopPcm: {

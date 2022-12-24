@@ -11,4 +11,5 @@ public:
     int GetSoundIx(char const* soundName) const;  // returns -1 if not found
     std::vector<audio::PcmSound> _sounds;
     std::vector<char const*> _soundNames;
+    std::vector<int> _exclusiveGroups;
 };

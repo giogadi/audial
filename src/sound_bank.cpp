@@ -46,7 +46,29 @@ void SoundBank::LoadSounds() {
         , "data/sounds/feeling_vocals/v8.wav"
         , "data/sounds/feeling_vocals/v9.wav"
     };
+    _exclusiveGroups = {
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+    };
     assert(soundFilenames.size() == _soundNames.size());
+    assert(_soundNames.size() == _exclusiveGroups.size());
     for (int i = 0, n = soundFilenames.size(); i < n; ++i) {
         char const* filename = soundFilenames[i];
         audio::PcmSound sound;

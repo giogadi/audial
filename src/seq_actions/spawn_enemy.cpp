@@ -119,6 +119,15 @@ void LoadNoteTables() {
             {GetMidiNote("A1"), -1, -1, -1},
         };
     }
+
+    {
+        std::vector<std::array<int,4>>& table = gNoteTables["chordChrom1"];
+        table = {
+            {GetMidiNote("A3"), GetMidiNote("B3-"), GetMidiNote("D4"),-1},
+            {GetMidiNote("A3-"), GetMidiNote("A3"), GetMidiNote("D4-"),-1},
+            {GetMidiNote("A3"), GetMidiNote("B3-"), GetMidiNote("D4"),-1},
+        };
+    }
     
 
     SpawnEnemySeqAction::_sStaticDataLoaded = true;
