@@ -46,18 +46,16 @@ offset 10
 
 offset 14
 
-1 set_seq_save chord_seq 1
+0 e off:6 text:w x:2 z:-8 vz:2 type:seq seq:chord_seq note_vel:1 note:A3 note:B3- note:D4 save:
+0 e off:6 text:o x:4 z:-8 vz:2 type:seq seq:chord_seq note_vel:1 note:A3 note:B3- note:D4 save:
+0 e off:6 text:i x:6 z:-8 vz:2 type:seq seq:chord_seq note_vel:1 note:A3 note:B3- note:D4 save:
+0 e off:6 text:z x:8 z:-8 vz:2 type:seq seq:chord_seq note_vel:1 note:A3 note:B3- note:D4 save:
+0 e off:6 text:a x:2 z:-6 vz:2 type:seq seq:chord_seq note_vel:1 note:A3 note:B3- note:D4 save:
+0 e off:6 text:k x:4 z:-6 vz:2 type:seq seq:chord_seq note_vel:1 note:A3 note:B3- note:D4 save:
+0 e off:6 text:e x:6 z:-6 vz:2 type:seq seq:chord_seq note_vel:1 note:A3 note:B3- note:D4 save:
+0 e off:6 text:n x:8 z:-6 vz:2 type:seq seq:chord_seq note_vel:1 note:A3 note:B3- note:D4 save:
 
-0 e off:6 text:w x:2 z:-8 vz:2 type:seq seq:chord_seq note_vel:1 note:A3 note:B3- note:D4p
-0 e off:6 text:o x:4 z:-8 vz:2 type:seq seq:chord_seq note_vel:1 note:A3 note:B3- note:D4
-0 e off:6 text:i x:6 z:-8 vz:2 type:seq seq:chord_seq note_vel:1 note:A3 note:B3- note:D4
-0 e off:6 text:z x:8 z:-8 vz:2 type:seq seq:chord_seq note_vel:1 note:A3 note:B3- note:D4
-0 e off:6 text:a x:2 z:-6 vz:2 type:seq seq:chord_seq note_vel:1 note:A3 note:B3- note:D4
-0 e off:6 text:k x:4 z:-6 vz:2 type:seq seq:chord_seq note_vel:1 note:A3 note:B3- note:D4
-0 e off:6 text:e x:6 z:-6 vz:2 type:seq seq:chord_seq note_vel:1 note:A3 note:B3- note:D4
-0 e off:6 text:n x:8 z:-6 vz:2 type:seq seq:chord_seq note_vel:1 note:A3 note:B3- note:D4
-
-0 e off:6 text:fgh x:5 z:-10 vz:2 type:seq seq:chord_seq note_vel:1 note_list:chordSeq1
+0 e off:6 text:fgh x:5 z:-10 vz:2 type:seq seq:chord_seq note_vel:1 note_list:chordSeq1 save:
 
 offset 20
 
@@ -68,6 +66,9 @@ offset 20
 offset 22
 
 1.75 automate Gain 2 0 0 0.1
+# 0 automate CutoffEnvGain 2 3550.42407 1000 4
+# 0 automate Cutoff 2 934.322021 500 4
+
 1.75 automate seq_velocity clap_seq 0 0 0.1
 1.75 automate seq_velocity kick 0 0 0.1
 
@@ -185,50 +186,10 @@ offset 50
 
 0 e off:6 text:q x:-4 z:-2 type:seq seq:bass_seq note:F1+ note_vel:1.0
 0 e off:6 text:d x:-2 z:-2 type:seq seq:bass_seq note:F2+ note_vel:1.0
-##### TODO: MOVE THESE CUTE CHROMATIC GUYS INTO A LATER BASSLINE. start simple first
 0 e off:6 text:er x:-2 z:-4 type:seq seq:bass_seq note_list:bassPair1 note_vel:1.0
 0 e off:6 text:u x:0 z:-2 type:seq seq:bass_seq note:F1+ note_vel:1.0
 0 e off:6 text:c x:2 z:-2 type:seq seq:bass_seq note:A1 note_vel:1.0
 0 e off:6 text:io x:2 z:-4 type:seq seq:bass_seq note_list:bassPair2 note_vel:1.0
 
-0 e on:2 off:6 text:o x:-4 z:0 vz:1 type:seq seq:bass_seq note:F1+ note_vel:1.0
+0 e on:2 off:6 text:a x:-4 z:0 vz:1 type:seq seq:bass_seq note:F1+ note_vel:1.0
 0 e on:2 off:6 text:n x:-2 z:0 vz:1 type:seq seq:bass_seq note:A1 note_vel:1.0
-
-#0 e text:fffj x:0 z:0 type:seq seq:bass_seq note_vel:1 note_list:bassSeq2
-
-# 0 e off:4 text:w x:-4 z:-10 type:seq seq:chord_seq note_vel:1 note:A3 note:B3- note:D4
-# 0 e off:4 text:o x:-2 z:-10 type:seq seq:chord_seq note_vel:1 note:A3 note:B3- note:D4
-# 0 e off:4 text:z x:0 z:-10 type:seq seq:chord_seq note_vel:1 note:A3 note:B3- note:D4
-# 0 e off:4 text:i x:2 z:-10 type:seq seq:chord_seq note_vel:1 note:A3 note:B3- note:D4
-# 0 e off:4 text:a x:-4 z:-8 type:seq seq:chord_seq note_vel:1 note:A3 note:B3- note:D4
-# 0 e off:4 text:k x:-2 z:-8 type:seq seq:chord_seq note_vel:1 note:A3 note:B3- note:D4
-# 0 e off:4 text:e x:0 z:-8 type:seq seq:chord_seq note_vel:1 note:A3 note:B3- note:D4
-# 0 e off:4 text:n x:2 z:-8 type:seq seq:chord_seq note_vel:1 note:A3 note:B3- note:D4
-
-# 0 e on:1 off:5 text:fgh x:0 z:-6 type:seq seq:chord_seq note_vel:1 note_list:chordSeq1
-
-# offset 28
-
-# 0 e off:4 text:w x:-4 z:-10 type:seq seq:chord_seq note_vel:1 note:A3 note:B3- note:D4
-# 0 e off:4 text:o x:-2 z:-10 type:seq seq:chord_seq note_vel:1 note:A3 note:B3- note:D4
-# 0 e off:4 text:z x:0 z:-10 type:seq seq:chord_seq note_vel:1 note:A3 note:B3- note:D4
-# 0 e off:4 text:i x:2 z:-10 type:seq seq:chord_seq note_vel:1 note:A3 note:B3- note:D4
-# 0 e off:4 text:a x:-4 z:-8 type:seq seq:chord_seq note_vel:1 note:A3 note:B3- note:D4
-# 0 e off:4 text:k x:-2 z:-8 type:seq seq:chord_seq note_vel:1 note:A3 note:B3- note:D4
-# 0 e off:4 text:e x:0 z:-8 type:seq seq:chord_seq note_vel:1 note:A3 note:B3- note:D4
-# 0 e off:4 text:n x:2 z:-8 type:seq seq:chord_seq note_vel:1 note:A3 note:B3- note:D4
-
-# 0 e on:1 off:5 text:fgh x:0 z:-6 type:seq seq:chord_seq note_vel:1 note_list:chordSeq1
-
-# offset 32
-
-# 0 e off:4 text:w x:-4 z:-10 type:seq seq:chord_seq note_vel:1 note:A3 note:B3- note:D4
-# 0 e off:4 text:o x:-2 z:-10 type:seq seq:chord_seq note_vel:1 note:A3 note:B3- note:D4
-# 0 e off:4 text:z x:0 z:-10 type:seq seq:chord_seq note_vel:1 note:A3 note:B3- note:D4
-# 0 e off:4 text:i x:2 z:-10 type:seq seq:chord_seq note_vel:1 note:A3 note:B3- note:D4
-# 0 e off:4 text:a x:-4 z:-8 type:seq seq:chord_seq note_vel:1 note:A3 note:B3- note:D4
-# 0 e off:4 text:k x:-2 z:-8 type:seq seq:chord_seq note_vel:1 note:A3 note:B3- note:D4
-# 0 e off:4 text:e x:0 z:-8 type:seq seq:chord_seq note_vel:1 note:A3 note:B3- note:D4
-# 0 e off:4 text:n x:2 z:-8 type:seq seq:chord_seq note_vel:1 note:A3 note:B3- note:D4
-
-# 0 e on:1 off:5 text:fgh x:0 z:-6 type:seq seq:chord_seq note_vel:1 note_list:chordSeq1

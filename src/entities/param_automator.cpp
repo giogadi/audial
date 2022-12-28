@@ -33,10 +33,9 @@ void ParamAutomatorEntity::Update(GameManager& g, float dt) {
     if (_automateStartTime > beatTime) {
         return;
     }
-    // TODO: This early return might cause us to never get to _endVelocity.
+    // We don't early-return here so we ensure we actually set to the end value.
     if (automateTime >= _desiredAutomateTime) {
         g._neEntityManager->TagForDestroy(_id);
-        // return;
     }
     double factor = math_util::Clamp(automateTime / _desiredAutomateTime, 0.0, 1.0);
     float newValue = _startValue + factor * (_endValue - _startValue);
@@ -57,9 +56,7 @@ void ParamAutomatorEntity::Update(GameManager& g, float dt) {
             if (seq == nullptr) {
                 printf("ParamAutomator (\"%s\"): Sequencer was destroyed!\n", _name.c_str());
             } else {
-                for (StepSequencerEntity::SeqStep& s : seq->_initialMidiSequence) {
-                    s._velocity = newValue;
-                }
+                seq->SetAllVelocitiesPermanent(newValue);
             }
         } else if (seqBaseEntity->_id._type == ne::EntityType::Sequencer) {
             SequencerEntity* seq = static_cast<SequencerEntity*>(g._neEntityManager->GetEntity(_seqId));

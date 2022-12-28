@@ -8,7 +8,7 @@
 #include "game_manager.h"
 #include "midi_util.h"
 
-void StepSequencerEntity::SetNextSeqStep(GameManager& g, SeqStep step) {
+void StepSequencerEntity::SetNextSeqStep(GameManager& g, SeqStep step, StepSaveType saveType) {
     // BeatClock const& beatClock = *g._beatClock;
     // double const beatTime = beatClock.GetBeatTimeFromEpoch();
     // double nextStepBeatTime = _loopStartBeatTime + _currentIx * _stepBeatLength;
@@ -22,18 +22,44 @@ void StepSequencerEntity::SetNextSeqStep(GameManager& g, SeqStep step) {
     // _midiSequence[_currentIx] = midiNote;
     SeqStepChange change;
     change._step = step;
+    switch (saveType) {
+        case StepSaveType::Temporary:
+            change._temporary = true;
+            break;
+        case StepSaveType::Permanent:
+            change._temporary = false;
+            break;
+    }
+    change._changeNote = true;
+    change._changeVelocity = true;
     _changeQueue.push(std::move(change));
 }
 
-void StepSequencerEntity::SetNextSeqStepVelocity(GameManager& g, float v) {
+void StepSequencerEntity::SetNextSeqStepVelocity(GameManager& g, float v, StepSaveType saveType) {
     SeqStepChange change;
     change._step._velocity = v;
+    switch (saveType) {
+        case StepSaveType::Temporary:
+            change._temporary = true;
+            break;
+        case StepSaveType::Permanent:
+            change._temporary = false;
+            break;
+    }
     change._changeNote = false;
+    change._changeVelocity = true;
     _changeQueue.push(std::move(change));
+}
+
+void StepSequencerEntity::SetAllVelocitiesPermanent(float newValue) {
+    assert(_permanentSequence.size() == _tempSequence.size());
+    for (int i = 0, n = _permanentSequence.size(); i < n; ++i) {
+        _tempSequence[i]._velocity = _permanentSequence[i]._velocity = newValue;
+    }
 }
 
 void StepSequencerEntity::Init(GameManager& g) {
-    _midiSequence = _initialMidiSequence = _initialMidiSequenceDoNotChange;
+    _tempSequence = _permanentSequence = _initialMidiSequenceDoNotChange;
     _loopStartBeatTime = _initialLoopStartBeatTime;
 }
 
@@ -42,7 +68,7 @@ void StepSequencerEntity::Update(GameManager& g, float dt) {
         return;
     }
     
-    if (_midiSequence.empty()) {
+    if (_permanentSequence.empty()) {
         return;
     }
     
@@ -57,20 +83,23 @@ void StepSequencerEntity::Update(GameManager& g, float dt) {
         return;
     }
 
-    SeqStep seqStep = _midiSequence[_currentIx];
     if (!_changeQueue.empty()) {
         SeqStepChange const& change = _changeQueue.front();
+        SeqStep& tempStep = _tempSequence[_currentIx];        
         if (change._changeNote) {
-            seqStep._midiNote = change._step._midiNote;
+            tempStep._midiNote = change._step._midiNote;
         }
         if (change._changeVelocity) {
-            seqStep._velocity = change._step._velocity;
+            tempStep._velocity = change._step._velocity;
         }
-        _midiSequence[_currentIx] = seqStep;
+        if (!change._temporary) {
+            _permanentSequence[_currentIx] = tempStep;
+        }
         _changeQueue.pop();
-    }
+    }   
 
     // Play the sound
+    SeqStep const& seqStep = _tempSequence[_currentIx];
     audio::Event e;
     e.timeInTicks = 0;
     e.velocity = seqStep._velocity;
@@ -98,25 +127,23 @@ void StepSequencerEntity::Update(GameManager& g, float dt) {
             g._audioContext->AddEvent(e);
         }        
     }
-
-    // After the playing the sound, maybe reset that seq element to the initial
+    
+    // After the playing the sound, reset that seq element to the initial
     // value
-    if (_resetToInitialAfterPlay) {
-        _midiSequence[_currentIx] = _initialMidiSequence[_currentIx];
-    }
+    _tempSequence[_currentIx] = _permanentSequence[_currentIx];
 
     ++_currentIx;
 
-    if (_currentIx >= _midiSequence.size()) {
+    if (_currentIx >= _permanentSequence.size()) {
         _currentIx = 0;
-        _loopStartBeatTime += _midiSequence.size() * _stepBeatLength;
+        _loopStartBeatTime += _permanentSequence.size() * _stepBeatLength;
     }
 }
 
 void StepSequencerEntity::SaveDerived(serial::Ptree pt) const {
     std::stringstream seqSs;
     std::string noteName;
-    for (int ix = 0; ix < _initialMidiSequence.size(); ++ix) {
+    for (int ix = 0; ix < _initialMidiSequenceDoNotChange.size(); ++ix) {
         if (ix > 0) {
             seqSs << " ";
         }

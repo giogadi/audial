@@ -49,13 +49,14 @@ void RemoveEntitySeqAction::Execute(GameManager& g) {
 void ChangeStepSequencerSeqAction::Execute(GameManager& g) {
     StepSequencerEntity* seq = static_cast<StepSequencerEntity*>(g._neEntityManager->GetEntity(_seqId));
     if (seq) {
+        StepSequencerEntity::StepSaveType saveType = _temporary ? StepSequencerEntity::StepSaveType::Temporary : StepSequencerEntity::StepSaveType::Permanent;
         if (_velOnly) {
-            seq->SetNextSeqStepVelocity(g, _velocity);
+            seq->SetNextSeqStepVelocity(g, _velocity, saveType);
         } else {
             StepSequencerEntity::SeqStep step;
             step._midiNote = _midiNotes;
             step._velocity = _velocity;
-            seq->SetNextSeqStep(g, std::move(step));
+            seq->SetNextSeqStep(g, std::move(step), saveType);
         }
     } else {
         printf("ChangeStepSequencerSeqAction: no seq entity!!\n");
@@ -75,28 +76,6 @@ void ChangeStepSequencerSeqAction::Load(GameManager& g, LoadInputs const& loadIn
     }
     input >> _midiNotes[0];
     input >> _velocity;
-}
-
-void SetStepSequencerSaveSeqAction::Execute(GameManager& g) {
-    StepSequencerEntity* seq = static_cast<StepSequencerEntity*>(g._neEntityManager->GetEntity(_seqId));
-    if (seq) {
-        seq->_resetToInitialAfterPlay = !_save;
-    } else {
-        printf("SetStepSequencerSaveSeqAction: no seq entity!!\n");
-        return;
-    }
-}
-
-void SetStepSequencerSaveSeqAction::Load(GameManager& g, LoadInputs const& loadInputs, std::istream& input) {
-    std::string seqName;
-    input >> seqName;
-    ne::Entity* e = g._neEntityManager->FindEntityByName(seqName);
-    if (e) {
-        _seqId = e->_id;
-    } else {
-        printf("ChangeStepSequencerSeqAction: could not find seq entity \"%s\"\n", seqName.c_str());
-    }
-    input >> _save;
 }
 
 void NoteOnOffSeqAction::Execute(GameManager& g) {

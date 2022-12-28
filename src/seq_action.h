@@ -59,16 +59,8 @@ struct ChangeStepSequencerSeqAction : public SeqAction {
     std::array<int, 4> _midiNotes = {-1, -1, -1, -1};
     float _velocity = 0.f;
     bool _velOnly = false;
+    bool _temporary = true;
     virtual Type GetType() const override { return Type::ChangeStepSequencer; }
-    virtual void Execute(GameManager& g) override;
-    virtual void Load(
-        GameManager& g, LoadInputs const& loadInputs, std::istream& input) override;
-};
-
-struct SetStepSequencerSaveSeqAction : public SeqAction {
-    ne::EntityId _seqId;
-    bool _save = true;
-    virtual Type GetType() const override { return Type::SetStepSequencerSave; }
     virtual void Execute(GameManager& g) override;
     virtual void Load(
         GameManager& g, LoadInputs const& loadInputs, std::istream& input) override;
