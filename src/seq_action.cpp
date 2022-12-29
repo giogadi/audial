@@ -78,6 +78,33 @@ void ChangeStepSequencerSeqAction::Load(GameManager& g, LoadInputs const& loadIn
     input >> _velocity;
 }
 
+void SetAllStepsSeqAction::Load(GameManager& g, LoadInputs const& loadInputs, std::istream& input) {
+    std::string seqName;
+    input >> seqName;
+    ne::Entity* e = g._neEntityManager->FindEntityByName(seqName);
+    if (e) {
+        _seqId = e->_id;
+    } else {
+        printf("ChangeStepSequencerSeqAction: could not find seq entity \"%s\"\n", seqName.c_str());
+    }
+    assert(_midiNotes.size() == 4);
+    input >> _midiNotes[0] >> _midiNotes[1] >> _midiNotes[2] >> _midiNotes[3];
+    input >> _velocity;
+}
+
+void SetAllStepsSeqAction::Execute(GameManager& g) {
+    StepSequencerEntity* seq = static_cast<StepSequencerEntity*>(g._neEntityManager->GetEntity(_seqId));
+    if (seq) {
+        StepSequencerEntity::SeqStep step;
+        step._midiNote = _midiNotes;
+        step._velocity = _velocity;
+        seq->SetAllStepsPermanent(step);               
+    } else {
+        printf("SetAllStepsSeqAction: no seq entity!!\n");
+        return;
+    }
+}
+
 void NoteOnOffSeqAction::Execute(GameManager& g) {
     BeatTimeEvent b_e;
     b_e._beatTime = 0.0;

@@ -63,6 +63,8 @@ void ActionSequencerEntity::Init(GameManager& g) {
             pAction = std::make_unique<RemoveEntitySeqAction>();
         } else if (token == "change_step") {
             pAction = std::make_unique<ChangeStepSequencerSeqAction>();
+        } else if (token == "set_all_steps") {
+            pAction = std::make_unique<SetAllStepsSeqAction>();
         } else if (token == "note_on_off") {
             pAction = std::make_unique<NoteOnOffSeqAction>();
         } else if (token == "e") {

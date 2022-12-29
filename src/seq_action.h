@@ -14,7 +14,7 @@ struct SeqAction {
         SpawnAutomator,
         RemoveEntity,
         ChangeStepSequencer,
-        SetStepSequencerSave,
+        SetAllSteps,
         NoteOnOff,
         BeatTimeEvent,
         SpawnEnemy,
@@ -61,6 +61,17 @@ struct ChangeStepSequencerSeqAction : public SeqAction {
     bool _velOnly = false;
     bool _temporary = true;
     virtual Type GetType() const override { return Type::ChangeStepSequencer; }
+    virtual void Execute(GameManager& g) override;
+    virtual void Load(
+        GameManager& g, LoadInputs const& loadInputs, std::istream& input) override;
+};
+
+// Assumed to be permanent
+struct SetAllStepsSeqAction : public SeqAction {
+    ne::EntityId _seqId;
+    std::array<int, 4> _midiNotes = {-1, -1, -1, -1};
+    float _velocity = 0.f;
+    virtual Type GetType() const override { return Type::SetAllSteps; }
     virtual void Execute(GameManager& g) override;
     virtual void Load(
         GameManager& g, LoadInputs const& loadInputs, std::istream& input) override;

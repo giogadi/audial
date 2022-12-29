@@ -36,6 +36,7 @@ struct StepSequencerEntity : ne::Entity {
     void SetNextSeqStep(GameManager& g, SeqStep step, StepSaveType saveType);
     void SetNextSeqStepVelocity(GameManager& g, float v, StepSaveType saveType);
     void SetAllVelocitiesPermanent(float newVelocity);
+    void SetAllStepsPermanent(SeqStep const& newStep);
 
     virtual void Init(GameManager& g) override;
     virtual void Update(GameManager& g, float dt) override;

@@ -58,6 +58,13 @@ void StepSequencerEntity::SetAllVelocitiesPermanent(float newValue) {
     }
 }
 
+void StepSequencerEntity::SetAllStepsPermanent(SeqStep const& newStep) {
+    assert(_permanentSequence.size() == _tempSequence.size());
+    for (int i = 0, n = _permanentSequence.size(); i < n; ++i) {
+        _tempSequence[i] = _permanentSequence[i] = newStep;
+    }
+}
+
 void StepSequencerEntity::Init(GameManager& g) {
     _tempSequence = _permanentSequence = _initialMidiSequenceDoNotChange;
     _loopStartBeatTime = _initialLoopStartBeatTime;
