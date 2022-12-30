@@ -322,7 +322,7 @@
                 <z>0</z>
                 <w>0</w>
             </model_color_vec4>
-            <seq_filename>data/test_action_seq.txt</seq_filename>
+            <seq_filename>data/feeling_action_seq.txt</seq_filename>
         </ActionSequencer>
         <Sequencer>
             <name>hihat_seq</name>
