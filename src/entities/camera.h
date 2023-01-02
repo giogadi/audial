@@ -12,8 +12,8 @@ struct CameraEntity : ne::Entity {
     virtual void Init(GameManager& g) override;
     virtual void Update(GameManager& g, float dt) override;
 protected:
-    // virtual void SaveDerived(serial::Ptree pt) const {};
-    // virtual void LoadDerived(serial::Ptree pt) {};
+    virtual void SaveDerived(serial::Ptree pt) const override;
+    virtual void LoadDerived(serial::Ptree pt) override;
     virtual ImGuiResult ImGuiDerived(GameManager& g) override;
 
     renderer::Camera* _camera = nullptr;

@@ -4,8 +4,19 @@
 #include "game_manager.h"
 #include "entities/typing_enemy.h"
 #include "constants.h"
+#include "renderer.h"
 
 void TypingPlayerEntity::Update(GameManager& g, float dt) {
+    // Draw rhythm bar
+    {
+        float xPos = -8.f;
+        Vec4 color(0.f, 0.f, 0.f, 1.f);
+        Mat4 transform;
+        transform.SetTranslation(Vec3(xPos, 0.f, 0.f));
+        transform.Scale(0.25f, 0.25f, 25.f);
+        g._scene->DrawCube(transform, color);
+    }
+    
     if (g._editMode) {
         return;
     }
@@ -32,7 +43,8 @@ void TypingPlayerEntity::Update(GameManager& g, float dt) {
         if (g._inputManager->IsKeyPressedThisFrame(nextKey)) {
             // Vec3 dp = playerPos - enemy->_transform.GetPos();
             // float dist2 = dp.Length2();
-            float dist2 = -enemy->_transform.GetPos()._z;
+            // float dist2 = -enemy->_transform.GetPos()._z;
+            float dist2 = enemy->_transform.GetPos()._x;
             if (nearest == nullptr) {
                 nearest = enemy;
                 nearestDist2 = dist2;

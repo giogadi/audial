@@ -33,3 +33,12 @@ ne::Entity::ImGuiResult CameraEntity::ImGuiDerived(GameManager& g) {
     }
     return ImGuiResult::Done;
 }
+
+void CameraEntity::SaveDerived(serial::Ptree pt) const {
+    pt.PutBool("ortho", _ortho);
+}
+
+void CameraEntity::LoadDerived(serial::Ptree pt) {
+    _ortho = false;
+    pt.TryGetBool("ortho", &_ortho);
+}

@@ -403,6 +403,8 @@ void SpawnEnemySeqAction::Load(GameManager& g, LoadInputs const& loadInputs, std
 
     _enemy._modelName = "cube";
     _enemy._modelColor.Set(1.f, 0.f, 0.f, 1.f);
+
+    _enemy._transform.Scale(0.5f, 0.5f, 0.5f);
     
     // Read in common properties until we read a type:blah one. After that, all
     // properties are assumed to be specific to that enemy "type".

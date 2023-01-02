@@ -1,0 +1,93 @@
+4 e text:a x:12 z:0 vx:-5.1 type:seq seq:bass_seq note:C2 save:
+5 e text:n x:12 z:0 vx:-5.1 type:seq seq:bass_seq note:G2 save:
+6 e text:y x:12 z:0 vx:-5.1 type:seq seq:bass_seq note:C2 save:
+7 e text:t x:12 z:0 vx:-5.1 type:seq seq:bass_seq note:G2 save:
+8 e text:h x:12 z:0 vx:-5.1 type:seq seq:bass_seq note:C2 save:
+9 e text:i x:12 z:0 vx:-5.1 type:seq seq:bass_seq note:G2 save:
+10 e text:n x:12 z:0 vx:-5.1 type:seq seq:bass_seq note:C2 save:
+11 e text:g x:12 z:0 vx:-5.1 type:seq seq:bass_seq note:G2 save:
+
+offset 8
+
+4 e text:a x:12 z:4 vx:-5.1 type:seq seq:bass_seq note:B1- save:
+5 e text:n x:12 z:4 vx:-5.1 type:seq seq:bass_seq note:F2 save:
+6 e text:y x:12 z:4 vx:-5.1 type:seq seq:bass_seq note:B1- save:
+7 e text:t x:12 z:4 vx:-5.1 type:seq seq:bass_seq note:F2 save:
+8 e text:h x:12 z:4 vx:-5.1 type:seq seq:bass_seq note:B1- save:
+9 e text:i x:12 z:4 vx:-5.1 type:seq seq:bass_seq note:F2 save:
+10 e text:n x:12 z:4 vx:-5.1 type:seq seq:bass_seq note:B1- save:
+11 e text:g x:12 z:4 vx:-5.1 type:seq seq:bass_seq note:F2 save:
+
+offset 20
+
+0.5 e text:b x:12 z:-4 vx:-5.1 type:seq seq:chord_seq note:E3 note:G3 note:C4 save:
+1 e text:r x:12 z:-4 vx:-5.1 type:seq seq:chord_seq note:E3 note:G3 note:C4 save:
+2 e text:e x:12 z:-4 vx:-5.1 type:seq seq:chord_seq note:E3 note:G3 note:C4 save:
+2.75 e text:a x:12 z:-4 vx:-5.1 type:seq seq:chord_seq note:E3 note:G3 note:C4 save:
+3.5 e text:k x:12 z:-4 vx:-5.1 type:seq seq:chord_seq note:E3 note:G3 note:C4 save:
+
+offset 24
+
+0.5 e text:b x:12 z:-4 vx:-5.1 type:seq seq:chord_seq note:E3 note:G3 note:C4 save:
+1 e text:r x:12 z:-4 vx:-5.1 type:seq seq:chord_seq note:E3 note:G3 note:C4 save:
+2 e text:e x:12 z:-4 vx:-5.1 type:seq seq:chord_seq note:E3 note:G3 note:C4 save:
+2.75 e text:a x:12 z:-4 vx:-5.1 type:seq seq:chord_seq note:E3 note:G3 note:C4 save:
+3.5 e text:k x:12 z:-4 vx:-5.1 type:seq seq:chord_seq note:E3 note:G3 note:C4 save:
+
+offset 28
+
+0.5 e text:s x:12 z:0 vx:-5.1 type:seq seq:chord_seq note:D3 note:F3 note:B3- save:
+1 e text:e x:12 z:0 vx:-5.1 type:seq seq:chord_seq note:D3 note:F3 note:B3- save:
+2 e text:n x:12 z:0 vx:-5.1 type:seq seq:chord_seq note:D3 note:F3 note:B3- save:
+2.75 e text:s x:12 z:0 vx:-5.1 type:seq seq:chord_seq note:D3 note:F3 note:B3- save:
+3.5 e text:e x:12 z:0 vx:-5.1 type:seq seq:chord_seq note:D3 note:F3 note:B3- save:
+
+offset 32
+
+0.5 e text:s x:12 z:0 vx:-5.1 type:seq seq:chord_seq note:D3 note:F3 note:B3- save:
+1 e text:e x:12 z:0 vx:-5.1 type:seq seq:chord_seq note:D3 note:F3 note:B3- save:
+2 e text:n x:12 z:0 vx:-5.1 type:seq seq:chord_seq note:D3 note:F3 note:B3- save:
+2.75 e text:s x:12 z:0 vx:-5.1 type:seq seq:chord_seq note:D3 note:F3 note:B3- save:
+3.5 e text:e x:12 z:0 vx:-5.1 type:seq seq:chord_seq note:D3 note:F3 note:B3- save:
+
+offset 36
+
+0 e text:j x:12 z:-4 vx:-5.1 type:seq seq:lead_seq note:F4
+0.5 e text:u x:12 z:-4 vx:-5.1 type:seq seq:lead_seq note:E4
+1 e text:s x:12 z:-4 vx:-5.1 type:seq seq:lead_seq note:D4
+1.5 e text:t x:12 z:-4 vx:-5.1 type:seq seq:lead_seq note:C4
+
+2.5 e text:e x:12 z:-4 vx:-5.1 type:seq seq:lead_seq note:G3
+3 e text:v x:12 z:-4 vx:-5.1 type:seq seq:lead_seq note:C4
+3.5 e text:e x:12 z:-4 vx:-5.1 type:seq seq:lead_seq note:E4
+4 e text:n x:12 z:-4 vx:-5.1 type:seq seq:lead_seq note:G4
+
+7 e text:a x:12 z:-4 vx:-5.1 type:seq seq:lead_seq note:A4
+
+8 e text:m x:12 z:-4 vx:-5.1 type:seq seq:lead_seq note:B4-
+8.5 e text:o x:12 z:-4 vx:-5.1 type:seq seq:lead_seq note:C5
+9.5 e text:m x:12 z:-4 vx:-5.1 type:seq seq:lead_seq note:G4
+9.75 e text:e x:12 z:-4 vx:-5.1 type:seq seq:lead_seq note:A4-
+10 e text:n x:12 z:-4 vx:-5.1 type:seq seq:lead_seq note:A4
+11.5 e text:t x:12 z:-4 vx:-5.1 type:seq seq:lead_seq note:F4
+
+offset 52
+
+0 e text:j x:12 z:-4 vx:-5.1 type:seq seq:lead_seq note:F3
+0.5 e text:u x:12 z:-4 vx:-5.1 type:seq seq:lead_seq note:E3
+1 e text:s x:12 z:-4 vx:-5.1 type:seq seq:lead_seq note:D3
+1.5 e text:t x:12 z:-4 vx:-5.1 type:seq seq:lead_seq note:C3
+
+2.5 e text:e x:12 z:-4 vx:-5.1 type:seq seq:lead_seq note:G2
+3 e text:v x:12 z:-4 vx:-5.1 type:seq seq:lead_seq note:C3
+3.5 e text:e x:12 z:-4 vx:-5.1 type:seq seq:lead_seq note:E3
+4 e text:n x:12 z:-4 vx:-5.1 type:seq seq:lead_seq note:G3
+
+7 e text:a x:12 z:-4 vx:-5.1 type:seq seq:lead_seq note:A3
+
+8 e text:m x:12 z:-4 vx:-5.1 type:seq seq:lead_seq note:B3-
+8.5 e text:o x:12 z:-4 vx:-5.1 type:seq seq:lead_seq note:C4
+9.5 e text:m x:12 z:-4 vx:-5.1 type:seq seq:lead_seq note:G3
+9.75 e text:e x:12 z:-4 vx:-5.1 type:seq seq:lead_seq note:A3-
+10 e text:n x:12 z:-4 vx:-5.1 type:seq seq:lead_seq note:A3
+11.5 e text:t x:12 z:-4 vx:-5.1 type:seq seq:lead_seq note:F3
