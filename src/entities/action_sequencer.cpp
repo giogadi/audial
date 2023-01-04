@@ -17,6 +17,7 @@ void ActionSequencerEntity::Init(GameManager& g) {
         printf("Action Sequencer %s could not find seq file %s\n", _name.c_str(), _seqFilename.c_str());
         return;
     }
+    double startBeatTime = 0.0;
     SeqAction::LoadInputs loadInputs;
     loadInputs._beatTimeOffset = 0.0;
     std::string line;
@@ -50,9 +51,17 @@ void ActionSequencerEntity::Init(GameManager& g) {
         if (token == "offset") {
             lineStream >> loadInputs._beatTimeOffset;
             continue;
+        } else if (token == "start") {
+            lineStream >> startBeatTime;
+            continue;
         }
 
-        double beatTime = std::stod(token) + loadInputs._beatTimeOffset;
+        double inputTime = std::stod(token);
+        double beatTimeAbs = inputTime + loadInputs._beatTimeOffset;
+        if (beatTimeAbs < startBeatTime) {
+            continue;
+        }
+        double beatTime = beatTimeAbs - startBeatTime;
 
         lineStream >> token;
 

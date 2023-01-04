@@ -7,6 +7,7 @@
 #include "audio.h"
 #include "midi_util.h"
 #include "sound_bank.h"
+#include "color_presets.h"
 
 void SpawnEnemySeqAction::Execute(GameManager& g) {
     assert(!_done);
@@ -436,6 +437,9 @@ void SpawnEnemySeqAction::Load(GameManager& g, LoadInputs const& loadInputs, std
                 LoadPcmEnemy(g, _enemy, lineStream);
             }
             break;
+        } else if (key == "color") {
+            ColorPreset preset = StringToColorPreset(value.c_str());
+            _enemy._modelColor = ToColor4(preset);
         } else if (key == "on") {
             _enemy._activeBeatTime = std::stod(value) + loadInputs._beatTimeOffset;
         } else if (key == "off") {

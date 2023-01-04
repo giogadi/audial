@@ -31,9 +31,17 @@ void TypingEnemyEntity::Update(GameManager& g, float dt) {
     }
 
     Vec3 p  = _transform.GetPos();
+    
     Vec3 dp = _velocity * dt;
     p += dp;
     _transform.SetTranslation(p);
+
+    if (_destroyIfOffscreenLeft) {
+        float constexpr kMinX = -10.f;
+        if (p._x < kMinX) {
+            g._neEntityManager->TagForDestroy(_id);
+        }
+    }
 
     float screenX, screenY;
     Mat4 viewProjTransform = g._scene->GetViewProjTransform();

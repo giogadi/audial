@@ -14,6 +14,7 @@ struct TypingEnemyEntity : public ne::Entity {
     HitBehavior _hitBehavior = HitBehavior::SingleAction;
     double _activeBeatTime = -1.0;
     double _inactiveBeatTime = -1.0;
+    bool _destroyIfOffscreenLeft = true;
     
     // non-serialized
     int _numHits = 0;

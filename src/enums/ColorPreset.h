@@ -22,6 +22,8 @@ enum class ColorPreset : int {
     
     Cyan,
     
+    Gray,
+    
     Count
 };
 extern char const* gColorPresetStrings[];

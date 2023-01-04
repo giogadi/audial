@@ -25,7 +25,9 @@ std::unordered_map<std::string, ColorPreset> const gStringToColorPreset = {
     
     { "Magenta", ColorPreset::Magenta },
     
-    { "Cyan", ColorPreset::Cyan }
+    { "Cyan", ColorPreset::Cyan },
+    
+    { "Gray", ColorPreset::Gray }
     
 };
 
@@ -49,7 +51,9 @@ char const* gColorPresetStrings[] = {
     
     "Magenta",
     
-    "Cyan"
+    "Cyan",
+    
+    "Gray"
     
 };
 

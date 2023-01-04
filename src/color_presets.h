@@ -13,6 +13,7 @@ inline Vec3 ToColor3(ColorPreset preset) {
         case ColorPreset::Blue: return Vec3(0.f, 0.f, 1.f);
         case ColorPreset::Magenta: return Vec3(1.f, 0.f, 1.f);
         case ColorPreset::Cyan: return Vec3(0.f, 1.f, 1.f);
+        case ColorPreset::Gray: return Vec3(0.5f, 0.5f, 0.5f);
         case ColorPreset::Count: assert(false); return Vec3();
     }
 }
