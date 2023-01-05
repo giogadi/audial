@@ -364,7 +364,7 @@
                 <channel>1</channel>
             </channels>
             <step_length>0.25</step_length>
-            <note_length>0.2</note_length>
+            <note_length>0.125</note_length>
             <start_time>0</start_time>
         </StepSequencer>
         <ActionSequencer>

@@ -1,4 +1,4 @@
-#start 84
+start 116
 
 4 e text:a x:12 z:0 vx:-2.5 type:seq seq:low_bass_seq note:C2 
 5 e text:n x:12 z:0 vx:-2.5 type:seq seq:low_bass_seq note:G2 
@@ -407,3 +407,22 @@ offset 112
 3.25 e text:a x:12 z:0 vx:-2.5 type:seq seq:bass_seq note:E2 
 3.5 e text:o x:12 z:0 vx:-2.5 type:seq seq:bass_seq note:D2 
 3.75 e text:g x:12 z:0 vx:-2.5 type:seq seq:bass_seq note:B1- 
+
+offset 116
+0 e text:s rand_pv: type:seq seq:lead_seq all_actions: note_list:rookieLeadSolo1
+0.5 e text:o rand_pv: type:seq seq:lead_seq all_actions: note_list:rookieLeadSolo2
+1 e text:m rand_pv: type:seq seq:lead_seq all_actions: note_list:rookieLeadSolo3
+1.5 e text:e rand_pv: type:seq seq:lead_seq all_actions: note_list:rookieLeadSolo4
+2 e text:t rand_pv: type:seq seq:lead_seq all_actions: note_list:rookieLeadSolo5
+2.5 e text:h rand_pv: type:seq seq:lead_seq all_actions: note_list:rookieLeadSolo6
+3 e text:i rand_pv: type:seq seq:lead_seq all_actions: note_list:rookieLeadSolo7
+3.5 e text:n rand_pv: type:seq seq:lead_seq all_actions: note_list:rookieLeadSolo8
+
+0 e text:a rand_pv: type:seq seq:lead_seq all_actions: note_list:rookieLeadSolo9
+0.5 e text:r rand_pv: type:seq seq:lead_seq all_actions: note_list:rookieLeadSolo10
+1 e text:b rand_pv: type:seq seq:lead_seq all_actions: note_list:rookieLeadSolo11
+1.5 e text:p rand_pv: type:seq seq:lead_seq all_actions: note_list:rookieLeadSolo12
+2 e text:k rand_pv: type:seq seq:lead_seq all_actions: note_list:rookieLeadSolo1
+2.5 e text:g rand_pv: type:seq seq:lead_seq all_actions: note_list:rookieLeadSolo2
+3 e text:c rand_pv: type:seq seq:lead_seq all_actions: note_list:rookieLeadSolo3
+3.5 e text:w rand_pv: type:seq seq:lead_seq all_actions: note_list:rookieLeadSolo4

@@ -129,6 +129,110 @@ void LoadNoteTables() {
             {GetMidiNote("A3"), GetMidiNote("B3-"), GetMidiNote("D4"),-1},
         };
     }
+
+    {
+        std::vector<std::array<int,4>>& table = gNoteTables["rookieLeadSolo1"];
+        table = {
+            {GetMidiNote("C3"), -1, -1 ,-1},
+            {GetMidiNote("D3"), -1, -1, -1},
+        };
+    }
+
+    {
+        std::vector<std::array<int,4>>& table = gNoteTables["rookieLeadSolo2"];
+        table = {
+            {GetMidiNote("E3-"), -1, -1, -1},
+            {GetMidiNote("F3"), -1, -1, -1},
+        };
+    }
+
+    {
+        std::vector<std::array<int,4>>& table = gNoteTables["rookieLeadSolo3"];
+        table = {
+            {GetMidiNote("G3"), -1, -1, -1},
+            {GetMidiNote("B3-"), -1, -1, -1},
+        };
+    }
+
+    {
+        std::vector<std::array<int,4>>& table = gNoteTables["rookieLeadSolo4"];
+        table = {
+            {GetMidiNote("C4"), -1, -1, -1},
+            {GetMidiNote("D4"), -1, -1, -1},
+        };
+    }
+
+    {
+        std::vector<std::array<int,4>>& table = gNoteTables["rookieLeadSolo5"];
+        table = {
+            {GetMidiNote("E4-"), -1, -1, -1},
+            {GetMidiNote("F4"), -1, -1, -1},
+        };
+    }
+
+    {
+        std::vector<std::array<int,4>>& table = gNoteTables["rookieLeadSolo6"];
+        table = {
+            {GetMidiNote("G4"), -1, -1, -1},
+            {GetMidiNote("B4-"), -1, -1, -1},
+        };
+    }
+
+    {
+        std::vector<std::array<int,4>>& table = gNoteTables["rookieLeadSolo6"];
+        table = {
+            {GetMidiNote("C5"), -1, -1, -1},
+            {GetMidiNote("B4-"), -1, -1, -1},
+        };
+    }
+
+    {
+        std::vector<std::array<int,4>>& table = gNoteTables["rookieLeadSolo7"];
+        table = {
+            {GetMidiNote("G4"), -1, -1, -1},
+            {GetMidiNote("F4"), -1, -1, -1},
+        };
+    }
+
+    {
+        std::vector<std::array<int,4>>& table = gNoteTables["rookieLeadSolo8"];
+        table = {
+            {GetMidiNote("E4-"), -1, -1, -1},
+            {GetMidiNote("D4"), -1, -1, -1},
+        };
+    }
+
+    {
+        std::vector<std::array<int,4>>& table = gNoteTables["rookieLeadSolo9"];
+        table = {
+            {GetMidiNote("C4"), -1, -1, -1},
+            {GetMidiNote("B3-"), -1, -1, -1},
+        };
+    }
+
+    {
+        std::vector<std::array<int,4>>& table = gNoteTables["rookieLeadSolo10"];
+        table = {
+            {GetMidiNote("G3"), -1, -1, -1},
+            {GetMidiNote("F3"), -1, -1, -1},
+        };
+    }
+
+    {
+        std::vector<std::array<int,4>>& table = gNoteTables["rookieLeadSolo11"];
+        table = {
+            {GetMidiNote("E3-"), -1, -1, -1},
+            {GetMidiNote("D3"), -1, -1, -1},
+        };
+    }
+
+    {
+        std::vector<std::array<int,4>>& table = gNoteTables["rookieLeadSolo12"];
+        table = {
+            {GetMidiNote("C3"), -1, -1, -1},
+            {GetMidiNote("B2-"), -1, -1, -1},
+        };
+    }
     
 
     SpawnEnemySeqAction::_sStaticDataLoaded = true;
@@ -248,6 +352,8 @@ void LoadSeqEnemy(GameManager& g, SeqAction::LoadInputs const& loadInputs, Typin
             velOnly = true;
         } else if (key == "save") {
             saveSeqChange = true;
+        } else if (key == "all_actions") {
+            enemy._hitBehavior = TypingEnemyEntity::HitBehavior::AllActions;
         } else {
             printf("LoadSeqEnemy: unrecognized key \"%s\"\n", key.c_str());
         }
@@ -473,7 +579,7 @@ void SpawnEnemySeqAction::Load(GameManager& g, LoadInputs const& loadInputs, std
             // spawn._z *= kSpawnRadius;
             // spawn._velocity = spawn._velocity * kSpeed;
             static bool gHorizontal = true;
-            float constexpr kSpeed = 5.f;
+            float constexpr kSpeed = 2.5f;
             float constexpr kHorizLimit = 7.f;
             float constexpr kZMin = -10.f;
             float constexpr kZMax = 5.5f;
