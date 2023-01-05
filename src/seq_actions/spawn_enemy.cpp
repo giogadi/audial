@@ -192,14 +192,14 @@ void LoadParamEnemy(TypingEnemyEntity& enemy, std::istream& lineStream) {
     }
 }
 
-void LoadSeqEnemy(GameManager& g, TypingEnemyEntity& enemy, std::istream& lineStream) {
+void LoadSeqEnemy(GameManager& g, SeqAction::LoadInputs const& loadInputs, TypingEnemyEntity& enemy, std::istream& lineStream) {
     ne::Entity* seqEntity = nullptr;
     std::array<int, 4> midiNotes = {-1, -1, -1, -1};
     int currentNoteIx = 0;
     std::vector<std::array<int,4>>* noteTable = nullptr;
     float velocity = 1.f;
     bool velOnly = false;
-    bool saveSeqChange = false;
+    bool saveSeqChange = loadInputs._defaultEnemiesSave;
     std::string token, key, value;
     while (!lineStream.eof()) {
         {
@@ -432,7 +432,7 @@ void SpawnEnemySeqAction::Load(GameManager& g, LoadInputs const& loadInputs, std
             } else if (value == "note") {
                 LoadNoteEnemy(_enemy, lineStream);
             } else if (value == "seq") {
-                LoadSeqEnemy(g, _enemy, lineStream);
+                LoadSeqEnemy(g, loadInputs, _enemy, lineStream);
             } else if (value == "pcm") {
                 LoadPcmEnemy(g, _enemy, lineStream);
             }

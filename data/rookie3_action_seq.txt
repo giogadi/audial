@@ -1,267 +1,409 @@
-start 52
+#start 84
 
-4 e text:a x:12 z:0 vx:-5.1 type:seq seq:low_bass_seq note:C2 save:
-5 e text:n x:12 z:0 vx:-5.1 type:seq seq:low_bass_seq note:G2 save:
-6 e text:y x:12 z:0 vx:-5.1 type:seq seq:low_bass_seq note:C2 save:
-7 e text:t x:12 z:0 vx:-5.1 type:seq seq:low_bass_seq note:G2 save:
-8 e text:h x:12 z:0 vx:-5.1 type:seq seq:low_bass_seq note:C2 save:
-9 e text:i x:12 z:0 vx:-5.1 type:seq seq:low_bass_seq note:G2 save:
-10 e text:n x:12 z:0 vx:-5.1 type:seq seq:low_bass_seq note:C2 save:
-11 e text:g x:12 z:0 vx:-5.1 type:seq seq:low_bass_seq note:G2 save:
+4 e text:a x:12 z:0 vx:-2.5 type:seq seq:low_bass_seq note:C2 
+5 e text:n x:12 z:0 vx:-2.5 type:seq seq:low_bass_seq note:G2 
+6 e text:y x:12 z:0 vx:-2.5 type:seq seq:low_bass_seq note:C2 
+7 e text:t x:12 z:0 vx:-2.5 type:seq seq:low_bass_seq note:G2 
+8 e text:h x:12 z:0 vx:-2.5 type:seq seq:low_bass_seq note:C2 
+9 e text:i x:12 z:0 vx:-2.5 type:seq seq:low_bass_seq note:G2 
+10 e text:n x:12 z:0 vx:-2.5 type:seq seq:low_bass_seq note:C2 
+11 e text:g x:12 z:0 vx:-2.5 type:seq seq:low_bass_seq note:G2 
 
 offset 8
 
-4 e text:a x:12 z:4 vx:-5.1 type:seq seq:low_bass_seq note:B1- save:
-5 e text:n x:12 z:4 vx:-5.1 type:seq seq:low_bass_seq note:F2 save:
-6 e text:y x:12 z:4 vx:-5.1 type:seq seq:low_bass_seq note:B1- save:
-7 e text:t x:12 z:4 vx:-5.1 type:seq seq:low_bass_seq note:F2 save:
-8 e text:h x:12 z:4 vx:-5.1 type:seq seq:low_bass_seq note:B1- save:
-9 e text:i x:12 z:4 vx:-5.1 type:seq seq:low_bass_seq note:F2 save:
-10 e text:n x:12 z:4 vx:-5.1 type:seq seq:low_bass_seq note:B1- save:
-11 e text:g x:12 z:4 vx:-5.1 type:seq seq:low_bass_seq note:F2 save:
+4 e text:a x:12 z:4 vx:-2.5 type:seq seq:low_bass_seq note:B1- 
+5 e text:n x:12 z:4 vx:-2.5 type:seq seq:low_bass_seq note:F2 
+6 e text:y x:12 z:4 vx:-2.5 type:seq seq:low_bass_seq note:B1- 
+7 e text:t x:12 z:4 vx:-2.5 type:seq seq:low_bass_seq note:F2 
+8 e text:h x:12 z:4 vx:-2.5 type:seq seq:low_bass_seq note:B1- 
+9 e text:i x:12 z:4 vx:-2.5 type:seq seq:low_bass_seq note:F2 
+10 e text:n x:12 z:4 vx:-2.5 type:seq seq:low_bass_seq note:B1- 
+11 e text:g x:12 z:4 vx:-2.5 type:seq seq:low_bass_seq note:F2
+
+# offset 20
+# 0 e text:c x:12 z:-4 vx:-2.5 type:seq seq:bass_seq note:C2 save:
+# #0.5 e color:Gray text:r x:12 z:-6 vx:-2.5 type:seq seq:bass_seq note:C2 save:
+# #0.75 e color:Gray text:j x:12 z:-2 vx:-2.5 type:seq seq:bass_seq note:C1 save:
+# 1 e text:e x:12 z:-4 vx:-2.5 type:seq seq:bass_seq note:C2 save:
+# #1.5 e color:Gray text:d x:12 z:-6 vx:-2.5 type:seq seq:bass_seq note:C2 save:
+# #1.75 e color:Gray text:j x:12 z:-2 vx:-2.5 type:seq seq:bass_seq note:C1 save:
+# 2 e text:i x:12 z:-4 vx:-2.5 type:seq seq:bass_seq note:C2 save:
+# #2.5 e color:Gray text:t x:12 z:-6 vx:-2.5 type:seq seq:bass_seq note:C2 save:
+# #2.75 e color:Gray text:j x:12 z:-2 vx:-2.5 type:seq seq:bass_seq note:C1 save:
+# 3 e text:g x:12 z:-4 vx:-2.5 type:seq seq:bass_seq note:C2 save:
+# #3.25 e text:o x:12 z:-4 vx:-2.5 type:seq seq:bass_seq note:F2 save:
+# 3.5 e text:a x:12 z:-4 vx:-2.5 type:seq seq:bass_seq note:B2- save:
+# 3.75 e text:l x:12 z:-4 vx:-2.5 type:seq seq:bass_seq note:C3 save:
+
+# offset 24
+# 0 e text:c x:12 z:0 vx:-2.5 type:seq seq:bass_seq note:C2 save:
+# #0.5 e color:Gray text:r x:12 z:-2 vx:-2.5 type:seq seq:bass_seq note:C2 save:
+# #0.75 e color:Gray text:j x:12 z:2 vx:-2.5 type:seq seq:bass_seq note:C1 save:
+# 1 e text:e x:12 z:0 vx:-2.5 type:seq seq:bass_seq note:C2 save:
+# #1.5 e color:Gray text:d x:12 z:-2 vx:-2.5 type:seq seq:bass_seq note:C2 save:
+# #1.75 e color:Gray text:j x:12 z:2 vx:-2.5 type:seq seq:bass_seq note:C1 save:
+# 2 e text:i x:12 z:0 vx:-2.5 type:seq seq:bass_seq note:C2 save:
+# #2.5 e color:Gray text:t x:12 z:-2 vx:-2.5 type:seq seq:bass_seq note:C2 save:
+# #2.75 e color:Gray text:j x:12 z:2 vx:-2.5 type:seq seq:bass_seq note:C1 save:
+# 3 e text:g x:12 z:0 vx:-2.5 type:seq seq:bass_seq note:F2 save:
+# #3.25 e text:o x:12 z:0 vx:-2.5 type:seq seq:bass_seq note:E2 save:
+# 3.5 e text:a x:12 z:0 vx:-2.5 type:seq seq:bass_seq note:D2 save:
+# #3.75 e text:l x:12 z:0 vx:-2.5 type:seq seq:bass_seq note:C2 save:
+
+# offset 28
+# 0 e text:c x:12 z:-4 vx:-2.5 type:seq seq:bass_seq note:B1- save:
+# #0.5 e color:Gray text:r x:12 z:-6 vx:-2.5 type:seq seq:bass_seq note:B1- save:
+# #0.75 e color:Gray text:j x:12 z:-2 vx:-2.5 type:seq seq:bass_seq note:B0- save:
+# 1 e text:e x:12 z:-4 vx:-2.5 type:seq seq:bass_seq note:B1- save:
+# #1.5 e color:Gray text:d x:12 z:-6 vx:-2.5 type:seq seq:bass_seq note:B1- save:
+# #1.75 e color:Gray text:j x:12 z:-2 vx:-2.5 type:seq seq:bass_seq note:B0- save:
+# 2 e text:i x:12 z:-4 vx:-2.5 type:seq seq:bass_seq note:B1- save:
+# #2.5 e color:Gray text:t x:12 z:-6 vx:-2.5 type:seq seq:bass_seq note:B1- save:
+# #2.75 e color:Gray text:j x:12 z:-2 vx:-2.5 type:seq seq:bass_seq note:B0- save:
+# 3 e text:g x:12 z:-4 vx:-2.5 type:seq seq:bass_seq note:B1- save:
+# #3.25 e text:o x:12 z:-4 vx:-2.5 type:seq seq:bass_seq note:D2 save:
+# 3.5 e text:a x:12 z:-4 vx:-2.5 type:seq seq:bass_seq note:E2 save:
+# 3.75 e text:l x:12 z:-4 vx:-2.5 type:seq seq:bass_seq note:F2 save:
+
+# offset 32
+# 0 e text:c x:12 z:0 vx:-2.5 type:seq seq:bass_seq note:B1- save:
+# #0.5 e color:Gray text:r x:12 z:-2 vx:-2.5 type:seq seq:bass_seq note:B1- save:
+# #0.75 e color:Gray text:j x:12 z:2 vx:-2.5 type:seq seq:bass_seq note:B0- save:
+# 1 e text:e x:12 z:0 vx:-2.5 type:seq seq:bass_seq note:B1- save:
+# #1.5 e color:Gray text:d x:12 z:-2 vx:-2.5 type:seq seq:bass_seq note:B1- save:
+# #1.75 e color:Gray text:j x:12 z:2 vx:-2.5 type:seq seq:bass_seq note:B0- save:
+# 2 e text:i x:12 z:0 vx:-2.5 type:seq seq:bass_seq note:B1- save:
+# #2.5 e color:Gray text:t x:12 z:-2 vx:-2.5 type:seq seq:bass_seq note:B1- save:
+# #2.75 e color:Gray text:j x:12 z:2 vx:-2.5 type:seq seq:bass_seq note:B0- save:
+# #3 e text:l x:12 z:0 vx:-2.5 type:seq seq:bass_seq note:F2 save:
+# #3.25 e text:a x:12 z:0 vx:-2.5 type:seq seq:bass_seq note:E2 save:
+# 3.5 e text:o x:12 z:0 vx:-2.5 type:seq seq:bass_seq note:D2 save:
+# 3.75 e text:g x:12 z:0 vx:-2.5 type:seq seq:bass_seq note:B1- save:
+
+# 0 set_all_steps low_bass_seq -1 -1 -1 -1 1.0
+
+### LOW_BASS PHASE 2 STAGE 2 ###
 
 offset 20
-0 e text:c x:12 z:-4 vx:-5.1 type:seq seq:bass_seq note:C2 save:
-#0.5 e color:Gray text:r x:12 z:-6 vx:-5.1 type:seq seq:bass_seq note:C2 save:
-#0.75 e color:Gray text:j x:12 z:-2 vx:-5.1 type:seq seq:bass_seq note:C1 save:
-1 e text:e x:12 z:-4 vx:-5.1 type:seq seq:bass_seq note:C2 save:
-#1.5 e color:Gray text:d x:12 z:-6 vx:-5.1 type:seq seq:bass_seq note:C2 save:
-#1.75 e color:Gray text:j x:12 z:-2 vx:-5.1 type:seq seq:bass_seq note:C1 save:
-2 e text:i x:12 z:-4 vx:-5.1 type:seq seq:bass_seq note:C2 save:
-#2.5 e color:Gray text:t x:12 z:-6 vx:-5.1 type:seq seq:bass_seq note:C2 save:
-#2.75 e color:Gray text:j x:12 z:-2 vx:-5.1 type:seq seq:bass_seq note:C1 save:
-3 e text:g x:12 z:-4 vx:-5.1 type:seq seq:bass_seq note:C2 save:
-#3.25 e text:o x:12 z:-4 vx:-5.1 type:seq seq:bass_seq note:F2 save:
-3.5 e text:a x:12 z:-4 vx:-5.1 type:seq seq:bass_seq note:B2- save:
-3.75 e text:l x:12 z:-4 vx:-5.1 type:seq seq:bass_seq note:C3 save:
-
-offset 24
-0 e text:c x:12 z:0 vx:-5.1 type:seq seq:bass_seq note:C2 save:
-#0.5 e color:Gray text:r x:12 z:-2 vx:-5.1 type:seq seq:bass_seq note:C2 save:
-#0.75 e color:Gray text:j x:12 z:2 vx:-5.1 type:seq seq:bass_seq note:C1 save:
-1 e text:e x:12 z:0 vx:-5.1 type:seq seq:bass_seq note:C2 save:
-#1.5 e color:Gray text:d x:12 z:-2 vx:-5.1 type:seq seq:bass_seq note:C2 save:
-#1.75 e color:Gray text:j x:12 z:2 vx:-5.1 type:seq seq:bass_seq note:C1 save:
-2 e text:i x:12 z:0 vx:-5.1 type:seq seq:bass_seq note:C2 save:
-#2.5 e color:Gray text:t x:12 z:-2 vx:-5.1 type:seq seq:bass_seq note:C2 save:
-#2.75 e color:Gray text:j x:12 z:2 vx:-5.1 type:seq seq:bass_seq note:C1 save:
-3 e text:g x:12 z:0 vx:-5.1 type:seq seq:bass_seq note:F2 save:
-#3.25 e text:o x:12 z:0 vx:-5.1 type:seq seq:bass_seq note:E2 save:
-3.5 e text:a x:12 z:0 vx:-5.1 type:seq seq:bass_seq note:D2 save:
-#3.75 e text:l x:12 z:0 vx:-5.1 type:seq seq:bass_seq note:C2 save:
+0 e text:c x:12 z:-4 vx:-2.5 type:seq seq:low_bass_seq note:C2 
+0.5 e text:r x:12 z:-4 vx:-2.5 type:seq seq:low_bass_seq note:C2 
+1 e text:a x:12 z:-4 vx:-2.5 type:seq seq:low_bass_seq note:C2 
+1.5 e text:f x:12 z:-4 vx:-2.5 type:seq seq:low_bass_seq note:C2 
+2 e text:t x:12 z:-4 vx:-2.5 type:seq seq:low_bass_seq note:C2 
+2.5 e text:s x:12 z:-4 vx:-2.5 type:seq seq:low_bass_seq note:C2 
+3 e text:o x:12 z:-4 vx:-2.5 type:seq seq:low_bass_seq note:C2 
+3.5 e text:n x:12 z:-4 vx:-2.5 type:seq seq:low_bass_seq note:C2 
+4 e text:c x:12 z:0 vx:-2.5 type:seq seq:low_bass_seq note:C2 
+4.5 e text:r x:12 z:0 vx:-2.5 type:seq seq:low_bass_seq note:C2 
+5 e text:a x:12 z:0 vx:-2.5 type:seq seq:low_bass_seq note:C2 
+5.5 e text:f x:12 z:0 vx:-2.5 type:seq seq:low_bass_seq note:C2 
+6 e text:t x:12 z:0 vx:-2.5 type:seq seq:low_bass_seq note:C2 
+6.5 e text:s x:12 z:0 vx:-2.5 type:seq seq:low_bass_seq note:C2 
+7 e text:o x:12 z:0 vx:-2.5 type:seq seq:low_bass_seq note:C2 
+7.5 e text:n x:12 z:0 vx:-2.5 type:seq seq:low_bass_seq note:C2 
 
 offset 28
-0 e text:c x:12 z:-4 vx:-5.1 type:seq seq:bass_seq note:B1- save:
-#0.5 e color:Gray text:r x:12 z:-6 vx:-5.1 type:seq seq:bass_seq note:B1- save:
-#0.75 e color:Gray text:j x:12 z:-2 vx:-5.1 type:seq seq:bass_seq note:B0- save:
-1 e text:e x:12 z:-4 vx:-5.1 type:seq seq:bass_seq note:B1- save:
-#1.5 e color:Gray text:d x:12 z:-6 vx:-5.1 type:seq seq:bass_seq note:B1- save:
-#1.75 e color:Gray text:j x:12 z:-2 vx:-5.1 type:seq seq:bass_seq note:B0- save:
-2 e text:i x:12 z:-4 vx:-5.1 type:seq seq:bass_seq note:B1- save:
-#2.5 e color:Gray text:t x:12 z:-6 vx:-5.1 type:seq seq:bass_seq note:B1- save:
-#2.75 e color:Gray text:j x:12 z:-2 vx:-5.1 type:seq seq:bass_seq note:B0- save:
-3 e text:g x:12 z:-4 vx:-5.1 type:seq seq:bass_seq note:B1- save:
-#3.25 e text:o x:12 z:-4 vx:-5.1 type:seq seq:bass_seq note:D2 save:
-3.5 e text:a x:12 z:-4 vx:-5.1 type:seq seq:bass_seq note:E2 save:
-3.75 e text:l x:12 z:-4 vx:-5.1 type:seq seq:bass_seq note:F2 save:
-
-offset 32
-0 e text:c x:12 z:0 vx:-5.1 type:seq seq:bass_seq note:B1- save:
-#0.5 e color:Gray text:r x:12 z:-2 vx:-5.1 type:seq seq:bass_seq note:B1- save:
-#0.75 e color:Gray text:j x:12 z:2 vx:-5.1 type:seq seq:bass_seq note:B0- save:
-1 e text:e x:12 z:0 vx:-5.1 type:seq seq:bass_seq note:B1- save:
-#1.5 e color:Gray text:d x:12 z:-2 vx:-5.1 type:seq seq:bass_seq note:B1- save:
-#1.75 e color:Gray text:j x:12 z:2 vx:-5.1 type:seq seq:bass_seq note:B0- save:
-2 e text:i x:12 z:0 vx:-5.1 type:seq seq:bass_seq note:B1- save:
-#2.5 e color:Gray text:t x:12 z:-2 vx:-5.1 type:seq seq:bass_seq note:B1- save:
-#2.75 e color:Gray text:j x:12 z:2 vx:-5.1 type:seq seq:bass_seq note:B0- save:
-#3 e text:l x:12 z:0 vx:-5.1 type:seq seq:bass_seq note:F2 save:
-#3.25 e text:a x:12 z:0 vx:-5.1 type:seq seq:bass_seq note:E2 save:
-3.5 e text:o x:12 z:0 vx:-5.1 type:seq seq:bass_seq note:D2 save:
-3.75 e text:g x:12 z:0 vx:-5.1 type:seq seq:bass_seq note:B1- save:
-
-0 set_all_steps low_bass_seq -1 -1 -1 -1 1.0
-
-### LOW_BASS PHASE 2 STAGE 2
-
-offset 36
-0 e text:c x:12 z:-4 vx:-5.1 type:seq seq:low_bass_seq note:C2 
-0.5 e text:r x:12 z:-4 vx:-5.1 type:seq seq:low_bass_seq note:C2 
-1 e text:a x:12 z:-4 vx:-5.1 type:seq seq:low_bass_seq note:C2 
-1.5 e text:f x:12 z:-4 vx:-5.1 type:seq seq:low_bass_seq note:C2 
-2 e text:t x:12 z:-4 vx:-5.1 type:seq seq:low_bass_seq note:C2 
-2.5 e text:s x:12 z:-4 vx:-5.1 type:seq seq:low_bass_seq note:C2 
-3 e text:o x:12 z:-4 vx:-5.1 type:seq seq:low_bass_seq note:C2 
-3.5 e text:n x:12 z:-4 vx:-5.1 type:seq seq:low_bass_seq note:C2 
-4 e text:c x:12 z:0 vx:-5.1 type:seq seq:low_bass_seq note:C2 
-4.5 e text:r x:12 z:0 vx:-5.1 type:seq seq:low_bass_seq note:C2 
-5 e text:a x:12 z:0 vx:-5.1 type:seq seq:low_bass_seq note:C2 
-5.5 e text:f x:12 z:0 vx:-5.1 type:seq seq:low_bass_seq note:C2 
-6 e text:t x:12 z:0 vx:-5.1 type:seq seq:low_bass_seq note:C2 
-6.5 e text:s x:12 z:0 vx:-5.1 type:seq seq:low_bass_seq note:C2 
-7 e text:o x:12 z:0 vx:-5.1 type:seq seq:low_bass_seq note:C2 
-7.5 e text:n x:12 z:0 vx:-5.1 type:seq seq:low_bass_seq note:C2 
-
-offset 44
-0 e text:p x:12 z:2 vx:-5.1 type:seq seq:low_bass_seq note:B1- 
-0.5 e text:o x:12 z:2 vx:-5.1 type:seq seq:low_bass_seq note:B1- 
-1 e text:l x:12 z:2 vx:-5.1 type:seq seq:low_bass_seq note:B1- 
-1.5 e text:y x:12 z:2 vx:-5.1 type:seq seq:low_bass_seq note:B1- 
-2 e text:g x:12 z:2 vx:-5.1 type:seq seq:low_bass_seq note:B1- 
-2.5 e text:o x:12 z:2 vx:-5.1 type:seq seq:low_bass_seq note:B1- 
-3 e text:n x:12 z:2 vx:-5.1 type:seq seq:low_bass_seq note:B1- 
-3.5 e text:s x:12 z:2 vx:-5.1 type:seq seq:low_bass_seq note:B1- 
-4 e text:p x:12 z:4 vx:-5.1 type:seq seq:low_bass_seq note:B1- 
-4.5 e text:o x:12 z:4 vx:-5.1 type:seq seq:low_bass_seq note:B1- 
-5 e text:l x:12 z:4 vx:-5.1 type:seq seq:low_bass_seq note:B1- 
-5.5 e text:y x:12 z:4 vx:-5.1 type:seq seq:low_bass_seq note:B1- 
-6 e text:g x:12 z:4 vx:-5.1 type:seq seq:low_bass_seq note:B1- 
-6.5 e text:o x:12 z:4 vx:-5.1 type:seq seq:low_bass_seq note:B1- 
-7 e text:n x:12 z:4 vx:-5.1 type:seq seq:low_bass_seq note:B1- 
-7.5 e text:s x:12 z:4 vx:-5.1 type:seq seq:low_bass_seq note:B1-
+0 e text:p x:12 z:2 vx:-2.5 type:seq seq:low_bass_seq note:B1- 
+0.5 e text:o x:12 z:2 vx:-2.5 type:seq seq:low_bass_seq note:B1- 
+1 e text:l x:12 z:2 vx:-2.5 type:seq seq:low_bass_seq note:B1- 
+1.5 e text:y x:12 z:2 vx:-2.5 type:seq seq:low_bass_seq note:B1- 
+2 e text:g x:12 z:2 vx:-2.5 type:seq seq:low_bass_seq note:B1- 
+2.5 e text:o x:12 z:2 vx:-2.5 type:seq seq:low_bass_seq note:B1- 
+3 e text:n x:12 z:2 vx:-2.5 type:seq seq:low_bass_seq note:B1- 
+3.5 e text:s x:12 z:2 vx:-2.5 type:seq seq:low_bass_seq note:B1- 
+4 e text:p x:12 z:4 vx:-2.5 type:seq seq:low_bass_seq note:B1- 
+4.5 e text:o x:12 z:4 vx:-2.5 type:seq seq:low_bass_seq note:B1- 
+5 e text:l x:12 z:4 vx:-2.5 type:seq seq:low_bass_seq note:B1- 
+5.5 e text:y x:12 z:4 vx:-2.5 type:seq seq:low_bass_seq note:B1- 
+6 e text:g x:12 z:4 vx:-2.5 type:seq seq:low_bass_seq note:B1- 
+6.5 e text:o x:12 z:4 vx:-2.5 type:seq seq:low_bass_seq note:B1- 
+7 e text:n x:12 z:4 vx:-2.5 type:seq seq:low_bass_seq note:B1- 
+7.5 e text:s x:12 z:4 vx:-2.5 type:seq seq:low_bass_seq note:B1-
 
 ### LOW_BASS PHASE 2 STAGE 3
 
-offset 52
-0 e text:c x:12 z:-4 vx:-5.1 type:seq seq:low_bass_seq note:C2 
-0.5 e text:r x:12 z:-4 vx:-5.1 type:seq seq:low_bass_seq note:C2 
-1 e text:a x:12 z:-4 vx:-5.1 type:seq seq:low_bass_seq note:C2 
-1.5 e text:f x:12 z:-4 vx:-5.1 type:seq seq:low_bass_seq note:C2
+offset 36
+0 e text:c x:12 z:-4 vx:-2.5 type:seq seq:low_bass_seq note:C2 
+0.5 e text:r x:12 z:-4 vx:-2.5 type:seq seq:low_bass_seq note:C2 
+1 e text:a x:12 z:-4 vx:-2.5 type:seq seq:low_bass_seq note:C2 
+1.5 e text:f x:12 z:-4 vx:-2.5 type:seq seq:low_bass_seq note:C2
 # EXTRA
-1.75 e text:p x:12 z:-2 vx:-5.1 color:Gray type:seq seq:low_bass_seq note:G1
+1.75 e text:p x:12 z:-2 vx:-2.5 color:Gray type:seq seq:low_bass_seq note:G1
 # /EXTRA
-2 e text:t x:12 z:-4 vx:-5.1 type:seq seq:low_bass_seq note:C2 
-2.5 e text:s x:12 z:-4 vx:-5.1 type:seq seq:low_bass_seq note:C2 
-3 e text:o x:12 z:-4 vx:-5.1 type:seq seq:low_bass_seq note:C2
+2 e text:t x:12 z:-4 vx:-2.5 type:seq seq:low_bass_seq note:C2 
+2.5 e text:s x:12 z:-4 vx:-2.5 type:seq seq:low_bass_seq note:C2 
+3 e text:o x:12 z:-4 vx:-2.5 type:seq seq:low_bass_seq note:C2
 # EXTRA
-3 e text:v x:12 z:-2 vx:-5.1 color:Gray type:seq seq:low_bass_seq note:F2
-3.25 e text:uuu x:12 z:-2 vx:-5.1 color:Gray type:seq seq:low_bass_seq note:G2
-3.25 e text:y x:12 z:0 vx:-5.1 color:Gray type:seq seq:low_bass_seq note:G2
-3.5 e text:v x:12 z:0 vx:-5.1 color:Gray type:seq seq:low_bass_seq note:B2-
-3.75 e text:y x:12 z:0 vx:-5.1 color:Gray type:seq seq:low_bass_seq note:C3
+3 e text:v x:12 z:-2 vx:-2.5 color:Gray type:seq seq:low_bass_seq note:F2
+3.25 e text:uuu x:12 z:-2 vx:-2.5 color:Gray type:seq seq:low_bass_seq note:G2
+3.25 e text:y x:12 z:0 vx:-2.5 color:Gray type:seq seq:low_bass_seq note:G2
+3.5 e text:v x:12 z:0 vx:-2.5 color:Gray type:seq seq:low_bass_seq note:B2-
+3.75 e text:y x:12 z:0 vx:-2.5 color:Gray type:seq seq:low_bass_seq note:C3
 # /EXTRA
-3.5 e text:n x:12 z:-4 vx:-5.1 type:seq seq:low_bass_seq note:C2 
-4 e text:c x:12 z:0 vx:-5.1 type:seq seq:low_bass_seq note:C2 
-4.5 e text:r x:12 z:0 vx:-5.1 type:seq seq:low_bass_seq note:C2 
-5 e text:a x:12 z:0 vx:-5.1 type:seq seq:low_bass_seq note:C2 
-5.5 e text:ff x:12 z:0 vx:-5.1 type:seq seq:low_bass_seq note:C2
-# 5.75 e text:f x:12 z:2 vx:-5.1 color:Gray type:seq seq:low_bass_seq note:C2
-6 e text:t x:12 z:0 vx:-5.1 type:seq seq:low_bass_seq note:C2 
-6.5 e text:s x:12 z:0 vx:-5.1 type:seq seq:low_bass_seq note:C2 
-7 e text:o x:12 z:0 vx:-5.1 type:seq seq:low_bass_seq note:C2 
-7.5 e text:n x:12 z:0 vx:-5.1 type:seq seq:low_bass_seq note:C2 
+3.5 e text:n x:12 z:-4 vx:-2.5 type:seq seq:low_bass_seq note:C2 
+4 e text:c x:12 z:0 vx:-2.5 type:seq seq:low_bass_seq note:C2 
+4.5 e text:r x:12 z:0 vx:-2.5 type:seq seq:low_bass_seq note:C2 
+5 e text:a x:12 z:0 vx:-2.5 type:seq seq:low_bass_seq note:C2 
+5.5 e text:ff x:12 z:0 vx:-2.5 type:seq seq:low_bass_seq note:C2
+# 5.75 e text:f x:12 z:2 vx:-2.5 color:Gray type:seq seq:low_bass_seq note:C2
+6 e text:t x:12 z:0 vx:-2.5 type:seq seq:low_bass_seq note:C2 
+6.5 e text:s x:12 z:0 vx:-2.5 type:seq seq:low_bass_seq note:C2 
+7 e text:o x:12 z:0 vx:-2.5 type:seq seq:low_bass_seq note:C2 
+7.5 e text:n x:12 z:0 vx:-2.5 type:seq seq:low_bass_seq note:C2 
 
-offset 60
-0 e text:p x:12 z:2 vx:-5.1 type:seq seq:low_bass_seq note:B1- 
-0.5 e text:o x:12 z:2 vx:-5.1 type:seq seq:low_bass_seq note:B1- 
-1 e text:l x:12 z:2 vx:-5.1 type:seq seq:low_bass_seq note:B1- 
-1.5 e text:y x:12 z:2 vx:-5.1 type:seq seq:low_bass_seq note:B1- 
-2 e text:g x:12 z:2 vx:-5.1 type:seq seq:low_bass_seq note:B1- 
-2.5 e text:o x:12 z:2 vx:-5.1 type:seq seq:low_bass_seq note:B1- 
-3 e text:n x:12 z:2 vx:-5.1 type:seq seq:low_bass_seq note:B1- 
-3.5 e text:s x:12 z:2 vx:-5.1 type:seq seq:low_bass_seq note:B1- 
-4 e text:p x:12 z:4 vx:-5.1 type:seq seq:low_bass_seq note:B1- 
-4.5 e text:o x:12 z:4 vx:-5.1 type:seq seq:low_bass_seq note:B1- 
-5 e text:l x:12 z:4 vx:-5.1 type:seq seq:low_bass_seq note:B1- 
-5.5 e text:y x:12 z:4 vx:-5.1 type:seq seq:low_bass_seq note:B1- 
-6 e text:g x:12 z:4 vx:-5.1 type:seq seq:low_bass_seq note:B1- 
-6.5 e text:o x:12 z:4 vx:-5.1 type:seq seq:low_bass_seq note:B1- 
-7 e text:n x:12 z:4 vx:-5.1 type:seq seq:low_bass_seq note:B1- 
-7.5 e text:s x:12 z:4 vx:-5.1 type:seq seq:low_bass_seq note:B1-
+offset 44
+0 e text:p x:12 z:2 vx:-2.5 type:seq seq:low_bass_seq note:B1- 
+0.5 e text:o x:12 z:2 vx:-2.5 type:seq seq:low_bass_seq note:B1- 
+1 e text:l x:12 z:2 vx:-2.5 type:seq seq:low_bass_seq note:B1- 
+1.5 e text:y x:12 z:2 vx:-2.5 type:seq seq:low_bass_seq note:B1- 
+2 e text:g x:12 z:2 vx:-2.5 type:seq seq:low_bass_seq note:B1- 
+2.5 e text:o x:12 z:2 vx:-2.5 type:seq seq:low_bass_seq note:B1- 
+3 e text:n x:12 z:2 vx:-2.5 type:seq seq:low_bass_seq note:B1- 
+3.5 e text:s x:12 z:2 vx:-2.5 type:seq seq:low_bass_seq note:B1- 
+4 e text:p x:12 z:4 vx:-2.5 type:seq seq:low_bass_seq note:B1- 
+4.5 e text:o x:12 z:4 vx:-2.5 type:seq seq:low_bass_seq note:B1- 
+5 e text:l x:12 z:4 vx:-2.5 type:seq seq:low_bass_seq note:B1- 
+5.5 e text:y x:12 z:4 vx:-2.5 type:seq seq:low_bass_seq note:B1- 
+6 e text:g x:12 z:4 vx:-2.5 type:seq seq:low_bass_seq note:B1- 
+6.5 e text:o x:12 z:4 vx:-2.5 type:seq seq:low_bass_seq note:B1- 
+7 e text:n x:12 z:4 vx:-2.5 type:seq seq:low_bass_seq note:B1- 
+7.5 e text:s x:12 z:4 vx:-2.5 type:seq seq:low_bass_seq note:B1-
 
 ### LOW_BASS PHASE 2 STAGE 4
 
+start_save
+
+offset 52
+0 e text:c x:12 z:-4 vx:-2.5 type:seq seq:low_bass_seq note:C2 
+0.5 e text:r x:12 z:-4 vx:-2.5 type:seq seq:low_bass_seq note:C2 
+1 e text:a x:12 z:-4 vx:-2.5 type:seq seq:low_bass_seq note:C2 
+1.5 e text:f x:12 z:-4 vx:-2.5 type:seq seq:low_bass_seq note:C2
+# EXTRA
+1.75 e text:p x:12 z:-2 vx:-2.5 color:Gray type:seq seq:low_bass_seq note:G1
+# /EXTRA
+2 e text:t x:12 z:-4 vx:-2.5 type:seq seq:low_bass_seq note:C2 
+2.5 e text:s x:12 z:-4 vx:-2.5 type:seq seq:low_bass_seq note:C2 
+3 e text:o x:12 z:-4 vx:-2.5 type:seq seq:low_bass_seq note:C2
+# EXTRA
+3 e text:v x:12 z:-2 vx:-2.5 color:Gray type:seq seq:low_bass_seq note:F2
+3.25 e text:uuu x:12 z:-2 vx:-2.5 color:Gray type:seq seq:low_bass_seq note:G2
+3.25 e text:y x:12 z:0 vx:-2.5 color:Gray type:seq seq:low_bass_seq note:G2
+3.5 e text:v x:12 z:0 vx:-2.5 color:Gray type:seq seq:low_bass_seq note:B2-
+3.75 e text:y x:12 z:0 vx:-2.5 color:Gray type:seq seq:low_bass_seq note:C3
+# /EXTRA
+3.5 e text:n x:12 z:-4 vx:-2.5 type:seq seq:low_bass_seq note:C2 
+4 e text:c x:12 z:0 vx:-2.5 type:seq seq:low_bass_seq note:C2 
+4.5 e text:r x:12 z:0 vx:-2.5 type:seq seq:low_bass_seq note:C2 
+5 e text:a x:12 z:0 vx:-2.5 type:seq seq:low_bass_seq note:C2 
+5.5 e text:ff x:12 z:0 vx:-2.5 type:seq seq:low_bass_seq note:C2
+# 5.75 e text:f x:12 z:2 vx:-2.5 color:Gray type:seq seq:low_bass_seq note:C2
+6 e text:t x:12 z:0 vx:-2.5 type:seq seq:low_bass_seq note:C2 
+6.5 e text:s x:12 z:0 vx:-2.5 type:seq seq:low_bass_seq note:C2 
+7 e text:o x:12 z:0 vx:-2.5 type:seq seq:low_bass_seq note:C2 
+7.5 e text:n x:12 z:0 vx:-2.5 type:seq seq:low_bass_seq note:C2 
+
+offset 60
+0 e text:p x:12 z:2 vx:-2.5 type:seq seq:low_bass_seq note:B1- 
+0.5 e text:o x:12 z:2 vx:-2.5 type:seq seq:low_bass_seq note:B1- 
+1 e text:l x:12 z:2 vx:-2.5 type:seq seq:low_bass_seq note:B1- 
+1.5 e text:y x:12 z:2 vx:-2.5 type:seq seq:low_bass_seq note:B1- 
+2 e text:g x:12 z:2 vx:-2.5 type:seq seq:low_bass_seq note:B1- 
+2.5 e text:o x:12 z:2 vx:-2.5 type:seq seq:low_bass_seq note:B1- 
+3 e text:n x:12 z:2 vx:-2.5 type:seq seq:low_bass_seq note:B1- 
+3.5 e text:s x:12 z:2 vx:-2.5 type:seq seq:low_bass_seq note:B1- 
+4 e text:p x:12 z:4 vx:-2.5 type:seq seq:low_bass_seq note:B1- 
+4.5 e text:o x:12 z:4 vx:-2.5 type:seq seq:low_bass_seq note:B1- 
+5 e text:l x:12 z:4 vx:-2.5 type:seq seq:low_bass_seq note:B1- 
+5.5 e text:y x:12 z:4 vx:-2.5 type:seq seq:low_bass_seq note:B1- 
+6 e text:g x:12 z:4 vx:-2.5 type:seq seq:low_bass_seq note:B1- 
+6.5 e text:o x:12 z:4 vx:-2.5 type:seq seq:low_bass_seq note:B1- 
+7 e text:n x:12 z:4 vx:-2.5 type:seq seq:low_bass_seq note:B1- 
+7.5 e text:s x:12 z:4 vx:-2.5 type:seq seq:low_bass_seq note:B1-
+
+stop_save
+
+### MID BASS SECTION 1 ###
+
 offset 68
-0 e text:c x:12 z:-4 vx:-5.1 type:seq seq:low_bass_seq note:C2 
-0.5 e text:r x:12 z:-4 vx:-5.1 type:seq seq:low_bass_seq note:C2 
-1 e text:a x:12 z:-4 vx:-5.1 type:seq seq:low_bass_seq note:C2 
-1.5 e text:f x:12 z:-4 vx:-5.1 type:seq seq:low_bass_seq note:C2
-# EXTRA
-1.75 e text:p x:12 z:-2 vx:-5.1 color:Gray type:seq seq:low_bass_seq note:G1
-# /EXTRA
-2 e text:t x:12 z:-4 vx:-5.1 type:seq seq:low_bass_seq note:C2 
-2.5 e text:s x:12 z:-4 vx:-5.1 type:seq seq:low_bass_seq note:C2 
-3 e text:o x:12 z:-4 vx:-5.1 type:seq seq:low_bass_seq note:C2
-# EXTRA
-3 e text:v x:12 z:-2 vx:-5.1 color:Gray type:seq seq:low_bass_seq note:F2
-3.25 e text:uuu x:12 z:-2 vx:-5.1 color:Gray type:seq seq:low_bass_seq note:G2
-3.25 e text:y x:12 z:0 vx:-5.1 color:Gray type:seq seq:low_bass_seq note:G2
-3.5 e text:v x:12 z:0 vx:-5.1 color:Gray type:seq seq:low_bass_seq note:B2-
-3.75 e text:y x:12 z:0 vx:-5.1 color:Gray type:seq seq:low_bass_seq note:C3
-# /EXTRA
-3.5 e text:n x:12 z:-4 vx:-5.1 type:seq seq:low_bass_seq note:C2 
-4 e text:c x:12 z:0 vx:-5.1 type:seq seq:low_bass_seq note:C2 
-4.5 e text:r x:12 z:0 vx:-5.1 type:seq seq:low_bass_seq note:C2 
-5 e text:a x:12 z:0 vx:-5.1 type:seq seq:low_bass_seq note:C2 
-5.5 e text:ff x:12 z:0 vx:-5.1 type:seq seq:low_bass_seq note:C2
-# 5.75 e text:f x:12 z:2 vx:-5.1 color:Gray type:seq seq:low_bass_seq note:C2
-6 e text:t x:12 z:0 vx:-5.1 type:seq seq:low_bass_seq note:C2 
-6.5 e text:s x:12 z:0 vx:-5.1 type:seq seq:low_bass_seq note:C2 
-7 e text:o x:12 z:0 vx:-5.1 type:seq seq:low_bass_seq note:C2 
-7.5 e text:n x:12 z:0 vx:-5.1 type:seq seq:low_bass_seq note:C2 
+0 e text:c x:12 z:-4 vx:-2.5 type:seq seq:bass_seq note:C2 
+#0.5 e color:Gray text:r x:12 z:-6 vx:-2.5 type:seq seq:bass_seq note:C2 
+#0.75 e color:Gray text:j x:12 z:-2 vx:-2.5 type:seq seq:bass_seq note:C1 
+1 e text:e x:12 z:-4 vx:-2.5 type:seq seq:bass_seq note:C2 
+#1.5 e color:Gray text:d x:12 z:-6 vx:-2.5 type:seq seq:bass_seq note:C2 
+#1.75 e color:Gray text:j x:12 z:-2 vx:-2.5 type:seq seq:bass_seq note:C1 
+2 e text:i x:12 z:-4 vx:-2.5 type:seq seq:bass_seq note:C2 
+#2.5 e color:Gray text:t x:12 z:-6 vx:-2.5 type:seq seq:bass_seq note:C2 
+#2.75 e color:Gray text:j x:12 z:-2 vx:-2.5 type:seq seq:bass_seq note:C1 
+3 e text:g x:12 z:-4 vx:-2.5 type:seq seq:bass_seq note:C2 
+#3.25 e text:o x:12 z:-4 vx:-2.5 type:seq seq:bass_seq note:F2 
+3.5 e text:a x:12 z:-4 vx:-2.5 type:seq seq:bass_seq note:B2- 
+3.75 e text:l x:12 z:-4 vx:-2.5 type:seq seq:bass_seq note:C3 
+
+offset 72
+0 e text:c x:12 z:0 vx:-2.5 type:seq seq:bass_seq note:C2 
+#0.5 e color:Gray text:r x:12 z:-2 vx:-2.5 type:seq seq:bass_seq note:C2 
+#0.75 e color:Gray text:j x:12 z:2 vx:-2.5 type:seq seq:bass_seq note:C1 
+1 e text:e x:12 z:0 vx:-2.5 type:seq seq:bass_seq note:C2 
+#1.5 e color:Gray text:d x:12 z:-2 vx:-2.5 type:seq seq:bass_seq note:C2 
+#1.75 e color:Gray text:j x:12 z:2 vx:-2.5 type:seq seq:bass_seq note:C1 
+2 e text:i x:12 z:0 vx:-2.5 type:seq seq:bass_seq note:C2 
+#2.5 e color:Gray text:t x:12 z:-2 vx:-2.5 type:seq seq:bass_seq note:C2 
+#2.75 e color:Gray text:j x:12 z:2 vx:-2.5 type:seq seq:bass_seq note:C1 
+3 e text:g x:12 z:0 vx:-2.5 type:seq seq:bass_seq note:F2 
+#3.25 e text:o x:12 z:0 vx:-2.5 type:seq seq:bass_seq note:E2 
+3.5 e text:a x:12 z:0 vx:-2.5 type:seq seq:bass_seq note:D2 
+#3.75 e text:l x:12 z:0 vx:-2.5 type:seq seq:bass_seq note:C2 
 
 offset 76
-0 e text:p x:12 z:2 vx:-5.1 type:seq seq:low_bass_seq note:B1- 
-0.5 e text:o x:12 z:2 vx:-5.1 type:seq seq:low_bass_seq note:B1- 
-1 e text:l x:12 z:2 vx:-5.1 type:seq seq:low_bass_seq note:B1- 
-1.5 e text:y x:12 z:2 vx:-5.1 type:seq seq:low_bass_seq note:B1- 
-2 e text:g x:12 z:2 vx:-5.1 type:seq seq:low_bass_seq note:B1- 
-2.5 e text:o x:12 z:2 vx:-5.1 type:seq seq:low_bass_seq note:B1- 
-3 e text:n x:12 z:2 vx:-5.1 type:seq seq:low_bass_seq note:B1- 
-3.5 e text:s x:12 z:2 vx:-5.1 type:seq seq:low_bass_seq note:B1- 
-4 e text:p x:12 z:4 vx:-5.1 type:seq seq:low_bass_seq note:B1- 
-4.5 e text:o x:12 z:4 vx:-5.1 type:seq seq:low_bass_seq note:B1- 
-5 e text:l x:12 z:4 vx:-5.1 type:seq seq:low_bass_seq note:B1- 
-5.5 e text:y x:12 z:4 vx:-5.1 type:seq seq:low_bass_seq note:B1- 
-6 e text:g x:12 z:4 vx:-5.1 type:seq seq:low_bass_seq note:B1- 
-6.5 e text:o x:12 z:4 vx:-5.1 type:seq seq:low_bass_seq note:B1- 
-7 e text:n x:12 z:4 vx:-5.1 type:seq seq:low_bass_seq note:B1- 
-7.5 e text:s x:12 z:4 vx:-5.1 type:seq seq:low_bass_seq note:B1-
+0 e text:c x:12 z:-4 vx:-2.5 type:seq seq:bass_seq note:B1- 
+#0.5 e color:Gray text:r x:12 z:-6 vx:-2.5 type:seq seq:bass_seq note:B1- 
+#0.75 e color:Gray text:j x:12 z:-2 vx:-2.5 type:seq seq:bass_seq note:B0- 
+1 e text:e x:12 z:-4 vx:-2.5 type:seq seq:bass_seq note:B1- 
+#1.5 e color:Gray text:d x:12 z:-6 vx:-2.5 type:seq seq:bass_seq note:B1- 
+#1.75 e color:Gray text:j x:12 z:-2 vx:-2.5 type:seq seq:bass_seq note:B0- 
+2 e text:i x:12 z:-4 vx:-2.5 type:seq seq:bass_seq note:B1- 
+#2.5 e color:Gray text:t x:12 z:-6 vx:-2.5 type:seq seq:bass_seq note:B1- 
+#2.75 e color:Gray text:j x:12 z:-2 vx:-2.5 type:seq seq:bass_seq note:B0- 
+3 e text:g x:12 z:-4 vx:-2.5 type:seq seq:bass_seq note:B1- 
+#3.25 e text:o x:12 z:-4 vx:-2.5 type:seq seq:bass_seq note:D2 
+3.5 e text:a x:12 z:-4 vx:-2.5 type:seq seq:bass_seq note:E2 
+3.75 e text:l x:12 z:-4 vx:-2.5 type:seq seq:bass_seq note:F2 
 
-offset 94
-0 e text:c x:12 z:-4 vx:-5.1 type:seq seq:low_bass_seq note:C2 
-0.5 e text:r x:12 z:-4 vx:-5.1 type:seq seq:low_bass_seq note:C2 
-1 e text:a x:12 z:-4 vx:-5.1 type:seq seq:low_bass_seq note:C2 
-1.5 e text:f x:12 z:-4 vx:-5.1 type:seq seq:low_bass_seq note:C2
-# EXTRA
-1.75 e text:p x:12 z:-2 vx:-5.1 color:Gray type:seq seq:low_bass_seq note:G1
-# /EXTRA
-2 e text:t x:12 z:-4 vx:-5.1 type:seq seq:low_bass_seq note:C2 
-2.5 e text:s x:12 z:-4 vx:-5.1 type:seq seq:low_bass_seq note:C2 
-3 e text:o x:12 z:-4 vx:-5.1 type:seq seq:low_bass_seq note:C2
-# EXTRA
-3 e text:v x:12 z:-2 vx:-5.1 color:Gray type:seq seq:low_bass_seq note:F2
-3.25 e text:uuu x:12 z:-2 vx:-5.1 color:Gray type:seq seq:low_bass_seq note:G2
-3.25 e text:y x:12 z:0 vx:-5.1 color:Gray type:seq seq:low_bass_seq note:G2
-3.5 e text:v x:12 z:0 vx:-5.1 color:Gray type:seq seq:low_bass_seq note:B2-
-3.75 e text:y x:12 z:0 vx:-5.1 color:Gray type:seq seq:low_bass_seq note:C3
-# /EXTRA
-3.5 e text:n x:12 z:-4 vx:-5.1 type:seq seq:low_bass_seq note:C2 
-4 e text:c x:12 z:0 vx:-5.1 type:seq seq:low_bass_seq note:C2 
-4.5 e text:r x:12 z:0 vx:-5.1 type:seq seq:low_bass_seq note:C2 
-5 e text:a x:12 z:0 vx:-5.1 type:seq seq:low_bass_seq note:C2 
-5.5 e text:ff x:12 z:0 vx:-5.1 type:seq seq:low_bass_seq note:C2
-# 5.75 e text:f x:12 z:2 vx:-5.1 color:Gray type:seq seq:low_bass_seq note:C2
-6 e text:t x:12 z:0 vx:-5.1 type:seq seq:low_bass_seq note:C2 
-6.5 e text:s x:12 z:0 vx:-5.1 type:seq seq:low_bass_seq note:C2 
-7 e text:o x:12 z:0 vx:-5.1 type:seq seq:low_bass_seq note:C2 
-7.5 e text:n x:12 z:0 vx:-5.1 type:seq seq:low_bass_seq note:C2 
+offset 80
+0 e text:c x:12 z:0 vx:-2.5 type:seq seq:bass_seq note:B1- 
+#0.5 e color:Gray text:r x:12 z:-2 vx:-2.5 type:seq seq:bass_seq note:B1- 
+#0.75 e color:Gray text:j x:12 z:2 vx:-2.5 type:seq seq:bass_seq note:B0- 
+1 e text:e x:12 z:0 vx:-2.5 type:seq seq:bass_seq note:B1- 
+#1.5 e color:Gray text:d x:12 z:-2 vx:-2.5 type:seq seq:bass_seq note:B1- 
+#1.75 e color:Gray text:j x:12 z:2 vx:-2.5 type:seq seq:bass_seq note:B0- 
+2 e text:i x:12 z:0 vx:-2.5 type:seq seq:bass_seq note:B1- 
+#2.5 e color:Gray text:t x:12 z:-2 vx:-2.5 type:seq seq:bass_seq note:B1- 
+#2.75 e color:Gray text:j x:12 z:2 vx:-2.5 type:seq seq:bass_seq note:B0- 
+#3 e text:l x:12 z:0 vx:-2.5 type:seq seq:bass_seq note:F2 
+#3.25 e text:a x:12 z:0 vx:-2.5 type:seq seq:bass_seq note:E2 
+3.5 e text:o x:12 z:0 vx:-2.5 type:seq seq:bass_seq note:D2 
+3.75 e text:g x:12 z:0 vx:-2.5 type:seq seq:bass_seq note:B1- 
 
-offset 102
-0 e text:p x:12 z:2 vx:-5.1 type:seq seq:low_bass_seq note:B1- 
-0.5 e text:o x:12 z:2 vx:-5.1 type:seq seq:low_bass_seq note:B1- 
-1 e text:l x:12 z:2 vx:-5.1 type:seq seq:low_bass_seq note:B1- 
-1.5 e text:y x:12 z:2 vx:-5.1 type:seq seq:low_bass_seq note:B1- 
-2 e text:g x:12 z:2 vx:-5.1 type:seq seq:low_bass_seq note:B1- 
-2.5 e text:o x:12 z:2 vx:-5.1 type:seq seq:low_bass_seq note:B1- 
-3 e text:n x:12 z:2 vx:-5.1 type:seq seq:low_bass_seq note:B1- 
-3.5 e text:s x:12 z:2 vx:-5.1 type:seq seq:low_bass_seq note:B1- 
-4 e text:p x:12 z:4 vx:-5.1 type:seq seq:low_bass_seq note:B1- 
-4.5 e text:o x:12 z:4 vx:-5.1 type:seq seq:low_bass_seq note:B1- 
-5 e text:l x:12 z:4 vx:-5.1 type:seq seq:low_bass_seq note:B1- 
-5.5 e text:y x:12 z:4 vx:-5.1 type:seq seq:low_bass_seq note:B1- 
-6 e text:g x:12 z:4 vx:-5.1 type:seq seq:low_bass_seq note:B1- 
-6.5 e text:o x:12 z:4 vx:-5.1 type:seq seq:low_bass_seq note:B1- 
-7 e text:n x:12 z:4 vx:-5.1 type:seq seq:low_bass_seq note:B1- 
-7.5 e text:s x:12 z:4 vx:-5.1 type:seq seq:low_bass_seq note:B1- 
+### MID BASS SECTION 2 ###
 
+offset 84
+0 e text:c x:12 z:-4 vx:-2.5 type:seq seq:bass_seq note:C2 
+0.5 e color:Gray text:r x:12 z:-6 vx:-2.5 type:seq seq:bass_seq note:C2 
+0.75 e color:Gray text:j x:12 z:-2 vx:-2.5 type:seq seq:bass_seq note:C1 
+1 e text:e x:12 z:-4 vx:-2.5 type:seq seq:bass_seq note:C2 
+1.5 e color:Gray text:d x:12 z:-6 vx:-2.5 type:seq seq:bass_seq note:C2 
+1.75 e color:Gray text:j x:12 z:-2 vx:-2.5 type:seq seq:bass_seq note:C1 
+2 e text:i x:12 z:-4 vx:-2.5 type:seq seq:bass_seq note:C2 
+2.5 e color:Gray text:t x:12 z:-6 vx:-2.5 type:seq seq:bass_seq note:C2 
+2.75 e color:Gray text:j x:12 z:-2 vx:-2.5 type:seq seq:bass_seq note:C1 
+3 e text:g x:12 z:-4 vx:-2.5 type:seq seq:bass_seq note:C2 
+3.25 e text:o x:12 z:-4 vx:-2.5 type:seq seq:bass_seq note:F2 
+3.5 e text:a x:12 z:-4 vx:-2.5 type:seq seq:bass_seq note:B2- 
+3.75 e text:l x:12 z:-4 vx:-2.5 type:seq seq:bass_seq note:C3 
+
+offset 88
+0 e text:c x:12 z:0 vx:-2.5 type:seq seq:bass_seq note:C2 
+0.5 e color:Gray text:r x:12 z:-2 vx:-2.5 type:seq seq:bass_seq note:C2 
+0.75 e color:Gray text:j x:12 z:2 vx:-2.5 type:seq seq:bass_seq note:C1 
+1 e text:e x:12 z:0 vx:-2.5 type:seq seq:bass_seq note:C2 
+1.5 e color:Gray text:d x:12 z:-2 vx:-2.5 type:seq seq:bass_seq note:C2 
+1.75 e color:Gray text:j x:12 z:2 vx:-2.5 type:seq seq:bass_seq note:C1 
+2 e text:i x:12 z:0 vx:-2.5 type:seq seq:bass_seq note:C2 
+2.5 e color:Gray text:t x:12 z:-2 vx:-2.5 type:seq seq:bass_seq note:C2 
+2.75 e color:Gray text:j x:12 z:2 vx:-2.5 type:seq seq:bass_seq note:C1 
+3 e text:g x:12 z:0 vx:-2.5 type:seq seq:bass_seq note:F2 
+3.25 e text:o x:12 z:0 vx:-2.5 type:seq seq:bass_seq note:E2 
+3.5 e text:a x:12 z:0 vx:-2.5 type:seq seq:bass_seq note:D2 
+3.75 e text:l x:12 z:0 vx:-2.5 type:seq seq:bass_seq note:C2 
+
+offset 92
+0 e text:c x:12 z:-4 vx:-2.5 type:seq seq:bass_seq note:B1- 
+0.5 e color:Gray text:r x:12 z:-6 vx:-2.5 type:seq seq:bass_seq note:B1- 
+0.75 e color:Gray text:j x:12 z:-2 vx:-2.5 type:seq seq:bass_seq note:B0- 
+1 e text:e x:12 z:-4 vx:-2.5 type:seq seq:bass_seq note:B1- 
+1.5 e color:Gray text:d x:12 z:-6 vx:-2.5 type:seq seq:bass_seq note:B1- 
+1.75 e color:Gray text:j x:12 z:-2 vx:-2.5 type:seq seq:bass_seq note:B0- 
+2 e text:i x:12 z:-4 vx:-2.5 type:seq seq:bass_seq note:B1- 
+2.5 e color:Gray text:t x:12 z:-6 vx:-2.5 type:seq seq:bass_seq note:B1- 
+2.75 e color:Gray text:j x:12 z:-2 vx:-2.5 type:seq seq:bass_seq note:B0- 
+3 e text:g x:12 z:-4 vx:-2.5 type:seq seq:bass_seq note:B1- 
+3.25 e text:o x:12 z:-4 vx:-2.5 type:seq seq:bass_seq note:D2 
+3.5 e text:a x:12 z:-4 vx:-2.5 type:seq seq:bass_seq note:E2 
+3.75 e text:l x:12 z:-4 vx:-2.5 type:seq seq:bass_seq note:F2 
+
+offset 96
+0 e text:c x:12 z:0 vx:-2.5 type:seq seq:bass_seq note:B1- 
+0.5 e color:Gray text:r x:12 z:-2 vx:-2.5 type:seq seq:bass_seq note:B1- 
+0.75 e color:Gray text:j x:12 z:2 vx:-2.5 type:seq seq:bass_seq note:B0- 
+1 e text:e x:12 z:0 vx:-2.5 type:seq seq:bass_seq note:B1- 
+1.5 e color:Gray text:d x:12 z:-2 vx:-2.5 type:seq seq:bass_seq note:B1- 
+1.75 e color:Gray text:j x:12 z:2 vx:-2.5 type:seq seq:bass_seq note:B0- 
+2 e text:i x:12 z:0 vx:-2.5 type:seq seq:bass_seq note:B1- 
+2.5 e color:Gray text:t x:12 z:-2 vx:-2.5 type:seq seq:bass_seq note:B1- 
+2.75 e color:Gray text:j x:12 z:2 vx:-2.5 type:seq seq:bass_seq note:B0- 
+3 e text:l x:12 z:0 vx:-2.5 type:seq seq:bass_seq note:F2 
+3.25 e text:a x:12 z:0 vx:-2.5 type:seq seq:bass_seq note:E2 
+3.5 e text:o x:12 z:0 vx:-2.5 type:seq seq:bass_seq note:D2 
+3.75 e text:g x:12 z:0 vx:-2.5 type:seq seq:bass_seq note:B1- 
+
+### MID BASS SECTION 3 ###
+
+offset 100
+0 e text:c x:12 z:-4 vx:-2.5 type:seq seq:bass_seq note:C2 
+0.5 e color:Gray text:r x:12 z:-6 vx:-2.5 type:seq seq:bass_seq note:C2 
+0.75 e color:Gray text:j x:12 z:-2 vx:-2.5 type:seq seq:bass_seq note:C1 
+1 e text:e x:12 z:-4 vx:-2.5 type:seq seq:bass_seq note:C2 
+1.5 e color:Gray text:d x:12 z:-6 vx:-2.5 type:seq seq:bass_seq note:C2 
+1.75 e color:Gray text:j x:12 z:-2 vx:-2.5 type:seq seq:bass_seq note:C1 
+2 e text:i x:12 z:-4 vx:-2.5 type:seq seq:bass_seq note:C2 
+2.5 e color:Gray text:t x:12 z:-6 vx:-2.5 type:seq seq:bass_seq note:C2 
+2.75 e color:Gray text:j x:12 z:-2 vx:-2.5 type:seq seq:bass_seq note:C1 
+3 e text:g x:12 z:-4 vx:-2.5 type:seq seq:bass_seq note:C2 
+3.25 e text:o x:12 z:-4 vx:-2.5 type:seq seq:bass_seq note:F2 
+3.5 e text:a x:12 z:-4 vx:-2.5 type:seq seq:bass_seq note:B2- 
+3.75 e text:l x:12 z:-4 vx:-2.5 type:seq seq:bass_seq note:C3 
+
+offset 104
+0 e text:c x:12 z:0 vx:-2.5 type:seq seq:bass_seq note:C2 
+0.5 e color:Gray text:r x:12 z:-2 vx:-2.5 type:seq seq:bass_seq note:C2 
+0.75 e color:Gray text:j x:12 z:2 vx:-2.5 type:seq seq:bass_seq note:C1 
+1 e text:e x:12 z:0 vx:-2.5 type:seq seq:bass_seq note:C2 
+1.5 e color:Gray text:d x:12 z:-2 vx:-2.5 type:seq seq:bass_seq note:C2 
+1.75 e color:Gray text:j x:12 z:2 vx:-2.5 type:seq seq:bass_seq note:C1 
+2 e text:i x:12 z:0 vx:-2.5 type:seq seq:bass_seq note:C2 
+2.5 e color:Gray text:t x:12 z:-2 vx:-2.5 type:seq seq:bass_seq note:C2 
+2.75 e color:Gray text:j x:12 z:2 vx:-2.5 type:seq seq:bass_seq note:C1 
+3 e text:g x:12 z:0 vx:-2.5 type:seq seq:bass_seq note:F2 
+3.25 e text:o x:12 z:0 vx:-2.5 type:seq seq:bass_seq note:E2 
+3.5 e text:a x:12 z:0 vx:-2.5 type:seq seq:bass_seq note:D2 
+3.75 e text:l x:12 z:0 vx:-2.5 type:seq seq:bass_seq note:C2 
+
+offset 108
+0 e text:c x:12 z:-4 vx:-2.5 type:seq seq:bass_seq note:B1- 
+0.5 e color:Gray text:r x:12 z:-6 vx:-2.5 type:seq seq:bass_seq note:B1- 
+0.75 e color:Gray text:j x:12 z:-2 vx:-2.5 type:seq seq:bass_seq note:B0- 
+1 e text:e x:12 z:-4 vx:-2.5 type:seq seq:bass_seq note:B1- 
+1.5 e color:Gray text:d x:12 z:-6 vx:-2.5 type:seq seq:bass_seq note:B1- 
+1.75 e color:Gray text:j x:12 z:-2 vx:-2.5 type:seq seq:bass_seq note:B0- 
+2 e text:i x:12 z:-4 vx:-2.5 type:seq seq:bass_seq note:B1- 
+2.5 e color:Gray text:t x:12 z:-6 vx:-2.5 type:seq seq:bass_seq note:B1- 
+2.75 e color:Gray text:j x:12 z:-2 vx:-2.5 type:seq seq:bass_seq note:B0- 
+3 e text:g x:12 z:-4 vx:-2.5 type:seq seq:bass_seq note:B1- 
+3.25 e text:o x:12 z:-4 vx:-2.5 type:seq seq:bass_seq note:D2 
+3.5 e text:a x:12 z:-4 vx:-2.5 type:seq seq:bass_seq note:E2 
+3.75 e text:l x:12 z:-4 vx:-2.5 type:seq seq:bass_seq note:F2 
+
+offset 112
+0 e text:c x:12 z:0 vx:-2.5 type:seq seq:bass_seq note:B1- 
+0.5 e color:Gray text:r x:12 z:-2 vx:-2.5 type:seq seq:bass_seq note:B1- 
+0.75 e color:Gray text:j x:12 z:2 vx:-2.5 type:seq seq:bass_seq note:B0- 
+1 e text:e x:12 z:0 vx:-2.5 type:seq seq:bass_seq note:B1- 
+1.5 e color:Gray text:d x:12 z:-2 vx:-2.5 type:seq seq:bass_seq note:B1- 
+1.75 e color:Gray text:j x:12 z:2 vx:-2.5 type:seq seq:bass_seq note:B0- 
+2 e text:i x:12 z:0 vx:-2.5 type:seq seq:bass_seq note:B1- 
+2.5 e color:Gray text:t x:12 z:-2 vx:-2.5 type:seq seq:bass_seq note:B1- 
+2.75 e color:Gray text:j x:12 z:2 vx:-2.5 type:seq seq:bass_seq note:B0- 
+3 e text:l x:12 z:0 vx:-2.5 type:seq seq:bass_seq note:F2 
+3.25 e text:a x:12 z:0 vx:-2.5 type:seq seq:bass_seq note:E2 
+3.5 e text:o x:12 z:0 vx:-2.5 type:seq seq:bass_seq note:D2 
+3.75 e text:g x:12 z:0 vx:-2.5 type:seq seq:bass_seq note:B1- 

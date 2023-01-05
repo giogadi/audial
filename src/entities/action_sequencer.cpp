@@ -54,6 +54,12 @@ void ActionSequencerEntity::Init(GameManager& g) {
         } else if (token == "start") {
             lineStream >> startBeatTime;
             continue;
+        } else if (token == "start_save") {
+            loadInputs._defaultEnemiesSave = true;
+            continue;
+        } else if (token == "stop_save") {
+            loadInputs._defaultEnemiesSave = false;
+            continue;
         }
 
         double inputTime = std::stod(token);
