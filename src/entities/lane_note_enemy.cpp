@@ -107,25 +107,6 @@ void LaneNoteEnemyEntity::Init(GameManager& g) {
     _hp = _initialHp;
 }
 
-float SmoothStep(float x) {
-    if (x <= 0) { return 0.f; }
-    if (x >= 1.f) { return 1.f; }
-    float x2 = x*x;
-    return 3*x2 - 2*x2*x;
-}
-
-// Maps [0..1] to [0..1..0]
-float Triangle(float x) {
-    return -std::abs(2.f*(x - 0.5f)) + 1.f;
-}
-
-float SmoothUpAndDown(float x) {
-    if (x < 0.5f) {
-        return SmoothStep(2*x);
-    }
-    return 1.f-SmoothStep(2*(x - 0.5f));
-}
-
 static float GetCenterXOfLane(int laneIx) {
     float constexpr minX = -kLaneWidth * (kNumLanes / 2);
     float centerX = minX + (0.5f * kLaneWidth) + (laneIx * kLaneWidth);
@@ -304,7 +285,7 @@ void LaneNoteEnemyEntity::Update(GameManager& g, float dt) {
         assert(totalMotionTime >= 0.0);
         double param = timeSinceStart / totalMotionTime;
         param = std::min(param, 1.0);
-        param = SmoothStep(param);
+        param = math_util::SmoothStep(param);
         Vec3 newPos = _motionSource + (_motionTarget - _motionSource) * param;
         _transform.SetTranslation(newPos);
         if (beatTime >= _motionEndBeatTime) {
@@ -342,7 +323,7 @@ void LaneNoteEnemyEntity::Update(GameManager& g, float dt) {
         float constexpr bounceBeatTime = 0.3f;
         float param = timeSinceShot / bounceBeatTime;
         // param: [0,1]. Want to map this to [0...1...0]
-        param = Triangle(param);
+        param = math_util::Triangle(param);
         // For some reason, smoothing doesn't look good.
         // param = SmoothStep(param);
         renderTrans._m23 += -param * 1.5f;

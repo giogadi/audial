@@ -1,0 +1,11 @@
+#start 116
+
+0 e text:a  z:-4 x:-6 typekill:0 type:seq seq:low_bass_seq note:C2
+0 e text:n  z:-4 x:-5 typekill:0 type:seq seq:low_bass_seq note:G2 
+0 e text:y  z:-4 x:-4 typekill:0 type:seq seq:low_bass_seq note:C2 
+0 e text:t  z:-4 x:-3 typekill:0 type:seq seq:low_bass_seq note:G2 
+0 e text:h  z:-4 x:-2 typekill:0 type:seq seq:low_bass_seq note:C2 
+0 e text:i  z:-4 x:-1 typekill:0 type:seq seq:low_bass_seq note:G2 
+0 e text:n  z:-4 x:0 typekill:0 type:seq seq:low_bass_seq note:C2 
+0 e text:g  z:-4 x:1 typekill:0 type:seq seq:low_bass_seq note:G2
+

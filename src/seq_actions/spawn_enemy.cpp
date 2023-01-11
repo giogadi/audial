@@ -233,7 +233,121 @@ void LoadNoteTables() {
             {GetMidiNote("B2-"), -1, -1, -1},
         };
     }
-    
+
+    {
+        std::vector<std::array<int,4>>& table = gNoteTables["rookieLeadSolo2_1"];
+        table = {
+            {GetMidiNote("C4"), -1, -1, -1},
+            {GetMidiNote("E4"), -1, -1, -1},
+        };
+    }
+
+    {
+        std::vector<std::array<int,4>>& table = gNoteTables["rookieLeadSolo2_2"];
+        table = {
+            {GetMidiNote("F4"), -1, -1, -1},
+            {GetMidiNote("B4-"), -1, -1, -1},
+        };
+    }
+
+    {
+        std::vector<std::array<int,4>>& table = gNoteTables["rookieLeadSolo2_3"];
+        table = {
+            {GetMidiNote("A4"), -1, -1, -1},
+            {GetMidiNote("G4"), -1, -1, -1},
+        };
+    }
+
+    {
+        std::vector<std::array<int,4>>& table = gNoteTables["rookieLeadSolo2_4"];
+        table = {
+            {GetMidiNote("F4"), -1, -1, -1},
+        };
+    }
+
+    {
+        std::vector<std::array<int,4>>& table = gNoteTables["rookieLeadSolo2_5"];
+        table = {
+            {GetMidiNote("D5"), -1, -1, -1},
+        };
+    }
+
+    {
+        std::vector<std::array<int,4>>& table = gNoteTables["rookieLeadSolo2_6"];
+        table = {
+            {GetMidiNote("B4-"), -1, -1, -1},
+            {GetMidiNote("A4"), -1, -1, -1},
+        };
+    }
+
+    {
+        std::vector<std::array<int,4>>& table = gNoteTables["rookieLeadSolo2_7"];
+        table = {
+            {GetMidiNote("F5"), -1, -1, -1},
+            {GetMidiNote("E5"), -1, -1, -1},
+        };
+    }
+
+    {
+        std::vector<std::array<int,4>>& table = gNoteTables["rookieLeadSolo2_8"];
+        table = {
+            {GetMidiNote("D5"), -1, -1, -1},
+        };
+    }
+
+    {
+        std::vector<std::array<int,4>>& table = gNoteTables["rookieLeadSolo2_9"];
+        table = {
+            {GetMidiNote("E5"), -1, -1, -1},
+        };
+    }
+
+    {
+        std::vector<std::array<int,4>>& table = gNoteTables["rookieLeadSolo2_10"];
+        table = {
+            {GetMidiNote("D5"), -1, -1, -1},
+            {GetMidiNote("C5"), -1, -1, -1},
+        };
+    }
+
+    {
+        std::vector<std::array<int,4>>& table = gNoteTables["rookieLeadSolo2_11"];
+        table = {
+            {GetMidiNote("B4-"), -1, -1, -1},
+            {GetMidiNote("C5"), -1, -1, -1},
+        };
+    }
+
+    {
+        std::vector<std::array<int,4>>& table = gNoteTables["rookieLeadSolo2_12"];
+        table = {
+            {GetMidiNote("D5"), -1, -1, -1},
+            {GetMidiNote("A4"), -1, -1, -1},
+        };
+    }
+
+    {
+        std::vector<std::array<int,4>>& table = gNoteTables["rookieLeadSolo2_13"];
+        table = {
+            {GetMidiNote("C4"), -1, -1, -1},
+            {GetMidiNote("D4"), -1, -1, -1},
+        };
+    }
+
+    {
+        std::vector<std::array<int,4>>& table = gNoteTables["rookieLeadSolo2_14"];
+        table = {
+            {GetMidiNote("E4-"), -1, -1, -1},
+            {GetMidiNote("F4"), -1, -1, -1},
+        };
+    }
+
+    {
+        std::vector<std::array<int,4>>& table = gNoteTables["rookieLeadSolo2_15"];
+        table = {
+            {GetMidiNote("E4-"), -1, -1, -1},
+        };
+    }
 
     SpawnEnemySeqAction::_sStaticDataLoaded = true;
 }
@@ -555,6 +669,8 @@ void SpawnEnemySeqAction::Load(GameManager& g, LoadInputs const& loadInputs, std
         } else if (key == "rand_text_len") {
             int numChars = std::stoi(value);
             _enemy._text = string_util::GenerateRandomText(numChars);
+        } else if (key == "typekill") {
+            _enemy._destroyAfterTyped = std::stoi(value) != 0;
         } else if (key == "x") {
             _enemy._transform._m03 = std::stof(value);
         } else if (key == "z") {

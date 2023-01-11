@@ -4,6 +4,7 @@
 
 #include "new_entity.h"
 #include "seq_action.h"
+#include "input_manager.h"
 
 struct TypingEnemyEntity : public ne::Entity {
     enum class HitBehavior { SingleAction, AllActions };
@@ -15,13 +16,16 @@ struct TypingEnemyEntity : public ne::Entity {
     double _activeBeatTime = -1.0;
     double _inactiveBeatTime = -1.0;
     bool _destroyIfOffscreenLeft = true;
+    bool _destroyAfterTyped = true;
     
     // non-serialized
     int _numHits = 0;
     Vec3 _velocity; // spatial, not audio
+    Vec4 _currentColor;
 
     bool IsActive(GameManager& g) const;
     void OnHit(GameManager& g);
+    InputManager::Key GetNextKey() const;
     
     virtual void Init(GameManager& g) override;
     virtual void Update(GameManager& g, float dt) override;

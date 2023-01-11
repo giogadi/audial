@@ -202,9 +202,9 @@ inline Mat3 operator*(Mat3 const& a, Mat3 const& b) {
 }
 
 struct Vec4 {
-    Vec4()
+    constexpr Vec4()
         : _x(0.), _y(0.), _z(0.), _w(0.f) {}
-    Vec4(float x, float y, float z, float w)
+    constexpr Vec4(float x, float y, float z, float w)
         : _x(x), _y(y), _z(z), _w(w) {}
     
     void Set(float x, float y, float z, float w) {
@@ -245,6 +245,29 @@ struct Vec4 {
         return !(*this == rhs);
     }
 };
+
+inline Vec4 operator+(Vec4 const& lhs, Vec4 const& rhs) {
+    return Vec4(lhs._x + rhs._x, lhs._y + rhs._y, lhs._z + rhs._z, lhs._w + rhs._w);
+}
+
+inline Vec4 operator-(Vec4 const& lhs, Vec4 const& rhs) {
+    return Vec4(lhs._x - rhs._x, lhs._y - rhs._y, lhs._z - rhs._z, lhs._w - rhs._w);
+}
+
+inline Vec4 operator-(Vec4 const& v) {
+    return Vec4(-v._x, -v._y, -v._z, -v._w);
+}
+
+inline Vec4 operator*(Vec4 const& v, float const a) {
+    return Vec4(a*v._x, a*v._y, a*v._z, a*v._w);
+}
+
+inline Vec4 operator*(float const a, Vec4 const& v) {
+    return v * a;
+}
+inline Vec4 operator/(Vec4 const& v, float const a) {
+    return Vec4(v._x / a, v._y / a, v._z / a, v._w / a);
+}
 
 struct Mat4 {
     Mat4() {
