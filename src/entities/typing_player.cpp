@@ -138,10 +138,34 @@ void TypingPlayerEntity::Update(GameManager& g, float dt) {
         }
     }
 
-    // Draw dividers
+    // Draw section counters and dividers
     {
         Vec3 sectionOrigin = topSectionOrigin;
-        for (int i = 0; i < kNumVisibleSections; ++i) {
+        for (int sectionIx = 0; sectionIx < kNumVisibleSections; ++sectionIx) {
+            // Draw counters
+            int sectionId = _currentSectionId + sectionIx;
+            auto numBeatsIter = _sectionNumBeats.find(sectionId);
+            if (numBeatsIter != _sectionNumBeats.end()) {
+                int beatsLeft = (int)(_nextSectionStartTime - beatTime);
+                int numBeats = numBeatsIter->second;
+                int currentBeatIx = numBeats - beatsLeft - 1;
+                float counterSize = (kDistBetweenSections - 1) / numBeats;
+                for (int beatIx = 0; beatIx < numBeats; ++beatIx) {
+                    Mat4 trans;
+                    trans.SetTranslation(sectionOrigin);
+                    trans._m03 -= 1.f;
+                    trans._m23 += beatIx * counterSize;
+                    trans.Scale(0.25f, 0.25f, counterSize * 0.9f);
+                    Vec4 color;
+                    if (sectionIx == 0 && beatIx <= currentBeatIx) {
+                        color.Set(1.f, 0.f, 1.f, 1.f);
+                    } else {
+                        color.Set(0.1f, 0.1f, 0.1f, 1.f);
+                    }
+                    g._scene->DrawCube(trans, color);
+                }
+            }
+            
             Mat4 trans;
             trans.SetTranslation(Vec3(0.f, 0.f, sectionOrigin._z + kDistBetweenSections - 1.0));
             trans.Scale(20.f, 0.25f, 0.25f);
