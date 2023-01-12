@@ -4,6 +4,7 @@
 #include "renderer.h"
 #include "audio.h"
 #include "step_sequencer.h"
+#include "typing_player.h"
 
 namespace {
 
@@ -21,6 +22,14 @@ void ProjectWorldPointToScreenSpace(Vec3 const& worldPos, Mat4 const& viewProjMa
 void TypingEnemyEntity::Init(GameManager& g) {
     ne::Entity::Init(g);
     _currentColor = _modelColor;
+    if (_sectionId >= 0) {
+        int numEntities = 0;
+        ne::EntityManager::Iterator eIter = g._neEntityManager->GetIterator(ne::EntityType::TypingPlayer, &numEntities);
+        assert(numEntities == 1);
+        TypingPlayerEntity* player = static_cast<TypingPlayerEntity*>(eIter.GetEntity());
+        assert(player != nullptr);
+        player->RegisterSectionEnemy(_sectionId, _id);
+    }
 }
 
 void TypingEnemyEntity::Update(GameManager& g, float dt) {

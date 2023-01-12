@@ -7,6 +7,7 @@
 #include "game_manager.h"
 #include "beat_clock.h"
 #include "seq_actions/spawn_enemy.h"
+#include "entities/typing_player.h"
 
 void ActionSequencerEntity::Init(GameManager& g) {
     _currentIx = 0;
@@ -60,14 +61,30 @@ void ActionSequencerEntity::Init(GameManager& g) {
         } else if (token == "stop_save") {
             loadInputs._defaultEnemiesSave = false;
             continue;
+        } else if (token == "section") {
+            lineStream >> loadInputs._sectionId;
+            int sectionNumBeats;
+            lineStream >> sectionNumBeats;
+            int numEntities = 0;
+            ne::EntityManager::Iterator eIter = g._neEntityManager->GetIterator(ne::EntityType::TypingPlayer, &numEntities);
+            assert(numEntities == 1);
+            TypingPlayerEntity* player = static_cast<TypingPlayerEntity*>(eIter.GetEntity());
+            assert(player != nullptr);
+            player->SetSectionLength(loadInputs._sectionId, sectionNumBeats);
+            continue;
         }
 
         double inputTime = std::stod(token);
-        double beatTimeAbs = inputTime + loadInputs._beatTimeOffset;
-        if (beatTimeAbs < startBeatTime) {
-            continue;
-        }
-        double beatTime = beatTimeAbs - startBeatTime;
+        double beatTime = -1.0;
+        if (inputTime < 0) {
+            beatTime = inputTime;
+        } else {
+            double beatTimeAbs = inputTime + loadInputs._beatTimeOffset;
+            if (beatTimeAbs < startBeatTime) {
+                continue;
+            }
+            beatTime = beatTimeAbs - startBeatTime;
+        }       
 
         lineStream >> token;
 
@@ -105,6 +122,16 @@ void ActionSequencerEntity::Init(GameManager& g) {
                      [](BeatTimeAction const& lhs, BeatTimeAction const& rhs) {
                          return lhs._beatTime < rhs._beatTime;
                      });
+
+    // Immediately execute any actions that are < 0
+    for (int n = _actions.size(); _currentIx < n; ++_currentIx) {
+        BeatTimeAction const& bta = _actions[_currentIx];
+        if (bta._beatTime < 0) {
+            bta._pAction->Execute(g);
+        } else {
+            break;
+        }
+    }
 }
 
 void ActionSequencerEntity::Update(GameManager& g, float dt) {

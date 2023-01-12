@@ -24,6 +24,7 @@ struct SeqAction {
     struct LoadInputs {
         double _beatTimeOffset = 0.0;
         bool _defaultEnemiesSave = false;
+        int _sectionId = -1;
     };
     virtual void Load(
         GameManager& g, LoadInputs const& loadInputs, std::istream& input) {}

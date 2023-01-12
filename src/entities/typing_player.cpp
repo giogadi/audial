@@ -36,6 +36,10 @@ void TypingPlayerEntity::LoadDerived(serial::Ptree pt) {
     }
 }
 
+void TypingPlayerEntity::Init(GameManager& g) {   
+    _sectionNumBeats[-1] = 4;
+}
+
 void TypingPlayerEntity::Update(GameManager& g, float dt) {
     // Draw rhythm bar
     // {
@@ -49,20 +53,128 @@ void TypingPlayerEntity::Update(GameManager& g, float dt) {
     
     if (g._editMode) {
         return;
-    }    
+    }
+
+    int constexpr kNumVisibleSections = 2;
+    
+    double const beatTime = g._beatClock->GetBeatTimeFromEpoch();
+    Vec3 topSectionOrigin(-8.f, 0.f, -4.f);
+    double constexpr kScrollTime = 1.0;
+    float constexpr kDistBetweenSections = 5.f;
+    // TODO OMG CLEAN THIS SHIT UP
+    if (beatTime >= _nextSectionStartTime) {
+        // This is currently handled by the dirty hack below
+        // _transform.SetTranslation(Vec3(-10.f, 0.f, 0.f));
+        
+        std::vector<ne::EntityId> toRemove;
+        {
+            std::set<ne::EntityId>& sectionEnemies = _sectionEnemies[_currentSectionId];
+            for (ne::EntityId const eId : sectionEnemies) {
+                toRemove.push_back(eId);
+            }
+        }
+
+        ++_currentSectionId;
+        _nextSectionStartTime += _sectionNumBeats[_currentSectionId];
+        
+        Vec3 sectionOrigin = topSectionOrigin;
+        for (int sectionIx = 0; sectionIx < kNumVisibleSections; ++sectionIx) {
+            int sectionId = _currentSectionId + sectionIx;
+            std::set<ne::EntityId>& sectionEnemies = _sectionEnemies[sectionId];
+            if (sectionIx >= 0) {
+                for (ne::EntityId const eId : sectionEnemies) {
+                    TypingEnemyEntity* enemy = static_cast<TypingEnemyEntity*>(g._neEntityManager->GetEntity(eId));
+                    if (enemy == nullptr) {
+                        toRemove.push_back(eId);
+                        continue;
+                    }
+                    // instant activate
+                    enemy->_activeBeatTime = -1.0;
+                    Vec3 p = sectionOrigin + enemy->_sectionLocalPos;
+                    enemy->_transform.SetTranslation(p);
+                    if (sectionIx > 0) {
+                        enemy->_currentColor.Set(0.2f, 0.2f, 0.2f, 1.f);
+                    } else {
+                        enemy->_currentColor = enemy->_modelColor;
+                    }
+                }
+            }            
+            sectionOrigin._z += kDistBetweenSections;
+        }
+
+        for (ne::EntityId const eId : toRemove) {
+            g._neEntityManager->TagForDestroy(eId);
+        }
+        toRemove.clear();
+        _adjustedForQuant = false;
+        
+    } else if (beatTime + kScrollTime >= _nextSectionStartTime) {
+        double param = 1 - (_nextSectionStartTime - beatTime) / kScrollTime;
+        param = math_util::Clamp(param, 0.0, 1.0);
+        topSectionOrigin._z -= param * kDistBetweenSections;
+                
+        Vec3 sectionOrigin = topSectionOrigin;
+        for (int sectionIx = 0; sectionIx < kNumVisibleSections + 1; ++sectionIx) {
+            int sectionId = _currentSectionId + sectionIx;
+            if (sectionId >= 0) {
+                std::set<ne::EntityId>& sectionEnemies = _sectionEnemies[sectionId];
+                for (ne::EntityId const eId : sectionEnemies) {
+                    TypingEnemyEntity* enemy = static_cast<TypingEnemyEntity*>(g._neEntityManager->GetEntity(eId));
+                    if (enemy == nullptr) {
+                        continue;
+                    }
+                    // instant activate
+                    enemy->_activeBeatTime = -1.0;
+                    Vec3 p = sectionOrigin + enemy->_sectionLocalPos;
+                    enemy->_transform.SetTranslation(p);
+                    if (sectionIx > 0) {
+                        enemy->_currentColor.Set(0.2f, 0.2f, 0.2f, 1.f);
+                    } else {
+                        enemy->_currentColor = enemy->_modelColor;
+                    }
+                }
+            }
+            sectionOrigin._z += kDistBetweenSections;
+        }
+    }
+
+    // Draw dividers
+    {
+        Vec3 sectionOrigin = topSectionOrigin;
+        for (int i = 0; i < kNumVisibleSections; ++i) {
+            Mat4 trans;
+            trans.SetTranslation(Vec3(0.f, 0.f, sectionOrigin._z + kDistBetweenSections - 1.0));
+            trans.Scale(20.f, 0.25f, 0.25f);
+            Vec4 color(0.1f, 0.1f, 0.1f, 1.f);
+            g._scene->DrawCube(trans, color);
+            sectionOrigin._z += kDistBetweenSections;
+        }
+    }
     
     TypingEnemyEntity* nearest = nullptr;
     float nearestDist2 = -1.f;
     ne::EntityManager::Iterator enemyIter = g._neEntityManager->GetIterator(ne::EntityType::TypingEnemy);
     Vec3 const& playerPos = _transform.GetPos();
+    // ***DIRTY HACK*** account for note quantization so we can hit downbeats reliably
+    // TODO: try to do this instead by doing all this checking in the StepSequencer?
+    int effectiveSectionId = _currentSectionId;
+    {
+        if (beatTime + 0.25 > _nextSectionStartTime) {
+            ++effectiveSectionId;
+            if (!_adjustedForQuant) {
+                _transform.SetTranslation(Vec3(-10.f, 0.f, 0.f));
+                _adjustedForQuant = true;
+            }
+        }
+    }
     for (; !enemyIter.Finished(); enemyIter.Next()) {
         TypingEnemyEntity* enemy = (TypingEnemyEntity*) enemyIter.GetEntity();
         if (!enemy->IsActive(g)) {
             continue;
         }
-        // if (enemy->_numHits >= enemy->_text.length()) {
-        //     continue;
-        // }
+        if (enemy->_sectionId >= 0 && effectiveSectionId != enemy->_sectionId) {
+            continue;
+        }
         InputManager::Key nextKey = enemy->GetNextKey();
         if (g._inputManager->IsKeyPressedThisFrame(nextKey)) {
             std::optional<float> dist2;
@@ -116,4 +228,12 @@ void TypingPlayerEntity::Update(GameManager& g, float dt) {
         float param = math_util::SmoothUpAndDown((float)beatTimeFrac);
         currentEnemy->_currentColor = selectionColor + param * (enemyColor - selectionColor);
     }
+}
+
+void TypingPlayerEntity::RegisterSectionEnemy(int sectionId, ne::EntityId enemyId) {
+    _sectionEnemies[sectionId].insert(enemyId);
+}
+
+void TypingPlayerEntity::SetSectionLength(int sectionId, int numBeats) {
+    _sectionNumBeats[sectionId] = numBeats;
 }

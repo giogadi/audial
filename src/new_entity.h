@@ -42,6 +42,16 @@ struct EntityId {
     bool IsValid() { return _id >= 0; }
     int _id = -1;
     EntityType _type;
+    bool operator==(EntityId const& rhs) const {
+        bool v = _id == rhs._id;
+        if (v) {
+            assert(_type == rhs._type);
+        }
+        return v;
+    }
+    bool operator<(EntityId const& rhs) const {
+        return _id < rhs._id;
+    }
 };
 
 struct BaseEntity {

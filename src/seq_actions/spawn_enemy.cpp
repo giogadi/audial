@@ -671,6 +671,11 @@ void SpawnEnemySeqAction::Load(GameManager& g, LoadInputs const& loadInputs, std
             _enemy._text = string_util::GenerateRandomText(numChars);
         } else if (key == "typekill") {
             _enemy._destroyAfterTyped = std::stoi(value) != 0;
+        } else if (key == "section") {
+            _enemy._sectionId = loadInputs._sectionId;
+            // initialize to "inactive" by setting their start beat time to be
+            // way in the future.
+            _enemy._activeBeatTime = 99999.0;
         } else if (key == "x") {
             _enemy._transform._m03 = std::stof(value);
         } else if (key == "z") {
@@ -716,5 +721,9 @@ void SpawnEnemySeqAction::Load(GameManager& g, LoadInputs const& loadInputs, std
         } else {
             printf("SpawnEnemySeqAction: unknown common key \"%s\"\n", key.c_str());
         }
+    }
+
+    if (_enemy._sectionId >= 0) {
+        _enemy._sectionLocalPos = _enemy._transform.GetPos();
     }
 }

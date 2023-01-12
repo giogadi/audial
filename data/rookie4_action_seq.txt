@@ -1,11 +1,22 @@
-#start 116
+section 0 8
 
-0 e text:a  z:-4 x:-6 typekill:0 type:seq seq:low_bass_seq note:C2
-0 e text:n  z:-4 x:-5 typekill:0 type:seq seq:low_bass_seq note:G2 
-0 e text:y  z:-4 x:-4 typekill:0 type:seq seq:low_bass_seq note:C2 
-0 e text:t  z:-4 x:-3 typekill:0 type:seq seq:low_bass_seq note:G2 
-0 e text:h  z:-4 x:-2 typekill:0 type:seq seq:low_bass_seq note:C2 
-0 e text:i  z:-4 x:-1 typekill:0 type:seq seq:low_bass_seq note:G2 
-0 e text:n  z:-4 x:0 typekill:0 type:seq seq:low_bass_seq note:C2 
-0 e text:g  z:-4 x:1 typekill:0 type:seq seq:low_bass_seq note:G2
+-1 e text:a  z:0 x:0 typekill:0 section: type:seq seq:low_bass_seq note:C2
+-1 e text:n  z:0 x:1 typekill:0 section: type:seq seq:low_bass_seq note:G2 
+-1 e text:y  z:0 x:2 typekill:0 section: type:seq seq:low_bass_seq note:C2 
+-1 e text:t  z:0 x:3 typekill:0 section: type:seq seq:low_bass_seq note:G2 
+-1 e text:h  z:0 x:4 typekill:0 section: type:seq seq:low_bass_seq note:C2 
+-1 e text:i  z:0 x:5 typekill:0 section: type:seq seq:low_bass_seq note:G2 
+-1 e text:n  z:0 x:6 typekill:0 section: type:seq seq:low_bass_seq note:C2 
+-1 e text:g  z:0 x:7 typekill:0 section: type:seq seq:low_bass_seq note:G2
+
+section 1 8
+
+-1 e text:n  z:0 x:0 typekill:0 section: type:seq seq:low_bass_seq note:B1-
+-1 e text:o  z:0 x:1 typekill:0 section: type:seq seq:low_bass_seq note:F2
+-1 e text:t  z:0 x:2 typekill:0 section: type:seq seq:low_bass_seq note:B1- 
+-1 e text:h  z:0 x:3 typekill:0 section: type:seq seq:low_bass_seq note:F2
+-1 e text:i  z:0 x:4 typekill:0 section: type:seq seq:low_bass_seq note:B1- 
+-1 e text:n  z:0 x:5 typekill:0 section: type:seq seq:low_bass_seq note:F2 
+-1 e text:g  z:0 x:6 typekill:0 section: type:seq seq:low_bass_seq note:B1- 
+-1 e text:s  z:0 x:7 typekill:0 section: type:seq seq:low_bass_seq note:F2
 

@@ -17,6 +17,8 @@ struct TypingEnemyEntity : public ne::Entity {
     double _inactiveBeatTime = -1.0;
     bool _destroyIfOffscreenLeft = true;
     bool _destroyAfterTyped = true;
+    int _sectionId = -1;
+    Vec3 _sectionLocalPos;
     
     // non-serialized
     int _numHits = 0;
