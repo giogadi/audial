@@ -59,13 +59,14 @@ void TypingEnemyEntity::Update(GameManager& g, float dt) {
 
     screenX = std::round(screenX);
     screenY = std::round(screenY);
+    float constexpr kTextSize = 0.75f;
     if (_numHits > 0) {
         std::string_view substr = std::string_view(_text).substr(0, _numHits);
-        g._scene->DrawText(substr, screenX, screenY, /*scale=*/1.f, Vec4(1.f,1.f,0.f,1.f));
+        g._scene->DrawText(substr, screenX, screenY, /*scale=*/kTextSize, Vec4(1.f,1.f,0.f,1.f));
     }
     if (_numHits < _text.length()) {
         std::string_view substr = std::string_view(_text).substr(_numHits);
-        g._scene->DrawText(substr, screenX, screenY, /*scale=*/1.f, Vec4(1.f,1.f,1.f,1.f));
+        g._scene->DrawText(substr, screenX, screenY, /*scale=*/kTextSize, Vec4(1.f,1.f,1.f,1.f));
     }
 
     if (_model != nullptr) {

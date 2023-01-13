@@ -174,7 +174,7 @@
                 <z>0</z>
                 <w>0</w>
             </model_color_vec4>
-            <enemy_selection_type>NearPos</enemy_selection_type>
+            <enemy_selection_type>MinXZ</enemy_selection_type>
             <selection_radius>100</selection_radius>
         </TypingPlayer>
         <Sequencer>

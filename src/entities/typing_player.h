@@ -6,7 +6,7 @@
 #include "new_entity.h"
 
 struct TypingPlayerEntity : public ne::Entity {
-    enum class EnemySelectionType { MinX, NearPos };
+    enum class EnemySelectionType { MinX, NearPos, MinXZ };
 
     // serialized
     EnemySelectionType _selectionType = EnemySelectionType::MinX;

@@ -625,7 +625,7 @@ void SpawnEnemySeqAction::Load(GameManager& g, LoadInputs const& loadInputs, std
     _enemy._modelName = "cube";
     _enemy._modelColor.Set(1.f, 0.f, 0.f, 1.f);
 
-    _enemy._transform.Scale(0.5f, 0.5f, 0.5f);
+    _enemy._transform.Scale(0.2f, 0.2f, 0.2f);
     
     // Read in common properties until we read a type:blah one. After that, all
     // properties are assumed to be specific to that enemy "type".
@@ -657,6 +657,8 @@ void SpawnEnemySeqAction::Load(GameManager& g, LoadInputs const& loadInputs, std
                 LoadPcmEnemy(g, _enemy, lineStream);
             }
             break;
+        } else if (key == "name") {
+            _enemy._name = value;
         } else if (key == "color") {
             ColorPreset preset = StringToColorPreset(value.c_str());
             _enemy._modelColor = ToColor4(preset);

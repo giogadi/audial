@@ -12,6 +12,7 @@ void TypingPlayerEntity::SaveDerived(serial::Ptree pt) const {
     switch (_selectionType) {
         case EnemySelectionType::MinX: selectionTypeStr = "MinX"; break;
         case EnemySelectionType::NearPos: selectionTypeStr = "NearPos"; break;
+        case EnemySelectionType::MinXZ: selectionTypeStr = "MinXZ"; break;
     }
     pt.PutString("enemy_selection_type", selectionTypeStr.c_str());
     if (_selectionType == EnemySelectionType::NearPos) {
@@ -27,7 +28,9 @@ void TypingPlayerEntity::LoadDerived(serial::Ptree pt) {
             _selectionType = EnemySelectionType::MinX;
         } else if (selectionTypeStr == "NearPos") {
             _selectionType = EnemySelectionType::NearPos;
-        } else {
+        } else if (selectionTypeStr == "MinXZ")
+            _selectionType = EnemySelectionType::MinXZ;
+        else {
             printf("TypingPlayerEntity::LoadDerived: ERROR unrecognized selection type \"%s\"", selectionTypeStr.c_str());
         }
     }
@@ -158,7 +161,7 @@ void TypingPlayerEntity::Update(GameManager& g, float dt) {
                     trans.Scale(0.25f, 0.25f, counterSize * 0.9f);
                     Vec4 color;
                     if (sectionIx == 0 && beatIx <= currentBeatIx) {
-                        color.Set(1.f, 0.f, 1.f, 1.f);
+                        color.Set(1.f, 1.f, 0.f, 1.f);
                     } else {
                         color.Set(0.1f, 0.1f, 0.1f, 1.f);
                     }
@@ -214,7 +217,15 @@ void TypingPlayerEntity::Update(GameManager& g, float dt) {
                     }
                     break;
                 }
-                    
+                case EnemySelectionType::MinXZ: {
+                    int dId = enemy->_id._id - _currentEnemyId._id;
+                    if (dId < 0.f) { // if enemy is before player
+                        dist2 = 100.f * (-dId);
+                    } else {
+                        dist2 = (float) enemy->_id._id;
+                    }
+                    break;
+                }                    
             }
             if (!dist2.has_value()) {
                 continue;

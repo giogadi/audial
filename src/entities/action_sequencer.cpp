@@ -23,6 +23,7 @@ void ActionSequencerEntity::Init(GameManager& g) {
     loadInputs._beatTimeOffset = 0.0;
     std::string line;
     std::string token;
+    int nextSectionId = 0;    
     while (!inFile.eof()) {
         std::getline(inFile, line);
         // If it's empty, skip.
@@ -62,7 +63,8 @@ void ActionSequencerEntity::Init(GameManager& g) {
             loadInputs._defaultEnemiesSave = false;
             continue;
         } else if (token == "section") {
-            lineStream >> loadInputs._sectionId;
+            // lineStream >> loadInputs._sectionId;
+            loadInputs._sectionId = nextSectionId++;
             int sectionNumBeats;
             lineStream >> sectionNumBeats;
             int numEntities = 0;
