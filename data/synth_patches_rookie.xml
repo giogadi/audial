@@ -3,14 +3,14 @@
     <patch>
         <version>4</version>
         <name>bass</name>
-        <gain_factor>0.864000022</gain_factor>
+        <gain_factor>0.844999969</gain_factor>
         <mono>true</mono>
         <osc1_waveform>Saw</osc1_waveform>
         <osc2_waveform>Saw</osc2_waveform>
-        <detune>0.0130000003</detune>
-        <osc_fader>0.326000005</osc_fader>
+        <detune>1</detune>
+        <osc_fader>0.626999974</osc_fader>
         <cutoff_freq>0</cutoff_freq>
-        <cutoff_k>2.45099998</cutoff_k>
+        <cutoff_k>1.13300002</cutoff_k>
         <hpf_cutoff_freq>0</hpf_cutoff_freq>
         <hpf_peak>0</hpf_peak>
         <pitch_lfo_gain>0</pitch_lfo_gain>
@@ -24,11 +24,11 @@
             <release_time>0.657000005</release_time>
             <min_value>0.00999999978</min_value>
         </amp_env_spec>
-        <cutoff_env_gain>1308.05103</cutoff_env_gain>
+        <cutoff_env_gain>950.186035</cutoff_env_gain>
         <cutoff_env_spec>
-            <attack_time>0.00400000019</attack_time>
-            <decay_time>0.114</decay_time>
-            <sustain_level>0.114</sustain_level>
+            <attack_time>0.00800000038</attack_time>
+            <decay_time>0.130999997</decay_time>
+            <sustain_level>0.130999997</sustain_level>
             <release_time>0.219999999</release_time>
             <min_value>0.00999999978</min_value>
         </cutoff_env_spec>
@@ -44,12 +44,12 @@
     <patch>
         <version>4</version>
         <name>lead</name>
-        <gain_factor>0.927999973</gain_factor>
+        <gain_factor>0.873000026</gain_factor>
         <mono>true</mono>
         <osc1_waveform>Square</osc1_waveform>
         <osc2_waveform>Square</osc2_waveform>
-        <detune>0.0130000003</detune>
-        <osc_fader>0.317999989</osc_fader>
+        <detune>1</detune>
+        <osc_fader>0.26699999</osc_fader>
         <cutoff_freq>186.863998</cutoff_freq>
         <cutoff_k>2.01200008</cutoff_k>
         <hpf_cutoff_freq>0</hpf_cutoff_freq>
@@ -67,8 +67,8 @@
         </amp_env_spec>
         <cutoff_env_gain>747.458008</cutoff_env_gain>
         <cutoff_env_spec>
-            <attack_time>0.0170000009</attack_time>
-            <decay_time>0.219999999</decay_time>
+            <attack_time>0.0469999984</attack_time>
+            <decay_time>0.0379999988</decay_time>
             <sustain_level>0.389999986</sustain_level>
             <release_time>0.0970000029</release_time>
             <min_value>0.00999999978</min_value>
