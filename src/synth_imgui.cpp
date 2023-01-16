@@ -53,7 +53,7 @@ void DrawSynthGuiAndUpdatePatch(SynthGuiState& synthGuiState, audio::Context& au
 
         // Saving
         char saveFilenameBuffer[256];
-        strcpy(saveFilenameBuffer, synthGuiState._saveFilename.c_str());
+        strncpy_s(saveFilenameBuffer, synthGuiState._saveFilename.c_str(), synthGuiState._saveFilename.length());
         ImGui::InputText("Save filename", saveFilenameBuffer, 256);
         synthGuiState._saveFilename = saveFilenameBuffer;
         if (ImGui::Button("Save")) {
@@ -75,7 +75,7 @@ void DrawSynthGuiAndUpdatePatch(SynthGuiState& synthGuiState, audio::Context& au
         synth::Patch& patch = synthGuiState._synthPatches[synthGuiState._currentSynthIx];
 
         char nameBuffer[128];
-        strcpy(nameBuffer, patch.name.c_str());
+        strncpy_s(nameBuffer, patch.name.c_str(), patch.name.length());
         ImGui::InputText("Name", nameBuffer, 128);
         patch.name = nameBuffer;
 

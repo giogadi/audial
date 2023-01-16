@@ -60,7 +60,7 @@ private:
 };
 
 struct NameTreePair {    
-    char const* _name;
+    char const* _name = nullptr;
     Ptree _pt;
 };
 

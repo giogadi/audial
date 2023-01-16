@@ -213,11 +213,14 @@ bool SceneInternal::Init(GameManager& g) {
         int const numCubeVerts = 36;
         auto mesh = std::make_unique<BoundMeshPNU>();
         mesh->Init(cubeVerts.data(), numCubeVerts);
-        assert(_meshMap.emplace("cube", std::move(mesh)).second);
+        bool success = _meshMap.emplace("cube", std::move(mesh)).second;
+        assert(success);
 
         mesh = std::make_unique<BoundMeshPNU>();
-        assert(mesh->Init("data/models/axes.obj"));
-        assert(_meshMap.emplace("axes", std::move(mesh)).second);
+        success = mesh->Init("data/models/axes.obj");
+        assert(success);
+        success = _meshMap.emplace("axes", std::move(mesh)).second;
+        assert(success);
 
         mesh = MakeWaterMesh();
         assert(_meshMap.emplace("water", std::move(mesh)).second);
@@ -473,12 +476,14 @@ void Scene::Draw(int windowWidth, int windowHeight, float timeInSecs) {
             shader.SetMat4("uMvpTrans", viewProjTransform * transMat);
             shader.SetMat4("uModelTrans", transMat);
             Mat3 modelTransInv;
-            assert(transMat.GetMat3().TransposeInverse(modelTransInv));
+            bool success = transMat.GetMat3().TransposeInverse(modelTransInv);
+            assert(success);
             shader.SetMat3("uModelInvTrans", modelTransInv);
 
             // TEMPORARY! What we really want is to use the submeshes always unless the outer Model
             // has defined some overrides.
-            if (m._mesh->_subMeshes.size() == 0) {
+            assert(m._mesh != nullptr);
+            if (m._mesh->_subMeshes.size() == 0) {                
                 shader.SetVec4("uColor", m._color);
                 glBindVertexArray(m._mesh->_vao);
                 glDrawElements(GL_TRIANGLES, /*count=*/m._mesh->_numIndices, GL_UNSIGNED_INT, /*start_offset=*/0);
@@ -515,7 +520,8 @@ void Scene::Draw(int windowWidth, int windowHeight, float timeInSecs) {
             shader.SetMat4("uMvpTrans", viewProjTransform * transMat);
             shader.SetMat4("uModelTrans", transMat);
             Mat3 modelTransInv;
-            assert(transMat.GetMat3().TransposeInverse(modelTransInv));
+            bool success = transMat.GetMat3().TransposeInverse(modelTransInv);
+            assert(success);
             shader.SetMat3("uModelInvTrans", modelTransInv);
 
             // TEMPORARY! What we really want is to use the submeshes always unless the outer Model
@@ -549,7 +555,8 @@ void Scene::Draw(int windowWidth, int windowHeight, float timeInSecs) {
             shader.SetMat4("uMvpTrans", viewProjTransform * transMat);
             shader.SetMat4("uModelTrans", transMat);
             Mat3 modelTransInv;
-            assert(transMat.GetMat3().TransposeInverse(modelTransInv));
+            bool success = transMat.GetMat3().TransposeInverse(modelTransInv);
+            assert(success);
             shader.SetMat3("uModelInvTrans", modelTransInv);
             glActiveTexture(GL_TEXTURE0);
             glBindTexture(GL_TEXTURE_2D, m->_textureId);
@@ -618,7 +625,8 @@ void Scene::Draw(int windowWidth, int windowHeight, float timeInSecs) {
             shader.SetMat4("uMvpTrans", viewProjTransform * transMat);
             shader.SetMat4("uModelTrans", transMat);
             Mat3 modelTransInv;
-            assert(transMat.GetMat3().TransposeInverse(modelTransInv));
+            bool success = transMat.GetMat3().TransposeInverse(modelTransInv);
+            assert(success);
             shader.SetMat3("uModelInvTrans", modelTransInv);
 
             // TEMPORARY! What we really want is to use the submeshes always unless the outer Model

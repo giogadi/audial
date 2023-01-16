@@ -23,24 +23,24 @@ float Polyblep(float t, float dt) {
 
 float GenerateSquare(float const phase, float const phaseChange) {
     float v = 0.0f;
-    if (phase < M_PI) {
+    if (phase < kPi) {
         v = 1.0f;
     } else {
         v = -1.0f;
     }
     // polyblep
-    float dt = phaseChange / (2*M_PI);
-    float t = phase / (2*M_PI);
+    float dt = phaseChange / (2*kPi);
+    float t = phase / (2*kPi);
     v += Polyblep(t, dt);
     v -= Polyblep(fmod(t + 0.5f, 1.0f), dt);
     return v;
 }
 
 float GenerateSaw(float const phase, float const phaseChange) {
-    float v = (phase / M_PI) - 1.0f;
+    float v = (phase / kPi) - 1.0f;
     // polyblep
-    float dt = phaseChange / (2*M_PI);
-    float t = phase / (2*M_PI);
+    float dt = phaseChange / (2*kPi);
+    float t = phase / (2*kPi);
     v -= Polyblep(t, dt);
     return v;
 }

@@ -1,5 +1,7 @@
 #include "typing_player.h"
 
+#include <optional>
+
 #include "input_manager.h"
 #include "game_manager.h"
 #include "entities/typing_enemy.h"

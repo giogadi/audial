@@ -1,5 +1,7 @@
 #pragma once
 
+#include <functional>
+
 #include "entity.h"
 
 // TODO: move these inside EntityManager

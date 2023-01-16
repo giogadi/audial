@@ -1,6 +1,7 @@
 #include "version_id_list_simple.h"
 
 #include <vector>
+#include <cassert>
 
 class VersionIdListInternal {
 public:

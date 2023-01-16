@@ -2,6 +2,7 @@
 
 #include <fstream>
 #include <sstream>
+#include <algorithm>
 
 #include "entities/param_automator.h"
 #include "game_manager.h"

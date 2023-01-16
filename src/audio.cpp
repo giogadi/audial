@@ -71,14 +71,37 @@ PaError Init(
         return err;
     }
 
-    context._outputParameters.device = Pa_GetDefaultOutputDevice(); /* default output device */
+#ifdef _WIN32
+    context._outputParameters.device = paNoDevice;
+    PaDeviceIndex numDevices = Pa_GetDeviceCount();
+    for (PaDeviceIndex deviceIx = 0; deviceIx < numDevices; ++deviceIx) {
+        PaDeviceInfo const* pDeviceInfo = Pa_GetDeviceInfo(deviceIx);
+        PaHostApiInfo const* pHostApiInfo = Pa_GetHostApiInfo(pDeviceInfo->hostApi);
+        if (pHostApiInfo->type == paWASAPI) {
+            PaStreamParameters testOutputParams;
+            testOutputParams.device = deviceIx;
+            testOutputParams.channelCount = 2;
+            testOutputParams.sampleFormat = paFloat32;
+            testOutputParams.hostApiSpecificStreamInfo = NULL;
+            if (deviceIx == pHostApiInfo->defaultOutputDevice && Pa_IsFormatSupported(NULL, &testOutputParams, SAMPLE_RATE) == paNoError) {
+                context._outputParameters.device = deviceIx;
+                break;
+            }
+        }
+    }
+#else
+    context._outputParameters.device = Pa_GetDefaultOutputDevice();
+#endif     
+
     if (context._outputParameters.device == paNoDevice) {
-      printf("Error: No default output device.\n");
+      printf("Error: No supported output device.\n");
       return err;
     }
+    
     context._outputParameters.channelCount = 2;       /* stereo output */
     context._outputParameters.sampleFormat = paFloat32; /* 32 bit floating point output */
     context._outputParameters.suggestedLatency = Pa_GetDeviceInfo( context._outputParameters.device )->defaultLowOutputLatency;
+
     context._outputParameters.hostApiSpecificStreamInfo = NULL;
 
     err = Pa_OpenStream(
@@ -87,7 +110,7 @@ PaError Init(
               &context._outputParameters,
               SAMPLE_RATE,
               FRAMES_PER_BUFFER,
-              paClipOff,      /* we won't output out of range samples so don't bother clipping them */
+              paNoFlag,  // no flags (clipping is on)
               PortAudioCallback,
               &context._state );
     if( err != paNoError ) {

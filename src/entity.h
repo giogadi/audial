@@ -5,6 +5,7 @@
 #include <unordered_map>
 #include <vector>
 #include <memory>
+#include <algorithm>
 
 #include "entity_id.h"
 #include "component.h"
