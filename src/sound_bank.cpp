@@ -24,6 +24,9 @@ void SoundBank::LoadSounds() {
         , "feel_vox_7"
         , "feel_vox_8"
         , "feel_vox_9"
+        , "kick_909"
+        , "snare_909"
+        , "hihat_closed_909"
     };
     std::vector<char const*> soundFilenames = {
         "data/sounds/kick_deep.wav"
@@ -45,6 +48,9 @@ void SoundBank::LoadSounds() {
         , "data/sounds/feeling_vocals/v7.wav"
         , "data/sounds/feeling_vocals/v8.wav"
         , "data/sounds/feeling_vocals/v9.wav"
+        , "data/sounds/kick_909_48k.wav"
+        , "data/sounds/snare_909_48k.wav"
+        , "data/sounds/hihat_closed_909_48k.wav"
     };
     _exclusiveGroups = {
         -1,
@@ -65,7 +71,10 @@ void SoundBank::LoadSounds() {
         0,
         0,
         0,
-        0
+        0,
+        -1,
+        -1,
+        -1,
     };
     assert(soundFilenames.size() == _soundNames.size());
     assert(_soundNames.size() == _exclusiveGroups.size());
@@ -77,7 +86,7 @@ void SoundBank::LoadSounds() {
         sound._buffer = drwav_open_file_and_read_pcm_frames_f32(
             filename, &numChannels, &sampleRate, &sound._bufferLength, /*???*/NULL);
         assert(numChannels == 1);
-        assert(sampleRate == 44100);
+        // assert(sampleRate == SAMPLE_RATE);
         assert(sound._buffer != nullptr);
         printf("Loaded \"%s\": %d channels, %llu samples.\n", filename, numChannels, sound._bufferLength);
         _sounds.push_back(std::move(sound));

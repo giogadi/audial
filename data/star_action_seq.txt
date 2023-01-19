@@ -1,0 +1,251 @@
+start_save
+
+section 4
+
+-1 e text:a  z:0 x:0 typekill:1 section: type:seq seq:chord_seq note:B3- note:E4- note:G4
+-1 e text:n  z:0 x:0.5 typekill:1 section: type:seq seq:chord_seq note:B3- note:E4- note:G4
+-1 e text:y  z:0 x:1 typekill:1 section: type:seq seq:chord_seq note:B3- note:E4- note:G4
+-1 e text:t  z:0 x:1.5 typekill:1 section: type:seq seq:chord_seq note:B3- note:E4- note:G4
+-1 e text:h  z:0 x:2 typekill:1 section: type:seq seq:chord_seq note:B3- note:E4- note:G4
+-1 e text:i  z:0 x:2.5 typekill:1 section: type:seq seq:chord_seq note:B3- note:E4- note:G4
+-1 e text:n  z:0 x:3 typekill:1 section: type:seq seq:chord_seq note:B3- note:E4- note:G4
+-1 e text:g  z:0 x:3.5 typekill:1 section: type:seq seq:chord_seq note:B3- note:E4- note:G4
+
+section 4
+
+-1 e text:w  z:0 x:0 typekill:1 section: type:seq seq:chord_seq note:A3- note:C4 note:E4- note:G4
+-1 e text:i  z:0 x:0.5 typekill:1 section: type:seq seq:chord_seq note:A3- note:C4 note:E4- note:G4
+-1 e text:l  z:0 x:1 typekill:1 section: type:seq seq:chord_seq note:A3- note:C4 note:E4- note:G4
+-1 e text:l  z:0 x:1.5 typekill:1 section: type:seq seq:chord_seq note:A3- note:C4 note:E4- note:G4
+-1 e text:s  z:0 x:2 typekill:1 section: type:seq seq:chord_seq note:A3- note:C4 note:E4- note:G4
+-1 e text:h  z:0 x:2.5 typekill:1 section: type:seq seq:chord_seq note:A3- note:C4 note:E4- note:G4
+-1 e text:o  z:0 x:3 typekill:1 section: type:seq seq:chord_seq note:A3- note:C4 note:E4- note:G4
+-1 e text:w  z:0 x:3.5 typekill:1 section: type:seq seq:chord_seq note:A3- note:C4 note:E4- note:G4
+
+section 4
+
+-1 e text:m  z:0 x:0 typekill:1 section: type:seq seq:chord_seq note:A3- note:B3 note:E4- note:F4
+-1 e text:a  z:0 x:0.5 typekill:1 section: type:seq seq:chord_seq note:A3- note:B3 note:E4- note:F4
+-1 e text:r  z:0 x:1 typekill:1 section: type:seq seq:chord_seq note:A3- note:B3 note:E4- note:F4
+-1 e text:v  z:0 x:1.5 typekill:1 section: type:seq seq:chord_seq note:A3- note:B3 note:E4- note:F4
+-1 e text:e  z:0 x:2 typekill:1 section: type:seq seq:chord_seq note:A3- note:B3 note:E4- note:F4
+-1 e text:l  z:0 x:2.5 typekill:1 section: type:seq seq:chord_seq note:A3- note:B3 note:E4- note:F4
+-1 e text:o  z:0 x:3 typekill:1 section: type:seq seq:chord_seq note:A3- note:B3 note:E4- note:F4
+-1 e text:u  z:0 x:3.5 typekill:1 section: type:seq seq:chord_seq note:A3- note:B3 note:E4- note:F4
+-1 e text:s  z:0 x:4 typekill:1 section: type:seq seq:chord_seq note:A3- note:B3 note:E4- note:F4
+
+section 2
+
+-1 e text:p  z:0 x:0 typekill:1 section: type:seq seq:chord_seq note:G3- note:B3- note:D4- note:F4
+-1 e text:o  z:0 x:0.5 typekill:1 section: type:seq seq:chord_seq note:G3- note:B3- note:D4- note:F4
+-1 e text:t  z:0 x:1 typekill:1 section: type:seq seq:chord_seq note:G3- note:B3- note:D4- note:F4
+-1 e text:e  z:0 x:1.5 typekill:1 section: type:seq seq:chord_seq note:G3- note:B3- note:D4- note:F4
+
+section 2
+-1 e text:n  z:0 x:2 typekill:1 section: type:seq seq:chord_seq note:G3- note:B3- note:C4 note:E4-
+-1 e text:t  z:0 x:2.5 typekill:1 section: type:seq seq:chord_seq note:G3- note:B3- note:C4 note:E4-
+-1 e text:i  z:0 x:3 typekill:1 section: type:seq seq:chord_seq note:G3- note:B3- note:C4 note:E4-
+-1 e text:a  z:0 x:3.5 typekill:1 section: type:seq seq:chord_seq note:G3- note:B3- note:C4 note:E4-
+
+stop_save
+
+# # bass seq 1
+# section 8
+
+# -1 e text:h  z:0 x:0 typekill:0 section: type:seq seq:bass_seq note:C2
+# -1 e text:a  z:0 x:2 typekill:0 section: type:seq seq:bass_seq note:C2 
+# -1 e text:n  z:0 x:4 typekill:0 section: type:seq seq:bass_seq note:C2 
+# -1 e text:d  z:0 x:6 typekill:0 section: type:seq seq:bass_seq note:C2 
+# -1 e text:l  z:0 x:8 typekill:0 section: type:seq seq:bass_seq note:B2-
+# -1 e text:e  z:0 x:9 typekill:0 section: type:seq seq:bass_seq note:C3
+
+# -1 e text:f  z:2 x:0 typekill:0 section: type:seq seq:bass_seq note:C2
+# -1 e text:i  z:2 x:2 typekill:0 section: type:seq seq:bass_seq note:C2 
+# -1 e text:v  z:2 x:4 typekill:0 section: type:seq seq:bass_seq note:C2 
+# -1 e text:e  z:2 x:6 typekill:0 section: type:seq seq:bass_seq note:F2 
+# -1 e text:r  z:2 x:7 typekill:0 section: type:seq seq:bass_seq note:D2
+
+# section 8
+
+# -1 e text:p  z:0 x:0 typekill:0 section: type:seq seq:bass_seq note:B1-
+# -1 e text:l  z:0 x:2 typekill:0 section: type:seq seq:bass_seq note:B1- 
+# -1 e text:a  z:0 x:4 typekill:0 section: type:seq seq:bass_seq note:B1- 
+# -1 e text:y  z:0 x:6 typekill:0 section: type:seq seq:bass_seq note:B1- 
+# -1 e text:e  z:0 x:8 typekill:0 section: type:seq seq:bass_seq note:E2
+# -1 e text:r  z:0 x:9 typekill:0 section: type:seq seq:bass_seq note:F2
+
+# -1 e text:h  z:2 x:0 typekill:0 section: type:seq seq:bass_seq note:B1-
+# -1 e text:i  z:2 x:2 typekill:0 section: type:seq seq:bass_seq note:B1- 
+# -1 e text:r  z:2 x:4 typekill:0 section: type:seq seq:bass_seq note:B1- 
+# -1 e text:e  z:2 x:6 typekill:0 section: type:seq seq:bass_seq note:D2 
+# -1 e text:s  z:2 x:7 typekill:0 section: type:seq seq:bass_seq note:B1-
+
+start_save
+
+# bass seq 2
+
+section 8
+
+-1 e text:h  z:0 x:0 typekill:0 section: type:seq seq:bass_seq note:C2
+-1 e text:i  z:0.5 x:0.5 color:Gray typekill:0 section: type:seq seq:bass_seq note:C1
+-1 e text:a  z:0 x:1 typekill:0 section: type:seq seq:bass_seq note:C2
+-1 e text:i  z:0.5 x:1.5 color:Gray typekill:0 section: type:seq seq:bass_seq note:C1
+-1 e text:n  z:0 x:2 typekill:0 section: type:seq seq:bass_seq note:C2
+-1 e text:i  z:0.5 x:2.5 color:Gray typekill:0 section: type:seq seq:bass_seq note:C1
+-1 e text:d  z:0 x:3 typekill:0 section: type:seq seq:bass_seq note:C2
+-1 e text:i  z:0.5 x:3.25 color:Gray typekill:0 section: type:seq seq:bass_seq note:F2
+-1 e text:l  z:0 x:3.5 typekill:0 section: type:seq seq:bass_seq note:B2-
+-1 e text:e  z:0 x:3.75 typekill:0 section: type:seq seq:bass_seq note:C3
+
+-1 e text:h  z:1 x:4 typekill:0 section: type:seq seq:bass_seq note:C2
+-1 e text:i  z:1.5 x:4.5 color:Gray typekill:0 section: type:seq seq:bass_seq note:C1
+-1 e text:a  z:1 x:5 typekill:0 section: type:seq seq:bass_seq note:C2
+-1 e text:i  z:1.5 x:5.5 color:Gray typekill:0 section: type:seq seq:bass_seq note:C1
+-1 e text:n  z:1 x:6 typekill:0 section: type:seq seq:bass_seq note:C2
+-1 e text:i  z:1.5 x:6.5 color:Gray typekill:0 section: type:seq seq:bass_seq note:C1
+-1 e text:e  z:1 x:7 typekill:0 section: type:seq seq:bass_seq note:F2 
+-1 e text:r  z:1 x:7.5 typekill:0 section: type:seq seq:bass_seq note:D2
+
+section 8
+
+-1 e text:h  z:0 x:0 typekill:0 section: type:seq seq:bass_seq note:B1-
+-1 e text:i  z:0.5 x:0.5 color:Gray typekill:0 section: type:seq seq:bass_seq note:B0-
+-1 e text:a  z:0 x:1 typekill:0 section: type:seq seq:bass_seq note:B1-
+-1 e text:i  z:0.5 x:1.5 color:Gray typekill:0 section: type:seq seq:bass_seq note:B0-
+-1 e text:n  z:0 x:2 typekill:0 section: type:seq seq:bass_seq note:B1-
+-1 e text:i  z:0.5 x:2.5 color:Gray typekill:0 section: type:seq seq:bass_seq note:B0-
+-1 e text:d  z:0 x:3 typekill:0 section: type:seq seq:bass_seq note:B1-
+-1 e text:i  z:0.5 x:3.25 color:Gray typekill:0 section: type:seq seq:bass_seq note:D2
+-1 e text:l  z:0 x:3.5 typekill:0 section: type:seq seq:bass_seq note:E2
+-1 e text:e  z:0 x:3.75 typekill:0 section: type:seq seq:bass_seq note:F2
+
+-1 e text:h  z:1 x:4 typekill:0 section: type:seq seq:bass_seq note:B1-
+-1 e text:i  z:1.5 x:4.5 color:Gray typekill:0 section: type:seq seq:bass_seq note:B0-
+-1 e text:a  z:1 x:5 typekill:0 section: type:seq seq:bass_seq note:B1-
+-1 e text:i  z:1.5 x:5.5 color:Gray typekill:0 section: type:seq seq:bass_seq note:B0-
+-1 e text:n  z:1 x:6 typekill:0 section: type:seq seq:bass_seq note:B1-
+-1 e text:i  z:1.5 x:6.5 color:Gray typekill:0 section: type:seq seq:bass_seq note:B0-
+-1 e text:e  z:1 x:7 typekill:0 section: type:seq seq:bass_seq note:F2 
+-1 e text:r  z:1 x:7.5 typekill:0 section: type:seq seq:bass_seq note:D2
+
+stop_save
+
+60 set_all_steps low_bass_seq -1 -1 -1 -1 1.0
+# 62 automate CutoffEnvGain 0 5605 5605 1.0
+# 62 automate Gain 0 0.64 0.74 1.0
+
+# start_save
+
+# # low_bass seq 1
+# section 4
+
+# -1 e text:f  z:0 x:0 typekill:1 section: type:seq seq:low_bass_seq note:C1
+# -1 e text:f  z:0 x:0.5 typekill:1 section: type:seq seq:low_bass_seq note:C1
+# -1 e text:f  z:0 x:1 typekill:1 section: type:seq seq:low_bass_seq note:C1
+# -1 e text:f  z:0 x:1.5 typekill:1 section: type:seq seq:low_bass_seq note:C1 
+# -1 e text:f  z:0 x:2 typekill:1 section: type:seq seq:low_bass_seq note:C1
+# -1 e text:f  z:0 x:2.5 typekill:1 section: type:seq seq:low_bass_seq note:C1
+# -1 e text:f  z:0 x:3 typekill:1 section: type:seq seq:low_bass_seq note:C1
+# -1 e text:f  z:0 x:3.5 typekill:1 section: type:seq seq:low_bass_seq note:C1
+# -1 e text:f  z:0 x:4 typekill:1 section: type:seq seq:low_bass_seq note:C1 
+# -1 e text:f  z:0 x:4.5 typekill:1 section: type:seq seq:low_bass_seq note:C1
+# -1 e text:f  z:0 x:5 typekill:1 section: type:seq seq:low_bass_seq note:C1
+# -1 e text:f  z:0 x:5.5 typekill:1 section: type:seq seq:low_bass_seq note:C1
+# -1 e text:f  z:0 x:6 typekill:1 section: type:seq seq:low_bass_seq note:C1 
+
+# -1 e text:j  z:1 x:3 color:Blue typekill:0 section: type:seq seq:low_bass_seq note:G2
+# -1 e text:k  z:2 x:3 color:Blue typekill:0 section: type:seq seq:low_bass_seq note:C2
+
+# # low_bass seq 2
+# section 4
+
+# -1 e text:f  z:0 x:0 typekill:1 section: type:seq seq:low_bass_seq note:C1
+# -1 e text:f  z:0 x:0.5 typekill:1 section: type:seq seq:low_bass_seq note:C1
+# -1 e text:f  z:0 x:1 typekill:1 section: type:seq seq:low_bass_seq note:C1
+# -1 e text:f  z:0 x:1.5 typekill:1 section: type:seq seq:low_bass_seq note:C1 
+# -1 e text:f  z:0 x:2 typekill:1 section: type:seq seq:low_bass_seq note:C1
+# -1 e text:f  z:0 x:2.5 typekill:1 section: type:seq seq:low_bass_seq note:C1
+# -1 e text:f  z:0 x:3 typekill:1 section: type:seq seq:low_bass_seq note:C1
+# -1 e text:f  z:0 x:3.5 typekill:1 section: type:seq seq:low_bass_seq note:C1
+# -1 e text:f  z:0 x:4 typekill:1 section: type:seq seq:low_bass_seq note:C1 
+# -1 e text:f  z:0 x:4.5 typekill:1 section: type:seq seq:low_bass_seq note:C1
+# -1 e text:f  z:0 x:5 typekill:1 section: type:seq seq:low_bass_seq note:C1
+# -1 e text:f  z:0 x:5.5 typekill:1 section: type:seq seq:low_bass_seq note:C1
+# -1 e text:f  z:0 x:6 typekill:1 section: type:seq seq:low_bass_seq note:C1 
+
+# -1 e text:j  z:1 x:3 color:Blue typekill:0 section: type:seq seq:low_bass_seq note:G2
+# -1 e text:k  z:2 x:3 color:Blue typekill:0 section: type:seq seq:low_bass_seq note:C2
+
+# # low_bass seq 3
+# section 4
+
+# -1 e text:f  z:0 x:0 typekill:1 section: type:seq seq:low_bass_seq note:B0-
+# -1 e text:f  z:0 x:0.5 typekill:1 section: type:seq seq:low_bass_seq note:B0-
+# -1 e text:f  z:0 x:1 typekill:1 section: type:seq seq:low_bass_seq note:B0-
+# -1 e text:f  z:0 x:1.5 typekill:1 section: type:seq seq:low_bass_seq note:B0- 
+# -1 e text:f  z:0 x:2 typekill:1 section: type:seq seq:low_bass_seq note:B0-
+# -1 e text:f  z:0 x:2.5 typekill:1 section: type:seq seq:low_bass_seq note:B0-
+# -1 e text:f  z:0 x:3 typekill:1 section: type:seq seq:low_bass_seq note:B0-
+# -1 e text:f  z:0 x:3.5 typekill:1 section: type:seq seq:low_bass_seq note:B0-
+# -1 e text:f  z:0 x:4 typekill:1 section: type:seq seq:low_bass_seq note:B0- 
+# -1 e text:f  z:0 x:4.5 typekill:1 section: type:seq seq:low_bass_seq note:B0-
+# -1 e text:f  z:0 x:5 typekill:1 section: type:seq seq:low_bass_seq note:B0-
+# -1 e text:f  z:0 x:5.5 typekill:1 section: type:seq seq:low_bass_seq note:B0-
+# -1 e text:f  z:0 x:6 typekill:1 section: type:seq seq:low_bass_seq note:B0- 
+
+# -1 e text:j  z:1 x:3 color:Blue typekill:0 section: type:seq seq:low_bass_seq note:F1
+# -1 e text:k  z:2 x:3 color:Blue typekill:0 section: type:seq seq:low_bass_seq note:B1-
+
+# # low_bass seq 4
+# section 4
+
+# -1 e text:f  z:0 x:0 typekill:1 section: type:seq seq:low_bass_seq note:B0-
+# -1 e text:f  z:0 x:0.5 typekill:1 section: type:seq seq:low_bass_seq note:B0-
+# -1 e text:f  z:0 x:1 typekill:1 section: type:seq seq:low_bass_seq note:B0-
+# -1 e text:f  z:0 x:1.5 typekill:1 section: type:seq seq:low_bass_seq note:B0- 
+# -1 e text:f  z:0 x:2 typekill:1 section: type:seq seq:low_bass_seq note:B0-
+# -1 e text:f  z:0 x:2.5 typekill:1 section: type:seq seq:low_bass_seq note:B0-
+# -1 e text:f  z:0 x:3 typekill:1 section: type:seq seq:low_bass_seq note:B0-
+# -1 e text:f  z:0 x:3.5 typekill:1 section: type:seq seq:low_bass_seq note:B0-
+# -1 e text:f  z:0 x:4 typekill:1 section: type:seq seq:low_bass_seq note:B0- 
+# -1 e text:f  z:0 x:4.5 typekill:1 section: type:seq seq:low_bass_seq note:B0-
+# -1 e text:f  z:0 x:5 typekill:1 section: type:seq seq:low_bass_seq note:B0-
+# -1 e text:f  z:0 x:5.5 typekill:1 section: type:seq seq:low_bass_seq note:B0-
+# -1 e text:f  z:0 x:6 typekill:1 section: type:seq seq:low_bass_seq note:B0- 
+
+# -1 e text:j  z:1 x:3 color:Blue typekill:0 section: type:seq seq:low_bass_seq note:F1
+# -1 e text:k  z:2 x:3 color:Blue typekill:0 section: type:seq seq:low_bass_seq note:B1-
+
+stop_save
+
+#60 set_all_steps kick -1 -1 -1 -1 1.0
+
+# LEAD (short: 64)
+section 8
+
+-1 e text:f  z:0 x:0 typekill:1 section: type:seq seq:lead_seq note:G4
+-1 e text:i  z:0 x:0.5 typekill:1 section: type:seq seq:lead_seq note:F4
+-1 e text:n  z:0 x:1 typekill:1 section: type:seq seq:lead_seq note:E4-
+-1 e text:e  z:0 x:1.5 typekill:1 section: type:seq seq:lead_seq note:D4
+-1 e text:r  z:0 x:2 typekill:1 section: type:seq seq:lead_seq note:C4
+
+-1 e text:b  z:1 x:0 typekill:1 section: type:seq seq:lead_seq note:C4
+-1 e text:u  z:1 x:0.5 typekill:1 section: type:seq seq:lead_seq note:G4
+-1 e text:i  z:1 x:1 typekill:1 section: type:seq seq:lead_seq note:B4-
+-1 e text:l  z:1 x:1.5 typekill:1 section: type:seq seq:lead_seq note:C5
+-1 e text:d  z:1 x:2 typekill:1 section: type:seq seq:lead_seq note:D5
+-1 e text:i  z:1 x:2.5 typekill:1 section: type:seq seq:lead_seq note:C5
+-1 e text:t  z:1 x:3 typekill:1 section: type:seq seq:lead_seq note:G4
+
+-1 e text:o  z:2 x:1 typekill:1 section: type:seq seq:lead_seq note:B4-
+
+section 4
+
+-1 e text:o  z:0 x:0 typekill:0 section: type:seq seq:lead_seq note:B4-
+-1 e text:n  z:0 x:1 typekill:0 section: type:seq seq:lead_seq note:F4
+
+section 4
+
+-1 e text:o  z:0 x:0 typekill:0 section: type:seq seq:lead_seq note:B4-
+-1 e text:n  z:0 x:1 typekill:0 section: type:seq seq:lead_seq note:F4
+
