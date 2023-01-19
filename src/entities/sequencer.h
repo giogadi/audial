@@ -12,7 +12,7 @@ struct SequencerEntity : ne::Entity {
     // Gets initialized to false in edit mode.
     bool _playing = true;
     int _currentIx = -1;
-    double _currentLoopStartBeatTime = -1.0;
+    double _currentLoopStartBeatTime = -1.0;    
 
     void Reset();
 

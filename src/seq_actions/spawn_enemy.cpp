@@ -667,6 +667,7 @@ void SpawnEnemySeqAction::Load(GameManager& g, LoadInputs const& loadInputs, std
         } else if (key == "off") {
             _enemy._inactiveBeatTime = std::stod(value) + loadInputs._beatTimeOffset;
         } else if (key == "text") {
+            assert(value.length() > 0);
             _enemy._text = value;
         } else if (key == "rand_text_len") {
             int numChars = std::stoi(value);

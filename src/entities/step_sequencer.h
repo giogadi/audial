@@ -22,6 +22,7 @@ struct StepSequencerEntity : ne::Entity {
     std::vector<SeqStep> _initialMidiSequenceDoNotChange;
     double _stepBeatLength = 0.25;
     std::vector<int> _channels;
+    bool _isSynth = true;  // false is drumkit
     double _noteLength = 0.25;
     double _initialLoopStartBeatTime = 4.0;
 
