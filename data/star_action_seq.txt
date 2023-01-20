@@ -109,6 +109,12 @@ section 4
 
 stop_save
 
+### CHANGE THE DRUMS LET'S GOOOOO ###
+# TODO: NEEDS A DRUM FILL
+
+35 set_step_seq kick_seq 19:0.5 -1 -1 -1 19:0.5 -1 -1 -1 19:0.5 -1 -1 19:0.5 -1 19:0.5 -1 -1
+35 set_step_seq snare_seq -1 -1 20:0.5 -1  -1 -1 20:0.5 -1  -1 -1 20:0.5 -1  -1 -1 20:0.5 -1
+
 #### LEAD TIME ####
 
 section 4
@@ -148,8 +154,8 @@ section 4
 -1 e text:s  z:0.0 x:1 typekill:1 section: type:seq seq:lead_seq note:C5
 -1 e text:k  z:0.0 x:1.5 typekill:1 section: type:seq seq:lead_seq note:G5
 
+# beattime: 48
 ### LEAD REPEAT ###
-# TODO: maybe up the drum tempo here?
 
 section 4
 

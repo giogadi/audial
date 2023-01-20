@@ -91,6 +91,7 @@ void ActionSequencerEntity::Init(GameManager& g) {
 
         lineStream >> token;
 
+        // TODO: get these from the SeqActionType enum
         std::unique_ptr<SeqAction> pAction;
         if (token == "automate") {
             pAction = std::make_unique<SpawnAutomatorSeqAction>();
@@ -100,6 +101,8 @@ void ActionSequencerEntity::Init(GameManager& g) {
             pAction = std::make_unique<ChangeStepSequencerSeqAction>();
         } else if (token == "set_all_steps") {
             pAction = std::make_unique<SetAllStepsSeqAction>();
+        } else if (token == "set_step_seq") {
+            pAction = std::make_unique<SetStepSequenceSeqAction>();
         } else if (token == "note_on_off") {
             pAction = std::make_unique<NoteOnOffSeqAction>();
         } else if (token == "e") {

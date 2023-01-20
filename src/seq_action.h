@@ -8,6 +8,7 @@
 #include "game_manager.h"
 #include "new_entity.h"
 #include "beat_time_event.h"
+#include "entities/step_sequencer.h"
 
 struct SeqAction {
     enum class Type {
@@ -15,6 +16,7 @@ struct SeqAction {
         RemoveEntity,
         ChangeStepSequencer,
         SetAllSteps,
+        SetStepSequence,
         NoteOnOff,
         BeatTimeEvent,
         SpawnEnemy,
@@ -57,6 +59,7 @@ struct RemoveEntitySeqAction : public SeqAction {
 };
 
 struct ChangeStepSequencerSeqAction : public SeqAction {
+
     ne::EntityId _seqId;
     std::array<int, 4> _midiNotes = {-1, -1, -1, -1};
     float _velocity = 0.f;
@@ -74,6 +77,15 @@ struct SetAllStepsSeqAction : public SeqAction {
     std::array<int, 4> _midiNotes = {-1, -1, -1, -1};
     float _velocity = 0.f;
     virtual Type GetType() const override { return Type::SetAllSteps; }
+    virtual void Execute(GameManager& g) override;
+    virtual void Load(
+        GameManager& g, LoadInputs const& loadInputs, std::istream& input) override;
+};
+
+struct SetStepSequenceSeqAction : public SeqAction {
+    ne::EntityId _seqId;
+    std::vector<StepSequencerEntity::SeqStep> _sequence;
+    virtual Type GetType() const override { return Type::SetStepSequence; }
     virtual void Execute(GameManager& g) override;
     virtual void Load(
         GameManager& g, LoadInputs const& loadInputs, std::istream& input) override;

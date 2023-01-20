@@ -38,10 +38,15 @@ struct StepSequencerEntity : ne::Entity {
     void SetNextSeqStepVelocity(GameManager& g, float v, StepSaveType saveType);
     void SetAllVelocitiesPermanent(float newVelocity);
     void SetAllStepsPermanent(SeqStep const& newStep);
+    void SetSequencePermanent(std::vector<SeqStep> newSequence);
 
     virtual void Init(GameManager& g) override;
     virtual void Update(GameManager& g, float dt) override;
     virtual void SaveDerived(serial::Ptree pt) const override;
     virtual void LoadDerived(serial::Ptree pt) override;
-    /* virtual ImGuiResult ImGuiDerived(GameManager& g) override; */    
+    /* virtual ImGuiResult ImGuiDerived(GameManager& g) override; */
+
+    // Assumes input contains _only_ the sequence, nothing else.
+    static void LoadSequenceFromInput(
+        std::istream& input, std::vector<SeqStep>& sequence);
 };

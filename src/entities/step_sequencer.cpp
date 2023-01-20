@@ -7,6 +7,58 @@
 #include "audio.h"
 #include "game_manager.h"
 #include "midi_util.h"
+#include "string_util.h"
+
+void StepSequencerEntity::LoadSequenceFromInput(std::istream& input, std::vector<SeqStep>& sequence) {
+    sequence.clear();
+    while (!input.eof()) {
+        SeqStep step;
+        std::string stepStr;
+        input >> stepStr;
+        // Chars [0,delimIx) are the notes delimited by ,
+        int currentNoteIx = 0;
+        int curIx = 0;
+        bool continueLoop = true;
+        while (continueLoop && curIx < stepStr.size()) {
+            std::size_t noteDelimIx = stepStr.find_first_of(",:", curIx);
+            if (noteDelimIx == curIx) {
+                break;
+            }
+            std::string_view noteStr;
+            if (noteDelimIx == std::string::npos) {
+                noteStr = std::string_view(stepStr).substr(curIx);
+                continueLoop = false;
+            } else {
+                noteStr = std::string_view(stepStr).substr(curIx, noteDelimIx - curIx);
+                if (stepStr[noteDelimIx] == ':') {
+                    continueLoop = false;
+                } else {
+                    curIx = noteDelimIx + 1;
+                }
+            }            
+            int midiNote = -1;
+            if (noteStr[0] == 'm') {
+                midiNote = GetMidiNote(noteStr.substr(1));
+            } else {
+                midiNote = string_util::StoiOrDie(noteStr);
+            }
+            if (currentNoteIx >= step._midiNote.size()) {
+                printf("StepSequencer::Load: Too many notes!\n");
+                break;
+            }
+            step._midiNote[currentNoteIx] = midiNote;
+            ++currentNoteIx;
+        }
+
+        std::size_t velDelimIx = stepStr.find_first_of(':');
+        if (velDelimIx != std::string::npos) {
+            std::string_view velStr = std::string_view(stepStr).substr(velDelimIx+1);
+            step._velocity = string_util::StofOrDie(velStr);
+        }
+       
+        sequence.push_back(step);
+    }
+}
 
 void StepSequencerEntity::SetNextSeqStep(GameManager& g, SeqStep step, StepSaveType saveType) {
     // BeatClock const& beatClock = *g._beatClock;
@@ -62,6 +114,14 @@ void StepSequencerEntity::SetAllStepsPermanent(SeqStep const& newStep) {
     assert(_permanentSequence.size() == _tempSequence.size());
     for (int i = 0, n = _permanentSequence.size(); i < n; ++i) {
         _tempSequence[i] = _permanentSequence[i] = newStep;
+    }
+}
+
+void StepSequencerEntity::SetSequencePermanent(std::vector<SeqStep> newSequence) {
+    assert(_permanentSequence.size() == _tempSequence.size());
+    assert(_permanentSequence.size() == newSequence.size());
+    for (int i = 0, n = newSequence.size(); i < n; ++i) {
+        _tempSequence[i] = _permanentSequence[i] = newSequence[i];
     }
 }
 
@@ -194,74 +254,57 @@ void StepSequencerEntity::SaveDerived(serial::Ptree pt) const {
     pt.PutBool("is_synth", _isSynth);
 }
 
-namespace {
-int StoiOrDie(std::string_view str) {
-    int x;
-    auto [ptr, ec] = std::from_chars(str.data(), str.data()+str.length(), x);
-    assert(ec == std::errc());
-    return x;
-}
-float StofOrDie(std::string_view str) {
-    // WTF, doesn't work yet???
-    // float x;
-    // auto [ptr, ec] = std::from_chars(str.data(), str.data()+str.length(), x);
-    // assert(ec == std::errc());
-    // return x;
-    std::string ownedStr(str);
-    return std::stof(ownedStr);
-}
-}
-
 void StepSequencerEntity::LoadDerived(serial::Ptree pt) {
     std::string seq = pt.GetString("sequence");    
     std::stringstream seqSs(seq);
-    while (!seqSs.eof()) {
-        SeqStep step;
-        std::string stepStr;
-        seqSs >> stepStr;
-        // Chars [0,delimIx) are the notes delimited by ,
-        int currentNoteIx = 0;
-        int curIx = 0;
-        bool continueLoop = true;
-        while (continueLoop && curIx < stepStr.size()) {
-            std::size_t noteDelimIx = stepStr.find_first_of(",:", curIx);
-            if (noteDelimIx == curIx) {
-                break;
-            }
-            std::string_view noteStr;
-            if (noteDelimIx == std::string::npos) {
-                noteStr = std::string_view(stepStr).substr(curIx);
-                continueLoop = false;
-            } else {
-                noteStr = std::string_view(stepStr).substr(curIx, noteDelimIx - curIx);
-                if (stepStr[noteDelimIx] == ':') {
-                    continueLoop = false;
-                } else {
-                    curIx = noteDelimIx + 1;
-                }
-            }            
-            int midiNote = -1;
-            if (noteStr[0] == 'm') {
-                midiNote = GetMidiNote(noteStr.substr(1));
-            } else {
-                midiNote = StoiOrDie(noteStr);
-            }
-            if (currentNoteIx >= step._midiNote.size()) {
-                printf("StepSequencer::Load: Too many notes!\n");
-                break;
-            }
-            step._midiNote[currentNoteIx] = midiNote;
-            ++currentNoteIx;
-        }
+    LoadSequenceFromInput(seqSs, _initialMidiSequenceDoNotChange);
+    // while (!seqSs.eof()) {
+    //     SeqStep step;
+    //     std::string stepStr;
+    //     seqSs >> stepStr;
+    //     // Chars [0,delimIx) are the notes delimited by ,
+    //     int currentNoteIx = 0;
+    //     int curIx = 0;
+    //     bool continueLoop = true;
+    //     while (continueLoop && curIx < stepStr.size()) {
+    //         std::size_t noteDelimIx = stepStr.find_first_of(",:", curIx);
+    //         if (noteDelimIx == curIx) {
+    //             break;
+    //         }
+    //         std::string_view noteStr;
+    //         if (noteDelimIx == std::string::npos) {
+    //             noteStr = std::string_view(stepStr).substr(curIx);
+    //             continueLoop = false;
+    //         } else {
+    //             noteStr = std::string_view(stepStr).substr(curIx, noteDelimIx - curIx);
+    //             if (stepStr[noteDelimIx] == ':') {
+    //                 continueLoop = false;
+    //             } else {
+    //                 curIx = noteDelimIx + 1;
+    //             }
+    //         }            
+    //         int midiNote = -1;
+    //         if (noteStr[0] == 'm') {
+    //             midiNote = GetMidiNote(noteStr.substr(1));
+    //         } else {
+    //             midiNote = StoiOrDie(noteStr);
+    //         }
+    //         if (currentNoteIx >= step._midiNote.size()) {
+    //             printf("StepSequencer::Load: Too many notes!\n");
+    //             break;
+    //         }
+    //         step._midiNote[currentNoteIx] = midiNote;
+    //         ++currentNoteIx;
+    //     }
 
-        std::size_t velDelimIx = stepStr.find_first_of(':');
-        if (velDelimIx != std::string::npos) {
-            std::string_view velStr = std::string_view(stepStr).substr(velDelimIx+1);
-            step._velocity = StofOrDie(velStr);
-        }
+    //     std::size_t velDelimIx = stepStr.find_first_of(':');
+    //     if (velDelimIx != std::string::npos) {
+    //         std::string_view velStr = std::string_view(stepStr).substr(velDelimIx+1);
+    //         step._velocity = StofOrDie(velStr);
+    //     }
        
-        _initialMidiSequenceDoNotChange.push_back(step);
-    }
+    //     _initialMidiSequenceDoNotChange.push_back(step);
+    // }
     
     _stepBeatLength = pt.GetDouble("step_length");
     int channel = 0;

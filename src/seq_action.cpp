@@ -1,7 +1,6 @@
 #include "seq_action.h"
 
 #include "entities/param_automator.h"
-#include "entities/step_sequencer.h"
 #include "audio.h"
 #include "midi_util.h"
 
@@ -85,7 +84,7 @@ void SetAllStepsSeqAction::Load(GameManager& g, LoadInputs const& loadInputs, st
     if (e) {
         _seqId = e->_id;
     } else {
-        printf("ChangeStepSequencerSeqAction: could not find seq entity \"%s\"\n", seqName.c_str());
+        printf("SetAllStepsSeqAction: could not find seq entity \"%s\"\n", seqName.c_str());
     }
     assert(_midiNotes.size() == 4);
     input >> _midiNotes[0] >> _midiNotes[1] >> _midiNotes[2] >> _midiNotes[3];
@@ -101,6 +100,28 @@ void SetAllStepsSeqAction::Execute(GameManager& g) {
         seq->SetAllStepsPermanent(step);               
     } else {
         printf("SetAllStepsSeqAction: no seq entity!!\n");
+        return;
+    }
+}
+
+void SetStepSequenceSeqAction::Load(GameManager& g, LoadInputs const& loadInputs, std::istream& input) {
+    std::string seqName;
+    input >> seqName;
+    ne::Entity* e = g._neEntityManager->FindEntityByName(seqName);
+    if (e) {
+        _seqId = e->_id;
+    } else {
+        printf("SetStepSequenceSeqAction: could not find seq entity \"%s\"\n", seqName.c_str());
+    }
+    StepSequencerEntity::LoadSequenceFromInput(input, _sequence);
+}
+
+void SetStepSequenceSeqAction::Execute(GameManager& g) {
+    StepSequencerEntity* seq = static_cast<StepSequencerEntity*>(g._neEntityManager->GetEntity(_seqId));
+    if (seq) {
+        seq->SetSequencePermanent(_sequence);               
+    } else {
+        printf("SetStepSequenceSeqAction: no seq entity!!\n");
         return;
     }
 }

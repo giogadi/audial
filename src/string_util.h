@@ -1,6 +1,8 @@
 #pragma once
 
 #include <string>
+#include <charconv>
+#include <string_view>
 
 #include "rng.h"
 
@@ -15,6 +17,22 @@ inline std::string GenerateRandomText(int numChars) {
         text.push_back(randChar);
     }
     return text;
+}
+
+inline int StoiOrDie(std::string_view str) {
+    int x;
+    auto [ptr, ec] = std::from_chars(str.data(), str.data()+str.length(), x);
+    assert(ec == std::errc());
+    return x;
+}
+inline float StofOrDie(std::string_view str) {
+    // WTF, doesn't work yet???
+    // float x;
+    // auto [ptr, ec] = std::from_chars(str.data(), str.data()+str.length(), x);
+    // assert(ec == std::errc());
+    // return x;
+    std::string ownedStr(str);
+    return std::stof(ownedStr);
 }
 
 }
