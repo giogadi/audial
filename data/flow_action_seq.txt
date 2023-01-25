@@ -1,0 +1,5 @@
+0 e text:a  z:-4 x:4 typekill:0 type:seq seq:bass_seq note:C2
+0 e text:j  z:-4 x:-4 typekill:0 type:seq seq:bass_seq note:E2-
+0 e text:k  z:4 x:4 typekill:0 type:seq seq:bass_seq note:F2
+0 e text:e  z:4 x:-4 typekill:0 type:seq seq:bass_seq note:G2
+0 e text:d  z:0 x:-4 typekill:0 type:seq seq:bass_seq note:B2-

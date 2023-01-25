@@ -18,6 +18,7 @@
 #include "entities/step_sequencer.h"
 #include "entities/action_sequencer.h"
 #include "entities/param_automator.h"
+#include "entities/flow_player.h"
 
 namespace ne {
 

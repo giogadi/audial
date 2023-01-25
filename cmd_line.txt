@@ -16,4 +16,4 @@
 // -s data/typing_level.xml -y data/synth_patches_typing.xml
 // -s data/feeling_level.xml -y data/synth_patches_typing.xml
 // -s data/rookie4_level.xml -y data/synth_patches_rookie.xml
--s data/star_level.xml -y data/synth_patches_star.xml
+-s data/flow_level.xml -y data/synth_patches_flow.xml

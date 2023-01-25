@@ -21,6 +21,7 @@ namespace ne {
     X(LaneNoteEnemy) \
     X(Sequencer) \
     X(TypingPlayer) \
+    X(FlowPlayer) \
     X(TypingEnemy) \
     X(StepSequencer) \
     X(ActionSequencer) \

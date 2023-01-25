@@ -48,6 +48,7 @@ add_executable(game
     src/entities/step_sequencer.cpp
     src/entities/action_sequencer.cpp
     src/entities/param_automator.cpp
+    src/entities/flow_player.cpp
     
     src/enums/audio_EventType.cpp
     src/enums/audio_SynthParamType.cpp
