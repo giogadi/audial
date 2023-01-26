@@ -70,6 +70,7 @@
                 <w>0</w>
             </model_color_vec4>
             <ortho>true</ortho>
+            <follow_entity_name>player</follow_entity_name>
         </Camera>
         <Sequencer>
             <name>count_off</name>
