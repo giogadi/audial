@@ -1,6 +1,7 @@
 #pragma once
 
 #include <deque>
+#include <map>
 
 #include "new_entity.h"
 
@@ -12,9 +13,13 @@ struct FlowPlayerEntity : public ne::Entity {
 
     // non-serialized
     Vec3 _vel;
-    // TODO: use a ring buffer instead
+    // TODO: use a ring buffer instead. maybe stack would work too
     std::deque<Vec3> _posHistory;  // start is most recent
     int _framesSinceLastSample = 0;
+    int _currentSectionId = -1;
+    enum SectionDir { Center, Up, Down, Left, Right };
+    std::map<int, SectionDir> _sectionDirs;
+    ne::EntityId _cameraId;
     
     virtual void Init(GameManager& g) override;
     virtual void Update(GameManager& g, float dt) override;

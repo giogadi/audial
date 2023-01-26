@@ -4,6 +4,7 @@
 #include "typing_enemy.h"
 #include "input_manager.h"
 #include "renderer.h"
+#include "camera.h"
 
 void FlowPlayerEntity::SaveDerived(serial::Ptree pt) const {
     pt.PutFloat("selection_radius", _selectionRadius);
@@ -20,6 +21,12 @@ void FlowPlayerEntity::LoadDerived(serial::Ptree pt) {
 void FlowPlayerEntity::Init(GameManager& g) {
     BaseEntity::Init(g);
     _transform.Scale(0.5f, 0.5f, 0.5f);
+    {
+        int numEntities = 0;
+        ne::EntityManager::Iterator eIter = g._neEntityManager->GetIterator(ne::EntityType::Camera, &numEntities);
+        assert(numEntities == 1);
+        _cameraId = eIter.GetEntity()->_id;
+    }
 }
 
 void FlowPlayerEntity::Update(GameManager& g, float dt) {
@@ -50,6 +57,32 @@ ne::EntityManager::Iterator enemyIter = g._neEntityManager->GetIterator(ne::Enti
         Vec3 toEnemyDir = nearest->_transform.GetPos() - playerPos;
         toEnemyDir.Normalize();
         _vel = toEnemyDir * _launchVel;
+
+        // Update camera offset according to section
+        if (nearest->_flowSectionId != _currentSectionId) {
+            _currentSectionId = nearest->_flowSectionId;
+            SectionDir sectionDir = _sectionDirs[_currentSectionId];
+            Vec3 targetToCameraOffset;
+            switch (sectionDir) {
+                case SectionDir::Center:
+                    targetToCameraOffset.Set(0, 5.f, 0.f);
+                    break;
+                case SectionDir::Up:
+                    targetToCameraOffset.Set(0, 5.f, -3.f);
+                    break;
+                case SectionDir::Down:
+                    targetToCameraOffset.Set(0, 5.f, 3.f);
+                    break;
+                case SectionDir::Left:
+                    targetToCameraOffset.Set(-3.f, 5.f, 0.f);
+                    break;
+                case SectionDir::Right:
+                    targetToCameraOffset.Set(3.f, 5.f, 0.f);
+                    break;
+            }
+            CameraEntity* camera = static_cast<CameraEntity*>(g._neEntityManager->GetEntity(_cameraId));
+            camera->_desiredTargetToCameraOffset = targetToCameraOffset;
+        }
     }
 
     float constexpr kEps = 0.0001f;

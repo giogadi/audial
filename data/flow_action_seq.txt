@@ -1,5 +1,20 @@
-0 e text:a  z:-4 x:4 typekill:0 type:seq seq:bass_seq note:C2
-0 e text:j  z:-4 x:-4 typekill:0 type:seq seq:bass_seq note:E2-
-0 e text:k  z:4 x:4 typekill:0 type:seq seq:bass_seq note:F2
-0 e text:e  z:4 x:-4 typekill:0 type:seq seq:bass_seq note:G2
-0 e text:d  z:0 x:-4 typekill:0 type:seq seq:bass_seq note:B2-
+flow_section up
+
+0 e text:a  z:-4 x:-2 typekill:0 flow_section: type:seq seq:chord_seq note:B3- note:E4- note:G4
+0 e text:j  z:-8 x:-2 typekill:0 flow_section: type:seq seq:chord_seq note:B3- note:E4- note:G4
+0 e text:e  z:-4 x:2  typekill:0 flow_section: type:seq seq:chord_seq note:B3- note:E4- note:G4
+0 e text:d  z:-8 x:2  typekill:0 flow_section: type:seq seq:chord_seq note:B3- note:E4- note:G4
+
+flow_section center
+
+0 e text:k  z:-12 x:-2 color:Blue flow_section: typekill:0 type:seq seq:chord_seq note:A3- note:C4 note:E4- note:G4
+0 e text:s  z:-16 x:-2 color:Blue flow_section: typekill:0 type:seq seq:chord_seq note:A3- note:C4 note:E4- note:G4
+0 e text:w  z:-12 x:2 color:Blue flow_section: typekill:0 type:seq seq:chord_seq note:A3- note:C4 note:E4- note:G4
+0 e text:n  z:-16 x:2 color:Blue flow_section: typekill:0 type:seq seq:chord_seq note:A3- note:C4 note:E4- note:G4
+
+flow_section left
+
+0 e text:f  z:-12 x:-6 color:Orange flow_section: typekill:0 type:seq seq:chord_seq note:A3- note:B3 note:E4- note:F4
+0 e text:l  z:-16 x:-6 color:Orange flow_section: typekill:0 type:seq seq:chord_seq note:A3- note:B3 note:E4- note:F4
+0 e text:t  z:-12 x:-10 color:Orange flow_section: typekill:0 type:seq seq:chord_seq note:A3- note:B3 note:E4- note:F4
+0 e text:m  z:-16 x:-10 color:Orange flow_section: typekill:0 type:seq seq:chord_seq note:A3- note:B3 note:E4- note:F4

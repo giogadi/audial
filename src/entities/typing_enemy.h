@@ -19,6 +19,7 @@ struct TypingEnemyEntity : public ne::Entity {
     bool _destroyAfterTyped = true;
     int _sectionId = -1;
     Vec3 _sectionLocalPos;
+    int _flowSectionId = -1;
     
     // non-serialized
     int _numHits = 0;

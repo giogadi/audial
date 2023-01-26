@@ -9,6 +9,8 @@
 #include "beat_clock.h"
 #include "seq_actions/spawn_enemy.h"
 #include "entities/typing_player.h"
+#include "entities/flow_player.h"
+#include "string_util.h"
 
 void ActionSequencerEntity::Init(GameManager& g) {
     _currentIx = 0;
@@ -74,6 +76,32 @@ void ActionSequencerEntity::Init(GameManager& g) {
             TypingPlayerEntity* player = static_cast<TypingPlayerEntity*>(eIter.GetEntity());
             assert(player != nullptr);
             player->SetSectionLength(loadInputs._sectionId, sectionNumBeats);
+            continue;
+        } else if (token == "flow_section") {
+            loadInputs._sectionId = nextSectionId++;
+            std::string sectionDirStr;
+            lineStream >> sectionDirStr;
+            string_util::ToLower(sectionDirStr);
+            int numEntities = 0;
+            ne::EntityManager::Iterator eIter = g._neEntityManager->GetIterator(ne::EntityType::FlowPlayer, &numEntities);
+            assert(numEntities == 1);
+            FlowPlayerEntity* player = static_cast<FlowPlayerEntity*>(eIter.GetEntity());
+            assert(player != nullptr);
+            FlowPlayerEntity::SectionDir sectionDir = FlowPlayerEntity::SectionDir::Up;
+            if (sectionDirStr == "center") {
+                sectionDir = FlowPlayerEntity::SectionDir::Center;
+            } else if (sectionDirStr == "up") {
+                sectionDir = FlowPlayerEntity::SectionDir::Up;
+            } else if (sectionDirStr == "down") {
+                sectionDir = FlowPlayerEntity::SectionDir::Down;
+            } else if (sectionDirStr == "left") {
+                sectionDir = FlowPlayerEntity::SectionDir::Left;
+            } else if (sectionDirStr == "right") {
+                sectionDir = FlowPlayerEntity::SectionDir::Right;
+            } else {
+                printf("ERROR: unrecognized flow_section direction \"%s\"\n", sectionDirStr.c_str());
+            }
+            player->_sectionDirs[loadInputs._sectionId] = sectionDir;
             continue;
         }
 
