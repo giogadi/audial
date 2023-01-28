@@ -20,6 +20,7 @@ struct TypingEnemyEntity : public ne::Entity {
     int _sectionId = -1;
     Vec3 _sectionLocalPos;
     int _flowSectionId = -1;
+    Vec4 _textColor = Vec4(1.f, 1.f, 1.f, 1.f);
     
     // non-serialized
     int _numHits = 0;

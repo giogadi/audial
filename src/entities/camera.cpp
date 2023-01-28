@@ -10,6 +10,7 @@ void CameraEntity::Init(GameManager& g) {
     if (g._editMode) {
         // If in edit mode, initialize the debug camera location to this location.
         _camera->_transform = _transform;
+        _camera->_projectionType = renderer::Camera::ProjectionType::Orthographic;
     } else if (!_followEntityName.empty()) {
         ne::BaseEntity* followEntity = g._neEntityManager->FindEntityByName(_followEntityName);
         if (followEntity != nullptr) {

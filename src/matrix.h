@@ -160,6 +160,19 @@ struct Mat3 {
         return _col0;
     }
 
+    Vec3 GetRow(int r) {
+        assert(r >= 0);
+        assert(r < 3);
+        return Vec3(_data[r], _data[r+3], _data[r+6]);
+    }
+    void SetRow(int r, Vec3 const& v) {
+        assert(r >= 0);
+        assert(r < 3);
+        _data[r] = v._x;
+        _data[r+3] = v._y;
+        _data[r+6] = v._z;
+    }
+
     // Takes inverse then transpose of this matrix and returns result in "out".
     bool TransposeInverse(Mat3& out);
 

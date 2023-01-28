@@ -59,7 +59,7 @@
                 <m32>0</m32>
                 <m03>0</m03>
                 <m13>5</m13>
-                <m23>-3</m23>
+                <m23>0</m23>
                 <m33>1</m33>
             </transform_mat4>
             <model_name/>
@@ -70,7 +70,8 @@
                 <w>0</w>
             </model_color_vec4>
             <ortho>true</ortho>
-            <follow_entity_name>player</follow_entity_name>
+            <follow_entity_name/>
+            <tracking_factor>0.0500000007</tracking_factor>
         </Camera>
         <Sequencer>
             <name>count_off</name>
@@ -151,21 +152,21 @@
             <name>player</name>
             <pickable>false</pickable>
             <transform_mat4>
-                <m00>1</m00>
+                <m00>0.25</m00>
                 <m10>0</m10>
                 <m20>0</m20>
                 <m30>0</m30>
                 <m01>0</m01>
-                <m11>1</m11>
+                <m11>0.25</m11>
                 <m21>0</m21>
                 <m31>0</m31>
                 <m02>0</m02>
                 <m12>0</m12>
-                <m22>1</m22>
+                <m22>0.25</m22>
                 <m32>0</m32>
-                <m03>0</m03>
+                <m03>-8</m03>
                 <m13>0</m13>
-                <m23>0</m23>
+                <m23>-4</m23>
                 <m33>1</m33>
             </transform_mat4>
             <model_name>cube</model_name>
@@ -175,9 +176,9 @@
                 <z>1</z>
                 <w>0</w>
             </model_color_vec4>
-            <selection_radius>-1</selection_radius>
-            <launch_vel>15</launch_vel>
-            <decel>30</decel>
+            <selection_radius>8</selection_radius>
+            <launch_vel>10</launch_vel>
+            <decel>20</decel>
         </FlowPlayer>
         <StepSequencer>
             <name>kick_seq</name>
@@ -462,5 +463,92 @@
             </model_color_vec4>
             <seq_filename>data/flow_action_seq.txt</seq_filename>
         </ActionSequencer>
+        <FlowWall>
+            <name>wall1</name>
+            <pickable>true</pickable>
+            <transform_mat4>
+                <m00>18</m00>
+                <m10>0</m10>
+                <m20>0</m20>
+                <m30>0</m30>
+                <m01>0</m01>
+                <m11>1</m11>
+                <m21>0</m21>
+                <m31>0</m31>
+                <m02>0</m02>
+                <m12>0</m12>
+                <m22>0.25</m22>
+                <m32>0</m32>
+                <m03>-3.75814557</m03>
+                <m13>0</m13>
+                <m23>-3.61108756</m23>
+                <m33>1</m33>
+            </transform_mat4>
+            <model_name>cube</model_name>
+            <model_color_vec4>
+                <x>0.328431368</x>
+                <y>0.328431368</y>
+                <z>0.328431368</z>
+                <w>0</w>
+            </model_color_vec4>
+        </FlowWall>
+        <FlowWall>
+            <name>wall2</name>
+            <pickable>true</pickable>
+            <transform_mat4>
+                <m00>18</m00>
+                <m10>0</m10>
+                <m20>0</m20>
+                <m30>0</m30>
+                <m01>0</m01>
+                <m11>1</m11>
+                <m21>0</m21>
+                <m31>0</m31>
+                <m02>0</m02>
+                <m12>0</m12>
+                <m22>0.25</m22>
+                <m32>0</m32>
+                <m03>4.63155413</m03>
+                <m13>0</m13>
+                <m23>-1.18768668</m23>
+                <m33>1</m33>
+            </transform_mat4>
+            <model_name>cube</model_name>
+            <model_color_vec4>
+                <x>0.328431368</x>
+                <y>0.328431368</y>
+                <z>0.328431368</z>
+                <w>0</w>
+            </model_color_vec4>
+        </FlowWall>
+        <FlowWall>
+            <name>wall3</name>
+            <pickable>true</pickable>
+            <transform_mat4>
+                <m00>18</m00>
+                <m10>0</m10>
+                <m20>0</m20>
+                <m30>0</m30>
+                <m01>0</m01>
+                <m11>1</m11>
+                <m21>0</m21>
+                <m31>0</m31>
+                <m02>0</m02>
+                <m12>0</m12>
+                <m22>0.25</m22>
+                <m32>0</m32>
+                <m03>-3.84626198</m03>
+                <m13>0</m13>
+                <m23>1.29013073</m23>
+                <m33>1</m33>
+            </transform_mat4>
+            <model_name>cube</model_name>
+            <model_color_vec4>
+                <x>0.328431368</x>
+                <y>0.328431368</y>
+                <z>0.328431368</z>
+                <w>0</w>
+            </model_color_vec4>
+        </FlowWall>
     </new_entities>
 </script>
