@@ -37,6 +37,7 @@ add_executable(game
 
     src/seq_action.cpp
     src/seq_actions/spawn_enemy.cpp
+    src/seq_actions/camera_control.cpp
     
     src/entities/light.cpp
     src/entities/camera.cpp

@@ -1,6 +1,7 @@
 #include "spawn_enemy.h"
 
 #include <map>
+#include <fstream>
 
 #include "string_util.h"
 #include "rng.h"
@@ -20,7 +21,7 @@ void SpawnEnemySeqAction::Execute(GameManager& g) {
     _done = true;
 }
 
-bool SpawnEnemySeqAction::_sStaticDataLoaded = false;
+bool SpawnEnemySeqAction::_sNoteTablesLoaded = false;
 
 namespace {
 
@@ -349,7 +350,7 @@ void LoadNoteTables() {
         };
     }
 
-    SpawnEnemySeqAction::_sStaticDataLoaded = true;
+    SpawnEnemySeqAction::_sNoteTablesLoaded = true;
 }
 
 // TODO!!!!!! are we going to consider beatTimeOffset?
@@ -614,10 +615,29 @@ void LoadPcmEnemy(GameManager& g, TypingEnemyEntity& enemy, std::istream& lineSt
     }   
 }
 
+void LoadActionEnemy(GameManager& g, TypingEnemyEntity& enemy, std::istream& lineStream) {
+    std::string seqFilename;
+    lineStream >> seqFilename;
+    std::ifstream seqFile(seqFilename);
+    if (!seqFile.is_open()) {
+        printf("LoadActionEnemy ERROR: could not open file \"%s\"\n", seqFilename.c_str());
+        return;
+    }
+    {
+        std::vector<BeatTimeAction> actions;
+        SeqAction::LoadActions(g, seqFile, actions);
+        // UGLY
+        enemy._hitActions.reserve(actions.size());
+        for (BeatTimeAction& action : actions) {
+            enemy._hitActions.push_back(std::move(action._pAction));
+        }
+    }    
+}
+
 } // namespace
 
 void SpawnEnemySeqAction::Load(GameManager& g, LoadInputs const& loadInputs, std::istream& lineStream) {
-    if (!_sStaticDataLoaded) {
+    if (!_sNoteTablesLoaded) {
         LoadNoteTables();
     }
 
@@ -655,6 +675,8 @@ void SpawnEnemySeqAction::Load(GameManager& g, LoadInputs const& loadInputs, std
                 LoadSeqEnemy(g, loadInputs, _enemy, lineStream);
             } else if (value == "pcm") {
                 LoadPcmEnemy(g, _enemy, lineStream);
+            } else if (value == "action") {
+                LoadActionEnemy(g, _enemy, lineStream);
             }
             break;
         } else if (key == "name") {

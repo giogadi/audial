@@ -27,6 +27,8 @@
 0 e text:i  z:0 x:4 color:Orange flow_section: typekill:0 type:seq seq:chord_seq note:A3- note:B3 note:E4- note:F4
 0 e text:z  z:0 x:6 color:Orange flow_section: typekill:0 type:seq seq:chord_seq note:A3- note:B3 note:E4- note:F4
 
+
+
 # left
 0 e text:k  z:2 x:6 color:Green flow_section: typekill:0 type:seq seq:chord_seq note:G3- note:B3- note:D4- note:F4
 0 e text:r  z:2 x:4 color:Green flow_section: typekill:0 type:seq seq:chord_seq note:G3- note:B3- note:D4- note:F4

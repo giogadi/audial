@@ -5,15 +5,7 @@
 #include "new_entity.h"
 #include "seq_action.h"
 
-struct ActionSequencerEntity : ne::Entity {
-    struct BeatTimeAction {
-        BeatTimeAction(BeatTimeAction const& rhs) = delete;
-        BeatTimeAction(BeatTimeAction&&) = default;
-        BeatTimeAction& operator=(BeatTimeAction&&) = default;
-        BeatTimeAction() {}
-        std::unique_ptr<SeqAction> _pAction;
-        double _beatTime = 0.0;
-    };
+struct ActionSequencerEntity : ne::Entity {    
     ActionSequencerEntity() {}
     ActionSequencerEntity(ActionSequencerEntity&&) = default;
     ActionSequencerEntity& operator=(ActionSequencerEntity&&) = default;
