@@ -412,8 +412,8 @@ void LoadParamEnemy(TypingEnemyEntity& enemy, std::istream& lineStream) {
     }
 }
 
-void LoadSeqEnemy(GameManager& g, SeqAction::LoadInputs const& loadInputs, TypingEnemyEntity& enemy, std::istream& lineStream) {
-    ne::Entity* seqEntity = nullptr;
+void LoadSeqEnemy(SeqAction::LoadInputs const& loadInputs, TypingEnemyEntity& enemy, std::istream& lineStream) {
+    std::string seqName;
     std::array<int, 4> midiNotes = {-1, -1, -1, -1};
     int currentNoteIx = 0;
     std::vector<std::array<int,4>>* noteTable = nullptr;
@@ -435,10 +435,7 @@ void LoadSeqEnemy(GameManager& g, SeqAction::LoadInputs const& loadInputs, Typin
         }
 
         if (key == "seq") {
-            seqEntity = g._neEntityManager->FindEntityByName(value);
-            if (seqEntity == nullptr) {
-                printf("LoadSeqEnemy: can't find seq entity \"%s\"\n", value.c_str());
-            }
+            seqName = value;
         } else if (key == "note") {
             if (currentNoteIx >= midiNotes.size()) {
                 printf("LoadSeqEnemy: too many notes!\n");
@@ -475,15 +472,15 @@ void LoadSeqEnemy(GameManager& g, SeqAction::LoadInputs const& loadInputs, Typin
         }
     }
 
-    if (seqEntity == nullptr) {
-        printf("LoadSeqEnemy: ERROR: could not find seq entity.\n");
+    if (seqName.empty()) {
+        printf("LoadSeqEnemy: ERROR: need to set seq entity name!\n");
         return;
     }
 
     if (noteTable) {
         for (std::array<int,4> const& n : *noteTable) {
             auto pAction = std::make_unique<ChangeStepSequencerSeqAction>();
-            pAction->_seqId = seqEntity->_id;
+            pAction->_seqName = seqName;
             pAction->_midiNotes = n;
             pAction->_velocity = velocity;
             pAction->_velOnly = velOnly;
@@ -492,7 +489,7 @@ void LoadSeqEnemy(GameManager& g, SeqAction::LoadInputs const& loadInputs, Typin
         }
     } else {
         auto pAction = std::make_unique<ChangeStepSequencerSeqAction>();
-        pAction->_seqId = seqEntity->_id;
+        pAction->_seqName = seqName;
         pAction->_midiNotes = midiNotes;
         pAction->_velocity = velocity;
         pAction->_velOnly = velOnly;
@@ -501,7 +498,6 @@ void LoadSeqEnemy(GameManager& g, SeqAction::LoadInputs const& loadInputs, Typin
     }
 }
 
-// TODO: make this support chords
 void LoadNoteEnemy(TypingEnemyEntity& enemy, std::istream& lineStream) {
     int midiNote = -1;
     std::vector<std::array<int, 4>>* noteTable = nullptr;
@@ -573,9 +569,9 @@ void LoadNoteEnemy(TypingEnemyEntity& enemy, std::istream& lineStream) {
     }
 }
 
-void LoadPcmEnemy(GameManager& g, TypingEnemyEntity& enemy, std::istream& lineStream) {
+void LoadPcmEnemy(TypingEnemyEntity& enemy, std::istream& lineStream) {
     float velocity = 1.f;
-    int soundIx = -1;
+    std::string soundName;    
     
     std::string token, key, value;
     while (!lineStream.eof()) {
@@ -592,10 +588,7 @@ void LoadPcmEnemy(GameManager& g, TypingEnemyEntity& enemy, std::istream& lineSt
         }
 
         if (key == "sound") {
-            soundIx = g._soundBank->GetSoundIx(value.c_str());
-            if (soundIx < 0) {
-                printf("ERROR: no sound with name \"%s\"\n", value.c_str());
-            }
+            soundName = value;            
         } else if (key == "vel") {
             velocity = std::stof(value);
         } else {
@@ -603,41 +596,42 @@ void LoadPcmEnemy(GameManager& g, TypingEnemyEntity& enemy, std::istream& lineSt
         }
     }
 
-    if (soundIx >= 0) {
+    if (!soundName.empty()) {
         auto pAction = std::make_unique<BeatTimeEventSeqAction>();
+        pAction->_soundBankName = soundName;
         pAction->_b_e._beatTime = 0.0;
         pAction->_b_e._e.type = audio::EventType::PlayPcm;
-        pAction->_b_e._e.pcmSoundIx = soundIx;
         pAction->_b_e._e.pcmVelocity = velocity;
         pAction->_b_e._e.loop = false;
         enemy._hitActions.push_back(std::move(pAction));
     } else {
-        printf("LoadPcmEnemy: no valid sound index!\n");
-    }   
+        printf("LoadPcmEnemy: need a sound name!\n");
+    }
 }
 
-void LoadActionEnemy(GameManager& g, TypingEnemyEntity& enemy, std::istream& lineStream) {
-    std::string seqFilename;
-    lineStream >> seqFilename;
-    std::ifstream seqFile(seqFilename);
-    if (!seqFile.is_open()) {
-        printf("LoadActionEnemy ERROR: could not open file \"%s\"\n", seqFilename.c_str());
-        return;
-    }
-    {
-        std::vector<BeatTimeAction> actions;
-        SeqAction::LoadActions(g, seqFile, actions);
-        // UGLY
-        enemy._hitActions.reserve(actions.size());
-        for (BeatTimeAction& action : actions) {
-            enemy._hitActions.push_back(std::move(action._pAction));
-        }
-    }    
+void LoadActionEnemy(TypingEnemyEntity& enemy, std::istream& lineStream) {
+    assert(false); // UNSUPPORTED
+    // std::string seqFilename;
+    // lineStream >> seqFilename;
+    // std::ifstream seqFile(seqFilename);
+    // if (!seqFile.is_open()) {
+    //     printf("LoadActionEnemy ERROR: could not open file \"%s\"\n", seqFilename.c_str());
+    //     return;
+    // }
+    // {
+    //     std::vector<BeatTimeAction> actions;
+    //     SeqAction::LoadActions(g, seqFile, actions);
+    //     // UGLY
+    //     enemy._hitActions.reserve(actions.size());
+    //     for (BeatTimeAction& action : actions) {
+    //         enemy._hitActions.push_back(std::move(action._pAction));
+    //     }
+    // }
 }
 
 } // namespace
 
-void SpawnEnemySeqAction::Load(GameManager& g, LoadInputs const& loadInputs, std::istream& lineStream) {
+void SpawnEnemySeqAction::Load(LoadInputs const& loadInputs, std::istream& lineStream) {
     if (!_sNoteTablesLoaded) {
         LoadNoteTables();
     }
@@ -672,11 +666,11 @@ void SpawnEnemySeqAction::Load(GameManager& g, LoadInputs const& loadInputs, std
             } else if (value == "note") {
                 LoadNoteEnemy(_enemy, lineStream);
             } else if (value == "seq") {
-                LoadSeqEnemy(g, loadInputs, _enemy, lineStream);
+                LoadSeqEnemy(loadInputs, _enemy, lineStream);
             } else if (value == "pcm") {
-                LoadPcmEnemy(g, _enemy, lineStream);
+                LoadPcmEnemy(_enemy, lineStream);
             } else if (value == "action") {
-                LoadActionEnemy(g, _enemy, lineStream);
+                LoadActionEnemy(_enemy, lineStream);
             }
             break;
         } else if (key == "name") {
@@ -746,15 +740,12 @@ void SpawnEnemySeqAction::Load(GameManager& g, LoadInputs const& loadInputs, std
             }
             gHorizontal = !gHorizontal;
         } else if (key == "camera_target") {
-            ne::BaseEntity* targetEntity = g._neEntityManager->FindEntityByName(value);
-            if (targetEntity == nullptr) {
-                printf("spawn_enemy:camera_target: could not find entity named \"%s\"\n", value.c_str());
-            } else {
-                auto pAction = std::make_unique<CameraControlSeqAction>();
-                pAction->_targetEntityId = targetEntity->_id;
-                pAction->_desiredTargetToCameraOffset.Set(0.f, 5.f, 0.f);
-                _enemy._hitActions.push_back(std::move(pAction));
-            }           
+            auto pAction = std::make_unique<CameraControlSeqAction>();
+            pAction->_targetEntityName = value;
+            pAction->_desiredTargetToCameraOffset.Set(0.f, 5.f, 0.f);
+            pAction->_setTarget = true;
+            pAction->_setOffset = true;
+            _enemy._hitActions.push_back(std::move(pAction));
         } else if (key == "camera_offset") {
             assert(false);  // UNSUPPORTED
             // auto pAction = std::make_unique<CameraControlSeqAction>();

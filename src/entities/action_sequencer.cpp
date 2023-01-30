@@ -21,13 +21,13 @@ void ActionSequencerEntity::Init(GameManager& g) {
         return;
     }
 
-    SeqAction::LoadActions(g, inFile, _actions);
+    SeqAction::LoadAndInitActions(g, inFile, _actions);
 
     // Immediately execute any actions that are < 0
     for (int n = _actions.size(); _currentIx < n; ++_currentIx) {
         BeatTimeAction const& bta = _actions[_currentIx];
         if (bta._beatTime < 0) {
-            bta._pAction->Execute(g);
+            bta._pAction->ExecuteBase(g);
         } else {
             break;
         }
@@ -48,7 +48,7 @@ void ActionSequencerEntity::Update(GameManager& g, float dt) {
         if (beatTime < bta._beatTime) {
             break;
         }
-        bta._pAction->Execute(g);
+        bta._pAction->ExecuteBase(g);
     }
 }
 

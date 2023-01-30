@@ -41,6 +41,9 @@ inline audio::Event BeatTimeToTickTimeEvent(BeatTimeEvent const& b_e, BeatClock 
     return e;
 }
 
+// Returns true if soundBank name was given
+bool ReadBeatEventFromTextLineNoSoundLookup(std::istream& lineStream, BeatTimeEvent& b_e, std::string& soundBankName);
+
 void ReadBeatEventFromTextLine(SoundBank const& soundBank, std::istream& lineStream, BeatTimeEvent& b_e);
 void ReadBeatEventsFromScript(
     std::vector<BeatTimeEvent>& events, SoundBank const& soundBank, char const* scriptBuf, int scriptBufLength);

@@ -9,8 +9,9 @@
 #include "seq_actions/spawn_enemy.h"
 #include "entities/typing_player.h"
 #include "entities/flow_player.h"
+#include "sound_bank.h"
 
-std::unique_ptr<SeqAction> SeqAction::LoadAction(GameManager& g, LoadInputs const& loadInputs, std::istream& input) {
+std::unique_ptr<SeqAction> SeqAction::LoadAction(LoadInputs const& loadInputs, std::istream& input) {
     std::string token;
     input >> token;
 
@@ -38,12 +39,12 @@ std::unique_ptr<SeqAction> SeqAction::LoadAction(GameManager& g, LoadInputs cons
 
     assert(pAction != nullptr);
 
-    pAction->Load(g, loadInputs, input);
+    pAction->Load(loadInputs, input);
 
     return pAction;
 }
 
-void SeqAction::LoadActions(GameManager& g, std::istream& input, std::vector<BeatTimeAction>& actions) {
+void SeqAction::LoadAndInitActions(GameManager& g, std::istream& input, std::vector<BeatTimeAction>& actions) {
     double startBeatTime = 0.0;
     SeqAction::LoadInputs loadInputs;
     loadInputs._beatTimeOffset = 0.0;
@@ -140,12 +141,14 @@ void SeqAction::LoadActions(GameManager& g, std::istream& input, std::vector<Bea
             beatTime = beatTimeAbs - startBeatTime;
         }
 
-        std::unique_ptr<SeqAction> pAction = SeqAction::LoadAction(g, loadInputs, lineStream);
+        std::unique_ptr<SeqAction> pAction = SeqAction::LoadAction(loadInputs, lineStream);
+
+        pAction->InitBase(g);
 
         actions.emplace_back();
         BeatTimeAction& newBta = actions.back();
         newBta._pAction = std::move(pAction);
-        newBta._beatTime = beatTime;       
+        newBta._beatTime = beatTime;
     }
 
     std::stable_sort(actions.begin(), actions.end(),
@@ -154,7 +157,7 @@ void SeqAction::LoadActions(GameManager& g, std::istream& input, std::vector<Bea
                      });
 }
 
-void SpawnAutomatorSeqAction::Load(GameManager& g, LoadInputs const& loadInputs, std::istream& input) {
+void SpawnAutomatorSeqAction::Load(LoadInputs const& loadInputs, std::istream& input) {
     std::string paramName;
     input >> paramName;
     if (paramName == "seq_velocity") {
@@ -182,7 +185,7 @@ void SpawnAutomatorSeqAction::Execute(GameManager& g) {
     e->Init(g);
 }
 
-void RemoveEntitySeqAction::Load(GameManager& g, LoadInputs const& loadInputs, std::istream& input) {
+void RemoveEntitySeqAction::Load(LoadInputs const& loadInputs, std::istream& input) {
     input >> _entityName;
 }
 
@@ -213,32 +216,44 @@ void ChangeStepSequencerSeqAction::Execute(GameManager& g) {
     }
 }
 
-void ChangeStepSequencerSeqAction::Load(GameManager& g, LoadInputs const& loadInputs, std::istream& input) {
-    printf("WARNING! I DON'T SUPPORT MULTIPLE MIDI NOTES YET\n");
-    std::string seqName;
-    input >> seqName;
-    ne::Entity* e = g._neEntityManager->FindEntityByName(seqName);
-    if (e) {
-        _seqId = e->_id;
-    } else {
-        printf("ChangeStepSequencerSeqAction: could not find seq entity \"%s\"\n", seqName.c_str());
+void ChangeStepSequencerSeqAction::Load(LoadInputs const& loadInputs, std::istream& input) {
+    input >> _seqName;
+
+    input >> _velOnly;
+    input >> _temporary;
+    
+
+    StepSequencerEntity::SeqStep step;
+    StepSequencerEntity::TryReadSeqStep(input, step);
+    for (int i = 0; i < 4; ++i) {
+        _midiNotes[i] = step._midiNote[i];
     }
-    input >> _midiNotes[0];
-    input >> _velocity;
+    _velocity = step._velocity;
 }
 
-void SetAllStepsSeqAction::Load(GameManager& g, LoadInputs const& loadInputs, std::istream& input) {
-    std::string seqName;
-    input >> seqName;
-    ne::Entity* e = g._neEntityManager->FindEntityByName(seqName);
+void ChangeStepSequencerSeqAction::Init(GameManager& g) {
+    ne::Entity* e = g._neEntityManager->FindEntityByName(_seqName);
     if (e) {
         _seqId = e->_id;
     } else {
-        printf("SetAllStepsSeqAction: could not find seq entity \"%s\"\n", seqName.c_str());
+        printf("ChangeStepSequencerSeqAction: could not find seq entity \"%s\"\n", _seqName.c_str());
     }
+}
+
+void SetAllStepsSeqAction::Load(LoadInputs const& loadInputs, std::istream& input) {
+    input >> _seqName;
     assert(_midiNotes.size() == 4);
     input >> _midiNotes[0] >> _midiNotes[1] >> _midiNotes[2] >> _midiNotes[3];
     input >> _velocity;
+}
+
+void SetAllStepsSeqAction::Init(GameManager& g) {
+    ne::Entity* e = g._neEntityManager->FindEntityByName(_seqName);
+    if (e) {
+        _seqId = e->_id;
+    } else {
+        printf("SetAllStepsSeqAction: could not find seq entity \"%s\"\n", _seqName.c_str());
+    }
 }
 
 void SetAllStepsSeqAction::Execute(GameManager& g) {
@@ -254,16 +269,18 @@ void SetAllStepsSeqAction::Execute(GameManager& g) {
     }
 }
 
-void SetStepSequenceSeqAction::Load(GameManager& g, LoadInputs const& loadInputs, std::istream& input) {
-    std::string seqName;
-    input >> seqName;
-    ne::Entity* e = g._neEntityManager->FindEntityByName(seqName);
+void SetStepSequenceSeqAction::Load(LoadInputs const& loadInputs, std::istream& input) {
+    input >> _seqName;   
+    StepSequencerEntity::LoadSequenceFromInput(input, _sequence);
+}
+
+void SetStepSequenceSeqAction::Init(GameManager& g) {
+    ne::Entity* e = g._neEntityManager->FindEntityByName(_seqName);
     if (e) {
         _seqId = e->_id;
     } else {
-        printf("SetStepSequenceSeqAction: could not find seq entity \"%s\"\n", seqName.c_str());
+        printf("SetStepSequenceSeqAction: could not find seq entity \"%s\"\n", _seqName.c_str());
     }
-    StepSequencerEntity::LoadSequenceFromInput(input, _sequence);
 }
 
 void SetStepSequenceSeqAction::Execute(GameManager& g) {
@@ -293,7 +310,7 @@ void NoteOnOffSeqAction::Execute(GameManager& g) {
     g._audioContext->AddEvent(e);
 }
 
-void NoteOnOffSeqAction::Load(GameManager& g, LoadInputs const& loadInputs, std::istream& input) {
+void NoteOnOffSeqAction::Load(LoadInputs const& loadInputs, std::istream& input) {
     std::string token, key, value;
     while (!input.eof()) {
         {
@@ -334,9 +351,20 @@ void BeatTimeEventSeqAction::Execute(GameManager& g) {
     g._audioContext->AddEvent(e);
 }
 
-void BeatTimeEventSeqAction::Load(GameManager& g, LoadInputs const& loadInputs, std::istream& input) {
+void BeatTimeEventSeqAction::Load(LoadInputs const& loadInputs, std::istream& input) {
     // quantize denom first
     input >> _quantizeDenom;
-    ReadBeatEventFromTextLine(*g._soundBank, input, _b_e);
+    ReadBeatEventFromTextLineNoSoundLookup(input, _b_e, _soundBankName);
     _b_e._beatTime += loadInputs._beatTimeOffset;   
+}
+
+void BeatTimeEventSeqAction::Init(GameManager& g) {
+    if (!_soundBankName.empty()) {
+        int soundIx = g._soundBank->GetSoundIx(_soundBankName.c_str());
+        if (soundIx < 0) {
+            printf("Failed to find sound \"%s\"\n", _soundBankName.c_str());   
+        } else {
+            _b_e._e.pcmSoundIx = soundIx;
+        }
+    }
 }

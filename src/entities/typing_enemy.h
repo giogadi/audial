@@ -12,15 +12,15 @@ struct TypingEnemyEntity : public ne::Entity {
     // serialized
     std::string _text;
     std::vector<std::unique_ptr<SeqAction>> _hitActions;
-    HitBehavior _hitBehavior = HitBehavior::SingleAction;
-    double _activeBeatTime = -1.0;
-    double _inactiveBeatTime = -1.0;
-    bool _destroyIfOffscreenLeft = true;
-    bool _destroyAfterTyped = true;
-    int _sectionId = -1;
-    Vec3 _sectionLocalPos;
-    int _flowSectionId = -1;
-    Vec4 _textColor = Vec4(1.f, 1.f, 1.f, 1.f);
+    HitBehavior _hitBehavior = HitBehavior::SingleAction; // TODO
+    double _activeBeatTime = -1.0; // TODO
+    double _inactiveBeatTime = -1.0; // TODO
+    bool _destroyIfOffscreenLeft = true; // TODO
+    bool _destroyAfterTyped = true; // TODO
+    int _sectionId = -1; // TODO
+    Vec3 _sectionLocalPos; // TODO
+    int _flowSectionId = -1; // TODO
+    Vec4 _textColor = Vec4(1.f, 1.f, 1.f, 1.f); // TODO
     
     // non-serialized
     int _numHits = 0;

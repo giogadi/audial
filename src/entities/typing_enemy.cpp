@@ -1,5 +1,7 @@
 #include "typing_enemy.h"
 
+#include <sstream>
+
 #include "game_manager.h"
 #include "renderer.h"
 #include "audio.h"
@@ -29,6 +31,9 @@ void TypingEnemyEntity::Init(GameManager& g) {
         TypingPlayerEntity* player = static_cast<TypingPlayerEntity*>(eIter.GetEntity());
         assert(player != nullptr);
         player->RegisterSectionEnemy(_sectionId, _id);
+    }
+    for (auto const& pAction : _hitActions) {
+        pAction->InitBase(g);
     }
 }
 
@@ -102,12 +107,12 @@ void TypingEnemyEntity::OnHit(GameManager& g) {
             int hitActionIx = (_numHits - 1) % _hitActions.size();
             SeqAction& a = *_hitActions[hitActionIx];
 
-            a.Execute(g);
+            a.ExecuteBase(g);
             break;
         }
         case HitBehavior::AllActions: {
             for (auto const& pAction : _hitActions) {
-                pAction->Execute(g);
+                pAction->ExecuteBase(g);
             }
             break;
         }
@@ -133,12 +138,13 @@ void TypingEnemyEntity::LoadDerived(serial::Ptree pt) {
     serial::NameTreePair* children = actionsPt.GetChildren(&numChildren);
     _hitActions.clear();
     _hitActions.reserve(numChildren);
+    SeqAction::LoadInputs loadInputs;  // default
     for (int i = 0; i < numChildren; ++i) {
         std::string seqActionStr = children[i]._pt.GetStringValue();
-        
+        std::stringstream ss(seqActionStr);
+        _hitActions.push_back(SeqAction::LoadAction(loadInputs, ss));
     }
-    delete[] children;
-    
+    delete[] children;    
     
 }
 

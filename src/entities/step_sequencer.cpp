@@ -9,54 +9,60 @@
 #include "midi_util.h"
 #include "string_util.h"
 
+bool StepSequencerEntity::TryReadSeqStep(std::istream& input, SeqStep& step) {
+    std::string stepStr;
+    input >> stepStr;
+    int currentNoteIx = 0;
+    int curIx = 0;
+    bool continueLoop = true;
+    while (continueLoop && curIx < stepStr.size()) {
+        std::size_t noteDelimIx = stepStr.find_first_of(",:", curIx);
+        if (noteDelimIx == curIx) {
+            break;
+        }
+        std::string_view noteStr;
+        if (noteDelimIx == std::string::npos) {
+            noteStr = std::string_view(stepStr).substr(curIx);
+            continueLoop = false;
+        } else {
+            noteStr = std::string_view(stepStr).substr(curIx, noteDelimIx - curIx);
+            if (stepStr[noteDelimIx] == ':') {
+                continueLoop = false;
+            } else {
+                curIx = noteDelimIx + 1;
+            }
+        }            
+        int midiNote = -1;
+        if (noteStr[0] == 'm') {
+            midiNote = GetMidiNote(noteStr.substr(1));
+        } else {
+            midiNote = string_util::StoiOrDie(noteStr);
+        }
+        if (currentNoteIx >= step._midiNote.size()) {
+            printf("StepSequencer::Load: Too many notes!\n");
+            break;
+        }
+        step._midiNote[currentNoteIx] = midiNote;
+        ++currentNoteIx;
+    }
+    std::size_t velDelimIx = stepStr.find_first_of(':');
+    if (velDelimIx != std::string::npos) {
+        std::string_view velStr = std::string_view(stepStr).substr(velDelimIx+1);
+        step._velocity = string_util::StofOrDie(velStr);
+    }
+
+    // Returns false if we never read a note
+    return currentNoteIx > 0;
+}
+
 void StepSequencerEntity::LoadSequenceFromInput(std::istream& input, std::vector<SeqStep>& sequence) {
     sequence.clear();
     while (!input.eof()) {
         SeqStep step;
-        std::string stepStr;
-        input >> stepStr;
-        // Chars [0,delimIx) are the notes delimited by ,
-        int currentNoteIx = 0;
-        int curIx = 0;
-        bool continueLoop = true;
-        while (continueLoop && curIx < stepStr.size()) {
-            std::size_t noteDelimIx = stepStr.find_first_of(",:", curIx);
-            if (noteDelimIx == curIx) {
-                break;
-            }
-            std::string_view noteStr;
-            if (noteDelimIx == std::string::npos) {
-                noteStr = std::string_view(stepStr).substr(curIx);
-                continueLoop = false;
-            } else {
-                noteStr = std::string_view(stepStr).substr(curIx, noteDelimIx - curIx);
-                if (stepStr[noteDelimIx] == ':') {
-                    continueLoop = false;
-                } else {
-                    curIx = noteDelimIx + 1;
-                }
-            }            
-            int midiNote = -1;
-            if (noteStr[0] == 'm') {
-                midiNote = GetMidiNote(noteStr.substr(1));
-            } else {
-                midiNote = string_util::StoiOrDie(noteStr);
-            }
-            if (currentNoteIx >= step._midiNote.size()) {
-                printf("StepSequencer::Load: Too many notes!\n");
-                break;
-            }
-            step._midiNote[currentNoteIx] = midiNote;
-            ++currentNoteIx;
+        bool hasStep = TryReadSeqStep(input, step);
+        if (hasStep) {
+            sequence.push_back(step);
         }
-
-        std::size_t velDelimIx = stepStr.find_first_of(':');
-        if (velDelimIx != std::string::npos) {
-            std::string_view velStr = std::string_view(stepStr).substr(velDelimIx+1);
-            step._velocity = string_util::StofOrDie(velStr);
-        }
-       
-        sequence.push_back(step);
     }
 }
 

@@ -21,22 +21,35 @@ struct BeatTimeAction {
     double _beatTime = 0.0;
 };
 
-struct SeqAction {
-    virtual void Execute(GameManager& g) = 0;
+struct SeqAction {        
     struct LoadInputs {
         double _beatTimeOffset = 0.0;
         bool _defaultEnemiesSave = false;
         int _sectionId = -1;
-    };
+    };    
+    
+    void InitBase(GameManager& g) {
+        Init(g);
+        _init = true;
+    }
+    void ExecuteBase(GameManager& g) {
+        assert(_init);
+        Execute(g);
+    }
 
     virtual ~SeqAction() {}
 
-    static void LoadActions(GameManager& g, std::istream& input, std::vector<BeatTimeAction>& actions);
-    static std::unique_ptr<SeqAction> LoadAction(GameManager& g, LoadInputs const& loadInputs, std::istream& input);
+    static void LoadAndInitActions(GameManager& g, std::istream& input, std::vector<BeatTimeAction>& actions);
+    static std::unique_ptr<SeqAction> LoadAction(LoadInputs const& loadInputs, std::istream& input);
 
 protected:
     virtual void Load(
-        GameManager& g, LoadInputs const& loadInputs, std::istream& input) {}
+        LoadInputs const& loadInputs, std::istream& input) {}
+    virtual void Init(GameManager& g) {}    
+    virtual void Execute(GameManager& g) = 0;
+    
+private:
+    bool _init = false;
 };
 
 struct SpawnAutomatorSeqAction : public SeqAction {
@@ -50,7 +63,7 @@ struct SpawnAutomatorSeqAction : public SeqAction {
     
     virtual void Execute(GameManager& g) override;
     virtual void Load(
-        GameManager& g, LoadInputs const& loadInputs, std::istream& input) override;
+        LoadInputs const& loadInputs, std::istream& input) override;
 };
 
 struct RemoveEntitySeqAction : public SeqAction {
@@ -58,37 +71,51 @@ struct RemoveEntitySeqAction : public SeqAction {
 
     virtual void Execute(GameManager& g) override;
     virtual void Load(
-        GameManager& g, LoadInputs const& loadInputs, std::istream& input) override;
+        LoadInputs const& loadInputs, std::istream& input) override;
 };
 
 struct ChangeStepSequencerSeqAction : public SeqAction {
-
-    ne::EntityId _seqId;
+    // serialized
+    std::string _seqName;
+    // TODO: Turn these into a StepSequencer::SeqStepChange thing
     std::array<int, 4> _midiNotes = {-1, -1, -1, -1};
     float _velocity = 0.f;
     bool _velOnly = false;
     bool _temporary = true;
+    
+    ne::EntityId _seqId;    
     virtual void Execute(GameManager& g) override;
     virtual void Load(
-        GameManager& g, LoadInputs const& loadInputs, std::istream& input) override;
+        LoadInputs const& loadInputs, std::istream& input) override;
+    virtual void Init(GameManager& g) override;
 };
 
 // Assumed to be permanent
 struct SetAllStepsSeqAction : public SeqAction {
-    ne::EntityId _seqId;
+    // serialized
+    std::string _seqName;
     std::array<int, 4> _midiNotes = {-1, -1, -1, -1};
     float _velocity = 0.f;
+
+    ne::EntityId _seqId;
+    
     virtual void Execute(GameManager& g) override;
     virtual void Load(
-        GameManager& g, LoadInputs const& loadInputs, std::istream& input) override;
+        LoadInputs const& loadInputs, std::istream& input) override;
+    virtual void Init(GameManager& g) override;
 };
 
 struct SetStepSequenceSeqAction : public SeqAction {
-    ne::EntityId _seqId;
+    // serialized
+    std::string _seqName;
     std::vector<StepSequencerEntity::SeqStep> _sequence;
+    
+    ne::EntityId _seqId;
+    
     virtual void Execute(GameManager& g) override;
     virtual void Load(
-        GameManager& g, LoadInputs const& loadInputs, std::istream& input) override;
+        LoadInputs const& loadInputs, std::istream& input) override;
+    virtual void Init(GameManager& g) override;
 };
 
 struct NoteOnOffSeqAction : public SeqAction {
@@ -99,13 +126,17 @@ struct NoteOnOffSeqAction : public SeqAction {
     double _quantizeDenom = 0.25;
     virtual void Execute(GameManager& g) override;
     virtual void Load(
-        GameManager& g, LoadInputs const& loadInputs, std::istream& input) override;
+        LoadInputs const& loadInputs, std::istream& input) override;
 };
 
 struct BeatTimeEventSeqAction : public SeqAction {
+    // serialize
+    std::string _soundBankName;
     BeatTimeEvent _b_e;
     double _quantizeDenom = 0.25;
+    
     virtual void Execute(GameManager& g) override;
     virtual void Load(
-        GameManager& g, LoadInputs const& loadInputs, std::istream& input) override;
+        LoadInputs const& loadInputs, std::istream& input) override;
+    virtual void Init(GameManager& g) override;
 };

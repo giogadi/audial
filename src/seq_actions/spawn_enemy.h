@@ -5,10 +5,12 @@
 
 // ONLY SAFE TO EXECUTE ONE TIME!!!!
 struct SpawnEnemySeqAction : public SeqAction {
+    // Serialized        
     TypingEnemyEntity _enemy;
+    
     bool _done = false;
     virtual void Execute(GameManager& g) override;
-    virtual void Load(GameManager& g, LoadInputs const& loadInputs, std::istream& input) override;
+    virtual void Load(LoadInputs const& loadInputs, std::istream& input) override;
 
     static bool _sNoteTablesLoaded;
 };

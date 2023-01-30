@@ -6,7 +6,8 @@
 #include "sound_bank.h"
 #include "midi_util.h"
 
-void ReadBeatEventFromTextLine(SoundBank const& soundBank, std::istream& lineStream, BeatTimeEvent& b_e) {
+bool ReadBeatEventFromTextLineNoSoundLookup(std::istream& lineStream, BeatTimeEvent& b_e, std::string& soundBankName) {
+    bool needsSoundLookup = false;
     std::string token, key, value;
     while (!lineStream.eof()) {
         {
@@ -71,12 +72,8 @@ void ReadBeatEventFromTextLine(SoundBank const& soundBank, std::istream& lineStr
                 break;
             }
         } else if (key == "s") {
-            int soundIx = soundBank.GetSoundIx(value.c_str());
-            if (soundIx < 0) {
-                printf("Failed to find sound \"%s\"\n", value.c_str());
-                break;
-            }
-            b_e._e.pcmSoundIx = soundIx;
+            soundBankName = value;
+            needsSoundLookup = true;
         } else if (key == "v") {
             // velocity
             float v;
@@ -112,6 +109,21 @@ void ReadBeatEventFromTextLine(SoundBank const& soundBank, std::istream& lineStr
                 printf("Failed to parse loop setting: %s\n", value.c_str());
                 break;
             }
+        }
+    }
+
+    return needsSoundLookup;
+}
+
+void ReadBeatEventFromTextLine(SoundBank const& soundBank, std::istream& lineStream, BeatTimeEvent& b_e) {
+    std::string soundBankName;
+    bool needsSoundLookup = ReadBeatEventFromTextLineNoSoundLookup(lineStream, b_e, soundBankName);
+    if (needsSoundLookup) {
+        int soundIx = soundBank.GetSoundIx(soundBankName.c_str());
+        if (soundIx < 0) {
+            printf("Failed to find sound \"%s\"\n", soundBankName.c_str());
+        } else {
+            b_e._e.pcmSoundIx = soundIx;
         }
     }
 }
