@@ -46,6 +46,7 @@ struct StepSequencerEntity : ne::Entity {
     virtual void LoadDerived(serial::Ptree pt) override;
     /* virtual ImGuiResult ImGuiDerived(GameManager& g) override; */
 
+    static void WriteSeqStep(SeqStep const& step, std::ostream& output);
     static bool TryReadSeqStep(std::istream& input, SeqStep& step);
 
     // Assumes input contains _only_ the sequence, nothing else.

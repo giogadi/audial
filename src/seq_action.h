@@ -41,10 +41,11 @@ struct SeqAction {
 
     static void LoadAndInitActions(GameManager& g, std::istream& input, std::vector<BeatTimeAction>& actions);
     static std::unique_ptr<SeqAction> LoadAction(LoadInputs const& loadInputs, std::istream& input);
-
+    virtual void Save(std::ostream& output) const { assert(false); }
+    
 protected:
     virtual void Load(
-        LoadInputs const& loadInputs, std::istream& input) {}
+        LoadInputs const& loadInputs, std::istream& input) = 0;
     virtual void Init(GameManager& g) {}    
     virtual void Execute(GameManager& g) = 0;
     
@@ -64,6 +65,7 @@ struct SpawnAutomatorSeqAction : public SeqAction {
     virtual void Execute(GameManager& g) override;
     virtual void Load(
         LoadInputs const& loadInputs, std::istream& input) override;
+    virtual void Save(std::ostream& output) const override;
 };
 
 struct RemoveEntitySeqAction : public SeqAction {
@@ -72,6 +74,7 @@ struct RemoveEntitySeqAction : public SeqAction {
     virtual void Execute(GameManager& g) override;
     virtual void Load(
         LoadInputs const& loadInputs, std::istream& input) override;
+    virtual void Save(std::ostream& output) const override;
 };
 
 struct ChangeStepSequencerSeqAction : public SeqAction {
@@ -86,8 +89,9 @@ struct ChangeStepSequencerSeqAction : public SeqAction {
     ne::EntityId _seqId;    
     virtual void Execute(GameManager& g) override;
     virtual void Load(
-        LoadInputs const& loadInputs, std::istream& input) override;
+        LoadInputs const& loadInputs, std::istream& input) override;    
     virtual void Init(GameManager& g) override;
+    virtual void Save(std::ostream& output) const override;
 };
 
 // Assumed to be permanent

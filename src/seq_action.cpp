@@ -173,6 +173,19 @@ void SpawnAutomatorSeqAction::Load(LoadInputs const& loadInputs, std::istream& i
     input >> _desiredAutomateTime;
 }
 
+void SpawnAutomatorSeqAction::Save(std::ostream& output) const {
+    output << "automate" << " ";
+    if (_synth) {
+        output << audio::SynthParamTypeToString(_synthParam);
+        output << " " << _channel;
+    } else {
+        output << "seq_velocity";
+    }
+    output << " " << _startValue;
+    output << " " << _endValue;
+    output << " " << _desiredAutomateTime;
+}
+
 void SpawnAutomatorSeqAction::Execute(GameManager& g) {
     ParamAutomatorEntity* e = static_cast<ParamAutomatorEntity*>(g._neEntityManager->AddEntity(ne::EntityType::ParamAutomator));
     e->_startValue = _startValue;
@@ -187,6 +200,11 @@ void SpawnAutomatorSeqAction::Execute(GameManager& g) {
 
 void RemoveEntitySeqAction::Load(LoadInputs const& loadInputs, std::istream& input) {
     input >> _entityName;
+}
+
+void RemoveEntitySeqAction::Save(std::ostream& output) const {
+    output << "remove_entity" << " ";
+    output << _entityName;
 }
 
 void RemoveEntitySeqAction::Execute(GameManager& g) {
@@ -229,6 +247,18 @@ void ChangeStepSequencerSeqAction::Load(LoadInputs const& loadInputs, std::istre
         _midiNotes[i] = step._midiNote[i];
     }
     _velocity = step._velocity;
+}
+
+void ChangeStepSequencerSeqAction::Save(std::ostream& output) const {
+    output << "change_step" << " ";
+    output << _seqName;
+    output << " " << _velOnly;
+    output << " " << _temporary;
+    output << " ";
+    StepSequencerEntity::SeqStep step;
+    step._midiNote = _midiNotes;
+    step._velocity = _velocity;
+    StepSequencerEntity::WriteSeqStep(step, output);
 }
 
 void ChangeStepSequencerSeqAction::Init(GameManager& g) {

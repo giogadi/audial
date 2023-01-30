@@ -9,6 +9,26 @@
 #include "midi_util.h"
 #include "string_util.h"
 
+void StepSequencerEntity::WriteSeqStep(SeqStep const& step, std::ostream& output) {
+    std::string noteName;
+    for (int i = 0, n = step._midiNote.size(); i < n; ++i) {
+        int midiNote = step._midiNote[i];
+        if (midiNote < 0 && i > 0) {
+            break;
+        }
+        if (i > 0) {
+            output << ",";
+        }
+        if (midiNote < 0) {
+            output << "-1";
+        } else {
+            GetNoteName(midiNote, noteName);
+            output << "m" << noteName;
+        }
+    }
+    output << ":" << step._velocity;
+}
+
 bool StepSequencerEntity::TryReadSeqStep(std::istream& input, SeqStep& step) {
     std::string stepStr;
     input >> stepStr;

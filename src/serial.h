@@ -39,6 +39,8 @@ public:
     float GetFloat(char const* name);
     double GetDouble(char const* name);
 
+    void PutStringValue(char const* value);
+    
     std::string GetStringValue();
     int GetIntValue();
 

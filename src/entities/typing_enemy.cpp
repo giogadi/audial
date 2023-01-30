@@ -41,20 +41,19 @@ void TypingEnemyEntity::Update(GameManager& g, float dt) {
     if (!IsActive(g)) {
         return;
     }
-    if (g._editMode) {
-        return;
-    }
 
-    Vec3 p  = _transform.GetPos();
+    if (!g._editMode) {
+        Vec3 p  = _transform.GetPos();
     
-    Vec3 dp = _velocity * dt;
-    p += dp;
-    _transform.SetTranslation(p);
+        Vec3 dp = _velocity * dt;
+        p += dp;
+        _transform.SetTranslation(p);
 
-    if (_destroyIfOffscreenLeft) {
-        float constexpr kMinX = -10.f;
-        if (p._x < kMinX) {
-            g._neEntityManager->TagForDestroy(_id);
+        if (_destroyIfOffscreenLeft) {
+            float constexpr kMinX = -10.f;
+            if (p._x < kMinX) {
+                g._neEntityManager->TagForDestroy(_id);
+            }
         }
     }
 
@@ -149,13 +148,14 @@ void TypingEnemyEntity::LoadDerived(serial::Ptree pt) {
 }
 
 void TypingEnemyEntity::SaveDerived(serial::Ptree pt) const {
-    assert(false);  // UNSUPPORTED
-    // pt.PutString("text", _text.c_str());
-    // serial::Ptree actionsPt = pt.AddChild("hit_actions");
-    // for (auto const& pSeqAction : _hitActions) {
-    //     serial::Ptree actionPt = actionsPt.AddChild("action");
-    //     actionPt.PutString(pSeqAction->
-    // }
+    pt.PutString("text", _text.c_str());
+    serial::Ptree actionsPt = pt.AddChild("hit_actions");
+    for (auto const& pSeqAction : _hitActions) {
+        serial::Ptree actionPt = actionsPt.AddChild("action");
+        std::stringstream actionSs;
+        pSeqAction->Save(actionSs);
+        actionPt.PutStringValue(actionSs.str().c_str());
+    }
 }
 
 ne::BaseEntity::ImGuiResult TypingEnemyEntity::ImGuiDerived(GameManager& g) {

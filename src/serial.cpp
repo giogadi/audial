@@ -148,6 +148,11 @@ bool Ptree::TryGetDouble(char const* name, double* v) {
     return false;
 }
 
+void Ptree::PutStringValue(char const* value) {
+    assert(IsValid());
+    return GetInternal(_internal)->put_value<std::string>(value);
+}
+
 std::string Ptree::GetStringValue() {
     assert(IsValid());
     return GetInternal(_internal)->get_value<std::string>();
