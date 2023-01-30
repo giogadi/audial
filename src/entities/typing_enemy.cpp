@@ -125,3 +125,33 @@ InputManager::Key TypingEnemyEntity::GetNextKey() const {
     InputManager::Key nextKey = static_cast<InputManager::Key>(charIx);
     return nextKey;
 }
+
+void TypingEnemyEntity::LoadDerived(serial::Ptree pt) {
+    _text = pt.GetString("text");
+    serial::Ptree actionsPt = pt.GetChild("hit_actions");
+    int numChildren;
+    serial::NameTreePair* children = actionsPt.GetChildren(&numChildren);
+    _hitActions.clear();
+    _hitActions.reserve(numChildren);
+    for (int i = 0; i < numChildren; ++i) {
+        std::string seqActionStr = children[i]._pt.GetStringValue();
+        
+    }
+    delete[] children;
+    
+    
+}
+
+void TypingEnemyEntity::SaveDerived(serial::Ptree pt) const {
+    assert(false);  // UNSUPPORTED
+    // pt.PutString("text", _text.c_str());
+    // serial::Ptree actionsPt = pt.AddChild("hit_actions");
+    // for (auto const& pSeqAction : _hitActions) {
+    //     serial::Ptree actionPt = actionsPt.AddChild("action");
+    //     actionPt.PutString(pSeqAction->
+    // }
+}
+
+ne::BaseEntity::ImGuiResult TypingEnemyEntity::ImGuiDerived(GameManager& g) {
+    return ImGuiResult::Done;
+}

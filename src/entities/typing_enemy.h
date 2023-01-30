@@ -37,9 +37,9 @@ struct TypingEnemyEntity : public ne::Entity {
     /* virtual void OnEditPick(GameManager& g) {} */
     /* virtual void DebugPrint(); */
 
-    /* virtual void SaveDerived(serial::Ptree pt) const {}; */
-    /* virtual void LoadDerived(serial::Ptree pt) {}; */
-    /* virtual ImGuiResult ImGuiDerived(GameManager& g) { return ImGuiResult::Done; } */
+    virtual void SaveDerived(serial::Ptree pt) const override;
+    virtual void LoadDerived(serial::Ptree pt) override;
+    virtual ImGuiResult ImGuiDerived(GameManager& g) override;
 
     TypingEnemyEntity() = default;
     TypingEnemyEntity(TypingEnemyEntity const&) = delete;

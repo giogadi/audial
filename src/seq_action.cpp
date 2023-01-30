@@ -10,6 +10,39 @@
 #include "entities/typing_player.h"
 #include "entities/flow_player.h"
 
+std::unique_ptr<SeqAction> SeqAction::LoadAction(GameManager& g, LoadInputs const& loadInputs, std::istream& input) {
+    std::string token;
+    input >> token;
+
+    // TODO: get these from the SeqActionType enum
+    std::unique_ptr<SeqAction> pAction;
+    if (token == "automate") {
+        pAction = std::make_unique<SpawnAutomatorSeqAction>();
+    } else if (token == "remove_entity") {
+        pAction = std::make_unique<RemoveEntitySeqAction>();
+    } else if (token == "change_step") {
+        pAction = std::make_unique<ChangeStepSequencerSeqAction>();
+    } else if (token == "set_all_steps") {
+        pAction = std::make_unique<SetAllStepsSeqAction>();
+    } else if (token == "set_step_seq") {
+        pAction = std::make_unique<SetStepSequenceSeqAction>();
+    } else if (token == "note_on_off") {
+        pAction = std::make_unique<NoteOnOffSeqAction>();
+    } else if (token == "e") {
+        pAction = std::make_unique<SpawnEnemySeqAction>();
+    } else if (token == "b_e") {
+        pAction = std::make_unique<BeatTimeEventSeqAction>();
+    } else {
+        printf("ERROR: Unrecognized action type \"%s\".\n", token.c_str());
+    }
+
+    assert(pAction != nullptr);
+
+    pAction->Load(g, loadInputs, input);
+
+    return pAction;
+}
+
 void SeqAction::LoadActions(GameManager& g, std::istream& input, std::vector<BeatTimeAction>& actions) {
     double startBeatTime = 0.0;
     SeqAction::LoadInputs loadInputs;
@@ -105,36 +138,9 @@ void SeqAction::LoadActions(GameManager& g, std::istream& input, std::vector<Bea
                 continue;
             }
             beatTime = beatTimeAbs - startBeatTime;
-        }       
-
-        lineStream >> token;
-
-        // TODO: get these from the SeqActionType enum
-        std::unique_ptr<SeqAction> pAction;
-        if (token == "automate") {
-            pAction = std::make_unique<SpawnAutomatorSeqAction>();
-        } else if (token == "remove_entity") {
-            pAction = std::make_unique<RemoveEntitySeqAction>();
-        } else if (token == "change_step") {
-            pAction = std::make_unique<ChangeStepSequencerSeqAction>();
-        } else if (token == "set_all_steps") {
-            pAction = std::make_unique<SetAllStepsSeqAction>();
-        } else if (token == "set_step_seq") {
-            pAction = std::make_unique<SetStepSequenceSeqAction>();
-        } else if (token == "note_on_off") {
-            pAction = std::make_unique<NoteOnOffSeqAction>();
-        } else if (token == "e") {
-            pAction = std::make_unique<SpawnEnemySeqAction>();
-        } else if (token == "b_e") {
-            pAction = std::make_unique<BeatTimeEventSeqAction>();
-        } else {
-            printf("ERROR: Unrecognized action type \"%s\".\n", token.c_str());
-            continue;
         }
 
-        assert(pAction != nullptr);
-
-        pAction->Load(g, loadInputs, lineStream);
+        std::unique_ptr<SeqAction> pAction = SeqAction::LoadAction(g, loadInputs, lineStream);
 
         actions.emplace_back();
         BeatTimeAction& newBta = actions.back();

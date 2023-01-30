@@ -28,12 +28,15 @@ struct SeqAction {
         bool _defaultEnemiesSave = false;
         int _sectionId = -1;
     };
-    virtual void Load(
-        GameManager& g, LoadInputs const& loadInputs, std::istream& input) {}
 
     virtual ~SeqAction() {}
 
     static void LoadActions(GameManager& g, std::istream& input, std::vector<BeatTimeAction>& actions);
+    static std::unique_ptr<SeqAction> LoadAction(GameManager& g, LoadInputs const& loadInputs, std::istream& input);
+
+protected:
+    virtual void Load(
+        GameManager& g, LoadInputs const& loadInputs, std::istream& input) {}
 };
 
 struct SpawnAutomatorSeqAction : public SeqAction {
