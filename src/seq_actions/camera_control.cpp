@@ -3,6 +3,7 @@
 #include "game_manager.h"
 #include "entities/camera.h"
 #include "string_util.h"
+#include "entities/flow_player.h"
 
 void CameraControlSeqAction::Execute(GameManager& g) {
     int numEntities = 0;
@@ -10,6 +11,13 @@ void CameraControlSeqAction::Execute(GameManager& g) {
     assert(numEntities == 1);
     CameraEntity* camera = static_cast<CameraEntity*>(eIter.GetEntity());
     camera->_desiredTargetToCameraOffset = _desiredTargetToCameraOffset;
+    camera->_followEntityId = _targetEntityId;
+    
+    // numEntities = 0;
+    // eIter = g._neEntityManager->GetIterator(ne::EntityType::FlowPlayer, &numEntities);
+    // assert(numEntities == 1);
+    // FlowPlayerEntity* player = static_cast<FlowPlayerEntity*>(eIter.GetEntity());
+    // camera->_followEntityId = player->_id;
 }
 
 void CameraControlSeqAction::Load(GameManager& g, LoadInputs const& loadInputs, std::istream& input) {

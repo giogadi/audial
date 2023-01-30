@@ -30,12 +30,12 @@
 
 
 # left
-0 e text:k  z:2 x:6 color:Green flow_section: typekill:0 type:seq seq:chord_seq note:G3- note:B3- note:D4- note:F4
-0 e text:r  z:2 x:4 color:Green flow_section: typekill:0 type:seq seq:chord_seq note:G3- note:B3- note:D4- note:F4
-0 e text:o  z:2 x:2 color:Green flow_section: typekill:0 type:seq seq:chord_seq note:G3- note:B3- note:D4- note:F4
-0 e text:w  z:2 x:0 color:Green flow_section: typekill:0 type:seq seq:chord_seq note:G3- note:B3- note:D4- note:F4
+0 e text:k  z:2 x:6 color:Green flow_section: camera_target:camera_target2 typekill:0 type:seq seq:chord_seq note:G3- note:B3- note:D4- all_actions: note:F4
+0 e text:r  z:2 x:4 color:Green flow_section: camera_target:camera_target2 typekill:0 type:seq seq:chord_seq note:G3- note:B3- note:D4- all_actions: note:F4
+0 e text:o  z:2 x:2 color:Green flow_section: camera_target:camera_target2 typekill:0 type:seq seq:chord_seq note:G3- note:B3- note:D4- all_actions: note:F4
+0 e text:w  z:2 x:0 color:Green flow_section: camera_target:camera_target2 typekill:0 type:seq seq:chord_seq note:G3- note:B3- note:D4- all_actions: note:F4
 
-0 e text:x  z:2 x:-2 color:Yellow flow_section: typekill:0 type:seq seq:chord_seq note:G3- note:B3- note:C4 note:E4-
-0 e text:j  z:2 x:-4 color:Yellow flow_section: typekill:0 type:seq seq:chord_seq note:G3- note:B3- note:C4 note:E4-
-0 e text:f  z:2 x:-6 color:Yellow flow_section: typekill:0 type:seq seq:chord_seq note:G3- note:B3- note:C4 note:E4-
-0 e text:h  z:2 x:-8 color:Yellow flow_section: typekill:0 type:seq seq:chord_seq note:G3- note:B3- note:C4 note:E4-
+0 e text:x  z:2 x:-2 color:Yellow flow_section: camera_target:camera_target2 typekill:0 type:seq seq:chord_seq note:G3- note:B3- note:C4 all_actions: note:E4-
+0 e text:j  z:2 x:-4 color:Yellow flow_section: camera_target:camera_target2 typekill:0 type:seq seq:chord_seq note:G3- note:B3- note:C4 all_actions: note:E4-
+0 e text:f  z:2 x:-6 color:Yellow flow_section: camera_target:camera_target2 typekill:0 type:seq seq:chord_seq note:G3- note:B3- note:C4 all_actions: note:E4-
+0 e text:h  z:2 x:-8 color:Yellow flow_section: camera_target:camera_target2 typekill:0 type:seq seq:chord_seq note:G3- note:B3- note:C4 all_actions: note:E4-

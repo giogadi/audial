@@ -9,6 +9,7 @@
 #include "midi_util.h"
 #include "sound_bank.h"
 #include "color_presets.h"
+#include "seq_actions/camera_control.h"
 
 void SpawnEnemySeqAction::Execute(GameManager& g) {
     assert(!_done);
@@ -641,7 +642,6 @@ void SpawnEnemySeqAction::Load(GameManager& g, LoadInputs const& loadInputs, std
         LoadNoteTables();
     }
 
-
     _enemy._modelName = "cube";
     _enemy._modelColor.Set(1.f, 0.f, 0.f, 1.f);
 
@@ -745,6 +745,33 @@ void SpawnEnemySeqAction::Load(GameManager& g, LoadInputs const& loadInputs, std
                 _enemy._velocity.Set(0.f, 0.f, kSpeed * (topSide ? 1.f : -1.f));
             }
             gHorizontal = !gHorizontal;
+        } else if (key == "camera_target") {
+            ne::BaseEntity* targetEntity = g._neEntityManager->FindEntityByName(value);
+            if (targetEntity == nullptr) {
+                printf("spawn_enemy:camera_target: could not find entity named \"%s\"\n", value.c_str());
+            } else {
+                auto pAction = std::make_unique<CameraControlSeqAction>();
+                pAction->_targetEntityId = targetEntity->_id;
+                pAction->_desiredTargetToCameraOffset.Set(0.f, 5.f, 0.f);
+                _enemy._hitActions.push_back(std::move(pAction));
+            }           
+        } else if (key == "camera_offset") {
+            assert(false);  // UNSUPPORTED
+            // auto pAction = std::make_unique<CameraControlSeqAction>();
+            // if (string_util::EqualsIgnoreCase(value, "top")) {
+            //     pAction->_desiredTargetToCameraOffset.Set(0.f, 5.f, 3.f);
+            // } else if (string_util::EqualsIgnoreCase(value, "bottom")) {
+            //     pAction->_desiredTargetToCameraOffset.Set(0.f, 5.f, -3.f);
+            // } else if (string_util::EqualsIgnoreCase(value, "left")) {
+            //     pAction->_desiredTargetToCameraOffset.Set(3.f, 5.f, 0.f);
+            // } else if (string_util::EqualsIgnoreCase(value, "right")) {
+            //     pAction->_desiredTargetToCameraOffset.Set(-3.f, 5.f, 0.f);
+            // } else if (string_util::EqualsIgnoreCase(value, "center")) {
+            //     pAction->_desiredTargetToCameraOffset.Set(0.f, 5.f, 0.f);
+            // } else {
+            //     printf("SpawnEnemy:camera_offset: unrecognized direction \"%s\"\n", value.c_str());
+            // }
+            // _enemy._hitActions.push_back(std::move(pAction));
         } else {
             printf("SpawnEnemySeqAction: unknown common key \"%s\"\n", key.c_str());
         }
