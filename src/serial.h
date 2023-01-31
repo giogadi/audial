@@ -72,4 +72,15 @@ inline void SaveInNewChildOf(Ptree pt, char const* childName, T const& v) {
     v.Save(childPt);
 }
 
+template <typename T>
+inline bool LoadFromChildOf(Ptree pt, char const* childName, T& v) {
+    Ptree childPt = pt.TryGetChild(childName);
+    if (childPt.IsValid()) {
+        v.Load(childPt);
+        return true;
+    } else {
+        return false;
+    }
+}
+
 }

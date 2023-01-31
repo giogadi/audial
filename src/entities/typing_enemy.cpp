@@ -2,11 +2,14 @@
 
 #include <sstream>
 
+#include "imgui/imgui.h"
+
 #include "game_manager.h"
 #include "renderer.h"
 #include "audio.h"
 #include "step_sequencer.h"
 #include "typing_player.h"
+#include "imgui_util.h"
 
 namespace {
 
@@ -32,8 +35,16 @@ void TypingEnemyEntity::Init(GameManager& g) {
         assert(player != nullptr);
         player->RegisterSectionEnemy(_sectionId, _id);
     }
-    for (auto const& pAction : _hitActions) {
-        pAction->InitBase(g);
+    _hitActions.clear();
+    _hitActions.reserve(_hitActionStrings.size());
+    SeqAction::LoadInputs loadInputs;  // default
+    for (std::string const& actionStr : _hitActionStrings) {
+        std::stringstream ss(actionStr);
+        std::unique_ptr<SeqAction> pAction = SeqAction::LoadAction(loadInputs, ss);
+        if (pAction != nullptr) {
+            pAction->InitBase(g);
+            _hitActions.push_back(std::move(pAction));   
+        }
     }
 }
 
@@ -135,13 +146,10 @@ void TypingEnemyEntity::LoadDerived(serial::Ptree pt) {
     serial::Ptree actionsPt = pt.GetChild("hit_actions");
     int numChildren;
     serial::NameTreePair* children = actionsPt.GetChildren(&numChildren);
-    _hitActions.clear();
-    _hitActions.reserve(numChildren);
-    SeqAction::LoadInputs loadInputs;  // default
+    _hitActionStrings.clear();
+    _hitActionStrings.reserve(numChildren);
     for (int i = 0; i < numChildren; ++i) {
-        std::string seqActionStr = children[i]._pt.GetStringValue();
-        std::stringstream ss(seqActionStr);
-        _hitActions.push_back(SeqAction::LoadAction(loadInputs, ss));
+        _hitActionStrings.push_back(children[i]._pt.GetStringValue());
     }
     delete[] children;    
     
@@ -150,14 +158,37 @@ void TypingEnemyEntity::LoadDerived(serial::Ptree pt) {
 void TypingEnemyEntity::SaveDerived(serial::Ptree pt) const {
     pt.PutString("text", _text.c_str());
     serial::Ptree actionsPt = pt.AddChild("hit_actions");
-    for (auto const& pSeqAction : _hitActions) {
+    for (std::string const& actionStr : _hitActionStrings) {
         serial::Ptree actionPt = actionsPt.AddChild("action");
-        std::stringstream actionSs;
-        pSeqAction->Save(actionSs);
-        actionPt.PutStringValue(actionSs.str().c_str());
+        actionPt.PutStringValue(actionStr.c_str());
     }
 }
 
 ne::BaseEntity::ImGuiResult TypingEnemyEntity::ImGuiDerived(GameManager& g) {
-    return ImGuiResult::Done;
+    ImGuiResult result = ImGuiResult::Done;
+
+    imgui_util::InputText<32>("Text", &_text);
+    
+    if (ImGui::Button("Add Action")) {
+        _hitActionStrings.emplace_back();
+    }
+    int deletedIx = -1;
+    for (int i = 0; i < _hitActionStrings.size(); ++i) {
+        ImGui::PushID(i);
+        std::string& actionStr = _hitActionStrings[i];
+        bool changed = imgui_util::InputText<256>("Action", &actionStr);
+        if (changed) {
+            result = ImGuiResult::NeedsInit;
+        }
+        if (ImGui::Button("Delete")) {
+            deletedIx = i;
+        }
+        ImGui::PopID();
+    }
+
+    if (deletedIx >= 0) {
+        result = ImGuiResult::NeedsInit;
+        _hitActionStrings.erase(_hitActionStrings.begin() + deletedIx);
+    }
+    return result;
 }

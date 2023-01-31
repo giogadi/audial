@@ -11,7 +11,7 @@ struct TypingEnemyEntity : public ne::Entity {
     
     // serialized
     std::string _text;
-    std::vector<std::unique_ptr<SeqAction>> _hitActions;
+    std::vector<std::string> _hitActionStrings;    
     HitBehavior _hitBehavior = HitBehavior::SingleAction; // TODO
     double _activeBeatTime = -1.0; // TODO
     double _inactiveBeatTime = -1.0; // TODO
@@ -26,6 +26,7 @@ struct TypingEnemyEntity : public ne::Entity {
     int _numHits = 0;
     Vec3 _velocity; // spatial, not audio
     Vec4 _currentColor;
+    std::vector<std::unique_ptr<SeqAction>> _hitActions;
 
     bool IsActive(GameManager& g) const;
     void OnHit(GameManager& g);

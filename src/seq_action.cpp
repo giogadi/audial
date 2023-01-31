@@ -37,7 +37,9 @@ std::unique_ptr<SeqAction> SeqAction::LoadAction(LoadInputs const& loadInputs, s
         printf("ERROR: Unrecognized action type \"%s\".\n", token.c_str());
     }
 
-    assert(pAction != nullptr);
+    if (pAction == nullptr) {
+        return nullptr;
+    }
 
     pAction->Load(loadInputs, input);
 
