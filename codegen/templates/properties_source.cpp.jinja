@@ -1,0 +1,35 @@
+#include "{{headerFilename}}"
+
+#include "imgui/imgui.h"
+
+#include "imgui_util.h"
+
+void {{propertiesName}}Props::Load(serial::Ptree pt) {
+    {% for prop in props %}
+    {% if prop.type == "int" %}
+    pt.TryGetInt("{{prop.name}}", &_{{prop.name}});
+    {% elif prop.type == "string" %}
+    pt.TryGetString("{{prop.name}}", &_{{prop.name}});
+    {% endif %}
+    {% endfor %}
+}
+
+void {{propertiesName}}Props::Save(serial::Ptree pt) const {
+     {% for prop in props %}
+     {% if prop.type == "int" %}
+     pt.PutInt("{{prop.name}}", _{{prop.name}});
+     {% elif prop.type == "string" %}
+     pt.PutString("{{prop.name}}", _{{prop.name}});
+     {% endif %}
+     {% endfor %}
+}
+
+bool {{propertiesName}}Props::ImGui() {
+     {% for prop in props %}
+     {% if prop.type == "int" %}
+     ImGui::InputInt("{{prop.name}}", &_{{prop.name}});
+     {% elif prop.type == "string" %}
+     imgui_util::InputText<128>("{{prop.name}}", &_{{prop.name}});
+     {% endif %}
+     {% endfor %}
+}

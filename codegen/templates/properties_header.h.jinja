@@ -1,0 +1,17 @@
+#pragma once
+
+#include "serial.h"
+
+struct {{propertiesName}}Props {
+    {% for prop in props %}
+    {% if prop.type == "int" %}
+    int _{{prop.name}};
+    {% elif prop.type == "string" %}
+    std::string _{{prop.name}};
+    {% endif %}
+    {% endfor %}
+
+    void Load(serial::Ptree pt);
+    void Save(serial::Ptree pt) const;
+    bool ImGui();
+};

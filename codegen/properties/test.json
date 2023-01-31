@@ -1,0 +1,21 @@
+{
+    "propertiesName": "Test",
+    "props": [
+        {
+            "name": "myInt1",
+            "type": "int"
+        },
+        {
+            "name": "myInt2",
+            "type": "int"
+        },
+        {
+            "name": "myString",
+            "type": "string"
+        },
+        {
+            "name": "myVec3",
+            "type": "Vec3"
+        }
+    ]
+}
