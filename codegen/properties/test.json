@@ -12,10 +12,6 @@
         {
             "name": "myString",
             "type": "string"
-        },
-        {
-            "name": "myVec3",
-            "type": "Vec3"
         }
     ]
 }

@@ -40,9 +40,17 @@ public:
     double GetDouble(char const* name);
 
     void PutStringValue(char const* value);
+    void PutIntValue(int value);
+    void PutBoolValue(bool value);
+    void PutFloatValue(float value);
+    void PutDoubleValue(double value);
+    
     
     std::string GetStringValue();
     int GetIntValue();
+    bool GetBoolValue();
+    float GetFloatValue();
+    double GetDoubleValue();
 
     // Returns pointer to allocated memory. Up to user to delete.
     NameTreePair* GetChildren(int* numChildren);

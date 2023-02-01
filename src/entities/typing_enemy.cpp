@@ -151,7 +151,7 @@ void TypingEnemyEntity::LoadDerived(serial::Ptree pt) {
     for (int i = 0; i < numChildren; ++i) {
         _hitActionStrings.push_back(children[i]._pt.GetStringValue());
     }
-    delete[] children;    
+    delete[] children;
     
 }
 

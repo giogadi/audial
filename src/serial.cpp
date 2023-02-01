@@ -150,7 +150,27 @@ bool Ptree::TryGetDouble(char const* name, double* v) {
 
 void Ptree::PutStringValue(char const* value) {
     assert(IsValid());
-    return GetInternal(_internal)->put_value<std::string>(value);
+    GetInternal(_internal)->put_value<std::string>(value);
+}
+
+void Ptree::PutIntValue(int value) {
+    assert(IsValid());
+    GetInternal(_internal)->put_value<int>(value);
+}
+
+void Ptree::PutBoolValue(bool value) {
+    assert(IsValid());
+    GetInternal(_internal)->put_value<bool>(value);
+}
+
+void Ptree::PutFloatValue(float value) {
+    assert(IsValid());
+    GetInternal(_internal)->put_value<float>(value);
+}
+
+void Ptree::PutDoubleValue(double value) {
+    assert(IsValid());
+    GetInternal(_internal)->put_value<double>(value);
 }
 
 std::string Ptree::GetStringValue() {
@@ -161,6 +181,21 @@ std::string Ptree::GetStringValue() {
 int Ptree::GetIntValue() {
     assert(IsValid());
     return GetInternal(_internal)->get_value<int>();
+}
+
+bool Ptree::GetBoolValue() {
+    assert(IsValid());
+    return GetInternal(_internal)->get_value<bool>();
+}
+
+float Ptree::GetFloatValue() {
+    assert(IsValid());
+    return GetInternal(_internal)->get_value<float>();
+}
+
+double Ptree::GetDoubleValue() {
+    assert(IsValid());
+    return GetInternal(_internal)->get_value<double>();
 }
 
 NameTreePair* Ptree::GetChildren(int* numChildren) {

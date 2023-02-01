@@ -4,19 +4,11 @@
 
 struct TestProps {
     
-    
     int _myInt1;
-    
-    
     
     int _myInt2;
     
-    
-    
     std::string _myString;
-
-    Vec3 _myVec3;
-    
     
 
     void Load(serial::Ptree pt);

@@ -4,11 +4,7 @@
 
 struct {{propertiesName}}Props {
     {% for prop in props %}
-    {% if prop.type == "int" %}
-    int _{{prop.name}};
-    {% elif prop.type == "string" %}
-    std::string _{{prop.name}};
-    {% endif %}
+    {{prop.type}} _{{prop.name}};
     {% endfor %}
 
     void Load(serial::Ptree pt);
