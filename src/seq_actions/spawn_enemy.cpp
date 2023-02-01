@@ -2,6 +2,7 @@
 
 #include <map>
 #include <fstream>
+#include <sstream>
 
 #include "string_util.h"
 #include "rng.h"
@@ -485,7 +486,7 @@ void LoadSeqEnemy(SeqAction::LoadInputs const& loadInputs, TypingEnemyEntity& en
             pAction->_velocity = velocity;
             pAction->_velOnly = velOnly;
             pAction->_temporary = !saveSeqChange;
-            enemy._hitActions.push_back(std::move(pAction));
+            enemy._hitActions.push_back(std::move(pAction));            
         }
     } else {
         auto pAction = std::make_unique<ChangeStepSequencerSeqAction>();
@@ -495,6 +496,7 @@ void LoadSeqEnemy(SeqAction::LoadInputs const& loadInputs, TypingEnemyEntity& en
         pAction->_velOnly = velOnly;
         pAction->_temporary = !saveSeqChange;
         enemy._hitActions.push_back(std::move(pAction));
+       
     }
 }
 
@@ -557,7 +559,7 @@ void LoadNoteEnemy(TypingEnemyEntity& enemy, std::istream& lineStream) {
             pAction->_midiNote = n[0];
             pAction->_noteLength = noteLength;
             pAction->_velocity = velocity;
-            enemy._hitActions.push_back(std::move(pAction));
+            enemy._hitActions.push_back(std::move(pAction));            
         }
     } else {
         auto pAction = std::make_unique<NoteOnOffSeqAction>();
@@ -565,7 +567,7 @@ void LoadNoteEnemy(TypingEnemyEntity& enemy, std::istream& lineStream) {
         pAction->_midiNote = midiNote;
         pAction->_noteLength = noteLength;
         pAction->_velocity = velocity;
-        enemy._hitActions.push_back(std::move(pAction));
+        enemy._hitActions.push_back(std::move(pAction));       
     }
 }
 
@@ -603,7 +605,7 @@ void LoadPcmEnemy(TypingEnemyEntity& enemy, std::istream& lineStream) {
         pAction->_b_e._e.type = audio::EventType::PlayPcm;
         pAction->_b_e._e.pcmVelocity = velocity;
         pAction->_b_e._e.loop = false;
-        enemy._hitActions.push_back(std::move(pAction));
+        enemy._hitActions.push_back(std::move(pAction));        
     } else {
         printf("LoadPcmEnemy: need a sound name!\n");
     }
@@ -640,6 +642,8 @@ void SpawnEnemySeqAction::Load(LoadInputs const& loadInputs, std::istream& lineS
     _enemy._modelColor.Set(1.f, 0.f, 0.f, 1.f);
 
     _enemy._transform.Scale(0.2f, 0.2f, 0.2f);
+
+    _enemy._useHitActionsOnInitHack = true;
     
     // Read in common properties until we read a type:blah one. After that, all
     // properties are assumed to be specific to that enemy "type".
@@ -745,7 +749,7 @@ void SpawnEnemySeqAction::Load(LoadInputs const& loadInputs, std::istream& lineS
             pAction->_desiredTargetToCameraOffset.Set(0.f, 5.f, 0.f);
             pAction->_setTarget = true;
             pAction->_setOffset = true;
-            _enemy._hitActions.push_back(std::move(pAction));
+            _enemy._hitActions.push_back(std::move(pAction));           
         } else if (key == "camera_offset") {
             assert(false);  // UNSUPPORTED
             // auto pAction = std::make_unique<CameraControlSeqAction>();

@@ -27,10 +27,12 @@ struct TypingEnemyEntity : public ne::Entity {
     Vec3 _velocity; // spatial, not audio
     Vec4 _currentColor;
     std::vector<std::unique_ptr<SeqAction>> _hitActions;
+    bool _useHitActionsOnInitHack = false;
 
     bool IsActive(GameManager& g) const;
     void OnHit(GameManager& g);
     InputManager::Key GetNextKey() const;
+
     
     virtual void Init(GameManager& g) override;
     virtual void Update(GameManager& g, float dt) override;

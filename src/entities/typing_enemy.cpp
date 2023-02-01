@@ -35,7 +35,18 @@ void TypingEnemyEntity::Init(GameManager& g) {
         assert(player != nullptr);
         player->RegisterSectionEnemy(_sectionId, _id);
     }
-    _hitActions.clear();
+    // TODO I'M SORRY MOTHER. We need to support the ability for now of
+    // spawn_enemy.cpp to init an enemy by setting _hitActions directly, and not
+    // having it overwritten.
+    if (_useHitActionsOnInitHack) {
+        assert(_hitActionStrings.empty());
+        for (auto const& pAction : _hitActions) {
+            pAction->InitBase(g);
+        }
+    } else {
+        _hitActions.clear();
+    }
+    // END UGLY HACK
     _hitActions.reserve(_hitActionStrings.size());
     SeqAction::LoadInputs loadInputs;  // default
     for (std::string const& actionStr : _hitActionStrings) {
