@@ -308,7 +308,11 @@ Entity::ImGuiResult Entity::ImGui(GameManager& g) {
     imgui_util::InputText<128>("Entity name##TopLevel", &_name);
     ImGui::Text("Entity type: %s", ne::gkEntityTypeNames[(int)_id._type]);
     ImGui::Checkbox("Pickable", &_pickable);
+    Entity::ImGuiResult result = Entity::ImGuiResult::Done;
     Vec3 p = _transform.GetPos();
+    if (ImGui::Button("Force Init")) {
+        result = Entity::ImGuiResult::NeedsInit;
+    }
     if (ImGui::InputFloat3("Pos##Entity", p._data, "%.3f", ImGuiInputTextFlags_EnterReturnsTrue)) {
         _transform.SetTranslation(p);
     }
@@ -338,10 +342,9 @@ Entity::ImGuiResult Entity::ImGui(GameManager& g) {
     ImGui::ColorEdit4("Model color##Entity", _modelColor._data);    
     bool derivedNeedsInit = ImGuiDerived(g) == ImGuiResult::NeedsInit;
     if (modelChanged || derivedNeedsInit) {
-        return ImGuiResult::NeedsInit;
-    } else {
-        return ImGuiResult::Done;
+        result = Entity::ImGuiResult::NeedsInit;
     }
+    return result;
 }
 
 }  // namespace ne

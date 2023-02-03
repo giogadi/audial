@@ -62,7 +62,7 @@ struct BaseEntity {
     std::string _name;
     bool _pickable = true;
     std::string _modelName;
-    Vec4 _modelColor;
+    Vec4 _modelColor = Vec4(0.8f, 0.8f, 0.8f, 1.f);
 
     EntityId _id;
     BoundMeshPNU const* _model = nullptr;
