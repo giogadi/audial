@@ -38,65 +38,188 @@ std::optional<float> sphereRayCast(Vec3 const& rayStart, Vec3 const& normalizedR
 
 }  // end namespace
 
-// TODO: Have PickEntity use this.
 void GetPickRay(double screenX, double screenY, int windowWidth, int windowHeight, renderer::Camera const& camera,
     Vec3* rayStart, Vec3* rayDir) {
     assert(rayStart != nullptr);
     assert(rayDir != nullptr);
 
-    Mat4 const& cameraTransform = camera._transform;
+    Mat4 const& cameraTransform = camera._transform;    
 
     float aspectRatio = (float) windowWidth / (float) windowHeight;
 
-    // First we find the world-space position of the top-left corner of the near clipping plane.
-    Vec3 nearPlaneCenter = cameraTransform.GetPos() - cameraTransform.GetZAxis() * camera._zNear;
-    float nearPlaneHalfHeight = camera._zNear * tan(0.5f * camera._fovyRad);
-    float nearPlaneHalfWidth = nearPlaneHalfHeight * aspectRatio;
-    Vec3 nearPlaneTopLeft = nearPlaneCenter;
-    nearPlaneTopLeft -= nearPlaneHalfWidth * cameraTransform.GetXAxis();
-    nearPlaneTopLeft += nearPlaneHalfHeight * cameraTransform.GetYAxis();
+    if (camera._projectionType == renderer::Camera::ProjectionType::Perspective) {
 
-    // Now map clicked point from [0,windowWidth] -> [0,1]
-    float xFactor = screenX / windowWidth;
-    float yFactor = screenY / windowHeight;
+        // First we find the world-space position of the top-left corner of the near clipping plane.
+        Vec3 nearPlaneCenter = cameraTransform.GetPos() - cameraTransform.GetZAxis() * camera._zNear;
+        float nearPlaneHalfHeight = camera._zNear * tan(0.5f * camera._fovyRad);
+        float nearPlaneHalfWidth = nearPlaneHalfHeight * aspectRatio;
+        Vec3 nearPlaneTopLeft = nearPlaneCenter;
+        nearPlaneTopLeft -= nearPlaneHalfWidth * cameraTransform.GetXAxis();
+        nearPlaneTopLeft += nearPlaneHalfHeight * cameraTransform.GetYAxis();
 
-    Vec3 clickedPointOnNearPlane = nearPlaneTopLeft;
-    clickedPointOnNearPlane += (xFactor * 2 * nearPlaneHalfWidth) * cameraTransform.GetXAxis();
-    clickedPointOnNearPlane -= (yFactor * 2 * nearPlaneHalfHeight) * cameraTransform.GetYAxis();
+        // Now map clicked point from [0,windowWidth] -> [0,1]
+        float xFactor = screenX / windowWidth;
+        float yFactor = screenY / windowHeight;
 
-    *rayDir = (clickedPointOnNearPlane - cameraTransform.GetPos()).GetNormalized();
-    *rayStart = cameraTransform.GetPos();
+        Vec3 clickedPointOnNearPlane = nearPlaneTopLeft;
+        clickedPointOnNearPlane += (xFactor * 2 * nearPlaneHalfWidth) * cameraTransform.GetXAxis();
+        clickedPointOnNearPlane -= (yFactor * 2 * nearPlaneHalfHeight) * cameraTransform.GetYAxis();
+
+        *rayDir = (clickedPointOnNearPlane - cameraTransform.GetPos()).GetNormalized();
+        *rayStart = cameraTransform.GetPos() ;
+    } else if (camera._projectionType == renderer::Camera::ProjectionType::Orthographic) {
+        // get screen units as [0,1]
+        double xFactor = screenX / (double) windowWidth;
+        // Flip it so that yFactor is 0 at screen bottom
+        double yFactor = 1.0 - (screenY / (double) windowHeight);
+
+        // map xFactor/yFactor to world units local to camera x/y
+        float offsetFromCameraX = (xFactor - 0.5) * camera._width;
+        float viewHeight = camera._width / aspectRatio;
+        float offsetFromCameraY = (yFactor - 0.5) * viewHeight;
+
+        Vec4 posRelToCamera(offsetFromCameraX, offsetFromCameraY, 0.f, 1.f);
+        Vec4 worldPos = camera._transform * posRelToCamera;
+        rayStart->Set(worldPos._x, worldPos._y, worldPos._z);
+        *rayDir = -camera._transform.GetZAxis();        
+    } else { assert(false); }
+}
+
+// https://github.com/opengl-tutorials/ogl/blob/master/misc05_picking/misc05_picking_custom.cpp
+bool TestRayOBBIntersection(
+	Vec3 const& ray_origin,        // Ray origin, in world space
+	Vec3 const& ray_direction,     // Ray direction (NOT target position!), in world space. Must be normalize()'d.
+	Vec3 const& aabb_min,          // Minimum X,Y,Z coords of the mesh when not transformed at all.
+	Vec3 const& aabb_max,          // Maximum X,Y,Z coords. Often aabb_min*-1 if your mesh is centered, but it's not always the case.
+	Mat4 const& ModelMatrix,       // Transformation applied to the mesh (which will thus be also applied to its bounding box)
+	float& intersection_distance // Output : distance between ray_origin and the intersection with the OBB
+){
+	
+	// Intersection method from Real-Time Rendering and Essential Mathematics for Games
+	
+	float tMin = 0.0f;
+	float tMax = 100000.0f;
+
+	// Vec3 OBBposition_worldspace(ModelMatrix[3].x, ModelMatrix[3].y, ModelMatrix[3].z);
+    Vec3 OBBposition_worldspace = ModelMatrix.GetPos();
+
+	Vec3 delta = OBBposition_worldspace - ray_origin;
+
+	// Test intersection with the 2 planes perpendicular to the OBB's X axis
+	{
+		// glm::vec3 xaxis(ModelMatrix[0].x, ModelMatrix[0].y, ModelMatrix[0].z);
+        Vec3 xaxis = ModelMatrix.GetCol3(0);
+		float e = Vec3::Dot(xaxis, delta);
+		float f = Vec3::Dot(ray_direction, xaxis);
+
+		if ( fabs(f) > 0.001f ){ // Standard case
+
+			float t1 = (e+aabb_min._x)/f; // Intersection with the "left" plane
+			float t2 = (e+aabb_max._x)/f; // Intersection with the "right" plane
+			// t1 and t2 now contain distances betwen ray origin and ray-plane intersections
+
+			// We want t1 to represent the nearest intersection, 
+			// so if it's not the case, invert t1 and t2
+			if (t1>t2){
+				float w=t1;t1=t2;t2=w; // swap t1 and t2
+			}
+
+			// tMax is the nearest "far" intersection (amongst the X,Y and Z planes pairs)
+			if ( t2 < tMax )
+				tMax = t2;
+			// tMin is the farthest "near" intersection (amongst the X,Y and Z planes pairs)
+			if ( t1 > tMin )
+				tMin = t1;
+
+			// And here's the trick :
+			// If "far" is closer than "near", then there is NO intersection.
+			// See the images in the tutorials for the visual explanation.
+			if (tMax < tMin )
+				return false;
+
+		}else{ // Rare case : the ray is almost parallel to the planes, so they don't have any "intersection"
+			if(-e+aabb_min._x > 0.0f || -e+aabb_max._x < 0.0f)
+				return false;
+		}
+	}
+
+
+	// Test intersection with the 2 planes perpendicular to the OBB's Y axis
+	// Exactly the same thing than above.
+	{
+		// glm::vec3 yaxis(ModelMatrix[1].x, ModelMatrix[1].y, ModelMatrix[1].z);
+        Vec3 yaxis = ModelMatrix.GetCol3(1);
+		float e = Vec3::Dot(yaxis, delta);
+		float f = Vec3::Dot(ray_direction, yaxis);
+
+		if ( fabs(f) > 0.001f ){
+
+			float t1 = (e+aabb_min._y)/f;
+			float t2 = (e+aabb_max._y)/f;
+
+			if (t1>t2){float w=t1;t1=t2;t2=w;}
+
+			if ( t2 < tMax )
+				tMax = t2;
+			if ( t1 > tMin )
+				tMin = t1;
+			if (tMin > tMax)
+				return false;
+
+		}else{
+			if(-e+aabb_min._y > 0.0f || -e+aabb_max._y < 0.0f)
+				return false;
+		}
+	}
+
+
+	// Test intersection with the 2 planes perpendicular to the OBB's Z axis
+	// Exactly the same thing than above.
+	{
+		// glm::vec3 zaxis(ModelMatrix[2].x, ModelMatrix[2].y, ModelMatrix[2].z);
+        Vec3 zaxis = ModelMatrix.GetCol3(2);
+		float e = Vec3::Dot(zaxis, delta);
+		float f = Vec3::Dot(ray_direction, zaxis);
+
+		if ( fabs(f) > 0.001f ){
+
+			float t1 = (e+aabb_min._z)/f;
+			float t2 = (e+aabb_max._z)/f;
+
+			if (t1>t2){float w=t1;t1=t2;t2=w;}
+
+			if ( t2 < tMax )
+				tMax = t2;
+			if ( t1 > tMin )
+				tMin = t1;
+			if (tMin > tMax)
+				return false;
+
+		}else{
+			if(-e+aabb_min._z > 0.0f || -e+aabb_max._z < 0.0f)
+				return false;
+		}
+	}
+
+	intersection_distance = tMin;
+	return true;
+
 }
 
 EntityId PickEntity(
     EntityManager& entities, double clickX, double clickY, int windowWidth, int windowHeight,
     renderer::Camera const& camera) {
-    Mat4 const& cameraTransform = camera._transform;
 
-    float aspectRatio = (float) windowWidth / (float) windowHeight;
+    float const pickSphereRad = 0.1f;
 
-    // First we find the world-space position of the top-left corner of the near clipping plane.
-    Vec3 nearPlaneCenter = cameraTransform.GetPos() - cameraTransform.GetZAxis() * camera._zNear;
-    float nearPlaneHalfHeight = camera._zNear * tan(0.5f * camera._fovyRad);
-    float nearPlaneHalfWidth = nearPlaneHalfHeight * aspectRatio;
-    Vec3 nearPlaneTopLeft = nearPlaneCenter;
-    nearPlaneTopLeft -= nearPlaneHalfWidth * cameraTransform.GetXAxis();
-    nearPlaneTopLeft += nearPlaneHalfHeight * cameraTransform.GetYAxis();
-
-    // Now map clicked point from [0,windowWidth] -> [0,1]
-    float xFactor = clickX / windowWidth;
-    float yFactor = clickY / windowHeight;
-
-    Vec3 clickedPointOnNearPlane = nearPlaneTopLeft;
-    clickedPointOnNearPlane += (xFactor * 2 * nearPlaneHalfWidth) * cameraTransform.GetXAxis();
-    clickedPointOnNearPlane -= (yFactor * 2 * nearPlaneHalfHeight) * cameraTransform.GetYAxis();
+    Vec3 rayStart;
+    Vec3 rayDir;
+    GetPickRay(clickX, clickY, windowWidth, windowHeight, camera, &rayStart, &rayDir);
+    // Start a little ahead of camera so we don't pick it
+    rayStart += -camera._transform.GetZAxis() * pickSphereRad * 1.1f;
 
     std::optional<float> closestPickDist;
     EntityId closestPickItem = EntityId::InvalidId();
-    float pickSphereRad = 1.f;
-    Vec3 rayDir = (clickedPointOnNearPlane - cameraTransform.GetPos()).GetNormalized();
-    // Start ray forward of the camera a bit so we don't just pick the camera
-    Vec3 rayStart = cameraTransform.GetPos() + rayDir * (pickSphereRad + 0.1f);
     entities.ForEveryActiveEntity([&](EntityId id) {
         Entity& entity = *entities.GetEntity(id);
         std::weak_ptr<TransformComponent> pTrans = entity.FindComponentOfType<TransformComponent>();
@@ -119,46 +242,48 @@ EntityId PickEntity(
 ne::Entity* PickEntity(
     ne::EntityManager& entityMgr, double clickX, double clickY, int windowWidth, int windowHeight,
     renderer::Camera const& camera) {
-    Mat4 const& cameraTransform = camera._transform;
 
-    float aspectRatio = (float) windowWidth / (float) windowHeight;
-
-    // First we find the world-space position of the top-left corner of the near clipping plane.
-    Vec3 nearPlaneCenter = cameraTransform.GetPos() - cameraTransform.GetZAxis() * camera._zNear;
-    float nearPlaneHalfHeight = camera._zNear * tan(0.5f * camera._fovyRad);
-    float nearPlaneHalfWidth = nearPlaneHalfHeight * aspectRatio;
-    Vec3 nearPlaneTopLeft = nearPlaneCenter;
-    nearPlaneTopLeft -= nearPlaneHalfWidth * cameraTransform.GetXAxis();
-    nearPlaneTopLeft += nearPlaneHalfHeight * cameraTransform.GetYAxis();
-
-    // Now map clicked point from [0,windowWidth] -> [0,1]
-    float xFactor = clickX / windowWidth;
-    float yFactor = clickY / windowHeight;
-
-    Vec3 clickedPointOnNearPlane = nearPlaneTopLeft;
-    clickedPointOnNearPlane += (xFactor * 2 * nearPlaneHalfWidth) * cameraTransform.GetXAxis();
-    clickedPointOnNearPlane -= (yFactor * 2 * nearPlaneHalfHeight) * cameraTransform.GetYAxis();
+    Vec3 rayStart;
+    Vec3 rayDir;
+    GetPickRay(clickX, clickY, windowWidth, windowHeight, camera, &rayStart, &rayDir);
 
     std::optional<float> closestPickDist;
-    // ne::EntityId closestPickItem;
     ne::Entity* closestPickItem = nullptr;
-    float pickSphereRad = 1.f;
-    Vec3 rayDir = (clickedPointOnNearPlane - cameraTransform.GetPos()).GetNormalized();
-    // Start ray forward of the camera a bit so we don't just pick the camera
-    Vec3 rayStart = cameraTransform.GetPos() + rayDir * (pickSphereRad + 0.1f);
     for (auto iter = entityMgr.GetAllIterator(); !iter.Finished(); iter.Next()) {
         ne::Entity& entity = *iter.GetEntity();
         if (!entity._pickable) {
             continue;
         }
         Vec3 pos = entity._transform.GetPos();
-        std::optional<float> hitDist = sphereRayCast(rayStart, rayDir, pos, pickSphereRad);
+        std::optional<float> hitDist;
+        {
+            Vec3 scale;
+            
+            Vec3 xAxis = entity._transform.GetCol3(0);
+            scale._x = xAxis.Normalize();
+
+            Vec3 yAxis = entity._transform.GetCol3(1);
+            scale._y = yAxis.Normalize();
+
+            Vec3 zAxis = entity._transform.GetCol3(2);
+            scale._z = zAxis.Normalize();
+
+            Mat3 rot(xAxis, yAxis, zAxis);
+            Mat4 transNoScale;
+            transNoScale.SetTopLeftMat3(rot);
+            transNoScale.SetTranslation(pos);
+
+            float d;
+            if (TestRayOBBIntersection(rayStart, rayDir, -scale, scale, transNoScale, d)) {
+                hitDist = d;
+            }
+        }
         if (hitDist.has_value()) {
             if (!closestPickDist.has_value() || *hitDist < *closestPickDist) {
                 *closestPickDist = *hitDist;
                 closestPickItem = &entity;
             }
-        }
+        }       
     }
 
     return closestPickItem;
