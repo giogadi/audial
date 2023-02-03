@@ -54,9 +54,15 @@ bool StepSequencerEntity::TryReadSeqStep(std::istream& input, SeqStep& step) {
         }            
         int midiNote = -1;
         if (noteStr[0] == 'm') {
-            midiNote = GetMidiNote(noteStr.substr(1));
+            bool success = MaybeGetMidiNoteFromStr(noteStr.substr(1), midiNote);
+            if (!success) {
+                return false;
+            }
         } else {
-            midiNote = string_util::StoiOrDie(noteStr);
+            bool success = string_util::MaybeStoi(noteStr, midiNote);
+            if (!success) {
+                return false;
+            }
         }
         if (currentNoteIx >= step._midiNote.size()) {
             printf("StepSequencer::Load: Too many notes!\n");
@@ -68,7 +74,10 @@ bool StepSequencerEntity::TryReadSeqStep(std::istream& input, SeqStep& step) {
     std::size_t velDelimIx = stepStr.find_first_of(':');
     if (velDelimIx != std::string::npos) {
         std::string_view velStr = std::string_view(stepStr).substr(velDelimIx+1);
-        step._velocity = string_util::StofOrDie(velStr);
+        bool success = string_util::MaybeStof(velStr, step._velocity);
+        if (!success) {
+            return false;
+        }
     }
 
     // Returns false if we never read a note

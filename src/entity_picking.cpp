@@ -257,6 +257,7 @@ ne::Entity* PickEntity(
         Vec3 pos = entity._transform.GetPos();
         std::optional<float> hitDist;
         {
+            // TODO: THIS DECOMPOSITION PROBABLY DOES NOT HANDLE SHEAR
             Vec3 scale;
             
             Vec3 xAxis = entity._transform.GetCol3(0);

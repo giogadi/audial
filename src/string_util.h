@@ -19,20 +19,35 @@ inline std::string GenerateRandomText(int numChars) {
     return text;
 }
 
+inline bool MaybeStoi(std::string_view const str, int& output) {
+    auto [ptr, ec] = std::from_chars(str.data(), str.data()+str.length(), output);
+    return ec == std::errc();
+}
 inline int StoiOrDie(std::string_view const str) {
     int x;
-    auto [ptr, ec] = std::from_chars(str.data(), str.data()+str.length(), x);
-    assert(ec == std::errc());
+    bool success = MaybeStoi(str, x);
+    assert(success);
     return x;
 }
-inline float StofOrDie(std::string_view const str) {
+inline bool MaybeStof(std::string_view const str, float& output) {
     // WTF, doesn't work yet???
     // float x;
     // auto [ptr, ec] = std::from_chars(str.data(), str.data()+str.length(), x);
     // assert(ec == std::errc());
     // return x;
     std::string ownedStr(str);
-    return std::stof(ownedStr);
+    try {
+        output = std::stof(ownedStr);
+        return true;
+    } catch (std::exception& e) {
+        return false;
+    }
+}
+inline float StofOrDie(std::string_view const str) {
+    float x;
+    bool success = MaybeStof(str, x);
+    assert(success);
+    return x;
 }
 
 inline bool EqualsIgnoreCase(std::string_view const x, std::string_view const y) {

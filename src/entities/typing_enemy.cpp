@@ -187,7 +187,7 @@ ne::BaseEntity::ImGuiResult TypingEnemyEntity::ImGuiDerived(GameManager& g) {
     for (int i = 0; i < _hitActionStrings.size(); ++i) {
         ImGui::PushID(i);
         std::string& actionStr = _hitActionStrings[i];
-        bool changed = imgui_util::InputText<256>("Action", &actionStr);
+        bool changed = imgui_util::InputText<256>("Action", &actionStr, /*trueOnReturnOnly=*/true);
         if (changed) {
             result = ImGuiResult::NeedsInit;
         }
