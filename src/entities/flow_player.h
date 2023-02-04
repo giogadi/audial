@@ -9,7 +9,9 @@ struct FlowPlayerEntity : public ne::Entity {
     // serialized
     float _selectionRadius = -1.f;  // ignored if < 0
     float _launchVel = 4.f; // > 0
-    float _decel = 2.f;  // > 0
+    Vec3 _gravity = Vec3(0.f, 0.f, 9.81f);
+    float _maxHorizSpeedAfterDash = 20.f;
+    float _dashTime = 0.5f;
 
     // non-serialized
     Vec3 _vel;
@@ -20,6 +22,7 @@ struct FlowPlayerEntity : public ne::Entity {
     enum SectionDir { Center, Up, Down, Left, Right };
     std::map<int, SectionDir> _sectionDirs;
     ne::EntityId _cameraId;
+    float _dashTimer = -1.f;
     
     virtual void Init(GameManager& g) override;
     virtual void Update(GameManager& g, float dt) override;

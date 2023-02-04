@@ -5,17 +5,22 @@
 #include "input_manager.h"
 #include "renderer.h"
 #include "camera.h"
+#include "math_util.h"
 
 void FlowPlayerEntity::SaveDerived(serial::Ptree pt) const {
     pt.PutFloat("selection_radius", _selectionRadius);
     pt.PutFloat("launch_vel", _launchVel);
-    pt.PutFloat("decel", _decel);  
+    pt.PutFloat("max_horiz_speed_after_dash", _maxHorizSpeedAfterDash);
+    pt.PutFloat("dash_time", _dashTime);
+    serial::SaveInNewChildOf(pt, "gravity", _gravity);
 }
 
 void FlowPlayerEntity::LoadDerived(serial::Ptree pt) {
     _selectionRadius = pt.GetFloat("selection_radius");
     _launchVel = pt.GetFloat("launch_vel");
-    _decel = pt.GetFloat("decel");
+    pt.TryGetFloat("max_horiz_speed_after_dash", &_maxHorizSpeedAfterDash);
+    pt.TryGetFloat("dash_time", &_dashTime);
+    serial::LoadFromChildOf(pt, "gravity", _gravity);
 }
 
 void FlowPlayerEntity::Init(GameManager& g) {
@@ -185,6 +190,7 @@ ne::EntityManager::Iterator enemyIter = g._neEntityManager->GetIterator(ne::Enti
         Vec3 toEnemyDir = nearest->_transform.GetPos() - playerPos;
         toEnemyDir.Normalize();
         _vel = toEnemyDir * _launchVel;
+        _dashTimer = 0.f;
 
         // Update camera offset according to section
         if (nearest->_flowSectionId != _currentSectionId) {
@@ -212,16 +218,18 @@ ne::EntityManager::Iterator enemyIter = g._neEntityManager->GetIterator(ne::Enti
             camera->_desiredTargetToCameraOffset = targetToCameraOffset;
         }
     }
-    
-    if (std::abs(_vel._x) < kEps && std::abs(_vel._y) < kEps && std::abs(_vel._z) < kEps) {
-        _vel.Set(0.f, 0.f, 0.f);
+
+    if (_dashTimer >= _dashTime) {
+        // Finished dashing. reset vel.
+        _vel._x = math_util::Clamp(_vel._x, -_maxHorizSpeedAfterDash, _maxHorizSpeedAfterDash);
+        _vel._z = 0.f;
+        _dashTimer = -1.f;
+    } else if (_dashTimer >= 0.f) {
+        // Still dashing. maintain velocity.
+        _dashTimer += dt;
     } else {
-        float speed = _vel.Length();
-        float newSpeed = speed - dt * _decel;
-        if ((newSpeed > 0) != (speed > 0)) {
-            newSpeed = 0.f;
-        }
-        _vel = _vel * (newSpeed / speed);
+        // Not dashing. Apply gravity.
+        _vel += _gravity * dt;
     }
 
     Vec3 p = _transform.GetPos();
