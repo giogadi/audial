@@ -269,6 +269,8 @@ ne::Entity* PickEntity(
             Vec3 zAxis = entity._transform.GetCol3(2);
             scale._z = zAxis.Normalize();
 
+            scale *= 0.5f;
+
             Mat3 rot(xAxis, yAxis, zAxis);
             Mat4 transNoScale;
             transNoScale.SetTopLeftMat3(rot);

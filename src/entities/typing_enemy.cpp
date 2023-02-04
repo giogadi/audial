@@ -10,6 +10,7 @@
 #include "step_sequencer.h"
 #include "typing_player.h"
 #include "imgui_util.h"
+#include "rng.h"
 
 namespace {
 
@@ -215,6 +216,8 @@ void TypingEnemyEntity::OnEditPick(GameManager& g) {
 static TypingEnemyEntity sMultiEnemy;
 
 void TypingEnemyEntity::MultiSelectImGui(GameManager& g, std::vector<TypingEnemyEntity*>& enemies) {
+
+    ImGui::ColorEdit4("Model color", sMultiEnemy._modelColor._data);
     
     if (ImGui::Button("Add Action")) {
         sMultiEnemy._hitActionStrings.emplace_back();
@@ -223,7 +226,7 @@ void TypingEnemyEntity::MultiSelectImGui(GameManager& g, std::vector<TypingEnemy
     for (int i = 0; i < sMultiEnemy._hitActionStrings.size(); ++i) {
         ImGui::PushID(i);
         std::string& actionStr = sMultiEnemy._hitActionStrings[i];
-        imgui_util::InputText<256>("Action", &actionStr, /*trueOnReturnOnly=*/true);
+        imgui_util::InputText<256>("Action", &actionStr);
         if (ImGui::Button("Delete")) {
             deletedIx = i;
         }
@@ -234,12 +237,30 @@ void TypingEnemyEntity::MultiSelectImGui(GameManager& g, std::vector<TypingEnemy
         sMultiEnemy._hitActionStrings.erase(sMultiEnemy._hitActionStrings.begin() + deletedIx);
     }
 
+    static bool sApplyColor = true;
+    static bool sApplyActions = true;
+    ImGui::Checkbox("Apply color", &sApplyColor);
+    ImGui::Checkbox("Apply actions", &sApplyActions);
     char applySelectionButtonStr[] = "Apply to Selection (x)";
     sprintf(applySelectionButtonStr, "Apply to Selection (%zu)", enemies.size());
     if (ImGui::Button(applySelectionButtonStr)) {
         for (TypingEnemyEntity* e : enemies) {
-            e->_hitActionStrings = sMultiEnemy._hitActionStrings;
+            if (sApplyColor) {
+                e->_modelColor = sMultiEnemy._modelColor;
+            }
+            if (sApplyActions) {
+                e->_hitActionStrings = sMultiEnemy._hitActionStrings;
+            }            
+            // TODO: do I need to call Destroy()?
             e->Init(g);
         }        
+    }
+
+    if (ImGui::Button("Randomize text")) {
+        for (TypingEnemyEntity* e : enemies) {
+            int letterIx = rng::GetInt(0, 25);
+            char letter = 'a' + letterIx;
+            e->_text = std::string(1, letter);
+        }
     }
 }

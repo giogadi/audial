@@ -9,6 +9,7 @@
 #include "beat_clock.h"
 #include "renderer.h"
 #include "entity_picking.h"
+#include "entities/typing_enemy.h"
 
 static float gScrollFactorForDebugCameraMove = 1.f;
 
@@ -152,7 +153,12 @@ void Editor::Update(float dt) {
     
     if (inputManager.IsKeyPressedThisFrame(InputManager::Key::I)) {
         _visible = !_visible;
-    }   
+    }
+
+    static bool sMultiEnemyEditorVisible = false;
+    if (inputManager.IsKeyPressedThisFrame(InputManager::Key::M)) {
+        sMultiEnemyEditorVisible = !sMultiEnemyEditorVisible;
+    }
 
     HandleEntitySelectAndMove();
 
@@ -185,6 +191,10 @@ void Editor::Update(float dt) {
     if (_visible) {
         DrawWindow();
     }
+
+    if (sMultiEnemyEditorVisible) {
+        DrawMultiEnemyWindow();
+    }
 }
 
 void Editor::DrawWindow() {
@@ -209,6 +219,7 @@ void Editor::DrawWindow() {
         } else {
             printf("FAILED to save script to \"%s\".\n", _saveFilename.c_str());
         }
+        pt.DeleteData();
     }
 
     // Entities  
@@ -219,7 +230,6 @@ void Editor::DrawWindow() {
 
             // Clean up any missing entities
             if (entity == nullptr) {
-                // printf("HOWDY: entity ID %d missing\n", entityId._id);
                 entityIdIter = _entityIds.erase(entityIdIter);
                 continue;
             }
@@ -268,15 +278,28 @@ void Editor::DrawWindow() {
     // Duplicate entities
     if (ImGui::Button("Duplicate Entity")) {
         for (ne::EntityId selectedId : _selectedEntityIds) {
-            if (ne::Entity* selectedEntity = _g->_neEntityManager->GetEntity(selectedId)) {
-                ne::Entity* newEntity = _g->_neEntityManager->AddEntity(selectedEntity->_id._type);
+            if (!_g->_neEntityManager->GetEntity(selectedId)) {
+                // NOTE: In the case that GetEntity() returns non-null, we DO
+                // NOT STORE it because we're about to add an entity to the
+                // manager. pointers are NOT STABLE after addition.
+                continue;
+            }
+
+            ne::Entity* newEntity = _g->_neEntityManager->AddEntity(selectedId._type);
+            assert(newEntity != nullptr);
+
+            ne::Entity* selectedEntity = _g->_neEntityManager->GetEntity(selectedId);
+            assert(selectedEntity != nullptr);
+
+            {
                 serial::Ptree pt = serial::Ptree::MakeNew();
                 selectedEntity->Save(pt);
                 newEntity->Load(pt);
-                newEntity->_name += " (copy)";
-                _entityIds.push_back(newEntity->_id);
-                newEntity->Init(*_g);
+                pt.DeleteData();
             }
+            newEntity->_name += " (copy)";
+            _entityIds.push_back(newEntity->_id);
+            newEntity->Init(*_g);
         }
     }
 
@@ -303,5 +326,23 @@ void Editor::DrawWindow() {
         }
     }
         
+    ImGui::End();
+}
+
+void Editor::DrawMultiEnemyWindow() {
+    ImGui::Begin("Multi Enemy Edit");
+
+    static std::vector<TypingEnemyEntity*> sSelectedEnemies;
+    sSelectedEnemies.clear();
+    sSelectedEnemies.reserve(_selectedEntityIds.size());
+    for (ne::EntityId eId : _selectedEntityIds) {
+        if (eId._type == ne::EntityType::TypingEnemy) {
+            if (ne::Entity* entity = _g->_neEntityManager->GetEntity(eId)) {
+                sSelectedEnemies.push_back(static_cast<TypingEnemyEntity*>(entity));
+            }
+        }
+    }
+    TypingEnemyEntity::MultiSelectImGui(*_g, sSelectedEnemies);
+    
     ImGui::End();
 }

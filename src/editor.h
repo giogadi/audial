@@ -12,6 +12,7 @@ struct Editor {
     void Init(GameManager* g);
     void Update(float dt);
     void DrawWindow();
+    void DrawMultiEnemyWindow();
     void HandleEntitySelectAndMove();
 
     GameManager* _g = nullptr;
