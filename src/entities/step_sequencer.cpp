@@ -4,6 +4,8 @@
 #include <string_view>
 #include <charconv>
 
+#include "imgui/imgui.h"
+
 #include "audio.h"
 #include "game_manager.h"
 #include "midi_util.h"
@@ -167,11 +169,7 @@ void StepSequencerEntity::Init(GameManager& g) {
     _loopStartBeatTime = _initialLoopStartBeatTime;
 }
 
-void StepSequencerEntity::Update(GameManager& g, float dt) {
-    if (g._editMode) {
-        return;
-    }
-    
+void StepSequencerEntity::Update(GameManager& g, float dt) {    
     if (_permanentSequence.empty()) {
         return;
     }
@@ -203,47 +201,49 @@ void StepSequencerEntity::Update(GameManager& g, float dt) {
     }   
 
     // Play the sound
-    SeqStep const& seqStep = _tempSequence[_currentIx];
-    if (_isSynth) {
-        audio::Event e;
-        e.timeInTicks = 0;
-        e.velocity = seqStep._velocity;
-        e.type = audio::EventType::NoteOn;
-        for (int i = 0; i < seqStep._midiNote.size(); ++i) {
-            if (seqStep._midiNote[i] < 0 || seqStep._velocity == 0.f) {
-                break;
+    if (!g._editMode || !_editorMute) {
+        SeqStep const& seqStep = _tempSequence[_currentIx];
+        if (_isSynth) {
+            audio::Event e;
+            e.timeInTicks = 0;
+            e.velocity = seqStep._velocity;
+            e.type = audio::EventType::NoteOn;
+            for (int i = 0; i < seqStep._midiNote.size(); ++i) {
+                if (seqStep._midiNote[i] < 0 || seqStep._velocity == 0.f) {
+                    break;
+                }
+                e.midiNote = seqStep._midiNote[i];
+                for (int channel : _channels) {
+                    e.channel = channel;
+                    g._audioContext->AddEvent(e);
+                }
             }
-            e.midiNote = seqStep._midiNote[i];
-            for (int channel : _channels) {
-                e.channel = channel;
+            double noteOffBeatTime = beatClock.GetBeatTime() + _noteLength;        
+            e.type = audio::EventType::NoteOff;
+            e.timeInTicks = beatClock.BeatTimeToTickTime(noteOffBeatTime);
+            for (int i = 0; i < seqStep._midiNote.size(); ++i) {
+                if (seqStep._midiNote[i] < 0 || seqStep._velocity == 0.f) {
+                    break;
+                }
+                e.midiNote = seqStep._midiNote[i];
+                for (int channel : _channels) {
+                    e.channel = channel;
+                    g._audioContext->AddEvent(e);
+                }        
+            }
+        } else {
+            audio::Event e;
+            e.timeInTicks = 0;
+            e.pcmVelocity = seqStep._velocity;
+            e.type = audio::EventType::PlayPcm;
+            e.loop = false;
+            for (int i = 0; i < seqStep._midiNote.size(); ++i) {
+                if (seqStep._midiNote[i] < 0 || seqStep._velocity == 0.f) {
+                    break;
+                }
+                e.pcmSoundIx = seqStep._midiNote[i];
                 g._audioContext->AddEvent(e);
             }
-        }
-        double noteOffBeatTime = beatClock.GetBeatTime() + _noteLength;        
-        e.type = audio::EventType::NoteOff;
-        e.timeInTicks = beatClock.BeatTimeToTickTime(noteOffBeatTime);
-        for (int i = 0; i < seqStep._midiNote.size(); ++i) {
-            if (seqStep._midiNote[i] < 0 || seqStep._velocity == 0.f) {
-                break;
-            }
-            e.midiNote = seqStep._midiNote[i];
-            for (int channel : _channels) {
-                e.channel = channel;
-                g._audioContext->AddEvent(e);
-            }        
-        }
-    } else {
-        audio::Event e;
-        e.timeInTicks = 0;
-        e.pcmVelocity = seqStep._velocity;
-        e.type = audio::EventType::PlayPcm;
-        e.loop = false;
-        for (int i = 0; i < seqStep._midiNote.size(); ++i) {
-            if (seqStep._midiNote[i] < 0 || seqStep._velocity == 0.f) {
-                break;
-            }
-            e.pcmSoundIx = seqStep._midiNote[i];
-            g._audioContext->AddEvent(e);
         }
     }
     
@@ -292,6 +292,7 @@ void StepSequencerEntity::SaveDerived(serial::Ptree pt) const {
     pt.PutDouble("note_length", _noteLength);
     pt.PutDouble("start_time", _initialLoopStartBeatTime);
     pt.PutBool("is_synth", _isSynth);
+    pt.PutBool("editor_mute", _editorMute);
 }
 
 void StepSequencerEntity::LoadDerived(serial::Ptree pt) {
@@ -318,4 +319,10 @@ void StepSequencerEntity::LoadDerived(serial::Ptree pt) {
     _initialLoopStartBeatTime = pt.GetDouble("start_time");
     _isSynth = true;
     pt.TryGetBool("is_synth", &_isSynth);
+    pt.TryGetBool("editor_mute", &_editorMute);
+}
+
+ne::BaseEntity::ImGuiResult StepSequencerEntity::ImGuiDerived(GameManager& g) {
+    ImGui::Checkbox("Mute in Editor", &_editorMute);
+    return ImGuiResult::Done;
 }

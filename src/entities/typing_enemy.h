@@ -31,13 +31,14 @@ struct TypingEnemyEntity : public ne::Entity {
 
     bool IsActive(GameManager& g) const;
     void OnHit(GameManager& g);
+    void DoHitActions(GameManager& g);
     InputManager::Key GetNextKey() const;
 
     
     virtual void Init(GameManager& g) override;
     virtual void Update(GameManager& g, float dt) override;
     /* virtual void Destroy(GameManager& g) {} */
-    /* virtual void OnEditPick(GameManager& g) {} */
+    virtual void OnEditPick(GameManager& g) override;
     /* virtual void DebugPrint(); */
 
     virtual void SaveDerived(serial::Ptree pt) const override;
@@ -48,4 +49,6 @@ struct TypingEnemyEntity : public ne::Entity {
     TypingEnemyEntity(TypingEnemyEntity const&) = delete;
     TypingEnemyEntity(TypingEnemyEntity&&) = default;
     TypingEnemyEntity& operator=(TypingEnemyEntity&&) = default;
+
+    static void MultiSelectImGui(GameManager& g, std::vector<TypingEnemyEntity*>& enemies);
 };

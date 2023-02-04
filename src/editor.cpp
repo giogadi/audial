@@ -1,5 +1,7 @@
 #include "editor.h"
 
+#include <map>
+
 #include "imgui/imgui.h"
 #include "imgui_util.h"
 #include "new_entity.h"
@@ -33,100 +35,126 @@ bool ProjectScreenPointToXZPlane(
     return false;
 }
 
-double gClickX = 0.f;
-double gClickY = 0.f;
-bool gMovingObject = false;
-}
+} // end namespace
 
-void Editor::UpdateSelectedPositionFromInput(float dt) {
-    ne::EntityManager& entities = *_g->_neEntityManager;
-    ne::Entity* entity = entities.GetEntity(_selectedEntityId);
-    if (entity == nullptr) {
-        _selectedEntityId = ne::EntityId();
-        return;
-    }
-
-    InputManager const& input = *_g->_inputManager;
-
-    if (input.IsKeyPressedThisFrame(InputManager::MouseButton::Left)) {
-        gMovingObject = false;
-        input.GetMousePos(gClickX, gClickY);
-    } else if (input.IsKeyPressed(InputManager::MouseButton::Left)) {
-        double screenX, screenY;
-        input.GetMousePos(screenX, screenY);
-        if (!gMovingObject) {
-            double screenX, screenY;
-            input.GetMousePos(screenX, screenY);
-            float const kMinDistBeforeMove = 0.01 * _g->_windowWidth;
-            float dx = gClickX - screenX;
-            float dy = gClickY - screenY;
-            float distFromClick2 = dx*dx + dy*dy;
-            if (distFromClick2 >= kMinDistBeforeMove*kMinDistBeforeMove) {
-                gMovingObject = true;
-            }
+void Editor::HandleEntitySelectAndMove() {
+    InputManager const& inputManager = *_g->_inputManager;
+    
+    static std::map<ne::EntityId, Vec3> sSelectedPositionsBeforeMove;
+    double mouseX, mouseY;
+    inputManager.GetMousePos(mouseX, mouseY);
+    enum class ClickMode { Selection, Move };
+    static ClickMode sClickMode = ClickMode::Selection;    
+    if (inputManager.IsKeyPressedThisFrame(InputManager::Key::Tab)) {
+        switch (sClickMode) {
+            case ClickMode::Selection:
+                sClickMode = ClickMode::Move;
+                break;
+            case ClickMode::Move: {
+                sClickMode = ClickMode::Selection;
+                // In case we were in the middle of moving some dudes, reset
+                // their positions and clear it out
+                for (auto const& idPosPair : sSelectedPositionsBeforeMove) {
+                    if (ne::Entity* entity = _g->_neEntityManager->GetEntity(idPosPair.first)) {
+                        entity->_transform.SetTranslation(idPosPair.second);
+                    }
+                }
+                sSelectedPositionsBeforeMove.clear();
+                break;
+            }             
         }
-        if (gMovingObject) {
-            Vec3 pickedPosOnXZPlane;
-            if (ProjectScreenPointToXZPlane(
-                screenX, screenY, _g->_windowWidth, _g->_windowHeight, _g->_scene->_camera, &pickedPosOnXZPlane)) {
-                entity->_transform.SetTranslation(pickedPosOnXZPlane);
+    }
+    switch (sClickMode) {
+        case ClickMode::Selection: {
+            if (inputManager.IsKeyPressedThisFrame(InputManager::MouseButton::Left)) {
+                ne::Entity* picked = PickEntity(
+                    *_g->_neEntityManager, mouseX, mouseY, _g->_windowWidth, _g->_windowHeight, _g->_scene->_camera);
+                if (picked) {
+                    picked->OnEditPick(*_g);
+                }
+                if (inputManager.IsShiftPressed()) {
+                    if (picked) {
+                        // Toggle the selection status of the picked entity.
+                        int numErased = _selectedEntityIds.erase(picked->_id);
+                        if (numErased == 0) {
+                            // Was unselected; so select it then!
+                            _selectedEntityIds.insert(picked->_id);
+                        }                       
+                    } else {
+                        // Do nothing if we clicked the air with shift held down
+                    }
+                } else {
+                    if (picked) {
+                        _selectedEntityIds.clear();
+                        _selectedEntityIds.insert(picked->_id);
+                    } else {
+                        _selectedEntityIds.clear();
+                    }
+                }
             }
+            break;
         }
-    } else {
-        gMovingObject = false;
+        case ClickMode::Move: {            
+            static Vec3 sClickedPosOnXZPlane;
+            if (inputManager.IsKeyPressedThisFrame(InputManager::MouseButton::Left)) {
+                sSelectedPositionsBeforeMove.clear();
+                ne::Entity* picked = PickEntity(
+                    *_g->_neEntityManager, mouseX, mouseY, _g->_windowWidth, _g->_windowHeight, _g->_scene->_camera);
+                if (picked) {
+                    if (_selectedEntityIds.find(picked->_id) != _selectedEntityIds.end()) {
+                        if (ProjectScreenPointToXZPlane(
+                                mouseX, mouseY, _g->_windowWidth, _g->_windowHeight, _g->_scene->_camera, &sClickedPosOnXZPlane)) {                                                    
+                            for (ne::EntityId selectedId : _selectedEntityIds) {
+                                if (ne::Entity* selectedEntity = _g->_neEntityManager->GetEntity(selectedId)) {
+                                    sSelectedPositionsBeforeMove.emplace(selectedId, selectedEntity->_transform.GetPos());
+                                }
+                            }
+                        } else {
+                            printf("WEIRD!!!! CLICKED POINT THAT DID NOT PROJECT TO XZ PLANE!\n");
+                        }
+                        
+                    }
+                }
+            } else if (!sSelectedPositionsBeforeMove.empty()) {
+                if (inputManager.IsKeyReleasedThisFrame(InputManager::MouseButton::Left)) {
+                    sSelectedPositionsBeforeMove.clear();
+                } else {
+                    // we're moving things!!!
+                    Vec3 mousePosOnXZPlane;
+                    if (ProjectScreenPointToXZPlane(
+                            mouseX, mouseY, _g->_windowWidth, _g->_windowHeight, _g->_scene->_camera, &mousePosOnXZPlane)) {
+                        Vec3 offset = mousePosOnXZPlane - sClickedPosOnXZPlane;
+                        for (auto const& idPosPair : sSelectedPositionsBeforeMove) {
+                            if (ne::Entity* entity = _g->_neEntityManager->GetEntity(idPosPair.first)) {
+                                Vec3 newPos = idPosPair.second + offset;
+                                entity->_transform.SetTranslation(newPos);
+                            }
+                        }
+                    } else {
+                        printf("WEIRD!!! MOUSE MOTION POINT DID NOT PROJECT TO XZ PLANE!\n");
+                    }
+                }
+            }
+            break;
+        }
     }
 
-    Vec3 inputVec(0.0f,0.f,0.f);
-    if (input.IsKeyPressed(InputManager::Key::W)) {
-        inputVec._z -= 1.0f;
-    }
-    if (input.IsKeyPressed(InputManager::Key::S)) {
-        inputVec._z += 1.0f;
-    }
-    if (input.IsKeyPressed(InputManager::Key::A)) {
-        inputVec._x -= 1.0f;
-    }
-    if (input.IsKeyPressed(InputManager::Key::D)) {
-        inputVec._x += 1.0f;
-    }
-
-    bool hasInput = inputVec._x != 0.f || inputVec._y != 0.f || inputVec._z != 0.f;
-    if (hasInput) {
-        float moveSpeed = 3.f;
-        Vec3 p = entity->_transform.GetPos() + inputVec.GetNormalized() * moveSpeed * dt;
-        entity->_transform.SetTranslation(p);
-    }    
-
-    // // Update axes cursor
-    // renderer::ColorModelInstance& m = _g->_scene->DrawMesh();
-    // m._mesh = _axesModel;
-    // m._transform = transform->GetWorldMat4();
-    // m._topLayer = true;
+    // TODO if we add WSAD motion of objects back in, we liked a speed
+    // multiplier of 3.0.
 }
 
 void Editor::Update(float dt) {
     if (!_g->_editMode) {
         return;
     }
-    
-    if (_g->_inputManager->IsKeyPressedThisFrame(InputManager::Key::I)) {
-        _visible = !_visible;
-    }
-    
-    double mouseX, mouseY;
-    _g->_inputManager->GetMousePos(mouseX, mouseY);
-    if (_g->_inputManager->IsKeyPressedThisFrame(InputManager::MouseButton::Left)) {
-        ne::Entity* picked = PickEntity(
-            *_g->_neEntityManager, mouseX, mouseY, _g->_windowWidth, _g->_windowHeight, _g->_scene->_camera);
-        if (picked == nullptr) {
-            _selectedEntityId = ne::EntityId();
-        } else {
-            _selectedEntityId = picked->_id;
-            picked->OnEditPick(*_g);
-        }       
-    }
 
-    UpdateSelectedPositionFromInput(dt);
+    InputManager const& inputManager = *_g->_inputManager;
+    
+    if (inputManager.IsKeyPressedThisFrame(InputManager::Key::I)) {
+        _visible = !_visible;
+    }   
+
+    HandleEntitySelectAndMove();
 
     // Use scroll input to move debug camera around.
     double scrollX = 0.0, scrollY = 0.0;
@@ -137,7 +165,11 @@ void Editor::Update(float dt) {
     }
 
     // Draw axes
-    if (ne::Entity* selectedEntity = _g->_neEntityManager->GetEntity(_selectedEntityId)) {
+    for (ne::EntityId selectedId : _selectedEntityIds) {
+        ne::Entity* selectedEntity = _g->_neEntityManager->GetEntity(selectedId);
+        if (selectedEntity == nullptr) {            
+            continue;
+        }
         renderer::ColorModelInstance& axesModel = _g->_scene->DrawMesh();
         axesModel._mesh = _axesMesh;
         axesModel._topLayer = true;
@@ -193,11 +225,20 @@ void Editor::DrawWindow() {
             }
             
             ImGui::PushID(entityId._id);
-            bool selected = entityId._id == _selectedEntityId._id;
+            bool selected = _selectedEntityIds.find(entityId) != _selectedEntityIds.end();
             bool clicked = ImGui::Selectable(entity->_name.c_str(), selected);
             if (clicked) {
-                _selectedEntityId = entityId;
+                if (ImGui::IsKeyDown(ImGuiKey_LeftShift) ||
+                    ImGui::IsKeyDown(ImGuiKey_RightShift)) {
+                    int numErased = _selectedEntityIds.erase(entityId);
+                    if (numErased == 0) {
+                        _selectedEntityIds.insert(entityId);
+                    }
+                } else {
+                    _selectedEntityIds = {entityId};
+                }                
             }
+            
             ImGui::PopID();
 
             ++entityIdIter;
@@ -223,32 +264,44 @@ void Editor::DrawWindow() {
         _entityIds.push_back(entity->_id);
         entity->Init(*_g);
     }
-
+    
     // Duplicate entities
     if (ImGui::Button("Duplicate Entity")) {
-        if (ne::Entity* selectedEntity = _g->_neEntityManager->GetEntity(_selectedEntityId)) {
-            ne::Entity* newEntity = _g->_neEntityManager->AddEntity(selectedEntity->_id._type);
-            serial::Ptree pt = serial::Ptree::MakeNew();
-            selectedEntity->Save(pt);
-            newEntity->Load(pt);
-            newEntity->_name += " (copy)";
-            _entityIds.push_back(newEntity->_id);
-            newEntity->Init(*_g);
+        for (ne::EntityId selectedId : _selectedEntityIds) {
+            if (ne::Entity* selectedEntity = _g->_neEntityManager->GetEntity(selectedId)) {
+                ne::Entity* newEntity = _g->_neEntityManager->AddEntity(selectedEntity->_id._type);
+                serial::Ptree pt = serial::Ptree::MakeNew();
+                selectedEntity->Save(pt);
+                newEntity->Load(pt);
+                newEntity->_name += " (copy)";
+                _entityIds.push_back(newEntity->_id);
+                newEntity->Init(*_g);
+            }
         }
     }
 
-    if (ne::Entity* selectedEntity = _g->_neEntityManager->GetEntity(_selectedEntityId)) {        
-        if (ImGui::Button("Remove Entity")) {
-            assert(_g->_neEntityManager->TagForDestroy(_selectedEntityId));
+    if (ImGui::Button("Remove Entity")) {
+        for (ne::EntityId selectedId : _selectedEntityIds) {
+            if (!_g->_neEntityManager->TagForDestroy(selectedId)) {
+                printf("WEIRD: Remove Entity couldn't find the entity!\n");
+            }
         }
     }
 
-    if (ne::Entity* selectedEntity = _g->_neEntityManager->GetEntity(_selectedEntityId)) {
-        if (selectedEntity->ImGui(*_g) == ne::Entity::ImGuiResult::NeedsInit) {
-            selectedEntity->Destroy(*_g);
-            selectedEntity->Init(*_g);
+    if (_selectedEntityIds.size() == 1) {
+        if (ne::Entity* selectedEntity = _g->_neEntityManager->GetEntity(*_selectedEntityIds.begin())) {
+            if (selectedEntity->ImGui(*_g) == ne::Entity::ImGuiResult::NeedsInit) {
+                selectedEntity->Destroy(*_g);
+                selectedEntity->Init(*_g);
+            }
+        }
+    } else {
+        if (_selectedEntityIds.empty()) {
+            ImGui::Text("(No selected entities)");
+        } else {
+            ImGui::Text("(Editing multiple entities unsupported)");
         }
     }
-
+        
     ImGui::End();
 }

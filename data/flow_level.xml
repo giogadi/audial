@@ -214,6 +214,7 @@
             <note_length>0.125</note_length>
             <start_time>4</start_time>
             <is_synth>false</is_synth>
+            <editor_mute>true</editor_mute>
         </StepSequencer>
         <StepSequencer>
             <name>snare_seq</name>
@@ -249,6 +250,7 @@
             <note_length>0.125</note_length>
             <start_time>4</start_time>
             <is_synth>false</is_synth>
+            <editor_mute>true</editor_mute>
         </StepSequencer>
         <StepSequencer>
             <name>hihat_seq</name>
@@ -284,6 +286,7 @@
             <note_length>0.125</note_length>
             <start_time>4</start_time>
             <is_synth>false</is_synth>
+            <editor_mute>true</editor_mute>
         </StepSequencer>
         <StepSequencer>
             <name>chord_seq</name>
@@ -321,6 +324,7 @@
             <note_length>0.125</note_length>
             <start_time>0</start_time>
             <is_synth>true</is_synth>
+            <editor_mute>false</editor_mute>
         </StepSequencer>
         <StepSequencer>
             <name>other_seq</name>
@@ -358,6 +362,7 @@
             <note_length>0.125</note_length>
             <start_time>0</start_time>
             <is_synth>true</is_synth>
+            <editor_mute>false</editor_mute>
         </StepSequencer>
         <StepSequencer>
             <name>bass_seq</name>
@@ -395,6 +400,7 @@
             <note_length>0.125</note_length>
             <start_time>0</start_time>
             <is_synth>true</is_synth>
+            <editor_mute>false</editor_mute>
         </StepSequencer>
         <StepSequencer>
             <name>lead_seq</name>
@@ -432,6 +438,7 @@
             <note_length>0.20000000000000001</note_length>
             <start_time>0</start_time>
             <is_synth>true</is_synth>
+            <editor_mute>false</editor_mute>
         </StepSequencer>
         <ActionSequencer>
             <name>action_seq</name>
@@ -725,7 +732,7 @@
             </model_color_vec4>
             <text>h</text>
             <hit_actions>
-                <action>change_step chord_seq 0 0 mB3-,mE4-,mG4</action>
+                <action>change_step chord_seq 0 1 mB3-,mE4-,mG4</action>
             </hit_actions>
         </TypingEnemy>
     </new_entities>

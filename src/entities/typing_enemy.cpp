@@ -123,6 +123,10 @@ void TypingEnemyEntity::OnHit(GameManager& g) {
         }            
     }
 
+    DoHitActions(g);
+}
+
+void TypingEnemyEntity::DoHitActions(GameManager& g) {
     switch (_hitBehavior) {
         case HitBehavior::SingleAction: {
             int hitActionIx = (_numHits - 1) % _hitActions.size();
@@ -202,4 +206,40 @@ ne::BaseEntity::ImGuiResult TypingEnemyEntity::ImGuiDerived(GameManager& g) {
         _hitActionStrings.erase(_hitActionStrings.begin() + deletedIx);
     }
     return result;
+}
+
+void TypingEnemyEntity::OnEditPick(GameManager& g) {
+    DoHitActions(g);
+}
+
+static TypingEnemyEntity sMultiEnemy;
+
+void TypingEnemyEntity::MultiSelectImGui(GameManager& g, std::vector<TypingEnemyEntity*>& enemies) {
+    
+    if (ImGui::Button("Add Action")) {
+        sMultiEnemy._hitActionStrings.emplace_back();
+    }
+    int deletedIx = -1;
+    for (int i = 0; i < sMultiEnemy._hitActionStrings.size(); ++i) {
+        ImGui::PushID(i);
+        std::string& actionStr = sMultiEnemy._hitActionStrings[i];
+        imgui_util::InputText<256>("Action", &actionStr, /*trueOnReturnOnly=*/true);
+        if (ImGui::Button("Delete")) {
+            deletedIx = i;
+        }
+        ImGui::PopID();
+    }
+
+    if (deletedIx >= 0) {
+        sMultiEnemy._hitActionStrings.erase(sMultiEnemy._hitActionStrings.begin() + deletedIx);
+    }
+
+    char applySelectionButtonStr[] = "Apply to Selection (x)";
+    sprintf(applySelectionButtonStr, "Apply to Selection (%zu)", enemies.size());
+    if (ImGui::Button(applySelectionButtonStr)) {
+        for (TypingEnemyEntity* e : enemies) {
+            e->_hitActionStrings = sMultiEnemy._hitActionStrings;
+            e->Init(g);
+        }        
+    }
 }

@@ -25,6 +25,7 @@ struct StepSequencerEntity : ne::Entity {
     bool _isSynth = true;  // false is drumkit
     double _noteLength = 0.25;
     double _initialLoopStartBeatTime = 4.0;
+    bool _editorMute = false;
 
     // non-serialized
     int _currentIx = 0;
@@ -44,7 +45,7 @@ struct StepSequencerEntity : ne::Entity {
     virtual void Update(GameManager& g, float dt) override;
     virtual void SaveDerived(serial::Ptree pt) const override;
     virtual void LoadDerived(serial::Ptree pt) override;
-    /* virtual ImGuiResult ImGuiDerived(GameManager& g) override; */
+    virtual ImGuiResult ImGuiDerived(GameManager& g) override;
 
     static void WriteSeqStep(SeqStep const& step, std::ostream& output);
     static bool TryReadSeqStep(std::istream& input, SeqStep& step);
