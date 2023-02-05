@@ -2,6 +2,7 @@
 
 #include <unordered_map>
 #include <string>
+#include <cstdio>
 
 
 
@@ -38,6 +39,11 @@ char const* ScriptActionTypeToString(ScriptActionType e) {
 }
 
 ScriptActionType StringToScriptActionType(char const* s) {
-	return gStringToScriptActionType.at(s);
+    auto iter = gStringToScriptActionType.find(s);
+    if (iter != gStringToScriptActionType.end()) {
+    	return gStringToScriptActionType.at(s);
+    }
+    printf("ERROR StringToScriptActionType: unrecognized value \"%s\"\n", s);
+    return static_cast<ScriptActionType>(0);
 }
 

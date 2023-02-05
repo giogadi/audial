@@ -2,6 +2,7 @@
 
 #include <unordered_map>
 #include <string>
+#include <cstdio>
 
 
 namespace audio {
@@ -52,7 +53,12 @@ char const* EventTypeToString(EventType e) {
 }
 
 EventType StringToEventType(char const* s) {
-	return gStringToEventType.at(s);
+    auto iter = gStringToEventType.find(s);
+    if (iter != gStringToEventType.end()) {
+    	return gStringToEventType.at(s);
+    }
+    printf("ERROR StringToEventType: unrecognized value \"%s\"\n", s);
+    return static_cast<EventType>(0);
 }
 
 

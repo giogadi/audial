@@ -63,7 +63,7 @@ def generatePropsFromJson(dataFilename):
     # userProps = [prop['type'] for prop in dataDict['props'] if isUserPropType(prop['type'])]
     # print(userProps)
     props = [getProp(rawProp['name'], rawProp['type'], isArray = False) for rawProp in dataDict['props']]
-    print(props)
+    # print(props)
     dataDict['props'] = props;
 
     # namespacesPrefix = ""

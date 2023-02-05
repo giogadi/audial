@@ -1,0 +1,11 @@
+{
+    "namespaces": [],
+    "enumName": "Direction",
+    "enumItems": [
+        "Center",
+        "Up",
+        "Down",
+        "Left",
+        "Right"
+    ]
+}

@@ -7,6 +7,7 @@
 #include "midi_util.h"
 #include "string_util.h"
 #include "seq_actions/spawn_enemy.h"
+#include "seq_actions/camera_control.h"
 #include "entities/typing_player.h"
 #include "entities/flow_player.h"
 #include "sound_bank.h"
@@ -33,6 +34,8 @@ std::unique_ptr<SeqAction> SeqAction::LoadAction(LoadInputs const& loadInputs, s
         pAction = std::make_unique<SpawnEnemySeqAction>();
     } else if (token == "b_e") {
         pAction = std::make_unique<BeatTimeEventSeqAction>();
+    } else if (token == "camera") {
+        pAction = std::make_unique<CameraControlSeqAction>();
     } else {
         printf("ERROR: Unrecognized action type \"%s\".\n", token.c_str());
     }

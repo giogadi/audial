@@ -2,6 +2,7 @@
 
 #include <unordered_map>
 #include <string>
+#include <cstdio>
 
 {% for ns in namespaces %}
 namespace {{ns}} {
@@ -28,7 +29,12 @@ char const* {{enumName}}ToString({{enumName}} e) {
 }
 
 {{enumName}} StringTo{{enumName}}(char const* s) {
-	return gStringTo{{enumName}}.at(s);
+    auto iter = gStringTo{{enumName}}.find(s);
+    if (iter != gStringTo{{enumName}}.end()) {
+    	return gStringTo{{enumName}}.at(s);
+    }
+    printf("ERROR StringTo{{enumName}}: unrecognized value \"%s\"\n", s);
+    return static_cast<{{enumName}}>(0);
 }
 
 {% for ns in namespaces %}

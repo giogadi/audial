@@ -2,6 +2,7 @@
 
 #include <unordered_map>
 #include <string>
+#include <cstdio>
 
 
 namespace audio {
@@ -132,7 +133,12 @@ char const* SynthParamTypeToString(SynthParamType e) {
 }
 
 SynthParamType StringToSynthParamType(char const* s) {
-	return gStringToSynthParamType.at(s);
+    auto iter = gStringToSynthParamType.find(s);
+    if (iter != gStringToSynthParamType.end()) {
+    	return gStringToSynthParamType.at(s);
+    }
+    printf("ERROR StringToSynthParamType: unrecognized value \"%s\"\n", s);
+    return static_cast<SynthParamType>(0);
 }
 
 

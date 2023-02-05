@@ -28,6 +28,8 @@ add_executable(game
     src/stb_truetype.cpp
 
     src/properties/Test.cpp
+
+    src/string_ci.cpp
     
     src/components/transform.cpp
     src/components/model_instance.cpp src/components/camera.cpp src/components/light.cpp
@@ -59,6 +61,7 @@ add_executable(game
     src/enums/ScriptActionType.cpp
     src/enums/synth_Waveform.cpp
     src/enums/ColorPreset.cpp
+    src/enums/Direction.cpp
 )
 
 if(MSVC)

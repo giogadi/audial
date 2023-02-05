@@ -70,4 +70,4 @@ inline void ToLower(std::string& x) {
     }
 }
 
-}
+}  // namespace string_util

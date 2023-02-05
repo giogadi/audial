@@ -2,6 +2,7 @@
 
 #include <unordered_map>
 #include <string>
+#include <cstdio>
 
 
 
@@ -62,6 +63,11 @@ char const* ColorPresetToString(ColorPreset e) {
 }
 
 ColorPreset StringToColorPreset(char const* s) {
-	return gStringToColorPreset.at(s);
+    auto iter = gStringToColorPreset.find(s);
+    if (iter != gStringToColorPreset.end()) {
+    	return gStringToColorPreset.at(s);
+    }
+    printf("ERROR StringToColorPreset: unrecognized value \"%s\"\n", s);
+    return static_cast<ColorPreset>(0);
 }
 

@@ -2,6 +2,7 @@
 
 #include <unordered_map>
 #include <string>
+#include <cstdio>
 
 
 
@@ -34,6 +35,11 @@ char const* CollisionLayerToString(CollisionLayer e) {
 }
 
 CollisionLayer StringToCollisionLayer(char const* s) {
-	return gStringToCollisionLayer.at(s);
+    auto iter = gStringToCollisionLayer.find(s);
+    if (iter != gStringToCollisionLayer.end()) {
+    	return gStringToCollisionLayer.at(s);
+    }
+    printf("ERROR StringToCollisionLayer: unrecognized value \"%s\"\n", s);
+    return static_cast<CollisionLayer>(0);
 }
 

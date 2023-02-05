@@ -4,6 +4,7 @@
 #include "entities/camera.h"
 #include "string_util.h"
 #include "entities/flow_player.h"
+#include "camera_util.h"
 
 void CameraControlSeqAction::Execute(GameManager& g) {
     int numEntities = 0;
@@ -38,19 +39,8 @@ void CameraControlSeqAction::Load(LoadInputs const& loadInputs, std::istream& in
         }
 
         if (key == "offset") {
-            if (string_util::EqualsIgnoreCase(value, "top")) {
-                _desiredTargetToCameraOffset.Set(0.f, 5.f, 3.f);
-            } else if (string_util::EqualsIgnoreCase(value, "bottom")) {
-                _desiredTargetToCameraOffset.Set(0.f, 5.f, -3.f);
-            } else if (string_util::EqualsIgnoreCase(value, "left")) {
-                _desiredTargetToCameraOffset.Set(3.f, 5.f, 0.f);
-            } else if (string_util::EqualsIgnoreCase(value, "right")) {
-                _desiredTargetToCameraOffset.Set(-3.f, 5.f, 0.f);
-            } else if (string_util::EqualsIgnoreCase(value, "center")) {
-                _desiredTargetToCameraOffset.Set(0.f, 5.f, 0.f);
-            } else {
-                printf("SpawnEnemy:camera_offset: unrecognized direction \"%s\"\n", value.c_str());
-            }
+            Direction offsetFromCamera = StringToDirection(value.c_str());
+            _desiredTargetToCameraOffset = camera_util::GetDefaultCameraOffset(offsetFromCamera);            
             _setOffset = true;
         } else if (key == "target") {
             _targetEntityName = value;

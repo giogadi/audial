@@ -16,7 +16,7 @@ struct TypingEnemyEntity : public ne::Entity {
     double _activeBeatTime = -1.0; // TODO
     double _inactiveBeatTime = -1.0; // TODO
     bool _destroyIfOffscreenLeft = true; // TODO
-    bool _destroyAfterTyped = false;
+    bool _destroyAfterTyped = true;
     int _sectionId = -1; // TODO
     Vec3 _sectionLocalPos; // TODO
     int _flowSectionId = -1; // TODO

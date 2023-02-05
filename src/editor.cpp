@@ -272,6 +272,13 @@ void Editor::DrawWindow() {
         ne::Entity* entity = _g->_neEntityManager->AddEntity((ne::EntityType)_selectedEntityTypeIx);
         entity->_name = "new_entity";
         _entityIds.push_back(entity->_id);
+        // place entity at center of view
+        Vec3 newPos;
+        bool projectSuccess = ProjectScreenPointToXZPlane(_g->_windowWidth / 2, _g->_windowHeight / 2, _g->_windowWidth, _g->_windowHeight, _g->_scene->_camera, &newPos);
+        if (!projectSuccess) {
+            printf("Editor.AddEntity: Failed to project center to XZ plane!\n");
+        }
+        entity->_transform.SetTranslation(newPos);
         entity->Init(*_g);
     }
     

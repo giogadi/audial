@@ -7,6 +7,8 @@
 #include "imgui_util.h"
 #include "game_manager.h"
 #include "renderer.h"
+#include "enums/Direction.h"
+#include "camera_util.h"
 
 #include "entities/light.h"
 #include "entities/camera.h"
@@ -339,7 +341,17 @@ Entity::ImGuiResult Entity::ImGui(GameManager& g) {
         }
     }
     bool modelChanged = imgui_util::InputText<64>("Model name##Entity", &_modelName, /*trueOnReturnOnly=*/true);
-    ImGui::ColorEdit4("Model color##Entity", _modelColor._data);    
+    ImGui::ColorEdit4("Model color##Entity", _modelColor._data);
+    
+    static int sCurDbgLookAtIx = 0;
+    ImGui::Combo("##DbgLookAtOffsetType", &sCurDbgLookAtIx, gDirectionStrings, static_cast<int>(Direction::Count));
+    ImGui::SameLine();
+    if (ImGui::Button("DbgLookAt w/ offset")) {
+        Direction offsetFromCamera = static_cast<Direction>(sCurDbgLookAtIx);
+        Vec3 targetToCamera = camera_util::GetDefaultCameraOffset(offsetFromCamera);
+        Vec3 cameraWorld = _transform.GetPos() + targetToCamera;
+        g._scene->_camera._transform.SetTranslation(cameraWorld);
+    }
     bool derivedNeedsInit = ImGuiDerived(g) == ImGuiResult::NeedsInit;
     if (modelChanged || derivedNeedsInit) {
         result = Entity::ImGuiResult::NeedsInit;

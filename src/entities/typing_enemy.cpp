@@ -163,6 +163,13 @@ InputManager::Key TypingEnemyEntity::GetNextKey() const {
 void TypingEnemyEntity::LoadDerived(serial::Ptree pt) {
     _text = pt.GetString("text");
     pt.TryGetBool("type_kill", &_destroyAfterTyped);
+    bool allActionsOnHit = false;
+    pt.TryGetBool("all_actions_on_hit", &allActionsOnHit);
+    if (allActionsOnHit) {
+        _hitBehavior = HitBehavior::AllActions;
+    } else {
+        _hitBehavior = HitBehavior::SingleAction;
+    }
     serial::Ptree actionsPt = pt.GetChild("hit_actions");
     int numChildren;
     serial::NameTreePair* children = actionsPt.GetChildren(&numChildren);
@@ -178,6 +185,7 @@ void TypingEnemyEntity::LoadDerived(serial::Ptree pt) {
 void TypingEnemyEntity::SaveDerived(serial::Ptree pt) const {
     pt.PutString("text", _text.c_str());
     pt.PutBool("type_kill", _destroyAfterTyped);
+    pt.PutBool("all_actions_on_hit", _hitBehavior == HitBehavior::AllActions);
     serial::Ptree actionsPt = pt.AddChild("hit_actions");
     for (std::string const& actionStr : _hitActionStrings) {
         serial::Ptree actionPt = actionsPt.AddChild("action");
@@ -190,6 +198,14 @@ ne::BaseEntity::ImGuiResult TypingEnemyEntity::ImGuiDerived(GameManager& g) {
 
     imgui_util::InputText<32>("Text", &_text);
     ImGui::Checkbox("Kill on type", &_destroyAfterTyped);
+
+    bool allActionsOnHit = _hitBehavior == HitBehavior::AllActions;
+    ImGui::Checkbox("All actions on hit", &allActionsOnHit);
+    if (allActionsOnHit) {
+        _hitBehavior = HitBehavior::AllActions;
+    } else {
+        _hitBehavior = HitBehavior::SingleAction;
+    }
     
     if (ImGui::Button("Add Action")) {
         _hitActionStrings.emplace_back();
