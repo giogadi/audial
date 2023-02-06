@@ -19,10 +19,11 @@ struct FlowPlayerEntity : public ne::Entity {
     std::deque<Vec3> _posHistory;  // start is most recent
     int _framesSinceLastSample = 0;
     int _currentSectionId = -1;
-    enum SectionDir { Center, Up, Down, Left, Right };
-    std::map<int, SectionDir> _sectionDirs;
     ne::EntityId _cameraId;
     float _dashTimer = -1.f;
+    Vec4 _currentColor;
+
+    void Draw(GameManager& g);
     
     virtual void Init(GameManager& g) override;
     virtual void Update(GameManager& g, float dt) override;

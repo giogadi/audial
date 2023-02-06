@@ -6,6 +6,7 @@
 #include "renderer.h"
 #include "camera.h"
 #include "math_util.h"
+#include "beat_clock.h"
 
 void FlowPlayerEntity::SaveDerived(serial::Ptree pt) const {
     pt.PutFloat("selection_radius", _selectionRadius);
@@ -31,6 +32,7 @@ void FlowPlayerEntity::Init(GameManager& g) {
         assert(numEntities == 1);
         _cameraId = eIter.GetEntity()->_id;
     }
+    _currentColor = _modelColor;
 }
 
 namespace {
@@ -144,9 +146,37 @@ bool IsCollisionFree(GameManager& g, Vec3 const& playerPos, Vec3 const& enemyPos
 }
 }
 
+void FlowPlayerEntity::Draw(GameManager& g) {
+    // Draw history positions
+    Mat4 historyTrans;
+    historyTrans.Scale(0.1f, 0.1f, 0.1f);
+    for (Vec3 const& prevPos : _posHistory) {
+        historyTrans.SetTranslation(prevPos);
+        g._scene->DrawCube(historyTrans, _currentColor);
+    }
+
+    if (_model != nullptr) {
+        g._scene->DrawMesh(_model, _transform, _currentColor);
+    }
+}
+
 void FlowPlayerEntity::Update(GameManager& g, float dt) {
     if (g._editMode) {
         return;
+    }
+
+    double const beatTime = g._beatClock->GetBeatTimeFromEpoch();
+    if (beatTime < 3) {
+        double unusedBeatNum;
+        float beatTimeFrac = (float) (modf(beatTime, &unusedBeatNum));
+        // 0 is default color, 1 is temp flash color
+        float factor = math_util::SmoothStep(beatTimeFrac);
+        Vec4 constexpr kFlashColor(0.f, 0.f, 0.f, 1.f);
+        _currentColor = _modelColor + factor * (kFlashColor - _modelColor);
+        Draw(g);
+        return;
+    } else {
+        _currentColor = _modelColor;
     }
 
     TypingEnemyEntity* nearest = nullptr;
@@ -192,30 +222,16 @@ ne::EntityManager::Iterator enemyIter = g._neEntityManager->GetIterator(ne::Enti
         _vel = toEnemyDir * _launchVel;
         _dashTimer = 0.f;
 
-        // Update camera offset according to section
         if (nearest->_flowSectionId != _currentSectionId) {
-            _currentSectionId = nearest->_flowSectionId;
-            SectionDir sectionDir = _sectionDirs[_currentSectionId];
-            Vec3 targetToCameraOffset;
-            switch (sectionDir) {
-                case SectionDir::Center:
-                    targetToCameraOffset.Set(0, 5.f, 0.f);
-                    break;
-                case SectionDir::Up:
-                    targetToCameraOffset.Set(0, 5.f, -3.f);
-                    break;
-                case SectionDir::Down:
-                    targetToCameraOffset.Set(0, 5.f, 3.f);
-                    break;
-                case SectionDir::Left:
-                    targetToCameraOffset.Set(-3.f, 5.f, 0.f);
-                    break;
-                case SectionDir::Right:
-                    targetToCameraOffset.Set(3.f, 5.f, 0.f);
-                    break;
+            // go through and destroy all enemies with the current section id
+            ne::EntityManager::Iterator enemyIter = g._neEntityManager->GetIterator(ne::EntityType::TypingEnemy);
+            for (; !enemyIter.Finished(); enemyIter.Next()) {
+                TypingEnemyEntity* e = static_cast<TypingEnemyEntity*>(enemyIter.GetEntity());
+                if (e->_flowSectionId == _currentSectionId) {
+                    g._neEntityManager->TagForDestroy(enemyIter.GetEntity()->_id);
+                }
             }
-            CameraEntity* camera = static_cast<CameraEntity*>(g._neEntityManager->GetEntity(_cameraId));
-            camera->_desiredTargetToCameraOffset = targetToCameraOffset;
+            _currentSectionId = nearest->_flowSectionId;
         }
     }
 
@@ -250,13 +266,5 @@ ne::EntityManager::Iterator enemyIter = g._neEntityManager->GetIterator(ne::Enti
     p += _vel * dt;
     _transform.SetTranslation(p);
 
-    // Draw history positions
-    Mat4 historyTrans;
-    historyTrans.Scale(0.1f, 0.1f, 0.1f);
-    for (Vec3 const& prevPos : _posHistory) {
-        historyTrans.SetTranslation(prevPos);
-        g._scene->DrawCube(historyTrans, _modelColor);
-    }
-
-    BaseEntity::Update(g, dt);    
+    Draw(g);
 }
