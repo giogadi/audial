@@ -179,6 +179,7 @@ void Editor::Update(float dt) {
         renderer::ColorModelInstance& axesModel = _g->_scene->DrawMesh();
         axesModel._mesh = _axesMesh;
         axesModel._topLayer = true;
+        axesModel._useMeshColor = true;
         // Factor out scale from transform
         Mat3 rotScale = selectedEntity->_transform.GetMat3();
         for (int i = 0; i < 3; ++i) {

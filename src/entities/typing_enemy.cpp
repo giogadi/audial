@@ -170,6 +170,7 @@ void TypingEnemyEntity::LoadDerived(serial::Ptree pt) {
     } else {
         _hitBehavior = HitBehavior::SingleAction;
     }
+    pt.TryGetBool("flow_polarity", &_flowPolarity);
     serial::Ptree actionsPt = pt.GetChild("hit_actions");
     int numChildren;
     serial::NameTreePair* children = actionsPt.GetChildren(&numChildren);
@@ -186,6 +187,7 @@ void TypingEnemyEntity::SaveDerived(serial::Ptree pt) const {
     pt.PutString("text", _text.c_str());
     pt.PutBool("type_kill", _destroyAfterTyped);
     pt.PutBool("all_actions_on_hit", _hitBehavior == HitBehavior::AllActions);
+    pt.PutBool("flow_polarity", _flowPolarity);
     serial::Ptree actionsPt = pt.AddChild("hit_actions");
     for (std::string const& actionStr : _hitActionStrings) {
         serial::Ptree actionPt = actionsPt.AddChild("action");
@@ -206,6 +208,8 @@ ne::BaseEntity::ImGuiResult TypingEnemyEntity::ImGuiDerived(GameManager& g) {
     } else {
         _hitBehavior = HitBehavior::SingleAction;
     }
+
+    ImGui::Checkbox("Flow polarity", &_flowPolarity);
     
     if (ImGui::Button("Add Action")) {
         _hitActionStrings.emplace_back();

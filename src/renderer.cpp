@@ -222,6 +222,12 @@ bool SceneInternal::Init(GameManager& g) {
         success = _meshMap.emplace("axes", std::move(mesh)).second;
         assert(success);
 
+        mesh = std::make_unique<BoundMeshPNU>();
+        success = mesh->Init("data/models/cross.obj");
+        assert(success);
+        success = _meshMap.emplace("cross", std::move(mesh)).second;
+        assert(success);
+
         mesh = MakeWaterMesh();
         assert(_meshMap.emplace("water", std::move(mesh)).second);
     }
@@ -319,6 +325,7 @@ void Scene::DrawMesh(BoundMeshPNU const* mesh, Mat4 const& t, Vec4 const& color)
     model._transform = t;
     model._mesh = mesh;
     model._color = color;
+    model._useMeshColor = false;
 }
 
 void Scene::DrawCube(Mat4 const& t, Vec4 const& color) {
@@ -488,9 +495,14 @@ void Scene::Draw(int windowWidth, int windowHeight, float timeInSecs) {
                 glBindVertexArray(m._mesh->_vao);
                 glDrawElements(GL_TRIANGLES, /*count=*/m._mesh->_numIndices, GL_UNSIGNED_INT, /*start_offset=*/0);
             } else {
+                if (!m._useMeshColor) {
+                    shader.SetVec4("uColor", m._color);
+                }
                 for (int subMeshIx = 0; subMeshIx < m._mesh->_subMeshes.size(); ++subMeshIx) {
                     BoundMeshPNU::SubMesh const& subMesh = m._mesh->_subMeshes[subMeshIx];
-                    shader.SetVec4("uColor", subMesh._color);
+                    if (m._useMeshColor) {
+                        shader.SetVec4("uColor", subMesh._color);   
+                    }
                     glBindVertexArray(m._mesh->_vao);
                     glDrawElements(GL_TRIANGLES, /*count=*/subMesh._numIndices, GL_UNSIGNED_INT,
                         /*start_offset=*/(void*)(sizeof(uint32_t) * subMesh._startIndex));

@@ -219,7 +219,8 @@ ne::EntityManager::Iterator enemyIter = g._neEntityManager->GetIterator(ne::Enti
         nearest->OnHit(g);
         Vec3 toEnemyDir = nearest->_transform.GetPos() - playerPos;
         toEnemyDir.Normalize();
-        _vel = toEnemyDir * _launchVel;
+        float sign = (_flowPolarity != nearest->_flowPolarity) ? 1.f : -1.f;
+        _vel = toEnemyDir * (sign * _launchVel);
         _dashTimer = 0.f;
 
         if (nearest->_flowSectionId != _currentSectionId) {

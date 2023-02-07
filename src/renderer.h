@@ -54,14 +54,21 @@ public:
 
 class ColorModelInstance {
 public:
+    void Set(Mat4 const& t, BoundMeshPNU const* mesh) {
+        _transform = t;
+        _mesh = mesh;
+        _useMeshColor = true;
+    }
     void Set(Mat4 const& t, BoundMeshPNU const* mesh, Vec4 const& color) {
         _transform = t;
         _mesh = mesh;
         _color = color;
+        _useMeshColor = false;
     }
 
     Mat4 _transform;
     BoundMeshPNU const* _mesh = nullptr;
+    bool _useMeshColor = false;
     Vec4 _color;
     bool _visible = true;
     bool _topLayer = false;

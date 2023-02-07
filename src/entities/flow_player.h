@@ -22,6 +22,7 @@ struct FlowPlayerEntity : public ne::Entity {
     ne::EntityId _cameraId;
     float _dashTimer = -1.f;
     Vec4 _currentColor;
+    bool _flowPolarity = true;
 
     void Draw(GameManager& g);
     
