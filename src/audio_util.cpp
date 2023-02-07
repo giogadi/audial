@@ -29,6 +29,9 @@ void audio::Event::Save(serial::Ptree pt) const {
             break;
         case EventType::AllNotesOff:
             break;
+        case EventType::SetGain:
+            pt.PutFloat("gain", newGain);
+            break;
         case EventType::None:
         case EventType::Count:
             break;
@@ -68,6 +71,9 @@ void audio::Event::Load(serial::Ptree pt) {
             midiNote = pt.GetInt("midi_note");
             break;
         case EventType::AllNotesOff:
+            break;
+        case EventType::SetGain:
+            newGain = pt.GetFloat("gain");
             break;
         case EventType::None:
         case EventType::Count:

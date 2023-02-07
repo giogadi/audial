@@ -39,6 +39,10 @@ struct Event {
             float newParamValue;
             int newParamValueInt;
         };
+        struct {
+            // valid under SetGain
+            float newGain;
+        };
     };
 
     void Save(serial::Ptree pt) const;

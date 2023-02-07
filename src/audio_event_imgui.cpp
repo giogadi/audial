@@ -42,6 +42,10 @@ void EventDrawImGuiNoTime(Event& event, SoundBank const& soundBank) {
             ImGui::Combo("Sound##", &event.pcmSoundIx, soundBank._soundNames.data(), soundBank._soundNames.size());
             break;
         }
+        case audio::EventType::SetGain: {
+            ImGui::InputScalar("Gain##", ImGuiDataType_Float, &event.newGain);
+            break;
+        }
         case audio::EventType::None:
         case audio::EventType::SynthParam:        
         case audio::EventType::Count:

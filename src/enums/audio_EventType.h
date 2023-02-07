@@ -20,6 +20,8 @@ enum class EventType : int {
     
     StopPcm,
     
+    SetGain,
+    
     Count
 };
 extern char const* gEventTypeStrings[];

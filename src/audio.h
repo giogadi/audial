@@ -36,6 +36,8 @@ struct StateData {
     EventQueue* events = nullptr;
     boost::circular_buffer<Event> pendingEvents;
 
+    float _finalGain = 1.f;
+
     char message[20];
 };
 

@@ -329,6 +329,10 @@ int PortAudioCallback(
                     }
                     break;
                 }
+                case EventType::SetGain: {
+                    state->_finalGain = e.newGain;
+                    break;
+                }
                 default: {
                     break;
                 }
@@ -373,6 +377,12 @@ int PortAudioCallback(
         synth::Process(
             &s, state->pendingEvents, outputBuffer,
             NUM_OUTPUT_CHANNELS, samplesPerFrame, SAMPLE_RATE, frameStartTickTime);
+    }
+
+    if (state->_finalGain != 1.f) {
+        for (int i = 0, n = samplesPerFrame * NUM_OUTPUT_CHANNELS; i < n; ++i) {
+            outputBuffer[i] *= state->_finalGain;
+        }
     }
 
     // Clear out events from this frame.

@@ -8,6 +8,7 @@
         "AllNotesOff",
         "SynthParam",
         "PlayPcm",
-        "StopPcm"
+        "StopPcm",
+        "SetGain"
     ]
 }

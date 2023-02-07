@@ -24,7 +24,9 @@ std::unordered_map<std::string, EventType> const gStringToEventType = {
     
     { "PlayPcm", EventType::PlayPcm },
     
-    { "StopPcm", EventType::StopPcm }
+    { "StopPcm", EventType::StopPcm },
+    
+    { "SetGain", EventType::SetGain }
     
 };
 
@@ -44,7 +46,9 @@ char const* gEventTypeStrings[] = {
     
     "PlayPcm",
     
-    "StopPcm"
+    "StopPcm",
+    
+    "SetGain"
     
 };
 

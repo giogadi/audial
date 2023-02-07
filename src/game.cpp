@@ -91,6 +91,21 @@ void ShowHitCounterWindow(EntityManager& entityMgr) {
     ImGui::End();
 }
 
+void ToggleMute(float dt) {
+    static bool sMute = false;
+    sMute = !sMute;
+    static float sCurrentGain = 1.f;
+    float targetGain;
+    if (sMute) {
+        targetGain = 0.f;
+    } else {
+        targetGain = 1.f;
+    }
+    float constexpr kFactor = 6.f;
+    sCurrentGain = sCurrentGain + kFactor * (targetGain - sCurrentGain);
+    
+}
+
 struct CommandLineInputs {
     std::optional<std::string> _scriptFilename;
     std::optional<std::string> _synthPatchesFilename;
@@ -163,6 +178,35 @@ void ParseCommandLine(CommandLineInputs& inputs, int argc, char** argv) {
 }
 
 GameManager gGameManager;
+
+void MaybeToggleMute(float dt) {
+    static bool sMute = false;
+    static bool sRamping = false;
+    if (gGameManager._inputManager->IsKeyPressedThisFrame(InputManager::Key::Backspace)) {
+        sMute = !sMute;
+        sRamping = true;
+    }
+    if (sRamping) {
+        static float sCurrentGain = 1.f;
+        float targetGain;
+        if (sMute) {
+            targetGain = 0.f;
+        } else {
+            targetGain = 1.f;
+        }
+        if (std::abs(targetGain - sCurrentGain) < 0.001f) {
+            sCurrentGain = targetGain;
+            sRamping = false;
+        } else {
+            float constexpr kFactor = 10.f;
+            sCurrentGain += kFactor * dt * (targetGain - sCurrentGain);
+        }
+        audio::Event e;
+        e.type = audio::EventType::SetGain;
+        e.newGain = sCurrentGain;
+        gGameManager._audioContext->AddEvent(e);
+    }
+}
 
 int main(int argc, char** argv) {
     CommandLineInputs cmdLineInputs;
@@ -371,6 +415,8 @@ int main(int argc, char** argv) {
         } else {
             dt = fixedTimeStep;
         }
+
+        MaybeToggleMute(fixedTimeStep);
 
         if (gGameManager._editMode && inputManager.IsKeyPressedThisFrame(InputManager::Key::Y)) {
             showSynthWindow = !showSynthWindow;

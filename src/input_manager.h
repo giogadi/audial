@@ -8,7 +8,7 @@ class InputManager {
 public:
     enum class Key : int {
         A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z,
-        Escape,Space,Right,LeftShift,RightShift,Tab,NumKeys
+        Escape,Space,Right,LeftShift,RightShift,Tab,Backspace,NumKeys
     };
     enum class MouseButton : int {
         Left,Right,Middle,Count
