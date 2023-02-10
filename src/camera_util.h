@@ -15,9 +15,9 @@ inline Vec3 GetDefaultCameraOffset(Direction dir) {
         case Direction::Down:
             return Vec3(0.f, 5.f, -3.f);
         case Direction::Left:
-            return Vec3(3.f, 5.f, 0.f);
+            return Vec3(7.f, 5.f, 0.f);
         case Direction::Right:
-            return Vec3(-3.f, 5.f, 0.f);
+            return Vec3(-7.f, 5.f, 0.f);
         case Direction::Count:
             assert(false);
             return Vec3();

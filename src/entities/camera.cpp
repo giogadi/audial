@@ -28,19 +28,54 @@ void CameraEntity::Update(GameManager& g, float dt) {
         return;
     }
 
+    Vec3 targetPos = _transform.GetPos();   
     if (_followEntityId.IsValid()) {
         if (ne::BaseEntity* followEntity = g._neEntityManager->GetEntity(_followEntityId)) {
-            Vec3 cameraPos = _transform.GetPos();
-            Vec3 targetPos = followEntity->_transform.GetPos();
-            Vec3 targetToCameraOffset = cameraPos - targetPos;
-            float k = _trackingFactor * 60.f;  // TOD0: 60 is the expected fps right???
-            Vec3 diff = _desiredTargetToCameraOffset - targetToCameraOffset;
-            Vec3 newOffset = targetToCameraOffset + k * dt * diff;
-            _transform.SetTranslation(targetPos + newOffset);
+            // Vec3 cameraPos = _transform.GetPos();
+            targetPos = followEntity->_transform.GetPos();
+            // Vec3 targetToCameraOffset = cameraPos - targetPos;
+            // float k = _trackingFactor * 60.f;  // TOD0: 60 is the expected fps right???
+            // Vec3 diff = _desiredTargetToCameraOffset - targetToCameraOffset;
+            // Vec3 newOffset = targetToCameraOffset + k * dt * diff;
+            // _transform.SetTranslation(targetPos + newOffset);
         } else {
             _followEntityId = ne::EntityId();
         }
     }
+
+    Vec3 const& cameraPos = _transform.GetPos();
+    Vec3 targetToCameraOffset = cameraPos - targetPos;
+    float k = _trackingFactor * 60.f;  // TOD0: 60 is the expected fps right???
+    Vec3 diff = _desiredTargetToCameraOffset - targetToCameraOffset;
+    Vec3 newOffset = targetToCameraOffset + k * dt * diff;
+    Vec3 newPos = targetPos + newOffset;
+
+    // Fade in the constraints
+    if (_constraintBlend == 0.f) {
+        _constraintBlend = 0.f;
+    }
+
+    float constexpr kConstraintFactor = 0.01f;
+    _constraintBlend += kConstraintFactor * dt * (1.f - _constraintBlend);
+    {
+        Vec3 clampedPos = newPos;   
+        if (_minX.has_value()) {
+            clampedPos._x = std::max(clampedPos._x, *_minX);
+        }
+        if (_minZ.has_value()) {
+            clampedPos._z = std::max(clampedPos._z, *_minZ);
+        }
+        if (_maxX.has_value()) {
+            clampedPos._x = std::min(clampedPos._x, *_maxX);
+        }
+        if (_maxZ.has_value()) {
+            clampedPos._z = std::min(clampedPos._z, *_maxZ);
+        }
+        Vec3 diff = clampedPos - newPos;
+        Vec3 newDiff = _constraintBlend * diff;
+        newPos += newDiff;
+        _transform.SetTranslation(newPos);
+    }         
     
     _camera->_transform = _transform;
     _camera->_projectionType = 

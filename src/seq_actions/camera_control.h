@@ -8,6 +8,10 @@ struct CameraControlSeqAction : public SeqAction {
     Vec3 _desiredTargetToCameraOffset;
     bool _setTarget = false;
     bool _setOffset = false;
+    std::optional<float> _minX;
+    std::optional<float> _minZ;
+    std::optional<float> _maxX;
+    std::optional<float> _maxZ;
 
     //non-serialized
     ne::EntityId _targetEntityId;    

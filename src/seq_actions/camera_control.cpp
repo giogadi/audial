@@ -16,7 +16,14 @@ void CameraControlSeqAction::Execute(GameManager& g) {
     }
     if (_setOffset) {
         camera->_desiredTargetToCameraOffset = _desiredTargetToCameraOffset;
-    }   
+    }    
+    camera->_minX = _minX;
+    camera->_minZ = _minZ;
+    camera->_maxX = _maxX;
+    camera->_maxZ = _maxZ;
+    if (camera->_minX.has_value() || camera->_minZ.has_value() || camera->_maxX.has_value() || camera->_maxZ.has_value()) {
+        camera->ResetConstraintBlend();
+    }
 }
 
 void CameraControlSeqAction::Load(LoadInputs const& loadInputs, std::istream& input) {
@@ -45,6 +52,14 @@ void CameraControlSeqAction::Load(LoadInputs const& loadInputs, std::istream& in
         } else if (key == "target") {
             _targetEntityName = value;
             _setTarget = true;
+        } else if (key == "min_x") {
+            _minX = std::stof(value);
+        } else if (key == "max_x") {
+            _maxX = std::stof(value);
+        } else if (key == "min_z") {
+            _minZ = std::stof(value);
+        } else if (key == "max_z") {
+            _maxZ = std::stof(value);
         } else {
             printf("CameraControlSeqAction::Load: Unrecognized key \"%s\"\n", key.c_str());
         }
