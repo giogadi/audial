@@ -509,6 +509,8 @@
             <all_actions_on_hit>false</all_actions_on_hit>
             <flow_polarity>false</flow_polarity>
             <flow_section_id>0</flow_section_id>
+            <waypoint_auto_start>false</waypoint_auto_start>
+            <loop_waypoints>false</loop_waypoints>
             <waypoints/>
             <hit_actions>
                 <action>change_step chord_seq 0 1 mB3-,mE4-,mG4</action>
@@ -547,24 +549,9 @@
             <all_actions_on_hit>false</all_actions_on_hit>
             <flow_polarity>false</flow_polarity>
             <flow_section_id>0</flow_section_id>
-            <waypoints>
-              <waypoint>
-                <t>1</t>
-                <p>
-                  <x>-0.6875</x>
-                  <y>0</y>
-                  <z>5</z>
-                </p>
-              </waypoint>
-              <waypoint>
-                <t>2</t>
-                <p>
-                  <x>-0.6875</x>
-                  <y>0</y>
-                  <z>-0.890625</z>
-                </p>
-              </waypoint>
-            </waypoints>
+            <waypoint_auto_start>false</waypoint_auto_start>
+            <loop_waypoints>false</loop_waypoints>
+            <waypoints/>
             <hit_actions>
                 <action>change_step chord_seq 0 1 mB3-,mE4-,mG4</action>
             </hit_actions>
@@ -602,6 +589,8 @@
             <all_actions_on_hit>false</all_actions_on_hit>
             <flow_polarity>false</flow_polarity>
             <flow_section_id>0</flow_section_id>
+            <waypoint_auto_start>false</waypoint_auto_start>
+            <loop_waypoints>false</loop_waypoints>
             <waypoints/>
             <hit_actions>
                 <action>change_step chord_seq 0 1 mB3-,mE4-,mG4</action>
@@ -640,6 +629,8 @@
             <all_actions_on_hit>true</all_actions_on_hit>
             <flow_polarity>false</flow_polarity>
             <flow_section_id>0</flow_section_id>
+            <waypoint_auto_start>false</waypoint_auto_start>
+            <loop_waypoints>false</loop_waypoints>
             <waypoints/>
             <hit_actions>
                 <action>change_step chord_seq 0 1 mB3-,mE4-,mG4</action>
@@ -708,6 +699,8 @@
             <all_actions_on_hit>true</all_actions_on_hit>
             <flow_polarity>false</flow_polarity>
             <flow_section_id>1</flow_section_id>
+            <waypoint_auto_start>false</waypoint_auto_start>
+            <loop_waypoints>false</loop_waypoints>
             <waypoints/>
             <hit_actions>
                 <action>change_step chord_seq 0 1 mA3-,mC4,mE4-,mG4</action>
@@ -746,6 +739,8 @@
             <all_actions_on_hit>true</all_actions_on_hit>
             <flow_polarity>false</flow_polarity>
             <flow_section_id>1</flow_section_id>
+            <waypoint_auto_start>false</waypoint_auto_start>
+            <loop_waypoints>false</loop_waypoints>
             <waypoints/>
             <hit_actions>
                 <action>change_step chord_seq 0 1 mA3-,mC4,mE4-,mG4</action>
@@ -784,6 +779,8 @@
             <all_actions_on_hit>true</all_actions_on_hit>
             <flow_polarity>false</flow_polarity>
             <flow_section_id>1</flow_section_id>
+            <waypoint_auto_start>false</waypoint_auto_start>
+            <loop_waypoints>false</loop_waypoints>
             <waypoints/>
             <hit_actions>
                 <action>change_step chord_seq 0 1 mA3-,mC4,mE4-,mG4</action>
@@ -822,6 +819,8 @@
             <all_actions_on_hit>true</all_actions_on_hit>
             <flow_polarity>false</flow_polarity>
             <flow_section_id>1</flow_section_id>
+            <waypoint_auto_start>false</waypoint_auto_start>
+            <loop_waypoints>false</loop_waypoints>
             <waypoints/>
             <hit_actions>
                 <action>change_step chord_seq 0 1 mA3-,mC4,mE4-,mG4</action>
@@ -860,6 +859,8 @@
             <all_actions_on_hit>true</all_actions_on_hit>
             <flow_polarity>true</flow_polarity>
             <flow_section_id>1</flow_section_id>
+            <waypoint_auto_start>false</waypoint_auto_start>
+            <loop_waypoints>false</loop_waypoints>
             <waypoints/>
             <hit_actions>
                 <action>change_step chord_seq 0 1 mA3-,mC4,mE4-,mG4</action>
@@ -898,9 +899,12 @@
             <all_actions_on_hit>true</all_actions_on_hit>
             <flow_polarity>true</flow_polarity>
             <flow_section_id>1</flow_section_id>
+            <waypoint_auto_start>false</waypoint_auto_start>
+            <loop_waypoints>false</loop_waypoints>
             <waypoints/>
             <hit_actions>
                 <action>change_step chord_seq 0 1 mA3-,mC4,mE4-,mG4</action>
+                <action>onetime waypoint moving_platform 1</action>
             </hit_actions>
         </TypingEnemy>
         <TypingEnemy>
@@ -936,6 +940,8 @@
             <all_actions_on_hit>true</all_actions_on_hit>
             <flow_polarity>false</flow_polarity>
             <flow_section_id>1</flow_section_id>
+            <waypoint_auto_start>false</waypoint_auto_start>
+            <loop_waypoints>false</loop_waypoints>
             <waypoints/>
             <hit_actions>
                 <action>change_step chord_seq 0 1 mA3-,mC4,mE4-,mG4</action>
@@ -1003,6 +1009,8 @@
             <all_actions_on_hit>true</all_actions_on_hit>
             <flow_polarity>true</flow_polarity>
             <flow_section_id>1</flow_section_id>
+            <waypoint_auto_start>false</waypoint_auto_start>
+            <loop_waypoints>false</loop_waypoints>
             <waypoints/>
             <hit_actions>
                 <action>change_step chord_seq 0 1 mA3-,mC4,mE4-,mG4</action>
@@ -1041,6 +1049,8 @@
             <all_actions_on_hit>true</all_actions_on_hit>
             <flow_polarity>true</flow_polarity>
             <flow_section_id>1</flow_section_id>
+            <waypoint_auto_start>false</waypoint_auto_start>
+            <loop_waypoints>false</loop_waypoints>
             <waypoints/>
             <hit_actions>
                 <action>change_step chord_seq 0 1 mA3-,mC4,mE4-,mG4</action>
@@ -1079,6 +1089,8 @@
             <all_actions_on_hit>true</all_actions_on_hit>
             <flow_polarity>false</flow_polarity>
             <flow_section_id>1</flow_section_id>
+            <waypoint_auto_start>false</waypoint_auto_start>
+            <loop_waypoints>false</loop_waypoints>
             <waypoints/>
             <hit_actions>
                 <action>change_step chord_seq 0 1 mG3,mB3,mD4,mG4-</action>
@@ -1117,6 +1129,8 @@
             <all_actions_on_hit>true</all_actions_on_hit>
             <flow_polarity>false</flow_polarity>
             <flow_section_id>1</flow_section_id>
+            <waypoint_auto_start>false</waypoint_auto_start>
+            <loop_waypoints>false</loop_waypoints>
             <waypoints/>
             <hit_actions>
                 <action>change_step chord_seq 0 1 mA3-,mC4,mE4-,mG4</action>
@@ -1184,6 +1198,8 @@
             <all_actions_on_hit>true</all_actions_on_hit>
             <flow_polarity>false</flow_polarity>
             <flow_section_id>1</flow_section_id>
+            <waypoint_auto_start>false</waypoint_auto_start>
+            <loop_waypoints>false</loop_waypoints>
             <waypoints/>
             <hit_actions>
                 <action>change_step chord_seq 0 1 mA3-,mC4,mE4-,mG4</action>
@@ -1217,12 +1233,31 @@
                 <z>0</z>
                 <w>1</w>
             </model_color_vec4>
-            <text>f</text>
+            <text>r</text>
             <type_kill>false</type_kill>
             <all_actions_on_hit>true</all_actions_on_hit>
-            <flow_polarity>true</flow_polarity>
+            <flow_polarity>false</flow_polarity>
             <flow_section_id>1</flow_section_id>
-            <waypoints/>
+            <waypoint_auto_start>false</waypoint_auto_start>
+            <loop_waypoints>true</loop_waypoints>
+            <waypoints>
+                <waypoint>
+                    <t>5</t>
+                    <p>
+                        <x>26</x>
+                        <y>0</y>
+                        <z>-6</z>
+                    </p>
+                </waypoint>
+                <waypoint>
+                    <t>5</t>
+                    <p>
+                        <x>36.5309982</x>
+                        <y>0</y>
+                        <z>-10.0780001</z>
+                    </p>
+                </waypoint>
+            </waypoints>
             <hit_actions>
                 <action>change_step chord_seq 0 1 mA3-,mC4,mE4-,mG4</action>
             </hit_actions>

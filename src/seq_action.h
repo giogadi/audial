@@ -156,3 +156,13 @@ struct BeatTimeEventSeqAction : public SeqAction {
         LoadInputs const& loadInputs, std::istream& input) override;
     virtual void Init(GameManager& g) override;
 };
+
+struct WaypointControlSeqAction : public SeqAction {
+    // serialize
+    bool _followWaypoints = true;
+    std::string _enemyName;
+
+    virtual void Execute(GameManager& g) override;
+    virtual void Load(
+        LoadInputs const& loadInputs, std::istream& input) override;
+};

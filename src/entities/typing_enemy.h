@@ -29,8 +29,11 @@ struct TypingEnemyEntity : public ne::Entity {
         Vec3 _p;
         void Save(serial::Ptree pt) const;
         void Load(serial::Ptree pt);
+        void ImGui(GameManager& g);
     };
     std::vector<Waypoint> _waypoints;
+    bool _autoStartFollowingWaypoints = false;
+    bool _loopWaypoints = false;
     
     // non-serialized
     int _numHits = 0;
@@ -39,7 +42,7 @@ struct TypingEnemyEntity : public ne::Entity {
     std::vector<std::unique_ptr<SeqAction>> _hitActions;
     bool _useHitActionsOnInitHack = false;
     float _currentWaypointTime = 0.f;
-    bool _followingWaypoints = true;
+    bool _followingWaypoints = false;
     int _currentWaypointIx = 0;
 
     bool IsActive(GameManager& g) const;

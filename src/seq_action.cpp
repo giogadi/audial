@@ -42,6 +42,8 @@ std::unique_ptr<SeqAction> SeqAction::LoadAction(LoadInputs const& loadInputs, s
         pAction = std::make_unique<BeatTimeEventSeqAction>();
     } else if (token == "camera") {
         pAction = std::make_unique<CameraControlSeqAction>();
+    } else if (token == "waypoint") {
+        pAction = std::make_unique<WaypointControlSeqAction>();
     } else {
         printf("ERROR: Unrecognized action type \"%s\".\n", token.c_str());
     }
@@ -384,4 +386,23 @@ void BeatTimeEventSeqAction::Init(GameManager& g) {
             _b_e._e.pcmSoundIx = soundIx;
         }
     }
+}
+
+void WaypointControlSeqAction::Execute(GameManager& g) {
+    ne::Entity* e = g._neEntityManager->FindEntityByName(_enemyName);
+    if (e == nullptr) {
+        printf("ERROR: WaypointControlSeqAction could not find entity \"%s\"\n", _enemyName.c_str());
+        return;
+    }
+    if (e->_id._type != ne::EntityType::TypingEnemy) {
+        printf("ERROR: WaypointControlSeqAction given a non-enemy entity \"%s\"\n", _enemyName.c_str());
+        return;
+    }
+    TypingEnemyEntity* enemy = static_cast<TypingEnemyEntity*>(e);
+    enemy->_followingWaypoints = _followWaypoints;
+}
+
+void WaypointControlSeqAction::Load(LoadInputs const& loadInputs, std::istream& input) {
+    input >> _enemyName;
+    input >> _followWaypoints;
 }
