@@ -618,7 +618,7 @@
             <flow_polarity>false</flow_polarity>
             <hit_actions>
                 <action>change_step chord_seq 0 1 mB3-,mE4-,mG4</action>
-                <action>camera offset:Center target:player min_x:15.187 min_z:-5.598 max_x:28.588 max_z:-5.598</action>
+                <action>onetime camera offset:Center target:player min_x:15.187 min_z:-5.598 max_x:28.588 max_z:-5.598</action>
             </hit_actions>
         </TypingEnemy>
         <Base>

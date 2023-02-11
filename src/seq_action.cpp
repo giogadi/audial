@@ -16,6 +16,12 @@ std::unique_ptr<SeqAction> SeqAction::LoadAction(LoadInputs const& loadInputs, s
     std::string token;
     input >> token;
 
+    bool oneTime = false;
+    if (token == "onetime") {
+        oneTime = true;
+        input >> token;
+    }
+
     // TODO: get these from the SeqActionType enum
     std::unique_ptr<SeqAction> pAction;
     if (token == "automate") {
@@ -43,6 +49,8 @@ std::unique_ptr<SeqAction> SeqAction::LoadAction(LoadInputs const& loadInputs, s
     if (pAction == nullptr) {
         return nullptr;
     }
+
+    pAction->_oneTime = oneTime;
 
     pAction->Load(loadInputs, input);
 

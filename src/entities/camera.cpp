@@ -31,13 +31,7 @@ void CameraEntity::Update(GameManager& g, float dt) {
     Vec3 targetPos = _transform.GetPos();   
     if (_followEntityId.IsValid()) {
         if (ne::BaseEntity* followEntity = g._neEntityManager->GetEntity(_followEntityId)) {
-            // Vec3 cameraPos = _transform.GetPos();
             targetPos = followEntity->_transform.GetPos();
-            // Vec3 targetToCameraOffset = cameraPos - targetPos;
-            // float k = _trackingFactor * 60.f;  // TOD0: 60 is the expected fps right???
-            // Vec3 diff = _desiredTargetToCameraOffset - targetToCameraOffset;
-            // Vec3 newOffset = targetToCameraOffset + k * dt * diff;
-            // _transform.SetTranslation(targetPos + newOffset);
         } else {
             _followEntityId = ne::EntityId();
         }
@@ -56,9 +50,9 @@ void CameraEntity::Update(GameManager& g, float dt) {
     }
 
     float constexpr kConstraintFactor = 0.01f;
-    _constraintBlend += kConstraintFactor * dt * (1.f - _constraintBlend);
+    _constraintBlend += kConstraintFactor * 60.f * dt * (1.f - _constraintBlend);
     {
-        Vec3 clampedPos = newPos;   
+        Vec3 clampedPos = newPos;
         if (_minX.has_value()) {
             clampedPos._x = std::max(clampedPos._x, *_minX);
         }

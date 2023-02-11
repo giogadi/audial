@@ -11,7 +11,8 @@ struct TypingEnemyEntity : public ne::Entity {
     
     // serialized
     std::string _text;
-    std::vector<std::string> _hitActionStrings;    
+    std::vector<std::string> _hitActionStrings;
+    std::vector<bool> _isOneTimeAction;
     HitBehavior _hitBehavior = HitBehavior::SingleAction; // TODO
     double _activeBeatTime = -1.0; // TODO
     double _inactiveBeatTime = -1.0; // TODO
@@ -21,7 +22,7 @@ struct TypingEnemyEntity : public ne::Entity {
     Vec3 _sectionLocalPos; // TODO
     int _flowSectionId = -1; // TODO
     Vec4 _textColor = Vec4(1.f, 1.f, 1.f, 1.f); // TODO
-    bool _flowPolarity = false;
+    bool _flowPolarity = false;    
     
     // non-serialized
     int _numHits = 0;

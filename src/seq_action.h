@@ -26,15 +26,26 @@ struct SeqAction {
         double _beatTimeOffset = 0.0;
         bool _defaultEnemiesSave = false;
         int _sectionId = -1;
-    };    
+    };
+
+    bool _oneTime = false;
     
-    void InitBase(GameManager& g) {
+    void InitBase(GameManager& g) {        
         Init(g);
         _init = true;
     }
     void ExecuteBase(GameManager& g) {
         assert(_init);
-        Execute(g);
+        if (!_oneTime || !_hasExecuted) {
+            Execute(g);
+            _hasExecuted = true;
+        }
+    }
+    void SaveBase(std::ostream& output) {
+        if (_oneTime) {
+            output << "onetime ";
+        }
+        Save(output);
     }
 
     virtual ~SeqAction() {}
@@ -51,6 +62,7 @@ protected:
     
 private:
     bool _init = false;
+    bool _hasExecuted = false;
 };
 
 struct SpawnAutomatorSeqAction : public SeqAction {
