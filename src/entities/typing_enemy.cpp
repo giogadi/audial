@@ -11,6 +11,7 @@
 #include "typing_player.h"
 #include "imgui_util.h"
 #include "rng.h"
+#include "serial_vector_util.h"
 
 namespace {
 
@@ -36,6 +37,7 @@ void TypingEnemyEntity::Init(GameManager& g) {
         assert(player != nullptr);
         player->RegisterSectionEnemy(_sectionId, _id);
     }
+    _prevWaypointPos = _transform.GetPos();
     // TODO I'M SORRY MOTHER. We need to support the ability for now of
     // spawn_enemy.cpp to init an enemy by setting _hitActions directly, and not
     // having it overwritten.
@@ -66,13 +68,35 @@ void TypingEnemyEntity::Update(GameManager& g, float dt) {
     }
 
     if (!g._editMode) {
-        Vec3 p  = _transform.GetPos();
+        if (_followingWaypoints && !_waypoints.empty()) {
+            _currentWaypointTime += dt;
+            if (_currentWaypointTime > 1.f) {
+                assert(_currentWaypointIx < _waypoints.size());
+                _prevWaypointPos = _waypoints[_currentWaypointIx]._p;
+                ++_currentWaypointIx;
+                if (_currentWaypointIx >= _waypoints.size()) {
+                    --_currentWaypointIx;
+                    _currentWaypointTime = 1.f;
+                } else {
+                    float unused;
+                    _currentWaypointTime = std::modf(_currentWaypointTime, &unused);
+                }
+            }
+            // lerp from prevWaypointPos to pos of current waypoint            
+            assert(_currentWaypointIx < _waypoints.size());
+            Waypoint const& currentWp = _waypoints[_currentWaypointIx];
+            Vec3 newPos = _prevWaypointPos + _currentWaypointTime * (currentWp._p - _prevWaypointPos);
+            _transform.SetTranslation(newPos);
+        } else {
+            Vec3 p  = _transform.GetPos();
     
-        Vec3 dp = _velocity * dt;
-        p += dp;
-        _transform.SetTranslation(p);
+            Vec3 dp = _velocity * dt;
+            p += dp;
+            _transform.SetTranslation(p);
+        }       
 
         if (_destroyIfOffscreenLeft) {
+            Vec3 p = _transform.GetPos();
             float constexpr kMinX = -10.f;
             if (p._x < kMinX) {
                 g._neEntityManager->TagForDestroy(_id);
@@ -160,6 +184,18 @@ InputManager::Key TypingEnemyEntity::GetNextKey() const {
     return nextKey;
 }
 
+void TypingEnemyEntity::Waypoint::Save(serial::Ptree pt) const {
+    pt.PutFloat("t", _t);
+    serial::SaveInNewChildOf(pt, "p", _p);
+}
+
+void TypingEnemyEntity::Waypoint::Load(serial::Ptree pt) {
+    _t = pt.GetFloat("t");
+    if (!serial::LoadFromChildOf(pt, "p", _p)) {
+        printf("TypingEnemyEntity::Waypoint::Load: ERROR couldn't find child \"p\"\n");
+    }
+}
+
 void TypingEnemyEntity::LoadDerived(serial::Ptree pt) {
     _text = pt.GetString("text");
     pt.TryGetBool("type_kill", &_destroyAfterTyped);
@@ -172,6 +208,7 @@ void TypingEnemyEntity::LoadDerived(serial::Ptree pt) {
     }
     pt.TryGetBool("flow_polarity", &_flowPolarity);
     pt.TryGetInt("flow_section_id", &_flowSectionId);
+    serial::LoadVectorFromChildNode(pt, "waypoints", _waypoints);
     serial::Ptree actionsPt = pt.GetChild("hit_actions");
     int numChildren;
     serial::NameTreePair* children = actionsPt.GetChildren(&numChildren);
@@ -190,6 +227,13 @@ void TypingEnemyEntity::SaveDerived(serial::Ptree pt) const {
     pt.PutBool("all_actions_on_hit", _hitBehavior == HitBehavior::AllActions);
     pt.PutBool("flow_polarity", _flowPolarity);
     pt.PutInt("flow_section_id", _flowSectionId);
+    // serial::Ptree wpsPt = pt.AddChild("waypoints");
+    // for (Waypoint const& wp : _waypoints) {
+    //     serial::Ptree wpPt = wpsPt.AddChild("waypoint");
+    //     serial::PutFloat("t", wp._t);
+    //     serial::SaveInNewChildOf(wpPt, "p", wp._p);
+    // }
+    serial::SaveVectorInChildNode(pt, "waypoints", "waypoint", _waypoints);
     serial::Ptree actionsPt = pt.AddChild("hit_actions");
     for (std::string const& actionStr : _hitActionStrings) {
         serial::Ptree actionPt = actionsPt.AddChild("action");

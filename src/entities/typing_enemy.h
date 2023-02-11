@@ -22,7 +22,15 @@ struct TypingEnemyEntity : public ne::Entity {
     Vec3 _sectionLocalPos; // TODO
     int _flowSectionId = -1;
     Vec4 _textColor = Vec4(1.f, 1.f, 1.f, 1.f); // TODO
-    bool _flowPolarity = false;    
+    bool _flowPolarity = false;
+    Vec3 _prevWaypointPos;
+    struct Waypoint {
+        float _t;  // time in seconds to get to this point from the previous one.
+        Vec3 _p;
+        void Save(serial::Ptree pt) const;
+        void Load(serial::Ptree pt);
+    };
+    std::vector<Waypoint> _waypoints;
     
     // non-serialized
     int _numHits = 0;
@@ -30,6 +38,9 @@ struct TypingEnemyEntity : public ne::Entity {
     Vec4 _currentColor;
     std::vector<std::unique_ptr<SeqAction>> _hitActions;
     bool _useHitActionsOnInitHack = false;
+    float _currentWaypointTime = 0.f;
+    bool _followingWaypoints = true;
+    int _currentWaypointIx = 0;
 
     bool IsActive(GameManager& g) const;
     void OnHit(GameManager& g);
