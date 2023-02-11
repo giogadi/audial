@@ -228,7 +228,7 @@ ne::EntityManager::Iterator enemyIter = g._neEntityManager->GetIterator(ne::Enti
             ne::EntityManager::Iterator enemyIter = g._neEntityManager->GetIterator(ne::EntityType::TypingEnemy);
             for (; !enemyIter.Finished(); enemyIter.Next()) {
                 TypingEnemyEntity* e = static_cast<TypingEnemyEntity*>(enemyIter.GetEntity());
-                if (e->_flowSectionId == _currentSectionId) {
+                if (e->_flowSectionId >= 0 && e->_flowSectionId == _currentSectionId) {
                     g._neEntityManager->TagForDestroy(enemyIter.GetEntity()->_id);
                 }
             }

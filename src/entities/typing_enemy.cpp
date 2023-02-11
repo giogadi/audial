@@ -171,6 +171,7 @@ void TypingEnemyEntity::LoadDerived(serial::Ptree pt) {
         _hitBehavior = HitBehavior::SingleAction;
     }
     pt.TryGetBool("flow_polarity", &_flowPolarity);
+    pt.TryGetInt("flow_section_id", &_flowSectionId);
     serial::Ptree actionsPt = pt.GetChild("hit_actions");
     int numChildren;
     serial::NameTreePair* children = actionsPt.GetChildren(&numChildren);
@@ -188,6 +189,7 @@ void TypingEnemyEntity::SaveDerived(serial::Ptree pt) const {
     pt.PutBool("type_kill", _destroyAfterTyped);
     pt.PutBool("all_actions_on_hit", _hitBehavior == HitBehavior::AllActions);
     pt.PutBool("flow_polarity", _flowPolarity);
+    pt.PutInt("flow_section_id", _flowSectionId);
     serial::Ptree actionsPt = pt.AddChild("hit_actions");
     for (std::string const& actionStr : _hitActionStrings) {
         serial::Ptree actionPt = actionsPt.AddChild("action");
@@ -210,6 +212,8 @@ ne::BaseEntity::ImGuiResult TypingEnemyEntity::ImGuiDerived(GameManager& g) {
     }
 
     ImGui::Checkbox("Flow polarity", &_flowPolarity);
+
+    ImGui::InputInt("Section ID", &_flowSectionId);
     
     if (ImGui::Button("Add Action")) {
         _hitActionStrings.emplace_back();
@@ -244,6 +248,7 @@ static TypingEnemyEntity sMultiEnemy;
 void TypingEnemyEntity::MultiSelectImGui(GameManager& g, std::vector<TypingEnemyEntity*>& enemies) {
 
     ImGui::ColorEdit4("Model color", sMultiEnemy._modelColor._data);
+    ImGui::InputInt("Section ID", &sMultiEnemy._flowSectionId);
     
     if (ImGui::Button("Add Action")) {
         sMultiEnemy._hitActionStrings.emplace_back();
@@ -264,8 +269,10 @@ void TypingEnemyEntity::MultiSelectImGui(GameManager& g, std::vector<TypingEnemy
     }
 
     static bool sApplyColor = true;
-    static bool sApplyActions = true;
+    static bool sApplySectionId = true;
+    static bool sApplyActions = true;    
     ImGui::Checkbox("Apply color", &sApplyColor);
+    ImGui::Checkbox("Apply section ID", &sApplySectionId);
     ImGui::Checkbox("Apply actions", &sApplyActions);
     char applySelectionButtonStr[] = "Apply to Selection (x)";
     sprintf(applySelectionButtonStr, "Apply to Selection (%zu)", enemies.size());
@@ -273,6 +280,9 @@ void TypingEnemyEntity::MultiSelectImGui(GameManager& g, std::vector<TypingEnemy
         for (TypingEnemyEntity* e : enemies) {
             if (sApplyColor) {
                 e->_modelColor = sMultiEnemy._modelColor;
+            }
+            if (sApplySectionId) {
+                e->_flowSectionId = sMultiEnemy._flowSectionId;
             }
             if (sApplyActions) {
                 e->_hitActionStrings = sMultiEnemy._hitActionStrings;

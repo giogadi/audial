@@ -20,7 +20,7 @@ struct TypingEnemyEntity : public ne::Entity {
     bool _destroyAfterTyped = true;
     int _sectionId = -1; // TODO
     Vec3 _sectionLocalPos; // TODO
-    int _flowSectionId = -1; // TODO
+    int _flowSectionId = -1;
     Vec4 _textColor = Vec4(1.f, 1.f, 1.f, 1.f); // TODO
     bool _flowPolarity = false;    
     
