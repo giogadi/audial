@@ -53,15 +53,12 @@ void InitStateData(
  */
 static void StreamFinished( void* userData )
 {
-    printf("Stream completed\n");
 }
 
 PaError Init(
     Context& context, std::vector<synth::Patch> const& synthPatches, SoundBank const& soundBank) {
 
     PaError err;
-
-    printf("PortAudio Test: output sine wave. SR = %d, BufSize = %d\n", SAMPLE_RATE, FRAMES_PER_BUFFER);
 
     InitStateData(context._state, synthPatches, soundBank, &context._eventQueue, SAMPLE_RATE);
 

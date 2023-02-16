@@ -88,7 +88,7 @@ void SoundBank::LoadSounds() {
         assert(numChannels == 1);
         // assert(sampleRate == SAMPLE_RATE);
         assert(sound._buffer != nullptr);
-        printf("Loaded \"%s\": %d channels, %llu samples.\n", filename, numChannels, sound._bufferLength);
+        // printf("Loaded \"%s\": %d channels, %llu samples.\n", filename, numChannels, sound._bufferLength);
         _sounds.push_back(std::move(sound));
     }
 }

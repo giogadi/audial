@@ -112,7 +112,7 @@ struct CommandLineInputs {
     bool _editMode = false;
 };
 
-void ParseCommandLine(CommandLineInputs& inputs, std::vector<std::string> const& argv);
+void ParseCommandLine(CommandLineInputs& inputs, std::vector<std::string> const& argv, bool useDefaultFile);
 
 void ParseCommandLineFile(CommandLineInputs& inputs, std::string_view fileName) {
     std::vector<std::string> fileArgv;
@@ -139,14 +139,16 @@ void ParseCommandLineFile(CommandLineInputs& inputs, std::string_view fileName) 
             fileArgv.push_back(std::move(arg));
         }
     }
-    ParseCommandLine(inputs, fileArgv);
+    ParseCommandLine(inputs, fileArgv, false);
 }
 
-void ParseCommandLine(CommandLineInputs& inputs, std::vector<std::string> const& argv) {
+void ParseCommandLine(CommandLineInputs& inputs, std::vector<std::string> const& argv, bool useDefaultFile = true) {
     inputs._editMode = false;
 
     // Start off args from a default cmd line file
-    ParseCommandLineFile(inputs, "cmd_line.txt");
+    if (useDefaultFile) {
+        ParseCommandLineFile(inputs, "cmd_line.txt");
+    }
     
     for (int argIx = 0; argIx < argv.size(); ++argIx) {
         if (argv[argIx] == "-f") {
@@ -221,25 +223,6 @@ int main(int argc, char** argv) {
     CommandLineInputs cmdLineInputs;
     ParseCommandLine(cmdLineInputs, argc, argv);
 
-    SoundBank soundBank;
-    soundBank.LoadSounds();
-
-    // Init audio
-    audio::Context audioContext;
-    {
-        // Load in synth patch data if we have it
-        std::vector<synth::Patch> patches;
-        if (cmdLineInputs._synthPatchesFilename.has_value()) {
-            if (LoadSynthPatches(cmdLineInputs._synthPatchesFilename->c_str(), patches)) {
-                std::cout << "Loaded synth patch data from \"" << *cmdLineInputs._synthPatchesFilename << "\"." << std::endl;
-            }
-        }
-
-        if (audio::Init(audioContext, patches, soundBank) != paNoError) {
-            return 1;
-        }
-    }
-
     glfwInit();
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
@@ -297,6 +280,26 @@ int main(int argc, char** argv) {
     ImGui_ImplGlfw_InitForOpenGL(window, true);
     // TODO: should I be setting this? imgui_impl_opengl3.h says it's ok to be null.
     ImGui_ImplOpenGL3_Init(/*glsl_version=*/NULL);
+
+    SoundBank soundBank;
+    soundBank.LoadSounds();
+
+    // Init audio
+    audio::Context audioContext;
+    {
+        // Load in synth patch data if we have it
+        std::vector<synth::Patch> patches;
+        if (cmdLineInputs._synthPatchesFilename.has_value()) {
+            bool success = LoadSynthPatches(cmdLineInputs._synthPatchesFilename->c_str(), patches);
+            if (!success) {
+                printf("Failed to load synth patch data from \"%s\".\n", cmdLineInputs._synthPatchesFilename->c_str());
+            }
+        }
+
+        if (audio::Init(audioContext, patches, soundBank) != paNoError) {
+            return 1;
+        }
+    }
 
     InputManager inputManager(window);
 
@@ -365,8 +368,6 @@ int main(int argc, char** argv) {
                 printf("Entities load failed. Exiting.\n");
                 return 1;
             }
-        } else {
-            printf("No old-school entities!\n");
         }
 
         pt.DeleteData();
