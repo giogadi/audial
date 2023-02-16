@@ -4,7 +4,9 @@
 
 #include "imgui_util.h"
 
-// TODO HEADERS
+{% for header in src_includes %}
+#include {{header}}
+{% endfor %}
 
 void {{propertiesName}}Props::Load(serial::Ptree pt) {
    {% for prop in props %}
@@ -19,11 +21,12 @@ void {{propertiesName}}Props::Save(serial::Ptree pt) const {
 }
 
 bool {{propertiesName}}Props::ImGui() {
-    bool overallNeedsInit = false;
-    bool thisNeedsInit = false;
+    bool changed = false;
     {% for prop in props %}
-    thisNeedsInit = {{prop.imgui}}
-    overallNeedsInit = thisNeedsInit || overallNeedsInit;
+    {
+        bool thisChanged = {{prop.imgui}}
+        changed = changed || thisChanged;
+    }
     {% endfor %}
-    return overallNeedsInit;
+    return changed;
 }

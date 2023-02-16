@@ -4,7 +4,7 @@
 
 #include "imgui_util.h"
 
-// TODO HEADERS
+
 
 void TestProps::Load(serial::Ptree pt) {
    
@@ -13,6 +13,8 @@ void TestProps::Load(serial::Ptree pt) {
    pt.TryGetInt("myInt2", &_myInt2);
    
    pt.TryGetString("myString", &_myString);
+   
+   serial::LoadVectorFromChildNode<float>(pt, "myFloatArray", _myFloatArray);
    
 }
 
@@ -24,20 +26,32 @@ void TestProps::Save(serial::Ptree pt) const {
     
     pt.PutString("myString", _myString.c_str());
     
+    serial::SaveVectorFromChildNode<float>(pt, "myFloatArray", "array_item", _myFloatArray);
+    
 }
 
 bool TestProps::ImGui() {
-    bool overallNeedsInit = false;
-    bool thisNeedsInit = false;
+    bool changed = false;
     
-    thisNeedsInit = ImGui::InputInt("myInt1", &_myInt1);
-    overallNeedsInit = thisNeedsInit || overallNeedsInit;
+    {
+        bool thisChanged = ImGui::InputInt("myInt1", &_myInt1);
+        changed = changed || thisChanged;
+    }
     
-    thisNeedsInit = ImGui::InputInt("myInt2", &_myInt2);
-    overallNeedsInit = thisNeedsInit || overallNeedsInit;
+    {
+        bool thisChanged = ImGui::InputInt("myInt2", &_myInt2);
+        changed = changed || thisChanged;
+    }
     
-    thisNeedsInit = imgui_util::InputText<128>("myString", &_myString);
-    overallNeedsInit = thisNeedsInit || overallNeedsInit;
+    {
+        bool thisChanged = imgui_util::InputText<128>("myString", &_myString);
+        changed = changed || thisChanged;
+    }
     
-    return overallNeedsInit;
+    {
+        bool thisChanged = imgui_util::InputVector(_myFloatArray);
+        changed = changed || thisChanged;
+    }
+    
+    return changed;
 }

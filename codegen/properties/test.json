@@ -12,6 +12,11 @@
         {
             "name": "myString",
             "type": "string"
+        },
+        {
+            "name": "myFloatArray",
+            "type": "float",
+            "isArray": true
         }
     ]
 }

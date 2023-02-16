@@ -2,6 +2,10 @@
 
 #include "serial.h"
 
+{% for header in header_includes %}
+#include {{header}}
+{% endfor %}
+
 struct {{propertiesName}}Props {
     {% for prop in props %}
     {{prop.type}} _{{prop.name}};

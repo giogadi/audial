@@ -2,6 +2,10 @@
 
 #include "serial.h"
 
+
+#include <vector>
+
+
 struct TestProps {
     
     int _myInt1;
@@ -9,6 +13,8 @@ struct TestProps {
     int _myInt2;
     
     std::string _myString;
+    
+    std::vector<float> _myFloatArray;
     
 
     void Load(serial::Ptree pt);
