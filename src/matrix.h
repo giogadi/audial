@@ -257,6 +257,20 @@ struct Vec4 {
     bool operator!=(Vec4 const& rhs) const {
         return !(*this == rhs);
     }
+    Vec4& operator*=(float const rhs) {
+        _x *= rhs;
+        _y *= rhs;
+        _z *= rhs;
+        _w *= rhs;
+        return *this;
+    }
+    Vec4& operator/=(float const rhs) {
+        _x /= rhs;
+        _y /= rhs;
+        _z /= rhs;
+        _w /= rhs;
+        return *this;
+    }
 };
 
 inline Vec4 operator+(Vec4 const& lhs, Vec4 const& rhs) {
@@ -447,30 +461,3 @@ inline Vec4 operator*(Mat4 const& m, Vec4 const& v) {
         m._m20*v._x + m._m21*v._y + m._m22*v._z + m._m23*v._w,
         m._m30*v._x + m._m31*v._y + m._m32*v._z + m._m33*v._w);
 }
-
-// struct Transform {
-//     Transform() {}
-//     Transform(Mat3 const& rot, Vec3 const& p)
-//         : _rot(rot)
-//         , _pos(p) {}
-
-//     Mat4 MakeMat4() const {
-//         Mat4 m = Mat4::Identity();
-//         for (int c = 0; c < 3; ++c) {
-//             Vec4& v4 = m.GetCol(c);
-//             Vec3 const& v3 = _rot.GetCol(c);
-//             v4._x = v3._x;
-//             v4._y = v3._y;
-//             v4._z = v3._z;
-//         }
-//         Vec4& p4 = m.GetCol(3);
-//         p4._x = _pos._x;
-//         p4._y = _pos._y;
-//         p4._z = _pos._z;
-//         return m;
-//     }
-
-//     Mat3 _rot;
-//     Vec3 _pos;
-//     // float _scale;
-// };
