@@ -111,8 +111,43 @@ struct CommandLineInputs {
     std::optional<std::string> _synthPatchesFilename;
     bool _editMode = false;
 };
+
+void ParseCommandLine(CommandLineInputs& inputs, std::vector<std::string> const& argv);
+
+void ParseCommandLineFile(CommandLineInputs& inputs, std::string_view fileName) {
+    std::vector<std::string> fileArgv;
+    std::ifstream cmdLineFile(fileName);
+    if (!cmdLineFile.is_open()) {
+        std::cout << "Tried to open command line file \"" << fileName <<
+            "\", but could not open file. Skipping." << std::endl;
+        return;
+    }
+    // read from the cmdline file line-by-line so we can filter out // comments
+    while (!cmdLineFile.eof()) {
+        std::string line;
+        std::getline(cmdLineFile, line);
+        if (line.size() >= 2 && line[0] == '/' && line[1] == '/') {
+            // comment. skip line.
+            continue;
+        }
+
+        std::stringstream ss(line);
+        ss.str(line);
+        while (!ss.eof()) {
+            std::string arg;
+            ss >> arg;
+            fileArgv.push_back(std::move(arg));
+        }
+    }
+    ParseCommandLine(inputs, fileArgv);
+}
+
 void ParseCommandLine(CommandLineInputs& inputs, std::vector<std::string> const& argv) {
     inputs._editMode = false;
+
+    // Start off args from a default cmd line file
+    ParseCommandLineFile(inputs, "cmd_line.txt");
+    
     for (int argIx = 0; argIx < argv.size(); ++argIx) {
         if (argv[argIx] == "-f") {
             ++argIx;
@@ -120,33 +155,7 @@ void ParseCommandLine(CommandLineInputs& inputs, std::vector<std::string> const&
                 std::cout << "Need a command line filename with -f. Ignoring." << std::endl;
                 continue;
             }
-            std::vector<std::string> fileArgv;
-            {
-                std::ifstream cmdLineFile(argv[argIx]);
-                if (!cmdLineFile.is_open()) {
-                    std::cout << "Tried to open command line file \"" << argv[argIx] <<
-                        "\", but could not open file. Skipping." << std::endl;
-                    continue;
-                }
-                // read from the cmdline file line-by-line so we can filter out // comments
-                while (!cmdLineFile.eof()) {
-                    std::string line;
-                    std::getline(cmdLineFile, line);
-                    if (line.size() >= 2 && line[0] == '/' && line[1] == '/') {
-                        // comment. skip line.
-                        continue;
-                    }
-
-                    std::stringstream ss(line);
-                    ss.str(line);
-                    while (!ss.eof()) {
-                        std::string arg;
-                        ss >> arg;
-                        fileArgv.push_back(std::move(arg));
-                    }
-                }
-            }
-            ParseCommandLine(inputs, fileArgv);
+            ParseCommandLineFile(inputs, argv[argIx]);
         } else if (argv[argIx] == "-s") {
             ++argIx;
             if (argIx >= argv.size()) {

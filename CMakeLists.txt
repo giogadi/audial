@@ -27,7 +27,7 @@ add_executable(game
     src/renderer.cpp src/collisions.cpp
     src/stb_truetype.cpp
 
-    src/properties/Test.cpp
+    # src/properties/Test.cpp
 
     src/string_ci.cpp
     
