@@ -5,24 +5,24 @@
         <Light>
             <name>light</name>
             <pickable>false</pickable>
-            <transform_mat4>
-                <m00>1</m00>
-                <m10>0</m10>
-                <m20>0</m20>
-                <m30>0</m30>
-                <m01>0</m01>
-                <m11>1</m11>
-                <m21>0</m21>
-                <m31>0</m31>
-                <m02>0</m02>
-                <m12>0</m12>
-                <m22>1</m22>
-                <m32>0</m32>
-                <m03>0</m03>
-                <m13>10</m13>
-                <m23>0</m23>
-                <m33>1</m33>
-            </transform_mat4>
+            <transform>
+                <pos>
+                    <x>0</x>
+                    <y>10</y>
+                    <z>0</z>
+                </pos>
+                <quat>
+                    <x>0</x>
+                    <y>0</y>
+                    <z>0</z>
+                    <w>1</w>
+                </quat>
+                <scale>
+                    <x>1</x>
+                    <y>1</y>
+                    <z>1</z>
+                </scale>
+            </transform>
             <model_name/>
             <model_color_vec4>
                 <x>0</x>
@@ -44,24 +44,24 @@
         <Camera>
             <name>camera</name>
             <pickable>false</pickable>
-            <transform_mat4>
-                <m00>1</m00>
-                <m10>0</m10>
-                <m20>0</m20>
-                <m30>0</m30>
-                <m01>0</m01>
-                <m11>0</m11>
-                <m21>-1</m21>
-                <m31>0</m31>
-                <m02>0</m02>
-                <m12>1</m12>
-                <m22>0</m22>
-                <m32>0</m32>
-                <m03>0</m03>
-                <m13>5</m13>
-                <m23>0</m23>
-                <m33>1</m33>
-            </transform_mat4>
+            <transform>
+                <pos>
+                    <x>0</x>
+                    <y>5</y>
+                    <z>0</z>
+                </pos>
+                <quat>
+                    <x>-0.707106769</x>
+                    <y>0</y>
+                    <z>0</z>
+                    <w>0.707106769</w>
+                </quat>
+                <scale>
+                    <x>1</x>
+                    <y>1</y>
+                    <z>1</z>
+                </scale>
+            </transform>
             <model_name/>
             <model_color_vec4>
                 <x>0</x>
@@ -76,24 +76,24 @@
         <Sequencer>
             <name>count_off</name>
             <pickable>false</pickable>
-            <transform_mat4>
-                <m00>1</m00>
-                <m10>0</m10>
-                <m20>0</m20>
-                <m30>0</m30>
-                <m01>0</m01>
-                <m11>1</m11>
-                <m21>0</m21>
-                <m31>0</m31>
-                <m02>0</m02>
-                <m12>0</m12>
-                <m22>1</m22>
-                <m32>0</m32>
-                <m03>0</m03>
-                <m13>0</m13>
-                <m23>0</m23>
-                <m33>1</m33>
-            </transform_mat4>
+            <transform>
+                <pos>
+                    <x>0</x>
+                    <y>0</y>
+                    <z>0</z>
+                </pos>
+                <quat>
+                    <x>0</x>
+                    <y>0</y>
+                    <z>0</z>
+                    <w>1</w>
+                </quat>
+                <scale>
+                    <x>1</x>
+                    <y>1</y>
+                    <z>1</z>
+                </scale>
+            </transform>
             <model_name/>
             <model_color_vec4>
                 <x>0</x>
@@ -151,24 +151,24 @@
         <FlowPlayer>
             <name>player</name>
             <pickable>true</pickable>
-            <transform_mat4>
-                <m00>0.25</m00>
-                <m10>0</m10>
-                <m20>0</m20>
-                <m30>0</m30>
-                <m01>0</m01>
-                <m11>0.25</m11>
-                <m21>0</m21>
-                <m31>0</m31>
-                <m02>0</m02>
-                <m12>0</m12>
-                <m22>0.25</m22>
-                <m32>0</m32>
-                <m03>-8.703125</m03>
-                <m13>0</m13>
-                <m23>-4.125</m23>
-                <m33>1</m33>
-            </transform_mat4>
+            <transform>
+                <pos>
+                    <x>-8.703125</x>
+                    <y>0</y>
+                    <z>-4.125</z>
+                </pos>
+                <quat>
+                    <x>0</x>
+                    <y>0</y>
+                    <z>0</z>
+                    <w>1</w>
+                </quat>
+                <scale>
+                    <x>0.25</x>
+                    <y>0.25</y>
+                    <z>0.25</z>
+                </scale>
+            </transform>
             <model_name>cube</model_name>
             <model_color_vec4>
                 <x>1</x>
@@ -189,24 +189,24 @@
         <StepSequencer>
             <name>kick_seq</name>
             <pickable>false</pickable>
-            <transform_mat4>
-                <m00>1</m00>
-                <m10>0</m10>
-                <m20>0</m20>
-                <m30>0</m30>
-                <m01>0</m01>
-                <m11>1</m11>
-                <m21>0</m21>
-                <m31>0</m31>
-                <m02>0</m02>
-                <m12>0</m12>
-                <m22>1</m22>
-                <m32>0</m32>
-                <m03>0</m03>
-                <m13>0</m13>
-                <m23>0</m23>
-                <m33>1</m33>
-            </transform_mat4>
+            <transform>
+                <pos>
+                    <x>0</x>
+                    <y>0</y>
+                    <z>0</z>
+                </pos>
+                <quat>
+                    <x>0</x>
+                    <y>0</y>
+                    <z>0</z>
+                    <w>1</w>
+                </quat>
+                <scale>
+                    <x>1</x>
+                    <y>1</y>
+                    <z>1</z>
+                </scale>
+            </transform>
             <model_name/>
             <model_color_vec4>
                 <x>0</x>
@@ -225,24 +225,24 @@
         <StepSequencer>
             <name>snare_seq</name>
             <pickable>false</pickable>
-            <transform_mat4>
-                <m00>1</m00>
-                <m10>0</m10>
-                <m20>0</m20>
-                <m30>0</m30>
-                <m01>0</m01>
-                <m11>1</m11>
-                <m21>0</m21>
-                <m31>0</m31>
-                <m02>0</m02>
-                <m12>0</m12>
-                <m22>1</m22>
-                <m32>0</m32>
-                <m03>0</m03>
-                <m13>0</m13>
-                <m23>0</m23>
-                <m33>1</m33>
-            </transform_mat4>
+            <transform>
+                <pos>
+                    <x>0</x>
+                    <y>0</y>
+                    <z>0</z>
+                </pos>
+                <quat>
+                    <x>0</x>
+                    <y>0</y>
+                    <z>0</z>
+                    <w>1</w>
+                </quat>
+                <scale>
+                    <x>1</x>
+                    <y>1</y>
+                    <z>1</z>
+                </scale>
+            </transform>
             <model_name/>
             <model_color_vec4>
                 <x>0</x>
@@ -261,24 +261,24 @@
         <StepSequencer>
             <name>hihat_seq</name>
             <pickable>false</pickable>
-            <transform_mat4>
-                <m00>1</m00>
-                <m10>0</m10>
-                <m20>0</m20>
-                <m30>0</m30>
-                <m01>0</m01>
-                <m11>1</m11>
-                <m21>0</m21>
-                <m31>0</m31>
-                <m02>0</m02>
-                <m12>0</m12>
-                <m22>1</m22>
-                <m32>0</m32>
-                <m03>0</m03>
-                <m13>0</m13>
-                <m23>0</m23>
-                <m33>1</m33>
-            </transform_mat4>
+            <transform>
+                <pos>
+                    <x>0</x>
+                    <y>0</y>
+                    <z>0</z>
+                </pos>
+                <quat>
+                    <x>0</x>
+                    <y>0</y>
+                    <z>0</z>
+                    <w>1</w>
+                </quat>
+                <scale>
+                    <x>1</x>
+                    <y>1</y>
+                    <z>1</z>
+                </scale>
+            </transform>
             <model_name/>
             <model_color_vec4>
                 <x>0</x>
@@ -297,24 +297,24 @@
         <StepSequencer>
             <name>chord_seq</name>
             <pickable>false</pickable>
-            <transform_mat4>
-                <m00>1</m00>
-                <m10>0</m10>
-                <m20>0</m20>
-                <m30>0</m30>
-                <m01>0</m01>
-                <m11>1</m11>
-                <m21>0</m21>
-                <m31>0</m31>
-                <m02>0</m02>
-                <m12>0</m12>
-                <m22>1</m22>
-                <m32>0</m32>
-                <m03>0</m03>
-                <m13>0</m13>
-                <m23>0</m23>
-                <m33>1</m33>
-            </transform_mat4>
+            <transform>
+                <pos>
+                    <x>0</x>
+                    <y>0</y>
+                    <z>0</z>
+                </pos>
+                <quat>
+                    <x>0</x>
+                    <y>0</y>
+                    <z>0</z>
+                    <w>1</w>
+                </quat>
+                <scale>
+                    <x>1</x>
+                    <y>1</y>
+                    <z>1</z>
+                </scale>
+            </transform>
             <model_name/>
             <model_color_vec4>
                 <x>0</x>
@@ -335,24 +335,24 @@
         <StepSequencer>
             <name>other_seq</name>
             <pickable>false</pickable>
-            <transform_mat4>
-                <m00>1</m00>
-                <m10>0</m10>
-                <m20>0</m20>
-                <m30>0</m30>
-                <m01>0</m01>
-                <m11>1</m11>
-                <m21>0</m21>
-                <m31>0</m31>
-                <m02>0</m02>
-                <m12>0</m12>
-                <m22>1</m22>
-                <m32>0</m32>
-                <m03>0</m03>
-                <m13>0</m13>
-                <m23>0</m23>
-                <m33>1</m33>
-            </transform_mat4>
+            <transform>
+                <pos>
+                    <x>0</x>
+                    <y>0</y>
+                    <z>0</z>
+                </pos>
+                <quat>
+                    <x>0</x>
+                    <y>0</y>
+                    <z>0</z>
+                    <w>1</w>
+                </quat>
+                <scale>
+                    <x>1</x>
+                    <y>1</y>
+                    <z>1</z>
+                </scale>
+            </transform>
             <model_name/>
             <model_color_vec4>
                 <x>0</x>
@@ -373,24 +373,24 @@
         <StepSequencer>
             <name>bass_seq</name>
             <pickable>false</pickable>
-            <transform_mat4>
-                <m00>1</m00>
-                <m10>0</m10>
-                <m20>0</m20>
-                <m30>0</m30>
-                <m01>0</m01>
-                <m11>1</m11>
-                <m21>0</m21>
-                <m31>0</m31>
-                <m02>0</m02>
-                <m12>0</m12>
-                <m22>1</m22>
-                <m32>0</m32>
-                <m03>0</m03>
-                <m13>0</m13>
-                <m23>0</m23>
-                <m33>1</m33>
-            </transform_mat4>
+            <transform>
+                <pos>
+                    <x>0</x>
+                    <y>0</y>
+                    <z>0</z>
+                </pos>
+                <quat>
+                    <x>0</x>
+                    <y>0</y>
+                    <z>0</z>
+                    <w>1</w>
+                </quat>
+                <scale>
+                    <x>1</x>
+                    <y>1</y>
+                    <z>1</z>
+                </scale>
+            </transform>
             <model_name/>
             <model_color_vec4>
                 <x>0</x>
@@ -411,24 +411,24 @@
         <StepSequencer>
             <name>lead_seq</name>
             <pickable>false</pickable>
-            <transform_mat4>
-                <m00>1</m00>
-                <m10>0</m10>
-                <m20>0</m20>
-                <m30>0</m30>
-                <m01>0</m01>
-                <m11>1</m11>
-                <m21>0</m21>
-                <m31>0</m31>
-                <m02>0</m02>
-                <m12>0</m12>
-                <m22>1</m22>
-                <m32>0</m32>
-                <m03>0</m03>
-                <m13>0</m13>
-                <m23>0</m23>
-                <m33>1</m33>
-            </transform_mat4>
+            <transform>
+                <pos>
+                    <x>0</x>
+                    <y>0</y>
+                    <z>0</z>
+                </pos>
+                <quat>
+                    <x>0</x>
+                    <y>0</y>
+                    <z>0</z>
+                    <w>1</w>
+                </quat>
+                <scale>
+                    <x>1</x>
+                    <y>1</y>
+                    <z>1</z>
+                </scale>
+            </transform>
             <model_name/>
             <model_color_vec4>
                 <x>0</x>
@@ -449,24 +449,24 @@
         <ActionSequencer>
             <name>action_seq</name>
             <pickable>false</pickable>
-            <transform_mat4>
-                <m00>1</m00>
-                <m10>0</m10>
-                <m20>0</m20>
-                <m30>0</m30>
-                <m01>0</m01>
-                <m11>1</m11>
-                <m21>0</m21>
-                <m31>0</m31>
-                <m02>0</m02>
-                <m12>0</m12>
-                <m22>1</m22>
-                <m32>0</m32>
-                <m03>0</m03>
-                <m13>0</m13>
-                <m23>0</m23>
-                <m33>1</m33>
-            </transform_mat4>
+            <transform>
+                <pos>
+                    <x>0</x>
+                    <y>0</y>
+                    <z>0</z>
+                </pos>
+                <quat>
+                    <x>0</x>
+                    <y>0</y>
+                    <z>0</z>
+                    <w>1</w>
+                </quat>
+                <scale>
+                    <x>1</x>
+                    <y>1</y>
+                    <z>1</z>
+                </scale>
+            </transform>
             <model_name/>
             <model_color_vec4>
                 <x>0</x>
@@ -479,24 +479,24 @@
         <TypingEnemy>
             <name>e0</name>
             <pickable>true</pickable>
-            <transform_mat4>
-                <m00>0.5</m00>
-                <m10>0</m10>
-                <m20>0</m20>
-                <m30>0</m30>
-                <m01>0</m01>
-                <m11>0.5</m11>
-                <m21>0</m21>
-                <m31>0</m31>
-                <m02>0</m02>
-                <m12>0</m12>
-                <m22>0.5</m22>
-                <m32>0</m32>
-                <m03>-5.1875</m03>
-                <m13>0</m13>
-                <m23>-0.8125</m23>
-                <m33>1</m33>
-            </transform_mat4>
+            <transform>
+                <pos>
+                    <x>-5.1875</x>
+                    <y>0</y>
+                    <z>-0.8125</z>
+                </pos>
+                <quat>
+                    <x>0</x>
+                    <y>0</y>
+                    <z>0</z>
+                    <w>1</w>
+                </quat>
+                <scale>
+                    <x>0.5</x>
+                    <y>0.5</y>
+                    <z>0.5</z>
+                </scale>
+            </transform>
             <model_name>cube</model_name>
             <model_color_vec4>
                 <x>1</x>
@@ -519,24 +519,24 @@
         <TypingEnemy>
             <name>e1</name>
             <pickable>true</pickable>
-            <transform_mat4>
-                <m00>0.5</m00>
-                <m10>0</m10>
-                <m20>0</m20>
-                <m30>0</m30>
-                <m01>0</m01>
-                <m11>0.5</m11>
-                <m21>0</m21>
-                <m31>0</m31>
-                <m02>0</m02>
-                <m12>0</m12>
-                <m22>0.5</m22>
-                <m32>0</m32>
-                <m03>-0.6875</m03>
-                <m13>0</m13>
-                <m23>-0.890625</m23>
-                <m33>1</m33>
-            </transform_mat4>
+            <transform>
+                <pos>
+                    <x>-0.6875</x>
+                    <y>0</y>
+                    <z>-0.890625</z>
+                </pos>
+                <quat>
+                    <x>0</x>
+                    <y>0</y>
+                    <z>0</z>
+                    <w>1</w>
+                </quat>
+                <scale>
+                    <x>0.5</x>
+                    <y>0.5</y>
+                    <z>0.5</z>
+                </scale>
+            </transform>
             <model_name>cube</model_name>
             <model_color_vec4>
                 <x>1</x>
@@ -559,24 +559,24 @@
         <TypingEnemy>
             <name>e2</name>
             <pickable>true</pickable>
-            <transform_mat4>
-                <m00>0.5</m00>
-                <m10>0</m10>
-                <m20>0</m20>
-                <m30>0</m30>
-                <m01>0</m01>
-                <m11>0.5</m11>
-                <m21>0</m21>
-                <m31>0</m31>
-                <m02>0</m02>
-                <m12>0</m12>
-                <m22>0.5</m22>
-                <m32>0</m32>
-                <m03>3.234375</m03>
-                <m13>0</m13>
-                <m23>-0.890625</m23>
-                <m33>1</m33>
-            </transform_mat4>
+            <transform>
+                <pos>
+                    <x>3.234375</x>
+                    <y>0</y>
+                    <z>-0.890625</z>
+                </pos>
+                <quat>
+                    <x>0</x>
+                    <y>0</y>
+                    <z>0</z>
+                    <w>1</w>
+                </quat>
+                <scale>
+                    <x>0.5</x>
+                    <y>0.5</y>
+                    <z>0.5</z>
+                </scale>
+            </transform>
             <model_name>cube</model_name>
             <model_color_vec4>
                 <x>1</x>
@@ -599,24 +599,24 @@
         <TypingEnemy>
             <name>e3</name>
             <pickable>true</pickable>
-            <transform_mat4>
-                <m00>0.5</m00>
-                <m10>0</m10>
-                <m20>0</m20>
-                <m30>0</m30>
-                <m01>0</m01>
-                <m11>0.5</m11>
-                <m21>0</m21>
-                <m31>0</m31>
-                <m02>0</m02>
-                <m12>0</m12>
-                <m22>0.5</m22>
-                <m32>0</m32>
-                <m03>7.09375</m03>
-                <m13>0</m13>
-                <m23>-0.90625</m23>
-                <m33>1</m33>
-            </transform_mat4>
+            <transform>
+                <pos>
+                    <x>7.09375</x>
+                    <y>0</y>
+                    <z>-0.90625</z>
+                </pos>
+                <quat>
+                    <x>0</x>
+                    <y>0</y>
+                    <z>0</z>
+                    <w>1</w>
+                </quat>
+                <scale>
+                    <x>0.5</x>
+                    <y>0.5</y>
+                    <z>0.5</z>
+                </scale>
+            </transform>
             <model_name>cube</model_name>
             <model_color_vec4>
                 <x>1</x>
@@ -640,24 +640,24 @@
         <Base>
             <name>cameraTarget2</name>
             <pickable>true</pickable>
-            <transform_mat4>
-                <m00>1</m00>
-                <m10>0</m10>
-                <m20>0</m20>
-                <m30>0</m30>
-                <m01>0</m01>
-                <m11>1</m11>
-                <m21>0</m21>
-                <m31>0</m31>
-                <m02>0</m02>
-                <m12>0</m12>
-                <m22>1</m22>
-                <m32>0</m32>
-                <m03>15.1874971</m03>
-                <m13>0</m13>
-                <m23>-5.59843683</m23>
-                <m33>1</m33>
-            </transform_mat4>
+            <transform>
+                <pos>
+                    <x>15.1874971</x>
+                    <y>0</y>
+                    <z>-5.59843683</z>
+                </pos>
+                <quat>
+                    <x>0</x>
+                    <y>0</y>
+                    <z>0</z>
+                    <w>1</w>
+                </quat>
+                <scale>
+                    <x>1</x>
+                    <y>1</y>
+                    <z>1</z>
+                </scale>
+            </transform>
             <model_name/>
             <model_color_vec4>
                 <x>0.800000012</x>
@@ -669,24 +669,24 @@
         <TypingEnemy>
             <name>e1_0</name>
             <pickable>true</pickable>
-            <transform_mat4>
-                <m00>0.5</m00>
-                <m10>0</m10>
-                <m20>0</m20>
-                <m30>0</m30>
-                <m01>0</m01>
-                <m11>0.5</m11>
-                <m21>0</m21>
-                <m31>0</m31>
-                <m02>0</m02>
-                <m12>0</m12>
-                <m22>0.5</m22>
-                <m32>0</m32>
-                <m03>10.28125</m03>
-                <m13>0</m13>
-                <m23>-3.40625</m23>
-                <m33>1</m33>
-            </transform_mat4>
+            <transform>
+                <pos>
+                    <x>10.28125</x>
+                    <y>0</y>
+                    <z>-3.40625</z>
+                </pos>
+                <quat>
+                    <x>0</x>
+                    <y>0</y>
+                    <z>0</z>
+                    <w>1</w>
+                </quat>
+                <scale>
+                    <x>0.5</x>
+                    <y>0.5</y>
+                    <z>0.5</z>
+                </scale>
+            </transform>
             <model_name>cube</model_name>
             <model_color_vec4>
                 <x>1</x>
@@ -709,24 +709,24 @@
         <TypingEnemy>
             <name>e1_1</name>
             <pickable>true</pickable>
-            <transform_mat4>
-                <m00>0.5</m00>
-                <m10>0</m10>
-                <m20>0</m20>
-                <m30>0</m30>
-                <m01>0</m01>
-                <m11>0.5</m11>
-                <m21>0</m21>
-                <m31>0</m31>
-                <m02>0</m02>
-                <m12>0</m12>
-                <m22>0.5</m22>
-                <m32>0</m32>
-                <m03>12.9375</m03>
-                <m13>0</m13>
-                <m23>-6</m23>
-                <m33>1</m33>
-            </transform_mat4>
+            <transform>
+                <pos>
+                    <x>12.9375</x>
+                    <y>0</y>
+                    <z>-6</z>
+                </pos>
+                <quat>
+                    <x>0</x>
+                    <y>0</y>
+                    <z>0</z>
+                    <w>1</w>
+                </quat>
+                <scale>
+                    <x>0.5</x>
+                    <y>0.5</y>
+                    <z>0.5</z>
+                </scale>
+            </transform>
             <model_name>cube</model_name>
             <model_color_vec4>
                 <x>1</x>
@@ -749,24 +749,24 @@
         <TypingEnemy>
             <name>e1_2</name>
             <pickable>true</pickable>
-            <transform_mat4>
-                <m00>0.5</m00>
-                <m10>0</m10>
-                <m20>0</m20>
-                <m30>0</m30>
-                <m01>0</m01>
-                <m11>0.5</m11>
-                <m21>0</m21>
-                <m31>0</m31>
-                <m02>0</m02>
-                <m12>0</m12>
-                <m22>0.5</m22>
-                <m32>0</m32>
-                <m03>10.640625</m03>
-                <m13>0</m13>
-                <m23>-8.78125</m23>
-                <m33>1</m33>
-            </transform_mat4>
+            <transform>
+                <pos>
+                    <x>10.640625</x>
+                    <y>0</y>
+                    <z>-8.78125</z>
+                </pos>
+                <quat>
+                    <x>0</x>
+                    <y>0</y>
+                    <z>0</z>
+                    <w>1</w>
+                </quat>
+                <scale>
+                    <x>0.5</x>
+                    <y>0.5</y>
+                    <z>0.5</z>
+                </scale>
+            </transform>
             <model_name>cube</model_name>
             <model_color_vec4>
                 <x>1</x>
@@ -789,24 +789,24 @@
         <TypingEnemy>
             <name>e1_3</name>
             <pickable>true</pickable>
-            <transform_mat4>
-                <m00>0.5</m00>
-                <m10>0</m10>
-                <m20>0</m20>
-                <m30>0</m30>
-                <m01>0</m01>
-                <m11>0.5</m11>
-                <m21>0</m21>
-                <m31>0</m31>
-                <m02>0</m02>
-                <m12>0</m12>
-                <m22>0.5</m22>
-                <m32>0</m32>
-                <m03>13.953125</m03>
-                <m13>0</m13>
-                <m23>-10.265625</m23>
-                <m33>1</m33>
-            </transform_mat4>
+            <transform>
+                <pos>
+                    <x>13.953125</x>
+                    <y>0</y>
+                    <z>-10.265625</z>
+                </pos>
+                <quat>
+                    <x>0</x>
+                    <y>0</y>
+                    <z>0</z>
+                    <w>1</w>
+                </quat>
+                <scale>
+                    <x>0.5</x>
+                    <y>0.5</y>
+                    <z>0.5</z>
+                </scale>
+            </transform>
             <model_name>cube</model_name>
             <model_color_vec4>
                 <x>1</x>
@@ -829,24 +829,24 @@
         <TypingEnemy>
             <name>e1_4</name>
             <pickable>true</pickable>
-            <transform_mat4>
-                <m00>0.100000001</m00>
-                <m10>0</m10>
-                <m20>0</m20>
-                <m30>0</m30>
-                <m01>0</m01>
-                <m11>0.100000001</m11>
-                <m21>0</m21>
-                <m31>0</m31>
-                <m02>0</m02>
-                <m12>0</m12>
-                <m22>0.100000001</m22>
-                <m32>0</m32>
-                <m03>16.609375</m03>
-                <m13>0</m13>
-                <m23>-5.85937548</m23>
-                <m33>1</m33>
-            </transform_mat4>
+            <transform>
+                <pos>
+                    <x>16.609375</x>
+                    <y>0</y>
+                    <z>-5.85937548</z>
+                </pos>
+                <quat>
+                    <x>0</x>
+                    <y>0</y>
+                    <z>0</z>
+                    <w>1</w>
+                </quat>
+                <scale>
+                    <x>0.100000001</x>
+                    <y>0.100000001</y>
+                    <z>0.100000001</z>
+                </scale>
+            </transform>
             <model_name>cross</model_name>
             <model_color_vec4>
                 <x>1</x>
@@ -869,24 +869,24 @@
         <TypingEnemy>
             <name>e1_5</name>
             <pickable>true</pickable>
-            <transform_mat4>
-                <m00>0.100000001</m00>
-                <m10>0</m10>
-                <m20>0</m20>
-                <m30>0</m30>
-                <m01>0</m01>
-                <m11>0.100000001</m11>
-                <m21>0</m21>
-                <m31>0</m31>
-                <m02>0</m02>
-                <m12>0</m12>
-                <m22>0.100000001</m22>
-                <m32>0</m32>
-                <m03>20.96875</m03>
-                <m13>0</m13>
-                <m23>-4.42187548</m23>
-                <m33>1</m33>
-            </transform_mat4>
+            <transform>
+                <pos>
+                    <x>20.96875</x>
+                    <y>0</y>
+                    <z>-4.42187548</z>
+                </pos>
+                <quat>
+                    <x>0</x>
+                    <y>0</y>
+                    <z>0</z>
+                    <w>1</w>
+                </quat>
+                <scale>
+                    <x>0.100000001</x>
+                    <y>0.100000001</y>
+                    <z>0.100000001</z>
+                </scale>
+            </transform>
             <model_name>cross</model_name>
             <model_color_vec4>
                 <x>1</x>
@@ -910,24 +910,24 @@
         <TypingEnemy>
             <name>e1_3 (copy)</name>
             <pickable>true</pickable>
-            <transform_mat4>
-                <m00>0.5</m00>
-                <m10>0</m10>
-                <m20>0</m20>
-                <m30>0</m30>
-                <m01>0</m01>
-                <m11>0.5</m11>
-                <m21>0</m21>
-                <m31>0</m31>
-                <m02>0</m02>
-                <m12>0</m12>
-                <m22>0.5</m22>
-                <m32>0</m32>
-                <m03>18.234375</m03>
-                <m13>0</m13>
-                <m23>-10.171875</m23>
-                <m33>1</m33>
-            </transform_mat4>
+            <transform>
+                <pos>
+                    <x>18.234375</x>
+                    <y>0</y>
+                    <z>-10.171875</z>
+                </pos>
+                <quat>
+                    <x>0</x>
+                    <y>0</y>
+                    <z>0</z>
+                    <w>1</w>
+                </quat>
+                <scale>
+                    <x>0.5</x>
+                    <y>0.5</y>
+                    <z>0.5</z>
+                </scale>
+            </transform>
             <model_name>cube</model_name>
             <model_color_vec4>
                 <x>1</x>
@@ -950,24 +950,24 @@
         <Base>
             <name>cameraTarget3</name>
             <pickable>true</pickable>
-            <transform_mat4>
-                <m00>1</m00>
-                <m10>0</m10>
-                <m20>0</m20>
-                <m30>0</m30>
-                <m01>0</m01>
-                <m11>1</m11>
-                <m21>0</m21>
-                <m31>0</m31>
-                <m02>0</m02>
-                <m12>0</m12>
-                <m22>1</m22>
-                <m32>0</m32>
-                <m03>28.587532</m03>
-                <m13>0</m13>
-                <m23>-5.59800005</m23>
-                <m33>1</m33>
-            </transform_mat4>
+            <transform>
+                <pos>
+                    <x>28.587532</x>
+                    <y>0</y>
+                    <z>-5.59800005</z>
+                </pos>
+                <quat>
+                    <x>0</x>
+                    <y>0</y>
+                    <z>0</z>
+                    <w>1</w>
+                </quat>
+                <scale>
+                    <x>1</x>
+                    <y>1</y>
+                    <z>1</z>
+                </scale>
+            </transform>
             <model_name/>
             <model_color_vec4>
                 <x>0.800000012</x>
@@ -979,24 +979,24 @@
         <TypingEnemy>
             <name>e2_0</name>
             <pickable>true</pickable>
-            <transform_mat4>
-                <m00>0.100000001</m00>
-                <m10>0</m10>
-                <m20>0</m20>
-                <m30>0</m30>
-                <m01>0</m01>
-                <m11>0.100000001</m11>
-                <m21>0</m21>
-                <m31>0</m31>
-                <m02>0</m02>
-                <m12>0</m12>
-                <m22>0.100000001</m22>
-                <m32>0</m32>
-                <m03>23.859375</m03>
-                <m13>0</m13>
-                <m23>-4.46875</m23>
-                <m33>1</m33>
-            </transform_mat4>
+            <transform>
+                <pos>
+                    <x>23.859375</x>
+                    <y>0</y>
+                    <z>-4.46875</z>
+                </pos>
+                <quat>
+                    <x>0</x>
+                    <y>0</y>
+                    <z>0</z>
+                    <w>1</w>
+                </quat>
+                <scale>
+                    <x>0.100000001</x>
+                    <y>0.100000001</y>
+                    <z>0.100000001</z>
+                </scale>
+            </transform>
             <model_name>cross</model_name>
             <model_color_vec4>
                 <x>1</x>
@@ -1019,24 +1019,24 @@
         <TypingEnemy>
             <name>e2_1</name>
             <pickable>true</pickable>
-            <transform_mat4>
-                <m00>0.100000001</m00>
-                <m10>0</m10>
-                <m20>0</m20>
-                <m30>0</m30>
-                <m01>0</m01>
-                <m11>0.100000001</m11>
-                <m21>0</m21>
-                <m31>0</m31>
-                <m02>0</m02>
-                <m12>0</m12>
-                <m22>0.100000001</m22>
-                <m32>0</m32>
-                <m03>22.296875</m03>
-                <m13>0</m13>
-                <m23>-3.25000048</m23>
-                <m33>1</m33>
-            </transform_mat4>
+            <transform>
+                <pos>
+                    <x>22.296875</x>
+                    <y>0</y>
+                    <z>-3.25000048</z>
+                </pos>
+                <quat>
+                    <x>0</x>
+                    <y>0</y>
+                    <z>0</z>
+                    <w>1</w>
+                </quat>
+                <scale>
+                    <x>0.100000001</x>
+                    <y>0.100000001</y>
+                    <z>0.100000001</z>
+                </scale>
+            </transform>
             <model_name>cross</model_name>
             <model_color_vec4>
                 <x>1</x>
@@ -1059,24 +1059,24 @@
         <TypingEnemy>
             <name>e1_3 (copy)</name>
             <pickable>true</pickable>
-            <transform_mat4>
-                <m00>0.5</m00>
-                <m10>0</m10>
-                <m20>0</m20>
-                <m30>0</m30>
-                <m01>0</m01>
-                <m11>0.5</m11>
-                <m21>0</m21>
-                <m31>0</m31>
-                <m02>0</m02>
-                <m12>0</m12>
-                <m22>0.5</m22>
-                <m32>0</m32>
-                <m03>15.65625</m03>
-                <m13>0</m13>
-                <m23>-8.328125</m23>
-                <m33>1</m33>
-            </transform_mat4>
+            <transform>
+                <pos>
+                    <x>15.65625</x>
+                    <y>0</y>
+                    <z>-8.328125</z>
+                </pos>
+                <quat>
+                    <x>0</x>
+                    <y>0</y>
+                    <z>0</z>
+                    <w>1</w>
+                </quat>
+                <scale>
+                    <x>0.5</x>
+                    <y>0.5</y>
+                    <z>0.5</z>
+                </scale>
+            </transform>
             <model_name>cube</model_name>
             <model_color_vec4>
                 <x>1</x>
@@ -1099,24 +1099,24 @@
         <TypingEnemy>
             <name>e1_3 (copy)</name>
             <pickable>true</pickable>
-            <transform_mat4>
-                <m00>0.5</m00>
-                <m10>0</m10>
-                <m20>0</m20>
-                <m30>0</m30>
-                <m01>0</m01>
-                <m11>0.5</m11>
-                <m21>0</m21>
-                <m31>0</m31>
-                <m02>0</m02>
-                <m12>0</m12>
-                <m22>0.5</m22>
-                <m32>0</m32>
-                <m03>13.171875</m03>
-                <m13>0</m13>
-                <m23>-8.5</m23>
-                <m33>1</m33>
-            </transform_mat4>
+            <transform>
+                <pos>
+                    <x>13.171875</x>
+                    <y>0</y>
+                    <z>-8.5</z>
+                </pos>
+                <quat>
+                    <x>0</x>
+                    <y>0</y>
+                    <z>0</z>
+                    <w>1</w>
+                </quat>
+                <scale>
+                    <x>0.5</x>
+                    <y>0.5</y>
+                    <z>0.5</z>
+                </scale>
+            </transform>
             <model_name>cube</model_name>
             <model_color_vec4>
                 <x>1</x>
@@ -1139,24 +1139,24 @@
         <Base>
             <name>new_entity</name>
             <pickable>true</pickable>
-            <transform_mat4>
-                <m00>1</m00>
-                <m10>0</m10>
-                <m20>0</m20>
-                <m30>0</m30>
-                <m01>0</m01>
-                <m11>1</m11>
-                <m21>0</m21>
-                <m31>0</m31>
-                <m02>0</m02>
-                <m12>0</m12>
-                <m22>1</m22>
-                <m32>0</m32>
-                <m03>29.8281212</m03>
-                <m13>0</m13>
-                <m23>-4.29374933</m23>
-                <m33>1</m33>
-            </transform_mat4>
+            <transform>
+                <pos>
+                    <x>29.8281212</x>
+                    <y>0</y>
+                    <z>-4.29374933</z>
+                </pos>
+                <quat>
+                    <x>0</x>
+                    <y>0</y>
+                    <z>0</z>
+                    <w>1</w>
+                </quat>
+                <scale>
+                    <x>1</x>
+                    <y>1</y>
+                    <z>1</z>
+                </scale>
+            </transform>
             <model_name/>
             <model_color_vec4>
                 <x>0.800000012</x>
@@ -1168,24 +1168,24 @@
         <TypingEnemy>
             <name>e1_1 (copy)</name>
             <pickable>true</pickable>
-            <transform_mat4>
-                <m00>0.5</m00>
-                <m10>0</m10>
-                <m20>0</m20>
-                <m30>0</m30>
-                <m01>0</m01>
-                <m11>0.5</m11>
-                <m21>0</m21>
-                <m31>0</m31>
-                <m02>0</m02>
-                <m12>0</m12>
-                <m22>0.5</m22>
-                <m32>0</m32>
-                <m03>14.765625</m03>
-                <m13>0</m13>
-                <m23>-2.28125</m23>
-                <m33>1</m33>
-            </transform_mat4>
+            <transform>
+                <pos>
+                    <x>14.765625</x>
+                    <y>0</y>
+                    <z>-2.28125</z>
+                </pos>
+                <quat>
+                    <x>0</x>
+                    <y>0</y>
+                    <z>0</z>
+                    <w>1</w>
+                </quat>
+                <scale>
+                    <x>0.5</x>
+                    <y>0.5</y>
+                    <z>0.5</z>
+                </scale>
+            </transform>
             <model_name>cube</model_name>
             <model_color_vec4>
                 <x>1</x>
@@ -1208,24 +1208,24 @@
         <TypingEnemy>
             <name>moving_platform</name>
             <pickable>true</pickable>
-            <transform_mat4>
-                <m00>0.5</m00>
-                <m10>0</m10>
-                <m20>0</m20>
-                <m30>0</m30>
-                <m01>0</m01>
-                <m11>0.5</m11>
-                <m21>0</m21>
-                <m31>0</m31>
-                <m02>0</m02>
-                <m12>0</m12>
-                <m22>0.5</m22>
-                <m32>0</m32>
-                <m03>36.53125</m03>
-                <m13>0</m13>
-                <m23>-10.078125</m23>
-                <m33>1</m33>
-            </transform_mat4>
+            <transform>
+                <pos>
+                    <x>36.53125</x>
+                    <y>0</y>
+                    <z>-10.078125</z>
+                </pos>
+                <quat>
+                    <x>0</x>
+                    <y>0</y>
+                    <z>0</z>
+                    <w>1</w>
+                </quat>
+                <scale>
+                    <x>0.5</x>
+                    <y>0.5</y>
+                    <z>0.5</z>
+                </scale>
+            </transform>
             <model_name>cube</model_name>
             <model_color_vec4>
                 <x>1</x>

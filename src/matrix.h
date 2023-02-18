@@ -44,6 +44,12 @@ struct Vec3 {
         return _x == 0.f && _y == 0.f && _z == 0.f;
     }
 
+    void ElemWiseMult(Vec3 const& v) {
+        _x *= v._x;
+        _y *= v._y;
+        _z *= v._z;
+    }
+
     float& operator[](int i) {
         return _data[i];
     }
@@ -238,6 +244,12 @@ struct Vec4 {
     static float Dot(Vec4 const& a, Vec4 const& b) {
         return a._x*b._x + a._y*b._y + a._z*b._z + a._w*b._w;
     }
+    void ElemWiseMult(Vec4 const& v) {
+        _x *= v._x;
+        _y *= v._y;
+        _z *= v._z;
+        _w *= v._w;
+    }
     void Save(serial::Ptree pt) const {
         pt.PutFloat("x", _x);
         pt.PutFloat("y", _y);
@@ -364,6 +376,7 @@ struct Mat4 {
         }
     }
 
+    // These APPLY the given scale to the current matrix.
     // NOTE!!!! These only apply to the 3x3 rot matrix
     void ScaleUniform(float x);
     void Scale(float x, float y, float z);
@@ -439,6 +452,13 @@ struct Mat4 {
         };
         struct {
             Vec4 _col0, _col1, _col2, _col3;
+        };
+        // TODO: CONFIRM WHETHER THIS WILL WORK AS YOU INTEND BEFORE YOU USE THIS
+        struct {
+            Vec3 _col3_0; float _col3_padding_0;
+            Vec3 _col3_1; float _col3_padding_1;
+            Vec3 _col3_2; float _col3_padding_2;
+            Vec3 _col3_3; float _col3_padding_3;
         };
     };
 };

@@ -57,7 +57,7 @@ void Editor::HandleEntitySelectAndMove() {
                 // their positions and clear it out
                 for (auto const& idPosPair : sSelectedPositionsBeforeMove) {
                     if (ne::Entity* entity = _g->_neEntityManager->GetEntity(idPosPair.first)) {
-                        entity->_transform.SetTranslation(idPosPair.second);
+                        entity->_transform.SetPos(idPosPair.second);
                     }
                 }
                 sSelectedPositionsBeforeMove.clear();
@@ -107,7 +107,7 @@ void Editor::HandleEntitySelectAndMove() {
                                 mouseX, mouseY, _g->_windowWidth, _g->_windowHeight, _g->_scene->_camera, &sClickedPosOnXZPlane)) {                                                    
                             for (ne::EntityId selectedId : _selectedEntityIds) {
                                 if (ne::Entity* selectedEntity = _g->_neEntityManager->GetEntity(selectedId)) {
-                                    sSelectedPositionsBeforeMove.emplace(selectedId, selectedEntity->_transform.GetPos());
+                                    sSelectedPositionsBeforeMove.emplace(selectedId, selectedEntity->_transform.Pos());
                                 }
                             }
                         } else {
@@ -128,7 +128,7 @@ void Editor::HandleEntitySelectAndMove() {
                         for (auto const& idPosPair : sSelectedPositionsBeforeMove) {
                             if (ne::Entity* entity = _g->_neEntityManager->GetEntity(idPosPair.first)) {
                                 Vec3 newPos = idPosPair.second + offset;
-                                entity->_transform.SetTranslation(newPos);
+                                entity->_transform.SetPos(newPos);
                             }
                         }
                     } else {
@@ -180,13 +180,7 @@ void Editor::Update(float dt) {
         axesModel._mesh = _axesMesh;
         axesModel._topLayer = true;
         axesModel._useMeshColor = true;
-        // Factor out scale from transform
-        Mat3 rotScale = selectedEntity->_transform.GetMat3();
-        for (int i = 0; i < 3; ++i) {
-            rotScale.GetCol(i).Normalize();
-        }
-        axesModel._transform.SetTopLeftMat3(rotScale);
-        axesModel._transform.SetTranslation(selectedEntity->_transform.GetPos());
+        axesModel._transform = selectedEntity->_transform.Mat4NoScale();
     }
 
     if (_visible) {

@@ -103,7 +103,7 @@ static double constexpr gSpawnPredelayBeatTime = 0.5;
 
 void LaneNoteEnemyEntity::Init(GameManager& g) {
     ne::Entity::Init(g);
-    _desiredSpawnY = _transform._m13;
+    _desiredSpawnY = _transform.GetPos()._y;
     _hp = _initialHp;
 }
 
@@ -115,7 +115,7 @@ static float GetCenterXOfLane(int laneIx) {
 
 int LaneNoteEnemyEntity::GetLaneIxFromCurrentPos() {
     float constexpr minX = -kLaneWidth * (kNumLanes / 2);
-    float const xOffset = _transform._m03 - minX;
+    float const xOffset = _transform.GetPos()._x - minX;
     int laneIx = math_util::Clamp((int)(xOffset / kLaneWidth), 0, kNumLanes - 1);
     return laneIx;
 }
@@ -224,15 +224,15 @@ void LaneNoteEnemyEntity::Update(GameManager& g, float dt) {
     bool useModelColor = false;
     if (beatTime < _activeBeatTime) {
         float param = (_activeBeatTime - beatTime) / gSpawnPredelayBeatTime;  // 0: active beat time; 1: predelay start
-        _transform._m13 = _desiredSpawnY + param * gSpawnYOffset;
+        _transform.SetPosY(_desiredSpawnY + param * gSpawnYOffset);
         useModelColor = false;
     } else if (beatTime > _inactiveBeatTime - gSpawnPredelayBeatTime) {
         float param = (_inactiveBeatTime - beatTime) / gSpawnPredelayBeatTime;  // 0: inactive beat time; 1: predelay start
-        _transform._m13 = _desiredSpawnY + (1.0-param) * gSpawnYOffset;
+        _transform.SetPosY(_desiredSpawnY + (1.0-param) * gSpawnYOffset);
         useModelColor = false;
     } else {        
         useModelColor = true;
-        _transform._m13 = _desiredSpawnY;
+        _transform.SetPosY(_desiredSpawnY);
         active = true; 
     }
 
@@ -244,8 +244,10 @@ void LaneNoteEnemyEntity::Update(GameManager& g, float dt) {
             case Behavior::None:
                 break;
             case Behavior::ConstVel: {
-                _transform._m03 += _constVelX * dt;
-                _transform._m23 += _constVelZ * dt;
+                Vec3 p = _transform.Pos();
+                p._x += _constVelX * dt;
+                p._z += _constVelZ * dt;
+                _transform.SetPos(p);
                 break;
             }
             case Behavior::Zigging: {
@@ -296,10 +298,10 @@ void LaneNoteEnemyEntity::Update(GameManager& g, float dt) {
     // Despawn if beyond screen bounds
     float constexpr kDespawnMinZ = -13.f;
     float constexpr kDespawnMaxZ = 7.f;
-    float constexpr kDespawnMaxX = 10.f;
-    if (_transform._m23 > kDespawnMaxZ ||
-        _transform._m23 < kDespawnMinZ ||
-        std::abs(_transform._m03) > kDespawnMaxX) {
+    float constexpr kDespawnMaxX = 10.f;    
+    if (_transform.Pos()._z > kDespawnMaxZ ||
+        _transform.Pos()._z < kDespawnMinZ ||
+        std::abs(_transform.Pos()._x) > kDespawnMaxX) {
         g._neEntityManager->TagForDestroy(_id);
     } 
 
@@ -316,7 +318,7 @@ void LaneNoteEnemyEntity::Update(GameManager& g, float dt) {
         default: assert(false); break;
     }
 
-    Mat4 renderTrans = _transform;
+    Mat4 renderTrans = _transform.Mat4Scale();
 
     if (_shotBeatTime >= 0.0) {
         double timeSinceShot = beatTime - _shotBeatTime;

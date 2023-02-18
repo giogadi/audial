@@ -254,30 +254,33 @@ ne::Entity* PickEntity(
         if (!entity._pickable) {
             continue;
         }
-        Vec3 pos = entity._transform.GetPos();
         std::optional<float> hitDist;
         {
             // TODO: THIS DECOMPOSITION PROBABLY DOES NOT HANDLE SHEAR
-            Vec3 scale;
+            // Vec3 scale;
             
-            Vec3 xAxis = entity._transform.GetCol3(0);
-            scale._x = xAxis.Normalize();
+            // Vec3 xAxis = entity._transform.GetXAxis();
+            // scale._x = xAxis.Normalize();
 
-            Vec3 yAxis = entity._transform.GetCol3(1);
-            scale._y = yAxis.Normalize();
+            // Vec3 yAxis = entity._transform.GetCol3(1);
+            // scale._y = yAxis.Normalize();
 
-            Vec3 zAxis = entity._transform.GetCol3(2);
-            scale._z = zAxis.Normalize();
+            // Vec3 zAxis = entity._transform.GetCol3(2);
+            // scale._z = zAxis.Normalize();
 
+            // scale *= 0.5f;
+
+            // Mat3 rot(xAxis, yAxis, zAxis);
+            // Mat4 transNoScale;
+            // transNoScale.SetTopLeftMat3(rot);
+            // transNoScale.SetTranslation(pos);
+
+            Vec3 scale = entity._transform.Scale();
             scale *= 0.5f;
-
-            Mat3 rot(xAxis, yAxis, zAxis);
-            Mat4 transNoScale;
-            transNoScale.SetTopLeftMat3(rot);
-            transNoScale.SetTranslation(pos);
+            
 
             float d;
-            if (TestRayOBBIntersection(rayStart, rayDir, -scale, scale, transNoScale, d)) {
+            if (TestRayOBBIntersection(rayStart, rayDir, -scale, scale, entity._transform.Mat4NoScale(), d)) {
                 hitDist = d;
             }
         }

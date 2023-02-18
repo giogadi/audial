@@ -641,7 +641,7 @@ void SpawnEnemySeqAction::Load(LoadInputs const& loadInputs, std::istream& lineS
     _enemy._modelName = "cube";
     _enemy._modelColor.Set(1.f, 0.f, 0.f, 1.f);
 
-    _enemy._transform.Scale(0.2f, 0.2f, 0.2f);
+    _enemy._transform.ApplyScale(Vec3(0.2f, 0.2f, 0.2f));
 
     _enemy._useHitActionsOnInitHack = true;
     
@@ -702,16 +702,16 @@ void SpawnEnemySeqAction::Load(LoadInputs const& loadInputs, std::istream& lineS
         } else if (key == "flow_section") {
             _enemy._flowSectionId = loadInputs._sectionId;
         } else if (key == "x") {
-            _enemy._transform._m03 = std::stof(value);
+            _enemy._transform.SetPosX(std::stof(value));
         } else if (key == "z") {
-            _enemy._transform._m23 = std::stof(value);
+            _enemy._transform.SetPosZ(std::stof(value));
         } else if (key == "vx") {
             _enemy._velocity._x = std::stof(value);
         } else if (key == "vz") {
             _enemy._velocity._z = std::stof(value);
         } else if (key == "rand_pos") {
-            _enemy._transform._m03 = rng::GetFloat(-8.f, 8.f);
-            _enemy._transform._m23 = rng::GetFloat(-5.f, 5.f);                
+            _enemy._transform.SetPosX(rng::GetFloat(-8.f, 8.f));
+            _enemy._transform.SetPosZ(rng::GetFloat(-5.f, 5.f));
         } else if (key == "rand_pv") {                
             // float constexpr kSpeed = 5.f;
             // float constexpr kSpawnRadius = 6.f;
@@ -732,14 +732,14 @@ void SpawnEnemySeqAction::Load(LoadInputs const& loadInputs, std::istream& lineS
             if (gHorizontal) {                    
                 bool leftSide = rng::GetInt(0, 1) == 1;
                     
-                _enemy._transform._m03 = (leftSide ? -1 : 1) * kHorizLimit;
-                _enemy._transform._m23 = rng::GetFloat(kZMin, kZMax);
+                _enemy._transform.SetPosX((leftSide ? -1 : 1) * kHorizLimit);
+                _enemy._transform.SetPosZ(rng::GetFloat(kZMin, kZMax));
                 _enemy._velocity.Set(kSpeed * (leftSide ? 1.f : -1.f), 0.f, 0.f);
             } else {
                 bool topSide = rng::GetInt(0, 1) == 1;
 
-                _enemy._transform._m03 = rng::GetFloat(-kHorizLimit, kHorizLimit);
-                _enemy._transform._m23 = topSide ? kZMin : kZMax;
+                _enemy._transform.SetPosX(rng::GetFloat(-kHorizLimit, kHorizLimit));
+                _enemy._transform.SetPosZ(topSide ? kZMin : kZMax);
                 _enemy._velocity.Set(0.f, 0.f, kSpeed * (topSide ? 1.f : -1.f));
             }
             gHorizontal = !gHorizontal;

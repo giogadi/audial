@@ -405,7 +405,7 @@ void LaneNotePlayerEntity::Update(GameManager& g, float dt) {
             continue;
         }
         bool alreadyFound = false;
-        float enemyDist = -enemy->_transform._m23;
+        float enemyDist = -enemy->_transform.Pos()._z;
         for (int i = 0; i < numKeysShot; ++i) {
             if (keysShot[i]._key == enemyKey) {
                 alreadyFound = true;

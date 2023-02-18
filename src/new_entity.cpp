@@ -280,7 +280,9 @@ void Entity::Init(GameManager& g) {
 }
 void Entity::Update(GameManager& g, float dt) {
     if (_model != nullptr) {
-        g._scene->DrawMesh(_model, _transform, _modelColor);
+        Mat4 const& mat = _transform.Mat4Scale();
+        // Mat4 const& mat = _transform;
+        g._scene->DrawMesh(_model, mat, _modelColor);
     }
 }
 void Entity::DebugPrint() {
@@ -290,7 +292,8 @@ void Entity::DebugPrint() {
 void Entity::Save(serial::Ptree pt) const {
     pt.PutString("name", _name.c_str());
     pt.PutBool("pickable", _pickable);
-    serial::SaveInNewChildOf(pt, "transform_mat4", _transform);
+    // serial::SaveInNewChildOf(pt, "transform_mat4", _transform);
+    serial::SaveInNewChildOf(pt, "transform", _transform);
     pt.PutString("model_name", _modelName.c_str());
     serial::SaveInNewChildOf(pt, "model_color_vec4", _modelColor);
     SaveDerived(pt);
@@ -298,7 +301,16 @@ void Entity::Save(serial::Ptree pt) const {
 void Entity::Load(serial::Ptree pt) {
     _name = pt.GetString("name");
     pt.TryGetBool("pickable", &_pickable);
-    _transform.Load(pt.GetChild("transform_mat4"));
+    // _transform.Load(pt.GetChild("transform_mat4"));
+    {
+        bool success = serial::LoadFromChildOf(pt, "transform", _transform);
+        if (!success) {
+            // Fallback to mat4 loading
+            Mat4 transMat4;
+            serial::LoadFromChildOf(pt, "transform_mat4", transMat4);
+            _transform.SetFromMat4(transMat4);
+        }
+    }
     pt.TryGetString("model_name", &_modelName);
     serial::Ptree colorPt = pt.TryGetChild("model_color_vec4");
     if (colorPt.IsValid()) {
@@ -311,35 +323,60 @@ Entity::ImGuiResult Entity::ImGui(GameManager& g) {
     ImGui::Text("Entity type: %s", ne::gkEntityTypeNames[(int)_id._type]);
     ImGui::Checkbox("Pickable", &_pickable);
     Entity::ImGuiResult result = Entity::ImGuiResult::Done;
-    Vec3 p = _transform.GetPos();
     if (ImGui::Button("Force Init")) {
         result = Entity::ImGuiResult::NeedsInit;
     }
+    // Transform trans;
+    // trans.SetFromMat4(_transform);
+    Transform& trans = _transform;
+    
+    Vec3 p = trans.Pos();
     if (ImGui::InputFloat3("Pos##Entity", p._data, "%.3f", ImGuiInputTextFlags_EnterReturnsTrue)) {
-        _transform.SetTranslation(p);
+        trans.SetPos(p);
     }
-    {
-        Mat3 rs = _transform.GetMat3();
-        Vec3 rs0 = rs.GetRow(0);
-        Vec3 rs1 = rs.GetRow(1);
-        Vec3 rs2 = rs.GetRow(2);
-        bool transChanged = false;
-        if (ImGui::InputFloat3("RotScaleRow0##Entity", rs0._data, "%.3f", ImGuiInputTextFlags_EnterReturnsTrue)) {
-            transChanged = true;
+    Vec3 euler = trans.Quat().EulerAngles();
+    euler *= kRad2Deg;
+    if (ImGui::InputFloat3("Euler angles (deg)##Entity", euler._data, "%.3f", ImGuiInputTextFlags_EnterReturnsTrue)) {
+        euler *= kDeg2Rad;
+        Quaternion q = trans.Quat();
+        q.SetFromEulerAngles(euler);
+        // DEBUG
+        Vec3 eulerResult = q.EulerAngles();
+        float diff = (euler - eulerResult).Length();
+        if (diff > 0.001f) {
+            printf("EULER PROBLEM:\ninput: %f %f %f\noutput: %f %f %f\n",
+                   euler._x, euler._y, euler._z,
+                   eulerResult._x, eulerResult._y, eulerResult._z);
         }
-        if (ImGui::InputFloat3("RotScaleRow1##Entity", rs1._data, "%.3f", ImGuiInputTextFlags_EnterReturnsTrue)) {
-            transChanged = true;
-        }
-        if (ImGui::InputFloat3("RotScaleRow2##Entity", rs2._data, "%.3f", ImGuiInputTextFlags_EnterReturnsTrue)) {
-            transChanged = true;
-        }
-        if (transChanged) {
-            rs.SetRow(0, rs0);
-            rs.SetRow(1, rs1);
-            rs.SetRow(2, rs2);
-            _transform.SetTopLeftMat3(rs);
-        }
+        trans.SetQuat(q);
     }
+    Vec3 scale = trans.Scale();
+    if (ImGui::InputFloat3("Scale##Entity", scale._data, "%.3f", ImGuiInputTextFlags_EnterReturnsTrue)) {
+        trans.SetScale(scale);
+    }
+    // _transform = trans.Mat4Scale();
+    // {
+    //     Mat3 rs = _transform.GetMat3();
+    //     Vec3 rs0 = rs.GetRow(0);
+    //     Vec3 rs1 = rs.GetRow(1);
+    //     Vec3 rs2 = rs.GetRow(2);
+    //     bool transChanged = false;
+    //     if (ImGui::InputFloat3("RotScaleRow0##Entity", rs0._data, "%.3f", ImGuiInputTextFlags_EnterReturnsTrue)) {
+    //         transChanged = true;
+    //     }
+    //     if (ImGui::InputFloat3("RotScaleRow1##Entity", rs1._data, "%.3f", ImGuiInputTextFlags_EnterReturnsTrue)) {
+    //         transChanged = true;
+    //     }
+    //     if (ImGui::InputFloat3("RotScaleRow2##Entity", rs2._data, "%.3f", ImGuiInputTextFlags_EnterReturnsTrue)) {
+    //         transChanged = true;
+    //     }
+    //     if (transChanged) {
+    //         rs.SetRow(0, rs0);
+    //         rs.SetRow(1, rs1);
+    //         rs.SetRow(2, rs2);
+    //         _transform.SetTopLeftMat3(rs);
+    //     }
+    // }
     bool modelChanged = imgui_util::InputText<64>("Model name##Entity", &_modelName, /*trueOnReturnOnly=*/true);
     ImGui::ColorEdit4("Model color##Entity", _modelColor._data);
     
@@ -349,7 +386,7 @@ Entity::ImGuiResult Entity::ImGui(GameManager& g) {
     if (ImGui::Button("DbgLookAt w/ offset")) {
         Direction offsetFromCamera = static_cast<Direction>(sCurDbgLookAtIx);
         Vec3 targetToCamera = camera_util::GetDefaultCameraOffset(offsetFromCamera);
-        Vec3 cameraWorld = _transform.GetPos() + targetToCamera;
+        Vec3 cameraWorld = _transform.Pos() + targetToCamera;
         g._scene->_camera._transform.SetTranslation(cameraWorld);
     }
     bool derivedNeedsInit = ImGuiDerived(g) == ImGuiResult::NeedsInit;

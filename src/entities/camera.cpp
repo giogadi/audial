@@ -9,7 +9,7 @@ void CameraEntity::Init(GameManager& g) {
     _camera = &g._scene->_camera;
     if (g._editMode) {
         // If in edit mode, initialize the debug camera location to this location.
-        _camera->_transform = _transform;
+        _camera->_transform = _transform.Mat4NoScale();
         _camera->_projectionType = renderer::Camera::ProjectionType::Orthographic;
     } else if (!_followEntityName.empty()) {
         ne::BaseEntity* followEntity = g._neEntityManager->FindEntityByName(_followEntityName);
@@ -71,7 +71,7 @@ void CameraEntity::Update(GameManager& g, float dt) {
         _transform.SetTranslation(newPos);
     }         
     
-    _camera->_transform = _transform;
+    _camera->_transform = _transform.Mat4NoScale();
     _camera->_projectionType = 
         _ortho ? renderer::Camera::ProjectionType::Orthographic :
             renderer::Camera::ProjectionType::Perspective;
@@ -79,10 +79,10 @@ void CameraEntity::Update(GameManager& g, float dt) {
 
 ne::Entity::ImGuiResult CameraEntity::ImGuiDerived(GameManager& g) {
     if (ImGui::Button("Move Debug Camera to This")) {
-        _camera->_transform = _transform;
+        _camera->_transform = _transform.Mat4NoScale();
     }
     if (ImGui::Button("Move This to Debug Camera")) {
-        _transform = _camera->_transform;
+        _transform.SetFromMat4(_camera->_transform);
     }
     return ImGuiResult::Done;
 }

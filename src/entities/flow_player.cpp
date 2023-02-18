@@ -129,12 +129,14 @@ bool IsCollisionFree(GameManager& g, Vec3 const& playerPos, Vec3 const& enemyPos
     int numEntities = 0;
     ne::EntityManager::Iterator wallIter = g._neEntityManager->GetIterator(ne::EntityType::FlowWall, &numEntities);
     for (; !wallIter.Finished(); wallIter.Next()) {
-        Mat4 const& wallTrans = wallIter.GetEntity()->_transform;
-        Vec3 wallPos = wallTrans.GetPos();
-        float wallMinX = wallPos._x - 0.5f*wallTrans._m00;
-        float wallMaxX = wallPos._x + 0.5f*wallTrans._m00;
-        float wallMinZ = wallPos._z - 0.5f*wallTrans._m22;
-        float wallMaxZ = wallPos._z + 0.5f*wallTrans._m22;
+        // TODO: handle rotated walls. For now we assume AABB and ignore rotation.
+        Transform const& wallTrans = wallIter.GetEntity()->_transform;
+        Vec3 const& wallPos = wallTrans.Pos();
+        Vec3 const& scale = wallTrans.Scale();
+        float wallMinX = wallPos._x - 0.5f*scale._x;
+        float wallMaxX = wallPos._x + 0.5f*scale._x;
+        float wallMinZ = wallPos._z - 0.5f*scale._z;
+        float wallMaxZ = wallPos._z + 0.5f*scale._z;
         bool hit = SegmentBoxIntersection2d(
             playerPos._x, playerPos._z, enemyPos._x, enemyPos._z,
             wallMinX, wallMinZ, wallMaxX, wallMaxZ);
@@ -156,7 +158,7 @@ void FlowPlayerEntity::Draw(GameManager& g) {
     }
 
     if (_model != nullptr) {
-        g._scene->DrawMesh(_model, _transform, _currentColor);
+        g._scene->DrawMesh(_model, _transform.Mat4Scale(), _currentColor);
     }
 }
 

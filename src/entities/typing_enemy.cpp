@@ -129,7 +129,7 @@ void TypingEnemyEntity::Update(GameManager& g, float dt) {
     }
 
     if (_model != nullptr) {
-        g._scene->DrawMesh(_model, _transform, _currentColor);
+        g._scene->DrawMesh(_model, _transform.Mat4Scale(), _currentColor);
     }
 }
 

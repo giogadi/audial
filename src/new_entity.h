@@ -5,8 +5,8 @@
 #include <memory>
 #include <string_view>
 
-#include "matrix.h"
 #include "serial.h"
+#include "transform.h"
 
 struct GameManager;
 class BoundMeshPNU;
@@ -58,7 +58,8 @@ struct EntityId {
 
 struct BaseEntity {
     // serialized
-    Mat4 _transform;
+    Transform _transform;
+    // Mat4 _transform;
     std::string _name;
     bool _pickable = true;
     std::string _modelName;
