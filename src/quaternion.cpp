@@ -53,19 +53,6 @@ void Quaternion::GetRotMat(Mat3& mat) const {
     mat._m20 = 2*(xz - yw);
     mat._m21 = 2*(yz + xw);
     mat._m22 = 1-2*(xx + yy);
-    ////////
-    
-    // mat._m00 = 1-2*_v._y*_v._y-2*_v._z*_v._z;
-    // mat._m01 = 2*_v._x*_v._y - 2*_v._z*_v._w;
-    // mat._m02 = 2*_v._x*_v._z + 2*_v._y*_v._w;
-
-    // mat._m10 = 2*_v._x*_v._y + 2*_v._z*_v._w;
-    // mat._m11 = 1-2*_v._x*_v._x-2*_v._z*_v._z;
-    // mat._m12 = 2*_v._y*_v._z - 2*_v._x*_v._w;
-
-    // mat._m20 = 2*_v._x*_v._z - 2*_v._y*_v._w;
-    // mat._m21 = 2*_v._y*_v._z + 2*_v._x*_v._w;
-    // mat._m22 = 1-2*_v._x*_v._x-2*_v._y*_v._y;
 }
 
 void Quaternion::GetRotMat(Mat4& mat) const {
@@ -90,18 +77,6 @@ void Quaternion::GetRotMat(Mat4& mat) const {
     mat._m20 = 2*(xz - yw);
     mat._m21 = 2*(yz + xw);
     mat._m22 = 1-2*(xx + yy);
-    
-    // mat._m00 = 1-2*_v._y*_v._y-2*_v._z*_v._z;
-    // mat._m01 = 2*_v._x*_v._y - 2*_v._z*_v._w;
-    // mat._m02 = 2*_v._x*_v._z + 2*_v._y*_v._w;
-
-    // mat._m10 = 2*_v._x*_v._y + 2*_v._z*_v._w;
-    // mat._m11 = 1-2*_v._x*_v._x-2*_v._z*_v._z;
-    // mat._m12 = 2*_v._y*_v._z - 2*_v._x*_v._w;
-
-    // mat._m20 = 2*_v._x*_v._z - 2*_v._y*_v._w;
-    // mat._m21 = 2*_v._y*_v._z + 2*_v._x*_v._w;
-    // mat._m22 = 1-2*_v._x*_v._x-2*_v._y*_v._y;
 }
 
 void Quaternion::SetFromRotMat(Mat3 const& matTranspose) {
