@@ -32,43 +32,81 @@ Quaternion Quaternion::operator*(Quaternion const& rhs) const {
 }
 
 void Quaternion::GetRotMat(Mat3& mat) const {
-    // float x2 = _v._x * _v._x;
-    // float y2 = _v._y * _v._y;
-    // float z2 = _v._z * _v._z;
-    // float xy = _v._x * _v._y;
-    // float wz = _v._w * _v._z;
-    // float xz = _v._x * _v._z;
-    // float wy = _v._w * _v._y;
+    float xx = _v._x * _v._x;
+    float yy = _v._y * _v._y;
+    float zz = _v._z * _v._z;
+    float xy = _v._x * _v._y;
+    float xz = _v._x * _v._z;
+    float xw = _v._x * _v._w;
+    float yz = _v._y * _v._z;
+    float yw = _v._y * _v._w;
+    float zw = _v._z * _v._w;
+
+    mat._m00 = 1 - 2*(yy + zz);
+    mat._m01 = 2*(xy - zw);
+    mat._m02 = 2*(xz + yw);
     
-    mat._m00 = 1-2*_v._y*_v._y-2*_v._z*_v._z;
-    mat._m01 = 2*_v._x*_v._y - 2*_v._z*_v._w;
-    mat._m02 = 2*_v._x*_v._z + 2*_v._y*_v._w;
+    mat._m10 = 2*(xy + zw);
+    mat._m11 = 1 - 2*(xx + zz);
+    mat._m12 = 2*(yz - xw);
 
-    mat._m10 = 2*_v._x*_v._y + 2*_v._z*_v._w;
-    mat._m11 = 1-2*_v._x*_v._x-2*_v._z*_v._z;
-    mat._m12 = 2*_v._y*_v._z - 2*_v._x*_v._w;
+    mat._m20 = 2*(xz - yw);
+    mat._m21 = 2*(yz + xw);
+    mat._m22 = 1-2*(xx + yy);
+    ////////
+    
+    // mat._m00 = 1-2*_v._y*_v._y-2*_v._z*_v._z;
+    // mat._m01 = 2*_v._x*_v._y - 2*_v._z*_v._w;
+    // mat._m02 = 2*_v._x*_v._z + 2*_v._y*_v._w;
 
-    mat._m20 = 2*_v._x*_v._z - 2*_v._y*_v._w;
-    mat._m21 = 2*_v._y*_v._z + 2*_v._x*_v._w;
-    mat._m22 = 1-2*_v._x*_v._x-2*_v._y*_v._y;
+    // mat._m10 = 2*_v._x*_v._y + 2*_v._z*_v._w;
+    // mat._m11 = 1-2*_v._x*_v._x-2*_v._z*_v._z;
+    // mat._m12 = 2*_v._y*_v._z - 2*_v._x*_v._w;
+
+    // mat._m20 = 2*_v._x*_v._z - 2*_v._y*_v._w;
+    // mat._m21 = 2*_v._y*_v._z + 2*_v._x*_v._w;
+    // mat._m22 = 1-2*_v._x*_v._x-2*_v._y*_v._y;
 }
 
 void Quaternion::GetRotMat(Mat4& mat) const {
-    mat._m00 = 1-2*_v._y*_v._y-2*_v._z*_v._z;
-    mat._m01 = 2*_v._x*_v._y - 2*_v._z*_v._w;
-    mat._m02 = 2*_v._x*_v._z + 2*_v._y*_v._w;
+    float xx = _v._x * _v._x;
+    float yy = _v._y * _v._y;
+    float zz = _v._z * _v._z;
+    float xy = _v._x * _v._y;
+    float xz = _v._x * _v._z;
+    float xw = _v._x * _v._w;
+    float yz = _v._y * _v._z;
+    float yw = _v._y * _v._w;
+    float zw = _v._z * _v._w;
 
-    mat._m10 = 2*_v._x*_v._y + 2*_v._z*_v._w;
-    mat._m11 = 1-2*_v._x*_v._x-2*_v._z*_v._z;
-    mat._m12 = 2*_v._y*_v._z - 2*_v._x*_v._w;
+    mat._m00 = 1 - 2*(yy + zz);
+    mat._m01 = 2*(xy - zw);
+    mat._m02 = 2*(xz + yw);
+    
+    mat._m10 = 2*(xy + zw);
+    mat._m11 = 1 - 2*(xx + zz);
+    mat._m12 = 2*(yz - xw);
 
-    mat._m20 = 2*_v._x*_v._z - 2*_v._y*_v._w;
-    mat._m21 = 2*_v._y*_v._z + 2*_v._x*_v._w;
-    mat._m22 = 1-2*_v._x*_v._x-2*_v._y*_v._y;
+    mat._m20 = 2*(xz - yw);
+    mat._m21 = 2*(yz + xw);
+    mat._m22 = 1-2*(xx + yy);
+    
+    // mat._m00 = 1-2*_v._y*_v._y-2*_v._z*_v._z;
+    // mat._m01 = 2*_v._x*_v._y - 2*_v._z*_v._w;
+    // mat._m02 = 2*_v._x*_v._z + 2*_v._y*_v._w;
+
+    // mat._m10 = 2*_v._x*_v._y + 2*_v._z*_v._w;
+    // mat._m11 = 1-2*_v._x*_v._x-2*_v._z*_v._z;
+    // mat._m12 = 2*_v._y*_v._z - 2*_v._x*_v._w;
+
+    // mat._m20 = 2*_v._x*_v._z - 2*_v._y*_v._w;
+    // mat._m21 = 2*_v._y*_v._z + 2*_v._x*_v._w;
+    // mat._m22 = 1-2*_v._x*_v._x-2*_v._y*_v._y;
 }
 
 void Quaternion::SetFromRotMat(Mat3 const& matTranspose) {
 
+    // TODO GET RID OF THIS TRANSPOSE
     Mat3 const mat = matTranspose.GetTranspose();
     
     // Determine which of w, x, y, or z has the largest absolute value
