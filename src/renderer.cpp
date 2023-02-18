@@ -22,8 +22,8 @@ namespace renderer {
 
 Mat4 Camera::GetViewMatrix() const {
     Vec3 p = _transform.GetPos();
-    Vec3 forward = -_transform.GetZAxis();  // Z-axis points backward
-    Vec3 up = _transform.GetYAxis();
+    Vec3 forward = -_transform.GetCol3(2);  // Z-axis points backward
+    Vec3 up = _transform.GetCol3(1);
     return Mat4::LookAt(p, p + forward, up);
 }
 

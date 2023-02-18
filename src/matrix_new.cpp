@@ -1,4 +1,4 @@
-#include "matrix.h"
+#include "matrix_new.h"
 
 Vec3 Vec3::GetNormalized() const {
     // float length = Length();
@@ -132,7 +132,7 @@ Mat4 Mat4::LookAt(Vec3 const& eye, Vec3 const& at, Vec3 const& up) {
 
     Vec3 t = r.MultiplyTranspose(-eye);
     Mat4 result;
-    result.SetTopLeftMat3(r.GetTranspose());
+    result.SetTopLeftMat3(r);
     result.SetTranslation(t);
     return result;  
 }

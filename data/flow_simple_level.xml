@@ -174,7 +174,7 @@
                 <x>1</x>
                 <y>1</y>
                 <z>1</z>
-                <w>0</w>
+                <w>1</w>
             </model_color_vec4>
             <selection_radius>8</selection_radius>
             <launch_vel>20</launch_vel>

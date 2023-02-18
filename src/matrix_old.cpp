@@ -49,92 +49,47 @@ Mat3 Mat3::FromAxisAngle(Vec3 const& axis, float angleRad) {
 }
 
 // From https://en.wikipedia.org/wiki/Invertible_matrix#Methods_of_matrix_inversion
-bool Mat3::TransposeInverse(Mat3& out) const {
-    Mat3 const& m = *this;
+bool Mat3::TransposeInverse(Mat3& out) {
+    float A = _m11*_m22 - _m12*_m21;
+    float B = -(_m10*_m22 - _m12*_m20);
+    float C = _m10*_m21 - _m11*_m20;
     
-    float A = m(1,1)*m(2,2) - m(1,2)*m(2,1);
-    float B = -(m(1,0)*m(2,2) - m(1,2)*m(2,0));
-    float C = m(1,0)*m(2,1) - m(1,1)*m(2,0);
-    
-    float det = m(0,0)*A + m(0,1)*B + m(0,2)*C;
+    float det = _m00*A + _m01*B + _m02*C;
     if (det < 0.00001) {
         return false;
     }
     float invDet = 1.f / det;
 
-    // TODO manually inline these
-    out(0,0) = A * invDet;
-    out(0,1) = B * invDet;
-    out(0,2) = C * invDet;
+    out._m00 = A * invDet;
+    out._m01 = B * invDet;
+    out._m02 = C * invDet;
 
-    out(1,0) = -(m(0,1)*m(2,2) - m(0,2)*m(2,1)) * invDet;
-    out(1,1) = (m(0,0)*m(2,2) - m(0,2)*m(2,0)) * invDet;
-    out(1,2) = -(m(0,0)*m(2,1) - m(0,1)*m(2,0)) * invDet;
+    out._m10 = -(_m01*_m22 - _m02*_m21) * invDet;
+    out._m11 = (_m00*_m22 - _m02*_m20) * invDet;
+    out._m12 = -(_m00*_m21 - _m01*_m20) * invDet;
 
-    out(2,0) = (m(0,1)*m(1,2) - m(0,2)*m(1,1)) * invDet;
-    out(2,1) = -(m(0,0)*m(1,2) - m(0,2)*m(1,0)) * invDet;
-    out(2,2) = (m(0,0)*m(1,1) - m(0,1)*m(1,0)) * invDet;
+    out._m20 = (_m01*_m12 - _m02*_m11) * invDet;
+    out._m21 = -(_m00*_m12 - _m02*_m10) * invDet;
+    out._m22 = (_m00*_m11 - _m01*_m10) * invDet;
 
     return true;
 }
 
-void Mat4::ScaleUniform(float x) {
-    Scale(x, x, x);
-}
-
-void Mat4::Scale(float x, float y, float z) {
-    _data[0] *= x;
-    _data[1] *= x;
-    _data[2] *= x;
-    _data[4] *= y;
-    _data[5] *= y;
-    _data[6] *= y;
-    _data[8] *= z;    
-    _data[9] *= z;    
-    _data[10] *= z;
-}
-
-// Derivation inspired by:
-// https://www.scratchapixel.com/lessons/3d-basic-rendering/perspective-and-orthographic-projection-matrix/orthographic-projection-matrix
-//
-// Important to note: this generates a z value that is more negative the closer
-// to the camera it is. This is to match GL's default depth-testing.
-Mat4 Mat4::Ortho(float width, float aspect, float zNear, float zFar) {
-    Mat4 m;
-    m(0,0) = 2.f / width;
-    m(1,1) = 2.f * aspect / width;
-    m(2,2) = -2.f / (zFar - zNear);
-    m(2,3) = -(zFar + zNear) / (zFar - zNear);
-    return m;
-}
-
-Mat4 Mat4::Ortho(float left, float right, float top, float bottom, float zNear, float zFar) {
-    assert(right - left != 0.f);
-    assert(top - bottom != 0.f);
-    assert(zFar - zNear != 0.f);
-    Mat4 m;
-    m(0,0) = 2.f / (right - left);
-    m(1,1) = 2.f / (top - bottom);
-    m(2,2) = -2.f / (zFar - zNear);
-
-    m(0,3) = -(right + left) / (right - left);
-    m(1,3) = -(top + bottom) / (top - bottom);
-    m(2,3) = -(zFar + zNear) / (zFar - zNear);
-    return m;
-}
-
 Mat4 Mat4::LookAt(Vec3 const& eye, Vec3 const& at, Vec3 const& up) {
     Mat3 r;
-    r.SetCol(2, (at - eye).GetNormalized());   
-    r.SetCol(0, Vec3::Cross(r.GetCol(2), up).GetNormalized());
-    r.SetCol(1, Vec3::Cross(r.GetCol(0), r.GetCol(2)).GetNormalized());
-    r.SetCol(2, -r.GetCol(2));
-
+    r._col2 = (at - eye).GetNormalized();
+    r._col0 = Vec3::Cross(r._col2, up).GetNormalized();
+    r._col1 = Vec3::Cross(r._col0, r._col2).GetNormalized();
+    
+    r._col2 = -r._col2;
+    
     Vec3 t = r.MultiplyTranspose(-eye);
-    Mat4 result;
-    result.SetTopLeftMat3(r.GetTranspose());
-    result.SetTranslation(t);
-    return result;  
+
+    return Mat4(
+        r._col0._x, r._col1._x, r._col2._x, 0.f,
+        r._col0._y, r._col1._y, r._col2._y, 0.f,
+        r._col0._z, r._col1._z, r._col2._z, 0.f,
+        t._x, t._y, t._z, 1.f);
 }
 
 // https://www.khronos.org/opengl/wiki/GluPerspective_code
@@ -177,4 +132,49 @@ Mat4 Mat4::Perspective(
     // xmin = -ymax * aspectRatio;
     xmax = ymax * aspectRatio;
     return Frustrum(-xmax, xmax, -ymax, ymax, znear, zfar);
+}
+
+void Mat4::ScaleUniform(float x) {
+    Scale(x, x, x);
+}
+
+void Mat4::Scale(float x, float y, float z) {
+    _m00 *= x;
+    _m10 *= x;
+    _m20 *= x;
+    _m01 *= y;
+    _m11 *= y;
+    _m21 *= y;
+    _m02 *= z;    
+    _m12 *= z;    
+    _m22 *= z;
+}
+
+// Derivation inspired by:
+// https://www.scratchapixel.com/lessons/3d-basic-rendering/perspective-and-orthographic-projection-matrix/orthographic-projection-matrix
+//
+// Important to note: this generates a z value that is more negative the closer
+// to the camera it is. This is to match GL's default depth-testing.
+Mat4 Mat4::Ortho(float width, float aspect, float zNear, float zFar) {
+    Mat4 m;
+    m._m00 = 2.f / width;
+    m._m11 = 2.f * aspect / width;
+    m._m22 = -2.f / (zFar - zNear);
+    m._m23 = -(zFar + zNear) / (zFar - zNear);
+    return m;
+}
+
+Mat4 Mat4::Ortho(float left, float right, float top, float bottom, float zNear, float zFar) {
+    assert(right - left != 0.f);
+    assert(top - bottom != 0.f);
+    assert(zFar - zNear != 0.f);
+    Mat4 m;
+    m._m00 = 2.f / (right - left);
+    m._m11 = 2.f / (top - bottom);
+    m._m22 = -2.f / (zFar - zNear);
+
+    m._m03 = -(right + left) / (right - left);
+    m._m13 = -(top + bottom) / (top - bottom);
+    m._m23 = -(zFar + zNear) / (zFar - zNear);
+    return m;
 }

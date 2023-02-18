@@ -328,7 +328,7 @@ void LaneNoteEnemyEntity::Update(GameManager& g, float dt) {
         param = math_util::Triangle(param);
         // For some reason, smoothing doesn't look good.
         // param = SmoothStep(param);
-        renderTrans._m23 += -param * 1.5f;
+        renderTrans(2,3) += -param * 1.5f;
         if (timeSinceShot >= bounceBeatTime) {
             _shotBeatTime = -1.0;
         }

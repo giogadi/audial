@@ -151,4 +151,5 @@ target_link_libraries(stk_test stk)
 target_include_directories(stk_test PUBLIC src/)
 
 add_executable(matrix_test EXCLUDE_FROM_ALL
-    src/matrix_test.cpp)                          
+    src/matrix_test.cpp src/matrix.cpp src/serial.cpp)                          
+target_include_directories(matrix_test PUBLIC src/)

@@ -158,8 +158,8 @@ void TypingPlayerEntity::Update(GameManager& g, float dt) {
                 for (int beatIx = 0; beatIx < numBeats; ++beatIx) {
                     Mat4 trans;
                     trans.SetTranslation(sectionOrigin);
-                    trans._m03 -= 1.f;
-                    trans._m23 += beatIx * counterSize;
+                    trans(0,3) -= 1.f;
+                    trans(2,3) += beatIx * counterSize;
                     trans.Scale(0.25f, 0.25f, counterSize * 0.9f);
                     Vec4 color;
                     if (sectionIx == 0 && beatIx <= currentBeatIx) {

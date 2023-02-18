@@ -42,17 +42,18 @@ void Quaternion::GetRotMat(Mat3& mat) const {
     float yw = _v._y * _v._w;
     float zw = _v._z * _v._w;
 
-    mat._m00 = 1 - 2*(yy + zz);
-    mat._m01 = 2*(xy - zw);
-    mat._m02 = 2*(xz + yw);
+    // MANUALLY INLINE THESE PLEASE    
+    mat(0,0) = 1 - 2*(yy + zz);
+    mat(0,1) = 2*(xy - zw);
+    mat(0,2) = 2*(xz + yw);
     
-    mat._m10 = 2*(xy + zw);
-    mat._m11 = 1 - 2*(xx + zz);
-    mat._m12 = 2*(yz - xw);
+    mat(1,0) = 2*(xy + zw);
+    mat(1,1) = 1 - 2*(xx + zz);
+    mat(1,2) = 2*(yz - xw);
 
-    mat._m20 = 2*(xz - yw);
-    mat._m21 = 2*(yz + xw);
-    mat._m22 = 1-2*(xx + yy);
+    mat(2,0) = 2*(xz - yw);
+    mat(2,1) = 2*(yz + xw);
+    mat(2,2) = 1-2*(xx + yy);
 }
 
 void Quaternion::GetRotMat(Mat4& mat) const {
@@ -66,17 +67,18 @@ void Quaternion::GetRotMat(Mat4& mat) const {
     float yw = _v._y * _v._w;
     float zw = _v._z * _v._w;
 
-    mat._m00 = 1 - 2*(yy + zz);
-    mat._m01 = 2*(xy - zw);
-    mat._m02 = 2*(xz + yw);
+    // MANUALLY INLINE THESE PLEASE    
+    mat(0,0) = 1 - 2*(yy + zz);
+    mat(0,1) = 2*(xy - zw);
+    mat(0,2) = 2*(xz + yw);
     
-    mat._m10 = 2*(xy + zw);
-    mat._m11 = 1 - 2*(xx + zz);
-    mat._m12 = 2*(yz - xw);
+    mat(1,0) = 2*(xy + zw);
+    mat(1,1) = 1 - 2*(xx + zz);
+    mat(1,2) = 2*(yz - xw);
 
-    mat._m20 = 2*(xz - yw);
-    mat._m21 = 2*(yz + xw);
-    mat._m22 = 1-2*(xx + yy);
+    mat(2,0) = 2*(xz - yw);
+    mat(2,1) = 2*(yz + xw);
+    mat(2,2) = 1-2*(xx + yy);
 }
 
 void Quaternion::SetFromRotMat(Mat3 const& matTranspose) {
@@ -85,10 +87,10 @@ void Quaternion::SetFromRotMat(Mat3 const& matTranspose) {
     Mat3 const mat = matTranspose.GetTranspose();
     
     // Determine which of w, x, y, or z has the largest absolute value
-    float fourWSquaredMinus1 = mat._m00 + mat._m11 + mat._m22;
-    float fourXSquaredMinus1 = mat._m00 - mat._m11 - mat._m22;
-    float fourYSquaredMinus1 = mat._m11 - mat._m00 - mat._m22;
-    float fourZSquaredMinus1 = mat._m22 - mat._m00 - mat._m11;
+    float fourWSquaredMinus1 = mat(0,0) + mat(1,1) + mat(2,2);
+    float fourXSquaredMinus1 = mat(0,0) - mat(1,1) - mat(2,2);
+    float fourYSquaredMinus1 = mat(1,1) - mat(0,0) - mat(2,2);
+    float fourZSquaredMinus1 = mat(2,2) - mat(0,0) - mat(1,1);
 
     int biggestIndex = 0;
     float fourBiggestSquaredMinus1 = fourWSquaredMinus1;
@@ -113,30 +115,30 @@ void Quaternion::SetFromRotMat(Mat3 const& matTranspose) {
     switch (biggestIndex) {
         case 0:
             _v._w = biggestVal;
-            _v._x = (mat._m12 - mat._m21) * mult;
-            _v._y = (mat._m20 - mat._m02) * mult;
-            _v._z = (mat._m01 - mat._m10) * mult;
+            _v._x = (mat(1,2) - mat(2,1)) * mult;
+            _v._y = (mat(2,0) - mat(0,2)) * mult;
+            _v._z = (mat(0,1) - mat(1,0)) * mult;
             break;
 
         case 1:
             _v._x = biggestVal;
-            _v._w = (mat._m12 - mat._m21) * mult;
-            _v._y = (mat._m01 + mat._m10) * mult;
-            _v._z = (mat._m20 + mat._m02) * mult;
+            _v._w = (mat(1,2) - mat(2,1)) * mult;
+            _v._y = (mat(0,1) + mat(1,0)) * mult;
+            _v._z = (mat(2,0) + mat(0,2)) * mult;
             break;
 
         case 2:
             _v._y = biggestVal;
-            _v._w = (mat._m20 - mat._m02) * mult;
-            _v._x = (mat._m01 + mat._m10) * mult;
-            _v._z = (mat._m12 + mat._m21) * mult;
+            _v._w = (mat(2,0) - mat(0,2)) * mult;
+            _v._x = (mat(0,1) + mat(1,0)) * mult;
+            _v._z = (mat(1,2) + mat(2,1)) * mult;
             break;
 
         case 3:
             _v._z = biggestVal;
-            _v._w = (mat._m01 - mat._m10) * mult;
-            _v._x = (mat._m20 + mat._m02) * mult;
-            _v._y = (mat._m12 + mat._m21) * mult;
+            _v._w = (mat(0,1) - mat(1,0)) * mult;
+            _v._x = (mat(2,0) + mat(0,2)) * mult;
+            _v._y = (mat(1,2) + mat(2,1)) * mult;
             break;
     }
 }

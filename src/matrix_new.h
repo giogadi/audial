@@ -139,6 +139,8 @@ struct Mat3 {
                0.f, 1.f, 0.f,
                0.f, 0.f, 1.f) {}
 
+    static Mat3 FromAxisAngle(Vec3 const& axis, float angleRad);
+
     float const operator()(int r, int c) const {
         assert(r >= 0 && r < 3 && c >= 0 && c < 3);
         return _data[3*r + c];
@@ -177,7 +179,17 @@ struct Mat3 {
             _data[0], _data[3], _data[6],
             _data[1], _data[4], _data[7],
             _data[2], _data[5], _data[8]);
-    }    
+    }
+
+    Vec3 MultiplyTranspose(Vec3 const& v) const {
+        return Vec3(
+            _data[0]*v._x + _data[1]*v._y + _data[2]*v._z,
+            _data[3]*v._x + _data[4]*v._y + _data[5]*v._z,
+            _data[6]*v._x + _data[7]*v._y + _data[8]*v._z);
+    }
+
+    // Takes inverse then transpose of this matrix and returns result in "out".
+    bool TransposeInverse(Mat3& out) const;
     
     float _data[9];
 };
@@ -371,6 +383,13 @@ struct Mat4 {
             _data[3], _data[7], _data[11], _data[15]);
     }
 
+    Mat3 GetMat3() const {
+        return Mat3(
+            _data[0], _data[1], _data[2],
+            _data[4], _data[5], _data[6],
+            _data[8], _data[9], _data[10]);
+    }
+    
     void SetTopLeftMat3(Mat3 const& mat3) {
         float const* m3 = mat3._data;
         _data[0] = m3[0];
@@ -383,6 +402,42 @@ struct Mat4 {
         _data[9] = m3[7];
         _data[10] = m3[8];
     }
+
+    // These APPLY the given scale to the current matrix.
+    // NOTE!!!! These only apply to the 3x3 rot matrix
+    void ScaleUniform(float x);
+    void Scale(float x, float y, float z);
+
+    void Translate(Vec3 const& t) {
+        _data[12] += t._x;
+        _data[13] += t._y;
+        _data[14] += t._z;
+    }
+
+    void SetTranslation(Vec3 const& t) {
+        _data[12] = t._x;
+        _data[13] = t._y;
+        _data[14] = t._z;
+    }
+
+    Vec3 GetPos() const {
+        return Vec3(_data[12], _data[13], _data[14]);
+    }
+
+    // Assumes the mat is just a simple rotation and translation. No scaling.
+    Mat4 InverseAffine() const {
+        Mat4 inverse;
+        inverse.SetTopLeftMat3(GetMat3().GetTranspose());
+        Vec3 newPos = -(inverse.GetMat3() * GetCol3(3));
+        inverse.SetTranslation(newPos);
+        return inverse;
+    }
+
+    static Mat4 LookAt(Vec3 const& eye, Vec3 const& at, Vec3 const& up);
+    static Mat4 Frustrum(float left, float right, float bottom, float top, float znear, float zfar);
+    static Mat4 Perspective(float fovyRadians, float aspectRatio, float znear, float zfar);
+    static Mat4 Ortho(float width, float aspect, float zNear, float zFar);
+    static Mat4 Ortho(float left, float right, float top, float bottom, float zNear, float zFar);
     
     float _data[16];
 };

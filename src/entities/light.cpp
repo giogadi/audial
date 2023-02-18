@@ -2,7 +2,7 @@
 
 #include "game_manager.h"
 #include "renderer.h"
-#include "imgui/imgui.h"
+#include "imgui_util.h"
 #include "serial.h"
 
 void LightEntity::DebugPrint() {
@@ -19,8 +19,8 @@ void LightEntity::LoadDerived(serial::Ptree pt) {
     _diffuse.Load(pt.GetChild("diffuse"));
 }
 ne::Entity::ImGuiResult LightEntity::ImGuiDerived(GameManager& g) {
-    ImGui::ColorEdit3("Diffuse", _diffuse._data);
-    ImGui::ColorEdit3("Ambient", _ambient._data);
+    imgui_util::ColorEdit3("Diffuse", &_diffuse);
+    imgui_util::ColorEdit3("Ambient", &_ambient);
     return ImGuiResult::Done;
 }
 void LightEntity::Init(GameManager& g) {

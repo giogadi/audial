@@ -113,10 +113,19 @@ void Shader::SetMat4(const char* name, Mat4 const& mat) const {
         glGetUniformLocation(_id, name), /*count=*/1, /*transpose=*/GL_FALSE, mat._data);
 }
 void Shader::SetVec3(const char* name, Vec3 const& vec) const {
+    float data[3];
+    data[0] = vec._x;
+    data[1] = vec._y;
+    data[2] = vec._z;
     glUniform3fv(
-        glGetUniformLocation(_id, name), /*count=*/1, vec._data);
+        glGetUniformLocation(_id, name), /*count=*/1, data);
 }
 void Shader::SetVec4(const char* name, Vec4 const& vec) const {
+    float data[4];
+    data[0] = vec._x;
+    data[1] = vec._y;
+    data[2] = vec._z;
+    data[3] = vec._w;
     glUniform4fv(
-        glGetUniformLocation(_id, name), /*count=*/1, vec._data);
+        glGetUniformLocation(_id, name), /*count=*/1, data);
 }

@@ -253,7 +253,7 @@ void TypingEnemyEntity::SaveDerived(serial::Ptree pt) const {
 
 void TypingEnemyEntity::Waypoint::ImGui(GameManager& g) {
     ImGui::InputFloat("Time", &_t);
-    ImGui::InputFloat3("Pos", _p._data);
+    imgui_util::InputVec3("Pos", &_p);
 }
 
 ne::BaseEntity::ImGuiResult TypingEnemyEntity::ImGuiDerived(GameManager& g) {
@@ -331,7 +331,7 @@ static TypingEnemyEntity sMultiEnemy;
 
 void TypingEnemyEntity::MultiSelectImGui(GameManager& g, std::vector<TypingEnemyEntity*>& enemies) {
 
-    ImGui::ColorEdit4("Model color", sMultiEnemy._modelColor._data);
+    imgui_util::ColorEdit4("Model color", &sMultiEnemy._modelColor);
     ImGui::InputInt("Section ID", &sMultiEnemy._flowSectionId);
     
     if (ImGui::Button("Add Action")) {

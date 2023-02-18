@@ -48,20 +48,20 @@ void GetPickRay(double screenX, double screenY, int windowWidth, int windowHeigh
     if (camera._projectionType == renderer::Camera::ProjectionType::Perspective) {
 
         // First we find the world-space position of the top-left corner of the near clipping plane.
-        Vec3 nearPlaneCenter = cameraTransform.GetPos() - cameraTransform.GetZAxis() * camera._zNear;
+        Vec3 nearPlaneCenter = cameraTransform.GetPos() - cameraTransform.GetCol3(2) * camera._zNear;
         float nearPlaneHalfHeight = camera._zNear * tan(0.5f * camera._fovyRad);
         float nearPlaneHalfWidth = nearPlaneHalfHeight * aspectRatio;
         Vec3 nearPlaneTopLeft = nearPlaneCenter;
-        nearPlaneTopLeft -= nearPlaneHalfWidth * cameraTransform.GetXAxis();
-        nearPlaneTopLeft += nearPlaneHalfHeight * cameraTransform.GetYAxis();
+        nearPlaneTopLeft -= nearPlaneHalfWidth * cameraTransform.GetCol3(0);
+        nearPlaneTopLeft += nearPlaneHalfHeight * cameraTransform.GetCol3(1);
 
         // Now map clicked point from [0,windowWidth] -> [0,1]
         float xFactor = screenX / windowWidth;
         float yFactor = screenY / windowHeight;
 
         Vec3 clickedPointOnNearPlane = nearPlaneTopLeft;
-        clickedPointOnNearPlane += (xFactor * 2 * nearPlaneHalfWidth) * cameraTransform.GetXAxis();
-        clickedPointOnNearPlane -= (yFactor * 2 * nearPlaneHalfHeight) * cameraTransform.GetYAxis();
+        clickedPointOnNearPlane += (xFactor * 2 * nearPlaneHalfWidth) * cameraTransform.GetCol3(0);
+        clickedPointOnNearPlane -= (yFactor * 2 * nearPlaneHalfHeight) * cameraTransform.GetCol3(1);
 
         *rayDir = (clickedPointOnNearPlane - cameraTransform.GetPos()).GetNormalized();
         *rayStart = cameraTransform.GetPos() ;
@@ -79,7 +79,7 @@ void GetPickRay(double screenX, double screenY, int windowWidth, int windowHeigh
         Vec4 posRelToCamera(offsetFromCameraX, offsetFromCameraY, 0.f, 1.f);
         Vec4 worldPos = camera._transform * posRelToCamera;
         rayStart->Set(worldPos._x, worldPos._y, worldPos._z);
-        *rayDir = -camera._transform.GetZAxis();        
+        *rayDir = -camera._transform.GetCol3(2);        
     } else { assert(false); }
 }
 

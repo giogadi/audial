@@ -6,10 +6,12 @@
 #include "serial.h"
 
 struct Vec3 {
-    Vec3()
+    constexpr Vec3()
         : _x(0.), _y(0.), _z(0.) {}
-    Vec3(float x, float y, float z)
+    constexpr Vec3(float x, float y, float z)
         : _x(x), _y(y), _z(z) {}
+    constexpr explicit Vec3(float* v)
+        : _x(v[0]), _y(v[1]), _z(v[2]) {}
 
     void Set(float x, float y, float z) {
         _x = x;
@@ -50,11 +52,27 @@ struct Vec3 {
         _z *= v._z;
     }
 
-    float& operator[](int i) {
-        return _data[i];
+    float& operator()(int i) {
+        switch (i) {
+            case 0: return _x;
+            case 1: return _y;
+            case 2: return _z;
+            default: {
+                assert(false);
+                return _x;
+            }
+        }
     }
-    float const& operator[](int i) const {
-        return _data[i];
+    float const operator()(int i) const {
+        switch (i) {
+            case 0: return _x;
+            case 1: return _y;
+            case 2: return _z;
+            default: {
+                assert(false);
+                return 0.f;
+            }
+        }
     }
     Vec3& operator+=(Vec3 const& rhs) {
         _x += rhs._x;
@@ -75,6 +93,12 @@ struct Vec3 {
         return *this;
     }
 
+    void CopyToArray(float* v) {
+        v[0] = _x;
+        v[1] = _y;
+        v[2] = _z;
+    }
+
     void Save(serial::Ptree pt) const {
         pt.PutFloat("x", _x);
         pt.PutFloat("y", _y);
@@ -86,12 +110,7 @@ struct Vec3 {
         _z = pt.GetFloat("z");
     }
 
-    union {
-        float _data[3];
-        struct {
-            float _x, _y, _z;
-        };
-    };
+    float _x, _y, _z;
 };
 
 inline Vec3 operator+(Vec3 const& lhs, Vec3 const& rhs) {
@@ -118,105 +137,94 @@ inline Vec3 operator/(Vec3 const& v, float const a) {
 }
 
 struct Mat3 {
-    Mat3() {
-        *this = Identity();
-    }
-    Mat3(float m00, float m10, float m20,
-         float m01, float m11, float m21,
-         float m02, float m12, float m22)
-        : _m00(m00), _m10(m10), _m20(m20),
-          _m01(m01), _m11(m11), _m21(m21),
-          _m02(m02), _m12(m12), _m22(m22) {}
-    Mat3(Vec3 const& col0, Vec3 const& col1, Vec3 const& col2)
-        : _col0(col0), _col1(col1), _col2(col2) {}
-
-    static Mat3 Identity() {
-        return Mat3(
-            1.f, 0.f, 0.f,
-            0.f, 1.f, 0.f,
-            0.f, 0.f, 1.f);
-    }
+    // TODO: transpose this
+    constexpr Mat3(float m00, float m10, float m20,
+                   float m01, float m11, float m21,
+                   float m02, float m12, float m22) :
+        _data{m00, m10, m20, m01, m11, m21, m02, m12, m22} {}
+    constexpr Mat3()
+        : Mat3(1.f, 0.f, 0.f,
+               0.f, 1.f, 0.f,
+               0.f, 0.f, 1.f) {}
 
     static Mat3 FromAxisAngle(Vec3 const& axis, float angleRad);
 
-    Mat3 GetTranspose() const {
-        return Mat3(
-            _m00, _m01, _m02,
-            _m10, _m11, _m12,
-            _m20, _m21, _m22);
+    float const operator()(int r, int c) const {
+        assert(r >= 0 && r < 3 && c >= 0 && c < 3);
+        return _data[3*c + r];
+    }
+    float& operator()(int r, int c) {
+        assert(r >= 0 && r < 3 && c >= 0 && c < 3);
+        return _data[3*c + r];
     }
 
-    Vec3 MultiplyTranspose(Vec3 const& v) const {
-        return Vec3(
-            _m00*v._x + _m10*v._y + _m20*v._z,
-            _m01*v._x + _m11*v._y + _m21*v._z,
-            _m02*v._x + _m12*v._y + _m22*v._z);
+    Vec3 GetCol(int c) const {
+        assert(c >= 0 && c < 3);
+        int colStart = 3*c;
+        return Vec3(_data[colStart], _data[colStart + 1], _data[colStart + 2]);
+    }
+    void SetCol(int c, Vec3 const& v) {
+        assert(c >= 0 && c < 3);
+        int colStart = 3*c;
+        _data[colStart] = v._x;
+        _data[colStart+1] = v._y;
+        _data[colStart+2] = v._z;
     }
 
-    Vec3& GetCol(int c) {
-        return const_cast<Vec3&>(static_cast<Mat3 const&>(*this).GetCol(c));
-    }
-    Vec3 const& GetCol(int c) const {
-        switch (c) {
-            case 0: return _col0;
-            case 1: return _col1;
-            case 2: return _col2;
-        }
-        assert(false);
-        return _col0;
-    }
-
-    Vec3 GetRow(int r) {
-        assert(r >= 0);
-        assert(r < 3);
-        return Vec3(_data[r], _data[r+3], _data[r+6]);
+    Vec3 GetRow(int r) const {
+        assert(r >= 0 && r < 3);
+        return Vec3(_data[r], _data[r + 3], _data[r + 6]);
     }
     void SetRow(int r, Vec3 const& v) {
-        assert(r >= 0);
-        assert(r < 3);
+        assert(r >= 0 && r < 3);
         _data[r] = v._x;
         _data[r+3] = v._y;
         _data[r+6] = v._z;
     }
 
-    // Takes inverse then transpose of this matrix and returns result in "out".
-    bool TransposeInverse(Mat3& out);
+    Mat3 GetTranspose() const {
+        return Mat3(
+            _data[0], _data[3], _data[6],
+            _data[1], _data[4], _data[7],
+            _data[2], _data[5], _data[8]);
+    }
 
-    union {
-        float _data[9];
-        struct {
-            // Data is laid out so that column vectors are contiguous in memory. index names are mathematical [row,column].
-            float
-                _m00, _m10, _m20,
-                _m01, _m11, _m21,
-                _m02, _m12, _m22;
-        };
-        struct {
-            Vec3 _col0, _col1, _col2;
-        };
-    };
+    Vec3 MultiplyTranspose(Vec3 const& v) const {
+        return Vec3(
+            _data[0]*v._x + _data[1]*v._y + _data[2]*v._z,
+            _data[3]*v._x + _data[4]*v._y + _data[5]*v._z,
+            _data[6]*v._x + _data[7]*v._y + _data[8]*v._z);
+    }
+
+    // Takes inverse then transpose of this matrix and returns result in "out".
+    bool TransposeInverse(Mat3& out) const;
+    
+    float _data[9];
 };
 
-inline Vec3 operator*(Mat3 const& m, Vec3 const& v) {
+inline Vec3 operator*(Mat3 const& mat, Vec3 const& v) {
+    float const* m = mat._data;
     return Vec3(
-        m._m00*v._x + m._m01*v._y + m._m02*v._z,
-        m._m10*v._x + m._m11*v._y + m._m12*v._z,
-        m._m20*v._x + m._m21*v._y + m._m22*v._z);
+        m[0]*v._x + m[3]*v._y + m[6]*v._z,
+        m[1]*v._x + m[4]*v._y + m[7]*v._z,
+        m[2]*v._x + m[5]*v._y + m[8]*v._z);
 }
 
-inline Mat3 operator*(Mat3 const& a, Mat3 const& b) {
+inline Mat3 operator*(Mat3 const& a_mat, Mat3 const& b_mat) {
+    float const* a = a_mat._data;
+    float const* b = b_mat._data;
     return Mat3(
-        a._m00*b._m00 + a._m01*b._m10 + a._m02*b._m20,
-        a._m10*b._m00 + a._m11*b._m10 + a._m12*b._m20,
-        a._m20*b._m00 + a._m21*b._m10 + a._m22*b._m20,
+        a[0]*b[0] + a[3]*b[1] + a[6]*b[2],
+        a[1]*b[0] + a[4]*b[1] + a[7]*b[2],
+        a[2]*b[0] + a[5]*b[1] + a[8]*b[2],
 
-        a._m00*b._m01 + a._m01*b._m11 + a._m02*b._m21,
-        a._m10*b._m01 + a._m11*b._m11 + a._m12*b._m21,
-        a._m20*b._m01 + a._m21*b._m11 + a._m22*b._m21,
+        a[0]*b[3] + a[3]*b[4] + a[6]*b[5],
+        a[1]*b[3] + a[4]*b[4] + a[7]*b[5],
+        a[2]*b[3] + a[5]*b[4] + a[8]*b[5],
 
-        a._m00*b._m02 + a._m01*b._m12 + a._m02*b._m22,
-        a._m10*b._m02 + a._m11*b._m12 + a._m12*b._m22,
-        a._m20*b._m02 + a._m21*b._m12 + a._m22*b._m22
+        a[0]*b[6] + a[3]*b[7] + a[6]*b[8],
+        a[1]*b[6] + a[4]*b[7] + a[7]*b[8],
+        a[2]*b[6] + a[5]*b[7] + a[8]*b[8]
     );
 }
 
@@ -225,6 +233,8 @@ struct Vec4 {
         : _x(0.), _y(0.), _z(0.), _w(0.f) {}
     constexpr Vec4(float x, float y, float z, float w)
         : _x(x), _y(y), _z(z), _w(w) {}
+    constexpr explicit Vec4(float* v)
+        : _x(v[0]), _y(v[1]), _z(v[2]), _w(v[3]) {}
     
     void Set(float x, float y, float z, float w) {
         _x = x;
@@ -232,15 +242,7 @@ struct Vec4 {
         _z = z;
         _w = w;
     }
-    union {
-        float _data[4];
-        struct {
-            float _x, _y, _z, _w;
-        };
-        struct {
-            float _r, _g, _b, _a;
-        };
-    };
+
     static float Dot(Vec4 const& a, Vec4 const& b) {
         return a._x*b._x + a._y*b._y + a._z*b._z + a._w*b._w;
     }
@@ -249,18 +251,6 @@ struct Vec4 {
         _y *= v._y;
         _z *= v._z;
         _w *= v._w;
-    }
-    void Save(serial::Ptree pt) const {
-        pt.PutFloat("x", _x);
-        pt.PutFloat("y", _y);
-        pt.PutFloat("z", _z);
-        pt.PutFloat("w", _w);
-    }
-    void Load(serial::Ptree pt) {
-        _x = pt.GetFloat("x");
-        _y = pt.GetFloat("y");
-        _z = pt.GetFloat("z");
-        _w = pt.GetFloat("w");
     }
 
     bool operator==(Vec4 const& rhs) const {
@@ -283,6 +273,28 @@ struct Vec4 {
         _w /= rhs;
         return *this;
     }
+
+    void CopyToArray(float* v) {
+        v[0] = _x;
+        v[1] = _y;
+        v[2] = _z;
+        v[3] = _w;
+    }
+
+    void Save(serial::Ptree pt) const {
+        pt.PutFloat("x", _x);
+        pt.PutFloat("y", _y);
+        pt.PutFloat("z", _z);
+        pt.PutFloat("w", _w);
+    }
+    void Load(serial::Ptree pt) {
+        _x = pt.GetFloat("x");
+        _y = pt.GetFloat("y");
+        _z = pt.GetFloat("z");
+        _w = pt.GetFloat("w");
+    }
+    
+    float _x, _y, _z, _w;
 };
 
 inline Vec4 operator+(Vec4 const& lhs, Vec4 const& rhs) {
@@ -309,71 +321,103 @@ inline Vec4 operator/(Vec4 const& v, float const a) {
 }
 
 struct Mat4 {
-    Mat4() {
-        *this = Identity();
-    }
-    Mat4(float m00, float m10, float m20, float m30,
-         float m01, float m11, float m21, float m31,
-         float m02, float m12, float m22, float m32,
-         float m03, float m13, float m23, float m33)
-        : _m00(m00), _m10(m10), _m20(m20), _m30(m30),
-          _m01(m01), _m11(m11), _m21(m21), _m31(m31),
-          _m02(m02), _m12(m12), _m22(m22), _m32(m32),
-          _m03(m03), _m13(m13), _m23(m23), _m33(m33) {}
+    // TODO: transpose this
+    constexpr Mat4(float m00, float m10, float m20, float m30,
+                   float m01, float m11, float m21, float m31,
+                   float m02, float m12, float m22, float m32,
+                   float m03, float m13, float m23, float m33) :
+        _data{m00, m10, m20, m30, m01, m11, m21, m31, m02, m12, m22, m32, m03, m13, m23, m33} {}
+    constexpr Mat4()
+        : Mat4(1.f, 0.f, 0.f, 0.f,
+               0.f, 1.f, 0.f, 0.f,
+               0.f, 0.f, 1.f, 0.f,
+               0.f, 0.f, 0.f, 1.f) {}
 
-    static Mat4 Identity() {
-        return Mat4(
-            1.f, 0.f, 0.f, 0.f,
-            0.f, 1.f, 0.f, 0.f,
-            0.f, 0.f, 1.f, 0.f,
-            0.f, 0.f, 0.f, 1.f);
+    float const operator()(int r, int c) const {
+        assert(r >= 0 && r < 4 && c >= 0 && c < 4);
+        return _data[4*c + r];
     }
-    static Mat4 Zero() {
+    float& operator()(int r, int c) {
+        assert(r >= 0 && r < 4 && c >= 0 && c < 4);
+        return _data[4*c + r];
+    }    
+
+    Vec4 GetCol(int c) const {
+        assert(c >= 0 && c < 4);
+        int colStart = 4*c;
+        return Vec4(_data[colStart], _data[colStart + 1], _data[colStart + 2], _data[colStart + 3]);
+    }
+    void SetCol(int c, Vec4 const& v) {
+        assert(c >= 0 && c < 4);
+        int colStart = 4*c;
+        _data[colStart] = v._x;
+        _data[colStart+1] = v._y;
+        _data[colStart+2] = v._z;
+        _data[colStart+3] = v._w;
+    }
+
+    Vec4 GetRow(int r) const {
+        assert(r >= 0 && r < 4);
+        return Vec4(_data[r], _data[r+4], _data[r+8], _data[r+12]);
+    }
+    void SetRow(int r, Vec4 const& v) {
+        assert(r >= 0 && r < 4);
+        _data[r] = v._x;
+        _data[r+4] = v._y;
+        _data[r+8] = v._z;
+        _data[r+12] = v._w;
+    }
+
+    Vec3 GetCol3(int c) const {
+        assert(c >= 0 && c < 4);
+        int colStart = 4*c;
+        return Vec3(_data[colStart], _data[colStart + 1], _data[colStart + 2]);
+    }
+    void SetCol3(int c, Vec3 const& v) {
+        assert(c >= 0 && c < 4);
+        int colStart = 4*c;
+        _data[colStart] = v._x;
+        _data[colStart+1] = v._y;
+        _data[colStart+2] = v._z;
+    }
+
+    Vec3 GetRow3(int r) const {
+        assert(r >= 0 && r < 4);
+        return Vec3(_data[r], _data[r+4], _data[r+8]);
+    }
+    void SetRow3(int r, Vec3 const& v) {
+        assert(r >= 0 && r < 4);
+        _data[r] = v._x;
+        _data[r+4] = v._y;
+        _data[r+8] = v._z;
+    }
+
+    Mat4 GetTranspose() const {
         return Mat4(
-            0.f, 0.f, 0.f, 0.f,
-            0.f, 0.f, 0.f, 0.f,
-            0.f, 0.f, 0.f, 0.f,
-            0.f, 0.f, 0.f, 0.f);
+            _data[0], _data[4], _data[8], _data[12],
+            _data[1], _data[5], _data[9], _data[13],
+            _data[2], _data[6], _data[10], _data[14],
+            _data[3], _data[7], _data[11], _data[15]);
     }
 
     Mat3 GetMat3() const {
         return Mat3(
-            _m00, _m10, _m20,
-            _m01, _m11, _m21,
-            _m02, _m12, _m22);
+            _data[0], _data[1], _data[2],
+            _data[4], _data[5], _data[6],
+            _data[8], _data[9], _data[10]);
     }
-
-    Vec4 GetRow(int r) const {
-        return Vec4(_data[r], _data[r+4], _data[r+8], _data[r+12]);
-    }
-    Vec4& GetCol(int c) {
-        return const_cast<Vec4&>(static_cast<Mat4 const&>(*this).GetCol(c));
-    }
-    Vec4 const& GetCol(int c) const {
-        switch (c) {
-            case 0: return _col0;
-            case 1: return _col1;
-            case 2: return _col2;
-            case 3: return _col3;
-        }
-        assert(false);
-        return _col0;
-    }
-
-    // TODO: maybe add a version that just reinterpets the memory instead of copying
-    Vec3 GetCol3(int c) const {
-        assert(c < 4);
-        return Vec3(_data[4*c], _data[4*c + 1], _data[4*c + 2]);
-    }
-
-    void SetTopLeftMat3(Mat3 const& m3) {
-        for (int c = 0; c < 3; ++c) {
-            Vec4& v4 = this->GetCol(c);
-            Vec3 const& v3 = m3.GetCol(c);
-            v4._x = v3._x;
-            v4._y = v3._y;
-            v4._z = v3._z;
-        }
+    
+    void SetTopLeftMat3(Mat3 const& mat3) {
+        float const* m3 = mat3._data;
+        _data[0] = m3[0];
+        _data[1] = m3[1];
+        _data[2] = m3[2];
+        _data[4] = m3[3];
+        _data[5] = m3[4];
+        _data[6] = m3[5];
+        _data[8] = m3[6];
+        _data[9] = m3[7];
+        _data[10] = m3[8];
     }
 
     // These APPLY the given scale to the current matrix.
@@ -381,9 +425,25 @@ struct Mat4 {
     void ScaleUniform(float x);
     void Scale(float x, float y, float z);
 
+    void Translate(Vec3 const& t) {
+        _data[12] += t._x;
+        _data[13] += t._y;
+        _data[14] += t._z;
+    }
+
+    void SetTranslation(Vec3 const& t) {
+        _data[12] = t._x;
+        _data[13] = t._y;
+        _data[14] = t._z;
+    }
+
+    Vec3 GetPos() const {
+        return Vec3(_data[12], _data[13], _data[14]);
+    }
+
     // Assumes the mat is just a simple rotation and translation. No scaling.
     Mat4 InverseAffine() const {
-        Mat4 inverse = Mat4::Identity();
+        Mat4 inverse;
         inverse.SetTopLeftMat3(GetMat3().GetTranspose());
         Vec3 newPos = -(inverse.GetMat3() * GetCol3(3));
         inverse.SetTranslation(newPos);
@@ -395,31 +455,6 @@ struct Mat4 {
     static Mat4 Perspective(float fovyRadians, float aspectRatio, float znear, float zfar);
     static Mat4 Ortho(float width, float aspect, float zNear, float zFar);
     static Mat4 Ortho(float left, float right, float top, float bottom, float zNear, float zFar);
-    
-    void Translate(Vec3 const& t) {
-        _m03 += t._x;
-        _m13 += t._y;
-        _m23 += t._z;
-    }
-
-    void SetTranslation(Vec3 const& t) {
-        _m03 = t._x;
-        _m13 = t._y;
-        _m23 = t._z;
-    }
-    
-    Vec3 GetXAxis() const {
-        return GetCol3(0);
-    }
-    Vec3 GetYAxis() const {
-        return GetCol3(1);
-    }
-    Vec3 GetZAxis() const {
-        return GetCol3(2);
-    }
-    Vec3 GetPos() const {
-        return GetCol3(3);
-    }
 
     void Save(serial::Ptree pt) const {
         char name[] = "mXX";
@@ -439,45 +474,41 @@ struct Mat4 {
             }
         }
     }
-
-    union {
-        float _data[16];
-        struct {
-            // Data is laid out so that column vectors are contiguous in memory. index names are mathematical [row,column].
-            float
-                _m00, _m10, _m20, _m30,
-                _m01, _m11, _m21, _m31,
-                _m02, _m12, _m22, _m32,
-                _m03, _m13, _m23, _m33;
-        };
-        struct {
-            Vec4 _col0, _col1, _col2, _col3;
-        };
-        // TODO: CONFIRM WHETHER THIS WILL WORK AS YOU INTEND BEFORE YOU USE THIS
-        struct {
-            Vec3 _col3_0; float _col3_padding_0;
-            Vec3 _col3_1; float _col3_padding_1;
-            Vec3 _col3_2; float _col3_padding_2;
-            Vec3 _col3_3; float _col3_padding_3;
-        };
-    };
+    
+    float _data[16];
 };
 
-inline Mat4 operator*(Mat4 const& a, Mat4 const& b) {
-    Mat4 result;
-    for (int i = 0; i < 4; ++i) {
-        for (int j = 0; j < 4; ++j) {
-            float val = Vec4::Dot(a.GetRow(j), b.GetCol(i));
-            result._data[4*i + j] = val;
-        }
-    }
-    return result;
+inline Mat4 operator*(Mat4 const& mat_a, Mat4 const& mat_b) {
+    float const* a = mat_a._data;
+    float const* b = mat_b._data;
+    return Mat4(
+        a[0]*b[0] + a[4]*b[1] + a[8]*b[2] + a[12]*b[3],
+        a[1]*b[0] + a[5]*b[1] + a[9]*b[2] + a[13]*b[3],
+        a[2]*b[0] + a[6]*b[1] + a[10]*b[2] + a[14]*b[3],
+        a[3]*b[0] + a[7]*b[1] + a[11]*b[2] + a[15]*b[3],
+
+        a[0]*b[4] + a[4]*b[5] + a[8]*b[6] + a[12]*b[7],
+        a[1]*b[4] + a[5]*b[5] + a[9]*b[6] + a[13]*b[7],
+        a[2]*b[4] + a[6]*b[5] + a[10]*b[6] + a[14]*b[7],
+        a[3]*b[4] + a[7]*b[5] + a[11]*b[6] + a[15]*b[7],
+
+        a[0]*b[8] + a[4]*b[9] + a[8]*b[10] + a[12]*b[11],
+        a[1]*b[8] + a[5]*b[9] + a[9]*b[10] + a[13]*b[11],
+        a[2]*b[8] + a[6]*b[9] + a[10]*b[10] + a[14]*b[11],
+        a[3]*b[8] + a[7]*b[9] + a[11]*b[10] + a[15]*b[11],
+
+        a[0]*b[12] + a[4]*b[13] + a[8]*b[14] + a[12]*b[15],
+        a[1]*b[12] + a[5]*b[13] + a[9]*b[14] + a[13]*b[15],
+        a[2]*b[12] + a[6]*b[13] + a[10]*b[14] + a[14]*b[15],
+        a[3]*b[12] + a[7]*b[13] + a[11]*b[14] + a[15]*b[15]
+    );
 }
 
-inline Vec4 operator*(Mat4 const& m, Vec4 const& v) {
+inline Vec4 operator*(Mat4 const& mat, Vec4 const& v) {
+    float const* m = mat._data;
     return Vec4(
-        m._m00*v._x + m._m01*v._y + m._m02*v._z + m._m03*v._w,
-        m._m10*v._x + m._m11*v._y + m._m12*v._z + m._m13*v._w,
-        m._m20*v._x + m._m21*v._y + m._m22*v._z + m._m23*v._w,
-        m._m30*v._x + m._m31*v._y + m._m32*v._z + m._m33*v._w);
+        m[0]*v._x + m[4]*v._y + m[8]*v._z + m[12]*v._w,
+        m[1]*v._x + m[5]*v._y + m[9]*v._z + m[13]*v._w,
+        m[2]*v._x + m[6]*v._y + m[10]*v._z + m[14]*v._w,
+        m[3]*v._x + m[7]*v._y + m[11]*v._z + m[15]*v._w);
 }

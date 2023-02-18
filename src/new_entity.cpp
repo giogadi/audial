@@ -329,14 +329,15 @@ Entity::ImGuiResult Entity::ImGui(GameManager& g) {
     // Transform trans;
     // trans.SetFromMat4(_transform);
     Transform& trans = _transform;
-    
+
     Vec3 p = trans.Pos();
-    if (ImGui::InputFloat3("Pos##Entity", p._data, "%.3f", ImGuiInputTextFlags_EnterReturnsTrue)) {
+    if (imgui_util::InputVec3("Pos##Entity", &p, /*trueOnReturnOnly=*/true)) {
         trans.SetPos(p);
     }
+
     Vec3 euler = trans.Quat().EulerAngles();
     euler *= kRad2Deg;
-    if (ImGui::InputFloat3("Euler angles (deg)##Entity", euler._data, "%.3f", ImGuiInputTextFlags_EnterReturnsTrue)) {
+    if (imgui_util::InputVec3("Euler angles (deg)##Entity", &euler, true)) {
         euler *= kDeg2Rad;
         Quaternion q = trans.Quat();
         q.SetFromEulerAngles(euler);
@@ -351,34 +352,11 @@ Entity::ImGuiResult Entity::ImGui(GameManager& g) {
         trans.SetQuat(q);
     }
     Vec3 scale = trans.Scale();
-    if (ImGui::InputFloat3("Scale##Entity", scale._data, "%.3f", ImGuiInputTextFlags_EnterReturnsTrue)) {
+    if (imgui_util::InputVec3("Scale##Entity", &scale, true)) {
         trans.SetScale(scale);
     }
-    // _transform = trans.Mat4Scale();
-    // {
-    //     Mat3 rs = _transform.GetMat3();
-    //     Vec3 rs0 = rs.GetRow(0);
-    //     Vec3 rs1 = rs.GetRow(1);
-    //     Vec3 rs2 = rs.GetRow(2);
-    //     bool transChanged = false;
-    //     if (ImGui::InputFloat3("RotScaleRow0##Entity", rs0._data, "%.3f", ImGuiInputTextFlags_EnterReturnsTrue)) {
-    //         transChanged = true;
-    //     }
-    //     if (ImGui::InputFloat3("RotScaleRow1##Entity", rs1._data, "%.3f", ImGuiInputTextFlags_EnterReturnsTrue)) {
-    //         transChanged = true;
-    //     }
-    //     if (ImGui::InputFloat3("RotScaleRow2##Entity", rs2._data, "%.3f", ImGuiInputTextFlags_EnterReturnsTrue)) {
-    //         transChanged = true;
-    //     }
-    //     if (transChanged) {
-    //         rs.SetRow(0, rs0);
-    //         rs.SetRow(1, rs1);
-    //         rs.SetRow(2, rs2);
-    //         _transform.SetTopLeftMat3(rs);
-    //     }
-    // }
     bool modelChanged = imgui_util::InputText<64>("Model name##Entity", &_modelName, /*trueOnReturnOnly=*/true);
-    ImGui::ColorEdit4("Model color##Entity", _modelColor._data);
+    imgui_util::ColorEdit4("Model color##Entity", &_modelColor);
     
     static int sCurDbgLookAtIx = 0;
     ImGui::Combo("##DbgLookAtOffsetType", &sCurDbgLookAtIx, gDirectionStrings, static_cast<int>(Direction::Count));

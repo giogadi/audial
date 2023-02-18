@@ -9,15 +9,15 @@ void Transform::SetPos(Vec3 const& p) {
 }
 
 void Transform::SetPosX(float v) {
-    _mat._m03 = v;
+    _mat(0,3) = v;
 }
 
 void Transform::SetPosY(float v) {
-    _mat._m13 = v;
+    _mat(1,3) = v;
 }
 
 void Transform::SetPosZ(float v) {
-    _mat._m23 = v;
+    _mat(2,3) = v;
 }
 
 void Transform::SetQuat(Quaternion const& q) {
@@ -58,9 +58,9 @@ Mat4 Transform::Mat4Scale() const {
 void Transform::SetFromMat4(Mat4 const& mat4) {
     // First, let's extract scale (and create a rot matrix).
     Mat3 mat3 = mat4.GetMat3();
-    _scale._x = mat3._col0.Normalize();
-    _scale._y = mat3._col1.Normalize();
-    _scale._z = mat3._col2.Normalize();
+    _scale._x = mat3.GetCol(0).Normalize();
+    _scale._y = mat3.GetCol(1).Normalize();
+    _scale._z = mat3.GetCol(2).Normalize();
 
     Quaternion q;
     q.SetFromRotMat(mat3);
