@@ -23,22 +23,20 @@
 #include "audio.h"
 #include "beat_clock.h"
 #include "input_manager.h"
-#include "collisions.h"
-#include "component.h"
+// #include "collisions.h"
+// #include "component.h"
 #include "mesh.h"
 #include "renderer.h"
-#include "components/player_controller.h"
-#include "components/beep_on_hit.h"
-#include "components/sequencer.h"
-#include "components/rigid_body.h"
-#include "components/hit_counter.h"
+// #include "components/player_controller.h"
+// #include "components/beep_on_hit.h"
+// #include "components/sequencer.h"
+// #include "components/rigid_body.h"
+// #include "components/hit_counter.h"
 #include "audio_loader.h"
-#include "entity_editing_context.h"
+// #include "entity_editing_context.h"
 #include "editor.h"
 #include "sound_bank.h"
 #include "synth_imgui.h"
-
-#include "test_script.h"
 
 void InitEventQueueWithSequence(audio::EventQueue* queue, BeatClock const& beatClock) {
     double const firstNoteBeatTime = beatClock.GetDownBeatTime() + 1.0;
@@ -77,18 +75,6 @@ void InitEventQueueWithParamSequence(audio::EventQueue* queue, BeatClock const& 
 
 void FramebufferSizeCallback(GLFWwindow* window, int width, int height) {
     glViewport(0, 0, width, height);
-}
-
-void ShowHitCounterWindow(EntityManager& entityMgr) {
-    ImGui::Begin("Hit counters");
-    entityMgr.ForEveryActiveEntity([&entityMgr](EntityId id) {
-        Entity& entity = *entityMgr.GetEntity(id);
-        std::shared_ptr<HitCounterComponent> hitComp = entity.FindComponentOfType<HitCounterComponent>().lock();
-        if (hitComp) {
-            ImGui::Text("%s: %d", entity._name.c_str(), hitComp->_hitsRemaining);
-        }
-    });
-    ImGui::End();
 }
 
 void ToggleMute(float dt) {
@@ -305,15 +291,13 @@ int main(int argc, char** argv) {
 
     renderer::Scene sceneManager;
 
-    EntityManager entityManager;
+    //EntityManager entityManager;
     ne::EntityManager neEntityManager;
-
-    CollisionManager collisionManager;
 
     BeatClock beatClock;
 
     gGameManager = GameManager {
-        &sceneManager, &inputManager, &audioContext, &entityManager, &neEntityManager, &collisionManager, &beatClock, &soundBank,
+        &sceneManager, &inputManager, &audioContext, &neEntityManager, &beatClock, &soundBank,
         cmdLineInputs._editMode };
 
     if (!sceneManager.Init(gGameManager)) {
@@ -329,7 +313,6 @@ int main(int argc, char** argv) {
     // SCRIPT LOADING
     if (cmdLineInputs._scriptFilename.has_value()) {
         std::cout << "loading " << cmdLineInputs._scriptFilename.value() << std::endl;
-        bool dieOnConnectFail = !cmdLineInputs._editMode;
         serial::Ptree pt = serial::Ptree::MakeNew();
         if (!pt.LoadFromFile(cmdLineInputs._scriptFilename->c_str())) {
             printf("Script ptree load failed. Exiting.\n");
@@ -362,20 +345,14 @@ int main(int argc, char** argv) {
             }
         }
 
-        serial::Ptree entitiesPt = pt.TryGetChild("script.entities");
-        if (entitiesPt.IsValid()) {
-            if (!entityManager.LoadAndConnect(entitiesPt, dieOnConnectFail, gGameManager)) {
-                printf("Entities load failed. Exiting.\n");
-                return 1;
-            }
-        }
-
         pt.DeleteData();
     } else {
-        std::cout << "loading hardcoded script" << std::endl;
-        beatClock.Init(/*bpm=*/120.0, /*sampleRate=*/SAMPLE_RATE, audioContext._stream);
-        beatClock.Update();
-        LoadTestScript(gGameManager);
+        printf("ERROR: TODO NEED TO SUPPLY A HARDCODED TEST SCRIPT\n");
+        return 1;
+        // std::cout << "loading hardcoded script" << std::endl;
+        // beatClock.Init(/*bpm=*/120.0, /*sampleRate=*/SAMPLE_RATE, audioContext._stream);
+        // beatClock.Update();
+        // LoadTestScript(gGameManager);
     }
 
     SynthGuiState synthGuiState;
@@ -387,16 +364,9 @@ int main(int argc, char** argv) {
         InitSynthGuiState(audioContext, filename, synthGuiState);
     }
 
-    EntityEditingContext entityEditingContext;
-    assert(entityEditingContext.Init(gGameManager));
-    if (cmdLineInputs._scriptFilename.has_value()) {
-        entityEditingContext._saveFilename = *cmdLineInputs._scriptFilename;
-    }    
-
     bool showSynthWindow = false;
     bool showEntitiesWindow = false;
     bool showDemoWindow = false;
-    bool showHitCounters = false;
     float const fixedTimeStep = 1.f / 60.f;
     bool paused = false;
     while(!glfwWindowShouldClose(window)) {
@@ -438,15 +408,13 @@ int main(int argc, char** argv) {
             showDemoWindow = !showDemoWindow;
         }
 
-        entityEditingContext.Update(dt, cmdLineInputs._editMode, gGameManager);        
-
-        if (cmdLineInputs._editMode) {
-            entityManager.EditModeUpdate(dt);
-        } else {
-            entityManager.Update(dt);
-            // TODO do we wanna run collision manager during edit mode?
-            collisionManager.Update(dt);
-        }
+        // if (cmdLineInputs._editMode) {
+        //     entityManager.EditModeUpdate(dt);
+        // } else {
+        //     entityManager.Update(dt);
+        //     // TODO do we wanna run collision manager during edit mode?
+        //     collisionManager.Update(dt);
+        // }
 
         for (auto iter = gGameManager._neEntityManager->GetAllIterator(); !iter.Finished(); iter.Next()) {
             iter.GetEntity()->Update(gGameManager, dt);
@@ -465,12 +433,9 @@ int main(int argc, char** argv) {
         if (showSynthWindow) {
             DrawSynthGuiAndUpdatePatch(synthGuiState, audioContext);
         }
-        if (showEntitiesWindow) {
-            entityEditingContext.DrawEntitiesWindow(entityManager, gGameManager);
-        }        
-        if (showHitCounters) {
-            ShowHitCounterWindow(entityManager);
-        }
+        // if (showEntitiesWindow) {
+        //     entityEditingContext.DrawEntitiesWindow(entityManager, gGameManager);
+        // }        
         if (showDemoWindow) {
             ImGui::ShowDemoWindow(&showDemoWindow);
         }
@@ -500,7 +465,7 @@ int main(int argc, char** argv) {
         // 4. renderer takes wacky position
         //
         // Rule here is: We ALWAYS have at least one frame to deal with a deleted reference before a render happens. Not a bad rule!
-        entityManager.DestroyTaggedEntities();
+        // entityManager.DestroyTaggedEntities();
         neEntityManager.DestroyTaggedEntities(gGameManager);
     }
 

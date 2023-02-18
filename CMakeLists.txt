@@ -23,26 +23,28 @@ add_executable(game
     src/sound_bank.cpp
     src/editor.cpp
     src/version_id_list_simple.cpp
-    src/entity_picking.cpp src/entity_editing_context.cpp src/script_action.cpp
+    src/entity_picking.cpp
+    # src/entity_editing_context.cpp src/script_action.cpp
     src/shader.cpp src/synth.cpp src/mesh.cpp
     src/beat_clock.cpp src/input_manager.cpp src/beat_time_event.cpp
     src/synth_imgui.cpp
-    src/component.cpp src/entity.cpp src/entity_manager.cpp
+    # src/component.cpp src/entity.cpp src/entity_manager.cpp
     src/new_entity.cpp    
-    src/renderer.cpp src/collisions.cpp
+    src/renderer.cpp
+    # src/collisions.cpp
     src/stb_truetype.cpp
 
     # src/properties/Test.cpp
 
     src/string_ci.cpp
     
-    src/components/transform.cpp
-    src/components/model_instance.cpp src/components/camera.cpp src/components/light.cpp
-    src/components/rigid_body.cpp src/components/beep_on_hit.cpp src/components/player_controller.cpp
-    src/components/player_orbit_controller.cpp src/components/camera_controller.cpp src/components/hit_counter.cpp
-    src/components/orbitable.cpp src/components/events_on_hit.cpp src/components/activator.cpp src/components/damage.cpp
-    src/components/waypoint_follow.cpp src/components/recorder_balloon.cpp src/components/area_recorder.cpp
-    src/components/piano_planet.cpp
+    #src/components/transform.cpp
+    #src/components/model_instance.cpp src/components/camera.cpp src/components/light.cpp
+    #src/components/rigid_body.cpp src/components/beep_on_hit.cpp src/components/player_controller.cpp
+    #src/components/player_orbit_controller.cpp src/components/camera_controller.cpp src/components/hit_counter.cpp
+    #src/components/orbitable.cpp src/components/events_on_hit.cpp src/components/activator.cpp src/components/damage.cpp
+    #src/components/waypoint_follow.cpp src/components/recorder_balloon.cpp src/components/area_recorder.cpp
+    #src/components/piano_planet.cpp
 
     src/seq_action.cpp
     src/seq_actions/spawn_enemy.cpp
@@ -147,3 +149,6 @@ target_link_libraries(stk_test PortAudio)
 target_include_directories(stk_test PUBLIC src/portaudio/include)
 target_link_libraries(stk_test stk)
 target_include_directories(stk_test PUBLIC src/)
+
+add_executable(matrix_test EXCLUDE_FROM_ALL
+    src/matrix_test.cpp)                          

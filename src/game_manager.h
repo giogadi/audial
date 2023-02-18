@@ -7,7 +7,6 @@ class InputManager;
 namespace audio {
     struct Context;
 }
-class EntityManager;
 namespace ne {
     struct EntityManager;
 }
@@ -19,9 +18,7 @@ struct GameManager {
     renderer::Scene* _scene = nullptr;
     InputManager* _inputManager = nullptr;
     audio::Context* _audioContext = nullptr;
-    EntityManager* _entityManager = nullptr;
     ne::EntityManager* _neEntityManager = nullptr;
-    CollisionManager* _collisionManager = nullptr;
     BeatClock* _beatClock = nullptr;
     SoundBank* _soundBank = nullptr;
 

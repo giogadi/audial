@@ -2,8 +2,6 @@
 
 #include <optional>
 
-#include "components/transform.h"
-#include "entity_manager.h"
 #include "renderer.h"
 
 namespace {
@@ -206,38 +204,38 @@ bool TestRayOBBIntersection(
 
 }
 
-EntityId PickEntity(
-    EntityManager& entities, double clickX, double clickY, int windowWidth, int windowHeight,
-    renderer::Camera const& camera) {
+// EntityId PickEntity(
+//     EntityManager& entities, double clickX, double clickY, int windowWidth, int windowHeight,
+//     renderer::Camera const& camera) {
 
-    float const pickSphereRad = 0.1f;
+//     float const pickSphereRad = 0.1f;
 
-    Vec3 rayStart;
-    Vec3 rayDir;
-    GetPickRay(clickX, clickY, windowWidth, windowHeight, camera, &rayStart, &rayDir);
-    // Start a little ahead of camera so we don't pick it
-    rayStart += -camera._transform.GetZAxis() * pickSphereRad * 1.1f;
+//     Vec3 rayStart;
+//     Vec3 rayDir;
+//     GetPickRay(clickX, clickY, windowWidth, windowHeight, camera, &rayStart, &rayDir);
+//     // Start a little ahead of camera so we don't pick it
+//     rayStart += -camera._transform.GetZAxis() * pickSphereRad * 1.1f;
 
-    std::optional<float> closestPickDist;
-    EntityId closestPickItem = EntityId::InvalidId();
-    entities.ForEveryActiveEntity([&](EntityId id) {
-        Entity& entity = *entities.GetEntity(id);
-        std::weak_ptr<TransformComponent> pTrans = entity.FindComponentOfType<TransformComponent>();
-        if (pTrans.expired()) {
-            return;
-        }
-        TransformComponent const& t = *pTrans.lock();
-        std::optional<float> hitDist = sphereRayCast(rayStart, rayDir, t.GetWorldPos(), pickSphereRad);
-        if (hitDist.has_value()) {
-            if (!closestPickDist.has_value() || *hitDist < *closestPickDist) {
-                *closestPickDist = *hitDist;
-                closestPickItem = id;
-            }
-        }
-    });
+//     std::optional<float> closestPickDist;
+//     EntityId closestPickItem = EntityId::InvalidId();
+//     entities.ForEveryActiveEntity([&](EntityId id) {
+//         Entity& entity = *entities.GetEntity(id);
+//         std::weak_ptr<TransformComponent> pTrans = entity.FindComponentOfType<TransformComponent>();
+//         if (pTrans.expired()) {
+//             return;
+//         }
+//         TransformComponent const& t = *pTrans.lock();
+//         std::optional<float> hitDist = sphereRayCast(rayStart, rayDir, t.GetWorldPos(), pickSphereRad);
+//         if (hitDist.has_value()) {
+//             if (!closestPickDist.has_value() || *hitDist < *closestPickDist) {
+//                 *closestPickDist = *hitDist;
+//                 closestPickItem = id;
+//             }
+//         }
+//     });
 
-    return closestPickItem;
-}
+//     return closestPickItem;
+// }
 
 ne::Entity* PickEntity(
     ne::EntityManager& entityMgr, double clickX, double clickY, int windowWidth, int windowHeight,
