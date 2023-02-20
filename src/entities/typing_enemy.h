@@ -39,7 +39,7 @@ struct TypingEnemyEntity : public ne::Entity {
     InputManager::Key GetNextKey() const;
 
     
-    virtual void Init(GameManager& g) override;
+    virtual void InitDerived(GameManager& g) override;
     virtual void Update(GameManager& g, float dt) override;
     /* virtual void Destroy(GameManager& g) {} */
     virtual void OnEditPick(GameManager& g) override;

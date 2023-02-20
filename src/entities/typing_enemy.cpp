@@ -27,8 +27,7 @@ void ProjectWorldPointToScreenSpace(Vec3 const& worldPos, Mat4 const& viewProjMa
 
 }
 
-void TypingEnemyEntity::Init(GameManager& g) {
-    ne::Entity::Init(g);
+void TypingEnemyEntity::InitDerived(GameManager& g) {
     _currentColor = _modelColor;
     if (_sectionId >= 0) {
         int numEntities = 0;

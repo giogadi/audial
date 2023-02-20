@@ -277,6 +277,7 @@ Entity* EntityManager::AllIterator::GetEntity() {
 
 void Entity::Init(GameManager& g) {
     _model = g._scene->GetMesh(_modelName);
+    InitDerived(g);
 }
 void Entity::Update(GameManager& g, float dt) {
     if (_model != nullptr) {

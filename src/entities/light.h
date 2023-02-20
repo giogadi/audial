@@ -9,7 +9,7 @@ struct LightEntity : public ne::Entity {
     Vec3 _diffuse;
 
     VersionId _lightId;
-    virtual void Init(GameManager& g) override;
+    virtual void InitDerived(GameManager& g) override;
     virtual void Update(GameManager& g, float dt) override;
     virtual void Destroy(GameManager& g) override;
 

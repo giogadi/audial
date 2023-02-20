@@ -101,8 +101,7 @@ bool LaneNoteEnemyEntity::IsActive(GameManager& g) const {
 static float constexpr gSpawnYOffset = -10.f;
 static double constexpr gSpawnPredelayBeatTime = 0.5;
 
-void LaneNoteEnemyEntity::Init(GameManager& g) {
-    ne::Entity::Init(g);
+void LaneNoteEnemyEntity::InitDerived(GameManager& g) {
     _desiredSpawnY = _transform.GetPos()._y;
     _hp = _initialHp;
 }

@@ -372,7 +372,7 @@ void LoadSpawnsFromFile(char const* fileName, std::vector<Spawn>* spawns) {
 }
 }
 
-void LaneNotePlayerEntity::Init(GameManager& g) {
+void LaneNotePlayerEntity::InitDerived(GameManager& g) {
     LoadLaneNoteTablesFromFile("data/lane_note_tables.txt", _laneNotesTables);
     
     std::vector<Spawn> spawns;

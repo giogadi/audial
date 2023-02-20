@@ -11,7 +11,7 @@ std::array<char,1024> gAudioEventScriptBuf;
 
 } // end namespace
 
-void SequencerEntity::Init(GameManager& g) {
+void SequencerEntity::InitDerived(GameManager& g) {
     if (g._editMode) {
         _playing = false;
     }

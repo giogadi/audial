@@ -26,7 +26,7 @@ struct FlowPlayerEntity : public ne::Entity {
 
     void Draw(GameManager& g);
     
-    virtual void Init(GameManager& g) override;
+    virtual void InitDerived(GameManager& g) override;
     virtual void Update(GameManager& g, float dt) override;
     /* virtual void Destroy(GameManager& g) {} */
     /* virtual void OnEditPick(GameManager& g) {} */

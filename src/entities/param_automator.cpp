@@ -7,7 +7,7 @@
 #include "sequencer.h"
 #include "audio.h"
 
-void ParamAutomatorEntity::Init(GameManager& g) {
+void ParamAutomatorEntity::InitDerived(GameManager& g) {
     if (!_seqEntityName.empty()) {
         ne::Entity* e = g._neEntityManager->FindEntityByName(_seqEntityName);
         if (e == nullptr) {

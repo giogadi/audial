@@ -11,7 +11,7 @@
 // #include "entities/flow_player.h"
 #include "string_util.h"
 
-void ActionSequencerEntity::Init(GameManager& g) {
+void ActionSequencerEntity::InitDerived(GameManager& g) {
     _currentIx = 0;
     _actions.clear();
     

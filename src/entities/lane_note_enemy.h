@@ -66,7 +66,7 @@ struct LaneNoteEnemyEntity : public ne::Entity {
 
     // _transform should contain the desired spawn position *before* calling
     // Init() for the spawn to work properly.
-    virtual void Init(GameManager& g) override;
+    virtual void InitDerived(GameManager& g) override;
     virtual void Update(GameManager& g, float dt) override;
     // virtual void Destroy(GameManager& g) override;
     virtual void OnEditPick(GameManager& g) override;

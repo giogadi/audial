@@ -23,7 +23,7 @@ struct TypingPlayerEntity : public ne::Entity {
     void RegisterSectionEnemy(int sectionId, ne::EntityId enemyId);
     void SetSectionLength(int sectionId, int numBeats);
     
-    virtual void Init(GameManager& g) override;
+    virtual void InitDerived(GameManager& g) override;
     virtual void Update(GameManager& g, float dt) override;
     /* virtual void Destroy(GameManager& g) {} */
     /* virtual void OnEditPick(GameManager& g) {} */

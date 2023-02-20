@@ -23,7 +23,7 @@ ne::Entity::ImGuiResult LightEntity::ImGuiDerived(GameManager& g) {
     imgui_util::ColorEdit3("Ambient", &_ambient);
     return ImGuiResult::Done;
 }
-void LightEntity::Init(GameManager& g) {
+void LightEntity::InitDerived(GameManager& g) {
     _lightId = g._scene->AddPointLight().first;
 }
 void LightEntity::Update(GameManager& g, float dt) {

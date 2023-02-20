@@ -41,7 +41,7 @@ struct StepSequencerEntity : ne::Entity {
     void SetAllStepsPermanent(SeqStep const& newStep);
     void SetSequencePermanent(std::vector<SeqStep> newSequence);
 
-    virtual void Init(GameManager& g) override;
+    virtual void InitDerived(GameManager& g) override;
     virtual void Update(GameManager& g, float dt) override;
     virtual void SaveDerived(serial::Ptree pt) const override;
     virtual void LoadDerived(serial::Ptree pt) override;

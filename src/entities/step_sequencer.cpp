@@ -164,7 +164,7 @@ void StepSequencerEntity::SetSequencePermanent(std::vector<SeqStep> newSequence)
     }
 }
 
-void StepSequencerEntity::Init(GameManager& g) {
+void StepSequencerEntity::InitDerived(GameManager& g) {
     _tempSequence = _permanentSequence = _initialMidiSequenceDoNotChange;
     _loopStartBeatTime = _initialLoopStartBeatTime;
 }

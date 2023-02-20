@@ -24,8 +24,7 @@ void FlowPlayerEntity::LoadDerived(serial::Ptree pt) {
     serial::LoadFromChildOf(pt, "gravity", _gravity);
 }
 
-void FlowPlayerEntity::Init(GameManager& g) {
-    BaseEntity::Init(g);
+void FlowPlayerEntity::InitDerived(GameManager& g) {
     {
         int numEntities = 0;
         ne::EntityManager::Iterator eIter = g._neEntityManager->GetIterator(ne::EntityType::Camera, &numEntities);
@@ -195,12 +194,12 @@ ne::EntityManager::Iterator enemyIter = g._neEntityManager->GetIterator(ne::Enti
             enemy->_textColor = kGreyColor;
             continue;
         }
-        bool clear = IsCollisionFree(g, playerPos, enemy->_transform.GetPos());
-        if (!clear) {
-            enemy->_currentColor = kGreyColor;
-            enemy->_textColor = kGreyColor;
-            continue;
-        }
+        // bool clear = IsCollisionFree(g, playerPos, enemy->_transform.GetPos());
+        // if (!clear) {
+        //     enemy->_currentColor = kGreyColor;
+        //     enemy->_textColor = kGreyColor;
+        //     continue;
+        // }
 
         // UGLY
         enemy->_currentColor = enemy->_modelColor;

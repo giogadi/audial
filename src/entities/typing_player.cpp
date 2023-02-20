@@ -41,7 +41,7 @@ void TypingPlayerEntity::LoadDerived(serial::Ptree pt) {
     }
 }
 
-void TypingPlayerEntity::Init(GameManager& g) {   
+void TypingPlayerEntity::InitDerived(GameManager& g) {   
     _sectionNumBeats[-1] = 4;
 }
 

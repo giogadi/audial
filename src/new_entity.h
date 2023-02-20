@@ -76,16 +76,18 @@ struct BaseEntity {
 
     virtual ~BaseEntity() {}
 
+    void Init(GameManager& g);
+
     // Init() is intended to be called after Load(). Load should not touch anything
     // outside this class. Everything else should happen here.
-    virtual void Init(GameManager& g);
     virtual void Update(GameManager& g, float dt);
     virtual void Destroy(GameManager& g) {}
     virtual void OnEditPick(GameManager& g) {}
     virtual void DebugPrint();
 
 protected:
-    // Used by derived classes to save/load child-specific data.
+    // Used by derived classes to work with child-specific data.
+    virtual void InitDerived(GameManager& g) {}
     virtual void SaveDerived(serial::Ptree pt) const {};
     virtual void LoadDerived(serial::Ptree pt) {};
     virtual ImGuiResult ImGuiDerived(GameManager& g) { return ImGuiResult::Done; }

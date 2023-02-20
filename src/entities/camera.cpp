@@ -5,7 +5,7 @@
 #include "game_manager.h"
 #include "renderer.h"
 
-void CameraEntity::Init(GameManager& g) {
+void CameraEntity::InitDerived(GameManager& g) {
     _camera = &g._scene->_camera;
     if (g._editMode) {
         // If in edit mode, initialize the debug camera location to this location.
