@@ -1,12 +1,13 @@
 #pragma once
 
 #include <cmath>
+#include "game_manager.h"
 
 class BeatClock {
 public:
-    void Init(double bpm, double sampleRate, void* stream);
+    void Init(GameManager& g, double bpm, double sampleRate);
 
-    void Update();
+    void Update(GameManager& g);
 
     bool IsNewBeat() const { return _newBeat; }
 
@@ -59,6 +60,5 @@ private:
     double _currentAudioTime = -1.0;
     unsigned long _currentTickTime = 0;
     bool _newBeat = false;
-    void* _paStream = nullptr;
     double _sampleRate = 44100.0;
 };

@@ -321,8 +321,8 @@ int main(int argc, char** argv) {
         }
 
         double bpm = pt.GetDouble("script.bpm");
-        beatClock.Init(bpm, SAMPLE_RATE, audioContext._stream);
-        beatClock.Update();
+        beatClock.Init(gGameManager, bpm, SAMPLE_RATE);
+        beatClock.Update(gGameManager);
 
         {
             // New entity loading. Manually add them in this order to the editor to keep ordering consistent.
@@ -373,7 +373,7 @@ int main(int argc, char** argv) {
 
         glfwGetWindowSize(window, &gGameManager._windowWidth, &gGameManager._windowHeight);
 
-        beatClock.Update();
+        beatClock.Update(gGameManager);
 
         {
             ImGuiIO& io = ImGui::GetIO();

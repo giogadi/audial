@@ -1,18 +1,17 @@
 #include "beat_clock.h"
 
-#include <portaudio.h>
+#include "audio.h"
 
-void BeatClock::Init(double bpm, double sampleRate, void* stream) {
+void BeatClock::Init(GameManager& g, double bpm, double sampleRate) {
     _bpm = bpm;
-    _paStream = stream;
     _sampleRate = sampleRate;
-    double audioTimeNow = Pa_GetStreamTime(_paStream);
+    double audioTimeNow = g._audioContext->_state.GetTimeInSeconds();
     double beatTimeNow = audioTimeNow * (_bpm / 60.0);
     _epochBeatTime = GetNextDownBeatTime(beatTimeNow);
 }
 
-void BeatClock::Update() {
-    double audioTime = Pa_GetStreamTime(_paStream);
+void BeatClock::Update(GameManager& g) {
+    double audioTime = g._audioContext->_state.GetTimeInSeconds();
     double beatTime = audioTime * (_bpm / 60.0);
     double downBeat = std::floor(beatTime);
     _newBeat = false;

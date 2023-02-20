@@ -48,6 +48,10 @@ void InitStateData(
     state.pendingEvents.set_capacity(256);
 }
 
+double StateData::GetTimeInSeconds() const {
+    return ((double) (_bufferCounter * FRAMES_PER_BUFFER)) / SAMPLE_RATE;
+}
+
 /*
  * This routine is called by portaudio when playback is done.
  */
@@ -227,8 +231,9 @@ int PortAudioCallback(
     gLastFrameSize = samplesPerFrame;
 
     StateData* state = (StateData*)userData;
-    double const timeSecs = timeInfo->currentTime;
-    // double const timeSecs = timeInfo->outputBufferDacTime;
+    double const timeSecs = state->GetTimeInSeconds();
+    // TODO: do we need to wrap this in an atomic?
+    ++state->_bufferCounter;
 
     // DEBUG
     gTimeSinceLastCallback = timeSecs - gLastCallbackTime;
