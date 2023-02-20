@@ -14,6 +14,7 @@ void FlowPlayerEntity::SaveDerived(serial::Ptree pt) const {
     pt.PutFloat("max_horiz_speed_after_dash", _maxHorizSpeedAfterDash);
     pt.PutFloat("dash_time", _dashTime);
     serial::SaveInNewChildOf(pt, "gravity", _gravity);
+    serial::SaveInNewChildOf(pt, "respawn_pos", _respawnPos);
 }
 
 void FlowPlayerEntity::LoadDerived(serial::Ptree pt) {
@@ -22,6 +23,7 @@ void FlowPlayerEntity::LoadDerived(serial::Ptree pt) {
     pt.TryGetFloat("max_horiz_speed_after_dash", &_maxHorizSpeedAfterDash);
     pt.TryGetFloat("dash_time", &_dashTime);
     serial::LoadFromChildOf(pt, "gravity", _gravity);
+    serial::LoadFromChildOf(pt, "respawn_pos", _respawnPos);
 }
 
 void FlowPlayerEntity::InitDerived(GameManager& g) {
@@ -124,7 +126,7 @@ bool SegmentBoxIntersection2d(
     return false;
 }
 
-bool IsCollisionFree(GameManager& g, Vec3 const& playerPos, Vec3 const& enemyPos) {
+bool IsSegmentCollisionFree2D(GameManager& g, Vec3 const& playerPos, Vec3 const& enemyPos) {
     int numEntities = 0;
     ne::EntityManager::Iterator wallIter = g._neEntityManager->GetIterator(ne::EntityType::FlowWall, &numEntities);
     for (; !wallIter.Finished(); wallIter.Next()) {
@@ -145,6 +147,36 @@ bool IsCollisionFree(GameManager& g, Vec3 const& playerPos, Vec3 const& enemyPos
     }
     return true;
 }
+
+// Checks XZ collisions between 
+bool DoAABBsOverlap(Transform const& aabb1, Transform const& aabb2) {
+    Vec3 const& p1 = aabb1.Pos();
+    Vec3 const& p2 = aabb2.Pos();    
+    Vec3 halfScale1 = 0.5f * aabb1.Scale();
+    Vec3 halfScale2 = 0.5f * aabb2.Scale();
+    Vec3 min1 = p1 - halfScale1;
+    Vec3 min2 = p2 - halfScale2;
+    Vec3 max1 = p1 + halfScale1;
+    Vec3 max2 = p2 + halfScale2;
+    for (int i = 0; i < 3; ++i) {
+        if (min1(i) > max2(i) ||
+            min2(i) > max1(i)) {
+            return false;
+        }
+    }
+    return true;
+}
+
+bool DoesPlayerOverlapAnyWallNoRotate(GameManager& g, Transform const& playerTrans) {
+    ne::EntityManager::Iterator wallIter = g._neEntityManager->GetIterator(ne::EntityType::FlowWall);
+    for (; !wallIter.Finished(); wallIter.Next()) {
+        Transform const& wallTrans = wallIter.GetEntity()->_transform;
+        if (DoAABBsOverlap(playerTrans, wallTrans)) {
+            return true;
+        }
+    }
+    return false;
+}
 }
 
 void FlowPlayerEntity::Draw(GameManager& g) {
@@ -161,13 +193,24 @@ void FlowPlayerEntity::Draw(GameManager& g) {
     }
 }
 
+void FlowPlayerEntity::Respawn(GameManager& g) {
+    _transform.SetTranslation(_respawnPos);
+    double beatTime = g._beatClock->GetBeatTimeFromEpoch();
+    _countOffEndTime = g._beatClock->GetNextDownBeatTime(beatTime) + 3;
+    _posHistory.clear();
+    _framesSinceLastSample = 0;
+    _vel.Set(0.f,0.f,0.f);
+    _dashTimer = -1.f;
+    
+}
+
 void FlowPlayerEntity::Update(GameManager& g, float dt) {
     if (g._editMode) {
         return;
     }
 
     double const beatTime = g._beatClock->GetBeatTimeFromEpoch();
-    if (beatTime < 3) {
+    if (_countOffEndTime >= 0.0 && beatTime < _countOffEndTime) {
         double unusedBeatNum;
         float beatTimeFrac = (float) (modf(beatTime, &unusedBeatNum));
         // 0 is default color, 1 is temp flash color
@@ -267,6 +310,11 @@ ne::EntityManager::Iterator enemyIter = g._neEntityManager->GetIterator(ne::Enti
 
     p += _vel * dt;
     _transform.SetTranslation(p);
+
+    // Check collisions between p and walls
+    if (DoesPlayerOverlapAnyWallNoRotate(g, _transform)) {
+        Respawn(g);
+    }
 
     Draw(g);
 }

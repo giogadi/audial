@@ -12,6 +12,7 @@ struct FlowPlayerEntity : public ne::Entity {
     Vec3 _gravity = Vec3(0.f, 0.f, 9.81f);
     float _maxHorizSpeedAfterDash = 20.f;
     float _dashTime = 0.5f;
+    Vec3 _respawnPos;
 
     // non-serialized
     Vec3 _vel;
@@ -23,8 +24,10 @@ struct FlowPlayerEntity : public ne::Entity {
     float _dashTimer = -1.f;
     Vec4 _currentColor;
     bool _flowPolarity = true;
+    double _countOffEndTime = 3.0;
 
     void Draw(GameManager& g);
+    void Respawn(GameManager &g);
     
     virtual void InitDerived(GameManager& g) override;
     virtual void Update(GameManager& g, float dt) override;

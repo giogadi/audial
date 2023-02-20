@@ -185,6 +185,11 @@
                 <y>0</y>
                 <z>9.81000042</z>
             </gravity>
+            <respawn_pos>
+                <x>-8.703125</x>
+                <y>0</y>
+                <z>-4.125</z>
+            </respawn_pos>
         </FlowPlayer>
         <StepSequencer>
             <name>kick_seq</name>
