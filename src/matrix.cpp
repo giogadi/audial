@@ -123,16 +123,16 @@ Mat4 Mat4::Ortho(float left, float right, float top, float bottom, float zNear, 
     return m;
 }
 
-Mat4 Mat4::LookAt(Vec3 const& eye, Vec3 const& at, Vec3 const& up) {
+Mat4 Mat4::LookAt(Vec3 const& eye, Vec3 const& at, Vec3 const& up) {    
     Mat3 r;
-    r.SetCol(2, (at - eye).GetNormalized());   
-    r.SetCol(0, Vec3::Cross(r.GetCol(2), up).GetNormalized());
-    r.SetCol(1, Vec3::Cross(r.GetCol(0), r.GetCol(2)).GetNormalized());
-    r.SetCol(2, -r.GetCol(2));
+    r.SetRow(2, (at - eye).GetNormalized());   
+    r.SetRow(0, Vec3::Cross(r.GetRow(2), up).GetNormalized());
+    r.SetRow(1, Vec3::Cross(r.GetRow(0), r.GetRow(2)).GetNormalized());
+    r.SetRow(2, -r.GetRow(2));
 
-    Vec3 t = r.MultiplyTranspose(-eye);
+    Vec3 t = r * (-eye);
     Mat4 result;
-    result.SetTopLeftMat3(r.GetTranspose());
+    result.SetTopLeftMat3(r);
     result.SetTranslation(t);
     return result;  
 }

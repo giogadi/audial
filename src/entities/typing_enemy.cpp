@@ -38,7 +38,9 @@ void TypingEnemyEntity::Init(GameManager& g) {
         assert(player != nullptr);
         player->RegisterSectionEnemy(_sectionId, _id);
     }
-    _prevWaypointPos = _transform.GetPos();
+    
+    _waypointFollower.Init(_transform.GetPos());
+        
     // TODO I'M SORRY MOTHER. We need to support the ability for now of
     // spawn_enemy.cpp to init an enemy by setting _hitActions directly, and not
     // having it overwritten.
@@ -61,10 +63,6 @@ void TypingEnemyEntity::Init(GameManager& g) {
             _hitActions.push_back(std::move(pAction));   
         }
     }
-
-    _currentWaypointIx = 0;
-    _currentWaypointTime = 0.f;
-    _followingWaypoints = _autoStartFollowingWaypoints;
 }
 
 void TypingEnemyEntity::Update(GameManager& g, float dt) {
@@ -73,35 +71,17 @@ void TypingEnemyEntity::Update(GameManager& g, float dt) {
     }
 
     if (!g._editMode) {
-        if (_followingWaypoints && !_waypoints.empty()) {
-            _currentWaypointTime += dt;
-            assert(_currentWaypointIx < _waypoints.size());            
-            if (_currentWaypointTime > _waypoints[_currentWaypointIx]._t) {  
-                _prevWaypointPos = _waypoints[_currentWaypointIx]._p;
-                _currentWaypointTime -= _waypoints[_currentWaypointIx]._t;
-                ++_currentWaypointIx;
-                if (_currentWaypointIx >= _waypoints.size()) {
-                    if (_loopWaypoints) {
-                        _currentWaypointIx = 0;
-                    } else {
-                        --_currentWaypointIx;
-                        _currentWaypointTime = _waypoints[_currentWaypointIx]._t;
-                    }
-                }
-            }
-            float lerpFactor = _currentWaypointTime / _waypoints[_currentWaypointIx]._t;
-            lerpFactor = math_util::Clamp(lerpFactor, 0.f, 1.f);
-            // lerp from prevWaypointPos to pos of current waypoint
-            Waypoint const& currentWp = _waypoints[_currentWaypointIx];
-            Vec3 newPos = _prevWaypointPos + lerpFactor * (currentWp._p - _prevWaypointPos);
-            _transform.SetTranslation(newPos);
+        Vec3 newPosFromWp = _transform.Pos();
+        bool followsWaypoint = _waypointFollower.Update(dt, &newPosFromWp);
+        if (followsWaypoint) {
+            _transform.SetPos(newPosFromWp);
         } else {
             Vec3 p  = _transform.GetPos();
     
             Vec3 dp = _velocity * dt;
             p += dp;
             _transform.SetTranslation(p);
-        }       
+        }
 
         if (_destroyIfOffscreenLeft) {
             Vec3 p = _transform.GetPos();
@@ -192,18 +172,6 @@ InputManager::Key TypingEnemyEntity::GetNextKey() const {
     return nextKey;
 }
 
-void TypingEnemyEntity::Waypoint::Save(serial::Ptree pt) const {
-    pt.PutFloat("t", _t);
-    serial::SaveInNewChildOf(pt, "p", _p);
-}
-
-void TypingEnemyEntity::Waypoint::Load(serial::Ptree pt) {
-    _t = pt.GetFloat("t");
-    if (!serial::LoadFromChildOf(pt, "p", _p)) {
-        printf("TypingEnemyEntity::Waypoint::Load: ERROR couldn't find child \"p\"\n");
-    }
-}
-
 void TypingEnemyEntity::LoadDerived(serial::Ptree pt) {
     _text = pt.GetString("text");
     pt.TryGetBool("type_kill", &_destroyAfterTyped);
@@ -218,11 +186,13 @@ void TypingEnemyEntity::LoadDerived(serial::Ptree pt) {
     pt.TryGetBool("flow_polarity", &_flowPolarity);
     _flowSectionId = -1;
     pt.TryGetInt("flow_section_id", &_flowSectionId);
-    _autoStartFollowingWaypoints = false;
-    pt.TryGetBool("waypoint_auto_start", &_autoStartFollowingWaypoints);
-    _loopWaypoints = false;
-    pt.TryGetBool("loop_waypoints", &_loopWaypoints);
-    serial::LoadVectorFromChildNode(pt, "waypoints", _waypoints);
+
+    bool hasWaypointFollower = serial::LoadFromChildOf(pt, "waypoint_follower", _waypointFollower);
+    if (!hasWaypointFollower) {
+        // backward compat
+        _waypointFollower.Load(pt);
+    }
+    
     serial::Ptree actionsPt = pt.GetChild("hit_actions");
     int numChildren;
     serial::NameTreePair* children = actionsPt.GetChildren(&numChildren);
@@ -241,19 +211,14 @@ void TypingEnemyEntity::SaveDerived(serial::Ptree pt) const {
     pt.PutBool("all_actions_on_hit", _hitBehavior == HitBehavior::AllActions);
     pt.PutBool("flow_polarity", _flowPolarity);
     pt.PutInt("flow_section_id", _flowSectionId);
-    pt.PutBool("waypoint_auto_start", _autoStartFollowingWaypoints);
-    pt.PutBool("loop_waypoints", _loopWaypoints);
-    serial::SaveVectorInChildNode(pt, "waypoints", "waypoint", _waypoints);
+
+    serial::SaveInNewChildOf(pt, "waypoint_follower", _waypointFollower);
+
     serial::Ptree actionsPt = pt.AddChild("hit_actions");
     for (std::string const& actionStr : _hitActionStrings) {
         serial::Ptree actionPt = actionsPt.AddChild("action");
         actionPt.PutStringValue(actionStr.c_str());
     }
-}
-
-void TypingEnemyEntity::Waypoint::ImGui(GameManager& g) {
-    ImGui::InputFloat("Time", &_t);
-    imgui_util::InputVec3("Pos", &_p);
 }
 
 ne::BaseEntity::ImGuiResult TypingEnemyEntity::ImGuiDerived(GameManager& g) {
@@ -298,27 +263,9 @@ ne::BaseEntity::ImGuiResult TypingEnemyEntity::ImGuiDerived(GameManager& g) {
         _hitActionStrings.erase(_hitActionStrings.begin() + deletedIx);
     }
 
-    ImGui::Checkbox("Waypoint Auto Start", &_autoStartFollowingWaypoints);
-    ImGui::Checkbox("Loop Waypoints", &_loopWaypoints);
-
-    if (ImGui::Button("Add Waypoint")) {
-        _waypoints.emplace_back();
-    }
-    deletedIx = -1;
-    ImGui::PushID("waypoints");
-    for (int i = 0; i < _waypoints.size(); ++i) {
-        ImGui::PushID(i);
-        _waypoints[i].ImGui(g);
-        if (ImGui::Button("Delete Waypoint")) {
-            deletedIx = i;
-        }
-        ImGui::PopID();
-    }
-    ImGui::PopID();
-    if (deletedIx >= 0) {
-        result = ImGuiResult::NeedsInit;
-        _waypoints.erase(_waypoints.begin() + deletedIx);
-    }
+    ImGui::PushID("wp");
+    _waypointFollower.ImGui();
+    ImGui::PopID();    
              
     return result;
 }

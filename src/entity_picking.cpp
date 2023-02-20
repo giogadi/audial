@@ -1,12 +1,8 @@
 #include "entity_picking.h"
 
-#include <optional>
-
 #include "renderer.h"
 
-namespace {
-
-std::optional<float> sphereRayCast(Vec3 const& rayStart, Vec3 const& normalizedRayDir, Vec3 const& spherePos, float const sphereRadius) {
+std::optional<float> SphereRayCast(Vec3 const& rayStart, Vec3 const& normalizedRayDir, Vec3 const& spherePos, float const sphereRadius) {
     // a: ||rayDir||^2 == 1
     // b: dot(2*rayDir, rayStart - spherePos)
     // c: ||rayStart - spherePos||^2 - radius^2
@@ -33,8 +29,6 @@ std::optional<float> sphereRayCast(Vec3 const& rayStart, Vec3 const& normalizedR
         return std::nullopt;
     }
 }
-
-}  // end namespace
 
 void GetPickRay(double screenX, double screenY, int windowWidth, int windowHeight, renderer::Camera const& camera,
     Vec3* rayStart, Vec3* rayDir) {
@@ -254,25 +248,6 @@ ne::Entity* PickEntity(
         }
         std::optional<float> hitDist;
         {
-            // TODO: THIS DECOMPOSITION PROBABLY DOES NOT HANDLE SHEAR
-            // Vec3 scale;
-            
-            // Vec3 xAxis = entity._transform.GetXAxis();
-            // scale._x = xAxis.Normalize();
-
-            // Vec3 yAxis = entity._transform.GetCol3(1);
-            // scale._y = yAxis.Normalize();
-
-            // Vec3 zAxis = entity._transform.GetCol3(2);
-            // scale._z = zAxis.Normalize();
-
-            // scale *= 0.5f;
-
-            // Mat3 rot(xAxis, yAxis, zAxis);
-            // Mat4 transNoScale;
-            // transNoScale.SetTopLeftMat3(rot);
-            // transNoScale.SetTranslation(pos);
-
             Vec3 scale = entity._transform.Scale();
             scale *= 0.5f;
             

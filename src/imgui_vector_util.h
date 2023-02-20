@@ -34,7 +34,7 @@ inline bool ImGuiElement<double>(double& v) {
 
 template <>
 inline bool ImGuiElement<std::string>(std::string& v) {
-    return imgui_util::InputText("", &v);
+    return imgui_util::InputText<128>("", &v);
 }
 
 template <typename T>

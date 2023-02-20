@@ -137,7 +137,6 @@ inline Vec3 operator/(Vec3 const& v, float const a) {
 }
 
 struct Mat3 {
-    // TODO: transpose this
     constexpr Mat3(float m00, float m10, float m20,
                    float m01, float m11, float m21,
                    float m02, float m12, float m22) :
@@ -321,7 +320,6 @@ inline Vec4 operator/(Vec4 const& v, float const a) {
 }
 
 struct Mat4 {
-    // TODO: transpose this
     constexpr Mat4(float m00, float m10, float m20, float m30,
                    float m01, float m11, float m21, float m31,
                    float m02, float m12, float m22, float m32,

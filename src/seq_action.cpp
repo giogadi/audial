@@ -399,7 +399,7 @@ void WaypointControlSeqAction::Execute(GameManager& g) {
         return;
     }
     TypingEnemyEntity* enemy = static_cast<TypingEnemyEntity*>(e);
-    enemy->_followingWaypoints = _followWaypoints;
+    enemy->_waypointFollower._followingWaypoints = _followWaypoints;
 }
 
 void WaypointControlSeqAction::Load(LoadInputs const& loadInputs, std::istream& input) {

@@ -37,6 +37,8 @@ add_executable(game
     # src/properties/Test.cpp
 
     src/string_ci.cpp
+
+    src/waypoint_follower.cpp
     
     #src/components/transform.cpp
     #src/components/model_instance.cpp src/components/camera.cpp src/components/light.cpp
