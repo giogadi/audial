@@ -112,9 +112,9 @@ public:
 
     BoundMeshPNU const* GetMesh(std::string const& meshName) const;
     // TODO: inline or remove some of the call depth here
-    void DrawMesh(BoundMeshPNU const* m, Mat4 const& t, Vec4 const& color);
+    renderer::ColorModelInstance& DrawMesh(BoundMeshPNU const* m, Mat4 const& t, Vec4 const& color);
     renderer::ColorModelInstance& DrawMesh();
-    void DrawCube(Mat4 const& t, Vec4 const& color);
+    renderer::ColorModelInstance& DrawCube(Mat4 const& t, Vec4 const& color);
 
     void DrawText(std::string_view str, float& screenX, float& screenY, float scale=1.f, Vec4 const& colorRgba = Vec4(1.f, 1.f, 1.f, 1.f));
 

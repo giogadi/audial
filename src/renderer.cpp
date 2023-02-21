@@ -320,16 +320,17 @@ renderer::ColorModelInstance& Scene::DrawMesh() {
     return _pInternal->_modelsToDraw.back();
 }
 
-void Scene::DrawMesh(BoundMeshPNU const* mesh, Mat4 const& t, Vec4 const& color) {
+renderer::ColorModelInstance& Scene::DrawMesh(BoundMeshPNU const* mesh, Mat4 const& t, Vec4 const& color) {
     ColorModelInstance& model = DrawMesh();
     model._transform = t;
     model._mesh = mesh;
     model._color = color;
     model._useMeshColor = false;
+    return model;
 }
 
-void Scene::DrawCube(Mat4 const& t, Vec4 const& color) {
-    DrawMesh(_pInternal->_cubeMesh, t, color);
+renderer::ColorModelInstance& Scene::DrawCube(Mat4 const& t, Vec4 const& color) {
+    return DrawMesh(_pInternal->_cubeMesh, t, color);
 }
 
 void Scene::DrawText(std::string_view str, float& screenX, float& screenY, float scale, Vec4 const& colorRgba) {

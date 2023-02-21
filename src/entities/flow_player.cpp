@@ -185,11 +185,13 @@ void FlowPlayerEntity::Draw(GameManager& g) {
     historyTrans.Scale(0.1f, 0.1f, 0.1f);
     for (Vec3 const& prevPos : _posHistory) {
         historyTrans.SetTranslation(prevPos);
-        g._scene->DrawCube(historyTrans, _currentColor);
+        renderer::ColorModelInstance& model = g._scene->DrawCube(historyTrans, _currentColor);
+        model._topLayer = true;
     }
 
     if (_model != nullptr) {
-        g._scene->DrawMesh(_model, _transform.Mat4Scale(), _currentColor);
+        renderer::ColorModelInstance& model = g._scene->DrawMesh(_model, _transform.Mat4Scale(), _currentColor);
+        model._topLayer = true;
     }
 }
 
@@ -266,6 +268,7 @@ ne::EntityManager::Iterator enemyIter = g._neEntityManager->GetIterator(ne::Enti
         float sign = (_flowPolarity != nearest->_flowPolarity) ? 1.f : -1.f;
         _vel = toEnemyDir * (sign * _launchVel);
         _dashTimer = 0.f;
+        _dashTargetId = nearest->_id;
 
         if (nearest->_flowSectionId != _currentSectionId) {
             // go through and destroy all enemies with the current section id
@@ -286,6 +289,19 @@ ne::EntityManager::Iterator enemyIter = g._neEntityManager->GetIterator(ne::Enti
         _vel._z = 0.f;
         _dashTimer = -1.f;
     } else if (_dashTimer >= 0.f) {
+        // Check if we've "passed" the dash target. If so, shorten the dash time..
+        if (ne::Entity* dashTarget = g._neEntityManager->GetEntity(_dashTargetId)) {
+            Vec3 playerPos = _transform.Pos();
+            Vec3 targetPos = dashTarget->_transform.Pos();
+            Vec3 prevOffset = targetPos - playerPos;
+            playerPos += _vel * dt;
+            Vec3 nextOffset = targetPos - playerPos;
+            float dotp = Vec3::Dot(prevOffset, nextOffset);
+            if (dotp < 0.f) {
+                _dashTimer = std::max(_dashTimer, _dashTime - 2*dt);
+            }
+        }
+
         // Still dashing. maintain velocity.
         _dashTimer += dt;
     } else {
