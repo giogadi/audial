@@ -4,8 +4,9 @@
 #include "waypoint_follower.h"
 
 struct FlowWallEntity : public ne::Entity {
-    // serialized/
+    // serialized
     WaypointFollower _wpFollower;
+    double _wpArriveTime = 4.0;
        
     virtual void Update(GameManager& g, float dt) override;
     /* virtual void Destroy(GameManager& g) {} */

@@ -148,8 +148,10 @@ bool IsSegmentCollisionFree2D(GameManager& g, Vec3 const& playerPos, Vec3 const&
     return true;
 }
 
-// Checks XZ collisions between 
-bool DoAABBsOverlap(Transform const& aabb1, Transform const& aabb2) {
+// Checks XZ collisions between
+// NOTE: penetration points from 2 to 1.
+// NOTE: penetration only has a value if this returns TRUE.
+bool DoAABBsOverlap(Transform const& aabb1, Transform const& aabb2, Vec3* penetration) {
     Vec3 const& p1 = aabb1.Pos();
     Vec3 const& p2 = aabb2.Pos();    
     Vec3 halfScale1 = 0.5f * aabb1.Scale();
@@ -158,20 +160,43 @@ bool DoAABBsOverlap(Transform const& aabb1, Transform const& aabb2) {
     Vec3 min2 = p2 - halfScale2;
     Vec3 max1 = p1 + halfScale1;
     Vec3 max2 = p2 + halfScale2;
+    // negative is overlap
+    float maxSignedDist = std::numeric_limits<float>::lowest();
+    int maxSignedDistAxis = -1;
     for (int i = 0; i < 3; ++i) {
-        if (min1(i) > max2(i) ||
-            min2(i) > max1(i)) {
+        float dist1 = min1(i) - max2(i);
+        if (dist1 > 0.f) {
             return false;
         }
+        float dist2 = min2(i) - max1(i);
+        if (dist2 > 0.f) {
+            return false;
+        }
+        float maxDist = std::max(dist1, dist2);
+        if (maxDist > maxSignedDist) {
+            maxSignedDistAxis = i;
+            maxSignedDist = maxDist;
+        }
+    }
+    if (penetration) {
+        assert(maxSignedDistAxis >= 0);
+        assert(maxSignedDist <= 0);
+        float sign = p1(maxSignedDistAxis) >= p2(maxSignedDistAxis) ? -1.f : 1.f;
+        (*penetration)(maxSignedDistAxis) = sign * maxSignedDist;
     }
     return true;
 }
 
-bool DoesPlayerOverlapAnyWallNoRotate(GameManager& g, Transform const& playerTrans) {
+// penetration is offset to move player to move out of (one) collision.
+// NOTE: penetration only populated if returns true
+bool DoesPlayerOverlapAnyWallNoRotate(GameManager& g, Transform const& playerTrans, Vec3* penetrationOut) {
+    Vec3 penetration;
     ne::EntityManager::Iterator wallIter = g._neEntityManager->GetIterator(ne::EntityType::FlowWall);
     for (; !wallIter.Finished(); wallIter.Next()) {
         Transform const& wallTrans = wallIter.GetEntity()->_transform;
-        if (DoAABBsOverlap(playerTrans, wallTrans)) {
+        bool hasOverlap = DoAABBsOverlap(playerTrans, wallTrans, &penetration);
+        if (hasOverlap) {
+            *penetrationOut = penetration;
             return true;
         }
     }
@@ -327,9 +352,20 @@ ne::EntityManager::Iterator enemyIter = g._neEntityManager->GetIterator(ne::Enti
     p += _vel * dt;
     _transform.SetTranslation(p);
 
-    // Check collisions between p and walls
-    if (DoesPlayerOverlapAnyWallNoRotate(g, _transform)) {
-        Respawn(g);
+    // Check collisions between p and walls    
+    Vec3 penetration;
+    if (DoesPlayerOverlapAnyWallNoRotate(g, _transform, &penetration)) {
+        // Respawn(g);
+        p += penetration;
+        Vec3 collNormal = penetration.GetNormalized();
+        Vec3 newVel = -_vel;
+        // reflect across coll normal
+        Vec3 tangentPart = Vec3::Dot(newVel, collNormal) * collNormal;
+        Vec3 normalPart = newVel - tangentPart;
+        newVel -= 2 * normalPart;
+
+        _transform.SetTranslation(p);
+        _vel = newVel;
     }
 
     Draw(g);

@@ -562,7 +562,7 @@
                 <waypoints/>
             </waypoint_follower>
             <hit_actions>
-                <action>change_step chord_seq 0 1 mB3-,mE4-,mG4</action>
+                <action>change_step chord_seq 0 1 mA3-,mC4,mE4-,mG4</action>
             </hit_actions>
         </TypingEnemy>
         <Base>
@@ -594,216 +594,6 @@
                 <w>1</w>
             </model_color_vec4>
         </Base>
-        <TypingEnemy>
-            <name>e1_0</name>
-            <pickable>true</pickable>
-            <transform>
-                <pos>
-                    <x>10.28125</x>
-                    <y>0</y>
-                    <z>-3.40625</z>
-                </pos>
-                <quat>
-                    <x>0</x>
-                    <y>0</y>
-                    <z>0</z>
-                    <w>1</w>
-                </quat>
-                <scale>
-                    <x>0.5</x>
-                    <y>0.5</y>
-                    <z>0.5</z>
-                </scale>
-            </transform>
-            <model_name>cube</model_name>
-            <model_color_vec4>
-                <x>1</x>
-                <y>0.558823526</y>
-                <z>0</z>
-                <w>1</w>
-            </model_color_vec4>
-            <text>x</text>
-            <type_kill>false</type_kill>
-            <all_actions_on_hit>true</all_actions_on_hit>
-            <flow_polarity>false</flow_polarity>
-            <flow_section_id>1</flow_section_id>
-            <waypoint_follower>
-                <waypoint_auto_start>false</waypoint_auto_start>
-                <loop_waypoints>false</loop_waypoints>
-                <waypoints/>
-            </waypoint_follower>
-            <hit_actions>
-                <action>change_step chord_seq 0 1 mA3-,mC4,mE4-,mG4</action>
-            </hit_actions>
-        </TypingEnemy>
-        <TypingEnemy>
-            <name>e1_1</name>
-            <pickable>true</pickable>
-            <transform>
-                <pos>
-                    <x>12.9375</x>
-                    <y>0</y>
-                    <z>-6</z>
-                </pos>
-                <quat>
-                    <x>0</x>
-                    <y>0</y>
-                    <z>0</z>
-                    <w>1</w>
-                </quat>
-                <scale>
-                    <x>0.5</x>
-                    <y>0.5</y>
-                    <z>0.5</z>
-                </scale>
-            </transform>
-            <model_name>cube</model_name>
-            <model_color_vec4>
-                <x>1</x>
-                <y>0.558823526</y>
-                <z>0</z>
-                <w>1</w>
-            </model_color_vec4>
-            <text>s</text>
-            <type_kill>false</type_kill>
-            <all_actions_on_hit>true</all_actions_on_hit>
-            <flow_polarity>false</flow_polarity>
-            <flow_section_id>1</flow_section_id>
-            <waypoint_follower>
-                <waypoint_auto_start>false</waypoint_auto_start>
-                <loop_waypoints>false</loop_waypoints>
-                <waypoints/>
-            </waypoint_follower>
-            <hit_actions>
-                <action>change_step chord_seq 0 1 mA3-,mC4,mE4-,mG4</action>
-            </hit_actions>
-        </TypingEnemy>
-        <TypingEnemy>
-            <name>e1_2</name>
-            <pickable>true</pickable>
-            <transform>
-                <pos>
-                    <x>10.640625</x>
-                    <y>0</y>
-                    <z>-8.78125</z>
-                </pos>
-                <quat>
-                    <x>0</x>
-                    <y>0</y>
-                    <z>0</z>
-                    <w>1</w>
-                </quat>
-                <scale>
-                    <x>0.5</x>
-                    <y>0.5</y>
-                    <z>0.5</z>
-                </scale>
-            </transform>
-            <model_name>cube</model_name>
-            <model_color_vec4>
-                <x>1</x>
-                <y>0.558823526</y>
-                <z>0</z>
-                <w>1</w>
-            </model_color_vec4>
-            <text>o</text>
-            <type_kill>false</type_kill>
-            <all_actions_on_hit>true</all_actions_on_hit>
-            <flow_polarity>false</flow_polarity>
-            <flow_section_id>1</flow_section_id>
-            <waypoint_follower>
-                <waypoint_auto_start>false</waypoint_auto_start>
-                <loop_waypoints>false</loop_waypoints>
-                <waypoints/>
-            </waypoint_follower>
-            <hit_actions>
-                <action>change_step chord_seq 0 1 mA3-,mC4,mE4-,mG4</action>
-            </hit_actions>
-        </TypingEnemy>
-        <TypingEnemy>
-            <name>e1_3</name>
-            <pickable>true</pickable>
-            <transform>
-                <pos>
-                    <x>13.953125</x>
-                    <y>0</y>
-                    <z>-10.265625</z>
-                </pos>
-                <quat>
-                    <x>0</x>
-                    <y>0</y>
-                    <z>0</z>
-                    <w>1</w>
-                </quat>
-                <scale>
-                    <x>0.5</x>
-                    <y>0.5</y>
-                    <z>0.5</z>
-                </scale>
-            </transform>
-            <model_name>cube</model_name>
-            <model_color_vec4>
-                <x>1</x>
-                <y>0.558823526</y>
-                <z>0</z>
-                <w>1</w>
-            </model_color_vec4>
-            <text>w</text>
-            <type_kill>false</type_kill>
-            <all_actions_on_hit>true</all_actions_on_hit>
-            <flow_polarity>false</flow_polarity>
-            <flow_section_id>1</flow_section_id>
-            <waypoint_follower>
-                <waypoint_auto_start>false</waypoint_auto_start>
-                <loop_waypoints>false</loop_waypoints>
-                <waypoints/>
-            </waypoint_follower>
-            <hit_actions>
-                <action>change_step chord_seq 0 1 mA3-,mC4,mE4-,mG4</action>
-            </hit_actions>
-        </TypingEnemy>
-        <TypingEnemy>
-            <name>e1_4</name>
-            <pickable>true</pickable>
-            <transform>
-                <pos>
-                    <x>16.609375</x>
-                    <y>0</y>
-                    <z>-5.85937548</z>
-                </pos>
-                <quat>
-                    <x>0</x>
-                    <y>0</y>
-                    <z>0</z>
-                    <w>1</w>
-                </quat>
-                <scale>
-                    <x>0.100000001</x>
-                    <y>0.100000001</y>
-                    <z>0.100000001</z>
-                </scale>
-            </transform>
-            <model_name>cross</model_name>
-            <model_color_vec4>
-                <x>1</x>
-                <y>0.558823526</y>
-                <z>0</z>
-                <w>1</w>
-            </model_color_vec4>
-            <text>p</text>
-            <type_kill>false</type_kill>
-            <all_actions_on_hit>true</all_actions_on_hit>
-            <flow_polarity>true</flow_polarity>
-            <flow_section_id>1</flow_section_id>
-            <waypoint_follower>
-                <waypoint_auto_start>false</waypoint_auto_start>
-                <loop_waypoints>false</loop_waypoints>
-                <waypoints/>
-            </waypoint_follower>
-            <hit_actions>
-                <action>change_step chord_seq 0 1 mA3-,mC4,mE4-,mG4</action>
-            </hit_actions>
-        </TypingEnemy>
         <TypingEnemy>
             <name>e1_5</name>
             <pickable>true</pickable>
@@ -845,48 +635,6 @@
             <hit_actions>
                 <action>change_step chord_seq 0 1 mA3-,mC4,mE4-,mG4</action>
                 <action>onetime waypoint moving_platform 1</action>
-            </hit_actions>
-        </TypingEnemy>
-        <TypingEnemy>
-            <name>e1_3 (copy)</name>
-            <pickable>true</pickable>
-            <transform>
-                <pos>
-                    <x>18.234375</x>
-                    <y>0</y>
-                    <z>-10.171875</z>
-                </pos>
-                <quat>
-                    <x>0</x>
-                    <y>0</y>
-                    <z>0</z>
-                    <w>1</w>
-                </quat>
-                <scale>
-                    <x>0.5</x>
-                    <y>0.5</y>
-                    <z>0.5</z>
-                </scale>
-            </transform>
-            <model_name>cube</model_name>
-            <model_color_vec4>
-                <x>1</x>
-                <y>0.558823526</y>
-                <z>0</z>
-                <w>1</w>
-            </model_color_vec4>
-            <text>u</text>
-            <type_kill>false</type_kill>
-            <all_actions_on_hit>true</all_actions_on_hit>
-            <flow_polarity>false</flow_polarity>
-            <flow_section_id>1</flow_section_id>
-            <waypoint_follower>
-                <waypoint_auto_start>false</waypoint_auto_start>
-                <loop_waypoints>false</loop_waypoints>
-                <waypoints/>
-            </waypoint_follower>
-            <hit_actions>
-                <action>change_step chord_seq 0 1 mA3-,mC4,mE4-,mG4</action>
             </hit_actions>
         </TypingEnemy>
         <Base>
@@ -1002,90 +750,6 @@
                 <action>change_step chord_seq 0 1 mA3-,mC4,mE4-,mG4</action>
             </hit_actions>
         </TypingEnemy>
-        <TypingEnemy>
-            <name>e1_3 (copy)</name>
-            <pickable>true</pickable>
-            <transform>
-                <pos>
-                    <x>15.65625</x>
-                    <y>0</y>
-                    <z>-8.328125</z>
-                </pos>
-                <quat>
-                    <x>0</x>
-                    <y>0</y>
-                    <z>0</z>
-                    <w>1</w>
-                </quat>
-                <scale>
-                    <x>0.5</x>
-                    <y>0.5</y>
-                    <z>0.5</z>
-                </scale>
-            </transform>
-            <model_name>cube</model_name>
-            <model_color_vec4>
-                <x>1</x>
-                <y>0.558823526</y>
-                <z>0</z>
-                <w>1</w>
-            </model_color_vec4>
-            <text>v</text>
-            <type_kill>false</type_kill>
-            <all_actions_on_hit>true</all_actions_on_hit>
-            <flow_polarity>false</flow_polarity>
-            <flow_section_id>1</flow_section_id>
-            <waypoint_follower>
-                <waypoint_auto_start>false</waypoint_auto_start>
-                <loop_waypoints>false</loop_waypoints>
-                <waypoints/>
-            </waypoint_follower>
-            <hit_actions>
-                <action>change_step chord_seq 0 1 mG3,mB3,mD4,mG4-</action>
-            </hit_actions>
-        </TypingEnemy>
-        <TypingEnemy>
-            <name>e1_3 (copy)</name>
-            <pickable>true</pickable>
-            <transform>
-                <pos>
-                    <x>13.171875</x>
-                    <y>0</y>
-                    <z>-8.5</z>
-                </pos>
-                <quat>
-                    <x>0</x>
-                    <y>0</y>
-                    <z>0</z>
-                    <w>1</w>
-                </quat>
-                <scale>
-                    <x>0.5</x>
-                    <y>0.5</y>
-                    <z>0.5</z>
-                </scale>
-            </transform>
-            <model_name>cube</model_name>
-            <model_color_vec4>
-                <x>1</x>
-                <y>0.558823526</y>
-                <z>0</z>
-                <w>1</w>
-            </model_color_vec4>
-            <text>y</text>
-            <type_kill>false</type_kill>
-            <all_actions_on_hit>true</all_actions_on_hit>
-            <flow_polarity>false</flow_polarity>
-            <flow_section_id>1</flow_section_id>
-            <waypoint_follower>
-                <waypoint_auto_start>false</waypoint_auto_start>
-                <loop_waypoints>false</loop_waypoints>
-                <waypoints/>
-            </waypoint_follower>
-            <hit_actions>
-                <action>change_step chord_seq 0 1 mA3-,mC4,mE4-,mG4</action>
-            </hit_actions>
-        </TypingEnemy>
         <Base>
             <name>new_entity</name>
             <pickable>true</pickable>
@@ -1115,48 +779,6 @@
                 <w>1</w>
             </model_color_vec4>
         </Base>
-        <TypingEnemy>
-            <name>e1_1 (copy)</name>
-            <pickable>true</pickable>
-            <transform>
-                <pos>
-                    <x>14.765625</x>
-                    <y>0</y>
-                    <z>-2.28125</z>
-                </pos>
-                <quat>
-                    <x>0</x>
-                    <y>0</y>
-                    <z>0</z>
-                    <w>1</w>
-                </quat>
-                <scale>
-                    <x>0.5</x>
-                    <y>0.5</y>
-                    <z>0.5</z>
-                </scale>
-            </transform>
-            <model_name>cube</model_name>
-            <model_color_vec4>
-                <x>1</x>
-                <y>0.558823526</y>
-                <z>0</z>
-                <w>1</w>
-            </model_color_vec4>
-            <text>d</text>
-            <type_kill>false</type_kill>
-            <all_actions_on_hit>true</all_actions_on_hit>
-            <flow_polarity>false</flow_polarity>
-            <flow_section_id>1</flow_section_id>
-            <waypoint_follower>
-                <waypoint_auto_start>false</waypoint_auto_start>
-                <loop_waypoints>false</loop_waypoints>
-                <waypoints/>
-            </waypoint_follower>
-            <hit_actions>
-                <action>change_step chord_seq 0 1 mA3-,mC4,mE4-,mG4</action>
-            </hit_actions>
-        </TypingEnemy>
         <TypingEnemy>
             <name>moving_platform</name>
             <pickable>true</pickable>
@@ -1246,24 +868,7 @@
             </model_color_vec4>
             <waypoint_auto_start>true</waypoint_auto_start>
             <loop_waypoints>true</loop_waypoints>
-            <waypoints>
-                <waypoint>
-                    <t>1</t>
-                    <p>
-                        <x>-1.54700005</x>
-                        <y>0</y>
-                        <z>-4</z>
-                    </p>
-                </waypoint>
-                <waypoint>
-                    <t>1</t>
-                    <p>
-                        <x>-1.54700005</x>
-                        <y>0</y>
-                        <z>3</z>
-                    </p>
-                </waypoint>
-            </waypoints>
+            <waypoints/>
         </FlowWall>
         <FlowWall>
             <name>wall0 (copy)</name>
@@ -1353,7 +958,7 @@
                 <waypoints/>
             </waypoint_follower>
             <hit_actions>
-                <action>change_step chord_seq 0 1 mB3-,mE4-,mG4</action>
+                <action>change_step chord_seq 0 1 mA3-,mB3,mE4-,F4</action>
                 <action>onetime camera offset:Center target:player min_x:15.187 min_z:-5.598 max_x:28.588 max_z:-5.598</action>
             </hit_actions>
         </TypingEnemy>
@@ -1438,7 +1043,231 @@
                 <waypoints/>
             </waypoint_follower>
             <hit_actions>
-                <action>change_step chord_seq 0 1 mB3-,mE4-,mG4</action>
+                <action>change_step chord_seq 0 1 mA3-,mC4,mE4-,mG4</action>
+            </hit_actions>
+        </TypingEnemy>
+        <TypingEnemy>
+            <name>e3 (copy) (copy)</name>
+            <pickable>true</pickable>
+            <transform>
+                <pos>
+                    <x>9.296875</x>
+                    <y>0</y>
+                    <z>-1.140625</z>
+                </pos>
+                <quat>
+                    <x>0</x>
+                    <y>0</y>
+                    <z>0</z>
+                    <w>1</w>
+                </quat>
+                <scale>
+                    <x>0.5</x>
+                    <y>0.5</y>
+                    <z>0.5</z>
+                </scale>
+            </transform>
+            <model_name>cube</model_name>
+            <model_color_vec4>
+                <x>1</x>
+                <y>0</y>
+                <z>0</z>
+                <w>1</w>
+            </model_color_vec4>
+            <text>g</text>
+            <type_kill>false</type_kill>
+            <all_actions_on_hit>true</all_actions_on_hit>
+            <flow_polarity>false</flow_polarity>
+            <flow_section_id>0</flow_section_id>
+            <waypoint_follower>
+                <waypoint_auto_start>false</waypoint_auto_start>
+                <loop_waypoints>false</loop_waypoints>
+                <waypoints/>
+            </waypoint_follower>
+            <hit_actions>
+                <action>change_step chord_seq 0 1 mA3-,mB3,mE4-,F4</action>
+            </hit_actions>
+        </TypingEnemy>
+        <FlowWall>
+            <name>wall0 (copy) (copy)</name>
+            <pickable>true</pickable>
+            <transform>
+                <pos>
+                    <x>7.9375</x>
+                    <y>0</y>
+                    <z>-1.11718786</z>
+                </pos>
+                <quat>
+                    <x>0</x>
+                    <y>0</y>
+                    <z>0</z>
+                    <w>1</w>
+                </quat>
+                <scale>
+                    <x>0.5</x>
+                    <y>1</y>
+                    <z>1</z>
+                </scale>
+            </transform>
+            <model_name>cube</model_name>
+            <model_color_vec4>
+                <x>0.426470578</x>
+                <y>0.414665163</y>
+                <z>0.393021911</z>
+                <w>1</w>
+            </model_color_vec4>
+            <waypoint_auto_start>true</waypoint_auto_start>
+            <loop_waypoints>true</loop_waypoints>
+            <waypoints>
+                <waypoint>
+                    <t>1</t>
+                    <p>
+                        <x>7.9380002</x>
+                        <y>0</y>
+                        <z>1</z>
+                    </p>
+                </waypoint>
+                <waypoint>
+                    <t>1</t>
+                    <p>
+                        <x>7.9380002</x>
+                        <y>0</y>
+                        <z>-3</z>
+                    </p>
+                </waypoint>
+            </waypoints>
+        </FlowWall>
+        <FlowWall>
+            <name>wall0 (copy) (copy)</name>
+            <pickable>true</pickable>
+            <transform>
+                <pos>
+                    <x>11.15625</x>
+                    <y>0</y>
+                    <z>-1.0703125</z>
+                </pos>
+                <quat>
+                    <x>0</x>
+                    <y>0</y>
+                    <z>0</z>
+                    <w>1</w>
+                </quat>
+                <scale>
+                    <x>1</x>
+                    <y>1</y>
+                    <z>3</z>
+                </scale>
+            </transform>
+            <model_name>cube</model_name>
+            <model_color_vec4>
+                <x>0.426470578</x>
+                <y>0.414665163</y>
+                <z>0.393021911</z>
+                <w>1</w>
+            </model_color_vec4>
+            <waypoint_auto_start>true</waypoint_auto_start>
+            <loop_waypoints>true</loop_waypoints>
+            <waypoints>
+                <waypoint>
+                    <t>1</t>
+                    <p>
+                        <x>11.1560001</x>
+                        <y>0</y>
+                        <z>3</z>
+                    </p>
+                </waypoint>
+                <waypoint>
+                    <t>1</t>
+                    <p>
+                        <x>11.1560001</x>
+                        <y>0</y>
+                        <z>-4</z>
+                    </p>
+                </waypoint>
+            </waypoints>
+        </FlowWall>
+        <TypingEnemy>
+            <name>e3 (copy) (copy)</name>
+            <pickable>true</pickable>
+            <transform>
+                <pos>
+                    <x>13.3125</x>
+                    <y>0</y>
+                    <z>-1.28125</z>
+                </pos>
+                <quat>
+                    <x>0</x>
+                    <y>0</y>
+                    <z>0</z>
+                    <w>1</w>
+                </quat>
+                <scale>
+                    <x>0.5</x>
+                    <y>0.5</y>
+                    <z>0.5</z>
+                </scale>
+            </transform>
+            <model_name>cube</model_name>
+            <model_color_vec4>
+                <x>1</x>
+                <y>0</y>
+                <z>0</z>
+                <w>1</w>
+            </model_color_vec4>
+            <text>v</text>
+            <type_kill>false</type_kill>
+            <all_actions_on_hit>true</all_actions_on_hit>
+            <flow_polarity>false</flow_polarity>
+            <flow_section_id>0</flow_section_id>
+            <waypoint_follower>
+                <waypoint_auto_start>false</waypoint_auto_start>
+                <loop_waypoints>false</loop_waypoints>
+                <waypoints/>
+            </waypoint_follower>
+            <hit_actions>
+                <action>change_step chord_seq 0 1 mG3-,mB3-,mD4-,F4</action>
+            </hit_actions>
+        </TypingEnemy>
+        <TypingEnemy>
+            <name>e3 (copy) (copy) (copy)</name>
+            <pickable>true</pickable>
+            <transform>
+                <pos>
+                    <x>15.5</x>
+                    <y>0</y>
+                    <z>-1.234375</z>
+                </pos>
+                <quat>
+                    <x>0</x>
+                    <y>0</y>
+                    <z>0</z>
+                    <w>1</w>
+                </quat>
+                <scale>
+                    <x>0.5</x>
+                    <y>0.5</y>
+                    <z>0.5</z>
+                </scale>
+            </transform>
+            <model_name>cube</model_name>
+            <model_color_vec4>
+                <x>1</x>
+                <y>0</y>
+                <z>0</z>
+                <w>1</w>
+            </model_color_vec4>
+            <text>k</text>
+            <type_kill>false</type_kill>
+            <all_actions_on_hit>true</all_actions_on_hit>
+            <flow_polarity>false</flow_polarity>
+            <flow_section_id>0</flow_section_id>
+            <waypoint_follower>
+                <waypoint_auto_start>false</waypoint_auto_start>
+                <loop_waypoints>false</loop_waypoints>
+                <waypoints/>
+            </waypoint_follower>
+            <hit_actions>
+                <action>change_step chord_seq 0 1 mG3-,mB3-,mC4,E4-</action>
             </hit_actions>
         </TypingEnemy>
     </new_entities>

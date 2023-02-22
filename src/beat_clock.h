@@ -38,6 +38,10 @@ public:
     static double GetNextDownBeatTime(double beatTime) {
         return std::ceil(beatTime);
     }
+    static double GetBeatFraction(double beatTime) {
+        double unused;
+        return std::modf(beatTime, &unused);
+    }
     // Denom == 1: next quarter note (beat)
     // Denom == 0.5: next 8th note. etc
     static double GetNextBeatDenomTime(double beatTime, double denom) {
