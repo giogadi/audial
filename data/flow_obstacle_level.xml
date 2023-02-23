@@ -818,6 +818,8 @@
                 <waypoints>
                     <waypoint>
                         <t>5</t>
+                        <wait_time>0.75</wait_time>
+                        <move_time>0.25</move_time>
                         <p>
                             <x>26</x>
                             <y>0</y>
@@ -826,6 +828,8 @@
                     </waypoint>
                     <waypoint>
                         <t>5</t>
+                        <wait_time>0.75</wait_time>
+                        <move_time>0.25</move_time>
                         <p>
                             <x>36.5309982</x>
                             <y>0</y>
@@ -903,6 +907,8 @@
             <waypoints>
                 <waypoint>
                     <t>1</t>
+                    <wait_time>0.75</wait_time>
+                    <move_time>0.25</move_time>
                     <p>
                         <x>4.0619998</x>
                         <y>0</y>
@@ -911,6 +917,8 @@
                 </waypoint>
                 <waypoint>
                     <t>1</t>
+                    <wait_time>0.75</wait_time>
+                    <move_time>0.25</move_time>
                     <p>
                         <x>4.0619998</x>
                         <y>0</y>
@@ -958,8 +966,8 @@
                 <waypoints/>
             </waypoint_follower>
             <hit_actions>
-                <action>change_step chord_seq 0 1 mA3-,mB3,mE4-,F4</action>
-                <action>onetime camera offset:Center target:player min_x:15.187 min_z:-5.598 max_x:28.588 max_z:-5.598</action>
+                <action>change_step chord_seq 0 1 mA3-,mB3,mE4-,mF4</action>
+                <action>onetime camera offset:Center target:player min_x:15.187 min_z:0 max_x:28.588 max_z:0</action>
             </hit_actions>
         </TypingEnemy>
         <TypingEnemy>
@@ -1085,7 +1093,7 @@
                 <waypoints/>
             </waypoint_follower>
             <hit_actions>
-                <action>change_step chord_seq 0 1 mA3-,mB3,mE4-,F4</action>
+                <action>change_step chord_seq 0 1 mA3-,mB3,mE4-,mF4</action>
             </hit_actions>
         </TypingEnemy>
         <FlowWall>
@@ -1121,6 +1129,8 @@
             <waypoints>
                 <waypoint>
                     <t>1</t>
+                    <wait_time>0.75</wait_time>
+                    <move_time>0.25</move_time>
                     <p>
                         <x>7.9380002</x>
                         <y>0</y>
@@ -1129,6 +1139,8 @@
                 </waypoint>
                 <waypoint>
                     <t>1</t>
+                    <wait_time>0.75</wait_time>
+                    <move_time>0.25</move_time>
                     <p>
                         <x>7.9380002</x>
                         <y>0</y>
@@ -1170,6 +1182,8 @@
             <waypoints>
                 <waypoint>
                     <t>1</t>
+                    <wait_time>0.75</wait_time>
+                    <move_time>0.25</move_time>
                     <p>
                         <x>11.1560001</x>
                         <y>0</y>
@@ -1178,6 +1192,8 @@
                 </waypoint>
                 <waypoint>
                     <t>1</t>
+                    <wait_time>0.75</wait_time>
+                    <move_time>0.25</move_time>
                     <p>
                         <x>11.1560001</x>
                         <y>0</y>
@@ -1225,7 +1241,7 @@
                 <waypoints/>
             </waypoint_follower>
             <hit_actions>
-                <action>change_step chord_seq 0 1 mG3-,mB3-,mD4-,F4</action>
+                <action>change_step chord_seq 0 1 mG3-,mB3-,mD4-,mF4</action>
             </hit_actions>
         </TypingEnemy>
         <TypingEnemy>
@@ -1267,7 +1283,7 @@
                 <waypoints/>
             </waypoint_follower>
             <hit_actions>
-                <action>change_step chord_seq 0 1 mG3-,mB3-,mC4,E4-</action>
+                <action>change_step chord_seq 0 1 mG3-,mB3-,mC4,mE4-</action>
             </hit_actions>
         </TypingEnemy>
     </new_entities>

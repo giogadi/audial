@@ -52,14 +52,14 @@ void CameraControlSeqAction::Load(LoadInputs const& loadInputs, std::istream& in
         } else if (key == "target") {
             _targetEntityName = value;
             _setTarget = true;
-        } else if (key == "min_x") {
-            _minX = std::stof(value);
+        } else if (key == "min_x") {            
+            _minX = string_util::MaybeStof(value);
         } else if (key == "max_x") {
-            _maxX = std::stof(value);
+            _maxX = string_util::MaybeStof(value);
         } else if (key == "min_z") {
-            _minZ = std::stof(value);
+            _minZ = string_util::MaybeStof(value);
         } else if (key == "max_z") {
-            _maxZ = std::stof(value);
+            _maxZ = string_util::MaybeStof(value);
         } else {
             printf("CameraControlSeqAction::Load: Unrecognized key \"%s\"\n", key.c_str());
         }

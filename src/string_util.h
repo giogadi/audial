@@ -3,6 +3,7 @@
 #include <string>
 #include <charconv>
 #include <string_view>
+#include <optional>
 
 #include "rng.h"
 
@@ -29,23 +30,33 @@ inline int StoiOrDie(std::string_view const str) {
     assert(success);
     return x;
 }
-inline bool MaybeStof(std::string_view const str, float& output) {
-    // WTF, doesn't work yet???
-    // float x;
-    // auto [ptr, ec] = std::from_chars(str.data(), str.data()+str.length(), x);
-    // assert(ec == std::errc());
-    // return x;
-    std::string ownedStr(str);
+inline bool MaybeStof(std::string const& str, float& output) {    
     try {
-        output = std::stof(ownedStr);
+        output = std::stof(str);
         return true;
     } catch (std::exception& e) {
         return false;
     }
 }
+inline bool MaybeStof(std::string_view const str, float& output) {
+    // WTF, doesn't work yet with string_view???
+    // float x;
+    // auto [ptr, ec] = std::from_chars(str.data(), str.data()+str.length(), x);
+    // assert(ec == std::errc());
+    // return x;
+    return MaybeStof(std::string(str), output);
+}
+inline std::optional<float> MaybeStof(std::string const& str) {
+    float x;
+    if (MaybeStof(str, x)) {
+        return x;
+    } else {
+        return std::nullopt;
+    }
+}
 inline float StofOrDie(std::string_view const str) {
     float x;
-    bool success = MaybeStof(str, x);
+    bool success = MaybeStof(std::string(str), x);
     assert(success);
     return x;
 }

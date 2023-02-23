@@ -71,7 +71,7 @@ void TypingEnemyEntity::Update(GameManager& g, float dt) {
 
     if (!g._editMode) {
         Vec3 newPosFromWp = _transform.Pos();
-        bool followsWaypoint = _waypointFollower.Update(dt, &newPosFromWp);
+        bool followsWaypoint = _waypointFollower.Update(g, dt, &newPosFromWp);
         if (followsWaypoint) {
             _transform.SetPos(newPosFromWp);
         } else {
