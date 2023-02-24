@@ -208,7 +208,13 @@ void RemoveEntitySeqAction::Execute(GameManager& g) {
 void ChangeStepSequencerSeqAction::Execute(GameManager& g) {
     StepSequencerEntity* seq = static_cast<StepSequencerEntity*>(g._neEntityManager->GetEntity(_seqId));
     if (seq) {
-        StepSequencerEntity::StepSaveType saveType = _temporary ? StepSequencerEntity::StepSaveType::Temporary : StepSequencerEntity::StepSaveType::Permanent;
+        StepSequencerEntity::StepSaveType saveType;
+        if (g._editMode) {
+            saveType = StepSequencerEntity::StepSaveType::Temporary;
+        } else {
+            saveType = _temporary ? StepSequencerEntity::StepSaveType::Temporary : StepSequencerEntity::StepSaveType::Permanent;
+        }        
+        
         if (_velOnly) {
             seq->SetNextSeqStepVelocity(g, _velocity, saveType);
         } else {
