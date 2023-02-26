@@ -13,6 +13,18 @@ class BoundMeshPNU;
 
 namespace renderer {
 
+struct DirLight {
+    void Set(Vec3 const& dir, Vec3 const& ambient, Vec3 const& diffuse) {
+        _dir = dir;
+        _ambient = ambient;
+        _diffuse = diffuse;
+    }
+    
+    Vec3 _dir;
+    Vec3 _ambient;
+    Vec3 _diffuse;
+};
+
 class PointLight {
 public:
     void Set(Vec3 const& p, Vec3 const& ambient, Vec3 const& diffuse) {

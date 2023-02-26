@@ -106,6 +106,8 @@ public:
         _modelsToDraw.reserve(100);
     }
     bool Init(GameManager& g);
+
+    DirLight _dirLight;
     TVersionIdList<PointLight> _pointLights;
     TVersionIdList<ColorModelInstance> _colorModelInstances;
     TVersionIdList<TexturedModelInstance> _texturedModelInstances;
@@ -201,6 +203,8 @@ std::unique_ptr<BoundMeshPNU> MakeWaterMesh() {
 
 bool SceneInternal::Init(GameManager& g) {
     _g = &g;
+
+    _dirLight.Set(/*dir=*/Vec3(0.f, -1.f, 0.f), /*amb=*/Vec3(), /*dif=*/Vec3());    
 
     // More OpenGL stuff
     glEnable(GL_CULL_FACE);
@@ -421,23 +425,52 @@ Mat4 Scene::GetViewProjTransform() const {
     return viewProjTransform;
 }
 
-void Scene::Draw(int windowWidth, int windowHeight, float timeInSecs) {    
-    assert(_pInternal->_pointLights.GetCount() == 1);
-    PointLight const& light = *(_pInternal->_pointLights.GetItemAtIndex(0));
+namespace {
+void SetLightUniforms(SceneInternal& sceneInternal, Shader const& shader) {
+    shader.SetVec3("uDirLight._dir", sceneInternal._dirLight._dir);
+    shader.SetVec3("uDirLight._ambient", sceneInternal._dirLight._ambient);
+    shader.SetVec3("uDirLight._diffuse", sceneInternal._dirLight._diffuse);
+    
+    // TODO OMG DON'T DO THIS WITH STRINGS    
+    static char uniPos[] = "uPointLights[i]._pos";
+    static char uniAmb[] = "uPointLights[i]._ambient";
+    static char uniDif[] = "uPointLights[i]._diffuse";
+    int const kMaxNumLights = 10;
+    if (sceneInternal._pointLights.GetCount() >= kMaxNumLights) {
+        printf("RENDERER ERROR: TOO MANY POINT LIGHTS (%d)\n", sceneInternal._pointLights.GetCount());
+    }
+    for (int i = 0; i < kMaxNumLights; ++i) {
+        uniPos[13] = '0' + i;
+        uniAmb[13] = '0' + i;
+        uniDif[13] = '0' + i;
+        if (i >= sceneInternal._pointLights.GetCount()) {
+            shader.SetVec3(uniPos, Vec3(0.f, 0.f, 0.f));
+            shader.SetVec3(uniAmb, Vec3(0.f, 0.f, 0.f));
+            shader.SetVec3(uniDif, Vec3(0.f, 0.f, 0.f));
+        } else {
+            PointLight const& pl = *sceneInternal._pointLights.GetItemAtIndex(i);
+            shader.SetVec3(uniPos, pl._p);
+            shader.SetVec3(uniAmb, pl._ambient);
+            shader.SetVec3(uniDif, pl._diffuse);
+        }
+    }
+}
+}
 
-    // float aspectRatio = (float)windowWidth / windowHeight;
-    // Mat4 viewProjTransform;
-    // switch (_camera._projectionType) {
-    //     case Camera::ProjectionType::Perspective:
-    //         viewProjTransform = Mat4::Perspective(
-    //             _camera._fovyRad, aspectRatio, /*near=*/_camera._zNear, /*far=*/_camera._zFar);
-    //         break;
-    //     case Camera::ProjectionType::Orthographic:
-    //         viewProjTransform = Mat4::Ortho(/*width=*/_camera._width, aspectRatio, _camera._zNear, _camera._zFar);
-    //         break;
-    // }
-    // Mat4 camMatrix = _camera.GetViewMatrix();
-    // viewProjTransform = viewProjTransform * camMatrix;
+void Scene::Draw(int windowWidth, int windowHeight, float timeInSecs) {
+    // TODO migrate the other shaders to multiple lights UGH.
+    // assert(_pInternal->_pointLights.GetCount() == 1);
+    // PointLight const& light = *(_pInternal->_pointLights.GetItemAtIndex(0));
+
+    // TODO LOAD THE DIR LIGHT IN FROM DATA
+    {
+        DirLight& dirLight = _pInternal->_dirLight;
+        // make it point 45-degrees up from straight-down, up toward -z
+        Vec3 dir(0.f, -1.f, -1.f);
+        dir.Normalize();
+        dirLight.Set(dir, Vec3(0.2f, 0.2f, 0.2f), Vec3(1.f, 1.f, 1.f));
+    }
+
     Mat4 viewProjTransform = GetViewProjTransform();
 
     auto& topLayerModels = _pInternal->_topLayerColorModels;
@@ -446,6 +479,7 @@ void Scene::Draw(int windowWidth, int windowHeight, float timeInSecs) {
     // WATER
 #if 0
     {
+        assert(false);
         Mat4 const transMat = Mat4::Identity();
         Mat3 modelTransInv;
         assert(transMat.GetMat3().TransposeInverse(modelTransInv));
@@ -470,9 +504,7 @@ void Scene::Draw(int windowWidth, int windowHeight, float timeInSecs) {
     {
         Shader& shader = _pInternal->_colorShader;
         shader.Use();
-        shader.SetVec3("uLightPos", light._p);
-        shader.SetVec3("uAmbient", light._ambient);
-        shader.SetVec3("uDiffuse", light._diffuse);
+        SetLightUniforms(*_pInternal, _pInternal->_colorShader);
         for (ColorModelInstance const& m : _pInternal->_modelsToDraw) {
             if (!m._visible) {
                 continue;
@@ -518,9 +550,7 @@ void Scene::Draw(int windowWidth, int windowHeight, float timeInSecs) {
     {
         Shader& shader = _pInternal->_colorShader;
         shader.Use();
-        shader.SetVec3("uLightPos", light._p);
-        shader.SetVec3("uAmbient", light._ambient);
-        shader.SetVec3("uDiffuse", light._diffuse);
+        SetLightUniforms(*_pInternal, _pInternal->_colorShader);
         for (int modelIx = 0; modelIx < _pInternal->_colorModelInstances.GetCount(); ++modelIx) {
             ColorModelInstance const* m = _pInternal->_colorModelInstances.GetItemAtIndex(modelIx);
             if (!m->_visible) {
@@ -556,9 +586,12 @@ void Scene::Draw(int windowWidth, int windowHeight, float timeInSecs) {
     }    
 
     // Textured models
-    {
+#if 0    
+    {        
         Shader& shader = _pInternal->_textureShader;
         shader.Use();
+        // TODO update to use new multi lights!!!
+        assert(false);
         shader.SetVec3("uLightPos", light._p);
         shader.SetVec3("uAmbient", light._ambient);
         shader.SetVec3("uDiffuse", light._diffuse);
@@ -577,6 +610,7 @@ void Scene::Draw(int windowWidth, int windowHeight, float timeInSecs) {
             glDrawElements(GL_TRIANGLES, /*count=*/m->_mesh->_numIndices, GL_UNSIGNED_INT, /*start_offset=*/0);
         }
     }
+#endif
 
     // TEXT RENDERING
     {
@@ -627,9 +661,7 @@ void Scene::Draw(int windowWidth, int windowHeight, float timeInSecs) {
     {
         Shader& shader = _pInternal->_colorShader;
         shader.Use();
-        shader.SetVec3("uLightPos", light._p);
-        shader.SetVec3("uAmbient", light._ambient);
-        shader.SetVec3("uDiffuse", light._diffuse);
+        SetLightUniforms(*_pInternal, _pInternal->_colorShader);
         for (ColorModelInstance const* m : _pInternal->_topLayerColorModels) {
             if (!m->_visible) {
                 continue;

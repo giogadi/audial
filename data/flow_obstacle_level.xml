@@ -31,14 +31,14 @@
                 <w>0</w>
             </model_color_vec4>
             <ambient>
-                <x>0.15196079</x>
-                <y>0.15196079</y>
-                <z>0.15196079</z>
+                <x>0</x>
+                <y>0</y>
+                <z>0</z>
             </ambient>
             <diffuse>
-                <x>1</x>
-                <y>1</y>
-                <z>1</z>
+                <x>0</x>
+                <y>0</y>
+                <z>0</z>
             </diffuse>
         </Light>
         <Camera>

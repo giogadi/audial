@@ -88,6 +88,8 @@ public:
     }
 
     int GetCount() const { return _denseData.size(); }
+    
+    // TODO: CAN'T REMEMBER is this guaranteed to be non-null?
     T* GetItemAtIndex(int32_t denseIndex) {
         return &(_denseData.at(denseIndex));
     }
