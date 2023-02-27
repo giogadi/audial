@@ -15,13 +15,24 @@ public:
     void Use() const;
     // utility uniform functions
     // TODO: cache the uniform locations.
-    void SetBool(const char* name, bool value) const;  
-    void SetInt(const char* name, int value) const;   
-    void SetFloat(const char* name, float value) const;
-    void SetMat3(const char* name, Mat3 const& mat) const;
-    void SetMat4(const char* name, Mat4 const& mat) const;
-    void SetVec3(const char* name, Vec3 const& vec) const;
-    void SetVec4(const char* name, Vec4 const& vec) const;
+    int SetBool(const char* name, bool value) const;  
+    int SetInt(const char* name, int value) const;   
+    int SetFloat(const char* name, float value) const;
+    int SetMat3(const char* name, Mat3 const& mat) const;
+    int SetMat4(const char* name, Mat4 const& mat) const;
+    int SetVec3(const char* name, Vec3 const& vec) const;
+    int SetVec4(const char* name, Vec4 const& vec) const;
+
+    void SetBool(int location, bool value) const;
+    void SetInt(int location, int value) const;   
+    void SetFloat(int location, float value) const;
+    void SetMat3(int location,  Mat3 const& mat) const;
+    void SetMat4(int location, Mat4 const& mat) const;
+    void SetVec3(int location, Vec3 const& vec) const;
+    void SetVec4(int location, Vec4 const& vec) const;
+
+    int GetUniformLocation(const char* name) const;
 private:
     unsigned int _id = 0;
+    
 };

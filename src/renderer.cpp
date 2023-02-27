@@ -93,7 +93,41 @@ struct GlyphInstance {
     stbtt_aligned_quad _quad;
 };
 
-}
+namespace ColorShaderUniforms {
+    enum Names {
+        uMvpTrans,
+        uModelTrans,
+        uModelInvTrans,
+        uColor,
+        uDirLightDir,
+        uDirLightAmb,
+        uDirLightDif,
+        uPointLight0Pos,
+        uPointLight0Amb,
+        uPointLight0Dif,
+        uPointLight1Pos,
+        uPointLight1Amb,
+        uPointLight1Dif,
+        Count
+    };
+    static char const* NameStrings[] = {
+        "uMvpTrans",
+        "uModelTrans",
+        "uModelInvTrans",
+        "uColor",
+        "uDirLight._dir",
+        "uDirLight._ambient",
+        "uDirLight._diffuse",
+        "uPointLights[0]._pos",
+        "uPointLights[0]._ambient",
+        "uPointLights[0]._diffuse",
+        "uPointLights[1]._pos",
+        "uPointLights[1]._ambient",
+        "uPointLights[1]._diffuse"
+    };
+};
+
+}  // namespace
 
 class SceneInternal {
 public:
@@ -118,6 +152,8 @@ public:
     std::unordered_map<std::string, std::unique_ptr<BoundMeshPNU>> _meshMap;
     std::unordered_map<std::string, unsigned int> _textureIdMap;
     Shader _colorShader;
+    int _colorShaderUniforms[ColorShaderUniforms::Count];
+    
     Shader _textureShader;
     Shader _waterShader;
     Shader _textShader;
@@ -238,6 +274,9 @@ bool SceneInternal::Init(GameManager& g) {
 
     if (!_colorShader.Init("shaders/shader.vert", "shaders/color.frag")) {
         return false;
+    }
+    for (int i = 0; i < ColorShaderUniforms::Count; ++i) {
+        _colorShaderUniforms[i] = _colorShader.GetUniformLocation(ColorShaderUniforms::NameStrings[i]);
     }
 
     if (!_textureShader.Init("shaders/shader.vert", "shaders/shader.frag")) {
@@ -427,31 +466,65 @@ Mat4 Scene::GetViewProjTransform() const {
 
 namespace {
 void SetLightUniforms(SceneInternal& sceneInternal, Shader const& shader) {
-    shader.SetVec3("uDirLight._dir", sceneInternal._dirLight._dir);
-    shader.SetVec3("uDirLight._ambient", sceneInternal._dirLight._ambient);
-    shader.SetVec3("uDirLight._diffuse", sceneInternal._dirLight._diffuse);
-    
-    // TODO OMG DON'T DO THIS WITH STRINGS    
-    static char uniPos[] = "uPointLights[i]._pos";
-    static char uniAmb[] = "uPointLights[i]._ambient";
-    static char uniDif[] = "uPointLights[i]._diffuse";
-    int const kMaxNumLights = 10;
-    if (sceneInternal._pointLights.GetCount() >= kMaxNumLights) {
+    int const* uniforms = sceneInternal._colorShaderUniforms;
+    shader.SetVec3(uniforms[ColorShaderUniforms::uDirLightDir], sceneInternal._dirLight._dir);
+    shader.SetVec3(uniforms[ColorShaderUniforms::uDirLightAmb], sceneInternal._dirLight._ambient);
+    shader.SetVec3(uniforms[ColorShaderUniforms::uDirLightDif], sceneInternal._dirLight._diffuse);
+    int constexpr kMaxNumPointLights = 2;
+    if (sceneInternal._pointLights.GetCount() > kMaxNumPointLights) {
         printf("RENDERER ERROR: TOO MANY POINT LIGHTS (%d)\n", sceneInternal._pointLights.GetCount());
     }
-    for (int i = 0; i < kMaxNumLights; ++i) {
-        uniPos[13] = '0' + i;
-        uniAmb[13] = '0' + i;
-        uniDif[13] = '0' + i;
+    for (int i = 0; i < kMaxNumPointLights; ++i) {
+        int posLoc = uniforms[ColorShaderUniforms::uPointLight0Pos + 3*i];
+        int ambLoc = uniforms[ColorShaderUniforms::uPointLight0Amb + 3*i];
+        int difLoc = uniforms[ColorShaderUniforms::uPointLight0Dif + 3*i];
         if (i >= sceneInternal._pointLights.GetCount()) {
-            shader.SetVec3(uniPos, Vec3(0.f, 0.f, 0.f));
-            shader.SetVec3(uniAmb, Vec3(0.f, 0.f, 0.f));
-            shader.SetVec3(uniDif, Vec3(0.f, 0.f, 0.f));
+            shader.SetVec3(posLoc, Vec3(0.f, 0.f, 0.f));
+            shader.SetVec3(ambLoc, Vec3(0.f, 0.f, 0.f));
+            shader.SetVec3(difLoc, Vec3(0.f, 0.f, 0.f));
         } else {
             PointLight const& pl = *sceneInternal._pointLights.GetItemAtIndex(i);
-            shader.SetVec3(uniPos, pl._p);
-            shader.SetVec3(uniAmb, pl._ambient);
-            shader.SetVec3(uniDif, pl._diffuse);
+            shader.SetVec3(posLoc, pl._p);
+            shader.SetVec3(ambLoc, pl._ambient);
+            shader.SetVec3(difLoc, pl._diffuse);
+        }
+    }   
+}
+
+void DrawColorModelInstance(SceneInternal& internal, Mat4 const& viewProjTransform, ColorModelInstance const& m) {
+    if (!m._visible) {
+        return;
+    }
+    if (m._topLayer) {
+        internal._topLayerColorModels.push_back(&m);
+    }
+    Mat4 const& transMat = m._transform;
+    internal._colorShader.SetMat4(internal._colorShaderUniforms[ColorShaderUniforms::uMvpTrans], viewProjTransform * transMat);
+    internal._colorShader.SetMat4(internal._colorShaderUniforms[ColorShaderUniforms::uModelTrans], transMat);
+    Mat3 modelTransInv;
+    bool success = transMat.GetMat3().TransposeInverse(modelTransInv);
+    assert(success);
+    internal._colorShader.SetMat3(internal._colorShaderUniforms[ColorShaderUniforms::uModelInvTrans], modelTransInv);
+
+    // TEMPORARY! What we really want is to use the submeshes always unless the outer Model
+    // has defined some overrides.
+    assert(m._mesh != nullptr);
+    if (m._mesh->_subMeshes.size() == 0) {
+        internal._colorShader.SetVec4(internal._colorShaderUniforms[ColorShaderUniforms::uColor], m._color);
+        glBindVertexArray(m._mesh->_vao);
+        glDrawElements(GL_TRIANGLES, /*count=*/m._mesh->_numIndices, GL_UNSIGNED_INT, /*start_offset=*/0);
+    } else {
+        if (!m._useMeshColor) {
+            internal._colorShader.SetVec4(internal._colorShaderUniforms[ColorShaderUniforms::uColor], m._color);
+        }
+        for (int subMeshIx = 0; subMeshIx < m._mesh->_subMeshes.size(); ++subMeshIx) {
+            BoundMeshPNU::SubMesh const& subMesh = m._mesh->_subMeshes[subMeshIx];
+            if (m._useMeshColor) {
+                internal._colorShader.SetVec4(internal._colorShaderUniforms[ColorShaderUniforms::uColor], m._color);
+            }
+            glBindVertexArray(m._mesh->_vao);
+            glDrawElements(GL_TRIANGLES, /*count=*/subMesh._numIndices, GL_UNSIGNED_INT,
+                           /*start_offset=*/(void*)(sizeof(uint32_t) * subMesh._startIndex));
         }
     }
 }
@@ -506,41 +579,7 @@ void Scene::Draw(int windowWidth, int windowHeight, float timeInSecs) {
         shader.Use();
         SetLightUniforms(*_pInternal, _pInternal->_colorShader);
         for (ColorModelInstance const& m : _pInternal->_modelsToDraw) {
-            if (!m._visible) {
-                continue;
-            }
-            if (m._topLayer) {
-                topLayerModels.push_back(&m);
-            }
-            Mat4 const& transMat = m._transform;
-            shader.SetMat4("uMvpTrans", viewProjTransform * transMat);
-            shader.SetMat4("uModelTrans", transMat);
-            Mat3 modelTransInv;
-            bool success = transMat.GetMat3().TransposeInverse(modelTransInv);
-            assert(success);
-            shader.SetMat3("uModelInvTrans", modelTransInv);
-
-            // TEMPORARY! What we really want is to use the submeshes always unless the outer Model
-            // has defined some overrides.
-            assert(m._mesh != nullptr);
-            if (m._mesh->_subMeshes.size() == 0) {                
-                shader.SetVec4("uColor", m._color);
-                glBindVertexArray(m._mesh->_vao);
-                glDrawElements(GL_TRIANGLES, /*count=*/m._mesh->_numIndices, GL_UNSIGNED_INT, /*start_offset=*/0);
-            } else {
-                if (!m._useMeshColor) {
-                    shader.SetVec4("uColor", m._color);
-                }
-                for (int subMeshIx = 0; subMeshIx < m._mesh->_subMeshes.size(); ++subMeshIx) {
-                    BoundMeshPNU::SubMesh const& subMesh = m._mesh->_subMeshes[subMeshIx];
-                    if (m._useMeshColor) {
-                        shader.SetVec4("uColor", subMesh._color);   
-                    }
-                    glBindVertexArray(m._mesh->_vao);
-                    glDrawElements(GL_TRIANGLES, /*count=*/subMesh._numIndices, GL_UNSIGNED_INT,
-                        /*start_offset=*/(void*)(sizeof(uint32_t) * subMesh._startIndex));
-                }
-            }
+            DrawColorModelInstance(*_pInternal, viewProjTransform, m);
         }
 
         _pInternal->_modelsToDraw.clear();
@@ -553,35 +592,7 @@ void Scene::Draw(int windowWidth, int windowHeight, float timeInSecs) {
         SetLightUniforms(*_pInternal, _pInternal->_colorShader);
         for (int modelIx = 0; modelIx < _pInternal->_colorModelInstances.GetCount(); ++modelIx) {
             ColorModelInstance const* m = _pInternal->_colorModelInstances.GetItemAtIndex(modelIx);
-            if (!m->_visible) {
-                continue;
-            }
-            if (m->_topLayer) {
-                topLayerModels.push_back(m);
-            }
-            Mat4 const& transMat = m->_transform;
-            shader.SetMat4("uMvpTrans", viewProjTransform * transMat);
-            shader.SetMat4("uModelTrans", transMat);
-            Mat3 modelTransInv;
-            bool success = transMat.GetMat3().TransposeInverse(modelTransInv);
-            assert(success);
-            shader.SetMat3("uModelInvTrans", modelTransInv);
-
-            // TEMPORARY! What we really want is to use the submeshes always unless the outer Model
-            // has defined some overrides.
-            if (m->_mesh->_subMeshes.size() == 0) {
-                shader.SetVec4("uColor", m->_color);
-                glBindVertexArray(m->_mesh->_vao);
-                glDrawElements(GL_TRIANGLES, /*count=*/m->_mesh->_numIndices, GL_UNSIGNED_INT, /*start_offset=*/0);
-            } else {
-                for (int subMeshIx = 0; subMeshIx < m->_mesh->_subMeshes.size(); ++subMeshIx) {
-                    BoundMeshPNU::SubMesh const& subMesh = m->_mesh->_subMeshes[subMeshIx];
-                    shader.SetVec4("uColor", subMesh._color);
-                    glBindVertexArray(m->_mesh->_vao);
-                    glDrawElements(GL_TRIANGLES, /*count=*/subMesh._numIndices, GL_UNSIGNED_INT,
-                        /*start_offset=*/(void*)(sizeof(uint32_t) * subMesh._startIndex));
-                }
-            }
+            DrawColorModelInstance(*_pInternal, viewProjTransform, *m);
         }
     }    
 
