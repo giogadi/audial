@@ -34,6 +34,8 @@ std::unique_ptr<SeqAction> SeqAction::LoadAction(LoadInputs const& loadInputs, s
         pAction = std::make_unique<SetAllStepsSeqAction>();
     } else if (token == "set_step_seq") {
         pAction = std::make_unique<SetStepSequenceSeqAction>();
+    } else if (token == "step_seq_mute") {
+        pAction = std::make_unique<SetStepSequencerMuteSeqAction>();
     } else if (token == "note_on_off") {
         pAction = std::make_unique<NoteOnOffSeqAction>();
     } else if (token == "e") {
@@ -333,6 +335,30 @@ void NoteOnOffSeqAction::Execute(GameManager& g) {
     b_e._beatTime = _noteLength;
     e = GetEventAtBeatOffsetFromNextDenom(_quantizeDenom, b_e, *g._beatClock, /*slack=*/0.0625);
     g._audioContext->AddEvent(e);
+}
+
+void SetStepSequencerMuteSeqAction::Load(LoadInputs const& loadInputs, std::istream& input) {
+    input >> _seqName;
+    input >> _mute;
+}
+
+void SetStepSequencerMuteSeqAction::Init(GameManager& g) {
+    ne::Entity* e = g._neEntityManager->FindEntityByName(_seqName);
+    if (e) {
+        _seqId = e->_id;
+    } else {
+        printf("SetStepSequenceMuteSeqAction: could not find seq entity \"%s\"\n", _seqName.c_str());
+    }
+}
+
+void SetStepSequencerMuteSeqAction::Execute(GameManager& g) {
+    StepSequencerEntity* seq = static_cast<StepSequencerEntity*>(g._neEntityManager->GetEntity(_seqId));
+    if (seq) {
+        seq->_mute = _mute;               
+    } else {
+        printf("SetStepSequenceMuteSeqAction: no seq entity!!\n");
+        return;
+    }
 }
 
 void NoteOnOffSeqAction::Load(LoadInputs const& loadInputs, std::istream& input) {

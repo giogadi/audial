@@ -134,6 +134,19 @@ struct SetStepSequenceSeqAction : public SeqAction {
     virtual void Init(GameManager& g) override;
 };
 
+struct SetStepSequencerMuteSeqAction : public SeqAction {
+    // serialized
+    std::string _seqName;
+    bool _mute;
+
+    ne::EntityId _seqId;
+    
+    virtual void Execute(GameManager& g) override;
+    virtual void Load(
+        LoadInputs const& loadInputs, std::istream& input) override;
+    virtual void Init(GameManager& g) override;
+};
+
 struct NoteOnOffSeqAction : public SeqAction {
     int _channel = 0;
     int _midiNote = -1;

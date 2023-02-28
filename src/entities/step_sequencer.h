@@ -25,11 +25,13 @@ struct StepSequencerEntity : ne::Entity {
     bool _isSynth = true;  // false is drumkit
     double _noteLength = 0.25;
     double _initialLoopStartBeatTime = 4.0;
+    bool _startMute = false;
     bool _editorMute = false;
 
     // non-serialized
+    bool _mute = false;
     int _currentIx = 0;
-    double _loopStartBeatTime = 0.0;
+    double _loopStartBeatTime = 0.0;    
     std::vector<SeqStep> _permanentSequence;
     std::vector<SeqStep> _tempSequence;
     std::queue<SeqStepChange> _changeQueue;

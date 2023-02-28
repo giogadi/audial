@@ -165,6 +165,7 @@ void StepSequencerEntity::SetSequencePermanent(std::vector<SeqStep> newSequence)
 }
 
 void StepSequencerEntity::InitDerived(GameManager& g) {
+    _mute = _startMute;
     _tempSequence = _permanentSequence = _initialMidiSequenceDoNotChange;
     _loopStartBeatTime = _initialLoopStartBeatTime;
 }
@@ -201,7 +202,7 @@ void StepSequencerEntity::Update(GameManager& g, float dt) {
     }   
 
     // Play the sound
-    if (!g._editMode || !_editorMute) {
+    if (!_mute && (!g._editMode || !_editorMute)) {
         SeqStep const& seqStep = _tempSequence[_currentIx];
         if (_isSynth) {
             audio::Event e;
@@ -209,7 +210,7 @@ void StepSequencerEntity::Update(GameManager& g, float dt) {
             e.velocity = seqStep._velocity;
             e.type = audio::EventType::NoteOn;
             for (int i = 0; i < seqStep._midiNote.size(); ++i) {
-                if (seqStep._midiNote[i] < 0 || seqStep._velocity == 0.f) {
+                if (seqStep._midiNote[i] < 0 || seqStep._velocity <= 0.f) {
                     break;
                 }
                 e.midiNote = seqStep._midiNote[i];
@@ -283,6 +284,8 @@ void StepSequencerEntity::SaveDerived(serial::Ptree pt) const {
         seqSs << ":" << s._velocity;
     }
     pt.PutString("sequence", seqSs.str().c_str());
+
+    pt.PutBool("start_mute", _startMute);
     
     serial::Ptree channelsPt = pt.AddChild("channels");
     for (int c : _channels) {
@@ -299,6 +302,8 @@ void StepSequencerEntity::LoadDerived(serial::Ptree pt) {
     std::string seq = pt.GetString("sequence");    
     std::stringstream seqSs(seq);
     LoadSequenceFromInput(seqSs, _initialMidiSequenceDoNotChange);
+
+    pt.TryGetBool("start_mute", &_startMute);
     
     _stepBeatLength = pt.GetDouble("step_length");
     int channel = 0;
@@ -324,5 +329,6 @@ void StepSequencerEntity::LoadDerived(serial::Ptree pt) {
 
 ne::BaseEntity::ImGuiResult StepSequencerEntity::ImGuiDerived(GameManager& g) {
     ImGui::Checkbox("Mute in Editor", &_editorMute);
+    ImGui::Checkbox("Start mute", &_startMute);
     return ImGuiResult::Done;
 }
