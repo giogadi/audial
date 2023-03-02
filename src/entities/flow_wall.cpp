@@ -4,6 +4,8 @@
 
 #include "serial_vector_util.h"
 #include "imgui_vector_util.h"
+#include "math_util.h"
+#include "renderer.h"
 
 void FlowWallEntity::InitDerived(GameManager& g) {
     _wpFollower.Init(_transform.Pos());
@@ -18,6 +20,8 @@ void FlowWallEntity::InitDerived(GameManager& g) {
             _hitActions.push_back(std::move(pAction));   
         }
     }
+
+    _currentColor = _modelColor;
 }
 
 void FlowWallEntity::Update(GameManager& g, float dt) {
@@ -30,7 +34,24 @@ void FlowWallEntity::Update(GameManager& g, float dt) {
         }
     }
 
-    BaseEntity::Update(g, dt);
+    // Maybe update color from getting hit
+    // turn to FadeColor on hit, then fade back to regular color
+    if (_timeOfLastHit >= 0.0) {
+        double const beatTime = g._beatClock->GetBeatTimeFromEpoch();
+        double constexpr kFadeTime = 0.25;
+        double fadeFactor = (beatTime - _timeOfLastHit) / kFadeTime;        
+        fadeFactor = math_util::Clamp(fadeFactor, 0.0, 1.0);
+        Vec4 constexpr kFadeColor(0.f, 0.f, 0.f, 1.f);
+        if (fadeFactor == 1.0) {
+            _timeOfLastHit = -1.0;
+        }
+        _currentColor = kFadeColor + fadeFactor * (_modelColor - kFadeColor);
+    }
+
+    // BaseEntity::Update(g, dt);
+    if (_model != nullptr) {
+        g._scene->DrawMesh(_model, _transform.Mat4Scale(), _currentColor);
+    }
 }
 
 void FlowWallEntity::SaveDerived(serial::Ptree pt) const {
@@ -63,6 +84,7 @@ FlowWallEntity::ImGuiResult FlowWallEntity::ImGuiDerived(GameManager& g)  {
 }
 
 void FlowWallEntity::OnHit(GameManager& g) {
+    _timeOfLastHit = g._beatClock->GetBeatTimeFromEpoch();
     for (auto const& pAction : _hitActions) {
         pAction->ExecuteBase(g);
     }

@@ -12,6 +12,8 @@ struct FlowWallEntity : public ne::Entity {
 
     // non-serialized
     std::vector<std::unique_ptr<SeqAction>> _hitActions;
+    double _timeOfLastHit = -1.0;
+    Vec4 _currentColor;
 
     void OnHit(GameManager& g);
        
