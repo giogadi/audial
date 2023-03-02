@@ -107,6 +107,20 @@ void TypingEnemyEntity::Update(GameManager& g, float dt) {
         g._scene->DrawText(substr, screenX, screenY, /*scale=*/kTextSize, _textColor);
     }
 
+    // Maybe update color from getting hit
+    // turn to FadeColor on hit, then fade back to regular color
+    if (_timeOfLastHit >= 0.0) {
+        double const beatTime = g._beatClock->GetBeatTimeFromEpoch();
+        double constexpr kFadeTime = 0.25;
+        double fadeFactor = (beatTime - _timeOfLastHit) / kFadeTime;        
+        fadeFactor = math_util::Clamp(fadeFactor, 0.0, 1.0);
+        Vec4 constexpr kFadeColor(0.f, 0.f, 0.f, 1.f);
+        if (fadeFactor == 1.0) {
+            _timeOfLastHit = -1.0;
+        }
+        _currentColor = kFadeColor + fadeFactor * (_modelColor - kFadeColor);
+    }    
+
     if (_model != nullptr) {
         g._scene->DrawMesh(_model, _transform.Mat4Scale(), _currentColor);
     }
@@ -134,6 +148,7 @@ void TypingEnemyEntity::OnHit(GameManager& g) {
             assert(success);
         }            
     }
+    _timeOfLastHit = g._beatClock->GetBeatTimeFromEpoch();
 
     DoHitActions(g);
 }

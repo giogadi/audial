@@ -64,6 +64,7 @@ add_executable(game
     src/entities/param_automator.cpp
     src/entities/flow_player.cpp
     src/entities/flow_wall.cpp
+    src/entities/flow_pickup.cpp
     
     src/enums/audio_EventType.cpp
     src/enums/audio_SynthParamType.cpp

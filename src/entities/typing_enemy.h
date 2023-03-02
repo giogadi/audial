@@ -32,6 +32,7 @@ struct TypingEnemyEntity : public ne::Entity {
     Vec4 _currentColor;
     std::vector<std::unique_ptr<SeqAction>> _hitActions;
     bool _useHitActionsOnInitHack = false;
+    double _timeOfLastHit = -1.0;
 
     bool IsActive(GameManager& g) const;
     void OnHit(GameManager& g);

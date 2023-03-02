@@ -8,6 +8,9 @@
 #include "math_util.h"
 #include "beat_clock.h"
 
+#include "entities/flow_pickup.h"
+#include "entities/flow_wall.h"
+
 void FlowPlayerEntity::SaveDerived(serial::Ptree pt) const {
     pt.PutFloat("selection_radius", _selectionRadius);
     pt.PutFloat("launch_vel", _launchVel);
@@ -37,6 +40,8 @@ void FlowPlayerEntity::InitDerived(GameManager& g) {
 }
 
 namespace {
+
+#if 0
 float constexpr kEps = 0.0001f;
 
 bool SegmentBoxIntersection2d(
@@ -147,6 +152,7 @@ bool IsSegmentCollisionFree2D(GameManager& g, Vec3 const& playerPos, Vec3 const&
     }
     return true;
 }
+#endif
 
 // Checks XZ collisions between
 // NOTE: penetration points from 2 to 1.
@@ -189,18 +195,18 @@ bool DoAABBsOverlap(Transform const& aabb1, Transform const& aabb2, Vec3* penetr
 
 // penetration is offset to move player to move out of (one) collision.
 // NOTE: penetration only populated if returns true
-bool DoesPlayerOverlapAnyWallNoRotate(GameManager& g, Transform const& playerTrans, Vec3* penetrationOut) {
-    Vec3 penetration;
-    ne::EntityManager::Iterator wallIter = g._neEntityManager->GetIterator(ne::EntityType::FlowWall);
-    for (; !wallIter.Finished(); wallIter.Next()) {
-        Transform const& wallTrans = wallIter.GetEntity()->_transform;
-        bool hasOverlap = DoAABBsOverlap(playerTrans, wallTrans, &penetration);
+ne::Entity* FindOverlapWithEntityAABBNoRotate(GameManager& g, ne::EntityManager::Iterator entityIter, Transform const& playerTrans, Vec3* penetrationOut) {
+    for (; !entityIter.Finished(); entityIter.Next()) {
+        ne::Entity* pEntity = entityIter.GetEntity();
+        Transform const& entityTrans = pEntity->_transform;
+        Vec3 penetration;
+        bool hasOverlap = DoAABBsOverlap(playerTrans, entityTrans, &penetration);
         if (hasOverlap) {
             *penetrationOut = penetration;
-            return true;
+            return pEntity;
         }
     }
-    return false;
+    return nullptr;
 }
 }
 
@@ -354,8 +360,11 @@ ne::EntityManager::Iterator enemyIter = g._neEntityManager->GetIterator(ne::Enti
 
     // Check collisions between p and walls    
     Vec3 penetration;
-    if (DoesPlayerOverlapAnyWallNoRotate(g, _transform, &penetration)) {
+    ne::EntityManager::Iterator wallIter = g._neEntityManager->GetIterator(ne::EntityType::FlowWall);
+    FlowWallEntity* pHitWall = static_cast<FlowWallEntity*>(FindOverlapWithEntityAABBNoRotate(g, wallIter, _transform, &penetration));
+    if (pHitWall != nullptr) {
         // Respawn(g);
+        pHitWall->OnHit(g);
         p += penetration;
         Vec3 collNormal = penetration.GetNormalized();
         Vec3 newVel = -_vel;
@@ -366,6 +375,19 @@ ne::EntityManager::Iterator enemyIter = g._neEntityManager->GetIterator(ne::Enti
 
         _transform.SetTranslation(p);
         _vel = newVel;
+    }
+
+    // Check if we hit any pickups
+    ne::EntityManager::Iterator pickupIter = g._neEntityManager->GetIterator(ne::EntityType::FlowPickup);
+    for (; !pickupIter.Finished(); pickupIter.Next()) {
+        FlowPickupEntity* pPickup = static_cast<FlowPickupEntity*>(pickupIter.GetEntity());
+        assert(pPickup != nullptr);
+        Transform const& pickupTrans = pPickup->_transform;
+        Vec3 penetration;
+        bool hasOverlap = DoAABBsOverlap(_transform, pickupTrans, &penetration);
+        if (hasOverlap) {
+            g._neEntityManager->TagForDestroy(pPickup->_id);
+        }
     }
 
     Draw(g);

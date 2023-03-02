@@ -20,4 +20,5 @@
 // -s data/flow_level.xml -y data/synth_patches_flow.xml
 // -s data/flow_simple_level.xml -y data/synth_patches_flow.xml
 // -s data/flow_obstacle_level.xml -y data/synth_patches_flow.xml
--s data/flow_auto_phrase_level.xml -y data/synth_patches_flow.xml
+// -s data/flow_auto_phrase_level.xml -y data/synth_patches_flow.xml
+-s data/flow_slow_level.xml -y data/synth_patches_flow.xml

@@ -22,6 +22,7 @@
 #include "entities/param_automator.h"
 #include "entities/flow_player.h"
 #include "entities/flow_wall.h"
+#include "entities/flow_pickup.h"
 
 namespace ne {
 
