@@ -22,6 +22,8 @@ inline Vec3 GetDefaultCameraOffset(Direction dir) {
             assert(false);
             return Vec3();
     }
+    assert(false);
+    return Vec3();
 }
 
 }  // namespace camera_util

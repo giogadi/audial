@@ -144,7 +144,7 @@ Mat4 Mat4::Frustrum(
     Mat4 m;
     float* matrix = m._data;
     float temp, temp2, temp3, temp4;
-    temp = 2.0 * znear;
+    temp = 2.f * znear;
     temp2 = right - left;
     temp3 = top - bottom;
     temp4 = zfar - znear;

@@ -12,7 +12,7 @@ public:
     bool IsNewBeat() const { return _newBeat; }
 
     unsigned long BeatTimeToTickTime(double beatTime) const {
-        return beatTime * (60.0 / _bpm) * _sampleRate;
+        return static_cast<unsigned long>(beatTime * (60.0 / _bpm) * _sampleRate);
     }
 
     double TickTimeToBeatTime(unsigned long tickTime) const {

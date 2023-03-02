@@ -41,8 +41,6 @@ struct StateData {
     // When we pause playback, this stops getting incremented.
     int64_t _bufferCounter = 0;
 
-    char message[20];
-
     double GetTimeInSeconds() const;
 };
 

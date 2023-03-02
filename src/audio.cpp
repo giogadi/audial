@@ -172,7 +172,7 @@ void ProcessEventQueue(EventQueue* eventQueue, boost::circular_buffer<Event>* pe
 
 void PopEventsFromThisFrame(
     boost::circular_buffer<Event>* pendingEvents, double const currentTimeSecs, unsigned long samplesPerFrame) {
-    unsigned long const frameStartTickTime = currentTimeSecs * SAMPLE_RATE;
+    unsigned long const frameStartTickTime = static_cast<unsigned long>(currentTimeSecs * SAMPLE_RATE);
     unsigned long const nextFrameStartTickTime = frameStartTickTime + samplesPerFrame;
     int lastProcessedEventIx = -1;
     for (int pendingEventIx = 0; pendingEventIx < pendingEvents->size(); ++pendingEventIx) {

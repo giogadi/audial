@@ -1,5 +1,7 @@
 #pragma once
 
+#include <optional>
+
 #include "new_entity.h"
 
 namespace renderer {

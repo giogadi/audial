@@ -111,6 +111,8 @@ std::pair<Entity*, int> EntityManager::GetEntitiesOfType(EntityType type) {
             return std::make_pair(nullptr, 0);
         }
     }
+    assert(false);
+    return std::make_pair(nullptr, 0);
 }
 
 std::pair<Entity*, int> EntityManager::GetEntityWithIndex(EntityId id) {

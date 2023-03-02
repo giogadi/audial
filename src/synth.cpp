@@ -252,6 +252,8 @@ float UpdateFilter(float const dt, float const cutoff, float const peak, float c
             return output;
         }
     }
+    assert(false);
+    return 0.f;
 }
 
 // TODO: make this process an entire buffer.
@@ -503,6 +505,8 @@ float& GetSynthParam(Patch& patch, audio::SynthParamType paramType) {
             assert(false);
             break;
     }    
+    assert(false);
+    return patch.gainFactor;
 }
 
 void SetSynthParam(audio::SynthParamType paramType, double newValue, int newValueInt, Patch& patch) {

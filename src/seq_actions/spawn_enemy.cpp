@@ -394,7 +394,7 @@ void LoadParamEnemy(TypingEnemyEntity& enemy, std::istream& lineStream) {
     }
 
     if (values.size() != times.size()) {
-        printf("LoadParamEnemy: there should be equal # of v's and t's (v:%lu, t:%lu)\n", values.size(), times.size());
+        printf("LoadParamEnemy: there should be equal # of v's and t's (v:%zu, t:%zu)\n", values.size(), times.size());
         values.clear();
         times.clear();
     }

@@ -44,7 +44,7 @@ bool ReadBeatEventFromTextLineNoSoundLookup(std::istream& lineStream, BeatTimeEv
             // channel
             try {
                 b_e._e.channel = std::stoi(value);
-            } catch (std::exception& e) {
+            } catch (std::exception&) {
                 printf("Failed to parse channel: %s\n", value.c_str());
                 break;
             }
@@ -52,7 +52,7 @@ bool ReadBeatEventFromTextLineNoSoundLookup(std::istream& lineStream, BeatTimeEv
             // beat time
             try {
                 b_e._beatTime = std::stof(value);
-            } catch (std::exception& e) {
+            } catch (std::exception&) {
                 printf("Failed to parse beat time: %s\n", value.c_str());
                 break;
             }
@@ -60,7 +60,7 @@ bool ReadBeatEventFromTextLineNoSoundLookup(std::istream& lineStream, BeatTimeEv
             // midi note
             try {
                 b_e._e.midiNote = std::stoi(value);
-            } catch (std::exception& e) {
+            } catch (std::exception&) {
                 printf("Failed to parse midi note: %s\n", value.c_str());
                 break;
             }
@@ -79,7 +79,7 @@ bool ReadBeatEventFromTextLineNoSoundLookup(std::istream& lineStream, BeatTimeEv
             float v;
             try {
                 v = std::stof(value);
-            } catch (std::exception& e) {
+            } catch (std::exception&) {
                 printf("Failed to parse velocity: %s\n", value.c_str());
                 break;
             }
@@ -105,7 +105,7 @@ bool ReadBeatEventFromTextLineNoSoundLookup(std::istream& lineStream, BeatTimeEv
             }
             try {
                 b_e._e.loop = std::stoi(value);
-            } catch (std::exception& e) {
+            } catch (std::exception&) {
                 printf("Failed to parse loop setting: %s\n", value.c_str());
                 break;
             }

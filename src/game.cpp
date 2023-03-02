@@ -100,9 +100,9 @@ struct CommandLineInputs {
 
 void ParseCommandLine(CommandLineInputs& inputs, std::vector<std::string> const& argv, bool useDefaultFile);
 
-void ParseCommandLineFile(CommandLineInputs& inputs, std::string_view fileName) {
+void ParseCommandLineFile(CommandLineInputs& inputs, std::string fileName) {
     std::vector<std::string> fileArgv;
-    std::ifstream cmdLineFile(fileName);
+    std::ifstream cmdLineFile(fileName.c_str());
     if (!cmdLineFile.is_open()) {
         std::cout << "Tried to open command line file \"" << fileName <<
             "\", but could not open file. Skipping." << std::endl;

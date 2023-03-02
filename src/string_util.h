@@ -34,7 +34,7 @@ inline bool MaybeStof(std::string const& str, float& output) {
     try {
         output = std::stof(str);
         return true;
-    } catch (std::exception& e) {
+    } catch (std::exception&) {
         return false;
     }
 }

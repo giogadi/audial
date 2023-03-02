@@ -16,6 +16,8 @@ inline Vec3 ToColor3(ColorPreset preset) {
         case ColorPreset::Gray: return Vec3(0.5f, 0.5f, 0.5f);
         case ColorPreset::Count: assert(false); return Vec3();
     }
+    assert(false);
+    return Vec3();
 }
 
 inline Vec4 ToColor4(ColorPreset preset) {

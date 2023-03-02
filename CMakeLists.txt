@@ -76,7 +76,7 @@ add_executable(game
 )
 
 if(MSVC)
-  target_compile_options(game PRIVATE /Wall)
+  #target_compile_options(game PRIVATE /Wall)
 else()
   target_compile_options(game PRIVATE -Wall)
 endif()

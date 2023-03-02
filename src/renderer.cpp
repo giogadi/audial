@@ -629,7 +629,7 @@ void Scene::Draw(int windowWidth, int windowHeight, float timeInSecs) {
         glEnable(GL_BLEND);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-        Mat4 projection = Mat4::Ortho(0.f, _pInternal->_g->_windowWidth, 0.f, _pInternal->_g->_windowHeight, -1.f, 1.f);        
+        Mat4 projection = Mat4::Ortho(0.f, (float)_pInternal->_g->_windowWidth, 0.f, (float)_pInternal->_g->_windowHeight, -1.f, 1.f);        
 
         unsigned int fontTextureId = _pInternal->_textureIdMap.at("font");
 
