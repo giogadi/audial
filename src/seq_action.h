@@ -2,6 +2,7 @@
 
 #include <string>
 #include <istream>
+#include <optional>
 
 #include "enums/audio_SynthParamType.h"
 
@@ -178,4 +179,11 @@ struct WaypointControlSeqAction : public SeqAction {
     virtual void Execute(GameManager& g) override;
     virtual void Load(
         LoadInputs const& loadInputs, std::istream& input) override;
+};
+
+struct PlayerSetKillZoneSeqAction : public SeqAction {
+    std::optional<float> _maxZ;
+
+    virtual void Execute(GameManager& g) override;
+    virtual void Load(LoadInputs const& loadInputs, std::istream& input) override;
 };

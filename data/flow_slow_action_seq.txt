@@ -1,0 +1,1 @@
+0 player_killzone max_z:6

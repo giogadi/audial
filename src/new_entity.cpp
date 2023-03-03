@@ -139,6 +139,15 @@ Entity* EntityManager::GetEntity(EntityId id) {
     return GetEntityWithIndex(id).first;
 }
 
+Entity* EntityManager::GetFirstEntityOfType(EntityType entityType) {
+    int numEntities;
+    Iterator iter = GetIterator(entityType, &numEntities);
+    if (numEntities == 0) {
+        return nullptr;
+    }
+    return iter.GetEntity();
+}
+
 Entity* EntityManager::FindEntityByName(std::string_view name) {
     for (AllIterator iter = GetAllIterator(); !iter.Finished(); iter.Next()) {
         Entity* e = iter.GetEntity();

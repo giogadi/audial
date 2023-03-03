@@ -2,6 +2,7 @@
 
 #include <deque>
 #include <map>
+#include <optional>
 
 #include "new_entity.h"
 
@@ -26,6 +27,7 @@ struct FlowPlayerEntity : public ne::Entity {
     Vec4 _currentColor;
     bool _flowPolarity = true;
     double _countOffEndTime = 3.0;
+    std::optional<float> _killMaxZ;  // kill/respawn if player goes over this value
 
     void Draw(GameManager& g);
     void Respawn(GameManager &g);

@@ -104,6 +104,7 @@ struct EntityManager {
     Entity* AddEntity(EntityType entityType);    
     Entity* GetEntity(EntityId id);
     Entity* FindEntityByName(std::string_view name);
+    Entity* GetFirstEntityOfType(EntityType entityType);
     bool TagForDestroy(EntityId id);
 
     // Calls Destroy() on removed entities.

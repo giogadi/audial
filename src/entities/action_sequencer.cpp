@@ -6,10 +6,8 @@
 #include "entities/param_automator.h"
 #include "game_manager.h"
 #include "beat_clock.h"
-// #include "seq_actions/spawn_enemy.h"
-// #include "entities/typing_player.h"
-// #include "entities/flow_player.h"
 #include "string_util.h"
+#include "imgui_util.h"
 
 void ActionSequencerEntity::InitDerived(GameManager& g) {
     _currentIx = 0;
@@ -58,4 +56,14 @@ void ActionSequencerEntity::LoadDerived(serial::Ptree pt) {
 
 void ActionSequencerEntity::SaveDerived(serial::Ptree pt) const {
     pt.PutString("seq_filename", _seqFilename.c_str());
+}
+
+ne::Entity::ImGuiResult ActionSequencerEntity::ImGuiDerived(GameManager& g) {
+    bool needsInit = imgui_util::InputText<256>("Filename", &_seqFilename, /*trueOnReturnOnly=*/true);
+    if (needsInit) {
+        return ImGuiResult::NeedsInit;
+    }
+    else {
+        return ImGuiResult::Done;
+    }
 }

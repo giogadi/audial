@@ -390,5 +390,12 @@ ne::EntityManager::Iterator enemyIter = g._neEntityManager->GetIterator(ne::Enti
         }
     }
 
+    if (_killMaxZ.has_value()) {
+        Vec3 p = _transform.Pos();
+        if (p._z > _killMaxZ.value()) {
+            Respawn(g);
+        }
+    }
+
     Draw(g);
 }

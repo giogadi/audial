@@ -46,6 +46,8 @@ std::unique_ptr<SeqAction> SeqAction::LoadAction(LoadInputs const& loadInputs, s
         pAction = std::make_unique<CameraControlSeqAction>();
     } else if (token == "waypoint") {
         pAction = std::make_unique<WaypointControlSeqAction>();
+    } else if (token == "player_killzone") {
+        pAction = std::make_unique<PlayerSetKillZoneSeqAction>();
     } else {
         printf("ERROR: Unrecognized action type \"%s\".\n", token.c_str());
     }
@@ -437,4 +439,37 @@ void WaypointControlSeqAction::Execute(GameManager& g) {
 void WaypointControlSeqAction::Load(LoadInputs const& loadInputs, std::istream& input) {
     input >> _enemyName;
     input >> _followWaypoints;
+}
+
+void PlayerSetKillZoneSeqAction::Load(LoadInputs const& loadInputs, std::istream& input) {
+    _maxZ.reset();
+
+    std::string token, key, value;
+    while (!input.eof()) {
+        {
+            input >> token;
+            std::size_t delimIx = token.find_first_of(':');
+            if (delimIx == std::string::npos) {
+                printf("Token missing \":\" - \"%s\"\n", token.c_str());
+                continue;
+            }
+
+            key = token.substr(0, delimIx);
+            value = token.substr(delimIx + 1);
+        }
+        if (key == "max_z") {
+            _maxZ = string_util::MaybeStof(value);      
+            if (!_maxZ.has_value()) {
+                printf("PlayerSetKillZoneSeqAction::Load: could not get max_z value from \"%s\"\n");
+            }
+        }
+        else {
+            printf("PlayerSetKillZoneSeqAction::Load: unknown key \"%s\"\n", key.c_str());
+        }
+    }
+}
+
+void PlayerSetKillZoneSeqAction::Execute(GameManager& g) {
+    FlowPlayerEntity* pPlayer = static_cast<FlowPlayerEntity*>(g._neEntityManager->GetFirstEntityOfType(ne::EntityType::FlowPlayer));
+    pPlayer->_killMaxZ = _maxZ;
 }
