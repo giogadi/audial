@@ -460,7 +460,7 @@ void PlayerSetKillZoneSeqAction::Load(LoadInputs const& loadInputs, std::istream
         if (key == "max_z") {
             _maxZ = string_util::MaybeStof(value);      
             if (!_maxZ.has_value()) {
-                printf("PlayerSetKillZoneSeqAction::Load: could not get max_z value from \"%s\"\n");
+                printf("PlayerSetKillZoneSeqAction::Load: could not get max_z value from \"%s\"\n", value.c_str());
             }
         }
         else {

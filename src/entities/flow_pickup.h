@@ -8,7 +8,7 @@ struct FlowPickupEntity : public ne::Entity {
     // WaypointFollower _wpFollower;
     // double _wpArriveTime = 4.0;
        
-    // virtual void Update(GameManager& g, float dt) override;
+    virtual void Update(GameManager& g, float dt) override;
     /* virtual void Destroy(GameManager& g) {} */
     /* virtual void OnEditPick(GameManager& g) {} */
     /* virtual void DebugPrint(); */
