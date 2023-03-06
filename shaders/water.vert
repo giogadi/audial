@@ -6,7 +6,6 @@ layout (location = 2) in vec2 aTexCoord;
 
 uniform mat4 uMvpTrans;
 uniform mat4 uModelTrans;
-uniform mat3 uModelInvTrans;
 uniform float uTime;
 
 out vec2 texCoord;
@@ -20,6 +19,5 @@ void main() {
     gl_Position = uMvpTrans * vec4(p,1.0);
     fragPos = vec3(uModelTrans * vec4(p, 1.0f));
     texCoord = aTexCoord;
-    // normal = uModelInvTrans * aNormal;
     normal = vec3(0.5*cos(aPos.x + uTime), 1.0, 0.0);
 }

@@ -18,6 +18,9 @@
 #include "cube_verts.h"
 #include "game_manager.h"
 
+#define DRAW_WATER 0
+#define DRAW_TERRAIN 0
+
 namespace renderer {
 
 Mat4 Camera::GetViewMatrix() const {
@@ -127,6 +130,56 @@ namespace ColorShaderUniforms {
     };
 };
 
+#if DRAW_WATER
+namespace WaterShaderUniforms {
+    enum Names {
+        uMvpTrans,
+        uModelTrans,
+        uColor,
+        uDirLightDir,
+        uDirLightAmb,
+        uDirLightDif,
+        uTime,
+        Count
+    };
+    static char const* NameStrings[] = {
+        "uMvpTrans",
+        "uModelTrans",
+        "uColor",
+        "uDirLight._dir",
+        "uDirLight._ambient",
+        "uDirLight._diffuse",
+        "uTime"
+    };
+};
+#endif
+
+#if DRAW_TERRAIN
+namespace TerrainShaderUniforms {
+    enum Names {
+        uMvpTrans,
+        uModelTrans,
+        uModelInvTrans,
+        uColor,
+        uDirLightDir,
+        uDirLightAmb,
+        uDirLightDif,
+        uTime,
+        Count
+    };
+    static char const* NameStrings[] = {
+        "uMvpTrans",
+        "uModelTrans",
+        "uModelInvTrans",
+        "uColor",
+        "uDirLight._dir",
+        "uDirLight._ambient",
+        "uDirLight._diffuse",
+        "uTime"
+    };
+};
+#endif
+
 }  // namespace
 
 class SceneInternal {
@@ -155,7 +208,17 @@ public:
     int _colorShaderUniforms[ColorShaderUniforms::Count];
     
     Shader _textureShader;
+
+#if DRAW_WATER    
     Shader _waterShader;
+    int _waterShaderUniforms[WaterShaderUniforms::Count];
+#endif    
+
+#if DRAW_TERRAIN    
+    Shader _terrainShader;
+    int _terrainShaderUniforms[TerrainShaderUniforms::Count];
+#endif    
+    
     Shader _textShader;
 
     unsigned int _textVao = 0;
@@ -171,12 +234,12 @@ public:
 
 namespace {
 std::unique_ptr<BoundMeshPNU> MakeWaterMesh() {
-    // 10 points across (+x) and 10 points down (+z), each point spaced a unit apart
+    // x points across (+x) and z points down (+z), each point spaced a unit apart
     // Should be indexed row-major, with +x direction being the rows.
     // origin of plane is top-left corner.
-    int numPointsX = 100;
-    int numPointsZ = 100;
-    float spacing = 0.1f;
+    int numPointsX = 50;
+    int numPointsZ = 40;
+    float spacing = 0.5f;
 
     assert(numPointsX >= 2);
     assert(numPointsZ >= 2);
@@ -283,9 +346,23 @@ bool SceneInternal::Init(GameManager& g) {
         return false;
     }
 
+#if DRAW_WATER    
     if (!_waterShader.Init("shaders/water.vert", "shaders/water.frag")) {
         return false;
     }
+    for (int i = 0; i < WaterShaderUniforms::Count; ++i) {
+        _waterShaderUniforms[i] = _waterShader.GetUniformLocation(WaterShaderUniforms::NameStrings[i]);
+    }
+#endif
+
+#if DRAW_TERRAIN    
+    if (!_terrainShader.Init("shaders/terrain.vert", "shaders/terrain.frag")) {
+        return false;
+    }
+    for (int i = 0; i < TerrainShaderUniforms::Count; ++i) {
+        _terrainShaderUniforms[i] = _terrainShader.GetUniformLocation(TerrainShaderUniforms::NameStrings[i]);
+    }
+#endif
 
     if (!_textShader.Init("shaders/text.vert", "shaders/text.frag")) {
         return false;
@@ -465,8 +542,9 @@ Mat4 Scene::GetViewProjTransform() const {
 }
 
 namespace {
-void SetLightUniforms(SceneInternal& sceneInternal, Shader const& shader) {
+void SetLightUniformsColorShader(SceneInternal& sceneInternal) {
     int const* uniforms = sceneInternal._colorShaderUniforms;
+    Shader& shader = sceneInternal._colorShader;
     shader.SetVec3(uniforms[ColorShaderUniforms::uDirLightDir], sceneInternal._dirLight._dir);
     shader.SetVec3(uniforms[ColorShaderUniforms::uDirLightAmb], sceneInternal._dirLight._ambient);
     shader.SetVec3(uniforms[ColorShaderUniforms::uDirLightDif], sceneInternal._dirLight._diffuse);
@@ -488,8 +566,28 @@ void SetLightUniforms(SceneInternal& sceneInternal, Shader const& shader) {
             shader.SetVec3(ambLoc, pl._ambient);
             shader.SetVec3(difLoc, pl._diffuse);
         }
-    }   
+    }
 }
+
+#if DRAW_WATER
+void SetLightUniformsWaterShader(SceneInternal& sceneInternal) {
+    int const* uniforms = sceneInternal._waterShaderUniforms;
+    Shader& shader = sceneInternal._waterShader;
+    shader.SetVec3(uniforms[WaterShaderUniforms::uDirLightDir], sceneInternal._dirLight._dir);
+    shader.SetVec3(uniforms[WaterShaderUniforms::uDirLightAmb], sceneInternal._dirLight._ambient);
+    shader.SetVec3(uniforms[WaterShaderUniforms::uDirLightDif], sceneInternal._dirLight._diffuse);
+}
+#endif
+
+#if DRAW_TERRAIN
+void SetLightUniformsTerrainShader(SceneInternal& sceneInternal) {
+    int const* uniforms = sceneInternal._terrainShaderUniforms;
+    Shader& shader = sceneInternal._terrainShader;
+    shader.SetVec3(uniforms[TerrainShaderUniforms::uDirLightDir], sceneInternal._dirLight._dir);
+    shader.SetVec3(uniforms[TerrainShaderUniforms::uDirLightAmb], sceneInternal._dirLight._ambient);
+    shader.SetVec3(uniforms[TerrainShaderUniforms::uDirLightDif], sceneInternal._dirLight._diffuse);
+}
+#endif
 
 void DrawColorModelInstance(SceneInternal& internal, Mat4 const& viewProjTransform, ColorModelInstance const& m) {
     if (!m._visible) {
@@ -550,18 +648,15 @@ void Scene::Draw(int windowWidth, int windowHeight, float timeInSecs) {
     topLayerModels.clear();
 
     // WATER
-#if 0
+#if DRAW_WATER
     {
-        assert(false);
-        Mat4 const transMat = Mat4::Identity();
+        Mat4 const transMat;
         Mat3 modelTransInv;
         assert(transMat.GetMat3().TransposeInverse(modelTransInv));
 
         Shader& shader = _pInternal->_waterShader;
         shader.Use();
-        shader.SetVec3("uLightPos", light._p);
-        shader.SetVec3("uAmbient", light._ambient);
-        shader.SetVec3("uDiffuse", light._diffuse);
+        SetLightUniformsWaterShader(*_pInternal);        
         shader.SetMat4("uMvpTrans", viewProjTransform * transMat);
         shader.SetMat4("uModelTrans", transMat);
         shader.SetMat3("uModelInvTrans", modelTransInv);
@@ -571,13 +666,36 @@ void Scene::Draw(int windowWidth, int windowHeight, float timeInSecs) {
         glBindVertexArray(waterMesh->_vao);
         glDrawElements(GL_TRIANGLES, /*count=*/waterMesh->_numIndices, GL_UNSIGNED_INT, /*start_offset=*/0);
     }
-#endif    
+#endif
+
+    // TERRAIN
+#if DRAW_TERRAIN   
+    {
+        Mat4 const transMat;
+        Mat3 modelTransInv;
+        assert(transMat.GetMat3().TransposeInverse(modelTransInv));
+
+        Shader& shader = _pInternal->_terrainShader;
+        shader.Use();
+        SetLightUniformsTerrainShader(*_pInternal);  
+        shader.SetMat4("uMvpTrans", viewProjTransform * transMat);
+        shader.SetMat4("uModelTrans", transMat);
+        shader.SetMat3("uModelInvTrans", modelTransInv);
+        shader.SetVec4("uColor", Vec4(0.f, 0.f, 1.f, 1.f));
+        shader.SetFloat("uTime", timeInSecs);
+        BoundMeshPNU const* waterMesh = GetMesh("water");
+        glBindVertexArray(waterMesh->_vao);
+        glDrawElements(GL_TRIANGLES, /*count=*/waterMesh->_numIndices, GL_UNSIGNED_INT, /*start_offset=*/0);
+    }
+#endif
+
+    glClear(GL_DEPTH_BUFFER_BIT);
 
     // buffered Color models (immediate API)
     {
         Shader& shader = _pInternal->_colorShader;
         shader.Use();
-        SetLightUniforms(*_pInternal, _pInternal->_colorShader);
+        SetLightUniformsColorShader(*_pInternal);
         for (ColorModelInstance const& m : _pInternal->_modelsToDraw) {
             DrawColorModelInstance(*_pInternal, viewProjTransform, m);
         }
@@ -589,7 +707,7 @@ void Scene::Draw(int windowWidth, int windowHeight, float timeInSecs) {
     {
         Shader& shader = _pInternal->_colorShader;
         shader.Use();
-        SetLightUniforms(*_pInternal, _pInternal->_colorShader);
+        SetLightUniformsColorShader(*_pInternal);
         for (int modelIx = 0; modelIx < _pInternal->_colorModelInstances.GetCount(); ++modelIx) {
             ColorModelInstance const* m = _pInternal->_colorModelInstances.GetItemAtIndex(modelIx);
             DrawColorModelInstance(*_pInternal, viewProjTransform, *m);
@@ -672,7 +790,7 @@ void Scene::Draw(int windowWidth, int windowHeight, float timeInSecs) {
     {
         Shader& shader = _pInternal->_colorShader;
         shader.Use();
-        SetLightUniforms(*_pInternal, _pInternal->_colorShader);
+        SetLightUniformsColorShader(*_pInternal);
         for (ColorModelInstance const* m : _pInternal->_topLayerColorModels) {
             if (!m->_visible) {
                 continue;
