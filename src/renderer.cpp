@@ -332,7 +332,8 @@ bool SceneInternal::Init(GameManager& g) {
         assert(success);
 
         mesh = MakeWaterMesh();
-        assert(_meshMap.emplace("water", std::move(mesh)).second);
+        success = _meshMap.emplace("water", std::move(mesh)).second;
+        assert(success);
     }
 
     if (!_colorShader.Init("shaders/shader.vert", "shaders/color.frag")) {
