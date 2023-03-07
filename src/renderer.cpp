@@ -19,7 +19,7 @@
 #include "game_manager.h"
 
 #define DRAW_WATER 0
-#define DRAW_TERRAIN 0
+#define DRAW_TERRAIN 1
 
 namespace renderer {
 
@@ -31,8 +31,8 @@ Mat4 Camera::GetViewMatrix() const {
 }
 
 namespace {
-bool CreateTextureFromFile(char const* filename, unsigned int& textureId) {
-    stbi_set_flip_vertically_on_load(true);
+bool CreateTextureFromFile(char const* filename, unsigned int& textureId, bool flip=true) {
+    stbi_set_flip_vertically_on_load(flip);
     int texWidth, texHeight, texNumChannels;
     unsigned char *texData = stbi_load(filename, &texWidth, &texHeight, &texNumChannels, 0);
     if (texData == nullptr) {
@@ -48,9 +48,15 @@ bool CreateTextureFromFile(char const* filename, unsigned int& textureId) {
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    GLenum format;
+    switch (texNumChannels) {
+        case 3: format = GL_RGB; break;
+        case 4: format = GL_RGBA; break;
+        default: assert(false); break;
+    }
     glTexImage2D(
         GL_TEXTURE_2D, /*mipmapLevel=*/0, /*textureFormat=*/GL_RGB, texWidth, texHeight, /*legacy=*/0,
-        /*sourceFormat=*/GL_RGB, /*sourceDataType=*/GL_UNSIGNED_BYTE, texData);
+        /*sourceFormat=*/format, /*sourceDataType=*/GL_UNSIGNED_BYTE, texData);
     glGenerateMipmap(GL_TEXTURE_2D);
     stbi_image_free(texData);
 
@@ -164,7 +170,7 @@ namespace TerrainShaderUniforms {
         uDirLightDir,
         uDirLightAmb,
         uDirLightDif,
-        uTime,
+        uOffset,
         Count
     };
     static char const* NameStrings[] = {
@@ -175,7 +181,7 @@ namespace TerrainShaderUniforms {
         "uDirLight._dir",
         "uDirLight._ambient",
         "uDirLight._diffuse",
-        "uTime"
+        "uOffset"
     };
 };
 #endif
@@ -237,9 +243,12 @@ std::unique_ptr<BoundMeshPNU> MakeWaterMesh() {
     // x points across (+x) and z points down (+z), each point spaced a unit apart
     // Should be indexed row-major, with +x direction being the rows.
     // origin of plane is top-left corner.
-    int numPointsX = 50;
-    int numPointsZ = 40;
-    float spacing = 0.5f;
+    // int numPointsX = 50;
+    // int numPointsZ = 40;
+    // float spacing = 0.5f;
+    int numPointsX = 2;
+    int numPointsZ = 2;
+    float spacing = 25.f;
 
     assert(numPointsX >= 2);
     assert(numPointsZ >= 2);
@@ -263,8 +272,10 @@ std::unique_ptr<BoundMeshPNU> MakeWaterMesh() {
             vertexData.push_back(0.f);
 
             // UV
-            vertexData.push_back(0.f);
-            vertexData.push_back(0.f);
+            float u = (float) x / (float) (numPointsX - 1);
+            float v = 1.f - ((float) z / (float) (numPointsZ - 1));
+            vertexData.push_back(u);
+            vertexData.push_back(v);
 
             xPos += spacing;
         }
@@ -374,6 +385,18 @@ bool SceneInternal::Init(GameManager& g) {
         return false;
     }
     _textureIdMap.emplace("wood_box", woodboxTextureId);
+
+    unsigned int perlinNoiseTextureId = 0;
+    if (!CreateTextureFromFile("data/textures/perlin_noise.png", perlinNoiseTextureId)) {
+        return false;
+    }
+    _textureIdMap.emplace("perlin_noise", perlinNoiseTextureId);
+
+    unsigned int perlinNoiseNormalTextureId = 0;
+    if (!CreateTextureFromFile("data/textures/perlin_noise_normal.png", perlinNoiseNormalTextureId)) {
+        return false;
+    }
+    _textureIdMap.emplace("perlin_noise_normal", perlinNoiseNormalTextureId);
 
     unsigned int fontTextureId = 0;
     if (!CreateFontTextureFromBitmap("data/fonts/videotype/videotype.bmp", fontTextureId)) {
@@ -640,7 +663,7 @@ void Scene::Draw(int windowWidth, int windowHeight, float timeInSecs) {
         // make it point 45-degrees up from straight-down, up toward -z
         Vec3 dir(0.f, -1.f, -1.f);
         dir.Normalize();
-        dirLight.Set(dir, Vec3(0.2f, 0.2f, 0.2f), Vec3(1.f, 1.f, 1.f));
+        dirLight.Set(dir, Vec3(0.1f, 0.1f, 0.1f), Vec3(1.f, 1.f, 1.f));
     }
 
     Mat4 viewProjTransform = GetViewProjTransform();
@@ -672,7 +695,10 @@ void Scene::Draw(int windowWidth, int windowHeight, float timeInSecs) {
     // TERRAIN
 #if DRAW_TERRAIN   
     {
-        Mat4 const transMat;
+        Mat4 transMat;
+        Vec3 cameraPos = _camera._transform.GetPos();
+        Vec3 cameraPosToTerrainPos(-10.f, -15.f, -5.8f);
+        transMat.SetTranslation(cameraPos + cameraPosToTerrainPos);
         Mat3 modelTransInv;
         assert(transMat.GetMat3().TransposeInverse(modelTransInv));
 
@@ -682,8 +708,17 @@ void Scene::Draw(int windowWidth, int windowHeight, float timeInSecs) {
         shader.SetMat4("uMvpTrans", viewProjTransform * transMat);
         shader.SetMat4("uModelTrans", transMat);
         shader.SetMat3("uModelInvTrans", modelTransInv);
-        shader.SetVec4("uColor", Vec4(0.f, 0.f, 1.f, 1.f));
-        shader.SetFloat("uTime", timeInSecs);
+        shader.SetVec4("uColor", Vec4(50.f/255.f, 80.f/255.f, 80.f/255.f, 1.f));
+        Vec3 offset(cameraPos._x, 0.f, cameraPos._z);
+        shader.SetVec3("uOffset", offset);
+        shader.SetInt("uNormalMap", 0);
+        unsigned int textureId = _pInternal->_textureIdMap.at("perlin_noise_normal");
+        glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_2D, textureId);
+        shader.SetInt("uHeightMap", 1);
+        textureId = _pInternal->_textureIdMap.at("perlin_noise");
+        glActiveTexture(GL_TEXTURE1);
+        glBindTexture(GL_TEXTURE_2D, textureId);
         BoundMeshPNU const* waterMesh = GetMesh("water");
         glBindVertexArray(waterMesh->_vao);
         glDrawElements(GL_TRIANGLES, /*count=*/waterMesh->_numIndices, GL_UNSIGNED_INT, /*start_offset=*/0);

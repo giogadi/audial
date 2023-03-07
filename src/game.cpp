@@ -205,6 +205,21 @@ void MaybeToggleMute(float dt) {
     }
 }
 
+void ShutDown(audio::Context& audioContext, SoundBank& soundBank) {
+    ImGui_ImplOpenGL3_Shutdown();
+    ImGui_ImplGlfw_Shutdown();
+    ImGui::DestroyContext();
+
+    glfwTerminate();
+
+    // NOTE: Do not use BeatClock after shutting down audio.
+    if (audio::ShutDown(audioContext) != paNoError) {
+        printf("Error in shutting down Audio!\n");
+    }
+
+    soundBank.Destroy();
+}
+
 int main(int argc, char** argv) {
     CommandLineInputs cmdLineInputs;
     ParseCommandLine(cmdLineInputs, argc, argv);
@@ -283,6 +298,7 @@ int main(int argc, char** argv) {
         }
 
         if (audio::Init(audioContext, patches, soundBank) != paNoError) {
+            ShutDown(audioContext, soundBank);
             return 1;
         }
     }
@@ -302,6 +318,7 @@ int main(int argc, char** argv) {
 
     if (!sceneManager.Init(gGameManager)) {
         std::cout << "scene failed to init. exiting" << std::endl;
+        ShutDown(audioContext, soundBank);
         return 1;
     }
 
@@ -317,6 +334,7 @@ int main(int argc, char** argv) {
         if (!pt.LoadFromFile(cmdLineInputs._scriptFilename->c_str())) {
             printf("Script ptree load failed. Exiting.\n");
             pt.DeleteData();
+            ShutDown(audioContext, soundBank);
             return 1;
         }
 
@@ -348,6 +366,7 @@ int main(int argc, char** argv) {
         pt.DeleteData();
     } else {
         printf("ERROR: TODO NEED TO SUPPLY A HARDCODED TEST SCRIPT\n");
+        ShutDown(audioContext, soundBank);
         return 1;
         // std::cout << "loading hardcoded script" << std::endl;
         // beatClock.Init(/*bpm=*/120.0, /*sampleRate=*/SAMPLE_RATE, audioContext._stream);
@@ -469,18 +488,20 @@ int main(int argc, char** argv) {
         neEntityManager.DestroyTaggedEntities(gGameManager);
     }
 
-    ImGui_ImplOpenGL3_Shutdown();
-    ImGui_ImplGlfw_Shutdown();
-    ImGui::DestroyContext();
+    ShutDown(audioContext, soundBank);
 
-    glfwTerminate();
+    // ImGui_ImplOpenGL3_Shutdown();
+    // ImGui_ImplGlfw_Shutdown();
+    // ImGui::DestroyContext();
 
-    // NOTE: Do not use BeatClock after shutting down audio.
-    if (audio::ShutDown(audioContext) != paNoError) {
-        return 1;
-    }
+    // glfwTerminate();
 
-    soundBank.Destroy();
+    // // NOTE: Do not use BeatClock after shutting down audio.
+    // if (audio::ShutDown(audioContext) != paNoError) {
+    //     return 1;
+    // }
+
+    // soundBank.Destroy();
 
     return 0;
 }
