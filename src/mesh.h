@@ -31,3 +31,16 @@ public:
     };
     std::vector<SubMesh> _subMeshes;
 };
+
+struct BoundMeshPBA {
+    // ppp bbb a
+    static int constexpr kNumValuesPerVertex = 7;
+
+    bool Init(char const* objFilename);
+
+    unsigned int _vao = 0;
+    unsigned int _vbo = 0;
+    unsigned int _ebo = 0;
+    int _numVerts = -1;
+    int _numIndices = -1;
+};

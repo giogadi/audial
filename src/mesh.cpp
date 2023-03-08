@@ -105,3 +105,91 @@ bool BoundMeshPNU::Init(char const* objFilename) {
 
     return true;
 }
+
+bool BoundMeshPBA::Init(char const* objFilename) {
+    objl::Loader loader;
+    bool success = loader.LoadFile(objFilename);
+    if (!success) {
+        return false;
+    }
+
+    if (loader.LoadedMeshes.size() != 1) {
+        printf("BoundMeshPBA: ERROR, I can only handle one mesh right now! (found %zu meshes)\n", loader.LoadedMeshes.size());
+        return false;
+    }
+
+    objl::Mesh const& mesh = loader.LoadedMeshes.front();
+
+    if (mesh.Indices.size() % 3 != 0) {
+        printf("BoundMeshPBA: ERROR, imported mesh did not have # indices divisible by 3! Num indices: %zu\n", mesh.Indices.size());
+        return false;
+    }
+
+    int const numTriangles = mesh.Indices.size() / 3;
+    std::vector<float> vertexData;
+    vertexData.reserve(numTriangles * 3 * kNumValuesPerVertex);
+
+    std::vector<uint32_t> indexData;
+    indexData.reserve(numTriangles * 3);
+
+    Vec3 baryCoords[3] = {
+        Vec3(1.f, 0.f, 0.f),
+        Vec3(0.f, 1.f, 0.f),
+        Vec3(0.f, 0.f, 1.f)
+    };
+    for (int triangleIx = 0; triangleIx < numTriangles; ++triangleIx) {
+        Vec3 verts[3];
+        for (int i = 0; i < 3; ++i) {
+            int vIdx = mesh.Indices[3*triangleIx + i];
+            auto const& meshV = mesh.Vertices[vIdx];
+            verts[i].Set(meshV.Position.X, meshV.Position.Y, meshV.Position.Z);
+        }
+        Vec3 u = verts[1] - verts[0];
+        Vec3 v = verts[2] - verts[0];
+        float triangleArea = 0.5f * Vec3::Cross(u,v).Length();
+
+        for (int i = 0; i < 3; ++i) {
+            vertexData.push_back(verts[i]._x);
+            vertexData.push_back(verts[i]._y);
+            vertexData.push_back(verts[i]._z);
+            vertexData.push_back(baryCoords[i]._x);
+            vertexData.push_back(baryCoords[i]._y);
+            vertexData.push_back(baryCoords[i]._z);
+            
+            vertexData.push_back(triangleArea);
+
+            indexData.push_back(3*triangleIx + i);
+        }
+    }
+
+    _numVerts = numTriangles * 3;
+    _numIndices = _numVerts;
+
+    glGenVertexArrays(1, &_vao);
+    glBindVertexArray(_vao);
+
+    glGenBuffers(1, &_vbo);
+    glBindBuffer(GL_ARRAY_BUFFER, _vbo);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(float) * kNumValuesPerVertex * _numVerts, vertexData.data(), GL_STATIC_DRAW);
+
+    glGenBuffers(1, &_ebo);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _ebo);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint32_t) * _numIndices, indexData.data(), GL_STATIC_DRAW);
+
+    // Position attribute
+    glVertexAttribPointer(
+        /*attributeIndex=*/0, /*numValues=*/3, /*valueType=*/GL_FLOAT, /*normalized=*/false, /*stride=*/kNumValuesPerVertex*sizeof(float), /*offsetOfFirstValue=*/(void*)0);
+    glEnableVertexAttribArray(/*attributeIndex=*/0);
+
+    // Barycentric attribute
+    glVertexAttribPointer(
+        /*attributeIndex=*/1, /*numValues=*/3, /*valueType=*/GL_FLOAT, /*normalized=*/false, /*stride=*/kNumValuesPerVertex*sizeof(float), /*offsetOfFirstValue=*/(void*)(3*sizeof(float)));
+    glEnableVertexAttribArray(/*attributeIndex=*/1);
+
+    // triangle area attribute
+    glVertexAttribPointer(
+        /*attributeIndex=*/2, /*numValues=*/1, /*valueType=*/GL_FLOAT, /*normalized=*/false, /*stride=*/kNumValuesPerVertex*sizeof(float), /*offsetOfFirstValue=*/(void*)(6*sizeof(float)));
+    glEnableVertexAttribArray(/*attributeIndex=*/2);
+
+    return true;
+}

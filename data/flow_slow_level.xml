@@ -869,9 +869,9 @@
             <pickable>true</pickable>
             <transform>
                 <pos>
-                    <x>6.71875</x>
+                    <x>6.82499981</x>
                     <y>0</y>
-                    <z>-0.765624881</z>
+                    <z>-0.812499881</z>
                 </pos>
                 <quat>
                     <x>0</x>
@@ -894,7 +894,7 @@
             </model_color_vec4>
             <text>d</text>
             <type_kill>false</type_kill>
-            <all_actions_on_hit>false</all_actions_on_hit>
+            <all_actions_on_hit>true</all_actions_on_hit>
             <flow_polarity>false</flow_polarity>
             <flow_section_id>0</flow_section_id>
             <waypoint_follower>
@@ -904,6 +904,7 @@
             </waypoint_follower>
             <hit_actions>
                 <action>change_step bass_seq 0 1 mE2-</action>
+                <action>onetime camera target:camera_target2</action>
             </hit_actions>
         </TypingEnemy>
         <FlowWall>
@@ -1034,5 +1035,34 @@
                 <action>change_step clap_seq 0 1 9:0.25</action>
             </hit_actions>
         </FlowWall>
+        <Base>
+            <name>camera_target2</name>
+            <pickable>true</pickable>
+            <transform>
+                <pos>
+                    <x>13.7000084</x>
+                    <y>15</y>
+                    <z>-0.90781337</z>
+                </pos>
+                <quat>
+                    <x>0</x>
+                    <y>0</y>
+                    <z>0</z>
+                    <w>1</w>
+                </quat>
+                <scale>
+                    <x>1</x>
+                    <y>1</y>
+                    <z>1</z>
+                </scale>
+            </transform>
+            <model_name/>
+            <model_color_vec4>
+                <x>0.800000012</x>
+                <y>0.800000012</y>
+                <z>0.800000012</z>
+                <w>1</w>
+            </model_color_vec4>
+        </Base>
     </new_entities>
 </script>

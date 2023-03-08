@@ -186,6 +186,23 @@ namespace TerrainShaderUniforms {
 };
 #endif
 
+namespace WireframeShaderUniforms {
+    enum Names {
+        uMvpTrans,
+        uColor,
+        Count
+    };
+    static char const* NameStrings[] = {
+        "uMvpTrans",
+        "uColor"
+    };
+}
+
+struct BoundingBoxInstance {
+    Mat4 _t;
+    Vec4 _color;
+};
+
 }  // namespace
 
 class SceneInternal {
@@ -207,9 +224,13 @@ public:
     std::vector<ColorModelInstance> _modelsToDraw;
     std::vector<TextInstance> _textsToDraw;
     std::vector<GlyphInstance> _glyphsToDraw;
+    std::vector<BoundingBoxInstance> _boundingBoxesToDraw;
 
     std::unordered_map<std::string, std::unique_ptr<BoundMeshPNU>> _meshMap;
     std::unordered_map<std::string, unsigned int> _textureIdMap;
+
+    BoundMeshPBA _cubeWireframeMesh;
+    
     Shader _colorShader;
     int _colorShaderUniforms[ColorShaderUniforms::Count];
     
@@ -230,6 +251,9 @@ public:
     unsigned int _textVao = 0;
     unsigned int _textVbo = 0;
     std::vector<stbtt_bakedchar> _fontCharInfo;
+
+    Shader _wireframeShader;
+    int _wireframeShaderUniforms[WireframeShaderUniforms::Count];
 
     // boring cached things
     std::vector<ColorModelInstance const*> _topLayerColorModels;
@@ -347,6 +371,13 @@ bool SceneInternal::Init(GameManager& g) {
         assert(success);
     }
 
+    {
+        bool success = _cubeWireframeMesh.Init("data/models/cube.obj");
+        if (!success) {
+            return false;
+        }
+    }
+
     if (!_colorShader.Init("shaders/shader.vert", "shaders/color.frag")) {
         return false;
     }
@@ -378,6 +409,13 @@ bool SceneInternal::Init(GameManager& g) {
 
     if (!_textShader.Init("shaders/text.vert", "shaders/text.frag")) {
         return false;
+    }
+
+    if (!_wireframeShader.Init("shaders/wireframe.vert", "shaders/wireframe.frag")) {
+        return false;
+    }
+    for (int i = 0; i < WireframeShaderUniforms::Count; ++i) {
+        _wireframeShaderUniforms[i] = _wireframeShader.GetUniformLocation(WireframeShaderUniforms::NameStrings[i]);
     }
 
     unsigned int woodboxTextureId = 0;
@@ -475,6 +513,13 @@ renderer::ColorModelInstance& Scene::DrawMesh(BoundMeshPNU const* mesh, Mat4 con
 
 renderer::ColorModelInstance& Scene::DrawCube(Mat4 const& t, Vec4 const& color) {
     return DrawMesh(_pInternal->_cubeMesh, t, color);
+}
+
+void Scene::DrawBoundingBox(Mat4 const& t, Vec4 const& color) {
+    _pInternal->_boundingBoxesToDraw.emplace_back();
+    BoundingBoxInstance& bb = _pInternal->_boundingBoxesToDraw.back();
+    bb._t = t;
+    bb._color = color;
 }
 
 void Scene::DrawText(std::string_view str, float& screenX, float& screenY, float scale, Vec4 const& colorRgba) {
@@ -671,6 +716,9 @@ void Scene::Draw(int windowWidth, int windowHeight, float timeInSecs) {
     auto& topLayerModels = _pInternal->_topLayerColorModels;
     topLayerModels.clear();
 
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
     // WATER
 #if DRAW_WATER
     {
@@ -697,7 +745,7 @@ void Scene::Draw(int windowWidth, int windowHeight, float timeInSecs) {
     {
         Mat4 transMat;
         Vec3 cameraPos = _camera._transform.GetPos();
-        Vec3 cameraPosToTerrainPos(-10.f, -15.f, -5.8f);
+        Vec3 cameraPosToTerrainPos(-10.f, -15.f, -6.f);
         transMat.SetTranslation(cameraPos + cameraPosToTerrainPos);
         Mat3 modelTransInv;
         assert(transMat.GetMat3().TransposeInverse(modelTransInv));
@@ -777,11 +825,24 @@ void Scene::Draw(int windowWidth, int windowHeight, float timeInSecs) {
     }
 #endif
 
+    // WIREFRAME
+    {        
+        Shader& shader = _pInternal->_wireframeShader;
+        shader.Use();
+        int* uniforms = _pInternal->_wireframeShaderUniforms;
+        glBindVertexArray(_pInternal->_cubeWireframeMesh._vao);
+        for (BoundingBoxInstance const& bb : _pInternal->_boundingBoxesToDraw) {
+            shader.SetMat4(uniforms[WireframeShaderUniforms::uMvpTrans], viewProjTransform * bb._t);
+            shader.SetVec4(uniforms[WireframeShaderUniforms::uColor], bb._color);
+            glDrawElements(GL_TRIANGLES, /*count=*/_pInternal->_cubeWireframeMesh._numIndices, GL_UNSIGNED_INT, 0);
+        }
+        _pInternal->_boundingBoxesToDraw.clear();
+    }
+    
+
     // TEXT RENDERING
     {
         glClear(GL_DEPTH_BUFFER_BIT);
-        glEnable(GL_BLEND);
-        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
         Mat4 projection = Mat4::Ortho(0.f, (float)_pInternal->_g->_windowWidth, 0.f, (float)_pInternal->_g->_windowHeight, -1.f, 1.f);        
 
@@ -812,8 +873,7 @@ void Scene::Draw(int windowWidth, int windowHeight, float timeInSecs) {
             glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
         }
         
-        _pInternal->_glyphsToDraw.clear();       
-        glDisable(GL_BLEND);
+        _pInternal->_glyphsToDraw.clear();
     }
 
     // TODO: maybe we should move all glClear()'s into renderer.cpp and save
@@ -855,7 +915,7 @@ void Scene::Draw(int windowWidth, int windowHeight, float timeInSecs) {
                 }
             }
         }
-    }  
+    }
 }
 
 } // namespace renderer

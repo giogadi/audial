@@ -181,6 +181,10 @@ void Editor::Update(float dt) {
         axesModel._topLayer = true;
         axesModel._useMeshColor = true;
         axesModel._transform = selectedEntity->_transform.Mat4NoScale();
+
+        Transform bbTrans = selectedEntity->_transform;
+        bbTrans.SetScale(bbTrans.Scale() + Vec3(0.1f, 0.1f, 0.1f));
+        _g->_scene->DrawBoundingBox(bbTrans.Mat4Scale(), Vec4(1.f, 1.f, 1.f, 1.f));
     }
 
     if (_visible) {
