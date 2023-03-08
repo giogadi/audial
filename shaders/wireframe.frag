@@ -8,7 +8,7 @@ uniform vec4 uColor;
 out vec4 FragColor;
 
 void main() {
-    float kEpsilon = 0.01f;
+    float kEpsilon = 0.05f;
     if (bary.x < kEpsilon || bary.y < kEpsilon || bary.z < kEpsilon) {
         FragColor = uColor;
     } else {

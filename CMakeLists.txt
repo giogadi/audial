@@ -33,6 +33,7 @@ add_executable(game
     src/renderer.cpp
     # src/collisions.cpp
     src/stb_truetype.cpp
+    src/geometry.cpp
 
     # src/properties/Test.cpp
 
@@ -65,6 +66,7 @@ add_executable(game
     src/entities/flow_player.cpp
     src/entities/flow_wall.cpp
     src/entities/flow_pickup.cpp
+    src/entities/flow_trigger.cpp
     
     src/enums/audio_EventType.cpp
     src/enums/audio_SynthParamType.cpp

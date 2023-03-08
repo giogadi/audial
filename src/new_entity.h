@@ -27,7 +27,8 @@ namespace ne {
     X(ActionSequencer) \
     X(ParamAutomator) \
     X(FlowWall) \
-    X(FlowPickup)
+    X(FlowPickup) \
+    X(FlowTrigger)
 
 enum class EntityType: int {
 #   define X(a) a,

@@ -23,6 +23,7 @@
 #include "entities/flow_player.h"
 #include "entities/flow_wall.h"
 #include "entities/flow_pickup.h"
+#include "entities/flow_trigger.h"
 
 namespace ne {
 

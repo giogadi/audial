@@ -7,6 +7,7 @@
 #include "camera.h"
 #include "math_util.h"
 #include "beat_clock.h"
+#include "geometry.h"
 
 #include "entities/flow_pickup.h"
 #include "entities/flow_wall.h"
@@ -41,158 +42,6 @@ void FlowPlayerEntity::InitDerived(GameManager& g) {
 
 namespace {
 
-#if 0
-float constexpr kEps = 0.0001f;
-
-bool SegmentBoxIntersection2d(
-    float sx0, float sy0, float sx1, float sy1, float minBoxX, float minBoxY, float maxBoxX, float maxBoxY) {
-    float dsx = sx1 - sx0;
-    float dsy = sy1 - sy0;
-    // Left side of box
-    {
-        float col_t;
-        if (std::abs(dsx) < kEps) {
-            if (sx0 >= minBoxX && sx0 <= maxBoxX) {
-                col_t = 0.f;
-            } else {
-                col_t = -1.f;
-            }
-        } else {
-            col_t = (minBoxX - sx0) / dsx;
-        }
-        if (col_t >= 0.f && col_t <= 1.f) {
-            float col_y = sy0 + col_t * dsy;
-            if (col_y >= minBoxY && col_y <= maxBoxY) {
-                return true;
-            }
-        }
-    }
-
-    // right side of box
-    {
-        float col_t;
-        if (std::abs(dsx) < kEps) {
-            if (sx0 >= minBoxX && sx0 <= maxBoxX) {
-                col_t = 0.f;
-            } else {
-                col_t = -1.f;
-            }
-        } else {
-            col_t = (maxBoxX - sx0) / dsx;
-        }
-        if (col_t >= 0.f && col_t <= 1.f) {
-            float col_y = sy0 + col_t * dsy;
-            if (col_y >= minBoxY && col_y <= maxBoxY) {
-                return true;
-            }
-        }
-    }
-
-    // bottom side of box
-    {
-        float col_t;
-        if (std::abs(dsy) < kEps) {
-            if (sy0 >= minBoxY && sy0 <= maxBoxY) {
-                col_t = 0.f;
-            } else {
-                col_t = -1.f;
-            }
-        } else {
-            col_t = (minBoxY - sy0) / dsy;
-        }
-        if (col_t >= 0.f && col_t <= 1.f) {
-            float col_x = sx0 + col_t * dsx;
-            if (col_x >= minBoxX && col_x <= maxBoxX) {
-                return true;
-            }
-        }
-    }
-
-    // top side of box
-    {
-        float col_t;
-        if (std::abs(dsy) < kEps) {
-            if (sy0 >= minBoxY && sy0 <= maxBoxY) {
-                col_t = 0.f;
-            } else {
-                col_t = -1.f;
-            }
-        } else {
-            col_t = (maxBoxY - sy0) / dsy;
-        }
-        if (col_t >= 0.f && col_t <= 1.f) {
-            float col_x = sx0 + col_t * dsx;
-            if (col_x >= minBoxX && col_x <= maxBoxX) {
-                return true;
-            }
-        }
-    }
-    
-    return false;
-}
-
-bool IsSegmentCollisionFree2D(GameManager& g, Vec3 const& playerPos, Vec3 const& enemyPos) {
-    int numEntities = 0;
-    ne::EntityManager::Iterator wallIter = g._neEntityManager->GetIterator(ne::EntityType::FlowWall, &numEntities);
-    for (; !wallIter.Finished(); wallIter.Next()) {
-        // TODO: handle rotated walls. For now we assume AABB and ignore rotation.
-        Transform const& wallTrans = wallIter.GetEntity()->_transform;
-        Vec3 const& wallPos = wallTrans.Pos();
-        Vec3 const& scale = wallTrans.Scale();
-        float wallMinX = wallPos._x - 0.5f*scale._x;
-        float wallMaxX = wallPos._x + 0.5f*scale._x;
-        float wallMinZ = wallPos._z - 0.5f*scale._z;
-        float wallMaxZ = wallPos._z + 0.5f*scale._z;
-        bool hit = SegmentBoxIntersection2d(
-            playerPos._x, playerPos._z, enemyPos._x, enemyPos._z,
-            wallMinX, wallMinZ, wallMaxX, wallMaxZ);
-        if (hit) {
-            return false;
-        }
-    }
-    return true;
-}
-#endif
-
-// Checks XZ collisions between
-// NOTE: penetration points from 2 to 1.
-// NOTE: penetration only has a value if this returns TRUE.
-bool DoAABBsOverlap(Transform const& aabb1, Transform const& aabb2, Vec3* penetration) {
-    Vec3 const& p1 = aabb1.Pos();
-    Vec3 const& p2 = aabb2.Pos();    
-    Vec3 halfScale1 = 0.5f * aabb1.Scale();
-    Vec3 halfScale2 = 0.5f * aabb2.Scale();
-    Vec3 min1 = p1 - halfScale1;
-    Vec3 min2 = p2 - halfScale2;
-    Vec3 max1 = p1 + halfScale1;
-    Vec3 max2 = p2 + halfScale2;
-    // negative is overlap
-    float maxSignedDist = std::numeric_limits<float>::lowest();
-    int maxSignedDistAxis = -1;
-    for (int i = 0; i < 3; ++i) {
-        float dist1 = min1(i) - max2(i);
-        if (dist1 > 0.f) {
-            return false;
-        }
-        float dist2 = min2(i) - max1(i);
-        if (dist2 > 0.f) {
-            return false;
-        }
-        float maxDist = std::max(dist1, dist2);
-        if (maxDist > maxSignedDist) {
-            maxSignedDistAxis = i;
-            maxSignedDist = maxDist;
-        }
-    }
-    if (penetration) {
-        assert(maxSignedDistAxis >= 0);
-        assert(maxSignedDist <= 0);
-        float sign = p1(maxSignedDistAxis) >= p2(maxSignedDistAxis) ? -1.f : 1.f;
-        (*penetration)(maxSignedDistAxis) = sign * maxSignedDist;
-    }
-    return true;
-}
-
 // penetration is offset to move player to move out of (one) collision.
 // NOTE: penetration only populated if returns true
 ne::Entity* FindOverlapWithEntityAABBNoRotate(GameManager& g, ne::EntityManager::Iterator entityIter, Transform const& playerTrans, Vec3* penetrationOut) {
@@ -200,7 +49,7 @@ ne::Entity* FindOverlapWithEntityAABBNoRotate(GameManager& g, ne::EntityManager:
         ne::Entity* pEntity = entityIter.GetEntity();
         Transform const& entityTrans = pEntity->_transform;
         Vec3 penetration;
-        bool hasOverlap = DoAABBsOverlap(playerTrans, entityTrans, &penetration);
+        bool hasOverlap = geometry::DoAABBsOverlap(playerTrans, entityTrans, &penetration);
         if (hasOverlap) {
             *penetrationOut = penetration;
             return pEntity;
@@ -384,7 +233,7 @@ ne::EntityManager::Iterator enemyIter = g._neEntityManager->GetIterator(ne::Enti
         assert(pPickup != nullptr);
         Transform const& pickupTrans = pPickup->_transform;
         Vec3 penetration;
-        bool hasOverlap = DoAABBsOverlap(_transform, pickupTrans, &penetration);
+        bool hasOverlap = geometry::DoAABBsOverlap(_transform, pickupTrans, &penetration);
         if (hasOverlap) {
             g._neEntityManager->TagForDestroy(pPickup->_id);
         }
