@@ -10,7 +10,7 @@ public:
 
     // reads and builds the shader
     // TODO: if returns false, will leak memory because it doesn't free the shaders. Just quit if this fails
-    bool Init(const char* vertexPath, const char* fragmentPath);
+    bool Init(const char* vertexPath, const char* fragmentPath, const char* geometryPath="");
     // use/activate the shader
     void Use() const;
     // utility uniform functions

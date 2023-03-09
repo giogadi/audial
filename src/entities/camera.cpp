@@ -78,6 +78,9 @@ void CameraEntity::Update(GameManager& g, float dt) {
 }
 
 ne::Entity::ImGuiResult CameraEntity::ImGuiDerived(GameManager& g) {
+    if (ImGui::Checkbox("Ortho", &_ortho)) {
+        _camera->_projectionType = _ortho ? renderer::Camera::ProjectionType::Orthographic : renderer::Camera::ProjectionType::Perspective;
+    }
     if (ImGui::Button("Move Debug Camera to This")) {
         _camera->_transform = _transform.Mat4NoScale();
     }

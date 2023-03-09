@@ -229,7 +229,7 @@ public:
     std::unordered_map<std::string, std::unique_ptr<BoundMeshPNU>> _meshMap;
     std::unordered_map<std::string, unsigned int> _textureIdMap;
 
-    BoundMeshPBA _cubeWireframeMesh;
+    BoundMeshPB _cubeWireframeMesh;
     
     Shader _colorShader;
     int _colorShaderUniforms[ColorShaderUniforms::Count];
@@ -411,7 +411,7 @@ bool SceneInternal::Init(GameManager& g) {
         return false;
     }
 
-    if (!_wireframeShader.Init("shaders/wireframe.vert", "shaders/wireframe.frag")) {
+    if (!_wireframeShader.Init("shaders/wireframe.vert", "shaders/wireframe.frag", "shaders/wireframe.geom")) {
         return false;
     }
     for (int i = 0; i < WireframeShaderUniforms::Count; ++i) {
@@ -826,7 +826,13 @@ void Scene::Draw(int windowWidth, int windowHeight, float timeInSecs) {
 #endif
 
     // WIREFRAME
-    {        
+    {
+        // For wireframes, we want to draw backfaces and we want to respect the
+        // depth buffer, but we don't want the wireframe to actually update the
+        // depth buffer!
+        glDisable(GL_CULL_FACE);
+        glDepthMask(GL_FALSE);
+        
         Shader& shader = _pInternal->_wireframeShader;
         shader.Use();
         int* uniforms = _pInternal->_wireframeShaderUniforms;
@@ -837,6 +843,9 @@ void Scene::Draw(int windowWidth, int windowHeight, float timeInSecs) {
             glDrawElements(GL_TRIANGLES, /*count=*/_pInternal->_cubeWireframeMesh._numIndices, GL_UNSIGNED_INT, 0);
         }
         _pInternal->_boundingBoxesToDraw.clear();
+
+        glEnable(GL_CULL_FACE);
+        glDepthMask(GL_TRUE);
     }
     
 

@@ -32,9 +32,9 @@ public:
     std::vector<SubMesh> _subMeshes;
 };
 
-struct BoundMeshPBA {
-    // ppp bbb a
-    static int constexpr kNumValuesPerVertex = 7;
+struct BoundMeshPB {
+    // ppp bbb
+    static int constexpr kNumValuesPerVertex = 6;
 
     bool Init(char const* objFilename);
 

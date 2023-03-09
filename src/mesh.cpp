@@ -106,7 +106,7 @@ bool BoundMeshPNU::Init(char const* objFilename) {
     return true;
 }
 
-bool BoundMeshPBA::Init(char const* objFilename) {
+bool BoundMeshPB::Init(char const* objFilename) {
     objl::Loader loader;
     bool success = loader.LoadFile(objFilename);
     if (!success) {
@@ -114,14 +114,14 @@ bool BoundMeshPBA::Init(char const* objFilename) {
     }
 
     if (loader.LoadedMeshes.size() != 1) {
-        printf("BoundMeshPBA: ERROR, I can only handle one mesh right now! (found %zu meshes)\n", loader.LoadedMeshes.size());
+        printf("BoundMeshPB: ERROR, I can only handle one mesh right now! (found %zu meshes)\n", loader.LoadedMeshes.size());
         return false;
     }
 
     objl::Mesh const& mesh = loader.LoadedMeshes.front();
 
     if (mesh.Indices.size() % 3 != 0) {
-        printf("BoundMeshPBA: ERROR, imported mesh did not have # indices divisible by 3! Num indices: %zu\n", mesh.Indices.size());
+        printf("BoundMeshPB: ERROR, imported mesh did not have # indices divisible by 3! Num indices: %zu\n", mesh.Indices.size());
         return false;
     }
 
@@ -143,20 +143,16 @@ bool BoundMeshPBA::Init(char const* objFilename) {
             int vIdx = mesh.Indices[3*triangleIx + i];
             auto const& meshV = mesh.Vertices[vIdx];
             verts[i].Set(meshV.Position.X, meshV.Position.Y, meshV.Position.Z);
-        }
-        Vec3 u = verts[1] - verts[0];
-        Vec3 v = verts[2] - verts[0];
-        float triangleArea = 0.5f * Vec3::Cross(u,v).Length();
+        }       
 
         for (int i = 0; i < 3; ++i) {
             vertexData.push_back(verts[i]._x);
             vertexData.push_back(verts[i]._y);
             vertexData.push_back(verts[i]._z);
+
             vertexData.push_back(baryCoords[i]._x);
             vertexData.push_back(baryCoords[i]._y);
             vertexData.push_back(baryCoords[i]._z);
-            
-            vertexData.push_back(triangleArea);
 
             indexData.push_back(3*triangleIx + i);
         }
@@ -185,11 +181,6 @@ bool BoundMeshPBA::Init(char const* objFilename) {
     glVertexAttribPointer(
         /*attributeIndex=*/1, /*numValues=*/3, /*valueType=*/GL_FLOAT, /*normalized=*/false, /*stride=*/kNumValuesPerVertex*sizeof(float), /*offsetOfFirstValue=*/(void*)(3*sizeof(float)));
     glEnableVertexAttribArray(/*attributeIndex=*/1);
-
-    // triangle area attribute
-    glVertexAttribPointer(
-        /*attributeIndex=*/2, /*numValues=*/1, /*valueType=*/GL_FLOAT, /*normalized=*/false, /*stride=*/kNumValuesPerVertex*sizeof(float), /*offsetOfFirstValue=*/(void*)(6*sizeof(float)));
-    glEnableVertexAttribArray(/*attributeIndex=*/2);
 
     return true;
 }

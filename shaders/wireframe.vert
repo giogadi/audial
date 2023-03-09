@@ -2,16 +2,15 @@
 
 layout (location = 0) in vec3 aPos;
 layout (location = 1) in vec3 aBary;
-layout (location = 2) in float aArea;
 
 uniform mat4 uMvpTrans;
 uniform vec4 uColor;
 
-out vec3 bary;
-out float area;
+out VS_OUT {
+    vec3 bary;
+} vs_out;
 
 void main() {
     gl_Position = uMvpTrans * vec4(aPos.xyz, 1.f);
-    bary = aBary;
-    area = aArea;
+    vs_out.bary = aBary;
 }
