@@ -22,6 +22,8 @@ void FlowWallEntity::InitDerived(GameManager& g) {
     }
 
     _currentColor = _modelColor;
+
+    _meshId = g._scene->LoadPolygon2d(_polygon);
 }
 
 void FlowWallEntity::Update(GameManager& g, float dt) {
@@ -48,21 +50,24 @@ void FlowWallEntity::Update(GameManager& g, float dt) {
         _currentColor = kFadeColor + fadeFactor * (_modelColor - kFadeColor);
     }
 
-    // BaseEntity::Update(g, dt);
-    if (_model != nullptr) {
+    if (renderer::ColorModelInstance* model = g._scene->DrawMesh(_meshId)) {
+        model->_transform = _transform.Mat4Scale();
+        model->_color = _currentColor;
+    } else if (_model != nullptr) {
         g._scene->DrawMesh(_model, _transform.Mat4Scale(), _currentColor);
     }
+
 }
 
 void FlowWallEntity::SaveDerived(serial::Ptree pt) const {
     _wpFollower.Save(pt);
-
+    serial::SaveVectorInChildNode(pt, "polygon", "point", _polygon);
     serial::SaveVectorInChildNode(pt, "hit_actions", "action", _hitActionStrings);   
 }
 
 void FlowWallEntity::LoadDerived(serial::Ptree pt) {
     _wpFollower.Load(pt);
-
+    serial::LoadVectorFromChildNode(pt, "polygon", _polygon);
     serial::LoadVectorFromChildNode(pt, "hit_actions", _hitActionStrings);
 }
 
@@ -71,6 +76,10 @@ FlowWallEntity::ImGuiResult FlowWallEntity::ImGuiDerived(GameManager& g)  {
     
     if (ImGui::CollapsingHeader("Waypoints")) {
         _wpFollower.ImGui();
+    }
+
+    if (ImGui::CollapsingHeader("Polygon")) {
+        imgui_util::InputVector(_polygon);        
     }
 
     if (ImGui::CollapsingHeader("Hit actions")) {

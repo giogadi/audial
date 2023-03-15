@@ -937,6 +937,7 @@
             <waypoint_auto_start>false</waypoint_auto_start>
             <loop_waypoints>false</loop_waypoints>
             <waypoints/>
+            <polygon/>
             <hit_actions>
                 <action>change_step clap_seq 0 1 9:0.25</action>
             </hit_actions>
@@ -1030,6 +1031,7 @@
             <waypoint_auto_start>false</waypoint_auto_start>
             <loop_waypoints>false</loop_waypoints>
             <waypoints/>
+            <polygon/>
             <hit_actions>
                 <action>change_step clap_seq 0 1 9:0.25</action>
             </hit_actions>
@@ -1095,5 +1097,57 @@
                 <action>onetime camera target:camera_target2</action>
             </actions>
         </FlowTrigger>
+        <FlowWall>
+            <name>wall (copy)</name>
+            <pickable>true</pickable>
+            <transform>
+                <pos>
+                    <x>0.03125</x>
+                    <y>0</y>
+                    <z>-0.7734375</z>
+                </pos>
+                <quat>
+                    <x>0</x>
+                    <y>0</y>
+                    <z>0</z>
+                    <w>1</w>
+                </quat>
+                <scale>
+                    <x>1</x>
+                    <y>1</y>
+                    <z>1</z>
+                </scale>
+            </transform>
+            <model_name>cube</model_name>
+            <model_color_vec4>
+                <x>0.800000012</x>
+                <y>0.800000012</y>
+                <z>0.800000012</z>
+                <w>1</w>
+            </model_color_vec4>
+            <waypoint_auto_start>false</waypoint_auto_start>
+            <loop_waypoints>false</loop_waypoints>
+            <waypoints/>
+            <polygon>
+                <point>
+                    <x>1</x>
+                    <y>0</y>
+                    <z>1</z>
+                </point>
+                <point>
+                    <x>0</x>
+                    <y>0</y>
+                    <z>-1</z>
+                </point>
+                <point>
+                    <x>-1</x>
+                    <y>0</y>
+                    <z>1</z>
+                </point>
+            </polygon>
+            <hit_actions>
+                <action>change_step clap_seq 0 1 9:0.25</action>
+            </hit_actions>
+        </FlowWall>
     </new_entities>
 </script>

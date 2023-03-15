@@ -120,13 +120,22 @@ public:
     TexturedModelInstance* GetTexturedModelInstance(VersionId id);
     bool RemoveTexturedModelInstance(VersionId id);
 
+    // Returns ID to be used for drawing and deleting
+    struct MeshId {
+        int _id = -1;
+    };
+    MeshId LoadPolygon2d(std::vector<Vec3> const& points);
+    // bool UnloadPolygon2d(MeshId id);
+
     void Draw(int windowWidth, int windowHeight, float timeInSecs);
 
     BoundMeshPNU const* GetMesh(std::string const& meshName) const;
     // TODO: inline or remove some of the call depth here
-    renderer::ColorModelInstance& DrawMesh(BoundMeshPNU const* m, Mat4 const& t, Vec4 const& color);
-    renderer::ColorModelInstance& DrawMesh();
-    renderer::ColorModelInstance& DrawCube(Mat4 const& t, Vec4 const& color);
+    ColorModelInstance& DrawMesh(BoundMeshPNU const* m, Mat4 const& t, Vec4 const& color);
+    ColorModelInstance& DrawMesh();
+    ColorModelInstance& DrawCube(Mat4 const& t, Vec4 const& color);
+
+    ColorModelInstance* DrawMesh(MeshId id);
 
     void DrawBoundingBox(Mat4 const& t, Vec4 const& color);
 

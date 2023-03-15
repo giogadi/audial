@@ -3,17 +3,20 @@
 #include "new_entity.h"
 #include "waypoint_follower.h"
 #include "seq_action.h"
+#include "renderer.h"
 
 struct FlowWallEntity : public ne::Entity {
     // serialized
     WaypointFollower _wpFollower;
     double _wpArriveTime = 4.0;
     std::vector<std::string> _hitActionStrings;
+    std::vector<Vec3> _polygon;
 
     // non-serialized
     std::vector<std::unique_ptr<SeqAction>> _hitActions;
     double _timeOfLastHit = -1.0;
     Vec4 _currentColor;
+    renderer::Scene::MeshId _meshId;
 
     void OnHit(GameManager& g);
        

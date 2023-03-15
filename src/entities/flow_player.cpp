@@ -44,12 +44,32 @@ namespace {
 
 // penetration is offset to move player to move out of (one) collision.
 // NOTE: penetration only populated if returns true
+// ne::Entity* FindOverlapWithEntityAABBNoRotate(GameManager& g, ne::EntityManager::Iterator entityIter, Transform const& playerTrans, Vec3* penetrationOut) {
+//     for (; !entityIter.Finished(); entityIter.Next()) {
+//         ne::Entity* pEntity = entityIter.GetEntity();
+//         Transform const& entityTrans = pEntity->_transform;
+//         Vec3 penetration;
+//         bool hasOverlap = geometry::DoAABBsOverlap(playerTrans, entityTrans, &penetration);
+//         if (hasOverlap) {
+//             *penetrationOut = penetration;
+//             return pEntity;
+//         }
+//     }
+//     return nullptr;
+// }
+
 ne::Entity* FindOverlapWithEntityAABBNoRotate(GameManager& g, ne::EntityManager::Iterator entityIter, Transform const& playerTrans, Vec3* penetrationOut) {
+    std::vector<Vec3> polygon(4);
     for (; !entityIter.Finished(); entityIter.Next()) {
         ne::Entity* pEntity = entityIter.GetEntity();
         Transform const& entityTrans = pEntity->_transform;
+        Vec3 halfScale = entityTrans.Scale() * 0.5f + 0.5f * playerTrans.Scale();
+        polygon[0].Set(halfScale._x, 0.f, halfScale._z);
+        polygon[1].Set(halfScale._x, 0.f, -halfScale._z);
+        polygon[2].Set(-halfScale._x, 0.f, -halfScale._z);
+        polygon[3].Set(-halfScale._x, 0.f, halfScale._z);
         Vec3 penetration;
-        bool hasOverlap = geometry::DoAABBsOverlap(playerTrans, entityTrans, &penetration);
+        bool hasOverlap = geometry::PointInConvexPolygon2D(playerTrans.Pos(), polygon, entityTrans.Pos(), /*polyRotRad=*/0.f, Vec3(1.f, 1.f, 1.f), &penetration);       
         if (hasOverlap) {
             *penetrationOut = penetration;
             return pEntity;
@@ -57,7 +77,37 @@ ne::Entity* FindOverlapWithEntityAABBNoRotate(GameManager& g, ne::EntityManager:
     }
     return nullptr;
 }
+
+FlowWallEntity* FindOverlapWithWall(GameManager& g, Transform const& playerTrans, Vec3* penetrationOut) {
+    ne::EntityManager::Iterator wallIter = g._neEntityManager->GetIterator(ne::EntityType::FlowWall);
+    std::vector<Vec3> aabbPoly(4);
+    for (; !wallIter.Finished(); wallIter.Next()) {
+        FlowWallEntity* pWall = static_cast<FlowWallEntity*>(wallIter.GetEntity());
+        Transform const& wallTrans = pWall->_transform;
+        Vec3 euler = wallTrans.Quat().EulerAngles();
+        float yRot = euler._x;
+        Vec3 penetration;
+        bool hasOverlap = false;
+        if (pWall->_polygon.size() < 3) {
+            Vec3 halfScale = wallTrans.Scale() * 0.5f + 0.5f * playerTrans.Scale();
+            aabbPoly[0].Set(halfScale._x, 0.f, halfScale._z);
+            aabbPoly[1].Set(halfScale._x, 0.f, -halfScale._z);
+            aabbPoly[2].Set(-halfScale._x, 0.f, -halfScale._z);
+            aabbPoly[3].Set(-halfScale._x, 0.f, halfScale._z);
+            
+            hasOverlap = geometry::PointInConvexPolygon2D(playerTrans.Pos(), aabbPoly, wallTrans.Pos(), yRot, Vec3(1.f, 1.f, 1.f), &penetration);            
+        } else {
+            hasOverlap = geometry::PointInConvexPolygon2D(playerTrans.Pos(), pWall->_polygon, wallTrans.Pos(), yRot, Vec3(1.f, 1.f, 1.f) + playerTrans.Scale() * 0.5f, &penetration);
+        }
+        if (hasOverlap) {
+            *penetrationOut = penetration;
+            return pWall;
+        }
+    }
+    return nullptr;
 }
+
+}  // namespace
 
 void FlowPlayerEntity::Draw(GameManager& g) {
     // Draw history positions
@@ -149,6 +199,7 @@ ne::EntityManager::Iterator enemyIter = g._neEntityManager->GetIterator(ne::Enti
         _vel = toEnemyDir * (sign * _launchVel);
         _dashTimer = 0.f;
         _dashTargetId = nearest->_id;
+        _applyGravityDuringDash = false;
 
         if (nearest->_flowSectionId != _currentSectionId) {
             // go through and destroy all enemies with the current section id
@@ -168,8 +219,12 @@ ne::EntityManager::Iterator enemyIter = g._neEntityManager->GetIterator(ne::Enti
         _vel._x = math_util::Clamp(_vel._x, -_maxHorizSpeedAfterDash, _maxHorizSpeedAfterDash);
         _vel._z = 0.f;
         _dashTimer = -1.f;
+        _dashTargetId = ne::EntityId();
+        if (_applyGravityDuringDash) {
+            _vel += _gravity * dt;
+        }
     } else if (_dashTimer >= 0.f) {
-        // Check if we've "passed" the dash target. If so, shorten the dash time..
+        // Check if we've "passed" the dash target. If so, shorten the dash time.
         if (ne::Entity* dashTarget = g._neEntityManager->GetEntity(_dashTargetId)) {
             Vec3 playerPos = _transform.Pos();
             Vec3 targetPos = dashTarget->_transform.Pos();
@@ -187,6 +242,13 @@ ne::EntityManager::Iterator enemyIter = g._neEntityManager->GetIterator(ne::Enti
     } else {
         // Not dashing. Apply gravity.
         _vel += _gravity * dt;
+
+        // Push velocities back toward max vel if we stray past them
+        // float desiredXVel = math_util::Clamp(_vel._x, -_maxHorizSpeedAfterDash, _maxHorizSpeedAfterDash);
+        // _vel._x = _vel._x + 0.1f * (desiredXVel - _vel._x);
+        
+        // float desiredZVel = math_util::Clamp(_vel._z, -10.f, 10.f);
+        // _vel._z = _vel._z + 0.1f * (desiredZVel - _vel._z);
     }
 
     Vec3 p = _transform.GetPos();
@@ -209,12 +271,11 @@ ne::EntityManager::Iterator enemyIter = g._neEntityManager->GetIterator(ne::Enti
 
     // Check collisions between p and walls    
     Vec3 penetration;
-    ne::EntityManager::Iterator wallIter = g._neEntityManager->GetIterator(ne::EntityType::FlowWall);
-    FlowWallEntity* pHitWall = static_cast<FlowWallEntity*>(FindOverlapWithEntityAABBNoRotate(g, wallIter, _transform, &penetration));
+    FlowWallEntity* pHitWall = FindOverlapWithWall(g, _transform, &penetration);
     if (pHitWall != nullptr) {
         // Respawn(g);
         pHitWall->OnHit(g);
-        p += penetration;
+        p += penetration * 1.1f;  // Add some padding to ensure we're outta collision
         Vec3 collNormal = penetration.GetNormalized();
         Vec3 newVel = -_vel;
         // reflect across coll normal
@@ -222,8 +283,20 @@ ne::EntityManager::Iterator enemyIter = g._neEntityManager->GetIterator(ne::Enti
         Vec3 normalPart = newVel - tangentPart;
         newVel -= 2 * normalPart;
 
+        // after bounce, ensure we have some velocity in the collision normal
+        float constexpr kMinBounceSpeed = 20.f;
+        float speedAlongNormal = Vec3::Dot(newVel, collNormal);
+        if (speedAlongNormal < kMinBounceSpeed) {
+            Vec3 correction = (kMinBounceSpeed - speedAlongNormal) * collNormal;
+            newVel += correction;
+        }       
+
         _transform.SetTranslation(p);
         _vel = newVel;
+
+        // Pretend it's a new dash with gravity applied
+        _dashTimer = 0.5f * _dashTime;
+        _applyGravityDuringDash = false;
     }
 
     // Check if we hit any pickups

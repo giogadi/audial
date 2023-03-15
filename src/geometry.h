@@ -1,5 +1,7 @@
 #pragma once
 
+#include <vector>
+
 #include "transform.h"
 #include "game_manager.h"
 #include "new_entity.h"
@@ -16,5 +18,8 @@ bool IsSegmentCollisionFree2D(GameManager& g, Vec3 const& playerPos, Vec3 const&
 // NOTE: penetration points from 2 to 1.
 // NOTE: penetration only has a value if this returns TRUE.
 bool DoAABBsOverlap(Transform const& aabb1, Transform const& aabb2, Vec3* penetration);
+
+// Assume convexPoly is convex and points are in CCW order. Ignores y-coords of inputs. penetration points OUT of polygon.
+bool PointInConvexPolygon2D(Vec3 const& queryP, std::vector<Vec3> const& convexPoly, Vec3 const& polyPos, float polyRotRad, Vec3 const& polyScale, Vec3* penetration);
 
 }  // namespace geometry

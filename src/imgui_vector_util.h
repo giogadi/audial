@@ -37,6 +37,11 @@ inline bool ImGuiElement<std::string>(std::string& v) {
     return imgui_util::InputText<128>("", &v);
 }
 
+template <>
+inline bool ImGuiElement<Vec3>(Vec3& v) {
+    return imgui_util::InputVec3("", &v);
+}
+
 template <typename T>
 inline bool InputVector(std::vector<T>& v) {
     bool changed = false;

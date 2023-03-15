@@ -203,6 +203,12 @@ struct BoundingBoxInstance {
     Vec4 _color;
 };
 
+struct Polygon2dInstance {
+    Mat4 _t;
+    Vec4 _color;
+    BoundMeshPNU const* _mesh = nullptr;
+};
+
 }  // namespace
 
 class SceneInternal {
@@ -225,9 +231,12 @@ public:
     std::vector<TextInstance> _textsToDraw;
     std::vector<GlyphInstance> _glyphsToDraw;
     std::vector<BoundingBoxInstance> _boundingBoxesToDraw;
+    std::vector<Polygon2dInstance> _polygonsToDraw;
 
-    std::unordered_map<std::string, std::unique_ptr<BoundMeshPNU>> _meshMap;
+    std::unordered_map<std::string, std::unique_ptr<BoundMeshPNU>> _meshMap;    
     std::unordered_map<std::string, unsigned int> _textureIdMap;
+    std::vector<std::pair<Scene::MeshId, std::unique_ptr<BoundMeshPNU>>> _dynLoadedMeshes;
+    int _nextMeshId = 0;
 
     BoundMeshPB _cubeWireframeMesh;
     
@@ -254,6 +263,8 @@ public:
 
     Shader _wireframeShader;
     int _wireframeShaderUniforms[WireframeShaderUniforms::Count];
+
+    
 
     // boring cached things
     std::vector<ColorModelInstance const*> _topLayerColorModels;
@@ -502,6 +513,17 @@ renderer::ColorModelInstance& Scene::DrawMesh() {
     return _pInternal->_modelsToDraw.back();
 }
 
+renderer::ColorModelInstance* Scene::DrawMesh(MeshId id) {
+    for (auto const& entry : _pInternal->_dynLoadedMeshes) {
+        if (entry.first._id == id._id) {
+            renderer::ColorModelInstance* model = &(_pInternal->_modelsToDraw.emplace_back());
+            model->_mesh = entry.second.get();
+            return model;
+        }
+    }
+    return nullptr;
+}
+
 renderer::ColorModelInstance& Scene::DrawMesh(BoundMeshPNU const* mesh, Mat4 const& t, Vec4 const& color) {
     ColorModelInstance& model = DrawMesh();
     model._transform = t;
@@ -593,6 +615,64 @@ bool Scene::RemoveTexturedModelInstance(VersionId id) {
     return _pInternal->_texturedModelInstances.RemoveItem(id);
 }
 
+Scene::MeshId Scene::LoadPolygon2d(std::vector<Vec3> const& points) {
+    if (points.size() < 3) {
+        return MeshId();
+    }
+    _pInternal->_dynLoadedMeshes.emplace_back();
+    auto& entry = _pInternal->_dynLoadedMeshes.back();
+    entry.first._id = _pInternal->_nextMeshId++;
+
+    Vec3 centroid(0.f, 0.f, 0.f);
+    for (Vec3 const& p : points) {
+        centroid += p;
+    }
+    centroid = centroid / points.size();
+
+    std::vector<float> vertexData;
+    vertexData.reserve((points.size() + 1) * BoundMeshPNU::kNumValuesPerVertex);
+
+    std::vector<uint32_t> indexData;
+    indexData.reserve(points.size() + 2);
+
+    vertexData.push_back(centroid._x);
+    vertexData.push_back(centroid._y);
+    vertexData.push_back(centroid._z);
+
+    vertexData.push_back(0.f);
+    vertexData.push_back(1.f);
+    vertexData.push_back(0.f);
+
+    vertexData.push_back(0.f);
+    vertexData.push_back(0.f);
+
+    indexData.push_back(0);
+    
+    for (Vec3 const& p : points) {
+        vertexData.push_back(p._x);
+        vertexData.push_back(p._y);
+        vertexData.push_back(p._z);
+
+        vertexData.push_back(0.f);
+        vertexData.push_back(1.f);
+        vertexData.push_back(0.f);
+
+        vertexData.push_back(0.f);
+        vertexData.push_back(0.f);
+
+        indexData.push_back(indexData.size());
+    }
+
+    // One more index to close the loop
+    indexData.push_back(1);
+
+    entry.second = std::make_unique<BoundMeshPNU>();
+    entry.second->Init(vertexData.data(), points.size() + 1, indexData.data(), indexData.size());
+    entry.second->_useTriangleFan = true;
+
+    return entry.first;
+}
+
 Mat4 Scene::GetViewProjTransform() const {
     float aspectRatio = (float)_pInternal->_g->_windowWidth / _pInternal->_g->_windowHeight;
     Mat4 viewProjTransform;
@@ -679,7 +759,11 @@ void DrawColorModelInstance(SceneInternal& internal, Mat4 const& viewProjTransfo
     if (m._mesh->_subMeshes.size() == 0) {
         internal._colorShader.SetVec4(internal._colorShaderUniforms[ColorShaderUniforms::uColor], m._color);
         glBindVertexArray(m._mesh->_vao);
-        glDrawElements(GL_TRIANGLES, /*count=*/m._mesh->_numIndices, GL_UNSIGNED_INT, /*start_offset=*/0);
+        GLenum mode = GL_TRIANGLES;
+        if (m._mesh->_useTriangleFan) {
+            mode = GL_TRIANGLE_FAN;
+        }
+        glDrawElements(mode, /*count=*/m._mesh->_numIndices, GL_UNSIGNED_INT, /*start_offset=*/0);
     } else {
         if (!m._useMeshColor) {
             internal._colorShader.SetVec4(internal._colorShaderUniforms[ColorShaderUniforms::uColor], m._color);
@@ -796,7 +880,23 @@ void Scene::Draw(int windowWidth, int windowHeight, float timeInSecs) {
             ColorModelInstance const* m = _pInternal->_colorModelInstances.GetItemAtIndex(modelIx);
             DrawColorModelInstance(*_pInternal, viewProjTransform, *m);
         }
-    }    
+    }
+
+    // Polygons (immediate API)
+    {
+        Shader& shader = _pInternal->_colorShader;
+        shader.Use();
+        SetLightUniformsColorShader(*_pInternal);
+        for (Polygon2dInstance const& poly : _pInternal->_polygonsToDraw) {
+            _pInternal->_colorShader.SetMat4(_pInternal->_colorShaderUniforms[ColorShaderUniforms::uMvpTrans], viewProjTransform * poly._t);
+            _pInternal->_colorShader.SetMat4(_pInternal->_colorShaderUniforms[ColorShaderUniforms::uModelTrans], poly._t);
+            Mat3 modelTransInv;
+            bool success = poly._t.GetMat3().TransposeInverse(modelTransInv);
+            assert(success);
+            _pInternal->_colorShader.SetMat3(_pInternal->_colorShaderUniforms[ColorShaderUniforms::uModelInvTrans], modelTransInv);
+            
+        }
+    }
 
     // Textured models
 #if 0    

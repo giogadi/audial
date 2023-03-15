@@ -24,6 +24,8 @@ public:
     int _numVerts = -1;
     int _numIndices = -1;
 
+    bool _useTriangleFan = false;
+
     struct SubMesh {
         int _startIndex;  // index into the index buffer (not the vertex buffer)
         int _numIndices;

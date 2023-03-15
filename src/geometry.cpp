@@ -152,4 +152,50 @@ bool DoAABBsOverlap(Transform const& aabb1, Transform const& aabb2, Vec3* penetr
     return true;
 }
 
+bool PointInConvexPolygon2D(Vec3 const& queryP, std::vector<Vec3> const& convexPoly, Vec3 const& polyPos, float polyRotRad, Vec3 const& polyScale, Vec3* penetration) {
+    Vec3 queryPLocal = queryP;
+    queryPLocal -= polyPos;
+    float c = cos(-polyRotRad);
+    float s = sin(-polyRotRad);
+    queryPLocal._x = c * queryPLocal._x - s * queryPLocal._z;
+    queryPLocal._z = s * queryPLocal._x + c * queryPLocal._z;
+    queryPLocal._x /= polyScale._x;
+    queryPLocal._z /= polyScale._z;
+    float minPenetrationDistSqr = 99999.f;
+    Vec3 minPenetrationNormal;  // will point OUT of polygon.
+    for (int i = 0, n = convexPoly.size(); i < n; ++i) {
+        Vec3 p1 = convexPoly[i];
+        Vec3 p2 = convexPoly[(i+1) % n];
+
+        Vec3 u = p2 - p1;
+        u._y = 0.f;
+        u.Normalize();
+        Vec3 v = queryPLocal - p1;
+        v._y = 0.f;
+        Vec3 cross = Vec3::Cross(u, v);
+        if (cross._y < 0.f) {
+            return false;
+        }
+        // Get penetration vec
+        float along = Vec3::Dot(v, u);
+        Vec3 proj = along * u;
+        Vec3 ortho = v - proj;
+        float depth2 = ortho.Length2();
+        if (depth2 < minPenetrationDistSqr) {
+            minPenetrationDistSqr = depth2;
+            minPenetrationNormal = -ortho;
+        }
+    }
+
+    // Finally, transform the minPenetrationNormal to world coordinates
+    s = -s;
+    minPenetrationNormal._x = c * minPenetrationNormal._x - s * minPenetrationNormal._z;
+    minPenetrationNormal._z = s * minPenetrationNormal._x + c * minPenetrationNormal._z;
+    if (penetration != nullptr) {
+        *penetration = minPenetrationNormal;
+    }
+    
+    return true;
+}
+
 }  // namespace geometry
