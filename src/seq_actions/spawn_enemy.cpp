@@ -695,7 +695,7 @@ void SpawnEnemySeqAction::Load(LoadInputs const& loadInputs, std::istream& lineS
         } else if (key == "typekill") {
             _enemy._destroyAfterTyped = std::stoi(value) != 0;
         } else if (key == "section") {
-            _enemy._sectionId = loadInputs._sectionId;
+            _enemy._typingSectionId = loadInputs._sectionId;
             // initialize to "inactive" by setting their start beat time to be
             // way in the future.
             _enemy._activeBeatTime = 99999.0;
@@ -772,7 +772,7 @@ void SpawnEnemySeqAction::Load(LoadInputs const& loadInputs, std::istream& lineS
         }
     }
 
-    if (_enemy._sectionId >= 0) {
+    if (_enemy._typingSectionId >= 0) {
         _enemy._sectionLocalPos = _enemy._transform.GetPos();
     }
 }

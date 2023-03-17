@@ -201,7 +201,7 @@ void TypingPlayerEntity::Update(GameManager& g, float dt) {
         if (!enemy->IsActive(g)) {
             continue;
         }
-        if (enemy->_sectionId >= 0 && effectiveSectionId != enemy->_sectionId) {
+        if (enemy->_typingSectionId >= 0 && effectiveSectionId != enemy->_typingSectionId) {
             continue;
         }
         InputManager::Key nextKey = enemy->GetNextKey();

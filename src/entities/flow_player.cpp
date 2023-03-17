@@ -136,6 +136,20 @@ void FlowPlayerEntity::Respawn(GameManager& g) {
     
 }
 
+// void FlowPlayerEntity::SetNewSection(GameManager& g, int newSectionId) {
+//     if (newSectionId != _currentSectionId) {
+//         // go through and destroy all enemies with the current section id
+//         ne::EntityManager::Iterator enemyIter = g._neEntityManager->GetIterator(ne::EntityType::TypingEnemy);
+//         for (; !enemyIter.Finished(); enemyIter.Next()) {
+//             TypingEnemyEntity* e = static_cast<TypingEnemyEntity*>(enemyIter.GetEntity());
+//             if (e->_flowSectionId >= 0 && e->_flowSectionId == _currentSectionId) {
+//                 g._neEntityManager->TagForDestroy(enemyIter.GetEntity()->_id);
+//             }
+//         }
+//         _currentSectionId = nearest->_flowSectionId;
+//     }
+// }
+
 void FlowPlayerEntity::Update(GameManager& g, float dt) {
     if (g._editMode) {
         return;
@@ -199,19 +213,7 @@ ne::EntityManager::Iterator enemyIter = g._neEntityManager->GetIterator(ne::Enti
         _vel = toEnemyDir * (sign * _launchVel);
         _dashTimer = 0.f;
         _dashTargetId = nearest->_id;
-        _applyGravityDuringDash = false;
-
-        if (nearest->_flowSectionId != _currentSectionId) {
-            // go through and destroy all enemies with the current section id
-            ne::EntityManager::Iterator enemyIter = g._neEntityManager->GetIterator(ne::EntityType::TypingEnemy);
-            for (; !enemyIter.Finished(); enemyIter.Next()) {
-                TypingEnemyEntity* e = static_cast<TypingEnemyEntity*>(enemyIter.GetEntity());
-                if (e->_flowSectionId >= 0 && e->_flowSectionId == _currentSectionId) {
-                    g._neEntityManager->TagForDestroy(enemyIter.GetEntity()->_id);
-                }
-            }
-            _currentSectionId = nearest->_flowSectionId;
-        }
+        _applyGravityDuringDash = false;        
     }
 
     if (_dashTimer >= _dashTime) {

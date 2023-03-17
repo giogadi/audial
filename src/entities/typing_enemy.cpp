@@ -29,13 +29,13 @@ void ProjectWorldPointToScreenSpace(Vec3 const& worldPos, Mat4 const& viewProjMa
 
 void TypingEnemyEntity::InitDerived(GameManager& g) {
     _currentColor = _modelColor;
-    if (_sectionId >= 0) {
+    if (_typingSectionId >= 0) {
         int numEntities = 0;
         ne::EntityManager::Iterator eIter = g._neEntityManager->GetIterator(ne::EntityType::TypingPlayer, &numEntities);
         assert(numEntities == 1);
         TypingPlayerEntity* player = static_cast<TypingPlayerEntity*>(eIter.GetEntity());
         assert(player != nullptr);
-        player->RegisterSectionEnemy(_sectionId, _id);
+        player->RegisterSectionEnemy(_typingSectionId, _id);
     }
     
     _waypointFollower.Init(_transform.GetPos());
@@ -198,8 +198,6 @@ void TypingEnemyEntity::LoadDerived(serial::Ptree pt) {
     }
     _flowPolarity = false;
     pt.TryGetBool("flow_polarity", &_flowPolarity);
-    _flowSectionId = -1;
-    pt.TryGetInt("flow_section_id", &_flowSectionId);
 
     bool hasWaypointFollower = serial::LoadFromChildOf(pt, "waypoint_follower", _waypointFollower);
     if (!hasWaypointFollower) {
@@ -224,7 +222,6 @@ void TypingEnemyEntity::SaveDerived(serial::Ptree pt) const {
     pt.PutBool("type_kill", _destroyAfterTyped);
     pt.PutBool("all_actions_on_hit", _hitBehavior == HitBehavior::AllActions);
     pt.PutBool("flow_polarity", _flowPolarity);
-    pt.PutInt("flow_section_id", _flowSectionId);
 
     serial::SaveInNewChildOf(pt, "waypoint_follower", _waypointFollower);
 
@@ -250,8 +247,6 @@ ne::BaseEntity::ImGuiResult TypingEnemyEntity::ImGuiDerived(GameManager& g) {
     }
 
     ImGui::Checkbox("Flow polarity", &_flowPolarity);
-
-    ImGui::InputInt("Section ID", &_flowSectionId);
     
     if (ImGui::Button("Add Action")) {
         _hitActionStrings.emplace_back();

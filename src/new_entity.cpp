@@ -207,6 +207,15 @@ bool EntityManager::TagForDestroy(EntityId idToDestroy) {
     return false;
 }
 
+void EntityManager::TagAllPrevSectionEntitiesForDestroy(int newFlowSectionId) {
+    for (AllIterator iter = GetAllIterator(); !iter.Finished(); iter.Next()) {
+        Entity* e = iter.GetEntity();
+        if (e->_flowSectionId >= 0 && e->_flowSectionId < newFlowSectionId) {
+            TagForDestroy(e->_id);
+        }
+    }
+}
+
 void EntityManager::DestroyTaggedEntities(GameManager& g) {
     for (EntityId& id : _toDestroy) {
         if (Entity* e = GetEntity(id)) {
@@ -310,6 +319,7 @@ void Entity::Save(serial::Ptree pt) const {
     serial::SaveInNewChildOf(pt, "transform", _transform);
     pt.PutString("model_name", _modelName.c_str());
     serial::SaveInNewChildOf(pt, "model_color_vec4", _modelColor);
+    pt.PutInt("flow_section_id", _flowSectionId);
     SaveDerived(pt);
 }
 void Entity::Load(serial::Ptree pt) {
@@ -330,6 +340,7 @@ void Entity::Load(serial::Ptree pt) {
     if (colorPt.IsValid()) {
         _modelColor.Load(colorPt);
     }
+    pt.TryGetInt("flow_section_id", &_flowSectionId);
     LoadDerived(pt);
 }
 Entity::ImGuiResult Entity::ImGui(GameManager& g) {
@@ -369,6 +380,7 @@ Entity::ImGuiResult Entity::ImGui(GameManager& g) {
     if (imgui_util::InputVec3("Scale##Entity", &scale, true)) {
         trans.SetScale(scale);
     }
+    ImGui::InputInt("Flow section ID##Entity", &_flowSectionId);
     bool modelChanged = imgui_util::InputText<64>("Model name##Entity", &_modelName, /*trueOnReturnOnly=*/true);
     imgui_util::ColorEdit4("Model color##Entity", &_modelColor);
     

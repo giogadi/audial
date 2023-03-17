@@ -19,9 +19,8 @@ struct TypingEnemyEntity : public ne::Entity {
     double _inactiveBeatTime = -1.0; // TODO
     bool _destroyIfOffscreenLeft = true; // TODO
     bool _destroyAfterTyped = true;
-    int _sectionId = -1; // TODO
+    int _typingSectionId = -1; // TODO
     Vec3 _sectionLocalPos; // TODO
-    int _flowSectionId = -1;
     Vec4 _textColor = Vec4(1.f, 1.f, 1.f, 1.f); // TODO
     bool _flowPolarity = false;
     WaypointFollower _waypointFollower;

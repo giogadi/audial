@@ -66,6 +66,7 @@ struct BaseEntity {
     bool _pickable = true;
     std::string _modelName;
     Vec4 _modelColor = Vec4(0.8f, 0.8f, 0.8f, 1.f);
+    int _flowSectionId = -1;
 
     EntityId _id;
     BoundMeshPNU const* _model = nullptr;
@@ -107,6 +108,7 @@ struct EntityManager {
     Entity* FindEntityByName(std::string_view name);
     Entity* GetFirstEntityOfType(EntityType entityType);
     bool TagForDestroy(EntityId id);
+    void TagAllPrevSectionEntitiesForDestroy(int newFlowSectionId);
 
     // Calls Destroy() on removed entities.
     void DestroyTaggedEntities(GameManager& g);

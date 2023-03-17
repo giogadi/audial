@@ -30,6 +30,7 @@
                 <z>0</z>
                 <w>0</w>
             </model_color_vec4>
+            <flow_section_id>-1</flow_section_id>
             <ambient>
                 <x>0</x>
                 <y>0</y>
@@ -69,6 +70,7 @@
                 <z>0</z>
                 <w>0</w>
             </model_color_vec4>
+            <flow_section_id>-1</flow_section_id>
             <ortho>true</ortho>
             <follow_entity_name/>
             <tracking_factor>0.0500000007</tracking_factor>
@@ -101,6 +103,7 @@
                 <z>0</z>
                 <w>0</w>
             </model_color_vec4>
+            <flow_section_id>-1</flow_section_id>
             <loop>false</loop>
             <start_beat_time>0</start_beat_time>
             <events>
@@ -176,6 +179,7 @@
                 <z>1</z>
                 <w>1</w>
             </model_color_vec4>
+            <flow_section_id>-1</flow_section_id>
             <selection_radius>8</selection_radius>
             <launch_vel>20</launch_vel>
             <max_horiz_speed_after_dash>2</max_horiz_speed_after_dash>
@@ -219,6 +223,7 @@
                 <z>0</z>
                 <w>0</w>
             </model_color_vec4>
+            <flow_section_id>-1</flow_section_id>
             <sequence>mG0:0.5 -1:1 mG0:0.5 -1:1 -1:1 -1:1 -1:1 -1:1 mG0:0.5 -1:1 -1:1 -1:1 mG0:0.5 -1:1 -1:1 -1:1</sequence>
             <start_mute>false</start_mute>
             <channels/>
@@ -256,6 +261,7 @@
                 <z>0</z>
                 <w>0</w>
             </model_color_vec4>
+            <flow_section_id>-1</flow_section_id>
             <sequence>-1:1 -1:1 -1:1 -1:1 mA0-:0.5 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 mA0-:0.5 -1:1 -1:1 -1:1</sequence>
             <start_mute>false</start_mute>
             <channels/>
@@ -293,6 +299,7 @@
                 <z>0</z>
                 <w>0</w>
             </model_color_vec4>
+            <flow_section_id>-1</flow_section_id>
             <sequence>mA0:0.1 mA0:0.1 mA0:0.1 mA0:0.1 mA0:0.1 mA0:0.1 mA0:0.1 mA0:0.1 mA0:0.1 mA0:0.1 mA0:0.1 mA0:0.1 mA0:0.1 mA0:0.1 mA0:0.1 mA0:0.1</sequence>
             <start_mute>false</start_mute>
             <channels/>
@@ -330,6 +337,7 @@
                 <z>0</z>
                 <w>0</w>
             </model_color_vec4>
+            <flow_section_id>-1</flow_section_id>
             <sequence>-1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1</sequence>
             <start_mute>false</start_mute>
             <channels/>
@@ -367,6 +375,7 @@
                 <z>0</z>
                 <w>0</w>
             </model_color_vec4>
+            <flow_section_id>-1</flow_section_id>
             <sequence>-1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1</sequence>
             <start_mute>false</start_mute>
             <channels>
@@ -406,6 +415,7 @@
                 <z>0</z>
                 <w>0</w>
             </model_color_vec4>
+            <flow_section_id>-1</flow_section_id>
             <sequence>-1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1</sequence>
             <start_mute>false</start_mute>
             <channels>
@@ -445,6 +455,7 @@
                 <z>0</z>
                 <w>0</w>
             </model_color_vec4>
+            <flow_section_id>-1</flow_section_id>
             <sequence>-1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1</sequence>
             <start_mute>false</start_mute>
             <channels>
@@ -484,6 +495,7 @@
                 <z>0</z>
                 <w>0</w>
             </model_color_vec4>
+            <flow_section_id>-1</flow_section_id>
             <sequence>-1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1</sequence>
             <start_mute>false</start_mute>
             <channels>
@@ -523,6 +535,7 @@
                 <z>0</z>
                 <w>0</w>
             </model_color_vec4>
+            <flow_section_id>-1</flow_section_id>
             <seq_filename>data/flow_slow_action_seq.txt</seq_filename>
         </ActionSequencer>
         <TypingEnemy>
@@ -553,11 +566,11 @@
                 <z>0</z>
                 <w>1</w>
             </model_color_vec4>
+            <flow_section_id>0</flow_section_id>
             <text>i</text>
             <type_kill>false</type_kill>
             <all_actions_on_hit>false</all_actions_on_hit>
             <flow_polarity>false</flow_polarity>
-            <flow_section_id>0</flow_section_id>
             <waypoint_follower>
                 <waypoint_auto_start>false</waypoint_auto_start>
                 <loop_waypoints>false</loop_waypoints>
@@ -595,11 +608,11 @@
                 <z>0</z>
                 <w>1</w>
             </model_color_vec4>
+            <flow_section_id>0</flow_section_id>
             <text>j</text>
             <type_kill>false</type_kill>
             <all_actions_on_hit>true</all_actions_on_hit>
             <flow_polarity>false</flow_polarity>
-            <flow_section_id>0</flow_section_id>
             <waypoint_follower>
                 <waypoint_auto_start>false</waypoint_auto_start>
                 <loop_waypoints>false</loop_waypoints>
@@ -637,6 +650,7 @@
                 <z>0.980392158</z>
                 <w>1</w>
             </model_color_vec4>
+            <flow_section_id>0</flow_section_id>
         </FlowPickup>
         <TypingEnemy>
             <name>f1</name>
@@ -666,11 +680,11 @@
                 <z>0</z>
                 <w>1</w>
             </model_color_vec4>
+            <flow_section_id>0</flow_section_id>
             <text>f</text>
             <type_kill>false</type_kill>
             <all_actions_on_hit>false</all_actions_on_hit>
             <flow_polarity>false</flow_polarity>
-            <flow_section_id>0</flow_section_id>
             <waypoint_follower>
                 <waypoint_auto_start>false</waypoint_auto_start>
                 <loop_waypoints>false</loop_waypoints>
@@ -708,11 +722,11 @@
                 <z>0</z>
                 <w>1</w>
             </model_color_vec4>
+            <flow_section_id>0</flow_section_id>
             <text>s</text>
             <type_kill>false</type_kill>
             <all_actions_on_hit>true</all_actions_on_hit>
             <flow_polarity>false</flow_polarity>
-            <flow_section_id>0</flow_section_id>
             <waypoint_follower>
                 <waypoint_auto_start>false</waypoint_auto_start>
                 <loop_waypoints>false</loop_waypoints>
@@ -750,6 +764,7 @@
                 <z>0.980392158</z>
                 <w>1</w>
             </model_color_vec4>
+            <flow_section_id>0</flow_section_id>
         </FlowPickup>
         <TypingEnemy>
             <name>n</name>
@@ -779,11 +794,11 @@
                 <z>0</z>
                 <w>1</w>
             </model_color_vec4>
+            <flow_section_id>0</flow_section_id>
             <text>n</text>
             <type_kill>false</type_kill>
             <all_actions_on_hit>false</all_actions_on_hit>
             <flow_polarity>false</flow_polarity>
-            <flow_section_id>0</flow_section_id>
             <waypoint_follower>
                 <waypoint_auto_start>false</waypoint_auto_start>
                 <loop_waypoints>false</loop_waypoints>
@@ -821,11 +836,11 @@
                 <z>0</z>
                 <w>1</w>
             </model_color_vec4>
+            <flow_section_id>0</flow_section_id>
             <text>p</text>
             <type_kill>false</type_kill>
             <all_actions_on_hit>false</all_actions_on_hit>
             <flow_polarity>false</flow_polarity>
-            <flow_section_id>0</flow_section_id>
             <waypoint_follower>
                 <waypoint_auto_start>false</waypoint_auto_start>
                 <loop_waypoints>false</loop_waypoints>
@@ -863,6 +878,7 @@
                 <z>0.980392158</z>
                 <w>1</w>
             </model_color_vec4>
+            <flow_section_id>0</flow_section_id>
         </FlowPickup>
         <TypingEnemy>
             <name>d</name>
@@ -892,11 +908,11 @@
                 <z>0</z>
                 <w>1</w>
             </model_color_vec4>
+            <flow_section_id>1</flow_section_id>
             <text>d</text>
             <type_kill>false</type_kill>
             <all_actions_on_hit>true</all_actions_on_hit>
             <flow_polarity>false</flow_polarity>
-            <flow_section_id>0</flow_section_id>
             <waypoint_follower>
                 <waypoint_auto_start>false</waypoint_auto_start>
                 <loop_waypoints>false</loop_waypoints>
@@ -934,6 +950,7 @@
                 <z>0.800000012</z>
                 <w>1</w>
             </model_color_vec4>
+            <flow_section_id>1</flow_section_id>
             <waypoint_auto_start>false</waypoint_auto_start>
             <loop_waypoints>false</loop_waypoints>
             <waypoints/>
@@ -970,6 +987,7 @@
                 <z>0.980392158</z>
                 <w>1</w>
             </model_color_vec4>
+            <flow_section_id>1</flow_section_id>
         </FlowPickup>
         <FlowPickup>
             <name>pickup3 (copy)</name>
@@ -999,6 +1017,7 @@
                 <z>0.980392158</z>
                 <w>1</w>
             </model_color_vec4>
+            <flow_section_id>0</flow_section_id>
         </FlowPickup>
         <FlowWall>
             <name>wall2</name>
@@ -1028,6 +1047,7 @@
                 <z>0.800000012</z>
                 <w>1</w>
             </model_color_vec4>
+            <flow_section_id>1</flow_section_id>
             <waypoint_auto_start>false</waypoint_auto_start>
             <loop_waypoints>false</loop_waypoints>
             <waypoints/>
@@ -1064,6 +1084,7 @@
                 <z>0.800000012</z>
                 <w>1</w>
             </model_color_vec4>
+            <flow_section_id>-1</flow_section_id>
         </Base>
         <FlowTrigger>
             <name>camera_trigger</name>
@@ -1093,8 +1114,10 @@
                 <z>0.800000012</z>
                 <w>1</w>
             </model_color_vec4>
+            <flow_section_id>-1</flow_section_id>
             <actions>
                 <action>onetime camera target:camera_target2</action>
+                <action>onetime set_new_section 1</action>
             </actions>
         </FlowTrigger>
         <FlowWall>
@@ -1102,9 +1125,9 @@
             <pickable>true</pickable>
             <transform>
                 <pos>
-                    <x>0.03125</x>
+                    <x>9.6875</x>
                     <y>0</y>
-                    <z>-0.7734375</z>
+                    <z>-0.7421875</z>
                 </pos>
                 <quat>
                     <x>0</x>
@@ -1125,6 +1148,7 @@
                 <z>0.800000012</z>
                 <w>1</w>
             </model_color_vec4>
+            <flow_section_id>-1</flow_section_id>
             <waypoint_auto_start>false</waypoint_auto_start>
             <loop_waypoints>false</loop_waypoints>
             <waypoints/>

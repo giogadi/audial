@@ -32,6 +32,7 @@ struct FlowPlayerEntity : public ne::Entity {
 
     void Draw(GameManager& g);
     void Respawn(GameManager &g);
+    void SetNewSection(GameManager& g, int newSectionId);
     
     virtual void InitDerived(GameManager& g) override;
     virtual void Update(GameManager& g, float dt) override;

@@ -48,6 +48,8 @@ std::unique_ptr<SeqAction> SeqAction::LoadAction(LoadInputs const& loadInputs, s
         pAction = std::make_unique<WaypointControlSeqAction>();
     } else if (token == "player_killzone") {
         pAction = std::make_unique<PlayerSetKillZoneSeqAction>();
+    } else if (token == "set_new_section") {
+        pAction = std::make_unique<SetNewFlowSectionSeqAction>();
     } else {
         printf("ERROR: Unrecognized action type \"%s\".\n", token.c_str());
     }
@@ -472,4 +474,17 @@ void PlayerSetKillZoneSeqAction::Load(LoadInputs const& loadInputs, std::istream
 void PlayerSetKillZoneSeqAction::Execute(GameManager& g) {
     FlowPlayerEntity* pPlayer = static_cast<FlowPlayerEntity*>(g._neEntityManager->GetFirstEntityOfType(ne::EntityType::FlowPlayer));
     pPlayer->_killMaxZ = _maxZ;
+}
+
+void SetNewFlowSectionSeqAction::Load(LoadInputs const& loadInputs, std::istream& input) {
+    std::string token;
+    input >> token;
+    bool success = string_util::MaybeStoi(std::string_view(token), _newSectionId);
+    if (!success) {
+        printf("SetNewFlowSectionSeqAction: bad section id \"%s\"\n", token.c_str());
+    }
+}
+
+void SetNewFlowSectionSeqAction::Execute(GameManager& g) {
+    g._neEntityManager->TagAllPrevSectionEntitiesForDestroy(_newSectionId);
 }
