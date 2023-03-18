@@ -7,7 +7,7 @@
 
 void Waypoint::Save(serial::Ptree pt) const {
     pt.PutDouble("wait_time", _waitTime);
-    pt.PutDouble("move_time", _moveTime);
+    pt.PutDouble("move_time", _moveTime);    
     serial::SaveInNewChildOf(pt, "p", _p);
 }
 
@@ -64,7 +64,7 @@ bool WaypointFollower::Update(GameManager& g, float const dt, Vec3* newPos) {
     return true;
 }
 
-void WaypointFollower::Save(serial::Ptree pt) const {    
+void WaypointFollower::Save(serial::Ptree pt) const {
     pt.PutBool("waypoint_auto_start", _autoStartFollowingWaypoints);
     pt.PutBool("loop_waypoints", _loopWaypoints);
     serial::SaveVectorInChildNode(pt, "waypoints", "waypoint", _waypoints);

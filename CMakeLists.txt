@@ -17,6 +17,7 @@ add_executable(game
     src/matrix.cpp
     src/quaternion.cpp
     src/transform.cpp
+    src/aabb.cpp
 
     src/serial.cpp src/rng.cpp
     src/audio_loader.cpp src/game.cpp src/audio_util.cpp src/audio.cpp src/audio_event_imgui.cpp
@@ -40,6 +41,7 @@ add_executable(game
     src/string_ci.cpp
 
     src/waypoint_follower.cpp
+    src/random_wander.cpp
     
     #src/components/transform.cpp
     #src/components/model_instance.cpp src/components/camera.cpp src/components/light.cpp
@@ -75,6 +77,7 @@ add_executable(game
     src/enums/synth_Waveform.cpp
     src/enums/ColorPreset.cpp
     src/enums/Direction.cpp
+    src/enums/WaypointFollowerMode.cpp
 )
 
 if(MSVC)

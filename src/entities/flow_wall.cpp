@@ -9,6 +9,7 @@
 
 void FlowWallEntity::InitDerived(GameManager& g) {
     _wpFollower.Init(_transform.Pos());
+    _randomWander.Init();
     
     _hitActions.reserve(_hitActionStrings.size());
     SeqAction::LoadInputs loadInputs;  // default
@@ -29,11 +30,21 @@ void FlowWallEntity::InitDerived(GameManager& g) {
 void FlowWallEntity::Update(GameManager& g, float dt) {
 
     if (!g._editMode) {
-        Vec3 newPos;
-        bool updatePos = _wpFollower.Update(g, dt, &newPos);
-        if (updatePos) {
-            _transform.SetPos(newPos);
-        }
+        switch (_moveMode) {
+            case WaypointFollowerMode::Waypoints: {
+                Vec3 newPos;
+                bool updatePos = _wpFollower.Update(g, dt, &newPos);
+                if (updatePos) {
+                    _transform.SetPos(newPos);
+                }
+                break;
+            }
+            case WaypointFollowerMode::Random: {
+                _randomWander.Update(g, dt, this);
+                break;
+            }
+            case WaypointFollowerMode::Count: { assert(false); break; }
+        }        
     }
 
     // Maybe update color from getting hit
@@ -60,22 +71,45 @@ void FlowWallEntity::Update(GameManager& g, float dt) {
 }
 
 void FlowWallEntity::SaveDerived(serial::Ptree pt) const {
-    _wpFollower.Save(pt);
+    pt.PutString("move_mode", WaypointFollowerModeToString(_moveMode));
+    if (_moveMode == WaypointFollowerMode::Waypoints) {
+        _wpFollower.Save(pt);
+    } else if (_moveMode == WaypointFollowerMode::Random) {        
+        _randomWander.Save(pt);
+    }
     serial::SaveVectorInChildNode(pt, "polygon", "point", _polygon);
     serial::SaveVectorInChildNode(pt, "hit_actions", "action", _hitActionStrings);   
 }
 
 void FlowWallEntity::LoadDerived(serial::Ptree pt) {
+    std::string moveModeStr;
+    bool changed = pt.TryGetString("move_mode", &moveModeStr);
+    if (changed) {
+        _moveMode = StringToWaypointFollowerMode(moveModeStr.c_str());
+    }
     _wpFollower.Load(pt);
+    if (_moveMode == WaypointFollowerMode::Waypoints) {
+        _wpFollower.Load(pt);
+    } else if (_moveMode == WaypointFollowerMode::Random) {
+        _randomWander.Load(pt);
+    }
     serial::LoadVectorFromChildNode(pt, "polygon", _polygon);
     serial::LoadVectorFromChildNode(pt, "hit_actions", _hitActionStrings);
 }
 
 FlowWallEntity::ImGuiResult FlowWallEntity::ImGuiDerived(GameManager& g)  {
     ImGuiResult result = ImGuiResult::Done;
+
+    WaypointFollowerModeImGui("Move mode", &_moveMode);
     
-    if (ImGui::CollapsingHeader("Waypoints")) {
-        _wpFollower.ImGui();
+    if (_moveMode == WaypointFollowerMode::Waypoints) {
+        if (ImGui::CollapsingHeader("Waypoints")) {
+            _wpFollower.ImGui();
+        }
+    } else if (_moveMode == WaypointFollowerMode::Random) {
+        if (ImGui::CollapsingHeader("Random")) {
+            _randomWander.ImGui();
+        }
     }
 
     if (ImGui::CollapsingHeader("Polygon")) {

@@ -4,6 +4,8 @@
 #include <string>
 #include <cstdio>
 
+#include "imgui/imgui.h"
+
 
 
 namespace {
@@ -41,5 +43,14 @@ CollisionLayer StringToCollisionLayer(char const* s) {
     }
     printf("ERROR StringToCollisionLayer: unrecognized value \"%s\"\n", s);
     return static_cast<CollisionLayer>(0);
+}
+
+bool CollisionLayerImGui(char const* label, CollisionLayer* v) {
+    int selectedIx = static_cast<int>(*v);
+    bool changed = ImGui::Combo(label, &selectedIx, gCollisionLayerStrings, static_cast<int>(CollisionLayer::Count));
+    if (changed) {
+        *v = static_cast<CollisionLayer>(selectedIx);
+    }
+    return changed;
 }
 

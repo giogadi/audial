@@ -4,6 +4,8 @@
 #include <string>
 #include <cstdio>
 
+#include "imgui/imgui.h"
+
 
 
 namespace {
@@ -69,5 +71,14 @@ ColorPreset StringToColorPreset(char const* s) {
     }
     printf("ERROR StringToColorPreset: unrecognized value \"%s\"\n", s);
     return static_cast<ColorPreset>(0);
+}
+
+bool ColorPresetImGui(char const* label, ColorPreset* v) {
+    int selectedIx = static_cast<int>(*v);
+    bool changed = ImGui::Combo(label, &selectedIx, gColorPresetStrings, static_cast<int>(ColorPreset::Count));
+    if (changed) {
+        *v = static_cast<ColorPreset>(selectedIx);
+    }
+    return changed;
 }
 

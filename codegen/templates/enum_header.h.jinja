@@ -14,6 +14,8 @@ extern char const* g{{enumName}}Strings[];
 char const* {{enumName}}ToString({{enumName}} e);
 {{enumName}} StringTo{{enumName}}(char const* s);
 
+bool {{enumName}}ImGui(char const* label, {{enumName}}* v);
+
 {% for ns in namespaces %}
 }
 {% endfor %}

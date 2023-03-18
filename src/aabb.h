@@ -21,4 +21,6 @@ struct Aabb {
         a._max = Vec3(half_width, half_width, half_width);
         return a;
     }
+
+    Vec3 SampleRandom() const;
 };

@@ -4,11 +4,14 @@
 #include "waypoint_follower.h"
 #include "seq_action.h"
 #include "renderer.h"
+#include "random_wander.h"
+#include "enums/WaypointFollowerMode.h"
 
 struct FlowWallEntity : public ne::Entity {
     // serialized
+    WaypointFollowerMode _moveMode;
     WaypointFollower _wpFollower;
-    double _wpArriveTime = 4.0;
+    RandomWander _randomWander;
     std::vector<std::string> _hitActionStrings;
     std::vector<Vec3> _polygon;
 

@@ -66,5 +66,7 @@ extern char const* gSynthParamTypeStrings[];
 char const* SynthParamTypeToString(SynthParamType e);
 SynthParamType StringToSynthParamType(char const* s);
 
+bool SynthParamTypeImGui(char const* label, SynthParamType* v);
+
 
 }

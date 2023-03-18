@@ -4,6 +4,8 @@
 #include <string>
 #include <cstdio>
 
+#include "imgui/imgui.h"
+
 
 namespace audio {
 
@@ -139,6 +141,15 @@ SynthParamType StringToSynthParamType(char const* s) {
     }
     printf("ERROR StringToSynthParamType: unrecognized value \"%s\"\n", s);
     return static_cast<SynthParamType>(0);
+}
+
+bool SynthParamTypeImGui(char const* label, SynthParamType* v) {
+    int selectedIx = static_cast<int>(*v);
+    bool changed = ImGui::Combo(label, &selectedIx, gSynthParamTypeStrings, static_cast<int>(SynthParamType::Count));
+    if (changed) {
+        *v = static_cast<SynthParamType>(selectedIx);
+    }
+    return changed;
 }
 
 

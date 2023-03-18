@@ -4,6 +4,8 @@
 #include <string>
 #include <cstdio>
 
+#include "imgui/imgui.h"
+
 
 
 namespace {
@@ -49,5 +51,14 @@ Direction StringToDirection(char const* s) {
     }
     printf("ERROR StringToDirection: unrecognized value \"%s\"\n", s);
     return static_cast<Direction>(0);
+}
+
+bool DirectionImGui(char const* label, Direction* v) {
+    int selectedIx = static_cast<int>(*v);
+    bool changed = ImGui::Combo(label, &selectedIx, gDirectionStrings, static_cast<int>(Direction::Count));
+    if (changed) {
+        *v = static_cast<Direction>(selectedIx);
+    }
+    return changed;
 }
 

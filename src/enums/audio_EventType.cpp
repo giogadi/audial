@@ -4,6 +4,8 @@
 #include <string>
 #include <cstdio>
 
+#include "imgui/imgui.h"
+
 
 namespace audio {
 
@@ -63,6 +65,15 @@ EventType StringToEventType(char const* s) {
     }
     printf("ERROR StringToEventType: unrecognized value \"%s\"\n", s);
     return static_cast<EventType>(0);
+}
+
+bool EventTypeImGui(char const* label, EventType* v) {
+    int selectedIx = static_cast<int>(*v);
+    bool changed = ImGui::Combo(label, &selectedIx, gEventTypeStrings, static_cast<int>(EventType::Count));
+    if (changed) {
+        *v = static_cast<EventType>(selectedIx);
+    }
+    return changed;
 }
 
 

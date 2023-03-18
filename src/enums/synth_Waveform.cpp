@@ -4,6 +4,8 @@
 #include <string>
 #include <cstdio>
 
+#include "imgui/imgui.h"
+
 
 namespace synth {
 
@@ -39,6 +41,15 @@ Waveform StringToWaveform(char const* s) {
     }
     printf("ERROR StringToWaveform: unrecognized value \"%s\"\n", s);
     return static_cast<Waveform>(0);
+}
+
+bool WaveformImGui(char const* label, Waveform* v) {
+    int selectedIx = static_cast<int>(*v);
+    bool changed = ImGui::Combo(label, &selectedIx, gWaveformStrings, static_cast<int>(Waveform::Count));
+    if (changed) {
+        *v = static_cast<Waveform>(selectedIx);
+    }
+    return changed;
 }
 
 

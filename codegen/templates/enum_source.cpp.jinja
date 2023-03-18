@@ -4,6 +4,8 @@
 #include <string>
 #include <cstdio>
 
+#include "imgui/imgui.h"
+
 {% for ns in namespaces %}
 namespace {{ns}} {
 {% endfor %}
@@ -35,6 +37,15 @@ char const* {{enumName}}ToString({{enumName}} e) {
     }
     printf("ERROR StringTo{{enumName}}: unrecognized value \"%s\"\n", s);
     return static_cast<{{enumName}}>(0);
+}
+
+bool {{enumName}}ImGui(char const* label, {{enumName}}* v) {
+    int selectedIx = static_cast<int>(*v);
+    bool changed = ImGui::Combo(label, &selectedIx, g{{enumName}}Strings, static_cast<int>({{enumName}}::Count));
+    if (changed) {
+        *v = static_cast<{{enumName}}>(selectedIx);
+    }
+    return changed;
 }
 
 {% for ns in namespaces %}

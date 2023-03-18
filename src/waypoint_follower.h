@@ -16,7 +16,7 @@ struct Waypoint {
 };
 
 struct WaypointFollower {
-    // serialized
+    // serialized   
     std::vector<Waypoint> _waypoints;
     bool _autoStartFollowingWaypoints = false;
     bool _loopWaypoints = false;

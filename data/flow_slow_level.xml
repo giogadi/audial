@@ -951,6 +951,7 @@
                 <w>1</w>
             </model_color_vec4>
             <flow_section_id>1</flow_section_id>
+            <move_mode>Waypoints</move_mode>
             <waypoint_auto_start>false</waypoint_auto_start>
             <loop_waypoints>false</loop_waypoints>
             <waypoints/>
@@ -1048,6 +1049,7 @@
                 <w>1</w>
             </model_color_vec4>
             <flow_section_id>1</flow_section_id>
+            <move_mode>Waypoints</move_mode>
             <waypoint_auto_start>false</waypoint_auto_start>
             <loop_waypoints>false</loop_waypoints>
             <waypoints/>
@@ -1121,7 +1123,7 @@
             </actions>
         </FlowTrigger>
         <FlowWall>
-            <name>wall (copy)</name>
+            <name>triangle</name>
             <pickable>true</pickable>
             <transform>
                 <pos>
@@ -1149,9 +1151,18 @@
                 <w>1</w>
             </model_color_vec4>
             <flow_section_id>-1</flow_section_id>
-            <waypoint_auto_start>false</waypoint_auto_start>
-            <loop_waypoints>false</loop_waypoints>
-            <waypoints/>
+            <move_mode>Random</move_mode>
+            <min>
+                <x>8</x>
+                <y>0</y>
+                <z>-3.5</z>
+            </min>
+            <max>
+                <x>16</x>
+                <y>0</y>
+                <z>3.5</z>
+            </max>
+            <speed>1</speed>
             <polygon>
                 <point>
                     <x>1</x>
@@ -1173,5 +1184,35 @@
                 <action>change_step clap_seq 0 1 9:0.25</action>
             </hit_actions>
         </FlowWall>
+        <Base>
+            <name>wall_bounds</name>
+            <pickable>true</pickable>
+            <transform>
+                <pos>
+                    <x>12</x>
+                    <y>0</y>
+                    <z>0</z>
+                </pos>
+                <quat>
+                    <x>0</x>
+                    <y>0</y>
+                    <z>0</z>
+                    <w>1</w>
+                </quat>
+                <scale>
+                    <x>8</x>
+                    <y>1</y>
+                    <z>7</z>
+                </scale>
+            </transform>
+            <model_name/>
+            <model_color_vec4>
+                <x>0.800000012</x>
+                <y>0.800000012</y>
+                <z>0.800000012</z>
+                <w>1</w>
+            </model_color_vec4>
+            <flow_section_id>-1</flow_section_id>
+        </Base>
     </new_entities>
 </script>
