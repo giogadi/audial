@@ -1,6 +1,7 @@
 #include "random_wander.h"
 
 #include "imgui_util.h"
+#include "renderer.h"
 
 void RandomWander::Save(serial::Ptree pt) const {
     _bounds.Save(pt);
@@ -24,6 +25,16 @@ void RandomWander::Init() {
 }
 
 void RandomWander::Update(GameManager& g, float dt, ne::Entity* entity) {
+    if (g._editMode) {
+        Vec3 boundsCenter = (_bounds._min + _bounds._max) * 0.5f;
+        Vec3 boundsExtents = _bounds._max - _bounds._min;
+        Mat4 boundsTrans;
+        boundsTrans.SetTranslation(boundsCenter);
+        boundsTrans.Scale(boundsExtents._x, boundsExtents._y, boundsExtents._z);
+        g._scene->DrawBoundingBox(boundsTrans, Vec4(1.f, 1.f, 1.f, 1.f));
+        return;
+    }
+    
     Vec3 entityPos = entity->_transform.Pos();
     
     // TODO curved paths?

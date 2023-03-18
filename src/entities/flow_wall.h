@@ -14,6 +14,7 @@ struct FlowWallEntity : public ne::Entity {
     RandomWander _randomWander;
     std::vector<std::string> _hitActionStrings;
     std::vector<Vec3> _polygon;
+    float _rotVel = 0.f;
 
     // non-serialized
     std::vector<std::unique_ptr<SeqAction>> _hitActions;

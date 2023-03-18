@@ -38,6 +38,11 @@ bool WaypointFollower::Update(GameManager& g, float const dt, Vec3* newPos) {
         return false;
     }
 
+    if (g._editMode) {
+        // TODO render debug stuff
+        return false;
+    }
+
     double const beatTime = g._beatClock->GetBeatTimeFromEpoch();
     assert(_currentWaypointIx >= 0 && _currentWaypointIx < _waypoints.size());
     Waypoint const& wp = _waypoints[_currentWaypointIx];

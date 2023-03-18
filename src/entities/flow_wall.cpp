@@ -29,22 +29,29 @@ void FlowWallEntity::InitDerived(GameManager& g) {
 
 void FlowWallEntity::Update(GameManager& g, float dt) {
 
-    if (!g._editMode) {
-        switch (_moveMode) {
-            case WaypointFollowerMode::Waypoints: {
-                Vec3 newPos;
-                bool updatePos = _wpFollower.Update(g, dt, &newPos);
-                if (updatePos) {
-                    _transform.SetPos(newPos);
-                }
-                break;
+    switch (_moveMode) {
+        case WaypointFollowerMode::Waypoints: {
+            Vec3 newPos;
+            bool updatePos = _wpFollower.Update(g, dt, &newPos);
+            if (updatePos) {
+                _transform.SetPos(newPos);
             }
-            case WaypointFollowerMode::Random: {
-                _randomWander.Update(g, dt, this);
-                break;
-            }
-            case WaypointFollowerMode::Count: { assert(false); break; }
-        }        
+            break;
+        }
+        case WaypointFollowerMode::Random: {
+            _randomWander.Update(g, dt, this);
+            break;
+        }
+        case WaypointFollowerMode::Count: { assert(false); break; }
+    }
+
+    // Update rotation
+    if (!g._editMode && _rotVel != 0.f) {
+        float dAngle = _rotVel * dt;
+        Quaternion qRot;
+        qRot.SetFromAngleAxis(dAngle, Vec3(0.f, 1.f, 0.f));
+        Quaternion newRot = qRot * _transform.Quat();
+        _transform.SetQuat(newRot);
     }
 
     // Maybe update color from getting hit
@@ -77,6 +84,7 @@ void FlowWallEntity::SaveDerived(serial::Ptree pt) const {
     } else if (_moveMode == WaypointFollowerMode::Random) {        
         _randomWander.Save(pt);
     }
+    pt.PutFloat("rot_vel", _rotVel);
     serial::SaveVectorInChildNode(pt, "polygon", "point", _polygon);
     serial::SaveVectorInChildNode(pt, "hit_actions", "action", _hitActionStrings);   
 }
@@ -93,12 +101,15 @@ void FlowWallEntity::LoadDerived(serial::Ptree pt) {
     } else if (_moveMode == WaypointFollowerMode::Random) {
         _randomWander.Load(pt);
     }
+    pt.TryGetFloat("rot_vel", &_rotVel);
     serial::LoadVectorFromChildNode(pt, "polygon", _polygon);
     serial::LoadVectorFromChildNode(pt, "hit_actions", _hitActionStrings);
 }
 
 FlowWallEntity::ImGuiResult FlowWallEntity::ImGuiDerived(GameManager& g)  {
     ImGuiResult result = ImGuiResult::Done;
+
+    ImGui::InputFloat("Rot Vel", &_rotVel);
 
     WaypointFollowerModeImGui("Move mode", &_moveMode);
     
@@ -110,7 +121,7 @@ FlowWallEntity::ImGuiResult FlowWallEntity::ImGuiDerived(GameManager& g)  {
         if (ImGui::CollapsingHeader("Random")) {
             _randomWander.ImGui();
         }
-    }
+    }    
 
     if (ImGui::CollapsingHeader("Polygon")) {
         imgui_util::InputVector(_polygon);        
