@@ -180,7 +180,7 @@
                 <w>1</w>
             </model_color_vec4>
             <flow_section_id>-1</flow_section_id>
-            <selection_radius>8</selection_radius>
+            <selection_radius>-1</selection_radius>
             <launch_vel>20</launch_vel>
             <max_horiz_speed_after_dash>2</max_horiz_speed_after_dash>
             <dash_time>0.150000006</dash_time>
@@ -951,6 +951,7 @@
                 <w>1</w>
             </model_color_vec4>
             <flow_section_id>1</flow_section_id>
+            <hp>-1</hp>
             <move_mode>Waypoints</move_mode>
             <waypoint_auto_start>false</waypoint_auto_start>
             <loop_waypoints>false</loop_waypoints>
@@ -1050,6 +1051,7 @@
                 <w>1</w>
             </model_color_vec4>
             <flow_section_id>1</flow_section_id>
+            <hp>-1</hp>
             <move_mode>Waypoints</move_mode>
             <waypoint_auto_start>false</waypoint_auto_start>
             <loop_waypoints>false</loop_waypoints>
@@ -1091,7 +1093,7 @@
             <flow_section_id>-1</flow_section_id>
         </Base>
         <FlowTrigger>
-            <name>camera_trigger</name>
+            <name>area_trigger</name>
             <pickable>true</pickable>
             <transform>
                 <pos>
@@ -1122,6 +1124,7 @@
             <actions>
                 <action>onetime camera target:camera_target2</action>
                 <action>onetime set_new_section 1</action>
+                <action>onetime set_player_spawn 6.959 0 -5.336</action>
             </actions>
         </FlowTrigger>
         <FlowWall>
@@ -1153,6 +1156,7 @@
                 <w>1</w>
             </model_color_vec4>
             <flow_section_id>-1</flow_section_id>
+            <hp>8</hp>
             <move_mode>Random</move_mode>
             <min>
                 <x>12</x>
@@ -1437,5 +1441,35 @@
                 <action>change_step bass_seq 0 1 mE3-</action>
             </hit_actions>
         </TypingEnemy>
+        <Base>
+            <name>new_spawn_pos</name>
+            <pickable>true</pickable>
+            <transform>
+                <pos>
+                    <x>6.95938396</x>
+                    <y>0</y>
+                    <z>-5.3359375</z>
+                </pos>
+                <quat>
+                    <x>0</x>
+                    <y>0</y>
+                    <z>0</z>
+                    <w>1</w>
+                </quat>
+                <scale>
+                    <x>1</x>
+                    <y>1</y>
+                    <z>1</z>
+                </scale>
+            </transform>
+            <model_name/>
+            <model_color_vec4>
+                <x>0.800000012</x>
+                <y>0.800000012</y>
+                <z>0.800000012</z>
+                <w>1</w>
+            </model_color_vec4>
+            <flow_section_id>-1</flow_section_id>
+        </Base>
     </new_entities>
 </script>

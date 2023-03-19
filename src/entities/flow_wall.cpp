@@ -23,7 +23,7 @@ void FlowWallEntity::InitDerived(GameManager& g) {
     }
 
     _currentColor = _modelColor;
-
+    _hp = _maxHp;
     _meshId = g._scene->LoadPolygon2d(_polygon);
 }
 
@@ -54,6 +54,15 @@ void FlowWallEntity::Update(GameManager& g, float dt) {
         _transform.SetQuat(newRot);
     }
 
+    // At hp == maxHp, use modelColor. Fade to dark red as we get closer to 0.
+    Vec4 colorAfterHp = _modelColor;
+    if (_maxHp > 0) {
+        Vec4 constexpr kDyingColor(74.f / 255.f, 13.f / 255.f, 13.f / 255.f, 1.f);
+        float fracOfMaxHp = (float)_hp / (float)_maxHp;
+        colorAfterHp = kDyingColor + fracOfMaxHp * (_modelColor - kDyingColor);
+    }
+    
+
     // Maybe update color from getting hit
     // turn to FadeColor on hit, then fade back to regular color
     if (_timeOfLastHit >= 0.0) {
@@ -65,7 +74,7 @@ void FlowWallEntity::Update(GameManager& g, float dt) {
         if (fadeFactor == 1.0) {
             _timeOfLastHit = -1.0;
         }
-        _currentColor = kFadeColor + fadeFactor * (_modelColor - kFadeColor);
+        _currentColor = kFadeColor + fadeFactor * (colorAfterHp - kFadeColor);
     }
 
     if (renderer::ColorModelInstance* model = g._scene->DrawMesh(_meshId)) {
@@ -78,6 +87,7 @@ void FlowWallEntity::Update(GameManager& g, float dt) {
 }
 
 void FlowWallEntity::SaveDerived(serial::Ptree pt) const {
+    pt.PutInt("hp", _maxHp);
     pt.PutString("move_mode", WaypointFollowerModeToString(_moveMode));
     if (_moveMode == WaypointFollowerMode::Waypoints) {
         _wpFollower.Save(pt);
@@ -90,6 +100,7 @@ void FlowWallEntity::SaveDerived(serial::Ptree pt) const {
 }
 
 void FlowWallEntity::LoadDerived(serial::Ptree pt) {
+    pt.TryGetInt("hp", &_maxHp);
     std::string moveModeStr;
     bool changed = pt.TryGetString("move_mode", &moveModeStr);
     if (changed) {
@@ -108,6 +119,8 @@ void FlowWallEntity::LoadDerived(serial::Ptree pt) {
 
 FlowWallEntity::ImGuiResult FlowWallEntity::ImGuiDerived(GameManager& g)  {
     ImGuiResult result = ImGuiResult::Done;
+
+    ImGui::InputInt("HP", &_maxHp);
 
     ImGui::InputFloat("Rot Vel", &_rotVel);
 
@@ -138,7 +151,17 @@ FlowWallEntity::ImGuiResult FlowWallEntity::ImGuiDerived(GameManager& g)  {
 }
 
 void FlowWallEntity::OnHit(GameManager& g) {
-    _timeOfLastHit = g._beatClock->GetBeatTimeFromEpoch();
+    if (!g._editMode) {
+        if (_maxHp > 0) {
+            --_hp;
+            if (_hp <= 0) {
+                g._neEntityManager->TagForDestroy(_id);
+            }
+        }
+
+        _timeOfLastHit = g._beatClock->GetBeatTimeFromEpoch();
+    }
+    
     for (auto const& pAction : _hitActions) {
         pAction->ExecuteBase(g);
     }

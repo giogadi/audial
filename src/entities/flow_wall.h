@@ -15,11 +15,13 @@ struct FlowWallEntity : public ne::Entity {
     std::vector<std::string> _hitActionStrings;
     std::vector<Vec3> _polygon;
     float _rotVel = 0.f;
+    int _maxHp = -1;
 
     // non-serialized
     std::vector<std::unique_ptr<SeqAction>> _hitActions;
     double _timeOfLastHit = -1.0;
     Vec4 _currentColor;
+    int _hp = -1;
     renderer::Scene::MeshId _meshId;
 
     void OnHit(GameManager& g);

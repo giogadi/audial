@@ -188,6 +188,13 @@ struct PlayerSetKillZoneSeqAction : public SeqAction {
     virtual void Load(LoadInputs const& loadInputs, std::istream& input) override;
 };
 
+struct PlayerSetSpawnPointSeqAction : public SeqAction {
+    Vec3 _spawnPos;
+    virtual void Execute(GameManager& g) override;
+    virtual void Load(
+        LoadInputs const& loadInputs, std::istream& input) override;
+};
+
 struct SetNewFlowSectionSeqAction : public SeqAction {
     int _newSectionId = -1;
 

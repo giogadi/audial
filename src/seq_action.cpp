@@ -50,6 +50,8 @@ std::unique_ptr<SeqAction> SeqAction::LoadAction(LoadInputs const& loadInputs, s
         pAction = std::make_unique<PlayerSetKillZoneSeqAction>();
     } else if (token == "set_new_section") {
         pAction = std::make_unique<SetNewFlowSectionSeqAction>();
+    } else if (token == "set_player_spawn") {
+        pAction = std::make_unique<PlayerSetSpawnPointSeqAction>();
     } else {
         printf("ERROR: Unrecognized action type \"%s\".\n", token.c_str());
     }
@@ -487,4 +489,18 @@ void SetNewFlowSectionSeqAction::Load(LoadInputs const& loadInputs, std::istream
 
 void SetNewFlowSectionSeqAction::Execute(GameManager& g) {
     g._neEntityManager->TagAllPrevSectionEntitiesForDestroy(_newSectionId);
+}
+
+void PlayerSetSpawnPointSeqAction::Load(LoadInputs const& loadInputs, std::istream& input) {
+    try {
+        input >> _spawnPos._x >> _spawnPos._y >> _spawnPos._z;
+    } catch (std::exception&) {
+        printf("PlayerSetSpawnPointSeqAction: could not parse spawn pos.\n");
+    }   
+}
+
+void PlayerSetSpawnPointSeqAction::Execute(GameManager& g) {
+    if (g._editMode) { return; }
+    FlowPlayerEntity* pPlayer = static_cast<FlowPlayerEntity*>(g._neEntityManager->GetFirstEntityOfType(ne::EntityType::FlowPlayer));
+    pPlayer->_respawnPos = _spawnPos;
 }
