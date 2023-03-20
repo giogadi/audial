@@ -317,6 +317,9 @@ void SetStepSequenceSeqAction::Init(GameManager& g) {
 }
 
 void SetStepSequenceSeqAction::Execute(GameManager& g) {
+    if (g._editMode) {
+        return;
+    }
     StepSequencerEntity* seq = static_cast<StepSequencerEntity*>(g._neEntityManager->GetEntity(_seqId));
     if (seq) {
         seq->SetSequencePermanent(_sequence);               

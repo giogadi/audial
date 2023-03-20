@@ -57,7 +57,8 @@ void FlowWallEntity::Update(GameManager& g, float dt) {
     // At hp == maxHp, use modelColor. Fade to dark red as we get closer to 0.
     Vec4 colorAfterHp = _modelColor;
     if (_maxHp > 0) {
-        Vec4 constexpr kDyingColor(74.f / 255.f, 13.f / 255.f, 13.f / 255.f, 1.f);
+        // Vec4 constexpr kDyingColor(74.f / 255.f, 13.f / 255.f, 13.f / 255.f, 1.f);
+        Vec4 constexpr kDyingColor(1.f, 0.f, 0.f, 1.f);
         float fracOfMaxHp = (float)_hp / (float)_maxHp;
         colorAfterHp = kDyingColor + fracOfMaxHp * (_modelColor - kDyingColor);
     }
