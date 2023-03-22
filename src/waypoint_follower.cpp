@@ -4,6 +4,7 @@
 #include "serial_vector_util.h"
 #include "math_util.h"
 #include "beat_clock.h"
+#include "renderer.h"
 
 void Waypoint::Save(serial::Ptree pt) const {
     pt.PutDouble("wait_time", _waitTime);
@@ -42,13 +43,19 @@ void WaypointFollower::Stop() {
     _followingWaypoints = false;
 }
 
-bool WaypointFollower::Update(GameManager& g, float const dt, Vec3* newPos) {
-    if (!_followingWaypoints || _waypoints.empty()) {
+bool WaypointFollower::Update(GameManager& g, float const dt, bool debugDraw, Vec3* newPos) {
+    if (g._editMode && debugDraw) {
+        Mat4 trans;
+        trans.ScaleUniform(0.5f);
+        Vec4 wpColor(0.8f, 0.f, 0.8f, 1.f);
+        for (Waypoint const& wp : _waypoints) {
+            trans.SetTranslation(wp._p);
+            g._scene->DrawBoundingBox(trans, wpColor);
+        }
         return false;
     }
-
-    if (g._editMode) {
-        // TODO render debug stuff
+    
+    if (!_followingWaypoints || _waypoints.empty()) {
         return false;
     }
 

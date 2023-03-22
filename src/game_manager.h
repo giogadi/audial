@@ -1,5 +1,6 @@
 #pragma once
 
+struct Editor;
 namespace renderer {
     class Scene;
 }
@@ -15,6 +16,7 @@ class BeatClock;
 class SoundBank;
 
 struct GameManager {
+    Editor* _editor = nullptr;
     renderer::Scene* _scene = nullptr;
     InputManager* _inputManager = nullptr;
     audio::Context* _audioContext = nullptr;

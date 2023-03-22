@@ -23,7 +23,7 @@ struct WaypointFollower {
 
     void Init(Vec3 const& initPos);
     // Returns true if waypoint logic updated position
-    bool Update(GameManager& g, float dt, Vec3* newPos);
+    bool Update(GameManager& g, float dt, bool debugDraw, Vec3* newPos);
     void Save(serial::Ptree pt) const;
     void Load(serial::Ptree pt);
     bool ImGui();

@@ -305,6 +305,8 @@ int main(int argc, char** argv) {
 
     InputManager inputManager(window);
 
+    Editor editor;
+
     renderer::Scene sceneManager;
 
     //EntityManager entityManager;
@@ -313,7 +315,7 @@ int main(int argc, char** argv) {
     BeatClock beatClock;
 
     gGameManager = GameManager {
-        &sceneManager, &inputManager, &audioContext, &neEntityManager, &beatClock, &soundBank, cmdLineInputs._editMode };
+        &editor, &sceneManager, &inputManager, &audioContext, &neEntityManager, &beatClock, &soundBank, cmdLineInputs._editMode };
 
     if (!sceneManager.Init(gGameManager)) {
         std::cout << "scene failed to init. exiting" << std::endl;
@@ -323,8 +325,7 @@ int main(int argc, char** argv) {
 
     neEntityManager.Init();
 
-    Editor editor;
-    editor.Init(&gGameManager);    
+    editor.Init(&gGameManager);
 
     // SCRIPT LOADING
     if (cmdLineInputs._scriptFilename.has_value()) {

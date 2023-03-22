@@ -13,6 +13,7 @@
 #include "rng.h"
 #include "serial_vector_util.h"
 #include "math_util.h"
+#include "editor.h"
 
 namespace {
 
@@ -65,13 +66,18 @@ void TypingEnemyEntity::InitDerived(GameManager& g) {
 }
 
 void TypingEnemyEntity::Update(GameManager& g, float dt) {
+    if (g._editMode && g._editor->IsEntitySelected(_id)) {
+        Vec3 unused;
+        _waypointFollower.Update(g, dt, /*editModeSelected=*/true, &unused);
+    }
+    
     if (!IsActive(g)) {
         return;
     }
 
     if (!g._editMode) {
         Vec3 newPosFromWp = _transform.Pos();
-        bool followsWaypoint = _waypointFollower.Update(g, dt, &newPosFromWp);
+        bool followsWaypoint = _waypointFollower.Update(g, dt, /*editModeSelected=*/false, &newPosFromWp);
         if (followsWaypoint) {
             _transform.SetPos(newPosFromWp);
         } else {

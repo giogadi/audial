@@ -6,6 +6,7 @@
 #include "imgui_vector_util.h"
 #include "math_util.h"
 #include "renderer.h"
+#include "editor.h"
 
 void FlowWallEntity::InitDerived(GameManager& g) {
     _wpFollower.Init(_transform.Pos());
@@ -29,11 +30,12 @@ void FlowWallEntity::InitDerived(GameManager& g) {
 }
 
 void FlowWallEntity::Update(GameManager& g, float dt) {
-
+    bool const editModeSelected = g._editMode && g._editor->IsEntitySelected(_id);
+    
     switch (_moveMode) {
         case WaypointFollowerMode::Waypoints: {
             Vec3 newPos;
-            bool updatePos = _wpFollower.Update(g, dt, &newPos);
+            bool updatePos = _wpFollower.Update(g, dt, editModeSelected, &newPos);
             if (updatePos) {
                 _transform.SetPos(newPos);
             }

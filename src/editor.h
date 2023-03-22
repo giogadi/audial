@@ -15,6 +15,8 @@ struct Editor {
     void DrawMultiEnemyWindow();
     void HandleEntitySelectAndMove();
 
+    bool IsEntitySelected(ne::EntityId entityId);
+
     GameManager* _g = nullptr;
     bool _visible = false;
     std::set<ne::EntityId> _selectedEntityIds;

@@ -18,9 +18,7 @@ uniform sampler2D uHeightMap;
 out vec4 FragColor;
 
 void main() {
-    // vec4 albedo = uColor;
-    // vec4 albedo = vec4(10.f/255.f, 20.f/255.f, 35.f/255.f, 1.f);
-    vec4 albedo = vec4(10.f/255.f, 20.f/255.f, 80.f/255.f, 1.f);
+    vec4 albedo = uColor * vec4(10.f/255.f, 20.f/255.f, 80.f/255.f, 1.f);
     vec3 norm = normalize(texture(uNormalMap, texCoord).xzy * 2 - 1);
     norm.z = -norm.z;
     

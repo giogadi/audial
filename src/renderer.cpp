@@ -840,7 +840,7 @@ void Scene::Draw(int windowWidth, int windowHeight, float timeInSecs) {
         shader.SetMat4("uMvpTrans", viewProjTransform * transMat);
         shader.SetMat4("uModelTrans", transMat);
         shader.SetMat3("uModelInvTrans", modelTransInv);
-        shader.SetVec4("uColor", Vec4(50.f/255.f, 80.f/255.f, 80.f/255.f, 1.f));
+        shader.SetVec4("uColor", Vec4(1.f, 1.f, 1.f, 1.f));
         Vec3 offset(cameraPos._x, 0.f, cameraPos._z);
         shader.SetVec3("uOffset", offset);
         shader.SetInt("uNormalMap", 0);

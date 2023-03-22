@@ -352,3 +352,9 @@ void Editor::DrawMultiEnemyWindow() {
     
     ImGui::End();
 }
+
+bool Editor::IsEntitySelected(ne::EntityId entityId) {
+    auto iter = _selectedEntityIds.find(entityId);
+    bool selected = iter != _selectedEntityIds.end();
+    return selected;
+}
