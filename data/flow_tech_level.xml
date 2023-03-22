@@ -810,9 +810,9 @@
             <pickable>true</pickable>
             <transform>
                 <pos>
-                    <x>12.3718748</x>
+                    <x>11.6999998</x>
                     <y>0</y>
-                    <z>-5.43749905</z>
+                    <z>0.125000447</z>
                 </pos>
                 <quat>
                     <x>0</x>
@@ -844,8 +844,7 @@
                 <waypoints/>
             </waypoint_follower>
             <hit_actions>
-                <action>change_step bass_seq 0 1 mE2-</action>
-                <action>set_step_seq chord_seq mE4-,mG4-:1 -1 mE4-,mG4-:1 -1 -1 mE4-,mG4-:1 -1 -1 mE4-,mG4-:1 -1 -1 -1 mE4-,mG4-:1 -1 mE4-,mG4-:1 -1</action>
+                <action>change_step bass_seq 0 1 mD2-</action>
             </hit_actions>
         </TypingEnemy>
         <FlowWall>
@@ -1069,80 +1068,6 @@
                 <action>onetime set_player_spawn 6.959 0 -5.336</action>
             </actions>
         </FlowTrigger>
-        <FlowWall>
-            <name>pentagon</name>
-            <pickable>true</pickable>
-            <transform>
-                <pos>
-                    <x>13.625</x>
-                    <y>0</y>
-                    <z>-0.24218756</z>
-                </pos>
-                <quat>
-                    <x>0</x>
-                    <y>0</y>
-                    <z>0</z>
-                    <w>1</w>
-                </quat>
-                <scale>
-                    <x>3</x>
-                    <y>1</y>
-                    <z>3</z>
-                </scale>
-            </transform>
-            <model_name>cube</model_name>
-            <model_color_vec4>
-                <x>0.800000012</x>
-                <y>0.800000012</y>
-                <z>0.800000012</z>
-                <w>1</w>
-            </model_color_vec4>
-            <flow_section_id>-1</flow_section_id>
-            <hp>8</hp>
-            <move_mode>Random</move_mode>
-            <min>
-                <x>12</x>
-                <y>0</y>
-                <z>-3.5</z>
-            </min>
-            <max>
-                <x>20</x>
-                <y>0</y>
-                <z>3.5</z>
-            </max>
-            <speed>1</speed>
-            <rot_vel>1</rot_vel>
-            <polygon>
-                <point>
-                    <x>1</x>
-                    <y>0</y>
-                    <z>0</z>
-                </point>
-                <point>
-                    <x>0.308999985</x>
-                    <y>0</y>
-                    <z>-0.950999975</z>
-                </point>
-                <point>
-                    <x>-0.809000015</x>
-                    <y>0</y>
-                    <z>-0.588</z>
-                </point>
-                <point>
-                    <x>-0.809000015</x>
-                    <y>0</y>
-                    <z>0.588</z>
-                </point>
-                <point>
-                    <x>0.308999985</x>
-                    <y>0</y>
-                    <z>0.950999975</z>
-                </point>
-            </polygon>
-            <hit_actions>
-                <action>change_step bass_seq 0 1 mE1-</action>
-            </hit_actions>
-        </FlowWall>
         <Base>
             <name>wall_bounds</name>
             <pickable>true</pickable>
@@ -1178,9 +1103,9 @@
             <pickable>true</pickable>
             <transform>
                 <pos>
-                    <x>10.0749998</x>
+                    <x>10.0906248</x>
                     <y>0</y>
-                    <z>-5.39062452</z>
+                    <z>-2.12499952</z>
                 </pos>
                 <quat>
                     <x>0</x>
@@ -1212,8 +1137,7 @@
                 <waypoints/>
             </waypoint_follower>
             <hit_actions>
-                <action>change_step bass_seq 0 1 mG2-</action>
-                <action>set_step_seq chord_seq mG4-,mB4-:1 -1 -1 mG4-,mB4-:1 -1 -1 mG4-,mB4-:1 -1 mG4-,mB4-:1 -1 -1 mG4-,mB4-:1 -1 -1 mG4-,mB4-:1 -1</action>
+                <action>change_step bass_seq 0 1 mE3-</action>
             </hit_actions>
         </TypingEnemy>
         <TypingEnemy>
@@ -1221,9 +1145,9 @@
             <pickable>true</pickable>
             <transform>
                 <pos>
-                    <x>16.6062489</x>
+                    <x>12.3406229</x>
                     <y>0</y>
-                    <z>-5.62499952</z>
+                    <z>-1.39062488</z>
                 </pos>
                 <quat>
                     <x>0</x>
@@ -1255,7 +1179,7 @@
                 <waypoints/>
             </waypoint_follower>
             <hit_actions>
-                <action>change_step bass_seq 0 1 mD2-</action>
+                <action>change_step bass_seq 0 1 mD2</action>
             </hit_actions>
         </TypingEnemy>
         <TypingEnemy>
@@ -1305,9 +1229,9 @@
             <pickable>true</pickable>
             <transform>
                 <pos>
-                    <x>10.9968748</x>
+                    <x>9.54374981</x>
                     <y>0</y>
-                    <z>4.54687452</z>
+                    <z>0.124999523</z>
                 </pos>
                 <quat>
                     <x>0</x>
@@ -1339,8 +1263,7 @@
                 <waypoints/>
             </waypoint_follower>
             <hit_actions>
-                <action>change_step bass_seq 0 1 mA2-</action>
-                <action>set_step_seq chord_seq mA4-,mC5:1 -1 -1 mA4-,mC5:1 -1 -1 mA4-,mC5:1 -1 mA4-,mC5:1 -1 -1 mA4-,mC5:1 -1 -1 mA4-,mC5:1 -1</action>
+                <action>change_step bass_seq 0 1 mE2-</action>
             </hit_actions>
         </TypingEnemy>
         <TypingEnemy>
@@ -1807,7 +1730,42 @@
             <flow_section_id>-1</flow_section_id>
             <actions>
                 <action>set_all_steps snare_seq 20 -1 -1 -1 0.5</action>
-                <action>set_all_steps bass_seq -1 -1 -1 -1 1</action>
+                <action>set_all_steps vel_only bass_seq 0.0</action>
+            </actions>
+        </FlowTrigger>
+        <FlowTrigger>
+            <name>room2_end_drumfill_trigger</name>
+            <pickable>true</pickable>
+            <transform>
+                <pos>
+                    <x>9.57812691</x>
+                    <y>0</y>
+                    <z>0.0828137398</z>
+                </pos>
+                <quat>
+                    <x>0</x>
+                    <y>0</y>
+                    <z>0</z>
+                    <w>1</w>
+                </quat>
+                <scale>
+                    <x>2</x>
+                    <y>1</y>
+                    <z>2</z>
+                </scale>
+            </transform>
+            <model_name/>
+            <model_color_vec4>
+                <x>0.800000012</x>
+                <y>0.800000012</y>
+                <z>0.800000012</z>
+                <w>1</w>
+            </model_color_vec4>
+            <flow_section_id>-1</flow_section_id>
+            <actions>
+                <action>set_all_steps snare_seq -1 -1 -1 -1 0.0</action>
+                <action>set_all_steps vel_only bass_seq 1</action>
+                <action>set_step_seq chord_seq mD4-,mE4-,mG4-:1 -1 -1 mD4-,mE4-,mG4-:1 -1 -1 mD4-,mE4-,mG4-:1 -1 mD4-,mE4-,mG4-:1 -1 -1 mD4-,mE4-,mG4-:1 -1 -1 mD4-,mE4-,mG4-:1 -1</action>
             </actions>
         </FlowTrigger>
     </new_entities>

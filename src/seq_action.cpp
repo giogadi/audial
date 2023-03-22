@@ -278,9 +278,18 @@ void ChangeStepSequencerSeqAction::Init(GameManager& g) {
 }
 
 void SetAllStepsSeqAction::Load(LoadInputs const& loadInputs, std::istream& input) {
-    input >> _seqName;
-    assert(_midiNotes.size() == 4);
-    input >> _midiNotes[0] >> _midiNotes[1] >> _midiNotes[2] >> _midiNotes[3];
+    std::string token;
+    input >> token;
+    if (token == "vel_only") {
+        _velOnly = true;
+        input >> _seqName;
+    } else {
+        _seqName = token;
+    }
+    if (!_velOnly) {
+        assert(_midiNotes.size() == 4);
+        input >> _midiNotes[0] >> _midiNotes[1] >> _midiNotes[2] >> _midiNotes[3];
+    }
     input >> _velocity;
 }
 
@@ -296,10 +305,16 @@ void SetAllStepsSeqAction::Init(GameManager& g) {
 void SetAllStepsSeqAction::Execute(GameManager& g) {
     StepSequencerEntity* seq = static_cast<StepSequencerEntity*>(g._neEntityManager->GetEntity(_seqId));
     if (seq) {
-        StepSequencerEntity::SeqStep step;
-        step._midiNote = _midiNotes;
-        step._velocity = _velocity;
-        seq->SetAllStepsPermanent(step);               
+        if (_velOnly) {
+            seq->SetAllVelocitiesPermanent(_velocity);
+        } else {
+            StepSequencerEntity::SeqStep step;
+            if (!_velOnly) {
+                step._midiNote = _midiNotes;
+            }
+            step._velocity = _velocity;
+            seq->SetAllStepsPermanent(step);
+        }
     } else {
         printf("SetAllStepsSeqAction: no seq entity!!\n");
         return;

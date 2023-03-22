@@ -113,6 +113,7 @@ struct SetAllStepsSeqAction : public SeqAction {
     std::string _seqName;
     std::array<int, 4> _midiNotes = {-1, -1, -1, -1};
     float _velocity = 0.f;
+    bool _velOnly = false;
 
     ne::EntityId _seqId;
     
