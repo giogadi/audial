@@ -24,6 +24,7 @@
 #include "entities/flow_wall.h"
 #include "entities/flow_pickup.h"
 #include "entities/flow_trigger.h"
+#include "entities/int_variable.h"
 
 namespace ne {
 
@@ -151,6 +152,16 @@ Entity* EntityManager::GetFirstEntityOfType(EntityType entityType) {
 
 Entity* EntityManager::FindEntityByName(std::string_view name) {
     for (AllIterator iter = GetAllIterator(); !iter.Finished(); iter.Next()) {
+        Entity* e = iter.GetEntity();
+        if (e->_name == name) {
+            return e;
+        }
+    }
+    return nullptr;
+}
+
+Entity* EntityManager::FindEntityByNameAndType(std::string_view name, EntityType entityType) {
+    for (Iterator iter = GetIterator(entityType); !iter.Finished(); iter.Next()) {
         Entity* e = iter.GetEntity();
         if (e->_name == name) {
             return e;

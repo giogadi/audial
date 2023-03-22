@@ -313,8 +313,7 @@ int main(int argc, char** argv) {
     BeatClock beatClock;
 
     gGameManager = GameManager {
-        &sceneManager, &inputManager, &audioContext, &neEntityManager, &beatClock, &soundBank,
-        cmdLineInputs._editMode };
+        &sceneManager, &inputManager, &audioContext, &neEntityManager, &beatClock, &soundBank, cmdLineInputs._editMode };
 
     if (!sceneManager.Init(gGameManager)) {
         std::cout << "scene failed to init. exiting" << std::endl;

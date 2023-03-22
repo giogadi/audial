@@ -69,6 +69,7 @@ add_executable(game
     src/entities/flow_wall.cpp
     src/entities/flow_pickup.cpp
     src/entities/flow_trigger.cpp
+    src/entities/int_variable.cpp
     
     src/enums/audio_EventType.cpp
     src/enums/audio_SynthParamType.cpp

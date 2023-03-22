@@ -10,6 +10,8 @@
 #include "seq_actions/camera_control.h"
 #include "entities/typing_player.h"
 #include "entities/flow_player.h"
+#include "entities/flow_wall.h"
+#include "entities/int_variable.h"
 #include "sound_bank.h"
 
 std::unique_ptr<SeqAction> SeqAction::LoadAction(LoadInputs const& loadInputs, std::istream& input) {
@@ -52,6 +54,8 @@ std::unique_ptr<SeqAction> SeqAction::LoadAction(LoadInputs const& loadInputs, s
         pAction = std::make_unique<SetNewFlowSectionSeqAction>();
     } else if (token == "set_player_spawn") {
         pAction = std::make_unique<PlayerSetSpawnPointSeqAction>();
+    } else if (token == "add_int") {
+        pAction = std::make_unique<AddToIntVariableSeqAction>();
     } else {
         printf("ERROR: Unrecognized action type \"%s\".\n", token.c_str());
     }
@@ -430,21 +434,34 @@ void BeatTimeEventSeqAction::Init(GameManager& g) {
 }
 
 void WaypointControlSeqAction::Execute(GameManager& g) {
-    ne::Entity* e = g._neEntityManager->FindEntityByName(_enemyName);
+    ne::Entity* e = g._neEntityManager->FindEntityByName(_entityName);
     if (e == nullptr) {
-        printf("ERROR: WaypointControlSeqAction could not find entity \"%s\"\n", _enemyName.c_str());
+        printf("ERROR: WaypointControlSeqAction could not find entity \"%s\"\n", _entityName.c_str());
         return;
     }
-    if (e->_id._type != ne::EntityType::TypingEnemy) {
-        printf("ERROR: WaypointControlSeqAction given a non-enemy entity \"%s\"\n", _enemyName.c_str());
+    WaypointFollower* wpFollower = nullptr;
+    if (e->_id._type == ne::EntityType::TypingEnemy) {
+        TypingEnemyEntity* enemy = static_cast<TypingEnemyEntity*>(e);
+        wpFollower = &enemy->_waypointFollower;
+    } else if (e->_id._type == ne::EntityType::FlowWall) {
+        FlowWallEntity* wall = static_cast<FlowWallEntity*>(e);
+        wpFollower = &wall->_wpFollower;
+    }
+    
+    if (wpFollower == nullptr) {
+        printf("ERROR: WaypointControlSeqAction given an unsupported entity \"%s\"\n", _entityName.c_str());
         return;
     }
-    TypingEnemyEntity* enemy = static_cast<TypingEnemyEntity*>(e);
-    enemy->_waypointFollower._followingWaypoints = _followWaypoints;
+    // wpFollower->_followingWaypoints = _followWaypoints;
+    if (_followWaypoints) {
+        wpFollower->Start(g);
+    } else {
+        wpFollower->Stop();
+    }
 }
 
 void WaypointControlSeqAction::Load(LoadInputs const& loadInputs, std::istream& input) {
-    input >> _enemyName;
+    input >> _entityName;
     input >> _followWaypoints;
 }
 
@@ -506,4 +523,20 @@ void PlayerSetSpawnPointSeqAction::Execute(GameManager& g) {
     if (g._editMode) { return; }
     FlowPlayerEntity* pPlayer = static_cast<FlowPlayerEntity*>(g._neEntityManager->GetFirstEntityOfType(ne::EntityType::FlowPlayer));
     pPlayer->_respawnPos = _spawnPos;
+}
+
+void AddToIntVariableSeqAction::Load(LoadInputs const& loadInputs, std::istream& input) {
+    try {
+        input >> _varName >> _addAmount;
+    } catch (std::exception&) {
+        printf("AddToIntVariableSeqAction::Load: could not parse input\n");
+    }
+}
+
+void AddToIntVariableSeqAction::Execute(GameManager& g) {
+    if (g._editMode) {
+        return;
+    }
+    IntVariableEntity* e = static_cast<IntVariableEntity*>(g._neEntityManager->FindEntityByNameAndType(_varName, ne::EntityType::IntVariable));
+    e->AddToVariable(_addAmount);
 }

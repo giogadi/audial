@@ -310,7 +310,7 @@ ne::EntityManager::Iterator enemyIter = g._neEntityManager->GetIterator(ne::Enti
         Vec3 penetration;
         bool hasOverlap = geometry::DoAABBsOverlap(_transform, pickupTrans, &penetration);
         if (hasOverlap) {
-            g._neEntityManager->TagForDestroy(pPickup->_id);
+            pPickup->OnHit(g);
         }
     }
 

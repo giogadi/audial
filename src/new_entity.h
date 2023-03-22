@@ -28,7 +28,8 @@ namespace ne {
     X(ParamAutomator) \
     X(FlowWall) \
     X(FlowPickup) \
-    X(FlowTrigger)
+    X(FlowTrigger) \
+    X(IntVariable)
 
 enum class EntityType: int {
 #   define X(a) a,
@@ -106,6 +107,7 @@ struct EntityManager {
     Entity* AddEntity(EntityType entityType);    
     Entity* GetEntity(EntityId id);
     Entity* FindEntityByName(std::string_view name);
+    Entity* FindEntityByNameAndType(std::string_view name, EntityType entityType);
     Entity* GetFirstEntityOfType(EntityType entityType);
     bool TagForDestroy(EntityId id);
     void TagAllPrevSectionEntitiesForDestroy(int newFlowSectionId);

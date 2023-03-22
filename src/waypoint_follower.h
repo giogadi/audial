@@ -28,9 +28,14 @@ struct WaypointFollower {
     void Load(serial::Ptree pt);
     bool ImGui();
 
+    void Start(GameManager& g);
+    void Stop();
+
     // non-serialized
     bool _followingWaypoints = false;
     int _currentWaypointIx = 0;
     Vec3 _prevWaypointPos;
+
+private:
     double _thisWpStartTime = 3.0;
 };

@@ -33,8 +33,17 @@ void WaypointFollower::Init(Vec3 const& initPos) {
     _thisWpStartTime = 3.0;
 }
 
+void WaypointFollower::Start(GameManager& g) {
+    _followingWaypoints = true;
+    _thisWpStartTime = BeatClock::GetNextBeatDenomTime(g._beatClock->GetBeatTimeFromEpoch(), 1.0);
+}
+
+void WaypointFollower::Stop() {
+    _followingWaypoints = false;
+}
+
 bool WaypointFollower::Update(GameManager& g, float const dt, Vec3* newPos) {
-    if (/*!_followingWaypoints || */_waypoints.empty()) {
+    if (!_followingWaypoints || _waypoints.empty()) {
         return false;
     }
 

@@ -174,7 +174,7 @@ struct BeatTimeEventSeqAction : public SeqAction {
 struct WaypointControlSeqAction : public SeqAction {
     // serialize
     bool _followWaypoints = true;
-    std::string _enemyName;
+    std::string _entityName;
 
     virtual void Execute(GameManager& g) override;
     virtual void Load(
@@ -197,6 +197,14 @@ struct PlayerSetSpawnPointSeqAction : public SeqAction {
 
 struct SetNewFlowSectionSeqAction : public SeqAction {
     int _newSectionId = -1;
+
+    virtual void Execute(GameManager& g) override;
+    virtual void Load(LoadInputs const& loadInputs, std::istream& input) override;
+};
+
+struct AddToIntVariableSeqAction : public SeqAction {
+    std::string _varName;
+    int _addAmount = 0;
 
     virtual void Execute(GameManager& g) override;
     virtual void Load(LoadInputs const& loadInputs, std::istream& input) override;

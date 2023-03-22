@@ -10,7 +10,8 @@
 void FlowWallEntity::InitDerived(GameManager& g) {
     _wpFollower.Init(_transform.Pos());
     _randomWander.Init();
-    
+
+    _hitActions.clear();
     _hitActions.reserve(_hitActionStrings.size());
     SeqAction::LoadInputs loadInputs;  // default
     for (std::string const& actionStr : _hitActionStrings) {
