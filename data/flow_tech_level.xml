@@ -456,7 +456,7 @@
                 <w>0</w>
             </model_color_vec4>
             <flow_section_id>-1</flow_section_id>
-            <sequence>-1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1</sequence>
+            <sequence>mE2-:1 -1:1 mE2-:1 -1:1 mE2-:1 mE2-:1 -1:1 -1:1 mE2-:1 -1:1 -1:1 mE2-:1 -1:1 -1:1 mE2-:1 -1:1</sequence>
             <start_mute>false</start_mute>
             <channels>
                 <channel>0</channel>
@@ -653,6 +653,7 @@
             <flow_section_id>0</flow_section_id>
             <actions>
                 <action>add_int room1_pickup_counter -1</action>
+                <action>automate relative Cutoff 0 0 250 1</action>
             </actions>
         </FlowPickup>
         <TypingEnemy>
@@ -770,6 +771,7 @@
             <flow_section_id>0</flow_section_id>
             <actions>
                 <action>add_int room1_pickup_counter -1</action>
+                <action>automate relative Cutoff 0 0 250 1</action>
             </actions>
         </FlowPickup>
         <FlowPickup>
@@ -803,6 +805,7 @@
             <flow_section_id>0</flow_section_id>
             <actions>
                 <action>add_int room1_pickup_counter -1</action>
+                <action>automate relative Cutoff 0 0 250 1</action>
             </actions>
         </FlowPickup>
         <TypingEnemy>
@@ -928,6 +931,7 @@
             <flow_section_id>1</flow_section_id>
             <actions>
                 <action>add_int room1_pickup_counter -1</action>
+                <action>automate relative Cutoff 0 0 250 1</action>
             </actions>
         </FlowPickup>
         <FlowPickup>
@@ -961,6 +965,7 @@
             <flow_section_id>0</flow_section_id>
             <actions>
                 <action>add_int room1_pickup_counter -1</action>
+                <action>automate relative Cutoff 0 0 250 1</action>
             </actions>
         </FlowPickup>
         <FlowWall>
@@ -1663,6 +1668,7 @@
             <flow_section_id>1</flow_section_id>
             <actions>
                 <action>add_int room1_pickup_counter -1</action>
+                <action>automate relative Cutoff 0 0 250 1</action>
             </actions>
         </FlowPickup>
         <IntVariable>

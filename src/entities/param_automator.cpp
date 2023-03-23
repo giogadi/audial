@@ -21,7 +21,21 @@ void ParamAutomatorEntity::InitDerived(GameManager& g) {
         }
         _seqId = e->_id;
     }
-    _automateStartTime = g._beatClock->GetBeatTimeFromEpoch();    
+    _automateStartTime = g._beatClock->GetBeatTimeFromEpoch();
+
+    if (_relative) {
+        if (_synth) {
+            if (_synthParam == audio::SynthParamType::Cutoff) {
+                synth::Patch const& patch = g._audioContext->_state.synths[_channel].patch;
+                float currentVal = patch.cutoffFreq;
+                _startValue = currentVal + _startValue;
+                _endValue = currentVal + _endValue;
+            } else {
+                printf("ParamAutomatorEntity::Init: relative only supports Cutoff right now.\n");
+            }
+        }
+
+    }
 }
 
 void ParamAutomatorEntity::Update(GameManager& g, float dt) {
@@ -75,4 +89,8 @@ void ParamAutomatorEntity::Update(GameManager& g, float dt) {
             assert(false);
         }
     }
+}
+
+void ParamAutomatorEntity::SaveDerived(serial::Ptree pt) const {
+    printf("ParamAutomatorEntity::SaveDerived is NOT IMPLEMENTED. If you get to this, DO NOT JUST SAVE _startValue and _endValue because they currently get messed with in Init\n");
 }

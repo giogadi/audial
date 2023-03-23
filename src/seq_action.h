@@ -67,6 +67,9 @@ private:
 };
 
 struct SpawnAutomatorSeqAction : public SeqAction {
+    // If relative is true, startValue and endValue are interpreted as offsets
+    // from the current value of the param
+    bool _relative = false;
     float _startValue = 0.f;
     float _endValue = 1.f;
     double _desiredAutomateTime = 1.0;
@@ -78,7 +81,6 @@ struct SpawnAutomatorSeqAction : public SeqAction {
     virtual void Execute(GameManager& g) override;
     virtual void Load(
         LoadInputs const& loadInputs, std::istream& input) override;
-    virtual void Save(std::ostream& output) const override;
 };
 
 struct RemoveEntitySeqAction : public SeqAction {

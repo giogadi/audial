@@ -5,6 +5,7 @@
 
 struct ParamAutomatorEntity : public ne::Entity {
     // serialized
+    bool _relative = false;
     float _startValue = 0.f;
     float _endValue = 1.f;
     double _desiredAutomateTime = 1.0;
@@ -19,7 +20,7 @@ struct ParamAutomatorEntity : public ne::Entity {
 
     virtual void InitDerived(GameManager& g) override;
     virtual void Update(GameManager& g, float dt) override;
-    /* virtual void SaveDerived(serial::Ptree pt) const override; */
+    virtual void SaveDerived(serial::Ptree pt) const override;
     /* virtual void LoadDerived(serial::Ptree pt) override; */
     /* virtual ImGuiResult ImGuiDerived(GameManager& g) override; */
 };

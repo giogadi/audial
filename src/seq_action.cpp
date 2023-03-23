@@ -160,7 +160,14 @@ void SeqAction::LoadAndInitActions(GameManager& g, std::istream& input, std::vec
 
 void SpawnAutomatorSeqAction::Load(LoadInputs const& loadInputs, std::istream& input) {
     std::string paramName;
-    input >> paramName;
+    std::string token;
+    input >> token;
+    if (token == "relative") {
+        _relative = true;
+        input >> paramName;
+    } else {
+        paramName = token;
+    }
     if (paramName == "seq_velocity") {
         _synth = false;
         input >> _seqEntityName;
@@ -174,21 +181,9 @@ void SpawnAutomatorSeqAction::Load(LoadInputs const& loadInputs, std::istream& i
     input >> _desiredAutomateTime;
 }
 
-void SpawnAutomatorSeqAction::Save(std::ostream& output) const {
-    output << "automate" << " ";
-    if (_synth) {
-        output << audio::SynthParamTypeToString(_synthParam);
-        output << " " << _channel;
-    } else {
-        output << "seq_velocity";
-    }
-    output << " " << _startValue;
-    output << " " << _endValue;
-    output << " " << _desiredAutomateTime;
-}
-
 void SpawnAutomatorSeqAction::Execute(GameManager& g) {
     ParamAutomatorEntity* e = static_cast<ParamAutomatorEntity*>(g._neEntityManager->AddEntity(ne::EntityType::ParamAutomator));
+    e->_relative = _relative;
     e->_startValue = _startValue;
     e->_endValue = _endValue;
     e->_desiredAutomateTime = _desiredAutomateTime;

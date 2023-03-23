@@ -53,7 +53,7 @@ bool StepSequencerEntity::TryReadSeqStep(std::istream& input, SeqStep& step) {
             } else {
                 curIx = noteDelimIx + 1;
             }
-        }            
+        }
         int midiNote = -1;
         if (noteStr[0] == 'm') {
             bool success = MaybeGetMidiNoteFromStr(noteStr.substr(1), midiNote);
