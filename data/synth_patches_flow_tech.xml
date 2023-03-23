@@ -9,7 +9,7 @@
         <osc2_waveform>Square</osc2_waveform>
         <detune>1</detune>
         <osc_fader>0.326000005</osc_fader>
-        <cutoff_freq>0.0</cutoff_freq>
+        <cutoff_freq>0</cutoff_freq>
         <cutoff_k>0</cutoff_k>
         <hpf_cutoff_freq>0</hpf_cutoff_freq>
         <hpf_peak>0</hpf_peak>
@@ -44,30 +44,30 @@
     <patch>
         <version>4</version>
         <name>lead</name>
-        <gain_factor>0.800000012</gain_factor>
-        <mono>true</mono>
+        <gain_factor>0.601000011</gain_factor>
+        <mono>false</mono>
         <osc1_waveform>Square</osc1_waveform>
         <osc2_waveform>Square</osc2_waveform>
-        <detune>1</detune>
-        <osc_fader>0.26699999</osc_fader>
-        <cutoff_freq>186.863998</cutoff_freq>
-        <cutoff_k>2.01200008</cutoff_k>
+        <detune>0.246999994</detune>
+        <osc_fader>0.173999995</osc_fader>
+        <cutoff_freq>1684.375</cutoff_freq>
+        <cutoff_k>0</cutoff_k>
         <hpf_cutoff_freq>0</hpf_cutoff_freq>
         <hpf_peak>0</hpf_peak>
-        <pitch_lfo_gain>0.0130000003</pitch_lfo_gain>
-        <pitch_lfo_freq>2.96600008</pitch_lfo_freq>
+        <pitch_lfo_gain>0</pitch_lfo_gain>
+        <pitch_lfo_freq>0</pitch_lfo_freq>
         <cutoff_lfo_gain>0</cutoff_lfo_gain>
-        <cutoff_lfo_freq>0.423999995</cutoff_lfo_freq>
+        <cutoff_lfo_freq>9.375</cutoff_lfo_freq>
         <amp_env_spec>
-            <attack_time>0.0170000009</attack_time>
-            <decay_time>0.224999994</decay_time>
-            <sustain_level>0.991999984</sustain_level>
-            <release_time>0.931999981</release_time>
+            <attack_time>0.00700000022</attack_time>
+            <decay_time>0.0560000017</decay_time>
+            <sustain_level>0.0939999968</sustain_level>
+            <release_time>0.191</release_time>
             <min_value>0.00999999978</min_value>
         </amp_env_spec>
-        <cutoff_env_gain>747.458008</cutoff_env_gain>
+        <cutoff_env_gain>0</cutoff_env_gain>
         <cutoff_env_spec>
-            <attack_time>0.0469999984</attack_time>
+            <attack_time>0.0140000004</attack_time>
             <decay_time>0.0379999988</decay_time>
             <sustain_level>0.389999986</sustain_level>
             <release_time>0.0970000029</release_time>
@@ -75,10 +75,10 @@
         </cutoff_env_spec>
         <pitch_env_gain>0</pitch_env_gain>
         <pitch_env_spec>
-            <attack_time>0.0170000009</attack_time>
+            <attack_time>0.061999999</attack_time>
             <decay_time>0</decay_time>
-            <sustain_level>0.465999991</sustain_level>
-            <release_time>0</release_time>
+            <sustain_level>1</sustain_level>
+            <release_time>0.575999975</release_time>
             <min_value>0.00999999978</min_value>
         </pitch_env_spec>
     </patch>

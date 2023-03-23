@@ -182,6 +182,9 @@ void SpawnAutomatorSeqAction::Load(LoadInputs const& loadInputs, std::istream& i
 }
 
 void SpawnAutomatorSeqAction::Execute(GameManager& g) {
+    if (g._editMode) {
+        return;
+    }
     ParamAutomatorEntity* e = static_cast<ParamAutomatorEntity*>(g._neEntityManager->AddEntity(ne::EntityType::ParamAutomator));
     e->_relative = _relative;
     e->_startValue = _startValue;

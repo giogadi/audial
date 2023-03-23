@@ -654,6 +654,7 @@
             <actions>
                 <action>add_int room1_pickup_counter -1</action>
                 <action>automate relative Cutoff 0 0 250 1</action>
+                <action>change_step lead_seq 0 1 mE4-,mB4-,mE5-,mE6-:1</action>
             </actions>
         </FlowPickup>
         <TypingEnemy>
@@ -772,6 +773,7 @@
             <actions>
                 <action>add_int room1_pickup_counter -1</action>
                 <action>automate relative Cutoff 0 0 250 1</action>
+                <action>change_step lead_seq 0 1 mE4-,mB4-,mE5-,mE6-:1</action>
             </actions>
         </FlowPickup>
         <FlowPickup>
@@ -806,6 +808,7 @@
             <actions>
                 <action>add_int room1_pickup_counter -1</action>
                 <action>automate relative Cutoff 0 0 250 1</action>
+                <action>change_step lead_seq 0 1 mE4-,mB4-,mE5-,mE6-:1</action>
             </actions>
         </FlowPickup>
         <TypingEnemy>
@@ -932,6 +935,7 @@
             <actions>
                 <action>add_int room1_pickup_counter -1</action>
                 <action>automate relative Cutoff 0 0 250 1</action>
+                <action>change_step lead_seq 0 1 mE4-,mB4-,mE5-,mE6-:1</action>
             </actions>
         </FlowPickup>
         <FlowPickup>
@@ -966,6 +970,7 @@
             <actions>
                 <action>add_int room1_pickup_counter -1</action>
                 <action>automate relative Cutoff 0 0 250 1</action>
+                <action>change_step lead_seq 0 1 mE4-,mB4-,mE5-,mE6-:1</action>
             </actions>
         </FlowPickup>
         <FlowWall>
@@ -1669,6 +1674,7 @@
             <actions>
                 <action>add_int room1_pickup_counter -1</action>
                 <action>automate relative Cutoff 0 0 250 1</action>
+                <action>change_step lead_seq 0 1 mE4-,mB4-,mE5-,mE6-:1</action>
             </actions>
         </FlowPickup>
         <IntVariable>
