@@ -39,7 +39,7 @@ void TypingEnemyEntity::InitDerived(GameManager& g) {
         player->RegisterSectionEnemy(_typingSectionId, _id);
     }
     
-    _waypointFollower.Init(_transform.GetPos());
+    _waypointFollower.Init(g, *this);
         
     // TODO I'M SORRY MOTHER. We need to support the ability for now of
     // spawn_enemy.cpp to init an enemy by setting _hitActions directly, and not
@@ -67,10 +67,9 @@ void TypingEnemyEntity::InitDerived(GameManager& g) {
     _flowCooldownTimeLeft = -1.f;
 }
 
-void TypingEnemyEntity::Update(GameManager& g, float dt) {
+void TypingEnemyEntity::Update(GameManager& g, float dt) {    
     if (g._editMode && g._editor->IsEntitySelected(_id)) {
-        Vec3 unused;
-        _waypointFollower.Update(g, dt, /*editModeSelected=*/true, &unused);
+        _waypointFollower.Update(g, dt, /*editModeSelected=*/true, this);
     }
     
     if (!IsActive(g)) {
@@ -78,11 +77,8 @@ void TypingEnemyEntity::Update(GameManager& g, float dt) {
     }
 
     if (!g._editMode) {
-        Vec3 newPosFromWp = _transform.Pos();
-        bool followsWaypoint = _waypointFollower.Update(g, dt, /*editModeSelected=*/false, &newPosFromWp);
-        if (followsWaypoint) {
-            _transform.SetPos(newPosFromWp);
-        } else {
+        bool followsWaypoint = _waypointFollower.Update(g, dt, /*editModeSelected=*/false, this);
+        if (!followsWaypoint) {
             Vec3 p  = _transform.GetPos();
     
             Vec3 dp = _velocity * dt;

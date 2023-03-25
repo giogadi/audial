@@ -9,7 +9,7 @@
 #include "editor.h"
 
 void FlowWallEntity::InitDerived(GameManager& g) {
-    _wpFollower.Init(_transform.Pos());
+    _wpFollower.Init(g, *this);
     _randomWander.Init();
 
     _hitActions.clear();
@@ -34,11 +34,7 @@ void FlowWallEntity::Update(GameManager& g, float dt) {
     
     switch (_moveMode) {
         case WaypointFollowerMode::Waypoints: {
-            Vec3 newPos;
-            bool updatePos = _wpFollower.Update(g, dt, editModeSelected, &newPos);
-            if (updatePos) {
-                _transform.SetPos(newPos);
-            }
+            _wpFollower.Update(g, dt, editModeSelected, this);
             break;
         }
         case WaypointFollowerMode::Random: {

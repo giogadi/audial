@@ -467,7 +467,7 @@ void WaypointControlSeqAction::Execute(GameManager& g) {
     }
     // wpFollower->_followingWaypoints = _followWaypoints;
     if (_followWaypoints) {
-        wpFollower->Start(g);
+        wpFollower->Start(g, *e);
     } else {
         wpFollower->Stop();
     }

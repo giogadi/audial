@@ -5,6 +5,7 @@
 #include "serial.h"
 #include "matrix.h"
 #include "game_manager.h"
+#include "new_entity.h"
 
 struct Waypoint {
     double _waitTime = 0.75f;
@@ -20,21 +21,24 @@ struct WaypointFollower {
     std::vector<Waypoint> _waypoints;
     bool _autoStartFollowingWaypoints = false;
     bool _loopWaypoints = false;
+    bool _localToEntity = false;
 
-    void Init(Vec3 const& initPos);
+    void Init(GameManager& g, ne::Entity const& entity);
     // Returns true if waypoint logic updated position
-    bool Update(GameManager& g, float dt, bool debugDraw, Vec3* newPos);
+    // offset gets added to waypoint positions when drawing and populating newPos.
+    bool Update(GameManager& g, float dt, bool debugDraw, ne::Entity* pEntity);
     void Save(serial::Ptree pt) const;
     void Load(serial::Ptree pt);
     bool ImGui();
 
-    void Start(GameManager& g);
+    void Start(GameManager& g, ne::Entity const& e);
     void Stop();
 
     // non-serialized
     bool _followingWaypoints = false;
     int _currentWaypointIx = 0;
     Vec3 _prevWaypointPos;
+    Vec3 _entityPosAtStart;
 
 private:
     double _thisWpStartTime = 3.0;
