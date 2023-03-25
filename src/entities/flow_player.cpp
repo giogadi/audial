@@ -83,6 +83,9 @@ FlowWallEntity* FindOverlapWithWall(GameManager& g, Transform const& playerTrans
     std::vector<Vec3> aabbPoly(4);
     for (; !wallIter.Finished(); wallIter.Next()) {
         FlowWallEntity* pWall = static_cast<FlowWallEntity*>(wallIter.GetEntity());
+        if (!pWall->_canHit) {
+            continue;
+        }
         Transform const& wallTrans = pWall->_transform;
         Vec3 euler = wallTrans.Quat().EulerAngles();
         float yRot = euler._x;
@@ -192,14 +195,16 @@ ne::EntityManager::Iterator enemyIter = g._neEntityManager->GetIterator(ne::Enti
     }
 
     if (nearest != nullptr) {
-        nearest->OnHit(g);
-        Vec3 toEnemyDir = nearest->_transform.GetPos() - playerPos;
-        toEnemyDir.Normalize();
-        float sign = (_flowPolarity != nearest->_flowPolarity) ? 1.f : -1.f;
-        _vel = toEnemyDir * (sign * _launchVel);
-        _dashTimer = 0.f;
-        _dashTargetId = nearest->_id;
-        _applyGravityDuringDash = false;        
+        if (nearest->CanHit()) {
+            nearest->OnHit(g);
+            Vec3 toEnemyDir = nearest->_transform.GetPos() - playerPos;
+            toEnemyDir.Normalize();
+            float sign = (_flowPolarity != nearest->_flowPolarity) ? 1.f : -1.f;
+            _vel = toEnemyDir * (sign * _launchVel);
+            _dashTimer = 0.f;
+            _dashTargetId = nearest->_id;
+            _applyGravityDuringDash = false;
+        }
     }
 
     // Check if we're done dashing

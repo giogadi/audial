@@ -571,6 +571,7 @@
             <type_kill>false</type_kill>
             <all_actions_on_hit>false</all_actions_on_hit>
             <flow_polarity>false</flow_polarity>
+            <flow_cooldown>-1</flow_cooldown>
             <waypoint_follower>
                 <waypoint_auto_start>false</waypoint_auto_start>
                 <loop_waypoints>false</loop_waypoints>
@@ -613,6 +614,7 @@
             <type_kill>false</type_kill>
             <all_actions_on_hit>true</all_actions_on_hit>
             <flow_polarity>false</flow_polarity>
+            <flow_cooldown>-1</flow_cooldown>
             <waypoint_follower>
                 <waypoint_auto_start>false</waypoint_auto_start>
                 <loop_waypoints>false</loop_waypoints>
@@ -690,6 +692,7 @@
             <type_kill>false</type_kill>
             <all_actions_on_hit>false</all_actions_on_hit>
             <flow_polarity>false</flow_polarity>
+            <flow_cooldown>-1</flow_cooldown>
             <waypoint_follower>
                 <waypoint_auto_start>false</waypoint_auto_start>
                 <loop_waypoints>false</loop_waypoints>
@@ -732,6 +735,7 @@
             <type_kill>false</type_kill>
             <all_actions_on_hit>true</all_actions_on_hit>
             <flow_polarity>false</flow_polarity>
+            <flow_cooldown>-1</flow_cooldown>
             <waypoint_follower>
                 <waypoint_auto_start>false</waypoint_auto_start>
                 <loop_waypoints>false</loop_waypoints>
@@ -844,6 +848,7 @@
             <type_kill>false</type_kill>
             <all_actions_on_hit>true</all_actions_on_hit>
             <flow_polarity>false</flow_polarity>
+            <flow_cooldown>0.5</flow_cooldown>
             <waypoint_follower>
                 <waypoint_auto_start>false</waypoint_auto_start>
                 <loop_waypoints>false</loop_waypoints>
@@ -882,6 +887,7 @@
                 <w>1</w>
             </model_color_vec4>
             <flow_section_id>1</flow_section_id>
+            <can_hit>true</can_hit>
             <hp>-1</hp>
             <move_mode>Waypoints</move_mode>
             <waypoint_auto_start>false</waypoint_auto_start>
@@ -1002,6 +1008,7 @@
                 <w>1</w>
             </model_color_vec4>
             <flow_section_id>1</flow_section_id>
+            <can_hit>true</can_hit>
             <hp>-1</hp>
             <move_mode>Waypoints</move_mode>
             <waypoint_auto_start>false</waypoint_auto_start>
@@ -1141,6 +1148,7 @@
             <type_kill>false</type_kill>
             <all_actions_on_hit>true</all_actions_on_hit>
             <flow_polarity>false</flow_polarity>
+            <flow_cooldown>0.5</flow_cooldown>
             <waypoint_follower>
                 <waypoint_auto_start>false</waypoint_auto_start>
                 <loop_waypoints>false</loop_waypoints>
@@ -1183,6 +1191,7 @@
             <type_kill>false</type_kill>
             <all_actions_on_hit>true</all_actions_on_hit>
             <flow_polarity>false</flow_polarity>
+            <flow_cooldown>4</flow_cooldown>
             <waypoint_follower>
                 <waypoint_auto_start>false</waypoint_auto_start>
                 <loop_waypoints>false</loop_waypoints>
@@ -1225,6 +1234,7 @@
             <type_kill>false</type_kill>
             <all_actions_on_hit>true</all_actions_on_hit>
             <flow_polarity>false</flow_polarity>
+            <flow_cooldown>-1</flow_cooldown>
             <waypoint_follower>
                 <waypoint_auto_start>false</waypoint_auto_start>
                 <loop_waypoints>false</loop_waypoints>
@@ -1267,6 +1277,7 @@
             <type_kill>false</type_kill>
             <all_actions_on_hit>true</all_actions_on_hit>
             <flow_polarity>false</flow_polarity>
+            <flow_cooldown>-1</flow_cooldown>
             <waypoint_follower>
                 <waypoint_auto_start>false</waypoint_auto_start>
                 <loop_waypoints>false</loop_waypoints>
@@ -1309,6 +1320,7 @@
             <type_kill>false</type_kill>
             <all_actions_on_hit>true</all_actions_on_hit>
             <flow_polarity>false</flow_polarity>
+            <flow_cooldown>-1</flow_cooldown>
             <waypoint_follower>
                 <waypoint_auto_start>false</waypoint_auto_start>
                 <loop_waypoints>false</loop_waypoints>
@@ -1381,6 +1393,7 @@
             <type_kill>false</type_kill>
             <all_actions_on_hit>false</all_actions_on_hit>
             <flow_polarity>false</flow_polarity>
+            <flow_cooldown>-1</flow_cooldown>
             <waypoint_follower>
                 <waypoint_auto_start>false</waypoint_auto_start>
                 <loop_waypoints>false</loop_waypoints>
@@ -1423,6 +1436,7 @@
             <type_kill>false</type_kill>
             <all_actions_on_hit>false</all_actions_on_hit>
             <flow_polarity>false</flow_polarity>
+            <flow_cooldown>-1</flow_cooldown>
             <waypoint_follower>
                 <waypoint_auto_start>false</waypoint_auto_start>
                 <loop_waypoints>false</loop_waypoints>
@@ -1465,6 +1479,7 @@
             <type_kill>false</type_kill>
             <all_actions_on_hit>false</all_actions_on_hit>
             <flow_polarity>false</flow_polarity>
+            <flow_cooldown>-1</flow_cooldown>
             <waypoint_follower>
                 <waypoint_auto_start>false</waypoint_auto_start>
                 <loop_waypoints>false</loop_waypoints>
@@ -1507,6 +1522,7 @@
             <type_kill>false</type_kill>
             <all_actions_on_hit>false</all_actions_on_hit>
             <flow_polarity>false</flow_polarity>
+            <flow_cooldown>-1</flow_cooldown>
             <waypoint_follower>
                 <waypoint_auto_start>false</waypoint_auto_start>
                 <loop_waypoints>false</loop_waypoints>
@@ -1549,6 +1565,7 @@
             <type_kill>false</type_kill>
             <all_actions_on_hit>false</all_actions_on_hit>
             <flow_polarity>false</flow_polarity>
+            <flow_cooldown>-1</flow_cooldown>
             <waypoint_follower>
                 <waypoint_auto_start>false</waypoint_auto_start>
                 <loop_waypoints>false</loop_waypoints>
@@ -1591,6 +1608,7 @@
             <type_kill>false</type_kill>
             <all_actions_on_hit>false</all_actions_on_hit>
             <flow_polarity>false</flow_polarity>
+            <flow_cooldown>-1</flow_cooldown>
             <waypoint_follower>
                 <waypoint_auto_start>false</waypoint_auto_start>
                 <loop_waypoints>false</loop_waypoints>
@@ -1633,6 +1651,7 @@
             <type_kill>false</type_kill>
             <all_actions_on_hit>false</all_actions_on_hit>
             <flow_polarity>false</flow_polarity>
+            <flow_cooldown>-1</flow_cooldown>
             <waypoint_follower>
                 <waypoint_auto_start>false</waypoint_auto_start>
                 <loop_waypoints>false</loop_waypoints>
@@ -1776,9 +1795,47 @@
             <flow_section_id>-1</flow_section_id>
             <actions>
                 <action>set_all_steps snare_seq -1 -1 -1 -1 0.0</action>
-                <action>set_all_steps vel_only bass_seq 1</action>
-                <action>set_step_seq chord_seq mD4-,mE4-,mG4-:1 -1 -1 mD4-,mE4-,mG4-:1 -1 -1 mD4-,mE4-,mG4-:1 -1 mD4-,mE4-,mG4-:1 -1 -1 mD4-,mE4-,mG4-:1 -1 -1 mD4-,mE4-,mG4-:1 -1</action>
+                <action>set_all_steps bass_seq -1 -1 -1 -1 1</action>
             </actions>
         </FlowTrigger>
+        <FlowWall>
+            <name>room2_platform</name>
+            <pickable>true</pickable>
+            <transform>
+                <pos>
+                    <x>10.9281235</x>
+                    <y>-4</y>
+                    <z>-0.960938215</z>
+                </pos>
+                <quat>
+                    <x>0</x>
+                    <y>0</y>
+                    <z>0</z>
+                    <w>1</w>
+                </quat>
+                <scale>
+                    <x>4</x>
+                    <y>1</y>
+                    <z>3.5</z>
+                </scale>
+            </transform>
+            <model_name>cube</model_name>
+            <model_color_vec4>
+                <x>0.143790826</x>
+                <y>0.431372523</y>
+                <z>0.287581623</z>
+                <w>1</w>
+            </model_color_vec4>
+            <flow_section_id>-1</flow_section_id>
+            <can_hit>false</can_hit>
+            <hp>-1</hp>
+            <move_mode>Waypoints</move_mode>
+            <waypoint_auto_start>false</waypoint_auto_start>
+            <loop_waypoints>false</loop_waypoints>
+            <waypoints/>
+            <rot_vel>0</rot_vel>
+            <polygon/>
+            <hit_actions/>
+        </FlowWall>
     </new_entities>
 </script>

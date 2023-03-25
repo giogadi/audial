@@ -5,6 +5,10 @@
 #include "imgui_util.h"
 
 
+#include "imgui_vector_util.h"
+
+#include "serial_vector_util.h"
+
 
 void TestProps::Load(serial::Ptree pt) {
    
@@ -26,7 +30,7 @@ void TestProps::Save(serial::Ptree pt) const {
     
     pt.PutString("myString", _myString.c_str());
     
-    serial::SaveVectorFromChildNode<float>(pt, "myFloatArray", "array_item", _myFloatArray);
+    serial::SaveVectorInChildNode<float>(pt, "myFloatArray", "array_item", _myFloatArray);
     
 }
 

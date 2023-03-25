@@ -34,9 +34,7 @@ add_executable(game
     src/renderer.cpp
     # src/collisions.cpp
     src/stb_truetype.cpp
-    src/geometry.cpp
-
-    # src/properties/Test.cpp
+    src/geometry.cpp    
 
     src/string_ci.cpp
 
@@ -50,6 +48,8 @@ add_executable(game
     #src/components/orbitable.cpp src/components/events_on_hit.cpp src/components/activator.cpp src/components/damage.cpp
     #src/components/waypoint_follow.cpp src/components/recorder_balloon.cpp src/components/area_recorder.cpp
     #src/components/piano_planet.cpp
+
+    src/properties/Test.cpp
 
     src/seq_action.cpp
     src/seq_actions/spawn_enemy.cpp

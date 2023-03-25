@@ -389,6 +389,10 @@ Entity::ImGuiResult Entity::ImGui(GameManager& g) {
     }
     Vec3 scale = trans.Scale();
     if (imgui_util::InputVec3("Scale##Entity", &scale, true)) {
+        float constexpr eps = 0.001f;
+        scale._x = std::max(eps, scale._x);
+        scale._y = std::max(eps, scale._y);
+        scale._z = std::max(eps, scale._z);
         trans.SetScale(scale);
     }
     ImGui::InputInt("Flow section ID##Entity", &_flowSectionId);

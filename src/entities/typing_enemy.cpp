@@ -63,6 +63,8 @@ void TypingEnemyEntity::InitDerived(GameManager& g) {
             _hitActions.push_back(std::move(pAction));   
         }
     }
+
+    _flowCooldownTimeLeft = -1.f;
 }
 
 void TypingEnemyEntity::Update(GameManager& g, float dt) {
@@ -104,13 +106,19 @@ void TypingEnemyEntity::Update(GameManager& g, float dt) {
     screenX = std::round(screenX);
     screenY = std::round(screenY);
     float constexpr kTextSize = 0.75f;
-    if (_numHits > 0) {
-        std::string_view substr = std::string_view(_text).substr(0, _numHits);
-        g._scene->DrawText(substr, screenX, screenY, /*scale=*/kTextSize, Vec4(1.f,1.f,0.f,1.f));
-    }
-    if (_numHits < _text.length()) {
-        std::string_view substr = std::string_view(_text).substr(_numHits);
-        g._scene->DrawText(substr, screenX, screenY, /*scale=*/kTextSize, _textColor);
+    if (_flowCooldownTimeLeft > 0.f) {
+        Vec4 color = _textColor;
+        color._w = 0.2f;
+        g._scene->DrawText(std::string_view(_text), screenX, screenY, kTextSize, color);
+    } else {
+        if (_numHits > 0) {
+            std::string_view substr = std::string_view(_text).substr(0, _numHits);
+            g._scene->DrawText(substr, screenX, screenY, /*scale=*/kTextSize, Vec4(1.f,1.f,0.f,1.f));
+        }
+        if (_numHits < _text.length()) {
+            std::string_view substr = std::string_view(_text).substr(_numHits);
+            g._scene->DrawText(substr, screenX, screenY, /*scale=*/kTextSize, _textColor);
+        }
     }
 
     // Maybe update color from getting hit
@@ -125,7 +133,11 @@ void TypingEnemyEntity::Update(GameManager& g, float dt) {
             _timeOfLastHit = -1.0;
         }
         _currentColor = kFadeColor + fadeFactor * (_modelColor - kFadeColor);
-    }    
+    }
+
+    if (_flowCooldownTimeLeft > 0.f) {
+        _flowCooldownTimeLeft -= dt;
+    }
 
     if (_model != nullptr) {
         g._scene->DrawMesh(_model, _transform.Mat4Scale(), _currentColor);
@@ -147,6 +159,7 @@ bool TypingEnemyEntity::IsActive(GameManager& g) const {
 }
 
 void TypingEnemyEntity::OnHit(GameManager& g) {
+    _flowCooldownTimeLeft = _flowCooldown;
     ++_numHits;
     if (_numHits == _text.length()) {
         if (_destroyAfterTyped) {
@@ -205,6 +218,9 @@ void TypingEnemyEntity::LoadDerived(serial::Ptree pt) {
     _flowPolarity = false;
     pt.TryGetBool("flow_polarity", &_flowPolarity);
 
+    _flowCooldown = -1.f;
+    pt.TryGetFloat("flow_cooldown", &_flowCooldown);
+
     bool hasWaypointFollower = serial::LoadFromChildOf(pt, "waypoint_follower", _waypointFollower);
     if (!hasWaypointFollower) {
         // backward compat
@@ -228,7 +244,7 @@ void TypingEnemyEntity::SaveDerived(serial::Ptree pt) const {
     pt.PutBool("type_kill", _destroyAfterTyped);
     pt.PutBool("all_actions_on_hit", _hitBehavior == HitBehavior::AllActions);
     pt.PutBool("flow_polarity", _flowPolarity);
-
+    pt.PutFloat("flow_cooldown", _flowCooldown);
     serial::SaveInNewChildOf(pt, "waypoint_follower", _waypointFollower);
 
     serial::Ptree actionsPt = pt.AddChild("hit_actions");
@@ -253,6 +269,8 @@ ne::BaseEntity::ImGuiResult TypingEnemyEntity::ImGuiDerived(GameManager& g) {
     }
 
     ImGui::Checkbox("Flow polarity", &_flowPolarity);
+
+    ImGui::InputFloat("Flow cooldown", &_flowCooldown);
     
     if (ImGui::Button("Add Action")) {
         _hitActionStrings.emplace_back();
@@ -287,6 +305,10 @@ ne::BaseEntity::ImGuiResult TypingEnemyEntity::ImGuiDerived(GameManager& g) {
 
 void TypingEnemyEntity::OnEditPick(GameManager& g) {
     DoHitActions(g);
+}
+
+bool TypingEnemyEntity::CanHit() const {
+    return _flowCooldownTimeLeft <= 0.f;
 }
 
 static TypingEnemyEntity sMultiEnemy;

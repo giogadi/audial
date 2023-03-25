@@ -91,6 +91,7 @@ void FlowWallEntity::Update(GameManager& g, float dt) {
 }
 
 void FlowWallEntity::SaveDerived(serial::Ptree pt) const {
+    pt.PutBool("can_hit", _canHit);
     pt.PutInt("hp", _maxHp);
     pt.PutString("move_mode", WaypointFollowerModeToString(_moveMode));
     if (_moveMode == WaypointFollowerMode::Waypoints) {
@@ -104,6 +105,8 @@ void FlowWallEntity::SaveDerived(serial::Ptree pt) const {
 }
 
 void FlowWallEntity::LoadDerived(serial::Ptree pt) {
+    _canHit = true;
+    pt.TryGetBool("can_hit", &_canHit);
     pt.TryGetInt("hp", &_maxHp);
     std::string moveModeStr;
     bool changed = pt.TryGetString("move_mode", &moveModeStr);
@@ -123,6 +126,8 @@ void FlowWallEntity::LoadDerived(serial::Ptree pt) {
 
 FlowWallEntity::ImGuiResult FlowWallEntity::ImGuiDerived(GameManager& g)  {
     ImGuiResult result = ImGuiResult::Done;
+
+    ImGui::Checkbox("Can hit", &_canHit);
 
     ImGui::InputInt("HP", &_maxHp);
 

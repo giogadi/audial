@@ -44,7 +44,7 @@
     <patch>
         <version>4</version>
         <name>lead</name>
-        <gain_factor>0.601000011</gain_factor>
+        <gain_factor>0.699000001</gain_factor>
         <mono>false</mono>
         <osc1_waveform>Square</osc1_waveform>
         <osc2_waveform>Square</osc2_waveform>

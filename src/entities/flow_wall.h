@@ -16,6 +16,7 @@ struct FlowWallEntity : public ne::Entity {
     std::vector<Vec3> _polygon;
     float _rotVel = 0.f;
     int _maxHp = -1;
+    bool _canHit = true;
 
     // non-serialized
     std::vector<std::unique_ptr<SeqAction>> _hitActions;

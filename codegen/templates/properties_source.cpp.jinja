@@ -5,7 +5,7 @@
 #include "imgui_util.h"
 
 {% for header in src_includes %}
-#include {{header}}
+#include "{{header}}"
 {% endfor %}
 
 void {{propertiesName}}Props::Load(serial::Ptree pt) {

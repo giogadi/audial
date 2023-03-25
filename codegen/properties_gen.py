@@ -34,10 +34,11 @@ def getProp(propName, propType, isArray):
         cppTypeName = getCppTypeName(propType)
         outProp['type'] = 'std::vector<{cppTypeName}>'.format(cppTypeName = cppTypeName)        
         outProp['load'] = 'serial::LoadVectorFromChildNode<{cppTypeName}>(pt, \"{name}\", _{name});'.format(cppTypeName = cppTypeName, name = propName)
-        outProp['save'] = 'serial::SaveVectorFromChildNode<{cppTypeName}>(pt, \"{name}\", \"array_item\", _{name});'.format(cppTypeName = cppTypeName, name = propName)
+        outProp['save'] = 'serial::SaveVectorInChildNode<{cppTypeName}>(pt, \"{name}\", \"array_item\", _{name});'.format(cppTypeName = cppTypeName, name = propName)
         outProp['imgui'] = 'imgui_util::InputVector(_{name});'.format(name = propName)
         outProp['header_includes'].append('<vector>')
         outProp['src_includes'].append('serial_vector_util.h')
+        outProp['src_includes'].append('imgui_vector_util.h')
         if not isPrimitiveType(propType):
             outProp['header_includes'].append('\"properties/{propType}.h\"'.format(propType = propType))
     else:
@@ -91,10 +92,11 @@ def generatePropsFromJson(dataFilename):
     dataDict['props'] = props;
 
     dataDict['header_includes'] = set()
-    dataDict['source_includes'] = set()
+    dataDict['src_includes'] = set()
     for prop in props:
+        print(prop['header_includes'])
         dataDict['header_includes'].update(prop['header_includes'])
-        dataDict['source_includes'].update(prop['src_includes'])
+        dataDict['src_includes'].update(prop['src_includes'])
 
     # namespacesPrefix = ""
     # if len(dataDict["namespaces"]) > 0:

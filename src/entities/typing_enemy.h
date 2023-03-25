@@ -24,6 +24,7 @@ struct TypingEnemyEntity : public ne::Entity {
     Vec4 _textColor = Vec4(1.f, 1.f, 1.f, 1.f); // TODO
     bool _flowPolarity = false;
     WaypointFollower _waypointFollower;
+    float _flowCooldown = -1.f;
     
     // non-serialized
     int _numHits = 0;
@@ -32,11 +33,13 @@ struct TypingEnemyEntity : public ne::Entity {
     std::vector<std::unique_ptr<SeqAction>> _hitActions;
     bool _useHitActionsOnInitHack = false;
     double _timeOfLastHit = -1.0;
+    float _flowCooldownTimeLeft = -1.f;
 
     bool IsActive(GameManager& g) const;
     void OnHit(GameManager& g);
     void DoHitActions(GameManager& g);
     InputManager::Key GetNextKey() const;
+    bool CanHit() const;
 
     
     virtual void InitDerived(GameManager& g) override;
