@@ -94,7 +94,7 @@ void TypingEnemyEntity::Update(GameManager& g, float dt) {
         Vec4 color = _textColor;
         color._w = 0.2f;
         g._scene->DrawText(std::string_view(_text), screenX, screenY, kTextSize, color);
-    } else {
+    } else if (_text.length() > 1) {
         if (_numHits > 0) {
             std::string_view substr = std::string_view(_text).substr(0, _numHits);
             g._scene->DrawText(substr, screenX, screenY, /*scale=*/kTextSize, Vec4(1.f,1.f,0.f,1.f));
@@ -103,6 +103,8 @@ void TypingEnemyEntity::Update(GameManager& g, float dt) {
             std::string_view substr = std::string_view(_text).substr(_numHits);
             g._scene->DrawText(substr, screenX, screenY, /*scale=*/kTextSize, _textColor);
         }
+    } else {
+        g._scene->DrawText(std::string_view(_text), screenX, screenY, /*scale=*/kTextSize, _textColor);
     }
 
     // Maybe update color from getting hit
@@ -123,8 +125,43 @@ void TypingEnemyEntity::Update(GameManager& g, float dt) {
         _flowCooldownTimeLeft -= dt;
     }
 
-    if (_model != nullptr) {
-        g._scene->DrawMesh(_model, _transform.Mat4Scale(), _currentColor);
+    if (_flowCooldown > 0.f) {
+        int constexpr kNumStepsX = 2;
+        int constexpr kNumStepsZ = 2;
+        float constexpr xStep = 1.f / (float) kNumStepsX;
+        float constexpr zStep = 1.f / (float) kNumStepsZ;
+        Mat4 localToWorld = _transform.Mat4Scale();
+        Mat4 subdivMat = localToWorld;
+        subdivMat.Scale(xStep * 0.8f, 1.f, zStep * 0.8f);
+        Vec4 color = _currentColor;
+        // We adjust the scale of localToWorld AFTER setting subdivMat so that
+        // changing the scale of localToWorld doesn't make the subdiv dudes
+        // bigger
+        if (_flowCooldownTimeLeft > 0.f) {
+            color._w = 0.5f;
+            // timeLeft: [0, flowCooldown] --> [1, explodeScale]
+            float constexpr kExplodeMaxScale = 2.f;
+            float factor = math_util::Clamp(_flowCooldownTimeLeft / _flowCooldown, 0.f, 1.f);
+            factor = math_util::SmoothStep(factor);
+            float explodeScale = 1.f + factor * (kExplodeMaxScale - 1.f);
+            localToWorld.Scale(explodeScale, 1.f, explodeScale);            
+        }
+        
+        Vec4 localPos(-0.5f, 0.f, -0.5f, 1.f);
+        for (int z = 0; z < kNumStepsZ; ++z) {
+            localPos._x = -0.5f;
+            for (int x = 0; x < kNumStepsX; ++x) {
+                Vec4 worldPos = localToWorld * localPos;
+                subdivMat.SetCol(3, worldPos);
+                g._scene->DrawCube(subdivMat, color);
+                localPos._x += xStep;
+            }
+            localPos._z += zStep;
+        }
+    } else {
+        if (_model != nullptr) {
+            g._scene->DrawMesh(_model, _transform.Mat4Scale(), _currentColor);
+        }
     }
 }
 
