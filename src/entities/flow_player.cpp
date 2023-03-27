@@ -161,7 +161,8 @@ void FlowPlayerEntity::Update(GameManager& g, float dt) {
     TypingEnemyEntity* nearest = nullptr;
     float nearestDist2 = -1.f;
     Vec3 const& playerPos = _transform.GetPos();
-ne::EntityManager::Iterator enemyIter = g._neEntityManager->GetIterator(ne::EntityType::TypingEnemy);
+    ne::EntityManager::Iterator enemyIter = g._neEntityManager->GetIterator(ne::EntityType::TypingEnemy);
+    Mat4 viewProjTransform = g._scene->GetViewProjTransform();
     for (; !enemyIter.Finished(); enemyIter.Next()) {
         Vec4 constexpr kGreyColor(0.6f, 0.6f, 0.6f, 0.7f);
         TypingEnemyEntity* enemy = (TypingEnemyEntity*) enemyIter.GetEntity();
@@ -189,6 +190,14 @@ ne::EntityManager::Iterator enemyIter = g._neEntityManager->GetIterator(ne::Enti
         }
 
         if (nearest == nullptr || d2 < nearestDist2) {
+
+            // Check if it's in view of camera
+            float screenX, screenY;
+            geometry::ProjectWorldPointToScreenSpace(enemy->_transform.GetPos(), viewProjTransform, g._windowWidth, g._windowHeight, screenX, screenY);
+            if (screenX < 0 || screenX > g._windowWidth || screenY < 0 || screenY > g._windowHeight) {
+                continue;
+            }
+            
             nearest = enemy;
             nearestDist2 = d2;
         }

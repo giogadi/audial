@@ -14,19 +14,7 @@
 #include "serial_vector_util.h"
 #include "math_util.h"
 #include "editor.h"
-
-namespace {
-
-void ProjectWorldPointToScreenSpace(Vec3 const& worldPos, Mat4 const& viewProjMatrix, int screenWidth, int screenHeight, float& screenX, float& screenY) {
-    Vec4 pos(worldPos._x, worldPos._y, worldPos._z, 1.f);
-    pos = viewProjMatrix * pos;
-    pos.Set(pos._x / pos._w, pos._y / pos._w, pos._z / pos._w, 1.f);
-    // map [-1,1] x [-1,1] to [0,sw] x [0,sh]
-    screenX = (pos._x * 0.5f + 0.5f) * screenWidth;
-    screenY = (-pos._y * 0.5f + 0.5f) * screenHeight;
-}
-
-}
+#include "geometry.h"
 
 void TypingEnemyEntity::InitDerived(GameManager& g) {
     _currentColor = _modelColor;
@@ -97,7 +85,7 @@ void TypingEnemyEntity::Update(GameManager& g, float dt) {
 
     float screenX, screenY;
     Mat4 viewProjTransform = g._scene->GetViewProjTransform();
-    ProjectWorldPointToScreenSpace(_transform.GetPos(), viewProjTransform, g._windowWidth, g._windowHeight, screenX, screenY);
+    geometry::ProjectWorldPointToScreenSpace(_transform.GetPos(), viewProjTransform, g._windowWidth, g._windowHeight, screenX, screenY);
 
     screenX = std::round(screenX);
     screenY = std::round(screenY);

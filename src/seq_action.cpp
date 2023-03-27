@@ -551,5 +551,9 @@ void AddToIntVariableSeqAction::Execute(GameManager& g) {
         return;
     }
     IntVariableEntity* e = static_cast<IntVariableEntity*>(g._neEntityManager->FindEntityByNameAndType(_varName, ne::EntityType::IntVariable));
-    e->AddToVariable(_addAmount);
+    if (e == nullptr) {
+        printf("AddToIntVariableSeqAction::Execute: couldn't entity \"%s\"!\n", _varName);
+    } else {        
+        e->AddToVariable(_addAmount);
+    }
 }

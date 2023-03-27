@@ -860,9 +860,9 @@
                 <waypoints>
                     <waypoint>
                         <wait_time>0</wait_time>
-                        <move_time>16</move_time>
+                        <move_time>32</move_time>
                         <p>
-                            <x>20</x>
+                            <x>40</x>
                             <y>0</y>
                             <z>0</z>
                         </p>
@@ -1143,9 +1143,9 @@
                 <waypoints>
                     <waypoint>
                         <wait_time>0</wait_time>
-                        <move_time>16</move_time>
+                        <move_time>32</move_time>
                         <p>
-                            <x>20</x>
+                            <x>40</x>
                             <y>0</y>
                             <z>0</z>
                         </p>
@@ -1197,9 +1197,9 @@
                 <waypoints>
                     <waypoint>
                         <wait_time>0</wait_time>
-                        <move_time>16</move_time>
+                        <move_time>32</move_time>
                         <p>
-                            <x>20</x>
+                            <x>40</x>
                             <y>0</y>
                             <z>0</z>
                         </p>
@@ -1251,9 +1251,9 @@
                 <waypoints>
                     <waypoint>
                         <wait_time>0</wait_time>
-                        <move_time>16</move_time>
+                        <move_time>32</move_time>
                         <p>
-                            <x>20</x>
+                            <x>40</x>
                             <y>0</y>
                             <z>0</z>
                         </p>
@@ -1747,7 +1747,7 @@
         </FlowTrigger>
         <FlowWall>
             <name>room2_platform</name>
-            <pickable>true</pickable>
+            <pickable>false</pickable>
             <transform>
                 <pos>
                     <x>10.9281235</x>
@@ -1783,9 +1783,9 @@
             <waypoints>
                 <waypoint>
                     <wait_time>0</wait_time>
-                    <move_time>16</move_time>
+                    <move_time>32</move_time>
                     <p>
-                        <x>20</x>
+                        <x>40</x>
                         <y>0</y>
                         <z>0</z>
                     </p>
@@ -1795,5 +1795,161 @@
             <polygon/>
             <hit_actions/>
         </FlowWall>
+        <FlowPickup>
+            <name>room2_pickup1</name>
+            <pickable>true</pickable>
+            <transform>
+                <pos>
+                    <x>25</x>
+                    <y>0</y>
+                    <z>-3.49218822</z>
+                </pos>
+                <quat>
+                    <x>0</x>
+                    <y>0</y>
+                    <z>0</z>
+                    <w>1</w>
+                </quat>
+                <scale>
+                    <x>0.5</x>
+                    <y>0.5</y>
+                    <z>0.5</z>
+                </scale>
+            </transform>
+            <model_name>cube</model_name>
+            <model_color_vec4>
+                <x>0.970588207</x>
+                <y>0.884948134</y>
+                <z>0</z>
+                <w>1</w>
+            </model_color_vec4>
+            <flow_section_id>1</flow_section_id>
+            <actions>
+                <action>automate relative Cutoff 0 0 250 1</action>
+                <action>change_step lead_seq 0 1 mE4-,mB4-,mE5-,mE6-:1</action>
+            </actions>
+        </FlowPickup>
+        <TypingEnemy>
+            <name>room2_r</name>
+            <pickable>true</pickable>
+            <transform>
+                <pos>
+                    <x>25</x>
+                    <y>0</y>
+                    <z>-4.82812548</z>
+                </pos>
+                <quat>
+                    <x>0</x>
+                    <y>0</y>
+                    <z>0</z>
+                    <w>1</w>
+                </quat>
+                <scale>
+                    <x>0.5</x>
+                    <y>0.5</y>
+                    <z>0.5</z>
+                </scale>
+            </transform>
+            <model_name>cube</model_name>
+            <model_color_vec4>
+                <x>1</x>
+                <y>0</y>
+                <z>0</z>
+                <w>1</w>
+            </model_color_vec4>
+            <flow_section_id>1</flow_section_id>
+            <text>r</text>
+            <type_kill>false</type_kill>
+            <all_actions_on_hit>true</all_actions_on_hit>
+            <flow_polarity>false</flow_polarity>
+            <flow_cooldown>-1</flow_cooldown>
+            <waypoint_follower>
+                <local_to_entity>true</local_to_entity>
+                <waypoint_auto_start>false</waypoint_auto_start>
+                <loop_waypoints>false</loop_waypoints>
+                <waypoints/>
+            </waypoint_follower>
+            <hit_actions>
+                <action>change_step bass_seq 0 1 mA2-</action>
+            </hit_actions>
+        </TypingEnemy>
+        <FlowPickup>
+            <name>room2_pickup2</name>
+            <pickable>true</pickable>
+            <transform>
+                <pos>
+                    <x>35</x>
+                    <y>0</y>
+                    <z>2.10156202</z>
+                </pos>
+                <quat>
+                    <x>0</x>
+                    <y>0</y>
+                    <z>0</z>
+                    <w>1</w>
+                </quat>
+                <scale>
+                    <x>0.5</x>
+                    <y>0.5</y>
+                    <z>0.5</z>
+                </scale>
+            </transform>
+            <model_name>cube</model_name>
+            <model_color_vec4>
+                <x>0.972549021</x>
+                <y>0.886274517</y>
+                <z>0</z>
+                <w>1</w>
+            </model_color_vec4>
+            <flow_section_id>1</flow_section_id>
+            <actions>
+                <action>automate relative Cutoff 0 0 250 1</action>
+                <action>change_step lead_seq 0 1 mE4-,mB4-,mE5-,mE6-:1</action>
+            </actions>
+        </FlowPickup>
+        <TypingEnemy>
+            <name>room2_m</name>
+            <pickable>true</pickable>
+            <transform>
+                <pos>
+                    <x>35</x>
+                    <y>0</y>
+                    <z>3.39062405</z>
+                </pos>
+                <quat>
+                    <x>0</x>
+                    <y>0</y>
+                    <z>0</z>
+                    <w>1</w>
+                </quat>
+                <scale>
+                    <x>0.5</x>
+                    <y>0.5</y>
+                    <z>0.5</z>
+                </scale>
+            </transform>
+            <model_name>cube</model_name>
+            <model_color_vec4>
+                <x>1</x>
+                <y>0</y>
+                <z>0</z>
+                <w>1</w>
+            </model_color_vec4>
+            <flow_section_id>1</flow_section_id>
+            <text>m</text>
+            <type_kill>false</type_kill>
+            <all_actions_on_hit>true</all_actions_on_hit>
+            <flow_polarity>false</flow_polarity>
+            <flow_cooldown>-1</flow_cooldown>
+            <waypoint_follower>
+                <local_to_entity>true</local_to_entity>
+                <waypoint_auto_start>false</waypoint_auto_start>
+                <loop_waypoints>false</loop_waypoints>
+                <waypoints/>
+            </waypoint_follower>
+            <hit_actions>
+                <action>change_step bass_seq 0 1 mB2-</action>
+            </hit_actions>
+        </TypingEnemy>
     </new_entities>
 </script>

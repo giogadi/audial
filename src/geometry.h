@@ -22,4 +22,6 @@ bool DoAABBsOverlap(Transform const& aabb1, Transform const& aabb2, Vec3* penetr
 // Assume convexPoly is convex and points are in CCW order. Ignores y-coords of inputs. penetration points OUT of polygon.
 bool PointInConvexPolygon2D(Vec3 const& queryP, std::vector<Vec3> const& convexPoly, Vec3 const& polyPos, float polyRotRad, Vec3 const& polyScale, Vec3* penetration);
 
+void ProjectWorldPointToScreenSpace(Vec3 const& worldPos, Mat4 const& viewProjMatrix, int screenWidth, int screenHeight, float& screenX, float& screenY);
+
 }  // namespace geometry

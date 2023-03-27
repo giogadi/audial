@@ -198,4 +198,13 @@ bool PointInConvexPolygon2D(Vec3 const& queryP, std::vector<Vec3> const& convexP
     return true;
 }
 
+void ProjectWorldPointToScreenSpace(Vec3 const& worldPos, Mat4 const& viewProjMatrix, int screenWidth, int screenHeight, float& screenX, float& screenY) {
+    Vec4 pos(worldPos._x, worldPos._y, worldPos._z, 1.f);
+    pos = viewProjMatrix * pos;
+    pos.Set(pos._x / pos._w, pos._y / pos._w, pos._z / pos._w, 1.f);
+    // map [-1,1] x [-1,1] to [0,sw] x [0,sh]
+    screenX = (pos._x * 0.5f + 0.5f) * screenWidth;
+    screenY = (-pos._y * 0.5f + 0.5f) * screenHeight;
+}
+
 }  // namespace geometry
