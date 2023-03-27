@@ -20,7 +20,7 @@ void main() {
     gl_Position = uMvpTrans * vec4(aPos.x, aPos.y, aPos.z, 1.0);
     fragPos = vec3(uModelTrans * vec4(aPos, 1.0f));
     // texCoord = 2 * aTexCoord + vec2(0.25 * uTime, 0);
-    vec3 scaledOffset = 0.01f * uOffset;
+    vec3 scaledOffset = 0.05f * uOffset;
     texCoord = aTexCoord + vec2(scaledOffset.x, -scaledOffset.z);
     normal = uModelInvTrans * aNormal;
 }
