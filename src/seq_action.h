@@ -31,7 +31,8 @@ struct SeqAction {
 
     bool _oneTime = false;
     
-    void InitBase(GameManager& g) {        
+    void InitBase(GameManager& g) {
+        _hasExecuted = false;
         Init(g);
         _init = true;
     }

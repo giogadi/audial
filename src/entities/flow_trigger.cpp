@@ -8,7 +8,7 @@
 #include "geometry.h"
 
 void FlowTriggerEntity::InitDerived(GameManager& g) {
-    
+    _actions.clear();
     _actions.reserve(_actionStrings.size());
     SeqAction::LoadInputs loadInputs;  // default
     for (std::string const& actionStr : _actionStrings) {

@@ -34,12 +34,12 @@ struct WaypointFollower {
     void Start(GameManager& g, ne::Entity const& e);
     void Stop();
 
-    // non-serialized
-    bool _followingWaypoints = false;
-    int _currentWaypointIx = 0;
-    Vec3 _prevWaypointPos;
-    Vec3 _entityPosAtStart;
-
-private:
-    double _thisWpStartTime = 3.0;
+    struct State {
+        bool _followingWaypoints = false;
+        int _currentWaypointIx = 0;
+        Vec3 _prevWaypointPos;
+        Vec3 _entityPosAtStart;
+        double _thisWpStartTime = 3.0;
+    };
+    State _ns;
 };

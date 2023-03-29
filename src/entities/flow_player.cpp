@@ -136,7 +136,21 @@ void FlowPlayerEntity::Respawn(GameManager& g) {
     _framesSinceLastSample = 0;
     _vel.Set(0.f,0.f,0.f);
     _dashTimer = -1.f;
-    
+
+    // Reset everything from the current section
+    for (ne::EntityManager::AllIterator iter = g._neEntityManager->GetAllIterator(); !iter.Finished(); iter.Next()) {
+        ne::Entity* e = iter.GetEntity();
+        if (e->_name == "room2_n") {
+            (void) 0;
+        }
+        if (e->_flowSectionId >= 0 && e->_flowSectionId == _currentSectionId) {
+            e->Init(g);
+        }
+    }
+}
+
+void FlowPlayerEntity::SetNewSection(GameManager& g, int newSectionId) {
+    _currentSectionId = newSectionId;
 }
 
 void FlowPlayerEntity::Update(GameManager& g, float dt) {

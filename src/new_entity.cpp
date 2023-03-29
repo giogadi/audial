@@ -316,7 +316,6 @@ void Entity::Init(GameManager& g) {
 void Entity::Update(GameManager& g, float dt) {
     if (_model != nullptr) {
         Mat4 const& mat = _transform.Mat4Scale();
-        // Mat4 const& mat = _transform;
         g._scene->DrawMesh(_model, mat, _modelColor);
     }
 }
@@ -324,10 +323,11 @@ void Entity::DebugPrint() {
     Vec3 p = _transform.GetPos();
     printf("pos: %f %f %f\n", p._x, p._y, p._z);
 }
-void Entity::Save(serial::Ptree pt) const {
+void Entity::Save(serial::Ptree pt) const {    
     pt.PutString("name", _name.c_str());
     pt.PutBool("pickable", _pickable);
-    serial::SaveInNewChildOf(pt, "transform", _initTransform);
+    // NOTE: we always save the current position! maybe do this different
+    serial::SaveInNewChildOf(pt, "transform", _transform);
     pt.PutString("model_name", _modelName.c_str());
     serial::SaveInNewChildOf(pt, "model_color_vec4", _modelColor);
     pt.PutInt("flow_section_id", _flowSectionId);

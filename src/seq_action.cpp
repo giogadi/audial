@@ -522,6 +522,9 @@ void SetNewFlowSectionSeqAction::Load(LoadInputs const& loadInputs, std::istream
 
 void SetNewFlowSectionSeqAction::Execute(GameManager& g) {
     g._neEntityManager->TagAllPrevSectionEntitiesForDestroy(_newSectionId);
+    FlowPlayerEntity* pPlayer = static_cast<FlowPlayerEntity*>(g._neEntityManager->GetFirstEntityOfType(ne::EntityType::FlowPlayer));
+    assert(pPlayer);
+    pPlayer->SetNewSection(g, _newSectionId);
 }
 
 void PlayerSetSpawnPointSeqAction::Load(LoadInputs const& loadInputs, std::istream& input) {

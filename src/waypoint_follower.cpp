@@ -28,30 +28,31 @@ bool Waypoint::ImGui() {
 }
 
 void WaypointFollower::Init(GameManager& g, ne::Entity const& entity) {
-    _currentWaypointIx = 0;
+    _ns = State();
+    
     if (_autoStartFollowingWaypoints) {
         Start(g, entity);
     }
     if (_localToEntity) {
-        _prevWaypointPos.Set(0.f, 0.f, 0.f);
+        _ns._prevWaypointPos.Set(0.f, 0.f, 0.f);
     } else {
-        _prevWaypointPos = entity._transform.Pos();
+        _ns._prevWaypointPos = entity._transform.Pos();
     }
-    _thisWpStartTime = 3.0;
+    _ns._thisWpStartTime = 3.0;
 
     if (g._editMode) {
-        _entityPosAtStart = entity._transform.Pos();
+        _ns._entityPosAtStart = entity._transform.Pos();
     }
 }
 
 void WaypointFollower::Start(GameManager& g, ne::Entity const& entity) {
-    _followingWaypoints = true;
-    _thisWpStartTime = BeatClock::GetNextBeatDenomTime(g._beatClock->GetBeatTimeFromEpoch(), 1.0);
-    _entityPosAtStart = entity._transform.Pos();
+    _ns._followingWaypoints = true;
+    _ns._thisWpStartTime = BeatClock::GetNextBeatDenomTime(g._beatClock->GetBeatTimeFromEpoch(), 1.0);
+    _ns._entityPosAtStart = entity._transform.Pos();
 }
 
 void WaypointFollower::Stop() {
-    _followingWaypoints = false;
+    _ns._followingWaypoints = false;
 }
 
 bool WaypointFollower::Update(GameManager& g, float const dt, bool debugDraw, ne::Entity* pEntity) {
@@ -61,7 +62,7 @@ bool WaypointFollower::Update(GameManager& g, float const dt, bool debugDraw, ne
         Vec4 wpColor(0.8f, 0.f, 0.8f, 1.f);
         Vec3 offset;
         if (_localToEntity) {
-            offset = _entityPosAtStart;
+            offset = _ns._entityPosAtStart;
         }
         for (Waypoint const& wp : _waypoints) {
             Vec3 worldPos = wp._p + offset;
@@ -71,38 +72,38 @@ bool WaypointFollower::Update(GameManager& g, float const dt, bool debugDraw, ne
         return false;
     }
     
-    if (!_followingWaypoints || _waypoints.empty()) {
+    if (!_ns._followingWaypoints || _waypoints.empty()) {
         return false;
     }
 
     Vec3 newPos;
 
     double const beatTime = g._beatClock->GetBeatTimeFromEpoch();
-    assert(_currentWaypointIx >= 0 && _currentWaypointIx < _waypoints.size());
-    Waypoint const& wp = _waypoints[_currentWaypointIx];
-    if (beatTime >= _thisWpStartTime + wp._waitTime + wp._moveTime) {
+    assert(_ns._currentWaypointIx >= 0 && _ns._currentWaypointIx < _waypoints.size());
+    Waypoint const& wp = _waypoints[_ns._currentWaypointIx];
+    if (beatTime >= _ns._thisWpStartTime + wp._waitTime + wp._moveTime) {
         newPos = wp._p;
-        _prevWaypointPos = wp._p;
-        ++_currentWaypointIx;
-        if (_currentWaypointIx >= _waypoints.size()) {
-            _currentWaypointIx = 0;
+        _ns._prevWaypointPos = wp._p;
+        ++_ns._currentWaypointIx;
+        if (_ns._currentWaypointIx >= _waypoints.size()) {
+            _ns._currentWaypointIx = 0;
         }
-        _thisWpStartTime += wp._waitTime + wp._moveTime;
-    } else if (beatTime > _thisWpStartTime + wp._waitTime) {
+        _ns._thisWpStartTime += wp._waitTime + wp._moveTime;
+    } else if (beatTime > _ns._thisWpStartTime + wp._waitTime) {
         // Moving toward the next waypoint!
         // Need to go from [0,moveTime] -> [0,1]
-        double elapsedMoveTime = beatTime - (_thisWpStartTime + wp._waitTime);
+        double elapsedMoveTime = beatTime - (_ns._thisWpStartTime + wp._waitTime);
         float factor = (float)(elapsedMoveTime / wp._moveTime);
         factor = math_util::Clamp(factor, 0.f, 1.f);
         Vec3 wpPos = wp._p;
-        newPos = _prevWaypointPos + factor * (wpPos - _prevWaypointPos);
+        newPos = _ns._prevWaypointPos + factor * (wpPos - _ns._prevWaypointPos);
     } else {
         // just wait
         return false;
     }
 
     if (_localToEntity) {
-        newPos += _entityPosAtStart;
+        newPos += _ns._entityPosAtStart;
     }
     pEntity->_transform.SetPos(newPos);
     return true;
