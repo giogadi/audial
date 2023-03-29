@@ -309,6 +309,7 @@ Entity* EntityManager::AllIterator::GetEntity() {
 }
 
 void Entity::Init(GameManager& g) {
+    _transform = _initTransform;
     _model = g._scene->GetMesh(_modelName);
     InitDerived(g);
 }
@@ -326,8 +327,7 @@ void Entity::DebugPrint() {
 void Entity::Save(serial::Ptree pt) const {
     pt.PutString("name", _name.c_str());
     pt.PutBool("pickable", _pickable);
-    // serial::SaveInNewChildOf(pt, "transform_mat4", _transform);
-    serial::SaveInNewChildOf(pt, "transform", _transform);
+    serial::SaveInNewChildOf(pt, "transform", _initTransform);
     pt.PutString("model_name", _modelName.c_str());
     serial::SaveInNewChildOf(pt, "model_color_vec4", _modelColor);
     pt.PutInt("flow_section_id", _flowSectionId);
@@ -336,14 +336,13 @@ void Entity::Save(serial::Ptree pt) const {
 void Entity::Load(serial::Ptree pt) {
     _name = pt.GetString("name");
     pt.TryGetBool("pickable", &_pickable);
-    // _transform.Load(pt.GetChild("transform_mat4"));
     {
-        bool success = serial::LoadFromChildOf(pt, "transform", _transform);
+        bool success = serial::LoadFromChildOf(pt, "transform", _initTransform);
         if (!success) {
             // Fallback to mat4 loading
             Mat4 transMat4;
             serial::LoadFromChildOf(pt, "transform_mat4", transMat4);
-            _transform.SetFromMat4(transMat4);
+            _initTransform.SetFromMat4(transMat4);
         }
     }
     pt.TryGetString("model_name", &_modelName);
@@ -362,13 +361,12 @@ Entity::ImGuiResult Entity::ImGui(GameManager& g) {
     if (ImGui::Button("Force Init")) {
         result = Entity::ImGuiResult::NeedsInit;
     }
-    // Transform trans;
-    // trans.SetFromMat4(_transform);
     Transform& trans = _transform;
 
     Vec3 p = trans.Pos();
     if (imgui_util::InputVec3("Pos##Entity", &p, /*trueOnReturnOnly=*/true)) {
         trans.SetPos(p);
+        _initTransform = trans;
     }
 
     Vec3 euler = trans.Quat().EulerAngles();
@@ -386,6 +384,7 @@ Entity::ImGuiResult Entity::ImGui(GameManager& g) {
                    eulerResult._x, eulerResult._y, eulerResult._z);
         }
         trans.SetQuat(q);
+        _initTransform = trans;
     }
     Vec3 scale = trans.Scale();
     if (imgui_util::InputVec3("Scale##Entity", &scale, true)) {
@@ -394,6 +393,7 @@ Entity::ImGuiResult Entity::ImGui(GameManager& g) {
         scale._y = std::max(eps, scale._y);
         scale._z = std::max(eps, scale._z);
         trans.SetScale(scale);
+        _initTransform = trans;
     }
     ImGui::InputInt("Flow section ID##Entity", &_flowSectionId);
     bool modelChanged = imgui_util::InputText<64>("Model name##Entity", &_modelName, /*trueOnReturnOnly=*/true);

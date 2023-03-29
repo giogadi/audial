@@ -58,6 +58,7 @@ void Editor::HandleEntitySelectAndMove() {
                 for (auto const& idPosPair : sSelectedPositionsBeforeMove) {
                     if (ne::Entity* entity = _g->_neEntityManager->GetEntity(idPosPair.first)) {
                         entity->_transform.SetPos(idPosPair.second);
+                        entity->_initTransform = entity->_transform;
                     }
                 }
                 sSelectedPositionsBeforeMove.clear();
