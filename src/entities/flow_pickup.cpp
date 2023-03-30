@@ -44,7 +44,7 @@ void FlowPickupEntity::OnHit(GameManager& g) {
     }
     
     if (!g._editMode) {
-        g._neEntityManager->TagForDestroy(_id);
+        g._neEntityManager->TagForDeactivate(_id);
     }
 }
 

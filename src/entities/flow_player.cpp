@@ -140,11 +140,16 @@ void FlowPlayerEntity::Respawn(GameManager& g) {
     // Reset everything from the current section
     for (ne::EntityManager::AllIterator iter = g._neEntityManager->GetAllIterator(); !iter.Finished(); iter.Next()) {
         ne::Entity* e = iter.GetEntity();
-        if (e->_name == "room2_n") {
-            (void) 0;
-        }
         if (e->_flowSectionId >= 0 && e->_flowSectionId == _currentSectionId) {
             e->Init(g);
+        }
+    }
+    // Reactivate all inactive entities
+    for (ne::EntityManager::AllIterator iter = g._neEntityManager->GetAllInactiveIterator(); !iter.Finished(); iter.Next()) {
+        ne::Entity* e = iter.GetEntity();
+        if (e->_flowSectionId >= 0 && e->_flowSectionId == _currentSectionId) {
+            e->Init(g);
+            g._neEntityManager->TagForActivate(e->_id);
         }
     }
 }

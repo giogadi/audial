@@ -57,6 +57,11 @@ struct EntityManager::Internal {
 #   define X(NAME) std::vector<NAME##Entity> _entities##NAME;
     M_ENTITY_TYPES
 #   undef X
+
+    // Inactive entity lists
+#   define X(NAME) std::vector<NAME##Entity> _inactiveEntities##NAME;
+    M_ENTITY_TYPES
+#   undef X    
 };
 
 EntityManager::EntityManager() {}
@@ -94,20 +99,26 @@ Entity* EntityManager::AddEntity(EntityType entityType) {
     MapEntry entry;
     entry._typeIx = (int)entityType;
     entry._entityIx = entityIx;
+    entry._active = true;
     bool newEntry = _entityIdMap.emplace(e->_id._id, entry).second;
     assert(newEntry);
     return e; 
 }
 
-std::pair<Entity*, int> EntityManager::GetEntitiesOfType(EntityType type) {
+std::pair<Entity*, int> EntityManager::GetEntitiesOfType(EntityType type, bool active) {
     switch (type) {
 #       define X(NAME) \
         case EntityType::NAME: { \
-            auto& entities = _p->_entities##NAME; \
-            return std::make_pair(entities.data(), entities.size()); \
+            if (active) { \
+                auto& entities = _p->_entities##NAME; \
+                return std::make_pair(entities.data(), entities.size()); \
+            } else { \
+                auto& entities = _p->_inactiveEntities##NAME; \
+                return std::make_pair(entities.data(), entities.size()); \
+            } \
         }
         M_ENTITY_TYPES
-#       undef X        
+#       undef X
         case EntityType::Count: {
             assert(false);
             return std::make_pair(nullptr, 0);
@@ -117,28 +128,38 @@ std::pair<Entity*, int> EntityManager::GetEntitiesOfType(EntityType type) {
     return std::make_pair(nullptr, 0);
 }
 
-std::pair<Entity*, int> EntityManager::GetEntityWithIndex(EntityId id) {
+ne::EntityManager::EntityInfo EntityManager::GetEntityInfo(EntityId id, bool includeActive, bool includeInactive) {
     if (!id.IsValid()) {
-        return std::make_pair(nullptr, -1);
+        return EntityInfo();
     }
     auto result = _entityIdMap.find(id._id);
     if (result == _entityIdMap.end()) {
-        return std::make_pair(nullptr, -1);
+        return EntityInfo();
     }
     MapEntry const& entry = result->second;
     assert(entry._typeIx == (int)id._type);
-    auto [pEntityList, numEntities] = GetEntitiesOfType(id._type);
+    if (entry._active && !includeActive) {
+        return EntityInfo();
+    }
+    if (!entry._active && !includeInactive) {
+        return EntityInfo();
+    }
+    auto [pEntityList, numEntities] = GetEntitiesOfType(id._type, entry._active);
     assert(entry._entityIx < numEntities);
     Entity* e = (Entity*) (((char*)pEntityList) + (entry._entityIx * gkEntitySizes[(int)id._type]));
     if (e->_id._id == id._id) {
         assert(e->_id._type == id._type);
-        return std::make_pair(e, entry._entityIx);
+        return EntityInfo{e, entry._entityIx, entry._active};
     }
-    return std::make_pair(nullptr, -1);
+    return EntityInfo();
 }
 
 Entity* EntityManager::GetEntity(EntityId id) {
-    return GetEntityWithIndex(id).first;
+    return GetEntityInfo(id, true, false)._e;
+}
+
+Entity* EntityManager::GetEntity(EntityId id, bool includeActive, bool includeInactive) {
+    return GetEntityInfo(id, includeActive, includeInactive)._e;
 }
 
 Entity* EntityManager::GetFirstEntityOfType(EntityType entityType) {
@@ -171,22 +192,24 @@ Entity* EntityManager::FindEntityByNameAndType(std::string_view name, EntityType
 }
 
 bool EntityManager::RemoveEntity(EntityId idToRemove) {
-    auto [toRemove, toRemoveIx] = GetEntityWithIndex(idToRemove);
+    EntityInfo entityInfo = GetEntityInfo(idToRemove, true, true);
+    Entity* toRemove = entityInfo._e;
+    int toRemoveIx = entityInfo._ix;
+    bool active = entityInfo._active;
+    
     if (toRemove == nullptr) {
         return false;
     }
 
     // Do a swap remove from entity list, remove from id map, and update swapped entry in id map.
-    // TODO: Can we get away with:
-    //     *e = std::move(entities.back());
     Entity* entryToUpdate = nullptr;
     switch (idToRemove._type) {
 #       define X(NAME) \
         case EntityType::NAME: { \
             NAME##Entity* e = (NAME##Entity*)toRemove; \
-            auto& entities = _p->_entities##NAME; \
+            auto& entities = active ? _p->_entities##NAME : _p->_inactiveEntities##NAME; \
             if (entities.size() > 1) { \
-                std::swap(*e, entities.back()); \
+                *e = std::move(entities.back()); \
                 entryToUpdate = e; \
             } \
             entities.pop_back(); \
@@ -205,13 +228,102 @@ bool EntityManager::RemoveEntity(EntityId idToRemove) {
         entry._entityIx = toRemoveIx;
     }
 
-    assert(_entityIdMap.erase(idToRemove._id) == 1);
+    int numErased = _entityIdMap.erase(idToRemove._id);
+    assert(numErased == 1);
 
     return true;
 }
 
+bool EntityManager::DeactivateEntity(EntityId idToDeactivate) {    
+    EntityInfo info = GetEntityInfo(idToDeactivate, true, false);
+    if (info._e == nullptr) {
+        return false;
+    }
+
+    Entity* entryToUpdate = nullptr;
+    int inactiveEntitiesIx = -1;
+    switch (idToDeactivate._type) {
+#       define X(NAME) \
+        case EntityType::NAME: { \
+            NAME##Entity* entity = (NAME##Entity*)info._e; \
+            auto& entities = _p->_entities##NAME; \
+            auto& inactiveEntities = _p->_inactiveEntities##NAME; \
+            inactiveEntities.push_back(std::move(*entity)); \
+            inactiveEntitiesIx = inactiveEntities.size() - 1; \
+            if (entities.size() > 1) { \
+                *entity = std::move(entities.back()); \
+                entryToUpdate = entity; \
+            } \
+            entities.pop_back(); \
+            break; \
+        }
+        M_ENTITY_TYPES
+#       undef X        
+        case EntityType::Count: {
+            assert(false);
+            break;
+        }
+    }   
+
+    if (entryToUpdate != nullptr) {
+        MapEntry& entry = _entityIdMap.at(entryToUpdate->_id._id);
+        entry._entityIx = info._ix;   
+    }
+
+    // TODO we shouldn't need to do this; we've already done this lookup in GetEntityInfo.
+    MapEntry& entry = _entityIdMap.at(idToDeactivate._id);
+    entry._active = false;
+    assert(inactiveEntitiesIx >= 0);
+    entry._entityIx = inactiveEntitiesIx;
+    return true;
+}
+
+bool EntityManager::ActivateEntity(EntityId idToActivate) {    
+    EntityInfo info = GetEntityInfo(idToActivate, false, true);
+    if (info._e == nullptr) {
+        return false;
+    }
+
+    Entity* entryToUpdate = nullptr;
+    int entitiesIx = -1;
+    switch (idToActivate._type) {
+#       define X(NAME) \
+        case EntityType::NAME: { \
+            NAME##Entity* entity = (NAME##Entity*)info._e; \
+            auto& entities = _p->_entities##NAME; \
+            auto& inactiveEntities = _p->_inactiveEntities##NAME; \
+            entities.push_back(std::move(*entity)); \
+            entitiesIx = entities.size() - 1; \
+            if (inactiveEntities.size() > 1) { \
+                *entity = std::move(inactiveEntities.back()); \
+                entryToUpdate = entity; \
+            } \
+            inactiveEntities.pop_back(); \
+            break; \
+        }
+        M_ENTITY_TYPES
+#       undef X        
+        case EntityType::Count: {
+            assert(false);
+            break;
+        }
+    }   
+
+    if (entryToUpdate != nullptr) {
+        MapEntry& entry = _entityIdMap.at(entryToUpdate->_id._id);
+        entry._entityIx = info._ix;   
+    }
+
+    // TODO we shouldn't need to do this; we've already done this lookup in GetEntityInfo.
+    MapEntry& entry = _entityIdMap.at(idToActivate._id);
+    entry._active = true;
+    assert(entitiesIx >= 0);
+    entry._entityIx = entitiesIx;
+    return true;
+}
+
 bool EntityManager::TagForDestroy(EntityId idToDestroy) {
-    if (Entity* e = GetEntity(idToDestroy)) {
+    if (Entity* e = GetEntity(idToDestroy, true, true)) {
         _toDestroy.push_back(idToDestroy);
         return true;
     }
@@ -225,11 +337,17 @@ void EntityManager::TagAllPrevSectionEntitiesForDestroy(int newFlowSectionId) {
             TagForDestroy(e->_id);
         }
     }
+    for (AllIterator iter = GetAllInactiveIterator(); !iter.Finished(); iter.Next()) {
+        Entity* e = iter.GetEntity();
+        if (e->_flowSectionId >= 0 && e->_flowSectionId < newFlowSectionId) {
+            TagForDestroy(e->_id);
+        }
+    }
 }
 
 void EntityManager::DestroyTaggedEntities(GameManager& g) {
     for (EntityId& id : _toDestroy) {
-        if (Entity* e = GetEntity(id)) {
+        if (Entity* e = GetEntity(id, true, true)) {
             e->Destroy(g);
         }
         RemoveEntity(id);
@@ -237,9 +355,56 @@ void EntityManager::DestroyTaggedEntities(GameManager& g) {
     _toDestroy.clear();
 }
 
+bool EntityManager::TagForDeactivate(EntityId idToDeactivate) {
+    if (Entity* e = GetEntity(idToDeactivate, true, false)) {
+        _toDeactivate.push_back(idToDeactivate);
+        return true;
+    }
+    return false;
+}
+
+void EntityManager::DeactivateTaggedEntities(GameManager& g) {
+    for (EntityId& id : _toDeactivate) {
+        if (Entity* e = GetEntity(id, true, false)) {
+            e->Destroy(g);
+        }
+        DeactivateEntity(id);
+    }
+    _toDeactivate.clear();
+}
+
+bool EntityManager::TagForActivate(EntityId idToActivate) {
+    if (Entity* e = GetEntity(idToActivate, false, true)) {
+        _toActivate.push_back(idToActivate);
+        return true;
+    }
+    return false;
+}
+
+void EntityManager::ActivateTaggedEntities(GameManager& g) {
+    for (EntityId& id : _toActivate) {
+        ActivateEntity(id);
+    }
+    _toActivate.clear();
+}
+
 EntityManager::Iterator EntityManager::GetIterator(EntityType type, int* outNumEntities) {
     Iterator iter;
-    auto [entityList, numEntities] = GetEntitiesOfType(type);
+    auto [entityList, numEntities] = GetEntitiesOfType(type, /*active=*/true);
+    iter._stride = gkEntitySizes[(int)type];
+    iter._current = entityList;
+    char* p = (char*) entityList;
+    char* end = p + numEntities * iter._stride;
+    iter._end = (Entity*)end;
+    if (outNumEntities != nullptr) {
+        *outNumEntities = numEntities;
+    }
+    return iter;
+}
+
+EntityManager::Iterator EntityManager::GetInactiveIterator(EntityType type, int* outNumEntities) {
+    Iterator iter;
+    auto [entityList, numEntities] = GetEntitiesOfType(type, /*active=*/false);
     iter._stride = gkEntitySizes[(int)type];
     iter._current = entityList;
     char* p = (char*) entityList;
@@ -272,6 +437,19 @@ EntityManager::AllIterator EntityManager::GetAllIterator() {
     iter._mgr = this;
     for (iter._typeIx = 0; iter._typeIx < gkNumEntityTypes; ++iter._typeIx) {
         iter._typeIter = GetIterator((EntityType)iter._typeIx);
+        if (!iter._typeIter.Finished()) {
+            return iter;
+        }
+    }
+    assert(iter.Finished());
+    return iter;
+}
+
+EntityManager::AllIterator EntityManager::GetAllInactiveIterator() {
+    AllIterator iter;
+    iter._mgr = this;
+    for (iter._typeIx = 0; iter._typeIx < gkNumEntityTypes; ++iter._typeIx) {
+        iter._typeIter = GetInactiveIterator((EntityType)iter._typeIx);
         if (!iter._typeIter.Finished()) {
             return iter;
         }

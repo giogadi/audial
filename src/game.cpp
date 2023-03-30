@@ -484,24 +484,12 @@ int main(int argc, char** argv) {
         // 4. renderer takes wacky position
         //
         // Rule here is: We ALWAYS have at least one frame to deal with a deleted reference before a render happens. Not a bad rule!
-        // entityManager.DestroyTaggedEntities();
         neEntityManager.DestroyTaggedEntities(gGameManager);
+        neEntityManager.DeactivateTaggedEntities(gGameManager);
+        neEntityManager.ActivateTaggedEntities(gGameManager);
     }
 
     ShutDown(audioContext, soundBank);
-
-    // ImGui_ImplOpenGL3_Shutdown();
-    // ImGui_ImplGlfw_Shutdown();
-    // ImGui::DestroyContext();
-
-    // glfwTerminate();
-
-    // // NOTE: Do not use BeatClock after shutting down audio.
-    // if (audio::ShutDown(audioContext) != paNoError) {
-    //     return 1;
-    // }
-
-    // soundBank.Destroy();
 
     return 0;
 }

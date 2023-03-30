@@ -104,16 +104,23 @@ struct EntityManager {
     ~EntityManager();
 
     void Init();
-    Entity* AddEntity(EntityType entityType);    
-    Entity* GetEntity(EntityId id);
+    Entity* AddEntity(EntityType entityType);
+    Entity* GetEntity(EntityId id);  // only looks for active entities
+    Entity* GetEntity(EntityId id, bool includeActive, bool includeInactive);
     Entity* FindEntityByName(std::string_view name);
     Entity* FindEntityByNameAndType(std::string_view name, EntityType entityType);
     Entity* GetFirstEntityOfType(EntityType entityType);
+    
     bool TagForDestroy(EntityId id);
     void TagAllPrevSectionEntitiesForDestroy(int newFlowSectionId);
-
     // Calls Destroy() on removed entities.
     void DestroyTaggedEntities(GameManager& g);
+
+    bool TagForDeactivate(EntityId id);
+    void DeactivateTaggedEntities(GameManager& g);
+
+    bool TagForActivate(EntityId id);
+    void ActivateTaggedEntities(GameManager& g);
 
     // Iterates over all entities of a given type.
     struct Iterator {
@@ -128,6 +135,7 @@ struct EntityManager {
         friend EntityManager;
     };
     Iterator GetIterator(EntityType type, int* outNumEntities = nullptr);
+    Iterator GetInactiveIterator(EntityType type, int* outNumEntities = nullptr);
 
     // Iterates over all entities of all types.
     struct AllIterator {
@@ -141,29 +149,42 @@ struct EntityManager {
         friend EntityManager;
         AllIterator() {}
     };
-    AllIterator GetAllIterator();    
+    AllIterator GetAllIterator();
+    AllIterator GetAllInactiveIterator();
 
 private:
     struct MapEntry {
         int _typeIx;
         int _entityIx;
+        bool _active = true;
     };
     std::unordered_map<int, MapEntry> _entityIdMap;
     int _nextId = 0;
     std::vector<EntityId> _toDestroy;
+    std::vector<EntityId> _toDeactivate;
+    std::vector<EntityId> _toActivate;
 
     struct Internal;
     std::unique_ptr<Internal> _p;
 
     // THIS IS UNSAFE! CAN'T ITERATE OVER THIS LIKE YOU THINK
-    std::pair<Entity*, int> GetEntitiesOfType(EntityType entityType);
+    std::pair<Entity*, int> GetEntitiesOfType(EntityType entityType, bool active);
 
-    std::pair<Entity*, int> GetEntityWithIndex(EntityId id);
+    struct EntityInfo {
+        Entity* _e = nullptr;
+        int _ix = -1;
+        bool _active = true;
+    };
+    EntityInfo GetEntityInfo(EntityId id, bool includeActive, bool includeInactive);
 
     // Returns true if the given ID was indeed found and deleted.
     // Does not preserve ordering.
     // Does NOT call Destroy() on entity.
     bool RemoveEntity(EntityId idToRemove);
+
+    bool DeactivateEntity(EntityId idToDeactivate);
+
+    bool ActivateEntity(EntityId idToActivate);
 };
 
 }  // namespace ne

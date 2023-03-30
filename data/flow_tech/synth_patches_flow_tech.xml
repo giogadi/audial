@@ -9,7 +9,7 @@
         <osc2_waveform>Square</osc2_waveform>
         <detune>1</detune>
         <osc_fader>0.326000005</osc_fader>
-        <cutoff_freq>0</cutoff_freq>
+        <cutoff_freq>1500</cutoff_freq>
         <cutoff_k>0</cutoff_k>
         <hpf_cutoff_freq>0</hpf_cutoff_freq>
         <hpf_peak>0</hpf_peak>
