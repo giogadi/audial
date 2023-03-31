@@ -147,9 +147,9 @@ void TypingEnemyEntity::Update(GameManager& g, float dt) {
             localToWorld.Scale(explodeScale, 1.f, explodeScale);            
         }
         
-        Vec4 localPos(-0.5f, 0.f, -0.5f, 1.f);
+        Vec4 localPos(-0.5f + 0.5f * xStep, 0.f, -0.5f + 0.5f * zStep, 1.f);
         for (int z = 0; z < kNumStepsZ; ++z) {
-            localPos._x = -0.5f;
+            localPos._x = -0.5f + 0.5f * xStep;
             for (int x = 0; x < kNumStepsX; ++x) {
                 Vec4 worldPos = localToWorld * localPos;
                 subdivMat.SetCol(3, worldPos);
