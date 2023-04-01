@@ -465,7 +465,7 @@
             <note_length>0.125</note_length>
             <start_time>0</start_time>
             <is_synth>true</is_synth>
-            <editor_mute>false</editor_mute>
+            <editor_mute>true</editor_mute>
         </StepSequencer>
         <StepSequencer>
             <name>lead_seq</name>
@@ -600,7 +600,7 @@
             <flow_section_id>0</flow_section_id>
             <text>i</text>
             <type_kill>false</type_kill>
-            <all_actions_on_hit>false</all_actions_on_hit>
+            <all_actions_on_hit>true</all_actions_on_hit>
             <flow_polarity>false</flow_polarity>
             <flow_cooldown>-1</flow_cooldown>
             <waypoint_follower>
@@ -610,7 +610,8 @@
                 <waypoints/>
             </waypoint_follower>
             <hit_actions>
-                <action>change_step chord_seq 0 1 mD4-,mE4-,mG4-:1</action>
+                <action>change_step chord_seq 0 1 mB3-,mD4-,mE4-:1</action>
+                <action>set_step_seq bass_seq mE2-:1 -1:1 mE2-:1 -1:1 mE2-:1 mE2-:1 -1:1 -1:1 mE2-:1 -1:1 -1:1 mE2-:1 -1:1 -1:1 mE2-:1 -1:1</action>
             </hit_actions>
         </TypingEnemy>
         <TypingEnemy>
@@ -655,6 +656,7 @@
             </waypoint_follower>
             <hit_actions>
                 <action>change_step chord_seq 0 1 mD4-,mG4-,mB4-:1</action>
+                <action>set_step_seq bass_seq mG2-:1 -1:1 mG2-:1 -1:1 mG2-:1 mG2-:1 -1:1 -1:1 mG2-:1 -1:1 -1:1 mG2-:1 -1:1 -1:1 mG2-:1 -1:1</action>
             </hit_actions>
         </TypingEnemy>
         <FlowPickup>
@@ -688,7 +690,7 @@
             <flow_section_id>0</flow_section_id>
             <actions>
                 <action>add_int room1_pickup_counter -1</action>
-                <action>automate relative Cutoff 0 0 250 1</action>
+                <action>automate relative Cutoff 0 0 200 1</action>
                 <action>change_step lead_seq 0 1 mE4-,mB4-,mE5-,mE6-:1</action>
             </actions>
         </FlowPickup>
@@ -723,7 +725,7 @@
             <flow_section_id>0</flow_section_id>
             <text>f</text>
             <type_kill>false</type_kill>
-            <all_actions_on_hit>false</all_actions_on_hit>
+            <all_actions_on_hit>true</all_actions_on_hit>
             <flow_polarity>false</flow_polarity>
             <flow_cooldown>-1</flow_cooldown>
             <waypoint_follower>
@@ -733,7 +735,8 @@
                 <waypoints/>
             </waypoint_follower>
             <hit_actions>
-                <action>change_step chord_seq 0 1 mD4-,mE4-,mG4-:1</action>
+                <action>change_step chord_seq 0 1 mB3-,mD4-,mE4-:1</action>
+                <action>set_step_seq bass_seq mE2-:1 -1:1 mE2-:1 -1:1 mE2-:1 mE2-:1 -1:1 -1:1 mE2-:1 -1:1 -1:1 mE2-:1 -1:1 -1:1 mE2-:1 -1:1</action>
             </hit_actions>
         </TypingEnemy>
         <TypingEnemy>
@@ -778,6 +781,7 @@
             </waypoint_follower>
             <hit_actions>
                 <action>change_step chord_seq 0 1 mG4-,mA4-,mC5:1</action>
+                <action>set_step_seq bass_seq mA2-:1 -1:1 mA2-:1 -1:1 mA2-:1 mA2-:1 -1:1 -1:1 mA2-:1 -1:1 -1:1 mA2-:1 -1:1 -1:1 mA2-:1 -1:1</action>
             </hit_actions>
         </TypingEnemy>
         <FlowPickup>
@@ -811,7 +815,7 @@
             <flow_section_id>0</flow_section_id>
             <actions>
                 <action>add_int room1_pickup_counter -1</action>
-                <action>automate relative Cutoff 0 0 250 1</action>
+                <action>automate relative Cutoff 0 0 200 1</action>
                 <action>change_step lead_seq 0 1 mE4-,mB4-,mE5-,mE6-:1</action>
             </actions>
         </FlowPickup>
@@ -846,7 +850,7 @@
             <flow_section_id>0</flow_section_id>
             <actions>
                 <action>add_int room1_pickup_counter -1</action>
-                <action>automate relative Cutoff 0 0 250 1</action>
+                <action>automate relative Cutoff 0 0 20 1</action>
                 <action>change_step lead_seq 0 1 mE4-,mB4-,mE5-,mE6-:1</action>
             </actions>
         </FlowPickup>
@@ -987,7 +991,7 @@
             <flow_section_id>0</flow_section_id>
             <actions>
                 <action>add_int room1_pickup_counter -1</action>
-                <action>automate relative Cutoff 0 0 250 1</action>
+                <action>automate relative Cutoff 0 0 200 1</action>
                 <action>change_step lead_seq 0 1 mE4-,mB4-,mE5-,mE6-:1</action>
             </actions>
         </FlowPickup>
@@ -1022,7 +1026,7 @@
             <flow_section_id>0</flow_section_id>
             <actions>
                 <action>add_int room1_pickup_counter -1</action>
-                <action>automate relative Cutoff 0 0 250 1</action>
+                <action>automate relative Cutoff 0 0 200 1</action>
                 <action>change_step lead_seq 0 1 mE4-,mB4-,mE5-,mE6-:1</action>
             </actions>
         </FlowPickup>
@@ -1356,7 +1360,7 @@
             <flow_section_id>0</flow_section_id>
             <text>w</text>
             <type_kill>false</type_kill>
-            <all_actions_on_hit>false</all_actions_on_hit>
+            <all_actions_on_hit>true</all_actions_on_hit>
             <flow_polarity>false</flow_polarity>
             <flow_cooldown>-1</flow_cooldown>
             <waypoint_follower>
@@ -1366,7 +1370,8 @@
                 <waypoints/>
             </waypoint_follower>
             <hit_actions>
-                <action>change_step chord_seq 0 1 mD4-,mE4-,mG4-:1</action>
+                <action>change_step chord_seq 0 1 mA3-,mB3-,mD4-:1</action>
+                <action>set_step_seq bass_seq mD2-:1 -1:1 mD2-:1 -1:1 mD2-:1 mD2-:1 -1:1 -1:1 mD2-:1 -1:1 -1:1 mD2-:1 -1:1 -1:1 mD2-:1 -1:1</action>
             </hit_actions>
         </TypingEnemy>
         <TypingEnemy>
@@ -1400,7 +1405,7 @@
             <flow_section_id>0</flow_section_id>
             <text>u</text>
             <type_kill>false</type_kill>
-            <all_actions_on_hit>false</all_actions_on_hit>
+            <all_actions_on_hit>true</all_actions_on_hit>
             <flow_polarity>false</flow_polarity>
             <flow_cooldown>-1</flow_cooldown>
             <waypoint_follower>
@@ -1410,7 +1415,8 @@
                 <waypoints/>
             </waypoint_follower>
             <hit_actions>
-                <action>change_step chord_seq 0 1 mD4-,mE4-,mG4-:1</action>
+                <action>change_step chord_seq 0 1 mG3-,mB3-,mD4-:1</action>
+                <action>set_step_seq bass_seq mD2-:1 -1:1 mD2-:1 -1:1 mD2-:1 mD2-:1 -1:1 -1:1 mD2-:1 -1:1 -1:1 mD2-:1 -1:1 -1:1 mD2-:1 -1:1</action>
             </hit_actions>
         </TypingEnemy>
         <TypingEnemy>
@@ -1444,7 +1450,7 @@
             <flow_section_id>0</flow_section_id>
             <text>r</text>
             <type_kill>false</type_kill>
-            <all_actions_on_hit>false</all_actions_on_hit>
+            <all_actions_on_hit>true</all_actions_on_hit>
             <flow_polarity>false</flow_polarity>
             <flow_cooldown>-1</flow_cooldown>
             <waypoint_follower>
@@ -1454,7 +1460,8 @@
                 <waypoints/>
             </waypoint_follower>
             <hit_actions>
-                <action>change_step chord_seq 0 1 mD4-,mE4-,mG4-:1</action>
+                <action>change_step chord_seq 0 1 mB3-,mD4-,mE4-:1</action>
+                <action>set_step_seq bass_seq mE2-:1 -1:1 mE2-:1 -1:1 mE2-:1 mE2-:1 -1:1 -1:1 mE2-:1 -1:1 -1:1 mE2-:1 -1:1 -1:1 mE2-:1 -1:1</action>
             </hit_actions>
         </TypingEnemy>
         <TypingEnemy>
@@ -1488,7 +1495,7 @@
             <flow_section_id>0</flow_section_id>
             <text>t</text>
             <type_kill>false</type_kill>
-            <all_actions_on_hit>false</all_actions_on_hit>
+            <all_actions_on_hit>true</all_actions_on_hit>
             <flow_polarity>false</flow_polarity>
             <flow_cooldown>-1</flow_cooldown>
             <waypoint_follower>
@@ -1498,7 +1505,8 @@
                 <waypoints/>
             </waypoint_follower>
             <hit_actions>
-                <action>change_step chord_seq 0 1 mC4,mE4-,mG4-:1</action>
+                <action>change_step chord_seq 0 1 mB3-,mD4-,mE4-:1</action>
+                <action>set_step_seq bass_seq mE2-:1 -1:1 mE2-:1 -1:1 mE2-:1 mE2-:1 -1:1 -1:1 mE2-:1 -1:1 -1:1 mE2-:1 -1:1 -1:1 mE2-:1 -1:1</action>
             </hit_actions>
         </TypingEnemy>
         <TypingEnemy>
@@ -1532,7 +1540,7 @@
             <flow_section_id>0</flow_section_id>
             <text>k</text>
             <type_kill>false</type_kill>
-            <all_actions_on_hit>false</all_actions_on_hit>
+            <all_actions_on_hit>true</all_actions_on_hit>
             <flow_polarity>false</flow_polarity>
             <flow_cooldown>-1</flow_cooldown>
             <waypoint_follower>
@@ -1542,7 +1550,8 @@
                 <waypoints/>
             </waypoint_follower>
             <hit_actions>
-                <action>change_step chord_seq 0 1 mC4,mE4-,mG4-:1</action>
+                <action>change_step chord_seq 0 1 mB3-,mD4-,mE4-:1</action>
+                <action>set_step_seq bass_seq mE2-:1 -1:1 mE2-:1 -1:1 mE2-:1 mE2-:1 -1:1 -1:1 mE2-:1 -1:1 -1:1 mE2-:1 -1:1 -1:1 mE2-:1 -1:1</action>
             </hit_actions>
         </TypingEnemy>
         <TypingEnemy>
@@ -1576,7 +1585,7 @@
             <flow_section_id>0</flow_section_id>
             <text>v</text>
             <type_kill>false</type_kill>
-            <all_actions_on_hit>false</all_actions_on_hit>
+            <all_actions_on_hit>true</all_actions_on_hit>
             <flow_polarity>false</flow_polarity>
             <flow_cooldown>-1</flow_cooldown>
             <waypoint_follower>
@@ -1586,7 +1595,8 @@
                 <waypoints/>
             </waypoint_follower>
             <hit_actions>
-                <action>change_step chord_seq 0 1 mC4,mE4-,mG4-:1</action>
+                <action>change_step chord_seq 0 1 mA3-,mB3-,mD4-:1</action>
+                <action>set_step_seq bass_seq mD2-:1 -1:1 mD2-:1 -1:1 mD2-:1 mD2-:1 -1:1 -1:1 mD2-:1 -1:1 -1:1 mD2-:1 -1:1 -1:1 mD2-:1 -1:1</action>
             </hit_actions>
         </TypingEnemy>
         <TypingEnemy>
@@ -1620,7 +1630,7 @@
             <flow_section_id>0</flow_section_id>
             <text>o</text>
             <type_kill>false</type_kill>
-            <all_actions_on_hit>false</all_actions_on_hit>
+            <all_actions_on_hit>true</all_actions_on_hit>
             <flow_polarity>false</flow_polarity>
             <flow_cooldown>-1</flow_cooldown>
             <waypoint_follower>
@@ -1630,7 +1640,8 @@
                 <waypoints/>
             </waypoint_follower>
             <hit_actions>
-                <action>change_step chord_seq 0 1 mC4,mE4-,mG4-:1</action>
+                <action>change_step chord_seq 0 1 mG3-,mB3-,mD4-:1</action>
+                <action>set_step_seq bass_seq mD2-:1 -1:1 mD2-:1 -1:1 mD2-:1 mD2-:1 -1:1 -1:1 mD2-:1 -1:1 -1:1 mD2-:1 -1:1 -1:1 mD2-:1 -1:1</action>
             </hit_actions>
         </TypingEnemy>
         <FlowPickup>
@@ -1664,13 +1675,13 @@
             <flow_section_id>0</flow_section_id>
             <actions>
                 <action>add_int room1_pickup_counter -1</action>
-                <action>automate relative Cutoff 0 0 250 1</action>
+                <action>automate relative Cutoff 0 0 200 1</action>
                 <action>change_step lead_seq 0 1 mE4-,mB4-,mE5-,mE6-:1</action>
             </actions>
         </FlowPickup>
         <IntVariable>
             <name>room1_pickup_counter</name>
-            <pickable>true</pickable>
+            <pickable>false</pickable>
             <transform>
                 <pos>
                     <x>0</x>
@@ -1704,7 +1715,7 @@
         </IntVariable>
         <FlowTrigger>
             <name>room1_drumfill_trigger</name>
-            <pickable>true</pickable>
+            <pickable>false</pickable>
             <transform>
                 <pos>
                     <x>4.82812691</x>
@@ -1905,7 +1916,7 @@
             </hit_actions>
         </TypingEnemy>
         <FlowPickup>
-            <name>room2_pickup2</name>
+            <name>room2_pickup5</name>
             <pickable>true</pickable>
             <transform>
                 <pos>
@@ -1983,7 +1994,7 @@
             </hit_actions>
         </TypingEnemy>
         <FlowPickup>
-            <name>room2_pickup3</name>
+            <name>room2_pickup7</name>
             <pickable>true</pickable>
             <transform>
                 <pos>
@@ -2105,7 +2116,7 @@
             </hit_actions>
         </TypingEnemy>
         <FlowPickup>
-            <name>room2_pickup1 (copy)</name>
+            <name>room2_pickup2</name>
             <pickable>true</pickable>
             <transform>
                 <pos>
@@ -2139,7 +2150,7 @@
             </actions>
         </FlowPickup>
         <FlowPickup>
-            <name>room2_pickup1 (copy) (copy)</name>
+            <name>room2_pickup3</name>
             <pickable>true</pickable>
             <transform>
                 <pos>
@@ -2173,7 +2184,7 @@
             </actions>
         </FlowPickup>
         <FlowPickup>
-            <name>room2_pickup2 (copy)</name>
+            <name>room2_pickup4</name>
             <pickable>true</pickable>
             <transform>
                 <pos>
@@ -2207,7 +2218,7 @@
             </actions>
         </FlowPickup>
         <FlowPickup>
-            <name>room2_pickup2 (copy) (copy)</name>
+            <name>room2_pickup6</name>
             <pickable>true</pickable>
             <transform>
                 <pos>
@@ -2241,7 +2252,7 @@
             </actions>
         </FlowPickup>
         <FlowPickup>
-            <name>room2_pickup3 (copy)</name>
+            <name>room2_pickup9</name>
             <pickable>true</pickable>
             <transform>
                 <pos>
@@ -2275,7 +2286,7 @@
             </actions>
         </FlowPickup>
         <FlowPickup>
-            <name>room2_pickup3 (copy) (copy)</name>
+            <name>room2_pickup8</name>
             <pickable>true</pickable>
             <transform>
                 <pos>
@@ -2309,7 +2320,7 @@
             </actions>
         </FlowPickup>
         <FlowPickup>
-            <name>room2_pickup3 (copy)</name>
+            <name>room2_pickup10</name>
             <pickable>true</pickable>
             <transform>
                 <pos>
@@ -2343,7 +2354,7 @@
             </actions>
         </FlowPickup>
         <FlowPickup>
-            <name>room2_pickup3 (copy) (copy)</name>
+            <name>room2_pickup12</name>
             <pickable>true</pickable>
             <transform>
                 <pos>
@@ -2377,7 +2388,7 @@
             </actions>
         </FlowPickup>
         <FlowPickup>
-            <name>room2_pickup3 (copy) (copy) (copy)</name>
+            <name>room2_pickup11</name>
             <pickable>true</pickable>
             <transform>
                 <pos>
@@ -2410,5 +2421,221 @@
                 <action>change_step lead_seq 0 1 mE3-,mG4-,mE4-,mG6-:1</action>
             </actions>
         </FlowPickup>
+        <FlowWall>
+            <name>room2_wall1</name>
+            <pickable>true</pickable>
+            <transform>
+                <pos>
+                    <x>46.5718727</x>
+                    <y>0</y>
+                    <z>0.10468626</z>
+                </pos>
+                <quat>
+                    <x>0</x>
+                    <y>0</y>
+                    <z>0</z>
+                    <w>1</w>
+                </quat>
+                <scale>
+                    <x>0.5</x>
+                    <y>1</y>
+                    <z>7</z>
+                </scale>
+            </transform>
+            <model_name>cube</model_name>
+            <model_color_vec4>
+                <x>0.800000012</x>
+                <y>0.800000012</y>
+                <z>0.800000012</z>
+                <w>1</w>
+            </model_color_vec4>
+            <flow_section_id>-1</flow_section_id>
+            <can_hit>true</can_hit>
+            <hp>-1</hp>
+            <move_mode>Waypoints</move_mode>
+            <local_to_entity>false</local_to_entity>
+            <waypoint_auto_start>false</waypoint_auto_start>
+            <loop_waypoints>false</loop_waypoints>
+            <waypoints/>
+            <rot_vel>0</rot_vel>
+            <polygon/>
+            <hit_actions/>
+        </FlowWall>
+        <TypingEnemy>
+            <name>room2_o</name>
+            <pickable>true</pickable>
+            <transform>
+                <pos>
+                    <x>44.5281906</x>
+                    <y>0</y>
+                    <z>-4.08906078</z>
+                </pos>
+                <quat>
+                    <x>0</x>
+                    <y>0</y>
+                    <z>0</z>
+                    <w>1</w>
+                </quat>
+                <scale>
+                    <x>0.5</x>
+                    <y>0.5</y>
+                    <z>0.5</z>
+                </scale>
+            </transform>
+            <model_name>cube</model_name>
+            <model_color_vec4>
+                <x>1</x>
+                <y>0</y>
+                <z>0</z>
+                <w>1</w>
+            </model_color_vec4>
+            <flow_section_id>-1</flow_section_id>
+            <text>o</text>
+            <type_kill>false</type_kill>
+            <all_actions_on_hit>false</all_actions_on_hit>
+            <flow_polarity>false</flow_polarity>
+            <flow_cooldown>-1</flow_cooldown>
+            <waypoint_follower>
+                <local_to_entity>false</local_to_entity>
+                <waypoint_auto_start>false</waypoint_auto_start>
+                <loop_waypoints>false</loop_waypoints>
+                <waypoints/>
+            </waypoint_follower>
+            <hit_actions>
+                <action>change_step chord_seq 0 1 mD4-,mE4-,mG4-:1</action>
+            </hit_actions>
+        </TypingEnemy>
+        <TypingEnemy>
+            <name>room2_v</name>
+            <pickable>true</pickable>
+            <transform>
+                <pos>
+                    <x>45.5750656</x>
+                    <y>0</y>
+                    <z>-5.01937485</z>
+                </pos>
+                <quat>
+                    <x>0</x>
+                    <y>0</y>
+                    <z>0</z>
+                    <w>1</w>
+                </quat>
+                <scale>
+                    <x>0.5</x>
+                    <y>0.5</y>
+                    <z>0.5</z>
+                </scale>
+            </transform>
+            <model_name>cube</model_name>
+            <model_color_vec4>
+                <x>1</x>
+                <y>0</y>
+                <z>0</z>
+                <w>1</w>
+            </model_color_vec4>
+            <flow_section_id>-1</flow_section_id>
+            <text>v</text>
+            <type_kill>false</type_kill>
+            <all_actions_on_hit>false</all_actions_on_hit>
+            <flow_polarity>false</flow_polarity>
+            <flow_cooldown>-1</flow_cooldown>
+            <waypoint_follower>
+                <local_to_entity>false</local_to_entity>
+                <waypoint_auto_start>false</waypoint_auto_start>
+                <loop_waypoints>false</loop_waypoints>
+                <waypoints/>
+            </waypoint_follower>
+            <hit_actions>
+                <action>change_step chord_seq 0 1 mC4,mE4-,mG4-:1</action>
+            </hit_actions>
+        </TypingEnemy>
+        <TypingEnemy>
+            <name>room2_e</name>
+            <pickable>true</pickable>
+            <transform>
+                <pos>
+                    <x>47.3875656</x>
+                    <y>0</y>
+                    <z>-5.0354991</z>
+                </pos>
+                <quat>
+                    <x>0</x>
+                    <y>0</y>
+                    <z>0</z>
+                    <w>1</w>
+                </quat>
+                <scale>
+                    <x>0.5</x>
+                    <y>0.5</y>
+                    <z>0.5</z>
+                </scale>
+            </transform>
+            <model_name>cube</model_name>
+            <model_color_vec4>
+                <x>1</x>
+                <y>0</y>
+                <z>0</z>
+                <w>1</w>
+            </model_color_vec4>
+            <flow_section_id>-1</flow_section_id>
+            <text>e</text>
+            <type_kill>false</type_kill>
+            <all_actions_on_hit>false</all_actions_on_hit>
+            <flow_polarity>false</flow_polarity>
+            <flow_cooldown>-1</flow_cooldown>
+            <waypoint_follower>
+                <local_to_entity>false</local_to_entity>
+                <waypoint_auto_start>false</waypoint_auto_start>
+                <loop_waypoints>false</loop_waypoints>
+                <waypoints/>
+            </waypoint_follower>
+            <hit_actions>
+                <action>change_step chord_seq 0 1 mB3,mE4-,mG4-:1</action>
+            </hit_actions>
+        </TypingEnemy>
+        <TypingEnemy>
+            <name>room2_r</name>
+            <pickable>true</pickable>
+            <transform>
+                <pos>
+                    <x>48.7156906</x>
+                    <y>0</y>
+                    <z>-4.07343578</z>
+                </pos>
+                <quat>
+                    <x>0</x>
+                    <y>0</y>
+                    <z>0</z>
+                    <w>1</w>
+                </quat>
+                <scale>
+                    <x>0.5</x>
+                    <y>0.5</y>
+                    <z>0.5</z>
+                </scale>
+            </transform>
+            <model_name>cube</model_name>
+            <model_color_vec4>
+                <x>1</x>
+                <y>0</y>
+                <z>0</z>
+                <w>1</w>
+            </model_color_vec4>
+            <flow_section_id>-1</flow_section_id>
+            <text>r</text>
+            <type_kill>false</type_kill>
+            <all_actions_on_hit>false</all_actions_on_hit>
+            <flow_polarity>false</flow_polarity>
+            <flow_cooldown>-1</flow_cooldown>
+            <waypoint_follower>
+                <local_to_entity>false</local_to_entity>
+                <waypoint_auto_start>false</waypoint_auto_start>
+                <loop_waypoints>false</loop_waypoints>
+                <waypoints/>
+            </waypoint_follower>
+            <hit_actions>
+                <action>change_step chord_seq 0 1 mB3-,mD4,mF4:1</action>
+            </hit_actions>
+        </TypingEnemy>
     </new_entities>
 </script>

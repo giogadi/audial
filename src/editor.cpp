@@ -277,7 +277,7 @@ void Editor::DrawWindow() {
         if (!projectSuccess) {
             printf("Editor.AddEntity: Failed to project center to XZ plane!\n");
         }
-        entity->_transform.SetTranslation(newPos);
+        entity->_initTransform.SetTranslation(newPos);
         entity->Init(*_g);
     }
     
