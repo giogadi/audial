@@ -38,6 +38,7 @@ void FlowPlayerEntity::InitDerived(GameManager& g) {
         _cameraId = eIter.GetEntity()->_id;
     }
     _currentColor = _modelColor;
+    _transform.SetPos(_respawnPos);
 }
 
 namespace {
@@ -130,12 +131,13 @@ void FlowPlayerEntity::Draw(GameManager& g) {
 
 void FlowPlayerEntity::Respawn(GameManager& g) {
     _transform.SetTranslation(_respawnPos);
-    double beatTime = g._beatClock->GetBeatTimeFromEpoch();
-    _countOffEndTime = g._beatClock->GetNextDownBeatTime(beatTime) + 3;
+    // double beatTime = g._beatClock->GetBeatTimeFromEpoch();
+    // _countOffEndTime = g._beatClock->GetNextDownBeatTime(beatTime) + 3;
     _posHistory.clear();
     _framesSinceLastSample = 0;
     _vel.Set(0.f,0.f,0.f);
     _dashTimer = -1.f;
+    _respawnBeforeFirstDash = true;
 
     // Reset everything from the current section
     for (ne::EntityManager::AllIterator iter = g._neEntityManager->GetAllIterator(); !iter.Finished(); iter.Next()) {
@@ -224,6 +226,7 @@ void FlowPlayerEntity::Update(GameManager& g, float dt) {
 
     if (nearest != nullptr) {
         if (nearest->CanHit()) {
+            _respawnBeforeFirstDash = false;
             nearest->OnHit(g);
             Vec3 toEnemyDir = nearest->_transform.GetPos() - playerPos;
             toEnemyDir.Normalize();
@@ -280,8 +283,10 @@ void FlowPlayerEntity::Update(GameManager& g, float dt) {
         // Still dashing. maintain velocity.
         _dashTimer += dt;
     } else {
-        // Not dashing. Apply gravity.
-        _vel += _gravity * dt;
+        // Not dashing. Apply gravity if we've dashed since respawn.
+        if (!_respawnBeforeFirstDash) {
+            _vel += _gravity * dt;
+        }
     }
 
     Vec3 p = _transform.GetPos();

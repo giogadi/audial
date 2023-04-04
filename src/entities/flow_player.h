@@ -29,6 +29,7 @@ struct FlowPlayerEntity : public ne::Entity {
     double _countOffEndTime = 3.0;
     std::optional<float> _killMaxZ;  // kill/respawn if player goes over this value
     bool _applyGravityDuringDash = false;
+    bool _respawnBeforeFirstDash = true;
 
     void Draw(GameManager& g);
     void Respawn(GameManager &g);
