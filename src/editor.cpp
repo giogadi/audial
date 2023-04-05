@@ -57,7 +57,9 @@ void Editor::HandleEntitySelectAndMove() {
                 // their positions and clear it out
                 for (auto const& idPosPair : sSelectedPositionsBeforeMove) {
                     if (ne::Entity* entity = _g->_neEntityManager->GetEntity(idPosPair.first)) {
-                        entity->_transform.SetPos(idPosPair.second);
+                        Transform t = entity->_transform;
+                        t.SetPos(idPosPair.second);
+                        entity->SetAllTransforms(t);
                     }
                 }
                 sSelectedPositionsBeforeMove.clear();
@@ -127,8 +129,9 @@ void Editor::HandleEntitySelectAndMove() {
                         Vec3 offset = mousePosOnXZPlane - sClickedPosOnXZPlane;
                         for (auto const& idPosPair : sSelectedPositionsBeforeMove) {
                             if (ne::Entity* entity = _g->_neEntityManager->GetEntity(idPosPair.first)) {
-                                Vec3 newPos = idPosPair.second + offset;
-                                entity->_transform.SetPos(newPos);
+                                Transform t = entity->_transform;
+                                t.SetPos(idPosPair.second + offset);
+                                entity->SetAllTransforms(t);
                             }
                         }
                     } else {

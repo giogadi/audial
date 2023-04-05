@@ -82,6 +82,8 @@ struct BaseEntity {
 
     void Init(GameManager& g);
 
+    void SetAllTransforms(Transform const& t) { _initTransform = _transform = t; }
+
     // Init() is intended to be called after Load(). Load should not touch anything
     // outside this class. Everything else should happen here.
     virtual void Update(GameManager& g, float dt);
