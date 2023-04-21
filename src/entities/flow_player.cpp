@@ -225,6 +225,7 @@ void FlowPlayerEntity::Update(GameManager& g, float dt) {
     }
 
     if (nearest != nullptr) {
+        ne::EntityId nearestId = nearest->_id;
         if (nearest->CanHit()) {
             _respawnBeforeFirstDash = false;
             nearest->OnHit(g);
@@ -235,6 +236,14 @@ void FlowPlayerEntity::Update(GameManager& g, float dt) {
             _dashTimer = 0.f;
             _dashTargetId = nearest->_id;
             _applyGravityDuringDash = false;
+
+            enemyIter = g._neEntityManager->GetIterator(ne::EntityType::TypingEnemy);
+            for (; !enemyIter.Finished(); enemyIter.Next()) {
+                TypingEnemyEntity* enemy = (TypingEnemyEntity*) enemyIter.GetEntity();
+                if (enemy->_id != nearestId) {
+                    enemy->OnHitOther(g);
+                }
+            }
         }
     }
 

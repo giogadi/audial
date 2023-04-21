@@ -1,0 +1,2 @@
+0 player_killzone max_z:6
+0 set_new_section 0

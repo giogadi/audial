@@ -505,7 +505,7 @@ void Entity::Save(serial::Ptree pt) const {
     pt.PutString("name", _name.c_str());
     pt.PutBool("pickable", _pickable);
     // NOTE: we always save the current position! maybe do this different
-    serial::SaveInNewChildOf(pt, "transform", _transform);
+    serial::SaveInNewChildOf(pt, "transform", _initTransform);
     pt.PutString("model_name", _modelName.c_str());
     serial::SaveInNewChildOf(pt, "model_color_vec4", _modelColor);
     pt.PutInt("flow_section_id", _flowSectionId);

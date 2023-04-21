@@ -56,18 +56,20 @@ void WaypointFollower::Stop() {
 }
 
 bool WaypointFollower::Update(GameManager& g, float const dt, bool debugDraw, ne::Entity* pEntity) {
-    if (g._editMode && debugDraw) {
-        Mat4 trans;
-        trans.ScaleUniform(0.5f);
-        Vec4 wpColor(0.8f, 0.f, 0.8f, 1.f);
-        Vec3 offset;
-        if (_localToEntity) {
-            offset = _ns._entityPosAtStart;
-        }
-        for (Waypoint const& wp : _waypoints) {
-            Vec3 worldPos = wp._p + offset;
-            trans.SetTranslation(worldPos);
-            g._scene->DrawBoundingBox(trans, wpColor);
+    if (g._editMode) {
+        if (debugDraw) {
+            Mat4 trans;
+            trans.ScaleUniform(0.5f);
+            Vec4 wpColor(0.8f, 0.f, 0.8f, 1.f);
+            Vec3 offset;
+            if (_localToEntity) {
+                offset = _ns._entityPosAtStart;
+            }
+            for (Waypoint const& wp : _waypoints) {
+                Vec3 worldPos = wp._p + offset;
+                trans.SetTranslation(worldPos);
+                g._scene->DrawBoundingBox(trans, wpColor);
+            }
         }
         return false;
     }

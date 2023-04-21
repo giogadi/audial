@@ -214,6 +214,12 @@ void TypingEnemyEntity::DoHitActions(GameManager& g) {
     }
 }
 
+void TypingEnemyEntity::OnHitOther(GameManager& g) {
+    if (_resetCooldownOnAnyHit) {
+        _flowCooldownTimeLeft = -1.f;
+    }
+}
+
 InputManager::Key TypingEnemyEntity::GetNextKey() const {
     int textIndex = std::min(_numHits, (int) _text.length() - 1);
     char nextChar = std::tolower(_text.at(textIndex));
@@ -242,6 +248,9 @@ void TypingEnemyEntity::LoadDerived(serial::Ptree pt) {
     _flowCooldown = -1.f;
     pt.TryGetFloat("flow_cooldown", &_flowCooldown);
 
+    _resetCooldownOnAnyHit = false;
+    pt.TryGetBool("reset_cooldown_on_any_hit", &_resetCooldownOnAnyHit);
+
     bool hasWaypointFollower = serial::LoadFromChildOf(pt, "waypoint_follower", _waypointFollower);
     if (!hasWaypointFollower) {
         // backward compat
@@ -266,6 +275,7 @@ void TypingEnemyEntity::SaveDerived(serial::Ptree pt) const {
     pt.PutBool("all_actions_on_hit", _hitBehavior == HitBehavior::AllActions);
     pt.PutBool("flow_polarity", _flowPolarity);
     pt.PutFloat("flow_cooldown", _flowCooldown);
+    pt.PutBool("reset_cooldown_on_any_hit", _resetCooldownOnAnyHit);
     serial::SaveInNewChildOf(pt, "waypoint_follower", _waypointFollower);
 
     serial::Ptree actionsPt = pt.AddChild("hit_actions");
@@ -290,8 +300,8 @@ ne::BaseEntity::ImGuiResult TypingEnemyEntity::ImGuiDerived(GameManager& g) {
     }
 
     ImGui::Checkbox("Flow polarity", &_flowPolarity);
-
     ImGui::InputFloat("Flow cooldown", &_flowCooldown);
+    ImGui::Checkbox("Reset cooldown on any hit", &_resetCooldownOnAnyHit);
     
     if (ImGui::Button("Add Action")) {
         _hitActionStrings.emplace_back();

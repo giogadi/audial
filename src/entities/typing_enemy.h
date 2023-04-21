@@ -25,6 +25,7 @@ struct TypingEnemyEntity : public ne::Entity {
     bool _flowPolarity = false;
     WaypointFollower _waypointFollower;
     float _flowCooldown = -1.f;
+    bool _resetCooldownOnAnyHit = false;
     
     // non-serialized
     int _numHits = 0;
@@ -38,6 +39,7 @@ struct TypingEnemyEntity : public ne::Entity {
     bool IsActive(GameManager& g) const;
     void OnHit(GameManager& g);
     void DoHitActions(GameManager& g);
+    void OnHitOther(GameManager& g);
     InputManager::Key GetNextKey() const;
     bool CanHit() const;
 

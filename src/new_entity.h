@@ -54,6 +54,9 @@ struct EntityId {
         }
         return v;
     }
+    bool operator!=(EntityId const& rhs) const {
+        return !(*this == rhs);
+    }
     bool operator<(EntityId const& rhs) const {
         return _id < rhs._id;
     }
