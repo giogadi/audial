@@ -860,7 +860,7 @@
             <waypoints>
                 <waypoint>
                     <wait_time>0</wait_time>
-                    <move_time>4</move_time>
+                    <move_time>5</move_time>
                     <p>
                         <x>0</x>
                         <y>0</y>
@@ -869,7 +869,7 @@
                 </waypoint>
                 <waypoint>
                     <wait_time>0</wait_time>
-                    <move_time>4</move_time>
+                    <move_time>5</move_time>
                     <p>
                         <x>0</x>
                         <y>0</y>
@@ -879,7 +879,9 @@
             </waypoints>
             <rot_vel>0</rot_vel>
             <polygon/>
-            <hit_actions/>
+            <hit_actions>
+                <action>b_e 0.25 e:play s:clap_909 v:0.2</action>
+            </hit_actions>
         </FlowWall>
         <TypingEnemy>
             <name>r1_d</name>
@@ -1009,7 +1011,7 @@
             <waypoints>
                 <waypoint>
                     <wait_time>0</wait_time>
-                    <move_time>4</move_time>
+                    <move_time>5</move_time>
                     <p>
                         <x>0</x>
                         <y>0</y>
@@ -1018,7 +1020,7 @@
                 </waypoint>
                 <waypoint>
                     <wait_time>0</wait_time>
-                    <move_time>4</move_time>
+                    <move_time>5</move_time>
                     <p>
                         <x>0</x>
                         <y>0</y>
@@ -1028,7 +1030,433 @@
             </waypoints>
             <rot_vel>0</rot_vel>
             <polygon/>
-            <hit_actions/>
+            <hit_actions>
+                <action>b_e 0.25 e:play s:clap_909 v:0.2</action>
+            </hit_actions>
         </FlowWall>
+        <FlowWall>
+            <name>r1_wall3</name>
+            <pickable>true</pickable>
+            <transform>
+                <pos>
+                    <x>0.609375</x>
+                    <y>0</y>
+                    <z>3.53906155</z>
+                </pos>
+                <quat>
+                    <x>0</x>
+                    <y>0</y>
+                    <z>0</z>
+                    <w>1</w>
+                </quat>
+                <scale>
+                    <x>1</x>
+                    <y>1</y>
+                    <z>8</z>
+                </scale>
+            </transform>
+            <model_name>cube</model_name>
+            <model_color_vec4>
+                <x>0.800000012</x>
+                <y>0.800000012</y>
+                <z>0.800000012</z>
+                <w>1</w>
+            </model_color_vec4>
+            <flow_section_id>-1</flow_section_id>
+            <can_hit>true</can_hit>
+            <hp>-1</hp>
+            <move_mode>Waypoints</move_mode>
+            <local_to_entity>true</local_to_entity>
+            <waypoint_auto_start>true</waypoint_auto_start>
+            <loop_waypoints>true</loop_waypoints>
+            <waypoints>
+                <waypoint>
+                    <wait_time>0</wait_time>
+                    <move_time>4</move_time>
+                    <p>
+                        <x>0</x>
+                        <y>0</y>
+                        <z>-4.5</z>
+                    </p>
+                </waypoint>
+                <waypoint>
+                    <wait_time>0</wait_time>
+                    <move_time>5</move_time>
+                    <p>
+                        <x>0</x>
+                        <y>0</y>
+                        <z>0</z>
+                    </p>
+                </waypoint>
+            </waypoints>
+            <rot_vel>0</rot_vel>
+            <polygon/>
+            <hit_actions>
+                <action>b_e 0.25 e:play s:clap_909 v:0.2</action>
+            </hit_actions>
+        </FlowWall>
+        <FlowWall>
+            <name>r1_wall4</name>
+            <pickable>true</pickable>
+            <transform>
+                <pos>
+                    <x>0.609375</x>
+                    <y>0</y>
+                    <z>-5.48437548</z>
+                </pos>
+                <quat>
+                    <x>0</x>
+                    <y>0</y>
+                    <z>0</z>
+                    <w>1</w>
+                </quat>
+                <scale>
+                    <x>1</x>
+                    <y>1</y>
+                    <z>8</z>
+                </scale>
+            </transform>
+            <model_name>cube</model_name>
+            <model_color_vec4>
+                <x>0.800000012</x>
+                <y>0.800000012</y>
+                <z>0.800000012</z>
+                <w>1</w>
+            </model_color_vec4>
+            <flow_section_id>-1</flow_section_id>
+            <can_hit>true</can_hit>
+            <hp>-1</hp>
+            <move_mode>Waypoints</move_mode>
+            <local_to_entity>true</local_to_entity>
+            <waypoint_auto_start>true</waypoint_auto_start>
+            <loop_waypoints>true</loop_waypoints>
+            <waypoints>
+                <waypoint>
+                    <wait_time>0</wait_time>
+                    <move_time>4</move_time>
+                    <p>
+                        <x>0</x>
+                        <y>0</y>
+                        <z>-4.5</z>
+                    </p>
+                </waypoint>
+                <waypoint>
+                    <wait_time>0</wait_time>
+                    <move_time>5</move_time>
+                    <p>
+                        <x>0</x>
+                        <y>0</y>
+                        <z>0</z>
+                    </p>
+                </waypoint>
+            </waypoints>
+            <rot_vel>0</rot_vel>
+            <polygon/>
+            <hit_actions>
+                <action>b_e 0.25 e:play s:clap_909 v:0.2</action>
+            </hit_actions>
+        </FlowWall>
+        <TypingEnemy>
+            <name>r1_e</name>
+            <pickable>true</pickable>
+            <transform>
+                <pos>
+                    <x>2.0625</x>
+                    <y>0</y>
+                    <z>-0.960938394</z>
+                </pos>
+                <quat>
+                    <x>0</x>
+                    <y>0</y>
+                    <z>0</z>
+                    <w>1</w>
+                </quat>
+                <scale>
+                    <x>0.5</x>
+                    <y>0.5</y>
+                    <z>0.5</z>
+                </scale>
+            </transform>
+            <model_name>cube</model_name>
+            <model_color_vec4>
+                <x>1</x>
+                <y>0</y>
+                <z>0</z>
+                <w>1</w>
+            </model_color_vec4>
+            <flow_section_id>-1</flow_section_id>
+            <text>e</text>
+            <type_kill>false</type_kill>
+            <all_actions_on_hit>false</all_actions_on_hit>
+            <flow_polarity>false</flow_polarity>
+            <flow_cooldown>500</flow_cooldown>
+            <reset_cooldown_on_any_hit>true</reset_cooldown_on_any_hit>
+            <waypoint_follower>
+                <local_to_entity>false</local_to_entity>
+                <waypoint_auto_start>false</waypoint_auto_start>
+                <loop_waypoints>false</loop_waypoints>
+                <waypoints/>
+            </waypoint_follower>
+            <hit_actions>
+                <action>change_step chord_seq 0 1 mG3,mB3-,mD4,mF4:1</action>
+            </hit_actions>
+        </TypingEnemy>
+        <TypingEnemy>
+            <name>r1_i</name>
+            <pickable>true</pickable>
+            <transform>
+                <pos>
+                    <x>3.734375</x>
+                    <y>0</y>
+                    <z>-0.976563394</z>
+                </pos>
+                <quat>
+                    <x>0</x>
+                    <y>0</y>
+                    <z>0</z>
+                    <w>1</w>
+                </quat>
+                <scale>
+                    <x>0.5</x>
+                    <y>0.5</y>
+                    <z>0.5</z>
+                </scale>
+            </transform>
+            <model_name>cube</model_name>
+            <model_color_vec4>
+                <x>1</x>
+                <y>0</y>
+                <z>0</z>
+                <w>1</w>
+            </model_color_vec4>
+            <flow_section_id>-1</flow_section_id>
+            <text>i</text>
+            <type_kill>false</type_kill>
+            <all_actions_on_hit>false</all_actions_on_hit>
+            <flow_polarity>false</flow_polarity>
+            <flow_cooldown>500</flow_cooldown>
+            <reset_cooldown_on_any_hit>true</reset_cooldown_on_any_hit>
+            <waypoint_follower>
+                <local_to_entity>false</local_to_entity>
+                <waypoint_auto_start>false</waypoint_auto_start>
+                <loop_waypoints>false</loop_waypoints>
+                <waypoints/>
+            </waypoint_follower>
+            <hit_actions>
+                <action>change_step chord_seq 0 1 mG3,mB3-,mD4,mF4:1</action>
+            </hit_actions>
+        </TypingEnemy>
+        <FlowWall>
+            <name>r1_wall5</name>
+            <pickable>true</pickable>
+            <transform>
+                <pos>
+                    <x>5.328125</x>
+                    <y>0</y>
+                    <z>-0.835937917</z>
+                </pos>
+                <quat>
+                    <x>0</x>
+                    <y>0</y>
+                    <z>0</z>
+                    <w>1</w>
+                </quat>
+                <scale>
+                    <x>1</x>
+                    <y>1</y>
+                    <z>8</z>
+                </scale>
+            </transform>
+            <model_name>cube</model_name>
+            <model_color_vec4>
+                <x>0.800000012</x>
+                <y>0.800000012</y>
+                <z>0.800000012</z>
+                <w>1</w>
+            </model_color_vec4>
+            <flow_section_id>-1</flow_section_id>
+            <can_hit>true</can_hit>
+            <hp>-1</hp>
+            <move_mode>Waypoints</move_mode>
+            <local_to_entity>true</local_to_entity>
+            <waypoint_auto_start>true</waypoint_auto_start>
+            <loop_waypoints>true</loop_waypoints>
+            <waypoints>
+                <waypoint>
+                    <wait_time>0</wait_time>
+                    <move_time>4</move_time>
+                    <p>
+                        <x>0</x>
+                        <y>0</y>
+                        <z>4.5</z>
+                    </p>
+                </waypoint>
+                <waypoint>
+                    <wait_time>0</wait_time>
+                    <move_time>5</move_time>
+                    <p>
+                        <x>0</x>
+                        <y>0</y>
+                        <z>0</z>
+                    </p>
+                </waypoint>
+            </waypoints>
+            <rot_vel>0</rot_vel>
+            <polygon/>
+            <hit_actions>
+                <action>b_e 0.25 e:play s:clap_909 v:0.2</action>
+            </hit_actions>
+        </FlowWall>
+        <FlowWall>
+            <name>r1_wall6</name>
+            <pickable>true</pickable>
+            <transform>
+                <pos>
+                    <x>5.328125</x>
+                    <y>0</y>
+                    <z>-9.859375</z>
+                </pos>
+                <quat>
+                    <x>0</x>
+                    <y>0</y>
+                    <z>0</z>
+                    <w>1</w>
+                </quat>
+                <scale>
+                    <x>1</x>
+                    <y>1</y>
+                    <z>8</z>
+                </scale>
+            </transform>
+            <model_name>cube</model_name>
+            <model_color_vec4>
+                <x>0.800000012</x>
+                <y>0.800000012</y>
+                <z>0.800000012</z>
+                <w>1</w>
+            </model_color_vec4>
+            <flow_section_id>-1</flow_section_id>
+            <can_hit>true</can_hit>
+            <hp>-1</hp>
+            <move_mode>Waypoints</move_mode>
+            <local_to_entity>true</local_to_entity>
+            <waypoint_auto_start>true</waypoint_auto_start>
+            <loop_waypoints>true</loop_waypoints>
+            <waypoints>
+                <waypoint>
+                    <wait_time>0</wait_time>
+                    <move_time>4</move_time>
+                    <p>
+                        <x>0</x>
+                        <y>0</y>
+                        <z>4.5</z>
+                    </p>
+                </waypoint>
+                <waypoint>
+                    <wait_time>0</wait_time>
+                    <move_time>5</move_time>
+                    <p>
+                        <x>0</x>
+                        <y>0</y>
+                        <z>0</z>
+                    </p>
+                </waypoint>
+            </waypoints>
+            <rot_vel>0</rot_vel>
+            <polygon/>
+            <hit_actions>
+                <action>b_e 0.25 e:play s:clap_909 v:0.2</action>
+            </hit_actions>
+        </FlowWall>
+        <TypingEnemy>
+            <name>r1_g</name>
+            <pickable>true</pickable>
+            <transform>
+                <pos>
+                    <x>6.796875</x>
+                    <y>0</y>
+                    <z>-1.00781333</z>
+                </pos>
+                <quat>
+                    <x>0</x>
+                    <y>0</y>
+                    <z>0</z>
+                    <w>1</w>
+                </quat>
+                <scale>
+                    <x>0.5</x>
+                    <y>0.5</y>
+                    <z>0.5</z>
+                </scale>
+            </transform>
+            <model_name>cube</model_name>
+            <model_color_vec4>
+                <x>0.990196049</x>
+                <y>0.696534932</y>
+                <z>0.08251632</z>
+                <w>1</w>
+            </model_color_vec4>
+            <flow_section_id>-1</flow_section_id>
+            <text>g</text>
+            <type_kill>false</type_kill>
+            <all_actions_on_hit>false</all_actions_on_hit>
+            <flow_polarity>false</flow_polarity>
+            <flow_cooldown>500</flow_cooldown>
+            <reset_cooldown_on_any_hit>true</reset_cooldown_on_any_hit>
+            <waypoint_follower>
+                <local_to_entity>false</local_to_entity>
+                <waypoint_auto_start>false</waypoint_auto_start>
+                <loop_waypoints>false</loop_waypoints>
+                <waypoints/>
+            </waypoint_follower>
+            <hit_actions>
+                <action>change_step chord_seq 0 1 mA3,mC4,mE4,mG4:1</action>
+            </hit_actions>
+        </TypingEnemy>
+        <TypingEnemy>
+            <name>r1_h</name>
+            <pickable>true</pickable>
+            <transform>
+                <pos>
+                    <x>8.234375</x>
+                    <y>0</y>
+                    <z>-1.00781333</z>
+                </pos>
+                <quat>
+                    <x>0</x>
+                    <y>0</y>
+                    <z>0</z>
+                    <w>1</w>
+                </quat>
+                <scale>
+                    <x>0.5</x>
+                    <y>0.5</y>
+                    <z>0.5</z>
+                </scale>
+            </transform>
+            <model_name>cube</model_name>
+            <model_color_vec4>
+                <x>0.992156863</x>
+                <y>0.698039234</y>
+                <z>0.0823529437</z>
+                <w>1</w>
+            </model_color_vec4>
+            <flow_section_id>-1</flow_section_id>
+            <text>h</text>
+            <type_kill>false</type_kill>
+            <all_actions_on_hit>false</all_actions_on_hit>
+            <flow_polarity>false</flow_polarity>
+            <flow_cooldown>500</flow_cooldown>
+            <reset_cooldown_on_any_hit>true</reset_cooldown_on_any_hit>
+            <waypoint_follower>
+                <local_to_entity>false</local_to_entity>
+                <waypoint_auto_start>false</waypoint_auto_start>
+                <loop_waypoints>false</loop_waypoints>
+                <waypoints/>
+            </waypoint_follower>
+            <hit_actions>
+                <action>change_step chord_seq 0 1 mA3,mC4,mE4,mG4:1</action>
+            </hit_actions>
+        </TypingEnemy>
     </new_entities>
 </script>
