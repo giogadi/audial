@@ -35,7 +35,7 @@ void TypingEnemyEntity::InitDerived(GameManager& g) {
     if (_useHitActionsOnInitHack) {
         assert(_hitActionStrings.empty());
         for (auto const& pAction : _hitActions) {
-            pAction->InitBase(g);
+            pAction->Init(g);
         }
     } else {
         _hitActions.clear();
@@ -47,7 +47,7 @@ void TypingEnemyEntity::InitDerived(GameManager& g) {
         std::stringstream ss(actionStr);
         std::unique_ptr<SeqAction> pAction = SeqAction::LoadAction(loadInputs, ss);
         if (pAction != nullptr) {
-            pAction->InitBase(g);
+            pAction->Init(g);
             _hitActions.push_back(std::move(pAction));   
         }
     }
@@ -202,12 +202,12 @@ void TypingEnemyEntity::DoHitActions(GameManager& g) {
             int hitActionIx = (_numHits - 1) % _hitActions.size();
             SeqAction& a = *_hitActions[hitActionIx];
 
-            a.ExecuteBase(g);
+            a.Execute(g);
             break;
         }
         case HitBehavior::AllActions: {
             for (auto const& pAction : _hitActions) {
-                pAction->ExecuteBase(g);
+                pAction->Execute(g);
             }
             break;
         }

@@ -16,7 +16,7 @@ struct CameraControlSeqAction : public SeqAction {
     //non-serialized
     ne::EntityId _targetEntityId;    
     
-    virtual void Execute(GameManager& g) override;
-    virtual void Load(LoadInputs const& loadInputs, std::istream& input) override;
-    virtual void Init(GameManager& g) override;
+    virtual void ExecuteDerived(GameManager& g) override;
+    virtual void LoadDerived(LoadInputs const& loadInputs, std::istream& input) override;
+    virtual void InitDerived(GameManager& g) override;
 };

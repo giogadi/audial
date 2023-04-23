@@ -66,7 +66,7 @@ std::unique_ptr<SeqAction> SeqAction::LoadAction(LoadInputs const& loadInputs, s
 
     pAction->_oneTime = oneTime;
 
-    pAction->Load(loadInputs, input);
+    pAction->LoadDerived(loadInputs, input);
 
     return pAction;
 }
@@ -144,7 +144,7 @@ void SeqAction::LoadAndInitActions(GameManager& g, std::istream& input, std::vec
 
         std::unique_ptr<SeqAction> pAction = SeqAction::LoadAction(loadInputs, lineStream);
 
-        pAction->InitBase(g);
+        pAction->Init(g);
 
         actions.emplace_back();
         BeatTimeAction& newBta = actions.back();
@@ -158,7 +158,7 @@ void SeqAction::LoadAndInitActions(GameManager& g, std::istream& input, std::vec
                      });
 }
 
-void SpawnAutomatorSeqAction::Load(LoadInputs const& loadInputs, std::istream& input) {
+void SpawnAutomatorSeqAction::LoadDerived(LoadInputs const& loadInputs, std::istream& input) {
     std::string paramName;
     std::string token;
     input >> token;
@@ -181,7 +181,7 @@ void SpawnAutomatorSeqAction::Load(LoadInputs const& loadInputs, std::istream& i
     input >> _desiredAutomateTime;
 }
 
-void SpawnAutomatorSeqAction::Execute(GameManager& g) {
+void SpawnAutomatorSeqAction::ExecuteDerived(GameManager& g) {
     if (g._editMode) {
         return;
     }
@@ -197,16 +197,16 @@ void SpawnAutomatorSeqAction::Execute(GameManager& g) {
     e->Init(g);
 }
 
-void RemoveEntitySeqAction::Load(LoadInputs const& loadInputs, std::istream& input) {
+void RemoveEntitySeqAction::LoadDerived(LoadInputs const& loadInputs, std::istream& input) {
     input >> _entityName;
 }
 
-void RemoveEntitySeqAction::Save(std::ostream& output) const {
+void RemoveEntitySeqAction::SaveDerived(std::ostream& output) const {
     output << "remove_entity" << " ";
     output << _entityName;
 }
 
-void RemoveEntitySeqAction::Execute(GameManager& g) {
+void RemoveEntitySeqAction::ExecuteDerived(GameManager& g) {
     ne::Entity* e = g._neEntityManager->FindEntityByName(_entityName);
     if (e) {
         g._neEntityManager->TagForDestroy(e->_id);
@@ -215,7 +215,7 @@ void RemoveEntitySeqAction::Execute(GameManager& g) {
     }
 }
 
-void ChangeStepSequencerSeqAction::Execute(GameManager& g) {
+void ChangeStepSequencerSeqAction::ExecuteDerived(GameManager& g) {
     StepSequencerEntity* seq = static_cast<StepSequencerEntity*>(g._neEntityManager->GetEntity(_seqId));
     if (seq) {
         StepSequencerEntity::StepSaveType saveType;
@@ -239,7 +239,7 @@ void ChangeStepSequencerSeqAction::Execute(GameManager& g) {
     }
 }
 
-void ChangeStepSequencerSeqAction::Load(LoadInputs const& loadInputs, std::istream& input) {
+void ChangeStepSequencerSeqAction::LoadDerived(LoadInputs const& loadInputs, std::istream& input) {
     input >> _seqName;
 
     input >> _velOnly;
@@ -254,7 +254,7 @@ void ChangeStepSequencerSeqAction::Load(LoadInputs const& loadInputs, std::istre
     _velocity = step._velocity;
 }
 
-void ChangeStepSequencerSeqAction::Save(std::ostream& output) const {
+void ChangeStepSequencerSeqAction::SaveDerived(std::ostream& output) const {
     output << "change_step" << " ";
     output << _seqName;
     output << " " << _velOnly;
@@ -266,7 +266,7 @@ void ChangeStepSequencerSeqAction::Save(std::ostream& output) const {
     StepSequencerEntity::WriteSeqStep(step, output);
 }
 
-void ChangeStepSequencerSeqAction::Init(GameManager& g) {
+void ChangeStepSequencerSeqAction::InitDerived(GameManager& g) {
     ne::Entity* e = g._neEntityManager->FindEntityByName(_seqName);
     if (e) {
         _seqId = e->_id;
@@ -275,7 +275,7 @@ void ChangeStepSequencerSeqAction::Init(GameManager& g) {
     }
 }
 
-void SetAllStepsSeqAction::Load(LoadInputs const& loadInputs, std::istream& input) {
+void SetAllStepsSeqAction::LoadDerived(LoadInputs const& loadInputs, std::istream& input) {
     std::string token;
     input >> token;
     if (token == "vel_only") {
@@ -291,7 +291,7 @@ void SetAllStepsSeqAction::Load(LoadInputs const& loadInputs, std::istream& inpu
     input >> _velocity;
 }
 
-void SetAllStepsSeqAction::Init(GameManager& g) {
+void SetAllStepsSeqAction::InitDerived(GameManager& g) {
     ne::Entity* e = g._neEntityManager->FindEntityByName(_seqName);
     if (e) {
         _seqId = e->_id;
@@ -300,7 +300,7 @@ void SetAllStepsSeqAction::Init(GameManager& g) {
     }
 }
 
-void SetAllStepsSeqAction::Execute(GameManager& g) {
+void SetAllStepsSeqAction::ExecuteDerived(GameManager& g) {
     StepSequencerEntity* seq = static_cast<StepSequencerEntity*>(g._neEntityManager->GetEntity(_seqId));
     if (seq) {
         if (_velOnly) {
@@ -319,12 +319,12 @@ void SetAllStepsSeqAction::Execute(GameManager& g) {
     }
 }
 
-void SetStepSequenceSeqAction::Load(LoadInputs const& loadInputs, std::istream& input) {
+void SetStepSequenceSeqAction::LoadDerived(LoadInputs const& loadInputs, std::istream& input) {
     input >> _seqName;   
     StepSequencerEntity::LoadSequenceFromInput(input, _sequence);
 }
 
-void SetStepSequenceSeqAction::Init(GameManager& g) {
+void SetStepSequenceSeqAction::InitDerived(GameManager& g) {
     ne::Entity* e = g._neEntityManager->FindEntityByName(_seqName);
     if (e) {
         _seqId = e->_id;
@@ -333,7 +333,7 @@ void SetStepSequenceSeqAction::Init(GameManager& g) {
     }
 }
 
-void SetStepSequenceSeqAction::Execute(GameManager& g) {
+void SetStepSequenceSeqAction::ExecuteDerived(GameManager& g) {
     if (g._editMode) {
         return;
     }
@@ -346,7 +346,7 @@ void SetStepSequenceSeqAction::Execute(GameManager& g) {
     }
 }
 
-void NoteOnOffSeqAction::Execute(GameManager& g) {
+void NoteOnOffSeqAction::ExecuteDerived(GameManager& g) {
     BeatTimeEvent b_e;
     b_e._beatTime = 0.0;
     b_e._e.type = audio::EventType::NoteOn;
@@ -363,12 +363,12 @@ void NoteOnOffSeqAction::Execute(GameManager& g) {
     g._audioContext->AddEvent(e);
 }
 
-void SetStepSequencerMuteSeqAction::Load(LoadInputs const& loadInputs, std::istream& input) {
+void SetStepSequencerMuteSeqAction::LoadDerived(LoadInputs const& loadInputs, std::istream& input) {
     input >> _seqName;
     input >> _mute;
 }
 
-void SetStepSequencerMuteSeqAction::Init(GameManager& g) {
+void SetStepSequencerMuteSeqAction::InitDerived(GameManager& g) {
     ne::Entity* e = g._neEntityManager->FindEntityByName(_seqName);
     if (e) {
         _seqId = e->_id;
@@ -377,7 +377,7 @@ void SetStepSequencerMuteSeqAction::Init(GameManager& g) {
     }
 }
 
-void SetStepSequencerMuteSeqAction::Execute(GameManager& g) {
+void SetStepSequencerMuteSeqAction::ExecuteDerived(GameManager& g) {
     StepSequencerEntity* seq = static_cast<StepSequencerEntity*>(g._neEntityManager->GetEntity(_seqId));
     if (seq) {
         seq->_mute = _mute;               
@@ -387,7 +387,7 @@ void SetStepSequencerMuteSeqAction::Execute(GameManager& g) {
     }
 }
 
-void NoteOnOffSeqAction::Load(LoadInputs const& loadInputs, std::istream& input) {
+void NoteOnOffSeqAction::LoadDerived(LoadInputs const& loadInputs, std::istream& input) {
     std::string token, key, value;
     while (!input.eof()) {
         {
@@ -417,7 +417,7 @@ void NoteOnOffSeqAction::Load(LoadInputs const& loadInputs, std::istream& input)
     }
 }
 
-void BeatTimeEventSeqAction::Execute(GameManager& g) {
+void BeatTimeEventSeqAction::ExecuteDerived(GameManager& g) {
     audio::Event e;
     if (_quantizeDenom >= 0) {
         e = GetEventAtBeatOffsetFromNextDenom(_quantizeDenom, _b_e, *g._beatClock, /*slack=*/0.0625);
@@ -428,14 +428,14 @@ void BeatTimeEventSeqAction::Execute(GameManager& g) {
     g._audioContext->AddEvent(e);
 }
 
-void BeatTimeEventSeqAction::Load(LoadInputs const& loadInputs, std::istream& input) {
+void BeatTimeEventSeqAction::LoadDerived(LoadInputs const& loadInputs, std::istream& input) {
     // quantize denom first
     input >> _quantizeDenom;
     ReadBeatEventFromTextLineNoSoundLookup(input, _b_e, _soundBankName);
     _b_e._beatTime += loadInputs._beatTimeOffset;   
 }
 
-void BeatTimeEventSeqAction::Init(GameManager& g) {
+void BeatTimeEventSeqAction::InitDerived(GameManager& g) {
     if (!_soundBankName.empty()) {
         int soundIx = g._soundBank->GetSoundIx(_soundBankName.c_str());
         if (soundIx < 0) {
@@ -446,7 +446,7 @@ void BeatTimeEventSeqAction::Init(GameManager& g) {
     }
 }
 
-void WaypointControlSeqAction::Execute(GameManager& g) {
+void WaypointControlSeqAction::ExecuteDerived(GameManager& g) {
     ne::Entity* e = g._neEntityManager->FindEntityByName(_entityName);
     if (e == nullptr) {
         printf("ERROR: WaypointControlSeqAction could not find entity \"%s\"\n", _entityName.c_str());
@@ -473,12 +473,12 @@ void WaypointControlSeqAction::Execute(GameManager& g) {
     }
 }
 
-void WaypointControlSeqAction::Load(LoadInputs const& loadInputs, std::istream& input) {
+void WaypointControlSeqAction::LoadDerived(LoadInputs const& loadInputs, std::istream& input) {
     input >> _entityName;
     input >> _followWaypoints;
 }
 
-void PlayerSetKillZoneSeqAction::Load(LoadInputs const& loadInputs, std::istream& input) {
+void PlayerSetKillZoneSeqAction::LoadDerived(LoadInputs const& loadInputs, std::istream& input) {
     _maxZ.reset();
 
     std::string token, key, value;
@@ -506,12 +506,12 @@ void PlayerSetKillZoneSeqAction::Load(LoadInputs const& loadInputs, std::istream
     }
 }
 
-void PlayerSetKillZoneSeqAction::Execute(GameManager& g) {
+void PlayerSetKillZoneSeqAction::ExecuteDerived(GameManager& g) {
     FlowPlayerEntity* pPlayer = static_cast<FlowPlayerEntity*>(g._neEntityManager->GetFirstEntityOfType(ne::EntityType::FlowPlayer));
     pPlayer->_killMaxZ = _maxZ;
 }
 
-void SetNewFlowSectionSeqAction::Load(LoadInputs const& loadInputs, std::istream& input) {
+void SetNewFlowSectionSeqAction::LoadDerived(LoadInputs const& loadInputs, std::istream& input) {
     std::string token;
     input >> token;
     bool success = string_util::MaybeStoi(std::string_view(token), _newSectionId);
@@ -520,14 +520,14 @@ void SetNewFlowSectionSeqAction::Load(LoadInputs const& loadInputs, std::istream
     }
 }
 
-void SetNewFlowSectionSeqAction::Execute(GameManager& g) {
+void SetNewFlowSectionSeqAction::ExecuteDerived(GameManager& g) {
     g._neEntityManager->TagAllPrevSectionEntitiesForDestroy(_newSectionId);
     FlowPlayerEntity* pPlayer = static_cast<FlowPlayerEntity*>(g._neEntityManager->GetFirstEntityOfType(ne::EntityType::FlowPlayer));
     assert(pPlayer);
     pPlayer->SetNewSection(g, _newSectionId);
 }
 
-void PlayerSetSpawnPointSeqAction::Load(LoadInputs const& loadInputs, std::istream& input) {
+void PlayerSetSpawnPointSeqAction::LoadDerived(LoadInputs const& loadInputs, std::istream& input) {
     try {
         input >> _spawnPos._x >> _spawnPos._y >> _spawnPos._z;
     } catch (std::exception&) {
@@ -535,13 +535,13 @@ void PlayerSetSpawnPointSeqAction::Load(LoadInputs const& loadInputs, std::istre
     }   
 }
 
-void PlayerSetSpawnPointSeqAction::Execute(GameManager& g) {
+void PlayerSetSpawnPointSeqAction::ExecuteDerived(GameManager& g) {
     if (g._editMode) { return; }
     FlowPlayerEntity* pPlayer = static_cast<FlowPlayerEntity*>(g._neEntityManager->GetFirstEntityOfType(ne::EntityType::FlowPlayer));
     pPlayer->_respawnPos = _spawnPos;
 }
 
-void AddToIntVariableSeqAction::Load(LoadInputs const& loadInputs, std::istream& input) {
+void AddToIntVariableSeqAction::LoadDerived(LoadInputs const& loadInputs, std::istream& input) {
     try {
         input >> _varName >> _addAmount;
     } catch (std::exception&) {
@@ -549,13 +549,13 @@ void AddToIntVariableSeqAction::Load(LoadInputs const& loadInputs, std::istream&
     }
 }
 
-void AddToIntVariableSeqAction::Execute(GameManager& g) {
+void AddToIntVariableSeqAction::ExecuteDerived(GameManager& g) {
     if (g._editMode) {
         return;
     }
     IntVariableEntity* e = static_cast<IntVariableEntity*>(g._neEntityManager->FindEntityByNameAndType(_varName, ne::EntityType::IntVariable));
     if (e == nullptr) {
-        printf("AddToIntVariableSeqAction::Execute: couldn't entity \"%s\"!\n", _varName.c_str());
+        printf("AddToIntVariableSeqAction::ExecuteDerived: couldn't entity \"%s\"!\n", _varName.c_str());
     } else {        
         e->AddToVariable(_addAmount);
     }

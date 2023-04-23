@@ -16,7 +16,7 @@ void IntVariableEntity::InitDerived(GameManager& g) {
         std::stringstream ss(actionStr);
         std::unique_ptr<SeqAction> pAction = SeqAction::LoadAction(loadInputs, ss);
         if (pAction != nullptr) {
-            pAction->InitBase(g);
+            pAction->Init(g);
             _actions.push_back(std::move(pAction));   
         }
     }
@@ -48,7 +48,7 @@ void IntVariableEntity::AddToVariable(int amount) {
 
     if (!wasZero && _currentValue == 0) {
         for (auto const& pAction : _actions) {
-            pAction->ExecuteBase(*_g);
+            pAction->Execute(*_g);
         }
     }
 }

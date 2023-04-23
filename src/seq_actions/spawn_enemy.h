@@ -9,8 +9,8 @@ struct SpawnEnemySeqAction : public SeqAction {
     TypingEnemyEntity _enemy;
     
     bool _done = false;
-    virtual void Execute(GameManager& g) override;
-    virtual void Load(LoadInputs const& loadInputs, std::istream& input) override;
+    virtual void ExecuteDerived(GameManager& g) override;
+    virtual void LoadDerived(LoadInputs const& loadInputs, std::istream& input) override;
 
     static bool _sNoteTablesLoaded;
 };

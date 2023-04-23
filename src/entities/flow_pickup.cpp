@@ -16,7 +16,7 @@ void FlowPickupEntity::InitDerived(GameManager& g) {
         std::stringstream ss(actionStr);
         std::unique_ptr<SeqAction> pAction = SeqAction::LoadAction(loadInputs, ss);
         if (pAction != nullptr) {
-            pAction->InitBase(g);
+            pAction->Init(g);
             _actions.push_back(std::move(pAction));   
         }
     }
@@ -40,7 +40,7 @@ ne::Entity::ImGuiResult FlowPickupEntity::ImGuiDerived(GameManager& g) {
 
 void FlowPickupEntity::OnHit(GameManager& g) {
     for (auto const& pAction : _actions) {
-        pAction->ExecuteBase(g);
+        pAction->Execute(g);
     }
     
     if (!g._editMode) {

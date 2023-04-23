@@ -12,7 +12,7 @@
 #include "color_presets.h"
 #include "seq_actions/camera_control.h"
 
-void SpawnEnemySeqAction::Execute(GameManager& g) {
+void SpawnEnemySeqAction::ExecuteDerived(GameManager& g) {
     assert(!_done);
     TypingEnemyEntity* pEnemy = static_cast<TypingEnemyEntity*>(g._neEntityManager->AddEntity(ne::EntityType::TypingEnemy));
     // UGLY
@@ -633,7 +633,7 @@ void LoadActionEnemy(TypingEnemyEntity& enemy, std::istream& lineStream) {
 
 } // namespace
 
-void SpawnEnemySeqAction::Load(LoadInputs const& loadInputs, std::istream& lineStream) {
+void SpawnEnemySeqAction::LoadDerived(LoadInputs const& loadInputs, std::istream& lineStream) {
     if (!_sNoteTablesLoaded) {
         LoadNoteTables();
     }

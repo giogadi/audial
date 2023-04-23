@@ -25,7 +25,7 @@ void ActionSequencerEntity::InitDerived(GameManager& g) {
     for (int n = _actions.size(); _currentIx < n; ++_currentIx) {
         BeatTimeAction const& bta = _actions[_currentIx];
         if (bta._beatTime < 0) {
-            bta._pAction->ExecuteBase(g);
+            bta._pAction->Execute(g);
         } else {
             break;
         }
@@ -46,7 +46,7 @@ void ActionSequencerEntity::Update(GameManager& g, float dt) {
         if (beatTime < bta._beatTime) {
             break;
         }
-        bta._pAction->ExecuteBase(g);
+        bta._pAction->Execute(g);
     }
 }
 

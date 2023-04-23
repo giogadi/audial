@@ -6,7 +6,7 @@
 #include "entities/flow_player.h"
 #include "camera_util.h"
 
-void CameraControlSeqAction::Execute(GameManager& g) {
+void CameraControlSeqAction::ExecuteDerived(GameManager& g) {
     int numEntities = 0;
     ne::EntityManager::Iterator eIter = g._neEntityManager->GetIterator(ne::EntityType::Camera, &numEntities);
     assert(numEntities == 1);
@@ -26,7 +26,7 @@ void CameraControlSeqAction::Execute(GameManager& g) {
     }
 }
 
-void CameraControlSeqAction::Load(LoadInputs const& loadInputs, std::istream& input) {
+void CameraControlSeqAction::LoadDerived(LoadInputs const& loadInputs, std::istream& input) {
 
     std::string token, key, value;
     while (!input.eof()) {
@@ -66,7 +66,7 @@ void CameraControlSeqAction::Load(LoadInputs const& loadInputs, std::istream& in
     }  
 }
 
-void CameraControlSeqAction::Init(GameManager& g) {
+void CameraControlSeqAction::InitDerived(GameManager& g) {
     if (!_targetEntityName.empty()) {
         ne::Entity* e = g._neEntityManager->FindEntityByName(_targetEntityName);
         if (e) {
