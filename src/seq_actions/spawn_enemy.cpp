@@ -479,22 +479,37 @@ void LoadSeqEnemy(SeqAction::LoadInputs const& loadInputs, TypingEnemyEntity& en
     }
 
     if (noteTable) {
+        std::stringstream ss;
         for (std::array<int,4> const& n : *noteTable) {
+            StepSequencerEntity::SeqStep step;
+            step._midiNote = n;
+            step._velocity = velocity;
+            ss.str("");
+            StepSequencerEntity::WriteSeqStep(step, ss);
+                        
             auto pAction = std::make_unique<ChangeStepSequencerSeqAction>();
-            pAction->_seqName = seqName;
-            pAction->_midiNotes = n;
-            pAction->_velocity = velocity;
-            pAction->_velOnly = velOnly;
-            pAction->_temporary = !saveSeqChange;
-            enemy._hitActions.push_back(std::move(pAction));            
+            pAction->_props._seqName = seqName;
+            pAction->_props._stepStr = ss.str();
+            // pAction->_midiNotes = n;
+            // pAction->_velocity = velocity;
+            pAction->_props._velOnly = velOnly;
+            pAction->_props._temporary = !saveSeqChange;
+            enemy._hitActions.push_back(std::move(pAction));
         }
     } else {
+        std::stringstream ss;
+        StepSequencerEntity::SeqStep step;
+        step._midiNote = midiNotes;
+        step._velocity = velocity;
+        StepSequencerEntity::WriteSeqStep(step, ss);
+        
         auto pAction = std::make_unique<ChangeStepSequencerSeqAction>();
-        pAction->_seqName = seqName;
-        pAction->_midiNotes = midiNotes;
-        pAction->_velocity = velocity;
-        pAction->_velOnly = velOnly;
-        pAction->_temporary = !saveSeqChange;
+        pAction->_props._seqName = seqName;
+        pAction->_props._stepStr = ss.str();
+        // pAction->_midiNotes = midiNotes;
+        // pAction->_velocity = velocity;
+        pAction->_props._velOnly = velOnly;
+        pAction->_props._temporary = !saveSeqChange;
         enemy._hitActions.push_back(std::move(pAction));
        
     }

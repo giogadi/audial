@@ -14,6 +14,21 @@
 #include "entities/int_variable.h"
 #include "sound_bank.h"
 
+#include "enums/SeqActionType.h"
+
+void SeqAction::Save(serial::Ptree pt) const {
+    pt.PutString("action_type", SeqActionTypeToString(Type()));
+    SaveDerived(pt);
+}
+
+void SeqAction::SaveActionsInChildNode(serial::Ptree pt, char const* childName, std::vector<std::unique_ptr<SeqAction>> const& actions) {
+    serial::Ptree vecPt = pt.AddChild(childName);
+    for (auto const& action : actions) {
+        serial::Ptree childPt = vecPt.AddChild("seq_action");
+        action->Save(childPt);
+    }
+}
+
 std::unique_ptr<SeqAction> SeqAction::LoadAction(LoadInputs const& loadInputs, std::istream& input) {
     std::string token;
     input >> token;
@@ -201,11 +216,6 @@ void RemoveEntitySeqAction::LoadDerived(LoadInputs const& loadInputs, std::istre
     input >> _entityName;
 }
 
-void RemoveEntitySeqAction::SaveDerived(std::ostream& output) const {
-    output << "remove_entity" << " ";
-    output << _entityName;
-}
-
 void RemoveEntitySeqAction::ExecuteDerived(GameManager& g) {
     ne::Entity* e = g._neEntityManager->FindEntityByName(_entityName);
     if (e) {
@@ -222,10 +232,10 @@ void ChangeStepSequencerSeqAction::ExecuteDerived(GameManager& g) {
         if (g._editMode) {
             saveType = StepSequencerEntity::StepSaveType::Temporary;
         } else {
-            saveType = _temporary ? StepSequencerEntity::StepSaveType::Temporary : StepSequencerEntity::StepSaveType::Permanent;
+            saveType = _props._temporary ? StepSequencerEntity::StepSaveType::Temporary : StepSequencerEntity::StepSaveType::Permanent;
         }        
         
-        if (_velOnly) {
+        if (_props._velOnly) {
             seq->SetNextSeqStepVelocity(g, _velocity, saveType);
         } else {
             StepSequencerEntity::SeqStep step;
@@ -240,39 +250,43 @@ void ChangeStepSequencerSeqAction::ExecuteDerived(GameManager& g) {
 }
 
 void ChangeStepSequencerSeqAction::LoadDerived(LoadInputs const& loadInputs, std::istream& input) {
-    input >> _seqName;
+    input >> _props._seqName;
 
-    input >> _velOnly;
-    input >> _temporary;
+    input >> _props._velOnly;
+    input >> _props._temporary;
     
+    std::getline(input, _props._stepStr);
+}
 
+void ChangeStepSequencerSeqAction::LoadDerived(LoadInputs const& loadInputs, serial::Ptree pt) {
+    _props.Load(pt);
+}
+
+void ChangeStepSequencerSeqAction::SaveDerived(serial::Ptree pt) const {
+    _props.Save(pt);
+}
+
+void ChangeStepSequencerSeqAction::ImGui() {
+    _props.ImGui();
+}
+
+void ChangeStepSequencerSeqAction::InitDerived(GameManager& g) {        
+    ne::Entity* e = g._neEntityManager->FindEntityByName(_props._seqName);
+    if (e) {
+        _seqId = e->_id;
+    } else {
+        printf("ChangeStepSequencerSeqAction: could not find seq entity \"%s\"\n", _props._seqName.c_str());
+    }
+
+    std::stringstream ss(_props._stepStr);
     StepSequencerEntity::SeqStep step;
-    StepSequencerEntity::TryReadSeqStep(input, step);
+    if (!StepSequencerEntity::TryReadSeqStep(ss, step)) {
+        printf("ChangeStepSequencerSeqAction: failed to parse step \"%s\"\n", _props._stepStr.c_str());
+    }
     for (int i = 0; i < 4; ++i) {
         _midiNotes[i] = step._midiNote[i];
     }
     _velocity = step._velocity;
-}
-
-void ChangeStepSequencerSeqAction::SaveDerived(std::ostream& output) const {
-    output << "change_step" << " ";
-    output << _seqName;
-    output << " " << _velOnly;
-    output << " " << _temporary;
-    output << " ";
-    StepSequencerEntity::SeqStep step;
-    step._midiNote = _midiNotes;
-    step._velocity = _velocity;
-    StepSequencerEntity::WriteSeqStep(step, output);
-}
-
-void ChangeStepSequencerSeqAction::InitDerived(GameManager& g) {
-    ne::Entity* e = g._neEntityManager->FindEntityByName(_seqName);
-    if (e) {
-        _seqId = e->_id;
-    } else {
-        printf("ChangeStepSequencerSeqAction: could not find seq entity \"%s\"\n", _seqName.c_str());
-    }
 }
 
 void SetAllStepsSeqAction::LoadDerived(LoadInputs const& loadInputs, std::istream& input) {

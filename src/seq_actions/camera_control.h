@@ -3,6 +3,7 @@
 #include "seq_action.h"
 
 struct CameraControlSeqAction : public SeqAction {
+    virtual SeqActionType Type() const override { return SeqActionType::CameraControl; }
     // serialized
     std::string _targetEntityName;
     Vec3 _desiredTargetToCameraOffset;

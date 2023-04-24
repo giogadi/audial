@@ -97,7 +97,9 @@ void FlowWallEntity::SaveDerived(serial::Ptree pt) const {
     }
     pt.PutFloat("rot_vel", _rotVel);
     serial::SaveVectorInChildNode(pt, "polygon", "point", _polygon);
-    serial::SaveVectorInChildNode(pt, "hit_actions", "action", _hitActionStrings);   
+    serial::SaveVectorInChildNode(pt, "hit_actions", "action", _hitActionStrings);
+    // HOWDYYYYYYYYYYY
+    SeqAction::SaveActionsInChildNode(pt, "new_hit_actions", _hitActions);
 }
 
 void FlowWallEntity::LoadDerived(serial::Ptree pt) {

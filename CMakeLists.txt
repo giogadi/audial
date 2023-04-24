@@ -50,6 +50,7 @@ add_executable(game
     #src/components/piano_planet.cpp
 
     src/properties/Test.cpp
+    src/properties/ChangeStepSequencerSeqAction.cpp
 
     src/seq_action.cpp
     src/seq_actions/spawn_enemy.cpp
@@ -79,6 +80,7 @@ add_executable(game
     src/enums/ColorPreset.cpp
     src/enums/Direction.cpp
     src/enums/WaypointFollowerMode.cpp
+    src/enums/SeqActionType.cpp
 )
 
 if(MSVC)

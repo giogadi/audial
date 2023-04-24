@@ -776,6 +776,15 @@
             <hit_actions>
                 <action>change_step chord_seq 0 1 mG3,mB3-,mD4,mF4:1</action>
             </hit_actions>
+            <new_hit_actions>
+                <seq_action>
+                    <action_type>ChangeStepSequencer</action_type>
+                    <seqName>chord_seq</seqName>
+                    <velOnly>false</velOnly>
+                    <temporary>true</temporary>
+                    <stepStr> mG3,mB3-,mD4,mF4:1</stepStr>
+                </seq_action>
+            </new_hit_actions>
         </TypingEnemy>
         <TypingEnemy>
             <name>r1_j</name>
@@ -821,6 +830,15 @@
             <hit_actions>
                 <action>change_step chord_seq 0 1 mG3,mB3-,mD4,mF4:1</action>
             </hit_actions>
+            <new_hit_actions>
+                <seq_action>
+                    <action_type>ChangeStepSequencer</action_type>
+                    <seqName>chord_seq</seqName>
+                    <velOnly>false</velOnly>
+                    <temporary>true</temporary>
+                    <stepStr> mG3,mB3-,mD4,mF4:1</stepStr>
+                </seq_action>
+            </new_hit_actions>
         </TypingEnemy>
         <FlowWall>
             <name>r1_wall1</name>
@@ -882,6 +900,11 @@
             <hit_actions>
                 <action>b_e 0.25 e:play s:clap_909 v:0.2</action>
             </hit_actions>
+            <new_hit_actions>
+                <seq_action>
+                    <action_type>BeatTimeEvent</action_type>
+                </seq_action>
+            </new_hit_actions>
         </FlowWall>
         <TypingEnemy>
             <name>r1_d</name>
@@ -927,6 +950,15 @@
             <hit_actions>
                 <action>change_step chord_seq 0 1 mA3,mC4,mE4,mG4:1</action>
             </hit_actions>
+            <new_hit_actions>
+                <seq_action>
+                    <action_type>ChangeStepSequencer</action_type>
+                    <seqName>chord_seq</seqName>
+                    <velOnly>false</velOnly>
+                    <temporary>true</temporary>
+                    <stepStr> mA3,mC4,mE4,mG4:1</stepStr>
+                </seq_action>
+            </new_hit_actions>
         </TypingEnemy>
         <TypingEnemy>
             <name>r1_k</name>
@@ -972,6 +1004,15 @@
             <hit_actions>
                 <action>change_step chord_seq 0 1 mA3,mC4,mE4,mG4:1</action>
             </hit_actions>
+            <new_hit_actions>
+                <seq_action>
+                    <action_type>ChangeStepSequencer</action_type>
+                    <seqName>chord_seq</seqName>
+                    <velOnly>false</velOnly>
+                    <temporary>true</temporary>
+                    <stepStr> mA3,mC4,mE4,mG4:1</stepStr>
+                </seq_action>
+            </new_hit_actions>
         </TypingEnemy>
         <FlowWall>
             <name>r1_wall2</name>
@@ -1033,6 +1074,11 @@
             <hit_actions>
                 <action>b_e 0.25 e:play s:clap_909 v:0.2</action>
             </hit_actions>
+            <new_hit_actions>
+                <seq_action>
+                    <action_type>BeatTimeEvent</action_type>
+                </seq_action>
+            </new_hit_actions>
         </FlowWall>
         <FlowWall>
             <name>r1_wall3</name>
@@ -1094,6 +1140,11 @@
             <hit_actions>
                 <action>b_e 0.25 e:play s:clap_909 v:0.2</action>
             </hit_actions>
+            <new_hit_actions>
+                <seq_action>
+                    <action_type>BeatTimeEvent</action_type>
+                </seq_action>
+            </new_hit_actions>
         </FlowWall>
         <FlowWall>
             <name>r1_wall4</name>
@@ -1155,6 +1206,11 @@
             <hit_actions>
                 <action>b_e 0.25 e:play s:clap_909 v:0.2</action>
             </hit_actions>
+            <new_hit_actions>
+                <seq_action>
+                    <action_type>BeatTimeEvent</action_type>
+                </seq_action>
+            </new_hit_actions>
         </FlowWall>
         <TypingEnemy>
             <name>r1_e</name>
@@ -1200,6 +1256,15 @@
             <hit_actions>
                 <action>change_step chord_seq 0 1 mG3,mB3-,mD4,mF4:1</action>
             </hit_actions>
+            <new_hit_actions>
+                <seq_action>
+                    <action_type>ChangeStepSequencer</action_type>
+                    <seqName>chord_seq</seqName>
+                    <velOnly>false</velOnly>
+                    <temporary>true</temporary>
+                    <stepStr> mG3,mB3-,mD4,mF4:1</stepStr>
+                </seq_action>
+            </new_hit_actions>
         </TypingEnemy>
         <TypingEnemy>
             <name>r1_i</name>
@@ -1245,6 +1310,15 @@
             <hit_actions>
                 <action>change_step chord_seq 0 1 mG3,mB3-,mD4,mF4:1</action>
             </hit_actions>
+            <new_hit_actions>
+                <seq_action>
+                    <action_type>ChangeStepSequencer</action_type>
+                    <seqName>chord_seq</seqName>
+                    <velOnly>false</velOnly>
+                    <temporary>true</temporary>
+                    <stepStr> mG3,mB3-,mD4,mF4:1</stepStr>
+                </seq_action>
+            </new_hit_actions>
         </TypingEnemy>
         <FlowWall>
             <name>r1_wall5</name>
@@ -1306,6 +1380,11 @@
             <hit_actions>
                 <action>b_e 0.25 e:play s:clap_909 v:0.2</action>
             </hit_actions>
+            <new_hit_actions>
+                <seq_action>
+                    <action_type>BeatTimeEvent</action_type>
+                </seq_action>
+            </new_hit_actions>
         </FlowWall>
         <FlowWall>
             <name>r1_wall6</name>
@@ -1367,6 +1446,11 @@
             <hit_actions>
                 <action>b_e 0.25 e:play s:clap_909 v:0.2</action>
             </hit_actions>
+            <new_hit_actions>
+                <seq_action>
+                    <action_type>BeatTimeEvent</action_type>
+                </seq_action>
+            </new_hit_actions>
         </FlowWall>
         <TypingEnemy>
             <name>r1_g</name>
@@ -1412,6 +1496,15 @@
             <hit_actions>
                 <action>change_step chord_seq 0 1 mA3,mC4,mE4,mG4:1</action>
             </hit_actions>
+            <new_hit_actions>
+                <seq_action>
+                    <action_type>ChangeStepSequencer</action_type>
+                    <seqName>chord_seq</seqName>
+                    <velOnly>false</velOnly>
+                    <temporary>true</temporary>
+                    <stepStr> mA3,mC4,mE4,mG4:1</stepStr>
+                </seq_action>
+            </new_hit_actions>
         </TypingEnemy>
         <TypingEnemy>
             <name>r1_h</name>
@@ -1457,6 +1550,15 @@
             <hit_actions>
                 <action>change_step chord_seq 0 1 mA3,mC4,mE4,mG4:1</action>
             </hit_actions>
+            <new_hit_actions>
+                <seq_action>
+                    <action_type>ChangeStepSequencer</action_type>
+                    <seqName>chord_seq</seqName>
+                    <velOnly>false</velOnly>
+                    <temporary>true</temporary>
+                    <stepStr> mA3,mC4,mE4,mG4:1</stepStr>
+                </seq_action>
+            </new_hit_actions>
         </TypingEnemy>
     </new_entities>
 </script>

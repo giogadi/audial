@@ -1,0 +1,21 @@
+{
+    "propertiesName": "ChangeStepSequencerSeqAction",
+    "props": [
+        {
+            "name": "seqName",
+            "type": "string"
+        },
+        {
+            "name": "velOnly",
+            "type": "bool"
+        },
+        {
+            "name": "temporary",
+            "type": "bool"
+        },
+        {
+            "name": "stepStr",
+            "type": "string"
+        }
+    ]
+}

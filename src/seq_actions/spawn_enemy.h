@@ -5,6 +5,7 @@
 
 // ONLY SAFE TO EXECUTE ONE TIME!!!!
 struct SpawnEnemySeqAction : public SeqAction {
+    virtual SeqActionType Type() const override { return SeqActionType::SpawnEnemy; }
     // Serialized        
     TypingEnemyEntity _enemy;
     

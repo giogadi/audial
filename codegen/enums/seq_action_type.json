@@ -1,0 +1,21 @@
+{
+    "namespaces": [],
+    "enumName": "SeqActionType",
+    "enumItems": [
+        "SpawnAutomator",
+        "RemoveEntity",
+        "ChangeStepSequencer",
+        "SetAllSteps",
+        "SetStepSequence",
+        "SetStepSequencerMute",
+        "NoteOnOff",
+        "BeatTimeEvent",
+        "WaypointControl",
+        "PlayerSetKillZone",
+        "PlayerSetSpawnPoint",
+        "SetNewFlowSection",
+        "AddToIntVariable",
+        "CameraControl",
+        "SpawnEnemy"
+    ]
+}

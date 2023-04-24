@@ -283,6 +283,8 @@ void TypingEnemyEntity::SaveDerived(serial::Ptree pt) const {
         serial::Ptree actionPt = actionsPt.AddChild("action");
         actionPt.PutStringValue(actionStr.c_str());
     }
+    // HOWDYYYYYYYYYYY
+    SeqAction::SaveActionsInChildNode(pt, "new_hit_actions", _hitActions);
 }
 
 ne::BaseEntity::ImGuiResult TypingEnemyEntity::ImGuiDerived(GameManager& g) {
