@@ -39,6 +39,14 @@ char const* {{enumName}}ToString({{enumName}} e) {
     return static_cast<{{enumName}}>(0);
 }
 
+char const* EnumToString({{enumName}} e) {
+     return {{enumName}}ToString(e);
+}
+
+void StringToEnum(char const* s, {{enumName}}& e) {
+     e = StringTo{{enumName}}(s);
+}
+
 bool {{enumName}}ImGui(char const* label, {{enumName}}* v) {
     int selectedIx = static_cast<int>(*v);
     bool changed = ImGui::Combo(label, &selectedIx, g{{enumName}}Strings, static_cast<int>({{enumName}}::Count));

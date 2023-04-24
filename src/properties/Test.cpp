@@ -20,6 +20,8 @@ void TestProps::Load(serial::Ptree pt) {
    
    serial::LoadVectorFromChildNode<float>(pt, "myFloatArray", _myFloatArray);
    
+   serial::TryGetEnum(pt, "mySeqActionType", _mySeqActionType);
+   
 }
 
 void TestProps::Save(serial::Ptree pt) const {
@@ -31,6 +33,8 @@ void TestProps::Save(serial::Ptree pt) const {
     pt.PutString("myString", _myString.c_str());
     
     serial::SaveVectorInChildNode<float>(pt, "myFloatArray", "array_item", _myFloatArray);
+    
+    serial::PutEnum(pt, "mySeqActionType", _mySeqActionType);
     
 }
 
@@ -54,6 +58,11 @@ bool TestProps::ImGui() {
     
     {
         bool thisChanged = imgui_util::InputVector(_myFloatArray);
+        changed = changed || thisChanged;
+    }
+    
+    {
+        bool thisChanged = SeqActionTypeImGui("SeqActionType", &_mySeqActionType);
         changed = changed || thisChanged;
     }
     

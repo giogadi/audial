@@ -65,6 +65,8 @@ enum class SynthParamType : int {
 extern char const* gSynthParamTypeStrings[];
 char const* SynthParamTypeToString(SynthParamType e);
 SynthParamType StringToSynthParamType(char const* s);
+char const* EnumToString(SynthParamType e);
+void StringToEnum(char const* s, SynthParamType& e);
 
 bool SynthParamTypeImGui(char const* label, SynthParamType* v);
 

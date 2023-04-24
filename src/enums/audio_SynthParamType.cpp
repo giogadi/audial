@@ -143,6 +143,14 @@ SynthParamType StringToSynthParamType(char const* s) {
     return static_cast<SynthParamType>(0);
 }
 
+char const* EnumToString(SynthParamType e) {
+     return SynthParamTypeToString(e);
+}
+
+void StringToEnum(char const* s, SynthParamType& e) {
+     e = StringToSynthParamType(s);
+}
+
 bool SynthParamTypeImGui(char const* label, SynthParamType* v) {
     int selectedIx = static_cast<int>(*v);
     bool changed = ImGui::Combo(label, &selectedIx, gSynthParamTypeStrings, static_cast<int>(SynthParamType::Count));

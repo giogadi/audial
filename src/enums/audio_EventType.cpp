@@ -67,6 +67,14 @@ EventType StringToEventType(char const* s) {
     return static_cast<EventType>(0);
 }
 
+char const* EnumToString(EventType e) {
+     return EventTypeToString(e);
+}
+
+void StringToEnum(char const* s, EventType& e) {
+     e = StringToEventType(s);
+}
+
 bool EventTypeImGui(char const* label, EventType* v) {
     int selectedIx = static_cast<int>(*v);
     bool changed = ImGui::Combo(label, &selectedIx, gEventTypeStrings, static_cast<int>(EventType::Count));

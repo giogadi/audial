@@ -13,6 +13,8 @@ enum class {{enumName}} : int {
 extern char const* g{{enumName}}Strings[];
 char const* {{enumName}}ToString({{enumName}} e);
 {{enumName}} StringTo{{enumName}}(char const* s);
+char const* EnumToString({{enumName}} e);
+void StringToEnum(char const* s, {{enumName}}& e);
 
 bool {{enumName}}ImGui(char const* label, {{enumName}}* v);
 

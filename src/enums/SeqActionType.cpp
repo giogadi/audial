@@ -93,6 +93,14 @@ SeqActionType StringToSeqActionType(char const* s) {
     return static_cast<SeqActionType>(0);
 }
 
+char const* EnumToString(SeqActionType e) {
+     return SeqActionTypeToString(e);
+}
+
+void StringToEnum(char const* s, SeqActionType& e) {
+     e = StringToSeqActionType(s);
+}
+
 bool SeqActionTypeImGui(char const* label, SeqActionType* v) {
     int selectedIx = static_cast<int>(*v);
     bool changed = ImGui::Combo(label, &selectedIx, gSeqActionTypeStrings, static_cast<int>(SeqActionType::Count));

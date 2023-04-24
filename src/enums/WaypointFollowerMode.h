@@ -13,6 +13,8 @@ enum class WaypointFollowerMode : int {
 extern char const* gWaypointFollowerModeStrings[];
 char const* WaypointFollowerModeToString(WaypointFollowerMode e);
 WaypointFollowerMode StringToWaypointFollowerMode(char const* s);
+char const* EnumToString(WaypointFollowerMode e);
+void StringToEnum(char const* s, WaypointFollowerMode& e);
 
 bool WaypointFollowerModeImGui(char const* label, WaypointFollowerMode* v);
 

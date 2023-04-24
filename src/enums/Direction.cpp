@@ -53,6 +53,14 @@ Direction StringToDirection(char const* s) {
     return static_cast<Direction>(0);
 }
 
+char const* EnumToString(Direction e) {
+     return DirectionToString(e);
+}
+
+void StringToEnum(char const* s, Direction& e) {
+     e = StringToDirection(s);
+}
+
 bool DirectionImGui(char const* label, Direction* v) {
     int selectedIx = static_cast<int>(*v);
     bool changed = ImGui::Combo(label, &selectedIx, gDirectionStrings, static_cast<int>(Direction::Count));

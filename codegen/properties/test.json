@@ -17,6 +17,11 @@
             "name": "myFloatArray",
             "type": "float",
             "isArray": true
+        },
+        {
+            "name": "mySeqActionType",
+            "type": "enum",
+            "enumType": "SeqActionType"
         }
     ]
 }

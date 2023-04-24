@@ -41,6 +41,14 @@ WaypointFollowerMode StringToWaypointFollowerMode(char const* s) {
     return static_cast<WaypointFollowerMode>(0);
 }
 
+char const* EnumToString(WaypointFollowerMode e) {
+     return WaypointFollowerModeToString(e);
+}
+
+void StringToEnum(char const* s, WaypointFollowerMode& e) {
+     e = StringToWaypointFollowerMode(s);
+}
+
 bool WaypointFollowerModeImGui(char const* label, WaypointFollowerMode* v) {
     int selectedIx = static_cast<int>(*v);
     bool changed = ImGui::Combo(label, &selectedIx, gWaypointFollowerModeStrings, static_cast<int>(WaypointFollowerMode::Count));
