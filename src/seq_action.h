@@ -55,16 +55,20 @@ struct SeqAction {
     static void LoadAndInitActions(GameManager& g, std::istream& input, std::vector<BeatTimeAction>& actions);
     static std::unique_ptr<SeqAction> LoadAction(LoadInputs const& loadInputs, std::istream& input);
 
-    virtual void ImGui() {};
+    virtual bool ImGui() { return false; };
+    static bool ImGui(char const* label, std::vector<std::unique_ptr<SeqAction>>& actions);
 
     void Save(serial::Ptree pt) const;
     static void SaveActionsInChildNode(serial::Ptree pt, char const* childName, std::vector<std::unique_ptr<SeqAction>> const& actions);
+
+    static std::unique_ptr<SeqAction> New(SeqActionType actionType);
+    static std::unique_ptr<SeqAction> Load(serial::Ptree pt);
+    static void LoadActionsFromChildNode(serial::Ptree pt, char const* childName, std::vector<std::unique_ptr<SeqAction>>& actions);
     
 protected:
     virtual void LoadDerived(
         LoadInputs const& loadInputs, std::istream& input) = 0;
-    virtual void LoadDerived(
-        LoadInputs const& loadInputs, serial::Ptree pt) {
+    virtual void LoadDerived(serial::Ptree pt) {
         printf("UNIMPLEMENTED LOAD - SeqActionType::%s!\n", SeqActionTypeToString(Type()));
     }
     virtual void SaveDerived(serial::Ptree pt) const {
@@ -124,11 +128,10 @@ struct ChangeStepSequencerSeqAction : public SeqAction {
     virtual void ExecuteDerived(GameManager& g) override;
     virtual void LoadDerived(
         LoadInputs const& loadInputs, std::istream& input) override;
-    virtual void LoadDerived(
-        LoadInputs const& loadInputs, serial::Ptree pt) override;
+    virtual void LoadDerived(serial::Ptree pt) override;
     virtual void SaveDerived(serial::Ptree pt) const override;
     virtual void InitDerived(GameManager& g) override;
-    virtual void ImGui() override;
+    virtual bool ImGui() override;
 };
 
 // Assumed to be permanent

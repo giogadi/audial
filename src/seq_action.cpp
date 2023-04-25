@@ -2,6 +2,8 @@
 
 #include <sstream>
 
+#include "imgui/imgui.h"
+
 #include "entities/param_automator.h"
 #include "audio.h"
 #include "midi_util.h"
@@ -27,6 +29,91 @@ void SeqAction::SaveActionsInChildNode(serial::Ptree pt, char const* childName, 
         serial::Ptree childPt = vecPt.AddChild("seq_action");
         action->Save(childPt);
     }
+}
+
+std::unique_ptr<SeqAction> SeqAction::New(SeqActionType actionType) {
+    switch (actionType) {
+        case SeqActionType::SpawnAutomator: return std::make_unique<SpawnAutomatorSeqAction>();
+        case SeqActionType::RemoveEntity: return std::make_unique<RemoveEntitySeqAction>();
+        case SeqActionType::ChangeStepSequencer: return std::make_unique<ChangeStepSequencerSeqAction>();
+        case SeqActionType::SetAllSteps: return std::make_unique<SetAllStepsSeqAction>();
+        case SeqActionType::SetStepSequence: return std::make_unique<SetStepSequenceSeqAction>();
+        case SeqActionType::SetStepSequencerMute: return std::make_unique<SetStepSequencerMuteSeqAction>();
+        case SeqActionType::NoteOnOff: return std::make_unique<NoteOnOffSeqAction>();
+        case SeqActionType::BeatTimeEvent: return std::make_unique<BeatTimeEventSeqAction>();
+        case SeqActionType::WaypointControl: return std::make_unique<WaypointControlSeqAction>();
+        case SeqActionType::PlayerSetKillZone: return std::make_unique<PlayerSetKillZoneSeqAction>();
+        case SeqActionType::PlayerSetSpawnPoint: return std::make_unique<PlayerSetSpawnPointSeqAction>();
+        case SeqActionType::SetNewFlowSection: return std::make_unique<SetNewFlowSectionSeqAction>();
+        case SeqActionType::AddToIntVariable: return std::make_unique<AddToIntVariableSeqAction>();
+        case SeqActionType::CameraControl: return std::make_unique<CameraControlSeqAction>();
+        case SeqActionType::SpawnEnemy: return std::make_unique<SpawnEnemySeqAction>();
+        case SeqActionType::Count: break;
+    }
+    assert(false);
+    return nullptr;
+}
+
+std::unique_ptr<SeqAction> SeqAction::Load(serial::Ptree pt) {
+    SeqActionType actionType;
+    bool found = TryGetEnum(pt, "action_type", actionType);
+    if (!found) {
+        printf("Could not find action_type!\n");
+        return nullptr;
+    }
+    std::unique_ptr<SeqAction> pAction = SeqAction::New(actionType);
+    pAction->LoadDerived(pt);
+    return pAction;
+}
+
+bool SeqAction::ImGui(char const* label, std::vector<std::unique_ptr<SeqAction>>& actions) {
+    bool changed = false;
+    if (ImGui::CollapsingHeader(label)) {
+        ImGui::PushID(label);
+        
+        static SeqActionType actionType = SeqActionType::SpawnAutomator;
+        SeqActionTypeImGui("Action type", &actionType);
+        if (ImGui::Button("Add")) {
+            actions.push_back(SeqAction::New(actionType));
+            changed = true;
+        }        
+        int deleteIx = -1;
+        for (int i = 0, n = actions.size(); i < n; ++i) {
+            ImGui::PushID(i);
+            if (ImGui::CollapsingHeader(SeqActionTypeToString(actions[i]->Type()))) {
+                bool thisChanged = actions[i]->ImGui();
+                changed = changed || thisChanged;
+                if (ImGui::Button("Remove")) {
+                    deleteIx = i;
+                    changed = true;
+                }
+            }
+            ImGui::PopID();
+        }
+        if (deleteIx >= 0) {
+            actions.erase(actions.begin() + deleteIx);
+        }
+        
+        ImGui::PopID();
+    }
+    
+    return changed;
+}
+
+void SeqAction::LoadActionsFromChildNode(serial::Ptree pt, char const* childName, std::vector<std::unique_ptr<SeqAction>>& actions) {
+    actions.clear();
+    serial::Ptree actionsPt = pt.TryGetChild(childName);
+    if (!actionsPt.IsValid()) {
+        printf("LoadActionsFromChildNode: no child found of name \"%s\"!\n", childName);
+        return;
+    }
+    int numChildren;
+    serial::NameTreePair* children = actionsPt.GetChildren(&numChildren);
+    actions.reserve(numChildren);
+    for (int i = 0; i < numChildren; ++i) {
+        actions.push_back(Load(children[i]._pt));
+    }
+    delete[] children;
 }
 
 std::unique_ptr<SeqAction> SeqAction::LoadAction(LoadInputs const& loadInputs, std::istream& input) {
@@ -258,7 +345,7 @@ void ChangeStepSequencerSeqAction::LoadDerived(LoadInputs const& loadInputs, std
     std::getline(input, _props._stepStr);
 }
 
-void ChangeStepSequencerSeqAction::LoadDerived(LoadInputs const& loadInputs, serial::Ptree pt) {
+void ChangeStepSequencerSeqAction::LoadDerived(serial::Ptree pt) {
     _props.Load(pt);
 }
 
@@ -266,8 +353,8 @@ void ChangeStepSequencerSeqAction::SaveDerived(serial::Ptree pt) const {
     _props.Save(pt);
 }
 
-void ChangeStepSequencerSeqAction::ImGui() {
-    _props.ImGui();
+bool ChangeStepSequencerSeqAction::ImGui() {
+    return _props.ImGui();
 }
 
 void ChangeStepSequencerSeqAction::InitDerived(GameManager& g) {        

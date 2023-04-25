@@ -46,14 +46,4 @@ inline bool ColorEdit4(char const* label, Vec4* v) {
     return changed;
 }
 
-template <typename E>
-inline bool ComboEnum(char const* label, E* v) {
-    int selectedIx = static_cast<int>(*v);
-    bool changed = ImGui::Combo(label, &selectedIx, EnumToString(*v), static_cast<int>(E::Count));
-    if (changed) {
-        *v = static_cast<E>(selectedIx);
-    }
-    return changed;
-}
-
 }

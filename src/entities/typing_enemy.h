@@ -12,7 +12,8 @@ struct TypingEnemyEntity : public ne::Entity {
     
     // serialized
     std::string _text;
-    std::vector<std::string> _hitActionStrings;
+    std::vector<std::unique_ptr<SeqAction>> _hitActions;
+    // std::vector<std::string> _hitActionStrings;
     std::vector<bool> _isOneTimeAction;
     HitBehavior _hitBehavior = HitBehavior::SingleAction; // TODO
     double _activeBeatTime = -1.0; // TODO
@@ -31,7 +32,6 @@ struct TypingEnemyEntity : public ne::Entity {
     int _numHits = 0;
     Vec3 _velocity; // spatial, not audio
     Vec4 _currentColor;
-    std::vector<std::unique_ptr<SeqAction>> _hitActions;
     bool _useHitActionsOnInitHack = false;
     double _timeOfLastHit = -1.0;
     float _flowCooldownTimeLeft = -1.f;
