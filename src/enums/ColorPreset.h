@@ -29,8 +29,9 @@ enum class ColorPreset : int {
 extern char const* gColorPresetStrings[];
 char const* ColorPresetToString(ColorPreset e);
 ColorPreset StringToColorPreset(char const* s);
-char const* EnumToString(ColorPreset e);
-void StringToEnum(char const* s, ColorPreset& e);
 
 bool ColorPresetImGui(char const* label, ColorPreset* v);
 
+
+char const* EnumToString(ColorPreset e);
+void StringToEnum(char const* s, ColorPreset& e);

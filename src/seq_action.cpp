@@ -265,22 +265,22 @@ void SpawnAutomatorSeqAction::LoadDerived(LoadInputs const& loadInputs, std::ist
     std::string token;
     input >> token;
     if (token == "relative") {
-        _relative = true;
+        _props._relative = true;
         input >> paramName;
     } else {
         paramName = token;
     }
     if (paramName == "seq_velocity") {
-        _synth = false;
-        input >> _seqEntityName;
+        _props._synth = false;
+        input >> _props._seqEntityName;
     } else {
-        _synth = true;
-        _synthParam = audio::StringToSynthParamType(paramName.c_str());
-        input >> _channel;
+        _props._synth = true;
+        _props._synthParam = audio::StringToSynthParamType(paramName.c_str());
+        input >> _props._channel;
     }
-    input >> _startValue;
-    input >> _endValue;
-    input >> _desiredAutomateTime;
+    input >> _props._startValue;
+    input >> _props._endValue;
+    input >> _props._desiredAutomateTime;
 }
 
 void SpawnAutomatorSeqAction::ExecuteDerived(GameManager& g) {
@@ -288,14 +288,14 @@ void SpawnAutomatorSeqAction::ExecuteDerived(GameManager& g) {
         return;
     }
     ParamAutomatorEntity* e = static_cast<ParamAutomatorEntity*>(g._neEntityManager->AddEntity(ne::EntityType::ParamAutomator));
-    e->_relative = _relative;
-    e->_startValue = _startValue;
-    e->_endValue = _endValue;
-    e->_desiredAutomateTime = _desiredAutomateTime;
-    e->_synth = _synth;
-    e->_synthParam = _synthParam;
-    e->_channel = _channel;
-    e->_seqEntityName = _seqEntityName;
+    e->_relative = _props._relative;
+    e->_startValue = _props._startValue;
+    e->_endValue = _props._endValue;
+    e->_desiredAutomateTime = _props._desiredAutomateTime;
+    e->_synth = _props._synth;
+    e->_synthParam = _props._synthParam;
+    e->_channel = _props._channel;
+    e->_seqEntityName = _props._seqEntityName;
     e->Init(g);
 }
 

@@ -45,14 +45,6 @@ CollisionLayer StringToCollisionLayer(char const* s) {
     return static_cast<CollisionLayer>(0);
 }
 
-char const* EnumToString(CollisionLayer e) {
-     return CollisionLayerToString(e);
-}
-
-void StringToEnum(char const* s, CollisionLayer& e) {
-     e = StringToCollisionLayer(s);
-}
-
 bool CollisionLayerImGui(char const* label, CollisionLayer* v) {
     int selectedIx = static_cast<int>(*v);
     bool changed = ImGui::Combo(label, &selectedIx, gCollisionLayerStrings, static_cast<int>(CollisionLayer::Count));
@@ -62,3 +54,11 @@ bool CollisionLayerImGui(char const* label, CollisionLayer* v) {
     return changed;
 }
 
+
+char const* EnumToString(CollisionLayer e) {
+     return CollisionLayerToString(e);
+}
+
+void StringToEnum(char const* s, CollisionLayer& e) {
+     e = StringToCollisionLayer(s);
+}

@@ -11,8 +11,10 @@
 #include "beat_time_event.h"
 #include "entities/step_sequencer.h"
 
-#include "properties/ChangeStepSequencerSeqAction.h"
 #include "enums/SeqActionType.h"
+
+#include "properties/SpawnAutomatorSeqAction.h"
+#include "properties/ChangeStepSequencerSeqAction.h"
 
 struct SeqAction;
 
@@ -84,21 +86,32 @@ private:
 
 struct SpawnAutomatorSeqAction : public SeqAction {
     virtual SeqActionType Type() const override { return SeqActionType::SpawnAutomator; }
+    SpawnAutomatorSeqActionProps _props;
     
     // If relative is true, startValue and endValue are interpreted as offsets
     // from the current value of the param
-    bool _relative = false;
-    float _startValue = 0.f;
-    float _endValue = 1.f;
-    double _desiredAutomateTime = 1.0;
-    bool _synth = false;
-    audio::SynthParamType _synthParam = audio::SynthParamType::Gain;
-    int _channel = 0;  // only if _synth == true
-    std::string _seqEntityName;
+    // bool _relative = false;
+    // float _startValue = 0.f;
+    // float _endValue = 1.f;
+    // double _desiredAutomateTime = 1.0;
+    // bool _synth = false;
+    // audio::SynthParamType _synthParam = audio::SynthParamType::Gain;
+    // int _channel = 0;  // only if _synth == true
+    // std::string _seqEntityName;
     
     virtual void ExecuteDerived(GameManager& g) override;
     virtual void LoadDerived(
         LoadInputs const& loadInputs, std::istream& input) override;
+    virtual void LoadDerived(serial::Ptree pt) override {
+        _props.Load(pt);
+    }
+    virtual void SaveDerived(serial::Ptree pt) const override {
+        _props.Save(pt);
+    }
+    virtual bool ImGui() override {
+        return _props.ImGui();
+    }
+        
 };
 
 struct RemoveEntitySeqAction : public SeqAction {

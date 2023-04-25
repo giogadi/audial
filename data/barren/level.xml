@@ -773,9 +773,6 @@
                 <loop_waypoints>false</loop_waypoints>
                 <waypoints/>
             </waypoint_follower>
-            <hit_actions>
-                <action>change_step chord_seq 0 1 mG3,mB3-,mD4,mF4:1</action>
-            </hit_actions>
             <new_hit_actions>
                 <seq_action>
                     <action_type>ChangeStepSequencer</action_type>
@@ -783,6 +780,17 @@
                     <velOnly>false</velOnly>
                     <temporary>true</temporary>
                     <stepStr> mG3,mB3-,mD4,mF4:1</stepStr>
+                </seq_action>
+                <seq_action>
+                    <action_type>SpawnAutomator</action_type>
+                    <relative>false</relative>
+                    <startValue>0</startValue>
+                    <endValue>1</endValue>
+                    <desiredAutomateTime>1</desiredAutomateTime>
+                    <synth>false</synth>
+                    <synthParam>Gain</synthParam>
+                    <channel>0</channel>
+                    <seqEntityName/>
                 </seq_action>
             </new_hit_actions>
         </TypingEnemy>
@@ -827,9 +835,6 @@
                 <loop_waypoints>false</loop_waypoints>
                 <waypoints/>
             </waypoint_follower>
-            <hit_actions>
-                <action>change_step chord_seq 0 1 mG3,mB3-,mD4,mF4:1</action>
-            </hit_actions>
             <new_hit_actions>
                 <seq_action>
                     <action_type>ChangeStepSequencer</action_type>
@@ -947,9 +952,6 @@
                 <loop_waypoints>false</loop_waypoints>
                 <waypoints/>
             </waypoint_follower>
-            <hit_actions>
-                <action>change_step chord_seq 0 1 mA3,mC4,mE4,mG4:1</action>
-            </hit_actions>
             <new_hit_actions>
                 <seq_action>
                     <action_type>ChangeStepSequencer</action_type>
@@ -1001,9 +1003,6 @@
                 <loop_waypoints>false</loop_waypoints>
                 <waypoints/>
             </waypoint_follower>
-            <hit_actions>
-                <action>change_step chord_seq 0 1 mA3,mC4,mE4,mG4:1</action>
-            </hit_actions>
             <new_hit_actions>
                 <seq_action>
                     <action_type>ChangeStepSequencer</action_type>
@@ -1253,9 +1252,6 @@
                 <loop_waypoints>false</loop_waypoints>
                 <waypoints/>
             </waypoint_follower>
-            <hit_actions>
-                <action>change_step chord_seq 0 1 mG3,mB3-,mD4,mF4:1</action>
-            </hit_actions>
             <new_hit_actions>
                 <seq_action>
                     <action_type>ChangeStepSequencer</action_type>
@@ -1307,9 +1303,6 @@
                 <loop_waypoints>false</loop_waypoints>
                 <waypoints/>
             </waypoint_follower>
-            <hit_actions>
-                <action>change_step chord_seq 0 1 mG3,mB3-,mD4,mF4:1</action>
-            </hit_actions>
             <new_hit_actions>
                 <seq_action>
                     <action_type>ChangeStepSequencer</action_type>
@@ -1493,9 +1486,6 @@
                 <loop_waypoints>false</loop_waypoints>
                 <waypoints/>
             </waypoint_follower>
-            <hit_actions>
-                <action>change_step chord_seq 0 1 mA3,mC4,mE4,mG4:1</action>
-            </hit_actions>
             <new_hit_actions>
                 <seq_action>
                     <action_type>ChangeStepSequencer</action_type>
@@ -1547,9 +1537,6 @@
                 <loop_waypoints>false</loop_waypoints>
                 <waypoints/>
             </waypoint_follower>
-            <hit_actions>
-                <action>change_step chord_seq 0 1 mA3,mC4,mE4,mG4:1</action>
-            </hit_actions>
             <new_hit_actions>
                 <seq_action>
                     <action_type>ChangeStepSequencer</action_type>

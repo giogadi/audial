@@ -51,6 +51,7 @@ add_executable(game
 
     src/properties/Test.cpp
     src/properties/ChangeStepSequencerSeqAction.cpp
+    src/properties/SpawnAutomatorSeqAction.cpp
 
     src/seq_action.cpp
     src/seq_actions/spawn_enemy.cpp

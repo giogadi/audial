@@ -1,12 +1,12 @@
 #pragma once
 
-#include "serial.h"
-
-
-#include "enums/SeqActionType.h"
 
 #include <vector>
 
+#include "enums/SeqActionType.h"
+
+
+#include "serial.h"
 
 struct TestProps {
     

@@ -43,14 +43,6 @@ Waveform StringToWaveform(char const* s) {
     return static_cast<Waveform>(0);
 }
 
-char const* EnumToString(Waveform e) {
-     return WaveformToString(e);
-}
-
-void StringToEnum(char const* s, Waveform& e) {
-     e = StringToWaveform(s);
-}
-
 bool WaveformImGui(char const* label, Waveform* v) {
     int selectedIx = static_cast<int>(*v);
     bool changed = ImGui::Combo(label, &selectedIx, gWaveformStrings, static_cast<int>(Waveform::Count));
@@ -61,4 +53,12 @@ bool WaveformImGui(char const* label, Waveform* v) {
 }
 
 
+}
+
+char const* EnumToString(synth::Waveform e) {
+     return synth::WaveformToString(e);
+}
+
+void StringToEnum(char const* s, synth::Waveform& e) {
+     e = synth::StringToWaveform(s);
 }

@@ -39,8 +39,9 @@ enum class SeqActionType : int {
 extern char const* gSeqActionTypeStrings[];
 char const* SeqActionTypeToString(SeqActionType e);
 SeqActionType StringToSeqActionType(char const* s);
-char const* EnumToString(SeqActionType e);
-void StringToEnum(char const* s, SeqActionType& e);
 
 bool SeqActionTypeImGui(char const* label, SeqActionType* v);
 
+
+char const* EnumToString(SeqActionType e);
+void StringToEnum(char const* s, SeqActionType& e);

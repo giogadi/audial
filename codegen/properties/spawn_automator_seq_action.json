@@ -1,0 +1,47 @@
+{
+    "propertiesName": "SpawnAutomatorSeqAction",
+    "props": [
+        {
+            "name": "relative",
+            "type": "bool",
+            "default": "false",
+            "comment": "If true, startValue and endValue are interpreted as offsets from the current value of the param."
+        },
+        {
+            "name": "startValue",
+            "type": "float",
+            "default": "0.f"
+        },
+        {
+            "name": "endValue",
+            "type": "float",
+            "default": "1.f"
+        },
+        {
+            "name": "desiredAutomateTime",
+            "type": "double",
+            "default": "1.0"
+        },
+        {
+            "name": "synth",
+            "type": "bool",
+            "default": "false"
+        },
+        {
+            "name": "synthParam",
+            "type": "enum",
+            "enumType": "SynthParamType",
+            "namespace": "audio",
+            "default": "audio::SynthParamType::Gain"
+        },
+        {
+            "name": "channel",
+            "type": "int",
+            "default": "0"
+        },
+        {
+            "name": "seqEntityName",
+            "type": "string"
+        }
+    ]
+}

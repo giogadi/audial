@@ -13,11 +13,11 @@ enum class {{enumName}} : int {
 extern char const* g{{enumName}}Strings[];
 char const* {{enumName}}ToString({{enumName}} e);
 {{enumName}} StringTo{{enumName}}(char const* s);
-char const* EnumToString({{enumName}} e);
-void StringToEnum(char const* s, {{enumName}}& e);
 
 bool {{enumName}}ImGui(char const* label, {{enumName}}* v);
 
 {% for ns in namespaces %}
 }
 {% endfor %}
+char const* EnumToString({% for ns in namespaces -%}{{ns}}::{%- endfor %}{{enumName}} e);
+void StringToEnum(char const* s, {% for ns in namespaces -%}{{ns}}::{%- endfor %}{{enumName}}& e);

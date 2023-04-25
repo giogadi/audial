@@ -73,14 +73,6 @@ ColorPreset StringToColorPreset(char const* s) {
     return static_cast<ColorPreset>(0);
 }
 
-char const* EnumToString(ColorPreset e) {
-     return ColorPresetToString(e);
-}
-
-void StringToEnum(char const* s, ColorPreset& e) {
-     e = StringToColorPreset(s);
-}
-
 bool ColorPresetImGui(char const* label, ColorPreset* v) {
     int selectedIx = static_cast<int>(*v);
     bool changed = ImGui::Combo(label, &selectedIx, gColorPresetStrings, static_cast<int>(ColorPreset::Count));
@@ -90,3 +82,11 @@ bool ColorPresetImGui(char const* label, ColorPreset* v) {
     return changed;
 }
 
+
+char const* EnumToString(ColorPreset e) {
+     return ColorPresetToString(e);
+}
+
+void StringToEnum(char const* s, ColorPreset& e) {
+     e = StringToColorPreset(s);
+}

@@ -27,10 +27,11 @@ enum class EventType : int {
 extern char const* gEventTypeStrings[];
 char const* EventTypeToString(EventType e);
 EventType StringToEventType(char const* s);
-char const* EnumToString(EventType e);
-void StringToEnum(char const* s, EventType& e);
 
 bool EventTypeImGui(char const* label, EventType* v);
 
 
 }
+
+char const* EnumToString(audio::EventType e);
+void StringToEnum(char const* s, audio::EventType& e);

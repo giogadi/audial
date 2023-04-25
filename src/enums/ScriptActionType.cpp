@@ -49,14 +49,6 @@ ScriptActionType StringToScriptActionType(char const* s) {
     return static_cast<ScriptActionType>(0);
 }
 
-char const* EnumToString(ScriptActionType e) {
-     return ScriptActionTypeToString(e);
-}
-
-void StringToEnum(char const* s, ScriptActionType& e) {
-     e = StringToScriptActionType(s);
-}
-
 bool ScriptActionTypeImGui(char const* label, ScriptActionType* v) {
     int selectedIx = static_cast<int>(*v);
     bool changed = ImGui::Combo(label, &selectedIx, gScriptActionTypeStrings, static_cast<int>(ScriptActionType::Count));
@@ -66,3 +58,11 @@ bool ScriptActionTypeImGui(char const* label, ScriptActionType* v) {
     return changed;
 }
 
+
+char const* EnumToString(ScriptActionType e) {
+     return ScriptActionTypeToString(e);
+}
+
+void StringToEnum(char const* s, ScriptActionType& e) {
+     e = StringToScriptActionType(s);
+}

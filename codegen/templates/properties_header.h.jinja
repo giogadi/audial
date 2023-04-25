@@ -1,14 +1,14 @@
 #pragma once
 
-#include "serial.h"
-
 {% for header in header_includes %}
 #include {{header}}
 {% endfor %}
 
+#include "serial.h"
+
 struct {{propertiesName}}Props {
     {% for prop in props %}
-    {{prop.type}} _{{prop.name}};
+    {{prop.type}} _{{prop.name}}{% if prop.default %} = {{prop.default}}{%- endif %};
     {% endfor %}
 
     void Load(serial::Ptree pt);

@@ -17,8 +17,9 @@ enum class ScriptActionType : int {
 extern char const* gScriptActionTypeStrings[];
 char const* ScriptActionTypeToString(ScriptActionType e);
 ScriptActionType StringToScriptActionType(char const* s);
-char const* EnumToString(ScriptActionType e);
-void StringToEnum(char const* s, ScriptActionType& e);
 
 bool ScriptActionTypeImGui(char const* label, ScriptActionType* v);
 
+
+char const* EnumToString(ScriptActionType e);
+void StringToEnum(char const* s, ScriptActionType& e);

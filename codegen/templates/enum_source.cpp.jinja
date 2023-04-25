@@ -39,14 +39,6 @@ char const* {{enumName}}ToString({{enumName}} e) {
     return static_cast<{{enumName}}>(0);
 }
 
-char const* EnumToString({{enumName}} e) {
-     return {{enumName}}ToString(e);
-}
-
-void StringToEnum(char const* s, {{enumName}}& e) {
-     e = StringTo{{enumName}}(s);
-}
-
 bool {{enumName}}ImGui(char const* label, {{enumName}}* v) {
     int selectedIx = static_cast<int>(*v);
     bool changed = ImGui::Combo(label, &selectedIx, g{{enumName}}Strings, static_cast<int>({{enumName}}::Count));
@@ -59,3 +51,10 @@ bool {{enumName}}ImGui(char const* label, {{enumName}}* v) {
 {% for ns in namespaces %}
 }
 {% endfor %}
+char const* EnumToString({% for ns in namespaces -%}{{ns}}::{%- endfor %}{{enumName}} e) {
+     return {% for ns in namespaces -%}{{ns}}::{%- endfor %}{{enumName}}ToString(e);
+}
+
+void StringToEnum(char const* s, {% for ns in namespaces -%}{{ns}}::{%- endfor %}{{enumName}}& e) {
+     e = {% for ns in namespaces -%}{{ns}}::{%- endfor %}StringTo{{enumName}}(s);
+}

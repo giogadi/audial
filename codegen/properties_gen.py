@@ -24,12 +24,14 @@ def getCppTypeName(typeName):
 
 # each prop should have name, type, required headers, load code, save code, and
 # imgui code
-def getProp(propName, propType, isArray, enumType):
+def getProp(propName, propType, isArray, enumType, maybeNamespace, maybeDefault):
     outProp = {}
     outProp['name'] = propName
     outProp['isArray'] = isArray
     outProp['header_includes'] = []
     outProp['src_includes'] = []
+    if (maybeDefault is not None):
+        outProp['default'] = maybeDefault
     if isArray:
         cppTypeName = getCppTypeName(propType)
         outProp['type'] = 'std::vector<{cppTypeName}>'.format(cppTypeName = cppTypeName)        
@@ -38,7 +40,7 @@ def getProp(propName, propType, isArray, enumType):
         outProp['imgui'] = 'imgui_util::InputVector(_{name});'.format(name = propName)
         outProp['header_includes'].append('<vector>')
         outProp['src_includes'].append('serial_vector_util.h')
-        outProp['src_includes'].append('imgui_vector_util.h')
+        outProp['src_includes'].append('imgui_vector_util.h')        
         if not isPrimitiveType(propType):
             outProp['header_includes'].append('\"properties/{propType}.h\"'.format(propType = propType))
     else:
@@ -69,11 +71,17 @@ def getProp(propName, propType, isArray, enumType):
             outProp['save'] = 'pt.PutString(\"{name}\", _{name}.c_str());'.format(name = outProp['name'])
             outProp['imgui'] = 'imgui_util::InputText<128>(\"{name}\", &_{name});'.format(name = outProp['name'])
         elif propType == 'enum':
-            outProp['type'] = enumType
+            if maybeNamespace is None:
+                outProp['type'] = enumType
+            else:
+                outProp['type'] = f'{maybeNamespace}::{enumType}'
             outProp['load'] = 'serial::TryGetEnum(pt, \"{name}\", _{name});'.format(name = outProp['name'])
             outProp['save'] = 'serial::PutEnum(pt, \"{name}\", _{name});'.format(name = outProp['name'])
-            outProp['imgui'] = '{enumType}ImGui(\"{enumType}\", &_{name});'.format(enumType = enumType, name = outProp['name'])
-            outProp['header_includes'].append('\"enums/{enumType}.h\"'.format(enumType = enumType))
+            outProp['imgui'] = '{enumType}ImGui(\"{labelName}\", &_{name});'.format(enumType = outProp['type'], labelName = enumType, name = outProp['name'])
+            if maybeNamespace is None:
+                outProp['header_includes'].append('\"enums/{enumType}.h\"'.format(enumType = enumType))
+            else:
+                outProp['header_includes'].append(f'\"enums/{maybeNamespace}_{enumType}.h\"')
         else:
             outProp['type'] = propType
             outProp['load'] = 'serial::LoadFromChildOf(pt, \"{name}\", _{name});'.format(name = outProp['name'])
@@ -93,7 +101,7 @@ def generatePropsFromJson(dataFilename):
     # those are user properties to be included.
     # userProps = [prop['type'] for prop in dataDict['props'] if isUserPropType(prop['type'])]
     # print(userProps)
-    props = [getProp(rawProp['name'], rawProp['type'], rawProp.get('isArray', False), rawProp.get('enumType', '')) for rawProp in dataDict['props']]
+    props = [getProp(rawProp['name'], rawProp['type'], rawProp.get('isArray', False), rawProp.get('enumType', ''), rawProp.get('namespace', None), rawProp.get('default', None)) for rawProp in dataDict['props']]
     # print(props)
     dataDict['props'] = props;
 
