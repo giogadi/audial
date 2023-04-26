@@ -65,6 +65,12 @@ def getProp(propName, propType, isArray, enumType, maybeNamespace, maybeDefault)
             outProp['load'] = 'pt.TryGetBool(\"{name}\", &_{name});'.format(name = outProp['name'])
             outProp['save'] = 'pt.PutBool(\"{name}\", _{name});'.format(name = outProp['name'])
             outProp['imgui'] = 'ImGui::Checkbox(\"{name}\", &_{name});'.format(name = outProp['name'])
+        elif propType == 'vec3':
+            outProp['type'] = 'Vec3'
+            outProp['load'] = 'serial::LoadFromChildOf(pt, \"{name}\", _{name});'.format(name = outProp['name'])
+            outProp['save'] = 'serial::SaveInNewChildOf(pt, \"{name}\", _{name});'.format(name = outProp['name'])
+            outProp['imgui'] = 'imgui_util::InputVec3(\"{name}\", &_{name});'.format(name = outProp['name'])
+            outProp['header_includes'].append('\"matrix.h\"')
         elif propType == 'string':
             outProp['type'] = 'std::string'
             outProp['load'] = 'pt.TryGetString(\"{name}\", &_{name});'.format(name = outProp['name'])

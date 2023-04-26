@@ -569,19 +569,19 @@ void LoadNoteEnemy(TypingEnemyEntity& enemy, std::istream& lineStream) {
     if (noteTable) {
         for (std::array<int, 4> const& n : *noteTable) {
             auto pAction = std::make_unique<NoteOnOffSeqAction>();
-            pAction->_channel = channel;
+            pAction->_props._channel = channel;
             // HOWDYYYYY
-            pAction->_midiNote = n[0];
-            pAction->_noteLength = noteLength;
-            pAction->_velocity = velocity;
+            pAction->_props._midiNote = n[0];
+            pAction->_props._noteLength = noteLength;
+            pAction->_props._velocity = velocity;
             enemy._hitActions.push_back(std::move(pAction));            
         }
     } else {
         auto pAction = std::make_unique<NoteOnOffSeqAction>();
-        pAction->_channel = channel;
-        pAction->_midiNote = midiNote;
-        pAction->_noteLength = noteLength;
-        pAction->_velocity = velocity;
+        pAction->_props._channel = channel;
+        pAction->_props._midiNote = midiNote;
+        pAction->_props._noteLength = noteLength;
+        pAction->_props._velocity = velocity;
         enemy._hitActions.push_back(std::move(pAction));       
     }
 }
@@ -614,8 +614,9 @@ void LoadPcmEnemy(TypingEnemyEntity& enemy, std::istream& lineStream) {
     }
 
     if (!soundName.empty()) {
+        printf("LoadPcmEnemy: WARNING, we no longer support sound bank names!\n");
         auto pAction = std::make_unique<BeatTimeEventSeqAction>();
-        pAction->_soundBankName = soundName;
+        // pAction->_soundBankName = soundName;
         pAction->_b_e._beatTime = 0.0;
         pAction->_b_e._e.type = audio::EventType::PlayPcm;
         pAction->_b_e._e.pcmVelocity = velocity;
@@ -760,10 +761,10 @@ void SpawnEnemySeqAction::LoadDerived(LoadInputs const& loadInputs, std::istream
             gHorizontal = !gHorizontal;
         } else if (key == "camera_target") {
             auto pAction = std::make_unique<CameraControlSeqAction>();
-            pAction->_targetEntityName = value;
-            pAction->_desiredTargetToCameraOffset.Set(0.f, 5.f, 0.f);
-            pAction->_setTarget = true;
-            pAction->_setOffset = true;
+            pAction->_props._targetEntityName = value;
+            pAction->_props._desiredTargetToCameraOffset.Set(0.f, 5.f, 0.f);
+            pAction->_props._setTarget = true;
+            pAction->_props._setOffset = true;
             _enemy._hitActions.push_back(std::move(pAction));           
         } else if (key == "camera_offset") {
             assert(false);  // UNSUPPORTED

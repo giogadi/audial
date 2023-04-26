@@ -15,6 +15,7 @@
 #include "entities/flow_wall.h"
 #include "entities/int_variable.h"
 #include "sound_bank.h"
+#include "imgui_util.h"
 
 #include "enums/SeqActionType.h"
 
@@ -303,6 +304,16 @@ void RemoveEntitySeqAction::LoadDerived(LoadInputs const& loadInputs, std::istre
     input >> _entityName;
 }
 
+void RemoveEntitySeqAction::LoadDerived(serial::Ptree pt) {
+    _entityName = pt.GetString("entity_name");
+}
+void RemoveEntitySeqAction::SaveDerived(serial::Ptree pt) const {
+    pt.PutString("entity_name", _entityName.c_str());
+}
+bool RemoveEntitySeqAction::ImGui() {
+    return imgui_util::InputText<128>("Entity name", &_entityName);
+}
+
 void RemoveEntitySeqAction::ExecuteDerived(GameManager& g) {
     ne::Entity* e = g._neEntityManager->FindEntityByName(_entityName);
     if (e) {
@@ -391,6 +402,22 @@ void SetAllStepsSeqAction::LoadDerived(LoadInputs const& loadInputs, std::istrea
     }
     input >> _velocity;
 }
+void SetAllStepsSeqAction::LoadDerived(serial::Ptree pt) {
+    _seqName = pt.GetString("seq_name");
+    _stepStr = pt.GetString("step_str");
+    _velOnly = pt.GetBool("vel_only");
+}
+void SetAllStepsSeqAction::SaveDerived(serial::Ptree pt) const {
+    pt.PutString("seq_name", _seqName.c_str());
+    pt.PutString("step_str", _stepStr.c_str());
+    pt.PutBool("vel_only", _velOnly);
+}
+bool SetAllStepsSeqAction::ImGui() {
+    imgui_util::InputText<128>("Seq entity name", &_seqName);
+    imgui_util::InputText<128>("Step string", &_stepStr);
+    ImGui::Checkbox("Velocity only", &_velOnly);
+    return false;
+}
 
 void SetAllStepsSeqAction::InitDerived(GameManager& g) {
     ne::Entity* e = g._neEntityManager->FindEntityByName(_seqName);
@@ -399,6 +426,16 @@ void SetAllStepsSeqAction::InitDerived(GameManager& g) {
     } else {
         printf("SetAllStepsSeqAction: could not find seq entity \"%s\"\n", _seqName.c_str());
     }
+
+    std::stringstream ss(_stepStr);
+    StepSequencerEntity::SeqStep step;
+    if (!StepSequencerEntity::TryReadSeqStep(ss, step)) {
+        printf("SetAllStepsSeqAction: failed to parse step \"%s\"\n", _stepStr.c_str());
+    }
+    for (int i = 0; i < 4; ++i) {
+        _midiNotes[i] = step._midiNote[i];
+    }
+    _velocity = step._velocity;
 }
 
 void SetAllStepsSeqAction::ExecuteDerived(GameManager& g) {
@@ -447,26 +484,72 @@ void SetStepSequenceSeqAction::ExecuteDerived(GameManager& g) {
     }
 }
 
+void NoteOnOffSeqAction::LoadDerived(LoadInputs const& loadInputs, std::istream& input) {
+    std::string token, key, value;
+    while (!input.eof()) {
+        {
+            input >> token;
+            std::size_t delimIx = token.find_first_of(':');
+            if (delimIx == std::string::npos) {
+                printf("Token missing \":\" - \"%s\"\n", token.c_str());
+                continue;
+            }
+
+            key = token.substr(0, delimIx);
+            value = token.substr(delimIx+1);
+        }
+        if (key == "channel") {
+            _props._channel = std::stoi(value);
+        } else if (key == "note") {
+            _props._midiNote = GetMidiNote(value.c_str());
+        } else if (key == "length") {
+            _props._noteLength = std::stod(value);
+        } else if (key == "velocity") {
+            _props._velocity = std::stof(value);
+        } else if (key == "quantize") {
+            _props._quantizeDenom = std::stod(value);
+        } else {
+            printf("NoteOnOffSeqAction::Load: unknown key \"%s\"\n", key.c_str());
+        }
+    }
+}
+
 void NoteOnOffSeqAction::ExecuteDerived(GameManager& g) {
     BeatTimeEvent b_e;
     b_e._beatTime = 0.0;
     b_e._e.type = audio::EventType::NoteOn;
-    b_e._e.channel = _channel;
-    b_e._e.midiNote = _midiNote;
-    b_e._e.velocity =_velocity;
+    b_e._e.channel = _props._channel;
+    b_e._e.midiNote = _props._midiNote;
+    b_e._e.velocity = _props._velocity;
                 
-    audio::Event e = GetEventAtBeatOffsetFromNextDenom(_quantizeDenom, b_e, *g._beatClock, /*slack=*/0.0625);
+    audio::Event e = GetEventAtBeatOffsetFromNextDenom(_props._quantizeDenom, b_e, *g._beatClock, /*slack=*/0.0625);
     g._audioContext->AddEvent(e);
 
     b_e._e.type = audio::EventType::NoteOff;
-    b_e._beatTime = _noteLength;
-    e = GetEventAtBeatOffsetFromNextDenom(_quantizeDenom, b_e, *g._beatClock, /*slack=*/0.0625);
+    b_e._beatTime = _props._noteLength;
+    e = GetEventAtBeatOffsetFromNextDenom(_props._quantizeDenom, b_e, *g._beatClock, /*slack=*/0.0625);
     g._audioContext->AddEvent(e);
 }
 
 void SetStepSequencerMuteSeqAction::LoadDerived(LoadInputs const& loadInputs, std::istream& input) {
     input >> _seqName;
     input >> _mute;
+}
+
+void SetStepSequencerMuteSeqAction::LoadDerived(serial::Ptree pt) {
+    _seqName = pt.GetString("seq_name");
+    _mute = pt.GetBool("mute");
+}
+
+void SetStepSequencerMuteSeqAction::SaveDerived(serial::Ptree pt) const {
+    pt.PutString("seq_name", _seqName.c_str());
+    pt.PutBool("mute", _mute);
+}
+
+bool SetStepSequencerMuteSeqAction::ImGui() {
+    imgui_util::InputText<128>("Seq entity name", &_seqName);
+    ImGui::Checkbox("Mute", &_mute);
+    return false;
 }
 
 void SetStepSequencerMuteSeqAction::InitDerived(GameManager& g) {
@@ -488,34 +571,31 @@ void SetStepSequencerMuteSeqAction::ExecuteDerived(GameManager& g) {
     }
 }
 
-void NoteOnOffSeqAction::LoadDerived(LoadInputs const& loadInputs, std::istream& input) {
-    std::string token, key, value;
-    while (!input.eof()) {
-        {
-            input >> token;
-            std::size_t delimIx = token.find_first_of(':');
-            if (delimIx == std::string::npos) {
-                printf("Token missing \":\" - \"%s\"\n", token.c_str());
-                continue;
-            }
-
-            key = token.substr(0, delimIx);
-            value = token.substr(delimIx+1);
-        }
-        if (key == "channel") {
-            _channel = std::stoi(value);
-        } else if (key == "note") {
-            _midiNote = GetMidiNote(value.c_str());
-        } else if (key == "length") {
-            _noteLength = std::stod(value);
-        } else if (key == "velocity") {
-            _velocity = std::stof(value);
-        } else if (key == "quantize") {
-            _quantizeDenom = std::stod(value);
-        } else {
-            printf("NoteOnOffSeqAction::Load: unknown key \"%s\"\n", key.c_str());
-        }
+void BeatTimeEventSeqAction::LoadDerived(LoadInputs const& loadInputs, std::istream& input) {
+    // quantize denom first
+    input >> _quantizeDenom;
+    std::string soundBankName;
+    ReadBeatEventFromTextLineNoSoundLookup(input, _b_e, soundBankName);
+    if (!soundBankName.empty()) {
+        printf("BeatTimeEventSeqAction::LoadDerived: WARNING, we no longer support sound bank names when loading from text lines!\n");        
     }
+    _b_e._beatTime += loadInputs._beatTimeOffset;
+}
+
+void BeatTimeEventSeqAction::LoadDerived(serial::Ptree pt) {
+    _quantizeDenom = pt.GetDouble("quantize_denom");
+    serial::LoadFromChildOf(pt, "beat_time_event", _b_e);
+}
+
+void BeatTimeEventSeqAction::SaveDerived(serial::Ptree pt) const {
+    pt.PutDouble("quantize_denom", _quantizeDenom);
+    serial::SaveInNewChildOf(pt, "beat_time_event", _b_e);
+}
+
+bool BeatTimeEventSeqAction::ImGui() {
+    ImGui::InputScalar("Denom", ImGuiDataType_Double, &_quantizeDenom);
+    _b_e.ImGui();
+    return false;
 }
 
 void BeatTimeEventSeqAction::ExecuteDerived(GameManager& g) {
@@ -529,22 +609,25 @@ void BeatTimeEventSeqAction::ExecuteDerived(GameManager& g) {
     g._audioContext->AddEvent(e);
 }
 
-void BeatTimeEventSeqAction::LoadDerived(LoadInputs const& loadInputs, std::istream& input) {
-    // quantize denom first
-    input >> _quantizeDenom;
-    ReadBeatEventFromTextLineNoSoundLookup(input, _b_e, _soundBankName);
-    _b_e._beatTime += loadInputs._beatTimeOffset;   
+void WaypointControlSeqAction::LoadDerived(LoadInputs const& loadInputs, std::istream& input) {
+    input >> _entityName;
+    input >> _followWaypoints;
 }
 
-void BeatTimeEventSeqAction::InitDerived(GameManager& g) {
-    if (!_soundBankName.empty()) {
-        int soundIx = g._soundBank->GetSoundIx(_soundBankName.c_str());
-        if (soundIx < 0) {
-            printf("Failed to find sound \"%s\"\n", _soundBankName.c_str());   
-        } else {
-            _b_e._e.pcmSoundIx = soundIx;
-        }
-    }
+void WaypointControlSeqAction::LoadDerived(serial::Ptree pt) {
+    _followWaypoints = pt.GetBool("follow_waypoints");
+    _entityName = pt.GetString("entity_name");
+}
+
+void WaypointControlSeqAction::SaveDerived(serial::Ptree pt) const {
+    pt.PutBool("follow_waypoints", _followWaypoints);
+    pt.PutString("entity_name", _entityName.c_str());
+}
+
+bool WaypointControlSeqAction::ImGui() {
+    ImGui::Checkbox("Follow", &_followWaypoints);
+    imgui_util::InputText<128>("Entity name", &_entityName);
+    return false;
 }
 
 void WaypointControlSeqAction::ExecuteDerived(GameManager& g) {
@@ -572,11 +655,6 @@ void WaypointControlSeqAction::ExecuteDerived(GameManager& g) {
     } else {
         wpFollower->Stop();
     }
-}
-
-void WaypointControlSeqAction::LoadDerived(LoadInputs const& loadInputs, std::istream& input) {
-    input >> _entityName;
-    input >> _followWaypoints;
 }
 
 void PlayerSetKillZoneSeqAction::LoadDerived(LoadInputs const& loadInputs, std::istream& input) {
@@ -607,6 +685,36 @@ void PlayerSetKillZoneSeqAction::LoadDerived(LoadInputs const& loadInputs, std::
     }
 }
 
+void PlayerSetKillZoneSeqAction::LoadDerived(serial::Ptree pt) {
+    _maxZ = std::nullopt;
+    float maxZ = 0.f;
+    if (pt.TryGetFloat("max_z", &maxZ)) {
+        _maxZ = maxZ;
+    }
+}
+
+void PlayerSetKillZoneSeqAction::SaveDerived(serial::Ptree pt) const {
+    if (_maxZ.has_value()) {
+        pt.PutFloat("max_z", _maxZ.value());
+    }
+}
+
+bool PlayerSetKillZoneSeqAction::ImGui() {
+    bool hasMaxZ = _maxZ.has_value();
+    ImGui::Checkbox("Has Max Z", &hasMaxZ);
+    if (hasMaxZ) {
+        float maxZ = 0.f;
+        if (_maxZ.has_value()) {
+            maxZ = _maxZ.value();
+        }
+        ImGui::InputScalar("Max Z", ImGuiDataType_Float, &maxZ);
+        _maxZ = maxZ;
+    } else {
+        _maxZ = std::nullopt;
+    }
+    return false;
+}
+
 void PlayerSetKillZoneSeqAction::ExecuteDerived(GameManager& g) {
     FlowPlayerEntity* pPlayer = static_cast<FlowPlayerEntity*>(g._neEntityManager->GetFirstEntityOfType(ne::EntityType::FlowPlayer));
     pPlayer->_killMaxZ = _maxZ;
@@ -619,6 +727,19 @@ void SetNewFlowSectionSeqAction::LoadDerived(LoadInputs const& loadInputs, std::
     if (!success) {
         printf("SetNewFlowSectionSeqAction: bad section id \"%s\"\n", token.c_str());
     }
+}
+
+void SetNewFlowSectionSeqAction::LoadDerived(serial::Ptree pt) {
+    _newSectionId = pt.GetInt("section_id");
+}
+
+void SetNewFlowSectionSeqAction::SaveDerived(serial::Ptree pt) const {
+    pt.PutInt("section_id", _newSectionId);
+}
+
+bool SetNewFlowSectionSeqAction::ImGui() {
+    ImGui::InputInt("Section ID", &_newSectionId);
+    return false;
 }
 
 void SetNewFlowSectionSeqAction::ExecuteDerived(GameManager& g) {
@@ -636,6 +757,19 @@ void PlayerSetSpawnPointSeqAction::LoadDerived(LoadInputs const& loadInputs, std
     }   
 }
 
+void PlayerSetSpawnPointSeqAction::LoadDerived(serial::Ptree pt) {
+    serial::LoadFromChildOf(pt, "spawn_pos", _spawnPos);    
+}
+
+void PlayerSetSpawnPointSeqAction::SaveDerived(serial::Ptree pt) const {
+    serial::SaveInNewChildOf(pt, "spawn_pos", _spawnPos);
+}
+
+bool PlayerSetSpawnPointSeqAction::ImGui() {
+    imgui_util::InputVec3("Spawn pos", &_spawnPos);
+    return false;   
+}
+
 void PlayerSetSpawnPointSeqAction::ExecuteDerived(GameManager& g) {
     if (g._editMode) { return; }
     FlowPlayerEntity* pPlayer = static_cast<FlowPlayerEntity*>(g._neEntityManager->GetFirstEntityOfType(ne::EntityType::FlowPlayer));
@@ -648,6 +782,22 @@ void AddToIntVariableSeqAction::LoadDerived(LoadInputs const& loadInputs, std::i
     } catch (std::exception&) {
         printf("AddToIntVariableSeqAction::Load: could not parse input\n");
     }
+}
+
+void AddToIntVariableSeqAction::LoadDerived(serial::Ptree pt) {
+    _varName = pt.GetString("var_name");
+    _addAmount = pt.GetInt("add_amount");
+}
+
+void AddToIntVariableSeqAction::SaveDerived(serial::Ptree pt) const {
+    pt.PutString("var_name", _varName.c_str());
+    pt.PutInt("add_amount", _addAmount);
+}
+
+bool AddToIntVariableSeqAction::ImGui() {
+    imgui_util::InputText<128>("Var entity name", &_varName);
+    ImGui::InputInt("Add amount", &_addAmount);
+    return false;
 }
 
 void AddToIntVariableSeqAction::ExecuteDerived(GameManager& g) {

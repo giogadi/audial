@@ -5,9 +5,9 @@
 #include "imgui_util.h"
 
 
-#include "imgui_vector_util.h"
-
 #include "serial_vector_util.h"
+
+#include "imgui_vector_util.h"
 
 
 void TestProps::Load(serial::Ptree pt) {
@@ -22,6 +22,8 @@ void TestProps::Load(serial::Ptree pt) {
    
    serial::TryGetEnum(pt, "mySeqActionType", _mySeqActionType);
    
+   serial::LoadFromChildOf(pt, "myVec3", _myVec3);
+   
 }
 
 void TestProps::Save(serial::Ptree pt) const {
@@ -35,6 +37,8 @@ void TestProps::Save(serial::Ptree pt) const {
     serial::SaveVectorInChildNode<float>(pt, "myFloatArray", "array_item", _myFloatArray);
     
     serial::PutEnum(pt, "mySeqActionType", _mySeqActionType);
+    
+    serial::SaveInNewChildOf(pt, "myVec3", _myVec3);
     
 }
 
@@ -63,6 +67,11 @@ bool TestProps::ImGui() {
     
     {
         bool thisChanged = SeqActionTypeImGui("SeqActionType", &_mySeqActionType);
+        changed = changed || thisChanged;
+    }
+    
+    {
+        bool thisChanged = imgui_util::InputVec3("myVec3", &_myVec3);
         changed = changed || thisChanged;
     }
     

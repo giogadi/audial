@@ -22,6 +22,10 @@
             "name": "mySeqActionType",
             "type": "enum",
             "enumType": "SeqActionType"
+        },
+        {
+            "name": "myVec3",
+            "type": "vec3"            
         }
     ]
 }

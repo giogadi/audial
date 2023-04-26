@@ -1,0 +1,63 @@
+{
+    "propertiesName": "CameraControlSeqAction",
+    "props": [
+        {
+            "name": "setTarget",
+            "type": "bool",
+            "default": "false"
+        },
+        {
+            "name": "targetEntityName",
+            "type": "string"            
+        },
+        {
+            "name": "setOffset",
+            "type": "bool",
+            "default": "false"
+        },
+        {
+            "name": "desiredTargetToCameraOffset",
+            "type": "vec3"
+        },
+        {
+            "name": "hasMinX",
+            "type": "bool",
+            "default": "false"
+        },
+        {
+            "name": "minX",
+            "type": "float",
+            "default": "0.f"
+        },
+        {
+            "name": "hasMinZ",
+            "type": "bool",
+            "default": "false"
+        },
+        {
+            "name": "minZ",
+            "type": "float",
+            "default": "0.f"
+        },
+        {
+            "name": "hasMaxX",
+            "type": "bool",
+            "default": "false"
+        },
+        {
+            "name": "maxX",
+            "type": "float",
+            "default": "0.f"
+        },
+        {
+            "name": "hasMaxZ",
+            "type": "bool",
+            "default": "false"
+        },
+        {
+            "name": "maxZ",
+            "type": "float",
+            "default": "0.f"
+        }
+    ]
+}

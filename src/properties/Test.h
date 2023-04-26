@@ -3,6 +3,8 @@
 
 #include <vector>
 
+#include "matrix.h"
+
 #include "enums/SeqActionType.h"
 
 
@@ -19,6 +21,8 @@ struct TestProps {
     std::vector<float> _myFloatArray;
     
     SeqActionType _mySeqActionType;
+    
+    Vec3 _myVec3;
     
 
     void Load(serial::Ptree pt);

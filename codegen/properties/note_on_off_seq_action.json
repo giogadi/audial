@@ -1,0 +1,31 @@
+{
+    "propertiesName": "NoteOnOffSeqAction",
+    "props": [
+        {
+            "name": "channel",
+            "type": "int",
+            "default": "0"
+        },
+        {
+            "name": "midiNote",
+            "type": "int",
+            "default": "-1"
+        },
+        {
+            "name": "noteLength",
+            "type": "double",
+            "default": "0.0",
+            "comment": "in beat time"
+        },
+        {
+            "name": "velocity",
+            "type": "float",
+            "default": "1.f"
+        },
+        {
+            "name": "quantizeDenom",
+            "type": "double",
+            "default": "0.25"
+        }
+    ]
+}

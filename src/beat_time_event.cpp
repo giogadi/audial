@@ -3,8 +3,19 @@
 #include <sstream>
 #include <iostream>
 
+#include "imgui/imgui.h"
+
 #include "sound_bank.h"
 #include "midi_util.h"
+#include "audio_event_imgui.h"
+
+extern GameManager gGameManager;
+
+bool BeatTimeEvent::ImGui() {
+    ImGui::InputScalar("Beat time", ImGuiDataType_Double, &_beatTime);
+    audio::EventDrawImGuiNoTime(_e, *gGameManager._soundBank);
+    return false;
+}
 
 bool ReadBeatEventFromTextLineNoSoundLookup(std::istream& lineStream, BeatTimeEvent& b_e, std::string& soundBankName) {
     bool needsSoundLookup = false;

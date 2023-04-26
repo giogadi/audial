@@ -773,7 +773,7 @@
                 <loop_waypoints>false</loop_waypoints>
                 <waypoints/>
             </waypoint_follower>
-            <new_hit_actions>
+            <hit_actions>
                 <seq_action>
                     <action_type>ChangeStepSequencer</action_type>
                     <seqName>chord_seq</seqName>
@@ -781,18 +781,7 @@
                     <temporary>true</temporary>
                     <stepStr> mG3,mB3-,mD4,mF4:1</stepStr>
                 </seq_action>
-                <seq_action>
-                    <action_type>SpawnAutomator</action_type>
-                    <relative>false</relative>
-                    <startValue>0</startValue>
-                    <endValue>1</endValue>
-                    <desiredAutomateTime>1</desiredAutomateTime>
-                    <synth>false</synth>
-                    <synthParam>Gain</synthParam>
-                    <channel>0</channel>
-                    <seqEntityName/>
-                </seq_action>
-            </new_hit_actions>
+            </hit_actions>
         </TypingEnemy>
         <TypingEnemy>
             <name>r1_j</name>
@@ -835,7 +824,7 @@
                 <loop_waypoints>false</loop_waypoints>
                 <waypoints/>
             </waypoint_follower>
-            <new_hit_actions>
+            <hit_actions>
                 <seq_action>
                     <action_type>ChangeStepSequencer</action_type>
                     <seqName>chord_seq</seqName>
@@ -843,7 +832,7 @@
                     <temporary>true</temporary>
                     <stepStr> mG3,mB3-,mD4,mF4:1</stepStr>
                 </seq_action>
-            </new_hit_actions>
+            </hit_actions>
         </TypingEnemy>
         <FlowWall>
             <name>r1_wall1</name>
@@ -903,13 +892,20 @@
             <rot_vel>0</rot_vel>
             <polygon/>
             <hit_actions>
-                <action>b_e 0.25 e:play s:clap_909 v:0.2</action>
-            </hit_actions>
-            <new_hit_actions>
                 <seq_action>
                     <action_type>BeatTimeEvent</action_type>
+                    <quantize_denom>0.25</quantize_denom>
+                    <beat_time_event>
+                        <event_type>PlayPcm</event_type>
+                        <channel>0</channel>
+                        <tick_time>0</tick_time>
+                        <sound_ix>9</sound_ix>
+                        <velocity>0.200000003</velocity>
+                        <loop>false</loop>
+                        <beat_time>0</beat_time>
+                    </beat_time_event>
                 </seq_action>
-            </new_hit_actions>
+            </hit_actions>
         </FlowWall>
         <TypingEnemy>
             <name>r1_d</name>
@@ -952,7 +948,7 @@
                 <loop_waypoints>false</loop_waypoints>
                 <waypoints/>
             </waypoint_follower>
-            <new_hit_actions>
+            <hit_actions>
                 <seq_action>
                     <action_type>ChangeStepSequencer</action_type>
                     <seqName>chord_seq</seqName>
@@ -960,7 +956,7 @@
                     <temporary>true</temporary>
                     <stepStr> mA3,mC4,mE4,mG4:1</stepStr>
                 </seq_action>
-            </new_hit_actions>
+            </hit_actions>
         </TypingEnemy>
         <TypingEnemy>
             <name>r1_k</name>
@@ -1003,7 +999,7 @@
                 <loop_waypoints>false</loop_waypoints>
                 <waypoints/>
             </waypoint_follower>
-            <new_hit_actions>
+            <hit_actions>
                 <seq_action>
                     <action_type>ChangeStepSequencer</action_type>
                     <seqName>chord_seq</seqName>
@@ -1011,7 +1007,7 @@
                     <temporary>true</temporary>
                     <stepStr> mA3,mC4,mE4,mG4:1</stepStr>
                 </seq_action>
-            </new_hit_actions>
+            </hit_actions>
         </TypingEnemy>
         <FlowWall>
             <name>r1_wall2</name>
@@ -1071,13 +1067,20 @@
             <rot_vel>0</rot_vel>
             <polygon/>
             <hit_actions>
-                <action>b_e 0.25 e:play s:clap_909 v:0.2</action>
-            </hit_actions>
-            <new_hit_actions>
                 <seq_action>
                     <action_type>BeatTimeEvent</action_type>
+                    <quantize_denom>0.25</quantize_denom>
+                    <beat_time_event>
+                        <event_type>PlayPcm</event_type>
+                        <channel>0</channel>
+                        <tick_time>0</tick_time>
+                        <sound_ix>9</sound_ix>
+                        <velocity>0.200000003</velocity>
+                        <loop>false</loop>
+                        <beat_time>0</beat_time>
+                    </beat_time_event>
                 </seq_action>
-            </new_hit_actions>
+            </hit_actions>
         </FlowWall>
         <FlowWall>
             <name>r1_wall3</name>
@@ -1137,13 +1140,20 @@
             <rot_vel>0</rot_vel>
             <polygon/>
             <hit_actions>
-                <action>b_e 0.25 e:play s:clap_909 v:0.2</action>
-            </hit_actions>
-            <new_hit_actions>
                 <seq_action>
                     <action_type>BeatTimeEvent</action_type>
+                    <quantize_denom>0.25</quantize_denom>
+                    <beat_time_event>
+                        <event_type>PlayPcm</event_type>
+                        <channel>0</channel>
+                        <tick_time>0</tick_time>
+                        <sound_ix>9</sound_ix>
+                        <velocity>0.200000003</velocity>
+                        <loop>false</loop>
+                        <beat_time>0</beat_time>
+                    </beat_time_event>
                 </seq_action>
-            </new_hit_actions>
+            </hit_actions>
         </FlowWall>
         <FlowWall>
             <name>r1_wall4</name>
@@ -1203,13 +1213,20 @@
             <rot_vel>0</rot_vel>
             <polygon/>
             <hit_actions>
-                <action>b_e 0.25 e:play s:clap_909 v:0.2</action>
-            </hit_actions>
-            <new_hit_actions>
                 <seq_action>
                     <action_type>BeatTimeEvent</action_type>
+                    <quantize_denom>0.25</quantize_denom>
+                    <beat_time_event>
+                        <event_type>PlayPcm</event_type>
+                        <channel>0</channel>
+                        <tick_time>0</tick_time>
+                        <sound_ix>9</sound_ix>
+                        <velocity>0.200000003</velocity>
+                        <loop>false</loop>
+                        <beat_time>0</beat_time>
+                    </beat_time_event>
                 </seq_action>
-            </new_hit_actions>
+            </hit_actions>
         </FlowWall>
         <TypingEnemy>
             <name>r1_e</name>
@@ -1252,7 +1269,7 @@
                 <loop_waypoints>false</loop_waypoints>
                 <waypoints/>
             </waypoint_follower>
-            <new_hit_actions>
+            <hit_actions>
                 <seq_action>
                     <action_type>ChangeStepSequencer</action_type>
                     <seqName>chord_seq</seqName>
@@ -1260,7 +1277,7 @@
                     <temporary>true</temporary>
                     <stepStr> mG3,mB3-,mD4,mF4:1</stepStr>
                 </seq_action>
-            </new_hit_actions>
+            </hit_actions>
         </TypingEnemy>
         <TypingEnemy>
             <name>r1_i</name>
@@ -1303,7 +1320,7 @@
                 <loop_waypoints>false</loop_waypoints>
                 <waypoints/>
             </waypoint_follower>
-            <new_hit_actions>
+            <hit_actions>
                 <seq_action>
                     <action_type>ChangeStepSequencer</action_type>
                     <seqName>chord_seq</seqName>
@@ -1311,7 +1328,7 @@
                     <temporary>true</temporary>
                     <stepStr> mG3,mB3-,mD4,mF4:1</stepStr>
                 </seq_action>
-            </new_hit_actions>
+            </hit_actions>
         </TypingEnemy>
         <FlowWall>
             <name>r1_wall5</name>
@@ -1371,13 +1388,20 @@
             <rot_vel>0</rot_vel>
             <polygon/>
             <hit_actions>
-                <action>b_e 0.25 e:play s:clap_909 v:0.2</action>
-            </hit_actions>
-            <new_hit_actions>
                 <seq_action>
                     <action_type>BeatTimeEvent</action_type>
+                    <quantize_denom>0.25</quantize_denom>
+                    <beat_time_event>
+                        <event_type>PlayPcm</event_type>
+                        <channel>0</channel>
+                        <tick_time>0</tick_time>
+                        <sound_ix>9</sound_ix>
+                        <velocity>0.200000003</velocity>
+                        <loop>false</loop>
+                        <beat_time>0</beat_time>
+                    </beat_time_event>
                 </seq_action>
-            </new_hit_actions>
+            </hit_actions>
         </FlowWall>
         <FlowWall>
             <name>r1_wall6</name>
@@ -1437,13 +1461,20 @@
             <rot_vel>0</rot_vel>
             <polygon/>
             <hit_actions>
-                <action>b_e 0.25 e:play s:clap_909 v:0.2</action>
-            </hit_actions>
-            <new_hit_actions>
                 <seq_action>
                     <action_type>BeatTimeEvent</action_type>
+                    <quantize_denom>0.25</quantize_denom>
+                    <beat_time_event>
+                        <event_type>PlayPcm</event_type>
+                        <channel>0</channel>
+                        <tick_time>0</tick_time>
+                        <sound_ix>9</sound_ix>
+                        <velocity>0.200000003</velocity>
+                        <loop>false</loop>
+                        <beat_time>0</beat_time>
+                    </beat_time_event>
                 </seq_action>
-            </new_hit_actions>
+            </hit_actions>
         </FlowWall>
         <TypingEnemy>
             <name>r1_g</name>
@@ -1486,7 +1517,7 @@
                 <loop_waypoints>false</loop_waypoints>
                 <waypoints/>
             </waypoint_follower>
-            <new_hit_actions>
+            <hit_actions>
                 <seq_action>
                     <action_type>ChangeStepSequencer</action_type>
                     <seqName>chord_seq</seqName>
@@ -1494,7 +1525,7 @@
                     <temporary>true</temporary>
                     <stepStr> mA3,mC4,mE4,mG4:1</stepStr>
                 </seq_action>
-            </new_hit_actions>
+            </hit_actions>
         </TypingEnemy>
         <TypingEnemy>
             <name>r1_h</name>
@@ -1537,7 +1568,7 @@
                 <loop_waypoints>false</loop_waypoints>
                 <waypoints/>
             </waypoint_follower>
-            <new_hit_actions>
+            <hit_actions>
                 <seq_action>
                     <action_type>ChangeStepSequencer</action_type>
                     <seqName>chord_seq</seqName>
@@ -1545,7 +1576,7 @@
                     <temporary>true</temporary>
                     <stepStr> mA3,mC4,mE4,mG4:1</stepStr>
                 </seq_action>
-            </new_hit_actions>
+            </hit_actions>
         </TypingEnemy>
     </new_entities>
 </script>

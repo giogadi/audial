@@ -15,6 +15,7 @@
 
 #include "properties/SpawnAutomatorSeqAction.h"
 #include "properties/ChangeStepSequencerSeqAction.h"
+#include "properties/NoteOnOffSeqAction.h"
 
 struct SeqAction;
 
@@ -86,18 +87,7 @@ private:
 
 struct SpawnAutomatorSeqAction : public SeqAction {
     virtual SeqActionType Type() const override { return SeqActionType::SpawnAutomator; }
-    SpawnAutomatorSeqActionProps _props;
-    
-    // If relative is true, startValue and endValue are interpreted as offsets
-    // from the current value of the param
-    // bool _relative = false;
-    // float _startValue = 0.f;
-    // float _endValue = 1.f;
-    // double _desiredAutomateTime = 1.0;
-    // bool _synth = false;
-    // audio::SynthParamType _synthParam = audio::SynthParamType::Gain;
-    // int _channel = 0;  // only if _synth == true
-    // std::string _seqEntityName;
+    SpawnAutomatorSeqActionProps _props;   
     
     virtual void ExecuteDerived(GameManager& g) override;
     virtual void LoadDerived(
@@ -121,17 +111,13 @@ struct RemoveEntitySeqAction : public SeqAction {
     virtual void ExecuteDerived(GameManager& g) override;
     virtual void LoadDerived(
         LoadInputs const& loadInputs, std::istream& input) override;
+    virtual void LoadDerived(serial::Ptree pt) override;
+    virtual void SaveDerived(serial::Ptree pt) const override;
+    virtual bool ImGui() override;
 };
 
 struct ChangeStepSequencerSeqAction : public SeqAction {
     virtual SeqActionType Type() const override { return SeqActionType::ChangeStepSequencer; }
-    // serialized
-    // std::string _seqName;
-    // // TODO: Turn these into a StepSequencer::SeqStepChange thing
-    // std::array<int, 4> _midiNotes = {-1, -1, -1, -1};
-    // float _velocity = 0.f;
-    // bool _velOnly = false;
-    // bool _temporary = true;
     ChangeStepSequencerSeqActionProps _props;
 
     ne::EntityId _seqId;
@@ -152,15 +138,19 @@ struct SetAllStepsSeqAction : public SeqAction {
     virtual SeqActionType Type() const override { return SeqActionType::SetAllSteps; }
     // serialized
     std::string _seqName;
-    std::array<int, 4> _midiNotes = {-1, -1, -1, -1};
-    float _velocity = 0.f;
+    std::string _stepStr;
     bool _velOnly = false;
 
     ne::EntityId _seqId;
+    float _velocity = 0.f;
+    std::array<int, 4> _midiNotes = {-1, -1, -1, -1};
     
     virtual void ExecuteDerived(GameManager& g) override;
     virtual void LoadDerived(
         LoadInputs const& loadInputs, std::istream& input) override;
+    virtual void LoadDerived(serial::Ptree pt) override;
+    virtual void SaveDerived(serial::Ptree pt) const override;
+    virtual bool ImGui() override;
     virtual void InitDerived(GameManager& g) override;
 };
 
@@ -189,32 +179,37 @@ struct SetStepSequencerMuteSeqAction : public SeqAction {
     virtual void ExecuteDerived(GameManager& g) override;
     virtual void LoadDerived(
         LoadInputs const& loadInputs, std::istream& input) override;
+    virtual void LoadDerived(serial::Ptree pt) override;
+    virtual void SaveDerived(serial::Ptree pt) const override;
+    virtual bool ImGui() override;
     virtual void InitDerived(GameManager& g) override;
 };
 
 struct NoteOnOffSeqAction : public SeqAction {
     virtual SeqActionType Type() const override { return SeqActionType::NoteOnOff; }
-    int _channel = 0;
-    int _midiNote = -1;
-    double _noteLength = 0.0;  // in beat time
-    float _velocity = 1.f;
-    double _quantizeDenom = 0.25;
+
+    NoteOnOffSeqActionProps _props;
+    
     virtual void ExecuteDerived(GameManager& g) override;
     virtual void LoadDerived(
         LoadInputs const& loadInputs, std::istream& input) override;
+    virtual void LoadDerived(serial::Ptree pt) override { _props.Load(pt); }
+    virtual void SaveDerived(serial::Ptree pt) const override { _props.Save(pt); }
+    virtual bool ImGui() override { return _props.ImGui(); }
 };
 
 struct BeatTimeEventSeqAction : public SeqAction {
     virtual SeqActionType Type() const override { return SeqActionType::BeatTimeEvent; }
     // serialize
-    std::string _soundBankName;
     BeatTimeEvent _b_e;
     double _quantizeDenom = 0.25;
     
     virtual void ExecuteDerived(GameManager& g) override;
     virtual void LoadDerived(
         LoadInputs const& loadInputs, std::istream& input) override;
-    virtual void InitDerived(GameManager& g) override;
+    virtual void LoadDerived(serial::Ptree pt) override;
+    virtual void SaveDerived(serial::Ptree pt) const override;
+    virtual bool ImGui() override;
 };
 
 struct WaypointControlSeqAction : public SeqAction {
@@ -226,6 +221,9 @@ struct WaypointControlSeqAction : public SeqAction {
     virtual void ExecuteDerived(GameManager& g) override;
     virtual void LoadDerived(
         LoadInputs const& loadInputs, std::istream& input) override;
+    virtual void LoadDerived(serial::Ptree pt) override;
+    virtual void SaveDerived(serial::Ptree pt) const override;
+    virtual bool ImGui() override;
 };
 
 struct PlayerSetKillZoneSeqAction : public SeqAction {
@@ -234,6 +232,9 @@ struct PlayerSetKillZoneSeqAction : public SeqAction {
 
     virtual void ExecuteDerived(GameManager& g) override;
     virtual void LoadDerived(LoadInputs const& loadInputs, std::istream& input) override;
+    virtual void LoadDerived(serial::Ptree pt) override;
+    virtual void SaveDerived(serial::Ptree pt) const override;
+    virtual bool ImGui() override;
 };
 
 struct PlayerSetSpawnPointSeqAction : public SeqAction {
@@ -242,6 +243,9 @@ struct PlayerSetSpawnPointSeqAction : public SeqAction {
     virtual void ExecuteDerived(GameManager& g) override;
     virtual void LoadDerived(
         LoadInputs const& loadInputs, std::istream& input) override;
+    virtual void LoadDerived(serial::Ptree pt) override;
+    virtual void SaveDerived(serial::Ptree pt) const override;
+    virtual bool ImGui() override;
 };
 
 struct SetNewFlowSectionSeqAction : public SeqAction {
@@ -250,6 +254,9 @@ struct SetNewFlowSectionSeqAction : public SeqAction {
 
     virtual void ExecuteDerived(GameManager& g) override;
     virtual void LoadDerived(LoadInputs const& loadInputs, std::istream& input) override;
+    virtual void LoadDerived(serial::Ptree pt) override;
+    virtual void SaveDerived(serial::Ptree pt) const override;
+    virtual bool ImGui() override;
 };
 
 struct AddToIntVariableSeqAction : public SeqAction {
@@ -259,4 +266,7 @@ struct AddToIntVariableSeqAction : public SeqAction {
 
     virtual void ExecuteDerived(GameManager& g) override;
     virtual void LoadDerived(LoadInputs const& loadInputs, std::istream& input) override;
+    virtual void LoadDerived(serial::Ptree pt) override;
+    virtual void SaveDerived(serial::Ptree pt) const override;
+    virtual bool ImGui() override;
 };

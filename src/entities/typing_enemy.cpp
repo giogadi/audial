@@ -238,17 +238,7 @@ void TypingEnemyEntity::LoadDerived(serial::Ptree pt) {
         _waypointFollower.Load(pt);
     }
 
-    SeqAction::LoadActionsFromChildNode(pt, "new_hit_actions", _hitActions);
-    // serial::Ptree actionsPt = pt.GetChild("new_hit_actions");
-    // int numChildren;
-    // serial::NameTreePair* children = actionsPt.GetChildren(&numChildren);
-    // _hitActionStrings.clear();
-    // _hitActionStrings.reserve(numChildren);
-    // for (int i = 0; i < numChildren; ++i) {
-    //     _hitActionStrings.push_back(children[i]._pt.GetStringValue());
-    // }
-    // delete[] children;
-    
+    SeqAction::LoadActionsFromChildNode(pt, "hit_actions", _hitActions);    
 }
 
 void TypingEnemyEntity::SaveDerived(serial::Ptree pt) const {
@@ -259,14 +249,7 @@ void TypingEnemyEntity::SaveDerived(serial::Ptree pt) const {
     pt.PutFloat("flow_cooldown", _flowCooldown);
     pt.PutBool("reset_cooldown_on_any_hit", _resetCooldownOnAnyHit);
     serial::SaveInNewChildOf(pt, "waypoint_follower", _waypointFollower);
-
-    // serial::Ptree actionsPt = pt.AddChild("hit_actions");
-    // for (std::string const& actionStr : _hitActionStrings) {
-    //     serial::Ptree actionPt = actionsPt.AddChild("action");
-    //     actionPt.PutStringValue(actionStr.c_str());
-    // }
-    // HOWDYYYYYYYYYYY
-    SeqAction::SaveActionsInChildNode(pt, "new_hit_actions", _hitActions);
+    SeqAction::SaveActionsInChildNode(pt, "hit_actions", _hitActions);
 }
 
 ne::BaseEntity::ImGuiResult TypingEnemyEntity::ImGuiDerived(GameManager& g) {
@@ -288,29 +271,6 @@ ne::BaseEntity::ImGuiResult TypingEnemyEntity::ImGuiDerived(GameManager& g) {
     ImGui::Checkbox("Reset cooldown on any hit", &_resetCooldownOnAnyHit);
 
     SeqAction::ImGui("Hit actions", _hitActions);
-    // if (ImGui::Button("Add Action")) {
-    //     _hitActionStrings.emplace_back();
-    // }
-    // int deletedIx = -1;
-    // ImGui::PushID("actions");
-    // for (int i = 0; i < _hitActionStrings.size(); ++i) {
-    //     ImGui::PushID(i);
-    //     std::string& actionStr = _hitActionStrings[i];
-    //     bool changed = imgui_util::InputText<256>("Action", &actionStr, /*trueOnReturnOnly=*/true);
-    //     if (changed) {
-    //         result = ImGuiResult::NeedsInit;
-    //     }
-    //     if (ImGui::Button("Delete Action")) {
-    //         deletedIx = i;
-    //     }
-    //     ImGui::PopID();
-    // }
-    // ImGui::PopID();
-
-    // if (deletedIx >= 0) {
-    //     result = ImGuiResult::NeedsInit;
-    //     _hitActionStrings.erase(_hitActionStrings.begin() + deletedIx);
-    // }
 
     ImGui::PushID("wp");
     _waypointFollower.ImGui();

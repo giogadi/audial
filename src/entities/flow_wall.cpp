@@ -12,16 +12,8 @@ void FlowWallEntity::InitDerived(GameManager& g) {
     _wpFollower.Init(g, *this);
     _randomWander.Init();
 
-    _hitActions.clear();
-    _hitActions.reserve(_hitActionStrings.size());
-    SeqAction::LoadInputs loadInputs;  // default
-    for (std::string const& actionStr : _hitActionStrings) {
-        std::stringstream ss(actionStr);
-        std::unique_ptr<SeqAction> pAction = SeqAction::LoadAction(loadInputs, ss);
-        if (pAction != nullptr) {
-            pAction->Init(g);
-            _hitActions.push_back(std::move(pAction));   
-        }
+    for (auto const& pAction : _hitActions) {
+        pAction->Init(g);
     }
 
     _currentColor = _modelColor;
@@ -97,9 +89,7 @@ void FlowWallEntity::SaveDerived(serial::Ptree pt) const {
     }
     pt.PutFloat("rot_vel", _rotVel);
     serial::SaveVectorInChildNode(pt, "polygon", "point", _polygon);
-    serial::SaveVectorInChildNode(pt, "hit_actions", "action", _hitActionStrings);
-    // HOWDYYYYYYYYYYY
-    SeqAction::SaveActionsInChildNode(pt, "new_hit_actions", _hitActions);
+    SeqAction::SaveActionsInChildNode(pt, "hit_actions", _hitActions);
 }
 
 void FlowWallEntity::LoadDerived(serial::Ptree pt) {
@@ -119,7 +109,7 @@ void FlowWallEntity::LoadDerived(serial::Ptree pt) {
     }
     pt.TryGetFloat("rot_vel", &_rotVel);
     serial::LoadVectorFromChildNode(pt, "polygon", _polygon);
-    serial::LoadVectorFromChildNode(pt, "hit_actions", _hitActionStrings);
+    SeqAction::LoadActionsFromChildNode(pt, "hit_actions", _hitActions);
 }
 
 FlowWallEntity::ImGuiResult FlowWallEntity::ImGuiDerived(GameManager& g)  {
@@ -147,12 +137,13 @@ FlowWallEntity::ImGuiResult FlowWallEntity::ImGuiDerived(GameManager& g)  {
         imgui_util::InputVector(_polygon);        
     }
 
-    if (ImGui::CollapsingHeader("Hit actions")) {
-        bool needsInit = imgui_util::InputVector(_hitActionStrings);
-        if (needsInit) {
-            result = ImGuiResult::NeedsInit;
-        }
-    }
+    SeqAction::ImGui("Hit actions", _hitActions);
+    // if (ImGui::CollapsingHeader("Hit actions")) {
+    //     bool needsInit = imgui_util::InputVector(_hitActionStrings);
+    //     if (needsInit) {
+    //         result = ImGuiResult::NeedsInit;
+    //     }
+    // }
     
     return result;
 }

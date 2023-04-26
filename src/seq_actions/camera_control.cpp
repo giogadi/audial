@@ -11,16 +11,32 @@ void CameraControlSeqAction::ExecuteDerived(GameManager& g) {
     ne::EntityManager::Iterator eIter = g._neEntityManager->GetIterator(ne::EntityType::Camera, &numEntities);
     assert(numEntities == 1);
     CameraEntity* camera = static_cast<CameraEntity*>(eIter.GetEntity());
-    if (_setTarget) {
+    if (_props._setTarget) {
         camera->_followEntityId = _targetEntityId;
     }
-    if (_setOffset) {
-        camera->_desiredTargetToCameraOffset = _desiredTargetToCameraOffset;
-    }    
-    camera->_minX = _minX;
-    camera->_minZ = _minZ;
-    camera->_maxX = _maxX;
-    camera->_maxZ = _maxZ;
+    if (_props._setOffset) {
+        camera->_desiredTargetToCameraOffset = _props._desiredTargetToCameraOffset;
+    }
+    if (_props._hasMinX) {
+        camera->_minX = _props._minX;
+    } else {
+        camera->_minX.reset();
+    }
+    if (_props._hasMinZ) {
+        camera->_minZ = _props._minZ;
+    } else {
+        camera->_minZ.reset();
+    }
+    if (_props._hasMaxX) {
+        camera->_maxX = _props._maxX;
+    } else {
+        camera->_maxX.reset();
+    }
+    if (_props._hasMaxZ) {
+        camera->_maxZ = _props._maxZ;
+    } else {
+        camera->_maxZ.reset();
+    }
     if (camera->_minX.has_value() || camera->_minZ.has_value() || camera->_maxX.has_value() || camera->_maxZ.has_value()) {
         camera->ResetConstraintBlend();
     }
@@ -47,19 +63,19 @@ void CameraControlSeqAction::LoadDerived(LoadInputs const& loadInputs, std::istr
 
         if (key == "offset") {
             Direction offsetFromCamera = StringToDirection(value.c_str());
-            _desiredTargetToCameraOffset = camera_util::GetDefaultCameraOffset(offsetFromCamera);            
-            _setOffset = true;
+            _props._desiredTargetToCameraOffset = camera_util::GetDefaultCameraOffset(offsetFromCamera);            
+            _props._setOffset = true;
         } else if (key == "target") {
-            _targetEntityName = value;
-            _setTarget = true;
-        } else if (key == "min_x") {            
-            _minX = string_util::MaybeStof(value);
+            _props._targetEntityName = value;
+            _props._setTarget = true;
+        } else if (key == "min_x") {
+            _props._hasMinX = string_util::MaybeStof(value, _props._minX);
         } else if (key == "max_x") {
-            _maxX = string_util::MaybeStof(value);
+            _props._hasMaxX = string_util::MaybeStof(value, _props._maxX);
         } else if (key == "min_z") {
-            _minZ = string_util::MaybeStof(value);
+            _props._hasMinZ = string_util::MaybeStof(value, _props._minZ);
         } else if (key == "max_z") {
-            _maxZ = string_util::MaybeStof(value);
+            _props._hasMaxZ = string_util::MaybeStof(value, _props._maxZ);
         } else {
             printf("CameraControlSeqAction::Load: Unrecognized key \"%s\"\n", key.c_str());
         }
@@ -67,12 +83,12 @@ void CameraControlSeqAction::LoadDerived(LoadInputs const& loadInputs, std::istr
 }
 
 void CameraControlSeqAction::InitDerived(GameManager& g) {
-    if (!_targetEntityName.empty()) {
-        ne::Entity* e = g._neEntityManager->FindEntityByName(_targetEntityName);
+    if (!_props._targetEntityName.empty()) {
+        ne::Entity* e = g._neEntityManager->FindEntityByName(_props._targetEntityName);
         if (e) {
             _targetEntityId = e->_id;
         } else {
-            printf("SetStepSequenceSeqAction: could not find seq entity \"%s\"\n", _targetEntityName.c_str());
+            printf("CameraControlSeqAction: could not find seq entity \"%s\"\n", _props._targetEntityName.c_str());
         }
     }
 }

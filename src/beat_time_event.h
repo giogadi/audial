@@ -33,6 +33,7 @@ struct BeatTimeEvent {
         _e.Load(pt);
         _beatTime = pt.GetDouble("beat_time");
     }
+    bool ImGui();
 };
 
 inline audio::Event BeatTimeToTickTimeEvent(BeatTimeEvent const& b_e, BeatClock const& beatClock) {
