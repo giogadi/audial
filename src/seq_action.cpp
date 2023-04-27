@@ -472,6 +472,25 @@ void SetStepSequenceSeqAction::LoadDerived(LoadInputs const& loadInputs, std::is
     StepSequencerEntity::LoadSequenceFromInput(input, _sequence);
 }
 
+void SetStepSequenceSeqAction::LoadDerived(serial::Ptree pt) {
+    _seqName = pt.GetString("seq_entity_name");
+    _seqStr = pt.GetString("seq_str");
+}
+
+void SetStepSequenceSeqAction::SaveDerived(serial::Ptree pt) const {
+    pt.PutString("seq_entity_name", _seqName.c_str());
+    pt.PutString("seq_str", _seqStr.c_str());
+}
+
+bool SetStepSequenceSeqAction::ImGui() {
+    bool changed = imgui_util::InputText<128>("Seq entity name", &_seqName);
+
+    bool c = imgui_util::InputText<1024>("Seq str", &_seqStr);
+    changed = c || changed;
+
+    return false;
+}
+
 void SetStepSequenceSeqAction::InitDerived(GameManager& g) {
     ne::Entity* e = g._neEntityManager->FindEntityByName(_seqName);
     if (e) {
@@ -479,6 +498,9 @@ void SetStepSequenceSeqAction::InitDerived(GameManager& g) {
     } else {
         printf("SetStepSequenceSeqAction: could not find seq entity \"%s\"\n", _seqName.c_str());
     }
+
+    std::stringstream ss(_seqStr);
+    StepSequencerEntity::LoadSequenceFromInput(ss, _sequence);
 }
 
 void SetStepSequenceSeqAction::ExecuteDerived(GameManager& g) {

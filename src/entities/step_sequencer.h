@@ -10,7 +10,7 @@ struct StepSequencerEntity : ne::Entity {
     struct SeqStep {
         SeqStep() {}
         std::array<int,4> _midiNote = {-1, -1, -1, -1};
-        float _velocity = 1.f;        
+        float _velocity = 1.f;
     };
     struct SeqStepChange {
         SeqStep _step;

@@ -224,7 +224,7 @@
                 <w>0</w>
             </model_color_vec4>
             <flow_section_id>-1</flow_section_id>
-            <sequence>mG0:0.5 -1:1 -1:1 -1:1 mG0:0.5 -1:1 -1:1 -1:1 mG0:0.5 -1:1 -1:1 -1:1 mG0:0.5 -1:1 -1:1 -1:1</sequence>
+            <sequence>mG0:0 -1:1 -1:1 -1:1 mG0:0 -1:1 -1:1 -1:1 mG0:0 -1:1 -1:1 -1:1 mG0:0 -1:1 -1:1 -1:1</sequence>
             <start_mute>true</start_mute>
             <channels/>
             <step_length>0.25</step_length>
@@ -806,7 +806,7 @@
             <flow_section_id>-1</flow_section_id>
             <text>f</text>
             <type_kill>false</type_kill>
-            <all_actions_on_hit>false</all_actions_on_hit>
+            <all_actions_on_hit>true</all_actions_on_hit>
             <flow_polarity>false</flow_polarity>
             <flow_cooldown>500</flow_cooldown>
             <reset_cooldown_on_any_hit>true</reset_cooldown_on_any_hit>
