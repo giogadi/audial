@@ -23,5 +23,5 @@ struct ActionSequencerEntity : ne::Entity {
     virtual void Update(GameManager& g, float dt) override;
     virtual void SaveDerived(serial::Ptree pt) const override;
     virtual void LoadDerived(serial::Ptree pt) override;
-     virtual ImGuiResult ImGuiDerived(GameManager& g) override;     
+    virtual ImGuiResult ImGuiDerived(GameManager& g) override;     
 };

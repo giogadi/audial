@@ -5,12 +5,10 @@
 
 struct FlowTriggerEntity : public ne::Entity {
     // serialized
-    std::vector<std::string> _actionStrings;
-
-    // non-serialized
     std::vector<std::unique_ptr<SeqAction>> _actions;
+    
+    // non-serialized
     bool _isTriggering = false;
-
     void OnTrigger(GameManager& g);
        
     virtual void Update(GameManager& g, float dt) override;

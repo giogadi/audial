@@ -20,6 +20,7 @@
 #include "enums/SeqActionType.h"
 
 void SeqAction::Save(serial::Ptree pt) const {
+    pt.PutBool("one_time", _oneTime);
     pt.PutString("action_type", SeqActionTypeToString(Type()));
     SaveDerived(pt);
 }
@@ -63,8 +64,25 @@ std::unique_ptr<SeqAction> SeqAction::Load(serial::Ptree pt) {
         return nullptr;
     }
     std::unique_ptr<SeqAction> pAction = SeqAction::New(actionType);
+    pt.TryGetBool("one_time", &(pAction->_oneTime));
     pAction->LoadDerived(pt);
     return pAction;
+}
+
+void SeqAction::LoadActionsFromChildNode(serial::Ptree pt, char const* childName, std::vector<std::unique_ptr<SeqAction>>& actions) {
+    actions.clear();
+    serial::Ptree actionsPt = pt.TryGetChild(childName);
+    if (!actionsPt.IsValid()) {
+        printf("LoadActionsFromChildNode: no child found of name \"%s\"!\n", childName);
+        return;
+    }
+    int numChildren;
+    serial::NameTreePair* children = actionsPt.GetChildren(&numChildren);
+    actions.reserve(numChildren);
+    for (int i = 0; i < numChildren; ++i) {
+        actions.push_back(Load(children[i]._pt));
+    }
+    delete[] children;
 }
 
 bool SeqAction::ImGui(char const* label, std::vector<std::unique_ptr<SeqAction>>& actions) {
@@ -82,8 +100,11 @@ bool SeqAction::ImGui(char const* label, std::vector<std::unique_ptr<SeqAction>>
         for (int i = 0, n = actions.size(); i < n; ++i) {
             ImGui::PushID(i);
             if (ImGui::CollapsingHeader(SeqActionTypeToString(actions[i]->Type()))) {
-                bool thisChanged = actions[i]->ImGui();
-                changed = changed || thisChanged;
+                bool thisChanged = ImGui::Checkbox("One time", &actions[i]->_oneTime);
+                changed = thisChanged || changed;
+
+                thisChanged = actions[i]->ImGui();
+                changed = thisChanged || changed;
                 if (ImGui::Button("Remove")) {
                     deleteIx = i;
                     changed = true;
@@ -99,22 +120,6 @@ bool SeqAction::ImGui(char const* label, std::vector<std::unique_ptr<SeqAction>>
     }
     
     return changed;
-}
-
-void SeqAction::LoadActionsFromChildNode(serial::Ptree pt, char const* childName, std::vector<std::unique_ptr<SeqAction>>& actions) {
-    actions.clear();
-    serial::Ptree actionsPt = pt.TryGetChild(childName);
-    if (!actionsPt.IsValid()) {
-        printf("LoadActionsFromChildNode: no child found of name \"%s\"!\n", childName);
-        return;
-    }
-    int numChildren;
-    serial::NameTreePair* children = actionsPt.GetChildren(&numChildren);
-    actions.reserve(numChildren);
-    for (int i = 0; i < numChildren; ++i) {
-        actions.push_back(Load(children[i]._pt));
-    }
-    delete[] children;
 }
 
 std::unique_ptr<SeqAction> SeqAction::LoadAction(LoadInputs const& loadInputs, std::istream& input) {
@@ -388,19 +393,24 @@ void ChangeStepSequencerSeqAction::InitDerived(GameManager& g) {
 }
 
 void SetAllStepsSeqAction::LoadDerived(LoadInputs const& loadInputs, std::istream& input) {
-    std::string token;
-    input >> token;
-    if (token == "vel_only") {
-        _velOnly = true;
-        input >> _seqName;
-    } else {
-        _seqName = token;
-    }
-    if (!_velOnly) {
-        assert(_midiNotes.size() == 4);
-        input >> _midiNotes[0] >> _midiNotes[1] >> _midiNotes[2] >> _midiNotes[3];
-    }
-    input >> _velocity;
+    input >> _seqName;
+    input >> _velOnly;
+
+    std::getline(input, _stepStr);
+    
+    // std::string token;
+    // input >> token;
+    // if (token == "vel_only") {
+    //     _velOnly = true;
+    //     input >> _seqName;
+    // } else {
+    //     _seqName = token;
+    // }
+    // if (!_velOnly) {
+    //     assert(_midiNotes.size() == 4);
+    //     input >> _midiNotes[0] >> _midiNotes[1] >> _midiNotes[2] >> _midiNotes[3];
+    // }
+    // input >> _velocity;
 }
 void SetAllStepsSeqAction::LoadDerived(serial::Ptree pt) {
     _seqName = pt.GetString("seq_name");
