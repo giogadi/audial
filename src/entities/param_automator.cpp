@@ -7,34 +7,40 @@
 #include "sequencer.h"
 #include "audio.h"
 
+void ParamAutomatorEntity::LoadDerived(serial::Ptree pt) {
+    _props.Load(pt);
+}
+
+void ParamAutomatorEntity::SaveDerived(serial::Ptree pt) const {
+    _props.Save(pt);
+}
+
 void ParamAutomatorEntity::InitDerived(GameManager& g) {
-    if (!_seqEntityName.empty()) {
-        ne::Entity* e = g._neEntityManager->FindEntityByName(_seqEntityName);
+    if (!_props._seqEntityName.empty()) {
+        ne::Entity* e = g._neEntityManager->FindEntityByNameAndType(_props._seqEntityName, ne::EntityType::StepSequencer);
         if (e == nullptr) {
-            printf("ParamAutomatorEntity::Init (\"%s\"): could not find entity with name \"%s\"\n", _name.c_str(), _seqEntityName.c_str());
+            e = g._neEntityManager->FindEntityByNameAndType(_props._seqEntityName, ne::EntityType::Sequencer);
+        }
+        if (e == nullptr) {
+            printf("ParamAutomatorEntity::Init (\"%s\"): could not find seq/stepseq entity with name \"%s\"\n", _name.c_str(), _props._seqEntityName.c_str());
             return;
         }
-        if (e->_id._type != ne::EntityType::Sequencer &&
-            e->_id._type != ne::EntityType::StepSequencer) {
-            printf("ParamAutomatorEntity::Init: (\"%s\"): entity found of name \"%s\" was not a seq entity!\n", _name.c_str(), _seqEntityName.c_str());
-            return;
-        }
-        _seqId = e->_id;
+        _seqId = e->_id;               
     }
     _automateStartTime = g._beatClock->GetBeatTimeFromEpoch();
 
-    if (_relative) {
-        if (_synth) {
-            if (_synthParam == audio::SynthParamType::Cutoff) {
-                synth::Patch const& patch = g._audioContext->_state.synths[_channel].patch;
+    if (_props._relative) {
+        if (_props._synth) {
+            if (_props._synthParam == audio::SynthParamType::Cutoff) {
+                synth::Patch const& patch = g._audioContext->_state.synths[_props._channel].patch;
                 float currentVal = patch.cutoffFreq;
-                _startValue = currentVal + _startValue;
-                _endValue = currentVal + _endValue;
-            } else if (_synthParam == audio::SynthParamType::CutoffEnvGain) {
-                synth::Patch const& patch = g._audioContext->_state.synths[_channel].patch;
+                _startValueAdjusted = currentVal + _props._startValue;
+                _endValueAdjusted = currentVal + _props._endValue;
+            } else if (_props._synthParam == audio::SynthParamType::CutoffEnvGain) {
+                synth::Patch const& patch = g._audioContext->_state.synths[_props._channel].patch;
                 float currentVal = patch.cutoffEnvGain;
-                _startValue = currentVal + _startValue;
-                _endValue = currentVal + _endValue;
+                _startValueAdjusted = currentVal + _props._startValue;
+                _endValueAdjusted = currentVal + _props._endValue;
             } else {
                 printf("ParamAutomatorEntity::Init: relative only supports Cutoff right now.\n");
             }
@@ -43,8 +49,13 @@ void ParamAutomatorEntity::InitDerived(GameManager& g) {
     }
 }
 
+ne::Entity::ImGuiResult ParamAutomatorEntity::ImGuiDerived(GameManager& g) {
+    bool needsInit = _props.ImGui();
+    return needsInit ? ImGuiResult::NeedsInit : ImGuiResult::Done;
+}
+
 void ParamAutomatorEntity::Update(GameManager& g, float dt) {
-    if (!_synth && !_seqId.IsValid()) {
+    if (!_props._synth && !_seqId.IsValid()) {
         return;
     }
     double const beatTime = g._beatClock->GetBeatTimeFromEpoch();
@@ -53,18 +64,18 @@ void ParamAutomatorEntity::Update(GameManager& g, float dt) {
         return;
     }
     // We don't early-return here so we ensure we actually set to the end value.
-    if (automateTime >= _desiredAutomateTime) {
+    if (automateTime >= _props._desiredAutomateTime) {
         g._neEntityManager->TagForDestroy(_id);
     }
-    double factor = math_util::Clamp(automateTime / _desiredAutomateTime, 0.0, 1.0);
-    float newValue = _startValue + factor * (_endValue - _startValue);
+    double factor = math_util::Clamp(automateTime / _props._desiredAutomateTime, 0.0, 1.0);
+    float newValue = _startValueAdjusted + factor * (_endValueAdjusted - _startValueAdjusted);
     
-    if (_synth) {
+    if (_props._synth) {
         audio::Event e;
         e.type = audio::EventType::SynthParam;
-        e.channel = _channel;
+        e.channel = _props._channel;
         e.timeInTicks = 0;
-        e.param = _synthParam;
+        e.param = _props._synthParam;
         e.newParamValue = newValue;
         e.paramChangeTime = 0;
         g._audioContext->AddEvent(e);
@@ -94,8 +105,4 @@ void ParamAutomatorEntity::Update(GameManager& g, float dt) {
             assert(false);
         }
     }
-}
-
-void ParamAutomatorEntity::SaveDerived(serial::Ptree pt) const {
-    printf("ParamAutomatorEntity::SaveDerived is NOT IMPLEMENTED. If you get to this, DO NOT JUST SAVE _startValue and _endValue because they currently get messed with in Init\n");
 }

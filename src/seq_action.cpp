@@ -294,14 +294,7 @@ void SpawnAutomatorSeqAction::ExecuteDerived(GameManager& g) {
         return;
     }
     ParamAutomatorEntity* e = static_cast<ParamAutomatorEntity*>(g._neEntityManager->AddEntity(ne::EntityType::ParamAutomator));
-    e->_relative = _props._relative;
-    e->_startValue = _props._startValue;
-    e->_endValue = _props._endValue;
-    e->_desiredAutomateTime = _props._desiredAutomateTime;
-    e->_synth = _props._synth;
-    e->_synthParam = _props._synthParam;
-    e->_channel = _props._channel;
-    e->_seqEntityName = _props._seqEntityName;
+    e->_props = _props;    
     e->Init(g);
 }
 

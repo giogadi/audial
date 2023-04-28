@@ -745,7 +745,7 @@
                     <w>1</w>
                 </quat>
                 <scale>
-                    <x>2</x>
+                    <x>3</x>
                     <y>1</y>
                     <z>2</z>
                 </scale>
@@ -763,15 +763,20 @@
                     <one_time>false</one_time>
                     <action_type>SetAllSteps</action_type>
                     <seq_name>snare_seq</seq_name>
-                    <step_str>20,-1,-1,-1:0.5</step_str>
+                    <step_str>20,-1,-1,-1:0.0</step_str>
                     <vel_only>false</vel_only>
                 </seq_action>
                 <seq_action>
                     <one_time>false</one_time>
-                    <action_type>SetAllSteps</action_type>
-                    <seq_name>bass_seq</seq_name>
-                    <step_str>-1,-1,-1,-1:0.0</step_str>
-                    <vel_only>true</vel_only>
+                    <action_type>SpawnAutomator</action_type>
+                    <relative>false</relative>
+                    <startValue>0</startValue>
+                    <endValue>0.5</endValue>
+                    <desiredAutomateTime>8</desiredAutomateTime>
+                    <synth>false</synth>
+                    <synthParam>Gain</synthParam>
+                    <channel>0</channel>
+                    <seqEntityName>snare_seq</seqEntityName>
                 </seq_action>
             </actions>
         </FlowTrigger>
@@ -886,7 +891,7 @@
                 <pos>
                     <x>-3.828125</x>
                     <y>0</y>
-                    <z>-0.976562977</z>
+                    <z>0</z>
                 </pos>
                 <quat>
                     <x>0</x>
@@ -1138,7 +1143,7 @@
                 <pos>
                     <x>0.609375</x>
                     <y>0</y>
-                    <z>3.53906155</z>
+                    <z>4.53900003</z>
                 </pos>
                 <quat>
                     <x>0</x>
@@ -1390,7 +1395,7 @@
                 <pos>
                     <x>5.328125</x>
                     <y>0</y>
-                    <z>-0.835937917</z>
+                    <z>0</z>
                 </pos>
                 <quat>
                     <x>0</x>
@@ -1464,7 +1469,7 @@
                 <pos>
                     <x>5.328125</x>
                     <y>0</y>
-                    <z>-9.859375</z>
+                    <z>-10</z>
                 </pos>
                 <quat>
                     <x>0</x>
