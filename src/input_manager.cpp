@@ -90,8 +90,11 @@ int InputManager::MapToGlfw(Key k) {
         case Key::Right: return GLFW_KEY_RIGHT;
         case Key::LeftShift: return GLFW_KEY_LEFT_SHIFT;
         case Key::RightShift: return GLFW_KEY_RIGHT_SHIFT;
+        case Key::LeftAlt: return GLFW_KEY_LEFT_ALT;
+        case Key::RightAlt: return GLFW_KEY_RIGHT_ALT;
         case Key::Tab: return GLFW_KEY_TAB;
         case Key::Backspace: return GLFW_KEY_BACKSPACE;
+        case Key::Enter: return GLFW_KEY_ENTER;
         default: {                    
             std::cout << "InputManager: UNRECOGNIZED KEY!" << std::endl;
             return -1;

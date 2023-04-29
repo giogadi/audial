@@ -198,38 +198,23 @@ bool TestRayOBBIntersection(
 
 }
 
-// EntityId PickEntity(
-//     EntityManager& entities, double clickX, double clickY, int windowWidth, int windowHeight,
-//     renderer::Camera const& camera) {
+std::optional<float> EntityRaycast(ne::Entity const& entity, Vec3 const& rayStart, Vec3 const& rayDir) {
+    Vec3 scale = entity._transform.Scale();
+    scale *= 0.5f;            
 
-//     float const pickSphereRad = 0.1f;
+    float hitDist;
+    if (TestRayOBBIntersection(rayStart, rayDir, -scale, scale, entity._transform.Mat4NoScale(), hitDist)) {
+        return hitDist;
+    }
+    return std::nullopt;
+}
 
-//     Vec3 rayStart;
-//     Vec3 rayDir;
-//     GetPickRay(clickX, clickY, windowWidth, windowHeight, camera, &rayStart, &rayDir);
-//     // Start a little ahead of camera so we don't pick it
-//     rayStart += -camera._transform.GetZAxis() * pickSphereRad * 1.1f;
-
-//     std::optional<float> closestPickDist;
-//     EntityId closestPickItem = EntityId::InvalidId();
-//     entities.ForEveryActiveEntity([&](EntityId id) {
-//         Entity& entity = *entities.GetEntity(id);
-//         std::weak_ptr<TransformComponent> pTrans = entity.FindComponentOfType<TransformComponent>();
-//         if (pTrans.expired()) {
-//             return;
-//         }
-//         TransformComponent const& t = *pTrans.lock();
-//         std::optional<float> hitDist = sphereRayCast(rayStart, rayDir, t.GetWorldPos(), pickSphereRad);
-//         if (hitDist.has_value()) {
-//             if (!closestPickDist.has_value() || *hitDist < *closestPickDist) {
-//                 *closestPickDist = *hitDist;
-//                 closestPickItem = id;
-//             }
-//         }
-//     });
-
-//     return closestPickItem;
-// }
+std::optional<float> PickEntity(ne::Entity const& entity, double clickX, double clickY, int windowWidth, int windowHeight, renderer::Camera const& camera) {
+    Vec3 rayStart;
+    Vec3 rayDir;
+    GetPickRay(clickX, clickY, windowWidth, windowHeight, camera, &rayStart, &rayDir);
+    return EntityRaycast(entity, rayStart, rayDir);
+}
 
 ne::Entity* PickEntity(
     ne::EntityManager& entityMgr, double clickX, double clickY, int windowWidth, int windowHeight,
@@ -245,18 +230,8 @@ ne::Entity* PickEntity(
         ne::Entity& entity = *iter.GetEntity();
         if (!entity._pickable) {
             continue;
-        }
-        std::optional<float> hitDist;
-        {
-            Vec3 scale = entity._transform.Scale();
-            scale *= 0.5f;
-            
-
-            float d;
-            if (TestRayOBBIntersection(rayStart, rayDir, -scale, scale, entity._transform.Mat4NoScale(), d)) {
-                hitDist = d;
-            }
-        }
+        }        
+        std::optional<float> hitDist = EntityRaycast(entity, rayStart, rayDir);
         if (hitDist.has_value()) {
             if (!closestPickDist.has_value() || *hitDist < *closestPickDist) {
                 *closestPickDist = *hitDist;
@@ -266,4 +241,27 @@ ne::Entity* PickEntity(
     }
 
     return closestPickItem;
+}
+
+void PickEntities(ne::EntityManager& entityMgr, double clickX, double clickY, int windowWidth, int windowHeight, renderer::Camera const& camera, std::vector<std::pair<ne::Entity*, float>>& entityDistPairs) {
+    Vec3 rayStart;
+    Vec3 rayDir;
+    GetPickRay(clickX, clickY, windowWidth, windowHeight, camera, &rayStart, &rayDir);
+
+    for (auto iter = entityMgr.GetAllIterator(); !iter.Finished(); iter.Next()) {
+        ne::Entity& entity = *iter.GetEntity();
+        if (!entity._pickable) {
+            continue;
+        }
+        std::optional<float> hitDist = EntityRaycast(entity, rayStart, rayDir);
+        if (hitDist.has_value()) {
+            entityDistPairs.push_back(std::make_pair(&entity, *hitDist));            
+        }
+    }
+
+    std::sort(entityDistPairs.begin(), entityDistPairs.end(),
+              [](std::pair<ne::Entity*, float> const& lhs,
+                 std::pair<ne::Entity*, float> const& rhs) {
+                  return lhs.second < rhs.second;
+              });
 }

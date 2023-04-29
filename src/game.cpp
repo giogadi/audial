@@ -439,9 +439,9 @@ int main(int argc, char** argv) {
             iter.GetEntity()->Update(gGameManager, dt);
         }
 
-        if (inputManager.IsKeyPressed(InputManager::Key::Escape)) {
-            glfwSetWindowShouldClose(window, true);
-        }
+        // if (inputManager.IsKeyPressed(InputManager::Key::Escape)) {
+        //     glfwSetWindowShouldClose(window, true);
+        // }
 
         // Start the Dear ImGui frame
         ImGui_ImplOpenGL3_NewFrame();

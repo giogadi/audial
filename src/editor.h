@@ -13,7 +13,8 @@ struct Editor {
     void Update(float dt);
     void DrawWindow();
     void DrawMultiEnemyWindow();
-    void HandleEntitySelectAndMove();
+    void HandleEntitySelectAndMove(float dt);
+    void HandleEntitySelectAndMoveOld(float dt);
 
     bool IsEntitySelected(ne::EntityId entityId);
 

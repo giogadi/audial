@@ -8,7 +8,9 @@ class InputManager {
 public:
     enum class Key : int {
         A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z,
-        Escape,Space,Right,LeftShift,RightShift,Tab,Backspace,NumKeys
+        Escape,Space,Right,LeftShift,RightShift,LeftAlt,RightAlt,Tab,Backspace,
+        Enter,
+        NumKeys
     };
     enum class MouseButton : int {
         Left,Right,Middle,Count
@@ -40,6 +42,9 @@ public:
 
     bool IsShiftPressed() const {
         return IsKeyPressed(Key::LeftShift) || IsKeyPressed(Key::RightShift);
+    }
+    bool IsAltPressed() const {
+        return IsKeyPressed(Key::LeftAlt) || IsKeyPressed(Key::RightAlt);
     }
 
     void GetMousePos(double& mouseX, double& mouseY) const {

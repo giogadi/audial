@@ -38,113 +38,112 @@ bool ProjectScreenPointToXZPlane(
 
 } // end namespace
 
-void Editor::HandleEntitySelectAndMove() {
+void Editor::HandleEntitySelectAndMove(float deltaTime) {
     InputManager const& inputManager = *_g->_inputManager;
-    
-    static std::map<ne::EntityId, Vec3> sSelectedPositionsBeforeMove;
-    double mouseX, mouseY;
-    inputManager.GetMousePos(mouseX, mouseY);
-    enum class ClickMode { Selection, Move };
-    static ClickMode sClickMode = ClickMode::Selection;    
-    if (inputManager.IsKeyPressedThisFrame(InputManager::Key::Tab)) {
-        switch (sClickMode) {
-            case ClickMode::Selection:
-                sClickMode = ClickMode::Move;
-                break;
-            case ClickMode::Move: {
-                sClickMode = ClickMode::Selection;
-                // In case we were in the middle of moving some dudes, reset
-                // their positions and clear it out
-                for (auto const& idPosPair : sSelectedPositionsBeforeMove) {
-                    if (ne::Entity* entity = _g->_neEntityManager->GetEntity(idPosPair.first)) {
-                        Transform t = entity->_transform;
-                        t.SetPos(idPosPair.second);
-                        entity->SetAllTransforms(t);
-                    }
-                }
-                sSelectedPositionsBeforeMove.clear();
-                break;
-            }             
-        }
-    }
-    switch (sClickMode) {
-        case ClickMode::Selection: {
-            if (inputManager.IsKeyPressedThisFrame(InputManager::MouseButton::Left)) {
-                ne::Entity* picked = PickEntity(
-                    *_g->_neEntityManager, mouseX, mouseY, _g->_windowWidth, _g->_windowHeight, _g->_scene->_camera);
-                if (picked) {
-                    picked->OnEditPick(*_g);
-                }
-                if (inputManager.IsShiftPressed()) {
-                    if (picked) {
-                        // Toggle the selection status of the picked entity.
-                        int numErased = _selectedEntityIds.erase(picked->_id);
-                        if (numErased == 0) {
-                            // Was unselected; so select it then!
-                            _selectedEntityIds.insert(picked->_id);
-                        }                       
-                    } else {
-                        // Do nothing if we clicked the air with shift held down
-                    }
-                } else {
-                    if (picked) {
-                        _selectedEntityIds.clear();
-                        _selectedEntityIds.insert(picked->_id);
-                    } else {
-                        _selectedEntityIds.clear();
-                    }
-                }
-            }
-            break;
-        }
-        case ClickMode::Move: {            
-            static Vec3 sClickedPosOnXZPlane;
-            if (inputManager.IsKeyPressedThisFrame(InputManager::MouseButton::Left)) {
-                sSelectedPositionsBeforeMove.clear();
-                ne::Entity* picked = PickEntity(
-                    *_g->_neEntityManager, mouseX, mouseY, _g->_windowWidth, _g->_windowHeight, _g->_scene->_camera);
-                if (picked) {
-                    if (_selectedEntityIds.find(picked->_id) != _selectedEntityIds.end()) {
-                        if (ProjectScreenPointToXZPlane(
-                                mouseX, mouseY, _g->_windowWidth, _g->_windowHeight, _g->_scene->_camera, &sClickedPosOnXZPlane)) {                                                    
-                            for (ne::EntityId selectedId : _selectedEntityIds) {
-                                if (ne::Entity* selectedEntity = _g->_neEntityManager->GetEntity(selectedId)) {
-                                    sSelectedPositionsBeforeMove.emplace(selectedId, selectedEntity->_transform.Pos());
-                                }
-                            }
-                        } else {
-                            printf("WEIRD!!!! CLICKED POINT THAT DID NOT PROJECT TO XZ PLANE!\n");
-                        }
-                        
-                    }
-                }
-            } else if (!sSelectedPositionsBeforeMove.empty()) {
-                if (inputManager.IsKeyReleasedThisFrame(InputManager::MouseButton::Left)) {
-                    sSelectedPositionsBeforeMove.clear();
-                } else {
-                    // we're moving things!!!
-                    Vec3 mousePosOnXZPlane;
-                    if (ProjectScreenPointToXZPlane(
-                            mouseX, mouseY, _g->_windowWidth, _g->_windowHeight, _g->_scene->_camera, &mousePosOnXZPlane)) {
-                        Vec3 offset = mousePosOnXZPlane - sClickedPosOnXZPlane;
-                        for (auto const& idPosPair : sSelectedPositionsBeforeMove) {
-                            if (ne::Entity* entity = _g->_neEntityManager->GetEntity(idPosPair.first)) {
-                                Transform t = entity->_transform;
-                                t.SetPos(idPosPair.second + offset);
-                                entity->SetAllTransforms(t);
-                            }
-                        }
-                    } else {
-                        printf("WEIRD!!! MOUSE MOTION POINT DID NOT PROJECT TO XZ PLANE!\n");
-                    }
-                }
-            }
-            break;
-        }
-    }
 
-    // TODO if we add WSAD motion of objects back in, we liked a speed
-    // multiplier of 3.0.
+    static bool sGrabMode = false;
+    static Vec3 sGrabPos;
+
+    if (sGrabMode) {
+        double mouseX, mouseY;
+        inputManager.GetMousePos(mouseX, mouseY);
+        Vec3 clickedPosOnXZPlane;
+        if (ProjectScreenPointToXZPlane(mouseX, mouseY, _g->_windowWidth, _g->_windowHeight, _g->_scene->_camera, &clickedPosOnXZPlane)) {
+            Vec3 grabOffset = clickedPosOnXZPlane - sGrabPos;
+            for (ne::EntityId selectedId : _selectedEntityIds) {
+                if (ne::Entity* selectedEntity = _g->_neEntityManager->GetEntity(selectedId)) {
+                    Vec3 newPos = selectedEntity->_initTransform.Pos() + grabOffset;
+                    selectedEntity->_transform.SetPos(newPos);
+                }
+            }
+        }
+
+        if (inputManager.IsKeyPressedThisFrame(InputManager::Key::Enter) ||
+            inputManager.IsKeyPressedThisFrame(InputManager::Key::G) ||
+            inputManager.IsKeyPressedThisFrame(InputManager::MouseButton::Left)) {
+            // commit transforms
+            for (ne::EntityId selectedId : _selectedEntityIds) {
+                if (ne::Entity* selectedEntity = _g->_neEntityManager->GetEntity(selectedId)) {
+                    selectedEntity->_initTransform = selectedEntity->_transform;
+                }
+            }
+            sGrabMode = false;
+        }
+
+        if (inputManager.IsKeyPressedThisFrame(InputManager::Key::Escape)) {
+            // revert transforms
+            for (ne::EntityId selectedId : _selectedEntityIds) {
+                if (ne::Entity* selectedEntity = _g->_neEntityManager->GetEntity(selectedId)) {
+                    selectedEntity->_transform = selectedEntity->_initTransform;
+                }
+            }
+            sGrabMode = false;
+        }
+    } else {
+        // select mode
+        if (inputManager.IsKeyPressedThisFrame(InputManager::MouseButton::Left)) {
+            double mouseX, mouseY;
+            inputManager.GetMousePos(mouseX, mouseY);
+            static std::vector<std::pair<ne::Entity*, float>> entityDistPairs;
+            entityDistPairs.clear();
+            PickEntities(*_g->_neEntityManager, mouseX, mouseY, _g->_windowWidth, _g->_windowHeight, _g->_scene->_camera, entityDistPairs);
+            if (entityDistPairs.empty()) {
+                if (!inputManager.IsShiftPressed()) {
+                    _selectedEntityIds.clear();
+                }
+            } else {
+                ne::Entity* pPicked = entityDistPairs.front().first;;
+                
+                // See if the currently selected entity is somewhere in the pick
+                // list
+                int ixOfSelectedInPicked = -1;
+                if (!_selectedEntityIds.empty()) {
+                    for (int ii = 0; ii < entityDistPairs.size(); ++ii) {
+                        ne::Entity* pPicked = entityDistPairs[ii].first;
+                        if (_selectedEntityIds.find(pPicked->_id) != _selectedEntityIds.end()) {
+                            ixOfSelectedInPicked = ii;
+                            break;
+                        }
+                    }
+                }
+
+                if (ixOfSelectedInPicked >= 0) {
+                    // If no modifiers, just pick this one and select only this
+                    // one. If shift is held, remove only this one from the
+                    // selection. If alt is held, cycle to the next one.
+                    if (inputManager.IsAltPressed()) {
+                        int nextIx = (ixOfSelectedInPicked + 1) % entityDistPairs.size();
+                        pPicked = entityDistPairs[nextIx].first;
+                    } else {
+                        pPicked = entityDistPairs[ixOfSelectedInPicked].first;
+                    }
+                }
+
+                assert(pPicked);
+                if (inputManager.IsShiftPressed()) {
+                    auto selectedIter = _selectedEntityIds.find(pPicked->_id);
+                    if (selectedIter == _selectedEntityIds.end()) {
+                        _selectedEntityIds.emplace(pPicked->_id);
+                        pPicked->OnEditPick(*_g);
+                    } else {
+                        _selectedEntityIds.erase(selectedIter);
+                    }
+                } else {
+                    _selectedEntityIds.clear();
+                    _selectedEntityIds.emplace(pPicked->_id);
+                    pPicked->OnEditPick(*_g);
+                }
+            }
+        }
+
+        if (inputManager.IsKeyPressedThisFrame(InputManager::Key::G) && !_selectedEntityIds.empty()) {
+            sGrabMode = true;
+            double mouseX, mouseY;
+            inputManager.GetMousePos(mouseX, mouseY);
+            ProjectScreenPointToXZPlane(mouseX, mouseY, _g->_windowWidth, _g->_windowHeight, _g->_scene->_camera, &sGrabPos);
+        }
+    }
+    
 }
 
 void Editor::Update(float dt) {
@@ -163,7 +162,7 @@ void Editor::Update(float dt) {
         sMultiEnemyEditorVisible = !sMultiEnemyEditorVisible;
     }
 
-    HandleEntitySelectAndMove();
+    HandleEntitySelectAndMove(dt);
 
     // Use scroll input to move debug camera around.
     double scrollX = 0.0, scrollY = 0.0;
