@@ -60,15 +60,17 @@ bool WaypointFollower::Update(GameManager& g, float const dt, bool debugDraw, ne
         if (debugDraw) {
             Mat4 trans;
             trans.ScaleUniform(0.5f);
+            trans.Scale(1.f, 10.f, 1.f);
             Vec4 wpColor(0.8f, 0.f, 0.8f, 1.f);
             Vec3 offset;
             if (_localToEntity) {
                 offset = _ns._entityPosAtStart;
             }
-            for (Waypoint const& wp : _waypoints) {
+            for (int ii = 0; ii < _waypoints.size(); ++ii) {
+                Waypoint const& wp = _waypoints[ii];
                 Vec3 worldPos = wp._p + offset;
                 trans.SetTranslation(worldPos);
-                g._scene->DrawBoundingBox(trans, wpColor);
+                g._scene->DrawBoundingBox(trans, wpColor);                
             }
         }
         return false;

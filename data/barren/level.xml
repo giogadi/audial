@@ -225,7 +225,7 @@
             </model_color_vec4>
             <flow_section_id>-1</flow_section_id>
             <sequence>mG0:0 -1:1 -1:1 -1:1 mG0:0 -1:1 -1:1 -1:1 mG0:0 -1:1 -1:1 -1:1 mG0:0 -1:1 -1:1 -1:1</sequence>
-            <start_mute>true</start_mute>
+            <start_mute>false</start_mute>
             <channels/>
             <step_length>0.25</step_length>
             <note_length>0.125</note_length>
@@ -726,14 +726,14 @@
             <flow_section_id>-1</flow_section_id>
             <actions>
                 <seq_action>
-                    <one_time>false</one_time>
+                    <one_time>true</one_time>
                     <action_type>SetAllSteps</action_type>
                     <seq_name>snare_seq</seq_name>
                     <step_str>20,-1,-1,-1:0.0</step_str>
                     <vel_only>false</vel_only>
                 </seq_action>
                 <seq_action>
-                    <one_time>false</one_time>
+                    <one_time>true</one_time>
                     <action_type>SpawnAutomator</action_type>
                     <relative>false</relative>
                     <startValue>0</startValue>
@@ -1748,7 +1748,7 @@
             <waypoints>
                 <waypoint>
                     <wait_time>0</wait_time>
-                    <move_time>5</move_time>
+                    <move_time>3.75</move_time>
                     <p>
                         <x>0</x>
                         <y>0</y>
@@ -1926,7 +1926,7 @@
             <waypoints>
                 <waypoint>
                     <wait_time>0</wait_time>
-                    <move_time>5</move_time>
+                    <move_time>3.75</move_time>
                     <p>
                         <x>0</x>
                         <y>0</y>
@@ -2000,7 +2000,7 @@
             <waypoints>
                 <waypoint>
                     <wait_time>0</wait_time>
-                    <move_time>4</move_time>
+                    <move_time>3.5</move_time>
                     <p>
                         <x>0</x>
                         <y>0</y>
@@ -2074,7 +2074,7 @@
             <waypoints>
                 <waypoint>
                     <wait_time>0</wait_time>
-                    <move_time>4</move_time>
+                    <move_time>3.5</move_time>
                     <p>
                         <x>0</x>
                         <y>0</y>
@@ -2252,7 +2252,7 @@
             <waypoints>
                 <waypoint>
                     <wait_time>0</wait_time>
-                    <move_time>4</move_time>
+                    <move_time>3.5</move_time>
                     <p>
                         <x>0</x>
                         <y>0</y>
@@ -2326,7 +2326,7 @@
             <waypoints>
                 <waypoint>
                     <wait_time>0</wait_time>
-                    <move_time>4</move_time>
+                    <move_time>3.5</move_time>
                     <p>
                         <x>0</x>
                         <y>0</y>
@@ -2504,11 +2504,11 @@
             <waypoints>
                 <waypoint>
                     <wait_time>0</wait_time>
-                    <move_time>5</move_time>
+                    <move_time>4</move_time>
                     <p>
                         <x>0</x>
                         <y>0</y>
-                        <z>4.5</z>
+                        <z>-4.5</z>
                     </p>
                 </waypoint>
                 <waypoint>
@@ -2578,11 +2578,11 @@
             <waypoints>
                 <waypoint>
                     <wait_time>0</wait_time>
-                    <move_time>5</move_time>
+                    <move_time>4</move_time>
                     <p>
                         <x>0</x>
                         <y>0</y>
-                        <z>4.5</z>
+                        <z>-4.5</z>
                     </p>
                 </waypoint>
                 <waypoint>
@@ -2614,5 +2614,50 @@
                 </seq_action>
             </hit_actions>
         </FlowWall>
+        <FlowTrigger>
+            <name>room2_drum_trigger</name>
+            <pickable>true</pickable>
+            <transform>
+                <pos>
+                    <x>12.265625</x>
+                    <y>0</y>
+                    <z>-0.953125</z>
+                </pos>
+                <quat>
+                    <x>0</x>
+                    <y>0</y>
+                    <z>0</z>
+                    <w>1</w>
+                </quat>
+                <scale>
+                    <x>3</x>
+                    <y>1</y>
+                    <z>2</z>
+                </scale>
+            </transform>
+            <model_name/>
+            <model_color_vec4>
+                <x>0.800000012</x>
+                <y>0.800000012</y>
+                <z>0.800000012</z>
+                <w>1</w>
+            </model_color_vec4>
+            <flow_section_id>-1</flow_section_id>
+            <actions>
+                <seq_action>
+                    <one_time>true</one_time>
+                    <action_type>SetAllSteps</action_type>
+                    <seq_name>snare_seq</seq_name>
+                    <step_str>-1,-1,-1,-1:0.0</step_str>
+                    <vel_only>false</vel_only>
+                </seq_action>
+                <seq_action>
+                    <one_time>true</one_time>
+                    <action_type>SetStepSequence</action_type>
+                    <seq_entity_name>kick_seq</seq_entity_name>
+                    <seq_str>19:1 -1:1 -1:1 -1:1 19:1 -1:1 -1:1 -1:1 19:1 -1:1 -1:1 -1:1 19:1 -1:1 -1:1 -1:1</seq_str>
+                </seq_action>
+            </actions>
+        </FlowTrigger>
     </new_entities>
 </script>
