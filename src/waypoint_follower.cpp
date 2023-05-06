@@ -8,7 +8,7 @@
 
 void Waypoint::Save(serial::Ptree pt) const {
     pt.PutDouble("wait_time", _waitTime);
-    pt.PutDouble("move_time", _moveTime);    
+    pt.PutDouble("move_time", _moveTime);
     serial::SaveInNewChildOf(pt, "p", _p);
 }
 
@@ -38,7 +38,7 @@ void WaypointFollower::Init(GameManager& g, ne::Entity const& entity) {
     } else {
         _ns._prevWaypointPos = entity._transform.Pos();
     }
-    _ns._thisWpStartTime = 3.0;
+    _ns._thisWpStartTime = _initWpStartTime;
 
     if (g._editMode) {
         _ns._entityPosAtStart = entity._transform.Pos();
@@ -117,6 +117,7 @@ void WaypointFollower::Save(serial::Ptree pt) const {
     pt.PutBool("local_to_entity", _localToEntity);
     pt.PutBool("waypoint_auto_start", _autoStartFollowingWaypoints);
     pt.PutBool("loop_waypoints", _loopWaypoints);
+    pt.PutDouble("start_time", _initWpStartTime);
     serial::SaveVectorInChildNode(pt, "waypoints", "waypoint", _waypoints);
 }
 
@@ -127,12 +128,16 @@ void WaypointFollower::Load(serial::Ptree pt) {
     pt.TryGetBool("waypoint_auto_start", &_autoStartFollowingWaypoints);
     _loopWaypoints = false;
     pt.TryGetBool("loop_waypoints", &_loopWaypoints);
+    if (!pt.TryGetDouble("start_time", &_initWpStartTime)) {
+        _initWpStartTime = 3.0; // previous default, before we serialized it
+    }
     serial::LoadVectorFromChildNode(pt, "waypoints", _waypoints);
 }
 
 bool WaypointFollower::ImGui() {
     ImGui::Checkbox("Local to Entity", &_localToEntity);
     ImGui::Checkbox("Waypoint Auto Start", &_autoStartFollowingWaypoints);
+    ImGui::InputDouble("Start time", &_initWpStartTime);
     ImGui::Checkbox("Loop Waypoints", &_loopWaypoints);
     bool changed = imgui_util::InputVector(_waypoints);
     return changed;

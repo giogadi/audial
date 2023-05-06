@@ -22,6 +22,7 @@ struct WaypointFollower {
     bool _autoStartFollowingWaypoints = false;
     bool _loopWaypoints = false;
     bool _localToEntity = false;
+    double _initWpStartTime = 3.0;
 
     void Init(GameManager& g, ne::Entity const& entity);
     // Returns true if waypoint logic updated position
