@@ -3,11 +3,11 @@
     <patch>
         <version>4</version>
         <name>bass</name>
-        <gain_factor>0.805000007</gain_factor>
+        <gain_factor>0.843999982</gain_factor>
         <mono>true</mono>
         <osc1_waveform>Square</osc1_waveform>
         <osc2_waveform>Saw</osc2_waveform>
-        <detune>0</detune>
+        <detune>1</detune>
         <osc_fader>0.5</osc_fader>
         <cutoff_freq>560.593018</cutoff_freq>
         <cutoff_k>0</cutoff_k>
