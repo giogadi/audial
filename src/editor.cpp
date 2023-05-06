@@ -285,6 +285,8 @@ void Editor::DrawWindow() {
     
     // Duplicate entities
     if (ImGui::Button("Duplicate Entity")) {
+        std::vector<ne::EntityId> newIds;
+        newIds.reserve(_selectedEntityIds.size());
         for (ne::EntityId selectedId : _selectedEntityIds) {
             if (!_g->_neEntityManager->GetEntity(selectedId)) {
                 // NOTE: In the case that GetEntity() returns non-null, we DO
@@ -308,6 +310,12 @@ void Editor::DrawWindow() {
             newEntity->_name += " (copy)";
             _entityIds.push_back(newEntity->_id);
             newEntity->Init(*_g);
+
+            newIds.push_back(newEntity->_id);
+        }
+        _selectedEntityIds.clear();
+        for (ne::EntityId const& id : newIds) {
+            _selectedEntityIds.insert(id);
         }
     }
 
