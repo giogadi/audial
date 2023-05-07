@@ -658,9 +658,9 @@
                     <one_time>true</one_time>
                     <action_type>PlayerSetSpawnPoint</action_type>
                     <spawn_pos>
-                        <x>9.44999981</x>
+                        <x>6.95900011</x>
                         <y>0</y>
-                        <z>-2.33599997</z>
+                        <z>-5.33599997</z>
                     </spawn_pos>
                 </seq_action>
             </actions>
@@ -737,7 +737,7 @@
                     <action_type>SpawnAutomator</action_type>
                     <relative>false</relative>
                     <startValue>0</startValue>
-                    <endValue>0.5</endValue>
+                    <endValue>0.500000001</endValue>
                     <desiredAutomateTime>8</desiredAutomateTime>
                     <synth>false</synth>
                     <synthParam>Gain</synthParam>

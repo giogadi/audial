@@ -45,7 +45,9 @@ void ParamAutomatorEntity::InitDerived(GameManager& g) {
                 printf("ParamAutomatorEntity::Init: relative only supports Cutoff right now.\n");
             }
         }
-
+    } else {
+        _startValueAdjusted = _props._startValue;
+        _endValueAdjusted = _props._endValue;
     }
 }
 
