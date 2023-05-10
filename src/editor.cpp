@@ -215,7 +215,6 @@ void Editor::DrawWindow() {
             }
             assert(id._type == entity->_id._type);
             serial::Ptree entityPt = entitiesPt.AddChild(ne::gkEntityTypeNames[(int)id._type]);
-            entityPt.PutBool("entity_active", active);
             entity->Save(entityPt);
         }
         if (pt.WriteToFile(_saveFilename.c_str())) {
@@ -331,18 +330,8 @@ void Editor::DrawWindow() {
     }
 
     if (_selectedEntityIds.size() == 1) {
-        bool active = true;
         ne::EntityId entityId = *_selectedEntityIds.begin();
-        if (ne::Entity* selectedEntity = _g->_neEntityManager->GetActiveOrInactiveEntity(entityId, &active)) {
-            bool activeChanged = ImGui::Checkbox("Entity active", &active);
-            if (activeChanged) {
-                if (active) {
-                    // TODOOOOOOOO do we need to call Init()?
-                    _g->_neEntityManager->TagForActivate(entityId);
-                } else {
-                    _g->_neEntityManager->TagForDeactivate(entityId);
-                }
-            }
+        if (ne::Entity* selectedEntity = _g->_neEntityManager->GetActiveOrInactiveEntity(entityId)) {
             if (selectedEntity->ImGui(*_g) == ne::Entity::ImGuiResult::NeedsInit) {
                 selectedEntity->Destroy(*_g);
                 selectedEntity->Init(*_g);

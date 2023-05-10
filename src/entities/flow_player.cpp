@@ -146,10 +146,11 @@ void FlowPlayerEntity::Respawn(GameManager& g) {
             e->Init(g);
         }
     }
-    // Reactivate all inactive entities
+    // Reactivate all inactive entities that were initially active
+    // TODO: deactivate all initially-inactive things?
     for (ne::EntityManager::AllIterator iter = g._neEntityManager->GetAllInactiveIterator(); !iter.Finished(); iter.Next()) {
         ne::Entity* e = iter.GetEntity();
-        if (e->_flowSectionId >= 0 && e->_flowSectionId == _currentSectionId) {
+        if (e->_initActive && e->_flowSectionId >= 0 && e->_flowSectionId == _currentSectionId) {
             e->Init(g);
             g._neEntityManager->TagForActivate(e->_id);
         }

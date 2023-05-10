@@ -65,6 +65,7 @@ struct EntityId {
 struct BaseEntity {
     // serialized
     Transform _initTransform;
+    bool _initActive = true;
     std::string _name;
     bool _pickable = true;
     std::string _modelName;
@@ -155,7 +156,8 @@ struct EntityManager {
         Entity* GetEntity();
     private:
         EntityManager* _mgr;
-        int _typeIx = 0;        
+        bool _active = true; // whether I iterate over active or inactive entities
+        int _typeIx = 0;
         Iterator _typeIter;
         friend EntityManager;
         AllIterator() {}

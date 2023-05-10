@@ -3,8 +3,8 @@
     <bpm>100</bpm>
     <new_entities>
         <Light>
-            <entity_active>true</entity_active>
             <name>light</name>
+            <entity_active>true</entity_active>
             <pickable>false</pickable>
             <transform>
                 <pos>
@@ -44,8 +44,8 @@
             </diffuse>
         </Light>
         <Camera>
-            <entity_active>true</entity_active>
             <name>camera</name>
+            <entity_active>true</entity_active>
             <pickable>false</pickable>
             <transform>
                 <pos>
@@ -78,8 +78,8 @@
             <tracking_factor>0.0500000007</tracking_factor>
         </Camera>
         <Sequencer>
-            <entity_active>true</entity_active>
             <name>count_off</name>
+            <entity_active>true</entity_active>
             <pickable>false</pickable>
             <transform>
                 <pos>
@@ -155,8 +155,8 @@
             </events>
         </Sequencer>
         <FlowPlayer>
-            <entity_active>true</entity_active>
             <name>player</name>
+            <entity_active>true</entity_active>
             <pickable>true</pickable>
             <transform>
                 <pos>
@@ -200,8 +200,8 @@
             </respawn_pos>
         </FlowPlayer>
         <StepSequencer>
-            <entity_active>true</entity_active>
             <name>kick_seq</name>
+            <entity_active>true</entity_active>
             <pickable>false</pickable>
             <transform>
                 <pos>
@@ -239,8 +239,8 @@
             <editor_mute>true</editor_mute>
         </StepSequencer>
         <StepSequencer>
-            <entity_active>true</entity_active>
             <name>snare_seq</name>
+            <entity_active>true</entity_active>
             <pickable>false</pickable>
             <transform>
                 <pos>
@@ -278,8 +278,8 @@
             <editor_mute>true</editor_mute>
         </StepSequencer>
         <StepSequencer>
-            <entity_active>true</entity_active>
             <name>hihat_seq</name>
+            <entity_active>true</entity_active>
             <pickable>false</pickable>
             <transform>
                 <pos>
@@ -317,8 +317,8 @@
             <editor_mute>true</editor_mute>
         </StepSequencer>
         <StepSequencer>
-            <entity_active>true</entity_active>
             <name>clap_seq</name>
+            <entity_active>true</entity_active>
             <pickable>false</pickable>
             <transform>
                 <pos>
@@ -356,8 +356,8 @@
             <editor_mute>false</editor_mute>
         </StepSequencer>
         <StepSequencer>
-            <entity_active>true</entity_active>
             <name>chord_seq</name>
+            <entity_active>true</entity_active>
             <pickable>false</pickable>
             <transform>
                 <pos>
@@ -397,8 +397,8 @@
             <editor_mute>false</editor_mute>
         </StepSequencer>
         <StepSequencer>
-            <entity_active>true</entity_active>
             <name>other_seq</name>
+            <entity_active>true</entity_active>
             <pickable>false</pickable>
             <transform>
                 <pos>
@@ -438,8 +438,8 @@
             <editor_mute>false</editor_mute>
         </StepSequencer>
         <StepSequencer>
-            <entity_active>true</entity_active>
             <name>bass_seq</name>
+            <entity_active>true</entity_active>
             <pickable>false</pickable>
             <transform>
                 <pos>
@@ -479,8 +479,8 @@
             <editor_mute>true</editor_mute>
         </StepSequencer>
         <StepSequencer>
-            <entity_active>true</entity_active>
             <name>lead_seq</name>
+            <entity_active>true</entity_active>
             <pickable>false</pickable>
             <transform>
                 <pos>
@@ -520,8 +520,8 @@
             <editor_mute>false</editor_mute>
         </StepSequencer>
         <ActionSequencer>
-            <entity_active>true</entity_active>
             <name>action_seq</name>
+            <entity_active>true</entity_active>
             <pickable>false</pickable>
             <transform>
                 <pos>
@@ -552,8 +552,8 @@
             <seq_filename>data/barren/action_seq.txt</seq_filename>
         </ActionSequencer>
         <ActionSequencer>
-            <entity_active>true</entity_active>
             <name>room1_action_seq</name>
+            <entity_active>true</entity_active>
             <pickable>false</pickable>
             <transform>
                 <pos>
@@ -584,8 +584,8 @@
             <seq_filename>data/barren/room1_action_seq.txt</seq_filename>
         </ActionSequencer>
         <Base>
-            <entity_active>true</entity_active>
             <name>camera_target2</name>
+            <entity_active>true</entity_active>
             <pickable>true</pickable>
             <transform>
                 <pos>
@@ -615,8 +615,8 @@
             <flow_section_id>-1</flow_section_id>
         </Base>
         <FlowTrigger>
-            <entity_active>true</entity_active>
             <name>room2_trigger</name>
+            <entity_active>true</entity_active>
             <pickable>true</pickable>
             <transform>
                 <pos>
@@ -682,8 +682,8 @@
             </actions>
         </FlowTrigger>
         <Base>
-            <entity_active>true</entity_active>
             <name>new_spawn_pos</name>
+            <entity_active>true</entity_active>
             <pickable>true</pickable>
             <transform>
                 <pos>
@@ -713,8 +713,8 @@
             <flow_section_id>-1</flow_section_id>
         </Base>
         <FlowTrigger>
-            <entity_active>true</entity_active>
             <name>room1_drumfill_trigger</name>
+            <entity_active>true</entity_active>
             <pickable>false</pickable>
             <transform>
                 <pos>
@@ -765,8 +765,8 @@
             </actions>
         </FlowTrigger>
         <TypingEnemy>
-            <entity_active>true</entity_active>
             <name>r1_f</name>
+            <entity_active>true</entity_active>
             <pickable>true</pickable>
             <transform>
                 <pos>
@@ -819,8 +819,8 @@
             </hit_actions>
         </TypingEnemy>
         <TypingEnemy>
-            <entity_active>true</entity_active>
             <name>r1_j</name>
+            <entity_active>true</entity_active>
             <pickable>true</pickable>
             <transform>
                 <pos>
@@ -873,8 +873,8 @@
             </hit_actions>
         </TypingEnemy>
         <FlowWall>
-            <entity_active>true</entity_active>
             <name>r1_wall1</name>
+            <entity_active>true</entity_active>
             <pickable>true</pickable>
             <transform>
                 <pos>
@@ -949,8 +949,8 @@
             </hit_actions>
         </FlowWall>
         <TypingEnemy>
-            <entity_active>true</entity_active>
             <name>r1_d</name>
+            <entity_active>true</entity_active>
             <pickable>true</pickable>
             <transform>
                 <pos>
@@ -1003,8 +1003,8 @@
             </hit_actions>
         </TypingEnemy>
         <TypingEnemy>
-            <entity_active>true</entity_active>
             <name>r1_k</name>
+            <entity_active>true</entity_active>
             <pickable>true</pickable>
             <transform>
                 <pos>
@@ -1057,8 +1057,8 @@
             </hit_actions>
         </TypingEnemy>
         <FlowWall>
-            <entity_active>true</entity_active>
             <name>r1_wall2</name>
+            <entity_active>true</entity_active>
             <pickable>true</pickable>
             <transform>
                 <pos>
@@ -1133,8 +1133,8 @@
             </hit_actions>
         </FlowWall>
         <FlowWall>
-            <entity_active>true</entity_active>
             <name>r1_wall3</name>
+            <entity_active>true</entity_active>
             <pickable>true</pickable>
             <transform>
                 <pos>
@@ -1209,8 +1209,8 @@
             </hit_actions>
         </FlowWall>
         <FlowWall>
-            <entity_active>true</entity_active>
             <name>r1_wall4</name>
+            <entity_active>true</entity_active>
             <pickable>true</pickable>
             <transform>
                 <pos>
@@ -1285,8 +1285,8 @@
             </hit_actions>
         </FlowWall>
         <TypingEnemy>
-            <entity_active>true</entity_active>
             <name>r1_e</name>
+            <entity_active>true</entity_active>
             <pickable>true</pickable>
             <transform>
                 <pos>
@@ -1339,8 +1339,8 @@
             </hit_actions>
         </TypingEnemy>
         <TypingEnemy>
-            <entity_active>true</entity_active>
             <name>r1_i</name>
+            <entity_active>true</entity_active>
             <pickable>true</pickable>
             <transform>
                 <pos>
@@ -1393,8 +1393,8 @@
             </hit_actions>
         </TypingEnemy>
         <FlowWall>
-            <entity_active>true</entity_active>
             <name>r1_wall5</name>
+            <entity_active>true</entity_active>
             <pickable>true</pickable>
             <transform>
                 <pos>
@@ -1469,8 +1469,8 @@
             </hit_actions>
         </FlowWall>
         <FlowWall>
-            <entity_active>true</entity_active>
             <name>r1_wall6</name>
+            <entity_active>true</entity_active>
             <pickable>true</pickable>
             <transform>
                 <pos>
@@ -1545,8 +1545,8 @@
             </hit_actions>
         </FlowWall>
         <TypingEnemy>
-            <entity_active>true</entity_active>
             <name>r1_g</name>
+            <entity_active>true</entity_active>
             <pickable>true</pickable>
             <transform>
                 <pos>
@@ -1599,8 +1599,8 @@
             </hit_actions>
         </TypingEnemy>
         <TypingEnemy>
-            <entity_active>true</entity_active>
             <name>r1_h</name>
+            <entity_active>true</entity_active>
             <pickable>true</pickable>
             <transform>
                 <pos>
@@ -1653,8 +1653,8 @@
             </hit_actions>
         </TypingEnemy>
         <TypingEnemy>
-            <entity_active>true</entity_active>
             <name>r2_f</name>
+            <entity_active>true</entity_active>
             <pickable>true</pickable>
             <transform>
                 <pos>
@@ -1707,8 +1707,8 @@
             </hit_actions>
         </TypingEnemy>
         <TypingEnemy>
-            <entity_active>true</entity_active>
             <name>r2_j</name>
+            <entity_active>true</entity_active>
             <pickable>true</pickable>
             <transform>
                 <pos>
@@ -1761,8 +1761,8 @@
             </hit_actions>
         </TypingEnemy>
         <FlowWall>
-            <entity_active>true</entity_active>
             <name>r2_wall1</name>
+            <entity_active>true</entity_active>
             <pickable>true</pickable>
             <transform>
                 <pos>
@@ -1837,8 +1837,8 @@
             </hit_actions>
         </FlowWall>
         <TypingEnemy>
-            <entity_active>true</entity_active>
             <name>r2_d</name>
+            <entity_active>true</entity_active>
             <pickable>true</pickable>
             <transform>
                 <pos>
@@ -1891,8 +1891,8 @@
             </hit_actions>
         </TypingEnemy>
         <TypingEnemy>
-            <entity_active>true</entity_active>
             <name>r2_k</name>
+            <entity_active>true</entity_active>
             <pickable>true</pickable>
             <transform>
                 <pos>
@@ -1945,8 +1945,8 @@
             </hit_actions>
         </TypingEnemy>
         <FlowWall>
-            <entity_active>true</entity_active>
             <name>r2_wall2</name>
+            <entity_active>true</entity_active>
             <pickable>true</pickable>
             <transform>
                 <pos>
@@ -2021,8 +2021,8 @@
             </hit_actions>
         </FlowWall>
         <FlowWall>
-            <entity_active>true</entity_active>
             <name>r2_wall3</name>
+            <entity_active>true</entity_active>
             <pickable>true</pickable>
             <transform>
                 <pos>
@@ -2097,8 +2097,8 @@
             </hit_actions>
         </FlowWall>
         <FlowWall>
-            <entity_active>true</entity_active>
             <name>r2_wall4</name>
+            <entity_active>true</entity_active>
             <pickable>true</pickable>
             <transform>
                 <pos>
@@ -2173,8 +2173,8 @@
             </hit_actions>
         </FlowWall>
         <TypingEnemy>
-            <entity_active>true</entity_active>
             <name>r2_e</name>
+            <entity_active>true</entity_active>
             <pickable>true</pickable>
             <transform>
                 <pos>
@@ -2227,8 +2227,8 @@
             </hit_actions>
         </TypingEnemy>
         <TypingEnemy>
-            <entity_active>true</entity_active>
             <name>r2_i</name>
+            <entity_active>true</entity_active>
             <pickable>true</pickable>
             <transform>
                 <pos>
@@ -2281,8 +2281,8 @@
             </hit_actions>
         </TypingEnemy>
         <FlowWall>
-            <entity_active>true</entity_active>
             <name>r2_wall5</name>
+            <entity_active>true</entity_active>
             <pickable>true</pickable>
             <transform>
                 <pos>
@@ -2357,8 +2357,8 @@
             </hit_actions>
         </FlowWall>
         <FlowWall>
-            <entity_active>true</entity_active>
             <name>r2_wall6</name>
+            <entity_active>true</entity_active>
             <pickable>true</pickable>
             <transform>
                 <pos>
@@ -2433,8 +2433,8 @@
             </hit_actions>
         </FlowWall>
         <TypingEnemy>
-            <entity_active>true</entity_active>
             <name>r2_g</name>
+            <entity_active>true</entity_active>
             <pickable>true</pickable>
             <transform>
                 <pos>
@@ -2487,8 +2487,8 @@
             </hit_actions>
         </TypingEnemy>
         <TypingEnemy>
-            <entity_active>true</entity_active>
             <name>r2_h</name>
+            <entity_active>true</entity_active>
             <pickable>true</pickable>
             <transform>
                 <pos>
@@ -2541,8 +2541,8 @@
             </hit_actions>
         </TypingEnemy>
         <FlowWall>
-            <entity_active>true</entity_active>
             <name>r2_wall1</name>
+            <entity_active>true</entity_active>
             <pickable>true</pickable>
             <transform>
                 <pos>
@@ -2617,8 +2617,8 @@
             </hit_actions>
         </FlowWall>
         <FlowWall>
-            <entity_active>true</entity_active>
             <name>r2_wall2</name>
+            <entity_active>true</entity_active>
             <pickable>true</pickable>
             <transform>
                 <pos>
@@ -2693,8 +2693,8 @@
             </hit_actions>
         </FlowWall>
         <FlowTrigger>
-            <entity_active>true</entity_active>
             <name>room2_drum_trigger</name>
+            <entity_active>true</entity_active>
             <pickable>true</pickable>
             <transform>
                 <pos>
@@ -2745,8 +2745,8 @@
             </actions>
         </FlowTrigger>
         <FlowTrigger>
-            <entity_active>true</entity_active>
             <name>room3_trigger</name>
+            <entity_active>true</entity_active>
             <pickable>true</pickable>
             <transform>
                 <pos>
@@ -2812,8 +2812,8 @@
             </actions>
         </FlowTrigger>
         <TypingEnemy>
-            <entity_active>true</entity_active>
             <name>r3_f</name>
+            <entity_active>true</entity_active>
             <pickable>true</pickable>
             <transform>
                 <pos>
@@ -2866,8 +2866,8 @@
             </hit_actions>
         </TypingEnemy>
         <TypingEnemy>
-            <entity_active>true</entity_active>
             <name>r3_j</name>
+            <entity_active>true</entity_active>
             <pickable>true</pickable>
             <transform>
                 <pos>
@@ -2920,8 +2920,8 @@
             </hit_actions>
         </TypingEnemy>
         <FlowWall>
-            <entity_active>true</entity_active>
             <name>r3_wall1</name>
+            <entity_active>true</entity_active>
             <pickable>true</pickable>
             <transform>
                 <pos>
@@ -2996,8 +2996,8 @@
             </hit_actions>
         </FlowWall>
         <TypingEnemy>
-            <entity_active>true</entity_active>
             <name>r3_d</name>
+            <entity_active>true</entity_active>
             <pickable>true</pickable>
             <transform>
                 <pos>
@@ -3050,8 +3050,8 @@
             </hit_actions>
         </TypingEnemy>
         <TypingEnemy>
-            <entity_active>true</entity_active>
             <name>r3_k</name>
+            <entity_active>true</entity_active>
             <pickable>true</pickable>
             <transform>
                 <pos>
@@ -3104,8 +3104,8 @@
             </hit_actions>
         </TypingEnemy>
         <FlowWall>
-            <entity_active>true</entity_active>
             <name>r3_wall2</name>
+            <entity_active>true</entity_active>
             <pickable>true</pickable>
             <transform>
                 <pos>
@@ -3180,8 +3180,8 @@
             </hit_actions>
         </FlowWall>
         <FlowWall>
-            <entity_active>true</entity_active>
             <name>r3_wall3</name>
+            <entity_active>true</entity_active>
             <pickable>true</pickable>
             <transform>
                 <pos>
@@ -3256,8 +3256,8 @@
             </hit_actions>
         </FlowWall>
         <FlowWall>
-            <entity_active>true</entity_active>
             <name>r3_wall4</name>
+            <entity_active>true</entity_active>
             <pickable>true</pickable>
             <transform>
                 <pos>
@@ -3332,8 +3332,8 @@
             </hit_actions>
         </FlowWall>
         <TypingEnemy>
-            <entity_active>true</entity_active>
             <name>r3_e</name>
+            <entity_active>true</entity_active>
             <pickable>true</pickable>
             <transform>
                 <pos>
@@ -3386,8 +3386,8 @@
             </hit_actions>
         </TypingEnemy>
         <TypingEnemy>
-            <entity_active>true</entity_active>
             <name>r3_i</name>
+            <entity_active>true</entity_active>
             <pickable>true</pickable>
             <transform>
                 <pos>
@@ -3440,8 +3440,8 @@
             </hit_actions>
         </TypingEnemy>
         <FlowWall>
-            <entity_active>true</entity_active>
             <name>r3_wall5</name>
+            <entity_active>true</entity_active>
             <pickable>true</pickable>
             <transform>
                 <pos>
@@ -3516,8 +3516,8 @@
             </hit_actions>
         </FlowWall>
         <FlowWall>
-            <entity_active>true</entity_active>
             <name>r3_wall6</name>
+            <entity_active>true</entity_active>
             <pickable>true</pickable>
             <transform>
                 <pos>
@@ -3592,8 +3592,8 @@
             </hit_actions>
         </FlowWall>
         <TypingEnemy>
-            <entity_active>true</entity_active>
             <name>r3_g</name>
+            <entity_active>true</entity_active>
             <pickable>true</pickable>
             <transform>
                 <pos>
@@ -3646,8 +3646,8 @@
             </hit_actions>
         </TypingEnemy>
         <TypingEnemy>
-            <entity_active>true</entity_active>
             <name>r3_h</name>
+            <entity_active>true</entity_active>
             <pickable>true</pickable>
             <transform>
                 <pos>
@@ -3700,8 +3700,8 @@
             </hit_actions>
         </TypingEnemy>
         <FlowWall>
-            <entity_active>true</entity_active>
             <name>r3_wall1</name>
+            <entity_active>true</entity_active>
             <pickable>true</pickable>
             <transform>
                 <pos>
@@ -3776,8 +3776,8 @@
             </hit_actions>
         </FlowWall>
         <FlowWall>
-            <entity_active>true</entity_active>
             <name>r3_wall2</name>
+            <entity_active>true</entity_active>
             <pickable>true</pickable>
             <transform>
                 <pos>
@@ -3852,8 +3852,8 @@
             </hit_actions>
         </FlowWall>
         <Base>
-            <entity_active>true</entity_active>
             <name>camera_target3</name>
+            <entity_active>true</entity_active>
             <pickable>true</pickable>
             <transform>
                 <pos>
@@ -3883,8 +3883,8 @@
             <flow_section_id>-1</flow_section_id>
         </Base>
         <FlowTrigger>
-            <entity_active>true</entity_active>
             <name>room3_bass_trigger</name>
+            <entity_active>true</entity_active>
             <pickable>true</pickable>
             <transform>
                 <pos>
@@ -3922,8 +3922,8 @@
             </actions>
         </FlowTrigger>
         <FlowTrigger>
-            <entity_active>true</entity_active>
             <name>room4_trigger</name>
+            <entity_active>true</entity_active>
             <pickable>true</pickable>
             <transform>
                 <pos>
@@ -3984,8 +3984,8 @@
             </actions>
         </FlowTrigger>
         <ActionSequencer>
-            <entity_active>false</entity_active>
             <name>room5_timed_trigger</name>
+            <entity_active>false</entity_active>
             <pickable>false</pickable>
             <transform>
                 <pos>
@@ -4015,5 +4015,37 @@
             <flow_section_id>-1</flow_section_id>
             <seq_filename>data/barren/room5_action_seq.txt</seq_filename>
         </ActionSequencer>
+        <FlowPickup>
+            <name>new_entity</name>
+            <entity_active>true</entity_active>
+            <pickable>true</pickable>
+            <transform>
+                <pos>
+                    <x>-1.5625</x>
+                    <y>0</y>
+                    <z>-0.914063334</z>
+                </pos>
+                <quat>
+                    <x>0</x>
+                    <y>0</y>
+                    <z>0</z>
+                    <w>1</w>
+                </quat>
+                <scale>
+                    <x>0.25</x>
+                    <y>0.25</y>
+                    <z>0.25</z>
+                </scale>
+            </transform>
+            <model_name>cube</model_name>
+            <model_color_vec4>
+                <x>0.800000012</x>
+                <y>0.800000012</y>
+                <z>0.800000012</z>
+                <w>1</w>
+            </model_color_vec4>
+            <flow_section_id>0</flow_section_id>
+            <actions/>
+        </FlowPickup>
     </new_entities>
 </script>

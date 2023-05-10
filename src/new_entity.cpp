@@ -439,6 +439,7 @@ void EntityManager::Iterator::Next() {
 EntityManager::AllIterator EntityManager::GetAllIterator() {
     AllIterator iter;
     iter._mgr = this;
+    iter._active = true;
     for (iter._typeIx = 0; iter._typeIx < gkNumEntityTypes; ++iter._typeIx) {
         iter._typeIter = GetIterator((EntityType)iter._typeIx);
         if (!iter._typeIter.Finished()) {
@@ -452,6 +453,7 @@ EntityManager::AllIterator EntityManager::GetAllIterator() {
 EntityManager::AllIterator EntityManager::GetAllInactiveIterator() {
     AllIterator iter;
     iter._mgr = this;
+    iter._active = false;
     for (iter._typeIx = 0; iter._typeIx < gkNumEntityTypes; ++iter._typeIx) {
         iter._typeIter = GetInactiveIterator((EntityType)iter._typeIx);
         if (!iter._typeIter.Finished()) {
@@ -477,7 +479,11 @@ void EntityManager::AllIterator::Next() {
     }
     ++_typeIx;
     for (; _typeIx < gkNumEntityTypes; ++_typeIx) {
-        _typeIter = _mgr->GetIterator((EntityType)_typeIx);
+        if (_active) {
+            _typeIter = _mgr->GetIterator((EntityType)_typeIx);
+        } else {
+            _typeIter = _mgr->GetInactiveIterator((EntityType)_typeIx);
+        }
         if (!_typeIter.Finished()) {
             return;
         }
@@ -507,6 +513,7 @@ void Entity::DebugPrint() {
 }
 void Entity::Save(serial::Ptree pt) const {    
     pt.PutString("name", _name.c_str());
+    pt.PutBool("entity_active", _initActive);
     pt.PutBool("pickable", _pickable);
     // NOTE: we always save the current position! maybe do this different
     serial::SaveInNewChildOf(pt, "transform", _initTransform);
@@ -517,6 +524,8 @@ void Entity::Save(serial::Ptree pt) const {
 }
 void Entity::Load(serial::Ptree pt) {
     _name = pt.GetString("name");
+    _initActive = true;
+    pt.TryGetBool("entity_active", &_initActive);
     pt.TryGetBool("pickable", &_pickable);
     {
         bool success = serial::LoadFromChildOf(pt, "transform", _initTransform);
@@ -538,6 +547,14 @@ void Entity::Load(serial::Ptree pt) {
 Entity::ImGuiResult Entity::ImGui(GameManager& g) {
     imgui_util::InputText<128>("Entity name##TopLevel", &_name);
     ImGui::Text("Entity type: %s", ne::gkEntityTypeNames[(int)_id._type]);
+    bool activeChanged = ImGui::Checkbox("Entity active", &_initActive);
+    if (activeChanged) {
+        if (_initActive) {
+            g._neEntityManager->TagForActivate(_id);
+        } else {
+            g._neEntityManager->TagForDeactivate(_id);
+        }
+    }
     ImGui::Checkbox("Pickable", &_pickable);
     Entity::ImGuiResult result = Entity::ImGuiResult::Done;
     if (ImGui::Button("Force Init")) {
