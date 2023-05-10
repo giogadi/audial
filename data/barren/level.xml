@@ -3,6 +3,7 @@
     <bpm>100</bpm>
     <new_entities>
         <Light>
+            <entity_active>true</entity_active>
             <name>light</name>
             <pickable>false</pickable>
             <transform>
@@ -43,6 +44,7 @@
             </diffuse>
         </Light>
         <Camera>
+            <entity_active>true</entity_active>
             <name>camera</name>
             <pickable>false</pickable>
             <transform>
@@ -76,6 +78,7 @@
             <tracking_factor>0.0500000007</tracking_factor>
         </Camera>
         <Sequencer>
+            <entity_active>true</entity_active>
             <name>count_off</name>
             <pickable>false</pickable>
             <transform>
@@ -152,6 +155,7 @@
             </events>
         </Sequencer>
         <FlowPlayer>
+            <entity_active>true</entity_active>
             <name>player</name>
             <pickable>true</pickable>
             <transform>
@@ -196,6 +200,7 @@
             </respawn_pos>
         </FlowPlayer>
         <StepSequencer>
+            <entity_active>true</entity_active>
             <name>kick_seq</name>
             <pickable>false</pickable>
             <transform>
@@ -234,6 +239,7 @@
             <editor_mute>true</editor_mute>
         </StepSequencer>
         <StepSequencer>
+            <entity_active>true</entity_active>
             <name>snare_seq</name>
             <pickable>false</pickable>
             <transform>
@@ -272,6 +278,7 @@
             <editor_mute>true</editor_mute>
         </StepSequencer>
         <StepSequencer>
+            <entity_active>true</entity_active>
             <name>hihat_seq</name>
             <pickable>false</pickable>
             <transform>
@@ -310,6 +317,7 @@
             <editor_mute>true</editor_mute>
         </StepSequencer>
         <StepSequencer>
+            <entity_active>true</entity_active>
             <name>clap_seq</name>
             <pickable>false</pickable>
             <transform>
@@ -348,6 +356,7 @@
             <editor_mute>false</editor_mute>
         </StepSequencer>
         <StepSequencer>
+            <entity_active>true</entity_active>
             <name>chord_seq</name>
             <pickable>false</pickable>
             <transform>
@@ -388,6 +397,7 @@
             <editor_mute>false</editor_mute>
         </StepSequencer>
         <StepSequencer>
+            <entity_active>true</entity_active>
             <name>other_seq</name>
             <pickable>false</pickable>
             <transform>
@@ -428,6 +438,7 @@
             <editor_mute>false</editor_mute>
         </StepSequencer>
         <StepSequencer>
+            <entity_active>true</entity_active>
             <name>bass_seq</name>
             <pickable>false</pickable>
             <transform>
@@ -468,6 +479,7 @@
             <editor_mute>true</editor_mute>
         </StepSequencer>
         <StepSequencer>
+            <entity_active>true</entity_active>
             <name>lead_seq</name>
             <pickable>false</pickable>
             <transform>
@@ -508,6 +520,7 @@
             <editor_mute>false</editor_mute>
         </StepSequencer>
         <ActionSequencer>
+            <entity_active>true</entity_active>
             <name>action_seq</name>
             <pickable>false</pickable>
             <transform>
@@ -539,6 +552,7 @@
             <seq_filename>data/barren/action_seq.txt</seq_filename>
         </ActionSequencer>
         <ActionSequencer>
+            <entity_active>true</entity_active>
             <name>room1_action_seq</name>
             <pickable>false</pickable>
             <transform>
@@ -570,6 +584,7 @@
             <seq_filename>data/barren/room1_action_seq.txt</seq_filename>
         </ActionSequencer>
         <Base>
+            <entity_active>true</entity_active>
             <name>camera_target2</name>
             <pickable>true</pickable>
             <transform>
@@ -600,6 +615,7 @@
             <flow_section_id>-1</flow_section_id>
         </Base>
         <FlowTrigger>
+            <entity_active>true</entity_active>
             <name>room2_trigger</name>
             <pickable>true</pickable>
             <transform>
@@ -666,6 +682,7 @@
             </actions>
         </FlowTrigger>
         <Base>
+            <entity_active>true</entity_active>
             <name>new_spawn_pos</name>
             <pickable>true</pickable>
             <transform>
@@ -696,6 +713,7 @@
             <flow_section_id>-1</flow_section_id>
         </Base>
         <FlowTrigger>
+            <entity_active>true</entity_active>
             <name>room1_drumfill_trigger</name>
             <pickable>false</pickable>
             <transform>
@@ -737,7 +755,7 @@
                     <action_type>SpawnAutomator</action_type>
                     <relative>false</relative>
                     <startValue>0</startValue>
-                    <endValue>0.500000001</endValue>
+                    <endValue>0.5</endValue>
                     <desiredAutomateTime>8</desiredAutomateTime>
                     <synth>false</synth>
                     <synthParam>Gain</synthParam>
@@ -747,6 +765,7 @@
             </actions>
         </FlowTrigger>
         <TypingEnemy>
+            <entity_active>true</entity_active>
             <name>r1_f</name>
             <pickable>true</pickable>
             <transform>
@@ -800,6 +819,7 @@
             </hit_actions>
         </TypingEnemy>
         <TypingEnemy>
+            <entity_active>true</entity_active>
             <name>r1_j</name>
             <pickable>true</pickable>
             <transform>
@@ -853,6 +873,7 @@
             </hit_actions>
         </TypingEnemy>
         <FlowWall>
+            <entity_active>true</entity_active>
             <name>r1_wall1</name>
             <pickable>true</pickable>
             <transform>
@@ -928,6 +949,7 @@
             </hit_actions>
         </FlowWall>
         <TypingEnemy>
+            <entity_active>true</entity_active>
             <name>r1_d</name>
             <pickable>true</pickable>
             <transform>
@@ -981,6 +1003,7 @@
             </hit_actions>
         </TypingEnemy>
         <TypingEnemy>
+            <entity_active>true</entity_active>
             <name>r1_k</name>
             <pickable>true</pickable>
             <transform>
@@ -1034,6 +1057,7 @@
             </hit_actions>
         </TypingEnemy>
         <FlowWall>
+            <entity_active>true</entity_active>
             <name>r1_wall2</name>
             <pickable>true</pickable>
             <transform>
@@ -1109,6 +1133,7 @@
             </hit_actions>
         </FlowWall>
         <FlowWall>
+            <entity_active>true</entity_active>
             <name>r1_wall3</name>
             <pickable>true</pickable>
             <transform>
@@ -1184,6 +1209,7 @@
             </hit_actions>
         </FlowWall>
         <FlowWall>
+            <entity_active>true</entity_active>
             <name>r1_wall4</name>
             <pickable>true</pickable>
             <transform>
@@ -1259,6 +1285,7 @@
             </hit_actions>
         </FlowWall>
         <TypingEnemy>
+            <entity_active>true</entity_active>
             <name>r1_e</name>
             <pickable>true</pickable>
             <transform>
@@ -1312,6 +1339,7 @@
             </hit_actions>
         </TypingEnemy>
         <TypingEnemy>
+            <entity_active>true</entity_active>
             <name>r1_i</name>
             <pickable>true</pickable>
             <transform>
@@ -1365,6 +1393,7 @@
             </hit_actions>
         </TypingEnemy>
         <FlowWall>
+            <entity_active>true</entity_active>
             <name>r1_wall5</name>
             <pickable>true</pickable>
             <transform>
@@ -1440,6 +1469,7 @@
             </hit_actions>
         </FlowWall>
         <FlowWall>
+            <entity_active>true</entity_active>
             <name>r1_wall6</name>
             <pickable>true</pickable>
             <transform>
@@ -1515,6 +1545,7 @@
             </hit_actions>
         </FlowWall>
         <TypingEnemy>
+            <entity_active>true</entity_active>
             <name>r1_g</name>
             <pickable>true</pickable>
             <transform>
@@ -1568,6 +1599,7 @@
             </hit_actions>
         </TypingEnemy>
         <TypingEnemy>
+            <entity_active>true</entity_active>
             <name>r1_h</name>
             <pickable>true</pickable>
             <transform>
@@ -1621,6 +1653,7 @@
             </hit_actions>
         </TypingEnemy>
         <TypingEnemy>
+            <entity_active>true</entity_active>
             <name>r2_f</name>
             <pickable>true</pickable>
             <transform>
@@ -1674,6 +1707,7 @@
             </hit_actions>
         </TypingEnemy>
         <TypingEnemy>
+            <entity_active>true</entity_active>
             <name>r2_j</name>
             <pickable>true</pickable>
             <transform>
@@ -1727,6 +1761,7 @@
             </hit_actions>
         </TypingEnemy>
         <FlowWall>
+            <entity_active>true</entity_active>
             <name>r2_wall1</name>
             <pickable>true</pickable>
             <transform>
@@ -1802,6 +1837,7 @@
             </hit_actions>
         </FlowWall>
         <TypingEnemy>
+            <entity_active>true</entity_active>
             <name>r2_d</name>
             <pickable>true</pickable>
             <transform>
@@ -1855,6 +1891,7 @@
             </hit_actions>
         </TypingEnemy>
         <TypingEnemy>
+            <entity_active>true</entity_active>
             <name>r2_k</name>
             <pickable>true</pickable>
             <transform>
@@ -1908,6 +1945,7 @@
             </hit_actions>
         </TypingEnemy>
         <FlowWall>
+            <entity_active>true</entity_active>
             <name>r2_wall2</name>
             <pickable>true</pickable>
             <transform>
@@ -1983,6 +2021,7 @@
             </hit_actions>
         </FlowWall>
         <FlowWall>
+            <entity_active>true</entity_active>
             <name>r2_wall3</name>
             <pickable>true</pickable>
             <transform>
@@ -2058,6 +2097,7 @@
             </hit_actions>
         </FlowWall>
         <FlowWall>
+            <entity_active>true</entity_active>
             <name>r2_wall4</name>
             <pickable>true</pickable>
             <transform>
@@ -2133,6 +2173,7 @@
             </hit_actions>
         </FlowWall>
         <TypingEnemy>
+            <entity_active>true</entity_active>
             <name>r2_e</name>
             <pickable>true</pickable>
             <transform>
@@ -2186,6 +2227,7 @@
             </hit_actions>
         </TypingEnemy>
         <TypingEnemy>
+            <entity_active>true</entity_active>
             <name>r2_i</name>
             <pickable>true</pickable>
             <transform>
@@ -2239,6 +2281,7 @@
             </hit_actions>
         </TypingEnemy>
         <FlowWall>
+            <entity_active>true</entity_active>
             <name>r2_wall5</name>
             <pickable>true</pickable>
             <transform>
@@ -2314,6 +2357,7 @@
             </hit_actions>
         </FlowWall>
         <FlowWall>
+            <entity_active>true</entity_active>
             <name>r2_wall6</name>
             <pickable>true</pickable>
             <transform>
@@ -2389,6 +2433,7 @@
             </hit_actions>
         </FlowWall>
         <TypingEnemy>
+            <entity_active>true</entity_active>
             <name>r2_g</name>
             <pickable>true</pickable>
             <transform>
@@ -2416,7 +2461,7 @@
                 <z>0.08251632</z>
                 <w>1</w>
             </model_color_vec4>
-            <flow_section_id>2</flow_section_id>
+            <flow_section_id>3</flow_section_id>
             <text>g</text>
             <type_kill>false</type_kill>
             <all_actions_on_hit>false</all_actions_on_hit>
@@ -2442,6 +2487,7 @@
             </hit_actions>
         </TypingEnemy>
         <TypingEnemy>
+            <entity_active>true</entity_active>
             <name>r2_h</name>
             <pickable>true</pickable>
             <transform>
@@ -2469,7 +2515,7 @@
                 <z>0.0823529437</z>
                 <w>1</w>
             </model_color_vec4>
-            <flow_section_id>2</flow_section_id>
+            <flow_section_id>3</flow_section_id>
             <text>h</text>
             <type_kill>false</type_kill>
             <all_actions_on_hit>false</all_actions_on_hit>
@@ -2495,6 +2541,7 @@
             </hit_actions>
         </TypingEnemy>
         <FlowWall>
+            <entity_active>true</entity_active>
             <name>r2_wall1</name>
             <pickable>true</pickable>
             <transform>
@@ -2570,6 +2617,7 @@
             </hit_actions>
         </FlowWall>
         <FlowWall>
+            <entity_active>true</entity_active>
             <name>r2_wall2</name>
             <pickable>true</pickable>
             <transform>
@@ -2645,6 +2693,7 @@
             </hit_actions>
         </FlowWall>
         <FlowTrigger>
+            <entity_active>true</entity_active>
             <name>room2_drum_trigger</name>
             <pickable>true</pickable>
             <transform>
@@ -2696,6 +2745,7 @@
             </actions>
         </FlowTrigger>
         <FlowTrigger>
+            <entity_active>true</entity_active>
             <name>room3_trigger</name>
             <pickable>true</pickable>
             <transform>
@@ -2762,6 +2812,7 @@
             </actions>
         </FlowTrigger>
         <TypingEnemy>
+            <entity_active>true</entity_active>
             <name>r3_f</name>
             <pickable>true</pickable>
             <transform>
@@ -2815,6 +2866,7 @@
             </hit_actions>
         </TypingEnemy>
         <TypingEnemy>
+            <entity_active>true</entity_active>
             <name>r3_j</name>
             <pickable>true</pickable>
             <transform>
@@ -2868,6 +2920,7 @@
             </hit_actions>
         </TypingEnemy>
         <FlowWall>
+            <entity_active>true</entity_active>
             <name>r3_wall1</name>
             <pickable>true</pickable>
             <transform>
@@ -2943,6 +2996,7 @@
             </hit_actions>
         </FlowWall>
         <TypingEnemy>
+            <entity_active>true</entity_active>
             <name>r3_d</name>
             <pickable>true</pickable>
             <transform>
@@ -2996,6 +3050,7 @@
             </hit_actions>
         </TypingEnemy>
         <TypingEnemy>
+            <entity_active>true</entity_active>
             <name>r3_k</name>
             <pickable>true</pickable>
             <transform>
@@ -3049,6 +3104,7 @@
             </hit_actions>
         </TypingEnemy>
         <FlowWall>
+            <entity_active>true</entity_active>
             <name>r3_wall2</name>
             <pickable>true</pickable>
             <transform>
@@ -3124,6 +3180,7 @@
             </hit_actions>
         </FlowWall>
         <FlowWall>
+            <entity_active>true</entity_active>
             <name>r3_wall3</name>
             <pickable>true</pickable>
             <transform>
@@ -3199,6 +3256,7 @@
             </hit_actions>
         </FlowWall>
         <FlowWall>
+            <entity_active>true</entity_active>
             <name>r3_wall4</name>
             <pickable>true</pickable>
             <transform>
@@ -3274,6 +3332,7 @@
             </hit_actions>
         </FlowWall>
         <TypingEnemy>
+            <entity_active>true</entity_active>
             <name>r3_e</name>
             <pickable>true</pickable>
             <transform>
@@ -3327,6 +3386,7 @@
             </hit_actions>
         </TypingEnemy>
         <TypingEnemy>
+            <entity_active>true</entity_active>
             <name>r3_i</name>
             <pickable>true</pickable>
             <transform>
@@ -3380,6 +3440,7 @@
             </hit_actions>
         </TypingEnemy>
         <FlowWall>
+            <entity_active>true</entity_active>
             <name>r3_wall5</name>
             <pickable>true</pickable>
             <transform>
@@ -3455,6 +3516,7 @@
             </hit_actions>
         </FlowWall>
         <FlowWall>
+            <entity_active>true</entity_active>
             <name>r3_wall6</name>
             <pickable>true</pickable>
             <transform>
@@ -3530,6 +3592,7 @@
             </hit_actions>
         </FlowWall>
         <TypingEnemy>
+            <entity_active>true</entity_active>
             <name>r3_g</name>
             <pickable>true</pickable>
             <transform>
@@ -3583,6 +3646,7 @@
             </hit_actions>
         </TypingEnemy>
         <TypingEnemy>
+            <entity_active>true</entity_active>
             <name>r3_h</name>
             <pickable>true</pickable>
             <transform>
@@ -3636,6 +3700,7 @@
             </hit_actions>
         </TypingEnemy>
         <FlowWall>
+            <entity_active>true</entity_active>
             <name>r3_wall1</name>
             <pickable>true</pickable>
             <transform>
@@ -3711,6 +3776,7 @@
             </hit_actions>
         </FlowWall>
         <FlowWall>
+            <entity_active>true</entity_active>
             <name>r3_wall2</name>
             <pickable>true</pickable>
             <transform>
@@ -3786,6 +3852,7 @@
             </hit_actions>
         </FlowWall>
         <Base>
+            <entity_active>true</entity_active>
             <name>camera_target3</name>
             <pickable>true</pickable>
             <transform>
@@ -3816,6 +3883,7 @@
             <flow_section_id>-1</flow_section_id>
         </Base>
         <FlowTrigger>
+            <entity_active>true</entity_active>
             <name>room3_bass_trigger</name>
             <pickable>true</pickable>
             <transform>
@@ -3853,5 +3921,99 @@
                 </seq_action>
             </actions>
         </FlowTrigger>
+        <FlowTrigger>
+            <entity_active>true</entity_active>
+            <name>room4_trigger</name>
+            <pickable>true</pickable>
+            <transform>
+                <pos>
+                    <x>43.875</x>
+                    <y>0</y>
+                    <z>-1.38593626</z>
+                </pos>
+                <quat>
+                    <x>0</x>
+                    <y>0</y>
+                    <z>0</z>
+                    <w>1</w>
+                </quat>
+                <scale>
+                    <x>2.5</x>
+                    <y>1</y>
+                    <z>2</z>
+                </scale>
+            </transform>
+            <model_name/>
+            <model_color_vec4>
+                <x>0.800000012</x>
+                <y>0.800000012</y>
+                <z>0.800000012</z>
+                <w>1</w>
+            </model_color_vec4>
+            <flow_section_id>3</flow_section_id>
+            <actions>
+                <seq_action>
+                    <one_time>true</one_time>
+                    <action_type>CameraControl</action_type>
+                    <setTarget>true</setTarget>
+                    <targetEntityName>room4_trigger</targetEntityName>
+                    <setOffset>false</setOffset>
+                    <desiredTargetToCameraOffset>
+                        <x>0</x>
+                        <y>0</y>
+                        <z>0</z>
+                    </desiredTargetToCameraOffset>
+                    <hasMinX>false</hasMinX>
+                    <minX>0</minX>
+                    <hasMinZ>false</hasMinZ>
+                    <minZ>0</minZ>
+                    <hasMaxX>false</hasMaxX>
+                    <maxX>0</maxX>
+                    <hasMaxZ>false</hasMaxZ>
+                    <maxZ>0</maxZ>
+                </seq_action>
+                <seq_action>
+                    <one_time>true</one_time>
+                    <action_type>SetNewFlowSection</action_type>
+                    <section_id>3</section_id>
+                </seq_action>
+                <seq_action>
+                    <one_time>true</one_time>
+                    <action_type>PlayerSetKillZone</action_type>
+                </seq_action>
+            </actions>
+        </FlowTrigger>
+        <ActionSequencer>
+            <entity_active>false</entity_active>
+            <name>room5_timed_trigger</name>
+            <pickable>false</pickable>
+            <transform>
+                <pos>
+                    <x>44.7000122</x>
+                    <y>0</y>
+                    <z>-1.10781145</z>
+                </pos>
+                <quat>
+                    <x>0</x>
+                    <y>0</y>
+                    <z>0</z>
+                    <w>1</w>
+                </quat>
+                <scale>
+                    <x>1</x>
+                    <y>1</y>
+                    <z>1</z>
+                </scale>
+            </transform>
+            <model_name/>
+            <model_color_vec4>
+                <x>0.800000012</x>
+                <y>0.800000012</y>
+                <z>0.800000012</z>
+                <w>1</w>
+            </model_color_vec4>
+            <flow_section_id>-1</flow_section_id>
+            <seq_filename>data/barren/room5_action_seq.txt</seq_filename>
+        </ActionSequencer>
     </new_entities>
 </script>

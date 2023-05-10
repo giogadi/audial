@@ -51,7 +51,7 @@ void Editor::HandleEntitySelectAndMove(float deltaTime) {
         if (ProjectScreenPointToXZPlane(mouseX, mouseY, _g->_windowWidth, _g->_windowHeight, _g->_scene->_camera, &clickedPosOnXZPlane)) {
             Vec3 grabOffset = clickedPosOnXZPlane - sGrabPos;
             for (ne::EntityId selectedId : _selectedEntityIds) {
-                if (ne::Entity* selectedEntity = _g->_neEntityManager->GetEntity(selectedId)) {
+                if (ne::Entity* selectedEntity = _g->_neEntityManager->GetActiveOrInactiveEntity(selectedId)) {
                     Vec3 newPos = selectedEntity->_initTransform.Pos() + grabOffset;
                     selectedEntity->_transform.SetPos(newPos);
                 }
@@ -63,7 +63,7 @@ void Editor::HandleEntitySelectAndMove(float deltaTime) {
             inputManager.IsKeyPressedThisFrame(InputManager::MouseButton::Left)) {
             // commit transforms
             for (ne::EntityId selectedId : _selectedEntityIds) {
-                if (ne::Entity* selectedEntity = _g->_neEntityManager->GetEntity(selectedId)) {
+                if (ne::Entity* selectedEntity = _g->_neEntityManager->GetActiveOrInactiveEntity(selectedId)) {
                     selectedEntity->_initTransform = selectedEntity->_transform;
                 }
             }
@@ -73,7 +73,7 @@ void Editor::HandleEntitySelectAndMove(float deltaTime) {
         if (inputManager.IsKeyPressedThisFrame(InputManager::Key::Escape)) {
             // revert transforms
             for (ne::EntityId selectedId : _selectedEntityIds) {
-                if (ne::Entity* selectedEntity = _g->_neEntityManager->GetEntity(selectedId)) {
+                if (ne::Entity* selectedEntity = _g->_neEntityManager->GetActiveOrInactiveEntity(selectedId)) {
                     selectedEntity->_transform = selectedEntity->_initTransform;
                 }
             }
@@ -174,7 +174,7 @@ void Editor::Update(float dt) {
 
     // Draw axes
     for (ne::EntityId selectedId : _selectedEntityIds) {
-        ne::Entity* selectedEntity = _g->_neEntityManager->GetEntity(selectedId);
+        ne::Entity* selectedEntity = _g->_neEntityManager->GetActiveOrInactiveEntity(selectedId);
         if (selectedEntity == nullptr) {            
             continue;
         }
@@ -208,12 +208,15 @@ void Editor::DrawWindow() {
         scriptPt.PutDouble("bpm", _g->_beatClock->GetBpm());
         serial::Ptree entitiesPt = scriptPt.AddChild("new_entities");
         for (ne::EntityId id : _entityIds) {
-            ne::Entity* entity = _g->_neEntityManager->GetEntity(id);
+            bool active = false;
+            ne::Entity* entity = _g->_neEntityManager->GetActiveOrInactiveEntity(id, &active);
             if (entity == nullptr) {
                 continue;
             }
-            assert(id._type == entity->_id._type);            
-            serial::SaveInNewChildOf(entitiesPt, ne::gkEntityTypeNames[(int)id._type], *entity);
+            assert(id._type == entity->_id._type);
+            serial::Ptree entityPt = entitiesPt.AddChild(ne::gkEntityTypeNames[(int)id._type]);
+            entityPt.PutBool("entity_active", active);
+            entity->Save(entityPt);
         }
         if (pt.WriteToFile(_saveFilename.c_str())) {
             printf("Saved script to \"%s\".\n", _saveFilename.c_str());
@@ -227,7 +230,7 @@ void Editor::DrawWindow() {
     if (ImGui::BeginListBox("Entities")) {
         for (auto entityIdIter = _entityIds.begin(); entityIdIter != _entityIds.end(); /*no inc*/) {
             ne::EntityId& entityId = *entityIdIter;
-            ne::Entity* entity = _g->_neEntityManager->GetEntity(entityId);
+            ne::Entity* entity = _g->_neEntityManager->GetActiveOrInactiveEntity(entityId);
 
             // Clean up any missing entities
             if (entity == nullptr) {
@@ -288,7 +291,7 @@ void Editor::DrawWindow() {
         std::vector<ne::EntityId> newIds;
         newIds.reserve(_selectedEntityIds.size());
         for (ne::EntityId selectedId : _selectedEntityIds) {
-            if (!_g->_neEntityManager->GetEntity(selectedId)) {
+            if (!_g->_neEntityManager->GetActiveOrInactiveEntity(selectedId)) {
                 // NOTE: In the case that GetEntity() returns non-null, we DO
                 // NOT STORE it because we're about to add an entity to the
                 // manager. pointers are NOT STABLE after addition.
@@ -298,7 +301,7 @@ void Editor::DrawWindow() {
             ne::Entity* newEntity = _g->_neEntityManager->AddEntity(selectedId._type);
             assert(newEntity != nullptr);
 
-            ne::Entity* selectedEntity = _g->_neEntityManager->GetEntity(selectedId);
+            ne::Entity* selectedEntity = _g->_neEntityManager->GetActiveOrInactiveEntity(selectedId);
             assert(selectedEntity != nullptr);
 
             {
@@ -328,7 +331,18 @@ void Editor::DrawWindow() {
     }
 
     if (_selectedEntityIds.size() == 1) {
-        if (ne::Entity* selectedEntity = _g->_neEntityManager->GetEntity(*_selectedEntityIds.begin())) {
+        bool active = true;
+        ne::EntityId entityId = *_selectedEntityIds.begin();
+        if (ne::Entity* selectedEntity = _g->_neEntityManager->GetActiveOrInactiveEntity(entityId, &active)) {
+            bool activeChanged = ImGui::Checkbox("Entity active", &active);
+            if (activeChanged) {
+                if (active) {
+                    // TODOOOOOOOO do we need to call Init()?
+                    _g->_neEntityManager->TagForActivate(entityId);
+                } else {
+                    _g->_neEntityManager->TagForDeactivate(entityId);
+                }
+            }
             if (selectedEntity->ImGui(*_g) == ne::Entity::ImGuiResult::NeedsInit) {
                 selectedEntity->Destroy(*_g);
                 selectedEntity->Init(*_g);
@@ -353,7 +367,7 @@ void Editor::DrawMultiEnemyWindow() {
     sSelectedEnemies.reserve(_selectedEntityIds.size());
     for (ne::EntityId eId : _selectedEntityIds) {
         if (eId._type == ne::EntityType::TypingEnemy) {
-            if (ne::Entity* entity = _g->_neEntityManager->GetEntity(eId)) {
+            if (ne::Entity* entity = _g->_neEntityManager->GetActiveOrInactiveEntity(eId)) {
                 sSelectedEnemies.push_back(static_cast<TypingEnemyEntity*>(entity));
             }
         }

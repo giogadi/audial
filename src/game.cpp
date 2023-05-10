@@ -309,7 +309,6 @@ int main(int argc, char** argv) {
 
     renderer::Scene sceneManager;
 
-    //EntityManager entityManager;
     ne::EntityManager neEntityManager;
 
     BeatClock beatClock;
@@ -351,7 +350,9 @@ int main(int argc, char** argv) {
             serial::NameTreePair* children = entitiesPt.GetChildren(&numEntities);
             for (int i = 0; i < numEntities; ++i) {
                 ne::EntityType entityType = ne::StringToEntityType(children[i]._name);
-                ne::Entity* entity = gGameManager._neEntityManager->AddEntity(entityType);
+                bool active = true;
+                children[i]._pt.TryGetBool("entity_active", &active);
+                ne::Entity* entity = gGameManager._neEntityManager->AddEntity(entityType, active);
                 entity->Load(children[i]._pt);
                 editor._entityIds.push_back(entity->_id);
             }
@@ -427,21 +428,9 @@ int main(int argc, char** argv) {
             showDemoWindow = !showDemoWindow;
         }
 
-        // if (cmdLineInputs._editMode) {
-        //     entityManager.EditModeUpdate(dt);
-        // } else {
-        //     entityManager.Update(dt);
-        //     // TODO do we wanna run collision manager during edit mode?
-        //     collisionManager.Update(dt);
-        // }
-
         for (auto iter = gGameManager._neEntityManager->GetAllIterator(); !iter.Finished(); iter.Next()) {
             iter.GetEntity()->Update(gGameManager, dt);
         }
-
-        // if (inputManager.IsKeyPressed(InputManager::Key::Escape)) {
-        //     glfwSetWindowShouldClose(window, true);
-        // }
 
         // Start the Dear ImGui frame
         ImGui_ImplOpenGL3_NewFrame();
@@ -452,9 +441,6 @@ int main(int argc, char** argv) {
         if (showSynthWindow) {
             DrawSynthGuiAndUpdatePatch(synthGuiState, audioContext);
         }
-        // if (showEntitiesWindow) {
-        //     entityEditingContext.DrawEntitiesWindow(entityManager, gGameManager);
-        // }        
         if (showDemoWindow) {
             ImGui::ShowDemoWindow(&showDemoWindow);
         }

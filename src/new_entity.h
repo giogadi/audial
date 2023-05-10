@@ -109,9 +109,15 @@ struct EntityManager {
     ~EntityManager();
 
     void Init();
-    Entity* AddEntity(EntityType entityType);
+    Entity* AddEntity(EntityType entityType) {
+        return AddEntity(entityType, /*active=*/true);
+    }
+    Entity* AddEntity(EntityType entityType, bool active);
     Entity* GetEntity(EntityId id);  // only looks for active entities
-    Entity* GetEntity(EntityId id, bool includeActive, bool includeInactive);
+    Entity* GetActiveOrInactiveEntity(EntityId id, bool* active = nullptr) {
+        return GetEntity(id, true, true, active);
+    }
+    Entity* GetEntity(EntityId id, bool includeActive, bool includeInactive, bool* active = nullptr);
     Entity* FindEntityByName(std::string_view name);
     Entity* FindEntityByNameAndType(std::string_view name, EntityType entityType);
     Entity* GetFirstEntityOfType(EntityType entityType);

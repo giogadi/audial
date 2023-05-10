@@ -75,13 +75,13 @@ void EntityManager::Init() {
     // _p->_entitiesLight.reserve(1);
 }
 
-Entity* EntityManager::AddEntity(EntityType entityType) {
+Entity* EntityManager::AddEntity(EntityType entityType, bool const active) {
     Entity* e = nullptr;
     int entityIx = -1;
     switch (entityType) {
 #       define X(NAME) \
         case EntityType::NAME: { \
-            auto& entities = _p->_entities##NAME; \
+            auto& entities = active ? _p->_entities##NAME : _p->_inactiveEntities##NAME; \
             entities.emplace_back(); \
             e = &(entities.back()); \
             entityIx = entities.size() - 1; \
@@ -99,7 +99,7 @@ Entity* EntityManager::AddEntity(EntityType entityType) {
     MapEntry entry;
     entry._typeIx = (int)entityType;
     entry._entityIx = entityIx;
-    entry._active = true;
+    entry._active = active;
     bool newEntry = _entityIdMap.emplace(e->_id._id, entry).second;
     assert(newEntry);
     return e; 
@@ -158,8 +158,12 @@ Entity* EntityManager::GetEntity(EntityId id) {
     return GetEntityInfo(id, true, false)._e;
 }
 
-Entity* EntityManager::GetEntity(EntityId id, bool includeActive, bool includeInactive) {
-    return GetEntityInfo(id, includeActive, includeInactive)._e;
+Entity* EntityManager::GetEntity(EntityId id, bool includeActive, bool includeInactive, bool* active) {
+    EntityInfo eInfo = GetEntityInfo(id, includeActive, includeInactive);
+    if (active != nullptr) {
+        *active = eInfo._active;
+    }
+    return eInfo._e;
 }
 
 Entity* EntityManager::GetFirstEntityOfType(EntityType entityType) {

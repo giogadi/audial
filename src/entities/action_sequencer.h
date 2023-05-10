@@ -17,7 +17,6 @@ struct ActionSequencerEntity : ne::Entity {
     // non-serialized
     std::vector<BeatTimeAction> _actions;
     int _currentIx = 0;
-    // double _currentLoopStartBeatTime = -1.0;
 
     virtual void InitDerived(GameManager& g) override;
     virtual void Update(GameManager& g, float dt) override;
