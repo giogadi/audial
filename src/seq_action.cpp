@@ -861,8 +861,13 @@ bool SetEntityActiveSeqAction::ImGui() {
     return false;
 }
 
-void SetEntityActiveSeqAction::InitDerived(GameManager& g) {    
-    ne::Entity* e = g._neEntityManager->FindInactiveEntityByName(_entityName);
+void SetEntityActiveSeqAction::InitDerived(GameManager& g) {
+    ne::Entity* e = nullptr;
+    if (_active) {
+        e = g._neEntityManager->FindInactiveEntityByName(_entityName);
+    } else {
+        e = g._neEntityManager->FindEntityByName(_entityName);
+    }
     if (e) {
         _entityId = e->_id;
     } else {
@@ -874,5 +879,9 @@ void SetEntityActiveSeqAction::ExecuteDerived(GameManager& g) {
     if (g._editMode) {
         return;
     }
-    g._neEntityManager->TagForActivate(_entityId, _initOnActivate);
+    if (_active) {
+        g._neEntityManager->TagForActivate(_entityId, _initOnActivate);   
+    } else {
+        g._neEntityManager->TagForDeactivate(_entityId);
+    }
 }

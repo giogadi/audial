@@ -820,7 +820,7 @@
                     <one_time>true</one_time>
                     <action_type>SetEntityActive</action_type>
                     <entity_name>howdy</entity_name>
-                    <active>true</active>
+                    <active>false</active>
                     <init_on_activate>true</init_on_activate>
                 </seq_action>
             </hit_actions>
@@ -4022,37 +4022,5 @@
             <flow_section_id>-1</flow_section_id>
             <seq_filename>data/barren/room5_action_seq.txt</seq_filename>
         </ActionSequencer>
-        <FlowPickup>
-            <name>howdy</name>
-            <entity_active>false</entity_active>
-            <pickable>true</pickable>
-            <transform>
-                <pos>
-                    <x>-1.5625</x>
-                    <y>0</y>
-                    <z>-0.914063334</z>
-                </pos>
-                <quat>
-                    <x>0</x>
-                    <y>0</y>
-                    <z>0</z>
-                    <w>1</w>
-                </quat>
-                <scale>
-                    <x>0.25</x>
-                    <y>0.25</y>
-                    <z>0.25</z>
-                </scale>
-            </transform>
-            <model_name>cube</model_name>
-            <model_color_vec4>
-                <x>0.800000012</x>
-                <y>0.800000012</y>
-                <z>0.800000012</z>
-                <w>1</w>
-            </model_color_vec4>
-            <flow_section_id>0</flow_section_id>
-            <actions/>
-        </FlowPickup>
     </new_entities>
 </script>
