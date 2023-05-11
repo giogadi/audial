@@ -16,6 +16,7 @@
         "SetNewFlowSection",
         "AddToIntVariable",
         "CameraControl",
-        "SpawnEnemy"
+        "SpawnEnemy",
+        "SetEntityActive"
     ]
 }

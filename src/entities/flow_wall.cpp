@@ -137,13 +137,9 @@ FlowWallEntity::ImGuiResult FlowWallEntity::ImGuiDerived(GameManager& g)  {
         imgui_util::InputVector(_polygon);        
     }
 
-    SeqAction::ImGui("Hit actions", _hitActions);
-    // if (ImGui::CollapsingHeader("Hit actions")) {
-    //     bool needsInit = imgui_util::InputVector(_hitActionStrings);
-    //     if (needsInit) {
-    //         result = ImGuiResult::NeedsInit;
-    //     }
-    // }
+    if (SeqAction::ImGui("Hit actions", _hitActions)) {
+        result = ImGuiResult::NeedsInit;
+    }
     
     return result;
 }

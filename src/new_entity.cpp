@@ -185,6 +185,16 @@ Entity* EntityManager::FindEntityByName(std::string_view name) {
     return nullptr;
 }
 
+Entity* EntityManager::FindInactiveEntityByName(std::string_view name) {
+    for (AllIterator iter = GetAllInactiveIterator(); !iter.Finished(); iter.Next()) {
+        Entity* e = iter.GetEntity();
+        if (e->_name == name) {
+            return e;
+        }
+    }
+    return nullptr;
+}
+
 Entity* EntityManager::FindEntityByNameAndType(std::string_view name, EntityType entityType) {
     for (Iterator iter = GetIterator(entityType); !iter.Finished(); iter.Next()) {
         Entity* e = iter.GetEntity();
@@ -377,17 +387,21 @@ void EntityManager::DeactivateTaggedEntities(GameManager& g) {
     _toDeactivate.clear();
 }
 
-bool EntityManager::TagForActivate(EntityId idToActivate) {
+bool EntityManager::TagForActivate(EntityId idToActivate, bool initOnActivate) {
     if (Entity* e = GetEntity(idToActivate, false, true)) {
-        _toActivate.push_back(idToActivate);
+        _toActivate.push_back({idToActivate, initOnActivate});
         return true;
     }
     return false;
 }
 
 void EntityManager::ActivateTaggedEntities(GameManager& g) {
-    for (EntityId& id : _toActivate) {
+    for (auto &[id, initOnActivate] : _toActivate) {
         ActivateEntity(id);
+        if (initOnActivate) {
+            Entity* e = GetEntity(id);
+            e->Init(g);
+        }
     }
     _toActivate.clear();
 }
@@ -550,7 +564,7 @@ Entity::ImGuiResult Entity::ImGui(GameManager& g) {
     bool activeChanged = ImGui::Checkbox("Entity active", &_initActive);
     if (activeChanged) {
         if (_initActive) {
-            g._neEntityManager->TagForActivate(_id);
+            g._neEntityManager->TagForActivate(_id, /*initOnActivate=*/true);
         } else {
             g._neEntityManager->TagForDeactivate(_id);
         }

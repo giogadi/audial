@@ -151,8 +151,7 @@ void FlowPlayerEntity::Respawn(GameManager& g) {
     for (ne::EntityManager::AllIterator iter = g._neEntityManager->GetAllInactiveIterator(); !iter.Finished(); iter.Next()) {
         ne::Entity* e = iter.GetEntity();
         if (e->_initActive && e->_flowSectionId >= 0 && e->_flowSectionId == _currentSectionId) {
-            e->Init(g);
-            g._neEntityManager->TagForActivate(e->_id);
+            g._neEntityManager->TagForActivate(e->_id, /*initOnActivate=*/true);
         }
     }
 }

@@ -274,3 +274,21 @@ struct AddToIntVariableSeqAction : public SeqAction {
     virtual void SaveDerived(serial::Ptree pt) const override;
     virtual bool ImGui() override;
 };
+
+struct SetEntityActiveSeqAction : public SeqAction {
+    virtual SeqActionType Type() const override { return SeqActionType::SetEntityActive; }
+    std::string _entityName;
+    bool _active = true;
+    bool _initOnActivate = true;
+
+    ne::EntityId _entityId;
+
+    virtual void LoadDerived(LoadInputs const& loadInputs, std::istream& input) override;
+    virtual void LoadDerived(serial::Ptree pt) override;
+    virtual void SaveDerived(serial::Ptree pt) const override;
+    virtual bool ImGui() override;
+
+    virtual void InitDerived(GameManager& g) override;
+
+    virtual void ExecuteDerived(GameManager& g) override;
+};

@@ -34,6 +34,8 @@ enum class SeqActionType : int {
     
     SpawnEnemy,
     
+    SetEntityActive,
+    
     Count
 };
 extern char const* gSeqActionTypeStrings[];

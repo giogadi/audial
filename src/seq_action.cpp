@@ -50,6 +50,7 @@ std::unique_ptr<SeqAction> SeqAction::New(SeqActionType actionType) {
         case SeqActionType::AddToIntVariable: return std::make_unique<AddToIntVariableSeqAction>();
         case SeqActionType::CameraControl: return std::make_unique<CameraControlSeqAction>();
         case SeqActionType::SpawnEnemy: return std::make_unique<SpawnEnemySeqAction>();
+        case SeqActionType::SetEntityActive: return std::make_unique<SetEntityActiveSeqAction>();
         case SeqActionType::Count: break;
     }
     assert(false);
@@ -835,4 +836,43 @@ void AddToIntVariableSeqAction::ExecuteDerived(GameManager& g) {
     } else {        
         e->AddToVariable(_addAmount);
     }
+}
+
+void SetEntityActiveSeqAction::LoadDerived(LoadInputs const& loadInputs, std::istream& input) {
+    input >> _entityName >> _active >> _initOnActivate;
+}
+
+void SetEntityActiveSeqAction::LoadDerived(serial::Ptree pt) {
+    _entityName = pt.GetString("entity_name");
+    _active = pt.GetBool("active");
+    _initOnActivate = pt.GetBool("init_on_activate");
+}
+
+void SetEntityActiveSeqAction::SaveDerived(serial::Ptree pt) const {
+    pt.PutString("entity_name", _entityName.c_str());
+    pt.PutBool("active", _active);
+    pt.PutBool("init_on_activate", _initOnActivate);
+}
+
+bool SetEntityActiveSeqAction::ImGui() {
+    imgui_util::InputText<128>("Entity name", &_entityName);
+    ImGui::Checkbox("Active", &_active);
+    ImGui::Checkbox("Init on activate", &_initOnActivate);
+    return false;
+}
+
+void SetEntityActiveSeqAction::InitDerived(GameManager& g) {    
+    ne::Entity* e = g._neEntityManager->FindInactiveEntityByName(_entityName);
+    if (e) {
+        _entityId = e->_id;
+    } else {
+        printf("SetEntityActiveSeqAction: could not find entity %s\n", _entityName.c_str());
+    }
+}
+
+void SetEntityActiveSeqAction::ExecuteDerived(GameManager& g) {
+    if (g._editMode) {
+        return;
+    }
+    g._neEntityManager->TagForActivate(_entityId, _initOnActivate);
 }

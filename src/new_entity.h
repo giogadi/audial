@@ -120,6 +120,7 @@ struct EntityManager {
     }
     Entity* GetEntity(EntityId id, bool includeActive, bool includeInactive, bool* active = nullptr);
     Entity* FindEntityByName(std::string_view name);
+    Entity* FindInactiveEntityByName(std::string_view name);
     Entity* FindEntityByNameAndType(std::string_view name, EntityType entityType);
     Entity* GetFirstEntityOfType(EntityType entityType);
     
@@ -131,7 +132,7 @@ struct EntityManager {
     bool TagForDeactivate(EntityId id);
     void DeactivateTaggedEntities(GameManager& g);
 
-    bool TagForActivate(EntityId id);
+    bool TagForActivate(EntityId id, bool initOnActivate);
     void ActivateTaggedEntities(GameManager& g);
 
     // Iterates over all entities of a given type.
@@ -175,7 +176,8 @@ private:
     int _nextId = 0;
     std::vector<EntityId> _toDestroy;
     std::vector<EntityId> _toDeactivate;
-    std::vector<EntityId> _toActivate;
+    // {entityId, initOnActivate}
+    std::vector<std::pair<EntityId, bool>> _toActivate;
 
     struct Internal;
     std::unique_ptr<Internal> _p;

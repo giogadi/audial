@@ -270,7 +270,9 @@ ne::BaseEntity::ImGuiResult TypingEnemyEntity::ImGuiDerived(GameManager& g) {
     ImGui::InputFloat("Flow cooldown", &_flowCooldown);
     ImGui::Checkbox("Reset cooldown on any hit", &_resetCooldownOnAnyHit);
 
-    SeqAction::ImGui("Hit actions", _hitActions);
+    if (SeqAction::ImGui("Hit actions", _hitActions)) {
+        result = ImGuiResult::NeedsInit;
+    }
 
     ImGui::PushID("wp");
     _waypointFollower.ImGui();
