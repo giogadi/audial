@@ -816,13 +816,6 @@
                     <temporary>true</temporary>
                     <stepStr> mG3,mB3-,mD4,mF4:1</stepStr>
                 </seq_action>
-                <seq_action>
-                    <one_time>true</one_time>
-                    <action_type>SetEntityActive</action_type>
-                    <entity_name>howdy</entity_name>
-                    <active>false</active>
-                    <init_on_activate>true</init_on_activate>
-                </seq_action>
             </hit_actions>
         </TypingEnemy>
         <TypingEnemy>

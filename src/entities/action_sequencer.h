@@ -1,6 +1,6 @@
 #pragma once
 
-#include <istream>
+#include <sstream>
 
 #include "new_entity.h"
 #include "seq_action.h"
@@ -15,6 +15,7 @@ struct ActionSequencerEntity : ne::Entity {
     std::string _seqFilename;
 
     // non-serialized
+    std::stringstream _actionsString;  // populated at Load() but not fully serialized
     std::vector<BeatTimeAction> _actions;
     int _currentIx = 0;
 
@@ -22,5 +23,5 @@ struct ActionSequencerEntity : ne::Entity {
     virtual void Update(GameManager& g, float dt) override;
     virtual void SaveDerived(serial::Ptree pt) const override;
     virtual void LoadDerived(serial::Ptree pt) override;
-    virtual ImGuiResult ImGuiDerived(GameManager& g) override;     
+    virtual ImGuiResult ImGuiDerived(GameManager& g) override;
 };
