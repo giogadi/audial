@@ -198,6 +198,7 @@
                 <y>0</y>
                 <z>-4.125</z>
             </respawn_pos>
+            <max_speed>20</max_speed>
         </FlowPlayer>
         <StepSequencer>
             <name>kick_seq</name>
@@ -3975,7 +3976,7 @@
                 <seq_action>
                     <one_time>true</one_time>
                     <action_type>SetNewFlowSection</action_type>
-                    <section_id>3</section_id>
+                    <section_id>4</section_id>
                 </seq_action>
                 <seq_action>
                     <one_time>true</one_time>
@@ -4058,7 +4059,7 @@
                 <z>0.800000012</z>
                 <w>1</w>
             </model_color_vec4>
-            <flow_section_id>3</flow_section_id>
+            <flow_section_id>4</flow_section_id>
             <seq_filename>data/barren/room5_action_seq.txt</seq_filename>
         </ActionSequencer>
         <Base>
@@ -4183,9 +4184,9 @@
             <pickable>true</pickable>
             <transform>
                 <pos>
-                    <x>46.2125168</x>
+                    <x>45.9781418</x>
                     <y>0</y>
-                    <z>4.73905945</z>
+                    <z>-1.02656507</z>
                 </pos>
                 <quat>
                     <x>0</x>
@@ -4196,7 +4197,7 @@
                 <scale>
                     <x>1</x>
                     <y>1</y>
-                    <z>20</z>
+                    <z>10</z>
                 </scale>
             </transform>
             <model_name>cube</model_name>
@@ -4242,7 +4243,7 @@
                 <pos>
                     <x>41.6343918</x>
                     <y>0</y>
-                    <z>4.6921854</z>
+                    <z>-0.995314121</z>
                 </pos>
                 <quat>
                     <x>0</x>
@@ -4253,7 +4254,7 @@
                 <scale>
                     <x>1</x>
                     <y>1</y>
-                    <z>20</z>
+                    <z>10</z>
                 </scale>
             </transform>
             <model_name>cube</model_name>
@@ -4291,26 +4292,26 @@
                 </seq_action>
             </hit_actions>
         </FlowWall>
-        <Base>
-            <name>r6_stuff1</name>
+        <FlowWall>
+            <name>r6_wall3</name>
             <entity_active>true</entity_active>
             <pickable>true</pickable>
             <transform>
                 <pos>
-                    <x>40.3812561</x>
+                    <x>41.7562561</x>
                     <y>0</y>
-                    <z>7.43594265</z>
+                    <z>8.27969265</z>
                 </pos>
                 <quat>
                     <x>0</x>
-                    <y>0</y>
+                    <y>0.382683456</y>
                     <z>0</z>
-                    <w>1</w>
+                    <w>0.923879504</w>
                 </quat>
                 <scale>
                     <x>0.5</x>
                     <y>1</y>
-                    <z>3</z>
+                    <z>5</z>
                 </scale>
             </transform>
             <model_name>cube</model_name>
@@ -4321,7 +4322,33 @@
                 <w>1</w>
             </model_color_vec4>
             <flow_section_id>4</flow_section_id>
-        </Base>
+            <can_hit>true</can_hit>
+            <hp>-1</hp>
+            <move_mode>Waypoints</move_mode>
+            <local_to_entity>false</local_to_entity>
+            <waypoint_auto_start>false</waypoint_auto_start>
+            <loop_waypoints>false</loop_waypoints>
+            <start_time>3</start_time>
+            <waypoints/>
+            <rot_vel>0</rot_vel>
+            <polygon/>
+            <hit_actions>
+                <seq_action>
+                    <one_time>false</one_time>
+                    <action_type>BeatTimeEvent</action_type>
+                    <quantize_denom>0.25</quantize_denom>
+                    <beat_time_event>
+                        <event_type>PlayPcm</event_type>
+                        <channel>0</channel>
+                        <tick_time>0</tick_time>
+                        <sound_ix>9</sound_ix>
+                        <velocity>0.200000003</velocity>
+                        <loop>false</loop>
+                        <beat_time>0</beat_time>
+                    </beat_time_event>
+                </seq_action>
+            </hit_actions>
+        </FlowWall>
         <Base>
             <name>r6_stuff2</name>
             <entity_active>true</entity_active>
@@ -4384,21 +4411,21 @@
             </model_color_vec4>
             <flow_section_id>4</flow_section_id>
         </Base>
-        <Base>
-            <name>r6_stuff4</name>
+        <FlowWall>
+            <name>r6_wall4</name>
             <entity_active>true</entity_active>
             <pickable>true</pickable>
             <transform>
                 <pos>
-                    <x>50.1468811</x>
+                    <x>46.9125061</x>
                     <y>0</y>
-                    <z>5.9203186</z>
+                    <z>6.9984436</z>
                 </pos>
                 <quat>
                     <x>0</x>
-                    <y>0</y>
+                    <y>0.173648179</y>
                     <z>0</z>
-                    <w>1</w>
+                    <w>0.98480773</w>
                 </quat>
                 <scale>
                     <x>3</x>
@@ -4414,7 +4441,33 @@
                 <w>1</w>
             </model_color_vec4>
             <flow_section_id>4</flow_section_id>
-        </Base>
+            <can_hit>true</can_hit>
+            <hp>-1</hp>
+            <move_mode>Waypoints</move_mode>
+            <local_to_entity>false</local_to_entity>
+            <waypoint_auto_start>false</waypoint_auto_start>
+            <loop_waypoints>false</loop_waypoints>
+            <start_time>3</start_time>
+            <waypoints/>
+            <rot_vel>0</rot_vel>
+            <polygon/>
+            <hit_actions>
+                <seq_action>
+                    <one_time>false</one_time>
+                    <action_type>BeatTimeEvent</action_type>
+                    <quantize_denom>0.25</quantize_denom>
+                    <beat_time_event>
+                        <event_type>PlayPcm</event_type>
+                        <channel>0</channel>
+                        <tick_time>0</tick_time>
+                        <sound_ix>9</sound_ix>
+                        <velocity>0.200000003</velocity>
+                        <loop>false</loop>
+                        <beat_time>0</beat_time>
+                    </beat_time_event>
+                </seq_action>
+            </hit_actions>
+        </FlowWall>
         <Base>
             <name>r6_stuff5</name>
             <entity_active>true</entity_active>
@@ -4542,9 +4595,9 @@
             <pickable>true</pickable>
             <transform>
                 <pos>
-                    <x>42.703125</x>
+                    <x>42.5625</x>
                     <y>0</y>
-                    <z>21.1015625</z>
+                    <z>13.0078125</z>
                 </pos>
                 <quat>
                     <x>0</x>
@@ -4568,7 +4621,7 @@
             <flow_section_id>5</flow_section_id>
             <text>e</text>
             <type_kill>false</type_kill>
-            <all_actions_on_hit>false</all_actions_on_hit>
+            <all_actions_on_hit>true</all_actions_on_hit>
             <flow_polarity>false</flow_polarity>
             <flow_cooldown>500</flow_cooldown>
             <reset_cooldown_on_any_hit>true</reset_cooldown_on_any_hit>
@@ -4588,6 +4641,18 @@
                     <temporary>true</temporary>
                     <stepStr> mG1:1</stepStr>
                 </seq_action>
+                <seq_action>
+                    <one_time>true</one_time>
+                    <action_type>SetStepSequencerMute</action_type>
+                    <seq_name>kick_seq</seq_name>
+                    <mute>true</mute>
+                </seq_action>
+                <seq_action>
+                    <one_time>true</one_time>
+                    <action_type>SetStepSequencerMute</action_type>
+                    <seq_name>snare_seq</seq_name>
+                    <mute>true</mute>
+                </seq_action>
             </hit_actions>
         </TypingEnemy>
         <TypingEnemy>
@@ -4596,9 +4661,9 @@
             <pickable>true</pickable>
             <transform>
                 <pos>
-                    <x>45.046875</x>
+                    <x>45.03125</x>
                     <y>0</y>
-                    <z>21.1484375</z>
+                    <z>12.9921875</z>
                 </pos>
                 <quat>
                     <x>0</x>
@@ -4622,7 +4687,7 @@
             <flow_section_id>5</flow_section_id>
             <text>i</text>
             <type_kill>false</type_kill>
-            <all_actions_on_hit>false</all_actions_on_hit>
+            <all_actions_on_hit>true</all_actions_on_hit>
             <flow_polarity>false</flow_polarity>
             <flow_cooldown>500</flow_cooldown>
             <reset_cooldown_on_any_hit>true</reset_cooldown_on_any_hit>
@@ -4641,6 +4706,18 @@
                     <velOnly>false</velOnly>
                     <temporary>true</temporary>
                     <stepStr> mG2:1</stepStr>
+                </seq_action>
+                <seq_action>
+                    <one_time>true</one_time>
+                    <action_type>SetStepSequencerMute</action_type>
+                    <seq_name>kick_seq</seq_name>
+                    <mute>true</mute>
+                </seq_action>
+                <seq_action>
+                    <one_time>true</one_time>
+                    <action_type>SetStepSequencerMute</action_type>
+                    <seq_name>snare_seq</seq_name>
+                    <mute>true</mute>
                 </seq_action>
             </hit_actions>
         </TypingEnemy>

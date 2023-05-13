@@ -14,6 +14,7 @@ struct FlowPlayerEntity : public ne::Entity {
     float _maxHorizSpeedAfterDash = 20.f;
     float _dashTime = 0.5f;
     Vec3 _respawnPos;
+    float _maxSpeed = 20.f;
 
     // non-serialized
     Vec3 _vel;

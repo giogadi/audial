@@ -400,7 +400,9 @@ void EntityManager::ActivateTaggedEntities(GameManager& g) {
         ActivateEntity(id);
         if (initOnActivate) {
             Entity* e = GetEntity(id);
-            e->Init(g);
+            if (e) {
+                e->Init(g);
+            }
         }
     }
     _toActivate.clear();
