@@ -401,9 +401,9 @@ int main(int argc, char** argv) {
             inputManager.Update(inputEnabled);
         }
 
-        // if (!cmdLineInputs._editMode && inputManager.IsKeyPressedThisFrame(InputManager::Key::Space)) {
-        //     paused = !paused;
-        // }
+        if (!cmdLineInputs._editMode && inputManager.IsKeyPressedThisFrame(InputManager::Key::Space)) {
+            paused = !paused;
+        }
 
         float dt = 0.f;
         if (paused) {
@@ -424,9 +424,9 @@ int main(int argc, char** argv) {
         if (gGameManager._editMode && inputManager.IsKeyPressedThisFrame(InputManager::Key::E)) {
             showEntitiesWindow = !showEntitiesWindow;
         }
-        if (gGameManager._editMode && inputManager.IsKeyPressedThisFrame(InputManager::Key::Space)) {
-            showDemoWindow = !showDemoWindow;
-        }
+        // if (gGameManager._editMode && inputManager.IsKeyPressedThisFrame(InputManager::Key::Space)) {
+        //     showDemoWindow = !showDemoWindow;
+        // }
 
         for (auto iter = gGameManager._neEntityManager->GetAllIterator(); !iter.Finished(); iter.Next()) {
             iter.GetEntity()->Update(gGameManager, dt);

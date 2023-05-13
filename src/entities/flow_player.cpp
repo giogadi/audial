@@ -92,7 +92,7 @@ FlowWallEntity* FindOverlapWithWall(GameManager& g, Transform const& playerTrans
         }
         Transform const& wallTrans = pWall->_transform;
         Vec3 euler = wallTrans.Quat().EulerAngles();
-        float yRot = euler._x;
+        float yRot = -euler._y;
         Vec3 penetration;
         bool hasOverlap = false;
         if (pWall->_polygon.size() < 3) {
@@ -102,7 +102,7 @@ FlowWallEntity* FindOverlapWithWall(GameManager& g, Transform const& playerTrans
             aabbPoly[2].Set(-halfScale._x, 0.f, -halfScale._z);
             aabbPoly[3].Set(-halfScale._x, 0.f, halfScale._z);
             
-            hasOverlap = geometry::PointInConvexPolygon2D(playerTrans.Pos(), aabbPoly, wallTrans.Pos(), yRot, Vec3(1.f, 1.f, 1.f), &penetration);            
+            hasOverlap = geometry::PointInConvexPolygon2D(playerTrans.Pos(), aabbPoly, wallTrans.Pos(), yRot, Vec3(1.f, 1.f, 1.f), &penetration);
         } else {
             hasOverlap = geometry::PointInConvexPolygon2D(playerTrans.Pos(), pWall->_polygon, wallTrans.Pos(), yRot, wallTrans.Scale() + (playerTrans.Scale() /** 0.5f*/), &penetration);
         }

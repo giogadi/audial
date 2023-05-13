@@ -153,14 +153,15 @@ bool DoAABBsOverlap(Transform const& aabb1, Transform const& aabb2, Vec3* penetr
 }
 
 bool PointInConvexPolygon2D(Vec3 const& queryP, std::vector<Vec3> const& convexPoly, Vec3 const& polyPos, float polyRotRad, Vec3 const& polyScale, Vec3* penetration) {
-    Vec3 queryPLocal = queryP;
-    queryPLocal -= polyPos;
+    Vec3 queryPTemp = queryP;
+    queryPTemp -= polyPos;
     float c = cos(-polyRotRad);
     float s = sin(-polyRotRad);
-    queryPLocal._x = c * queryPLocal._x - s * queryPLocal._z;
-    queryPLocal._z = s * queryPLocal._x + c * queryPLocal._z;
+    Vec3 queryPLocal;
+    queryPLocal._x = c * queryPTemp._x - s * queryPTemp._z;
+    queryPLocal._z = s * queryPTemp._x + c * queryPTemp._z;
     queryPLocal._x /= polyScale._x;
-    queryPLocal._z /= polyScale._z;
+    queryPLocal._z /= polyScale._z;        
     float minPenetrationDistSqr = 99999.f;
     Vec3 minPenetrationNormal;  // will point OUT of polygon.
     for (int i = 0, n = convexPoly.size(); i < n; ++i) {
@@ -189,10 +190,11 @@ bool PointInConvexPolygon2D(Vec3 const& queryP, std::vector<Vec3> const& convexP
 
     // Finally, transform the minPenetrationNormal to world coordinates
     s = -s;
-    minPenetrationNormal._x = c * minPenetrationNormal._x - s * minPenetrationNormal._z;
-    minPenetrationNormal._z = s * minPenetrationNormal._x + c * minPenetrationNormal._z;
+    Vec3 normalRotated;
+    normalRotated._x = c * minPenetrationNormal._x - s * minPenetrationNormal._z;
+    normalRotated._z = s * minPenetrationNormal._x + c * minPenetrationNormal._z;
     if (penetration != nullptr) {
-        *penetration = minPenetrationNormal;
+        *penetration = normalRotated;
     }
     
     return true;
