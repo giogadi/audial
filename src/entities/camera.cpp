@@ -20,6 +20,8 @@ void CameraEntity::InitDerived(GameManager& g) {
             printf("WARNING: CameraEntity could not find follow entity named \"%s\"", _followEntityName.c_str());
         }
     }
+
+    _trackingFactor = _initialTrackingFactor;
 }
 
 void CameraEntity::Update(GameManager& g, float dt) {
@@ -93,12 +95,12 @@ ne::Entity::ImGuiResult CameraEntity::ImGuiDerived(GameManager& g) {
 void CameraEntity::SaveDerived(serial::Ptree pt) const {
     pt.PutBool("ortho", _ortho);
     pt.PutString("follow_entity_name", _followEntityName.c_str());
-    pt.PutFloat("tracking_factor", _trackingFactor);
+    pt.PutFloat("tracking_factor", _initialTrackingFactor);
 }
 
 void CameraEntity::LoadDerived(serial::Ptree pt) {
     _ortho = false;
     pt.TryGetBool("ortho", &_ortho);
     pt.TryGetString("follow_entity_name", &_followEntityName);
-    pt.TryGetFloat("tracking_factor", &_trackingFactor);
+    pt.TryGetFloat("tracking_factor", &_initialTrackingFactor);
 }

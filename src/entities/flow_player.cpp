@@ -298,15 +298,16 @@ void FlowPlayerEntity::Update(GameManager& g, float dt) {
         // Not dashing. Apply gravity if we've dashed since respawn.
         if (!_respawnBeforeFirstDash) {
             _vel += _gravity * dt;
+            _vel._y = std::max(-_maxSpeed, _vel._y);
         }
     }
 
     // limit to _maxSpeed
-    {
-        float speed = std::min(_vel.Length(), _maxSpeed);
-        _vel.Normalize();
-        _vel *= speed;
-    }
+    // {
+    //     float speed = std::min(_vel.Length(), _maxSpeed);
+    //     _vel.Normalize();
+    //     _vel *= speed;
+    // }
 
     Vec3 p = _transform.GetPos();
 

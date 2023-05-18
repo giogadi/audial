@@ -13,6 +13,7 @@ void CameraControlSeqAction::ExecuteDerived(GameManager& g) {
     CameraEntity* camera = static_cast<CameraEntity*>(eIter.GetEntity());
     if (_props._setTarget) {
         camera->_followEntityId = _targetEntityId;
+        camera->_trackingFactor = _props._targetTrackingFactor;
     }
     if (_props._setOffset) {
         camera->_desiredTargetToCameraOffset = _props._desiredTargetToCameraOffset;
@@ -68,6 +69,10 @@ void CameraControlSeqAction::LoadDerived(LoadInputs const& loadInputs, std::istr
         } else if (key == "target") {
             _props._targetEntityName = value;
             _props._setTarget = true;
+        } else if (key == "tracking") {
+            if (!string_util::MaybeStof(value, _props._targetTrackingFactor)) {
+                printf("CameraControlSeqAction: could not parse \"%s\" as float\n", value.c_str());
+            }            
         } else if (key == "min_x") {
             _props._hasMinX = string_util::MaybeStof(value, _props._minX);
         } else if (key == "max_x") {

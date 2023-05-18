@@ -12,9 +12,10 @@ struct CameraEntity : ne::Entity {
     // serialized
     bool _ortho = false;
     std::string _followEntityName;
-    float _trackingFactor = 0.05f;    
+    float _initialTrackingFactor = 0.05f;
 
     // non-serialized
+    float _trackingFactor = 0.05f;
     ne::EntityId _followEntityId;
     Vec3 _desiredTargetToCameraOffset;
     std::optional<float> _minX;

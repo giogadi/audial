@@ -11,6 +11,11 @@
             "type": "string"            
         },
         {
+            "name": "targetTrackingFactor",
+            "type": "float",
+            "default": "0.05f"
+        },
+        {
             "name": "setOffset",
             "type": "bool",
             "default": "false"

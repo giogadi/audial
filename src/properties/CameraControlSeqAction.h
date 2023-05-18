@@ -12,6 +12,8 @@ struct CameraControlSeqActionProps {
     
     std::string _targetEntityName;
     
+    float _targetTrackingFactor = 0.05f;
+    
     bool _setOffset = false;
     
     Vec3 _desiredTargetToCameraOffset;

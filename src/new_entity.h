@@ -20,11 +20,11 @@ namespace ne {
     X(LaneNotePlayer) \
     X(LaneNoteEnemy) \
     X(Sequencer) \
+    X(ActionSequencer) \
     X(TypingPlayer) \
     X(TypingEnemy)  \
     X(FlowPlayer) \
     X(StepSequencer) \
-    X(ActionSequencer) \
     X(ParamAutomator) \
     X(FlowWall) \
     X(FlowPickup) \

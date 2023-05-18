@@ -198,7 +198,7 @@
                 <y>0</y>
                 <z>-4.125</z>
             </respawn_pos>
-            <max_speed>20</max_speed>
+            <max_speed>10</max_speed>
         </FlowPlayer>
         <StepSequencer>
             <name>kick_seq</name>
@@ -651,6 +651,7 @@
                     <action_type>CameraControl</action_type>
                     <setTarget>true</setTarget>
                     <targetEntityName>camera_target2</targetEntityName>
+                    <targetTrackingFactor>0.0500000007</targetTrackingFactor>
                     <setOffset>false</setOffset>
                     <desiredTargetToCameraOffset>
                         <x>0</x>
@@ -2748,6 +2749,7 @@
                     <action_type>CameraControl</action_type>
                     <setTarget>true</setTarget>
                     <targetEntityName>room3_camera_target</targetEntityName>
+                    <targetTrackingFactor>0.0500000007</targetTrackingFactor>
                     <setOffset>false</setOffset>
                     <desiredTargetToCameraOffset>
                         <x>0</x>
@@ -2801,6 +2803,7 @@
                     <action_type>CameraControl</action_type>
                     <setTarget>true</setTarget>
                     <targetEntityName>camera_target3</targetEntityName>
+                    <targetTrackingFactor>0.0500000007</targetTrackingFactor>
                     <setOffset>false</setOffset>
                     <desiredTargetToCameraOffset>
                         <x>0</x>
@@ -3945,6 +3948,7 @@
                     <action_type>CameraControl</action_type>
                     <setTarget>true</setTarget>
                     <targetEntityName>room4_camera_target_again</targetEntityName>
+                    <targetTrackingFactor>0.0500000007</targetTrackingFactor>
                     <setOffset>false</setOffset>
                     <desiredTargetToCameraOffset>
                         <x>0</x>
@@ -3998,6 +4002,7 @@
                     <action_type>CameraControl</action_type>
                     <setTarget>true</setTarget>
                     <targetEntityName>room4_camera_target</targetEntityName>
+                    <targetTrackingFactor>0.0500000007</targetTrackingFactor>
                     <setOffset>false</setOffset>
                     <desiredTargetToCameraOffset>
                         <x>0</x>
@@ -4169,6 +4174,7 @@
                     <action_type>CameraControl</action_type>
                     <setTarget>true</setTarget>
                     <targetEntityName>room6_camera_target</targetEntityName>
+                    <targetTrackingFactor>0.0500000007</targetTrackingFactor>
                     <setOffset>false</setOffset>
                     <desiredTargetToCameraOffset>
                         <x>0</x>
@@ -4338,15 +4344,15 @@
             <pickable>true</pickable>
             <transform>
                 <pos>
-                    <x>43.4750061</x>
+                    <x>43.8187561</x>
                     <y>0</y>
-                    <z>8.54531765</z>
+                    <z>7.84219313</z>
                 </pos>
                 <quat>
                     <x>0</x>
-                    <y>0.642787576</y>
+                    <y>0.707106769</y>
                     <z>0</z>
-                    <w>0.766044438</w>
+                    <w>0.707106769</w>
                 </quat>
                 <scale>
                     <x>0.5</x>
@@ -4457,20 +4463,20 @@
             <pickable>true</pickable>
             <transform>
                 <pos>
-                    <x>44.2250061</x>
+                    <x>43.8812561</x>
                     <y>0</y>
-                    <z>5.6078186</z>
+                    <z>5.2171936</z>
                 </pos>
                 <quat>
                     <x>0</x>
-                    <y>0.173648179</y>
+                    <y>0</y>
                     <z>0</z>
-                    <w>0.98480773</w>
+                    <w>1</w>
                 </quat>
                 <scale>
-                    <x>4</x>
+                    <x>5</x>
                     <y>1</y>
-                    <z>1</z>
+                    <z>0.5</z>
                 </scale>
             </transform>
             <model_name>cube</model_name>
@@ -4545,9 +4551,9 @@
             <pickable>true</pickable>
             <transform>
                 <pos>
-                    <x>43.8500175</x>
+                    <x>43.8812675</x>
                     <y>0</y>
-                    <z>15.1140594</z>
+                    <z>10.8640594</z>
                 </pos>
                 <quat>
                     <x>0</x>
@@ -4556,7 +4562,7 @@
                     <w>1</w>
                 </quat>
                 <scale>
-                    <x>7</x>
+                    <x>15</x>
                     <y>1</y>
                     <z>1</z>
                 </scale>
@@ -4575,6 +4581,7 @@
                     <action_type>CameraControl</action_type>
                     <setTarget>true</setTarget>
                     <targetEntityName>room7_camera_target</targetEntityName>
+                    <targetTrackingFactor>0.0500000007</targetTrackingFactor>
                     <setOffset>false</setOffset>
                     <desiredTargetToCameraOffset>
                         <x>0</x>
@@ -4836,6 +4843,202 @@
                 <w>1</w>
             </model_color_vec4>
             <flow_section_id>-1</flow_section_id>
+        </Base>
+        <FlowWall>
+            <name>r0_wall1</name>
+            <entity_active>true</entity_active>
+            <pickable>true</pickable>
+            <transform>
+                <pos>
+                    <x>-8.5</x>
+                    <y>0</y>
+                    <z>2.5</z>
+                </pos>
+                <quat>
+                    <x>0</x>
+                    <y>0</y>
+                    <z>0</z>
+                    <w>1</w>
+                </quat>
+                <scale>
+                    <x>1</x>
+                    <y>1</y>
+                    <z>8</z>
+                </scale>
+            </transform>
+            <model_name>cube</model_name>
+            <model_color_vec4>
+                <x>0.800000012</x>
+                <y>0.800000012</y>
+                <z>0.800000012</z>
+                <w>1</w>
+            </model_color_vec4>
+            <flow_section_id>0</flow_section_id>
+            <can_hit>true</can_hit>
+            <hp>-1</hp>
+            <move_mode>Waypoints</move_mode>
+            <local_to_entity>true</local_to_entity>
+            <waypoint_auto_start>false</waypoint_auto_start>
+            <loop_waypoints>true</loop_waypoints>
+            <start_time>4</start_time>
+            <waypoints>
+                <waypoint>
+                    <wait_time>0</wait_time>
+                    <move_time>4</move_time>
+                    <p>
+                        <x>0</x>
+                        <y>0</y>
+                        <z>4.5</z>
+                    </p>
+                </waypoint>
+            </waypoints>
+            <rot_vel>0</rot_vel>
+            <polygon/>
+            <hit_actions>
+                <seq_action>
+                    <one_time>false</one_time>
+                    <action_type>BeatTimeEvent</action_type>
+                    <quantize_denom>0.25</quantize_denom>
+                    <beat_time_event>
+                        <event_type>PlayPcm</event_type>
+                        <channel>0</channel>
+                        <tick_time>0</tick_time>
+                        <sound_ix>9</sound_ix>
+                        <velocity>0.200000003</velocity>
+                        <loop>false</loop>
+                        <beat_time>0</beat_time>
+                    </beat_time_event>
+                </seq_action>
+            </hit_actions>
+        </FlowWall>
+        <FlowWall>
+            <name>r0_wall2</name>
+            <entity_active>true</entity_active>
+            <pickable>true</pickable>
+            <transform>
+                <pos>
+                    <x>-8.5</x>
+                    <y>0</y>
+                    <z>-4.5</z>
+                </pos>
+                <quat>
+                    <x>0</x>
+                    <y>0</y>
+                    <z>0</z>
+                    <w>1</w>
+                </quat>
+                <scale>
+                    <x>1</x>
+                    <y>1</y>
+                    <z>8</z>
+                </scale>
+            </transform>
+            <model_name>cube</model_name>
+            <model_color_vec4>
+                <x>0.800000012</x>
+                <y>0.800000012</y>
+                <z>0.800000012</z>
+                <w>1</w>
+            </model_color_vec4>
+            <flow_section_id>0</flow_section_id>
+            <can_hit>true</can_hit>
+            <hp>-1</hp>
+            <move_mode>Waypoints</move_mode>
+            <local_to_entity>true</local_to_entity>
+            <waypoint_auto_start>false</waypoint_auto_start>
+            <loop_waypoints>true</loop_waypoints>
+            <start_time>4</start_time>
+            <waypoints>
+                <waypoint>
+                    <wait_time>0</wait_time>
+                    <move_time>4</move_time>
+                    <p>
+                        <x>0</x>
+                        <y>0</y>
+                        <z>-4.5</z>
+                    </p>
+                </waypoint>
+            </waypoints>
+            <rot_vel>0</rot_vel>
+            <polygon/>
+            <hit_actions>
+                <seq_action>
+                    <one_time>false</one_time>
+                    <action_type>BeatTimeEvent</action_type>
+                    <quantize_denom>0.25</quantize_denom>
+                    <beat_time_event>
+                        <event_type>PlayPcm</event_type>
+                        <channel>0</channel>
+                        <tick_time>0</tick_time>
+                        <sound_ix>9</sound_ix>
+                        <velocity>0.200000003</velocity>
+                        <loop>false</loop>
+                        <beat_time>0</beat_time>
+                    </beat_time_event>
+                </seq_action>
+            </hit_actions>
+        </FlowWall>
+        <Base>
+            <name>r0_camera_target</name>
+            <entity_active>true</entity_active>
+            <pickable>true</pickable>
+            <transform>
+                <pos>
+                    <x>-14.600009</x>
+                    <y>15</y>
+                    <z>0</z>
+                </pos>
+                <quat>
+                    <x>0</x>
+                    <y>0</y>
+                    <z>0</z>
+                    <w>1</w>
+                </quat>
+                <scale>
+                    <x>1</x>
+                    <y>1</y>
+                    <z>1</z>
+                </scale>
+            </transform>
+            <model_name/>
+            <model_color_vec4>
+                <x>0.800000012</x>
+                <y>0.800000012</y>
+                <z>0.800000012</z>
+                <w>1</w>
+            </model_color_vec4>
+            <flow_section_id>0</flow_section_id>
+        </Base>
+        <Base>
+            <name>r0_spawn_point</name>
+            <entity_active>true</entity_active>
+            <pickable>true</pickable>
+            <transform>
+                <pos>
+                    <x>-23</x>
+                    <y>0</y>
+                    <z>-4</z>
+                </pos>
+                <quat>
+                    <x>0</x>
+                    <y>0</y>
+                    <z>0</z>
+                    <w>1</w>
+                </quat>
+                <scale>
+                    <x>1</x>
+                    <y>1</y>
+                    <z>1</z>
+                </scale>
+            </transform>
+            <model_name/>
+            <model_color_vec4>
+                <x>0.800000012</x>
+                <y>0.800000012</y>
+                <z>0.800000012</z>
+                <w>1</w>
+            </model_color_vec4>
+            <flow_section_id>0</flow_section_id>
         </Base>
     </new_entities>
 </script>
