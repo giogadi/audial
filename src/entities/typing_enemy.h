@@ -18,7 +18,7 @@ struct TypingEnemyEntity : public ne::Entity {
     HitBehavior _hitBehavior = HitBehavior::SingleAction; // TODO
     double _activeBeatTime = -1.0; // TODO
     double _inactiveBeatTime = -1.0; // TODO
-    bool _destroyIfOffscreenLeft = true; // TODO
+    bool _destroyIfOffscreenLeft = false; // TODO
     bool _destroyAfterTyped = true;
     int _typingSectionId = -1; // TODO
     Vec3 _sectionLocalPos; // TODO

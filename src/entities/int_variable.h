@@ -7,7 +7,6 @@ struct SeqAction;
 struct IntVariableEntity : public ne::Entity {
     // serialized
     int _initialValue = -1;
-    std::vector<std::string> _actionStrings;  // default behavior: action when current value hits zero
 
     // non-serialized
     int _currentValue = -1;
