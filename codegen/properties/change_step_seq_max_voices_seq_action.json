@@ -1,0 +1,20 @@
+{
+    "propertiesName": "ChangeStepSeqMaxVoices",
+    "props": [
+        {
+            "name": "entityName",
+            "type": "string"
+        },
+        {
+            "name": "relative",
+            "type": "bool",
+            "default": "false",
+            "comment": "If true, numVoices gets added to current step seq value. Otherwise, it just gets set to numVoices"
+        },
+        {
+            "name": "numVoices",
+            "type": "int",
+            "default": "0"
+        }
+    ]
+}

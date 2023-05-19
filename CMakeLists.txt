@@ -54,6 +54,7 @@ add_executable(game
     src/properties/SpawnAutomatorSeqAction.cpp
     src/properties/NoteOnOffSeqAction.cpp
     src/properties/CameraControlSeqAction.cpp
+    src/properties/ChangeStepSeqMaxVoices.cpp
 
     src/seq_action.cpp
     src/seq_actions/spawn_enemy.cpp
@@ -168,3 +169,6 @@ target_include_directories(stk_test PUBLIC src/)
 add_executable(matrix_test EXCLUDE_FROM_ALL
     src/matrix_test.cpp src/matrix.cpp src/serial.cpp)                          
 target_include_directories(matrix_test PUBLIC src/)
+
+add_executable(bser_test EXCLUDE_FROM_ALL
+    src/bser_test.c)

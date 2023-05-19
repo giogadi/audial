@@ -2,3 +2,5 @@
 -1 camera target:r0_camera_target tracking:1
 -1 player_killzone max_z:6
 -1 set_new_section 0
+
+0 change_step_seq_max_voices chord_seq 0 1

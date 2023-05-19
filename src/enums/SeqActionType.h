@@ -36,6 +36,8 @@ enum class SeqActionType : int {
     
     SetEntityActive,
     
+    ChangeStepSeqMaxVoices,
+    
     Count
 };
 extern char const* gSeqActionTypeStrings[];

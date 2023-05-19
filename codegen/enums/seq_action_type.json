@@ -17,6 +17,7 @@
         "AddToIntVariable",
         "CameraControl",
         "SpawnEnemy",
-        "SetEntityActive"
+        "SetEntityActive",
+        "ChangeStepSeqMaxVoices"
     ]
 }

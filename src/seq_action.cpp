@@ -51,6 +51,7 @@ std::unique_ptr<SeqAction> SeqAction::New(SeqActionType actionType) {
         case SeqActionType::CameraControl: return std::make_unique<CameraControlSeqAction>();
         case SeqActionType::SpawnEnemy: return std::make_unique<SpawnEnemySeqAction>();
         case SeqActionType::SetEntityActive: return std::make_unique<SetEntityActiveSeqAction>();
+        case SeqActionType::ChangeStepSeqMaxVoices: return std::make_unique<ChangeStepSeqMaxVoicesSeqAction>();
         case SeqActionType::Count: break;
     }
     assert(false);
@@ -165,6 +166,8 @@ std::unique_ptr<SeqAction> SeqAction::LoadAction(LoadInputs const& loadInputs, s
         pAction = std::make_unique<PlayerSetSpawnPointSeqAction>();
     } else if (token == "add_int") {
         pAction = std::make_unique<AddToIntVariableSeqAction>();
+    } else if (token == "change_step_seq_max_voices") {
+        pAction = std::make_unique<ChangeStepSeqMaxVoicesSeqAction>();
     } else {
         printf("ERROR: Unrecognized action type \"%s\".\n", token.c_str());
     }
@@ -883,5 +886,31 @@ void SetEntityActiveSeqAction::ExecuteDerived(GameManager& g) {
         g._neEntityManager->TagForActivate(_entityId, _initOnActivate);   
     } else {
         g._neEntityManager->TagForDeactivate(_entityId);
+    }
+}
+
+void ChangeStepSeqMaxVoicesSeqAction::LoadDerived(LoadInputs const& loadInputs, std::istream& input) {
+    input >> _props._entityName >> _props._relative >> _props._numVoices;
+}
+
+void ChangeStepSeqMaxVoicesSeqAction::InitDerived(GameManager& g) {
+    ne::Entity* e = g._neEntityManager->FindEntityByNameAndType(_props._entityName, ne::EntityType::StepSequencer);
+    if (e) {
+        _entityId = e->_id;
+    } else {
+        printf("ChangeStepSeqMaxVoicesSeqAction::Init: couldn't find entity \"%s\"\n", _props._entityName.c_str());
+    }
+}
+
+void ChangeStepSeqMaxVoicesSeqAction::ExecuteDerived(GameManager& g) {
+    if (g._editMode) {
+        return;
+    }
+    if (StepSequencerEntity* e = static_cast<StepSequencerEntity*>(g._neEntityManager->GetEntity(_entityId))) {
+        if (_props._relative) {
+            e->_maxNumVoices += _props._numVoices;
+        } else {
+            e->_maxNumVoices = _props._numVoices;
+        }
     }
 }

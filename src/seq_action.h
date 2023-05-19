@@ -16,6 +16,7 @@
 #include "properties/SpawnAutomatorSeqAction.h"
 #include "properties/ChangeStepSequencerSeqAction.h"
 #include "properties/NoteOnOffSeqAction.h"
+#include "properties/ChangeStepSeqMaxVoices.h"
 
 struct SeqAction;
 
@@ -70,7 +71,9 @@ struct SeqAction {
     
 protected:
     virtual void LoadDerived(
-        LoadInputs const& loadInputs, std::istream& input) = 0;
+        LoadInputs const& loadInputs, std::istream& input) {
+        printf("UNIMPLEMENTED TEXT-BASED LOAD - SeqActionType::%s!\n", SeqActionTypeToString(Type()));
+    };
     virtual void LoadDerived(serial::Ptree pt) {
         printf("UNIMPLEMENTED LOAD - SeqActionType::%s!\n", SeqActionTypeToString(Type()));
     }
@@ -290,5 +293,19 @@ struct SetEntityActiveSeqAction : public SeqAction {
 
     virtual void InitDerived(GameManager& g) override;
 
+    virtual void ExecuteDerived(GameManager& g) override;
+};
+
+struct ChangeStepSeqMaxVoicesSeqAction : public SeqAction {
+    virtual SeqActionType Type() const override { return SeqActionType::ChangeStepSeqMaxVoices; }
+    ChangeStepSeqMaxVoicesProps _props;
+
+    ne::EntityId _entityId;
+
+    virtual void LoadDerived(LoadInputs const& loadInputs, std::istream& input) override;
+    virtual void LoadDerived(serial::Ptree pt) override { _props.Load(pt); }
+    virtual void SaveDerived(serial::Ptree pt) const override { _props.Save(pt); }
+    virtual bool ImGui() override { return _props.ImGui(); }
+    virtual void InitDerived(GameManager& g) override;
     virtual void ExecuteDerived(GameManager& g) override;
 };

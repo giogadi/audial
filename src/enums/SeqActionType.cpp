@@ -42,7 +42,9 @@ std::unordered_map<std::string, SeqActionType> const gStringToSeqActionType = {
     
     { "SpawnEnemy", SeqActionType::SpawnEnemy },
     
-    { "SetEntityActive", SeqActionType::SetEntityActive }
+    { "SetEntityActive", SeqActionType::SetEntityActive },
+    
+    { "ChangeStepSeqMaxVoices", SeqActionType::ChangeStepSeqMaxVoices }
     
 };
 
@@ -80,7 +82,9 @@ char const* gSeqActionTypeStrings[] = {
     
     "SpawnEnemy",
     
-    "SetEntityActive"
+    "SetEntityActive",
+    
+    "ChangeStepSeqMaxVoices"
     
 };
 
