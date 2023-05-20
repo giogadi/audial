@@ -1,5 +1,7 @@
 #include "entity_picking.h"
 
+#include <algorithm>
+
 #include "renderer.h"
 
 std::optional<float> SphereRayCast(Vec3 const& rayStart, Vec3 const& normalizedRayDir, Vec3 const& spherePos, float const sphereRadius) {
