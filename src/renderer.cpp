@@ -829,7 +829,7 @@ void Scene::Draw(int windowWidth, int windowHeight, float timeInSecs) {
     {
         Mat4 transMat;
         Vec3 cameraPos = _camera._transform.GetPos();
-        Vec3 cameraPosToTerrainPos(-10.f, -15.f, -6.f);
+        Vec3 cameraPosToTerrainPos(-10.f, -15.f, -8.f);
         transMat.SetTranslation(cameraPos + cameraPosToTerrainPos);
         Mat3 modelTransInv;
         assert(transMat.GetMat3().TransposeInverse(modelTransInv));

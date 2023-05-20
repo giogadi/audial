@@ -5354,6 +5354,15 @@
                     <relative>true</relative>
                     <numVoices>1</numVoices>
                 </seq_action>
+                <seq_action>
+                    <one_time>false</one_time>
+                    <action_type>NoteOnOff</action_type>
+                    <channel>0</channel>
+                    <midiNote>43</midiNote>
+                    <noteLength>0.10000000000000001</noteLength>
+                    <velocity>0.5</velocity>
+                    <quantizeDenom>0.25</quantizeDenom>
+                </seq_action>
             </actions>
         </FlowPickup>
         <FlowPickup>
@@ -5400,6 +5409,15 @@
                     <relative>true</relative>
                     <numVoices>1</numVoices>
                 </seq_action>
+                <seq_action>
+                    <one_time>false</one_time>
+                    <action_type>NoteOnOff</action_type>
+                    <channel>0</channel>
+                    <midiNote>43</midiNote>
+                    <noteLength>0.10000000000000001</noteLength>
+                    <velocity>0.5</velocity>
+                    <quantizeDenom>0.25</quantizeDenom>
+                </seq_action>
             </actions>
         </FlowPickup>
         <FlowPickup>
@@ -5445,6 +5463,15 @@
                     <entityName>chord_seq</entityName>
                     <relative>true</relative>
                     <numVoices>1</numVoices>
+                </seq_action>
+                <seq_action>
+                    <one_time>false</one_time>
+                    <action_type>NoteOnOff</action_type>
+                    <channel>0</channel>
+                    <midiNote>43</midiNote>
+                    <noteLength>0.10000000000000001</noteLength>
+                    <velocity>0.5</velocity>
+                    <quantizeDenom>0.25</quantizeDenom>
                 </seq_action>
             </actions>
         </FlowPickup>
@@ -5506,7 +5533,7 @@
             </hit_actions>
         </FlowWall>
         <TypingEnemy>
-            <name>r0_f</name>
+            <name>r0_j</name>
             <entity_active>true</entity_active>
             <pickable>true</pickable>
             <transform>
@@ -5535,7 +5562,7 @@
                 <w>1</w>
             </model_color_vec4>
             <flow_section_id>0</flow_section_id>
-            <text>f</text>
+            <text>j</text>
             <type_kill>false</type_kill>
             <all_actions_on_hit>true</all_actions_on_hit>
             <flow_polarity>false</flow_polarity>

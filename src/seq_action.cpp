@@ -544,6 +544,9 @@ void NoteOnOffSeqAction::LoadDerived(LoadInputs const& loadInputs, std::istream&
 }
 
 void NoteOnOffSeqAction::ExecuteDerived(GameManager& g) {
+    if (_props._midiNote < 0) {
+        return;
+    }
     BeatTimeEvent b_e;
     b_e._beatTime = 0.0;
     b_e._e.type = audio::EventType::NoteOn;
