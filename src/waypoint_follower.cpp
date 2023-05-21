@@ -137,7 +137,9 @@ void WaypointFollower::Load(serial::Ptree pt) {
 bool WaypointFollower::ImGui() {
     ImGui::Checkbox("Local to Entity", &_localToEntity);
     ImGui::Checkbox("Waypoint Auto Start", &_autoStartFollowingWaypoints);
-    ImGui::InputDouble("Start time", &_initWpStartTime);
+    if (_autoStartFollowingWaypoints) {
+        ImGui::InputDouble("Start time", &_initWpStartTime);
+    }
     ImGui::Checkbox("Loop Waypoints", &_loopWaypoints);
     bool changed = imgui_util::InputVector(_waypoints);
     return changed;

@@ -1,0 +1,4 @@
+8 waypoint r7_e 1
+8 waypoint r7_i 1
+8 waypoint r7_f 1
+8 waypoint r7_j 1

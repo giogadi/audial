@@ -129,9 +129,11 @@ struct EntityManager {
     // Calls Destroy() on removed entities.
     void DestroyTaggedEntities(GameManager& g);
 
+    // Only looks for active entities.
     bool TagForDeactivate(EntityId id);
     void DeactivateTaggedEntities(GameManager& g);
 
+    // Only looks for inactive entities.
     bool TagForActivate(EntityId id, bool initOnActivate);
     void ActivateTaggedEntities(GameManager& g);
 
