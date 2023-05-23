@@ -592,46 +592,15 @@
             <flow_section_id>0</flow_section_id>
             <seq_filename>data/barren/room1_action_seq.txt</seq_filename>
         </ActionSequencer>
-        <Base>
-            <name>camera_target2</name>
-            <entity_active>true</entity_active>
-            <pickable>true</pickable>
-            <transform>
-                <pos>
-                    <x>15.9500084</x>
-                    <y>15</y>
-                    <z>-1.11093831</z>
-                </pos>
-                <quat>
-                    <x>0</x>
-                    <y>0</y>
-                    <z>0</z>
-                    <w>1</w>
-                </quat>
-                <scale>
-                    <x>1</x>
-                    <y>1</y>
-                    <z>1</z>
-                </scale>
-            </transform>
-            <model_name/>
-            <model_color_vec4>
-                <x>0.800000012</x>
-                <y>0.800000012</y>
-                <z>0.800000012</z>
-                <w>1</w>
-            </model_color_vec4>
-            <flow_section_id>-1</flow_section_id>
-        </Base>
         <FlowTrigger>
             <name>room2_trigger</name>
             <entity_active>true</entity_active>
             <pickable>true</pickable>
             <transform>
                 <pos>
-                    <x>6.90625191</x>
+                    <x>10.7812519</x>
                     <y>0</y>
-                    <z>-1.02656126</z>
+                    <z>-0.82343626</z>
                 </pos>
                 <quat>
                     <x>0</x>
@@ -656,27 +625,6 @@
             <actions>
                 <seq_action>
                     <one_time>true</one_time>
-                    <action_type>CameraControl</action_type>
-                    <setTarget>true</setTarget>
-                    <targetEntityName>camera_target2</targetEntityName>
-                    <targetTrackingFactor>0.0500000007</targetTrackingFactor>
-                    <setOffset>false</setOffset>
-                    <desiredTargetToCameraOffset>
-                        <x>0</x>
-                        <y>0</y>
-                        <z>0</z>
-                    </desiredTargetToCameraOffset>
-                    <hasMinX>false</hasMinX>
-                    <minX>0</minX>
-                    <hasMinZ>false</hasMinZ>
-                    <minZ>0</minZ>
-                    <hasMaxX>false</hasMaxX>
-                    <maxX>0</maxX>
-                    <hasMaxZ>false</hasMaxZ>
-                    <maxZ>0</maxZ>
-                </seq_action>
-                <seq_action>
-                    <one_time>true</one_time>
                     <action_type>SetNewFlowSection</action_type>
                     <section_id>1</section_id>
                 </seq_action>
@@ -697,7 +645,7 @@
             <pickable>true</pickable>
             <transform>
                 <pos>
-                    <x>6.95938396</x>
+                    <x>11.271884</x>
                     <y>0</y>
                     <z>-5.3359375</z>
                 </pos>
@@ -2808,32 +2756,6 @@
             <actions>
                 <seq_action>
                     <one_time>true</one_time>
-                    <action_type>CameraControl</action_type>
-                    <setTarget>true</setTarget>
-                    <targetEntityName>camera_target3</targetEntityName>
-                    <targetTrackingFactor>0.0500000007</targetTrackingFactor>
-                    <setOffset>false</setOffset>
-                    <desiredTargetToCameraOffset>
-                        <x>0</x>
-                        <y>0</y>
-                        <z>0</z>
-                    </desiredTargetToCameraOffset>
-                    <hasMinX>false</hasMinX>
-                    <minX>0</minX>
-                    <hasMinZ>false</hasMinZ>
-                    <minZ>0</minZ>
-                    <hasMaxX>false</hasMaxX>
-                    <maxX>0</maxX>
-                    <hasMaxZ>false</hasMaxZ>
-                    <maxZ>0</maxZ>
-                </seq_action>
-                <seq_action>
-                    <one_time>true</one_time>
-                    <action_type>SetNewFlowSection</action_type>
-                    <section_id>2</section_id>
-                </seq_action>
-                <seq_action>
-                    <one_time>true</one_time>
                     <action_type>PlayerSetSpawnPoint</action_type>
                     <spawn_pos>
                         <x>25</x>
@@ -3883,37 +3805,6 @@
                 </seq_action>
             </hit_actions>
         </FlowWall>
-        <Base>
-            <name>camera_target3</name>
-            <entity_active>true</entity_active>
-            <pickable>true</pickable>
-            <transform>
-                <pos>
-                    <x>34.25</x>
-                    <y>15</y>
-                    <z>-1.29843831</z>
-                </pos>
-                <quat>
-                    <x>0</x>
-                    <y>0</y>
-                    <z>0</z>
-                    <w>1</w>
-                </quat>
-                <scale>
-                    <x>1</x>
-                    <y>1</y>
-                    <z>1</z>
-                </scale>
-            </transform>
-            <model_name/>
-            <model_color_vec4>
-                <x>0.800000012</x>
-                <y>0.800000012</y>
-                <z>0.800000012</z>
-                <w>1</w>
-            </model_color_vec4>
-            <flow_section_id>-1</flow_section_id>
-        </Base>
         <FlowTrigger>
             <name>room3_bass_trigger</name>
             <entity_active>true</entity_active>
@@ -3971,6 +3862,11 @@
                     <action_type>SetStepSequence</action_type>
                     <seq_entity_name>bass_seq</seq_entity_name>
                     <seq_str>-1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 mG1:1 -1:1 mG2:1 -1:1 -1:1 mG1:1 -1:1 mA1:1 mB1-:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1</seq_str>
+                </seq_action>
+                <seq_action>
+                    <one_time>true</one_time>
+                    <action_type>SetNewFlowSection</action_type>
+                    <section_id>2</section_id>
                 </seq_action>
             </actions>
         </FlowTrigger>
@@ -4830,7 +4726,7 @@
             <pickable>true</pickable>
             <transform>
                 <pos>
-                    <x>18.4000053</x>
+                    <x>20.5</x>
                     <y>15</y>
                     <z>-1</z>
                 </pos>
@@ -4861,7 +4757,7 @@
             <pickable>true</pickable>
             <transform>
                 <pos>
-                    <x>36.5999489</x>
+                    <x>38.5</x>
                     <y>15</y>
                     <z>-1</z>
                 </pos>
@@ -5327,7 +5223,7 @@
                 <z>0.800000012</z>
                 <w>1</w>
             </model_color_vec4>
-            <flow_section_id>-1</flow_section_id>
+            <flow_section_id>0</flow_section_id>
             <initial_value>3</initial_value>
             <actions>
                 <seq_action>
@@ -5373,7 +5269,7 @@
                 <z>1</z>
                 <w>1</w>
             </model_color_vec4>
-            <flow_section_id>-1</flow_section_id>
+            <flow_section_id>0</flow_section_id>
             <actions>
                 <seq_action>
                     <one_time>true</one_time>
@@ -5428,7 +5324,7 @@
                 <z>1</z>
                 <w>1</w>
             </model_color_vec4>
-            <flow_section_id>-1</flow_section_id>
+            <flow_section_id>0</flow_section_id>
             <actions>
                 <seq_action>
                     <one_time>true</one_time>
@@ -5483,7 +5379,7 @@
                 <z>1</z>
                 <w>1</w>
             </model_color_vec4>
-            <flow_section_id>-1</flow_section_id>
+            <flow_section_id>0</flow_section_id>
             <actions>
                 <seq_action>
                     <one_time>true</one_time>
@@ -5905,9 +5801,9 @@
             <pickable>true</pickable>
             <transform>
                 <pos>
-                    <x>1.10000193</x>
+                    <x>2.5</x>
                     <y>15</y>
-                    <z>0.292185694</z>
+                    <z>0</z>
                 </pos>
                 <quat>
                     <x>0</x>
@@ -5959,7 +5855,7 @@
                 <z>0.800000012</z>
                 <w>1</w>
             </model_color_vec4>
-            <flow_section_id>-1</flow_section_id>
+            <flow_section_id>0</flow_section_id>
         </Base>
         <TypingEnemy>
             <name>r7_f</name>
