@@ -36,7 +36,7 @@ std::optional<float> SphereRayCast(Vec3 const& rayStart, Vec3 const& normalizedR
     }
 }
 
-void GetPickRay(double screenX, double screenY, int windowWidth, int windowHeight, renderer::Camera const& camera,
+bool GetPickRay(double screenX, double screenY, int windowWidth, int windowHeight, renderer::Camera const& camera,
     Vec3* rayStart, Vec3* rayDir) {
     assert(rayStart != nullptr);
     assert(rayDir != nullptr);
@@ -47,6 +47,8 @@ void GetPickRay(double screenX, double screenY, int windowWidth, int windowHeigh
     
     float aspectRatio = (float) vp._screenWidth / (float) vp._screenHeight;
 
+    bool inViewport = true;
+    
     if (camera._projectionType == renderer::Camera::ProjectionType::Perspective) {
 
         // First we find the world-space position of the top-left corner of the near clipping plane.
@@ -60,6 +62,8 @@ void GetPickRay(double screenX, double screenY, int windowWidth, int windowHeigh
         // Now map clicked point from [0,windowWidth] -> [0,1] in viewport
         float xFactor = (screenX - vp._screenOffsetX) / vp._screenWidth;
         float yFactor = (screenY - vp._screenOffsetY) / vp._screenHeight;
+
+        inViewport = xFactor >= 0.f && xFactor <= 1.f && yFactor >= 0.f && yFactor <= 1.f;
         
         Vec3 clickedPointOnNearPlane = nearPlaneTopLeft;
         clickedPointOnNearPlane += (xFactor * 2 * nearPlaneHalfWidth) * cameraTransform.GetCol3(0);
@@ -71,6 +75,8 @@ void GetPickRay(double screenX, double screenY, int windowWidth, int windowHeigh
         double xFactor = (screenX - vp._screenOffsetX) / vp._screenWidth;
         // Flip it so that yFactor is 0 at screen bottom
         double yFactor = 1.0 - ((screenY - vp._screenOffsetY) / vp._screenHeight);
+
+        inViewport = xFactor >= 0.f && xFactor <= 1.f && yFactor >= 0.f && yFactor <= 1.f;
         
         // map xFactor/yFactor to world units local to camera x/y
         float offsetFromCameraX = (xFactor - 0.5) * camera._width;
@@ -82,6 +88,8 @@ void GetPickRay(double screenX, double screenY, int windowWidth, int windowHeigh
         rayStart->Set(worldPos._x, worldPos._y, worldPos._z);
         *rayDir = -camera._transform.GetCol3(2);        
     } else { assert(false); }
+
+    return inViewport;
 }
 
 // https://github.com/opengl-tutorials/ogl/blob/master/misc05_picking/misc05_picking_custom.cpp
@@ -219,7 +227,9 @@ std::optional<float> EntityRaycast(ne::Entity const& entity, Vec3 const& rayStar
 std::optional<float> PickEntity(ne::Entity const& entity, double clickX, double clickY, int windowWidth, int windowHeight, renderer::Camera const& camera) {
     Vec3 rayStart;
     Vec3 rayDir;
-    GetPickRay(clickX, clickY, windowWidth, windowHeight, camera, &rayStart, &rayDir);
+    if (!GetPickRay(clickX, clickY, windowWidth, windowHeight, camera, &rayStart, &rayDir)) {
+        return std::nullopt;
+    }
     return EntityRaycast(entity, rayStart, rayDir);
 }
 
@@ -229,7 +239,9 @@ ne::Entity* PickEntity(
 
     Vec3 rayStart;
     Vec3 rayDir;
-    GetPickRay(clickX, clickY, windowWidth, windowHeight, camera, &rayStart, &rayDir);
+    if (!GetPickRay(clickX, clickY, windowWidth, windowHeight, camera, &rayStart, &rayDir)) {
+        return nullptr;
+    }
 
     std::optional<float> closestPickDist;
     ne::Entity* closestPickItem = nullptr;
@@ -253,7 +265,9 @@ ne::Entity* PickEntity(
 void PickEntities(ne::EntityManager& entityMgr, double clickX, double clickY, int windowWidth, int windowHeight, renderer::Camera const& camera, std::vector<std::pair<ne::Entity*, float>>& entityDistPairs) {
     Vec3 rayStart;
     Vec3 rayDir;
-    GetPickRay(clickX, clickY, windowWidth, windowHeight, camera, &rayStart, &rayDir);
+    if (!GetPickRay(clickX, clickY, windowWidth, windowHeight, camera, &rayStart, &rayDir)) {
+        return;
+    }
 
     for (auto iter = entityMgr.GetAllIterator(); !iter.Finished(); iter.Next()) {
         ne::Entity& entity = *iter.GetEntity();

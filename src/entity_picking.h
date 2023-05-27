@@ -11,9 +11,10 @@ namespace renderer {
 
 std::optional<float> SphereRayCast(Vec3 const& rayStart, Vec3 const& normalizedRayDir, Vec3 const& spherePos, float const sphereRadius);
 
+// return true if the mouse was clicked within the main viewport
 // screenX/screenY go from [0,width/height]
 // screenY is 0 at TOP of screen.
-void GetPickRay(
+bool GetPickRay(
     double screenX, double screenY, int windowWidth, int windowHeight, renderer::Camera const& camera,
     Vec3* rayStart, Vec3* rayDir);
 
