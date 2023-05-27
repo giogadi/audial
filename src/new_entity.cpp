@@ -12,8 +12,8 @@
 
 #include "entities/light.h"
 #include "entities/camera.h"
-#include "entities/lane_note_enemy.h"
-#include "entities/lane_note_player.h"
+// #include "entities/lane_note_enemy.h"
+// #include "entities/lane_note_player.h"
 #include "entities/sequencer.h"
 #include "entities/typing_player.h"
 #include "entities/typing_enemy.h"
@@ -521,7 +521,7 @@ void Entity::Update(GameManager& g, float dt) {
     if (_model != nullptr) {
         Mat4 const& mat = _transform.Mat4Scale();
         g._scene->DrawMesh(_model, mat, _modelColor);
-    }
+    }    
 }
 void Entity::DebugPrint() {
     Vec3 p = _transform.GetPos();

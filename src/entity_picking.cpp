@@ -3,6 +3,10 @@
 #include <algorithm>
 
 #include "renderer.h"
+#include "viewport.h"
+#include "game_manager.h"
+
+extern GameManager gGameManager;
 
 std::optional<float> SphereRayCast(Vec3 const& rayStart, Vec3 const& normalizedRayDir, Vec3 const& spherePos, float const sphereRadius) {
     // a: ||rayDir||^2 == 1
@@ -39,7 +43,9 @@ void GetPickRay(double screenX, double screenY, int windowWidth, int windowHeigh
 
     Mat4 const& cameraTransform = camera._transform;    
 
-    float aspectRatio = (float) windowWidth / (float) windowHeight;
+    ViewportInfo const& vp = gGameManager._viewportInfo;
+    
+    float aspectRatio = (float) vp._screenWidth / (float) vp._screenHeight;
 
     if (camera._projectionType == renderer::Camera::ProjectionType::Perspective) {
 
@@ -51,10 +57,10 @@ void GetPickRay(double screenX, double screenY, int windowWidth, int windowHeigh
         nearPlaneTopLeft -= nearPlaneHalfWidth * cameraTransform.GetCol3(0);
         nearPlaneTopLeft += nearPlaneHalfHeight * cameraTransform.GetCol3(1);
 
-        // Now map clicked point from [0,windowWidth] -> [0,1]
-        float xFactor = screenX / windowWidth;
-        float yFactor = screenY / windowHeight;
-
+        // Now map clicked point from [0,windowWidth] -> [0,1] in viewport
+        float xFactor = (screenX - vp._screenOffsetX) / vp._screenWidth;
+        float yFactor = (screenY - vp._screenOffsetY) / vp._screenHeight;
+        
         Vec3 clickedPointOnNearPlane = nearPlaneTopLeft;
         clickedPointOnNearPlane += (xFactor * 2 * nearPlaneHalfWidth) * cameraTransform.GetCol3(0);
         clickedPointOnNearPlane -= (yFactor * 2 * nearPlaneHalfHeight) * cameraTransform.GetCol3(1);
@@ -62,11 +68,10 @@ void GetPickRay(double screenX, double screenY, int windowWidth, int windowHeigh
         *rayDir = (clickedPointOnNearPlane - cameraTransform.GetPos()).GetNormalized();
         *rayStart = cameraTransform.GetPos() ;
     } else if (camera._projectionType == renderer::Camera::ProjectionType::Orthographic) {
-        // get screen units as [0,1]
-        double xFactor = screenX / (double) windowWidth;
+        double xFactor = (screenX - vp._screenOffsetX) / vp._screenWidth;
         // Flip it so that yFactor is 0 at screen bottom
-        double yFactor = 1.0 - (screenY / (double) windowHeight);
-
+        double yFactor = 1.0 - ((screenY - vp._screenOffsetY) / vp._screenHeight);
+        
         // map xFactor/yFactor to world units local to camera x/y
         float offsetFromCameraX = (xFactor - 0.5) * camera._width;
         float viewHeight = camera._width / aspectRatio;

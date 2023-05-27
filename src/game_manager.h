@@ -15,6 +15,8 @@ class CollisionManager;
 class BeatClock;
 class SoundBank;
 
+#include "viewport.h"
+
 struct GameManager {
     Editor* _editor = nullptr;
     renderer::Scene* _scene = nullptr;
@@ -28,4 +30,8 @@ struct GameManager {
 
     int _windowWidth = -1;
     int _windowHeight = -1;
+    int _fbWidth = -1;
+    int _fbHeight = -1;
+    float _aspectRatio = 0.f;
+    ViewportInfo _viewportInfo;
 };

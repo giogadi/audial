@@ -25,4 +25,6 @@ struct Editor {
     BoundMeshPNU const* _axesMesh = nullptr;
     std::string _saveFilename;
     std::vector<ne::EntityId> _entityIds;
+    bool _enableFlowSectionFilter = false;
+    int _flowSectionFilterId = -1;
 };

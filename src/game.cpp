@@ -38,6 +38,8 @@
 #include "sound_bank.h"
 #include "synth_imgui.h"
 
+GameManager gGameManager;
+
 void InitEventQueueWithSequence(audio::EventQueue* queue, BeatClock const& beatClock) {
     double const firstNoteBeatTime = beatClock.GetDownBeatTime() + 1.0;
     for (int i = 0; i < 16; ++i) {
@@ -73,8 +75,21 @@ void InitEventQueueWithParamSequence(audio::EventQueue* queue, BeatClock const& 
     }
 }
 
+void SetViewport(ViewportInfo const& viewport) {
+    glViewport(viewport._offsetX, viewport._offsetY, viewport._width, viewport._height);
+}
+
 void FramebufferSizeCallback(GLFWwindow* window, int width, int height) {
-    glViewport(0, 0, width, height);
+    // Update viewport with new window size, but don't update GameManager just yet just to avoid potential multhreading shit
+    int widthScreen, heightScreen;
+    glfwGetWindowSize(window, &widthScreen, &heightScreen);
+    ViewportInfo viewport = CalculateViewport(gGameManager._aspectRatio, width, height, widthScreen, heightScreen);
+    SetViewport(viewport);
+}
+
+// TODO: why do we need to call this when window moves? makes no sense
+void WindowPosCallback(GLFWwindow* window, int xpos, int ypos) {
+    SetViewport(gGameManager._viewportInfo);
 }
 
 void ToggleMute(float dt) {
@@ -174,8 +189,6 @@ void ParseCommandLine(CommandLineInputs& inputs, int argc, char** argv) {
     ParseCommandLine(inputs, argVec);
 }
 
-GameManager gGameManager;
-
 void MaybeToggleMute(float dt) {
     static bool sMute = false;
     static bool sRamping = false;
@@ -262,7 +275,16 @@ int main(int argc, char** argv) {
         return -1;
     }
 
+    {        
+        glfwGetFramebufferSize(window, &gGameManager._fbWidth, &gGameManager._fbHeight);
+        glfwGetWindowSize(window, &gGameManager._windowWidth, &gGameManager._windowHeight);
+        gGameManager._aspectRatio = 2560.f / 1494.f;
+        gGameManager._viewportInfo = CalculateViewport(gGameManager._aspectRatio, gGameManager._fbWidth, gGameManager._fbHeight, gGameManager._windowWidth, gGameManager._windowHeight);
+        SetViewport(gGameManager._viewportInfo);
+    }
+
     glfwSetFramebufferSizeCallback(window, FramebufferSizeCallback);
+    glfwSetWindowPosCallback(window, WindowPosCallback);
 
     glEnable(GL_DEPTH_TEST);
 
@@ -313,8 +335,14 @@ int main(int argc, char** argv) {
 
     BeatClock beatClock;
 
-    gGameManager = GameManager {
-        &editor, &sceneManager, &inputManager, &audioContext, &neEntityManager, &beatClock, &soundBank, cmdLineInputs._editMode };
+    gGameManager._editor = &editor;
+    gGameManager._scene = &sceneManager;
+    gGameManager._inputManager = &inputManager;
+    gGameManager._audioContext = &audioContext;
+    gGameManager._neEntityManager = &neEntityManager;
+    gGameManager._beatClock = &beatClock;
+    gGameManager._soundBank = &soundBank;
+    gGameManager._editMode = cmdLineInputs._editMode;
 
     if (!sceneManager.Init(gGameManager)) {
         std::cout << "scene failed to init. exiting" << std::endl;
@@ -391,7 +419,10 @@ int main(int argc, char** argv) {
     bool paused = false;
     while(!glfwWindowShouldClose(window)) {
 
+        // IS IT OKAY THAT I'M USING SCREEN COORDS HERE?!?!?!?!
         glfwGetWindowSize(window, &gGameManager._windowWidth, &gGameManager._windowHeight);
+        glfwGetFramebufferSize(window, &gGameManager._fbWidth, &gGameManager._fbHeight);
+        gGameManager._viewportInfo = CalculateViewport(gGameManager._aspectRatio, gGameManager._fbWidth, gGameManager._fbHeight, gGameManager._windowWidth, gGameManager._windowHeight);
 
         beatClock.Update(gGameManager);
 
@@ -424,12 +455,16 @@ int main(int argc, char** argv) {
         if (gGameManager._editMode && inputManager.IsKeyPressedThisFrame(InputManager::Key::E)) {
             showEntitiesWindow = !showEntitiesWindow;
         }
-        // if (gGameManager._editMode && inputManager.IsKeyPressedThisFrame(InputManager::Key::Space)) {
-        //     showDemoWindow = !showDemoWindow;
-        // }
+        if (gGameManager._editMode && inputManager.IsShiftPressed() && inputManager.IsKeyPressedThisFrame(InputManager::Key::I)) {
+            showDemoWindow = !showDemoWindow;
+        }
 
         for (auto iter = gGameManager._neEntityManager->GetAllIterator(); !iter.Finished(); iter.Next()) {
-            iter.GetEntity()->Update(gGameManager, dt);
+            ne::Entity* e = iter.GetEntity();
+            if (gGameManager._editMode && editor._enableFlowSectionFilter && editor._flowSectionFilterId != e->_flowSectionId) {
+                continue;
+            }
+            e->Update(gGameManager, dt);
         }
 
         // Start the Dear ImGui frame
@@ -447,7 +482,8 @@ int main(int argc, char** argv) {
         ImGui::Render();
 
         // Rendering
-        glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+        // glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+        glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         float timeInSecs = (float) glfwGetTime();

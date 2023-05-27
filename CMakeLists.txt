@@ -14,6 +14,8 @@ add_executable(game
     src/imgui/backends/imgui_impl_opengl3.cpp
     src/glad/src/glad.cpp
 
+    src/viewport.cpp
+
     src/matrix.cpp
     src/quaternion.cpp
     src/transform.cpp
@@ -62,8 +64,8 @@ add_executable(game
     
     src/entities/light.cpp
     src/entities/camera.cpp
-    src/entities/lane_note_enemy.cpp
-    src/entities/lane_note_player.cpp
+    # src/entities/lane_note_enemy.cpp
+    # src/entities/lane_note_player.cpp
     src/entities/sequencer.cpp
     src/entities/typing_player.cpp
     src/entities/typing_enemy.cpp

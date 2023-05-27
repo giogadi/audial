@@ -17,8 +17,6 @@ namespace ne {
     X(Base) \
     X(Light) \
     X(Camera) \
-    X(LaneNotePlayer) \
-    X(LaneNoteEnemy) \
     X(Sequencer) \
     X(ActionSequencer) \
     X(TypingPlayer) \

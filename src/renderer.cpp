@@ -674,7 +674,7 @@ Scene::MeshId Scene::LoadPolygon2d(std::vector<Vec3> const& points) {
 }
 
 Mat4 Scene::GetViewProjTransform() const {
-    float aspectRatio = (float)_pInternal->_g->_windowWidth / _pInternal->_g->_windowHeight;
+    float aspectRatio = _pInternal->_g->_aspectRatio;
     Mat4 viewProjTransform;
     switch (_camera._projectionType) {
         case Camera::ProjectionType::Perspective:

@@ -47,6 +47,7 @@ public:
         return IsKeyPressed(Key::LeftAlt) || IsKeyPressed(Key::RightAlt);
     }
 
+    // SCREEN COORDINATES, (0,0) is top-left corner of window
     void GetMousePos(double& mouseX, double& mouseY) const {
         mouseX = _mouseX;
         mouseY = _mouseY;

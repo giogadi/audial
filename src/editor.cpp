@@ -225,6 +225,11 @@ void Editor::DrawWindow() {
         pt.DeleteData();
     }
 
+    ImGui::Checkbox("Filter by flow section ID", &_enableFlowSectionFilter);
+    if (_enableFlowSectionFilter) {
+        ImGui::InputInt("Flow section ID", &_flowSectionFilterId);;
+    }   
+
     // Entities  
     if (ImGui::BeginListBox("Entities")) {
         for (auto entityIdIter = _entityIds.begin(); entityIdIter != _entityIds.end(); /*no inc*/) {
@@ -235,6 +240,13 @@ void Editor::DrawWindow() {
             if (entity == nullptr) {
                 entityIdIter = _entityIds.erase(entityIdIter);
                 continue;
+            }
+
+            if (_enableFlowSectionFilter) {
+                if (entity->_flowSectionId != _flowSectionFilterId) {
+                    ++entityIdIter;
+                    continue;
+                }
             }
             
             ImGui::PushID(entityId._id);
