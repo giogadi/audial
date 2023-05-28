@@ -545,6 +545,12 @@ void Scene::DrawBoundingBox(Mat4 const& t, Vec4 const& color) {
 }
 
 void Scene::DrawText(std::string_view str, float& screenX, float& screenY, float scale, Vec4 const& colorRgba) {
+    // Pretend the "reference" size is with viewport resolution of size 2560/1494 with screen=pixels
+    ViewportInfo const& vp = _pInternal->_g->_viewportInfo;
+    scale *= ((float)vp._height / 1494.f);
+    // account for screen units not being the same as pixels.
+    scale *= ((float)vp._width / (float) vp._screenWidth);
+    
     Vec3 origin(screenX, screenY, 0.f);
     for (char c : str) {
         char constexpr kFirstChar = 65;  // 'A'
@@ -952,8 +958,9 @@ void Scene::Draw(int windowWidth, int windowHeight, float timeInSecs) {
     // TEXT RENDERING
     {
         glClear(GL_DEPTH_BUFFER_BIT);
-
-        Mat4 projection = Mat4::Ortho(0.f, (float)_pInternal->_g->_windowWidth, 0.f, (float)_pInternal->_g->_windowHeight, -1.f, 1.f);        
+        
+        ViewportInfo const& vp = _pInternal->_g->_viewportInfo;
+        Mat4 projection = Mat4::Ortho(0.f, (float)vp._width, 0.f, (float)vp._height, -1.f, 1.f);
 
         unsigned int fontTextureId = _pInternal->_textureIdMap.at("font");
 

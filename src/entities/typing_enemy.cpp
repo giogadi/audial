@@ -66,7 +66,8 @@ void TypingEnemyEntity::Update(GameManager& g, float dt) {
 
     float screenX, screenY;
     Mat4 viewProjTransform = g._scene->GetViewProjTransform();
-    geometry::ProjectWorldPointToScreenSpace(_transform.GetPos(), viewProjTransform, g._windowWidth, g._windowHeight, screenX, screenY);
+    ViewportInfo const& vp = g._viewportInfo;
+    geometry::ProjectWorldPointToScreenSpace(_transform.GetPos(), viewProjTransform, vp._width, vp._height, screenX, screenY);
 
     screenX = std::round(screenX);
     screenY = std::round(screenY);
