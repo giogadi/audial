@@ -38,6 +38,10 @@ ne::Entity::ImGuiResult ActionSequencerEntity::ImGuiDerived(GameManager& g) {
 }
 
 void ActionSequencerEntity::InitDerived(GameManager& g) {
+    // rewind stringstream
+    _actionsString.clear();
+    _actionsString.seekg(0);
+    
     _currentIx = 0;
     _actions.clear();   
 

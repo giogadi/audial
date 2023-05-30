@@ -1,0 +1,1 @@
+0 change_step_seq_max_voices chord_seq 0 1
