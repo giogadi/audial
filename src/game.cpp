@@ -352,8 +352,6 @@ int main(int argc, char** argv) {
 
     neEntityManager.Init();
 
-    editor.Init(&gGameManager);
-
     // SCRIPT LOADING
     if (cmdLineInputs._scriptFilename.has_value()) {
         std::cout << "loading " << cmdLineInputs._scriptFilename.value() << std::endl;
@@ -382,7 +380,6 @@ int main(int argc, char** argv) {
                 children[i]._pt.TryGetBool("entity_active", &active);
                 ne::Entity* entity = gGameManager._neEntityManager->AddEntity(entityType, active);
                 entity->Load(children[i]._pt);
-                editor._entityIds.push_back(entity->_id);
             }
             delete[] children;
 
@@ -402,6 +399,8 @@ int main(int argc, char** argv) {
         // beatClock.Update();
         // LoadTestScript(gGameManager);
     }
+
+    editor.Init(&gGameManager);
 
     SynthGuiState synthGuiState;
     {

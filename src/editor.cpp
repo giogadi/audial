@@ -15,7 +15,24 @@ static float gScrollFactorForDebugCameraMove = 1.f;
 
 void Editor::Init(GameManager* g) {
     _g = g;
-    _axesMesh = _g->_scene->GetMesh("axes");
+    _axesMesh = _g->_scene->GetMesh("axes");    
+    // Init all entities. For example, this sets all dudes' transforms to their
+    // initial transforms.
+    for (ne::EntityManager::AllIterator iter = g->_neEntityManager->GetAllIterator(); !iter.Finished(); iter.Next()) {
+        if (ne::Entity* e = iter.GetEntity()) {
+            e->Init(*g);
+            _entityIds.push_back(e->_id);
+        }
+    }
+    for (ne::EntityManager::AllIterator iter = g->_neEntityManager->GetAllInactiveIterator(); !iter.Finished(); iter.Next()) {
+        if (ne::Entity* e = iter.GetEntity()) {
+            e->Init(*g);
+            _entityIds.push_back(e->_id);
+        }
+    }
+
+    // sort entity IDs. This should result in the ordering that they were listed in the input xml.
+    std::sort(_entityIds.begin(), _entityIds.end());
 }
 
 namespace {
