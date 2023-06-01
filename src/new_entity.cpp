@@ -359,6 +359,21 @@ void EntityManager::TagAllPrevSectionEntitiesForDestroy(int newFlowSectionId) {
     }
 }
 
+void EntityManager::TagAllSectionEntitiesForDestroy(int sectionToDestroy) {
+    for (AllIterator iter = GetAllIterator(); !iter.Finished(); iter.Next()) {
+        Entity* e = iter.GetEntity();
+        if (e->_flowSectionId == sectionToDestroy) {
+            TagForDestroy(e->_id);
+        }
+    }
+    for (AllIterator iter = GetAllInactiveIterator(); !iter.Finished(); iter.Next()) {
+        Entity* e = iter.GetEntity();
+        if (e->_flowSectionId == sectionToDestroy) {
+            TagForDestroy(e->_id);
+        }
+    }   
+}
+
 void EntityManager::DestroyTaggedEntities(GameManager& g) {
     for (EntityId& id : _toDestroy) {
         if (Entity* e = GetEntity(id, true, true)) {

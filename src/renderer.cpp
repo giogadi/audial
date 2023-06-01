@@ -548,8 +548,9 @@ void Scene::DrawText(std::string_view str, float& screenX, float& screenY, float
     // Pretend the "reference" size is with viewport resolution of size 2560/1494 with screen=pixels
     ViewportInfo const& vp = _pInternal->_g->_viewportInfo;
     scale *= ((float)vp._height / 1494.f);
+    // TODO: for some reason we don't need this? Would be nice to fully figure out why, lol
     // account for screen units not being the same as pixels.
-    scale *= ((float)vp._width / (float) vp._screenWidth);
+    // scale *= ((float)vp._width / (float) vp._screenWidth);
     
     Vec3 origin(screenX, screenY, 0.f);
     for (char c : str) {

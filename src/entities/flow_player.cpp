@@ -46,42 +46,6 @@ void FlowPlayerEntity::InitDerived(GameManager& g) {
 
 namespace {
 
-// penetration is offset to move player to move out of (one) collision.
-// NOTE: penetration only populated if returns true
-// ne::Entity* FindOverlapWithEntityAABBNoRotate(GameManager& g, ne::EntityManager::Iterator entityIter, Transform const& playerTrans, Vec3* penetrationOut) {
-//     for (; !entityIter.Finished(); entityIter.Next()) {
-//         ne::Entity* pEntity = entityIter.GetEntity();
-//         Transform const& entityTrans = pEntity->_transform;
-//         Vec3 penetration;
-//         bool hasOverlap = geometry::DoAABBsOverlap(playerTrans, entityTrans, &penetration);
-//         if (hasOverlap) {
-//             *penetrationOut = penetration;
-//             return pEntity;
-//         }
-//     }
-//     return nullptr;
-// }
-
-// ne::Entity* FindOverlapWithEntityAABBNoRotate(GameManager& g, ne::EntityManager::Iterator entityIter, Transform const& playerTrans, Vec3* penetrationOut) {
-//     std::vector<Vec3> polygon(4);
-//     for (; !entityIter.Finished(); entityIter.Next()) {
-//         ne::Entity* pEntity = entityIter.GetEntity();
-//         Transform const& entityTrans = pEntity->_transform;
-//         Vec3 halfScale = entityTrans.Scale() * 0.5f + 0.5f * playerTrans.Scale();
-//         polygon[0].Set(halfScale._x, 0.f, halfScale._z);
-//         polygon[1].Set(halfScale._x, 0.f, -halfScale._z);
-//         polygon[2].Set(-halfScale._x, 0.f, -halfScale._z);
-//         polygon[3].Set(-halfScale._x, 0.f, halfScale._z);
-//         Vec3 penetration;
-//         bool hasOverlap = geometry::PointInConvexPolygon2D(playerTrans.Pos(), polygon, entityTrans.Pos(), /*polyRotRad=*/0.f, Vec3(1.f, 1.f, 1.f), &penetration);       
-//         if (hasOverlap) {
-//             *penetrationOut = penetration;
-//             return pEntity;
-//         }
-//     }
-//     return nullptr;
-// }
-
 FlowWallEntity* FindOverlapWithWall(GameManager& g, Transform const& playerTrans, Vec3* penetrationOut) {
     ne::EntityManager::Iterator wallIter = g._neEntityManager->GetIterator(ne::EntityType::FlowWall);
     std::vector<Vec3> aabbPoly(4);

@@ -124,6 +124,7 @@ struct EntityManager {
     
     bool TagForDestroy(EntityId id);
     void TagAllPrevSectionEntitiesForDestroy(int newFlowSectionId);
+    void TagAllSectionEntitiesForDestroy(int sectionToDestroy);
     // Calls Destroy() on removed entities.
     void DestroyTaggedEntities(GameManager& g);
 

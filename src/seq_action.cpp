@@ -775,9 +775,18 @@ bool SetNewFlowSectionSeqAction::ImGui() {
 }
 
 void SetNewFlowSectionSeqAction::ExecuteDerived(GameManager& g) {
-    g._neEntityManager->TagAllPrevSectionEntitiesForDestroy(_newSectionId);
     FlowPlayerEntity* pPlayer = static_cast<FlowPlayerEntity*>(g._neEntityManager->GetFirstEntityOfType(ne::EntityType::FlowPlayer));
     assert(pPlayer);
+    if (_newSectionId < 0) {
+        return;
+    }    
+    int currentSectionId = pPlayer->_currentSectionId;
+    if (currentSectionId == _newSectionId) {
+        return;
+    }
+    if (currentSectionId >= 0) {
+        g._neEntityManager->TagAllSectionEntitiesForDestroy(currentSectionId);
+    }
     pPlayer->SetNewSection(g, _newSectionId);
 }
 

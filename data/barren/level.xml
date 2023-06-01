@@ -640,7 +640,7 @@
             </actions>
         </FlowTrigger>
         <Base>
-            <name>new_spawn_pos</name>
+            <name>r2_new_spawn_pos</name>
             <entity_active>true</entity_active>
             <pickable>true</pickable>
             <transform>
@@ -668,7 +668,7 @@
                 <z>0.800000012</z>
                 <w>1</w>
             </model_color_vec4>
-            <flow_section_id>-1</flow_section_id>
+            <flow_section_id>1</flow_section_id>
         </Base>
         <FlowTrigger>
             <name>room1_drumfill_trigger</name>
@@ -2679,7 +2679,7 @@
                 <z>0.800000012</z>
                 <w>1</w>
             </model_color_vec4>
-            <flow_section_id>-1</flow_section_id>
+            <flow_section_id>1</flow_section_id>
             <actions>
                 <seq_action>
                     <one_time>true</one_time>
@@ -2720,6 +2720,15 @@
                     <maxX>0</maxX>
                     <hasMaxZ>false</hasMaxZ>
                     <maxZ>0</maxZ>
+                </seq_action>
+                <seq_action>
+                    <one_time>true</one_time>
+                    <action_type>PlayerSetSpawnPoint</action_type>
+                    <spawn_pos>
+                        <x>11.2720003</x>
+                        <y>0</y>
+                        <z>-5.33599997</z>
+                    </spawn_pos>
                 </seq_action>
             </actions>
         </FlowTrigger>
@@ -4811,7 +4820,7 @@
                 <z>0.800000012</z>
                 <w>1</w>
             </model_color_vec4>
-            <flow_section_id>0</flow_section_id>
+            <flow_section_id>6</flow_section_id>
             <can_hit>true</can_hit>
             <hp>-1</hp>
             <move_mode>Waypoints</move_mode>
@@ -4878,7 +4887,7 @@
                 <z>0.800000012</z>
                 <w>1</w>
             </model_color_vec4>
-            <flow_section_id>0</flow_section_id>
+            <flow_section_id>6</flow_section_id>
             <can_hit>true</can_hit>
             <hp>-1</hp>
             <move_mode>Waypoints</move_mode>
@@ -4976,7 +4985,7 @@
                 <z>0.800000012</z>
                 <w>1</w>
             </model_color_vec4>
-            <flow_section_id>0</flow_section_id>
+            <flow_section_id>6</flow_section_id>
         </Base>
         <TypingEnemy>
             <name>r0_d</name>
@@ -5007,7 +5016,7 @@
                 <z>0</z>
                 <w>1</w>
             </model_color_vec4>
-            <flow_section_id>0</flow_section_id>
+            <flow_section_id>6</flow_section_id>
             <text>d</text>
             <type_kill>false</type_kill>
             <all_actions_on_hit>true</all_actions_on_hit>
@@ -5061,7 +5070,7 @@
                 <z>0.94607842</z>
                 <w>1</w>
             </model_color_vec4>
-            <flow_section_id>0</flow_section_id>
+            <flow_section_id>6</flow_section_id>
             <text>k</text>
             <type_kill>false</type_kill>
             <all_actions_on_hit>true</all_actions_on_hit>
@@ -5115,7 +5124,7 @@
                 <z>0.068627432</z>
                 <w>1</w>
             </model_color_vec4>
-            <flow_section_id>0</flow_section_id>
+            <flow_section_id>6</flow_section_id>
             <text>e</text>
             <type_kill>false</type_kill>
             <all_actions_on_hit>true</all_actions_on_hit>
@@ -5169,7 +5178,7 @@
                 <z>0</z>
                 <w>1</w>
             </model_color_vec4>
-            <flow_section_id>0</flow_section_id>
+            <flow_section_id>6</flow_section_id>
             <text>i</text>
             <type_kill>false</type_kill>
             <all_actions_on_hit>true</all_actions_on_hit>
@@ -5269,7 +5278,7 @@
                 <z>1</z>
                 <w>1</w>
             </model_color_vec4>
-            <flow_section_id>0</flow_section_id>
+            <flow_section_id>6</flow_section_id>
             <actions>
                 <seq_action>
                     <one_time>true</one_time>
@@ -5324,7 +5333,7 @@
                 <z>1</z>
                 <w>1</w>
             </model_color_vec4>
-            <flow_section_id>0</flow_section_id>
+            <flow_section_id>6</flow_section_id>
             <actions>
                 <seq_action>
                     <one_time>true</one_time>
@@ -5379,7 +5388,7 @@
                 <z>1</z>
                 <w>1</w>
             </model_color_vec4>
-            <flow_section_id>0</flow_section_id>
+            <flow_section_id>6</flow_section_id>
             <actions>
                 <seq_action>
                     <one_time>true</one_time>
@@ -5434,7 +5443,7 @@
                 <z>0.800000012</z>
                 <w>1</w>
             </model_color_vec4>
-            <flow_section_id>0</flow_section_id>
+            <flow_section_id>6</flow_section_id>
             <can_hit>true</can_hit>
             <hp>-1</hp>
             <move_mode>Waypoints</move_mode>
@@ -5491,7 +5500,7 @@
                 <z>0.0823529437</z>
                 <w>1</w>
             </model_color_vec4>
-            <flow_section_id>0</flow_section_id>
+            <flow_section_id>6</flow_section_id>
             <text>j</text>
             <type_kill>false</type_kill>
             <all_actions_on_hit>true</all_actions_on_hit>
@@ -5545,7 +5554,7 @@
                 <z>0.0666666701</z>
                 <w>1</w>
             </model_color_vec4>
-            <flow_section_id>0</flow_section_id>
+            <flow_section_id>6</flow_section_id>
             <text>g</text>
             <type_kill>false</type_kill>
             <all_actions_on_hit>true</all_actions_on_hit>
@@ -5599,7 +5608,7 @@
                 <z>0.0666666701</z>
                 <w>1</w>
             </model_color_vec4>
-            <flow_section_id>0</flow_section_id>
+            <flow_section_id>6</flow_section_id>
             <text>h</text>
             <type_kill>false</type_kill>
             <all_actions_on_hit>true</all_actions_on_hit>
@@ -5653,7 +5662,7 @@
                 <z>0.945098042</z>
                 <w>1</w>
             </model_color_vec4>
-            <flow_section_id>0</flow_section_id>
+            <flow_section_id>6</flow_section_id>
             <text>o</text>
             <type_kill>false</type_kill>
             <all_actions_on_hit>true</all_actions_on_hit>
@@ -5707,7 +5716,7 @@
                 <z>0.0823529437</z>
                 <w>1</w>
             </model_color_vec4>
-            <flow_section_id>0</flow_section_id>
+            <flow_section_id>6</flow_section_id>
             <text>s</text>
             <type_kill>false</type_kill>
             <all_actions_on_hit>true</all_actions_on_hit>
@@ -5792,6 +5801,11 @@
                         <y>0</y>
                         <z>-3.51999998</z>
                     </spawn_pos>
+                </seq_action>
+                <seq_action>
+                    <one_time>true</one_time>
+                    <action_type>SetNewFlowSection</action_type>
+                    <section_id>0</section_id>
                 </seq_action>
             </actions>
         </FlowTrigger>
@@ -6755,7 +6769,7 @@
                 <z>0.800000012</z>
                 <w>1</w>
             </model_color_vec4>
-            <flow_section_id>0</flow_section_id>
+            <flow_section_id>6</flow_section_id>
             <seq_filename>data/barren/room0_action_seq.txt</seq_filename>
         </ActionSequencer>
     </new_entities>

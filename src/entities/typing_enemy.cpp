@@ -71,7 +71,8 @@ void TypingEnemyEntity::Update(GameManager& g, float dt) {
 
     screenX = std::round(screenX);
     screenY = std::round(screenY);
-    float constexpr kTextSize = 0.75f;
+    // float constexpr kTextSize = 0.75f;
+    float constexpr kTextSize = 1.5f;
     if (_flowCooldownTimeLeft > 0.f) {
         Vec4 color = _textColor;
         color._w = 0.2f;

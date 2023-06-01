@@ -353,7 +353,16 @@ void Editor::DrawWindow() {
         if (_selectedEntityIds.empty()) {
             ImGui::Text("(No selected entities)");
         } else {
-            ImGui::Text("(Editing multiple entities unsupported)");
+            static int sMultiSelectFlowSectionId = -1;
+            ImGui::InputInt("##SectionId", &sMultiSelectFlowSectionId);
+            ImGui::SameLine();
+            if (ImGui::Button("Set Section ID")) {
+                for (ne::EntityId eId : _selectedEntityIds) {
+                    if (ne::Entity* entity = _g->_neEntityManager->GetActiveOrInactiveEntity(eId)) {
+                        entity->_flowSectionId = sMultiSelectFlowSectionId;
+                    }
+                }
+            }
         }
     }
         
