@@ -15,12 +15,13 @@ static float gScrollFactorForDebugCameraMove = 1.f;
 
 void Editor::Init(GameManager* g) {
     _g = g;
-    _axesMesh = _g->_scene->GetMesh("axes");    
-    // Init all entities. For example, this sets all dudes' transforms to their
-    // initial transforms.
+    _axesMesh = _g->_scene->GetMesh("axes");
+    // Collect all our entities, and init the inactive ones (Active ones should
+    // already have been init). For example, this sets all dudes' transforms to
+    // their initial transforms.
     for (ne::EntityManager::AllIterator iter = g->_neEntityManager->GetAllIterator(); !iter.Finished(); iter.Next()) {
         if (ne::Entity* e = iter.GetEntity()) {
-            e->Init(*g);
+            // no init necessary
             _entityIds.push_back(e->_id);
         }
     }

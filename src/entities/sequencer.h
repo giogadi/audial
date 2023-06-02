@@ -14,7 +14,7 @@ struct SequencerEntity : ne::Entity {
     int _currentIx = -1;
     double _currentLoopStartBeatTime = -1.0;    
 
-    void Reset();
+    void Reset(GameManager& g);
 
     virtual void InitDerived(GameManager& g) override;
     virtual void Update(GameManager& g, float dt) override;

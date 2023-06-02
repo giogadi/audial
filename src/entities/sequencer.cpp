@@ -15,11 +15,13 @@ void SequencerEntity::InitDerived(GameManager& g) {
     if (g._editMode) {
         _playing = false;
     }
+    Reset(g);
 }
 
-void SequencerEntity::Reset() {
+void SequencerEntity::Reset(GameManager& g) {
     _currentIx = -1;
-    _currentLoopStartBeatTime = -1.0;
+    _currentLoopStartBeatTime = g._beatClock->GetNextDownBeatTime(g._beatClock->GetBeatTimeFromEpoch());
+    _currentLoopStartBeatTime = std::max(_currentLoopStartBeatTime, _startBeatTime);
 }
 
 void SequencerEntity::Update(GameManager& g, float dt) {
@@ -42,10 +44,7 @@ void SequencerEntity::Update(GameManager& g, float dt) {
     double maxBeatTime = currentBeatTime + 1.0;
     while (true) {
         if (_currentIx < 0) {
-            if (_currentLoopStartBeatTime < 0.0) {
-                // This is the first loop iteration. Just start the loop on the next beat.
-                _currentLoopStartBeatTime = _startBeatTime;
-            }
+            printf("Sequencer: ERROR _currentLoopStartBeatTime < 0!\n");
             _currentIx = 0;
         }
         for (; _currentIx < _events.size(); ++_currentIx) {
@@ -109,12 +108,12 @@ ne::Entity::ImGuiResult SequencerEntity::ImGuiDerived(GameManager& g) {
     ImGui::InputDouble("Start beat time", &_startBeatTime);
     if (_playing) {
         if (ImGui::Button("Stop")) {
-            Reset();
+            Reset(g);
             _playing = false;
         }
     } else {
         if (ImGui::Button("Play")) {
-            Reset();
+            Reset(g);
             _playing = true;
         }
     }

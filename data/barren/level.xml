@@ -6368,6 +6368,20 @@
                     <active>true</active>
                     <init_on_activate>true</init_on_activate>
                 </seq_action>
+                <seq_action>
+                    <one_time>true</one_time>
+                    <action_type>SetEntityActive</action_type>
+                    <entity_name>r2_p</entity_name>
+                    <active>true</active>
+                    <init_on_activate>true</init_on_activate>
+                </seq_action>
+                <seq_action>
+                    <one_time>true</one_time>
+                    <action_type>SetEntityActive</action_type>
+                    <entity_name>r2_q</entity_name>
+                    <active>true</active>
+                    <init_on_activate>true</init_on_activate>
+                </seq_action>
             </actions>
         </FlowPickup>
         <TypingEnemy>
@@ -6597,6 +6611,13 @@
                     <hasMaxZ>false</hasMaxZ>
                     <maxZ>0</maxZ>
                 </seq_action>
+                <seq_action>
+                    <one_time>true</one_time>
+                    <action_type>SetEntityActive</action_type>
+                    <entity_name>r2_secret_chord_seq</entity_name>
+                    <active>true</active>
+                    <init_on_activate>true</init_on_activate>
+                </seq_action>
             </actions>
         </FlowTrigger>
         <TypingEnemy>
@@ -6660,9 +6681,9 @@
             <pickable>true</pickable>
             <transform>
                 <pos>
-                    <x>39.25</x>
+                    <x>38.5</x>
                     <y>0</y>
-                    <z>-6.32031345</z>
+                    <z>-6.30468845</z>
                 </pos>
                 <quat>
                     <x>0</x>
@@ -6717,7 +6738,7 @@
                 <pos>
                     <x>39.328125</x>
                     <y>0</y>
-                    <z>-11.1640625</z>
+                    <z>-10.1640625</z>
                 </pos>
                 <quat>
                     <x>0</x>
@@ -6772,5 +6793,281 @@
             <flow_section_id>6</flow_section_id>
             <seq_filename>data/barren/room0_action_seq.txt</seq_filename>
         </ActionSequencer>
+        <Sequencer>
+            <name>r2_secret_chord_seq</name>
+            <entity_active>false</entity_active>
+            <pickable>true</pickable>
+            <transform>
+                <pos>
+                    <x>39.3406181</x>
+                    <y>0</y>
+                    <z>-11.8140583</z>
+                </pos>
+                <quat>
+                    <x>0</x>
+                    <y>0</y>
+                    <z>0</z>
+                    <w>1</w>
+                </quat>
+                <scale>
+                    <x>1</x>
+                    <y>1</y>
+                    <z>1</z>
+                </scale>
+            </transform>
+            <model_name/>
+            <model_color_vec4>
+                <x>0.800000012</x>
+                <y>0.800000012</y>
+                <z>0.800000012</z>
+                <w>1</w>
+            </model_color_vec4>
+            <flow_section_id>2</flow_section_id>
+            <loop>true</loop>
+            <start_beat_time>0</start_beat_time>
+            <events>
+                <beat_event>
+                    <event_type>NoteOn</event_type>
+                    <channel>2</channel>
+                    <tick_time>0</tick_time>
+                    <midi_note>55</midi_note>
+                    <velocity>1</velocity>
+                    <beat_time>0</beat_time>
+                </beat_event>
+                <beat_event>
+                    <event_type>NoteOn</event_type>
+                    <channel>2</channel>
+                    <tick_time>0</tick_time>
+                    <midi_note>58</midi_note>
+                    <velocity>1</velocity>
+                    <beat_time>0</beat_time>
+                </beat_event>
+                <beat_event>
+                    <event_type>NoteOn</event_type>
+                    <channel>2</channel>
+                    <tick_time>0</tick_time>
+                    <midi_note>62</midi_note>
+                    <velocity>1</velocity>
+                    <beat_time>0</beat_time>
+                </beat_event>
+                <beat_event>
+                    <event_type>NoteOn</event_type>
+                    <channel>2</channel>
+                    <tick_time>0</tick_time>
+                    <midi_note>65</midi_note>
+                    <velocity>1</velocity>
+                    <beat_time>0</beat_time>
+                </beat_event>
+                <beat_event>
+                    <event_type>NoteOff</event_type>
+                    <channel>2</channel>
+                    <tick_time>0</tick_time>
+                    <midi_note>55</midi_note>
+                    <beat_time>7</beat_time>
+                </beat_event>
+                <beat_event>
+                    <event_type>NoteOff</event_type>
+                    <channel>2</channel>
+                    <tick_time>0</tick_time>
+                    <midi_note>58</midi_note>
+                    <beat_time>7</beat_time>
+                </beat_event>
+                <beat_event>
+                    <event_type>NoteOff</event_type>
+                    <channel>2</channel>
+                    <tick_time>0</tick_time>
+                    <midi_note>62</midi_note>
+                    <beat_time>7</beat_time>
+                </beat_event>
+                <beat_event>
+                    <event_type>NoteOff</event_type>
+                    <channel>2</channel>
+                    <tick_time>0</tick_time>
+                    <midi_note>65</midi_note>
+                    <beat_time>7</beat_time>
+                </beat_event>
+                <beat_event>
+                    <event_type>None</event_type>
+                    <channel>2</channel>
+                    <tick_time>0</tick_time>
+                    <beat_time>8</beat_time>
+                </beat_event>
+            </events>
+        </Sequencer>
+        <TypingEnemy>
+            <name>r2_secret_c</name>
+            <entity_active>true</entity_active>
+            <pickable>true</pickable>
+            <transform>
+                <pos>
+                    <x>39.25</x>
+                    <y>0</y>
+                    <z>-13.0546865</z>
+                </pos>
+                <quat>
+                    <x>0</x>
+                    <y>0</y>
+                    <z>0</z>
+                    <w>1</w>
+                </quat>
+                <scale>
+                    <x>0.5</x>
+                    <y>0.5</y>
+                    <z>0.5</z>
+                </scale>
+            </transform>
+            <model_name>cube</model_name>
+            <model_color_vec4>
+                <x>0.600000024</x>
+                <y>0.588235319</y>
+                <z>0.588235319</z>
+                <w>1</w>
+            </model_color_vec4>
+            <flow_section_id>2</flow_section_id>
+            <text>c</text>
+            <type_kill>false</type_kill>
+            <all_actions_on_hit>true</all_actions_on_hit>
+            <flow_polarity>false</flow_polarity>
+            <flow_cooldown>500</flow_cooldown>
+            <reset_cooldown_on_any_hit>true</reset_cooldown_on_any_hit>
+            <waypoint_follower>
+                <local_to_entity>false</local_to_entity>
+                <waypoint_auto_start>false</waypoint_auto_start>
+                <loop_waypoints>false</loop_waypoints>
+                <start_time>3</start_time>
+                <waypoints/>
+            </waypoint_follower>
+            <hit_actions>
+                <seq_action>
+                    <one_time>false</one_time>
+                    <action_type>BeatTimeEvent</action_type>
+                    <quantize_denom>0.25</quantize_denom>
+                    <beat_time_event>
+                        <event_type>PlayPcm</event_type>
+                        <channel>0</channel>
+                        <tick_time>0</tick_time>
+                        <sound_ix>1</sound_ix>
+                        <velocity>0.5</velocity>
+                        <loop>false</loop>
+                        <beat_time>0</beat_time>
+                    </beat_time_event>
+                </seq_action>
+            </hit_actions>
+        </TypingEnemy>
+        <TypingEnemy>
+            <name>r2_secret_m</name>
+            <entity_active>true</entity_active>
+            <pickable>true</pickable>
+            <transform>
+                <pos>
+                    <x>39.203125</x>
+                    <y>0</y>
+                    <z>-11.3828115</z>
+                </pos>
+                <quat>
+                    <x>0</x>
+                    <y>0</y>
+                    <z>0</z>
+                    <w>1</w>
+                </quat>
+                <scale>
+                    <x>0.5</x>
+                    <y>0.5</y>
+                    <z>0.5</z>
+                </scale>
+            </transform>
+            <model_name>cube</model_name>
+            <model_color_vec4>
+                <x>0.600000024</x>
+                <y>0.588235319</y>
+                <z>0.588235319</z>
+                <w>1</w>
+            </model_color_vec4>
+            <flow_section_id>2</flow_section_id>
+            <text>m</text>
+            <type_kill>false</type_kill>
+            <all_actions_on_hit>true</all_actions_on_hit>
+            <flow_polarity>false</flow_polarity>
+            <flow_cooldown>500</flow_cooldown>
+            <reset_cooldown_on_any_hit>true</reset_cooldown_on_any_hit>
+            <waypoint_follower>
+                <local_to_entity>false</local_to_entity>
+                <waypoint_auto_start>false</waypoint_auto_start>
+                <loop_waypoints>false</loop_waypoints>
+                <start_time>3</start_time>
+                <waypoints/>
+            </waypoint_follower>
+            <hit_actions>
+                <seq_action>
+                    <one_time>false</one_time>
+                    <action_type>BeatTimeEvent</action_type>
+                    <quantize_denom>0.25</quantize_denom>
+                    <beat_time_event>
+                        <event_type>PlayPcm</event_type>
+                        <channel>0</channel>
+                        <tick_time>0</tick_time>
+                        <sound_ix>1</sound_ix>
+                        <velocity>0.5</velocity>
+                        <loop>false</loop>
+                        <beat_time>0</beat_time>
+                    </beat_time_event>
+                </seq_action>
+            </hit_actions>
+        </TypingEnemy>
+        <TypingEnemy>
+            <name>r2_q</name>
+            <entity_active>false</entity_active>
+            <pickable>true</pickable>
+            <transform>
+                <pos>
+                    <x>40.140625</x>
+                    <y>0</y>
+                    <z>-6.28906345</z>
+                </pos>
+                <quat>
+                    <x>0</x>
+                    <y>0</y>
+                    <z>0</z>
+                    <w>1</w>
+                </quat>
+                <scale>
+                    <x>0.5</x>
+                    <y>0.5</y>
+                    <z>0.5</z>
+                </scale>
+            </transform>
+            <model_name>cube</model_name>
+            <model_color_vec4>
+                <x>0.289215684</x>
+                <y>0.310121298</y>
+                <z>1</z>
+                <w>1</w>
+            </model_color_vec4>
+            <flow_section_id>2</flow_section_id>
+            <text>q</text>
+            <type_kill>false</type_kill>
+            <all_actions_on_hit>false</all_actions_on_hit>
+            <flow_polarity>false</flow_polarity>
+            <flow_cooldown>500</flow_cooldown>
+            <reset_cooldown_on_any_hit>true</reset_cooldown_on_any_hit>
+            <waypoint_follower>
+                <local_to_entity>false</local_to_entity>
+                <waypoint_auto_start>false</waypoint_auto_start>
+                <loop_waypoints>false</loop_waypoints>
+                <start_time>3</start_time>
+                <waypoints/>
+            </waypoint_follower>
+            <hit_actions>
+                <seq_action>
+                    <one_time>false</one_time>
+                    <action_type>NoteOnOff</action_type>
+                    <channel>1</channel>
+                    <midiNote>47</midiNote>
+                    <noteLength>0.5</noteLength>
+                    <velocity>1</velocity>
+                    <quantizeDenom>0.25</quantizeDenom>
+                </seq_action>
+            </hit_actions>
+        </TypingEnemy>
     </new_entities>
 </script>
