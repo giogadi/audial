@@ -6596,7 +6596,7 @@
                     <setTarget>true</setTarget>
                     <targetEntityName>sideroom1_camera_target</targetEntityName>
                     <targetTrackingFactor>0.0500000007</targetTrackingFactor>
-                    <setOffset>false</setOffset>
+                    <setOffset>true</setOffset>
                     <desiredTargetToCameraOffset>
                         <x>0</x>
                         <y>15</y>
@@ -6617,6 +6617,30 @@
                     <entity_name>r2_secret_chord_seq</entity_name>
                     <active>true</active>
                     <init_on_activate>true</init_on_activate>
+                </seq_action>
+                <seq_action>
+                    <one_time>true</one_time>
+                    <action_type>SetStepSequencerMute</action_type>
+                    <seq_name>hihat_seq</seq_name>
+                    <mute>true</mute>
+                </seq_action>
+                <seq_action>
+                    <one_time>true</one_time>
+                    <action_type>SetStepSequencerMute</action_type>
+                    <seq_name>snare_seq</seq_name>
+                    <mute>true</mute>
+                </seq_action>
+                <seq_action>
+                    <one_time>true</one_time>
+                    <action_type>SpawnAutomator</action_type>
+                    <relative>false</relative>
+                    <startValue>934</startValue>
+                    <endValue>300</endValue>
+                    <desiredAutomateTime>1</desiredAutomateTime>
+                    <synth>true</synth>
+                    <synthParam>Cutoff</synthParam>
+                    <channel>2</channel>
+                    <seqEntityName/>
                 </seq_action>
             </actions>
         </FlowTrigger>
@@ -6887,10 +6911,70 @@
                     <beat_time>7</beat_time>
                 </beat_event>
                 <beat_event>
+                    <event_type>NoteOn</event_type>
+                    <channel>2</channel>
+                    <tick_time>0</tick_time>
+                    <midi_note>57</midi_note>
+                    <velocity>1</velocity>
+                    <beat_time>8</beat_time>
+                </beat_event>
+                <beat_event>
+                    <event_type>NoteOn</event_type>
+                    <channel>2</channel>
+                    <tick_time>0</tick_time>
+                    <midi_note>60</midi_note>
+                    <velocity>1</velocity>
+                    <beat_time>8</beat_time>
+                </beat_event>
+                <beat_event>
+                    <event_type>NoteOn</event_type>
+                    <channel>2</channel>
+                    <tick_time>0</tick_time>
+                    <midi_note>64</midi_note>
+                    <velocity>1</velocity>
+                    <beat_time>8</beat_time>
+                </beat_event>
+                <beat_event>
+                    <event_type>NoteOn</event_type>
+                    <channel>2</channel>
+                    <tick_time>0</tick_time>
+                    <midi_note>67</midi_note>
+                    <velocity>1</velocity>
+                    <beat_time>8</beat_time>
+                </beat_event>
+                <beat_event>
+                    <event_type>NoteOff</event_type>
+                    <channel>2</channel>
+                    <tick_time>0</tick_time>
+                    <midi_note>57</midi_note>
+                    <beat_time>15</beat_time>
+                </beat_event>
+                <beat_event>
+                    <event_type>NoteOff</event_type>
+                    <channel>2</channel>
+                    <tick_time>0</tick_time>
+                    <midi_note>60</midi_note>
+                    <beat_time>15</beat_time>
+                </beat_event>
+                <beat_event>
+                    <event_type>NoteOff</event_type>
+                    <channel>2</channel>
+                    <tick_time>0</tick_time>
+                    <midi_note>64</midi_note>
+                    <beat_time>15</beat_time>
+                </beat_event>
+                <beat_event>
+                    <event_type>NoteOff</event_type>
+                    <channel>2</channel>
+                    <tick_time>0</tick_time>
+                    <midi_note>67</midi_note>
+                    <beat_time>15</beat_time>
+                </beat_event>
+                <beat_event>
                     <event_type>None</event_type>
                     <channel>2</channel>
                     <tick_time>0</tick_time>
-                    <beat_time>8</beat_time>
+                    <beat_time>16</beat_time>
                 </beat_event>
             </events>
         </Sequencer>

@@ -43,8 +43,10 @@ void SequencerEntity::Update(GameManager& g, float dt) {
     // double currentBeatTime = g._beatClock->GetBeatTime();
     double maxBeatTime = currentBeatTime + 1.0;
     while (true) {
+        if (_currentLoopStartBeatTime < 0.0) {
+            printf("Sequencer: ERROR _currentLoopStartBeatTime (%f) < 0 !\n", _currentLoopStartBeatTime);
+        }
         if (_currentIx < 0) {
-            printf("Sequencer: ERROR _currentLoopStartBeatTime < 0!\n");
             _currentIx = 0;
         }
         for (; _currentIx < _events.size(); ++_currentIx) {
