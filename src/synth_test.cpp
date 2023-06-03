@@ -8,7 +8,6 @@
 #include <backends/imgui_impl_opengl3.h>
 
 #include <audio.h>
-#include <audio_loader.h>
 #include <sound_bank.h>
 #include <synth_imgui.h>
 
@@ -16,19 +15,19 @@ bool gGetPianoInput = true;
 
 int GetNoteIndexFromKey(int glfwKey) {
     switch (glfwKey) {
-	case GLFW_KEY_A: { return 0; }
-	case GLFW_KEY_W: { return 1; }
-	case GLFW_KEY_S: { return 2; }
-	case GLFW_KEY_E: { return 3; }
-	case GLFW_KEY_D: { return 4; }
-	case GLFW_KEY_F: { return 5; }
-	case GLFW_KEY_T: { return 6; }
-	case GLFW_KEY_G: { return 7; }
-	case GLFW_KEY_Y: { return 8; }
-	case GLFW_KEY_H: { return 9; }
-	case GLFW_KEY_U: { return 10; }
-	case GLFW_KEY_J: { return 11; }
-	case GLFW_KEY_K: { return 12; }
+        case GLFW_KEY_A: { return 0; }
+        case GLFW_KEY_W: { return 1; }
+        case GLFW_KEY_S: { return 2; }
+        case GLFW_KEY_E: { return 3; }
+        case GLFW_KEY_D: { return 4; }
+        case GLFW_KEY_F: { return 5; }
+        case GLFW_KEY_T: { return 6; }
+        case GLFW_KEY_G: { return 7; }
+        case GLFW_KEY_Y: { return 8; }
+        case GLFW_KEY_H: { return 9; }
+        case GLFW_KEY_U: { return 10; }
+        case GLFW_KEY_J: { return 11; }
+        case GLFW_KEY_K: { return 12; }
     }
     return -1;
 }
@@ -37,7 +36,7 @@ int GetMidiNoteFromKey(int glfwKey, int octave) {
     assert(octave >= 0);
     int offset = GetNoteIndexFromKey(glfwKey);
     if (offset < 0) {
-	return -1;
+        return -1;
     }
     int midiNote = 12 * (octave + 1) + offset;
     return midiNote;
@@ -49,28 +48,28 @@ int gCurrentSynthIx = 0;
 
 void KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mods) {
     if (action == GLFW_RELEASE) {
-	if (key == GLFW_KEY_LEFT) {
-	    gOctave = std::max(0, gOctave - 1);
-	} else if (key == GLFW_KEY_RIGHT) {
-	    gOctave = std::min(7, gOctave + 1);
-	}
+        if (key == GLFW_KEY_LEFT) {
+            gOctave = std::max(0, gOctave - 1);
+        } else if (key == GLFW_KEY_RIGHT) {
+            gOctave = std::min(7, gOctave + 1);
+        }
     }
     
     int midiNote = GetMidiNoteFromKey(key, gOctave);
     if (midiNote < 0) {
-	return;
+        return;
     }
     audio::Event e;
     e.channel = gCurrentSynthIx;
     if (action == GLFW_PRESS) {
-	e.type = audio::EventType::NoteOn;
-	e.midiNote = midiNote;	
+        e.type = audio::EventType::NoteOn;
+        e.midiNote = midiNote;	
     } else if (action == GLFW_RELEASE) {
-	e.type = audio::EventType::NoteOff;
-	e.midiNote = midiNote;
+        e.type = audio::EventType::NoteOff;
+        e.midiNote = midiNote;
     }
     if (gpContext != nullptr) {
-	gpContext->AddEvent(e);
+        gpContext->AddEvent(e);
     }
 }
 
@@ -80,21 +79,24 @@ void FramebufferSizeCallback(GLFWwindow* window, int width, int height) {
 
 int main(int argc, char** argv) {
     if (argc != 2) {
-	printf("Expecting exactly one argument: a synth patch filename.\n");
-	return 0;
+        printf("Expecting exactly one argument: a synth patch filename.\n");
+        return 0;
     }
 
     audio::Context audioContext;
     gpContext = &audioContext;
 
-    std::vector<synth::Patch> patches;
-    if (LoadSynthPatches(argv[1], patches)) {
-	printf("Loaded synth patch data from %s.\n", argv[1]);
+    SynthGuiState synthGuiState;
+    synthGuiState._saveFilename = argv[1];
+    synthGuiState._currentSynthIx = 0;
+
+    if (serial::LoadFromFile(argv[1], synthGuiState._synthPatches)) {
+        printf("Loaded synth patch data from %s.\n", argv[1]);
     }
 
     SoundBank soundBank;
-    if (audio::Init(audioContext, patches, soundBank) != paNoError) {
-	return 1;
+    if (audio::Init(audioContext, synthGuiState._synthPatches, soundBank) != paNoError) {
+        return 1;
     }
 
     glfwInit();
@@ -154,36 +156,33 @@ int main(int argc, char** argv) {
     // Setup Platform/Renderer backends
     ImGui_ImplGlfw_InitForOpenGL(window, true);
     // TODO: should I be setting this? imgui_impl_opengl3.h says it's ok to be null.
-    ImGui_ImplOpenGL3_Init(/*glsl_version=*/NULL);
-
-    SynthGuiState synthGuiState;
-    InitSynthGuiState(audioContext, argv[1], synthGuiState);
+    ImGui_ImplOpenGL3_Init(/*glsl_version=*/NULL);  
 
     bool showSynthWindow = true;
     while (!glfwWindowShouldClose(window)) {
-	{
+        {
             ImGuiIO& io = ImGui::GetIO();
             bool inputEnabled = !io.WantCaptureMouse && !io.WantCaptureKeyboard;
-	    gGetPianoInput = inputEnabled;
+            gGetPianoInput = inputEnabled;
         }
 
-	ImGui_ImplOpenGL3_NewFrame();
+        ImGui_ImplOpenGL3_NewFrame();
         ImGui_ImplGlfw_NewFrame();
         ImGui::NewFrame();
-	if (showSynthWindow) {
-	    DrawSynthGuiAndUpdatePatch(synthGuiState, audioContext);
-	    gCurrentSynthIx = synthGuiState._currentSynthIx;
-	}
-	ImGui::Render();
+        if (showSynthWindow) {
+            DrawSynthGuiAndUpdatePatch(synthGuiState, audioContext);
+            gCurrentSynthIx = synthGuiState._currentSynthIx;
+        }
+        ImGui::Render();
 
-	glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+        glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
         glfwSwapBuffers(window);
 
-	glfwPollEvents();
+        glfwPollEvents();
     }
 
     ImGui_ImplOpenGL3_Shutdown();

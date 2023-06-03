@@ -24,11 +24,11 @@ void OnPortAudioError(PaError const& err) {
 } // namespace
 
 void InitStateData(
-    StateData& state, std::vector<synth::Patch> const& synthPatches, SoundBank const& soundBank,
+    StateData& state, synth::PatchBank const& synthPatches, SoundBank const& soundBank,
     EventQueue* eventQueue, int sampleRate) {
 
     bool useInputPatches = true;
-    if (synthPatches.size() != state.synths.size()) {
+    if (synthPatches._patches.size() != state.synths.size()) {
         useInputPatches = false;
         std::cout << "Missing/mismatched patch data. Loading hardcoded default patch data." << std::endl;
     }
@@ -37,7 +37,7 @@ void InitStateData(
         synth::StateData& s = state.synths[i];
         synth::InitStateData(s, /*channel=*/i);
         if (useInputPatches) {
-            s.patch = synthPatches[i];
+            s.patch = synthPatches._patches[i];
         }
     }
 
@@ -60,7 +60,7 @@ static void StreamFinished( void* userData )
 }
 
 PaError Init(
-    Context& context, std::vector<synth::Patch> const& synthPatches, SoundBank const& soundBank) {
+    Context& context, synth::PatchBank const& synthPatches, SoundBank const& soundBank) {
 
     PaError err;
 

@@ -3,6 +3,7 @@
     "enumName": "SynthParamType",
     "enumItems": [
         "Gain",
+        "Mono",
         "Osc1Waveform",
         "Osc2Waveform",
         "Detune",

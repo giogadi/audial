@@ -22,13 +22,15 @@ add_executable(game
     src/aabb.cpp
 
     src/serial.cpp src/rng.cpp
-    src/audio_loader.cpp src/game.cpp src/audio_util.cpp src/audio.cpp src/audio_event_imgui.cpp
+    src/game.cpp src/audio_util.cpp src/audio.cpp src/audio_event_imgui.cpp
     src/sound_bank.cpp
     src/editor.cpp
     src/version_id_list_simple.cpp
     src/entity_picking.cpp
     # src/entity_editing_context.cpp src/script_action.cpp
     src/shader.cpp src/synth.cpp src/mesh.cpp
+    src/synth_patch.cpp
+    src/synth_patch_bank.cpp
     src/beat_clock.cpp src/input_manager.cpp src/beat_time_event.cpp
     src/synth_imgui.cpp
     # src/component.cpp src/entity.cpp src/entity_manager.cpp
@@ -145,7 +147,9 @@ add_executable(synth_test EXCLUDE_FROM_ALL
     src/imgui/imgui.cpp src/imgui/imgui_demo.cpp src/imgui/imgui_draw.cpp
     src/imgui/imgui_tables.cpp src/imgui/imgui_widgets.cpp src/imgui/backends/imgui_impl_glfw.cpp
     src/imgui/backends/imgui_impl_opengl3.cpp
-    src/audio_loader.cpp src/audio_util.cpp src/audio.cpp src/audio_event_imgui.cpp
+    src/audio_util.cpp src/audio.cpp src/audio_event_imgui.cpp
+    src/synth_patch.cpp
+    src/synth_patch_bank.cpp
     src/sound_bank.cpp src/synth.cpp
     src/serial.cpp
     src/synth_imgui.cpp

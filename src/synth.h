@@ -10,6 +10,7 @@
 #include "audio_util.h"
 #include "serial.h"
 #include "enums/synth_Waveform.h"
+#include "synth_patch.h"
 
 namespace synth {
 static inline float const kSemitoneRatio = 1.05946309f;
@@ -32,59 +33,6 @@ struct ADSREnvState {
     float currentValue = 0.f;
     float multiplier = 0.f;
     long ticksSincePhaseStart = -1;
-};
-
-struct ADSREnvSpec {
-    float attackTime = 0.f;
-    float decayTime = 0.f;
-    float sustainLevel = 1.f;
-    float releaseTime = 0.f;
-    float minValue = 0.01f;
-
-    void Save(serial::Ptree pt) const;
-    void Load(serial::Ptree pt);
-};
-
-struct Patch {
-    std::string name;
-    // This is interpreted linearly from [0,1]. This will get mapped later to [-80db,0db].
-    // TODO: consider just having this be a decibel value capped at 0db.
-    float gainFactor = 0.7f;
-
-    bool mono = false;
-
-    Waveform osc1Waveform = Waveform::Square;
-    Waveform osc2Waveform = Waveform::Square;
-
-    float detune = 0.f;   // 1.0f is a whole octave.
-    float oscFader = 0.5f;  // 0.f is fully Osc1, 1.f is fully Osc2.
-
-    float cutoffFreq = 44100.0f;
-    float cutoffK = 0.0f;  // [0,4] but 4 is unstable
-
-    float hpfCutoffFreq = 0.0f;
-    float hpfPeak = 0.0f;
-
-    // gain of 1.0 coincides with the wave varying across 2 octaves (one octave up and one octave down).
-    float pitchLFOGain = 0.0f;
-    float pitchLFOFreq = 0.0f;
-
-    // gain of 1.0 coincides with cutoff frequency doubling at LFO peak and halving at LFO valley.
-    float cutoffLFOGain = 0.0f;
-    float cutoffLFOFreq = 0.0f;
-
-    ADSREnvSpec ampEnvSpec;
-
-    ADSREnvSpec cutoffEnvSpec;
-    float cutoffEnvGain = 0.f;
-
-    ADSREnvSpec pitchEnvSpec;
-    float pitchEnvGain = 0.f;
-
-    void Save(serial::Ptree pt) const;
-    void Load(serial::Ptree pt);
-
-    static int constexpr kVersion = 4;
 };
 
 int constexpr kNumOscillators = 2;

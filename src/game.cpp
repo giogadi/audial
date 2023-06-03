@@ -307,19 +307,36 @@ int main(int argc, char** argv) {
     SoundBank soundBank;
     soundBank.LoadSounds();
 
+    SynthGuiState synthGuiState;
+    {
+        bool success = false;
+        if (cmdLineInputs._synthPatchesFilename.has_value()) {
+            synthGuiState._saveFilename = cmdLineInputs._synthPatchesFilename.value();
+            synthGuiState._currentSynthIx = 0;
+            success = serial::LoadFromFile(synthGuiState._saveFilename.c_str(), synthGuiState._synthPatches);
+            if (!success) {
+                printf("FAILED to read synth patches file \"%s\"\n", synthGuiState._saveFilename.c_str());
+                return 1;
+            }
+        } else {
+            printf("REQUIRE SYNTH PATCH FILENAME!!\n");
+            return 1;
+        }
+    }
+
     // Init audio
     audio::Context audioContext;
     {
+        
         // Load in synth patch data if we have it
-        std::vector<synth::Patch> patches;
-        if (cmdLineInputs._synthPatchesFilename.has_value()) {
-            bool success = LoadSynthPatches(cmdLineInputs._synthPatchesFilename->c_str(), patches);
-            if (!success) {
-                printf("Failed to load synth patch data from \"%s\".\n", cmdLineInputs._synthPatchesFilename->c_str());
-            }
-        }
+        // synth::PatchBank patches;
+        // if (cmdLineInputs._synthPatchesFilename.has_value()) {
+        //     if (!serial::LoadFromFile(cmdLineInputs._synthPatchesFilename->c_str(), patches)) {
+        //         printf("Failed to load synth patch data from \"%s\".\n", cmdLineInputs._synthPatchesFilename->c_str());
+        //     }
+        // }
 
-        if (audio::Init(audioContext, patches, soundBank) != paNoError) {
+        if (audio::Init(audioContext, synthGuiState._synthPatches, soundBank) != paNoError) {
             ShutDown(audioContext, soundBank);
             return 1;
         }
@@ -401,15 +418,6 @@ int main(int argc, char** argv) {
     }
 
     editor.Init(&gGameManager);
-
-    SynthGuiState synthGuiState;
-    {
-        char const* filename = "";
-        if (cmdLineInputs._synthPatchesFilename.has_value()) {
-            filename = cmdLineInputs._synthPatchesFilename->c_str();
-        }
-        InitSynthGuiState(audioContext, filename, synthGuiState);
-    }
 
     bool showSynthWindow = false;
     bool showEntitiesWindow = false;

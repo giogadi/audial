@@ -8,6 +8,8 @@ enum class SynthParamType : int {
     
     Gain,
     
+    Mono,
+    
     Osc1Waveform,
     
     Osc2Waveform,

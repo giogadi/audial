@@ -6,15 +6,6 @@
 
 struct ParamAutomatorEntity : public ne::Entity {
     SpawnAutomatorSeqActionProps _props;
-    // serialized
-    // bool _relative = false;
-    // float _startValue = 0.f;
-    // float _endValue = 1.f;
-    // double _desiredAutomateTime = 1.0;
-    // bool _synth = false; // if false, we're modulating velocity of a seq (sigh)
-    // audio::SynthParamType _synthParam = audio::SynthParamType::Gain;
-    // int _channel = 0;  // only if _synth == true
-    // std::string _seqEntityName;
 
     // non-serialized
     ne::EntityId _seqId;

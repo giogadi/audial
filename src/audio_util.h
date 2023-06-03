@@ -37,7 +37,6 @@ struct Event {
             SynthParamType param;
             long paramChangeTime;  // if 0, param gets changed instantly.
             float newParamValue;
-            int newParamValueInt;
         };
         struct {
             // valid under SetGain

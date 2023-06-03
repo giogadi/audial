@@ -31,19 +31,10 @@ void ParamAutomatorEntity::InitDerived(GameManager& g) {
 
     if (_props._relative) {
         if (_props._synth) {
-            if (_props._synthParam == audio::SynthParamType::Cutoff) {
-                synth::Patch const& patch = g._audioContext->_state.synths[_props._channel].patch;
-                float currentVal = patch.cutoffFreq;
-                _startValueAdjusted = currentVal + _props._startValue;
-                _endValueAdjusted = currentVal + _props._endValue;
-            } else if (_props._synthParam == audio::SynthParamType::CutoffEnvGain) {
-                synth::Patch const& patch = g._audioContext->_state.synths[_props._channel].patch;
-                float currentVal = patch.cutoffEnvGain;
-                _startValueAdjusted = currentVal + _props._startValue;
-                _endValueAdjusted = currentVal + _props._endValue;
-            } else {
-                printf("ParamAutomatorEntity::Init: relative only supports Cutoff right now.\n");
-            }
+            synth::Patch const& patch = g._audioContext->_state.synths[_props._channel].patch;
+            float currentVal = patch.Get(_props._synthParam);
+            _startValueAdjusted = currentVal + _props._startValue;
+            _endValueAdjusted = currentVal + _props._endValue;                        
         }
     } else {
         _startValueAdjusted = _props._startValue;

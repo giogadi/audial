@@ -108,4 +108,40 @@ inline bool TryGetEnum(Ptree pt, char const* name, E& v) {
     return true;
 }
 
+template <typename T>
+inline bool SaveToFile(char const* filename, char const* rootName, T const& v) {
+    serial::Ptree pt = serial::Ptree::MakeNew();
+    serial::Ptree root = pt.AddChild(rootName);
+    v.Save(root);
+    bool success = pt.WriteToFile(filename);
+    pt.DeleteData();
+    if (!success) {
+        printf("Failed to write pt to \"%s\"\n", filename);
+    }
+    return success;
+}
+
+template <typename T>
+inline bool LoadFromFile(char const* filename, T& v) {
+    serial::Ptree pt = serial::Ptree::MakeNew();
+    if (!pt.LoadFromFile(filename)) {
+        pt.DeleteData();
+        printf("Failed to load pt from file \"%s\"\n", filename);
+        return false;
+    }
+    // Assume a single root node. Inside that is what we load from.
+    int numChildren = 0;
+    serial::NameTreePair* children = pt.GetChildren(&numChildren);
+    if (numChildren != 1) {
+        printf("serial::LoadFromFile: expected exactly one root, but found %d\n", numChildren);
+        delete[] children;
+        pt.DeleteData();
+        return false;
+    }
+    v.Load(children->_pt);
+    delete[] children;
+    pt.DeleteData();
+    return true;
+}
+
 }  // namespace serial
