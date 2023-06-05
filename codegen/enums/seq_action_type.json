@@ -18,6 +18,7 @@
         "CameraControl",
         "SpawnEnemy",
         "SetEntityActive",
-        "ChangeStepSeqMaxVoices"
+        "ChangeStepSeqMaxVoices",
+        "ChangePatch"
     ]
 }

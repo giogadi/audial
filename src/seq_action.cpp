@@ -10,6 +10,7 @@
 #include "string_util.h"
 #include "seq_actions/spawn_enemy.h"
 #include "seq_actions/camera_control.h"
+#include "seq_actions/change_patch.h"
 #include "entities/typing_player.h"
 #include "entities/flow_player.h"
 #include "entities/flow_wall.h"
@@ -52,6 +53,7 @@ std::unique_ptr<SeqAction> SeqAction::New(SeqActionType actionType) {
         case SeqActionType::SpawnEnemy: return std::make_unique<SpawnEnemySeqAction>();
         case SeqActionType::SetEntityActive: return std::make_unique<SetEntityActiveSeqAction>();
         case SeqActionType::ChangeStepSeqMaxVoices: return std::make_unique<ChangeStepSeqMaxVoicesSeqAction>();
+        case SeqActionType::ChangePatch: return std::make_unique<ChangePatchSeqAction>();
         case SeqActionType::Count: break;
     }
     assert(false);
