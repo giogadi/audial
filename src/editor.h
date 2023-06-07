@@ -5,21 +5,22 @@
 
 #include "game_manager.h"
 #include "new_entity.h"
+#include "synth_imgui.h"
 
 class BoundMeshPNU;
 
 struct Editor {
     void Init(GameManager* g);
-    void Update(float dt);
+    void Update(float dt, SynthGuiState& synthGuiState);
     void DrawWindow();
     void DrawMultiEnemyWindow();
     void HandleEntitySelectAndMove(float dt);
-    void HandleEntitySelectAndMoveOld(float dt);
+    void HandlePianoInput(SynthGuiState& synthGuiState);
 
     bool IsEntitySelected(ne::EntityId entityId);
 
     GameManager* _g = nullptr;
-    bool _visible = false;
+    bool _entityWindowVisible = false;
     std::set<ne::EntityId> _selectedEntityIds;
     int _selectedEntityTypeIx = 0;
     BoundMeshPNU const* _axesMesh = nullptr;

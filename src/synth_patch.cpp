@@ -170,7 +170,18 @@ void Patch::Load(serial::Ptree pt) {
     }  
 }
 
+namespace {
+Patch gClipboardPatch;
+}
+
 audio::SynthParamType Patch::ImGui() {
+    if (ImGui::Button("Copy")) {
+        gClipboardPatch = *this;
+    }
+    ImGui::SameLine();
+    if (ImGui::Button("Paste")) {
+        *this = gClipboardPatch;
+    }
     audio::SynthParamType changedParam = audio::SynthParamType::Count;
     for (int i = 0, n = (int) audio::SynthParamType::Count; i < n; ++i) {
         audio::SynthParamType paramType = (audio::SynthParamType) i;

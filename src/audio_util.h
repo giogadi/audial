@@ -48,7 +48,7 @@ struct Event {
     void Load(serial::Ptree pt);
 };
 
-static inline int const kEventQueueLength = 64;
+static inline int const kEventQueueLength = 1024;
 typedef rigtorp::SPSCQueue<Event> EventQueue;
 
 struct FrameEvent {

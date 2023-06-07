@@ -10,6 +10,7 @@
 #include "renderer.h"
 #include "entity_picking.h"
 #include "entities/typing_enemy.h"
+#include "util.h"
 
 static float gScrollFactorForDebugCameraMove = 1.f;
 
@@ -53,6 +54,17 @@ bool ProjectScreenPointToXZPlane(
 
     return false;
 }
+
+enum class InputMode {
+    Default,
+    Piano,
+    Count
+};
+
+InputMode sInputMode = InputMode::Default;
+bool sSynthWindowVisible = false;
+bool sDemoWindowVisible = false;
+bool sMultiEnemyEditorVisible = false;
 
 } // end namespace
 
@@ -154,7 +166,7 @@ void Editor::HandleEntitySelectAndMove(float deltaTime) {
             }
         }
 
-        if (inputManager.IsKeyPressedThisFrame(InputManager::Key::G) && !_selectedEntityIds.empty()) {
+        if (sInputMode == InputMode::Default && inputManager.IsKeyPressedThisFrame(InputManager::Key::G) && !_selectedEntityIds.empty()) {
             sGrabMode = true;
             double mouseX, mouseY;
             inputManager.GetMousePos(mouseX, mouseY);
@@ -164,22 +176,121 @@ void Editor::HandleEntitySelectAndMove(float deltaTime) {
     
 }
 
-void Editor::Update(float dt) {
+namespace {
+int GetNoteIndexFromKey(InputManager::Key key) {
+    switch (key) {
+        case InputManager::Key::A: { return 0; }
+        case InputManager::Key::W: { return 1; }
+        case InputManager::Key::S: { return 2; }
+        case InputManager::Key::E: { return 3; }
+        case InputManager::Key::D: { return 4; }
+        case InputManager::Key::F: { return 5; }
+        case InputManager::Key::T: { return 6; }
+        case InputManager::Key::G: { return 7; }
+        case InputManager::Key::Y: { return 8; }
+        case InputManager::Key::H: { return 9; }
+        case InputManager::Key::U: { return 10; }
+        case InputManager::Key::J: { return 11; }
+        case InputManager::Key::K: { return 12; }
+        default: return -1;
+    }
+    return -1;
+}
+
+int GetMidiNoteFromKey(InputManager::Key key, int octave) {
+    assert(octave >= 0);
+    int offset = GetNoteIndexFromKey(key);
+    if (offset < 0) {
+        return -1;
+    }
+    int midiNote = 12 * (octave + 1) + offset;
+    return midiNote;
+}
+
+int gPianoOctave = 3;
+
+InputManager::Key sPianoKeys[] = {
+    InputManager::Key::A,
+    InputManager::Key::W,
+    InputManager::Key::S,
+    InputManager::Key::E,
+    InputManager::Key::D,
+    InputManager::Key::F,
+    InputManager::Key::T,
+    InputManager::Key::G,
+    InputManager::Key::Y,
+    InputManager::Key::H,
+    InputManager::Key::U,
+    InputManager::Key::J,
+    InputManager::Key::K
+};
+}
+
+void Editor::HandlePianoInput(SynthGuiState& synthGuiState) {
+    InputManager const& inputManager = *_g->_inputManager;
+
+    if (inputManager.IsKeyPressedThisFrame(InputManager::Key::Left)) {
+        gPianoOctave = std::max(0, gPianoOctave - 1);
+    } else if (inputManager.IsKeyPressedThisFrame(InputManager::Key::Right)) {
+        gPianoOctave = std::min(7, gPianoOctave + 1);
+    }
+    
+    int const numPianoKeys = M_ARRAY_LEN(sPianoKeys);
+    for (int i = 0; i < numPianoKeys; ++i) {
+        InputManager::Key key = sPianoKeys[i];
+        bool pressed = inputManager.IsKeyPressedThisFrame(key);
+        bool released = inputManager.IsKeyReleasedThisFrame(key);
+        if (!pressed && !released) {
+            continue;
+        }
+        int midiNote = GetMidiNoteFromKey(key, gPianoOctave);
+        if (midiNote < 0) {
+            continue;
+        }
+        audio::Event e;
+        e.channel = synthGuiState._currentSynthIx;
+        e.midiNote = midiNote;
+        if (pressed) {
+            e.type = audio::EventType::NoteOn;
+        } else if (released) {
+            e.type = audio::EventType::NoteOff;
+        }
+        _g->_audioContext->AddEvent(e);
+    }
+}
+
+void Editor::Update(float dt, SynthGuiState& synthGuiState) {
     if (!_g->_editMode) {
         return;
     }
-
-    InputManager const& inputManager = *_g->_inputManager;
     
-    if (inputManager.IsKeyPressedThisFrame(InputManager::Key::I)) {
-        _visible = !_visible;
+    InputManager const& inputManager = *_g->_inputManager;
+
+    if (inputManager.IsKeyPressedThisFrame(InputManager::Key::P)) {
+        sInputMode = (InputMode) ((((int) sInputMode) + 1) % ((int) InputMode::Count));
     }
 
-    static bool sMultiEnemyEditorVisible = false;
-    if (inputManager.IsKeyPressedThisFrame(InputManager::Key::M)) {
-        sMultiEnemyEditorVisible = !sMultiEnemyEditorVisible;
-    }
+    if (sInputMode == InputMode::Default) {
+        if (inputManager.IsKeyPressedThisFrame(InputManager::Key::Y)) {
+            sSynthWindowVisible = !sSynthWindowVisible;
+        }
+        
+    
+        if (inputManager.IsKeyPressedThisFrame(InputManager::Key::I)) {
+            _entityWindowVisible = !_entityWindowVisible;
+        }
 
+        if (inputManager.IsKeyPressedThisFrame(InputManager::Key::M)) {
+            sMultiEnemyEditorVisible = !sMultiEnemyEditorVisible;
+        }
+
+        if (inputManager.IsShiftPressed() && inputManager.IsKeyPressedThisFrame(InputManager::Key::I)) {
+            sDemoWindowVisible = !sDemoWindowVisible;
+        }
+    } else if (sInputMode == InputMode::Piano) {
+        HandlePianoInput(synthGuiState);
+    }
+    
     HandleEntitySelectAndMove(dt);
 
     // Use scroll input to move debug camera around.
@@ -207,12 +318,20 @@ void Editor::Update(float dt) {
         _g->_scene->DrawBoundingBox(bbTrans.Mat4Scale(), Vec4(1.f, 1.f, 1.f, 1.f));
     }
 
-    if (_visible) {
+    if (_entityWindowVisible) {
         DrawWindow();
     }
 
     if (sMultiEnemyEditorVisible) {
         DrawMultiEnemyWindow();
+    }
+
+    if (sSynthWindowVisible) {
+        DrawSynthGuiAndUpdatePatch(synthGuiState, *_g->_audioContext);
+    }
+
+    if (sDemoWindowVisible) {
+        ImGui::ShowDemoWindow(&sDemoWindowVisible);
     }
 }
 

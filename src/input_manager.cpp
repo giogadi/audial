@@ -87,6 +87,7 @@ int InputManager::MapToGlfw(Key k) {
         case Key::Z: return GLFW_KEY_Z;
         case Key::Escape: return GLFW_KEY_ESCAPE;
         case Key::Space: return GLFW_KEY_SPACE;
+        case Key::Left: return GLFW_KEY_LEFT;
         case Key::Right: return GLFW_KEY_RIGHT;
         case Key::LeftShift: return GLFW_KEY_LEFT_SHIFT;
         case Key::RightShift: return GLFW_KEY_RIGHT_SHIFT;

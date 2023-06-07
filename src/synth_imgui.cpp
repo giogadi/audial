@@ -37,6 +37,17 @@ void DrawSynthGuiAndUpdatePatch(SynthGuiState& synthGuiState, audio::Context& au
         if (ImGui::Button("Save")) {
             serial::SaveToFile(synthGuiState._saveFilename.c_str(), "patches", synthGuiState._synthPatches);            
         }
+        ImGui::SameLine();
+        if (ImGui::Button("Load")) {
+            serial::LoadFromFile(synthGuiState._saveFilename.c_str(), synthGuiState._synthPatches);
+            for (int synthIx = 0; synthIx < synthGuiState._synthPatches._patches.size(); ++synthIx) {
+                for (int paramIx = 0; paramIx < (int) audio::SynthParamType::Count; ++paramIx) {
+                    audio::SynthParamType param = (audio::SynthParamType) paramIx;
+                    float v = synthGuiState._synthPatches._patches[synthIx].Get(param);
+                    RequestSynthParamChange(synthIx, param, v, audioContext);
+                }
+            }
+        }
     }
             
     // TODO: consider caching this.
@@ -60,150 +71,6 @@ void DrawSynthGuiAndUpdatePatch(SynthGuiState& synthGuiState, audio::Context& au
         if (changedParam != audio::SynthParamType::Count) {
             RequestSynthParamChange(synthGuiState._currentSynthIx, changedParam, patch.Get(changedParam), audioContext);
         }
-
-        // bool changed = ImGui::SliderFloat("Gain", &patch.gainFactor, 0.f, 1.f);
-    //     if (changed) {
-    //         RequestSynthParamChange(synthGuiState._currentSynthIx, audio::SynthParamType::Gain, patch.gainFactor, audioContext);
-    //     }
-
-    //     int const numWaveforms = static_cast<int>(synth::Waveform::Count);
-    //     {
-    //         int currentWaveIx = static_cast<int>(patch.osc1Waveform);
-    //         changed = ImGui::Combo("Osc1 Wave", &currentWaveIx, synth::gWaveformStrings, numWaveforms);
-    //         patch.osc1Waveform = static_cast<synth::Waveform>(currentWaveIx);
-    //         if (changed) {
-    //             RequestSynthParamChangeInt(synthGuiState._currentSynthIx, audio::SynthParamType::Osc1Waveform, currentWaveIx, audioContext);
-    //         }
-    //     }
-
-    //     {
-    //         int currentWaveIx = static_cast<int>(patch.osc2Waveform);
-    //         changed = ImGui::Combo("Osc2 Wave", &currentWaveIx, synth::gWaveformStrings, numWaveforms);
-    //         patch.osc2Waveform = static_cast<synth::Waveform>(currentWaveIx);
-    //         if (changed) {
-    //             RequestSynthParamChangeInt(synthGuiState._currentSynthIx, audio::SynthParamType::Osc2Waveform, currentWaveIx, audioContext);
-    //         }
-    //     }
-
-    //     changed = ImGui::SliderFloat("Detune", &patch.detune, 0.f, 1.f);
-    //     if (changed) {
-    //         RequestSynthParamChange(synthGuiState._currentSynthIx, audio::SynthParamType::Detune, patch.detune, audioContext);
-    //     }
-
-    //     changed = ImGui::SliderFloat("OscFader", &patch.oscFader, 0.f, 1.f);
-    //     if (changed) {
-    //         RequestSynthParamChange(synthGuiState._currentSynthIx, audio::SynthParamType::OscFader, patch.oscFader, audioContext);
-    //     }
-
-    //     changed = ImGui::SliderFloat("LPF Cutoff", &patch.cutoffFreq, 0.f, 44100.f);
-    //     if (changed) {
-    //         RequestSynthParamChange(synthGuiState._currentSynthIx, audio::SynthParamType::Cutoff, patch.cutoffFreq, audioContext);
-    //     }
-
-    //     changed = ImGui::SliderFloat("Peak", &patch.cutoffK, 0.f, 3.99f);
-    //     if (changed) {
-    //         RequestSynthParamChange(synthGuiState._currentSynthIx, audio::SynthParamType::Peak, patch.cutoffK, audioContext);
-    //     }
-
-    //     changed = ImGui::SliderFloat("HPF Cutoff", &patch.hpfCutoffFreq, 0.f, 44100.f);
-    //     if (changed) {
-    //         RequestSynthParamChange(synthGuiState._currentSynthIx, audio::SynthParamType::HpfCutoff, patch.hpfCutoffFreq, audioContext);
-    //     }
-
-    //     changed = ImGui::SliderFloat("HPF Peak", &patch.hpfPeak, 0.f, 3.99f);
-    //     if (changed) {
-    //         RequestSynthParamChange(synthGuiState._currentSynthIx, audio::SynthParamType::HpfPeak, patch.hpfPeak, audioContext);
-    //     }
-
-    //     changed = ImGui::SliderFloat("PitchLFOGain", &patch.pitchLFOGain, 0.f, 1.f);
-    //     if (changed) {
-    //         RequestSynthParamChange(synthGuiState._currentSynthIx, audio::SynthParamType::PitchLFOGain, patch.pitchLFOGain, audioContext);
-    //     }
-
-    //     changed = ImGui::SliderFloat("PitchLFOFreq", &patch.pitchLFOFreq, 0.f, 100.f);
-    //     if (changed) {
-    //         RequestSynthParamChange(synthGuiState._currentSynthIx, audio::SynthParamType::PitchLFOFreq, patch.pitchLFOFreq, audioContext);
-    //     }
-
-    //     changed = ImGui::SliderFloat("CutoffLFOGain", &patch.cutoffLFOGain, 0.f, 1.f);
-    //     if (changed) {
-    //         RequestSynthParamChange(synthGuiState._currentSynthIx, audio::SynthParamType::CutoffLFOGain, patch.cutoffLFOGain, audioContext);
-    //     }
-
-    //     changed = ImGui::SliderFloat("CutoffLFOFreq", &patch.cutoffLFOFreq, 0.f, 100.f);
-    //     if (changed) {
-    //         RequestSynthParamChange(synthGuiState._currentSynthIx, audio::SynthParamType::CutoffLFOFreq, patch.cutoffLFOFreq, audioContext);
-    //     }
-
-    //     changed = ImGui::SliderFloat("AmpEnvAtk", &patch.ampEnvSpec.attackTime, 0.f, 1.f);
-    //     if (changed) {
-    //         RequestSynthParamChange(synthGuiState._currentSynthIx, audio::SynthParamType::AmpEnvAttack, patch.ampEnvSpec.attackTime, audioContext);
-    //     }
-
-    //     changed = ImGui::SliderFloat("AmpEnvDecay", &patch.ampEnvSpec.decayTime, 0.f, 1.f);
-    //     if (changed) {
-    //         RequestSynthParamChange(synthGuiState._currentSynthIx, audio::SynthParamType::AmpEnvDecay, patch.ampEnvSpec.decayTime, audioContext);
-    //     }
-
-    //     changed = ImGui::SliderFloat("AmpEnvSustain", &patch.ampEnvSpec.sustainLevel, 0.f, 1.f);
-    //     if (changed) {
-    //         RequestSynthParamChange(synthGuiState._currentSynthIx, audio::SynthParamType::AmpEnvSustain, patch.ampEnvSpec.sustainLevel, audioContext);
-    //     }
-
-    //     changed = ImGui::SliderFloat("AmpEnvRelease", &patch.ampEnvSpec.releaseTime, 0.f, 5.f);
-    //     if (changed) {
-    //         RequestSynthParamChange(synthGuiState._currentSynthIx, audio::SynthParamType::AmpEnvRelease, patch.ampEnvSpec.releaseTime, audioContext);
-    //     }
-
-    //     changed = ImGui::SliderFloat("CutoffEnvGain", &patch.cutoffEnvGain, 0.f, 44100.f);
-    //     if (changed) {
-    //         RequestSynthParamChange(synthGuiState._currentSynthIx, audio::SynthParamType::CutoffEnvGain, patch.cutoffEnvGain, audioContext);
-    //     }
-
-    //     changed = ImGui::SliderFloat("CutoffEnvAtk", &patch.cutoffEnvSpec.attackTime, 0.f, 1.f);
-    //     if (changed) {
-    //         RequestSynthParamChange(synthGuiState._currentSynthIx, audio::SynthParamType::CutoffEnvAttack, patch.cutoffEnvSpec.attackTime, audioContext);
-    //     }
-
-    //     changed = ImGui::SliderFloat("CutoffEnvDecay", &patch.cutoffEnvSpec.decayTime, 0.f, 1.f);
-    //     if (changed) {
-    //         RequestSynthParamChange(synthGuiState._currentSynthIx, audio::SynthParamType::CutoffEnvDecay, patch.cutoffEnvSpec.decayTime, audioContext);
-    //     }
-
-    //     changed = ImGui::SliderFloat("CutoffEnvSustain", &patch.cutoffEnvSpec.sustainLevel, 0.f, 1.f);
-    //     if (changed) {
-    //         RequestSynthParamChange(synthGuiState._currentSynthIx, audio::SynthParamType::CutoffEnvSustain, patch.cutoffEnvSpec.sustainLevel, audioContext);
-    //     }
-
-    //     changed = ImGui::SliderFloat("CutoffEnvRelease", &patch.cutoffEnvSpec.releaseTime, 0.f, 1.f);
-    //     if (changed) {
-    //         RequestSynthParamChange(synthGuiState._currentSynthIx, audio::SynthParamType::CutoffEnvRelease, patch.cutoffEnvSpec.releaseTime, audioContext);
-    //     }
-
-	// changed = ImGui::SliderFloat("PitchEnvGain", &patch.pitchEnvGain, 0.f, 1.f);
-    //     if (changed) {
-    //         RequestSynthParamChange(synthGuiState._currentSynthIx, audio::SynthParamType::PitchEnvGain, patch.pitchEnvGain, audioContext);
-    //     }
-
-    //     changed = ImGui::SliderFloat("PitchEnvAtk", &patch.pitchEnvSpec.attackTime, 0.f, 1.f);
-    //     if (changed) {
-    //         RequestSynthParamChange(synthGuiState._currentSynthIx, audio::SynthParamType::PitchEnvAttack, patch.pitchEnvSpec.attackTime, audioContext);
-    //     }
-
-    //     changed = ImGui::SliderFloat("PitchEnvDecay", &patch.pitchEnvSpec.decayTime, 0.f, 1.f);
-    //     if (changed) {
-    //         RequestSynthParamChange(synthGuiState._currentSynthIx, audio::SynthParamType::PitchEnvDecay, patch.pitchEnvSpec.decayTime, audioContext);
-    //     }
-
-    //     changed = ImGui::SliderFloat("PitchEnvSustain", &patch.pitchEnvSpec.sustainLevel, 0.f, 1.f);
-    //     if (changed) {
-    //         RequestSynthParamChange(synthGuiState._currentSynthIx, audio::SynthParamType::PitchEnvSustain, patch.pitchEnvSpec.sustainLevel, audioContext);
-    //     }
-
-    //     changed = ImGui::SliderFloat("PitchEnvRelease", &patch.pitchEnvSpec.releaseTime, 0.f, 1.f);
-    //     if (changed) {
-    //         RequestSynthParamChange(synthGuiState._currentSynthIx, audio::SynthParamType::PitchEnvRelease, patch.pitchEnvSpec.releaseTime, audioContext);
-    //     }
     }
     ImGui::End();
 }
