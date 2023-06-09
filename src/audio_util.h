@@ -17,6 +17,7 @@ struct Event {
         timeInTicks = 0;
         midiNote = 0;
         velocity = 1.f;
+        noteOnId = 0;
     }
     EventType type;
     int channel;
@@ -25,6 +26,10 @@ struct Event {
         struct {
             int midiNote;
             float velocity;
+            // If non-zero, then note-ons will be tagged with this number. Then,
+            // this note will only get turned off from note-offs with this same
+            // ID (or note-offs with a zero ID).
+            int noteOnId;
         };
         // valid under pcm type
         struct {

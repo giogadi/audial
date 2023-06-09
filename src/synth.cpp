@@ -31,19 +31,19 @@ float GenerateSquare(float const phase, float const phaseChange) {
         v = -1.0f;
     }
     // polyblep
-    float dt = phaseChange / (2*kPi);
-    float t = phase / (2*kPi);
-    v += Polyblep(t, dt);
-    v -= Polyblep(fmod(t + 0.5f, 1.0f), dt);
+    // float dt = phaseChange / (2*kPi);
+    // float t = phase / (2*kPi);
+    // v += Polyblep(t, dt);
+    // v -= Polyblep(fmod(t + 0.5f, 1.0f), dt);
     return v;
 }
 
 float GenerateSaw(float const phase, float const phaseChange) {
     float v = (phase / kPi) - 1.0f;
     // polyblep
-    float dt = phaseChange / (2*kPi);
-    float t = phase / (2*kPi);
-    v -= Polyblep(t, dt);
+    // float dt = phaseChange / (2*kPi);
+    // float t = phase / (2*kPi);
+    // v -= Polyblep(t, dt);
     return v;
 }
 }  // namespace
@@ -212,7 +212,7 @@ float ProcessVoice(
 
 	    
 
-        if (osc.phase >= 2*kPi) {
+        if (osc.phase >= 2*kPi) {            
             osc.phase -= 2*kPi;
         }
 
@@ -323,15 +323,17 @@ Voice* FindVoiceForNoteOn(StateData& state, int const midiNote) {
     return nullptr;
 }
 
-Voice* FindVoiceForNoteOff(StateData& state, int midiNote) {
+Voice* FindVoiceForNoteOff(StateData& state, int midiNote, int noteOffId) {
     // NOTE: we should be able to return as soon as we find a voice matching
     // the given note, but I'm doing the full iteration to check for
     // correctness for now.
     Voice* resultVoice = nullptr;
     for (Voice& v : state.voices) {
         if (v.currentMidiNote == midiNote) {
-            assert(resultVoice == nullptr);
-            resultVoice = &v;
+            if (noteOffId == 0 || v.noteOnId == 0 || (v.noteOnId == noteOffId)) {
+                assert(resultVoice == nullptr);
+                resultVoice = &v;
+            }
         }
     }
     return resultVoice;
@@ -378,6 +380,7 @@ void Process(
                         v->oscillators[0].f = synth::MidiToFreq(e.midiNote);
                         v->currentMidiNote = e.midiNote;
                         v->velocity = e.velocity;
+                        v->noteOnId = e.noteOnId;
                         if (v->ampEnvState.phase != synth::ADSRPhase::Closed) {
                             v->ampEnvState.ticksSincePhaseStart = (unsigned long) (v->ampEnvState.currentValue * patch.Get(SynthParamType::AmpEnvAttack) * sampleRate);
                         } else {
@@ -394,7 +397,7 @@ void Process(
                     break;
                 }
                 case audio::EventType::NoteOff: {
-                    Voice* v = FindVoiceForNoteOff(*state, e.midiNote);
+                    Voice* v = FindVoiceForNoteOff(*state, e.midiNote, e.noteOnId);
                     if (v != nullptr) {
                         v->ampEnvState.phase = synth::ADSRPhase::Release;
                         v->ampEnvState.ticksSincePhaseStart = 0;

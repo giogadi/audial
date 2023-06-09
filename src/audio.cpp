@@ -189,14 +189,17 @@ void PopEventsFromThisFrame(
 }
 
 namespace {
-    double gLastCallbackTime = 0.0;
-    int gNumDesyncs = 0;
-    int gDevSum = 0;
-    int gTotalCallbacks = 0;
+double gLastCallbackTime = 0.0;
+int gNumDesyncs = 0;
+int gDevSum = 0;
+int gTotalCallbacks = 0;
 
-    double gTimeSinceLastCallback = 0.0;
-    double gTotalTime = 0.0;
-    unsigned long gLastFrameSize = 0;
+double gTimeSinceLastCallback = 0.0;
+double gTotalTime = 0.0;
+unsigned long gLastFrameSize = 0;
+
+double gAvgCallbackTime = 0.0;
+double gMaxCallbackTime = 0.0;
 }
 
 int GetNumDesyncs() {
@@ -397,6 +400,16 @@ int PortAudioCallback(
     if (callbackTimeSecs / kSecsPerCallback > 0.9) {
         printf("Frame close to deadline: %f / %f\n", callbackTimeSecs, kSecsPerCallback);
     }
+
+    // const int kCallbacksPerSec = (int) (1.0 / kSecsPerCallback);
+    // if (gTotalCallbacks % kCallbacksPerSec == 0) {
+    //     printf("(avg,max): %f, %f\n", gAvgCallbackTime / kSecsPerCallback, gMaxCallbackTime / kSecsPerCallback);
+    //     gAvgCallbackTime = 0.0;
+    //     gMaxCallbackTime = 0.0;
+    // } else {
+    //     gAvgCallbackTime += callbackTimeSecs / kCallbacksPerSec;
+    //     gMaxCallbackTime = std::max(callbackTimeSecs, gMaxCallbackTime);
+    // }
 
     return paContinue;
 }

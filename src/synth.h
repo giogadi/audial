@@ -56,6 +56,7 @@ struct Voice {
     ADSREnvState pitchEnvState;
     int currentMidiNote = -1;
     float velocity = 1.f;
+    int noteOnId = 0;
 
     // float lp0 = 0.0f;
     // float lp1 = 0.0f;

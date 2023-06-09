@@ -555,6 +555,8 @@ void NoteOnOffSeqAction::ExecuteDerived(GameManager& g) {
     b_e._e.channel = _props._channel;
     b_e._e.midiNote = _props._midiNote;
     b_e._e.velocity = _props._velocity;
+    static int sNoteOnId = 1;
+    b_e._e.noteOnId = sNoteOnId++;
                 
     audio::Event e = GetEventAtBeatOffsetFromNextDenom(_props._quantizeDenom, b_e, *g._beatClock, /*slack=*/0.0625);
     g._audioContext->AddEvent(e);

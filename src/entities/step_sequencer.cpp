@@ -220,6 +220,8 @@ void StepSequencerEntity::Update(GameManager& g, float dt) {
             e.timeInTicks = 0;
             e.velocity = seqStep._velocity;
             e.type = audio::EventType::NoteOn;
+            static int sNoteOnId = 1;
+            e.noteOnId = sNoteOnId++;
             for (int i = 0; i < numVoices; ++i) {
                 e.midiNote = seqStep._midiNote[i];
                 for (int channel : _channels) {
