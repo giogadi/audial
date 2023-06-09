@@ -522,7 +522,7 @@
                 <channel>1</channel>
             </channels>
             <step_length>0.25</step_length>
-            <note_length>0.20000000000000001</note_length>
+            <note_length>0.125</note_length>
             <start_time>0</start_time>
             <is_synth>true</is_synth>
             <editor_mute>false</editor_mute>
@@ -6632,15 +6632,75 @@
                 </seq_action>
                 <seq_action>
                     <one_time>true</one_time>
-                    <action_type>SpawnAutomator</action_type>
-                    <relative>false</relative>
-                    <startValue>934</startValue>
-                    <endValue>300</endValue>
-                    <desiredAutomateTime>1</desiredAutomateTime>
-                    <synth>true</synth>
-                    <synthParam>Cutoff</synthParam>
+                    <action_type>ChangePatch</action_type>
                     <channel>2</channel>
-                    <seqEntityName/>
+                    <blend_beat_time>0</blend_beat_time>
+                    <patch>
+                        <Gain>0.603999972</Gain>
+                        <Mono>0</Mono>
+                        <Osc1Waveform>Saw</Osc1Waveform>
+                        <Osc2Waveform>Saw</Osc2Waveform>
+                        <Detune>0.586000025</Detune>
+                        <OscFader>0.513000011</OscFader>
+                        <Cutoff>560.593018</Cutoff>
+                        <Peak>2.5079999</Peak>
+                        <HpfCutoff>373.729004</HpfCutoff>
+                        <HpfPeak>0</HpfPeak>
+                        <PitchLFOGain>0.0209999997</PitchLFOGain>
+                        <PitchLFOFreq>4.23699999</PitchLFOFreq>
+                        <CutoffLFOGain>0</CutoffLFOGain>
+                        <CutoffLFOFreq>0.423999995</CutoffLFOFreq>
+                        <AmpEnvAttack>0.51700002</AmpEnvAttack>
+                        <AmpEnvDecay>0.136000007</AmpEnvDecay>
+                        <AmpEnvSustain>1</AmpEnvSustain>
+                        <AmpEnvRelease>0.532000005</AmpEnvRelease>
+                        <CutoffEnvGain>0</CutoffEnvGain>
+                        <CutoffEnvAttack>0.0719999969</CutoffEnvAttack>
+                        <CutoffEnvDecay>0.411000013</CutoffEnvDecay>
+                        <CutoffEnvSustain>0.56400001</CutoffEnvSustain>
+                        <CutoffEnvRelease>0.492000014</CutoffEnvRelease>
+                        <PitchEnvGain>0</PitchEnvGain>
+                        <PitchEnvAttack>0</PitchEnvAttack>
+                        <PitchEnvDecay>0</PitchEnvDecay>
+                        <PitchEnvSustain>1</PitchEnvSustain>
+                        <PitchEnvRelease>0</PitchEnvRelease>
+                    </patch>
+                </seq_action>
+                <seq_action>
+                    <one_time>false</one_time>
+                    <action_type>ChangePatch</action_type>
+                    <channel>0</channel>
+                    <blend_beat_time>0</blend_beat_time>
+                    <patch>
+                        <Gain>0.91900003</Gain>
+                        <Mono>1</Mono>
+                        <Osc1Waveform>Square</Osc1Waveform>
+                        <Osc2Waveform>Square</Osc2Waveform>
+                        <Detune>1</Detune>
+                        <OscFader>0.825999975</OscFader>
+                        <Cutoff>400</Cutoff>
+                        <Peak>0</Peak>
+                        <HpfCutoff>0</HpfCutoff>
+                        <HpfPeak>0</HpfPeak>
+                        <PitchLFOGain>0</PitchLFOGain>
+                        <PitchLFOFreq>1</PitchLFOFreq>
+                        <CutoffLFOGain>0</CutoffLFOGain>
+                        <CutoffLFOFreq>8.05099964</CutoffLFOFreq>
+                        <AmpEnvAttack>0.00800000038</AmpEnvAttack>
+                        <AmpEnvDecay>0.114</AmpEnvDecay>
+                        <AmpEnvSustain>0.300999999</AmpEnvSustain>
+                        <AmpEnvRelease>0.529999971</AmpEnvRelease>
+                        <CutoffEnvGain>0</CutoffEnvGain>
+                        <CutoffEnvAttack>0</CutoffEnvAttack>
+                        <CutoffEnvDecay>0.064000003</CutoffEnvDecay>
+                        <CutoffEnvSustain>0.148000002</CutoffEnvSustain>
+                        <CutoffEnvRelease>0.123000003</CutoffEnvRelease>
+                        <PitchEnvGain>0</PitchEnvGain>
+                        <PitchEnvAttack>0</PitchEnvAttack>
+                        <PitchEnvDecay>0</PitchEnvDecay>
+                        <PitchEnvSustain>1</PitchEnvSustain>
+                        <PitchEnvRelease>0</PitchEnvRelease>
+                    </patch>
                 </seq_action>
             </actions>
         </FlowTrigger>
@@ -6701,7 +6761,7 @@
         </TypingEnemy>
         <TypingEnemy>
             <name>r2_p</name>
-            <entity_active>false</entity_active>
+            <entity_active>true</entity_active>
             <pickable>true</pickable>
             <transform>
                 <pos>
@@ -6748,7 +6808,7 @@
                     <action_type>NoteOnOff</action_type>
                     <channel>1</channel>
                     <midiNote>47</midiNote>
-                    <noteLength>0.5</noteLength>
+                    <noteLength>0.20000000000000001</noteLength>
                     <velocity>1</velocity>
                     <quantizeDenom>0.25</quantizeDenom>
                 </seq_action>

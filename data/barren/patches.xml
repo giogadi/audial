@@ -53,7 +53,7 @@
             <AmpEnvAttack>0.00700000022</AmpEnvAttack>
             <AmpEnvDecay>0.458000004</AmpEnvDecay>
             <AmpEnvSustain>0.0209999997</AmpEnvSustain>
-            <AmpEnvRelease>0.0419999994</AmpEnvRelease>
+            <AmpEnvRelease>0.127000004</AmpEnvRelease>
             <CutoffEnvGain>0</CutoffEnvGain>
             <CutoffEnvAttack>0.347000003</CutoffEnvAttack>
             <CutoffEnvDecay>0.758000016</CutoffEnvDecay>
@@ -61,9 +61,9 @@
             <CutoffEnvRelease>1</CutoffEnvRelease>
             <PitchEnvGain>1</PitchEnvGain>
             <PitchEnvAttack>0</PitchEnvAttack>
-            <PitchEnvDecay>0.712000012</PitchEnvDecay>
-            <PitchEnvSustain>0.00800000038</PitchEnvSustain>
-            <PitchEnvRelease>0</PitchEnvRelease>
+            <PitchEnvDecay>0.229000002</PitchEnvDecay>
+            <PitchEnvSustain>0.386000007</PitchEnvSustain>
+            <PitchEnvRelease>0.305000007</PitchEnvRelease>
         </patch>
     </patch>
     <patch>

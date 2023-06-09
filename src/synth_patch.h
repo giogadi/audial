@@ -34,7 +34,11 @@ struct Patch {
     void Save(serial::Ptree pt) const;
     void Load(serial::Ptree pt);
     // returns the param that changed (hopefully only one can change at a time...). Returns Count if none changed.
-    audio::SynthParamType ImGui();
+    struct ImGuiResult {
+        bool _allChanged = false;
+        audio::SynthParamType _changedParam = audio::SynthParamType::Count;
+    };
+    ImGuiResult ImGui();
 
     float _data[static_cast<int>(audio::SynthParamType::Count)];
 };

@@ -464,7 +464,7 @@ int main(int argc, char** argv) {
 
         for (auto iter = gGameManager._neEntityManager->GetAllIterator(); !iter.Finished(); iter.Next()) {
             ne::Entity* e = iter.GetEntity();
-            if (gGameManager._editMode && editor._enableFlowSectionFilter && editor._flowSectionFilterId != e->_flowSectionId) {
+            if (gGameManager._editMode && editor._enableFlowSectionFilter && e->_flowSectionId >= 0 && editor._flowSectionFilterId != e->_flowSectionId) {
                 continue;
             }
             e->Update(gGameManager, dt);

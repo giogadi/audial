@@ -174,13 +174,16 @@ namespace {
 Patch gClipboardPatch;
 }
 
-audio::SynthParamType Patch::ImGui() {
+Patch::ImGuiResult Patch::ImGui() {
+    ImGuiResult result;
+    
     if (ImGui::Button("Copy")) {
         gClipboardPatch = *this;
     }
     ImGui::SameLine();
     if (ImGui::Button("Paste")) {
         *this = gClipboardPatch;
+        result._allChanged = true;
     }
     audio::SynthParamType changedParam = audio::SynthParamType::Count;
     for (int i = 0, n = (int) audio::SynthParamType::Count; i < n; ++i) {
@@ -266,7 +269,8 @@ audio::SynthParamType Patch::ImGui() {
         }
     }
 
-    return changedParam;
+    result._changedParam = changedParam;
+    return result;
 }
 
 }

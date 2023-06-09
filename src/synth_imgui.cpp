@@ -67,10 +67,15 @@ void DrawSynthGuiAndUpdatePatch(SynthGuiState& synthGuiState, audio::Context& au
         ImGui::InputText("Name", nameBuffer, 128);
         patchName = nameBuffer;
 
-        audio::SynthParamType changedParam = patch.ImGui();
-        if (changedParam != audio::SynthParamType::Count) {
-            RequestSynthParamChange(synthGuiState._currentSynthIx, changedParam, patch.Get(changedParam), audioContext);
-        }
+        synth::Patch::ImGuiResult result = patch.ImGui();
+        if (result._allChanged) {
+            for (int ii = 0; ii < (int)audio::SynthParamType::Count; ++ii) {
+                auto type = (audio::SynthParamType) ii;
+                RequestSynthParamChange(synthGuiState._currentSynthIx, (audio::SynthParamType)ii, patch.Get(type), audioContext);
+            }
+        } else if (result._changedParam != audio::SynthParamType::Count) {
+            RequestSynthParamChange(synthGuiState._currentSynthIx, result._changedParam, patch.Get(result._changedParam), audioContext);
+        }                   
     }
     ImGui::End();
 }
