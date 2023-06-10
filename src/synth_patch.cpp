@@ -163,7 +163,9 @@ void Patch::Load(serial::Ptree pt) {
                     break;
                 }
                 default:
-                    _data[i] = pt.GetFloat(paramName);
+                    if (!pt.TryGetFloat(paramName, &_data[i])) {
+                        printf("Note: patch had no param \"%s\"\n", paramName);
+                    }
                     break;
             }
         }
@@ -222,6 +224,10 @@ Patch::ImGuiResult Patch::ImGui() {
             }
             case audio::SynthParamType::HpfPeak: {
                 changed = ImGui::SliderFloat(paramName, &_data[i], 0.f, 3.99f);
+                break;
+            }
+            case audio::SynthParamType::Portamento: {
+                changed = ImGui::SliderFloat(paramName, &_data[i], 0.f, 1.f);
                 break;
             }
             case audio::SynthParamType::PitchLFOFreq: {

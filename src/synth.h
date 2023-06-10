@@ -57,6 +57,7 @@ struct Voice {
     int currentMidiNote = -1;
     float velocity = 1.f;
     int noteOnId = 0;
+    float postPortamentoF = 0.f;  // latest output of applying porta to center freq.
 
     // float lp0 = 0.0f;
     // float lp1 = 0.0f;
@@ -79,7 +80,7 @@ struct Automation {
 struct StateData {
     int channel = -1;
 
-    std::array<Voice, 6> voices;
+    std::array<Voice, 4> voices;
     std::array<Automation, 20> automations;
 
     Patch patch;

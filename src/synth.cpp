@@ -198,8 +198,29 @@ float ProcessVoice(
     Patch const& patch) {
     float const dt = 1.0f / sampleRate;
 
+    // portamento
+    if (voice.postPortamentoF <= 0.f) {
+        voice.postPortamentoF = voice.oscillators[0].f;
+    }
+
+    float const samplesPerOctave = patch.Get(SynthParamType::Portamento) * sampleRate;
+    if (samplesPerOctave <= 0.f) {
+        voice.postPortamentoF = voice.oscillators[0].f;
+    } else if (voice.ampEnvState.phase == ADSRPhase::Attack ||
+               voice.ampEnvState.phase == ADSRPhase::Decay ||
+               voice.ampEnvState.phase == ADSRPhase::Sustain) {
+        float const kPortamentoFactor = powf(2.f, 1.f / samplesPerOctave);
+        if (voice.postPortamentoF > voice.oscillators[0].f) {
+            voice.postPortamentoF /= kPortamentoFactor;
+            voice.postPortamentoF = std::max(voice.oscillators[0].f, voice.postPortamentoF);
+        } else if (voice.postPortamentoF < voice.oscillators[0].f) {
+            voice.postPortamentoF *= kPortamentoFactor;
+            voice.postPortamentoF = std::min(voice.oscillators[0].f, voice.postPortamentoF);
+        }
+    }
+
     // Now use the LFO value to get a new frequency.
-    float modulatedF = voice.oscillators[0].f * powf(2.0f, pitchLFOValue);
+    float modulatedF = voice.postPortamentoF * powf(2.0f, pitchLFOValue);
 
 	// Modulate by pitch envelope.
 	adsrEnvelope(pitchEnvSpec, voice.pitchEnvState);

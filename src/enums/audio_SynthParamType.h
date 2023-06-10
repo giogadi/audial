@@ -26,6 +26,8 @@ enum class SynthParamType : int {
     
     HpfPeak,
     
+    Portamento,
+    
     PitchLFOGain,
     
     PitchLFOFreq,

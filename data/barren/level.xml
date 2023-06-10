@@ -6636,7 +6636,7 @@
                     <channel>2</channel>
                     <blend_beat_time>0</blend_beat_time>
                     <patch>
-                        <Gain>0.603999972</Gain>
+                        <Gain>0.825999975</Gain>
                         <Mono>0</Mono>
                         <Osc1Waveform>Saw</Osc1Waveform>
                         <Osc2Waveform>Saw</Osc2Waveform>
@@ -6646,6 +6646,7 @@
                         <Peak>2.5079999</Peak>
                         <HpfCutoff>747.458008</HpfCutoff>
                         <HpfPeak>0</HpfPeak>
+                        <Portamento>2</Portamento>
                         <PitchLFOGain>0.0209999997</PitchLFOGain>
                         <PitchLFOFreq>4.23699999</PitchLFOFreq>
                         <CutoffLFOGain>0</CutoffLFOGain>
@@ -6682,6 +6683,7 @@
                         <Peak>0</Peak>
                         <HpfCutoff>0</HpfCutoff>
                         <HpfPeak>0</HpfPeak>
+                        <Portamento>0</Portamento>
                         <PitchLFOGain>0</PitchLFOGain>
                         <PitchLFOFreq>1</PitchLFOFreq>
                         <CutoffLFOGain>0</CutoffLFOGain>
