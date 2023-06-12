@@ -1,10 +1,15 @@
 #include "seq_actions/camera_control.h"
 
+#include "imgui/imgui.h"
+
 #include "game_manager.h"
 #include "entities/camera.h"
 #include "string_util.h"
 #include "entities/flow_player.h"
 #include "camera_util.h"
+#include "renderer.h"
+
+extern GameManager gGameManager;
 
 void CameraControlSeqAction::ExecuteDerived(GameManager& g) {
     int numEntities = 0;
@@ -96,4 +101,17 @@ void CameraControlSeqAction::InitDerived(GameManager& g) {
             printf("CameraControlSeqAction: could not find seq entity \"%s\"\n", _props._targetEntityName.c_str());
         }
     }
+}
+
+bool CameraControlSeqAction::ImGui() {
+    if (ImGui::Button("Move Dbg cam to target")) {
+        ne::Entity* e = gGameManager._neEntityManager->FindEntityByName(_props._targetEntityName);
+        if (e) {
+            Vec3 targetPos = e->_transform.Pos();
+            Vec3 newCameraPos = targetPos + _props._desiredTargetToCameraOffset;
+            gGameManager._scene->_camera._transform.SetTranslation(newCameraPos);
+        }
+    }
+    
+    return _props.ImGui();
 }

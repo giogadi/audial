@@ -23,6 +23,6 @@ struct CameraControlSeqAction : public SeqAction {
     virtual void LoadDerived(LoadInputs const& loadInputs, std::istream& input) override;
     virtual void LoadDerived(serial::Ptree pt) override { _props.Load(pt); }
     virtual void SaveDerived(serial::Ptree pt) const override { _props.Save(pt); }
-    virtual bool ImGui() override { return _props.ImGui(); }
+    virtual bool ImGui() override;
     virtual void InitDerived(GameManager& g) override;
 };
