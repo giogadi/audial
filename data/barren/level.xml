@@ -6158,13 +6158,13 @@
                     <channel>0</channel>
                     <blend_beat_time>0</blend_beat_time>
                     <patch>
-                        <Gain>0.818000019</Gain>
+                        <Gain>0.893999994</Gain>
                         <Mono>1</Mono>
                         <Osc1Waveform>Square</Osc1Waveform>
-                        <Osc2Waveform>Square</Osc2Waveform>
+                        <Osc2Waveform>Saw</Osc2Waveform>
                         <Detune>1</Detune>
-                        <OscFader>0.741999984</OscFader>
-                        <Cutoff>373.729004</Cutoff>
+                        <OscFader>0.128000006</OscFader>
+                        <Cutoff>747.458008</Cutoff>
                         <Peak>0</Peak>
                         <HpfCutoff>0</HpfCutoff>
                         <HpfPeak>0</HpfPeak>
@@ -6175,13 +6175,13 @@
                         <CutoffLFOFreq>8.05099964</CutoffLFOFreq>
                         <AmpEnvAttack>0.00800000038</AmpEnvAttack>
                         <AmpEnvDecay>0.114</AmpEnvDecay>
-                        <AmpEnvSustain>1</AmpEnvSustain>
-                        <AmpEnvRelease>0.529999971</AmpEnvRelease>
-                        <CutoffEnvGain>0</CutoffEnvGain>
-                        <CutoffEnvAttack>0.0130000003</CutoffEnvAttack>
+                        <AmpEnvSustain>0.677999973</AmpEnvSustain>
+                        <AmpEnvRelease>0.402999997</AmpEnvRelease>
+                        <CutoffEnvGain>1868.64404</CutoffEnvGain>
+                        <CutoffEnvAttack>0</CutoffEnvAttack>
                         <CutoffEnvDecay>0.064000003</CutoffEnvDecay>
-                        <CutoffEnvSustain>1</CutoffEnvSustain>
-                        <CutoffEnvRelease>0.677999973</CutoffEnvRelease>
+                        <CutoffEnvSustain>0.148000002</CutoffEnvSustain>
+                        <CutoffEnvRelease>0.219999999</CutoffEnvRelease>
                         <PitchEnvGain>0</PitchEnvGain>
                         <PitchEnvAttack>0</PitchEnvAttack>
                         <PitchEnvDecay>0</PitchEnvDecay>
@@ -6316,7 +6316,7 @@
                 <pos>
                     <x>39.328125</x>
                     <y>0</y>
-                    <z>-10.1640625</z>
+                    <z>-11.6171875</z>
                 </pos>
                 <quat>
                     <x>0</x>
@@ -6637,7 +6637,7 @@
                     <seqName>bass_seq</seqName>
                     <velOnly>false</velOnly>
                     <temporary>true</temporary>
-                    <stepStr>mB2-:1</stepStr>
+                    <stepStr>mB3-:1</stepStr>
                 </seq_action>
             </hit_actions>
         </TypingEnemy>
@@ -6691,7 +6691,7 @@
                     <seqName>bass_seq</seqName>
                     <velOnly>false</velOnly>
                     <temporary>true</temporary>
-                    <stepStr>mG2:1</stepStr>
+                    <stepStr>mG3:1</stepStr>
                 </seq_action>
             </hit_actions>
         </TypingEnemy>
@@ -6745,7 +6745,7 @@
                     <seqName>bass_seq</seqName>
                     <velOnly>false</velOnly>
                     <temporary>true</temporary>
-                    <stepStr>mC2:1</stepStr>
+                    <stepStr>mC3:1</stepStr>
                 </seq_action>
             </hit_actions>
         </TypingEnemy>
@@ -7499,7 +7499,7 @@
                     <seqName>bass_seq</seqName>
                     <velOnly>false</velOnly>
                     <temporary>true</temporary>
-                    <stepStr>mF2:1</stepStr>
+                    <stepStr>mF3:1</stepStr>
                 </seq_action>
             </hit_actions>
         </TypingEnemy>
@@ -7553,7 +7553,7 @@
                     <seqName>bass_seq</seqName>
                     <velOnly>false</velOnly>
                     <temporary>true</temporary>
-                    <stepStr>mC3:1</stepStr>
+                    <stepStr>mC4:1</stepStr>
                 </seq_action>
             </hit_actions>
         </TypingEnemy>

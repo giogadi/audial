@@ -25,6 +25,19 @@ bool ChangePatchSeqAction::ImGui() {
             _patch = currentPatch;
         }
     }
+    if (ImGui::Button("Apply current patch")) {
+        audio::Event e;
+        e.channel = _channelIx;
+        e.timeInTicks = 0;
+        e.type = audio::EventType::SynthParam;
+        e.paramChangeTime = 0;
+        for (int ii = 0; ii < (int)audio::SynthParamType::Count; ++ii) {
+            auto type = (audio::SynthParamType) ii;
+            e.param = type;
+            e.newParamValue = _patch.Get(type);
+            gGameManager._audioContext->AddEvent(e);
+        }
+    }
     _patch.ImGui();
     return false;
 }
