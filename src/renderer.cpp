@@ -1047,12 +1047,13 @@ void Scene::Draw(int windowWidth, int windowHeight, float timeInSecs) {
     // transparent models
     //
 
+    // Sort models farthest to nearest
     // TODO: should we cache the dists so that we don't recompute them every time we
     // examine an element?
     std::sort(_pInternal->_transparentModels.begin(), _pInternal->_transparentModels.end(), [&](ColorModelInstance const* lhs, ColorModelInstance const* rhs) {
         float lhsD2 = (lhs->_transform.GetPos() - _camera._transform.GetPos()).Length2();
         float rhsD2 = (rhs->_transform.GetPos() - _camera._transform.GetPos()).Length2();
-        return lhsD2 < rhsD2;
+        return lhsD2 > rhsD2;
     });
     {
         Shader& shader = _pInternal->_colorShader;
