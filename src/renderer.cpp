@@ -268,6 +268,7 @@ public:
 
     // boring cached things
     std::vector<ColorModelInstance const*> _topLayerColorModels;
+    std::vector<ColorModelInstance const*> _transparentModels;
     BoundMeshPNU const* _cubeMesh = nullptr;
 
     GameManager* _g = nullptr;
@@ -751,6 +752,11 @@ void DrawColorModelInstance(SceneInternal& internal, Mat4 const& viewProjTransfo
     }
     if (m._topLayer) {
         internal._topLayerColorModels.push_back(&m);
+        return;
+    }
+    if (m._color._w < 1.f) {
+        internal._transparentModels.push_back(&m);
+        return;
     }
     Mat4 const& transMat = m._transform;
     internal._colorShader.SetMat4(internal._colorShaderUniforms[ColorShaderUniforms::uMvpTrans], viewProjTransform * transMat);
@@ -806,6 +812,9 @@ void Scene::Draw(int windowWidth, int windowHeight, float timeInSecs) {
 
     auto& topLayerModels = _pInternal->_topLayerColorModels;
     topLayerModels.clear();
+
+    auto& transparentModels = _pInternal->_transparentModels;
+    transparentModels.clear();    
 
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -1018,6 +1027,51 @@ void Scene::Draw(int windowWidth, int windowHeight, float timeInSecs) {
 
             // TEMPORARY! What we really want is to use the submeshes always unless the outer Model
             // has defined some overrides.
+            if (m->_mesh->_subMeshes.size() == 0) {
+                shader.SetVec4("uColor", m->_color);
+                glBindVertexArray(m->_mesh->_vao);
+                glDrawElements(GL_TRIANGLES, /*count=*/m->_mesh->_numIndices, GL_UNSIGNED_INT, /*start_offset=*/0);
+            } else {
+                for (int subMeshIx = 0; subMeshIx < m->_mesh->_subMeshes.size(); ++subMeshIx) {
+                    BoundMeshPNU::SubMesh const& subMesh = m->_mesh->_subMeshes[subMeshIx];
+                    shader.SetVec4("uColor", subMesh._color);
+                    glBindVertexArray(m->_mesh->_vao);
+                    uint64_t offset = sizeof(uint32_t) * subMesh._startIndex;
+                    glDrawElements(GL_TRIANGLES, /*count=*/subMesh._numIndices, GL_UNSIGNED_INT, (void*) offset);
+                }
+            }
+        }
+    }
+
+    //
+    // transparent models
+    //
+
+    // TODO: should we cache the dists so that we don't recompute them every time we
+    // examine an element?
+    std::sort(_pInternal->_transparentModels.begin(), _pInternal->_transparentModels.end(), [&](ColorModelInstance const* lhs, ColorModelInstance const* rhs) {
+        float lhsD2 = (lhs->_transform.GetPos() - _camera._transform.GetPos()).Length2();
+        float rhsD2 = (rhs->_transform.GetPos() - _camera._transform.GetPos()).Length2();
+        return lhsD2 < rhsD2;
+    });
+    {
+        Shader& shader = _pInternal->_colorShader;
+        shader.Use();
+        SetLightUniformsColorShader(*_pInternal);
+        for (ColorModelInstance const* m : _pInternal->_transparentModels) {
+            if (!m->_visible) {
+                continue;
+            }
+            Mat4 const& transMat = m->_transform;
+            shader.SetMat4("uMvpTrans", viewProjTransform * transMat);
+            shader.SetMat4("uModelTrans", transMat);
+            Mat3 modelTransInv;
+            bool success = transMat.GetMat3().TransposeInverse(modelTransInv);
+            assert(success);
+            shader.SetMat3("uModelInvTrans", modelTransInv);
+
+            // TEMPORARY! What we really want is to use the submeshes always unless the outer Model
+            // has defined some overrides.            
             if (m->_mesh->_subMeshes.size() == 0) {
                 shader.SetVec4("uColor", m->_color);
                 glBindVertexArray(m->_mesh->_vao);

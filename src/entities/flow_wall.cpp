@@ -49,7 +49,7 @@ void FlowWallEntity::Update(GameManager& g, float dt) {
     Vec4 colorAfterHp = _modelColor;
     if (_maxHp > 0) {
         // Vec4 constexpr kDyingColor(74.f / 255.f, 13.f / 255.f, 13.f / 255.f, 1.f);
-        Vec4 constexpr kDyingColor(1.f, 0.f, 0.f, 1.f);
+        Vec4 const kDyingColor(1.f, 0.f, 0.f, _modelColor._w);
         float fracOfMaxHp = (float)_hp / (float)_maxHp;
         colorAfterHp = kDyingColor + fracOfMaxHp * (_modelColor - kDyingColor);
     }
@@ -62,7 +62,9 @@ void FlowWallEntity::Update(GameManager& g, float dt) {
         double constexpr kFadeTime = 0.25;
         double fadeFactor = (beatTime - _timeOfLastHit) / kFadeTime;        
         fadeFactor = math_util::Clamp(fadeFactor, 0.0, 1.0);
-        Vec4 constexpr kFadeColor(0.f, 0.f, 0.f, 1.f);
+        // Use same alpha as the model color on the entity
+        
+        Vec4 kFadeColor(0.f, 0.f, 0.f, _modelColor._w);
         if (fadeFactor == 1.0) {
             _timeOfLastHit = -1.0;
         }
