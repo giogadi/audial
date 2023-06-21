@@ -9,6 +9,7 @@ struct FlowPickupEntity : public ne::Entity {
     std::vector<std::unique_ptr<SeqAction>> _actions;
 
     // non-serialized
+    bool _hit = false;
 
     void OnHit(GameManager& g);
        

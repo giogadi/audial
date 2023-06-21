@@ -8,10 +8,21 @@
 #include "serial_vector_util.h"
 #include "imgui_vector_util.h"
 
+namespace {
+Vec4 constexpr kNoHitColor = Vec4(0.245098054f, 0.933390915f, 1.f, 1.f);
+Vec4 constexpr kHitColor = Vec4(0.933390915f, 0.245098054f, 1.f, 1.f);
+}
+
 void FlowPickupEntity::InitDerived(GameManager& g) {
     for (auto const& pAction : _actions) {
         pAction->Init(g);
     }
+    _hit = false;
+    _modelColor = kNoHitColor;
+
+    Quaternion q;
+    q.SetFromAngleAxis(0.25f * kPi, Vec3(0.f, 1.f, 0.f));
+    _transform.SetQuat(q);
 }
 
 void FlowPickupEntity::SaveDerived(serial::Ptree pt) const {
@@ -30,22 +41,31 @@ ne::Entity::ImGuiResult FlowPickupEntity::ImGuiDerived(GameManager& g) {
 }
 
 void FlowPickupEntity::OnHit(GameManager& g) {
-    for (auto const& pAction : _actions) {
-        pAction->Execute(g);
-    }
+    if (!_hit) {
+        for (auto const& pAction : _actions) {
+            pAction->Execute(g);
+        }
     
-    if (!g._editMode) {
-        g._neEntityManager->TagForDeactivate(_id);
+        if (!g._editMode) {
+            _modelColor = kHitColor;
+            _hit = true;
+        }
     }
 }
 
 void FlowPickupEntity::Update(GameManager& g, float dt) {
     if (!g._editMode) {
-        // Rotate about y-axis. half rotation every beat
-        double beatTime = g._beatClock->GetBeatTimeFromEpoch();
-        float angle = (float) beatTime * kPi;
-        Quaternion q;
-        q.SetFromAngleAxis(angle, Vec3(1.f, 1.f, 1.f).GetNormalized());
+        float speed;
+        if (_hit) {
+            speed = 4.f;
+        } else {
+            speed = 0.5f;
+        }
+        float angle = speed * dt * kPi;
+        Quaternion q = _transform.Quat();
+        Quaternion rot;
+        rot.SetFromAngleAxis(angle, Vec3(0.f, 0.f, 1.f));
+        q = rot * q;
         _transform.SetQuat(q);
     }
     
