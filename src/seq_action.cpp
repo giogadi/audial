@@ -882,11 +882,7 @@ bool SetEntityActiveSeqAction::ImGui() {
 
 void SetEntityActiveSeqAction::InitDerived(GameManager& g) {
     ne::Entity* e = nullptr;
-    if (_active) {
-        e = g._neEntityManager->FindInactiveEntityByName(_entityName);
-    } else {
-        e = g._neEntityManager->FindEntityByName(_entityName);
-    }
+    e = g._neEntityManager->FindEntityByName(_entityName, true, true);   
     if (e) {
         _entityId = e->_id;
     } else {

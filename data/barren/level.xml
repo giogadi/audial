@@ -5846,8 +5846,8 @@
             </transform>
             <model_name>cube</model_name>
             <model_color_vec4>
-                <x>0.247058824</x>
-                <y>0.933333337</y>
+                <x>0.245098054</x>
+                <y>0.933390915</y>
                 <z>1</z>
                 <w>1</w>
             </model_color_vec4>
@@ -6215,6 +6215,20 @@
                     <step_str>-1:1</step_str>
                     <vel_only>false</vel_only>
                 </seq_action>
+                <seq_action>
+                    <one_time>true</one_time>
+                    <action_type>SetEntityActive</action_type>
+                    <entity_name>r2_back_to_main</entity_name>
+                    <active>true</active>
+                    <init_on_activate>true</init_on_activate>
+                </seq_action>
+                <seq_action>
+                    <one_time>true</one_time>
+                    <action_type>SetEntityActive</action_type>
+                    <entity_name>r2_secret_exit</entity_name>
+                    <active>false</active>
+                    <init_on_activate>true</init_on_activate>
+                </seq_action>
             </actions>
         </FlowTrigger>
         <TypingEnemy>
@@ -6335,7 +6349,7 @@
                 <pos>
                     <x>39.328125</x>
                     <y>0</y>
-                    <z>-11.6171875</z>
+                    <z>-10.5</z>
                 </pos>
                 <quat>
                     <x>0</x>
@@ -7880,5 +7894,118 @@
                 </seq_action>
             </hit_actions>
         </FlowWall>
+        <FlowTrigger>
+            <name>r2_back_to_main</name>
+            <entity_active>false</entity_active>
+            <pickable>true</pickable>
+            <transform>
+                <pos>
+                    <x>39.34375</x>
+                    <y>0</y>
+                    <z>-4.5</z>
+                </pos>
+                <quat>
+                    <x>0</x>
+                    <y>0</y>
+                    <z>0</z>
+                    <w>1</w>
+                </quat>
+                <scale>
+                    <x>3</x>
+                    <y>1</y>
+                    <z>1</z>
+                </scale>
+            </transform>
+            <model_name/>
+            <model_color_vec4>
+                <x>0.800000012</x>
+                <y>0.800000012</y>
+                <z>0.800000012</z>
+                <w>1</w>
+            </model_color_vec4>
+            <flow_section_id>2</flow_section_id>
+            <actions>
+                <seq_action>
+                    <one_time>true</one_time>
+                    <action_type>CameraControl</action_type>
+                    <setTarget>true</setTarget>
+                    <targetEntityName>room4_camera_target_again</targetEntityName>
+                    <targetTrackingFactor>0.0500000007</targetTrackingFactor>
+                    <setOffset>true</setOffset>
+                    <desiredTargetToCameraOffset>
+                        <x>0</x>
+                        <y>15</y>
+                        <z>0</z>
+                    </desiredTargetToCameraOffset>
+                    <hasMinX>false</hasMinX>
+                    <minX>0</minX>
+                    <hasMinZ>false</hasMinZ>
+                    <minZ>0</minZ>
+                    <hasMaxX>false</hasMaxX>
+                    <maxX>0</maxX>
+                    <hasMaxZ>false</hasMaxZ>
+                    <maxZ>0</maxZ>
+                </seq_action>
+                <seq_action>
+                    <one_time>true</one_time>
+                    <action_type>SetEntityActive</action_type>
+                    <entity_name>r2_secret_chord_seq</entity_name>
+                    <active>false</active>
+                    <init_on_activate>true</init_on_activate>
+                </seq_action>
+                <seq_action>
+                    <one_time>true</one_time>
+                    <action_type>SetStepSequencerMute</action_type>
+                    <seq_name>hihat_seq</seq_name>
+                    <mute>false</mute>
+                </seq_action>
+                <seq_action>
+                    <one_time>true</one_time>
+                    <action_type>SetStepSequencerMute</action_type>
+                    <seq_name>snare_seq</seq_name>
+                    <mute>false</mute>
+                </seq_action>
+                <seq_action>
+                    <one_time>false</one_time>
+                    <action_type>SetEntityActive</action_type>
+                    <entity_name>r2_back_to_main</entity_name>
+                    <active>false</active>
+                    <init_on_activate>true</init_on_activate>
+                </seq_action>
+            </actions>
+        </FlowTrigger>
+        <Vfx>
+            <name>new_entity</name>
+            <entity_active>true</entity_active>
+            <pickable>true</pickable>
+            <transform>
+                <pos>
+                    <x>-13.0125027</x>
+                    <y>0</y>
+                    <z>0.407811761</z>
+                </pos>
+                <quat>
+                    <x>0</x>
+                    <y>0</y>
+                    <z>0</z>
+                    <w>1</w>
+                </quat>
+                <scale>
+                    <x>1</x>
+                    <y>1</y>
+                    <z>1</z>
+                </scale>
+            </transform>
+            <model_name>cube</model_name>
+            <model_color_vec4>
+                <x>1</x>
+                <y>0</y>
+                <z>0</z>
+                <w>1</w>
+            </model_color_vec4>
+            <flow_section_id>6</flow_section_id>
+            <cycleTimeSecs>0.200000003</cycleTimeSecs>
+            <pulseScaleFactor>1.20000005</pulseScaleFactor>
+        </Vfx>
     </new_entities>
 </script>

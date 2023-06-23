@@ -25,6 +25,7 @@
 #include "entities/flow_pickup.h"
 #include "entities/flow_trigger.h"
 #include "entities/int_variable.h"
+#include "entities/vfx.h"
 
 namespace ne {
 
@@ -190,6 +191,26 @@ Entity* EntityManager::FindInactiveEntityByName(std::string_view name) {
         Entity* e = iter.GetEntity();
         if (e->_name == name) {
             return e;
+        }
+    }
+    return nullptr;
+}
+
+Entity* EntityManager::FindEntityByName(std::string_view name, bool includeActive, bool includeInactive) {
+    if (includeActive) {
+        for (AllIterator iter = GetAllIterator(); !iter.Finished(); iter.Next()) {
+            Entity* e = iter.GetEntity();
+            if (e->_name == name) {
+                return e;
+            }
+        }
+    }
+    if (includeInactive) {
+        for (AllIterator iter = GetAllInactiveIterator(); !iter.Finished(); iter.Next()) {
+            Entity* e = iter.GetEntity();
+            if (e->_name == name) {
+                return e;
+            }
         }
     }
     return nullptr;

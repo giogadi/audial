@@ -59,6 +59,7 @@ add_executable(game
     src/properties/NoteOnOffSeqAction.cpp
     src/properties/CameraControlSeqAction.cpp
     src/properties/ChangeStepSeqMaxVoices.cpp
+    src/properties/VfxEntity.cpp
 
     src/seq_action.cpp
     src/seq_actions/spawn_enemy.cpp
@@ -80,6 +81,7 @@ add_executable(game
     src/entities/flow_pickup.cpp
     src/entities/flow_trigger.cpp
     src/entities/int_variable.cpp
+    src/entities/vfx.cpp
     
     src/enums/audio_EventType.cpp
     src/enums/audio_SynthParamType.cpp

@@ -1,5 +1,7 @@
 #pragma once
 
+#include "matrix.h"
+
 namespace math_util {
 inline float Clamp(float x, float low, float high) {
     if (x < low) {
@@ -48,6 +50,13 @@ inline float SmoothUpAndDown(float x) {
         return SmoothStep(2*x);
     }
     return 1.f-SmoothStep(2*(x - 0.5f));
+}
+
+inline Vec3 Vec3Lerp(float x, Vec3 const& a, Vec3 const& b) {
+    Vec3 res = b - a;
+    res *= x;
+    res += a;
+    return res;
 }
 
 }

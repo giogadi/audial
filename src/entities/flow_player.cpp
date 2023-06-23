@@ -11,6 +11,7 @@
 
 #include "entities/flow_pickup.h"
 #include "entities/flow_wall.h"
+#include "entities/vfx.h"
 
 void FlowPlayerEntity::SaveDerived(serial::Ptree pt) const {
     pt.PutFloat("selection_radius", _selectionRadius);
@@ -148,10 +149,9 @@ void FlowPlayerEntity::Update(GameManager& g, float dt) {
 
     TypingEnemyEntity* nearest = nullptr;
     float nearestDist2 = -1.f;
-    Vec3 const& playerPos = _transform.GetPos();
-    ne::EntityManager::Iterator enemyIter = g._neEntityManager->GetIterator(ne::EntityType::TypingEnemy);
+    Vec3 const& playerPos = _transform.GetPos();    
     Mat4 viewProjTransform = g._scene->GetViewProjTransform();
-    for (; !enemyIter.Finished(); enemyIter.Next()) {
+    for (ne::EntityManager::Iterator enemyIter = g._neEntityManager->GetIterator(ne::EntityType::TypingEnemy); !enemyIter.Finished(); enemyIter.Next()) {
         Vec4 constexpr kGreyColor(0.6f, 0.6f, 0.6f, 0.7f);
         TypingEnemyEntity* enemy = (TypingEnemyEntity*) enemyIter.GetEntity();
         Vec3 dp = playerPos - enemy->_transform.GetPos();
@@ -203,13 +203,17 @@ void FlowPlayerEntity::Update(GameManager& g, float dt) {
             _dashTimer = 0.f;
             _dashTargetId = nearest->_id;
             _applyGravityDuringDash = false;
-
-            enemyIter = g._neEntityManager->GetIterator(ne::EntityType::TypingEnemy);
-            for (; !enemyIter.Finished(); enemyIter.Next()) {
+            
+            for (auto enemyIter = g._neEntityManager->GetIterator(ne::EntityType::TypingEnemy); !enemyIter.Finished(); enemyIter.Next()) {
                 TypingEnemyEntity* enemy = (TypingEnemyEntity*) enemyIter.GetEntity();
                 if (enemy->_id != nearestId) {
                     enemy->OnHitOther(g);
                 }
+            }
+
+            for (auto vfxIter = g._neEntityManager->GetIterator(ne::EntityType::Vfx); !vfxIter.Finished(); vfxIter.Next()) {
+                VfxEntity* vfx = (VfxEntity*) vfxIter.GetEntity();
+                vfx->OnHit(g);
             }
         }
     }

@@ -1,0 +1,15 @@
+{
+    "propertiesName": "VfxEntity",
+    "props": [
+        {
+            "name": "cycleTimeSecs",
+            "type": "float",
+            "default": "0.2f"
+        },
+        {
+            "name": "pulseScaleFactor",
+            "type": "float",
+            "default": "1.1f"
+        }
+    ]
+}

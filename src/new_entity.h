@@ -27,7 +27,8 @@ namespace ne {
     X(FlowWall) \
     X(FlowPickup) \
     X(FlowTrigger) \
-    X(IntVariable)
+    X(IntVariable) \
+    X(Vfx)
 
 enum class EntityType: int {
 #   define X(a) a,
@@ -119,6 +120,7 @@ struct EntityManager {
     Entity* GetEntity(EntityId id, bool includeActive, bool includeInactive, bool* active = nullptr);
     Entity* FindEntityByName(std::string_view name);
     Entity* FindInactiveEntityByName(std::string_view name);
+    Entity* FindEntityByName(std::string_view name, bool includeActive, bool includeInactive);
     Entity* FindEntityByNameAndType(std::string_view name, EntityType entityType);
     Entity* GetFirstEntityOfType(EntityType entityType);
     
