@@ -40,6 +40,10 @@ enum class SeqActionType : int {
     
     ChangePatch,
     
+    VfxPulse,
+    
+    Trigger,
+    
     Count
 };
 extern char const* gSeqActionTypeStrings[];

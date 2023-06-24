@@ -309,3 +309,16 @@ struct ChangeStepSeqMaxVoicesSeqAction : public SeqAction {
     virtual void InitDerived(GameManager& g) override;
     virtual void ExecuteDerived(GameManager& g) override;
 };
+
+struct TriggerSeqAction : public SeqAction {
+    virtual SeqActionType Type() const override { return SeqActionType::Trigger; }
+    std::string _entityName;
+
+    ne::EntityId _entityId;
+
+    virtual void LoadDerived(serial::Ptree pt) override;
+    virtual void SaveDerived(serial::Ptree pt) const override;
+    virtual bool ImGui() override;
+    virtual void InitDerived(GameManager& g) override;
+    virtual void ExecuteDerived(GameManager& g) override;
+};

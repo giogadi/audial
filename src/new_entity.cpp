@@ -217,10 +217,24 @@ Entity* EntityManager::FindEntityByName(std::string_view name, bool includeActiv
 }
 
 Entity* EntityManager::FindEntityByNameAndType(std::string_view name, EntityType entityType) {
-    for (Iterator iter = GetIterator(entityType); !iter.Finished(); iter.Next()) {
-        Entity* e = iter.GetEntity();
-        if (e->_name == name) {
-            return e;
+    return FindEntityByNameAndType(name, entityType, /*includeActive=*/true, /*includeInactive=*/false);
+}
+
+Entity* EntityManager::FindEntityByNameAndType(std::string_view name, EntityType entityType, bool includeActive, bool includeInactive) {
+    if (includeActive) {
+        for (Iterator iter = GetIterator(entityType); !iter.Finished(); iter.Next()) {
+            Entity* e = iter.GetEntity();
+            if (e->_name == name) {
+                return e;
+            }
+        }
+    }
+    if (includeInactive) {
+        for (Iterator iter = GetInactiveIterator(entityType); !iter.Finished(); iter.Next()) {
+            Entity* e = iter.GetEntity();
+            if (e->_name == name) {
+                return e;
+            }
         }
     }
     return nullptr;

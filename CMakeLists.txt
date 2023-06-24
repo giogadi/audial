@@ -60,11 +60,13 @@ add_executable(game
     src/properties/CameraControlSeqAction.cpp
     src/properties/ChangeStepSeqMaxVoices.cpp
     src/properties/VfxEntity.cpp
+    src/properties/VfxPulseSeqAction.cpp
 
     src/seq_action.cpp
     src/seq_actions/spawn_enemy.cpp
     src/seq_actions/camera_control.cpp
     src/seq_actions/change_patch.cpp
+    src/seq_actions/vfx_pulse.cpp
     
     src/entities/light.cpp
     src/entities/camera.cpp

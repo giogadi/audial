@@ -46,7 +46,11 @@ std::unordered_map<std::string, SeqActionType> const gStringToSeqActionType = {
     
     { "ChangeStepSeqMaxVoices", SeqActionType::ChangeStepSeqMaxVoices },
     
-    { "ChangePatch", SeqActionType::ChangePatch }
+    { "ChangePatch", SeqActionType::ChangePatch },
+    
+    { "VfxPulse", SeqActionType::VfxPulse },
+    
+    { "Trigger", SeqActionType::Trigger }
     
 };
 
@@ -88,7 +92,11 @@ char const* gSeqActionTypeStrings[] = {
     
     "ChangeStepSeqMaxVoices",
     
-    "ChangePatch"
+    "ChangePatch",
+    
+    "VfxPulse",
+    
+    "Trigger"
     
 };
 

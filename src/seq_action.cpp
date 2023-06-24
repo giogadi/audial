@@ -11,10 +11,12 @@
 #include "seq_actions/spawn_enemy.h"
 #include "seq_actions/camera_control.h"
 #include "seq_actions/change_patch.h"
+#include "seq_actions/vfx_pulse.h"
 #include "entities/typing_player.h"
 #include "entities/flow_player.h"
 #include "entities/flow_wall.h"
 #include "entities/int_variable.h"
+#include "entities/flow_trigger.h"
 #include "sound_bank.h"
 #include "imgui_util.h"
 
@@ -54,6 +56,8 @@ std::unique_ptr<SeqAction> SeqAction::New(SeqActionType actionType) {
         case SeqActionType::SetEntityActive: return std::make_unique<SetEntityActiveSeqAction>();
         case SeqActionType::ChangeStepSeqMaxVoices: return std::make_unique<ChangeStepSeqMaxVoicesSeqAction>();
         case SeqActionType::ChangePatch: return std::make_unique<ChangePatchSeqAction>();
+        case SeqActionType::VfxPulse: return std::make_unique<VfxPulseSeqAction>();
+        case SeqActionType::Trigger: return std::make_unique<TriggerSeqAction>();
         case SeqActionType::Count: break;
     }
     assert(false);
@@ -926,3 +930,33 @@ void ChangeStepSeqMaxVoicesSeqAction::ExecuteDerived(GameManager& g) {
         }
     }
 }
+
+void TriggerSeqAction::LoadDerived(serial::Ptree pt) {
+    _entityName = pt.GetString("entity_name");
+}
+
+void TriggerSeqAction::SaveDerived(serial::Ptree pt) const {
+    pt.PutString("entity_name", _entityName.c_str());
+}
+
+bool TriggerSeqAction::ImGui() {
+    return imgui_util::InputText<128>("Entity name", &_entityName);
+}
+
+void TriggerSeqAction::InitDerived(GameManager& g) {
+    ne::Entity* e = nullptr;
+    e = g._neEntityManager->FindEntityByNameAndType(_entityName, ne::EntityType::FlowTrigger, true, true);   
+    if (e) {
+        _entityId = e->_id;
+    } else {
+        printf("TriggerSeqAction: could not find entity %s\n", _entityName.c_str());
+    }
+}
+
+void TriggerSeqAction::ExecuteDerived(GameManager& g) {
+    if (ne::Entity* e = g._neEntityManager->GetEntity(_entityId)) {
+        FlowTriggerEntity* t = (FlowTriggerEntity*) e;
+        t->OnTrigger(g);
+    }
+}
+

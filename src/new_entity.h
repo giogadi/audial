@@ -122,6 +122,7 @@ struct EntityManager {
     Entity* FindInactiveEntityByName(std::string_view name);
     Entity* FindEntityByName(std::string_view name, bool includeActive, bool includeInactive);
     Entity* FindEntityByNameAndType(std::string_view name, EntityType entityType);
+    Entity* FindEntityByNameAndType(std::string_view name, EntityType entityType, bool includeActive, bool includeInactive);
     Entity* GetFirstEntityOfType(EntityType entityType);
     
     bool TagForDestroy(EntityId id);

@@ -1,0 +1,9 @@
+{
+    "propertiesName": "VfxPulseSeqAction",
+    "props": [
+        {
+            "name": "vfxEntityName",
+            "type": "string"
+        }
+    ]
+}

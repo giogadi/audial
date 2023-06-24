@@ -211,10 +211,10 @@ void FlowPlayerEntity::Update(GameManager& g, float dt) {
                 }
             }
 
-            for (auto vfxIter = g._neEntityManager->GetIterator(ne::EntityType::Vfx); !vfxIter.Finished(); vfxIter.Next()) {
-                VfxEntity* vfx = (VfxEntity*) vfxIter.GetEntity();
-                vfx->OnHit(g);
-            }
+            // for (auto vfxIter = g._neEntityManager->GetIterator(ne::EntityType::Vfx); !vfxIter.Finished(); vfxIter.Next()) {
+            //     VfxEntity* vfx = (VfxEntity*) vfxIter.GetEntity();
+            //     vfx->OnHit(g);
+            // }
         }
     }
 
