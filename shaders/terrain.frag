@@ -1,8 +1,8 @@
 #version 330 core
 
 in vec2 texCoord;
-in vec3 fragPos;
-in vec3 normal;
+// in vec3 fragPos;
+// in vec3 normal;
 
 struct DirLight {
     vec3 _dir;

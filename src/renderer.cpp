@@ -164,22 +164,22 @@ namespace WaterShaderUniforms {
 namespace TerrainShaderUniforms {
     enum Names {
         uMvpTrans,
-        uModelTrans,
-        uModelInvTrans,
+        // uModelTrans,
+        // uModelInvTrans,
         uColor,
         uDirLightDir,
-        uDirLightAmb,
+        // uDirLightAmb,
         uDirLightDif,
         uOffset,
         Count
     };
     static char const* NameStrings[] = {
         "uMvpTrans",
-        "uModelTrans",
-        "uModelInvTrans",
+        // "uModelTrans",
+        // "uModelInvTrans",
         "uColor",
         "uDirLight._dir",
-        "uDirLight._ambient",
+        // "uDirLight._ambient",
         "uDirLight._diffuse",
         "uOffset"
     };
@@ -741,7 +741,7 @@ void SetLightUniformsTerrainShader(SceneInternal& sceneInternal) {
     int const* uniforms = sceneInternal._terrainShaderUniforms;
     Shader& shader = sceneInternal._terrainShader;
     shader.SetVec3(uniforms[TerrainShaderUniforms::uDirLightDir], sceneInternal._dirLight._dir);
-    shader.SetVec3(uniforms[TerrainShaderUniforms::uDirLightAmb], sceneInternal._dirLight._ambient);
+    // shader.SetVec3(uniforms[TerrainShaderUniforms::uDirLightAmb], sceneInternal._dirLight._ambient);
     shader.SetVec3(uniforms[TerrainShaderUniforms::uDirLightDif], sceneInternal._dirLight._diffuse);
 }
 #endif

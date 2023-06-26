@@ -27,9 +27,6 @@ void FlowTriggerEntity::LoadDerived(serial::Ptree pt) {
     pt.TryGetBool("on_player_enter", &_p._triggerOnPlayerEnter);
     pt.TryGetInt("random_action_count", &_p._randomActionCount);
     SeqAction::LoadActionsFromChildNode(pt, "actions", _p._actions);
-    if (_name == "room1_trigger") {
-        printf("howdy\n");
-    }
 }
 
 FlowTriggerEntity::ImGuiResult FlowTriggerEntity::ImGuiDerived(GameManager& g)  {
