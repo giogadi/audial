@@ -78,7 +78,7 @@ void Editor::HandleEntitySelectAndMove(float deltaTime) {
         double mouseX, mouseY;
         inputManager.GetMousePos(mouseX, mouseY);
         Vec3 clickedPosOnXZPlane;
-        if (ProjectScreenPointToXZPlane(mouseX, mouseY, _g->_windowWidth, _g->_windowHeight, _g->_scene->_camera, &clickedPosOnXZPlane)) {
+        if (ProjectScreenPointToXZPlane((int)mouseX, (int)mouseY, _g->_windowWidth, _g->_windowHeight, _g->_scene->_camera, &clickedPosOnXZPlane)) {
             Vec3 grabOffset = clickedPosOnXZPlane - sGrabPos;
             for (ne::EntityId selectedId : _selectedEntityIds) {
                 if (ne::Entity* selectedEntity = _g->_neEntityManager->GetActiveOrInactiveEntity(selectedId)) {
@@ -170,7 +170,7 @@ void Editor::HandleEntitySelectAndMove(float deltaTime) {
             sGrabMode = true;
             double mouseX, mouseY;
             inputManager.GetMousePos(mouseX, mouseY);
-            ProjectScreenPointToXZPlane(mouseX, mouseY, _g->_windowWidth, _g->_windowHeight, _g->_scene->_camera, &sGrabPos);
+            ProjectScreenPointToXZPlane((int)mouseX, (int)mouseY, _g->_windowWidth, _g->_windowHeight, _g->_scene->_camera, &sGrabPos);
         }
     }
     

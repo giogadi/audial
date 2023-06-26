@@ -5,6 +5,13 @@ project(Audial)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
+if(MSVC)
+  add_compile_options(/W2)
+  add_definitions(-D_CRT_SECURE_NO_WARNINGS)
+else()
+  add_compile_options(game PRIVATE -Wall)
+endif()
+
 # STK
 add_subdirectory(src/stk)
 
@@ -95,12 +102,6 @@ add_executable(game
     src/enums/WaypointFollowerMode.cpp
     src/enums/SeqActionType.cpp
 )
-
-if(MSVC)
-  #target_compile_options(game PRIVATE /Wall)
-else()
-  target_compile_options(game PRIVATE -Wall)
-endif()
 
 ## GLFW ##
 set(GLFW_BUILD_DOCS OFF CACHE BOOL "" FORCE)

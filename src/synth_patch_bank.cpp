@@ -1,5 +1,7 @@
 #include "synth_patch_bank.h"
 
+#include <cassert>
+
 namespace synth {
 
 void PatchBank::Save(serial::Ptree pt) const {
