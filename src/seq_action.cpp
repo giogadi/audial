@@ -174,6 +174,9 @@ std::unique_ptr<SeqAction> SeqAction::LoadAction(LoadInputs const& loadInputs, s
         pAction = std::make_unique<AddToIntVariableSeqAction>();
     } else if (token == "change_step_seq_max_voices") {
         pAction = std::make_unique<ChangeStepSeqMaxVoicesSeqAction>();
+    }
+    else if (token == "change_patch") {
+        pAction = std::make_unique<ChangePatchSeqAction>();
     } else {
         printf("ERROR: Unrecognized action type \"%s\".\n", token.c_str());
     }

@@ -86,17 +86,25 @@ int main(int argc, char** argv) {
     audio::Context audioContext;
     gpContext = &audioContext;
 
-    SynthGuiState synthGuiState;
-    synthGuiState._saveFilename = argv[1];
-    synthGuiState._currentSynthIx = 0;
-
-    if (serial::LoadFromFile(argv[1], synthGuiState._synthPatches)) {
+    synth::PatchBank synthPatchBank;
+    if (serial::LoadFromFile(argv[1], synthPatchBank)) {
         printf("Loaded synth patch data from %s.\n", argv[1]);
     }
 
+    SynthGuiState synthGuiState;
+    synthGuiState._saveFilename = argv[1];
+    synthGuiState._synthPatches = &synthPatchBank;
+
     SoundBank soundBank;
-    if (audio::Init(audioContext, synthGuiState._synthPatches, soundBank) != paNoError) {
+    if (audio::Init(audioContext, soundBank) != paNoError) {
         return 1;
+    }
+
+    // TODO UGH GROSS. not thread-safe, etc etc
+    int const numSynths = audioContext._state.synths.size();
+    for (int ii = 0; ii < numSynths && ii < synthPatchBank._patches.size(); ++ii) {
+        synth::StateData& synth = audioContext._state.synths[ii];
+        synth.patch = synthPatchBank._patches[ii];
     }
 
     glfwInit();

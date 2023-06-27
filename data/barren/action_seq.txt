@@ -2,3 +2,7 @@
 -1 camera target:r0_camera_target tracking:1
 -1 player_killzone max_z:6
 -1 set_new_section 6
+-1 change_patch 0 0 bass
+-1 change_patch 1 0 lead
+-1 change_patch 2 0 pad
+-1 change_patch 3 0 real_bass

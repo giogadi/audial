@@ -306,38 +306,37 @@ int main(int argc, char** argv) {
     SoundBank soundBank;
     soundBank.LoadSounds();
 
+    synth::PatchBank synthPatchBank;
+    if (cmdLineInputs._synthPatchesFilename.has_value()) {
+        bool success = serial::LoadFromFile(cmdLineInputs._synthPatchesFilename->c_str(), synthPatchBank);
+        if (!success) {
+            printf("FAILED to read synth patches file \"%s\"\n", cmdLineInputs._synthPatchesFilename->c_str());
+        }
+    }
+
     SynthGuiState synthGuiState;
     {
-        bool success = false;
         if (cmdLineInputs._synthPatchesFilename.has_value()) {
-            synthGuiState._saveFilename = cmdLineInputs._synthPatchesFilename.value();
-            synthGuiState._currentSynthIx = 0;
-            success = serial::LoadFromFile(synthGuiState._saveFilename.c_str(), synthGuiState._synthPatches);
-            if (!success) {
-                printf("FAILED to read synth patches file \"%s\"\n", synthGuiState._saveFilename.c_str());
-                return 1;
-            }
-        } else {
-            printf("REQUIRE SYNTH PATCH FILENAME!!\n");
-            return 1;
+            synthGuiState._saveFilename = cmdLineInputs._synthPatchesFilename.value();            
         }
+        synthGuiState._synthPatches = &synthPatchBank;
     }
 
     // Init audio
     audio::Context audioContext;
-    {
-        
-        // Load in synth patch data if we have it
-        // synth::PatchBank patches;
-        // if (cmdLineInputs._synthPatchesFilename.has_value()) {
-        //     if (!serial::LoadFromFile(cmdLineInputs._synthPatchesFilename->c_str(), patches)) {
-        //         printf("Failed to load synth patch data from \"%s\".\n", cmdLineInputs._synthPatchesFilename->c_str());
-        //     }
-        // }
-
-        if (audio::Init(audioContext, synthGuiState._synthPatches, soundBank) != paNoError) {
+    {        
+        if (audio::Init(audioContext, soundBank) != paNoError) {
             ShutDown(audioContext, soundBank);
             return 1;
+        }
+    }
+
+    // TODO UGH GROSS. not thread-safe, etc etc
+    {
+        int const numSynths = audioContext._state.synths.size();
+        for (int ii = 0; ii < numSynths && ii < synthPatchBank._patches.size(); ++ii) {
+            synth::StateData& synth = audioContext._state.synths[ii];
+            synth.patch = synthPatchBank._patches[ii];
         }
     }
 
@@ -358,6 +357,7 @@ int main(int argc, char** argv) {
     gGameManager._neEntityManager = &neEntityManager;
     gGameManager._beatClock = &beatClock;
     gGameManager._soundBank = &soundBank;
+    gGameManager._synthPatchBank = &synthPatchBank;
     gGameManager._editMode = cmdLineInputs._editMode;
 
     if (!sceneManager.Init(gGameManager)) {

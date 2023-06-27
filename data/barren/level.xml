@@ -6041,74 +6041,16 @@
                     <action_type>ChangePatch</action_type>
                     <channel>2</channel>
                     <blend_beat_time>0</blend_beat_time>
-                    <patch>
-                        <Gain>0.825999975</Gain>
-                        <Mono>0</Mono>
-                        <Osc1Waveform>Saw</Osc1Waveform>
-                        <Osc2Waveform>Saw</Osc2Waveform>
-                        <Detune>0.586000025</Detune>
-                        <OscFader>0.513000011</OscFader>
-                        <Cutoff>560.593018</Cutoff>
-                        <Peak>2.5079999</Peak>
-                        <HpfCutoff>747.458008</HpfCutoff>
-                        <HpfPeak>0</HpfPeak>
-                        <Portamento>2</Portamento>
-                        <PitchLFOGain>0.0209999997</PitchLFOGain>
-                        <PitchLFOFreq>4.23699999</PitchLFOFreq>
-                        <CutoffLFOGain>0</CutoffLFOGain>
-                        <CutoffLFOFreq>0.423999995</CutoffLFOFreq>
-                        <AmpEnvAttack>0.51700002</AmpEnvAttack>
-                        <AmpEnvDecay>0.136000007</AmpEnvDecay>
-                        <AmpEnvSustain>1</AmpEnvSustain>
-                        <AmpEnvRelease>0.532000005</AmpEnvRelease>
-                        <CutoffEnvGain>0</CutoffEnvGain>
-                        <CutoffEnvAttack>0.0719999969</CutoffEnvAttack>
-                        <CutoffEnvDecay>0.411000013</CutoffEnvDecay>
-                        <CutoffEnvSustain>0.56400001</CutoffEnvSustain>
-                        <CutoffEnvRelease>0.492000014</CutoffEnvRelease>
-                        <PitchEnvGain>0</PitchEnvGain>
-                        <PitchEnvAttack>0</PitchEnvAttack>
-                        <PitchEnvDecay>0</PitchEnvDecay>
-                        <PitchEnvSustain>1</PitchEnvSustain>
-                        <PitchEnvRelease>0</PitchEnvRelease>
-                    </patch>
+                    <use_patch_bank>true</use_patch_bank>
+                    <patch_name>r2_sideroom_pad</patch_name>
                 </seq_action>
                 <seq_action>
                     <one_time>false</one_time>
                     <action_type>ChangePatch</action_type>
                     <channel>0</channel>
                     <blend_beat_time>0</blend_beat_time>
-                    <patch>
-                        <Gain>0.736999989</Gain>
-                        <Mono>1</Mono>
-                        <Osc1Waveform>Square</Osc1Waveform>
-                        <Osc2Waveform>Square</Osc2Waveform>
-                        <Detune>1</Detune>
-                        <OscFader>0.720000029</OscFader>
-                        <Cutoff>560.593018</Cutoff>
-                        <Peak>0</Peak>
-                        <HpfCutoff>0</HpfCutoff>
-                        <HpfPeak>0</HpfPeak>
-                        <Portamento>0</Portamento>
-                        <PitchLFOGain>0</PitchLFOGain>
-                        <PitchLFOFreq>1</PitchLFOFreq>
-                        <CutoffLFOGain>0</CutoffLFOGain>
-                        <CutoffLFOFreq>8.05099964</CutoffLFOFreq>
-                        <AmpEnvAttack>0.00800000038</AmpEnvAttack>
-                        <AmpEnvDecay>0.114</AmpEnvDecay>
-                        <AmpEnvSustain>0.677999973</AmpEnvSustain>
-                        <AmpEnvRelease>0.402999997</AmpEnvRelease>
-                        <CutoffEnvGain>1868.64404</CutoffEnvGain>
-                        <CutoffEnvAttack>0</CutoffEnvAttack>
-                        <CutoffEnvDecay>0.064000003</CutoffEnvDecay>
-                        <CutoffEnvSustain>0.148000002</CutoffEnvSustain>
-                        <CutoffEnvRelease>0.219999999</CutoffEnvRelease>
-                        <PitchEnvGain>0</PitchEnvGain>
-                        <PitchEnvAttack>0</PitchEnvAttack>
-                        <PitchEnvDecay>0</PitchEnvDecay>
-                        <PitchEnvSustain>1</PitchEnvSustain>
-                        <PitchEnvRelease>0</PitchEnvRelease>
-                    </patch>
+                    <use_patch_bank>true</use_patch_bank>
+                    <patch_name>r2_sideroom_bass</patch_name>
                 </seq_action>
                 <seq_action>
                     <one_time>true</one_time>

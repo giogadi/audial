@@ -5,7 +5,6 @@
 namespace synth {
 
 void PatchBank::Save(serial::Ptree pt) const {
-    assert(_names.size() == _patches.size());
     for (int ii = 0, n = _names.size(); ii < n; ++ii) {
         serial::Ptree child = pt.AddChild("patch");
         child.PutString("name", _names[ii].c_str());
@@ -36,6 +35,17 @@ void PatchBank::Load(serial::Ptree pt) {
         }
     }
     delete[] children;
+}
+
+Patch* PatchBank::GetPatch(std::string_view name)
+{
+    assert(_names.size() == _patches.size());
+    for (int ii = 0, n = _names.size(); ii < n; ++ii) {
+        if (name == _names[ii]) {
+            return &_patches[ii];
+        }
+    }
+    return nullptr;
 }
 
 }  // namespace synth

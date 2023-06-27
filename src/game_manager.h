@@ -8,6 +8,9 @@ class InputManager;
 namespace audio {
     struct Context;
 }
+namespace synth {
+    struct PatchBank;
+}
 namespace ne {
     struct EntityManager;
 }
@@ -25,6 +28,7 @@ struct GameManager {
     ne::EntityManager* _neEntityManager = nullptr;
     BeatClock* _beatClock = nullptr;
     SoundBank* _soundBank = nullptr;
+    synth::PatchBank* _synthPatchBank = nullptr;
 
     bool _editMode = false;
 

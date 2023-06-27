@@ -8,7 +8,6 @@
 
 #include "audio_util.h"
 #include "synth.h"
-#include "synth_patch_bank.h"
 
 class SoundBank;
 
@@ -46,7 +45,7 @@ struct StateData {
 };
 
 void InitStateData(
-    StateData& state, synth::PatchBank const& synthPatches,
+    StateData& state,
     SoundBank const& soundBank,
     EventQueue* eventQueue, int sampleRate);
 
@@ -76,7 +75,7 @@ struct Context {
 };
 
 PaError Init(
-    Context& context, synth::PatchBank const& synthPatches, SoundBank const& soundBank);
+    Context& context, SoundBank const& soundBank);
 
 PaError ShutDown(Context& stream);
 

@@ -24,28 +24,19 @@ void OnPortAudioError(PaError const& err) {
 } // namespace
 
 void InitStateData(
-    StateData& state, synth::PatchBank const& synthPatches, SoundBank const& soundBank,
+    StateData& state, SoundBank const& soundBank,
     EventQueue* eventQueue, int sampleRate) {
-
-    bool useInputPatches = true;
-    if (synthPatches._patches.size() != state.synths.size()) {
-        useInputPatches = false;
-        std::cout << "Missing/mismatched patch data. Loading hardcoded default patch data." << std::endl;
-    }
 
     for (int i = 0; i < state.synths.size(); ++i) {
         synth::StateData& s = state.synths[i];
         synth::InitStateData(s, /*channel=*/i);
-        if (useInputPatches) {
-            s.patch = synthPatches._patches[i];
-        }
     }
 
     state.soundBank = &soundBank;
 
     state.events = eventQueue;
 
-    state.pendingEvents.set_capacity(256);
+    state.pendingEvents.set_capacity(1024);
 }
 
 double StateData::GetTimeInSeconds() const {
@@ -60,11 +51,11 @@ static void StreamFinished( void* userData )
 }
 
 PaError Init(
-    Context& context, synth::PatchBank const& synthPatches, SoundBank const& soundBank) {
+    Context& context, SoundBank const& soundBank) {
 
     PaError err;
 
-    InitStateData(context._state, synthPatches, soundBank, &context._eventQueue, SAMPLE_RATE);
+    InitStateData(context._state, soundBank, &context._eventQueue, SAMPLE_RATE);
 
     err = Pa_Initialize();
     if( err != paNoError ) {

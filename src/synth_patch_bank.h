@@ -12,6 +12,7 @@ struct PatchBank {
         _names.clear();
         _patches.clear();
     }
+    Patch* GetPatch(std::string_view name);
     void Save(serial::Ptree pt) const;
     void Load(serial::Ptree pt);
     std::vector<std::string> _names;
