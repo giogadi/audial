@@ -7723,6 +7723,22 @@
                     <active>false</active>
                     <init_on_activate>true</init_on_activate>
                 </seq_action>
+                <seq_action>
+                    <one_time>false</one_time>
+                    <action_type>ChangePatch</action_type>
+                    <channel>0</channel>
+                    <blend_beat_time>0</blend_beat_time>
+                    <use_patch_bank>true</use_patch_bank>
+                    <patch_name>bass</patch_name>
+                </seq_action>
+                <seq_action>
+                    <one_time>false</one_time>
+                    <action_type>ChangePatch</action_type>
+                    <channel>2</channel>
+                    <blend_beat_time>0</blend_beat_time>
+                    <use_patch_bank>true</use_patch_bank>
+                    <patch_name>pad</patch_name>
+                </seq_action>
             </actions>
         </FlowTrigger>
         <Vfx>
