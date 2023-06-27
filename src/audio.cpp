@@ -4,6 +4,10 @@
 #include <chrono>
 #include <vector>
 
+#ifdef _WIN32
+#include "portaudio/include/pa_win_wasapi.h"
+#endif
+
 #include "audio_util.h"
 #include "synth.h"
 #include "sound_bank.h"
@@ -63,18 +67,29 @@ PaError Init(
         return err;
     }
 
+    void* streamInfo = nullptr;
 #ifdef _WIN32
+    PaWasapiStreamInfo wasapiStreamInfo{};
+    wasapiStreamInfo.size = sizeof(PaWasapiStreamInfo);
+    wasapiStreamInfo.hostApiType = paWASAPI;
+    wasapiStreamInfo.version = 1;
+    // sWasapiStreamInfo.flags = paWinWasapiExclusive|paWinWasapiThreadPriority;
+    // sWasapiStreamInfo.flags = paWinWasapiThreadPriority;
+    wasapiStreamInfo.threadPriority = eThreadPriorityProAudio;
+    streamInfo = &wasapiStreamInfo;
+
     context._outputParameters.device = paNoDevice;
     PaDeviceIndex numDevices = Pa_GetDeviceCount();
     for (PaDeviceIndex deviceIx = 0; deviceIx < numDevices; ++deviceIx) {
         PaDeviceInfo const* pDeviceInfo = Pa_GetDeviceInfo(deviceIx);
         PaHostApiInfo const* pHostApiInfo = Pa_GetHostApiInfo(pDeviceInfo->hostApi);
         if (pHostApiInfo->type == paWASAPI) {
-            PaStreamParameters testOutputParams;
+            PaStreamParameters testOutputParams{};
             testOutputParams.device = deviceIx;
             testOutputParams.channelCount = 2;
-            testOutputParams.sampleFormat = paFloat32;
-            testOutputParams.hostApiSpecificStreamInfo = NULL;
+            testOutputParams.sampleFormat = paFloat32;            
+            testOutputParams.hostApiSpecificStreamInfo = streamInfo;
+
             if (deviceIx == pHostApiInfo->defaultOutputDevice && Pa_IsFormatSupported(NULL, &testOutputParams, SAMPLE_RATE) == paNoError) {
                 context._outputParameters.device = deviceIx;
                 break;
@@ -89,12 +104,12 @@ PaError Init(
       printf("Error: No supported output device.\n");
       return err;
     }
+
+    context._outputParameters.hostApiSpecificStreamInfo = streamInfo;
     
     context._outputParameters.channelCount = 2;       /* stereo output */
     context._outputParameters.sampleFormat = paFloat32; /* 32 bit floating point output */
-    context._outputParameters.suggestedLatency = Pa_GetDeviceInfo( context._outputParameters.device )->defaultLowOutputLatency;
-
-    context._outputParameters.hostApiSpecificStreamInfo = NULL;
+    context._outputParameters.suggestedLatency = Pa_GetDeviceInfo( context._outputParameters.device )->defaultLowOutputLatency;    
 
     err = Pa_OpenStream(
               &context._stream,
@@ -392,15 +407,15 @@ int PortAudioCallback(
         printf("Frame close to deadline: %f / %f\n", callbackTimeSecs, kSecsPerCallback);
     }
 
-    // const int kCallbacksPerSec = (int) (1.0 / kSecsPerCallback);
-    // if (gTotalCallbacks % kCallbacksPerSec == 0) {
-    //     printf("(avg,max): %f, %f\n", gAvgCallbackTime / kSecsPerCallback, gMaxCallbackTime / kSecsPerCallback);
-    //     gAvgCallbackTime = 0.0;
-    //     gMaxCallbackTime = 0.0;
-    // } else {
-    //     gAvgCallbackTime += callbackTimeSecs / kCallbacksPerSec;
-    //     gMaxCallbackTime = std::max(callbackTimeSecs, gMaxCallbackTime);
-    // }
+     const int kCallbacksPerSec = (int) (1.0 / kSecsPerCallback);
+     if (gTotalCallbacks % kCallbacksPerSec == 0) {
+         printf("(avg,max): %f, %f\n", gAvgCallbackTime / kSecsPerCallback, gMaxCallbackTime / kSecsPerCallback);
+         gAvgCallbackTime = 0.0;
+         gMaxCallbackTime = 0.0;
+     } else {
+         gAvgCallbackTime += callbackTimeSecs / kCallbacksPerSec;
+         gMaxCallbackTime = std::max(callbackTimeSecs, gMaxCallbackTime);
+     }
 
     return paContinue;
 }

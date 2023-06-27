@@ -55,17 +55,18 @@ void DrawSynthGuiAndUpdatePatch(SynthGuiState& synthGuiState, audio::Context& au
     }
 
     bool synthSelectionChanged = false;
-    ImGui::BeginListBox("Synths");
-    char synthName[] = "X";
-    for (int ii = 0; ii < audio::kNumSynths; ++ii) {
-        synthName[0] = '0' + ii;
-        bool selected = ii == synthGuiState._currentSynthIx;
-        if (ImGui::Selectable(synthName, selected)) {
-            synthGuiState._currentSynthIx = ii;
-            synthSelectionChanged = true;
+    if (ImGui::BeginListBox("Synths")) {
+        char synthName[] = "X";
+        for (int ii = 0; ii < audio::kNumSynths; ++ii) {
+            synthName[0] = '0' + ii;
+            bool selected = ii == synthGuiState._currentSynthIx;
+            if (ImGui::Selectable(synthName, selected)) {
+                synthGuiState._currentSynthIx = ii;
+                synthSelectionChanged = true;
+            }
         }
+        ImGui::EndListBox();
     }
-    ImGui::EndListBox();
 
     if (synthGuiState._currentSynthIx < 0) {
         synthGuiState._currentSynthIx = 0;
