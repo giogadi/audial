@@ -87,9 +87,12 @@ struct StateData {
 
     float pitchLFOPhase = 0.0f;
     float cutoffLFOPhase = 0.0f;
+
+    float* voiceScratchBuffer = nullptr;
 };
 
-void InitStateData(StateData& state, int channel);
+void InitStateData(StateData& state, int channel, int const samplesPerFrame, int const numBufferChannels);
+void DestroyStateData(StateData& state);
 
 void Process(
     StateData* state, boost::circular_buffer<audio::Event> const& pendingEvents,

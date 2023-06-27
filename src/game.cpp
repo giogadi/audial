@@ -228,7 +228,6 @@ void ShutDown(audio::Context& audioContext, SoundBank& soundBank) {
     if (audio::ShutDown(audioContext) != paNoError) {
         printf("Error in shutting down Audio!\n");
     }
-
     soundBank.Destroy();
 }
 

@@ -33,7 +33,7 @@ void InitStateData(
 
     for (int i = 0; i < state.synths.size(); ++i) {
         synth::StateData& s = state.synths[i];
-        synth::InitStateData(s, /*channel=*/i);
+        synth::InitStateData(s, /*channel=*/i, FRAMES_PER_BUFFER, NUM_OUTPUT_CHANNELS);
     }
 
     state.soundBank = &soundBank;
@@ -41,6 +41,11 @@ void InitStateData(
     state.events = eventQueue;
 
     state.pendingEvents.set_capacity(1024);
+}
+void DestroyStateData(StateData& state) {
+    for (synth::StateData& synth : state.synths) {
+        synth::DestroyStateData(synth);
+    }
 }
 
 double StateData::GetTimeInSeconds() const {
@@ -154,6 +159,8 @@ PaError ShutDown(Context& context) {
     }
 
     Pa_Terminate();
+
+    DestroyStateData(context._state);
     return paNoError;
 }
 
@@ -407,15 +414,15 @@ int PortAudioCallback(
         printf("Frame close to deadline: %f / %f\n", callbackTimeSecs, kSecsPerCallback);
     }
 
-     const int kCallbacksPerSec = (int) (1.0 / kSecsPerCallback);
-     if (gTotalCallbacks % kCallbacksPerSec == 0) {
-         printf("(avg,max): %f, %f\n", gAvgCallbackTime / kSecsPerCallback, gMaxCallbackTime / kSecsPerCallback);
-         gAvgCallbackTime = 0.0;
-         gMaxCallbackTime = 0.0;
-     } else {
-         gAvgCallbackTime += callbackTimeSecs / kCallbacksPerSec;
-         gMaxCallbackTime = std::max(callbackTimeSecs, gMaxCallbackTime);
-     }
+    //const int kCallbacksPerSec = (int) (1.0 / kSecsPerCallback);
+    //if (gTotalCallbacks % kCallbacksPerSec == 0) {
+    //    printf("(avg,max): %f, %f\n", gAvgCallbackTime / kSecsPerCallback, gMaxCallbackTime / kSecsPerCallback);
+    //    gAvgCallbackTime = 0.0;
+    //    gMaxCallbackTime = 0.0;
+    //} else {
+    //    gAvgCallbackTime += callbackTimeSecs / kCallbacksPerSec;
+    //    gMaxCallbackTime = std::max(callbackTimeSecs, gMaxCallbackTime);
+    //}
 
     return paContinue;
 }

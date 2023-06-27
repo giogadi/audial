@@ -48,6 +48,7 @@ void InitStateData(
     StateData& state,
     SoundBank const& soundBank,
     EventQueue* eventQueue, int sampleRate);
+void DestroyStateData(StateData& state);
 
 int PortAudioCallback(
     const void *inputBuffer, void *outputBuffer,
