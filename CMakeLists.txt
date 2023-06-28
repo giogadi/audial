@@ -9,7 +9,7 @@ if(MSVC)
   add_compile_options(/W2)
   add_definitions(-D_CRT_SECURE_NO_WARNINGS)
 else()
-  add_compile_options(game PRIVATE -Wall)
+  add_compile_options(-Wall)
 endif()
 
 # STK
