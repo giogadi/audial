@@ -64,30 +64,22 @@ void TypingEnemyEntity::Update(GameManager& g, float dt) {
         }
     }
 
-    float screenX, screenY;
-    Mat4 viewProjTransform = g._scene->GetViewProjTransform();
-    ViewportInfo const& vp = g._viewportInfo;
-    geometry::ProjectWorldPointToScreenSpace(_transform.GetPos(), viewProjTransform, vp._width, vp._height, screenX, screenY);
-
-    screenX = std::round(screenX);
-    screenY = std::round(screenY);
-    // float constexpr kTextSize = 0.75f;
     float constexpr kTextSize = 1.5f;
     if (_flowCooldownTimeLeft > 0.f) {
         Vec4 color = _textColor;
         color._w = 0.2f;
-        g._scene->DrawText(std::string_view(_text), screenX, screenY, kTextSize, color);
+        g._scene->DrawTextWorld(_text, _transform.GetPos(), kTextSize, color);
     } else if (_text.length() > 1) {
         if (_numHits > 0) {
             std::string_view substr = std::string_view(_text).substr(0, _numHits);
-            g._scene->DrawText(substr, screenX, screenY, /*scale=*/kTextSize, Vec4(1.f,1.f,0.f,1.f));
+            g._scene->DrawTextWorld(_text, _transform.GetPos(), kTextSize, Vec4(1.f, 1.f, 0.f, 1.f));
         }
         if (_numHits < _text.length()) {
             std::string_view substr = std::string_view(_text).substr(_numHits);
-            g._scene->DrawText(substr, screenX, screenY, /*scale=*/kTextSize, _textColor);
+            g._scene->DrawTextWorld(std::string(substr), _transform.GetPos(), kTextSize, _textColor);
         }
     } else {
-        g._scene->DrawText(std::string_view(_text), screenX, screenY, /*scale=*/kTextSize, _textColor);
+        g._scene->DrawTextWorld(_text, _transform.GetPos(), kTextSize, _textColor);
     }
 
     // Maybe update color from getting hit

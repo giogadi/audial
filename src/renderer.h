@@ -141,6 +141,7 @@ public:
     void DrawBoundingBox(Mat4 const& t, Vec4 const& color);
 
     void DrawText(std::string_view str, float& screenX, float& screenY, float scale=1.f, Vec4 const& colorRgba = Vec4(1.f, 1.f, 1.f, 1.f));
+    void DrawTextWorld(std::string text, Vec3 const& pos, float scale = 1.f, Vec4 const& colorRgba = Vec4(1.f, 1.f, 1.f, 1.f));
 
     Camera _camera;
 

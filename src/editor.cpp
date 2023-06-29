@@ -287,11 +287,33 @@ void Editor::Update(float dt, SynthGuiState& synthGuiState) {
         if (inputManager.IsShiftPressed() && inputManager.IsKeyPressedThisFrame(InputManager::Key::I)) {
             sDemoWindowVisible = !sDemoWindowVisible;
         }
+
+        // Move camera around with RMB + WSAD.
+        if (_g->_inputManager->IsKeyPressed(InputManager::MouseButton::Right)) {
+            Vec3 inputVec;
+            if (_g->_inputManager->IsKeyPressed(InputManager::Key::W)) {
+                inputVec._z -= 1.f;
+            }
+            if (_g->_inputManager->IsKeyPressed(InputManager::Key::S)) {
+                inputVec._z += 1.f;
+            }
+            if (_g->_inputManager->IsKeyPressed(InputManager::Key::A)) {
+                inputVec._x -= 1.f;
+            }
+            if (_g->_inputManager->IsKeyPressed(InputManager::Key::D)) {
+                inputVec._x += 1.f;
+            }
+            Vec3 camVel = inputVec * 5.f;
+            if (_g->_inputManager->IsShiftPressed()) {
+                camVel *= 5.f;
+            }
+            _g->_scene->_camera._transform.Translate(camVel * dt);
+        }
     } else if (sInputMode == InputMode::Piano) {
         HandlePianoInput(synthGuiState);
     }
     
-    HandleEntitySelectAndMove(dt);
+    HandleEntitySelectAndMove(dt);    
 
     // Use scroll input to move debug camera around.
     double scrollX = 0.0, scrollY = 0.0;

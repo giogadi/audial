@@ -17,6 +17,7 @@
 #include "version_id_list.h"
 #include "cube_verts.h"
 #include "game_manager.h"
+#include "geometry.h"
 
 #define DRAW_WATER 0
 #define DRAW_TERRAIN 1
@@ -89,12 +90,11 @@ bool CreateFontTextureFromBitmap(char const* filename, unsigned int& textureId) 
     return true;    
 }
 
-struct TextInstance {
-    std::string _text;
-    float _screenX = -1;
-    float _screenY = -1;
-    Vec4 _colorRgba = Vec4(1.f, 1.f, 1.f, 1.f);
+struct TextWorldInstance {
+    Vec4 _colorRgba;
+    Vec3 _pos;
     float _scale = 1.f;
+    std::string _text;
 };
 
 struct GlyphInstance {
@@ -228,7 +228,7 @@ public:
     TVersionIdList<ColorModelInstance> _colorModelInstances;
     TVersionIdList<TexturedModelInstance> _texturedModelInstances;
     std::vector<ColorModelInstance> _modelsToDraw;
-    std::vector<TextInstance> _textsToDraw;
+    std::vector<TextWorldInstance> _textToDraw;
     std::vector<GlyphInstance> _glyphsToDraw;
     std::vector<BoundingBoxInstance> _boundingBoxesToDraw;
     std::vector<Polygon2dInstance> _polygonsToDraw;
@@ -543,6 +543,14 @@ void Scene::DrawBoundingBox(Mat4 const& t, Vec4 const& color) {
     BoundingBoxInstance& bb = _pInternal->_boundingBoxesToDraw.back();
     bb._t = t;
     bb._color = color;
+}
+
+void Scene::DrawTextWorld(std::string text, Vec3 const& pos, float scale, Vec4 const& colorRgba) {
+    TextWorldInstance& t = _pInternal->_textToDraw.emplace_back();
+    t._text = std::move(text);
+    t._pos = pos;
+    t._scale = scale;
+    t._colorRgba = colorRgba;
 }
 
 void Scene::DrawText(std::string_view str, float& screenX, float& screenY, float scale, Vec4 const& colorRgba) {
@@ -964,10 +972,26 @@ void Scene::Draw(int windowWidth, int windowHeight, float timeInSecs) {
         glDepthMask(GL_TRUE);
     }
     
-
+    //
     // TEXT RENDERING
+    //
+
+    // First go through our world text strings and convert them into glyphs to draw
     {
-        glClear(GL_DEPTH_BUFFER_BIT);
+        ViewportInfo const& vp = _pInternal->_g->_viewportInfo;
+        for (TextWorldInstance const& text : _pInternal->_textToDraw) {
+            float screenX, screenY;
+            geometry::ProjectWorldPointToScreenSpace(text._pos, viewProjTransform, vp._width, vp._height, screenX, screenY);
+
+            screenX = std::round(screenX);
+            screenY = std::round(screenY);
+            DrawText(text._text, screenX, screenY, text._scale, text._colorRgba);
+        }
+        _pInternal->_textToDraw.clear();
+    }
+
+    {
+        glClear(GL_DEPTH_BUFFER_BIT);        
         
         ViewportInfo const& vp = _pInternal->_g->_viewportInfo;
         Mat4 projection = Mat4::Ortho(0.f, (float)vp._width, 0.f, (float)vp._height, -1.f, 1.f);
