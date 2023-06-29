@@ -15,6 +15,83 @@
 #include "math_util.h"
 #include "editor.h"
 #include "geometry.h"
+#include "entities/flow_player.h"
+
+extern GameManager gGameManager;
+
+void TypingEnemyEntity::LoadDerived(serial::Ptree pt) {
+    _text = pt.GetString("text");
+    pt.TryGetBool("type_kill", &_destroyAfterTyped);
+    bool allActionsOnHit = false;
+    pt.TryGetBool("all_actions_on_hit", &allActionsOnHit);
+    if (allActionsOnHit) {
+        _hitBehavior = HitBehavior::AllActions;
+    }
+    else {
+        _hitBehavior = HitBehavior::SingleAction;
+    }
+    _flowPolarity = false;
+    pt.TryGetBool("flow_polarity", &_flowPolarity);
+
+    _flowCooldown = -1.f;
+    pt.TryGetFloat("flow_cooldown", &_flowCooldown);
+
+    _resetCooldownOnAnyHit = false;
+    pt.TryGetBool("reset_cooldown_on_any_hit", &_resetCooldownOnAnyHit);
+
+    _activeRadius = -1.f;
+    pt.TryGetFloat("active_radius", &_activeRadius);
+
+    bool hasWaypointFollower = serial::LoadFromChildOf(pt, "waypoint_follower", _waypointFollower);
+    if (!hasWaypointFollower) {
+        // backward compat
+        _waypointFollower.Load(pt);
+    }
+
+    SeqAction::LoadActionsFromChildNode(pt, "hit_actions", _hitActions);
+}
+
+void TypingEnemyEntity::SaveDerived(serial::Ptree pt) const {
+    pt.PutString("text", _text.c_str());
+    pt.PutBool("type_kill", _destroyAfterTyped);
+    pt.PutBool("all_actions_on_hit", _hitBehavior == HitBehavior::AllActions);
+    pt.PutBool("flow_polarity", _flowPolarity);
+    pt.PutFloat("flow_cooldown", _flowCooldown);
+    pt.PutBool("reset_cooldown_on_any_hit", _resetCooldownOnAnyHit);
+    pt.PutFloat("active_radius", _activeRadius);
+    serial::SaveInNewChildOf(pt, "waypoint_follower", _waypointFollower);
+    SeqAction::SaveActionsInChildNode(pt, "hit_actions", _hitActions);
+}
+
+ne::BaseEntity::ImGuiResult TypingEnemyEntity::ImGuiDerived(GameManager& g) {
+    ImGuiResult result = ImGuiResult::Done;
+
+    imgui_util::InputText<32>("Text", &_text);
+    ImGui::Checkbox("Kill on type", &_destroyAfterTyped);
+
+    bool allActionsOnHit = _hitBehavior == HitBehavior::AllActions;
+    ImGui::Checkbox("All actions on hit", &allActionsOnHit);
+    if (allActionsOnHit) {
+        _hitBehavior = HitBehavior::AllActions;
+    }
+    else {
+        _hitBehavior = HitBehavior::SingleAction;
+    }
+
+    ImGui::Checkbox("Flow polarity", &_flowPolarity);
+    ImGui::InputFloat("Flow cooldown", &_flowCooldown);
+    ImGui::Checkbox("Reset cooldown on any hit", &_resetCooldownOnAnyHit);
+    ImGui::InputFloat("Active radius", &_activeRadius);
+    if (SeqAction::ImGui("Hit actions", _hitActions)) {
+        result = ImGuiResult::NeedsInit;
+    }
+
+    ImGui::PushID("wp");
+    _waypointFollower.ImGui();
+    ImGui::PopID();
+
+    return result;
+}
 
 void TypingEnemyEntity::InitDerived(GameManager& g) {
     _currentColor = _modelColor;
@@ -26,7 +103,7 @@ void TypingEnemyEntity::InitDerived(GameManager& g) {
         assert(player != nullptr);
         player->RegisterSectionEnemy(_typingSectionId, _id);
     }
-    
+
     _waypointFollower.Init(g, *this);
 
     for (auto const& pAction : _hitActions) {
@@ -34,6 +111,18 @@ void TypingEnemyEntity::InitDerived(GameManager& g) {
     }
 
     _flowCooldownTimeLeft = -1.f;
+}
+
+namespace {
+    bool PlayerWithinRadius(TypingEnemyEntity const& enemy) {
+        if (enemy._activeRadius < 0.f) {
+            return true;
+        }
+        ne::Entity* e = gGameManager._neEntityManager->GetFirstEntityOfType(ne::EntityType::FlowPlayer);
+        FlowPlayerEntity* player = static_cast<FlowPlayerEntity*>(e);
+        Vec3 dp = player->_transform.GetPos() - enemy._transform.GetPos();
+        return std::abs(dp._x) < enemy._activeRadius && std::abs(dp._z) < enemy._activeRadius;
+    }
 }
 
 void TypingEnemyEntity::Update(GameManager& g, float dt) {    
@@ -44,6 +133,8 @@ void TypingEnemyEntity::Update(GameManager& g, float dt) {
     if (!IsActive(g)) {
         return;
     }
+
+    bool playerWithinRadius = true;
 
     if (!g._editMode) {
         bool followsWaypoint = _waypointFollower.Update(g, dt, /*editModeSelected=*/false, this);
@@ -62,10 +153,12 @@ void TypingEnemyEntity::Update(GameManager& g, float dt) {
                 g._neEntityManager->TagForDestroy(_id);
             }
         }
-    }
+
+        playerWithinRadius = PlayerWithinRadius(*this);
+    }    
 
     float constexpr kTextSize = 1.5f;
-    if (_flowCooldownTimeLeft > 0.f) {
+    if (_flowCooldownTimeLeft > 0.f || !playerWithinRadius) {
         Vec4 color = _textColor;
         color._w = 0.2f;
         g._scene->DrawTextWorld(_text, _transform.GetPos(), kTextSize, color);
@@ -100,7 +193,18 @@ void TypingEnemyEntity::Update(GameManager& g, float dt) {
         _flowCooldownTimeLeft -= dt;
     }
 
-    if (_flowCooldown > 0.f) {
+    if (_activeRadius >= 0.f) {
+        Transform t = _transform;
+        Vec3 scale = 2.f * _activeRadius * Vec3(1.f, 1.f, 1.f);
+        scale._y = 0.1f;
+        t.SetScale(2.f * _activeRadius * Vec3(1.f, 0.1f, 1.f));        
+        t.SetPosY(_transform.GetPos()._y - 1.f);
+        t.SetQuat(Quaternion());        
+        Vec4 constexpr kRadiusColor(0.f, 1.f, 1.f, 0.25f);
+        g._scene->DrawCube(t.Mat4Scale(), kRadiusColor);
+    }
+
+    if (_flowCooldown > 0.f || !playerWithinRadius) {
         int constexpr kNumStepsX = 2;
         int constexpr kNumStepsZ = 2;
         float constexpr xStep = 1.f / (float) kNumStepsX;
@@ -207,79 +311,14 @@ InputManager::Key TypingEnemyEntity::GetNextKey() const {
     return nextKey;
 }
 
-void TypingEnemyEntity::LoadDerived(serial::Ptree pt) {
-    _text = pt.GetString("text");
-    pt.TryGetBool("type_kill", &_destroyAfterTyped);
-    bool allActionsOnHit = false;
-    pt.TryGetBool("all_actions_on_hit", &allActionsOnHit);
-    if (allActionsOnHit) {
-        _hitBehavior = HitBehavior::AllActions;
-    } else {
-        _hitBehavior = HitBehavior::SingleAction;
-    }
-    _flowPolarity = false;
-    pt.TryGetBool("flow_polarity", &_flowPolarity);
-
-    _flowCooldown = -1.f;
-    pt.TryGetFloat("flow_cooldown", &_flowCooldown);
-
-    _resetCooldownOnAnyHit = false;
-    pt.TryGetBool("reset_cooldown_on_any_hit", &_resetCooldownOnAnyHit);
-
-    bool hasWaypointFollower = serial::LoadFromChildOf(pt, "waypoint_follower", _waypointFollower);
-    if (!hasWaypointFollower) {
-        // backward compat
-        _waypointFollower.Load(pt);
-    }
-
-    SeqAction::LoadActionsFromChildNode(pt, "hit_actions", _hitActions);    
-}
-
-void TypingEnemyEntity::SaveDerived(serial::Ptree pt) const {
-    pt.PutString("text", _text.c_str());
-    pt.PutBool("type_kill", _destroyAfterTyped);
-    pt.PutBool("all_actions_on_hit", _hitBehavior == HitBehavior::AllActions);
-    pt.PutBool("flow_polarity", _flowPolarity);
-    pt.PutFloat("flow_cooldown", _flowCooldown);
-    pt.PutBool("reset_cooldown_on_any_hit", _resetCooldownOnAnyHit);
-    serial::SaveInNewChildOf(pt, "waypoint_follower", _waypointFollower);
-    SeqAction::SaveActionsInChildNode(pt, "hit_actions", _hitActions);
-}
-
-ne::BaseEntity::ImGuiResult TypingEnemyEntity::ImGuiDerived(GameManager& g) {
-    ImGuiResult result = ImGuiResult::Done;
-
-    imgui_util::InputText<32>("Text", &_text);
-    ImGui::Checkbox("Kill on type", &_destroyAfterTyped);
-
-    bool allActionsOnHit = _hitBehavior == HitBehavior::AllActions;
-    ImGui::Checkbox("All actions on hit", &allActionsOnHit);
-    if (allActionsOnHit) {
-        _hitBehavior = HitBehavior::AllActions;
-    } else {
-        _hitBehavior = HitBehavior::SingleAction;
-    }
-
-    ImGui::Checkbox("Flow polarity", &_flowPolarity);
-    ImGui::InputFloat("Flow cooldown", &_flowCooldown);
-    ImGui::Checkbox("Reset cooldown on any hit", &_resetCooldownOnAnyHit);
-
-    if (SeqAction::ImGui("Hit actions", _hitActions)) {
-        result = ImGuiResult::NeedsInit;
-    }
-
-    ImGui::PushID("wp");
-    _waypointFollower.ImGui();
-    ImGui::PopID();    
-             
-    return result;
-}
-
 void TypingEnemyEntity::OnEditPick(GameManager& g) {
     DoHitActions(g);
 }
 
 bool TypingEnemyEntity::CanHit() const {
+    if (!PlayerWithinRadius(*this)) {
+        return false;
+    }
     return _flowCooldownTimeLeft <= 0.f;
 }
 

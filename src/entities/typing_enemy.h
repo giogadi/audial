@@ -27,6 +27,7 @@ struct TypingEnemyEntity : public ne::Entity {
     WaypointFollower _waypointFollower;
     float _flowCooldown = -1.f;
     bool _resetCooldownOnAnyHit = false;
+    float _activeRadius = -1.f;  // If >= 0, player must be within this (L1) distance to be dashable toward enemy
     
     // non-serialized
     int _numHits = 0;

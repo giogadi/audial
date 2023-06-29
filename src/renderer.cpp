@@ -970,106 +970,12 @@ void Scene::Draw(int windowWidth, int windowHeight, float timeInSecs) {
 
         glEnable(GL_CULL_FACE);
         glDepthMask(GL_TRUE);
-    }
-    
-    //
-    // TEXT RENDERING
-    //
-
-    // First go through our world text strings and convert them into glyphs to draw
-    {
-        ViewportInfo const& vp = _pInternal->_g->_viewportInfo;
-        for (TextWorldInstance const& text : _pInternal->_textToDraw) {
-            float screenX, screenY;
-            geometry::ProjectWorldPointToScreenSpace(text._pos, viewProjTransform, vp._width, vp._height, screenX, screenY);
-
-            screenX = std::round(screenX);
-            screenY = std::round(screenY);
-            DrawText(text._text, screenX, screenY, text._scale, text._colorRgba);
-        }
-        _pInternal->_textToDraw.clear();
-    }
-
-    {
-        glClear(GL_DEPTH_BUFFER_BIT);        
-        
-        ViewportInfo const& vp = _pInternal->_g->_viewportInfo;
-        Mat4 projection = Mat4::Ortho(0.f, (float)vp._width, 0.f, (float)vp._height, -1.f, 1.f);
-
-        unsigned int fontTextureId = _pInternal->_textureIdMap.at("font");
-
-        Shader& shader = _pInternal->_textShader;
-        shader.Use();
-        shader.SetMat4("uProjection", projection);
-        glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_2D, fontTextureId);
-        glBindVertexArray(_pInternal->_textVao);
-        Vec4 quadVertices[4];
-        Vec4 cachedColor(-1.f, -1.f, -1.f, -1.f);
-        for (GlyphInstance const& glyph : _pInternal->_glyphsToDraw) {
-            if (glyph._colorRgba != cachedColor) {
-                cachedColor = glyph._colorRgba;
-                shader.SetVec4("uTextColor", cachedColor);
-            }
-            stbtt_aligned_quad const& q = glyph._quad;
-            quadVertices[0].Set(q.x0, q.y0, q.s0, q.t0);
-            quadVertices[1].Set(q.x0, q.y1, q.s0, q.t1);
-            quadVertices[2].Set(q.x1, q.y0, q.s1, q.t0);
-            quadVertices[3].Set(q.x1, q.y1, q.s1, q.t1);
-
-            glBindBuffer(GL_ARRAY_BUFFER, _pInternal->_textVbo);
-            glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(quadVertices), quadVertices);
-            glBindBuffer(GL_ARRAY_BUFFER, 0);
-            glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
-        }
-        
-        _pInternal->_glyphsToDraw.clear();
-    }
-
-    // TODO: maybe we should move all glClear()'s into renderer.cpp and save
-    // game.cpp from including any GL code?
-    glClear(GL_DEPTH_BUFFER_BIT);
-
-    // Top layer color models.
-    // TODO prolly refactor both color draws into a common function
-    // Color models
-    {
-        Shader& shader = _pInternal->_colorShader;
-        shader.Use();
-        SetLightUniformsColorShader(*_pInternal);
-        for (ColorModelInstance const* m : _pInternal->_topLayerColorModels) {
-            if (!m->_visible) {
-                continue;
-            }
-            Mat4 const& transMat = m->_transform;
-            shader.SetMat4("uMvpTrans", viewProjTransform * transMat);
-            shader.SetMat4("uModelTrans", transMat);
-            Mat3 modelTransInv;
-            bool success = transMat.GetMat3().TransposeInverse(modelTransInv);
-            assert(success);
-            shader.SetMat3("uModelInvTrans", modelTransInv);
-
-            // TEMPORARY! What we really want is to use the submeshes always unless the outer Model
-            // has defined some overrides.
-            if (m->_mesh->_subMeshes.size() == 0) {
-                shader.SetVec4("uColor", m->_color);
-                glBindVertexArray(m->_mesh->_vao);
-                glDrawElements(GL_TRIANGLES, /*count=*/m->_mesh->_numIndices, GL_UNSIGNED_INT, /*start_offset=*/0);
-            } else {
-                for (int subMeshIx = 0; subMeshIx < m->_mesh->_subMeshes.size(); ++subMeshIx) {
-                    BoundMeshPNU::SubMesh const& subMesh = m->_mesh->_subMeshes[subMeshIx];
-                    shader.SetVec4("uColor", subMesh._color);
-                    glBindVertexArray(m->_mesh->_vao);
-                    uint64_t offset = sizeof(uint32_t) * subMesh._startIndex;
-                    glDrawElements(GL_TRIANGLES, /*count=*/subMesh._numIndices, GL_UNSIGNED_INT, (void*) offset);
-                }
-            }
-        }
-    }
+    }          
 
     //
     // transparent models
     //
+    // glClear(GL_DEPTH_BUFFER_BIT);  // TODO do we need this?
 
     // Sort models farthest to nearest
     // TODO: should we cache the dists so that we don't recompute them every time we
@@ -1108,6 +1014,100 @@ void Scene::Draw(int windowWidth, int windowHeight, float timeInSecs) {
                     glBindVertexArray(m->_mesh->_vao);
                     uint64_t offset = sizeof(uint32_t) * subMesh._startIndex;
                     glDrawElements(GL_TRIANGLES, /*count=*/subMesh._numIndices, GL_UNSIGNED_INT, (void*) offset);
+                }
+            }
+        }
+    }
+
+    // TODO: maybe we should move all glClear()'s into renderer.cpp and save
+    // game.cpp from including any GL code?
+    glClear(GL_DEPTH_BUFFER_BIT);
+
+    //
+    // TEXT RENDERING
+    //
+
+    // First go through our world text strings and convert them into glyphs to draw
+    {
+        ViewportInfo const& vp = _pInternal->_g->_viewportInfo;
+        for (TextWorldInstance const& text : _pInternal->_textToDraw) {
+            float screenX, screenY;
+            geometry::ProjectWorldPointToScreenSpace(text._pos, viewProjTransform, vp._width, vp._height, screenX, screenY);
+
+            screenX = std::round(screenX);
+            screenY = std::round(screenY);
+            DrawText(text._text, screenX, screenY, text._scale, text._colorRgba);
+        }
+        _pInternal->_textToDraw.clear();
+    }
+
+    {
+        ViewportInfo const& vp = _pInternal->_g->_viewportInfo;
+        Mat4 projection = Mat4::Ortho(0.f, (float)vp._width, 0.f, (float)vp._height, -1.f, 1.f);
+
+        unsigned int fontTextureId = _pInternal->_textureIdMap.at("font");
+
+        Shader& shader = _pInternal->_textShader;
+        shader.Use();
+        shader.SetMat4("uProjection", projection);
+        glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_2D, fontTextureId);
+        glBindVertexArray(_pInternal->_textVao);
+        Vec4 quadVertices[4];
+        Vec4 cachedColor(-1.f, -1.f, -1.f, -1.f);
+        for (GlyphInstance const& glyph : _pInternal->_glyphsToDraw) {
+            if (glyph._colorRgba != cachedColor) {
+                cachedColor = glyph._colorRgba;
+                shader.SetVec4("uTextColor", cachedColor);
+            }
+            stbtt_aligned_quad const& q = glyph._quad;
+            quadVertices[0].Set(q.x0, q.y0, q.s0, q.t0);
+            quadVertices[1].Set(q.x0, q.y1, q.s0, q.t1);
+            quadVertices[2].Set(q.x1, q.y0, q.s1, q.t0);
+            quadVertices[3].Set(q.x1, q.y1, q.s1, q.t1);
+
+            glBindBuffer(GL_ARRAY_BUFFER, _pInternal->_textVbo);
+            glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(quadVertices), quadVertices);
+            glBindBuffer(GL_ARRAY_BUFFER, 0);
+            glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+        }
+
+        _pInternal->_glyphsToDraw.clear();
+    }
+
+    // Top layer color models.
+    // TODO prolly refactor both color draws into a common function
+    // Color models
+    {
+        Shader& shader = _pInternal->_colorShader;
+        shader.Use();
+        SetLightUniformsColorShader(*_pInternal);
+        for (ColorModelInstance const* m : _pInternal->_topLayerColorModels) {
+            if (!m->_visible) {
+                continue;
+            }
+            Mat4 const& transMat = m->_transform;
+            shader.SetMat4("uMvpTrans", viewProjTransform * transMat);
+            shader.SetMat4("uModelTrans", transMat);
+            Mat3 modelTransInv;
+            bool success = transMat.GetMat3().TransposeInverse(modelTransInv);
+            assert(success);
+            shader.SetMat3("uModelInvTrans", modelTransInv);
+
+            // TEMPORARY! What we really want is to use the submeshes always unless the outer Model
+            // has defined some overrides.
+            if (m->_mesh->_subMeshes.size() == 0) {
+                shader.SetVec4("uColor", m->_color);
+                glBindVertexArray(m->_mesh->_vao);
+                glDrawElements(GL_TRIANGLES, /*count=*/m->_mesh->_numIndices, GL_UNSIGNED_INT, /*start_offset=*/0);
+            }
+            else {
+                for (int subMeshIx = 0; subMeshIx < m->_mesh->_subMeshes.size(); ++subMeshIx) {
+                    BoundMeshPNU::SubMesh const& subMesh = m->_mesh->_subMeshes[subMeshIx];
+                    shader.SetVec4("uColor", subMesh._color);
+                    glBindVertexArray(m->_mesh->_vao);
+                    uint64_t offset = sizeof(uint32_t) * subMesh._startIndex;
+                    glDrawElements(GL_TRIANGLES, /*count=*/subMesh._numIndices, GL_UNSIGNED_INT, (void*)offset);
                 }
             }
         }
