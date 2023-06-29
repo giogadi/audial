@@ -7739,6 +7739,17 @@
                     <use_patch_bank>true</use_patch_bank>
                     <patch_name>pad</patch_name>
                 </seq_action>
+                <seq_action>
+                    <one_time>false</one_time>
+                    <action_type>BeatTimeEvent</action_type>
+                    <quantize_denom>0.25</quantize_denom>
+                    <beat_time_event>
+                        <event_type>AllNotesOff</event_type>
+                        <channel>2</channel>
+                        <tick_time>0</tick_time>
+                        <beat_time>0</beat_time>
+                    </beat_time_event>
+                </seq_action>
             </actions>
         </FlowTrigger>
         <Vfx>
