@@ -49,6 +49,7 @@ void TypingEnemyEntity::LoadDerived(serial::Ptree pt) {
     }
 
     SeqAction::LoadActionsFromChildNode(pt, "hit_actions", _hitActions);
+    SeqAction::LoadActionsFromChildNode(pt, "off_cooldown_actions", _offCooldownActions);
 }
 
 void TypingEnemyEntity::SaveDerived(serial::Ptree pt) const {
@@ -61,6 +62,7 @@ void TypingEnemyEntity::SaveDerived(serial::Ptree pt) const {
     pt.PutFloat("active_radius", _activeRadius);
     serial::SaveInNewChildOf(pt, "waypoint_follower", _waypointFollower);
     SeqAction::SaveActionsInChildNode(pt, "hit_actions", _hitActions);
+    SeqAction::SaveActionsInChildNode(pt, "off_cooldown_actions", _offCooldownActions);
 }
 
 ne::BaseEntity::ImGuiResult TypingEnemyEntity::ImGuiDerived(GameManager& g) {
@@ -85,6 +87,9 @@ ne::BaseEntity::ImGuiResult TypingEnemyEntity::ImGuiDerived(GameManager& g) {
     if (SeqAction::ImGui("Hit actions", _hitActions)) {
         result = ImGuiResult::NeedsInit;
     }
+    if (SeqAction::ImGui("Off-cooldown actions", _offCooldownActions)) {
+        result = ImGuiResult::NeedsInit;
+    }
 
     ImGui::PushID("wp");
     _waypointFollower.ImGui();
@@ -107,6 +112,10 @@ void TypingEnemyEntity::InitDerived(GameManager& g) {
     _waypointFollower.Init(g, *this);
 
     for (auto const& pAction : _hitActions) {
+        pAction->Init(g);
+    }
+
+    for (auto const& pAction : _offCooldownActions) {
         pAction->Init(g);
     }
 
@@ -191,6 +200,11 @@ void TypingEnemyEntity::Update(GameManager& g, float dt) {
 
     if (_flowCooldownTimeLeft > 0.f) {
         _flowCooldownTimeLeft -= dt;
+        if (_flowCooldownTimeLeft <= 0.f) {
+            for (auto& pAction : _offCooldownActions) {
+                pAction->Execute(g);
+            }
+        }
     }
 
     if (_activeRadius >= 0.f) {

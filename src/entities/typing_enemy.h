@@ -13,7 +13,7 @@ struct TypingEnemyEntity : public ne::Entity {
     // serialized
     std::string _text;
     std::vector<std::unique_ptr<SeqAction>> _hitActions;
-    // std::vector<std::string> _hitActionStrings;
+    std::vector<std::unique_ptr<SeqAction>> _offCooldownActions;
     std::vector<bool> _isOneTimeAction;
     HitBehavior _hitBehavior = HitBehavior::SingleAction; // TODO
     double _activeBeatTime = -1.0; // TODO
