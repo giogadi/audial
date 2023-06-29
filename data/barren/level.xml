@@ -2248,9 +2248,9 @@
             <pickable>true</pickable>
             <transform>
                 <pos>
-                    <x>41.640625</x>
+                    <x>41.6296234</x>
                     <y>0</y>
-                    <z>-10.5</z>
+                    <z>-8.91199112</z>
                 </pos>
                 <quat>
                     <x>0</x>
@@ -2261,7 +2261,7 @@
                 <scale>
                     <x>1</x>
                     <y>1</y>
-                    <z>8</z>
+                    <z>12</z>
                 </scale>
             </transform>
             <model_name>cube</model_name>
@@ -2279,26 +2279,7 @@
             <waypoint_auto_start>true</waypoint_auto_start>
             <loop_waypoints>true</loop_waypoints>
             <start_time>4</start_time>
-            <waypoints>
-                <waypoint>
-                    <wait_time>0</wait_time>
-                    <move_time>4</move_time>
-                    <p>
-                        <x>0</x>
-                        <y>0</y>
-                        <z>4.5</z>
-                    </p>
-                </waypoint>
-                <waypoint>
-                    <wait_time>0</wait_time>
-                    <move_time>4</move_time>
-                    <p>
-                        <x>0</x>
-                        <y>0</y>
-                        <z>0</z>
-                    </p>
-                </waypoint>
-            </waypoints>
+            <waypoints/>
             <rot_vel>0</rot_vel>
             <polygon/>
             <hit_actions>
@@ -3735,6 +3716,13 @@
                     <step_str>-1,-1,-1,-1:1.0</step_str>
                     <vel_only>false</vel_only>
                 </seq_action>
+                <seq_action>
+                    <one_time>true</one_time>
+                    <action_type>SetEntityActive</action_type>
+                    <entity_name>r6_wall6</entity_name>
+                    <active>true</active>
+                    <init_on_activate>true</init_on_activate>
+                </seq_action>
             </actions>
         </FlowTrigger>
         <ActionSequencer>
@@ -3896,9 +3884,9 @@
             <pickable>true</pickable>
             <transform>
                 <pos>
-                    <x>45.9781418</x>
+                    <x>46.000145</x>
                     <y>0</y>
-                    <z>-1.02656507</z>
+                    <z>-4.68096733</z>
                 </pos>
                 <quat>
                     <x>0</x>
@@ -3909,7 +3897,7 @@
                 <scale>
                     <x>1</x>
                     <y>1</y>
-                    <z>10</z>
+                    <z>4</z>
                 </scale>
             </transform>
             <model_name>cube</model_name>
@@ -5980,7 +5968,7 @@
                     <w>1</w>
                 </quat>
                 <scale>
-                    <x>3</x>
+                    <x>4</x>
                     <y>1</y>
                     <z>1</z>
                 </scale>
@@ -6018,7 +6006,7 @@
                     <maxZ>0</maxZ>
                 </seq_action>
                 <seq_action>
-                    <one_time>true</one_time>
+                    <one_time>false</one_time>
                     <action_type>SetEntityActive</action_type>
                     <entity_name>r2_secret_chord_seq</entity_name>
                     <active>true</active>
@@ -6060,14 +6048,14 @@
                     <vel_only>false</vel_only>
                 </seq_action>
                 <seq_action>
-                    <one_time>true</one_time>
+                    <one_time>false</one_time>
                     <action_type>SetEntityActive</action_type>
                     <entity_name>r2_back_to_main</entity_name>
                     <active>true</active>
                     <init_on_activate>true</init_on_activate>
                 </seq_action>
                 <seq_action>
-                    <one_time>true</one_time>
+                    <one_time>false</one_time>
                     <action_type>SetEntityActive</action_type>
                     <entity_name>r2_secret_exit</entity_name>
                     <active>false</active>
@@ -7660,7 +7648,7 @@
                     <w>1</w>
                 </quat>
                 <scale>
-                    <x>3</x>
+                    <x>4</x>
                     <y>1</y>
                     <z>1</z>
                 </scale>
@@ -7698,7 +7686,7 @@
                     <maxZ>0</maxZ>
                 </seq_action>
                 <seq_action>
-                    <one_time>true</one_time>
+                    <one_time>false</one_time>
                     <action_type>SetEntityActive</action_type>
                     <entity_name>r2_secret_chord_seq</entity_name>
                     <active>false</active>
@@ -7719,8 +7707,8 @@
                 <seq_action>
                     <one_time>false</one_time>
                     <action_type>SetEntityActive</action_type>
-                    <entity_name>r2_back_to_main</entity_name>
-                    <active>false</active>
+                    <entity_name>r2_secret_exit</entity_name>
+                    <active>true</active>
                     <init_on_activate>true</init_on_activate>
                 </seq_action>
                 <seq_action>
@@ -7749,6 +7737,13 @@
                         <tick_time>0</tick_time>
                         <beat_time>0</beat_time>
                     </beat_time_event>
+                </seq_action>
+                <seq_action>
+                    <one_time>false</one_time>
+                    <action_type>SetEntityActive</action_type>
+                    <entity_name>r2_back_to_main</entity_name>
+                    <active>false</active>
+                    <init_on_activate>true</init_on_activate>
                 </seq_action>
             </actions>
         </FlowTrigger>
@@ -8556,5 +8551,119 @@
                 </seq_action>
             </hit_actions>
         </TypingEnemy>
+        <FlowWall>
+            <name>r6_wall5</name>
+            <entity_active>true</entity_active>
+            <pickable>true</pickable>
+            <transform>
+                <pos>
+                    <x>45.9891434</x>
+                    <y>0</y>
+                    <z>1.85368538</z>
+                </pos>
+                <quat>
+                    <x>0</x>
+                    <y>0</y>
+                    <z>0</z>
+                    <w>1</w>
+                </quat>
+                <scale>
+                    <x>1</x>
+                    <y>1</y>
+                    <z>4</z>
+                </scale>
+            </transform>
+            <model_name>cube</model_name>
+            <model_color_vec4>
+                <x>0.800000012</x>
+                <y>0.800000012</y>
+                <z>0.800000012</z>
+                <w>1</w>
+            </model_color_vec4>
+            <flow_section_id>4</flow_section_id>
+            <can_hit>true</can_hit>
+            <hp>-1</hp>
+            <move_mode>Waypoints</move_mode>
+            <local_to_entity>false</local_to_entity>
+            <waypoint_auto_start>false</waypoint_auto_start>
+            <loop_waypoints>false</loop_waypoints>
+            <start_time>3</start_time>
+            <waypoints/>
+            <rot_vel>0</rot_vel>
+            <polygon/>
+            <hit_actions>
+                <seq_action>
+                    <one_time>false</one_time>
+                    <action_type>BeatTimeEvent</action_type>
+                    <quantize_denom>0.25</quantize_denom>
+                    <beat_time_event>
+                        <event_type>PlayPcm</event_type>
+                        <channel>0</channel>
+                        <tick_time>0</tick_time>
+                        <sound_ix>9</sound_ix>
+                        <velocity>0.200000003</velocity>
+                        <loop>false</loop>
+                        <beat_time>0</beat_time>
+                    </beat_time_event>
+                </seq_action>
+            </hit_actions>
+        </FlowWall>
+        <FlowWall>
+            <name>r6_wall6</name>
+            <entity_active>false</entity_active>
+            <pickable>true</pickable>
+            <transform>
+                <pos>
+                    <x>45.9891434</x>
+                    <y>0</y>
+                    <z>-1</z>
+                </pos>
+                <quat>
+                    <x>0</x>
+                    <y>0</y>
+                    <z>0</z>
+                    <w>1</w>
+                </quat>
+                <scale>
+                    <x>1</x>
+                    <y>1</y>
+                    <z>4</z>
+                </scale>
+            </transform>
+            <model_name>cube</model_name>
+            <model_color_vec4>
+                <x>0.800000012</x>
+                <y>0.800000012</y>
+                <z>0.800000012</z>
+                <w>1</w>
+            </model_color_vec4>
+            <flow_section_id>4</flow_section_id>
+            <can_hit>true</can_hit>
+            <hp>-1</hp>
+            <move_mode>Waypoints</move_mode>
+            <local_to_entity>false</local_to_entity>
+            <waypoint_auto_start>false</waypoint_auto_start>
+            <loop_waypoints>false</loop_waypoints>
+            <start_time>3</start_time>
+            <waypoints/>
+            <rot_vel>0</rot_vel>
+            <polygon/>
+            <hit_actions>
+                <seq_action>
+                    <one_time>false</one_time>
+                    <action_type>BeatTimeEvent</action_type>
+                    <quantize_denom>0.25</quantize_denom>
+                    <beat_time_event>
+                        <event_type>PlayPcm</event_type>
+                        <channel>0</channel>
+                        <tick_time>0</tick_time>
+                        <sound_ix>9</sound_ix>
+                        <velocity>0.200000003</velocity>
+                        <loop>false</loop>
+                        <beat_time>0</beat_time>
+                    </beat_time_event>
+                </seq_action>
+            </hit_actions>
+        </FlowWall>
     </new_entities>
 </script>
