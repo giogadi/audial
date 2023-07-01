@@ -167,7 +167,7 @@ void TypingEnemyEntity::Update(GameManager& g, float dt) {
     }    
 
     float constexpr kTextSize = 1.5f;
-    if (_flowCooldownTimeLeft > 0.f || !playerWithinRadius) {
+    if (_flowCooldownTimeLeft > 0.f || !playerWithinRadius || !_hittable) {
         Vec4 color = _textColor;
         color._w = 0.2f;
         g._scene->DrawTextWorld(_text, _transform.GetPos(), kTextSize, color);
@@ -230,12 +230,15 @@ void TypingEnemyEntity::Update(GameManager& g, float dt) {
         // We adjust the scale of localToWorld AFTER setting subdivMat so that
         // changing the scale of localToWorld doesn't make the subdiv dudes
         // bigger
-        if (_flowCooldownTimeLeft > 0.f) {
+        if (_flowCooldownTimeLeft > 0.f || !_hittable) {
             color._w = 0.5f;
             // timeLeft: [0, flowCooldown] --> [1, explodeScale]
             float constexpr kExplodeMaxScale = 2.f;
-            float factor = math_util::Clamp(_flowCooldownTimeLeft / _flowCooldown, 0.f, 1.f);
-            factor = math_util::SmoothStep(factor);
+            float factor = 1.f;
+            if (_flowCooldownTimeLeft > 0.f) {
+                factor = math_util::Clamp(_flowCooldownTimeLeft / _flowCooldown, 0.f, 1.f);
+                factor = math_util::SmoothStep(factor);
+            }
             float explodeScale = 1.f + factor * (kExplodeMaxScale - 1.f);
             localToWorld.Scale(explodeScale, 1.f, explodeScale);            
         }
@@ -333,6 +336,9 @@ bool TypingEnemyEntity::CanHit() const {
     if (!PlayerWithinRadius(*this)) {
         return false;
     }
+    if (!_hittable) {
+        return false;
+    }
     return _flowCooldownTimeLeft <= 0.f;
 }
 
@@ -340,6 +346,7 @@ static TypingEnemyEntity sMultiEnemy;
 
 void TypingEnemyEntity::MultiSelectImGui(GameManager& g, std::vector<TypingEnemyEntity*>& enemies) {
 
+    ImGui::InputInt("Entity tag", &sMultiEnemy._tag);
     imgui_util::ColorEdit4("Model color", &sMultiEnemy._modelColor);
     ImGui::InputInt("Section ID", &sMultiEnemy._flowSectionId);
     
@@ -361,9 +368,11 @@ void TypingEnemyEntity::MultiSelectImGui(GameManager& g, std::vector<TypingEnemy
     //     sMultiEnemy._hitActionStrings.erase(sMultiEnemy._hitActionStrings.begin() + deletedIx);
     // }
 
-    static bool sApplyColor = true;
-    static bool sApplySectionId = true;
-    static bool sApplyActions = true;    
+    static bool sApplyTag = false;
+    static bool sApplyColor = false;
+    static bool sApplySectionId = false;
+    static bool sApplyActions = false;
+    ImGui::Checkbox("Apply tag", &sApplyTag);
     ImGui::Checkbox("Apply color", &sApplyColor);
     ImGui::Checkbox("Apply section ID", &sApplySectionId);
     ImGui::Checkbox("Apply actions", &sApplyActions);
@@ -371,6 +380,9 @@ void TypingEnemyEntity::MultiSelectImGui(GameManager& g, std::vector<TypingEnemy
     sprintf(applySelectionButtonStr, "Apply to Selection (%zu)", enemies.size());
     if (ImGui::Button(applySelectionButtonStr)) {
         for (TypingEnemyEntity* e : enemies) {
+            if (sApplyTag) {
+                e->_tag = sMultiEnemy._tag;
+            }
             if (sApplyColor) {
                 e->_modelColor = sMultiEnemy._modelColor;
             }
@@ -392,4 +404,8 @@ void TypingEnemyEntity::MultiSelectImGui(GameManager& g, std::vector<TypingEnemy
             e->_text = std::string(1, letter);
         }
     }
+}
+
+void TypingEnemyEntity::SetHittable(bool hittable) {
+    _hittable = hittable;
 }

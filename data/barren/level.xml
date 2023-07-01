@@ -32,6 +32,7 @@
                 <w>0</w>
             </model_color_vec4>
             <flow_section_id>-1</flow_section_id>
+            <tag>0</tag>
             <ambient>
                 <x>0</x>
                 <y>0</y>
@@ -73,6 +74,7 @@
                 <w>0</w>
             </model_color_vec4>
             <flow_section_id>-1</flow_section_id>
+            <tag>0</tag>
             <ortho>true</ortho>
             <follow_entity_name/>
             <tracking_factor>0.0500000007</tracking_factor>
@@ -107,6 +109,7 @@
                 <w>0</w>
             </model_color_vec4>
             <flow_section_id>-1</flow_section_id>
+            <tag>0</tag>
             <loop>false</loop>
             <start_beat_time>0</start_beat_time>
             <events>
@@ -184,6 +187,7 @@
                 <w>1</w>
             </model_color_vec4>
             <flow_section_id>-1</flow_section_id>
+            <tag>0</tag>
             <selection_radius>-1</selection_radius>
             <launch_vel>20</launch_vel>
             <max_horiz_speed_after_dash>2</max_horiz_speed_after_dash>
@@ -230,6 +234,7 @@
                 <w>0</w>
             </model_color_vec4>
             <flow_section_id>-1</flow_section_id>
+            <tag>0</tag>
             <sequence>mG0:0 -1:1 -1:1 -1:1 mG0:0 -1:1 -1:1 -1:1 mG0:0 -1:1 -1:1 -1:1 mG0:0 -1:1 -1:1 -1:1</sequence>
             <start_mute>false</start_mute>
             <channels/>
@@ -270,6 +275,7 @@
                 <w>0</w>
             </model_color_vec4>
             <flow_section_id>-1</flow_section_id>
+            <tag>0</tag>
             <sequence>-1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1</sequence>
             <start_mute>false</start_mute>
             <channels/>
@@ -310,6 +316,7 @@
                 <w>0</w>
             </model_color_vec4>
             <flow_section_id>-1</flow_section_id>
+            <tag>0</tag>
             <sequence>-1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1</sequence>
             <start_mute>false</start_mute>
             <channels/>
@@ -350,6 +357,7 @@
                 <w>0</w>
             </model_color_vec4>
             <flow_section_id>-1</flow_section_id>
+            <tag>0</tag>
             <sequence>-1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1</sequence>
             <start_mute>false</start_mute>
             <channels/>
@@ -390,6 +398,7 @@
                 <w>0</w>
             </model_color_vec4>
             <flow_section_id>-1</flow_section_id>
+            <tag>0</tag>
             <sequence>-1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1</sequence>
             <start_mute>false</start_mute>
             <channels>
@@ -432,6 +441,7 @@
                 <w>0</w>
             </model_color_vec4>
             <flow_section_id>-1</flow_section_id>
+            <tag>0</tag>
             <sequence>-1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1</sequence>
             <start_mute>false</start_mute>
             <channels>
@@ -474,6 +484,7 @@
                 <w>0</w>
             </model_color_vec4>
             <flow_section_id>-1</flow_section_id>
+            <tag>0</tag>
             <sequence>-1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1</sequence>
             <start_mute>false</start_mute>
             <channels>
@@ -516,6 +527,7 @@
                 <w>0</w>
             </model_color_vec4>
             <flow_section_id>-1</flow_section_id>
+            <tag>0</tag>
             <sequence>-1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1</sequence>
             <start_mute>false</start_mute>
             <channels>
@@ -558,6 +570,7 @@
                 <w>0</w>
             </model_color_vec4>
             <flow_section_id>-1</flow_section_id>
+            <tag>0</tag>
             <seq_filename>data/barren/action_seq.txt</seq_filename>
         </ActionSequencer>
         <ActionSequencer>
@@ -590,6 +603,7 @@
                 <w>0</w>
             </model_color_vec4>
             <flow_section_id>0</flow_section_id>
+            <tag>0</tag>
             <seq_filename>data/barren/room1_action_seq.txt</seq_filename>
         </ActionSequencer>
         <FlowTrigger>
@@ -622,6 +636,7 @@
                 <w>1</w>
             </model_color_vec4>
             <flow_section_id>-1</flow_section_id>
+            <tag>0</tag>
             <on_player_enter>true</on_player_enter>
             <random_action_count>-1</random_action_count>
             <actions>
@@ -671,6 +686,7 @@
                 <w>1</w>
             </model_color_vec4>
             <flow_section_id>1</flow_section_id>
+            <tag>0</tag>
         </Base>
         <FlowTrigger>
             <name>room1_drumfill_trigger</name>
@@ -702,6 +718,7 @@
                 <w>1</w>
             </model_color_vec4>
             <flow_section_id>-1</flow_section_id>
+            <tag>0</tag>
             <on_player_enter>true</on_player_enter>
             <random_action_count>-1</random_action_count>
             <actions>
@@ -756,6 +773,7 @@
                 <w>1</w>
             </model_color_vec4>
             <flow_section_id>0</flow_section_id>
+            <tag>0</tag>
             <text>f</text>
             <type_kill>false</type_kill>
             <all_actions_on_hit>true</all_actions_on_hit>
@@ -780,6 +798,7 @@
                     <stepStr> mG3,mB3-,mD4,mF4:1</stepStr>
                 </seq_action>
             </hit_actions>
+            <off_cooldown_actions/>
         </TypingEnemy>
         <TypingEnemy>
             <name>r1_j</name>
@@ -811,6 +830,7 @@
                 <w>1</w>
             </model_color_vec4>
             <flow_section_id>0</flow_section_id>
+            <tag>0</tag>
             <text>j</text>
             <type_kill>false</type_kill>
             <all_actions_on_hit>false</all_actions_on_hit>
@@ -835,6 +855,7 @@
                     <stepStr> mG3,mB3-,mD4,mF4:1</stepStr>
                 </seq_action>
             </hit_actions>
+            <off_cooldown_actions/>
         </TypingEnemy>
         <FlowWall>
             <name>r1_wall1</name>
@@ -866,6 +887,7 @@
                 <w>1</w>
             </model_color_vec4>
             <flow_section_id>0</flow_section_id>
+            <tag>0</tag>
             <can_hit>true</can_hit>
             <hp>-1</hp>
             <move_mode>Waypoints</move_mode>
@@ -942,6 +964,7 @@
                 <w>1</w>
             </model_color_vec4>
             <flow_section_id>0</flow_section_id>
+            <tag>0</tag>
             <text>d</text>
             <type_kill>false</type_kill>
             <all_actions_on_hit>false</all_actions_on_hit>
@@ -966,6 +989,7 @@
                     <stepStr> mA3,mC4,mE4,mG4:1</stepStr>
                 </seq_action>
             </hit_actions>
+            <off_cooldown_actions/>
         </TypingEnemy>
         <TypingEnemy>
             <name>r1_k</name>
@@ -997,6 +1021,7 @@
                 <w>1</w>
             </model_color_vec4>
             <flow_section_id>0</flow_section_id>
+            <tag>0</tag>
             <text>k</text>
             <type_kill>false</type_kill>
             <all_actions_on_hit>false</all_actions_on_hit>
@@ -1021,6 +1046,7 @@
                     <stepStr> mA3,mC4,mE4,mG4:1</stepStr>
                 </seq_action>
             </hit_actions>
+            <off_cooldown_actions/>
         </TypingEnemy>
         <FlowWall>
             <name>r1_wall2</name>
@@ -1052,6 +1078,7 @@
                 <w>1</w>
             </model_color_vec4>
             <flow_section_id>0</flow_section_id>
+            <tag>0</tag>
             <can_hit>true</can_hit>
             <hp>-1</hp>
             <move_mode>Waypoints</move_mode>
@@ -1128,6 +1155,7 @@
                 <w>1</w>
             </model_color_vec4>
             <flow_section_id>0</flow_section_id>
+            <tag>0</tag>
             <can_hit>true</can_hit>
             <hp>-1</hp>
             <move_mode>Waypoints</move_mode>
@@ -1204,6 +1232,7 @@
                 <w>1</w>
             </model_color_vec4>
             <flow_section_id>0</flow_section_id>
+            <tag>0</tag>
             <can_hit>true</can_hit>
             <hp>-1</hp>
             <move_mode>Waypoints</move_mode>
@@ -1280,6 +1309,7 @@
                 <w>1</w>
             </model_color_vec4>
             <flow_section_id>0</flow_section_id>
+            <tag>0</tag>
             <text>e</text>
             <type_kill>false</type_kill>
             <all_actions_on_hit>false</all_actions_on_hit>
@@ -1304,6 +1334,7 @@
                     <stepStr> mG3,mB3-,mD4,mF4:1</stepStr>
                 </seq_action>
             </hit_actions>
+            <off_cooldown_actions/>
         </TypingEnemy>
         <TypingEnemy>
             <name>r1_i</name>
@@ -1335,6 +1366,7 @@
                 <w>1</w>
             </model_color_vec4>
             <flow_section_id>0</flow_section_id>
+            <tag>0</tag>
             <text>i</text>
             <type_kill>false</type_kill>
             <all_actions_on_hit>false</all_actions_on_hit>
@@ -1359,6 +1391,7 @@
                     <stepStr> mG3,mB3-,mD4,mF4:1</stepStr>
                 </seq_action>
             </hit_actions>
+            <off_cooldown_actions/>
         </TypingEnemy>
         <FlowWall>
             <name>r1_wall5</name>
@@ -1390,6 +1423,7 @@
                 <w>1</w>
             </model_color_vec4>
             <flow_section_id>0</flow_section_id>
+            <tag>0</tag>
             <can_hit>true</can_hit>
             <hp>-1</hp>
             <move_mode>Waypoints</move_mode>
@@ -1466,6 +1500,7 @@
                 <w>1</w>
             </model_color_vec4>
             <flow_section_id>0</flow_section_id>
+            <tag>0</tag>
             <can_hit>true</can_hit>
             <hp>-1</hp>
             <move_mode>Waypoints</move_mode>
@@ -1542,6 +1577,7 @@
                 <w>1</w>
             </model_color_vec4>
             <flow_section_id>1</flow_section_id>
+            <tag>0</tag>
             <text>g</text>
             <type_kill>false</type_kill>
             <all_actions_on_hit>false</all_actions_on_hit>
@@ -1566,6 +1602,7 @@
                     <stepStr> mA3,mC4,mE4,mG4:1</stepStr>
                 </seq_action>
             </hit_actions>
+            <off_cooldown_actions/>
         </TypingEnemy>
         <TypingEnemy>
             <name>r1_h</name>
@@ -1597,6 +1634,7 @@
                 <w>1</w>
             </model_color_vec4>
             <flow_section_id>1</flow_section_id>
+            <tag>0</tag>
             <text>h</text>
             <type_kill>false</type_kill>
             <all_actions_on_hit>false</all_actions_on_hit>
@@ -1621,6 +1659,7 @@
                     <stepStr> mA3,mC4,mE4,mG4:1</stepStr>
                 </seq_action>
             </hit_actions>
+            <off_cooldown_actions/>
         </TypingEnemy>
         <TypingEnemy>
             <name>r2_f</name>
@@ -1652,6 +1691,7 @@
                 <w>1</w>
             </model_color_vec4>
             <flow_section_id>2</flow_section_id>
+            <tag>0</tag>
             <text>f</text>
             <type_kill>false</type_kill>
             <all_actions_on_hit>true</all_actions_on_hit>
@@ -1676,6 +1716,7 @@
                     <stepStr> mG3,mB3-,mD4,mF4:1</stepStr>
                 </seq_action>
             </hit_actions>
+            <off_cooldown_actions/>
         </TypingEnemy>
         <TypingEnemy>
             <name>r2_j</name>
@@ -1707,6 +1748,7 @@
                 <w>1</w>
             </model_color_vec4>
             <flow_section_id>2</flow_section_id>
+            <tag>0</tag>
             <text>j</text>
             <type_kill>false</type_kill>
             <all_actions_on_hit>false</all_actions_on_hit>
@@ -1731,6 +1773,7 @@
                     <stepStr> mG3,mB3-,mD4,mF4:1</stepStr>
                 </seq_action>
             </hit_actions>
+            <off_cooldown_actions/>
         </TypingEnemy>
         <FlowWall>
             <name>r2_wall1</name>
@@ -1762,6 +1805,7 @@
                 <w>1</w>
             </model_color_vec4>
             <flow_section_id>2</flow_section_id>
+            <tag>0</tag>
             <can_hit>true</can_hit>
             <hp>-1</hp>
             <move_mode>Waypoints</move_mode>
@@ -1838,6 +1882,7 @@
                 <w>1</w>
             </model_color_vec4>
             <flow_section_id>2</flow_section_id>
+            <tag>0</tag>
             <text>d</text>
             <type_kill>false</type_kill>
             <all_actions_on_hit>false</all_actions_on_hit>
@@ -1862,6 +1907,7 @@
                     <stepStr> mA3,mC4,mE4,mG4:1</stepStr>
                 </seq_action>
             </hit_actions>
+            <off_cooldown_actions/>
         </TypingEnemy>
         <TypingEnemy>
             <name>r2_k</name>
@@ -1893,6 +1939,7 @@
                 <w>1</w>
             </model_color_vec4>
             <flow_section_id>2</flow_section_id>
+            <tag>0</tag>
             <text>k</text>
             <type_kill>false</type_kill>
             <all_actions_on_hit>false</all_actions_on_hit>
@@ -1917,6 +1964,7 @@
                     <stepStr> mA3,mC4,mE4,mG4:1</stepStr>
                 </seq_action>
             </hit_actions>
+            <off_cooldown_actions/>
         </TypingEnemy>
         <FlowWall>
             <name>r2_wall2</name>
@@ -1948,6 +1996,7 @@
                 <w>1</w>
             </model_color_vec4>
             <flow_section_id>2</flow_section_id>
+            <tag>0</tag>
             <can_hit>true</can_hit>
             <hp>-1</hp>
             <move_mode>Waypoints</move_mode>
@@ -2024,6 +2073,7 @@
                 <w>1</w>
             </model_color_vec4>
             <flow_section_id>2</flow_section_id>
+            <tag>0</tag>
             <can_hit>true</can_hit>
             <hp>-1</hp>
             <move_mode>Waypoints</move_mode>
@@ -2100,6 +2150,7 @@
                 <w>1</w>
             </model_color_vec4>
             <flow_section_id>2</flow_section_id>
+            <tag>0</tag>
             <text>e</text>
             <type_kill>false</type_kill>
             <all_actions_on_hit>false</all_actions_on_hit>
@@ -2124,6 +2175,7 @@
                     <stepStr> mG3,mB3-,mD4,mF4:1</stepStr>
                 </seq_action>
             </hit_actions>
+            <off_cooldown_actions/>
         </TypingEnemy>
         <TypingEnemy>
             <name>r2_i</name>
@@ -2155,6 +2207,7 @@
                 <w>1</w>
             </model_color_vec4>
             <flow_section_id>2</flow_section_id>
+            <tag>0</tag>
             <text>i</text>
             <type_kill>false</type_kill>
             <all_actions_on_hit>false</all_actions_on_hit>
@@ -2179,6 +2232,7 @@
                     <stepStr> mG3,mB3-,mD4,mF4:1</stepStr>
                 </seq_action>
             </hit_actions>
+            <off_cooldown_actions/>
         </TypingEnemy>
         <FlowWall>
             <name>r2_wall5</name>
@@ -2210,6 +2264,7 @@
                 <w>1</w>
             </model_color_vec4>
             <flow_section_id>2</flow_section_id>
+            <tag>0</tag>
             <can_hit>true</can_hit>
             <hp>-1</hp>
             <move_mode>Waypoints</move_mode>
@@ -2286,6 +2341,7 @@
                 <w>1</w>
             </model_color_vec4>
             <flow_section_id>2</flow_section_id>
+            <tag>0</tag>
             <can_hit>true</can_hit>
             <hp>-1</hp>
             <move_mode>Waypoints</move_mode>
@@ -2343,6 +2399,7 @@
                 <w>1</w>
             </model_color_vec4>
             <flow_section_id>3</flow_section_id>
+            <tag>0</tag>
             <text>g</text>
             <type_kill>false</type_kill>
             <all_actions_on_hit>false</all_actions_on_hit>
@@ -2367,6 +2424,7 @@
                     <stepStr> mA3,mC4,mE4,mG4:1</stepStr>
                 </seq_action>
             </hit_actions>
+            <off_cooldown_actions/>
         </TypingEnemy>
         <TypingEnemy>
             <name>r2_h</name>
@@ -2398,6 +2456,7 @@
                 <w>1</w>
             </model_color_vec4>
             <flow_section_id>3</flow_section_id>
+            <tag>0</tag>
             <text>h</text>
             <type_kill>false</type_kill>
             <all_actions_on_hit>false</all_actions_on_hit>
@@ -2422,6 +2481,7 @@
                     <stepStr> mA3,mC4,mE4,mG4:1</stepStr>
                 </seq_action>
             </hit_actions>
+            <off_cooldown_actions/>
         </TypingEnemy>
         <FlowWall>
             <name>r2_wall1</name>
@@ -2453,6 +2513,7 @@
                 <w>1</w>
             </model_color_vec4>
             <flow_section_id>-1</flow_section_id>
+            <tag>0</tag>
             <can_hit>true</can_hit>
             <hp>-1</hp>
             <move_mode>Waypoints</move_mode>
@@ -2529,6 +2590,7 @@
                 <w>1</w>
             </model_color_vec4>
             <flow_section_id>-1</flow_section_id>
+            <tag>0</tag>
             <can_hit>true</can_hit>
             <hp>-1</hp>
             <move_mode>Waypoints</move_mode>
@@ -2605,6 +2667,7 @@
                 <w>1</w>
             </model_color_vec4>
             <flow_section_id>1</flow_section_id>
+            <tag>0</tag>
             <on_player_enter>true</on_player_enter>
             <random_action_count>-1</random_action_count>
             <actions>
@@ -2689,6 +2752,7 @@
                 <w>1</w>
             </model_color_vec4>
             <flow_section_id>1</flow_section_id>
+            <tag>0</tag>
             <text>f</text>
             <type_kill>false</type_kill>
             <all_actions_on_hit>true</all_actions_on_hit>
@@ -2713,6 +2777,7 @@
                     <stepStr> mG3,mB3-,mD4,mF4:1</stepStr>
                 </seq_action>
             </hit_actions>
+            <off_cooldown_actions/>
         </TypingEnemy>
         <TypingEnemy>
             <name>r3_j</name>
@@ -2744,6 +2809,7 @@
                 <w>1</w>
             </model_color_vec4>
             <flow_section_id>1</flow_section_id>
+            <tag>0</tag>
             <text>j</text>
             <type_kill>false</type_kill>
             <all_actions_on_hit>false</all_actions_on_hit>
@@ -2768,6 +2834,7 @@
                     <stepStr> mG3,mB3-,mD4,mF4:1</stepStr>
                 </seq_action>
             </hit_actions>
+            <off_cooldown_actions/>
         </TypingEnemy>
         <FlowWall>
             <name>r3_wall1</name>
@@ -2799,6 +2866,7 @@
                 <w>1</w>
             </model_color_vec4>
             <flow_section_id>1</flow_section_id>
+            <tag>0</tag>
             <can_hit>true</can_hit>
             <hp>-1</hp>
             <move_mode>Waypoints</move_mode>
@@ -2875,6 +2943,7 @@
                 <w>1</w>
             </model_color_vec4>
             <flow_section_id>1</flow_section_id>
+            <tag>0</tag>
             <text>d</text>
             <type_kill>false</type_kill>
             <all_actions_on_hit>false</all_actions_on_hit>
@@ -2899,6 +2968,7 @@
                     <stepStr> mA3,mC4,mE4,mG4:1</stepStr>
                 </seq_action>
             </hit_actions>
+            <off_cooldown_actions/>
         </TypingEnemy>
         <TypingEnemy>
             <name>r3_k</name>
@@ -2930,6 +3000,7 @@
                 <w>1</w>
             </model_color_vec4>
             <flow_section_id>1</flow_section_id>
+            <tag>0</tag>
             <text>k</text>
             <type_kill>false</type_kill>
             <all_actions_on_hit>false</all_actions_on_hit>
@@ -2954,6 +3025,7 @@
                     <stepStr> mA3,mC4,mE4,mG4:1</stepStr>
                 </seq_action>
             </hit_actions>
+            <off_cooldown_actions/>
         </TypingEnemy>
         <FlowWall>
             <name>r3_wall2</name>
@@ -2985,6 +3057,7 @@
                 <w>1</w>
             </model_color_vec4>
             <flow_section_id>1</flow_section_id>
+            <tag>0</tag>
             <can_hit>true</can_hit>
             <hp>-1</hp>
             <move_mode>Waypoints</move_mode>
@@ -3061,6 +3134,7 @@
                 <w>1</w>
             </model_color_vec4>
             <flow_section_id>1</flow_section_id>
+            <tag>0</tag>
             <can_hit>true</can_hit>
             <hp>-1</hp>
             <move_mode>Waypoints</move_mode>
@@ -3137,6 +3211,7 @@
                 <w>1</w>
             </model_color_vec4>
             <flow_section_id>1</flow_section_id>
+            <tag>0</tag>
             <text>e</text>
             <type_kill>false</type_kill>
             <all_actions_on_hit>false</all_actions_on_hit>
@@ -3161,6 +3236,7 @@
                     <stepStr> mG3,mB3-,mD4,mF4:1</stepStr>
                 </seq_action>
             </hit_actions>
+            <off_cooldown_actions/>
         </TypingEnemy>
         <TypingEnemy>
             <name>r3_i</name>
@@ -3192,6 +3268,7 @@
                 <w>1</w>
             </model_color_vec4>
             <flow_section_id>1</flow_section_id>
+            <tag>0</tag>
             <text>i</text>
             <type_kill>false</type_kill>
             <all_actions_on_hit>false</all_actions_on_hit>
@@ -3216,6 +3293,7 @@
                     <stepStr> mG3,mB3-,mD4,mF4:1</stepStr>
                 </seq_action>
             </hit_actions>
+            <off_cooldown_actions/>
         </TypingEnemy>
         <FlowWall>
             <name>r3_wall6</name>
@@ -3247,6 +3325,7 @@
                 <w>1</w>
             </model_color_vec4>
             <flow_section_id>1</flow_section_id>
+            <tag>0</tag>
             <can_hit>true</can_hit>
             <hp>-1</hp>
             <move_mode>Waypoints</move_mode>
@@ -3323,6 +3402,7 @@
                 <w>1</w>
             </model_color_vec4>
             <flow_section_id>2</flow_section_id>
+            <tag>0</tag>
             <text>g</text>
             <type_kill>false</type_kill>
             <all_actions_on_hit>false</all_actions_on_hit>
@@ -3347,6 +3427,7 @@
                     <stepStr> mA3,mC4,mE4,mG4:1</stepStr>
                 </seq_action>
             </hit_actions>
+            <off_cooldown_actions/>
         </TypingEnemy>
         <TypingEnemy>
             <name>r3_h</name>
@@ -3378,6 +3459,7 @@
                 <w>1</w>
             </model_color_vec4>
             <flow_section_id>2</flow_section_id>
+            <tag>0</tag>
             <text>h</text>
             <type_kill>false</type_kill>
             <all_actions_on_hit>false</all_actions_on_hit>
@@ -3402,6 +3484,7 @@
                     <stepStr> mA3,mC4,mE4,mG4:1</stepStr>
                 </seq_action>
             </hit_actions>
+            <off_cooldown_actions/>
         </TypingEnemy>
         <FlowWall>
             <name>r3_wall1</name>
@@ -3433,6 +3516,7 @@
                 <w>1</w>
             </model_color_vec4>
             <flow_section_id>1</flow_section_id>
+            <tag>0</tag>
             <can_hit>true</can_hit>
             <hp>-1</hp>
             <move_mode>Waypoints</move_mode>
@@ -3509,6 +3593,7 @@
                 <w>1</w>
             </model_color_vec4>
             <flow_section_id>1</flow_section_id>
+            <tag>0</tag>
             <can_hit>true</can_hit>
             <hp>-1</hp>
             <move_mode>Waypoints</move_mode>
@@ -3585,6 +3670,7 @@
                 <w>1</w>
             </model_color_vec4>
             <flow_section_id>2</flow_section_id>
+            <tag>0</tag>
             <on_player_enter>true</on_player_enter>
             <random_action_count>-1</random_action_count>
             <actions>
@@ -3661,6 +3747,7 @@
                 <w>1</w>
             </model_color_vec4>
             <flow_section_id>3</flow_section_id>
+            <tag>0</tag>
             <on_player_enter>true</on_player_enter>
             <random_action_count>-1</random_action_count>
             <actions>
@@ -3779,6 +3866,7 @@
                 <w>1</w>
             </model_color_vec4>
             <flow_section_id>4</flow_section_id>
+            <tag>0</tag>
             <seq_filename>data/barren/room5_action_seq.txt</seq_filename>
         </ActionSequencer>
         <Base>
@@ -3811,6 +3899,7 @@
                 <w>1</w>
             </model_color_vec4>
             <flow_section_id>-1</flow_section_id>
+            <tag>0</tag>
         </Base>
         <FlowTrigger>
             <name>room6_trigger</name>
@@ -3842,6 +3931,7 @@
                 <w>1</w>
             </model_color_vec4>
             <flow_section_id>4</flow_section_id>
+            <tag>0</tag>
             <on_player_enter>true</on_player_enter>
             <random_action_count>-1</random_action_count>
             <actions>
@@ -3898,6 +3988,7 @@
                 <w>1</w>
             </model_color_vec4>
             <flow_section_id>4</flow_section_id>
+            <tag>0</tag>
             <on_player_enter>true</on_player_enter>
             <random_action_count>-1</random_action_count>
             <actions/>
@@ -3932,6 +4023,7 @@
                 <w>1</w>
             </model_color_vec4>
             <flow_section_id>4</flow_section_id>
+            <tag>0</tag>
             <can_hit>true</can_hit>
             <hp>-1</hp>
             <move_mode>Waypoints</move_mode>
@@ -3989,6 +4081,7 @@
                 <w>1</w>
             </model_color_vec4>
             <flow_section_id>4</flow_section_id>
+            <tag>0</tag>
             <can_hit>true</can_hit>
             <hp>-1</hp>
             <move_mode>Waypoints</move_mode>
@@ -4046,6 +4139,7 @@
                 <w>1</w>
             </model_color_vec4>
             <flow_section_id>4</flow_section_id>
+            <tag>0</tag>
             <can_hit>true</can_hit>
             <hp>1</hp>
             <move_mode>Waypoints</move_mode>
@@ -4103,6 +4197,7 @@
                 <w>1</w>
             </model_color_vec4>
             <flow_section_id>4</flow_section_id>
+            <tag>0</tag>
         </Base>
         <Base>
             <name>r6_stuff3</name>
@@ -4134,6 +4229,7 @@
                 <w>1</w>
             </model_color_vec4>
             <flow_section_id>4</flow_section_id>
+            <tag>0</tag>
         </Base>
         <FlowWall>
             <name>r6_wall4</name>
@@ -4165,6 +4261,7 @@
                 <w>1</w>
             </model_color_vec4>
             <flow_section_id>4</flow_section_id>
+            <tag>0</tag>
             <can_hit>true</can_hit>
             <hp>1</hp>
             <move_mode>Waypoints</move_mode>
@@ -4222,6 +4319,7 @@
                 <w>1</w>
             </model_color_vec4>
             <flow_section_id>4</flow_section_id>
+            <tag>0</tag>
         </Base>
         <FlowTrigger>
             <name>room7_trigger</name>
@@ -4253,6 +4351,7 @@
                 <w>1</w>
             </model_color_vec4>
             <flow_section_id>4</flow_section_id>
+            <tag>0</tag>
             <on_player_enter>true</on_player_enter>
             <random_action_count>-1</random_action_count>
             <actions>
@@ -4314,6 +4413,7 @@
                 <w>1</w>
             </model_color_vec4>
             <flow_section_id>5</flow_section_id>
+            <tag>0</tag>
             <text>e</text>
             <type_kill>false</type_kill>
             <all_actions_on_hit>true</all_actions_on_hit>
@@ -4374,6 +4474,7 @@
                     <init_on_activate>true</init_on_activate>
                 </seq_action>
             </hit_actions>
+            <off_cooldown_actions/>
         </TypingEnemy>
         <Base>
             <name>room3_camera_target</name>
@@ -4405,6 +4506,7 @@
                 <w>1</w>
             </model_color_vec4>
             <flow_section_id>-1</flow_section_id>
+            <tag>0</tag>
         </Base>
         <Base>
             <name>room4_camera_target_again</name>
@@ -4436,6 +4538,7 @@
                 <w>1</w>
             </model_color_vec4>
             <flow_section_id>2</flow_section_id>
+            <tag>0</tag>
         </Base>
         <FlowWall>
             <name>r0_door1</name>
@@ -4467,6 +4570,7 @@
                 <w>1</w>
             </model_color_vec4>
             <flow_section_id>6</flow_section_id>
+            <tag>0</tag>
             <can_hit>true</can_hit>
             <hp>-1</hp>
             <move_mode>Waypoints</move_mode>
@@ -4534,6 +4638,7 @@
                 <w>1</w>
             </model_color_vec4>
             <flow_section_id>6</flow_section_id>
+            <tag>0</tag>
             <can_hit>true</can_hit>
             <hp>-1</hp>
             <move_mode>Waypoints</move_mode>
@@ -4601,6 +4706,7 @@
                 <w>1</w>
             </model_color_vec4>
             <flow_section_id>0</flow_section_id>
+            <tag>0</tag>
         </Base>
         <Base>
             <name>r0_spawn_point</name>
@@ -4632,6 +4738,7 @@
                 <w>1</w>
             </model_color_vec4>
             <flow_section_id>6</flow_section_id>
+            <tag>0</tag>
         </Base>
         <TypingEnemy>
             <name>r0_d</name>
@@ -4663,6 +4770,7 @@
                 <w>1</w>
             </model_color_vec4>
             <flow_section_id>6</flow_section_id>
+            <tag>0</tag>
             <text>d</text>
             <type_kill>false</type_kill>
             <all_actions_on_hit>true</all_actions_on_hit>
@@ -4687,6 +4795,7 @@
                     <stepStr> mG3,mB3-,mD4,mF4:1</stepStr>
                 </seq_action>
             </hit_actions>
+            <off_cooldown_actions/>
         </TypingEnemy>
         <TypingEnemy>
             <name>r0_k</name>
@@ -4718,6 +4827,7 @@
                 <w>1</w>
             </model_color_vec4>
             <flow_section_id>6</flow_section_id>
+            <tag>0</tag>
             <text>k</text>
             <type_kill>false</type_kill>
             <all_actions_on_hit>true</all_actions_on_hit>
@@ -4742,6 +4852,7 @@
                     <stepStr>mB3-,mD4,mF4,mA4:1</stepStr>
                 </seq_action>
             </hit_actions>
+            <off_cooldown_actions/>
         </TypingEnemy>
         <TypingEnemy>
             <name>r0_e</name>
@@ -4773,6 +4884,7 @@
                 <w>1</w>
             </model_color_vec4>
             <flow_section_id>6</flow_section_id>
+            <tag>0</tag>
             <text>e</text>
             <type_kill>false</type_kill>
             <all_actions_on_hit>true</all_actions_on_hit>
@@ -4797,6 +4909,7 @@
                     <stepStr> mC4,mE4-,mG4,mB4-:1</stepStr>
                 </seq_action>
             </hit_actions>
+            <off_cooldown_actions/>
         </TypingEnemy>
         <TypingEnemy>
             <name>r0_i</name>
@@ -4828,6 +4941,7 @@
                 <w>1</w>
             </model_color_vec4>
             <flow_section_id>6</flow_section_id>
+            <tag>0</tag>
             <text>i</text>
             <type_kill>false</type_kill>
             <all_actions_on_hit>true</all_actions_on_hit>
@@ -4852,6 +4966,7 @@
                     <stepStr> mG3,mB3-,mD4,mF4:1</stepStr>
                 </seq_action>
             </hit_actions>
+            <off_cooldown_actions/>
         </TypingEnemy>
         <IntVariable>
             <name>r0_counter</name>
@@ -4883,6 +4998,7 @@
                 <w>1</w>
             </model_color_vec4>
             <flow_section_id>6</flow_section_id>
+            <tag>0</tag>
             <initial_value>3</initial_value>
             <actions>
                 <seq_action>
@@ -4929,6 +5045,7 @@
                 <w>1</w>
             </model_color_vec4>
             <flow_section_id>6</flow_section_id>
+            <tag>0</tag>
             <actions>
                 <seq_action>
                     <one_time>true</one_time>
@@ -4984,6 +5101,7 @@
                 <w>1</w>
             </model_color_vec4>
             <flow_section_id>6</flow_section_id>
+            <tag>0</tag>
             <actions>
                 <seq_action>
                     <one_time>true</one_time>
@@ -5039,6 +5157,7 @@
                 <w>1</w>
             </model_color_vec4>
             <flow_section_id>6</flow_section_id>
+            <tag>0</tag>
             <actions>
                 <seq_action>
                     <one_time>true</one_time>
@@ -5094,6 +5213,7 @@
                 <w>1</w>
             </model_color_vec4>
             <flow_section_id>6</flow_section_id>
+            <tag>0</tag>
             <can_hit>true</can_hit>
             <hp>-1</hp>
             <move_mode>Waypoints</move_mode>
@@ -5151,6 +5271,7 @@
                 <w>1</w>
             </model_color_vec4>
             <flow_section_id>6</flow_section_id>
+            <tag>0</tag>
             <text>j</text>
             <type_kill>false</type_kill>
             <all_actions_on_hit>true</all_actions_on_hit>
@@ -5175,6 +5296,7 @@
                     <stepStr> mA3,mC4,mE4,mG4:1</stepStr>
                 </seq_action>
             </hit_actions>
+            <off_cooldown_actions/>
         </TypingEnemy>
         <TypingEnemy>
             <name>r0_g</name>
@@ -5206,6 +5328,7 @@
                 <w>1</w>
             </model_color_vec4>
             <flow_section_id>6</flow_section_id>
+            <tag>0</tag>
             <text>g</text>
             <type_kill>false</type_kill>
             <all_actions_on_hit>true</all_actions_on_hit>
@@ -5230,6 +5353,7 @@
                     <stepStr> mC4,mE4-,mG4,mB4-:1</stepStr>
                 </seq_action>
             </hit_actions>
+            <off_cooldown_actions/>
         </TypingEnemy>
         <TypingEnemy>
             <name>r0_h</name>
@@ -5261,6 +5385,7 @@
                 <w>1</w>
             </model_color_vec4>
             <flow_section_id>6</flow_section_id>
+            <tag>0</tag>
             <text>h</text>
             <type_kill>false</type_kill>
             <all_actions_on_hit>true</all_actions_on_hit>
@@ -5285,6 +5410,7 @@
                     <stepStr> mC4,mE4-,mG4,mB4-:1</stepStr>
                 </seq_action>
             </hit_actions>
+            <off_cooldown_actions/>
         </TypingEnemy>
         <TypingEnemy>
             <name>r0_o</name>
@@ -5316,6 +5442,7 @@
                 <w>1</w>
             </model_color_vec4>
             <flow_section_id>6</flow_section_id>
+            <tag>0</tag>
             <text>o</text>
             <type_kill>false</type_kill>
             <all_actions_on_hit>true</all_actions_on_hit>
@@ -5340,6 +5467,7 @@
                     <stepStr>mB3-,mD4,mF4,mA4:1</stepStr>
                 </seq_action>
             </hit_actions>
+            <off_cooldown_actions/>
         </TypingEnemy>
         <TypingEnemy>
             <name>r0_s</name>
@@ -5371,6 +5499,7 @@
                 <w>1</w>
             </model_color_vec4>
             <flow_section_id>6</flow_section_id>
+            <tag>0</tag>
             <text>s</text>
             <type_kill>false</type_kill>
             <all_actions_on_hit>true</all_actions_on_hit>
@@ -5395,6 +5524,7 @@
                     <stepStr> mA3,mC4,mE4,mG4:1</stepStr>
                 </seq_action>
             </hit_actions>
+            <off_cooldown_actions/>
         </TypingEnemy>
         <FlowTrigger>
             <name>room1_trigger</name>
@@ -5426,6 +5556,7 @@
                 <w>1</w>
             </model_color_vec4>
             <flow_section_id>0</flow_section_id>
+            <tag>0</tag>
             <on_player_enter>true</on_player_enter>
             <random_action_count>-1</random_action_count>
             <actions>
@@ -5496,6 +5627,7 @@
                 <w>1</w>
             </model_color_vec4>
             <flow_section_id>0</flow_section_id>
+            <tag>0</tag>
         </Base>
         <Base>
             <name>room1_spawn_pos</name>
@@ -5527,6 +5659,7 @@
                 <w>1</w>
             </model_color_vec4>
             <flow_section_id>0</flow_section_id>
+            <tag>0</tag>
         </Base>
         <ActionSequencer>
             <name>r7_action_seq</name>
@@ -5558,6 +5691,7 @@
                 <w>1</w>
             </model_color_vec4>
             <flow_section_id>5</flow_section_id>
+            <tag>0</tag>
             <seq_filename>data/barren/r7_action_seq.txt</seq_filename>
         </ActionSequencer>
         <FlowPickup>
@@ -5590,6 +5724,7 @@
                 <w>1</w>
             </model_color_vec4>
             <flow_section_id>2</flow_section_id>
+            <tag>0</tag>
             <actions>
                 <seq_action>
                     <one_time>true</one_time>
@@ -5656,6 +5791,7 @@
                 <w>1</w>
             </model_color_vec4>
             <flow_section_id>2</flow_section_id>
+            <tag>0</tag>
             <text>r</text>
             <type_kill>false</type_kill>
             <all_actions_on_hit>false</all_actions_on_hit>
@@ -5681,6 +5817,7 @@
                     <quantizeDenom>0.25</quantizeDenom>
                 </seq_action>
             </hit_actions>
+            <off_cooldown_actions/>
         </TypingEnemy>
         <FlowTrigger>
             <name>r2_secret_exit</name>
@@ -5712,6 +5849,7 @@
                 <w>1</w>
             </model_color_vec4>
             <flow_section_id>2</flow_section_id>
+            <tag>0</tag>
             <on_player_enter>true</on_player_enter>
             <random_action_count>-1</random_action_count>
             <actions>
@@ -5824,6 +5962,7 @@
                 <w>1</w>
             </model_color_vec4>
             <flow_section_id>2</flow_section_id>
+            <tag>0</tag>
             <text>u</text>
             <type_kill>false</type_kill>
             <all_actions_on_hit>false</all_actions_on_hit>
@@ -5849,6 +5988,7 @@
                     <quantizeDenom>0.25</quantizeDenom>
                 </seq_action>
             </hit_actions>
+            <off_cooldown_actions/>
         </TypingEnemy>
         <TypingEnemy>
             <name>r2_p</name>
@@ -5880,6 +6020,7 @@
                 <w>1</w>
             </model_color_vec4>
             <flow_section_id>2</flow_section_id>
+            <tag>0</tag>
             <text>p</text>
             <type_kill>false</type_kill>
             <all_actions_on_hit>false</all_actions_on_hit>
@@ -5905,6 +6046,7 @@
                     <quantizeDenom>0.25</quantizeDenom>
                 </seq_action>
             </hit_actions>
+            <off_cooldown_actions/>
         </TypingEnemy>
         <Base>
             <name>sideroom1_camera_target</name>
@@ -5936,6 +6078,7 @@
                 <w>1</w>
             </model_color_vec4>
             <flow_section_id>2</flow_section_id>
+            <tag>0</tag>
         </Base>
         <ActionSequencer>
             <name>room0_action_seq</name>
@@ -5967,6 +6110,7 @@
                 <w>1</w>
             </model_color_vec4>
             <flow_section_id>6</flow_section_id>
+            <tag>0</tag>
             <seq_filename>data/barren/room0_action_seq.txt</seq_filename>
         </ActionSequencer>
         <Sequencer>
@@ -5999,6 +6143,7 @@
                 <w>1</w>
             </model_color_vec4>
             <flow_section_id>2</flow_section_id>
+            <tag>0</tag>
             <loop>true</loop>
             <start_beat_time>0</start_beat_time>
             <events>
@@ -6160,6 +6305,7 @@
                 <w>1</w>
             </model_color_vec4>
             <flow_section_id>2</flow_section_id>
+            <tag>0</tag>
             <text>q</text>
             <type_kill>false</type_kill>
             <all_actions_on_hit>false</all_actions_on_hit>
@@ -6185,6 +6331,7 @@
                     <quantizeDenom>0.25</quantizeDenom>
                 </seq_action>
             </hit_actions>
+            <off_cooldown_actions/>
         </TypingEnemy>
         <TypingEnemy>
             <name>r2_secret_d</name>
@@ -6216,6 +6363,7 @@
                 <w>1</w>
             </model_color_vec4>
             <flow_section_id>2</flow_section_id>
+            <tag>0</tag>
             <text>d</text>
             <type_kill>false</type_kill>
             <all_actions_on_hit>true</all_actions_on_hit>
@@ -6245,6 +6393,7 @@
                     <entity_name>r2_secret_vfx_trigger</entity_name>
                 </seq_action>
             </hit_actions>
+            <off_cooldown_actions/>
         </TypingEnemy>
         <TypingEnemy>
             <name>r2_secret_k</name>
@@ -6276,6 +6425,7 @@
                 <w>1</w>
             </model_color_vec4>
             <flow_section_id>2</flow_section_id>
+            <tag>0</tag>
             <text>k</text>
             <type_kill>false</type_kill>
             <all_actions_on_hit>true</all_actions_on_hit>
@@ -6305,6 +6455,7 @@
                     <entity_name>r2_secret_vfx_trigger</entity_name>
                 </seq_action>
             </hit_actions>
+            <off_cooldown_actions/>
         </TypingEnemy>
         <TypingEnemy>
             <name>r2_secret_s</name>
@@ -6336,6 +6487,7 @@
                 <w>1</w>
             </model_color_vec4>
             <flow_section_id>2</flow_section_id>
+            <tag>0</tag>
             <text>s</text>
             <type_kill>false</type_kill>
             <all_actions_on_hit>true</all_actions_on_hit>
@@ -6365,6 +6517,7 @@
                     <entity_name>r2_secret_vfx_trigger</entity_name>
                 </seq_action>
             </hit_actions>
+            <off_cooldown_actions/>
         </TypingEnemy>
         <TypingEnemy>
             <name>r3_y</name>
@@ -6396,6 +6549,7 @@
                 <w>1</w>
             </model_color_vec4>
             <flow_section_id>1</flow_section_id>
+            <tag>0</tag>
             <text>y</text>
             <type_kill>false</type_kill>
             <all_actions_on_hit>true</all_actions_on_hit>
@@ -6426,6 +6580,7 @@
                     </beat_time_event>
                 </seq_action>
             </hit_actions>
+            <off_cooldown_actions/>
         </TypingEnemy>
         <TypingEnemy>
             <name>r3_u</name>
@@ -6457,6 +6612,7 @@
                 <w>1</w>
             </model_color_vec4>
             <flow_section_id>1</flow_section_id>
+            <tag>0</tag>
             <text>u</text>
             <type_kill>false</type_kill>
             <all_actions_on_hit>false</all_actions_on_hit>
@@ -6481,6 +6637,7 @@
                     <stepStr> mB3-,mD4,mF4,mA4:1</stepStr>
                 </seq_action>
             </hit_actions>
+            <off_cooldown_actions/>
         </TypingEnemy>
         <TypingEnemy>
             <name>r3_t</name>
@@ -6512,6 +6669,7 @@
                 <w>1</w>
             </model_color_vec4>
             <flow_section_id>1</flow_section_id>
+            <tag>0</tag>
             <text>t</text>
             <type_kill>false</type_kill>
             <all_actions_on_hit>false</all_actions_on_hit>
@@ -6536,6 +6694,7 @@
                     <stepStr> mB3-,mD4,mF4,mA4:1</stepStr>
                 </seq_action>
             </hit_actions>
+            <off_cooldown_actions/>
         </TypingEnemy>
         <TypingEnemy>
             <name>r3_n</name>
@@ -6567,6 +6726,7 @@
                 <w>1</w>
             </model_color_vec4>
             <flow_section_id>1</flow_section_id>
+            <tag>0</tag>
             <text>n</text>
             <type_kill>false</type_kill>
             <all_actions_on_hit>false</all_actions_on_hit>
@@ -6591,6 +6751,7 @@
                     <stepStr> mB3-,mD4,mF4,mA4:1</stepStr>
                 </seq_action>
             </hit_actions>
+            <off_cooldown_actions/>
         </TypingEnemy>
         <FlowWall>
             <name>r3_wall3</name>
@@ -6622,6 +6783,7 @@
                 <w>1</w>
             </model_color_vec4>
             <flow_section_id>1</flow_section_id>
+            <tag>0</tag>
             <can_hit>true</can_hit>
             <hp>-1</hp>
             <move_mode>Waypoints</move_mode>
@@ -6698,6 +6860,7 @@
                 <w>1</w>
             </model_color_vec4>
             <flow_section_id>1</flow_section_id>
+            <tag>0</tag>
             <text>o</text>
             <type_kill>false</type_kill>
             <all_actions_on_hit>false</all_actions_on_hit>
@@ -6722,6 +6885,7 @@
                     <stepStr> mB3-,mD4,mF4,mA4:1</stepStr>
                 </seq_action>
             </hit_actions>
+            <off_cooldown_actions/>
         </TypingEnemy>
         <FlowWall>
             <name>r2_wall3 (copy)</name>
@@ -6753,6 +6917,7 @@
                 <w>1</w>
             </model_color_vec4>
             <flow_section_id>2</flow_section_id>
+            <tag>0</tag>
             <can_hit>true</can_hit>
             <hp>-1</hp>
             <move_mode>Waypoints</move_mode>
@@ -6829,6 +6994,7 @@
                 <w>0.588235319</w>
             </model_color_vec4>
             <flow_section_id>2</flow_section_id>
+            <tag>0</tag>
             <can_hit>true</can_hit>
             <hp>1</hp>
             <move_mode>Waypoints</move_mode>
@@ -6905,6 +7071,7 @@
                 <w>1</w>
             </model_color_vec4>
             <flow_section_id>2</flow_section_id>
+            <tag>0</tag>
             <can_hit>true</can_hit>
             <hp>-1</hp>
             <move_mode>Waypoints</move_mode>
@@ -6981,6 +7148,7 @@
                 <w>1</w>
             </model_color_vec4>
             <flow_section_id>2</flow_section_id>
+            <tag>0</tag>
             <text>m</text>
             <type_kill>false</type_kill>
             <all_actions_on_hit>true</all_actions_on_hit>
@@ -7010,6 +7178,7 @@
                     <entity_name>r2_secret_vfx_trigger</entity_name>
                 </seq_action>
             </hit_actions>
+            <off_cooldown_actions/>
         </TypingEnemy>
         <TypingEnemy>
             <name>r2_secret_e</name>
@@ -7041,6 +7210,7 @@
                 <w>1</w>
             </model_color_vec4>
             <flow_section_id>2</flow_section_id>
+            <tag>0</tag>
             <text>e</text>
             <type_kill>false</type_kill>
             <all_actions_on_hit>true</all_actions_on_hit>
@@ -7070,6 +7240,7 @@
                     <entity_name>r2_secret_vfx_trigger</entity_name>
                 </seq_action>
             </hit_actions>
+            <off_cooldown_actions/>
         </TypingEnemy>
         <FlowWall>
             <name>r2_wall4</name>
@@ -7101,6 +7272,7 @@
                 <w>1</w>
             </model_color_vec4>
             <flow_section_id>2</flow_section_id>
+            <tag>0</tag>
             <can_hit>true</can_hit>
             <hp>-1</hp>
             <move_mode>Waypoints</move_mode>
@@ -7177,6 +7349,7 @@
                 <w>1</w>
             </model_color_vec4>
             <flow_section_id>2</flow_section_id>
+            <tag>0</tag>
             <can_hit>true</can_hit>
             <hp>-1</hp>
             <move_mode>Waypoints</move_mode>
@@ -7253,6 +7426,7 @@
                 <w>1</w>
             </model_color_vec4>
             <flow_section_id>2</flow_section_id>
+            <tag>0</tag>
             <can_hit>true</can_hit>
             <hp>-1</hp>
             <move_mode>Waypoints</move_mode>
@@ -7329,6 +7503,7 @@
                 <w>1</w>
             </model_color_vec4>
             <flow_section_id>2</flow_section_id>
+            <tag>0</tag>
             <can_hit>true</can_hit>
             <hp>-1</hp>
             <move_mode>Waypoints</move_mode>
@@ -7405,6 +7580,7 @@
                 <w>1</w>
             </model_color_vec4>
             <flow_section_id>2</flow_section_id>
+            <tag>0</tag>
             <on_player_enter>true</on_player_enter>
             <random_action_count>-1</random_action_count>
             <actions>
@@ -7521,6 +7697,7 @@
                 <w>1</w>
             </model_color_vec4>
             <flow_section_id>2</flow_section_id>
+            <tag>0</tag>
             <cycleTimeSecs>0.100000001</cycleTimeSecs>
             <pulseScaleFactor>1.5</pulseScaleFactor>
         </Vfx>
@@ -7554,6 +7731,7 @@
                 <w>1</w>
             </model_color_vec4>
             <flow_section_id>2</flow_section_id>
+            <tag>0</tag>
             <cycleTimeSecs>0.100000001</cycleTimeSecs>
             <pulseScaleFactor>1.5</pulseScaleFactor>
         </Vfx>
@@ -7587,6 +7765,7 @@
                 <w>1</w>
             </model_color_vec4>
             <flow_section_id>2</flow_section_id>
+            <tag>0</tag>
             <cycleTimeSecs>0.100000001</cycleTimeSecs>
             <pulseScaleFactor>1.5</pulseScaleFactor>
         </Vfx>
@@ -7620,6 +7799,7 @@
                 <w>1</w>
             </model_color_vec4>
             <flow_section_id>2</flow_section_id>
+            <tag>0</tag>
             <cycleTimeSecs>0.100000001</cycleTimeSecs>
             <pulseScaleFactor>1.5</pulseScaleFactor>
         </Vfx>
@@ -7653,6 +7833,7 @@
                 <w>1</w>
             </model_color_vec4>
             <flow_section_id>2</flow_section_id>
+            <tag>0</tag>
             <cycleTimeSecs>0.100000001</cycleTimeSecs>
             <pulseScaleFactor>1.5</pulseScaleFactor>
         </Vfx>
@@ -7686,6 +7867,7 @@
                 <w>1</w>
             </model_color_vec4>
             <flow_section_id>2</flow_section_id>
+            <tag>0</tag>
             <cycleTimeSecs>0.100000001</cycleTimeSecs>
             <pulseScaleFactor>1.5</pulseScaleFactor>
         </Vfx>
@@ -7719,6 +7901,7 @@
                 <w>1</w>
             </model_color_vec4>
             <flow_section_id>2</flow_section_id>
+            <tag>0</tag>
             <cycleTimeSecs>0.100000001</cycleTimeSecs>
             <pulseScaleFactor>1.5</pulseScaleFactor>
         </Vfx>
@@ -7752,6 +7935,7 @@
                 <w>1</w>
             </model_color_vec4>
             <flow_section_id>2</flow_section_id>
+            <tag>0</tag>
             <cycleTimeSecs>0.100000001</cycleTimeSecs>
             <pulseScaleFactor>1.5</pulseScaleFactor>
         </Vfx>
@@ -7785,6 +7969,7 @@
                 <w>1</w>
             </model_color_vec4>
             <flow_section_id>2</flow_section_id>
+            <tag>0</tag>
             <cycleTimeSecs>0.100000001</cycleTimeSecs>
             <pulseScaleFactor>1.5</pulseScaleFactor>
         </Vfx>
@@ -7818,6 +8003,7 @@
                 <w>1</w>
             </model_color_vec4>
             <flow_section_id>2</flow_section_id>
+            <tag>0</tag>
             <cycleTimeSecs>0.100000001</cycleTimeSecs>
             <pulseScaleFactor>1.5</pulseScaleFactor>
         </Vfx>
@@ -7851,6 +8037,7 @@
                 <w>1</w>
             </model_color_vec4>
             <flow_section_id>2</flow_section_id>
+            <tag>0</tag>
             <cycleTimeSecs>0.100000001</cycleTimeSecs>
             <pulseScaleFactor>1.5</pulseScaleFactor>
         </Vfx>
@@ -7884,6 +8071,7 @@
                 <w>1</w>
             </model_color_vec4>
             <flow_section_id>2</flow_section_id>
+            <tag>0</tag>
             <cycleTimeSecs>0.100000001</cycleTimeSecs>
             <pulseScaleFactor>1.5</pulseScaleFactor>
         </Vfx>
@@ -7917,6 +8105,7 @@
                 <w>1</w>
             </model_color_vec4>
             <flow_section_id>2</flow_section_id>
+            <tag>0</tag>
             <cycleTimeSecs>0.100000001</cycleTimeSecs>
             <pulseScaleFactor>1.5</pulseScaleFactor>
         </Vfx>
@@ -7950,6 +8139,7 @@
                 <w>1</w>
             </model_color_vec4>
             <flow_section_id>2</flow_section_id>
+            <tag>0</tag>
             <on_player_enter>false</on_player_enter>
             <random_action_count>6</random_action_count>
             <actions>
@@ -8050,6 +8240,7 @@
                 <w>1</w>
             </model_color_vec4>
             <flow_section_id>2</flow_section_id>
+            <tag>0</tag>
             <text>i</text>
             <type_kill>false</type_kill>
             <all_actions_on_hit>true</all_actions_on_hit>
@@ -8079,6 +8270,7 @@
                     <entity_name>r2_secret_vfx_trigger</entity_name>
                 </seq_action>
             </hit_actions>
+            <off_cooldown_actions/>
         </TypingEnemy>
         <TypingEnemy>
             <name>r2_e</name>
@@ -8110,6 +8302,7 @@
                 <w>1</w>
             </model_color_vec4>
             <flow_section_id>2</flow_section_id>
+            <tag>0</tag>
             <text>e</text>
             <type_kill>false</type_kill>
             <all_actions_on_hit>false</all_actions_on_hit>
@@ -8134,6 +8327,7 @@
                     <stepStr> mB3-,mD4,mF4,mA4:1</stepStr>
                 </seq_action>
             </hit_actions>
+            <off_cooldown_actions/>
         </TypingEnemy>
         <TypingEnemy>
             <name>r2_s</name>
@@ -8165,6 +8359,7 @@
                 <w>1</w>
             </model_color_vec4>
             <flow_section_id>2</flow_section_id>
+            <tag>0</tag>
             <text>s</text>
             <type_kill>false</type_kill>
             <all_actions_on_hit>false</all_actions_on_hit>
@@ -8189,6 +8384,7 @@
                     <stepStr> mB3-,mD4,mF4,mA4:1</stepStr>
                 </seq_action>
             </hit_actions>
+            <off_cooldown_actions/>
         </TypingEnemy>
         <TypingEnemy>
             <name>r2_o</name>
@@ -8220,6 +8416,7 @@
                 <w>1</w>
             </model_color_vec4>
             <flow_section_id>2</flow_section_id>
+            <tag>0</tag>
             <text>o</text>
             <type_kill>false</type_kill>
             <all_actions_on_hit>false</all_actions_on_hit>
@@ -8244,6 +8441,7 @@
                     <stepStr> mB3-,mD4,mF4,mA4:1</stepStr>
                 </seq_action>
             </hit_actions>
+            <off_cooldown_actions/>
         </TypingEnemy>
         <TypingEnemy>
             <name>r2_n</name>
@@ -8275,6 +8473,7 @@
                 <w>1</w>
             </model_color_vec4>
             <flow_section_id>2</flow_section_id>
+            <tag>0</tag>
             <text>n</text>
             <type_kill>false</type_kill>
             <all_actions_on_hit>false</all_actions_on_hit>
@@ -8299,6 +8498,7 @@
                     <stepStr> mB3-,mD4,mF4,mA4:1</stepStr>
                 </seq_action>
             </hit_actions>
+            <off_cooldown_actions/>
         </TypingEnemy>
         <FlowWall>
             <name>r6_wall5</name>
@@ -8330,6 +8530,7 @@
                 <w>1</w>
             </model_color_vec4>
             <flow_section_id>4</flow_section_id>
+            <tag>0</tag>
             <can_hit>true</can_hit>
             <hp>-1</hp>
             <move_mode>Waypoints</move_mode>
@@ -8387,6 +8588,7 @@
                 <w>1</w>
             </model_color_vec4>
             <flow_section_id>4</flow_section_id>
+            <tag>0</tag>
             <can_hit>true</can_hit>
             <hp>-1</hp>
             <move_mode>Waypoints</move_mode>
@@ -8444,6 +8646,7 @@
                 <w>1</w>
             </model_color_vec4>
             <flow_section_id>5</flow_section_id>
+            <tag>0</tag>
             <text>i</text>
             <type_kill>false</type_kill>
             <all_actions_on_hit>true</all_actions_on_hit>
@@ -8504,6 +8707,7 @@
                     <init_on_activate>true</init_on_activate>
                 </seq_action>
             </hit_actions>
+            <off_cooldown_actions/>
         </TypingEnemy>
         <TypingEnemy>
             <name>r8_a</name>
@@ -8535,12 +8739,13 @@
                 <w>1</w>
             </model_color_vec4>
             <flow_section_id>7</flow_section_id>
+            <tag>0</tag>
             <text>a</text>
             <type_kill>false</type_kill>
             <all_actions_on_hit>true</all_actions_on_hit>
             <flow_polarity>false</flow_polarity>
-            <flow_cooldown>500</flow_cooldown>
-            <reset_cooldown_on_any_hit>true</reset_cooldown_on_any_hit>
+            <flow_cooldown>4.80000019</flow_cooldown>
+            <reset_cooldown_on_any_hit>false</reset_cooldown_on_any_hit>
             <active_radius>3</active_radius>
             <waypoint_follower>
                 <local_to_entity>true</local_to_entity>
@@ -8589,7 +8794,21 @@
                     <hasMaxZ>false</hasMaxZ>
                     <maxZ>0</maxZ>
                 </seq_action>
+                <seq_action>
+                    <one_time>false</one_time>
+                    <action_type>SetEnemyHittable</action_type>
+                    <entity_tag>1</entity_tag>
+                    <hittable>true</hittable>
+                </seq_action>
             </hit_actions>
+            <off_cooldown_actions>
+                <seq_action>
+                    <one_time>false</one_time>
+                    <action_type>SetEnemyHittable</action_type>
+                    <entity_tag>1</entity_tag>
+                    <hittable>false</hittable>
+                </seq_action>
+            </off_cooldown_actions>
         </TypingEnemy>
         <Base>
             <name>r7_stuff6</name>
@@ -8621,6 +8840,7 @@
                 <w>1</w>
             </model_color_vec4>
             <flow_section_id>5</flow_section_id>
+            <tag>0</tag>
         </Base>
         <Base>
             <name>r7_stuff7</name>
@@ -8652,6 +8872,7 @@
                 <w>1</w>
             </model_color_vec4>
             <flow_section_id>5</flow_section_id>
+            <tag>0</tag>
         </Base>
         <Base>
             <name>r7_stuff8</name>
@@ -8683,6 +8904,7 @@
                 <w>1</w>
             </model_color_vec4>
             <flow_section_id>5</flow_section_id>
+            <tag>0</tag>
         </Base>
         <Base>
             <name>r7_stuff9</name>
@@ -8714,6 +8936,7 @@
                 <w>1</w>
             </model_color_vec4>
             <flow_section_id>5</flow_section_id>
+            <tag>0</tag>
         </Base>
         <Base>
             <name>r7_stuff10</name>
@@ -8745,6 +8968,7 @@
                 <w>1</w>
             </model_color_vec4>
             <flow_section_id>5</flow_section_id>
+            <tag>0</tag>
         </Base>
         <Base>
             <name>r7_stuff11</name>
@@ -8776,6 +9000,7 @@
                 <w>1</w>
             </model_color_vec4>
             <flow_section_id>5</flow_section_id>
+            <tag>0</tag>
         </Base>
         <FlowWall>
             <name>room7_camera_target</name>
@@ -8807,6 +9032,7 @@
                 <w>1</w>
             </model_color_vec4>
             <flow_section_id>5</flow_section_id>
+            <tag>0</tag>
             <can_hit>false</can_hit>
             <hp>-1</hp>
             <move_mode>Waypoints</move_mode>
@@ -8859,6 +9085,7 @@
                 <w>1</w>
             </model_color_vec4>
             <flow_section_id>7</flow_section_id>
+            <tag>0</tag>
         </Base>
         <TypingEnemy>
             <name>r8_f</name>
@@ -8890,6 +9117,7 @@
                 <w>1</w>
             </model_color_vec4>
             <flow_section_id>7</flow_section_id>
+            <tag>1</tag>
             <text>f</text>
             <type_kill>false</type_kill>
             <all_actions_on_hit>true</all_actions_on_hit>
@@ -8914,6 +9142,7 @@
                     <stepStr> mG1:1</stepStr>
                 </seq_action>
             </hit_actions>
+            <off_cooldown_actions/>
         </TypingEnemy>
         <TypingEnemy>
             <name>r8_o</name>
@@ -8945,6 +9174,7 @@
                 <w>1</w>
             </model_color_vec4>
             <flow_section_id>7</flow_section_id>
+            <tag>1</tag>
             <text>o</text>
             <type_kill>false</type_kill>
             <all_actions_on_hit>true</all_actions_on_hit>
@@ -8966,9 +9196,10 @@
                     <seqName>bass_seq</seqName>
                     <velOnly>false</velOnly>
                     <temporary>true</temporary>
-                    <stepStr> mG1:1</stepStr>
+                    <stepStr> mD2:1</stepStr>
                 </seq_action>
             </hit_actions>
+            <off_cooldown_actions/>
         </TypingEnemy>
         <TypingEnemy>
             <name>r8_d</name>
@@ -9000,6 +9231,7 @@
                 <w>1</w>
             </model_color_vec4>
             <flow_section_id>7</flow_section_id>
+            <tag>1</tag>
             <text>d</text>
             <type_kill>false</type_kill>
             <all_actions_on_hit>true</all_actions_on_hit>
@@ -9021,9 +9253,10 @@
                     <seqName>bass_seq</seqName>
                     <velOnly>false</velOnly>
                     <temporary>true</temporary>
-                    <stepStr> mG1:1</stepStr>
+                    <stepStr> mG2:1</stepStr>
                 </seq_action>
             </hit_actions>
+            <off_cooldown_actions/>
         </TypingEnemy>
         <TypingEnemy>
             <name>r8_h</name>
@@ -9031,9 +9264,9 @@
             <pickable>true</pickable>
             <transform>
                 <pos>
-                    <x>62.2304802</x>
+                    <x>62.2461052</x>
                     <y>0</y>
-                    <z>24.7565708</z>
+                    <z>24.7721958</z>
                 </pos>
                 <quat>
                     <x>0</x>
@@ -9055,6 +9288,7 @@
                 <w>1</w>
             </model_color_vec4>
             <flow_section_id>7</flow_section_id>
+            <tag>1</tag>
             <text>h</text>
             <type_kill>false</type_kill>
             <all_actions_on_hit>true</all_actions_on_hit>
@@ -9076,9 +9310,10 @@
                     <seqName>bass_seq</seqName>
                     <velOnly>false</velOnly>
                     <temporary>true</temporary>
-                    <stepStr> mG1:1</stepStr>
+                    <stepStr> mA1:1</stepStr>
                 </seq_action>
             </hit_actions>
+            <off_cooldown_actions/>
         </TypingEnemy>
         <TypingEnemy>
             <name>r8_l</name>
@@ -9086,9 +9321,9 @@
             <pickable>true</pickable>
             <transform>
                 <pos>
-                    <x>64.8047256</x>
+                    <x>66.1484756</x>
                     <y>0</y>
-                    <z>24.6795635</z>
+                    <z>23.5389385</z>
                 </pos>
                 <quat>
                     <x>0</x>
@@ -9110,6 +9345,7 @@
                 <w>1</w>
             </model_color_vec4>
             <flow_section_id>7</flow_section_id>
+            <tag>1</tag>
             <text>l</text>
             <type_kill>false</type_kill>
             <all_actions_on_hit>true</all_actions_on_hit>
@@ -9131,9 +9367,10 @@
                     <seqName>bass_seq</seqName>
                     <velOnly>false</velOnly>
                     <temporary>true</temporary>
-                    <stepStr> mG1:1</stepStr>
+                    <stepStr> mB1-:1</stepStr>
                 </seq_action>
             </hit_actions>
+            <off_cooldown_actions/>
         </TypingEnemy>
         <TypingEnemy>
             <name>r8_w</name>
@@ -9141,9 +9378,9 @@
             <pickable>true</pickable>
             <transform>
                 <pos>
-                    <x>67.3569794</x>
+                    <x>69.5444794</x>
                     <y>0</y>
-                    <z>24.7125683</z>
+                    <z>24.1813183</z>
                 </pos>
                 <quat>
                     <x>0</x>
@@ -9165,6 +9402,7 @@
                 <w>1</w>
             </model_color_vec4>
             <flow_section_id>7</flow_section_id>
+            <tag>1</tag>
             <text>w</text>
             <type_kill>false</type_kill>
             <all_actions_on_hit>true</all_actions_on_hit>
@@ -9186,9 +9424,10 @@
                     <seqName>bass_seq</seqName>
                     <velOnly>false</velOnly>
                     <temporary>true</temporary>
-                    <stepStr> mG1:1</stepStr>
+                    <stepStr> mC2:1</stepStr>
                 </seq_action>
             </hit_actions>
+            <off_cooldown_actions/>
         </TypingEnemy>
         <TypingEnemy>
             <name>r8_i</name>
@@ -9196,9 +9435,9 @@
             <pickable>true</pickable>
             <transform>
                 <pos>
-                    <x>62.2304802</x>
+                    <x>62.1523552</x>
                     <y>0</y>
-                    <z>26.8797836</z>
+                    <z>26.8641586</z>
                 </pos>
                 <quat>
                     <x>0</x>
@@ -9220,6 +9459,7 @@
                 <w>1</w>
             </model_color_vec4>
             <flow_section_id>7</flow_section_id>
+            <tag>1</tag>
             <text>i</text>
             <type_kill>false</type_kill>
             <all_actions_on_hit>true</all_actions_on_hit>
@@ -9241,9 +9481,10 @@
                     <seqName>bass_seq</seqName>
                     <velOnly>false</velOnly>
                     <temporary>true</temporary>
-                    <stepStr> mG1:1</stepStr>
+                    <stepStr> mG2:1</stepStr>
                 </seq_action>
             </hit_actions>
+            <off_cooldown_actions/>
         </TypingEnemy>
         <TypingEnemy>
             <name>r8_v</name>
@@ -9251,9 +9492,9 @@
             <pickable>true</pickable>
             <transform>
                 <pos>
-                    <x>64.8047256</x>
+                    <x>66.0078506</x>
                     <y>0</y>
-                    <z>26.8027763</z>
+                    <z>26.8184013</z>
                 </pos>
                 <quat>
                     <x>0</x>
@@ -9275,6 +9516,7 @@
                 <w>1</w>
             </model_color_vec4>
             <flow_section_id>7</flow_section_id>
+            <tag>1</tag>
             <text>v</text>
             <type_kill>false</type_kill>
             <all_actions_on_hit>true</all_actions_on_hit>
@@ -9296,9 +9538,10 @@
                     <seqName>bass_seq</seqName>
                     <velOnly>false</velOnly>
                     <temporary>true</temporary>
-                    <stepStr> mG1:1</stepStr>
+                    <stepStr> mB1-:1</stepStr>
                 </seq_action>
             </hit_actions>
+            <off_cooldown_actions/>
         </TypingEnemy>
         <TypingEnemy>
             <name>r8_p</name>
@@ -9306,9 +9549,9 @@
             <pickable>true</pickable>
             <transform>
                 <pos>
-                    <x>67.3569794</x>
+                    <x>72.9194794</x>
                     <y>0</y>
-                    <z>26.8357811</z>
+                    <z>23.1170311</z>
                 </pos>
                 <quat>
                     <x>0</x>
@@ -9330,6 +9573,7 @@
                 <w>1</w>
             </model_color_vec4>
             <flow_section_id>7</flow_section_id>
+            <tag>1</tag>
             <text>p</text>
             <type_kill>false</type_kill>
             <all_actions_on_hit>true</all_actions_on_hit>
@@ -9351,9 +9595,10 @@
                     <seqName>bass_seq</seqName>
                     <velOnly>false</velOnly>
                     <temporary>true</temporary>
-                    <stepStr> mG1:1</stepStr>
+                    <stepStr> mD2:1</stepStr>
                 </seq_action>
             </hit_actions>
+            <off_cooldown_actions/>
         </TypingEnemy>
         <TypingEnemy>
             <name>r8_k</name>
@@ -9363,7 +9608,7 @@
                 <pos>
                     <x>62.2524834</x>
                     <y>0</y>
-                    <z>28.7939739</z>
+                    <z>29.1064739</z>
                 </pos>
                 <quat>
                     <x>0</x>
@@ -9385,6 +9630,7 @@
                 <w>1</w>
             </model_color_vec4>
             <flow_section_id>7</flow_section_id>
+            <tag>1</tag>
             <text>k</text>
             <type_kill>false</type_kill>
             <all_actions_on_hit>true</all_actions_on_hit>
@@ -9406,9 +9652,10 @@
                     <seqName>bass_seq</seqName>
                     <velOnly>false</velOnly>
                     <temporary>true</temporary>
-                    <stepStr> mG1:1</stepStr>
+                    <stepStr> mD2:1</stepStr>
                 </seq_action>
             </hit_actions>
+            <off_cooldown_actions/>
         </TypingEnemy>
         <TypingEnemy>
             <name>r8_s</name>
@@ -9416,9 +9663,9 @@
             <pickable>true</pickable>
             <transform>
                 <pos>
-                    <x>64.8267288</x>
+                    <x>65.5298538</x>
                     <y>0</y>
-                    <z>28.7169666</z>
+                    <z>30.4669666</z>
                 </pos>
                 <quat>
                     <x>0</x>
@@ -9440,6 +9687,7 @@
                 <w>1</w>
             </model_color_vec4>
             <flow_section_id>7</flow_section_id>
+            <tag>1</tag>
             <text>s</text>
             <type_kill>false</type_kill>
             <all_actions_on_hit>true</all_actions_on_hit>
@@ -9461,9 +9709,10 @@
                     <seqName>bass_seq</seqName>
                     <velOnly>false</velOnly>
                     <temporary>true</temporary>
-                    <stepStr> mG1:1</stepStr>
+                    <stepStr> mC2:1</stepStr>
                 </seq_action>
             </hit_actions>
+            <off_cooldown_actions/>
         </TypingEnemy>
         <TypingEnemy>
             <name>r8_y</name>
@@ -9471,9 +9720,9 @@
             <pickable>true</pickable>
             <transform>
                 <pos>
-                    <x>67.3789825</x>
+                    <x>69.5977325</x>
                     <y>0</y>
-                    <z>28.7499714</z>
+                    <z>31.4687214</z>
                 </pos>
                 <quat>
                     <x>0</x>
@@ -9495,7 +9744,122 @@
                 <w>1</w>
             </model_color_vec4>
             <flow_section_id>7</flow_section_id>
+            <tag>1</tag>
             <text>y</text>
+            <type_kill>false</type_kill>
+            <all_actions_on_hit>true</all_actions_on_hit>
+            <flow_polarity>false</flow_polarity>
+            <flow_cooldown>500</flow_cooldown>
+            <reset_cooldown_on_any_hit>true</reset_cooldown_on_any_hit>
+            <active_radius>-1</active_radius>
+            <waypoint_follower>
+                <local_to_entity>true</local_to_entity>
+                <waypoint_auto_start>false</waypoint_auto_start>
+                <loop_waypoints>false</loop_waypoints>
+                <start_time>3</start_time>
+                <waypoints/>
+            </waypoint_follower>
+            <hit_actions>
+                <seq_action>
+                    <one_time>false</one_time>
+                    <action_type>ChangeStepSequencer</action_type>
+                    <seqName>bass_seq</seqName>
+                    <velOnly>false</velOnly>
+                    <temporary>true</temporary>
+                    <stepStr> mA1:1</stepStr>
+                </seq_action>
+            </hit_actions>
+            <off_cooldown_actions/>
+        </TypingEnemy>
+        <TypingEnemy>
+            <name>r8_m</name>
+            <entity_active>true</entity_active>
+            <pickable>true</pickable>
+            <transform>
+                <pos>
+                    <x>69.6016006</x>
+                    <y>0</y>
+                    <z>27.5215263</z>
+                </pos>
+                <quat>
+                    <x>0</x>
+                    <y>0</y>
+                    <z>0</z>
+                    <w>1</w>
+                </quat>
+                <scale>
+                    <x>0.5</x>
+                    <y>0.5</y>
+                    <z>0.5</z>
+                </scale>
+            </transform>
+            <model_name>cube</model_name>
+            <model_color_vec4>
+                <x>1</x>
+                <y>0</y>
+                <z>0</z>
+                <w>1</w>
+            </model_color_vec4>
+            <flow_section_id>7</flow_section_id>
+            <tag>1</tag>
+            <text>m</text>
+            <type_kill>false</type_kill>
+            <all_actions_on_hit>true</all_actions_on_hit>
+            <flow_polarity>false</flow_polarity>
+            <flow_cooldown>500</flow_cooldown>
+            <reset_cooldown_on_any_hit>true</reset_cooldown_on_any_hit>
+            <active_radius>-1</active_radius>
+            <waypoint_follower>
+                <local_to_entity>true</local_to_entity>
+                <waypoint_auto_start>false</waypoint_auto_start>
+                <loop_waypoints>false</loop_waypoints>
+                <start_time>3</start_time>
+                <waypoints/>
+            </waypoint_follower>
+            <hit_actions>
+                <seq_action>
+                    <one_time>false</one_time>
+                    <action_type>ChangeStepSequencer</action_type>
+                    <seqName>bass_seq</seqName>
+                    <velOnly>false</velOnly>
+                    <temporary>true</temporary>
+                    <stepStr> mB1-:1</stepStr>
+                </seq_action>
+            </hit_actions>
+            <off_cooldown_actions/>
+        </TypingEnemy>
+        <TypingEnemy>
+            <name>r8_r</name>
+            <entity_active>true</entity_active>
+            <pickable>true</pickable>
+            <transform>
+                <pos>
+                    <x>72.4363556</x>
+                    <y>0</y>
+                    <z>29.0961094</z>
+                </pos>
+                <quat>
+                    <x>0</x>
+                    <y>0</y>
+                    <z>0</z>
+                    <w>1</w>
+                </quat>
+                <scale>
+                    <x>0.5</x>
+                    <y>0.5</y>
+                    <z>0.5</z>
+                </scale>
+            </transform>
+            <model_name>cube</model_name>
+            <model_color_vec4>
+                <x>1</x>
+                <y>0</y>
+                <z>0</z>
+                <w>1</w>
+            </model_color_vec4>
+            <flow_section_id>7</flow_section_id>
+            <tag>1</tag>
+            <text>r</text>
             <type_kill>false</type_kill>
             <all_actions_on_hit>true</all_actions_on_hit>
             <flow_polarity>false</flow_polarity>
@@ -9519,6 +9883,7 @@
                     <stepStr> mG1:1</stepStr>
                 </seq_action>
             </hit_actions>
+            <off_cooldown_actions/>
         </TypingEnemy>
     </new_entities>
 </script>

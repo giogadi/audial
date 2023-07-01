@@ -70,6 +70,7 @@ struct BaseEntity {
     std::string _modelName;
     Vec4 _modelColor = Vec4(0.8f, 0.8f, 0.8f, 1.f);
     int _flowSectionId = -1;
+    int _tag = 0;
 
     Transform _transform;
     EntityId _id;
@@ -124,6 +125,8 @@ struct EntityManager {
     Entity* FindEntityByNameAndType(std::string_view name, EntityType entityType);
     Entity* FindEntityByNameAndType(std::string_view name, EntityType entityType, bool includeActive, bool includeInactive);
     Entity* GetFirstEntityOfType(EntityType entityType);
+
+    void FindEntitiesByTagAndType(int tag, EntityType entityType, bool includeActive, bool includeInactive, std::vector<ne::Entity*>* entities);
     
     bool TagForDestroy(EntityId id);
     void TagAllPrevSectionEntitiesForDestroy(int newFlowSectionId);

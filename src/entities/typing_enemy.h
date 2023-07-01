@@ -36,6 +36,7 @@ struct TypingEnemyEntity : public ne::Entity {
     bool _useHitActionsOnInitHack = false;
     double _timeOfLastHit = -1.0;
     float _flowCooldownTimeLeft = -1.f;
+    bool _hittable = true;
 
     bool IsActive(GameManager& g) const;
     void OnHit(GameManager& g);
@@ -43,6 +44,7 @@ struct TypingEnemyEntity : public ne::Entity {
     void OnHitOther(GameManager& g);
     InputManager::Key GetNextKey() const;
     bool CanHit() const;
+    void SetHittable(bool hittable);
 
     
     virtual void InitDerived(GameManager& g) override;

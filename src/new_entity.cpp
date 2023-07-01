@@ -240,6 +240,25 @@ Entity* EntityManager::FindEntityByNameAndType(std::string_view name, EntityType
     return nullptr;
 }
 
+void EntityManager::FindEntitiesByTagAndType(int tag, EntityType entityType, bool includeActive, bool includeInactive, std::vector<ne::Entity*>* entities) {
+    if (includeActive) {
+        for (Iterator iter = GetIterator(entityType); !iter.Finished(); iter.Next()) {
+            Entity* e = iter.GetEntity();
+            if (e->_tag == tag) {
+                entities->push_back(e);
+            }
+        }
+    }
+    if (includeInactive) {
+        for (Iterator iter = GetInactiveIterator(entityType); !iter.Finished(); iter.Next()) {
+            Entity* e = iter.GetEntity();
+            if (e->_tag == tag) {
+                entities->push_back(e);
+            }
+        }
+    }
+}
+
 bool EntityManager::RemoveEntity(EntityId idToRemove) {
     EntityInfo entityInfo = GetEntityInfo(idToRemove, true, true);
     Entity* toRemove = entityInfo._e;
@@ -586,6 +605,7 @@ void Entity::Save(serial::Ptree pt) const {
     pt.PutString("model_name", _modelName.c_str());
     serial::SaveInNewChildOf(pt, "model_color_vec4", _modelColor);
     pt.PutInt("flow_section_id", _flowSectionId);
+    pt.PutInt("tag", _tag);
     SaveDerived(pt);
 }
 void Entity::Load(serial::Ptree pt) {
@@ -608,6 +628,8 @@ void Entity::Load(serial::Ptree pt) {
         _modelColor.Load(colorPt);
     }
     pt.TryGetInt("flow_section_id", &_flowSectionId);
+    _tag = 0;
+    pt.TryGetInt("tag", &_tag);
     LoadDerived(pt);
 }
 Entity::ImGuiResult Entity::ImGui(GameManager& g) {
@@ -661,6 +683,7 @@ Entity::ImGuiResult Entity::ImGui(GameManager& g) {
         _initTransform = trans;
     }
     ImGui::InputInt("Flow section ID##Entity", &_flowSectionId);
+    ImGui::InputInt("Tag##Entity", &_tag);
     bool modelChanged = imgui_util::InputText<64>("Model name##Entity", &_modelName, /*trueOnReturnOnly=*/true);
     imgui_util::ColorEdit4("Model color##Entity", &_modelColor);
     

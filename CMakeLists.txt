@@ -74,6 +74,7 @@ add_executable(game
     src/seq_actions/camera_control.cpp
     src/seq_actions/change_patch.cpp
     src/seq_actions/vfx_pulse.cpp
+    src/seq_actions/set_enemy_hittable.cpp
     
     src/entities/light.cpp
     src/entities/camera.cpp

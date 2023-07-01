@@ -21,6 +21,7 @@
         "ChangeStepSeqMaxVoices",
         "ChangePatch",
         "VfxPulse",
-        "Trigger"
+        "Trigger",
+        "SetEnemyHittable"
     ]
 }

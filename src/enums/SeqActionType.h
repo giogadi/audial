@@ -44,6 +44,8 @@ enum class SeqActionType : int {
     
     Trigger,
     
+    SetEnemyHittable,
+    
     Count
 };
 extern char const* gSeqActionTypeStrings[];

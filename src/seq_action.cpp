@@ -12,6 +12,7 @@
 #include "seq_actions/camera_control.h"
 #include "seq_actions/change_patch.h"
 #include "seq_actions/vfx_pulse.h"
+#include "seq_actions/set_enemy_hittable.h"
 #include "entities/typing_player.h"
 #include "entities/flow_player.h"
 #include "entities/flow_wall.h"
@@ -58,6 +59,7 @@ std::unique_ptr<SeqAction> SeqAction::New(SeqActionType actionType) {
         case SeqActionType::ChangePatch: return std::make_unique<ChangePatchSeqAction>();
         case SeqActionType::VfxPulse: return std::make_unique<VfxPulseSeqAction>();
         case SeqActionType::Trigger: return std::make_unique<TriggerSeqAction>();
+        case SeqActionType::SetEnemyHittable: return std::make_unique<SetEnemyHittableSeqAction>();
         case SeqActionType::Count: break;
     }
     assert(false);
@@ -177,6 +179,8 @@ std::unique_ptr<SeqAction> SeqAction::LoadAction(LoadInputs const& loadInputs, s
     }
     else if (token == "change_patch") {
         pAction = std::make_unique<ChangePatchSeqAction>();
+    } else if (token == "set_enemy_hittable") {
+        pAction = std::make_unique<SetEnemyHittableSeqAction>();
     } else {
         printf("ERROR: Unrecognized action type \"%s\".\n", token.c_str());
     }
