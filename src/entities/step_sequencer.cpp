@@ -169,6 +169,7 @@ void StepSequencerEntity::InitDerived(GameManager& g) {
     _tempSequence = _permanentSequence = _initialMidiSequenceDoNotChange;
     _loopStartBeatTime = _initialLoopStartBeatTime;
     _maxNumVoices = _initMaxNumVoices;
+    _gain = _initGain;
 }
 
 void StepSequencerEntity::Update(GameManager& g, float dt) {    
@@ -218,7 +219,7 @@ void StepSequencerEntity::Update(GameManager& g, float dt) {
         if (_isSynth) {
             audio::Event e;
             e.timeInTicks = 0;
-            e.velocity = seqStep._velocity;
+            e.velocity = seqStep._velocity * _gain;
             e.type = audio::EventType::NoteOn;
             static int sNoteOnId = 1;
             e.noteOnId = sNoteOnId++;
@@ -242,7 +243,7 @@ void StepSequencerEntity::Update(GameManager& g, float dt) {
         } else {
             audio::Event e;
             e.timeInTicks = 0;
-            e.pcmVelocity = seqStep._velocity;
+            e.pcmVelocity = seqStep._velocity * _gain;
             e.type = audio::EventType::PlayPcm;
             e.loop = false;
             for (int i = 0; i < numVoices; ++i) {
@@ -290,6 +291,7 @@ void StepSequencerEntity::SaveDerived(serial::Ptree pt) const {
     pt.PutString("sequence", seqSs.str().c_str());
 
     pt.PutBool("start_mute", _startMute);
+    pt.PutFloat("gain", _initGain);
     
     serial::Ptree channelsPt = pt.AddChild("channels");
     for (int c : _channels) {
@@ -309,6 +311,8 @@ void StepSequencerEntity::LoadDerived(serial::Ptree pt) {
     LoadSequenceFromInput(seqSs, _initialMidiSequenceDoNotChange);
 
     pt.TryGetBool("start_mute", &_startMute);
+    _initGain = 1.f;
+    pt.TryGetFloat("gain", &_initGain);
     
     _stepBeatLength = pt.GetDouble("step_length");
     int channel = 0;
@@ -336,5 +340,8 @@ void StepSequencerEntity::LoadDerived(serial::Ptree pt) {
 ne::BaseEntity::ImGuiResult StepSequencerEntity::ImGuiDerived(GameManager& g) {
     ImGui::Checkbox("Mute in Editor", &_editorMute);
     ImGui::Checkbox("Start mute", &_startMute);
+    if (ImGui::InputFloat("Gain", &_initGain)) {
+        _gain = _initGain;
+    }
     return ImGuiResult::Done;
 }

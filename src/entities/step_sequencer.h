@@ -28,6 +28,7 @@ struct StepSequencerEntity : ne::Entity {
     bool _startMute = false;
     bool _editorMute = false;
     int _initMaxNumVoices = -1;
+    float _initGain = 1.f;
 
     // non-serialized
     bool _mute = false;
@@ -37,6 +38,7 @@ struct StepSequencerEntity : ne::Entity {
     std::vector<SeqStep> _tempSequence;
     std::queue<SeqStepChange> _changeQueue;
     int _maxNumVoices = -1;
+    float _gain = 1.f;
 
     enum StepSaveType { Temporary, Permanent };
     void SetNextSeqStep(GameManager& g, SeqStep step, StepSaveType saveType);
@@ -56,5 +58,5 @@ struct StepSequencerEntity : ne::Entity {
 
     // Assumes input contains _only_ the sequence, nothing else.
     static void LoadSequenceFromInput(
-        std::istream& input, std::vector<SeqStep>& sequence);    
+        std::istream& input, std::vector<SeqStep>& sequence);
 };
