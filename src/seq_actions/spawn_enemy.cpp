@@ -11,6 +11,7 @@
 #include "sound_bank.h"
 #include "color_presets.h"
 #include "seq_actions/camera_control.h"
+#include "actions.h"
 
 void SpawnEnemySeqAction::ExecuteDerived(GameManager& g) {
     assert(!_done);

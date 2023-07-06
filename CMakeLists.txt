@@ -21,87 +21,83 @@ add_executable(game
     src/imgui/backends/imgui_impl_opengl3.cpp
     src/glad/src/glad.cpp
 
-    src/viewport.cpp
+    src/viewport.cpp src/viewport.h
 
-    src/matrix.cpp
-    src/quaternion.cpp
-    src/transform.cpp
-    src/aabb.cpp
+    src/matrix.cpp src/matrix.h
+    src/quaternion.cpp src/quaternion.h
+    src/transform.cpp src/transform.h
+    src/aabb.cpp src/aabb.h
 
-    src/serial.cpp src/rng.cpp
-    src/game.cpp src/audio_util.cpp src/audio.cpp src/audio_event_imgui.cpp
-    src/sound_bank.cpp
-    src/editor.cpp
-    src/version_id_list_simple.cpp
-    src/entity_picking.cpp
-    # src/entity_editing_context.cpp src/script_action.cpp
-    src/shader.cpp src/synth.cpp src/mesh.cpp
-    src/synth_patch.cpp
-    src/synth_patch_bank.cpp
-    src/beat_clock.cpp src/input_manager.cpp src/beat_time_event.cpp
-    src/synth_imgui.cpp
-    # src/component.cpp src/entity.cpp src/entity_manager.cpp
-    src/new_entity.cpp    
-    src/renderer.cpp
-    # src/collisions.cpp
-    src/stb_truetype.cpp
-    src/geometry.cpp    
+    src/serial.cpp src/serial.h
+    src/rng.cpp src/rng.h
+    src/game.cpp
+    src/audio_util.cpp src/audio_util.h
+    src/audio.cpp src/audio.h
+    src/audio_event_imgui.cpp src/audio_event_imgui.h
+    src/sound_bank.cpp src/sound_bank.h
+    src/editor.cpp src/editor.h
+    src/version_id_list_simple.cpp src/version_id_list_simple.h
+    src/entity_picking.cpp src/entity_picking.h
+    src/shader.cpp src/shader.h
+    src/synth.cpp src/synth.h
+    src/mesh.cpp src/mesh.h
+    src/synth_patch.cpp src/synth_patch.h
+    src/synth_patch_bank.cpp src/synth_patch_bank.h
+    src/beat_clock.cpp src/beat_clock.h
+    src/input_manager.cpp src/input_manager.h
+    src/beat_time_event.cpp src/beat_time_event.h
+    src/synth_imgui.cpp src/synth_imgui.h
+    src/new_entity.cpp src/new_entity.h
+    src/renderer.cpp src/renderer.h
+    src/stb_truetype.cpp src/stb_truetype.h
+    src/geometry.cpp src/geometry.h
 
-    src/string_ci.cpp
+    src/string_ci.cpp src/string_ci.h
 
-    src/waypoint_follower.cpp
-    src/random_wander.cpp
-    
-    #src/components/transform.cpp
-    #src/components/model_instance.cpp src/components/camera.cpp src/components/light.cpp
-    #src/components/rigid_body.cpp src/components/beep_on_hit.cpp src/components/player_controller.cpp
-    #src/components/player_orbit_controller.cpp src/components/camera_controller.cpp src/components/hit_counter.cpp
-    #src/components/orbitable.cpp src/components/events_on_hit.cpp src/components/activator.cpp src/components/damage.cpp
-    #src/components/waypoint_follow.cpp src/components/recorder_balloon.cpp src/components/area_recorder.cpp
-    #src/components/piano_planet.cpp
+    src/waypoint_follower.cpp src/waypoint_follower.h
+    src/random_wander.cpp src/random_wander.h    
 
     src/properties/Test.cpp
-    src/properties/ChangeStepSequencerSeqAction.cpp
-    src/properties/SpawnAutomatorSeqAction.cpp
-    src/properties/NoteOnOffSeqAction.cpp
-    src/properties/CameraControlSeqAction.cpp
-    src/properties/ChangeStepSeqMaxVoices.cpp
-    src/properties/VfxEntity.cpp
-    src/properties/VfxPulseSeqAction.cpp
+    src/properties/ChangeStepSequencerSeqAction.cpp src/properties/ChangeStepSequencerSeqAction.h
+    src/properties/SpawnAutomatorSeqAction.cpp src/properties/SpawnAutomatorSeqAction.h
+    src/properties/NoteOnOffSeqAction.cpp src/properties/NoteOnOffSeqAction.h
+    src/properties/CameraControlSeqAction.cpp src/properties/CameraControlSeqAction.h
+    src/properties/ChangeStepSeqMaxVoices.cpp src/properties/ChangeStepSeqMaxVoices.h
+    src/properties/VfxEntity.cpp src/properties/VfxEntity.h
+    src/properties/VfxPulseSeqAction.cpp src/properties/VfxPulseSeqAction.h
 
-    src/seq_action.cpp
-    src/seq_actions/spawn_enemy.cpp
-    src/seq_actions/camera_control.cpp
-    src/seq_actions/change_patch.cpp
-    src/seq_actions/vfx_pulse.cpp
-    src/seq_actions/set_enemy_hittable.cpp
+    src/seq_action.cpp src/seq_action.h
+    src/actions.cpp src/actions.h
+    src/seq_actions/spawn_enemy.cpp src/seq_actions/spawn_enemy.h
+    src/seq_actions/camera_control.cpp src/seq_actions/camera_control.h
+    src/seq_actions/change_patch.cpp src/seq_actions/change_patch.h
+    src/seq_actions/vfx_pulse.cpp src/seq_actions/vfx_pulse.h
+    src/seq_actions/set_enemy_hittable.cpp src/seq_actions/set_enemy_hittable.h
     
-    src/entities/light.cpp
-    src/entities/camera.cpp
-    # src/entities/lane_note_enemy.cpp
-    # src/entities/lane_note_player.cpp
-    src/entities/sequencer.cpp
-    src/entities/typing_player.cpp
-    src/entities/typing_enemy.cpp
-    src/entities/step_sequencer.cpp
-    src/entities/action_sequencer.cpp
-    src/entities/param_automator.cpp
-    src/entities/flow_player.cpp
-    src/entities/flow_wall.cpp
-    src/entities/flow_pickup.cpp
-    src/entities/flow_trigger.cpp
-    src/entities/int_variable.cpp
-    src/entities/vfx.cpp
+    src/entities/light.cpp src/entities/light.h
+    src/entities/camera.cpp src/entities/camera.h    
+    src/entities/sequencer.cpp src/entities/sequencer.h
+    src/entities/typing_player.cpp src/entities/typing_player.h
+    src/entities/typing_enemy.cpp src/entities/typing_enemy.h
+    src/entities/step_sequencer.cpp src/entities/step_sequencer.h
+    src/entities/action_sequencer.cpp src/entities/action_sequencer.h
+    src/entities/param_automator.cpp src/entities/param_automator.h
+    src/entities/flow_player.cpp src/entities/flow_player.h
+    src/entities/flow_wall.cpp src/entities/flow_wall.h
+    src/entities/flow_pickup.cpp src/entities/flow_pickup.h
+    src/entities/flow_trigger.cpp src/entities/flow_trigger.h
+    src/entities/int_variable.cpp src/entities/int_variable.h
+    src/entities/vfx.cpp src/entities/vfx.h
     
-    src/enums/audio_EventType.cpp
-    src/enums/audio_SynthParamType.cpp
-    src/enums/CollisionLayer.cpp
-    src/enums/ScriptActionType.cpp
-    src/enums/synth_Waveform.cpp
-    src/enums/ColorPreset.cpp
-    src/enums/Direction.cpp
-    src/enums/WaypointFollowerMode.cpp
-    src/enums/SeqActionType.cpp
+    src/enums/audio_EventType.cpp src/enums/audio_EventType.h
+    src/enums/audio_SynthParamType.cpp src/enums/audio_SynthParamType.h
+    src/enums/CollisionLayer.cpp src/enums/CollisionLayer.h
+    src/enums/ScriptActionType.cpp src/enums/ScriptActionType.h
+    src/enums/synth_Waveform.cpp src/enums/synth_Waveform.h
+    src/enums/ColorPreset.cpp src/enums/ColorPreset.h
+    src/enums/Direction.cpp src/enums/Direction.h
+    src/enums/WaypointFollowerMode.cpp src/enums/WaypointFollowerMode.h
+    src/enums/SeqActionType.cpp src/enums/SeqActionType.h
 )
 
 ## GLFW ##

@@ -22,6 +22,7 @@
         "ChangePatch",
         "VfxPulse",
         "Trigger",
-        "SetEnemyHittable"
+        "SetEnemyHittable",
+        "Respawn"
     ]
 }

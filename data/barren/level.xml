@@ -4381,6 +4381,20 @@
                     <action_type>SetNewFlowSection</action_type>
                     <section_id>5</section_id>
                 </seq_action>
+                <seq_action>
+                    <one_time>true</one_time>
+                    <action_type>PlayerSetSpawnPoint</action_type>
+                    <spawn_pos>
+                        <x>40</x>
+                        <y>0</y>
+                        <z>24</z>
+                    </spawn_pos>
+                </seq_action>
+                <seq_action>
+                    <one_time>true</one_time>
+                    <action_type>PlayerSetKillZone</action_type>
+                    <max_z>35</max_z>
+                </seq_action>
             </actions>
         </FlowTrigger>
         <TypingEnemy>
@@ -8944,9 +8958,9 @@
             <pickable>true</pickable>
             <transform>
                 <pos>
-                    <x>47.4379387</x>
+                    <x>47.371933</x>
                     <y>0</y>
-                    <z>30.4826908</z>
+                    <z>30.3946819</z>
                 </pos>
                 <quat>
                     <x>0</x>
@@ -9885,5 +9899,37 @@
             </hit_actions>
             <off_cooldown_actions/>
         </TypingEnemy>
+        <Base>
+            <name>r7_spawn_pos</name>
+            <entity_active>true</entity_active>
+            <pickable>true</pickable>
+            <transform>
+                <pos>
+                    <x>40</x>
+                    <y>0</y>
+                    <z>24</z>
+                </pos>
+                <quat>
+                    <x>0</x>
+                    <y>0</y>
+                    <z>0</z>
+                    <w>1</w>
+                </quat>
+                <scale>
+                    <x>1</x>
+                    <y>1</y>
+                    <z>1</z>
+                </scale>
+            </transform>
+            <model_name/>
+            <model_color_vec4>
+                <x>0.800000012</x>
+                <y>0.800000012</y>
+                <z>0.800000012</z>
+                <w>1</w>
+            </model_color_vec4>
+            <flow_section_id>5</flow_section_id>
+            <tag>0</tag>
+        </Base>
     </new_entities>
 </script>
