@@ -39,6 +39,9 @@ void TypingEnemyEntity::LoadDerived(serial::Ptree pt) {
     _showBeatsLeft = false;
     pt.TryGetBool("show_beats_left", &_showBeatsLeft);
 
+    _cooldownQuantizeDenom = 0.f;
+    pt.TryGetFloat("cooldown_quantize_denom", &_cooldownQuantizeDenom);
+
     _resetCooldownOnAnyHit = false;
     pt.TryGetBool("reset_cooldown_on_any_hit", &_resetCooldownOnAnyHit);
 
@@ -62,6 +65,7 @@ void TypingEnemyEntity::SaveDerived(serial::Ptree pt) const {
     pt.PutBool("flow_polarity", _flowPolarity);
     pt.PutDouble("flow_cooldown", _flowCooldownBeatTime);
     pt.PutBool("show_beats_left", _showBeatsLeft);
+    pt.PutFloat("cooldown_quantize_denom", _cooldownQuantizeDenom);
     pt.PutBool("reset_cooldown_on_any_hit", _resetCooldownOnAnyHit);
     pt.PutFloat("active_radius", _activeRadius);
     serial::SaveInNewChildOf(pt, "waypoint_follower", _waypointFollower);
@@ -86,6 +90,7 @@ ne::BaseEntity::ImGuiResult TypingEnemyEntity::ImGuiDerived(GameManager& g) {
 
     ImGui::Checkbox("Flow polarity", &_flowPolarity);
     ImGui::InputDouble("Flow cooldown (beat)", &_flowCooldownBeatTime);
+    ImGui::InputFloat("Cooldown quantize denom", &_cooldownQuantizeDenom);
     ImGui::Checkbox("Show beats left", &_showBeatsLeft);
     ImGui::Checkbox("Reset cooldown on any hit", &_resetCooldownOnAnyHit);
     ImGui::InputFloat("Active radius", &_activeRadius);
@@ -245,7 +250,7 @@ void TypingEnemyEntity::Update(GameManager& g, float dt) {
             double const cooldownTimeElapsed = math_util::Clamp(beatTime - _flowCooldownStartBeatTime, 0.0, _flowCooldownBeatTime);
             float factor = 1.f;
             if (_flowCooldownStartBeatTime > 0.f) {
-                float factor = 1.f - static_cast<float>(cooldownTimeElapsed / _flowCooldownBeatTime);
+                factor = 1.f - static_cast<float>(cooldownTimeElapsed / _flowCooldownBeatTime);
                 factor = math_util::SmoothStep(factor);
             }
             float explodeScale = 1.f + factor * (kExplodeMaxScale - 1.f);
@@ -309,7 +314,12 @@ bool TypingEnemyEntity::IsActive(GameManager& g) const {
 
 void TypingEnemyEntity::OnHit(GameManager& g) {
     double beatTime = g._beatClock->GetBeatTimeFromEpoch();
-    _flowCooldownStartBeatTime = BeatClock::GetNextDownBeatTime(beatTime);
+    if (_cooldownQuantizeDenom > 0.f) {
+        _flowCooldownStartBeatTime = BeatClock::GetNextBeatDenomTime(beatTime, _cooldownQuantizeDenom);
+    }
+    else {
+        _flowCooldownStartBeatTime = beatTime;
+    }
     ++_numHits;
     if (_numHits == _text.length()) {
         if (_destroyAfterTyped) {
