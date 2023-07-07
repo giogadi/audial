@@ -30,6 +30,7 @@ struct TypingEnemyEntity : public ne::Entity {
     float _activeRadius = -1.f;  // If >= 0, player must be within this (L1) distance to be dashable toward enemy
     bool _showBeatsLeft = false;
     float _cooldownQuantizeDenom = 0.f;
+    bool _initHittable = true;
     
     // non-serialized
     int _numHits = 0;

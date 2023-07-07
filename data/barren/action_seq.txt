@@ -8,6 +8,5 @@
 -1 change_patch 3 0 real_bass
 
 # dev stuff
-0 set_new_section 5
-0 trigger room7_trigger
-0 respawn
+#0 trigger room7_trigger
+#0 respawn

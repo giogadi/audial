@@ -45,6 +45,9 @@ void TypingEnemyEntity::LoadDerived(serial::Ptree pt) {
     _resetCooldownOnAnyHit = false;
     pt.TryGetBool("reset_cooldown_on_any_hit", &_resetCooldownOnAnyHit);
 
+    _initHittable = true;
+    pt.TryGetBool("init_hittable", &_initHittable);
+
     _activeRadius = -1.f;
     pt.TryGetFloat("active_radius", &_activeRadius);
 
@@ -67,6 +70,7 @@ void TypingEnemyEntity::SaveDerived(serial::Ptree pt) const {
     pt.PutBool("show_beats_left", _showBeatsLeft);
     pt.PutFloat("cooldown_quantize_denom", _cooldownQuantizeDenom);
     pt.PutBool("reset_cooldown_on_any_hit", _resetCooldownOnAnyHit);
+    pt.PutBool("init_hittable", _initHittable);
     pt.PutFloat("active_radius", _activeRadius);
     serial::SaveInNewChildOf(pt, "waypoint_follower", _waypointFollower);
     SeqAction::SaveActionsInChildNode(pt, "hit_actions", _hitActions);
@@ -93,6 +97,7 @@ ne::BaseEntity::ImGuiResult TypingEnemyEntity::ImGuiDerived(GameManager& g) {
     ImGui::InputFloat("Cooldown quantize denom", &_cooldownQuantizeDenom);
     ImGui::Checkbox("Show beats left", &_showBeatsLeft);
     ImGui::Checkbox("Reset cooldown on any hit", &_resetCooldownOnAnyHit);
+    ImGui::Checkbox("Init hittable", &_initHittable);
     ImGui::InputFloat("Active radius", &_activeRadius);
     if (SeqAction::ImGui("Hit actions", _hitActions)) {
         result = ImGuiResult::NeedsInit;
@@ -130,6 +135,10 @@ void TypingEnemyEntity::InitDerived(GameManager& g) {
     }
 
     _flowCooldownStartBeatTime = -1.0;
+    _timeOfLastHit = -1.0;
+    _velocity = Vec3();
+
+    _hittable = _initHittable;
 }
 
 namespace {
@@ -419,7 +428,7 @@ void TypingEnemyEntity::MultiSelectImGui(GameManager& g, std::vector<TypingEnemy
     ImGui::Checkbox("Apply color", &sApplyColor);
     ImGui::Checkbox("Apply section ID", &sApplySectionId);
     ImGui::Checkbox("Apply actions", &sApplyActions);
-    char applySelectionButtonStr[] = "Apply to Selection (x)";
+    char applySelectionButtonStr[] = "Apply to Selection (xxxx)";
     sprintf(applySelectionButtonStr, "Apply to Selection (%zu)", enemies.size());
     if (ImGui::Button(applySelectionButtonStr)) {
         for (TypingEnemyEntity* e : enemies) {
