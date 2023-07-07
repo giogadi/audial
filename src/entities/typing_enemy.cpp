@@ -33,8 +33,11 @@ void TypingEnemyEntity::LoadDerived(serial::Ptree pt) {
     _flowPolarity = false;
     pt.TryGetBool("flow_polarity", &_flowPolarity);
 
-    _flowCooldown = -1.f;
-    pt.TryGetFloat("flow_cooldown", &_flowCooldown);
+    _flowCooldownBeatTime = -1.0;
+    pt.TryGetDouble("flow_cooldown", &_flowCooldownBeatTime);
+
+    _showBeatsLeft = false;
+    pt.TryGetBool("show_beats_left", &_showBeatsLeft);
 
     _resetCooldownOnAnyHit = false;
     pt.TryGetBool("reset_cooldown_on_any_hit", &_resetCooldownOnAnyHit);
@@ -57,7 +60,8 @@ void TypingEnemyEntity::SaveDerived(serial::Ptree pt) const {
     pt.PutBool("type_kill", _destroyAfterTyped);
     pt.PutBool("all_actions_on_hit", _hitBehavior == HitBehavior::AllActions);
     pt.PutBool("flow_polarity", _flowPolarity);
-    pt.PutFloat("flow_cooldown", _flowCooldown);
+    pt.PutDouble("flow_cooldown", _flowCooldownBeatTime);
+    pt.PutBool("show_beats_left", _showBeatsLeft);
     pt.PutBool("reset_cooldown_on_any_hit", _resetCooldownOnAnyHit);
     pt.PutFloat("active_radius", _activeRadius);
     serial::SaveInNewChildOf(pt, "waypoint_follower", _waypointFollower);
@@ -81,7 +85,8 @@ ne::BaseEntity::ImGuiResult TypingEnemyEntity::ImGuiDerived(GameManager& g) {
     }
 
     ImGui::Checkbox("Flow polarity", &_flowPolarity);
-    ImGui::InputFloat("Flow cooldown", &_flowCooldown);
+    ImGui::InputDouble("Flow cooldown (beat)", &_flowCooldownBeatTime);
+    ImGui::Checkbox("Show beats left", &_showBeatsLeft);
     ImGui::Checkbox("Reset cooldown on any hit", &_resetCooldownOnAnyHit);
     ImGui::InputFloat("Active radius", &_activeRadius);
     if (SeqAction::ImGui("Hit actions", _hitActions)) {
@@ -119,7 +124,7 @@ void TypingEnemyEntity::InitDerived(GameManager& g) {
         pAction->Init(g);
     }
 
-    _flowCooldownTimeLeft = -1.f;
+    _flowCooldownStartBeatTime = -1.0;
 }
 
 namespace {
@@ -164,10 +169,22 @@ void TypingEnemyEntity::Update(GameManager& g, float dt) {
         }
 
         playerWithinRadius = PlayerWithinRadius(*this);
-    }    
+    }
+
+    double const beatTime = g._beatClock->GetBeatTimeFromEpoch();
+
+    if (_flowCooldownStartBeatTime > 0.f) {
+        double const cooldownFinishBeatTime = _flowCooldownStartBeatTime + _flowCooldownBeatTime;
+        if (beatTime >= cooldownFinishBeatTime) {
+            for (auto& pAction : _offCooldownActions) {
+                pAction->Execute(g);
+            }
+            _flowCooldownStartBeatTime = -1.0;
+        }
+    }
 
     float constexpr kTextSize = 1.5f;
-    if (_flowCooldownTimeLeft > 0.f || !playerWithinRadius || !_hittable) {
+    if (_flowCooldownStartBeatTime > 0.f || !playerWithinRadius || !_hittable) {
         Vec4 color = _textColor;
         color._w = 0.2f;
         g._scene->DrawTextWorld(_text, _transform.GetPos(), kTextSize, color);
@@ -196,16 +213,7 @@ void TypingEnemyEntity::Update(GameManager& g, float dt) {
             _timeOfLastHit = -1.0;
         }
         _currentColor = kFadeColor + fadeFactor * (_modelColor - kFadeColor);
-    }
-
-    if (_flowCooldownTimeLeft > 0.f) {
-        _flowCooldownTimeLeft -= dt;
-        if (_flowCooldownTimeLeft <= 0.f) {
-            for (auto& pAction : _offCooldownActions) {
-                pAction->Execute(g);
-            }
-        }
-    }
+    }   
 
     if (_activeRadius >= 0.f) {
         Transform t = _transform;
@@ -218,7 +226,7 @@ void TypingEnemyEntity::Update(GameManager& g, float dt) {
         g._scene->DrawCube(t.Mat4Scale(), kRadiusColor);
     }
 
-    if (_flowCooldown > 0.f || !playerWithinRadius) {
+    if (_flowCooldownBeatTime > 0.f || !playerWithinRadius) {
         int constexpr kNumStepsX = 2;
         int constexpr kNumStepsZ = 2;
         float constexpr xStep = 1.f / (float) kNumStepsX;
@@ -230,17 +238,34 @@ void TypingEnemyEntity::Update(GameManager& g, float dt) {
         // We adjust the scale of localToWorld AFTER setting subdivMat so that
         // changing the scale of localToWorld doesn't make the subdiv dudes
         // bigger
-        if (_flowCooldownTimeLeft > 0.f || !_hittable) {
+        if (_flowCooldownStartBeatTime > 0.f || !_hittable) {
             color._w = 0.5f;
             // timeLeft: [0, flowCooldown] --> [1, explodeScale]
             float constexpr kExplodeMaxScale = 2.f;
+            double const cooldownTimeElapsed = beatTime - _flowCooldownStartBeatTime;
             float factor = 1.f;
-            if (_flowCooldownTimeLeft > 0.f) {
-                factor = math_util::Clamp(_flowCooldownTimeLeft / _flowCooldown, 0.f, 1.f);
+            if (_flowCooldownStartBeatTime > 0.f) {
+                float factor = 1.f - static_cast<float>(cooldownTimeElapsed / _flowCooldownBeatTime);
+                factor = math_util::Clamp(factor, 0.f, 1.f);
                 factor = math_util::SmoothStep(factor);
             }
             float explodeScale = 1.f + factor * (kExplodeMaxScale - 1.f);
-            localToWorld.Scale(explodeScale, 1.f, explodeScale);            
+            localToWorld.Scale(explodeScale, 1.f, explodeScale);
+            if (_showBeatsLeft) {
+                float constexpr kBeatCellSize = 0.25f;
+                float constexpr kSpacing = 0.25f;
+                float const totalBeats = static_cast<int>(std::ceil(_flowCooldownBeatTime));
+                float const totalSize = totalBeats * kBeatCellSize + (totalBeats - 1.f) * kSpacing;
+                Vec3 firstBeatPos = _transform.GetPos() + Vec3(-0.5f * totalSize, 0.f, -0.75f);
+                Mat4 m;
+                m.SetTranslation(firstBeatPos);
+                m.ScaleUniform(kBeatCellSize);                
+                int const numLeft = static_cast<int>(std::ceil(_flowCooldownBeatTime - cooldownTimeElapsed));
+                for (int ii = 0; ii < numLeft; ++ii) {
+                    g._scene->DrawCube(m, Vec4(0.f, 1.f, 0.f, 1.f));                    
+                    m.Translate(Vec3(kSpacing + kBeatCellSize, 0.f, 0.f));
+                }
+            }
         }
         
         Vec4 localPos(-0.5f + 0.5f * xStep, 0.f, -0.5f + 0.5f * zStep, 1.f);
@@ -258,7 +283,7 @@ void TypingEnemyEntity::Update(GameManager& g, float dt) {
         if (_model != nullptr) {
             g._scene->DrawMesh(_model, _transform.Mat4Scale(), _currentColor);
         }
-    }
+    }   
 }
 
 bool TypingEnemyEntity::IsActive(GameManager& g) const {
@@ -276,7 +301,8 @@ bool TypingEnemyEntity::IsActive(GameManager& g) const {
 }
 
 void TypingEnemyEntity::OnHit(GameManager& g) {
-    _flowCooldownTimeLeft = _flowCooldown;
+    double beatTime = g._beatClock->GetBeatTimeFromEpoch();
+    _flowCooldownStartBeatTime = beatTime;
     ++_numHits;
     if (_numHits == _text.length()) {
         if (_destroyAfterTyped) {
@@ -284,7 +310,7 @@ void TypingEnemyEntity::OnHit(GameManager& g) {
             assert(success);
         }            
     }
-    _timeOfLastHit = g._beatClock->GetBeatTimeFromEpoch();
+    _timeOfLastHit = beatTime;
 
     DoHitActions(g);
 }
@@ -312,7 +338,7 @@ void TypingEnemyEntity::DoHitActions(GameManager& g) {
 
 void TypingEnemyEntity::OnHitOther(GameManager& g) {
     if (_resetCooldownOnAnyHit) {
-        _flowCooldownTimeLeft = -1.f;
+        _flowCooldownStartBeatTime = -1.0;
     }
 }
 
@@ -339,7 +365,7 @@ bool TypingEnemyEntity::CanHit() const {
     if (!_hittable) {
         return false;
     }
-    return _flowCooldownTimeLeft <= 0.f;
+    return _flowCooldownStartBeatTime <= 0.0;
 }
 
 static TypingEnemyEntity sMultiEnemy;

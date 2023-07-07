@@ -787,6 +787,7 @@
             <all_actions_on_hit>true</all_actions_on_hit>
             <flow_polarity>false</flow_polarity>
             <flow_cooldown>500</flow_cooldown>
+            <show_beats_left>false</show_beats_left>
             <reset_cooldown_on_any_hit>true</reset_cooldown_on_any_hit>
             <active_radius>-1</active_radius>
             <waypoint_follower>
@@ -844,6 +845,7 @@
             <all_actions_on_hit>false</all_actions_on_hit>
             <flow_polarity>false</flow_polarity>
             <flow_cooldown>500</flow_cooldown>
+            <show_beats_left>false</show_beats_left>
             <reset_cooldown_on_any_hit>true</reset_cooldown_on_any_hit>
             <active_radius>-1</active_radius>
             <waypoint_follower>
@@ -978,6 +980,7 @@
             <all_actions_on_hit>false</all_actions_on_hit>
             <flow_polarity>false</flow_polarity>
             <flow_cooldown>500</flow_cooldown>
+            <show_beats_left>false</show_beats_left>
             <reset_cooldown_on_any_hit>true</reset_cooldown_on_any_hit>
             <active_radius>-1</active_radius>
             <waypoint_follower>
@@ -1035,6 +1038,7 @@
             <all_actions_on_hit>false</all_actions_on_hit>
             <flow_polarity>false</flow_polarity>
             <flow_cooldown>500</flow_cooldown>
+            <show_beats_left>false</show_beats_left>
             <reset_cooldown_on_any_hit>true</reset_cooldown_on_any_hit>
             <active_radius>-1</active_radius>
             <waypoint_follower>
@@ -1323,6 +1327,7 @@
             <all_actions_on_hit>false</all_actions_on_hit>
             <flow_polarity>false</flow_polarity>
             <flow_cooldown>500</flow_cooldown>
+            <show_beats_left>false</show_beats_left>
             <reset_cooldown_on_any_hit>true</reset_cooldown_on_any_hit>
             <active_radius>-1</active_radius>
             <waypoint_follower>
@@ -1380,6 +1385,7 @@
             <all_actions_on_hit>false</all_actions_on_hit>
             <flow_polarity>false</flow_polarity>
             <flow_cooldown>500</flow_cooldown>
+            <show_beats_left>false</show_beats_left>
             <reset_cooldown_on_any_hit>true</reset_cooldown_on_any_hit>
             <active_radius>-1</active_radius>
             <waypoint_follower>
@@ -1591,6 +1597,7 @@
             <all_actions_on_hit>false</all_actions_on_hit>
             <flow_polarity>false</flow_polarity>
             <flow_cooldown>500</flow_cooldown>
+            <show_beats_left>false</show_beats_left>
             <reset_cooldown_on_any_hit>true</reset_cooldown_on_any_hit>
             <active_radius>-1</active_radius>
             <waypoint_follower>
@@ -1648,6 +1655,7 @@
             <all_actions_on_hit>false</all_actions_on_hit>
             <flow_polarity>false</flow_polarity>
             <flow_cooldown>500</flow_cooldown>
+            <show_beats_left>false</show_beats_left>
             <reset_cooldown_on_any_hit>true</reset_cooldown_on_any_hit>
             <active_radius>-1</active_radius>
             <waypoint_follower>
@@ -1705,6 +1713,7 @@
             <all_actions_on_hit>true</all_actions_on_hit>
             <flow_polarity>false</flow_polarity>
             <flow_cooldown>500</flow_cooldown>
+            <show_beats_left>false</show_beats_left>
             <reset_cooldown_on_any_hit>true</reset_cooldown_on_any_hit>
             <active_radius>-1</active_radius>
             <waypoint_follower>
@@ -1762,6 +1771,7 @@
             <all_actions_on_hit>false</all_actions_on_hit>
             <flow_polarity>false</flow_polarity>
             <flow_cooldown>500</flow_cooldown>
+            <show_beats_left>false</show_beats_left>
             <reset_cooldown_on_any_hit>true</reset_cooldown_on_any_hit>
             <active_radius>-1</active_radius>
             <waypoint_follower>
@@ -1896,6 +1906,7 @@
             <all_actions_on_hit>false</all_actions_on_hit>
             <flow_polarity>false</flow_polarity>
             <flow_cooldown>500</flow_cooldown>
+            <show_beats_left>false</show_beats_left>
             <reset_cooldown_on_any_hit>true</reset_cooldown_on_any_hit>
             <active_radius>-1</active_radius>
             <waypoint_follower>
@@ -1953,6 +1964,7 @@
             <all_actions_on_hit>false</all_actions_on_hit>
             <flow_polarity>false</flow_polarity>
             <flow_cooldown>500</flow_cooldown>
+            <show_beats_left>false</show_beats_left>
             <reset_cooldown_on_any_hit>true</reset_cooldown_on_any_hit>
             <active_radius>-1</active_radius>
             <waypoint_follower>
@@ -2164,6 +2176,7 @@
             <all_actions_on_hit>false</all_actions_on_hit>
             <flow_polarity>false</flow_polarity>
             <flow_cooldown>500</flow_cooldown>
+            <show_beats_left>false</show_beats_left>
             <reset_cooldown_on_any_hit>true</reset_cooldown_on_any_hit>
             <active_radius>-1</active_radius>
             <waypoint_follower>
@@ -2221,6 +2234,7 @@
             <all_actions_on_hit>false</all_actions_on_hit>
             <flow_polarity>false</flow_polarity>
             <flow_cooldown>500</flow_cooldown>
+            <show_beats_left>false</show_beats_left>
             <reset_cooldown_on_any_hit>true</reset_cooldown_on_any_hit>
             <active_radius>-1</active_radius>
             <waypoint_follower>
@@ -2413,6 +2427,7 @@
             <all_actions_on_hit>false</all_actions_on_hit>
             <flow_polarity>false</flow_polarity>
             <flow_cooldown>500</flow_cooldown>
+            <show_beats_left>false</show_beats_left>
             <reset_cooldown_on_any_hit>true</reset_cooldown_on_any_hit>
             <active_radius>-1</active_radius>
             <waypoint_follower>
@@ -2470,6 +2485,7 @@
             <all_actions_on_hit>false</all_actions_on_hit>
             <flow_polarity>false</flow_polarity>
             <flow_cooldown>500</flow_cooldown>
+            <show_beats_left>false</show_beats_left>
             <reset_cooldown_on_any_hit>true</reset_cooldown_on_any_hit>
             <active_radius>-1</active_radius>
             <waypoint_follower>
@@ -2766,6 +2782,7 @@
             <all_actions_on_hit>true</all_actions_on_hit>
             <flow_polarity>false</flow_polarity>
             <flow_cooldown>500</flow_cooldown>
+            <show_beats_left>false</show_beats_left>
             <reset_cooldown_on_any_hit>true</reset_cooldown_on_any_hit>
             <active_radius>-1</active_radius>
             <waypoint_follower>
@@ -2823,6 +2840,7 @@
             <all_actions_on_hit>false</all_actions_on_hit>
             <flow_polarity>false</flow_polarity>
             <flow_cooldown>500</flow_cooldown>
+            <show_beats_left>false</show_beats_left>
             <reset_cooldown_on_any_hit>true</reset_cooldown_on_any_hit>
             <active_radius>-1</active_radius>
             <waypoint_follower>
@@ -2957,6 +2975,7 @@
             <all_actions_on_hit>false</all_actions_on_hit>
             <flow_polarity>false</flow_polarity>
             <flow_cooldown>500</flow_cooldown>
+            <show_beats_left>false</show_beats_left>
             <reset_cooldown_on_any_hit>true</reset_cooldown_on_any_hit>
             <active_radius>-1</active_radius>
             <waypoint_follower>
@@ -3014,6 +3033,7 @@
             <all_actions_on_hit>false</all_actions_on_hit>
             <flow_polarity>false</flow_polarity>
             <flow_cooldown>500</flow_cooldown>
+            <show_beats_left>false</show_beats_left>
             <reset_cooldown_on_any_hit>true</reset_cooldown_on_any_hit>
             <active_radius>-1</active_radius>
             <waypoint_follower>
@@ -3225,6 +3245,7 @@
             <all_actions_on_hit>false</all_actions_on_hit>
             <flow_polarity>false</flow_polarity>
             <flow_cooldown>500</flow_cooldown>
+            <show_beats_left>false</show_beats_left>
             <reset_cooldown_on_any_hit>true</reset_cooldown_on_any_hit>
             <active_radius>-1</active_radius>
             <waypoint_follower>
@@ -3282,6 +3303,7 @@
             <all_actions_on_hit>false</all_actions_on_hit>
             <flow_polarity>false</flow_polarity>
             <flow_cooldown>500</flow_cooldown>
+            <show_beats_left>false</show_beats_left>
             <reset_cooldown_on_any_hit>true</reset_cooldown_on_any_hit>
             <active_radius>-1</active_radius>
             <waypoint_follower>
@@ -3416,6 +3438,7 @@
             <all_actions_on_hit>false</all_actions_on_hit>
             <flow_polarity>false</flow_polarity>
             <flow_cooldown>500</flow_cooldown>
+            <show_beats_left>false</show_beats_left>
             <reset_cooldown_on_any_hit>true</reset_cooldown_on_any_hit>
             <active_radius>-1</active_radius>
             <waypoint_follower>
@@ -3473,6 +3496,7 @@
             <all_actions_on_hit>false</all_actions_on_hit>
             <flow_polarity>false</flow_polarity>
             <flow_cooldown>500</flow_cooldown>
+            <show_beats_left>false</show_beats_left>
             <reset_cooldown_on_any_hit>true</reset_cooldown_on_any_hit>
             <active_radius>-1</active_radius>
             <waypoint_follower>
@@ -4441,6 +4465,7 @@
             <all_actions_on_hit>true</all_actions_on_hit>
             <flow_polarity>false</flow_polarity>
             <flow_cooldown>500</flow_cooldown>
+            <show_beats_left>false</show_beats_left>
             <reset_cooldown_on_any_hit>true</reset_cooldown_on_any_hit>
             <active_radius>-1</active_radius>
             <waypoint_follower>
@@ -4797,8 +4822,9 @@
             <type_kill>false</type_kill>
             <all_actions_on_hit>true</all_actions_on_hit>
             <flow_polarity>false</flow_polarity>
-            <flow_cooldown>500</flow_cooldown>
-            <reset_cooldown_on_any_hit>true</reset_cooldown_on_any_hit>
+            <flow_cooldown>4</flow_cooldown>
+            <show_beats_left>true</show_beats_left>
+            <reset_cooldown_on_any_hit>false</reset_cooldown_on_any_hit>
             <active_radius>-1</active_radius>
             <waypoint_follower>
                 <local_to_entity>false</local_to_entity>
@@ -4855,6 +4881,7 @@
             <all_actions_on_hit>true</all_actions_on_hit>
             <flow_polarity>false</flow_polarity>
             <flow_cooldown>500</flow_cooldown>
+            <show_beats_left>false</show_beats_left>
             <reset_cooldown_on_any_hit>true</reset_cooldown_on_any_hit>
             <active_radius>-1</active_radius>
             <waypoint_follower>
@@ -4912,6 +4939,7 @@
             <all_actions_on_hit>true</all_actions_on_hit>
             <flow_polarity>false</flow_polarity>
             <flow_cooldown>500</flow_cooldown>
+            <show_beats_left>false</show_beats_left>
             <reset_cooldown_on_any_hit>true</reset_cooldown_on_any_hit>
             <active_radius>-1</active_radius>
             <waypoint_follower>
@@ -4969,6 +4997,7 @@
             <all_actions_on_hit>true</all_actions_on_hit>
             <flow_polarity>false</flow_polarity>
             <flow_cooldown>500</flow_cooldown>
+            <show_beats_left>false</show_beats_left>
             <reset_cooldown_on_any_hit>true</reset_cooldown_on_any_hit>
             <active_radius>-1</active_radius>
             <waypoint_follower>
@@ -5299,6 +5328,7 @@
             <all_actions_on_hit>true</all_actions_on_hit>
             <flow_polarity>false</flow_polarity>
             <flow_cooldown>500</flow_cooldown>
+            <show_beats_left>false</show_beats_left>
             <reset_cooldown_on_any_hit>true</reset_cooldown_on_any_hit>
             <active_radius>-1</active_radius>
             <waypoint_follower>
@@ -5356,6 +5386,7 @@
             <all_actions_on_hit>true</all_actions_on_hit>
             <flow_polarity>false</flow_polarity>
             <flow_cooldown>500</flow_cooldown>
+            <show_beats_left>false</show_beats_left>
             <reset_cooldown_on_any_hit>true</reset_cooldown_on_any_hit>
             <active_radius>-1</active_radius>
             <waypoint_follower>
@@ -5413,6 +5444,7 @@
             <all_actions_on_hit>true</all_actions_on_hit>
             <flow_polarity>false</flow_polarity>
             <flow_cooldown>500</flow_cooldown>
+            <show_beats_left>false</show_beats_left>
             <reset_cooldown_on_any_hit>true</reset_cooldown_on_any_hit>
             <active_radius>-1</active_radius>
             <waypoint_follower>
@@ -5470,6 +5502,7 @@
             <all_actions_on_hit>true</all_actions_on_hit>
             <flow_polarity>false</flow_polarity>
             <flow_cooldown>500</flow_cooldown>
+            <show_beats_left>false</show_beats_left>
             <reset_cooldown_on_any_hit>true</reset_cooldown_on_any_hit>
             <active_radius>-1</active_radius>
             <waypoint_follower>
@@ -5527,6 +5560,7 @@
             <all_actions_on_hit>true</all_actions_on_hit>
             <flow_polarity>false</flow_polarity>
             <flow_cooldown>500</flow_cooldown>
+            <show_beats_left>false</show_beats_left>
             <reset_cooldown_on_any_hit>true</reset_cooldown_on_any_hit>
             <active_radius>-1</active_radius>
             <waypoint_follower>
@@ -5819,6 +5853,7 @@
             <all_actions_on_hit>false</all_actions_on_hit>
             <flow_polarity>false</flow_polarity>
             <flow_cooldown>500</flow_cooldown>
+            <show_beats_left>false</show_beats_left>
             <reset_cooldown_on_any_hit>true</reset_cooldown_on_any_hit>
             <active_radius>-1</active_radius>
             <waypoint_follower>
@@ -5990,6 +6025,7 @@
             <all_actions_on_hit>false</all_actions_on_hit>
             <flow_polarity>false</flow_polarity>
             <flow_cooldown>500</flow_cooldown>
+            <show_beats_left>false</show_beats_left>
             <reset_cooldown_on_any_hit>true</reset_cooldown_on_any_hit>
             <active_radius>-1</active_radius>
             <waypoint_follower>
@@ -6048,6 +6084,7 @@
             <all_actions_on_hit>false</all_actions_on_hit>
             <flow_polarity>false</flow_polarity>
             <flow_cooldown>500</flow_cooldown>
+            <show_beats_left>false</show_beats_left>
             <reset_cooldown_on_any_hit>true</reset_cooldown_on_any_hit>
             <active_radius>-1</active_radius>
             <waypoint_follower>
@@ -6333,6 +6370,7 @@
             <all_actions_on_hit>false</all_actions_on_hit>
             <flow_polarity>false</flow_polarity>
             <flow_cooldown>500</flow_cooldown>
+            <show_beats_left>false</show_beats_left>
             <reset_cooldown_on_any_hit>true</reset_cooldown_on_any_hit>
             <active_radius>-1</active_radius>
             <waypoint_follower>
@@ -6390,7 +6428,8 @@
             <type_kill>false</type_kill>
             <all_actions_on_hit>true</all_actions_on_hit>
             <flow_polarity>false</flow_polarity>
-            <flow_cooldown>2</flow_cooldown>
+            <flow_cooldown>3.3333300000000001</flow_cooldown>
+            <show_beats_left>false</show_beats_left>
             <reset_cooldown_on_any_hit>false</reset_cooldown_on_any_hit>
             <active_radius>-1</active_radius>
             <waypoint_follower>
@@ -6452,7 +6491,8 @@
             <type_kill>false</type_kill>
             <all_actions_on_hit>true</all_actions_on_hit>
             <flow_polarity>false</flow_polarity>
-            <flow_cooldown>2</flow_cooldown>
+            <flow_cooldown>3.3332999999999999</flow_cooldown>
+            <show_beats_left>false</show_beats_left>
             <reset_cooldown_on_any_hit>false</reset_cooldown_on_any_hit>
             <active_radius>-1</active_radius>
             <waypoint_follower>
@@ -6514,7 +6554,8 @@
             <type_kill>false</type_kill>
             <all_actions_on_hit>true</all_actions_on_hit>
             <flow_polarity>false</flow_polarity>
-            <flow_cooldown>2</flow_cooldown>
+            <flow_cooldown>3.3332999999999999</flow_cooldown>
+            <show_beats_left>false</show_beats_left>
             <reset_cooldown_on_any_hit>false</reset_cooldown_on_any_hit>
             <active_radius>-1</active_radius>
             <waypoint_follower>
@@ -6577,6 +6618,7 @@
             <all_actions_on_hit>true</all_actions_on_hit>
             <flow_polarity>false</flow_polarity>
             <flow_cooldown>500</flow_cooldown>
+            <show_beats_left>false</show_beats_left>
             <reset_cooldown_on_any_hit>true</reset_cooldown_on_any_hit>
             <active_radius>-1</active_radius>
             <waypoint_follower>
@@ -6640,6 +6682,7 @@
             <all_actions_on_hit>false</all_actions_on_hit>
             <flow_polarity>false</flow_polarity>
             <flow_cooldown>500</flow_cooldown>
+            <show_beats_left>false</show_beats_left>
             <reset_cooldown_on_any_hit>true</reset_cooldown_on_any_hit>
             <active_radius>-1</active_radius>
             <waypoint_follower>
@@ -6697,6 +6740,7 @@
             <all_actions_on_hit>false</all_actions_on_hit>
             <flow_polarity>false</flow_polarity>
             <flow_cooldown>500</flow_cooldown>
+            <show_beats_left>false</show_beats_left>
             <reset_cooldown_on_any_hit>true</reset_cooldown_on_any_hit>
             <active_radius>-1</active_radius>
             <waypoint_follower>
@@ -6754,6 +6798,7 @@
             <all_actions_on_hit>false</all_actions_on_hit>
             <flow_polarity>false</flow_polarity>
             <flow_cooldown>500</flow_cooldown>
+            <show_beats_left>false</show_beats_left>
             <reset_cooldown_on_any_hit>true</reset_cooldown_on_any_hit>
             <active_radius>-1</active_radius>
             <waypoint_follower>
@@ -6888,6 +6933,7 @@
             <all_actions_on_hit>false</all_actions_on_hit>
             <flow_polarity>false</flow_polarity>
             <flow_cooldown>500</flow_cooldown>
+            <show_beats_left>false</show_beats_left>
             <reset_cooldown_on_any_hit>true</reset_cooldown_on_any_hit>
             <active_radius>-1</active_radius>
             <waypoint_follower>
@@ -7175,7 +7221,8 @@
             <type_kill>false</type_kill>
             <all_actions_on_hit>true</all_actions_on_hit>
             <flow_polarity>false</flow_polarity>
-            <flow_cooldown>2</flow_cooldown>
+            <flow_cooldown>3.3332999999999999</flow_cooldown>
+            <show_beats_left>false</show_beats_left>
             <reset_cooldown_on_any_hit>false</reset_cooldown_on_any_hit>
             <active_radius>-1</active_radius>
             <waypoint_follower>
@@ -7237,7 +7284,8 @@
             <type_kill>false</type_kill>
             <all_actions_on_hit>true</all_actions_on_hit>
             <flow_polarity>false</flow_polarity>
-            <flow_cooldown>2</flow_cooldown>
+            <flow_cooldown>3.3333300000000001</flow_cooldown>
+            <show_beats_left>false</show_beats_left>
             <reset_cooldown_on_any_hit>false</reset_cooldown_on_any_hit>
             <active_radius>-1</active_radius>
             <waypoint_follower>
@@ -8267,7 +8315,8 @@
             <type_kill>false</type_kill>
             <all_actions_on_hit>true</all_actions_on_hit>
             <flow_polarity>false</flow_polarity>
-            <flow_cooldown>2</flow_cooldown>
+            <flow_cooldown>3.3332999999999999</flow_cooldown>
+            <show_beats_left>false</show_beats_left>
             <reset_cooldown_on_any_hit>false</reset_cooldown_on_any_hit>
             <active_radius>-1</active_radius>
             <waypoint_follower>
@@ -8330,6 +8379,7 @@
             <all_actions_on_hit>false</all_actions_on_hit>
             <flow_polarity>false</flow_polarity>
             <flow_cooldown>500</flow_cooldown>
+            <show_beats_left>false</show_beats_left>
             <reset_cooldown_on_any_hit>true</reset_cooldown_on_any_hit>
             <active_radius>-1</active_radius>
             <waypoint_follower>
@@ -8387,6 +8437,7 @@
             <all_actions_on_hit>false</all_actions_on_hit>
             <flow_polarity>false</flow_polarity>
             <flow_cooldown>500</flow_cooldown>
+            <show_beats_left>false</show_beats_left>
             <reset_cooldown_on_any_hit>true</reset_cooldown_on_any_hit>
             <active_radius>-1</active_radius>
             <waypoint_follower>
@@ -8444,6 +8495,7 @@
             <all_actions_on_hit>false</all_actions_on_hit>
             <flow_polarity>false</flow_polarity>
             <flow_cooldown>500</flow_cooldown>
+            <show_beats_left>false</show_beats_left>
             <reset_cooldown_on_any_hit>true</reset_cooldown_on_any_hit>
             <active_radius>-1</active_radius>
             <waypoint_follower>
@@ -8501,6 +8553,7 @@
             <all_actions_on_hit>false</all_actions_on_hit>
             <flow_polarity>false</flow_polarity>
             <flow_cooldown>500</flow_cooldown>
+            <show_beats_left>false</show_beats_left>
             <reset_cooldown_on_any_hit>true</reset_cooldown_on_any_hit>
             <active_radius>-1</active_radius>
             <waypoint_follower>
@@ -8674,6 +8727,7 @@
             <all_actions_on_hit>true</all_actions_on_hit>
             <flow_polarity>false</flow_polarity>
             <flow_cooldown>500</flow_cooldown>
+            <show_beats_left>false</show_beats_left>
             <reset_cooldown_on_any_hit>true</reset_cooldown_on_any_hit>
             <active_radius>-1</active_radius>
             <waypoint_follower>
@@ -8766,7 +8820,8 @@
             <type_kill>false</type_kill>
             <all_actions_on_hit>true</all_actions_on_hit>
             <flow_polarity>false</flow_polarity>
-            <flow_cooldown>4.80000019</flow_cooldown>
+            <flow_cooldown>4.8000001900000004</flow_cooldown>
+            <show_beats_left>true</show_beats_left>
             <reset_cooldown_on_any_hit>false</reset_cooldown_on_any_hit>
             <active_radius>3</active_radius>
             <waypoint_follower>
@@ -8817,6 +8872,15 @@
                     <action_type>SetStepSequencerMute</action_type>
                     <seq_name>kick_seq</seq_name>
                     <mute>false</mute>
+                </seq_action>
+                <seq_action>
+                    <one_time>true</one_time>
+                    <action_type>PlayerSetSpawnPoint</action_type>
+                    <spawn_pos>
+                        <x>57.5</x>
+                        <y>0</y>
+                        <z>25</z>
+                    </spawn_pos>
                 </seq_action>
             </hit_actions>
             <off_cooldown_actions>
@@ -9141,6 +9205,7 @@
             <all_actions_on_hit>true</all_actions_on_hit>
             <flow_polarity>false</flow_polarity>
             <flow_cooldown>500</flow_cooldown>
+            <show_beats_left>false</show_beats_left>
             <reset_cooldown_on_any_hit>true</reset_cooldown_on_any_hit>
             <active_radius>-1</active_radius>
             <waypoint_follower>
@@ -9198,6 +9263,7 @@
             <all_actions_on_hit>true</all_actions_on_hit>
             <flow_polarity>false</flow_polarity>
             <flow_cooldown>500</flow_cooldown>
+            <show_beats_left>false</show_beats_left>
             <reset_cooldown_on_any_hit>true</reset_cooldown_on_any_hit>
             <active_radius>-1</active_radius>
             <waypoint_follower>
@@ -9255,6 +9321,7 @@
             <all_actions_on_hit>true</all_actions_on_hit>
             <flow_polarity>false</flow_polarity>
             <flow_cooldown>500</flow_cooldown>
+            <show_beats_left>false</show_beats_left>
             <reset_cooldown_on_any_hit>true</reset_cooldown_on_any_hit>
             <active_radius>-1</active_radius>
             <waypoint_follower>
@@ -9312,6 +9379,7 @@
             <all_actions_on_hit>true</all_actions_on_hit>
             <flow_polarity>false</flow_polarity>
             <flow_cooldown>500</flow_cooldown>
+            <show_beats_left>false</show_beats_left>
             <reset_cooldown_on_any_hit>true</reset_cooldown_on_any_hit>
             <active_radius>-1</active_radius>
             <waypoint_follower>
@@ -9369,6 +9437,7 @@
             <all_actions_on_hit>true</all_actions_on_hit>
             <flow_polarity>false</flow_polarity>
             <flow_cooldown>500</flow_cooldown>
+            <show_beats_left>false</show_beats_left>
             <reset_cooldown_on_any_hit>true</reset_cooldown_on_any_hit>
             <active_radius>-1</active_radius>
             <waypoint_follower>
@@ -9426,6 +9495,7 @@
             <all_actions_on_hit>true</all_actions_on_hit>
             <flow_polarity>false</flow_polarity>
             <flow_cooldown>500</flow_cooldown>
+            <show_beats_left>false</show_beats_left>
             <reset_cooldown_on_any_hit>true</reset_cooldown_on_any_hit>
             <active_radius>-1</active_radius>
             <waypoint_follower>
@@ -9483,6 +9553,7 @@
             <all_actions_on_hit>true</all_actions_on_hit>
             <flow_polarity>false</flow_polarity>
             <flow_cooldown>500</flow_cooldown>
+            <show_beats_left>false</show_beats_left>
             <reset_cooldown_on_any_hit>true</reset_cooldown_on_any_hit>
             <active_radius>-1</active_radius>
             <waypoint_follower>
@@ -9540,6 +9611,7 @@
             <all_actions_on_hit>true</all_actions_on_hit>
             <flow_polarity>false</flow_polarity>
             <flow_cooldown>500</flow_cooldown>
+            <show_beats_left>false</show_beats_left>
             <reset_cooldown_on_any_hit>true</reset_cooldown_on_any_hit>
             <active_radius>-1</active_radius>
             <waypoint_follower>
@@ -9597,6 +9669,7 @@
             <all_actions_on_hit>true</all_actions_on_hit>
             <flow_polarity>false</flow_polarity>
             <flow_cooldown>500</flow_cooldown>
+            <show_beats_left>false</show_beats_left>
             <reset_cooldown_on_any_hit>true</reset_cooldown_on_any_hit>
             <active_radius>-1</active_radius>
             <waypoint_follower>
@@ -9654,6 +9727,7 @@
             <all_actions_on_hit>true</all_actions_on_hit>
             <flow_polarity>false</flow_polarity>
             <flow_cooldown>500</flow_cooldown>
+            <show_beats_left>false</show_beats_left>
             <reset_cooldown_on_any_hit>true</reset_cooldown_on_any_hit>
             <active_radius>-1</active_radius>
             <waypoint_follower>
@@ -9711,6 +9785,7 @@
             <all_actions_on_hit>true</all_actions_on_hit>
             <flow_polarity>false</flow_polarity>
             <flow_cooldown>500</flow_cooldown>
+            <show_beats_left>false</show_beats_left>
             <reset_cooldown_on_any_hit>true</reset_cooldown_on_any_hit>
             <active_radius>-1</active_radius>
             <waypoint_follower>
@@ -9768,6 +9843,7 @@
             <all_actions_on_hit>true</all_actions_on_hit>
             <flow_polarity>false</flow_polarity>
             <flow_cooldown>500</flow_cooldown>
+            <show_beats_left>false</show_beats_left>
             <reset_cooldown_on_any_hit>true</reset_cooldown_on_any_hit>
             <active_radius>-1</active_radius>
             <waypoint_follower>
@@ -9825,6 +9901,7 @@
             <all_actions_on_hit>true</all_actions_on_hit>
             <flow_polarity>false</flow_polarity>
             <flow_cooldown>500</flow_cooldown>
+            <show_beats_left>false</show_beats_left>
             <reset_cooldown_on_any_hit>true</reset_cooldown_on_any_hit>
             <active_radius>-1</active_radius>
             <waypoint_follower>
@@ -9882,6 +9959,7 @@
             <all_actions_on_hit>true</all_actions_on_hit>
             <flow_polarity>false</flow_polarity>
             <flow_cooldown>500</flow_cooldown>
+            <show_beats_left>false</show_beats_left>
             <reset_cooldown_on_any_hit>true</reset_cooldown_on_any_hit>
             <active_radius>-1</active_radius>
             <waypoint_follower>
@@ -9933,6 +10011,38 @@
                 <w>1</w>
             </model_color_vec4>
             <flow_section_id>5</flow_section_id>
+            <tag>0</tag>
+        </Base>
+        <Base>
+            <name>r8_spawn_pos</name>
+            <entity_active>true</entity_active>
+            <pickable>true</pickable>
+            <transform>
+                <pos>
+                    <x>57.5</x>
+                    <y>0</y>
+                    <z>25</z>
+                </pos>
+                <quat>
+                    <x>0</x>
+                    <y>0</y>
+                    <z>0</z>
+                    <w>1</w>
+                </quat>
+                <scale>
+                    <x>1</x>
+                    <y>1</y>
+                    <z>1</z>
+                </scale>
+            </transform>
+            <model_name/>
+            <model_color_vec4>
+                <x>0.800000012</x>
+                <y>0.800000012</y>
+                <z>0.800000012</z>
+                <w>1</w>
+            </model_color_vec4>
+            <flow_section_id>7</flow_section_id>
             <tag>0</tag>
         </Base>
     </new_entities>

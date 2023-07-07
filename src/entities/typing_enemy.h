@@ -25,9 +25,10 @@ struct TypingEnemyEntity : public ne::Entity {
     Vec4 _textColor = Vec4(1.f, 1.f, 1.f, 1.f); // TODO
     bool _flowPolarity = false;
     WaypointFollower _waypointFollower;
-    float _flowCooldown = -1.f;
+    double _flowCooldownBeatTime = -1.0;
     bool _resetCooldownOnAnyHit = false;
     float _activeRadius = -1.f;  // If >= 0, player must be within this (L1) distance to be dashable toward enemy
+    bool _showBeatsLeft = false;
     
     // non-serialized
     int _numHits = 0;
@@ -35,7 +36,7 @@ struct TypingEnemyEntity : public ne::Entity {
     Vec4 _currentColor;
     bool _useHitActionsOnInitHack = false;
     double _timeOfLastHit = -1.0;
-    float _flowCooldownTimeLeft = -1.f;
+    double _flowCooldownStartBeatTime = -1.0;
     bool _hittable = true;
 
     bool IsActive(GameManager& g) const;
