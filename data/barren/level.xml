@@ -236,7 +236,7 @@
             <flow_section_id>-1</flow_section_id>
             <tag>0</tag>
             <sequence>mG0:1 -1:1 -1:1 -1:1 mG0:1 -1:1 -1:1 -1:1 mG0:1 -1:1 -1:1 -1:1 mG0:1 -1:1 -1:1 -1:1</sequence>
-            <start_mute>true</start_mute>
+            <start_mute>false</start_mute>
             <gain>0.75</gain>
             <channels/>
             <step_length>0.25</step_length>
@@ -4822,7 +4822,7 @@
             <type_kill>false</type_kill>
             <all_actions_on_hit>true</all_actions_on_hit>
             <flow_polarity>false</flow_polarity>
-            <flow_cooldown>4</flow_cooldown>
+            <flow_cooldown>7</flow_cooldown>
             <show_beats_left>true</show_beats_left>
             <reset_cooldown_on_any_hit>false</reset_cooldown_on_any_hit>
             <active_radius>-1</active_radius>
@@ -8820,7 +8820,7 @@
             <type_kill>false</type_kill>
             <all_actions_on_hit>true</all_actions_on_hit>
             <flow_polarity>false</flow_polarity>
-            <flow_cooldown>4.8000001900000004</flow_cooldown>
+            <flow_cooldown>7</flow_cooldown>
             <show_beats_left>true</show_beats_left>
             <reset_cooldown_on_any_hit>false</reset_cooldown_on_any_hit>
             <active_radius>3</active_radius>

@@ -242,28 +242,35 @@ void TypingEnemyEntity::Update(GameManager& g, float dt) {
             color._w = 0.5f;
             // timeLeft: [0, flowCooldown] --> [1, explodeScale]
             float constexpr kExplodeMaxScale = 2.f;
-            double const cooldownTimeElapsed = beatTime - _flowCooldownStartBeatTime;
+            double const cooldownTimeElapsed = math_util::Clamp(beatTime - _flowCooldownStartBeatTime, 0.0, _flowCooldownBeatTime);
             float factor = 1.f;
             if (_flowCooldownStartBeatTime > 0.f) {
                 float factor = 1.f - static_cast<float>(cooldownTimeElapsed / _flowCooldownBeatTime);
-                factor = math_util::Clamp(factor, 0.f, 1.f);
                 factor = math_util::SmoothStep(factor);
             }
             float explodeScale = 1.f + factor * (kExplodeMaxScale - 1.f);
             localToWorld.Scale(explodeScale, 1.f, explodeScale);
             if (_showBeatsLeft) {
                 float constexpr kBeatCellSize = 0.25f;
-                float constexpr kSpacing = 0.25f;
-                float const totalBeats = static_cast<int>(std::ceil(_flowCooldownBeatTime));
-                float const totalSize = totalBeats * kBeatCellSize + (totalBeats - 1.f) * kSpacing;
-                Vec3 firstBeatPos = _transform.GetPos() + Vec3(-0.5f * totalSize, 0.f, -0.75f);
+                float constexpr kSpacing = 0.1f;
+                float constexpr kRowSpacing = 0.1f;
+                float constexpr kRowLength = 4.f * kBeatCellSize + (3.f) * kSpacing;
+                float const totalBeats = std::ceil(_flowCooldownBeatTime);
+                int const numRows = ((static_cast<int>(totalBeats) - 1) / 4) + 1;
+                float const vertSize = numRows * kBeatCellSize + (numRows - 1) * kRowSpacing;
+                float const rowStartXPos = _transform.GetPos()._x - 0.5f * kRowLength;
+                float const rowStartZPos = _transform.GetPos()._z - 0.5f - vertSize;
+                Vec3 firstBeatPos = _transform.GetPos() + Vec3(rowStartXPos, 0.f, rowStartZPos);
                 Mat4 m;
                 m.SetTranslation(firstBeatPos);
                 m.ScaleUniform(kBeatCellSize);                
                 int const numLeft = static_cast<int>(std::ceil(_flowCooldownBeatTime - cooldownTimeElapsed));
-                for (int ii = 0; ii < numLeft; ++ii) {
-                    g._scene->DrawCube(m, Vec4(0.f, 1.f, 0.f, 1.f));                    
-                    m.Translate(Vec3(kSpacing + kBeatCellSize, 0.f, 0.f));
+                for (int row = 0, beatIx = 0; row < numRows; ++row) {
+                    for (int col = 0; col < 4 && beatIx < numLeft; ++col, ++beatIx) {
+                        Vec3 p(rowStartXPos + col * (kSpacing + kBeatCellSize), 0.f, rowStartZPos + row * (kRowSpacing + kBeatCellSize));
+                        m.SetTranslation(p);
+                        g._scene->DrawCube(m, Vec4(0.f, 1.f, 0.f, 1.f));
+                    }
                 }
             }
         }
@@ -302,7 +309,7 @@ bool TypingEnemyEntity::IsActive(GameManager& g) const {
 
 void TypingEnemyEntity::OnHit(GameManager& g) {
     double beatTime = g._beatClock->GetBeatTimeFromEpoch();
-    _flowCooldownStartBeatTime = beatTime;
+    _flowCooldownStartBeatTime = BeatClock::GetNextDownBeatTime(beatTime);
     ++_numHits;
     if (_numHits == _text.length()) {
         if (_destroyAfterTyped) {
