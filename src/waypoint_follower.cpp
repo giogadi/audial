@@ -90,7 +90,13 @@ bool WaypointFollower::Update(GameManager& g, float const dt, bool debugDraw, ne
         _ns._prevWaypointPos = wp._p;
         ++_ns._currentWaypointIx;
         if (_ns._currentWaypointIx >= _waypoints.size()) {
-            _ns._currentWaypointIx = 0;
+            if (_loopWaypoints) {
+                // TODO I don't think this works lol
+                _ns._currentWaypointIx = 0;
+            }
+            else {
+                _ns._followingWaypoints = false;
+            }
         }
         _ns._thisWpStartTime += wp._waitTime + wp._moveTime;
     } else if (beatTime > _ns._thisWpStartTime + wp._waitTime) {

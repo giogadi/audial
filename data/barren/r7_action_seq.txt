@@ -1,3 +1,6 @@
 0 waypoint r7_e 1
 0 waypoint r7_i 1
 0 waypoint room7_camera_target 1
+0 change_patch 0 0 bass2
+0 set_all_steps bass_seq 0 mG1:0.0
+4 automate seq_velocity bass_seq 0 1 4
