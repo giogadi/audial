@@ -221,7 +221,8 @@ void SetAllStepsSeqAction::ExecuteDerived(GameManager& g) {
 
 void SetStepSequenceSeqAction::LoadDerived(LoadInputs const& loadInputs, std::istream& input) {
     input >> _seqName;
-    StepSequencerEntity::LoadSequenceFromInput(input, _sequence);
+    // ASSUMES WE ONLY HAVE ONE LINE
+    std::getline(input, _seqStr);
 }
 
 void SetStepSequenceSeqAction::LoadDerived(serial::Ptree pt) {

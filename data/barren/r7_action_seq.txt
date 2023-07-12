@@ -3,4 +3,11 @@
 0 waypoint room7_camera_target 1
 0 change_patch 0 0 bass2
 0 set_all_steps bass_seq 0 mG1:0.0
+0 set_step_seq kick_seq mG0:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 mG0:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1
+0 set_step_seq clap_seq -1:1 -1:1 -1:1 -1:1 9:1.0 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 9:1.0 -1:1 -1:1 -1:1
+0 step_seq_mute kick_seq 1
+0 step_seq_mute clap_seq 1
 4 automate seq_velocity bass_seq 0 1 4
+7 waypoint r7_o 1
+8 waypoint r7_w 1
+8 waypoint room7_camera_target2 1
