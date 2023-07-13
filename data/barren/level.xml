@@ -10200,28 +10200,28 @@
                     <channel>2</channel>
                     <tick_time>0</tick_time>
                     <midi_note>55</midi_note>
-                    <beat_time>7</beat_time>
+                    <beat_time>4</beat_time>
                 </beat_event>
                 <beat_event>
                     <event_type>NoteOff</event_type>
                     <channel>2</channel>
                     <tick_time>0</tick_time>
                     <midi_note>58</midi_note>
-                    <beat_time>7</beat_time>
+                    <beat_time>4</beat_time>
                 </beat_event>
                 <beat_event>
                     <event_type>NoteOff</event_type>
                     <channel>2</channel>
                     <tick_time>0</tick_time>
                     <midi_note>62</midi_note>
-                    <beat_time>7</beat_time>
+                    <beat_time>4</beat_time>
                 </beat_event>
                 <beat_event>
                     <event_type>NoteOff</event_type>
                     <channel>2</channel>
                     <tick_time>0</tick_time>
                     <midi_note>65</midi_note>
-                    <beat_time>7</beat_time>
+                    <beat_time>4</beat_time>
                 </beat_event>
                 <beat_event>
                     <event_type>NoteOn</event_type>
@@ -10260,28 +10260,28 @@
                     <channel>2</channel>
                     <tick_time>0</tick_time>
                     <midi_note>55</midi_note>
-                    <beat_time>15</beat_time>
+                    <beat_time>12</beat_time>
                 </beat_event>
                 <beat_event>
                     <event_type>NoteOff</event_type>
                     <channel>2</channel>
                     <tick_time>0</tick_time>
                     <midi_note>58</midi_note>
-                    <beat_time>15</beat_time>
+                    <beat_time>12</beat_time>
                 </beat_event>
                 <beat_event>
                     <event_type>NoteOff</event_type>
                     <channel>2</channel>
                     <tick_time>0</tick_time>
                     <midi_note>60</midi_note>
-                    <beat_time>15</beat_time>
+                    <beat_time>12</beat_time>
                 </beat_event>
                 <beat_event>
                     <event_type>NoteOff</event_type>
                     <channel>2</channel>
                     <tick_time>0</tick_time>
                     <midi_note>64</midi_note>
-                    <beat_time>15</beat_time>
+                    <beat_time>12</beat_time>
                 </beat_event>
                 <beat_event>
                     <event_type>None</event_type>

@@ -139,7 +139,7 @@
     <patch>
         <name>r2_sideroom_pad</name>
         <patch>
-            <Gain>0.825999975</Gain>
+            <Gain>0.76700002</Gain>
             <Mono>0</Mono>
             <Osc1Waveform>Saw</Osc1Waveform>
             <Osc2Waveform>Saw</Osc2Waveform>
@@ -275,7 +275,7 @@
     <patch>
         <name>pad2</name>
         <patch>
-            <Gain>0.463999987</Gain>
+            <Gain>0.414999992</Gain>
             <Mono>0</Mono>
             <Osc1Waveform>Square</Osc1Waveform>
             <Osc2Waveform>Saw</Osc2Waveform>
