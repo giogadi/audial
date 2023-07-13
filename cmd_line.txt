@@ -26,4 +26,4 @@
 // -s data/flow_tech/flow_tech_level.xml -y data/flow_tech/synth_patches_flow_tech.xml
 // -s data/terrain_test_level.xml -y data/synth_patches_flow.xml
 // -s data/wall_test_level.xml -y data/barren/patches.xml
--s data/barren/level.xml -y data/barren/patches.xml -e
+-s data/barren/level.xml -y data/barren/patches.xml

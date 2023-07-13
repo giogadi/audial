@@ -9535,6 +9535,14 @@
                     <follow_waypoints>true</follow_waypoints>
                     <entity_name>room7_camera_target2</entity_name>
                 </seq_action>
+                <seq_action>
+                    <one_time>true</one_time>
+                    <action_type>ChangePatch</action_type>
+                    <channel>0</channel>
+                    <blend_beat_time>4</blend_beat_time>
+                    <use_patch_bank>true</use_patch_bank>
+                    <patch_name>bass3</patch_name>
+                </seq_action>
             </actions>
         </FlowTrigger>
         <FlowWall>
@@ -9716,9 +9724,9 @@
             <pickable>true</pickable>
             <transform>
                 <pos>
-                    <x>71.3367691</x>
+                    <x>71.3680191</x>
                     <y>0</y>
-                    <z>22.6113625</z>
+                    <z>22.5644875</z>
                 </pos>
                 <quat>
                     <x>0</x>
@@ -9996,5 +10004,48 @@
             </hit_actions>
             <off_cooldown_actions/>
         </TypingEnemy>
+        <FlowWall>
+            <name>r7_platform_wall2</name>
+            <entity_active>true</entity_active>
+            <pickable>true</pickable>
+            <transform>
+                <pos>
+                    <x>73.2731781</x>
+                    <y>0</y>
+                    <z>20.1490498</z>
+                </pos>
+                <quat>
+                    <x>0</x>
+                    <y>0</y>
+                    <z>0</z>
+                    <w>1</w>
+                </quat>
+                <scale>
+                    <x>1</x>
+                    <y>1</y>
+                    <z>10</z>
+                </scale>
+            </transform>
+            <model_name>cube</model_name>
+            <model_color_vec4>
+                <x>0.800000012</x>
+                <y>0.800000012</y>
+                <z>0.800000012</z>
+                <w>1</w>
+            </model_color_vec4>
+            <flow_section_id>5</flow_section_id>
+            <tag>0</tag>
+            <can_hit>true</can_hit>
+            <hp>-1</hp>
+            <move_mode>Waypoints</move_mode>
+            <local_to_entity>false</local_to_entity>
+            <waypoint_auto_start>false</waypoint_auto_start>
+            <loop_waypoints>false</loop_waypoints>
+            <start_time>3</start_time>
+            <waypoints/>
+            <rot_vel>0</rot_vel>
+            <polygon/>
+            <hit_actions/>
+        </FlowWall>
     </new_entities>
 </script>

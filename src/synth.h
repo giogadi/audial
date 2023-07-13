@@ -81,7 +81,7 @@ struct StateData {
     int channel = -1;
 
     std::array<Voice, 4> voices;
-    std::array<Automation, 20> automations;
+    std::array<Automation, 64> automations;
 
     Patch patch;
 
