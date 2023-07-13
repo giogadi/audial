@@ -112,6 +112,7 @@
             <tag>0</tag>
             <loop>false</loop>
             <start_beat_time>0</start_beat_time>
+            <start_quantize>1</start_quantize>
             <events>
                 <beat_event>
                     <event_type>PlayPcm</event_type>
@@ -6275,6 +6276,7 @@
             <tag>0</tag>
             <loop>true</loop>
             <start_beat_time>0</start_beat_time>
+            <start_quantize>1</start_quantize>
             <events>
                 <beat_event>
                     <event_type>NoteOn</event_type>
@@ -9057,6 +9059,14 @@
                     <follow_waypoints>true</follow_waypoints>
                     <entity_name>room7_camera_target</entity_name>
                 </seq_action>
+                <seq_action>
+                    <one_time>true</one_time>
+                    <action_type>ChangePatch</action_type>
+                    <channel>2</channel>
+                    <blend_beat_time>0</blend_beat_time>
+                    <use_patch_bank>true</use_patch_bank>
+                    <patch_name>pad2</patch_name>
+                </seq_action>
             </actions>
         </FlowTrigger>
         <Base>
@@ -9893,6 +9903,13 @@
                     <use_patch_bank>true</use_patch_bank>
                     <patch_name>bass2</patch_name>
                 </seq_action>
+                <seq_action>
+                    <one_time>true</one_time>
+                    <action_type>SetEntityActive</action_type>
+                    <entity_name>r7_pad_seq</entity_name>
+                    <active>true</active>
+                    <init_on_activate>true</init_on_activate>
+                </seq_action>
             </actions>
         </FlowTrigger>
         <TypingEnemy>
@@ -10111,5 +10128,168 @@
             <tag>0</tag>
             <seq_filename>data/barren/r7_action_seq2.txt</seq_filename>
         </ActionSequencer>
+        <Sequencer>
+            <name>r7_pad_seq</name>
+            <entity_active>false</entity_active>
+            <pickable>true</pickable>
+            <transform>
+                <pos>
+                    <x>73.3333511</x>
+                    <y>0</y>
+                    <z>25.8278217</z>
+                </pos>
+                <quat>
+                    <x>0</x>
+                    <y>0</y>
+                    <z>0</z>
+                    <w>1</w>
+                </quat>
+                <scale>
+                    <x>1</x>
+                    <y>1</y>
+                    <z>1</z>
+                </scale>
+            </transform>
+            <model_name/>
+            <model_color_vec4>
+                <x>0.800000012</x>
+                <y>0.800000012</y>
+                <z>0.800000012</z>
+                <w>1</w>
+            </model_color_vec4>
+            <flow_section_id>5</flow_section_id>
+            <tag>0</tag>
+            <loop>true</loop>
+            <start_beat_time>0</start_beat_time>
+            <start_quantize>4</start_quantize>
+            <events>
+                <beat_event>
+                    <event_type>NoteOn</event_type>
+                    <channel>2</channel>
+                    <tick_time>0</tick_time>
+                    <midi_note>55</midi_note>
+                    <velocity>1</velocity>
+                    <beat_time>0</beat_time>
+                </beat_event>
+                <beat_event>
+                    <event_type>NoteOn</event_type>
+                    <channel>2</channel>
+                    <tick_time>0</tick_time>
+                    <midi_note>58</midi_note>
+                    <velocity>1</velocity>
+                    <beat_time>0</beat_time>
+                </beat_event>
+                <beat_event>
+                    <event_type>NoteOn</event_type>
+                    <channel>2</channel>
+                    <tick_time>0</tick_time>
+                    <midi_note>62</midi_note>
+                    <velocity>1</velocity>
+                    <beat_time>0</beat_time>
+                </beat_event>
+                <beat_event>
+                    <event_type>NoteOn</event_type>
+                    <channel>2</channel>
+                    <tick_time>0</tick_time>
+                    <midi_note>65</midi_note>
+                    <velocity>1</velocity>
+                    <beat_time>0</beat_time>
+                </beat_event>
+                <beat_event>
+                    <event_type>NoteOff</event_type>
+                    <channel>2</channel>
+                    <tick_time>0</tick_time>
+                    <midi_note>55</midi_note>
+                    <beat_time>7</beat_time>
+                </beat_event>
+                <beat_event>
+                    <event_type>NoteOff</event_type>
+                    <channel>2</channel>
+                    <tick_time>0</tick_time>
+                    <midi_note>58</midi_note>
+                    <beat_time>7</beat_time>
+                </beat_event>
+                <beat_event>
+                    <event_type>NoteOff</event_type>
+                    <channel>2</channel>
+                    <tick_time>0</tick_time>
+                    <midi_note>62</midi_note>
+                    <beat_time>7</beat_time>
+                </beat_event>
+                <beat_event>
+                    <event_type>NoteOff</event_type>
+                    <channel>2</channel>
+                    <tick_time>0</tick_time>
+                    <midi_note>65</midi_note>
+                    <beat_time>7</beat_time>
+                </beat_event>
+                <beat_event>
+                    <event_type>NoteOn</event_type>
+                    <channel>2</channel>
+                    <tick_time>0</tick_time>
+                    <midi_note>55</midi_note>
+                    <velocity>1</velocity>
+                    <beat_time>8</beat_time>
+                </beat_event>
+                <beat_event>
+                    <event_type>NoteOn</event_type>
+                    <channel>2</channel>
+                    <tick_time>0</tick_time>
+                    <midi_note>58</midi_note>
+                    <velocity>1</velocity>
+                    <beat_time>8</beat_time>
+                </beat_event>
+                <beat_event>
+                    <event_type>NoteOn</event_type>
+                    <channel>2</channel>
+                    <tick_time>0</tick_time>
+                    <midi_note>60</midi_note>
+                    <velocity>1</velocity>
+                    <beat_time>8</beat_time>
+                </beat_event>
+                <beat_event>
+                    <event_type>NoteOn</event_type>
+                    <channel>2</channel>
+                    <tick_time>0</tick_time>
+                    <midi_note>64</midi_note>
+                    <velocity>1</velocity>
+                    <beat_time>8</beat_time>
+                </beat_event>
+                <beat_event>
+                    <event_type>NoteOff</event_type>
+                    <channel>2</channel>
+                    <tick_time>0</tick_time>
+                    <midi_note>55</midi_note>
+                    <beat_time>15</beat_time>
+                </beat_event>
+                <beat_event>
+                    <event_type>NoteOff</event_type>
+                    <channel>2</channel>
+                    <tick_time>0</tick_time>
+                    <midi_note>58</midi_note>
+                    <beat_time>15</beat_time>
+                </beat_event>
+                <beat_event>
+                    <event_type>NoteOff</event_type>
+                    <channel>2</channel>
+                    <tick_time>0</tick_time>
+                    <midi_note>60</midi_note>
+                    <beat_time>15</beat_time>
+                </beat_event>
+                <beat_event>
+                    <event_type>NoteOff</event_type>
+                    <channel>2</channel>
+                    <tick_time>0</tick_time>
+                    <midi_note>64</midi_note>
+                    <beat_time>15</beat_time>
+                </beat_event>
+                <beat_event>
+                    <event_type>None</event_type>
+                    <channel>2</channel>
+                    <tick_time>0</tick_time>
+                    <beat_time>16</beat_time>
+                </beat_event>
+            </events>
+        </Sequencer>
     </new_entities>
 </script>

@@ -8,6 +8,7 @@ struct SequencerEntity : ne::Entity {
     bool _loop = false;
     std::vector<BeatTimeEvent> _events;
     double _startBeatTime = 0.0;
+    double _startTimeQuantize = 1.0;
 
     // Gets initialized to false in edit mode.
     bool _playing = true;

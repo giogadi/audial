@@ -20,7 +20,13 @@ void SequencerEntity::InitDerived(GameManager& g) {
 
 void SequencerEntity::Reset(GameManager& g) {
     _currentIx = -1;
-    _currentLoopStartBeatTime = g._beatClock->GetNextDownBeatTime(g._beatClock->GetBeatTimeFromEpoch());
+    double beatTime = g._beatClock->GetBeatTimeFromEpoch();
+    if (_startTimeQuantize > 0.0) {
+        _currentLoopStartBeatTime = g._beatClock->GetNextBeatDenomTime(beatTime, _startTimeQuantize);
+    }
+    else {
+        _currentLoopStartBeatTime = beatTime;
+    }
     _currentLoopStartBeatTime = std::max(_currentLoopStartBeatTime, _startBeatTime);
 }
 
@@ -82,6 +88,7 @@ void SequencerEntity::Update(GameManager& g, float dt) {
 void SequencerEntity::SaveDerived(serial::Ptree pt) const {
     pt.PutBool("loop", _loop);
     pt.PutDouble("start_beat_time", _startBeatTime);
+    pt.PutDouble("start_quantize", _startTimeQuantize);
     serial::Ptree eventsPt = pt.AddChild("events");
     for (BeatTimeEvent const& b_e : _events) {
         serial::Ptree eventPt = eventsPt.AddChild("beat_event");
@@ -92,7 +99,9 @@ void SequencerEntity::SaveDerived(serial::Ptree pt) const {
 void SequencerEntity::LoadDerived(serial::Ptree pt) {
     _loop = pt.GetBool("loop");
     _startBeatTime = 0.0;
+    _startTimeQuantize = 1.0;
     pt.TryGetDouble("start_beat_time", &_startBeatTime);
+    pt.TryGetDouble("start_quantize", &_startTimeQuantize);
     serial::Ptree eventsPt = pt.TryGetChild("events");
     if (eventsPt.IsValid()) {
         int numChildren = 0;
@@ -108,6 +117,7 @@ void SequencerEntity::LoadDerived(serial::Ptree pt) {
 ne::Entity::ImGuiResult SequencerEntity::ImGuiDerived(GameManager& g) {
     ImGui::Checkbox("Loop", &_loop);
     ImGui::InputDouble("Start beat time", &_startBeatTime);
+    ImGui::InputDouble("Start quantize", &_startTimeQuantize);
     if (_playing) {
         if (ImGui::Button("Stop")) {
             Reset(g);
