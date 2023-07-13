@@ -9885,6 +9885,14 @@
                     <seq_name>clap_seq</seq_name>
                     <mute>false</mute>
                 </seq_action>
+                <seq_action>
+                    <one_time>true</one_time>
+                    <action_type>ChangePatch</action_type>
+                    <channel>0</channel>
+                    <blend_beat_time>1.5</blend_beat_time>
+                    <use_patch_bank>true</use_patch_bank>
+                    <patch_name>bass2</patch_name>
+                </seq_action>
             </actions>
         </FlowTrigger>
         <TypingEnemy>
