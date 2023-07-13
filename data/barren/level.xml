@@ -9479,7 +9479,7 @@
                     <w>1</w>
                 </quat>
                 <scale>
-                    <x>1</x>
+                    <x>2</x>
                     <y>1</y>
                     <z>1</z>
                 </scale>
@@ -9516,6 +9516,24 @@
                     <maxX>0</maxX>
                     <hasMaxZ>false</hasMaxZ>
                     <maxZ>0</maxZ>
+                </seq_action>
+                <seq_action>
+                    <one_time>true</one_time>
+                    <action_type>WaypointControl</action_type>
+                    <follow_waypoints>true</follow_waypoints>
+                    <entity_name>r7_w</entity_name>
+                </seq_action>
+                <seq_action>
+                    <one_time>true</one_time>
+                    <action_type>WaypointControl</action_type>
+                    <follow_waypoints>true</follow_waypoints>
+                    <entity_name>r7_o</entity_name>
+                </seq_action>
+                <seq_action>
+                    <one_time>true</one_time>
+                    <action_type>WaypointControl</action_type>
+                    <follow_waypoints>true</follow_waypoints>
+                    <entity_name>room7_camera_target2</entity_name>
                 </seq_action>
             </actions>
         </FlowTrigger>
@@ -9809,6 +9827,33 @@
                     <follow_waypoints>true</follow_waypoints>
                     <entity_name>r7_i2</entity_name>
                 </seq_action>
+                <seq_action>
+                    <one_time>true</one_time>
+                    <action_type>CameraControl</action_type>
+                    <setTarget>true</setTarget>
+                    <targetEntityName>r7_e2</targetEntityName>
+                    <targetTrackingFactor>0.0500000007</targetTrackingFactor>
+                    <setOffset>true</setOffset>
+                    <desiredTargetToCameraOffset>
+                        <x>0</x>
+                        <y>15</y>
+                        <z>0</z>
+                    </desiredTargetToCameraOffset>
+                    <hasMinX>false</hasMinX>
+                    <minX>0</minX>
+                    <hasMinZ>false</hasMinZ>
+                    <minZ>0</minZ>
+                    <hasMaxX>false</hasMaxX>
+                    <maxX>0</maxX>
+                    <hasMaxZ>false</hasMaxZ>
+                    <maxZ>0</maxZ>
+                </seq_action>
+                <seq_action>
+                    <one_time>true</one_time>
+                    <action_type>SetStepSequencerMute</action_type>
+                    <seq_name>clap_seq</seq_name>
+                    <mute>false</mute>
+                </seq_action>
             </actions>
         </FlowTrigger>
         <TypingEnemy>
@@ -9877,11 +9922,6 @@
                     <velOnly>false</velOnly>
                     <temporary>true</temporary>
                     <stepStr> mG2:1</stepStr>
-                </seq_action>
-                <seq_action>
-                    <one_time>true</one_time>
-                    <action_type>Trigger</action_type>
-                    <entity_name>r7_first_hit_trigger</entity_name>
                 </seq_action>
             </hit_actions>
             <off_cooldown_actions/>
@@ -9952,11 +9992,6 @@
                     <velOnly>false</velOnly>
                     <temporary>true</temporary>
                     <stepStr> mF2:1</stepStr>
-                </seq_action>
-                <seq_action>
-                    <one_time>true</one_time>
-                    <action_type>Trigger</action_type>
-                    <entity_name>r7_first_hit_trigger</entity_name>
                 </seq_action>
             </hit_actions>
             <off_cooldown_actions/>
