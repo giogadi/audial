@@ -58,7 +58,7 @@ struct SeqAction {
 
     static std::unique_ptr<SeqAction> New(SeqActionType actionType);
     static std::unique_ptr<SeqAction> Load(serial::Ptree pt);
-    static void LoadActionsFromChildNode(serial::Ptree pt, char const* childName, std::vector<std::unique_ptr<SeqAction>>& actions);
+    static bool LoadActionsFromChildNode(serial::Ptree pt, char const* childName, std::vector<std::unique_ptr<SeqAction>>& actions);
     
 protected:
     virtual void LoadDerived(

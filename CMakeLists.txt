@@ -21,6 +21,9 @@ add_executable(game
     src/imgui/backends/imgui_impl_opengl3.cpp
     src/glad/src/glad.cpp
 
+    src/imgui_util.h
+    src/imgui_vector_util.h
+
     src/viewport.cpp src/viewport.h
 
     src/matrix.cpp src/matrix.h
@@ -29,6 +32,7 @@ add_executable(game
     src/aabb.cpp src/aabb.h
 
     src/serial.cpp src/serial.h
+    src/serial_vector_util.h
     src/rng.cpp src/rng.h
     src/game.cpp
     src/audio_util.cpp src/audio_util.h

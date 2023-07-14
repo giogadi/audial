@@ -647,6 +647,7 @@
             <flow_section_id>-1</flow_section_id>
             <tag>0</tag>
             <on_player_enter>true</on_player_enter>
+            <use_trigger_volumes>false</use_trigger_volumes>
             <random_action_count>-1</random_action_count>
             <actions>
                 <seq_action>
@@ -664,6 +665,8 @@
                     </spawn_pos>
                 </seq_action>
             </actions>
+            <actions_on_exit/>
+            <trigger_volume_entities/>
         </FlowTrigger>
         <Base>
             <name>r2_new_spawn_pos</name>
@@ -729,6 +732,7 @@
             <flow_section_id>-1</flow_section_id>
             <tag>0</tag>
             <on_player_enter>true</on_player_enter>
+            <use_trigger_volumes>false</use_trigger_volumes>
             <random_action_count>-1</random_action_count>
             <actions>
                 <seq_action>
@@ -751,6 +755,8 @@
                     <seqEntityName>snare_seq</seqEntityName>
                 </seq_action>
             </actions>
+            <actions_on_exit/>
+            <trigger_volume_entities/>
         </FlowTrigger>
         <TypingEnemy>
             <name>r1_f</name>
@@ -2726,6 +2732,7 @@
             <flow_section_id>1</flow_section_id>
             <tag>0</tag>
             <on_player_enter>true</on_player_enter>
+            <use_trigger_volumes>false</use_trigger_volumes>
             <random_action_count>-1</random_action_count>
             <actions>
                 <seq_action>
@@ -2778,6 +2785,8 @@
                     <mute>false</mute>
                 </seq_action>
             </actions>
+            <actions_on_exit/>
+            <trigger_volume_entities/>
         </FlowTrigger>
         <TypingEnemy>
             <name>r3_f</name>
@@ -3753,6 +3762,7 @@
             <flow_section_id>2</flow_section_id>
             <tag>0</tag>
             <on_player_enter>true</on_player_enter>
+            <use_trigger_volumes>false</use_trigger_volumes>
             <random_action_count>-1</random_action_count>
             <actions>
                 <seq_action>
@@ -3797,6 +3807,8 @@
                     </spawn_pos>
                 </seq_action>
             </actions>
+            <actions_on_exit/>
+            <trigger_volume_entities/>
         </FlowTrigger>
         <FlowTrigger>
             <name>room4_trigger</name>
@@ -3830,6 +3842,7 @@
             <flow_section_id>3</flow_section_id>
             <tag>0</tag>
             <on_player_enter>true</on_player_enter>
+            <use_trigger_volumes>false</use_trigger_volumes>
             <random_action_count>-1</random_action_count>
             <actions>
                 <seq_action>
@@ -3924,6 +3937,8 @@
                     <patch_name>bass2</patch_name>
                 </seq_action>
             </actions>
+            <actions_on_exit/>
+            <trigger_volume_entities/>
         </FlowTrigger>
         <ActionSequencer>
             <name>room5_timed_trigger</name>
@@ -4022,6 +4037,7 @@
             <flow_section_id>4</flow_section_id>
             <tag>0</tag>
             <on_player_enter>true</on_player_enter>
+            <use_trigger_volumes>false</use_trigger_volumes>
             <random_action_count>-1</random_action_count>
             <actions>
                 <seq_action>
@@ -4046,6 +4062,8 @@
                     <maxZ>0</maxZ>
                 </seq_action>
             </actions>
+            <actions_on_exit/>
+            <trigger_volume_entities/>
         </FlowTrigger>
         <FlowTrigger>
             <name>room6_camera_target</name>
@@ -4079,8 +4097,11 @@
             <flow_section_id>4</flow_section_id>
             <tag>0</tag>
             <on_player_enter>true</on_player_enter>
+            <use_trigger_volumes>false</use_trigger_volumes>
             <random_action_count>-1</random_action_count>
             <actions/>
+            <actions_on_exit/>
+            <trigger_volume_entities/>
         </FlowTrigger>
         <FlowWall>
             <name>r6_wall1</name>
@@ -4442,6 +4463,7 @@
             <flow_section_id>5</flow_section_id>
             <tag>0</tag>
             <on_player_enter>true</on_player_enter>
+            <use_trigger_volumes>false</use_trigger_volumes>
             <random_action_count>-1</random_action_count>
             <actions>
                 <seq_action>
@@ -4485,6 +4507,8 @@
                     <max_z>35</max_z>
                 </seq_action>
             </actions>
+            <actions_on_exit/>
+            <trigger_volume_entities/>
         </FlowTrigger>
         <TypingEnemy>
             <name>r7_e</name>
@@ -5670,6 +5694,7 @@
             <flow_section_id>0</flow_section_id>
             <tag>0</tag>
             <on_player_enter>true</on_player_enter>
+            <use_trigger_volumes>false</use_trigger_volumes>
             <random_action_count>-1</random_action_count>
             <actions>
                 <seq_action>
@@ -5708,6 +5733,8 @@
                     <section_id>0</section_id>
                 </seq_action>
             </actions>
+            <actions_on_exit/>
+            <trigger_volume_entities/>
         </FlowTrigger>
         <Base>
             <name>room1_camera_target</name>
@@ -5975,6 +6002,7 @@
             <flow_section_id>2</flow_section_id>
             <tag>0</tag>
             <on_player_enter>true</on_player_enter>
+            <use_trigger_volumes>false</use_trigger_volumes>
             <random_action_count>-1</random_action_count>
             <actions>
                 <seq_action>
@@ -6055,6 +6083,8 @@
                     <init_on_activate>true</init_on_activate>
                 </seq_action>
             </actions>
+            <actions_on_exit/>
+            <trigger_volume_entities/>
         </FlowTrigger>
         <TypingEnemy>
             <name>r2_u</name>
@@ -7746,6 +7776,7 @@
             <flow_section_id>2</flow_section_id>
             <tag>0</tag>
             <on_player_enter>true</on_player_enter>
+            <use_trigger_volumes>false</use_trigger_volumes>
             <random_action_count>-1</random_action_count>
             <actions>
                 <seq_action>
@@ -7830,6 +7861,8 @@
                     <init_on_activate>true</init_on_activate>
                 </seq_action>
             </actions>
+            <actions_on_exit/>
+            <trigger_volume_entities/>
         </FlowTrigger>
         <Vfx>
             <name>r2_vfx1</name>
@@ -8305,6 +8338,7 @@
             <flow_section_id>2</flow_section_id>
             <tag>0</tag>
             <on_player_enter>false</on_player_enter>
+            <use_trigger_volumes>false</use_trigger_volumes>
             <random_action_count>6</random_action_count>
             <actions>
                 <seq_action>
@@ -8373,6 +8407,8 @@
                     <vfxEntityName>r2_vfx13</vfxEntityName>
                 </seq_action>
             </actions>
+            <actions_on_exit/>
+            <trigger_volume_entities/>
         </FlowTrigger>
         <TypingEnemy>
             <name>r2_secret_i</name>
@@ -9019,6 +9055,7 @@
             <flow_section_id>5</flow_section_id>
             <tag>0</tag>
             <on_player_enter>false</on_player_enter>
+            <use_trigger_volumes>false</use_trigger_volumes>
             <random_action_count>-1</random_action_count>
             <actions>
                 <seq_action>
@@ -9068,6 +9105,8 @@
                     <patch_name>pad2</patch_name>
                 </seq_action>
             </actions>
+            <actions_on_exit/>
+            <trigger_volume_entities/>
         </FlowTrigger>
         <Base>
             <name>r7_stuff7</name>
@@ -9516,6 +9555,7 @@
             <flow_section_id>5</flow_section_id>
             <tag>0</tag>
             <on_player_enter>false</on_player_enter>
+            <use_trigger_volumes>false</use_trigger_volumes>
             <random_action_count>-1</random_action_count>
             <actions>
                 <seq_action>
@@ -9569,14 +9609,9 @@
                     <seq_name>clap_seq</seq_name>
                     <mute>false</mute>
                 </seq_action>
-                <seq_action>
-                    <one_time>true</one_time>
-                    <action_type>SetEntityActive</action_type>
-                    <entity_name>r7_bass3_patch_changer</entity_name>
-                    <active>true</active>
-                    <init_on_activate>true</init_on_activate>
-                </seq_action>
             </actions>
+            <actions_on_exit/>
+            <trigger_volume_entities/>
         </FlowTrigger>
         <FlowWall>
             <name>r7_platform_wall</name>
@@ -9848,6 +9883,7 @@
             <flow_section_id>5</flow_section_id>
             <tag>0</tag>
             <on_player_enter>true</on_player_enter>
+            <use_trigger_volumes>false</use_trigger_volumes>
             <random_action_count>-1</random_action_count>
             <actions>
                 <seq_action>
@@ -9897,14 +9933,6 @@
                 </seq_action>
                 <seq_action>
                     <one_time>true</one_time>
-                    <action_type>ChangePatch</action_type>
-                    <channel>0</channel>
-                    <blend_beat_time>1.5</blend_beat_time>
-                    <use_patch_bank>true</use_patch_bank>
-                    <patch_name>bass2</patch_name>
-                </seq_action>
-                <seq_action>
-                    <one_time>true</one_time>
                     <action_type>SetEntityActive</action_type>
                     <entity_name>r7_pad_seq</entity_name>
                     <active>true</active>
@@ -9917,6 +9945,8 @@
                     <entity_name>room7_camera_target3</entity_name>
                 </seq_action>
             </actions>
+            <actions_on_exit/>
+            <trigger_volume_entities/>
         </FlowTrigger>
         <TypingEnemy>
             <name>r7_e2</name>
@@ -10717,6 +10747,7 @@
             <flow_section_id>5</flow_section_id>
             <tag>0</tag>
             <on_player_enter>true</on_player_enter>
+            <use_trigger_volumes>false</use_trigger_volumes>
             <random_action_count>-1</random_action_count>
             <actions>
                 <seq_action>
@@ -10759,6 +10790,8 @@
                     <entity_name>room7_camera_target4</entity_name>
                 </seq_action>
             </actions>
+            <actions_on_exit/>
+            <trigger_volume_entities/>
         </FlowTrigger>
         <FlowWall>
             <name>room7_camera_target4</name>
@@ -10813,5 +10846,61 @@
             <polygon/>
             <hit_actions/>
         </FlowWall>
+        <FlowTrigger>
+            <name>r7_bass3_patch_trigger</name>
+            <entity_active>true</entity_active>
+            <pickable>true</pickable>
+            <transform>
+                <pos>
+                    <x>67.9992371</x>
+                    <y>0</y>
+                    <z>21.8877735</z>
+                </pos>
+                <quat>
+                    <x>0</x>
+                    <y>0</y>
+                    <z>0</z>
+                    <w>1</w>
+                </quat>
+                <scale>
+                    <x>9</x>
+                    <y>1</y>
+                    <z>2</z>
+                </scale>
+            </transform>
+            <model_name>cube</model_name>
+            <model_color_vec4>
+                <x>0.628502667</x>
+                <y>0.950980365</y>
+                <z>0.167820051</z>
+                <w>0.392156869</w>
+            </model_color_vec4>
+            <flow_section_id>5</flow_section_id>
+            <tag>0</tag>
+            <on_player_enter>true</on_player_enter>
+            <use_trigger_volumes>false</use_trigger_volumes>
+            <random_action_count>-1</random_action_count>
+            <actions>
+                <seq_action>
+                    <one_time>false</one_time>
+                    <action_type>ChangePatch</action_type>
+                    <channel>0</channel>
+                    <blend_beat_time>2</blend_beat_time>
+                    <use_patch_bank>true</use_patch_bank>
+                    <patch_name>bass3</patch_name>
+                </seq_action>
+            </actions>
+            <actions_on_exit>
+                <seq_action>
+                    <one_time>false</one_time>
+                    <action_type>ChangePatch</action_type>
+                    <channel>0</channel>
+                    <blend_beat_time>2</blend_beat_time>
+                    <use_patch_bank>true</use_patch_bank>
+                    <patch_name>bass2</patch_name>
+                </seq_action>
+            </actions_on_exit>
+            <trigger_volume_entities/>
+        </FlowTrigger>
     </new_entities>
 </script>

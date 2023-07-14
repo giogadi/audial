@@ -70,12 +70,11 @@ std::unique_ptr<SeqAction> SeqAction::Load(serial::Ptree pt) {
     return pAction;
 }
 
-void SeqAction::LoadActionsFromChildNode(serial::Ptree pt, char const* childName, std::vector<std::unique_ptr<SeqAction>>& actions) {
+bool SeqAction::LoadActionsFromChildNode(serial::Ptree pt, char const* childName, std::vector<std::unique_ptr<SeqAction>>& actions) {
     actions.clear();
     serial::Ptree actionsPt = pt.TryGetChild(childName);
     if (!actionsPt.IsValid()) {
-        printf("LoadActionsFromChildNode: no child found of name \"%s\"!\n", childName);
-        return;
+        return false;
     }
     int numChildren;
     serial::NameTreePair* children = actionsPt.GetChildren(&numChildren);
@@ -84,6 +83,7 @@ void SeqAction::LoadActionsFromChildNode(serial::Ptree pt, char const* childName
         actions.push_back(Load(children[i]._pt));
     }
     delete[] children;
+    return true;
 }
 
 bool SeqAction::ImGui(char const* label, std::vector<std::unique_ptr<SeqAction>>& actions) {
