@@ -57,10 +57,13 @@ void ParamAutomatorEntity::Update(GameManager& g, float dt) {
         return;
     }
     // We don't early-return here so we ensure we actually set to the end value.
-    if (automateTime >= _props._desiredAutomateTime) {
+    if (automateTime >= _props._desiredAutomateTime || _props._desiredAutomateTime <= 0.0) {
         g._neEntityManager->TagForDestroy(_id);
     }
-    double factor = math_util::Clamp(automateTime / _props._desiredAutomateTime, 0.0, 1.0);
+    double factor = 1.0;
+    if (_props._desiredAutomateTime > 0.0) {
+        factor = math_util::Clamp(automateTime / _props._desiredAutomateTime, 0.0, 1.0);
+    }
     float newValue = _startValueAdjusted + factor * (_endValueAdjusted - _startValueAdjusted);
     
     if (_props._synth) {

@@ -240,7 +240,11 @@ void ProcessVoice(Voice& voice, int const sampleRate, float pitchLFOValue,
     // final gain. Map from linear [0,1] to exponential from -80db to 0db.
     float const startAmp = 0.01f;
     float const factor = 1.0f / startAmp;
-    float gain = startAmp * powf(factor, patch.Get(SynthParamType::Gain));
+    float gain = 0.f;
+    float const patchGain = patch.Get(SynthParamType::Gain);
+    if (patchGain > 0.f) {
+        gain = startAmp * powf(factor, patch.Get(SynthParamType::Gain));
+    }    
 
     float lpfA1, lpfA2, lpfA3, lpfK;  // filter shit
     {
