@@ -282,14 +282,14 @@
             <Detune>1</Detune>
             <OscFader>0.615999997</OscFader>
             <Cutoff>5365.77881</Cutoff>
-            <Peak>0.896000028</Peak>
-            <HpfCutoff>503.041992</HpfCutoff>
+            <Peak>0</Peak>
+            <HpfCutoff>167.681</HpfCutoff>
             <HpfPeak>0</HpfPeak>
             <Portamento>0</Portamento>
-            <PitchLFOGain>0.00800000038</PitchLFOGain>
+            <PitchLFOGain>0.0270000007</PitchLFOGain>
             <PitchLFOFreq>4.5630002</PitchLFOFreq>
-            <CutoffLFOGain>0.00400000019</CutoffLFOGain>
-            <CutoffLFOFreq>4.23699999</CutoffLFOFreq>
+            <CutoffLFOGain>0.0949999988</CutoffLFOGain>
+            <CutoffLFOFreq>0.5</CutoffLFOFreq>
             <AmpEnvAttack>0.0379999988</AmpEnvAttack>
             <AmpEnvDecay>0.349999994</AmpEnvDecay>
             <AmpEnvSustain>1</AmpEnvSustain>
