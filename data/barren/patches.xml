@@ -275,15 +275,15 @@
     <patch>
         <name>pad2</name>
         <patch>
-            <Gain>0.414999992</Gain>
+            <Gain>0.536000013</Gain>
             <Mono>0</Mono>
             <Osc1Waveform>Square</Osc1Waveform>
             <Osc2Waveform>Saw</Osc2Waveform>
             <Detune>1</Detune>
-            <OscFader>0.615999997</OscFader>
+            <OscFader>0.833000004</OscFader>
             <Cutoff>5365.77881</Cutoff>
             <Peak>0</Peak>
-            <HpfCutoff>167.681</HpfCutoff>
+            <HpfCutoff>0</HpfCutoff>
             <HpfPeak>0</HpfPeak>
             <Portamento>0</Portamento>
             <PitchLFOGain>0.0270000007</PitchLFOGain>
@@ -293,7 +293,7 @@
             <AmpEnvAttack>0.0379999988</AmpEnvAttack>
             <AmpEnvDecay>0.349999994</AmpEnvDecay>
             <AmpEnvSustain>1</AmpEnvSustain>
-            <AmpEnvRelease>7</AmpEnvRelease>
+            <AmpEnvRelease>4.06799984</AmpEnvRelease>
             <CutoffEnvGain>0</CutoffEnvGain>
             <CutoffEnvAttack>0.0719999969</CutoffEnvAttack>
             <CutoffEnvDecay>0.734000027</CutoffEnvDecay>
