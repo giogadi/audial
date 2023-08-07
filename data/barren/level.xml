@@ -34,11 +34,13 @@
             <flow_section_id>-1</flow_section_id>
             <tag>0</tag>
             <waypoint_follower>
+                <mode>Waypoint</mode>
                 <local_to_entity>false</local_to_entity>
                 <waypoint_auto_start>false</waypoint_auto_start>
                 <loop_waypoints>false</loop_waypoints>
                 <start_time>3</start_time>
                 <waypoints/>
+                <follow_entity_name/>
             </waypoint_follower>
             <ambient>
                 <x>0</x>
@@ -83,11 +85,13 @@
             <flow_section_id>-1</flow_section_id>
             <tag>0</tag>
             <waypoint_follower>
+                <mode>Waypoint</mode>
                 <local_to_entity>false</local_to_entity>
                 <waypoint_auto_start>false</waypoint_auto_start>
                 <loop_waypoints>false</loop_waypoints>
                 <start_time>3</start_time>
                 <waypoints/>
+                <follow_entity_name/>
             </waypoint_follower>
             <ortho>true</ortho>
             <follow_entity_name/>
@@ -125,11 +129,13 @@
             <flow_section_id>-1</flow_section_id>
             <tag>0</tag>
             <waypoint_follower>
+                <mode>Waypoint</mode>
                 <local_to_entity>false</local_to_entity>
                 <waypoint_auto_start>false</waypoint_auto_start>
                 <loop_waypoints>false</loop_waypoints>
                 <start_time>3</start_time>
                 <waypoints/>
+                <follow_entity_name/>
             </waypoint_follower>
             <loop>false</loop>
             <start_beat_time>0</start_beat_time>
@@ -211,11 +217,13 @@
             <flow_section_id>-1</flow_section_id>
             <tag>0</tag>
             <waypoint_follower>
+                <mode>Waypoint</mode>
                 <local_to_entity>false</local_to_entity>
                 <waypoint_auto_start>false</waypoint_auto_start>
                 <loop_waypoints>false</loop_waypoints>
                 <start_time>3</start_time>
                 <waypoints/>
+                <follow_entity_name/>
             </waypoint_follower>
             <selection_radius>-1</selection_radius>
             <launch_vel>20</launch_vel>
@@ -265,11 +273,13 @@
             <flow_section_id>-1</flow_section_id>
             <tag>0</tag>
             <waypoint_follower>
+                <mode>Waypoint</mode>
                 <local_to_entity>false</local_to_entity>
                 <waypoint_auto_start>false</waypoint_auto_start>
                 <loop_waypoints>false</loop_waypoints>
                 <start_time>4</start_time>
                 <waypoints/>
+                <follow_entity_name/>
             </waypoint_follower>
             <sequence>mG0:1 -1:1 -1:1 -1:1 mG0:1 -1:1 -1:1 -1:1 mG0:1 -1:1 -1:1 -1:1 mG0:1 -1:1 -1:1 -1:1</sequence>
             <start_mute>true</start_mute>
@@ -314,11 +324,13 @@
             <flow_section_id>-1</flow_section_id>
             <tag>0</tag>
             <waypoint_follower>
+                <mode>Waypoint</mode>
                 <local_to_entity>false</local_to_entity>
                 <waypoint_auto_start>false</waypoint_auto_start>
                 <loop_waypoints>false</loop_waypoints>
                 <start_time>4</start_time>
                 <waypoints/>
+                <follow_entity_name/>
             </waypoint_follower>
             <sequence>-1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1</sequence>
             <start_mute>false</start_mute>
@@ -363,11 +375,13 @@
             <flow_section_id>-1</flow_section_id>
             <tag>0</tag>
             <waypoint_follower>
+                <mode>Waypoint</mode>
                 <local_to_entity>false</local_to_entity>
                 <waypoint_auto_start>false</waypoint_auto_start>
                 <loop_waypoints>false</loop_waypoints>
                 <start_time>4</start_time>
                 <waypoints/>
+                <follow_entity_name/>
             </waypoint_follower>
             <sequence>-1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1</sequence>
             <start_mute>false</start_mute>
@@ -412,11 +426,13 @@
             <flow_section_id>-1</flow_section_id>
             <tag>0</tag>
             <waypoint_follower>
+                <mode>Waypoint</mode>
                 <local_to_entity>false</local_to_entity>
                 <waypoint_auto_start>false</waypoint_auto_start>
                 <loop_waypoints>false</loop_waypoints>
                 <start_time>0</start_time>
                 <waypoints/>
+                <follow_entity_name/>
             </waypoint_follower>
             <sequence>-1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1</sequence>
             <start_mute>false</start_mute>
@@ -461,11 +477,13 @@
             <flow_section_id>-1</flow_section_id>
             <tag>0</tag>
             <waypoint_follower>
+                <mode>Waypoint</mode>
                 <local_to_entity>false</local_to_entity>
                 <waypoint_auto_start>false</waypoint_auto_start>
                 <loop_waypoints>false</loop_waypoints>
                 <start_time>0</start_time>
                 <waypoints/>
+                <follow_entity_name/>
             </waypoint_follower>
             <sequence>-1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1</sequence>
             <start_mute>false</start_mute>
@@ -512,11 +530,13 @@
             <flow_section_id>-1</flow_section_id>
             <tag>0</tag>
             <waypoint_follower>
+                <mode>Waypoint</mode>
                 <local_to_entity>false</local_to_entity>
                 <waypoint_auto_start>false</waypoint_auto_start>
                 <loop_waypoints>false</loop_waypoints>
                 <start_time>0</start_time>
                 <waypoints/>
+                <follow_entity_name/>
             </waypoint_follower>
             <sequence>-1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1</sequence>
             <start_mute>false</start_mute>
@@ -563,11 +583,13 @@
             <flow_section_id>-1</flow_section_id>
             <tag>0</tag>
             <waypoint_follower>
+                <mode>Waypoint</mode>
                 <local_to_entity>false</local_to_entity>
                 <waypoint_auto_start>false</waypoint_auto_start>
                 <loop_waypoints>false</loop_waypoints>
                 <start_time>0</start_time>
                 <waypoints/>
+                <follow_entity_name/>
             </waypoint_follower>
             <sequence>-1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1</sequence>
             <start_mute>false</start_mute>
@@ -614,11 +636,13 @@
             <flow_section_id>-1</flow_section_id>
             <tag>0</tag>
             <waypoint_follower>
+                <mode>Waypoint</mode>
                 <local_to_entity>false</local_to_entity>
                 <waypoint_auto_start>false</waypoint_auto_start>
                 <loop_waypoints>false</loop_waypoints>
                 <start_time>0</start_time>
                 <waypoints/>
+                <follow_entity_name/>
             </waypoint_follower>
             <sequence>-1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1</sequence>
             <start_mute>false</start_mute>
@@ -665,11 +689,13 @@
             <flow_section_id>-1</flow_section_id>
             <tag>0</tag>
             <waypoint_follower>
+                <mode>Waypoint</mode>
                 <local_to_entity>false</local_to_entity>
                 <waypoint_auto_start>false</waypoint_auto_start>
                 <loop_waypoints>false</loop_waypoints>
                 <start_time>3</start_time>
                 <waypoints/>
+                <follow_entity_name/>
             </waypoint_follower>
             <seq_filename>data/barren/action_seq.txt</seq_filename>
         </ActionSequencer>
@@ -705,11 +731,13 @@
             <flow_section_id>0</flow_section_id>
             <tag>0</tag>
             <waypoint_follower>
+                <mode>Waypoint</mode>
                 <local_to_entity>false</local_to_entity>
                 <waypoint_auto_start>false</waypoint_auto_start>
                 <loop_waypoints>false</loop_waypoints>
                 <start_time>3</start_time>
                 <waypoints/>
+                <follow_entity_name/>
             </waypoint_follower>
             <seq_filename>data/barren/room1_action_seq.txt</seq_filename>
         </ActionSequencer>
@@ -745,11 +773,13 @@
             <flow_section_id>-1</flow_section_id>
             <tag>0</tag>
             <waypoint_follower>
+                <mode>Waypoint</mode>
                 <local_to_entity>false</local_to_entity>
                 <waypoint_auto_start>false</waypoint_auto_start>
                 <loop_waypoints>false</loop_waypoints>
                 <start_time>3</start_time>
                 <waypoints/>
+                <follow_entity_name/>
             </waypoint_follower>
             <on_player_enter>true</on_player_enter>
             <use_trigger_volumes>false</use_trigger_volumes>
@@ -805,11 +835,13 @@
             <flow_section_id>1</flow_section_id>
             <tag>0</tag>
             <waypoint_follower>
+                <mode>Waypoint</mode>
                 <local_to_entity>false</local_to_entity>
                 <waypoint_auto_start>false</waypoint_auto_start>
                 <loop_waypoints>false</loop_waypoints>
                 <start_time>3</start_time>
                 <waypoints/>
+                <follow_entity_name/>
             </waypoint_follower>
         </Base>
         <FlowTrigger>
@@ -844,11 +876,13 @@
             <flow_section_id>-1</flow_section_id>
             <tag>0</tag>
             <waypoint_follower>
+                <mode>Waypoint</mode>
                 <local_to_entity>false</local_to_entity>
                 <waypoint_auto_start>false</waypoint_auto_start>
                 <loop_waypoints>false</loop_waypoints>
                 <start_time>3</start_time>
                 <waypoints/>
+                <follow_entity_name/>
             </waypoint_follower>
             <on_player_enter>true</on_player_enter>
             <use_trigger_volumes>false</use_trigger_volumes>
@@ -909,11 +943,13 @@
             <flow_section_id>0</flow_section_id>
             <tag>0</tag>
             <waypoint_follower>
+                <mode>Waypoint</mode>
                 <local_to_entity>false</local_to_entity>
                 <waypoint_auto_start>false</waypoint_auto_start>
                 <loop_waypoints>false</loop_waypoints>
                 <start_time>3</start_time>
                 <waypoints/>
+                <follow_entity_name/>
             </waypoint_follower>
             <text>f</text>
             <type_kill>false</type_kill>
@@ -969,11 +1005,13 @@
             <flow_section_id>0</flow_section_id>
             <tag>0</tag>
             <waypoint_follower>
+                <mode>Waypoint</mode>
                 <local_to_entity>false</local_to_entity>
                 <waypoint_auto_start>false</waypoint_auto_start>
                 <loop_waypoints>false</loop_waypoints>
                 <start_time>3</start_time>
                 <waypoints/>
+                <follow_entity_name/>
             </waypoint_follower>
             <text>j</text>
             <type_kill>false</type_kill>
@@ -1029,6 +1067,7 @@
             <flow_section_id>0</flow_section_id>
             <tag>0</tag>
             <waypoint_follower>
+                <mode>Waypoint</mode>
                 <local_to_entity>true</local_to_entity>
                 <waypoint_auto_start>true</waypoint_auto_start>
                 <loop_waypoints>true</loop_waypoints>
@@ -1053,6 +1092,7 @@
                         </p>
                     </waypoint>
                 </waypoints>
+                <follow_entity_name/>
             </waypoint_follower>
             <can_hit>true</can_hit>
             <hp>-1</hp>
@@ -1108,11 +1148,13 @@
             <flow_section_id>0</flow_section_id>
             <tag>0</tag>
             <waypoint_follower>
+                <mode>Waypoint</mode>
                 <local_to_entity>false</local_to_entity>
                 <waypoint_auto_start>false</waypoint_auto_start>
                 <loop_waypoints>false</loop_waypoints>
                 <start_time>3</start_time>
                 <waypoints/>
+                <follow_entity_name/>
             </waypoint_follower>
             <text>d</text>
             <type_kill>false</type_kill>
@@ -1168,11 +1210,13 @@
             <flow_section_id>0</flow_section_id>
             <tag>0</tag>
             <waypoint_follower>
+                <mode>Waypoint</mode>
                 <local_to_entity>false</local_to_entity>
                 <waypoint_auto_start>false</waypoint_auto_start>
                 <loop_waypoints>false</loop_waypoints>
                 <start_time>3</start_time>
                 <waypoints/>
+                <follow_entity_name/>
             </waypoint_follower>
             <text>k</text>
             <type_kill>false</type_kill>
@@ -1228,6 +1272,7 @@
             <flow_section_id>0</flow_section_id>
             <tag>0</tag>
             <waypoint_follower>
+                <mode>Waypoint</mode>
                 <local_to_entity>true</local_to_entity>
                 <waypoint_auto_start>true</waypoint_auto_start>
                 <loop_waypoints>true</loop_waypoints>
@@ -1252,6 +1297,7 @@
                         </p>
                     </waypoint>
                 </waypoints>
+                <follow_entity_name/>
             </waypoint_follower>
             <can_hit>true</can_hit>
             <hp>-1</hp>
@@ -1307,6 +1353,7 @@
             <flow_section_id>0</flow_section_id>
             <tag>0</tag>
             <waypoint_follower>
+                <mode>Waypoint</mode>
                 <local_to_entity>true</local_to_entity>
                 <waypoint_auto_start>true</waypoint_auto_start>
                 <loop_waypoints>true</loop_waypoints>
@@ -1331,6 +1378,7 @@
                         </p>
                     </waypoint>
                 </waypoints>
+                <follow_entity_name/>
             </waypoint_follower>
             <can_hit>true</can_hit>
             <hp>-1</hp>
@@ -1386,6 +1434,7 @@
             <flow_section_id>0</flow_section_id>
             <tag>0</tag>
             <waypoint_follower>
+                <mode>Waypoint</mode>
                 <local_to_entity>true</local_to_entity>
                 <waypoint_auto_start>true</waypoint_auto_start>
                 <loop_waypoints>true</loop_waypoints>
@@ -1410,6 +1459,7 @@
                         </p>
                     </waypoint>
                 </waypoints>
+                <follow_entity_name/>
             </waypoint_follower>
             <can_hit>true</can_hit>
             <hp>-1</hp>
@@ -1465,11 +1515,13 @@
             <flow_section_id>0</flow_section_id>
             <tag>0</tag>
             <waypoint_follower>
+                <mode>Waypoint</mode>
                 <local_to_entity>false</local_to_entity>
                 <waypoint_auto_start>false</waypoint_auto_start>
                 <loop_waypoints>false</loop_waypoints>
                 <start_time>3</start_time>
                 <waypoints/>
+                <follow_entity_name/>
             </waypoint_follower>
             <text>e</text>
             <type_kill>false</type_kill>
@@ -1525,11 +1577,13 @@
             <flow_section_id>0</flow_section_id>
             <tag>0</tag>
             <waypoint_follower>
+                <mode>Waypoint</mode>
                 <local_to_entity>false</local_to_entity>
                 <waypoint_auto_start>false</waypoint_auto_start>
                 <loop_waypoints>false</loop_waypoints>
                 <start_time>3</start_time>
                 <waypoints/>
+                <follow_entity_name/>
             </waypoint_follower>
             <text>i</text>
             <type_kill>false</type_kill>
@@ -1585,6 +1639,7 @@
             <flow_section_id>0</flow_section_id>
             <tag>0</tag>
             <waypoint_follower>
+                <mode>Waypoint</mode>
                 <local_to_entity>true</local_to_entity>
                 <waypoint_auto_start>true</waypoint_auto_start>
                 <loop_waypoints>true</loop_waypoints>
@@ -1609,6 +1664,7 @@
                         </p>
                     </waypoint>
                 </waypoints>
+                <follow_entity_name/>
             </waypoint_follower>
             <can_hit>true</can_hit>
             <hp>-1</hp>
@@ -1664,6 +1720,7 @@
             <flow_section_id>0</flow_section_id>
             <tag>0</tag>
             <waypoint_follower>
+                <mode>Waypoint</mode>
                 <local_to_entity>true</local_to_entity>
                 <waypoint_auto_start>true</waypoint_auto_start>
                 <loop_waypoints>true</loop_waypoints>
@@ -1688,6 +1745,7 @@
                         </p>
                     </waypoint>
                 </waypoints>
+                <follow_entity_name/>
             </waypoint_follower>
             <can_hit>true</can_hit>
             <hp>-1</hp>
@@ -1743,11 +1801,13 @@
             <flow_section_id>1</flow_section_id>
             <tag>0</tag>
             <waypoint_follower>
+                <mode>Waypoint</mode>
                 <local_to_entity>false</local_to_entity>
                 <waypoint_auto_start>false</waypoint_auto_start>
                 <loop_waypoints>false</loop_waypoints>
                 <start_time>3</start_time>
                 <waypoints/>
+                <follow_entity_name/>
             </waypoint_follower>
             <text>g</text>
             <type_kill>false</type_kill>
@@ -1803,11 +1863,13 @@
             <flow_section_id>1</flow_section_id>
             <tag>0</tag>
             <waypoint_follower>
+                <mode>Waypoint</mode>
                 <local_to_entity>false</local_to_entity>
                 <waypoint_auto_start>false</waypoint_auto_start>
                 <loop_waypoints>false</loop_waypoints>
                 <start_time>3</start_time>
                 <waypoints/>
+                <follow_entity_name/>
             </waypoint_follower>
             <text>h</text>
             <type_kill>false</type_kill>
@@ -1863,11 +1925,13 @@
             <flow_section_id>2</flow_section_id>
             <tag>0</tag>
             <waypoint_follower>
+                <mode>Waypoint</mode>
                 <local_to_entity>false</local_to_entity>
                 <waypoint_auto_start>false</waypoint_auto_start>
                 <loop_waypoints>false</loop_waypoints>
                 <start_time>3</start_time>
                 <waypoints/>
+                <follow_entity_name/>
             </waypoint_follower>
             <text>f</text>
             <type_kill>false</type_kill>
@@ -1923,11 +1987,13 @@
             <flow_section_id>2</flow_section_id>
             <tag>0</tag>
             <waypoint_follower>
+                <mode>Waypoint</mode>
                 <local_to_entity>false</local_to_entity>
                 <waypoint_auto_start>false</waypoint_auto_start>
                 <loop_waypoints>false</loop_waypoints>
                 <start_time>3</start_time>
                 <waypoints/>
+                <follow_entity_name/>
             </waypoint_follower>
             <text>j</text>
             <type_kill>false</type_kill>
@@ -1983,6 +2049,7 @@
             <flow_section_id>2</flow_section_id>
             <tag>0</tag>
             <waypoint_follower>
+                <mode>Waypoint</mode>
                 <local_to_entity>true</local_to_entity>
                 <waypoint_auto_start>true</waypoint_auto_start>
                 <loop_waypoints>true</loop_waypoints>
@@ -2007,6 +2074,7 @@
                         </p>
                     </waypoint>
                 </waypoints>
+                <follow_entity_name/>
             </waypoint_follower>
             <can_hit>true</can_hit>
             <hp>-1</hp>
@@ -2062,11 +2130,13 @@
             <flow_section_id>2</flow_section_id>
             <tag>0</tag>
             <waypoint_follower>
+                <mode>Waypoint</mode>
                 <local_to_entity>false</local_to_entity>
                 <waypoint_auto_start>false</waypoint_auto_start>
                 <loop_waypoints>false</loop_waypoints>
                 <start_time>3</start_time>
                 <waypoints/>
+                <follow_entity_name/>
             </waypoint_follower>
             <text>d</text>
             <type_kill>false</type_kill>
@@ -2122,11 +2192,13 @@
             <flow_section_id>2</flow_section_id>
             <tag>0</tag>
             <waypoint_follower>
+                <mode>Waypoint</mode>
                 <local_to_entity>false</local_to_entity>
                 <waypoint_auto_start>false</waypoint_auto_start>
                 <loop_waypoints>false</loop_waypoints>
                 <start_time>3</start_time>
                 <waypoints/>
+                <follow_entity_name/>
             </waypoint_follower>
             <text>k</text>
             <type_kill>false</type_kill>
@@ -2182,6 +2254,7 @@
             <flow_section_id>2</flow_section_id>
             <tag>0</tag>
             <waypoint_follower>
+                <mode>Waypoint</mode>
                 <local_to_entity>true</local_to_entity>
                 <waypoint_auto_start>true</waypoint_auto_start>
                 <loop_waypoints>true</loop_waypoints>
@@ -2206,6 +2279,7 @@
                         </p>
                     </waypoint>
                 </waypoints>
+                <follow_entity_name/>
             </waypoint_follower>
             <can_hit>true</can_hit>
             <hp>-1</hp>
@@ -2261,6 +2335,7 @@
             <flow_section_id>2</flow_section_id>
             <tag>0</tag>
             <waypoint_follower>
+                <mode>Waypoint</mode>
                 <local_to_entity>true</local_to_entity>
                 <waypoint_auto_start>true</waypoint_auto_start>
                 <loop_waypoints>true</loop_waypoints>
@@ -2285,6 +2360,7 @@
                         </p>
                     </waypoint>
                 </waypoints>
+                <follow_entity_name/>
             </waypoint_follower>
             <can_hit>true</can_hit>
             <hp>-1</hp>
@@ -2340,11 +2416,13 @@
             <flow_section_id>2</flow_section_id>
             <tag>0</tag>
             <waypoint_follower>
+                <mode>Waypoint</mode>
                 <local_to_entity>false</local_to_entity>
                 <waypoint_auto_start>false</waypoint_auto_start>
                 <loop_waypoints>false</loop_waypoints>
                 <start_time>3</start_time>
                 <waypoints/>
+                <follow_entity_name/>
             </waypoint_follower>
             <text>e</text>
             <type_kill>false</type_kill>
@@ -2400,11 +2478,13 @@
             <flow_section_id>2</flow_section_id>
             <tag>0</tag>
             <waypoint_follower>
+                <mode>Waypoint</mode>
                 <local_to_entity>false</local_to_entity>
                 <waypoint_auto_start>false</waypoint_auto_start>
                 <loop_waypoints>false</loop_waypoints>
                 <start_time>3</start_time>
                 <waypoints/>
+                <follow_entity_name/>
             </waypoint_follower>
             <text>i</text>
             <type_kill>false</type_kill>
@@ -2460,6 +2540,7 @@
             <flow_section_id>2</flow_section_id>
             <tag>0</tag>
             <waypoint_follower>
+                <mode>Waypoint</mode>
                 <local_to_entity>true</local_to_entity>
                 <waypoint_auto_start>true</waypoint_auto_start>
                 <loop_waypoints>true</loop_waypoints>
@@ -2484,6 +2565,7 @@
                         </p>
                     </waypoint>
                 </waypoints>
+                <follow_entity_name/>
             </waypoint_follower>
             <can_hit>true</can_hit>
             <hp>-1</hp>
@@ -2539,11 +2621,13 @@
             <flow_section_id>2</flow_section_id>
             <tag>0</tag>
             <waypoint_follower>
+                <mode>Waypoint</mode>
                 <local_to_entity>true</local_to_entity>
                 <waypoint_auto_start>true</waypoint_auto_start>
                 <loop_waypoints>true</loop_waypoints>
                 <start_time>4</start_time>
                 <waypoints/>
+                <follow_entity_name/>
             </waypoint_follower>
             <can_hit>true</can_hit>
             <hp>-1</hp>
@@ -2599,11 +2683,13 @@
             <flow_section_id>3</flow_section_id>
             <tag>0</tag>
             <waypoint_follower>
+                <mode>Waypoint</mode>
                 <local_to_entity>false</local_to_entity>
                 <waypoint_auto_start>false</waypoint_auto_start>
                 <loop_waypoints>false</loop_waypoints>
                 <start_time>3</start_time>
                 <waypoints/>
+                <follow_entity_name/>
             </waypoint_follower>
             <text>g</text>
             <type_kill>false</type_kill>
@@ -2659,11 +2745,13 @@
             <flow_section_id>3</flow_section_id>
             <tag>0</tag>
             <waypoint_follower>
+                <mode>Waypoint</mode>
                 <local_to_entity>false</local_to_entity>
                 <waypoint_auto_start>false</waypoint_auto_start>
                 <loop_waypoints>false</loop_waypoints>
                 <start_time>3</start_time>
                 <waypoints/>
+                <follow_entity_name/>
             </waypoint_follower>
             <text>h</text>
             <type_kill>false</type_kill>
@@ -2719,6 +2807,7 @@
             <flow_section_id>2</flow_section_id>
             <tag>0</tag>
             <waypoint_follower>
+                <mode>Waypoint</mode>
                 <local_to_entity>true</local_to_entity>
                 <waypoint_auto_start>true</waypoint_auto_start>
                 <loop_waypoints>true</loop_waypoints>
@@ -2743,6 +2832,7 @@
                         </p>
                     </waypoint>
                 </waypoints>
+                <follow_entity_name/>
             </waypoint_follower>
             <can_hit>true</can_hit>
             <hp>-1</hp>
@@ -2798,6 +2888,7 @@
             <flow_section_id>2</flow_section_id>
             <tag>0</tag>
             <waypoint_follower>
+                <mode>Waypoint</mode>
                 <local_to_entity>true</local_to_entity>
                 <waypoint_auto_start>true</waypoint_auto_start>
                 <loop_waypoints>true</loop_waypoints>
@@ -2822,6 +2913,7 @@
                         </p>
                     </waypoint>
                 </waypoints>
+                <follow_entity_name/>
             </waypoint_follower>
             <can_hit>true</can_hit>
             <hp>-1</hp>
@@ -2877,11 +2969,13 @@
             <flow_section_id>1</flow_section_id>
             <tag>0</tag>
             <waypoint_follower>
+                <mode>Waypoint</mode>
                 <local_to_entity>false</local_to_entity>
                 <waypoint_auto_start>false</waypoint_auto_start>
                 <loop_waypoints>false</loop_waypoints>
                 <start_time>3</start_time>
                 <waypoints/>
+                <follow_entity_name/>
             </waypoint_follower>
             <on_player_enter>true</on_player_enter>
             <use_trigger_volumes>false</use_trigger_volumes>
@@ -2972,11 +3066,13 @@
             <flow_section_id>1</flow_section_id>
             <tag>0</tag>
             <waypoint_follower>
+                <mode>Waypoint</mode>
                 <local_to_entity>false</local_to_entity>
                 <waypoint_auto_start>false</waypoint_auto_start>
                 <loop_waypoints>false</loop_waypoints>
                 <start_time>3</start_time>
                 <waypoints/>
+                <follow_entity_name/>
             </waypoint_follower>
             <text>f</text>
             <type_kill>false</type_kill>
@@ -3032,11 +3128,13 @@
             <flow_section_id>1</flow_section_id>
             <tag>0</tag>
             <waypoint_follower>
+                <mode>Waypoint</mode>
                 <local_to_entity>false</local_to_entity>
                 <waypoint_auto_start>false</waypoint_auto_start>
                 <loop_waypoints>false</loop_waypoints>
                 <start_time>3</start_time>
                 <waypoints/>
+                <follow_entity_name/>
             </waypoint_follower>
             <text>j</text>
             <type_kill>false</type_kill>
@@ -3092,6 +3190,7 @@
             <flow_section_id>1</flow_section_id>
             <tag>0</tag>
             <waypoint_follower>
+                <mode>Waypoint</mode>
                 <local_to_entity>true</local_to_entity>
                 <waypoint_auto_start>true</waypoint_auto_start>
                 <loop_waypoints>true</loop_waypoints>
@@ -3116,6 +3215,7 @@
                         </p>
                     </waypoint>
                 </waypoints>
+                <follow_entity_name/>
             </waypoint_follower>
             <can_hit>true</can_hit>
             <hp>-1</hp>
@@ -3171,11 +3271,13 @@
             <flow_section_id>1</flow_section_id>
             <tag>0</tag>
             <waypoint_follower>
+                <mode>Waypoint</mode>
                 <local_to_entity>false</local_to_entity>
                 <waypoint_auto_start>false</waypoint_auto_start>
                 <loop_waypoints>false</loop_waypoints>
                 <start_time>3</start_time>
                 <waypoints/>
+                <follow_entity_name/>
             </waypoint_follower>
             <text>d</text>
             <type_kill>false</type_kill>
@@ -3231,11 +3333,13 @@
             <flow_section_id>1</flow_section_id>
             <tag>0</tag>
             <waypoint_follower>
+                <mode>Waypoint</mode>
                 <local_to_entity>false</local_to_entity>
                 <waypoint_auto_start>false</waypoint_auto_start>
                 <loop_waypoints>false</loop_waypoints>
                 <start_time>3</start_time>
                 <waypoints/>
+                <follow_entity_name/>
             </waypoint_follower>
             <text>k</text>
             <type_kill>false</type_kill>
@@ -3291,6 +3395,7 @@
             <flow_section_id>1</flow_section_id>
             <tag>0</tag>
             <waypoint_follower>
+                <mode>Waypoint</mode>
                 <local_to_entity>true</local_to_entity>
                 <waypoint_auto_start>true</waypoint_auto_start>
                 <loop_waypoints>true</loop_waypoints>
@@ -3315,6 +3420,7 @@
                         </p>
                     </waypoint>
                 </waypoints>
+                <follow_entity_name/>
             </waypoint_follower>
             <can_hit>true</can_hit>
             <hp>-1</hp>
@@ -3370,6 +3476,7 @@
             <flow_section_id>1</flow_section_id>
             <tag>0</tag>
             <waypoint_follower>
+                <mode>Waypoint</mode>
                 <local_to_entity>true</local_to_entity>
                 <waypoint_auto_start>true</waypoint_auto_start>
                 <loop_waypoints>true</loop_waypoints>
@@ -3394,6 +3501,7 @@
                         </p>
                     </waypoint>
                 </waypoints>
+                <follow_entity_name/>
             </waypoint_follower>
             <can_hit>true</can_hit>
             <hp>-1</hp>
@@ -3449,11 +3557,13 @@
             <flow_section_id>1</flow_section_id>
             <tag>0</tag>
             <waypoint_follower>
+                <mode>Waypoint</mode>
                 <local_to_entity>false</local_to_entity>
                 <waypoint_auto_start>false</waypoint_auto_start>
                 <loop_waypoints>false</loop_waypoints>
                 <start_time>3</start_time>
                 <waypoints/>
+                <follow_entity_name/>
             </waypoint_follower>
             <text>e</text>
             <type_kill>false</type_kill>
@@ -3509,11 +3619,13 @@
             <flow_section_id>1</flow_section_id>
             <tag>0</tag>
             <waypoint_follower>
+                <mode>Waypoint</mode>
                 <local_to_entity>false</local_to_entity>
                 <waypoint_auto_start>false</waypoint_auto_start>
                 <loop_waypoints>false</loop_waypoints>
                 <start_time>3</start_time>
                 <waypoints/>
+                <follow_entity_name/>
             </waypoint_follower>
             <text>i</text>
             <type_kill>false</type_kill>
@@ -3569,6 +3681,7 @@
             <flow_section_id>1</flow_section_id>
             <tag>0</tag>
             <waypoint_follower>
+                <mode>Waypoint</mode>
                 <local_to_entity>true</local_to_entity>
                 <waypoint_auto_start>true</waypoint_auto_start>
                 <loop_waypoints>true</loop_waypoints>
@@ -3593,6 +3706,7 @@
                         </p>
                     </waypoint>
                 </waypoints>
+                <follow_entity_name/>
             </waypoint_follower>
             <can_hit>true</can_hit>
             <hp>-1</hp>
@@ -3648,11 +3762,13 @@
             <flow_section_id>2</flow_section_id>
             <tag>0</tag>
             <waypoint_follower>
+                <mode>Waypoint</mode>
                 <local_to_entity>false</local_to_entity>
                 <waypoint_auto_start>false</waypoint_auto_start>
                 <loop_waypoints>false</loop_waypoints>
                 <start_time>3</start_time>
                 <waypoints/>
+                <follow_entity_name/>
             </waypoint_follower>
             <text>g</text>
             <type_kill>false</type_kill>
@@ -3708,11 +3824,13 @@
             <flow_section_id>2</flow_section_id>
             <tag>0</tag>
             <waypoint_follower>
+                <mode>Waypoint</mode>
                 <local_to_entity>false</local_to_entity>
                 <waypoint_auto_start>false</waypoint_auto_start>
                 <loop_waypoints>false</loop_waypoints>
                 <start_time>3</start_time>
                 <waypoints/>
+                <follow_entity_name/>
             </waypoint_follower>
             <text>h</text>
             <type_kill>false</type_kill>
@@ -3768,6 +3886,7 @@
             <flow_section_id>1</flow_section_id>
             <tag>0</tag>
             <waypoint_follower>
+                <mode>Waypoint</mode>
                 <local_to_entity>true</local_to_entity>
                 <waypoint_auto_start>true</waypoint_auto_start>
                 <loop_waypoints>true</loop_waypoints>
@@ -3792,6 +3911,7 @@
                         </p>
                     </waypoint>
                 </waypoints>
+                <follow_entity_name/>
             </waypoint_follower>
             <can_hit>true</can_hit>
             <hp>-1</hp>
@@ -3847,6 +3967,7 @@
             <flow_section_id>1</flow_section_id>
             <tag>0</tag>
             <waypoint_follower>
+                <mode>Waypoint</mode>
                 <local_to_entity>true</local_to_entity>
                 <waypoint_auto_start>true</waypoint_auto_start>
                 <loop_waypoints>true</loop_waypoints>
@@ -3871,6 +3992,7 @@
                         </p>
                     </waypoint>
                 </waypoints>
+                <follow_entity_name/>
             </waypoint_follower>
             <can_hit>true</can_hit>
             <hp>-1</hp>
@@ -3926,11 +4048,13 @@
             <flow_section_id>2</flow_section_id>
             <tag>0</tag>
             <waypoint_follower>
+                <mode>Waypoint</mode>
                 <local_to_entity>false</local_to_entity>
                 <waypoint_auto_start>false</waypoint_auto_start>
                 <loop_waypoints>false</loop_waypoints>
                 <start_time>3</start_time>
                 <waypoints/>
+                <follow_entity_name/>
             </waypoint_follower>
             <on_player_enter>true</on_player_enter>
             <use_trigger_volumes>false</use_trigger_volumes>
@@ -4013,11 +4137,13 @@
             <flow_section_id>3</flow_section_id>
             <tag>0</tag>
             <waypoint_follower>
+                <mode>Waypoint</mode>
                 <local_to_entity>false</local_to_entity>
                 <waypoint_auto_start>false</waypoint_auto_start>
                 <loop_waypoints>false</loop_waypoints>
                 <start_time>3</start_time>
                 <waypoints/>
+                <follow_entity_name/>
             </waypoint_follower>
             <on_player_enter>true</on_player_enter>
             <use_trigger_volumes>false</use_trigger_volumes>
@@ -4150,11 +4276,13 @@
             <flow_section_id>4</flow_section_id>
             <tag>0</tag>
             <waypoint_follower>
+                <mode>Waypoint</mode>
                 <local_to_entity>false</local_to_entity>
                 <waypoint_auto_start>false</waypoint_auto_start>
                 <loop_waypoints>false</loop_waypoints>
                 <start_time>3</start_time>
                 <waypoints/>
+                <follow_entity_name/>
             </waypoint_follower>
             <seq_filename>data/barren/room5_action_seq.txt</seq_filename>
         </ActionSequencer>
@@ -4190,11 +4318,13 @@
             <flow_section_id>-1</flow_section_id>
             <tag>0</tag>
             <waypoint_follower>
+                <mode>Waypoint</mode>
                 <local_to_entity>false</local_to_entity>
                 <waypoint_auto_start>false</waypoint_auto_start>
                 <loop_waypoints>false</loop_waypoints>
                 <start_time>3</start_time>
                 <waypoints/>
+                <follow_entity_name/>
             </waypoint_follower>
         </Base>
         <FlowTrigger>
@@ -4229,11 +4359,13 @@
             <flow_section_id>4</flow_section_id>
             <tag>0</tag>
             <waypoint_follower>
+                <mode>Waypoint</mode>
                 <local_to_entity>false</local_to_entity>
                 <waypoint_auto_start>false</waypoint_auto_start>
                 <loop_waypoints>false</loop_waypoints>
                 <start_time>3</start_time>
                 <waypoints/>
+                <follow_entity_name/>
             </waypoint_follower>
             <on_player_enter>true</on_player_enter>
             <use_trigger_volumes>false</use_trigger_volumes>
@@ -4296,11 +4428,13 @@
             <flow_section_id>4</flow_section_id>
             <tag>0</tag>
             <waypoint_follower>
+                <mode>Waypoint</mode>
                 <local_to_entity>false</local_to_entity>
                 <waypoint_auto_start>false</waypoint_auto_start>
                 <loop_waypoints>false</loop_waypoints>
                 <start_time>3</start_time>
                 <waypoints/>
+                <follow_entity_name/>
             </waypoint_follower>
             <on_player_enter>true</on_player_enter>
             <use_trigger_volumes>false</use_trigger_volumes>
@@ -4341,11 +4475,13 @@
             <flow_section_id>4</flow_section_id>
             <tag>0</tag>
             <waypoint_follower>
+                <mode>Waypoint</mode>
                 <local_to_entity>false</local_to_entity>
                 <waypoint_auto_start>false</waypoint_auto_start>
                 <loop_waypoints>false</loop_waypoints>
                 <start_time>3</start_time>
                 <waypoints/>
+                <follow_entity_name/>
             </waypoint_follower>
             <can_hit>true</can_hit>
             <hp>-1</hp>
@@ -4401,11 +4537,13 @@
             <flow_section_id>4</flow_section_id>
             <tag>0</tag>
             <waypoint_follower>
+                <mode>Waypoint</mode>
                 <local_to_entity>false</local_to_entity>
                 <waypoint_auto_start>false</waypoint_auto_start>
                 <loop_waypoints>false</loop_waypoints>
                 <start_time>3</start_time>
                 <waypoints/>
+                <follow_entity_name/>
             </waypoint_follower>
             <can_hit>true</can_hit>
             <hp>-1</hp>
@@ -4461,11 +4599,13 @@
             <flow_section_id>4</flow_section_id>
             <tag>0</tag>
             <waypoint_follower>
+                <mode>Waypoint</mode>
                 <local_to_entity>false</local_to_entity>
                 <waypoint_auto_start>false</waypoint_auto_start>
                 <loop_waypoints>false</loop_waypoints>
                 <start_time>3</start_time>
                 <waypoints/>
+                <follow_entity_name/>
             </waypoint_follower>
             <can_hit>true</can_hit>
             <hp>1</hp>
@@ -4521,11 +4661,13 @@
             <flow_section_id>4</flow_section_id>
             <tag>0</tag>
             <waypoint_follower>
+                <mode>Waypoint</mode>
                 <local_to_entity>false</local_to_entity>
                 <waypoint_auto_start>false</waypoint_auto_start>
                 <loop_waypoints>false</loop_waypoints>
                 <start_time>3</start_time>
                 <waypoints/>
+                <follow_entity_name/>
             </waypoint_follower>
         </Base>
         <Base>
@@ -4560,11 +4702,13 @@
             <flow_section_id>4</flow_section_id>
             <tag>0</tag>
             <waypoint_follower>
+                <mode>Waypoint</mode>
                 <local_to_entity>false</local_to_entity>
                 <waypoint_auto_start>false</waypoint_auto_start>
                 <loop_waypoints>false</loop_waypoints>
                 <start_time>3</start_time>
                 <waypoints/>
+                <follow_entity_name/>
             </waypoint_follower>
         </Base>
         <FlowWall>
@@ -4599,11 +4743,13 @@
             <flow_section_id>4</flow_section_id>
             <tag>0</tag>
             <waypoint_follower>
+                <mode>Waypoint</mode>
                 <local_to_entity>false</local_to_entity>
                 <waypoint_auto_start>false</waypoint_auto_start>
                 <loop_waypoints>false</loop_waypoints>
                 <start_time>3</start_time>
                 <waypoints/>
+                <follow_entity_name/>
             </waypoint_follower>
             <can_hit>true</can_hit>
             <hp>1</hp>
@@ -4659,11 +4805,13 @@
             <flow_section_id>4</flow_section_id>
             <tag>0</tag>
             <waypoint_follower>
+                <mode>Waypoint</mode>
                 <local_to_entity>false</local_to_entity>
                 <waypoint_auto_start>false</waypoint_auto_start>
                 <loop_waypoints>false</loop_waypoints>
                 <start_time>3</start_time>
                 <waypoints/>
+                <follow_entity_name/>
             </waypoint_follower>
         </Base>
         <FlowTrigger>
@@ -4698,11 +4846,13 @@
             <flow_section_id>5</flow_section_id>
             <tag>0</tag>
             <waypoint_follower>
+                <mode>Waypoint</mode>
                 <local_to_entity>false</local_to_entity>
                 <waypoint_auto_start>false</waypoint_auto_start>
                 <loop_waypoints>false</loop_waypoints>
                 <start_time>3</start_time>
                 <waypoints/>
+                <follow_entity_name/>
             </waypoint_follower>
             <on_player_enter>true</on_player_enter>
             <use_trigger_volumes>false</use_trigger_volumes>
@@ -4784,6 +4934,7 @@
             <flow_section_id>5</flow_section_id>
             <tag>0</tag>
             <waypoint_follower>
+                <mode>FollowEntity</mode>
                 <local_to_entity>true</local_to_entity>
                 <waypoint_auto_start>false</waypoint_auto_start>
                 <loop_waypoints>false</loop_waypoints>
@@ -4799,6 +4950,7 @@
                         </p>
                     </waypoint>
                 </waypoints>
+                <follow_entity_name>r7_platform1</follow_entity_name>
             </waypoint_follower>
             <text>e</text>
             <type_kill>false</type_kill>
@@ -4859,11 +5011,13 @@
             <flow_section_id>-1</flow_section_id>
             <tag>0</tag>
             <waypoint_follower>
+                <mode>Waypoint</mode>
                 <local_to_entity>false</local_to_entity>
                 <waypoint_auto_start>false</waypoint_auto_start>
                 <loop_waypoints>false</loop_waypoints>
                 <start_time>3</start_time>
                 <waypoints/>
+                <follow_entity_name/>
             </waypoint_follower>
         </Base>
         <Base>
@@ -4898,11 +5052,13 @@
             <flow_section_id>2</flow_section_id>
             <tag>0</tag>
             <waypoint_follower>
+                <mode>Waypoint</mode>
                 <local_to_entity>false</local_to_entity>
                 <waypoint_auto_start>false</waypoint_auto_start>
                 <loop_waypoints>false</loop_waypoints>
                 <start_time>3</start_time>
                 <waypoints/>
+                <follow_entity_name/>
             </waypoint_follower>
         </Base>
         <FlowWall>
@@ -4937,6 +5093,7 @@
             <flow_section_id>6</flow_section_id>
             <tag>0</tag>
             <waypoint_follower>
+                <mode>Waypoint</mode>
                 <local_to_entity>true</local_to_entity>
                 <waypoint_auto_start>false</waypoint_auto_start>
                 <loop_waypoints>true</loop_waypoints>
@@ -4952,6 +5109,7 @@
                         </p>
                     </waypoint>
                 </waypoints>
+                <follow_entity_name/>
             </waypoint_follower>
             <can_hit>true</can_hit>
             <hp>-1</hp>
@@ -5007,6 +5165,7 @@
             <flow_section_id>6</flow_section_id>
             <tag>0</tag>
             <waypoint_follower>
+                <mode>Waypoint</mode>
                 <local_to_entity>true</local_to_entity>
                 <waypoint_auto_start>false</waypoint_auto_start>
                 <loop_waypoints>true</loop_waypoints>
@@ -5022,6 +5181,7 @@
                         </p>
                     </waypoint>
                 </waypoints>
+                <follow_entity_name/>
             </waypoint_follower>
             <can_hit>true</can_hit>
             <hp>-1</hp>
@@ -5077,11 +5237,13 @@
             <flow_section_id>0</flow_section_id>
             <tag>0</tag>
             <waypoint_follower>
+                <mode>Waypoint</mode>
                 <local_to_entity>false</local_to_entity>
                 <waypoint_auto_start>false</waypoint_auto_start>
                 <loop_waypoints>false</loop_waypoints>
                 <start_time>3</start_time>
                 <waypoints/>
+                <follow_entity_name/>
             </waypoint_follower>
         </Base>
         <Base>
@@ -5116,11 +5278,13 @@
             <flow_section_id>6</flow_section_id>
             <tag>0</tag>
             <waypoint_follower>
+                <mode>Waypoint</mode>
                 <local_to_entity>false</local_to_entity>
                 <waypoint_auto_start>false</waypoint_auto_start>
                 <loop_waypoints>false</loop_waypoints>
                 <start_time>3</start_time>
                 <waypoints/>
+                <follow_entity_name/>
             </waypoint_follower>
         </Base>
         <TypingEnemy>
@@ -5155,11 +5319,13 @@
             <flow_section_id>6</flow_section_id>
             <tag>0</tag>
             <waypoint_follower>
+                <mode>Waypoint</mode>
                 <local_to_entity>false</local_to_entity>
                 <waypoint_auto_start>false</waypoint_auto_start>
                 <loop_waypoints>false</loop_waypoints>
                 <start_time>3</start_time>
                 <waypoints/>
+                <follow_entity_name/>
             </waypoint_follower>
             <text>d</text>
             <type_kill>false</type_kill>
@@ -5215,11 +5381,13 @@
             <flow_section_id>6</flow_section_id>
             <tag>0</tag>
             <waypoint_follower>
+                <mode>Waypoint</mode>
                 <local_to_entity>false</local_to_entity>
                 <waypoint_auto_start>false</waypoint_auto_start>
                 <loop_waypoints>false</loop_waypoints>
                 <start_time>3</start_time>
                 <waypoints/>
+                <follow_entity_name/>
             </waypoint_follower>
             <text>k</text>
             <type_kill>false</type_kill>
@@ -5275,11 +5443,13 @@
             <flow_section_id>6</flow_section_id>
             <tag>0</tag>
             <waypoint_follower>
+                <mode>Waypoint</mode>
                 <local_to_entity>false</local_to_entity>
                 <waypoint_auto_start>false</waypoint_auto_start>
                 <loop_waypoints>false</loop_waypoints>
                 <start_time>3</start_time>
                 <waypoints/>
+                <follow_entity_name/>
             </waypoint_follower>
             <text>e</text>
             <type_kill>false</type_kill>
@@ -5335,11 +5505,13 @@
             <flow_section_id>6</flow_section_id>
             <tag>0</tag>
             <waypoint_follower>
+                <mode>Waypoint</mode>
                 <local_to_entity>false</local_to_entity>
                 <waypoint_auto_start>false</waypoint_auto_start>
                 <loop_waypoints>false</loop_waypoints>
                 <start_time>3</start_time>
                 <waypoints/>
+                <follow_entity_name/>
             </waypoint_follower>
             <text>i</text>
             <type_kill>false</type_kill>
@@ -5395,11 +5567,13 @@
             <flow_section_id>6</flow_section_id>
             <tag>0</tag>
             <waypoint_follower>
+                <mode>Waypoint</mode>
                 <local_to_entity>false</local_to_entity>
                 <waypoint_auto_start>false</waypoint_auto_start>
                 <loop_waypoints>false</loop_waypoints>
                 <start_time>3</start_time>
                 <waypoints/>
+                <follow_entity_name/>
             </waypoint_follower>
             <initial_value>3</initial_value>
             <actions>
@@ -5449,11 +5623,13 @@
             <flow_section_id>6</flow_section_id>
             <tag>0</tag>
             <waypoint_follower>
+                <mode>Waypoint</mode>
                 <local_to_entity>false</local_to_entity>
                 <waypoint_auto_start>false</waypoint_auto_start>
                 <loop_waypoints>false</loop_waypoints>
                 <start_time>3</start_time>
                 <waypoints/>
+                <follow_entity_name/>
             </waypoint_follower>
             <actions>
                 <seq_action>
@@ -5512,11 +5688,13 @@
             <flow_section_id>6</flow_section_id>
             <tag>0</tag>
             <waypoint_follower>
+                <mode>Waypoint</mode>
                 <local_to_entity>false</local_to_entity>
                 <waypoint_auto_start>false</waypoint_auto_start>
                 <loop_waypoints>false</loop_waypoints>
                 <start_time>3</start_time>
                 <waypoints/>
+                <follow_entity_name/>
             </waypoint_follower>
             <actions>
                 <seq_action>
@@ -5575,11 +5753,13 @@
             <flow_section_id>6</flow_section_id>
             <tag>0</tag>
             <waypoint_follower>
+                <mode>Waypoint</mode>
                 <local_to_entity>false</local_to_entity>
                 <waypoint_auto_start>false</waypoint_auto_start>
                 <loop_waypoints>false</loop_waypoints>
                 <start_time>3</start_time>
                 <waypoints/>
+                <follow_entity_name/>
             </waypoint_follower>
             <actions>
                 <seq_action>
@@ -5638,11 +5818,13 @@
             <flow_section_id>6</flow_section_id>
             <tag>0</tag>
             <waypoint_follower>
+                <mode>Waypoint</mode>
                 <local_to_entity>true</local_to_entity>
                 <waypoint_auto_start>false</waypoint_auto_start>
                 <loop_waypoints>true</loop_waypoints>
                 <start_time>4</start_time>
                 <waypoints/>
+                <follow_entity_name/>
             </waypoint_follower>
             <can_hit>true</can_hit>
             <hp>-1</hp>
@@ -5698,11 +5880,13 @@
             <flow_section_id>6</flow_section_id>
             <tag>0</tag>
             <waypoint_follower>
+                <mode>Waypoint</mode>
                 <local_to_entity>false</local_to_entity>
                 <waypoint_auto_start>false</waypoint_auto_start>
                 <loop_waypoints>false</loop_waypoints>
                 <start_time>3</start_time>
                 <waypoints/>
+                <follow_entity_name/>
             </waypoint_follower>
             <text>j</text>
             <type_kill>false</type_kill>
@@ -5758,11 +5942,13 @@
             <flow_section_id>6</flow_section_id>
             <tag>0</tag>
             <waypoint_follower>
+                <mode>Waypoint</mode>
                 <local_to_entity>false</local_to_entity>
                 <waypoint_auto_start>false</waypoint_auto_start>
                 <loop_waypoints>false</loop_waypoints>
                 <start_time>3</start_time>
                 <waypoints/>
+                <follow_entity_name/>
             </waypoint_follower>
             <text>g</text>
             <type_kill>false</type_kill>
@@ -5818,11 +6004,13 @@
             <flow_section_id>6</flow_section_id>
             <tag>0</tag>
             <waypoint_follower>
+                <mode>Waypoint</mode>
                 <local_to_entity>false</local_to_entity>
                 <waypoint_auto_start>false</waypoint_auto_start>
                 <loop_waypoints>false</loop_waypoints>
                 <start_time>3</start_time>
                 <waypoints/>
+                <follow_entity_name/>
             </waypoint_follower>
             <text>h</text>
             <type_kill>false</type_kill>
@@ -5878,11 +6066,13 @@
             <flow_section_id>6</flow_section_id>
             <tag>0</tag>
             <waypoint_follower>
+                <mode>Waypoint</mode>
                 <local_to_entity>false</local_to_entity>
                 <waypoint_auto_start>false</waypoint_auto_start>
                 <loop_waypoints>false</loop_waypoints>
                 <start_time>3</start_time>
                 <waypoints/>
+                <follow_entity_name/>
             </waypoint_follower>
             <text>o</text>
             <type_kill>false</type_kill>
@@ -5938,11 +6128,13 @@
             <flow_section_id>6</flow_section_id>
             <tag>0</tag>
             <waypoint_follower>
+                <mode>Waypoint</mode>
                 <local_to_entity>false</local_to_entity>
                 <waypoint_auto_start>false</waypoint_auto_start>
                 <loop_waypoints>false</loop_waypoints>
                 <start_time>3</start_time>
                 <waypoints/>
+                <follow_entity_name/>
             </waypoint_follower>
             <text>s</text>
             <type_kill>false</type_kill>
@@ -5998,11 +6190,13 @@
             <flow_section_id>0</flow_section_id>
             <tag>0</tag>
             <waypoint_follower>
+                <mode>Waypoint</mode>
                 <local_to_entity>false</local_to_entity>
                 <waypoint_auto_start>false</waypoint_auto_start>
                 <loop_waypoints>false</loop_waypoints>
                 <start_time>3</start_time>
                 <waypoints/>
+                <follow_entity_name/>
             </waypoint_follower>
             <on_player_enter>true</on_player_enter>
             <use_trigger_volumes>false</use_trigger_volumes>
@@ -6079,11 +6273,13 @@
             <flow_section_id>0</flow_section_id>
             <tag>0</tag>
             <waypoint_follower>
+                <mode>Waypoint</mode>
                 <local_to_entity>false</local_to_entity>
                 <waypoint_auto_start>false</waypoint_auto_start>
                 <loop_waypoints>false</loop_waypoints>
                 <start_time>3</start_time>
                 <waypoints/>
+                <follow_entity_name/>
             </waypoint_follower>
         </Base>
         <Base>
@@ -6118,11 +6314,13 @@
             <flow_section_id>0</flow_section_id>
             <tag>0</tag>
             <waypoint_follower>
+                <mode>Waypoint</mode>
                 <local_to_entity>false</local_to_entity>
                 <waypoint_auto_start>false</waypoint_auto_start>
                 <loop_waypoints>false</loop_waypoints>
                 <start_time>3</start_time>
                 <waypoints/>
+                <follow_entity_name/>
             </waypoint_follower>
         </Base>
         <ActionSequencer>
@@ -6157,11 +6355,13 @@
             <flow_section_id>5</flow_section_id>
             <tag>0</tag>
             <waypoint_follower>
+                <mode>Waypoint</mode>
                 <local_to_entity>false</local_to_entity>
                 <waypoint_auto_start>false</waypoint_auto_start>
                 <loop_waypoints>false</loop_waypoints>
                 <start_time>3</start_time>
                 <waypoints/>
+                <follow_entity_name/>
             </waypoint_follower>
             <seq_filename>data/barren/r7_action_seq.txt</seq_filename>
         </ActionSequencer>
@@ -6197,11 +6397,13 @@
             <flow_section_id>2</flow_section_id>
             <tag>0</tag>
             <waypoint_follower>
+                <mode>Waypoint</mode>
                 <local_to_entity>false</local_to_entity>
                 <waypoint_auto_start>false</waypoint_auto_start>
                 <loop_waypoints>false</loop_waypoints>
                 <start_time>3</start_time>
                 <waypoints/>
+                <follow_entity_name/>
             </waypoint_follower>
             <actions>
                 <seq_action>
@@ -6280,11 +6482,13 @@
             <flow_section_id>2</flow_section_id>
             <tag>0</tag>
             <waypoint_follower>
+                <mode>Waypoint</mode>
                 <local_to_entity>false</local_to_entity>
                 <waypoint_auto_start>false</waypoint_auto_start>
                 <loop_waypoints>false</loop_waypoints>
                 <start_time>3</start_time>
                 <waypoints/>
+                <follow_entity_name/>
             </waypoint_follower>
             <text>r</text>
             <type_kill>false</type_kill>
@@ -6341,11 +6545,13 @@
             <flow_section_id>2</flow_section_id>
             <tag>0</tag>
             <waypoint_follower>
+                <mode>Waypoint</mode>
                 <local_to_entity>false</local_to_entity>
                 <waypoint_auto_start>false</waypoint_auto_start>
                 <loop_waypoints>false</loop_waypoints>
                 <start_time>3</start_time>
                 <waypoints/>
+                <follow_entity_name/>
             </waypoint_follower>
             <on_player_enter>true</on_player_enter>
             <use_trigger_volumes>false</use_trigger_volumes>
@@ -6464,11 +6670,13 @@
             <flow_section_id>2</flow_section_id>
             <tag>0</tag>
             <waypoint_follower>
+                <mode>Waypoint</mode>
                 <local_to_entity>false</local_to_entity>
                 <waypoint_auto_start>false</waypoint_auto_start>
                 <loop_waypoints>false</loop_waypoints>
                 <start_time>3</start_time>
                 <waypoints/>
+                <follow_entity_name/>
             </waypoint_follower>
             <text>u</text>
             <type_kill>false</type_kill>
@@ -6525,11 +6733,13 @@
             <flow_section_id>2</flow_section_id>
             <tag>0</tag>
             <waypoint_follower>
+                <mode>Waypoint</mode>
                 <local_to_entity>false</local_to_entity>
                 <waypoint_auto_start>false</waypoint_auto_start>
                 <loop_waypoints>false</loop_waypoints>
                 <start_time>3</start_time>
                 <waypoints/>
+                <follow_entity_name/>
             </waypoint_follower>
             <text>p</text>
             <type_kill>false</type_kill>
@@ -6586,11 +6796,13 @@
             <flow_section_id>2</flow_section_id>
             <tag>0</tag>
             <waypoint_follower>
+                <mode>Waypoint</mode>
                 <local_to_entity>false</local_to_entity>
                 <waypoint_auto_start>false</waypoint_auto_start>
                 <loop_waypoints>false</loop_waypoints>
                 <start_time>3</start_time>
                 <waypoints/>
+                <follow_entity_name/>
             </waypoint_follower>
         </Base>
         <ActionSequencer>
@@ -6625,11 +6837,13 @@
             <flow_section_id>6</flow_section_id>
             <tag>0</tag>
             <waypoint_follower>
+                <mode>Waypoint</mode>
                 <local_to_entity>false</local_to_entity>
                 <waypoint_auto_start>false</waypoint_auto_start>
                 <loop_waypoints>false</loop_waypoints>
                 <start_time>3</start_time>
                 <waypoints/>
+                <follow_entity_name/>
             </waypoint_follower>
             <seq_filename>data/barren/room0_action_seq.txt</seq_filename>
         </ActionSequencer>
@@ -6665,11 +6879,13 @@
             <flow_section_id>2</flow_section_id>
             <tag>0</tag>
             <waypoint_follower>
+                <mode>Waypoint</mode>
                 <local_to_entity>false</local_to_entity>
                 <waypoint_auto_start>false</waypoint_auto_start>
                 <loop_waypoints>false</loop_waypoints>
                 <start_time>3</start_time>
                 <waypoints/>
+                <follow_entity_name/>
             </waypoint_follower>
             <loop>true</loop>
             <start_beat_time>0</start_beat_time>
@@ -6835,11 +7051,13 @@
             <flow_section_id>2</flow_section_id>
             <tag>0</tag>
             <waypoint_follower>
+                <mode>Waypoint</mode>
                 <local_to_entity>false</local_to_entity>
                 <waypoint_auto_start>false</waypoint_auto_start>
                 <loop_waypoints>false</loop_waypoints>
                 <start_time>3</start_time>
                 <waypoints/>
+                <follow_entity_name/>
             </waypoint_follower>
             <text>q</text>
             <type_kill>false</type_kill>
@@ -6896,11 +7114,13 @@
             <flow_section_id>2</flow_section_id>
             <tag>0</tag>
             <waypoint_follower>
+                <mode>Waypoint</mode>
                 <local_to_entity>false</local_to_entity>
                 <waypoint_auto_start>false</waypoint_auto_start>
                 <loop_waypoints>false</loop_waypoints>
                 <start_time>3</start_time>
                 <waypoints/>
+                <follow_entity_name/>
             </waypoint_follower>
             <text>d</text>
             <type_kill>false</type_kill>
@@ -6961,11 +7181,13 @@
             <flow_section_id>2</flow_section_id>
             <tag>0</tag>
             <waypoint_follower>
+                <mode>Waypoint</mode>
                 <local_to_entity>false</local_to_entity>
                 <waypoint_auto_start>false</waypoint_auto_start>
                 <loop_waypoints>false</loop_waypoints>
                 <start_time>3</start_time>
                 <waypoints/>
+                <follow_entity_name/>
             </waypoint_follower>
             <text>k</text>
             <type_kill>false</type_kill>
@@ -7026,11 +7248,13 @@
             <flow_section_id>2</flow_section_id>
             <tag>0</tag>
             <waypoint_follower>
+                <mode>Waypoint</mode>
                 <local_to_entity>false</local_to_entity>
                 <waypoint_auto_start>false</waypoint_auto_start>
                 <loop_waypoints>false</loop_waypoints>
                 <start_time>3</start_time>
                 <waypoints/>
+                <follow_entity_name/>
             </waypoint_follower>
             <text>s</text>
             <type_kill>false</type_kill>
@@ -7091,11 +7315,13 @@
             <flow_section_id>1</flow_section_id>
             <tag>0</tag>
             <waypoint_follower>
+                <mode>Waypoint</mode>
                 <local_to_entity>false</local_to_entity>
                 <waypoint_auto_start>false</waypoint_auto_start>
                 <loop_waypoints>false</loop_waypoints>
                 <start_time>3</start_time>
                 <waypoints/>
+                <follow_entity_name/>
             </waypoint_follower>
             <text>y</text>
             <type_kill>false</type_kill>
@@ -7157,11 +7383,13 @@
             <flow_section_id>1</flow_section_id>
             <tag>0</tag>
             <waypoint_follower>
+                <mode>Waypoint</mode>
                 <local_to_entity>false</local_to_entity>
                 <waypoint_auto_start>false</waypoint_auto_start>
                 <loop_waypoints>false</loop_waypoints>
                 <start_time>3</start_time>
                 <waypoints/>
+                <follow_entity_name/>
             </waypoint_follower>
             <text>u</text>
             <type_kill>false</type_kill>
@@ -7217,11 +7445,13 @@
             <flow_section_id>1</flow_section_id>
             <tag>0</tag>
             <waypoint_follower>
+                <mode>Waypoint</mode>
                 <local_to_entity>false</local_to_entity>
                 <waypoint_auto_start>false</waypoint_auto_start>
                 <loop_waypoints>false</loop_waypoints>
                 <start_time>3</start_time>
                 <waypoints/>
+                <follow_entity_name/>
             </waypoint_follower>
             <text>t</text>
             <type_kill>false</type_kill>
@@ -7277,11 +7507,13 @@
             <flow_section_id>1</flow_section_id>
             <tag>0</tag>
             <waypoint_follower>
+                <mode>Waypoint</mode>
                 <local_to_entity>false</local_to_entity>
                 <waypoint_auto_start>false</waypoint_auto_start>
                 <loop_waypoints>false</loop_waypoints>
                 <start_time>3</start_time>
                 <waypoints/>
+                <follow_entity_name/>
             </waypoint_follower>
             <text>n</text>
             <type_kill>false</type_kill>
@@ -7337,6 +7569,7 @@
             <flow_section_id>1</flow_section_id>
             <tag>0</tag>
             <waypoint_follower>
+                <mode>Waypoint</mode>
                 <local_to_entity>true</local_to_entity>
                 <waypoint_auto_start>true</waypoint_auto_start>
                 <loop_waypoints>true</loop_waypoints>
@@ -7361,6 +7594,7 @@
                         </p>
                     </waypoint>
                 </waypoints>
+                <follow_entity_name/>
             </waypoint_follower>
             <can_hit>true</can_hit>
             <hp>-1</hp>
@@ -7416,11 +7650,13 @@
             <flow_section_id>1</flow_section_id>
             <tag>0</tag>
             <waypoint_follower>
+                <mode>Waypoint</mode>
                 <local_to_entity>false</local_to_entity>
                 <waypoint_auto_start>false</waypoint_auto_start>
                 <loop_waypoints>false</loop_waypoints>
                 <start_time>3</start_time>
                 <waypoints/>
+                <follow_entity_name/>
             </waypoint_follower>
             <text>o</text>
             <type_kill>false</type_kill>
@@ -7476,6 +7712,7 @@
             <flow_section_id>2</flow_section_id>
             <tag>0</tag>
             <waypoint_follower>
+                <mode>Waypoint</mode>
                 <local_to_entity>true</local_to_entity>
                 <waypoint_auto_start>false</waypoint_auto_start>
                 <loop_waypoints>true</loop_waypoints>
@@ -7500,6 +7737,7 @@
                         </p>
                     </waypoint>
                 </waypoints>
+                <follow_entity_name/>
             </waypoint_follower>
             <can_hit>true</can_hit>
             <hp>-1</hp>
@@ -7555,6 +7793,7 @@
             <flow_section_id>2</flow_section_id>
             <tag>0</tag>
             <waypoint_follower>
+                <mode>Waypoint</mode>
                 <local_to_entity>true</local_to_entity>
                 <waypoint_auto_start>false</waypoint_auto_start>
                 <loop_waypoints>true</loop_waypoints>
@@ -7579,6 +7818,7 @@
                         </p>
                     </waypoint>
                 </waypoints>
+                <follow_entity_name/>
             </waypoint_follower>
             <can_hit>true</can_hit>
             <hp>1</hp>
@@ -7634,6 +7874,7 @@
             <flow_section_id>2</flow_section_id>
             <tag>0</tag>
             <waypoint_follower>
+                <mode>Waypoint</mode>
                 <local_to_entity>true</local_to_entity>
                 <waypoint_auto_start>false</waypoint_auto_start>
                 <loop_waypoints>true</loop_waypoints>
@@ -7658,6 +7899,7 @@
                         </p>
                     </waypoint>
                 </waypoints>
+                <follow_entity_name/>
             </waypoint_follower>
             <can_hit>true</can_hit>
             <hp>-1</hp>
@@ -7713,11 +7955,13 @@
             <flow_section_id>2</flow_section_id>
             <tag>0</tag>
             <waypoint_follower>
+                <mode>Waypoint</mode>
                 <local_to_entity>false</local_to_entity>
                 <waypoint_auto_start>false</waypoint_auto_start>
                 <loop_waypoints>false</loop_waypoints>
                 <start_time>3</start_time>
                 <waypoints/>
+                <follow_entity_name/>
             </waypoint_follower>
             <text>m</text>
             <type_kill>false</type_kill>
@@ -7778,11 +8022,13 @@
             <flow_section_id>2</flow_section_id>
             <tag>0</tag>
             <waypoint_follower>
+                <mode>Waypoint</mode>
                 <local_to_entity>false</local_to_entity>
                 <waypoint_auto_start>false</waypoint_auto_start>
                 <loop_waypoints>false</loop_waypoints>
                 <start_time>3</start_time>
                 <waypoints/>
+                <follow_entity_name/>
             </waypoint_follower>
             <text>e</text>
             <type_kill>false</type_kill>
@@ -7843,6 +8089,7 @@
             <flow_section_id>2</flow_section_id>
             <tag>0</tag>
             <waypoint_follower>
+                <mode>Waypoint</mode>
                 <local_to_entity>true</local_to_entity>
                 <waypoint_auto_start>false</waypoint_auto_start>
                 <loop_waypoints>true</loop_waypoints>
@@ -7867,6 +8114,7 @@
                         </p>
                     </waypoint>
                 </waypoints>
+                <follow_entity_name/>
             </waypoint_follower>
             <can_hit>true</can_hit>
             <hp>-1</hp>
@@ -7922,6 +8170,7 @@
             <flow_section_id>2</flow_section_id>
             <tag>0</tag>
             <waypoint_follower>
+                <mode>Waypoint</mode>
                 <local_to_entity>true</local_to_entity>
                 <waypoint_auto_start>false</waypoint_auto_start>
                 <loop_waypoints>true</loop_waypoints>
@@ -7946,6 +8195,7 @@
                         </p>
                     </waypoint>
                 </waypoints>
+                <follow_entity_name/>
             </waypoint_follower>
             <can_hit>true</can_hit>
             <hp>-1</hp>
@@ -8001,6 +8251,7 @@
             <flow_section_id>2</flow_section_id>
             <tag>0</tag>
             <waypoint_follower>
+                <mode>Waypoint</mode>
                 <local_to_entity>true</local_to_entity>
                 <waypoint_auto_start>false</waypoint_auto_start>
                 <loop_waypoints>true</loop_waypoints>
@@ -8025,6 +8276,7 @@
                         </p>
                     </waypoint>
                 </waypoints>
+                <follow_entity_name/>
             </waypoint_follower>
             <can_hit>true</can_hit>
             <hp>-1</hp>
@@ -8080,6 +8332,7 @@
             <flow_section_id>2</flow_section_id>
             <tag>0</tag>
             <waypoint_follower>
+                <mode>Waypoint</mode>
                 <local_to_entity>true</local_to_entity>
                 <waypoint_auto_start>false</waypoint_auto_start>
                 <loop_waypoints>true</loop_waypoints>
@@ -8104,6 +8357,7 @@
                         </p>
                     </waypoint>
                 </waypoints>
+                <follow_entity_name/>
             </waypoint_follower>
             <can_hit>true</can_hit>
             <hp>-1</hp>
@@ -8159,11 +8413,13 @@
             <flow_section_id>2</flow_section_id>
             <tag>0</tag>
             <waypoint_follower>
+                <mode>Waypoint</mode>
                 <local_to_entity>false</local_to_entity>
                 <waypoint_auto_start>false</waypoint_auto_start>
                 <loop_waypoints>false</loop_waypoints>
                 <start_time>3</start_time>
                 <waypoints/>
+                <follow_entity_name/>
             </waypoint_follower>
             <on_player_enter>true</on_player_enter>
             <use_trigger_volumes>false</use_trigger_volumes>
@@ -8286,11 +8542,13 @@
             <flow_section_id>2</flow_section_id>
             <tag>0</tag>
             <waypoint_follower>
+                <mode>Waypoint</mode>
                 <local_to_entity>false</local_to_entity>
                 <waypoint_auto_start>false</waypoint_auto_start>
                 <loop_waypoints>false</loop_waypoints>
                 <start_time>3</start_time>
                 <waypoints/>
+                <follow_entity_name/>
             </waypoint_follower>
             <cycleTimeSecs>0.100000001</cycleTimeSecs>
             <pulseScaleFactor>1.5</pulseScaleFactor>
@@ -8327,11 +8585,13 @@
             <flow_section_id>2</flow_section_id>
             <tag>0</tag>
             <waypoint_follower>
+                <mode>Waypoint</mode>
                 <local_to_entity>false</local_to_entity>
                 <waypoint_auto_start>false</waypoint_auto_start>
                 <loop_waypoints>false</loop_waypoints>
                 <start_time>3</start_time>
                 <waypoints/>
+                <follow_entity_name/>
             </waypoint_follower>
             <cycleTimeSecs>0.100000001</cycleTimeSecs>
             <pulseScaleFactor>1.5</pulseScaleFactor>
@@ -8368,11 +8628,13 @@
             <flow_section_id>2</flow_section_id>
             <tag>0</tag>
             <waypoint_follower>
+                <mode>Waypoint</mode>
                 <local_to_entity>false</local_to_entity>
                 <waypoint_auto_start>false</waypoint_auto_start>
                 <loop_waypoints>false</loop_waypoints>
                 <start_time>3</start_time>
                 <waypoints/>
+                <follow_entity_name/>
             </waypoint_follower>
             <cycleTimeSecs>0.100000001</cycleTimeSecs>
             <pulseScaleFactor>1.5</pulseScaleFactor>
@@ -8409,11 +8671,13 @@
             <flow_section_id>2</flow_section_id>
             <tag>0</tag>
             <waypoint_follower>
+                <mode>Waypoint</mode>
                 <local_to_entity>false</local_to_entity>
                 <waypoint_auto_start>false</waypoint_auto_start>
                 <loop_waypoints>false</loop_waypoints>
                 <start_time>3</start_time>
                 <waypoints/>
+                <follow_entity_name/>
             </waypoint_follower>
             <cycleTimeSecs>0.100000001</cycleTimeSecs>
             <pulseScaleFactor>1.5</pulseScaleFactor>
@@ -8450,11 +8714,13 @@
             <flow_section_id>2</flow_section_id>
             <tag>0</tag>
             <waypoint_follower>
+                <mode>Waypoint</mode>
                 <local_to_entity>false</local_to_entity>
                 <waypoint_auto_start>false</waypoint_auto_start>
                 <loop_waypoints>false</loop_waypoints>
                 <start_time>3</start_time>
                 <waypoints/>
+                <follow_entity_name/>
             </waypoint_follower>
             <cycleTimeSecs>0.100000001</cycleTimeSecs>
             <pulseScaleFactor>1.5</pulseScaleFactor>
@@ -8491,11 +8757,13 @@
             <flow_section_id>2</flow_section_id>
             <tag>0</tag>
             <waypoint_follower>
+                <mode>Waypoint</mode>
                 <local_to_entity>false</local_to_entity>
                 <waypoint_auto_start>false</waypoint_auto_start>
                 <loop_waypoints>false</loop_waypoints>
                 <start_time>3</start_time>
                 <waypoints/>
+                <follow_entity_name/>
             </waypoint_follower>
             <cycleTimeSecs>0.100000001</cycleTimeSecs>
             <pulseScaleFactor>1.5</pulseScaleFactor>
@@ -8532,11 +8800,13 @@
             <flow_section_id>2</flow_section_id>
             <tag>0</tag>
             <waypoint_follower>
+                <mode>Waypoint</mode>
                 <local_to_entity>false</local_to_entity>
                 <waypoint_auto_start>false</waypoint_auto_start>
                 <loop_waypoints>false</loop_waypoints>
                 <start_time>3</start_time>
                 <waypoints/>
+                <follow_entity_name/>
             </waypoint_follower>
             <cycleTimeSecs>0.100000001</cycleTimeSecs>
             <pulseScaleFactor>1.5</pulseScaleFactor>
@@ -8573,11 +8843,13 @@
             <flow_section_id>2</flow_section_id>
             <tag>0</tag>
             <waypoint_follower>
+                <mode>Waypoint</mode>
                 <local_to_entity>false</local_to_entity>
                 <waypoint_auto_start>false</waypoint_auto_start>
                 <loop_waypoints>false</loop_waypoints>
                 <start_time>3</start_time>
                 <waypoints/>
+                <follow_entity_name/>
             </waypoint_follower>
             <cycleTimeSecs>0.100000001</cycleTimeSecs>
             <pulseScaleFactor>1.5</pulseScaleFactor>
@@ -8614,11 +8886,13 @@
             <flow_section_id>2</flow_section_id>
             <tag>0</tag>
             <waypoint_follower>
+                <mode>Waypoint</mode>
                 <local_to_entity>false</local_to_entity>
                 <waypoint_auto_start>false</waypoint_auto_start>
                 <loop_waypoints>false</loop_waypoints>
                 <start_time>3</start_time>
                 <waypoints/>
+                <follow_entity_name/>
             </waypoint_follower>
             <cycleTimeSecs>0.100000001</cycleTimeSecs>
             <pulseScaleFactor>1.5</pulseScaleFactor>
@@ -8655,11 +8929,13 @@
             <flow_section_id>2</flow_section_id>
             <tag>0</tag>
             <waypoint_follower>
+                <mode>Waypoint</mode>
                 <local_to_entity>false</local_to_entity>
                 <waypoint_auto_start>false</waypoint_auto_start>
                 <loop_waypoints>false</loop_waypoints>
                 <start_time>3</start_time>
                 <waypoints/>
+                <follow_entity_name/>
             </waypoint_follower>
             <cycleTimeSecs>0.100000001</cycleTimeSecs>
             <pulseScaleFactor>1.5</pulseScaleFactor>
@@ -8696,11 +8972,13 @@
             <flow_section_id>2</flow_section_id>
             <tag>0</tag>
             <waypoint_follower>
+                <mode>Waypoint</mode>
                 <local_to_entity>false</local_to_entity>
                 <waypoint_auto_start>false</waypoint_auto_start>
                 <loop_waypoints>false</loop_waypoints>
                 <start_time>3</start_time>
                 <waypoints/>
+                <follow_entity_name/>
             </waypoint_follower>
             <cycleTimeSecs>0.100000001</cycleTimeSecs>
             <pulseScaleFactor>1.5</pulseScaleFactor>
@@ -8737,11 +9015,13 @@
             <flow_section_id>2</flow_section_id>
             <tag>0</tag>
             <waypoint_follower>
+                <mode>Waypoint</mode>
                 <local_to_entity>false</local_to_entity>
                 <waypoint_auto_start>false</waypoint_auto_start>
                 <loop_waypoints>false</loop_waypoints>
                 <start_time>3</start_time>
                 <waypoints/>
+                <follow_entity_name/>
             </waypoint_follower>
             <cycleTimeSecs>0.100000001</cycleTimeSecs>
             <pulseScaleFactor>1.5</pulseScaleFactor>
@@ -8778,11 +9058,13 @@
             <flow_section_id>2</flow_section_id>
             <tag>0</tag>
             <waypoint_follower>
+                <mode>Waypoint</mode>
                 <local_to_entity>false</local_to_entity>
                 <waypoint_auto_start>false</waypoint_auto_start>
                 <loop_waypoints>false</loop_waypoints>
                 <start_time>3</start_time>
                 <waypoints/>
+                <follow_entity_name/>
             </waypoint_follower>
             <cycleTimeSecs>0.100000001</cycleTimeSecs>
             <pulseScaleFactor>1.5</pulseScaleFactor>
@@ -8819,11 +9101,13 @@
             <flow_section_id>2</flow_section_id>
             <tag>0</tag>
             <waypoint_follower>
+                <mode>Waypoint</mode>
                 <local_to_entity>false</local_to_entity>
                 <waypoint_auto_start>false</waypoint_auto_start>
                 <loop_waypoints>false</loop_waypoints>
                 <start_time>3</start_time>
                 <waypoints/>
+                <follow_entity_name/>
             </waypoint_follower>
             <on_player_enter>false</on_player_enter>
             <use_trigger_volumes>false</use_trigger_volumes>
@@ -8930,11 +9214,13 @@
             <flow_section_id>2</flow_section_id>
             <tag>0</tag>
             <waypoint_follower>
+                <mode>Waypoint</mode>
                 <local_to_entity>false</local_to_entity>
                 <waypoint_auto_start>false</waypoint_auto_start>
                 <loop_waypoints>false</loop_waypoints>
                 <start_time>3</start_time>
                 <waypoints/>
+                <follow_entity_name/>
             </waypoint_follower>
             <text>i</text>
             <type_kill>false</type_kill>
@@ -8995,11 +9281,13 @@
             <flow_section_id>2</flow_section_id>
             <tag>0</tag>
             <waypoint_follower>
+                <mode>Waypoint</mode>
                 <local_to_entity>false</local_to_entity>
                 <waypoint_auto_start>false</waypoint_auto_start>
                 <loop_waypoints>false</loop_waypoints>
                 <start_time>3</start_time>
                 <waypoints/>
+                <follow_entity_name/>
             </waypoint_follower>
             <text>e</text>
             <type_kill>false</type_kill>
@@ -9055,11 +9343,13 @@
             <flow_section_id>2</flow_section_id>
             <tag>0</tag>
             <waypoint_follower>
+                <mode>Waypoint</mode>
                 <local_to_entity>false</local_to_entity>
                 <waypoint_auto_start>false</waypoint_auto_start>
                 <loop_waypoints>false</loop_waypoints>
                 <start_time>3</start_time>
                 <waypoints/>
+                <follow_entity_name/>
             </waypoint_follower>
             <text>s</text>
             <type_kill>false</type_kill>
@@ -9115,11 +9405,13 @@
             <flow_section_id>2</flow_section_id>
             <tag>0</tag>
             <waypoint_follower>
+                <mode>Waypoint</mode>
                 <local_to_entity>false</local_to_entity>
                 <waypoint_auto_start>false</waypoint_auto_start>
                 <loop_waypoints>false</loop_waypoints>
                 <start_time>3</start_time>
                 <waypoints/>
+                <follow_entity_name/>
             </waypoint_follower>
             <text>o</text>
             <type_kill>false</type_kill>
@@ -9175,11 +9467,13 @@
             <flow_section_id>2</flow_section_id>
             <tag>0</tag>
             <waypoint_follower>
+                <mode>Waypoint</mode>
                 <local_to_entity>false</local_to_entity>
                 <waypoint_auto_start>false</waypoint_auto_start>
                 <loop_waypoints>false</loop_waypoints>
                 <start_time>3</start_time>
                 <waypoints/>
+                <follow_entity_name/>
             </waypoint_follower>
             <text>n</text>
             <type_kill>false</type_kill>
@@ -9235,11 +9529,13 @@
             <flow_section_id>4</flow_section_id>
             <tag>0</tag>
             <waypoint_follower>
+                <mode>Waypoint</mode>
                 <local_to_entity>false</local_to_entity>
                 <waypoint_auto_start>false</waypoint_auto_start>
                 <loop_waypoints>false</loop_waypoints>
                 <start_time>3</start_time>
                 <waypoints/>
+                <follow_entity_name/>
             </waypoint_follower>
             <can_hit>true</can_hit>
             <hp>-1</hp>
@@ -9295,11 +9591,13 @@
             <flow_section_id>4</flow_section_id>
             <tag>0</tag>
             <waypoint_follower>
+                <mode>Waypoint</mode>
                 <local_to_entity>false</local_to_entity>
                 <waypoint_auto_start>false</waypoint_auto_start>
                 <loop_waypoints>false</loop_waypoints>
                 <start_time>3</start_time>
                 <waypoints/>
+                <follow_entity_name/>
             </waypoint_follower>
             <can_hit>true</can_hit>
             <hp>-1</hp>
@@ -9355,6 +9653,7 @@
             <flow_section_id>5</flow_section_id>
             <tag>0</tag>
             <waypoint_follower>
+                <mode>FollowEntity</mode>
                 <local_to_entity>true</local_to_entity>
                 <waypoint_auto_start>false</waypoint_auto_start>
                 <loop_waypoints>false</loop_waypoints>
@@ -9370,6 +9669,7 @@
                         </p>
                     </waypoint>
                 </waypoints>
+                <follow_entity_name>r7_platform1</follow_entity_name>
             </waypoint_follower>
             <text>i</text>
             <type_kill>false</type_kill>
@@ -9430,11 +9730,13 @@
             <flow_section_id>5</flow_section_id>
             <tag>0</tag>
             <waypoint_follower>
+                <mode>Waypoint</mode>
                 <local_to_entity>false</local_to_entity>
                 <waypoint_auto_start>false</waypoint_auto_start>
                 <loop_waypoints>false</loop_waypoints>
                 <start_time>3</start_time>
                 <waypoints/>
+                <follow_entity_name/>
             </waypoint_follower>
         </Base>
         <FlowWall>
@@ -9469,6 +9771,7 @@
             <flow_section_id>5</flow_section_id>
             <tag>0</tag>
             <waypoint_follower>
+                <mode>FollowEntity</mode>
                 <local_to_entity>true</local_to_entity>
                 <waypoint_auto_start>false</waypoint_auto_start>
                 <loop_waypoints>false</loop_waypoints>
@@ -9484,6 +9787,7 @@
                         </p>
                     </waypoint>
                 </waypoints>
+                <follow_entity_name>r7_platform1</follow_entity_name>
             </waypoint_follower>
             <can_hit>false</can_hit>
             <hp>-1</hp>
@@ -9524,11 +9828,13 @@
             <flow_section_id>5</flow_section_id>
             <tag>0</tag>
             <waypoint_follower>
+                <mode>Waypoint</mode>
                 <local_to_entity>false</local_to_entity>
                 <waypoint_auto_start>false</waypoint_auto_start>
                 <loop_waypoints>false</loop_waypoints>
                 <start_time>3</start_time>
                 <waypoints/>
+                <follow_entity_name/>
             </waypoint_follower>
         </Base>
         <FlowTrigger>
@@ -9563,11 +9869,13 @@
             <flow_section_id>5</flow_section_id>
             <tag>0</tag>
             <waypoint_follower>
+                <mode>Waypoint</mode>
                 <local_to_entity>false</local_to_entity>
                 <waypoint_auto_start>false</waypoint_auto_start>
                 <loop_waypoints>false</loop_waypoints>
                 <start_time>3</start_time>
                 <waypoints/>
+                <follow_entity_name/>
             </waypoint_follower>
             <on_player_enter>false</on_player_enter>
             <use_trigger_volumes>false</use_trigger_volumes>
@@ -9597,19 +9905,7 @@
                     <one_time>true</one_time>
                     <action_type>WaypointControl</action_type>
                     <follow_waypoints>true</follow_waypoints>
-                    <entity_name>r7_e</entity_name>
-                </seq_action>
-                <seq_action>
-                    <one_time>true</one_time>
-                    <action_type>WaypointControl</action_type>
-                    <follow_waypoints>true</follow_waypoints>
-                    <entity_name>r7_i</entity_name>
-                </seq_action>
-                <seq_action>
-                    <one_time>true</one_time>
-                    <action_type>WaypointControl</action_type>
-                    <follow_waypoints>true</follow_waypoints>
-                    <entity_name>room7_camera_target</entity_name>
+                    <entity_name>r7_platform1</entity_name>
                 </seq_action>
                 <seq_action>
                     <one_time>true</one_time>
@@ -9655,11 +9951,13 @@
             <flow_section_id>5</flow_section_id>
             <tag>0</tag>
             <waypoint_follower>
+                <mode>Waypoint</mode>
                 <local_to_entity>false</local_to_entity>
                 <waypoint_auto_start>false</waypoint_auto_start>
                 <loop_waypoints>false</loop_waypoints>
                 <start_time>3</start_time>
                 <waypoints/>
+                <follow_entity_name/>
             </waypoint_follower>
         </Base>
         <TypingEnemy>
@@ -9694,11 +9992,13 @@
             <flow_section_id>5</flow_section_id>
             <tag>0</tag>
             <waypoint_follower>
+                <mode>Waypoint</mode>
                 <local_to_entity>true</local_to_entity>
                 <waypoint_auto_start>false</waypoint_auto_start>
                 <loop_waypoints>false</loop_waypoints>
                 <start_time>3</start_time>
                 <waypoints/>
+                <follow_entity_name/>
             </waypoint_follower>
             <text>f</text>
             <type_kill>false</type_kill>
@@ -9754,11 +10054,13 @@
             <flow_section_id>5</flow_section_id>
             <tag>0</tag>
             <waypoint_follower>
+                <mode>Waypoint</mode>
                 <local_to_entity>true</local_to_entity>
                 <waypoint_auto_start>false</waypoint_auto_start>
                 <loop_waypoints>false</loop_waypoints>
                 <start_time>3</start_time>
                 <waypoints/>
+                <follow_entity_name/>
             </waypoint_follower>
             <text>j</text>
             <type_kill>false</type_kill>
@@ -9814,11 +10116,13 @@
             <flow_section_id>5</flow_section_id>
             <tag>0</tag>
             <waypoint_follower>
+                <mode>Waypoint</mode>
                 <local_to_entity>true</local_to_entity>
                 <waypoint_auto_start>false</waypoint_auto_start>
                 <loop_waypoints>false</loop_waypoints>
                 <start_time>3</start_time>
                 <waypoints/>
+                <follow_entity_name/>
             </waypoint_follower>
             <text>k</text>
             <type_kill>false</type_kill>
@@ -9874,6 +10178,7 @@
             <flow_section_id>5</flow_section_id>
             <tag>0</tag>
             <waypoint_follower>
+                <mode>FollowEntity</mode>
                 <local_to_entity>true</local_to_entity>
                 <waypoint_auto_start>false</waypoint_auto_start>
                 <loop_waypoints>false</loop_waypoints>
@@ -9889,6 +10194,7 @@
                         </p>
                     </waypoint>
                 </waypoints>
+                <follow_entity_name>r7_platform2</follow_entity_name>
             </waypoint_follower>
             <text>w</text>
             <type_kill>false</type_kill>
@@ -9949,6 +10255,7 @@
             <flow_section_id>5</flow_section_id>
             <tag>0</tag>
             <waypoint_follower>
+                <mode>FollowEntity</mode>
                 <local_to_entity>true</local_to_entity>
                 <waypoint_auto_start>false</waypoint_auto_start>
                 <loop_waypoints>false</loop_waypoints>
@@ -9964,6 +10271,7 @@
                         </p>
                     </waypoint>
                 </waypoints>
+                <follow_entity_name>r7_platform2</follow_entity_name>
             </waypoint_follower>
             <text>o</text>
             <type_kill>false</type_kill>
@@ -10024,6 +10332,7 @@
             <flow_section_id>5</flow_section_id>
             <tag>0</tag>
             <waypoint_follower>
+                <mode>FollowEntity</mode>
                 <local_to_entity>true</local_to_entity>
                 <waypoint_auto_start>false</waypoint_auto_start>
                 <loop_waypoints>false</loop_waypoints>
@@ -10039,6 +10348,7 @@
                         </p>
                     </waypoint>
                 </waypoints>
+                <follow_entity_name>r7_platform2</follow_entity_name>
             </waypoint_follower>
             <can_hit>false</can_hit>
             <hp>-1</hp>
@@ -10079,11 +10389,13 @@
             <flow_section_id>5</flow_section_id>
             <tag>0</tag>
             <waypoint_follower>
+                <mode>Waypoint</mode>
                 <local_to_entity>false</local_to_entity>
                 <waypoint_auto_start>false</waypoint_auto_start>
                 <loop_waypoints>false</loop_waypoints>
                 <start_time>3</start_time>
                 <waypoints/>
+                <follow_entity_name/>
             </waypoint_follower>
             <on_player_enter>false</on_player_enter>
             <use_trigger_volumes>false</use_trigger_volumes>
@@ -10114,19 +10426,7 @@
                     <one_time>true</one_time>
                     <action_type>WaypointControl</action_type>
                     <follow_waypoints>true</follow_waypoints>
-                    <entity_name>r7_w</entity_name>
-                </seq_action>
-                <seq_action>
-                    <one_time>true</one_time>
-                    <action_type>WaypointControl</action_type>
-                    <follow_waypoints>true</follow_waypoints>
-                    <entity_name>r7_o</entity_name>
-                </seq_action>
-                <seq_action>
-                    <one_time>true</one_time>
-                    <action_type>WaypointControl</action_type>
-                    <follow_waypoints>true</follow_waypoints>
-                    <entity_name>room7_camera_target2</entity_name>
+                    <entity_name>r7_platform2</entity_name>
                 </seq_action>
                 <seq_action>
                     <one_time>true</one_time>
@@ -10176,11 +10476,13 @@
             <flow_section_id>5</flow_section_id>
             <tag>0</tag>
             <waypoint_follower>
+                <mode>Waypoint</mode>
                 <local_to_entity>false</local_to_entity>
                 <waypoint_auto_start>false</waypoint_auto_start>
                 <loop_waypoints>false</loop_waypoints>
                 <start_time>3</start_time>
                 <waypoints/>
+                <follow_entity_name/>
             </waypoint_follower>
             <can_hit>true</can_hit>
             <hp>-1</hp>
@@ -10221,11 +10523,13 @@
             <flow_section_id>5</flow_section_id>
             <tag>0</tag>
             <waypoint_follower>
+                <mode>Waypoint</mode>
                 <local_to_entity>true</local_to_entity>
                 <waypoint_auto_start>false</waypoint_auto_start>
                 <loop_waypoints>false</loop_waypoints>
                 <start_time>3</start_time>
                 <waypoints/>
+                <follow_entity_name/>
             </waypoint_follower>
             <text>f</text>
             <type_kill>false</type_kill>
@@ -10286,11 +10590,13 @@
             <flow_section_id>5</flow_section_id>
             <tag>0</tag>
             <waypoint_follower>
+                <mode>Waypoint</mode>
                 <local_to_entity>true</local_to_entity>
                 <waypoint_auto_start>false</waypoint_auto_start>
                 <loop_waypoints>false</loop_waypoints>
                 <start_time>3</start_time>
                 <waypoints/>
+                <follow_entity_name/>
             </waypoint_follower>
             <text>j</text>
             <type_kill>false</type_kill>
@@ -10351,11 +10657,13 @@
             <flow_section_id>5</flow_section_id>
             <tag>0</tag>
             <waypoint_follower>
+                <mode>Waypoint</mode>
                 <local_to_entity>true</local_to_entity>
                 <waypoint_auto_start>false</waypoint_auto_start>
                 <loop_waypoints>false</loop_waypoints>
                 <start_time>3</start_time>
                 <waypoints/>
+                <follow_entity_name/>
             </waypoint_follower>
             <text>k</text>
             <type_kill>false</type_kill>
@@ -10416,11 +10724,13 @@
             <flow_section_id>5</flow_section_id>
             <tag>0</tag>
             <waypoint_follower>
+                <mode>Waypoint</mode>
                 <local_to_entity>false</local_to_entity>
                 <waypoint_auto_start>false</waypoint_auto_start>
                 <loop_waypoints>false</loop_waypoints>
                 <start_time>3</start_time>
                 <waypoints/>
+                <follow_entity_name/>
             </waypoint_follower>
             <on_player_enter>true</on_player_enter>
             <use_trigger_volumes>false</use_trigger_volumes>
@@ -10436,13 +10746,7 @@
                     <one_time>true</one_time>
                     <action_type>WaypointControl</action_type>
                     <follow_waypoints>true</follow_waypoints>
-                    <entity_name>r7_e2</entity_name>
-                </seq_action>
-                <seq_action>
-                    <one_time>true</one_time>
-                    <action_type>WaypointControl</action_type>
-                    <follow_waypoints>true</follow_waypoints>
-                    <entity_name>r7_i2</entity_name>
+                    <entity_name>r7_platform3</entity_name>
                 </seq_action>
                 <seq_action>
                     <one_time>true</one_time>
@@ -10470,12 +10774,6 @@
                     <action_type>SetStepSequencerMute</action_type>
                     <seq_name>clap_seq</seq_name>
                     <mute>false</mute>
-                </seq_action>
-                <seq_action>
-                    <one_time>true</one_time>
-                    <action_type>WaypointControl</action_type>
-                    <follow_waypoints>true</follow_waypoints>
-                    <entity_name>room7_camera_target3</entity_name>
                 </seq_action>
             </actions>
             <actions_on_exit/>
@@ -10513,6 +10811,7 @@
             <flow_section_id>5</flow_section_id>
             <tag>0</tag>
             <waypoint_follower>
+                <mode>FollowEntity</mode>
                 <local_to_entity>true</local_to_entity>
                 <waypoint_auto_start>false</waypoint_auto_start>
                 <loop_waypoints>false</loop_waypoints>
@@ -10528,6 +10827,7 @@
                         </p>
                     </waypoint>
                 </waypoints>
+                <follow_entity_name>r7_platform3</follow_entity_name>
             </waypoint_follower>
             <text>e</text>
             <type_kill>false</type_kill>
@@ -10583,6 +10883,7 @@
             <flow_section_id>5</flow_section_id>
             <tag>0</tag>
             <waypoint_follower>
+                <mode>FollowEntity</mode>
                 <local_to_entity>true</local_to_entity>
                 <waypoint_auto_start>false</waypoint_auto_start>
                 <loop_waypoints>false</loop_waypoints>
@@ -10598,6 +10899,7 @@
                         </p>
                     </waypoint>
                 </waypoints>
+                <follow_entity_name>r7_platform3</follow_entity_name>
             </waypoint_follower>
             <text>i</text>
             <type_kill>false</type_kill>
@@ -10653,11 +10955,13 @@
             <flow_section_id>5</flow_section_id>
             <tag>0</tag>
             <waypoint_follower>
+                <mode>Waypoint</mode>
                 <local_to_entity>false</local_to_entity>
                 <waypoint_auto_start>false</waypoint_auto_start>
                 <loop_waypoints>false</loop_waypoints>
                 <start_time>3</start_time>
                 <waypoints/>
+                <follow_entity_name/>
             </waypoint_follower>
             <can_hit>true</can_hit>
             <hp>-1</hp>
@@ -10698,11 +11002,13 @@
             <flow_section_id>5</flow_section_id>
             <tag>0</tag>
             <waypoint_follower>
+                <mode>Waypoint</mode>
                 <local_to_entity>false</local_to_entity>
                 <waypoint_auto_start>false</waypoint_auto_start>
                 <loop_waypoints>false</loop_waypoints>
                 <start_time>3</start_time>
                 <waypoints/>
+                <follow_entity_name/>
             </waypoint_follower>
             <seq_filename>data/barren/r7_action_seq2.txt</seq_filename>
         </ActionSequencer>
@@ -10738,11 +11044,13 @@
             <flow_section_id>5</flow_section_id>
             <tag>0</tag>
             <waypoint_follower>
+                <mode>Waypoint</mode>
                 <local_to_entity>true</local_to_entity>
                 <waypoint_auto_start>false</waypoint_auto_start>
                 <loop_waypoints>false</loop_waypoints>
                 <start_time>3</start_time>
                 <waypoints/>
+                <follow_entity_name/>
             </waypoint_follower>
             <text>f</text>
             <type_kill>false</type_kill>
@@ -10803,11 +11111,13 @@
             <flow_section_id>5</flow_section_id>
             <tag>0</tag>
             <waypoint_follower>
+                <mode>Waypoint</mode>
                 <local_to_entity>true</local_to_entity>
                 <waypoint_auto_start>false</waypoint_auto_start>
                 <loop_waypoints>false</loop_waypoints>
                 <start_time>3</start_time>
                 <waypoints/>
+                <follow_entity_name/>
             </waypoint_follower>
             <text>j</text>
             <type_kill>false</type_kill>
@@ -10868,11 +11178,13 @@
             <flow_section_id>5</flow_section_id>
             <tag>0</tag>
             <waypoint_follower>
+                <mode>Waypoint</mode>
                 <local_to_entity>true</local_to_entity>
                 <waypoint_auto_start>false</waypoint_auto_start>
                 <loop_waypoints>false</loop_waypoints>
                 <start_time>3</start_time>
                 <waypoints/>
+                <follow_entity_name/>
             </waypoint_follower>
             <text>k</text>
             <type_kill>false</type_kill>
@@ -10933,6 +11245,7 @@
             <flow_section_id>5</flow_section_id>
             <tag>0</tag>
             <waypoint_follower>
+                <mode>FollowEntity</mode>
                 <local_to_entity>true</local_to_entity>
                 <waypoint_auto_start>false</waypoint_auto_start>
                 <loop_waypoints>false</loop_waypoints>
@@ -10948,6 +11261,7 @@
                         </p>
                     </waypoint>
                 </waypoints>
+                <follow_entity_name>r7_platform3</follow_entity_name>
             </waypoint_follower>
             <can_hit>false</can_hit>
             <hp>-1</hp>
@@ -10988,6 +11302,7 @@
             <flow_section_id>5</flow_section_id>
             <tag>0</tag>
             <waypoint_follower>
+                <mode>FollowEntity</mode>
                 <local_to_entity>true</local_to_entity>
                 <waypoint_auto_start>false</waypoint_auto_start>
                 <loop_waypoints>false</loop_waypoints>
@@ -11003,6 +11318,7 @@
                         </p>
                     </waypoint>
                 </waypoints>
+                <follow_entity_name>r7_platform4</follow_entity_name>
             </waypoint_follower>
             <text>w</text>
             <type_kill>false</type_kill>
@@ -11058,6 +11374,7 @@
             <flow_section_id>5</flow_section_id>
             <tag>0</tag>
             <waypoint_follower>
+                <mode>FollowEntity</mode>
                 <local_to_entity>true</local_to_entity>
                 <waypoint_auto_start>false</waypoint_auto_start>
                 <loop_waypoints>false</loop_waypoints>
@@ -11073,6 +11390,7 @@
                         </p>
                     </waypoint>
                 </waypoints>
+                <follow_entity_name>r7_platform4</follow_entity_name>
             </waypoint_follower>
             <text>o</text>
             <type_kill>false</type_kill>
@@ -11128,11 +11446,13 @@
             <flow_section_id>5</flow_section_id>
             <tag>0</tag>
             <waypoint_follower>
+                <mode>Waypoint</mode>
                 <local_to_entity>false</local_to_entity>
                 <waypoint_auto_start>false</waypoint_auto_start>
                 <loop_waypoints>false</loop_waypoints>
                 <start_time>3</start_time>
                 <waypoints/>
+                <follow_entity_name/>
             </waypoint_follower>
             <on_player_enter>true</on_player_enter>
             <use_trigger_volumes>false</use_trigger_volumes>
@@ -11163,19 +11483,7 @@
                     <one_time>true</one_time>
                     <action_type>WaypointControl</action_type>
                     <follow_waypoints>true</follow_waypoints>
-                    <entity_name>r7_w2</entity_name>
-                </seq_action>
-                <seq_action>
-                    <one_time>true</one_time>
-                    <action_type>WaypointControl</action_type>
-                    <follow_waypoints>true</follow_waypoints>
-                    <entity_name>r7_o2</entity_name>
-                </seq_action>
-                <seq_action>
-                    <one_time>true</one_time>
-                    <action_type>WaypointControl</action_type>
-                    <follow_waypoints>true</follow_waypoints>
-                    <entity_name>room7_camera_target4</entity_name>
+                    <entity_name>r7_platform4</entity_name>
                 </seq_action>
             </actions>
             <actions_on_exit/>
@@ -11213,6 +11521,7 @@
             <flow_section_id>5</flow_section_id>
             <tag>0</tag>
             <waypoint_follower>
+                <mode>FollowEntity</mode>
                 <local_to_entity>true</local_to_entity>
                 <waypoint_auto_start>false</waypoint_auto_start>
                 <loop_waypoints>false</loop_waypoints>
@@ -11228,6 +11537,7 @@
                         </p>
                     </waypoint>
                 </waypoints>
+                <follow_entity_name>r7_platform4</follow_entity_name>
             </waypoint_follower>
             <can_hit>false</can_hit>
             <hp>-1</hp>
@@ -11268,11 +11578,13 @@
             <flow_section_id>5</flow_section_id>
             <tag>0</tag>
             <waypoint_follower>
+                <mode>Waypoint</mode>
                 <local_to_entity>false</local_to_entity>
                 <waypoint_auto_start>false</waypoint_auto_start>
                 <loop_waypoints>false</loop_waypoints>
                 <start_time>3</start_time>
                 <waypoints/>
+                <follow_entity_name/>
             </waypoint_follower>
             <on_player_enter>true</on_player_enter>
             <use_trigger_volumes>false</use_trigger_volumes>
@@ -11322,11 +11634,13 @@
             <flow_section_id>5</flow_section_id>
             <tag>0</tag>
             <waypoint_follower>
+                <mode>Waypoint</mode>
                 <local_to_entity>true</local_to_entity>
                 <waypoint_auto_start>false</waypoint_auto_start>
                 <loop_waypoints>false</loop_waypoints>
                 <start_time>3</start_time>
                 <waypoints/>
+                <follow_entity_name/>
             </waypoint_follower>
             <text>f</text>
             <type_kill>false</type_kill>
@@ -11387,11 +11701,13 @@
             <flow_section_id>5</flow_section_id>
             <tag>0</tag>
             <waypoint_follower>
+                <mode>Waypoint</mode>
                 <local_to_entity>true</local_to_entity>
                 <waypoint_auto_start>false</waypoint_auto_start>
                 <loop_waypoints>false</loop_waypoints>
                 <start_time>3</start_time>
                 <waypoints/>
+                <follow_entity_name/>
             </waypoint_follower>
             <text>j</text>
             <type_kill>false</type_kill>
@@ -11452,11 +11768,13 @@
             <flow_section_id>5</flow_section_id>
             <tag>0</tag>
             <waypoint_follower>
+                <mode>Waypoint</mode>
                 <local_to_entity>true</local_to_entity>
                 <waypoint_auto_start>false</waypoint_auto_start>
                 <loop_waypoints>false</loop_waypoints>
                 <start_time>3</start_time>
                 <waypoints/>
+                <follow_entity_name/>
             </waypoint_follower>
             <text>k</text>
             <type_kill>false</type_kill>
@@ -11517,6 +11835,7 @@
             <flow_section_id>5</flow_section_id>
             <tag>0</tag>
             <waypoint_follower>
+                <mode>Waypoint</mode>
                 <local_to_entity>true</local_to_entity>
                 <waypoint_auto_start>false</waypoint_auto_start>
                 <loop_waypoints>false</loop_waypoints>
@@ -11532,6 +11851,7 @@
                         </p>
                     </waypoint>
                 </waypoints>
+                <follow_entity_name/>
             </waypoint_follower>
             <text>e</text>
             <type_kill>false</type_kill>
@@ -11587,6 +11907,7 @@
             <flow_section_id>5</flow_section_id>
             <tag>0</tag>
             <waypoint_follower>
+                <mode>Waypoint</mode>
                 <local_to_entity>true</local_to_entity>
                 <waypoint_auto_start>false</waypoint_auto_start>
                 <loop_waypoints>false</loop_waypoints>
@@ -11602,6 +11923,7 @@
                         </p>
                     </waypoint>
                 </waypoints>
+                <follow_entity_name/>
             </waypoint_follower>
             <text>i</text>
             <type_kill>false</type_kill>
@@ -11657,11 +11979,13 @@
             <flow_section_id>5</flow_section_id>
             <tag>0</tag>
             <waypoint_follower>
+                <mode>Waypoint</mode>
                 <local_to_entity>false</local_to_entity>
                 <waypoint_auto_start>false</waypoint_auto_start>
                 <loop_waypoints>false</loop_waypoints>
                 <start_time>3</start_time>
                 <waypoints/>
+                <follow_entity_name/>
             </waypoint_follower>
             <on_player_enter>true</on_player_enter>
             <use_trigger_volumes>false</use_trigger_volumes>
@@ -11768,11 +12092,13 @@
             <flow_section_id>5</flow_section_id>
             <tag>0</tag>
             <waypoint_follower>
+                <mode>Waypoint</mode>
                 <local_to_entity>false</local_to_entity>
                 <waypoint_auto_start>false</waypoint_auto_start>
                 <loop_waypoints>false</loop_waypoints>
                 <start_time>3</start_time>
                 <waypoints/>
+                <follow_entity_name/>
             </waypoint_follower>
             <on_player_enter>true</on_player_enter>
             <use_trigger_volumes>false</use_trigger_volumes>
@@ -11859,11 +12185,13 @@
             <flow_section_id>5</flow_section_id>
             <tag>0</tag>
             <waypoint_follower>
+                <mode>Waypoint</mode>
                 <local_to_entity>false</local_to_entity>
                 <waypoint_auto_start>false</waypoint_auto_start>
                 <loop_waypoints>false</loop_waypoints>
                 <start_time>3</start_time>
                 <waypoints/>
+                <follow_entity_name/>
             </waypoint_follower>
             <on_player_enter>true</on_player_enter>
             <use_trigger_volumes>false</use_trigger_volumes>
@@ -11913,11 +12241,13 @@
             <flow_section_id>5</flow_section_id>
             <tag>0</tag>
             <waypoint_follower>
+                <mode>Waypoint</mode>
                 <local_to_entity>true</local_to_entity>
                 <waypoint_auto_start>false</waypoint_auto_start>
                 <loop_waypoints>false</loop_waypoints>
                 <start_time>3</start_time>
                 <waypoints/>
+                <follow_entity_name/>
             </waypoint_follower>
             <text>n</text>
             <type_kill>false</type_kill>
@@ -11978,11 +12308,13 @@
             <flow_section_id>5</flow_section_id>
             <tag>0</tag>
             <waypoint_follower>
+                <mode>Waypoint</mode>
                 <local_to_entity>true</local_to_entity>
                 <waypoint_auto_start>false</waypoint_auto_start>
                 <loop_waypoints>false</loop_waypoints>
                 <start_time>3</start_time>
                 <waypoints/>
+                <follow_entity_name/>
             </waypoint_follower>
             <text>a</text>
             <type_kill>false</type_kill>
@@ -12043,11 +12375,13 @@
             <flow_section_id>5</flow_section_id>
             <tag>0</tag>
             <waypoint_follower>
+                <mode>Waypoint</mode>
                 <local_to_entity>true</local_to_entity>
                 <waypoint_auto_start>false</waypoint_auto_start>
                 <loop_waypoints>false</loop_waypoints>
                 <start_time>3</start_time>
                 <waypoints/>
+                <follow_entity_name/>
             </waypoint_follower>
             <text>m</text>
             <type_kill>false</type_kill>
@@ -12108,6 +12442,7 @@
             <flow_section_id>5</flow_section_id>
             <tag>0</tag>
             <waypoint_follower>
+                <mode>Waypoint</mode>
                 <local_to_entity>true</local_to_entity>
                 <waypoint_auto_start>false</waypoint_auto_start>
                 <loop_waypoints>false</loop_waypoints>
@@ -12123,6 +12458,7 @@
                         </p>
                     </waypoint>
                 </waypoints>
+                <follow_entity_name/>
             </waypoint_follower>
             <text>w</text>
             <type_kill>false</type_kill>
@@ -12178,6 +12514,7 @@
             <flow_section_id>5</flow_section_id>
             <tag>0</tag>
             <waypoint_follower>
+                <mode>Waypoint</mode>
                 <local_to_entity>true</local_to_entity>
                 <waypoint_auto_start>false</waypoint_auto_start>
                 <loop_waypoints>false</loop_waypoints>
@@ -12193,6 +12530,7 @@
                         </p>
                     </waypoint>
                 </waypoints>
+                <follow_entity_name/>
             </waypoint_follower>
             <text>o</text>
             <type_kill>false</type_kill>
@@ -12248,11 +12586,13 @@
             <flow_section_id>5</flow_section_id>
             <tag>0</tag>
             <waypoint_follower>
+                <mode>Waypoint</mode>
                 <local_to_entity>false</local_to_entity>
                 <waypoint_auto_start>false</waypoint_auto_start>
                 <loop_waypoints>false</loop_waypoints>
                 <start_time>3</start_time>
                 <waypoints/>
+                <follow_entity_name/>
             </waypoint_follower>
             <on_player_enter>true</on_player_enter>
             <use_trigger_volumes>false</use_trigger_volumes>
@@ -12353,11 +12693,13 @@
             <flow_section_id>5</flow_section_id>
             <tag>0</tag>
             <waypoint_follower>
+                <mode>Waypoint</mode>
                 <local_to_entity>false</local_to_entity>
                 <waypoint_auto_start>false</waypoint_auto_start>
                 <loop_waypoints>false</loop_waypoints>
                 <start_time>0</start_time>
                 <waypoints/>
+                <follow_entity_name/>
             </waypoint_follower>
             <sequence>-1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1</sequence>
             <start_mute>false</start_mute>
@@ -12404,11 +12746,13 @@
             <flow_section_id>5</flow_section_id>
             <tag>0</tag>
             <waypoint_follower>
+                <mode>Waypoint</mode>
                 <local_to_entity>true</local_to_entity>
                 <waypoint_auto_start>false</waypoint_auto_start>
                 <loop_waypoints>false</loop_waypoints>
                 <start_time>3</start_time>
                 <waypoints/>
+                <follow_entity_name/>
             </waypoint_follower>
             <text>e</text>
             <type_kill>false</type_kill>
@@ -12469,11 +12813,13 @@
             <flow_section_id>5</flow_section_id>
             <tag>0</tag>
             <waypoint_follower>
+                <mode>Waypoint</mode>
                 <local_to_entity>true</local_to_entity>
                 <waypoint_auto_start>false</waypoint_auto_start>
                 <loop_waypoints>false</loop_waypoints>
                 <start_time>3</start_time>
                 <waypoints/>
+                <follow_entity_name/>
             </waypoint_follower>
             <text>y</text>
             <type_kill>false</type_kill>
@@ -12534,11 +12880,13 @@
             <flow_section_id>5</flow_section_id>
             <tag>0</tag>
             <waypoint_follower>
+                <mode>Waypoint</mode>
                 <local_to_entity>true</local_to_entity>
                 <waypoint_auto_start>false</waypoint_auto_start>
                 <loop_waypoints>false</loop_waypoints>
                 <start_time>3</start_time>
                 <waypoints/>
+                <follow_entity_name/>
             </waypoint_follower>
             <text>r</text>
             <type_kill>false</type_kill>
@@ -12599,6 +12947,7 @@
             <flow_section_id>5</flow_section_id>
             <tag>0</tag>
             <waypoint_follower>
+                <mode>Waypoint</mode>
                 <local_to_entity>true</local_to_entity>
                 <waypoint_auto_start>false</waypoint_auto_start>
                 <loop_waypoints>false</loop_waypoints>
@@ -12614,6 +12963,7 @@
                         </p>
                     </waypoint>
                 </waypoints>
+                <follow_entity_name/>
             </waypoint_follower>
             <text>s</text>
             <type_kill>false</type_kill>
@@ -12669,6 +13019,7 @@
             <flow_section_id>5</flow_section_id>
             <tag>0</tag>
             <waypoint_follower>
+                <mode>Waypoint</mode>
                 <local_to_entity>true</local_to_entity>
                 <waypoint_auto_start>false</waypoint_auto_start>
                 <loop_waypoints>false</loop_waypoints>
@@ -12684,6 +13035,7 @@
                         </p>
                     </waypoint>
                 </waypoints>
+                <follow_entity_name/>
             </waypoint_follower>
             <text>l</text>
             <type_kill>false</type_kill>
@@ -12739,11 +13091,13 @@
             <flow_section_id>5</flow_section_id>
             <tag>0</tag>
             <waypoint_follower>
+                <mode>Waypoint</mode>
                 <local_to_entity>false</local_to_entity>
                 <waypoint_auto_start>false</waypoint_auto_start>
                 <loop_waypoints>false</loop_waypoints>
                 <start_time>3</start_time>
                 <waypoints/>
+                <follow_entity_name/>
             </waypoint_follower>
             <on_player_enter>true</on_player_enter>
             <use_trigger_volumes>false</use_trigger_volumes>
@@ -12813,7 +13167,7 @@
             <trigger_volume_entities/>
         </FlowTrigger>
         <Base>
-            <name>new_entity</name>
+            <name>r7_platform1</name>
             <entity_active>true</entity_active>
             <pickable>true</pickable>
             <transform>
@@ -12844,11 +13198,176 @@
             <flow_section_id>5</flow_section_id>
             <tag>0</tag>
             <waypoint_follower>
-                <local_to_entity>false</local_to_entity>
+                <mode>Waypoint</mode>
+                <local_to_entity>true</local_to_entity>
                 <waypoint_auto_start>false</waypoint_auto_start>
                 <loop_waypoints>false</loop_waypoints>
                 <start_time>3</start_time>
-                <waypoints/>
+                <waypoints>
+                    <waypoint>
+                        <wait_time>0</wait_time>
+                        <move_time>7</move_time>
+                        <p>
+                            <x>14</x>
+                            <y>0</y>
+                            <z>0</z>
+                        </p>
+                    </waypoint>
+                </waypoints>
+                <follow_entity_name/>
+            </waypoint_follower>
+        </Base>
+        <Base>
+            <name>r7_platform2</name>
+            <entity_active>true</entity_active>
+            <pickable>true</pickable>
+            <transform>
+                <pos>
+                    <x>57.4851837</x>
+                    <y>-5</y>
+                    <z>21.7718945</z>
+                </pos>
+                <quat>
+                    <x>0</x>
+                    <y>0</y>
+                    <z>0</z>
+                    <w>1</w>
+                </quat>
+                <scale>
+                    <x>2.5</x>
+                    <y>1</y>
+                    <z>1</z>
+                </scale>
+            </transform>
+            <model_name>cube</model_name>
+            <model_color_vec4>
+                <x>0.355561793</x>
+                <y>0.337370217</y>
+                <z>0.95588237</z>
+                <w>1</w>
+            </model_color_vec4>
+            <flow_section_id>5</flow_section_id>
+            <tag>0</tag>
+            <waypoint_follower>
+                <mode>Waypoint</mode>
+                <local_to_entity>true</local_to_entity>
+                <waypoint_auto_start>false</waypoint_auto_start>
+                <loop_waypoints>false</loop_waypoints>
+                <start_time>3</start_time>
+                <waypoints>
+                    <waypoint>
+                        <wait_time>0</wait_time>
+                        <move_time>7</move_time>
+                        <p>
+                            <x>14</x>
+                            <y>0</y>
+                            <z>0</z>
+                        </p>
+                    </waypoint>
+                </waypoints>
+                <follow_entity_name/>
+            </waypoint_follower>
+        </Base>
+        <Base>
+            <name>r7_platform3</name>
+            <entity_active>true</entity_active>
+            <pickable>true</pickable>
+            <transform>
+                <pos>
+                    <x>71.368576</x>
+                    <y>-5</y>
+                    <z>26.700386</z>
+                </pos>
+                <quat>
+                    <x>0</x>
+                    <y>0</y>
+                    <z>0</z>
+                    <w>1</w>
+                </quat>
+                <scale>
+                    <x>1</x>
+                    <y>1</y>
+                    <z>2.5</z>
+                </scale>
+            </transform>
+            <model_name>cube</model_name>
+            <model_color_vec4>
+                <x>0.355561793</x>
+                <y>0.337370217</y>
+                <z>0.95588237</z>
+                <w>1</w>
+            </model_color_vec4>
+            <flow_section_id>5</flow_section_id>
+            <tag>0</tag>
+            <waypoint_follower>
+                <mode>Waypoint</mode>
+                <local_to_entity>true</local_to_entity>
+                <waypoint_auto_start>false</waypoint_auto_start>
+                <loop_waypoints>false</loop_waypoints>
+                <start_time>3</start_time>
+                <waypoints>
+                    <waypoint>
+                        <wait_time>0</wait_time>
+                        <move_time>7</move_time>
+                        <p>
+                            <x>14</x>
+                            <y>0</y>
+                            <z>0</z>
+                        </p>
+                    </waypoint>
+                </waypoints>
+                <follow_entity_name/>
+            </waypoint_follower>
+        </Base>
+        <Base>
+            <name>r7_platform4</name>
+            <entity_active>true</entity_active>
+            <pickable>true</pickable>
+            <transform>
+                <pos>
+                    <x>85.4279709</x>
+                    <y>-5</y>
+                    <z>21.7058887</z>
+                </pos>
+                <quat>
+                    <x>0</x>
+                    <y>0</y>
+                    <z>0</z>
+                    <w>1</w>
+                </quat>
+                <scale>
+                    <x>2.5</x>
+                    <y>1</y>
+                    <z>1</z>
+                </scale>
+            </transform>
+            <model_name>cube</model_name>
+            <model_color_vec4>
+                <x>0.355561793</x>
+                <y>0.337370217</y>
+                <z>0.95588237</z>
+                <w>1</w>
+            </model_color_vec4>
+            <flow_section_id>5</flow_section_id>
+            <tag>0</tag>
+            <waypoint_follower>
+                <mode>Waypoint</mode>
+                <local_to_entity>true</local_to_entity>
+                <waypoint_auto_start>false</waypoint_auto_start>
+                <loop_waypoints>false</loop_waypoints>
+                <start_time>3</start_time>
+                <waypoints>
+                    <waypoint>
+                        <wait_time>0</wait_time>
+                        <move_time>7</move_time>
+                        <p>
+                            <x>14</x>
+                            <y>0</y>
+                            <z>0</z>
+                        </p>
+                    </waypoint>
+                </waypoints>
+                <follow_entity_name/>
             </waypoint_follower>
         </Base>
     </new_entities>

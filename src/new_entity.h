@@ -5,6 +5,7 @@
 #include <memory>
 #include <string_view>
 
+#include "new_entity_id.h"
 #include "serial.h"
 #include "transform.h"
 #include "waypoint_follower.h"
@@ -14,53 +15,10 @@ class BoundMeshPNU;
 
 namespace ne {
 
-#define M_ENTITY_TYPES \
-    X(Base) \
-    X(Light) \
-    X(Camera) \
-    X(Sequencer) \
-    X(ActionSequencer) \
-    X(TypingPlayer) \
-    X(TypingEnemy)  \
-    X(FlowPlayer) \
-    X(StepSequencer) \
-    X(ParamAutomator) \
-    X(FlowWall) \
-    X(FlowPickup) \
-    X(FlowTrigger) \
-    X(IntVariable) \
-    X(Vfx)
-
-enum class EntityType: int {
-#   define X(a) a,
-    M_ENTITY_TYPES
-#   undef X
-    Count
-};
-
 static inline constexpr int gkNumEntityTypes = (int)EntityType::Count;
 extern char const* const gkEntityTypeNames[];
 EntityType StringToEntityType(char const* s);
 extern std::size_t const gkEntitySizes[];
-
-struct EntityId {
-    bool IsValid() { return _id >= 0; }
-    int _id = -1;
-    EntityType _type;
-    bool operator==(EntityId const& rhs) const {
-        bool v = _id == rhs._id;
-        if (v) {
-            assert(_type == rhs._type);
-        }
-        return v;
-    }
-    bool operator!=(EntityId const& rhs) const {
-        return !(*this == rhs);
-    }
-    bool operator<(EntityId const& rhs) const {
-        return _id < rhs._id;
-    }
-};
 
 struct BaseEntity {
     // serialized

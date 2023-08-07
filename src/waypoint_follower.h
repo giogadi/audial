@@ -2,6 +2,7 @@
 
 #include <vector>
 
+#include "new_entity_id.h"
 #include "serial.h"
 #include "matrix.h"
 
@@ -22,11 +23,16 @@ struct Waypoint {
 struct WaypointFollower {
     // serialized
     struct Props {
+        enum class Mode { Waypoint, FollowEntity };
+        Mode _mode = Mode::Waypoint;
+        // Waypoint mode
         std::vector<Waypoint> _waypoints;
         bool _autoStartFollowingWaypoints = false;
         bool _loopWaypoints = false;
         bool _localToEntity = false;
         double _initWpStartTime = 3.0;
+        // FollowEntity mode
+        std::string _followEntityName;
         void Save(serial::Ptree pt) const;
         void Load(serial::Ptree pt);
         bool ImGui();
@@ -36,6 +42,8 @@ struct WaypointFollower {
     // Returns true if waypoint logic updated position
     // offset gets added to waypoint positions when drawing and populating newPos.
     bool Update(GameManager& g, float dt, ne::BaseEntity* pEntity, Props const& p);
+    bool UpdateWaypoint(GameManager& g, float dt, ne::BaseEntity* pEntity, Props const& p);
+    bool UpdateFollowEntity(GameManager& g, float const dt, ne::BaseEntity* pEntity, Props const& p);
 
     void Start(GameManager& g, ne::BaseEntity const& e);
     void Stop();
@@ -46,6 +54,9 @@ struct WaypointFollower {
         Vec3 _prevWaypointPos;
         Vec3 _entityPosAtStart;
         double _thisWpStartTime = 3.0;
+
+        ne::EntityId _followEntityId;
+        Vec3 _offsetFromFollowEntity;
     };
     State _ns;
 };

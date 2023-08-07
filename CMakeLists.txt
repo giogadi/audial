@@ -21,6 +21,8 @@ add_executable(game
     src/imgui/backends/imgui_impl_opengl3.cpp
     src/glad/src/glad.cpp
 
+    src/util.h
+
     src/imgui_util.h
     src/imgui_vector_util.h
 
@@ -51,6 +53,7 @@ add_executable(game
     src/input_manager.cpp src/input_manager.h
     src/beat_time_event.cpp src/beat_time_event.h
     src/synth_imgui.cpp src/synth_imgui.h
+    src/new_entity_id.h
     src/new_entity.cpp src/new_entity.h
     src/renderer.cpp src/renderer.h
     src/stb_truetype.cpp src/stb_truetype.h
