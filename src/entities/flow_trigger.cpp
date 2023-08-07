@@ -89,9 +89,8 @@ void FlowTriggerEntity::OnTrigger(GameManager& g) {
     }
 }
 
-void FlowTriggerEntity::Update(GameManager& g, float dt) {
+void FlowTriggerEntity::UpdateDerived(GameManager& g, float dt) {
     if (g._editMode || !_p._triggerOnPlayerEnter) {
-        BaseEntity::Update(g, dt);
         return;
     }
 
@@ -125,6 +124,4 @@ void FlowTriggerEntity::Update(GameManager& g, float dt) {
         }
     }
     _isTriggering = hasOverlap;
-
-    BaseEntity::Update(g, dt);
 }

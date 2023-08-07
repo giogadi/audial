@@ -7,6 +7,7 @@
 
 #include "serial.h"
 #include "transform.h"
+#include "waypoint_follower.h"
 
 struct GameManager;
 class BoundMeshPNU;
@@ -71,10 +72,12 @@ struct BaseEntity {
     Vec4 _modelColor = Vec4(0.8f, 0.8f, 0.8f, 1.f);
     int _flowSectionId = -1;
     int _tag = 0;
+    WaypointFollower::Props _wpProps;
 
     Transform _transform;
     EntityId _id;
     BoundMeshPNU const* _model = nullptr;
+    WaypointFollower _wpFollower;
     
     void Save(serial::Ptree pt) const;
     void Load(serial::Ptree pt);
@@ -101,6 +104,9 @@ protected:
     virtual void SaveDerived(serial::Ptree pt) const {};
     virtual void LoadDerived(serial::Ptree pt) {};
     virtual ImGuiResult ImGuiDerived(GameManager& g) { return ImGuiResult::Done; }
+    virtual void UpdateDerived(GameManager& g, float dt) {}
+
+    virtual void Draw(GameManager& g, float dt);
 };
 
 typedef BaseEntity Entity;

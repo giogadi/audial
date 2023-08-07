@@ -53,7 +53,7 @@ void FlowPickupEntity::OnHit(GameManager& g) {
     }
 }
 
-void FlowPickupEntity::Update(GameManager& g, float dt) {
+void FlowPickupEntity::UpdateDerived(GameManager& g, float dt) {
     if (!g._editMode) {
         float speed;
         if (_hit) {
@@ -67,9 +67,7 @@ void FlowPickupEntity::Update(GameManager& g, float dt) {
         rot.SetFromAngleAxis(angle, Vec3(0.f, 0.f, 1.f));
         q = rot * q;
         _transform.SetQuat(q);
-    }
-    
-    BaseEntity::Update(g, dt);
+    }  
 }
 
 void FlowPickupEntity::OnEditPick(GameManager& g) {

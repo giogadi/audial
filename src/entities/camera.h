@@ -27,7 +27,7 @@ struct CameraEntity : ne::Entity {
     void ResetConstraintBlend() { _constraintBlend = 0.f; };
 
     virtual void InitDerived(GameManager& g) override;
-    virtual void Update(GameManager& g, float dt) override;
+    virtual void UpdateDerived(GameManager& g, float dt) override;
 protected:
     virtual void SaveDerived(serial::Ptree pt) const override;
     virtual void LoadDerived(serial::Ptree pt) override;

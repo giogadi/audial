@@ -26,7 +26,7 @@ ne::Entity::ImGuiResult LightEntity::ImGuiDerived(GameManager& g) {
 void LightEntity::InitDerived(GameManager& g) {
     _lightId = g._scene->AddPointLight().first;
 }
-void LightEntity::Update(GameManager& g, float dt) {
+void LightEntity::UpdateDerived(GameManager& g, float dt) {
     renderer::PointLight* light = g._scene->GetPointLight(_lightId);
     light->Set(_transform.GetPos(), _ambient, _diffuse);
 }

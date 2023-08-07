@@ -4,8 +4,11 @@
 
 #include "serial.h"
 #include "matrix.h"
-#include "game_manager.h"
-#include "new_entity.h"
+
+namespace ne {
+    struct BaseEntity;
+}
+struct GameManager;
 
 struct Waypoint {
     double _waitTime = 0.75f;
@@ -17,22 +20,24 @@ struct Waypoint {
 };
 
 struct WaypointFollower {
-    // serialized   
-    std::vector<Waypoint> _waypoints;
-    bool _autoStartFollowingWaypoints = false;
-    bool _loopWaypoints = false;
-    bool _localToEntity = false;
-    double _initWpStartTime = 3.0;
+    // serialized
+    struct Props {
+        std::vector<Waypoint> _waypoints;
+        bool _autoStartFollowingWaypoints = false;
+        bool _loopWaypoints = false;
+        bool _localToEntity = false;
+        double _initWpStartTime = 3.0;
+        void Save(serial::Ptree pt) const;
+        void Load(serial::Ptree pt);
+        bool ImGui();
+    };
 
-    void Init(GameManager& g, ne::Entity const& entity);
+    void Init(GameManager& g, ne::BaseEntity const& entity, Props const& p);
     // Returns true if waypoint logic updated position
     // offset gets added to waypoint positions when drawing and populating newPos.
-    bool Update(GameManager& g, float dt, bool debugDraw, ne::Entity* pEntity);
-    void Save(serial::Ptree pt) const;
-    void Load(serial::Ptree pt);
-    bool ImGui();
+    bool Update(GameManager& g, float dt, ne::BaseEntity* pEntity, Props const& p);
 
-    void Start(GameManager& g, ne::Entity const& e);
+    void Start(GameManager& g, ne::BaseEntity const& e);
     void Stop();
 
     struct State {

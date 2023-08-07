@@ -24,7 +24,7 @@ void CameraEntity::InitDerived(GameManager& g) {
     _trackingFactor = _initialTrackingFactor;
 }
 
-void CameraEntity::Update(GameManager& g, float dt) {
+void CameraEntity::UpdateDerived(GameManager& g, float dt) {
     if (g._editMode) {
         // In this case, let Editor control the camera.
         return;

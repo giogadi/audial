@@ -9,7 +9,6 @@
 #include "editor.h"
 
 void FlowWallEntity::InitDerived(GameManager& g) {
-    _wpFollower.Init(g, *this);
     _randomWander.Init();
 
     for (auto const& pAction : _hitActions) {
@@ -22,11 +21,11 @@ void FlowWallEntity::InitDerived(GameManager& g) {
 }
 
 void FlowWallEntity::Update(GameManager& g, float dt) {
-    bool const editModeSelected = g._editMode && g._editor->IsEntitySelected(_id);
+    // bool const editModeSelected = g._editMode && g._editor->IsEntitySelected(_id);
     
     switch (_moveMode) {
         case WaypointFollowerMode::Waypoints: {
-            _wpFollower.Update(g, dt, editModeSelected, this);
+            _wpFollower.Update(g, dt, this, _wpProps);
             break;
         }
         case WaypointFollowerMode::Random: {
@@ -85,7 +84,6 @@ void FlowWallEntity::SaveDerived(serial::Ptree pt) const {
     pt.PutInt("hp", _maxHp);
     pt.PutString("move_mode", WaypointFollowerModeToString(_moveMode));
     if (_moveMode == WaypointFollowerMode::Waypoints) {
-        _wpFollower.Save(pt);
     } else if (_moveMode == WaypointFollowerMode::Random) {        
         _randomWander.Save(pt);
     }
@@ -103,9 +101,7 @@ void FlowWallEntity::LoadDerived(serial::Ptree pt) {
     if (changed) {
         _moveMode = StringToWaypointFollowerMode(moveModeStr.c_str());
     }
-    _wpFollower.Load(pt);
     if (_moveMode == WaypointFollowerMode::Waypoints) {
-        _wpFollower.Load(pt);
     } else if (_moveMode == WaypointFollowerMode::Random) {
         _randomWander.Load(pt);
     }
@@ -126,9 +122,6 @@ FlowWallEntity::ImGuiResult FlowWallEntity::ImGuiDerived(GameManager& g)  {
     WaypointFollowerModeImGui("Move mode", &_moveMode);
     
     if (_moveMode == WaypointFollowerMode::Waypoints) {
-        if (ImGui::CollapsingHeader("Waypoints")) {
-            _wpFollower.ImGui();
-        }
     } else if (_moveMode == WaypointFollowerMode::Random) {
         if (ImGui::CollapsingHeader("Random")) {
             _randomWander.ImGui();

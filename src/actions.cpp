@@ -436,26 +436,11 @@ void WaypointControlSeqAction::ExecuteDerived(GameManager& g) {
         printf("ERROR: WaypointControlSeqAction could not find entity \"%s\"\n", _entityName.c_str());
         return;
     }
-    WaypointFollower* wpFollower = nullptr;
-    if (e->_id._type == ne::EntityType::TypingEnemy) {
-        TypingEnemyEntity* enemy = static_cast<TypingEnemyEntity*>(e);
-        wpFollower = &enemy->_waypointFollower;
-    }
-    else if (e->_id._type == ne::EntityType::FlowWall) {
-        FlowWallEntity* wall = static_cast<FlowWallEntity*>(e);
-        wpFollower = &wall->_wpFollower;
-    }
-
-    if (wpFollower == nullptr) {
-        printf("ERROR: WaypointControlSeqAction given an unsupported entity \"%s\"\n", _entityName.c_str());
-        return;
-    }
-    // wpFollower->_followingWaypoints = _followWaypoints;
     if (_followWaypoints) {
-        wpFollower->Start(g, *e);
+        e->_wpFollower.Start(g, *e);
     }
     else {
-        wpFollower->Stop();
+        e->_wpFollower.Stop();
     }
 }
 

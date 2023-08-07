@@ -23,7 +23,7 @@ struct FlowTriggerEntity : public ne::Entity {
     
     void OnTrigger(GameManager& g);
        
-    virtual void Update(GameManager& g, float dt) override;
+    virtual void UpdateDerived(GameManager& g, float dt) override;
 
     virtual void InitDerived(GameManager& g) override;
     virtual void SaveDerived(serial::Ptree pt) const override;

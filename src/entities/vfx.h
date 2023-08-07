@@ -13,7 +13,7 @@ struct VfxEntity : public ne::Entity {
     
     void OnHit(GameManager& g);
        
-    virtual void Update(GameManager& g, float dt) override;
+    virtual void UpdateDerived(GameManager& g, float dt) override;
     /* virtual void Destroy(GameManager& g) {} */
     // virtual void OnEditPick(GameManager& g) override;
     /* virtual void DebugPrint(); */

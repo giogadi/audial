@@ -5,7 +5,6 @@
 #include "new_entity.h"
 #include "seq_action.h"
 #include "input_manager.h"
-#include "waypoint_follower.h"
 
 struct TypingEnemyEntity : public ne::Entity {
     enum class HitBehavior { SingleAction, AllActions };
@@ -24,7 +23,6 @@ struct TypingEnemyEntity : public ne::Entity {
     Vec3 _sectionLocalPos; // TODO
     Vec4 _textColor = Vec4(1.f, 1.f, 1.f, 1.f); // TODO
     bool _flowPolarity = false;
-    WaypointFollower _waypointFollower;
     double _flowCooldownBeatTime = -1.0;
     bool _resetCooldownOnAnyHit = false;
     float _activeRadius = -1.f;  // If >= 0, player must be within this (L1) distance to be dashable toward enemy
@@ -51,7 +49,8 @@ struct TypingEnemyEntity : public ne::Entity {
 
     
     virtual void InitDerived(GameManager& g) override;
-    virtual void Update(GameManager& g, float dt) override;
+    virtual void UpdateDerived(GameManager& g, float dt) override;
+    virtual void Draw(GameManager& g, float dt) override {};
     /* virtual void Destroy(GameManager& g) {} */
     virtual void OnEditPick(GameManager& g) override;
     /* virtual void DebugPrint(); */

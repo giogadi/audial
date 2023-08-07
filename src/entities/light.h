@@ -10,7 +10,7 @@ struct LightEntity : public ne::Entity {
 
     VersionId _lightId;
     virtual void InitDerived(GameManager& g) override;
-    virtual void Update(GameManager& g, float dt) override;
+    virtual void UpdateDerived(GameManager& g, float dt) override;
     virtual void Destroy(GameManager& g) override;
 
     virtual void DebugPrint() override;

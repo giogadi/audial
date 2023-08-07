@@ -10,7 +10,7 @@ void VfxEntity::OnHit(GameManager& g) {
     _timeSinceStart = 0.f;
 }
 
-void VfxEntity::Update(GameManager& g, float dt) {
+void VfxEntity::UpdateDerived(GameManager& g, float dt) {
     if (_timeSinceStart >= _p._cycleTimeSecs) {
         _transform.SetScale(_initTransform.Scale());
         _timeSinceStart = -1.f;
@@ -22,6 +22,4 @@ void VfxEntity::Update(GameManager& g, float dt) {
         _transform.SetScale(s);
         _timeSinceStart += dt;
     }
-
-    BaseEntity::Update(g, dt);
 }

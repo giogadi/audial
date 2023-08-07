@@ -576,27 +576,33 @@ void EntityManager::AllIterator::Next() {
     assert(Finished());
 }
 
-Entity* EntityManager::AllIterator::GetEntity() {
+BaseEntity* EntityManager::AllIterator::GetEntity() {
     assert(!Finished());
     return _typeIter._current;
 }
 
-void Entity::Init(GameManager& g) {
+void BaseEntity::Init(GameManager& g) {
     _transform = _initTransform;
     _model = g._scene->GetMesh(_modelName);
+    _wpFollower.Init(g, *this, _wpProps);
     InitDerived(g);
 }
-void Entity::Update(GameManager& g, float dt) {
+void BaseEntity::Update(GameManager& g, float dt) {
+    _wpFollower.Update(g, dt, this, _wpProps);
+    UpdateDerived(g, dt);
+    Draw(g, dt);
+}
+void BaseEntity::Draw(GameManager& g, float dt) {
     if (_model != nullptr) {
         Mat4 const& mat = _transform.Mat4Scale();
         g._scene->DrawMesh(_model, mat, _modelColor);
-    }    
+    }
 }
-void Entity::DebugPrint() {
+void BaseEntity::DebugPrint() {
     Vec3 p = _transform.GetPos();
     printf("pos: %f %f %f\n", p._x, p._y, p._z);
 }
-void Entity::Save(serial::Ptree pt) const {    
+void BaseEntity::Save(serial::Ptree pt) const {    
     pt.PutString("name", _name.c_str());
     pt.PutBool("entity_active", _initActive);
     pt.PutBool("pickable", _pickable);
@@ -606,9 +612,10 @@ void Entity::Save(serial::Ptree pt) const {
     serial::SaveInNewChildOf(pt, "model_color_vec4", _modelColor);
     pt.PutInt("flow_section_id", _flowSectionId);
     pt.PutInt("tag", _tag);
+    serial::SaveInNewChildOf(pt, "waypoint_follower", _wpProps);
     SaveDerived(pt);
 }
-void Entity::Load(serial::Ptree pt) {
+void BaseEntity::Load(serial::Ptree pt) {
     _name = pt.GetString("name");
     _initActive = true;
     pt.TryGetBool("entity_active", &_initActive);
@@ -630,9 +637,10 @@ void Entity::Load(serial::Ptree pt) {
     pt.TryGetInt("flow_section_id", &_flowSectionId);
     _tag = 0;
     pt.TryGetInt("tag", &_tag);
+    serial::LoadFromChildOf(pt, "waypoint_follower", _wpProps);
     LoadDerived(pt);
 }
-Entity::ImGuiResult Entity::ImGui(GameManager& g) {
+BaseEntity::ImGuiResult BaseEntity::ImGui(GameManager& g) {
     imgui_util::InputText<128>("Entity name##TopLevel", &_name);
     ImGui::Text("Entity type: %s", ne::gkEntityTypeNames[(int)_id._type]);
     bool activeChanged = ImGui::Checkbox("Entity active", &_initActive);
@@ -686,6 +694,12 @@ Entity::ImGuiResult Entity::ImGui(GameManager& g) {
     ImGui::InputInt("Tag##Entity", &_tag);
     bool modelChanged = imgui_util::InputText<64>("Model name##Entity", &_modelName, /*trueOnReturnOnly=*/true);
     imgui_util::ColorEdit4("Model color##Entity", &_modelColor);
+
+    if (ImGui::CollapsingHeader("Waypoints")) {
+        if (_wpProps.ImGui()) {
+            result = Entity::ImGuiResult::NeedsInit;
+        }
+    }
     
     static int sCurDbgLookAtIx = 0;
     ImGui::Combo("##DbgLookAtOffsetType", &sCurDbgLookAtIx, gDirectionStrings, static_cast<int>(Direction::Count));

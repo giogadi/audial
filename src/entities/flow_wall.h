@@ -1,7 +1,6 @@
 #pragma once
 
 #include "new_entity.h"
-#include "waypoint_follower.h"
 #include "seq_action.h"
 #include "renderer.h"
 #include "random_wander.h"
@@ -10,7 +9,6 @@
 struct FlowWallEntity : public ne::Entity {
     // serialized
     WaypointFollowerMode _moveMode;
-    WaypointFollower _wpFollower;
     RandomWander _randomWander;
     std::vector<std::unique_ptr<SeqAction>> _hitActions;
     std::vector<Vec3> _polygon;

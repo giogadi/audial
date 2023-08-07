@@ -51,12 +51,6 @@ void TypingEnemyEntity::LoadDerived(serial::Ptree pt) {
     _activeRadius = -1.f;
     pt.TryGetFloat("active_radius", &_activeRadius);
 
-    bool hasWaypointFollower = serial::LoadFromChildOf(pt, "waypoint_follower", _waypointFollower);
-    if (!hasWaypointFollower) {
-        // backward compat
-        _waypointFollower.Load(pt);
-    }
-
     SeqAction::LoadActionsFromChildNode(pt, "hit_actions", _hitActions);
     SeqAction::LoadActionsFromChildNode(pt, "off_cooldown_actions", _offCooldownActions);
 }
@@ -72,7 +66,6 @@ void TypingEnemyEntity::SaveDerived(serial::Ptree pt) const {
     pt.PutBool("reset_cooldown_on_any_hit", _resetCooldownOnAnyHit);
     pt.PutBool("init_hittable", _initHittable);
     pt.PutFloat("active_radius", _activeRadius);
-    serial::SaveInNewChildOf(pt, "waypoint_follower", _waypointFollower);
     SeqAction::SaveActionsInChildNode(pt, "hit_actions", _hitActions);
     SeqAction::SaveActionsInChildNode(pt, "off_cooldown_actions", _offCooldownActions);
 }
@@ -106,10 +99,6 @@ ne::BaseEntity::ImGuiResult TypingEnemyEntity::ImGuiDerived(GameManager& g) {
         result = ImGuiResult::NeedsInit;
     }
 
-    ImGui::PushID("wp");
-    _waypointFollower.ImGui();
-    ImGui::PopID();
-
     return result;
 }
 
@@ -123,8 +112,6 @@ void TypingEnemyEntity::InitDerived(GameManager& g) {
         assert(player != nullptr);
         player->RegisterSectionEnemy(_typingSectionId, _id);
     }
-
-    _waypointFollower.Init(g, *this);
 
     for (auto const& pAction : _hitActions) {
         pAction->Init(g);
@@ -153,11 +140,7 @@ namespace {
     }
 }
 
-void TypingEnemyEntity::Update(GameManager& g, float dt) {    
-    if (g._editMode && g._editor->IsEntitySelected(_id)) {
-        _waypointFollower.Update(g, dt, /*editModeSelected=*/true, this);
-    }
-    
+void TypingEnemyEntity::UpdateDerived(GameManager& g, float dt) {      
     if (!IsActive(g)) {
         return;
     }
@@ -165,14 +148,11 @@ void TypingEnemyEntity::Update(GameManager& g, float dt) {
     bool playerWithinRadius = true;
 
     if (!g._editMode) {
-        bool followsWaypoint = _waypointFollower.Update(g, dt, /*editModeSelected=*/false, this);
-        if (!followsWaypoint) {
-            Vec3 p  = _transform.GetPos();
+        Vec3 p  = _transform.GetPos();
     
-            Vec3 dp = _velocity * dt;
-            p += dp;
-            _transform.SetTranslation(p);
-        }
+        Vec3 dp = _velocity * dt;
+        p += dp;
+        _transform.SetTranslation(p);
 
         if (_destroyIfOffscreenLeft) {
             Vec3 p = _transform.GetPos();
