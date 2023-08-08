@@ -22,6 +22,7 @@ add_executable(game
     src/glad/src/glad.cpp
 
     src/util.h
+    src/string_util.h
 
     src/imgui_util.h
     src/imgui_vector_util.h
@@ -32,6 +33,8 @@ add_executable(game
     src/quaternion.cpp src/quaternion.h
     src/transform.cpp src/transform.h
     src/aabb.cpp src/aabb.h
+
+    src/game_manager.h
 
     src/serial.cpp src/serial.h
     src/serial_vector_util.h

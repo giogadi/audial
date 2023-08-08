@@ -4178,6 +4178,7 @@
                 <seq_action>
                     <one_time>true</one_time>
                     <action_type>PlayerSetKillZone</action_type>
+                    <kill_below_view>false</kill_below_view>
                 </seq_action>
                 <seq_action>
                     <one_time>true</one_time>
@@ -4896,7 +4897,7 @@
                 <seq_action>
                     <one_time>true</one_time>
                     <action_type>PlayerSetKillZone</action_type>
-                    <max_z>35</max_z>
+                    <kill_below_view>true</kill_below_view>
                 </seq_action>
             </actions>
             <actions_on_exit/>

@@ -338,10 +338,22 @@ void FlowPlayerEntity::Update(GameManager& g, float dt) {
         }
     }
 
+    bool respawned = false;
     if (_killMaxZ.has_value()) {
         Vec3 p = _transform.Pos();
         if (p._z > _killMaxZ.value()) {
             Respawn(g);
+            respawned = true;
+        }
+    }
+    if (!respawned && _killIfBelowCameraView) {
+        Vec3 p = _transform.Pos();
+        float playerSize = _transform.Scale()._x;
+        float screenX, screenY;
+        geometry::ProjectWorldPointToScreenSpace(p, viewProjTransform, g._windowWidth, g._windowHeight, screenX, screenY);
+        if (screenY > g._windowHeight + 4 * playerSize) {
+            Respawn(g);
+            respawned = true;
         }
     }
 

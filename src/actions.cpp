@@ -449,6 +449,7 @@ void WaypointControlSeqAction::ExecuteDerived(GameManager& g) {
 
 void PlayerSetKillZoneSeqAction::LoadDerived(LoadInputs const& loadInputs, std::istream& input) {
     _maxZ.reset();
+    _killIfBelowCameraView = false;
 
     std::string token, key, value;
     while (!input.eof()) {
@@ -468,6 +469,8 @@ void PlayerSetKillZoneSeqAction::LoadDerived(LoadInputs const& loadInputs, std::
             if (!_maxZ.has_value()) {
                 printf("PlayerSetKillZoneSeqAction::Load: could not get max_z value from \"%s\"\n", value.c_str());
             }
+        } else if (key == "kill_below_view") {
+            _killIfBelowCameraView = true;
         }
         else {
             printf("PlayerSetKillZoneSeqAction::Load: unknown key \"%s\"\n", key.c_str());
@@ -481,12 +484,16 @@ void PlayerSetKillZoneSeqAction::LoadDerived(serial::Ptree pt) {
     if (pt.TryGetFloat("max_z", &maxZ)) {
         _maxZ = maxZ;
     }
+
+    _killIfBelowCameraView = false;
+    pt.TryGetBool("kill_below_view", &_killIfBelowCameraView);    
 }
 
 void PlayerSetKillZoneSeqAction::SaveDerived(serial::Ptree pt) const {
     if (_maxZ.has_value()) {
         pt.PutFloat("max_z", _maxZ.value());
     }
+    pt.PutBool("kill_below_view", _killIfBelowCameraView);    
 }
 
 bool PlayerSetKillZoneSeqAction::ImGui() {
@@ -503,12 +510,15 @@ bool PlayerSetKillZoneSeqAction::ImGui() {
     else {
         _maxZ = std::nullopt;
     }
+
+    ImGui::Checkbox("Kill below camera view", &_killIfBelowCameraView);
     return false;
 }
 
 void PlayerSetKillZoneSeqAction::ExecuteDerived(GameManager& g) {
     FlowPlayerEntity* pPlayer = static_cast<FlowPlayerEntity*>(g._neEntityManager->GetFirstEntityOfType(ne::EntityType::FlowPlayer));
     pPlayer->_killMaxZ = _maxZ;
+    pPlayer->_killIfBelowCameraView = _killIfBelowCameraView;
 }
 
 void SetNewFlowSectionSeqAction::LoadDerived(LoadInputs const& loadInputs, std::istream& input) {
