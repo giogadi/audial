@@ -199,6 +199,9 @@ void SetAllStepsSeqAction::InitDerived(GameManager& g) {
 }
 
 void SetAllStepsSeqAction::ExecuteDerived(GameManager& g) {
+    if (g._editMode) {
+        return;
+    }
     StepSequencerEntity* seq = static_cast<StepSequencerEntity*>(g._neEntityManager->GetEntity(_seqId));
     if (seq) {
         if (_velOnly) {

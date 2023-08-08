@@ -51,7 +51,7 @@ struct SeqAction {
     static std::unique_ptr<SeqAction> LoadAction(LoadInputs const& loadInputs, std::istream& input);
 
     virtual bool ImGui() { return false; };
-    static bool ImGui(char const* label, std::vector<std::unique_ptr<SeqAction>>& actions);
+    static bool ImGui(char const* label, std::vector<std::unique_ptr<SeqAction>>& actions);    
 
     void Save(serial::Ptree pt) const;
     static void SaveActionsInChildNode(serial::Ptree pt, char const* childName, std::vector<std::unique_ptr<SeqAction>> const& actions);
@@ -59,6 +59,8 @@ struct SeqAction {
     static std::unique_ptr<SeqAction> New(SeqActionType actionType);
     static std::unique_ptr<SeqAction> Load(serial::Ptree pt);
     static bool LoadActionsFromChildNode(serial::Ptree pt, char const* childName, std::vector<std::unique_ptr<SeqAction>>& actions);
+
+    static std::unique_ptr<SeqAction> Clone(SeqAction const& action);
     
 protected:
     virtual void LoadDerived(

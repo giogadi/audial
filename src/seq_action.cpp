@@ -86,10 +86,36 @@ bool SeqAction::LoadActionsFromChildNode(serial::Ptree pt, char const* childName
     return true;
 }
 
+namespace {
+    std::vector<std::unique_ptr<SeqAction>> sClipboardActions;
+}
+
 bool SeqAction::ImGui(char const* label, std::vector<std::unique_ptr<SeqAction>>& actions) {
     bool changed = false;
     if (ImGui::CollapsingHeader(label)) {
         ImGui::PushID(label);
+        if (ImGui::Button("Clear Actions")) {
+            actions.clear();
+            changed = true;
+        }
+        ImGui::SameLine();
+        if (ImGui::Button("Copy actions")) {
+            sClipboardActions.clear();
+            sClipboardActions.reserve(actions.size());
+            for (auto const& pAction : actions) {
+                auto clone = SeqAction::Clone(*pAction);
+                sClipboardActions.push_back(std::move(clone));
+            }
+        }
+        ImGui::SameLine();
+        if (ImGui::Button("Paste actions")) {
+            actions.reserve(sClipboardActions.size());
+            for (auto const& pAction : sClipboardActions) {
+                auto clone = SeqAction::Clone(*pAction);
+                actions.push_back(std::move(clone));
+            }
+            changed = true;
+        }
         
         static SeqActionType actionType = SeqActionType::SpawnAutomator;
         SeqActionTypeImGui("Action type", &actionType);
@@ -275,4 +301,48 @@ void SeqAction::LoadAndInitActions(GameManager& g, std::istream& input, std::vec
                      [](BeatTimeAction const& lhs, BeatTimeAction const& rhs) {
                          return lhs._beatTime < rhs._beatTime;
                      });
+}
+
+std::unique_ptr<SeqAction> SeqAction::Clone(SeqAction const& action) {
+    // Slow and simple
+    serial::Ptree pt = serial::Ptree::MakeNew();
+    action.Save(pt);
+    std::unique_ptr<SeqAction> copy = SeqAction::Load(pt);
+    pt.DeleteData();
+    return copy;
+
+    // Faster, more maintenance
+    /*switch (action.Type()) {
+    case SeqActionType::SpawnAutomator: return std::make_unique<SpawnAutomatorSeqAction>(static_cast<SpawnAutomatorSeqAction const&>(action));
+    case SeqActionType::RemoveEntity: return std::make_unique<RemoveEntitySeqAction>(static_cast<RemoveEntitySeqAction const&>(action));
+    case SeqActionType::ChangeStepSequencer: return std::make_unique<ChangeStepSequencerSeqAction>(static_cast<ChangeStepSequencerSeqAction const&>(action));
+    case SeqActionType::SetAllSteps: return std::make_unique<SetAllStepsSeqAction>(static_cast<SetAllStepsSeqAction const&>(action));
+    case SeqActionType::SetStepSequence: return std::make_unique<SetStepSequenceSeqAction>(static_cast<SetStepSequenceSeqAction const&>(action));
+    case SeqActionType::SetStepSequencerMute: return std::make_unique<SetStepSequencerMuteSeqAction>(static_cast<SetStepSequencerMuteSeqAction const&>(action));
+    case SeqActionType::NoteOnOff: return std::make_unique<NoteOnOffSeqAction>(static_cast<NoteOnOffSeqAction const&>(action));
+    case SeqActionType::BeatTimeEvent: return std::make_unique<BeatTimeEventSeqAction>(static_cast<BeatTimeEventSeqAction const&>(action));
+    case SeqActionType::WaypointControl: return std::make_unique<WaypointControlSeqAction>(static_cast<WaypointControlSeqAction const&>(action));
+    case SeqActionType::PlayerSetKillZone: return std::make_unique<PlayerSetKillZoneSeqAction>(static_cast<PlayerSetKillZoneSeqAction const&>(action));
+    case SeqActionType::PlayerSetSpawnPoint: return std::make_unique<PlayerSetSpawnPointSeqAction>(static_cast<PlayerSetSpawnPointSeqAction const&>(action));
+    case SeqActionType::SetNewFlowSection: return std::make_unique<SetNewFlowSectionSeqAction>(static_cast<SetNewFlowSectionSeqAction const&>(action));
+    case SeqActionType::AddToIntVariable: return std::make_unique<AddToIntVariableSeqAction>(static_cast<AddToIntVariableSeqAction const&>(action));
+    case SeqActionType::CameraControl: return std::make_unique<CameraControlSeqAction>(static_cast<CameraControlSeqAction const&>(action));
+    case SeqActionType::SpawnEnemy: {
+        SpawnEnemySeqAction const& src = static_cast<SpawnEnemySeqAction const&>(action);
+        src;
+        std::unique_ptr<SpawnEnemySeqAction> copy = std::make_unique<SpawnEnemySeqAction>();       
+        copy->_enemy.Load();
+        return std::make_unique<SpawnEnemySeqAction>(static_cast<SpawnEnemySeqAction const&>(action));
+    }
+    case SeqActionType::SetEntityActive: return std::make_unique<SetEntityActiveSeqAction>(static_cast<SetEntityActiveSeqAction const&>(action));
+    case SeqActionType::ChangeStepSeqMaxVoices: return std::make_unique<ChangeStepSeqMaxVoicesSeqAction>(static_cast<ChangeStepSeqMaxVoicesSeqAction const&>(action));
+    case SeqActionType::ChangePatch: return std::make_unique<ChangePatchSeqAction>(static_cast<ChangePatchSeqAction const&>(action));
+    case SeqActionType::VfxPulse: return std::make_unique<VfxPulseSeqAction>(static_cast<VfxPulseSeqAction const&>(action));
+    case SeqActionType::Trigger: return std::make_unique<TriggerSeqAction>(static_cast<TriggerSeqAction const&>(action));
+    case SeqActionType::SetEnemyHittable: return std::make_unique<SetEnemyHittableSeqAction>(static_cast<SetEnemyHittableSeqAction const&>(action));
+    case SeqActionType::Respawn: return std::make_unique<RespawnSeqAction>(static_cast<RespawnSeqAction const&>(action));
+    case SeqActionType::Count: break;
+    }
+    assert(false);
+    return nullptr;*/
 }
