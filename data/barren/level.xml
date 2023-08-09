@@ -13560,24 +13560,6 @@
             <hit_actions>
                 <seq_action>
                     <one_time>true</one_time>
-                    <action_type>BeatTimeEvent</action_type>
-                    <quantize_denom>0</quantize_denom>
-                    <beat_time_event>
-                        <event_type>AllNotesOff</event_type>
-                        <channel>2</channel>
-                        <tick_time>0</tick_time>
-                        <beat_time>0</beat_time>
-                    </beat_time_event>
-                </seq_action>
-                <seq_action>
-                    <one_time>true</one_time>
-                    <action_type>SetAllSteps</action_type>
-                    <seq_name>bass_seq</seq_name>
-                    <step_str>mC1:0.5</step_str>
-                    <vel_only>false</vel_only>
-                </seq_action>
-                <seq_action>
-                    <one_time>true</one_time>
                     <action_type>SetAllSteps</action_type>
                     <seq_name>r7_pad_step_seq</seq_name>
                     <step_str>-1:1</step_str>
@@ -13771,24 +13753,6 @@
             <init_hittable>true</init_hittable>
             <active_radius>-1</active_radius>
             <hit_actions>
-                <seq_action>
-                    <one_time>true</one_time>
-                    <action_type>BeatTimeEvent</action_type>
-                    <quantize_denom>0</quantize_denom>
-                    <beat_time_event>
-                        <event_type>AllNotesOff</event_type>
-                        <channel>2</channel>
-                        <tick_time>0</tick_time>
-                        <beat_time>0</beat_time>
-                    </beat_time_event>
-                </seq_action>
-                <seq_action>
-                    <one_time>true</one_time>
-                    <action_type>SetAllSteps</action_type>
-                    <seq_name>bass_seq</seq_name>
-                    <step_str>mF1:0.5</step_str>
-                    <vel_only>false</vel_only>
-                </seq_action>
                 <seq_action>
                     <one_time>true</one_time>
                     <action_type>SetAllSteps</action_type>
@@ -14576,24 +14540,6 @@
             <init_hittable>true</init_hittable>
             <active_radius>-1</active_radius>
             <hit_actions>
-                <seq_action>
-                    <one_time>true</one_time>
-                    <action_type>BeatTimeEvent</action_type>
-                    <quantize_denom>0</quantize_denom>
-                    <beat_time_event>
-                        <event_type>AllNotesOff</event_type>
-                        <channel>2</channel>
-                        <tick_time>0</tick_time>
-                        <beat_time>0</beat_time>
-                    </beat_time_event>
-                </seq_action>
-                <seq_action>
-                    <one_time>true</one_time>
-                    <action_type>SetAllSteps</action_type>
-                    <seq_name>bass_seq</seq_name>
-                    <step_str>mF1:0.5</step_str>
-                    <vel_only>false</vel_only>
-                </seq_action>
                 <seq_action>
                     <one_time>true</one_time>
                     <action_type>SetAllSteps</action_type>

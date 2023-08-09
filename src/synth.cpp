@@ -331,14 +331,22 @@ void ProcessVoice(Voice& voice, int const sampleRate, float pitchLFOValue,
     }
 }
 
+namespace {
+    int ADSRPhaseScore(ADSRPhase phase) {
+        switch (phase) {
+        case ADSRPhase::Closed: return 4;
+        case ADSRPhase::Attack: return 0;
+        case ADSRPhase::Decay: return 1;
+        case ADSRPhase::Sustain: return 2;
+        case ADSRPhase::Release: return 3;
+        }
+        return 0;
+    }
+}
+
 Voice* FindVoiceForNoteOn(StateData& state, int const midiNote) {
-    // First, look for a voice already playing the note we want to play and
-    // use that. If no such voice, look for any voices with closed
-    // envelopes. If no such voice, look for voice that started closing the
-    // longest time ago. If no such voice, then we don't play this note,
-    // sorry bro
-    int oldestClosingIx = -1;
-    int oldestClosingAge = -1;
+    int bestIx = -1;
+    std::pair<int, int> bestPhaseAgePair = std::make_pair(-1, -1);
     int numVoices = 1;
     if (!state.patch.Get(SynthParamType::Mono)) {
         numVoices = state.voices.size();
@@ -348,19 +356,53 @@ Voice* FindVoiceForNoteOn(StateData& state, int const midiNote) {
         if (v.currentMidiNote == midiNote) {
             return &v;
         }
-        if (v.ampEnvState.phase == ADSRPhase::Closed) {
-            oldestClosingIx = i;
-            oldestClosingAge = std::numeric_limits<int>::max();
-        } else if (v.ampEnvState.phase == ADSRPhase::Release && v.ampEnvState.ticksSincePhaseStart >= oldestClosingAge/*v.ampEnvTicksSinceNoteOff >= oldestClosingAge*/) {
-            oldestClosingIx = i;
-            oldestClosingAge = v.ampEnvState.ticksSincePhaseStart;
+        int thisPhaseScore = ADSRPhaseScore(v.ampEnvState.phase);
+        if (thisPhaseScore > bestPhaseAgePair.first) {
+            bestIx = i;
+            bestPhaseAgePair = std::make_pair(thisPhaseScore, v.ampEnvState.ticksSincePhaseStart);
+        } else if (thisPhaseScore == bestPhaseAgePair.first) {
+            if (v.ampEnvState.ticksSincePhaseStart > bestPhaseAgePair.second) {
+                bestIx = i;
+                bestPhaseAgePair = std::make_pair(thisPhaseScore, v.ampEnvState.ticksSincePhaseStart);
+            }
         }
     }
-    if (oldestClosingIx >= 0) {
-        return &state.voices[oldestClosingIx];
+    if (bestIx >= 0) {
+        return &state.voices[bestIx];
     }
     return nullptr;
 }
+
+//Voice* FindVoiceForNoteOn(StateData& state, int const midiNote) {
+//    // First, look for a voice already playing the note we want to play and
+//    // use that. If no such voice, look for any voices with closed
+//    // envelopes. If no such voice, look for voice that started closing the
+//    // longest time ago. If no such voice, then we don't play this note,
+//    // sorry bro
+//    int oldestClosingIx = -1;
+//    int oldestClosingAge = -1;
+//    int numVoices = 1;
+//    if (!state.patch.Get(SynthParamType::Mono)) {
+//        numVoices = state.voices.size();
+//    }
+//    for (int i = 0; i < numVoices; ++i) {
+//        Voice& v = state.voices[i];
+//        if (v.currentMidiNote == midiNote) {
+//            return &v;
+//        }
+//        if (v.ampEnvState.phase == ADSRPhase::Closed) {
+//            oldestClosingIx = i;
+//            oldestClosingAge = std::numeric_limits<int>::max();
+//        } else if (v.ampEnvState.phase == ADSRPhase::Release && v.ampEnvState.ticksSincePhaseStart >= oldestClosingAge/*v.ampEnvTicksSinceNoteOff >= oldestClosingAge*/) {
+//            oldestClosingIx = i;
+//            oldestClosingAge = v.ampEnvState.ticksSincePhaseStart;
+//        }
+//    }
+//    if (oldestClosingIx >= 0) {
+//        return &state.voices[oldestClosingIx];
+//    }
+//    return nullptr;
+//}
 
 Voice* FindVoiceForNoteOff(StateData& state, int midiNote, int noteOffId) {
     // NOTE: we should be able to return as soon as we find a voice matching
@@ -418,10 +460,10 @@ void Process(StateData* state, boost::circular_buffer<audio::Event> const& pendi
                     v->currentMidiNote = e.midiNote;
                     v->velocity = e.velocity;
                     v->noteOnId = e.noteOnId;
-                    if (v->ampEnvState.phase != synth::ADSRPhase::Closed) {
+                    /*if (v->ampEnvState.phase != synth::ADSRPhase::Closed) {
                         v->ampEnvState.ticksSincePhaseStart = (unsigned long)(v->ampEnvState.currentValue * patch.Get(SynthParamType::AmpEnvAttack) * sampleRate);
                     }
-                    else {
+                    else*/ {
                         v->ampEnvState.ticksSincePhaseStart = 0;
                     }
                     v->ampEnvState.phase = synth::ADSRPhase::Attack;
