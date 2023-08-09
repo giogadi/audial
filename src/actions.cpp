@@ -402,7 +402,7 @@ bool BeatTimeEventSeqAction::ImGui() {
 
 void BeatTimeEventSeqAction::ExecuteDerived(GameManager& g) {
     audio::Event e;
-    if (_quantizeDenom >= 0) {
+    if (_quantizeDenom > 0) {
         e = GetEventAtBeatOffsetFromNextDenom(_quantizeDenom, _b_e, *g._beatClock, /*slack=*/0.0625);
     }
     else {
