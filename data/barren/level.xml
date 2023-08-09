@@ -12165,9 +12165,9 @@
             <pickable>true</pickable>
             <transform>
                 <pos>
-                    <x>105.770493</x>
+                    <x>106.529564</x>
                     <y>0</y>
-                    <z>28.8483505</z>
+                    <z>28.8153477</z>
                 </pos>
                 <quat>
                     <x>0</x>
@@ -12227,9 +12227,9 @@
             <pickable>true</pickable>
             <transform>
                 <pos>
-                    <x>105.737503</x>
+                    <x>106.518585</x>
                     <y>0</y>
-                    <z>27.935257</z>
+                    <z>27.7812405</z>
                 </pos>
                 <quat>
                     <x>0</x>
@@ -12289,9 +12289,9 @@
             <pickable>true</pickable>
             <transform>
                 <pos>
-                    <x>105.757751</x>
+                    <x>106.51683</x>
                     <y>0</y>
-                    <z>26.9972954</z>
+                    <z>26.7332687</z>
                 </pos>
                 <quat>
                     <x>0</x>
@@ -12369,9 +12369,9 @@
             </transform>
             <model_name>cube</model_name>
             <model_color_vec4>
-                <x>0.992156863</x>
-                <y>0.698039234</y>
-                <z>0.0823529437</z>
+                <x>0.333333343</x>
+                <y>0.78039217</y>
+                <z>0.894117653</z>
                 <w>1</w>
             </model_color_vec4>
             <flow_section_id>5</flow_section_id>
@@ -12402,7 +12402,7 @@
                     <seqName>bass_seq</seqName>
                     <velOnly>false</velOnly>
                     <temporary>true</temporary>
-                    <stepStr> mF2:1</stepStr>
+                    <stepStr> mE3:1</stepStr>
                 </seq_action>
             </hit_actions>
             <off_cooldown_actions/>
@@ -12431,9 +12431,9 @@
             </transform>
             <model_name>cube</model_name>
             <model_color_vec4>
-                <x>0.333333284</x>
-                <y>0.778662026</y>
-                <z>0.894117653</z>
+                <x>0.400000006</x>
+                <y>0.866666675</y>
+                <z>0.145098045</z>
                 <w>1</w>
             </model_color_vec4>
             <flow_section_id>5</flow_section_id>
@@ -12464,7 +12464,7 @@
                     <seqName>bass_seq</seqName>
                     <velOnly>false</velOnly>
                     <temporary>true</temporary>
-                    <stepStr> mE2:1</stepStr>
+                    <stepStr> mC3:1</stepStr>
                 </seq_action>
             </hit_actions>
             <off_cooldown_actions/>
@@ -12647,9 +12647,9 @@
             </transform>
             <model_name>cube</model_name>
             <model_color_vec4>
-                <x>0.400000006</x>
-                <y>0.866666675</y>
-                <z>0.145098045</z>
+                <x>1</x>
+                <y>0</y>
+                <z>0</z>
                 <w>1</w>
             </model_color_vec4>
             <flow_section_id>5</flow_section_id>
@@ -12680,7 +12680,7 @@
                     <seqName>bass_seq</seqName>
                     <velOnly>false</velOnly>
                     <temporary>true</temporary>
-                    <stepStr> mC2:1</stepStr>
+                    <stepStr> mG2:1</stepStr>
                 </seq_action>
             </hit_actions>
             <off_cooldown_actions/>
@@ -12742,7 +12742,7 @@
                     <seqName>bass_seq</seqName>
                     <velOnly>false</velOnly>
                     <temporary>true</temporary>
-                    <stepStr> mB1-:1</stepStr>
+                    <stepStr> mB2-:1</stepStr>
                 </seq_action>
             </hit_actions>
             <off_cooldown_actions/>
@@ -12771,9 +12771,9 @@
             </transform>
             <model_name>cube</model_name>
             <model_color_vec4>
-                <x>0.333333343</x>
-                <y>0.78039217</y>
-                <z>0.894117653</z>
+                <x>0.400000006</x>
+                <y>0.866666675</y>
+                <z>0.145098045</z>
                 <w>1</w>
             </model_color_vec4>
             <flow_section_id>5</flow_section_id>
@@ -12804,7 +12804,7 @@
                     <seqName>bass_seq</seqName>
                     <velOnly>false</velOnly>
                     <temporary>true</temporary>
-                    <stepStr> mE2:1</stepStr>
+                    <stepStr> mC3:1</stepStr>
                 </seq_action>
             </hit_actions>
             <off_cooldown_actions/>
@@ -12833,9 +12833,9 @@
             </transform>
             <model_name>cube</model_name>
             <model_color_vec4>
-                <x>0.882352948</x>
-                <y>0</y>
-                <z>1</z>
+                <x>0.992156863</x>
+                <y>0.698039234</y>
+                <z>0.0823529437</z>
                 <w>1</w>
             </model_color_vec4>
             <flow_section_id>5</flow_section_id>
@@ -12866,7 +12866,7 @@
                     <seqName>bass_seq</seqName>
                     <velOnly>false</velOnly>
                     <temporary>true</temporary>
-                    <stepStr> mB1-:1</stepStr>
+                    <stepStr> mF2:1</stepStr>
                 </seq_action>
             </hit_actions>
             <off_cooldown_actions/>
@@ -12895,9 +12895,9 @@
             </transform>
             <model_name>cube</model_name>
             <model_color_vec4>
-                <x>0.400000006</x>
-                <y>0.866666675</y>
-                <z>0.145098045</z>
+                <x>0.333333343</x>
+                <y>0.78039217</y>
+                <z>0.894117653</z>
                 <w>1</w>
             </model_color_vec4>
             <flow_section_id>5</flow_section_id>
@@ -12928,7 +12928,7 @@
                     <seqName>bass_seq</seqName>
                     <velOnly>false</velOnly>
                     <temporary>true</temporary>
-                    <stepStr> mC2:1</stepStr>
+                    <stepStr> mE2-:1</stepStr>
                 </seq_action>
             </hit_actions>
             <off_cooldown_actions/>
@@ -13301,9 +13301,9 @@
             <pickable>true</pickable>
             <transform>
                 <pos>
-                    <x>99.7088852</x>
+                    <x>97.6626816</x>
                     <y>0</y>
-                    <z>26.9671631</z>
+                    <z>25.8010464</z>
                 </pos>
                 <quat>
                     <x>0</x>
@@ -13421,9 +13421,9 @@
             <pickable>true</pickable>
             <transform>
                 <pos>
-                    <x>99.7220688</x>
+                    <x>98.412941</x>
                     <y>-10</y>
-                    <z>26.232111</z>
+                    <z>25.7810669</z>
                 </pos>
                 <quat>
                     <x>0</x>
@@ -13432,9 +13432,9 @@
                     <w>1</w>
                 </quat>
                 <scale>
-                    <x>0.100000001</x>
+                    <x>1</x>
                     <y>1</y>
-                    <z>1</z>
+                    <z>0.100000001</z>
                 </scale>
             </transform>
             <model_name>cube</model_name>
@@ -13760,7 +13760,7 @@
                 <waypoints/>
                 <follow_entity_name/>
             </waypoint_follower>
-            <text>p</text>
+            <text>q</text>
             <type_kill>true</type_kill>
             <all_actions_on_hit>true</all_actions_on_hit>
             <flow_polarity>false</flow_polarity>
@@ -13882,5 +13882,996 @@
                 <follow_entity_name/>
             </waypoint_follower>
         </Base>
+        <FlowWall>
+            <name>r7_platform_wall3</name>
+            <entity_active>true</entity_active>
+            <pickable>true</pickable>
+            <transform>
+                <pos>
+                    <x>102.206062</x>
+                    <y>0</y>
+                    <z>20.259058</z>
+                </pos>
+                <quat>
+                    <x>0</x>
+                    <y>0</y>
+                    <z>0</z>
+                    <w>1</w>
+                </quat>
+                <scale>
+                    <x>1</x>
+                    <y>1</y>
+                    <z>10</z>
+                </scale>
+            </transform>
+            <model_name>cube</model_name>
+            <model_color_vec4>
+                <x>0.800000012</x>
+                <y>0.800000012</y>
+                <z>0.800000012</z>
+                <w>1</w>
+            </model_color_vec4>
+            <flow_section_id>5</flow_section_id>
+            <tag>0</tag>
+            <waypoint_follower>
+                <mode>Waypoint</mode>
+                <local_to_entity>false</local_to_entity>
+                <waypoint_auto_start>false</waypoint_auto_start>
+                <loop_waypoints>false</loop_waypoints>
+                <start_time>3</start_time>
+                <waypoints/>
+                <follow_entity_name/>
+            </waypoint_follower>
+            <can_hit>true</can_hit>
+            <hp>-1</hp>
+            <move_mode>Waypoints</move_mode>
+            <rot_vel>0</rot_vel>
+            <polygon/>
+            <hit_actions/>
+        </FlowWall>
+        <FlowWall>
+            <name>r7_platform_wall4</name>
+            <entity_active>true</entity_active>
+            <pickable>true</pickable>
+            <transform>
+                <pos>
+                    <x>102.195061</x>
+                    <y>0</y>
+                    <z>31.304163</z>
+                </pos>
+                <quat>
+                    <x>0</x>
+                    <y>0</y>
+                    <z>0</z>
+                    <w>1</w>
+                </quat>
+                <scale>
+                    <x>1</x>
+                    <y>1</y>
+                    <z>10</z>
+                </scale>
+            </transform>
+            <model_name>cube</model_name>
+            <model_color_vec4>
+                <x>0.800000012</x>
+                <y>0.800000012</y>
+                <z>0.800000012</z>
+                <w>1</w>
+            </model_color_vec4>
+            <flow_section_id>5</flow_section_id>
+            <tag>0</tag>
+            <waypoint_follower>
+                <mode>Waypoint</mode>
+                <local_to_entity>false</local_to_entity>
+                <waypoint_auto_start>false</waypoint_auto_start>
+                <loop_waypoints>false</loop_waypoints>
+                <start_time>3</start_time>
+                <waypoints/>
+                <follow_entity_name/>
+            </waypoint_follower>
+            <can_hit>true</can_hit>
+            <hp>-1</hp>
+            <move_mode>Waypoints</move_mode>
+            <rot_vel>0</rot_vel>
+            <polygon/>
+            <hit_actions/>
+        </FlowWall>
+        <FlowWall>
+            <name>r7_platform_wall5</name>
+            <entity_active>true</entity_active>
+            <pickable>true</pickable>
+            <transform>
+                <pos>
+                    <x>108.036644</x>
+                    <y>0</y>
+                    <z>24.3954716</z>
+                </pos>
+                <quat>
+                    <x>0</x>
+                    <y>0</y>
+                    <z>0</z>
+                    <w>1</w>
+                </quat>
+                <scale>
+                    <x>1</x>
+                    <y>1</y>
+                    <z>10</z>
+                </scale>
+            </transform>
+            <model_name>cube</model_name>
+            <model_color_vec4>
+                <x>0.800000012</x>
+                <y>0.800000012</y>
+                <z>0.800000012</z>
+                <w>1</w>
+            </model_color_vec4>
+            <flow_section_id>5</flow_section_id>
+            <tag>0</tag>
+            <waypoint_follower>
+                <mode>Waypoint</mode>
+                <local_to_entity>false</local_to_entity>
+                <waypoint_auto_start>false</waypoint_auto_start>
+                <loop_waypoints>false</loop_waypoints>
+                <start_time>3</start_time>
+                <waypoints/>
+                <follow_entity_name/>
+            </waypoint_follower>
+            <can_hit>true</can_hit>
+            <hp>-1</hp>
+            <move_mode>Waypoints</move_mode>
+            <rot_vel>0</rot_vel>
+            <polygon/>
+            <hit_actions/>
+        </FlowWall>
+        <FlowWall>
+            <name>r7_platform_wall6</name>
+            <entity_active>true</entity_active>
+            <pickable>true</pickable>
+            <transform>
+                <pos>
+                    <x>108.036644</x>
+                    <y>0</y>
+                    <z>35.4075775</z>
+                </pos>
+                <quat>
+                    <x>0</x>
+                    <y>0</y>
+                    <z>0</z>
+                    <w>1</w>
+                </quat>
+                <scale>
+                    <x>1</x>
+                    <y>1</y>
+                    <z>10</z>
+                </scale>
+            </transform>
+            <model_name>cube</model_name>
+            <model_color_vec4>
+                <x>0.800000012</x>
+                <y>0.800000012</y>
+                <z>0.800000012</z>
+                <w>1</w>
+            </model_color_vec4>
+            <flow_section_id>5</flow_section_id>
+            <tag>0</tag>
+            <waypoint_follower>
+                <mode>Waypoint</mode>
+                <local_to_entity>false</local_to_entity>
+                <waypoint_auto_start>false</waypoint_auto_start>
+                <loop_waypoints>false</loop_waypoints>
+                <start_time>3</start_time>
+                <waypoints/>
+                <follow_entity_name/>
+            </waypoint_follower>
+            <can_hit>true</can_hit>
+            <hp>-1</hp>
+            <move_mode>Waypoints</move_mode>
+            <rot_vel>0</rot_vel>
+            <polygon/>
+            <hit_actions/>
+        </FlowWall>
+        <FlowWall>
+            <name>r7_platform_wall7</name>
+            <entity_active>true</entity_active>
+            <pickable>true</pickable>
+            <transform>
+                <pos>
+                    <x>114.241264</x>
+                    <y>0</y>
+                    <z>27.9048214</z>
+                </pos>
+                <quat>
+                    <x>0</x>
+                    <y>0</y>
+                    <z>0</z>
+                    <w>1</w>
+                </quat>
+                <scale>
+                    <x>1</x>
+                    <y>1</y>
+                    <z>10</z>
+                </scale>
+            </transform>
+            <model_name>cube</model_name>
+            <model_color_vec4>
+                <x>0.800000012</x>
+                <y>0.800000012</y>
+                <z>0.800000012</z>
+                <w>1</w>
+            </model_color_vec4>
+            <flow_section_id>5</flow_section_id>
+            <tag>0</tag>
+            <waypoint_follower>
+                <mode>Waypoint</mode>
+                <local_to_entity>false</local_to_entity>
+                <waypoint_auto_start>false</waypoint_auto_start>
+                <loop_waypoints>false</loop_waypoints>
+                <start_time>3</start_time>
+                <waypoints/>
+                <follow_entity_name/>
+            </waypoint_follower>
+            <can_hit>true</can_hit>
+            <hp>-1</hp>
+            <move_mode>Waypoints</move_mode>
+            <rot_vel>0</rot_vel>
+            <polygon/>
+            <hit_actions/>
+        </FlowWall>
+        <FlowWall>
+            <name>r7_platform_wall8</name>
+            <entity_active>true</entity_active>
+            <pickable>true</pickable>
+            <transform>
+                <pos>
+                    <x>114.230255</x>
+                    <y>0</y>
+                    <z>38.9169235</z>
+                </pos>
+                <quat>
+                    <x>0</x>
+                    <y>0</y>
+                    <z>0</z>
+                    <w>1</w>
+                </quat>
+                <scale>
+                    <x>1</x>
+                    <y>1</y>
+                    <z>10</z>
+                </scale>
+            </transform>
+            <model_name>cube</model_name>
+            <model_color_vec4>
+                <x>0.800000012</x>
+                <y>0.800000012</y>
+                <z>0.800000012</z>
+                <w>1</w>
+            </model_color_vec4>
+            <flow_section_id>5</flow_section_id>
+            <tag>0</tag>
+            <waypoint_follower>
+                <mode>Waypoint</mode>
+                <local_to_entity>false</local_to_entity>
+                <waypoint_auto_start>false</waypoint_auto_start>
+                <loop_waypoints>false</loop_waypoints>
+                <start_time>3</start_time>
+                <waypoints/>
+                <follow_entity_name/>
+            </waypoint_follower>
+            <can_hit>true</can_hit>
+            <hp>-1</hp>
+            <move_mode>Waypoints</move_mode>
+            <rot_vel>0</rot_vel>
+            <polygon/>
+            <hit_actions/>
+        </FlowWall>
+        <TypingEnemy>
+            <name>r7_g</name>
+            <entity_active>true</entity_active>
+            <pickable>true</pickable>
+            <transform>
+                <pos>
+                    <x>105.339699</x>
+                    <y>0</y>
+                    <z>26.7332649</z>
+                </pos>
+                <quat>
+                    <x>0</x>
+                    <y>0</y>
+                    <z>0</z>
+                    <w>1</w>
+                </quat>
+                <scale>
+                    <x>0.5</x>
+                    <y>0.5</y>
+                    <z>0.5</z>
+                </scale>
+            </transform>
+            <model_name>cube</model_name>
+            <model_color_vec4>
+                <x>0.882352948</x>
+                <y>0</y>
+                <z>1</z>
+                <w>1</w>
+            </model_color_vec4>
+            <flow_section_id>5</flow_section_id>
+            <tag>0</tag>
+            <waypoint_follower>
+                <mode>Waypoint</mode>
+                <local_to_entity>true</local_to_entity>
+                <waypoint_auto_start>false</waypoint_auto_start>
+                <loop_waypoints>false</loop_waypoints>
+                <start_time>3</start_time>
+                <waypoints/>
+                <follow_entity_name/>
+            </waypoint_follower>
+            <text>g</text>
+            <type_kill>false</type_kill>
+            <all_actions_on_hit>true</all_actions_on_hit>
+            <flow_polarity>false</flow_polarity>
+            <flow_cooldown>500</flow_cooldown>
+            <show_beats_left>false</show_beats_left>
+            <cooldown_quantize_denom>0</cooldown_quantize_denom>
+            <reset_cooldown_on_any_hit>true</reset_cooldown_on_any_hit>
+            <init_hittable>true</init_hittable>
+            <active_radius>-1</active_radius>
+            <hit_actions>
+                <seq_action>
+                    <one_time>false</one_time>
+                    <action_type>ChangeStepSequencer</action_type>
+                    <seqName>bass_seq</seqName>
+                    <velOnly>false</velOnly>
+                    <temporary>true</temporary>
+                    <stepStr> mB2-:1</stepStr>
+                </seq_action>
+            </hit_actions>
+            <off_cooldown_actions/>
+        </TypingEnemy>
+        <TypingEnemy>
+            <name>r7_u</name>
+            <entity_active>true</entity_active>
+            <pickable>true</pickable>
+            <transform>
+                <pos>
+                    <x>105.374458</x>
+                    <y>0</y>
+                    <z>28.8483467</z>
+                </pos>
+                <quat>
+                    <x>0</x>
+                    <y>0</y>
+                    <z>0</z>
+                    <w>1</w>
+                </quat>
+                <scale>
+                    <x>0.5</x>
+                    <y>0.5</y>
+                    <z>0.5</z>
+                </scale>
+            </transform>
+            <model_name>cube</model_name>
+            <model_color_vec4>
+                <x>0.399798155</x>
+                <y>0.867647052</y>
+                <z>0.144607857</z>
+                <w>1</w>
+            </model_color_vec4>
+            <flow_section_id>5</flow_section_id>
+            <tag>0</tag>
+            <waypoint_follower>
+                <mode>Waypoint</mode>
+                <local_to_entity>true</local_to_entity>
+                <waypoint_auto_start>false</waypoint_auto_start>
+                <loop_waypoints>false</loop_waypoints>
+                <start_time>3</start_time>
+                <waypoints/>
+                <follow_entity_name/>
+            </waypoint_follower>
+            <text>u</text>
+            <type_kill>false</type_kill>
+            <all_actions_on_hit>true</all_actions_on_hit>
+            <flow_polarity>false</flow_polarity>
+            <flow_cooldown>500</flow_cooldown>
+            <show_beats_left>false</show_beats_left>
+            <cooldown_quantize_denom>0</cooldown_quantize_denom>
+            <reset_cooldown_on_any_hit>true</reset_cooldown_on_any_hit>
+            <init_hittable>true</init_hittable>
+            <active_radius>-1</active_radius>
+            <hit_actions>
+                <seq_action>
+                    <one_time>false</one_time>
+                    <action_type>ChangeStepSequencer</action_type>
+                    <seqName>bass_seq</seqName>
+                    <velOnly>false</velOnly>
+                    <temporary>true</temporary>
+                    <stepStr> mC3:1</stepStr>
+                </seq_action>
+            </hit_actions>
+            <off_cooldown_actions/>
+        </TypingEnemy>
+        <TypingEnemy>
+            <name>r7_h</name>
+            <entity_active>true</entity_active>
+            <pickable>true</pickable>
+            <transform>
+                <pos>
+                    <x>105.36171</x>
+                    <y>0</y>
+                    <z>27.8223763</z>
+                </pos>
+                <quat>
+                    <x>0</x>
+                    <y>0</y>
+                    <z>0</z>
+                    <w>1</w>
+                </quat>
+                <scale>
+                    <x>0.5</x>
+                    <y>0.5</y>
+                    <z>0.5</z>
+                </scale>
+            </transform>
+            <model_name>cube</model_name>
+            <model_color_vec4>
+                <x>0.882352948</x>
+                <y>0</y>
+                <z>1</z>
+                <w>1</w>
+            </model_color_vec4>
+            <flow_section_id>5</flow_section_id>
+            <tag>0</tag>
+            <waypoint_follower>
+                <mode>Waypoint</mode>
+                <local_to_entity>true</local_to_entity>
+                <waypoint_auto_start>false</waypoint_auto_start>
+                <loop_waypoints>false</loop_waypoints>
+                <start_time>3</start_time>
+                <waypoints/>
+                <follow_entity_name/>
+            </waypoint_follower>
+            <text>h</text>
+            <type_kill>false</type_kill>
+            <all_actions_on_hit>true</all_actions_on_hit>
+            <flow_polarity>false</flow_polarity>
+            <flow_cooldown>500</flow_cooldown>
+            <show_beats_left>false</show_beats_left>
+            <cooldown_quantize_denom>0</cooldown_quantize_denom>
+            <reset_cooldown_on_any_hit>true</reset_cooldown_on_any_hit>
+            <init_hittable>true</init_hittable>
+            <active_radius>-1</active_radius>
+            <hit_actions>
+                <seq_action>
+                    <one_time>false</one_time>
+                    <action_type>ChangeStepSequencer</action_type>
+                    <seqName>bass_seq</seqName>
+                    <velOnly>false</velOnly>
+                    <temporary>true</temporary>
+                    <stepStr> mB2:1</stepStr>
+                </seq_action>
+            </hit_actions>
+            <off_cooldown_actions/>
+        </TypingEnemy>
+        <Base>
+            <name>r7_platform8</name>
+            <entity_active>true</entity_active>
+            <pickable>true</pickable>
+            <transform>
+                <pos>
+                    <x>118.002228</x>
+                    <y>-5</y>
+                    <z>29.4836712</z>
+                </pos>
+                <quat>
+                    <x>0</x>
+                    <y>0</y>
+                    <z>0</z>
+                    <w>1</w>
+                </quat>
+                <scale>
+                    <x>2.5</x>
+                    <y>1</y>
+                    <z>1</z>
+                </scale>
+            </transform>
+            <model_name>cube</model_name>
+            <model_color_vec4>
+                <x>0.356862754</x>
+                <y>0.337254912</y>
+                <z>0.956862748</z>
+                <w>1</w>
+            </model_color_vec4>
+            <flow_section_id>5</flow_section_id>
+            <tag>0</tag>
+            <waypoint_follower>
+                <mode>Waypoint</mode>
+                <local_to_entity>true</local_to_entity>
+                <waypoint_auto_start>false</waypoint_auto_start>
+                <loop_waypoints>false</loop_waypoints>
+                <start_time>3</start_time>
+                <waypoints>
+                    <waypoint>
+                        <wait_time>0</wait_time>
+                        <move_time>3</move_time>
+                        <p>
+                            <x>6</x>
+                            <y>0</y>
+                            <z>0</z>
+                        </p>
+                    </waypoint>
+                </waypoints>
+                <follow_entity_name/>
+            </waypoint_follower>
+        </Base>
+        <TypingEnemy>
+            <name>r7_e4</name>
+            <entity_active>true</entity_active>
+            <pickable>true</pickable>
+            <transform>
+                <pos>
+                    <x>117.37825</x>
+                    <y>0</y>
+                    <z>29.5530586</z>
+                </pos>
+                <quat>
+                    <x>0</x>
+                    <y>0</y>
+                    <z>0</z>
+                    <w>1</w>
+                </quat>
+                <scale>
+                    <x>0.5</x>
+                    <y>0.5</y>
+                    <z>0.5</z>
+                </scale>
+            </transform>
+            <model_name>cube</model_name>
+            <model_color_vec4>
+                <x>0.992156863</x>
+                <y>0.698039234</y>
+                <z>0.0823529437</z>
+                <w>1</w>
+            </model_color_vec4>
+            <flow_section_id>5</flow_section_id>
+            <tag>0</tag>
+            <waypoint_follower>
+                <mode>FollowEntity</mode>
+                <local_to_entity>true</local_to_entity>
+                <waypoint_auto_start>false</waypoint_auto_start>
+                <loop_waypoints>false</loop_waypoints>
+                <start_time>3</start_time>
+                <waypoints/>
+                <follow_entity_name>r7_platform8</follow_entity_name>
+            </waypoint_follower>
+            <text>e</text>
+            <type_kill>false</type_kill>
+            <all_actions_on_hit>true</all_actions_on_hit>
+            <flow_polarity>false</flow_polarity>
+            <flow_cooldown>500</flow_cooldown>
+            <show_beats_left>false</show_beats_left>
+            <cooldown_quantize_denom>0</cooldown_quantize_denom>
+            <reset_cooldown_on_any_hit>true</reset_cooldown_on_any_hit>
+            <init_hittable>true</init_hittable>
+            <active_radius>-1</active_radius>
+            <hit_actions>
+                <seq_action>
+                    <one_time>false</one_time>
+                    <action_type>ChangeStepSequencer</action_type>
+                    <seqName>bass_seq</seqName>
+                    <velOnly>false</velOnly>
+                    <temporary>true</temporary>
+                    <stepStr> mC3:1</stepStr>
+                </seq_action>
+            </hit_actions>
+            <off_cooldown_actions/>
+        </TypingEnemy>
+        <TypingEnemy>
+            <name>r7_i4</name>
+            <entity_active>true</entity_active>
+            <pickable>true</pickable>
+            <transform>
+                <pos>
+                    <x>118.566238</x>
+                    <y>0</y>
+                    <z>29.5530567</z>
+                </pos>
+                <quat>
+                    <x>0</x>
+                    <y>0</y>
+                    <z>0</z>
+                    <w>1</w>
+                </quat>
+                <scale>
+                    <x>0.5</x>
+                    <y>0.5</y>
+                    <z>0.5</z>
+                </scale>
+            </transform>
+            <model_name>cube</model_name>
+            <model_color_vec4>
+                <x>0.333333343</x>
+                <y>0.78039217</y>
+                <z>0.894117653</z>
+                <w>1</w>
+            </model_color_vec4>
+            <flow_section_id>5</flow_section_id>
+            <tag>0</tag>
+            <waypoint_follower>
+                <mode>FollowEntity</mode>
+                <local_to_entity>true</local_to_entity>
+                <waypoint_auto_start>false</waypoint_auto_start>
+                <loop_waypoints>false</loop_waypoints>
+                <start_time>3</start_time>
+                <waypoints/>
+                <follow_entity_name>r7_platform8</follow_entity_name>
+            </waypoint_follower>
+            <text>i</text>
+            <type_kill>false</type_kill>
+            <all_actions_on_hit>true</all_actions_on_hit>
+            <flow_polarity>false</flow_polarity>
+            <flow_cooldown>500</flow_cooldown>
+            <show_beats_left>false</show_beats_left>
+            <cooldown_quantize_denom>0</cooldown_quantize_denom>
+            <reset_cooldown_on_any_hit>true</reset_cooldown_on_any_hit>
+            <init_hittable>true</init_hittable>
+            <active_radius>-1</active_radius>
+            <hit_actions>
+                <seq_action>
+                    <one_time>false</one_time>
+                    <action_type>ChangeStepSequencer</action_type>
+                    <seqName>bass_seq</seqName>
+                    <velOnly>false</velOnly>
+                    <temporary>true</temporary>
+                    <stepStr> mC2:1</stepStr>
+                </seq_action>
+            </hit_actions>
+            <off_cooldown_actions/>
+        </TypingEnemy>
+        <TypingEnemy>
+            <name>r7_p3</name>
+            <entity_active>true</entity_active>
+            <pickable>true</pickable>
+            <transform>
+                <pos>
+                    <x>115.935516</x>
+                    <y>0</y>
+                    <z>29.5084152</z>
+                </pos>
+                <quat>
+                    <x>0</x>
+                    <y>0</y>
+                    <z>0</z>
+                    <w>1</w>
+                </quat>
+                <scale>
+                    <x>0.5</x>
+                    <y>0.5</y>
+                    <z>0.5</z>
+                </scale>
+            </transform>
+            <model_name>cube</model_name>
+            <model_color_vec4>
+                <x>0.400000006</x>
+                <y>0.866666675</y>
+                <z>0.145098045</z>
+                <w>1</w>
+            </model_color_vec4>
+            <flow_section_id>5</flow_section_id>
+            <tag>0</tag>
+            <waypoint_follower>
+                <mode>Waypoint</mode>
+                <local_to_entity>true</local_to_entity>
+                <waypoint_auto_start>false</waypoint_auto_start>
+                <loop_waypoints>false</loop_waypoints>
+                <start_time>3</start_time>
+                <waypoints/>
+                <follow_entity_name/>
+            </waypoint_follower>
+            <text>p</text>
+            <type_kill>true</type_kill>
+            <all_actions_on_hit>true</all_actions_on_hit>
+            <flow_polarity>false</flow_polarity>
+            <flow_cooldown>500</flow_cooldown>
+            <show_beats_left>false</show_beats_left>
+            <cooldown_quantize_denom>0</cooldown_quantize_denom>
+            <reset_cooldown_on_any_hit>true</reset_cooldown_on_any_hit>
+            <init_hittable>true</init_hittable>
+            <active_radius>-1</active_radius>
+            <hit_actions>
+                <seq_action>
+                    <one_time>true</one_time>
+                    <action_type>BeatTimeEvent</action_type>
+                    <quantize_denom>0</quantize_denom>
+                    <beat_time_event>
+                        <event_type>AllNotesOff</event_type>
+                        <channel>2</channel>
+                        <tick_time>0</tick_time>
+                        <beat_time>0</beat_time>
+                    </beat_time_event>
+                </seq_action>
+                <seq_action>
+                    <one_time>true</one_time>
+                    <action_type>SetAllSteps</action_type>
+                    <seq_name>bass_seq</seq_name>
+                    <step_str>mF1:0.5</step_str>
+                    <vel_only>false</vel_only>
+                </seq_action>
+                <seq_action>
+                    <one_time>true</one_time>
+                    <action_type>SetAllSteps</action_type>
+                    <seq_name>r7_pad_step_seq</seq_name>
+                    <step_str>-1:1</step_str>
+                    <vel_only>false</vel_only>
+                </seq_action>
+                <seq_action>
+                    <one_time>true</one_time>
+                    <action_type>ChangeStepSequencer</action_type>
+                    <seqName>r7_pad_step_seq</seqName>
+                    <velOnly>false</velOnly>
+                    <temporary>false</temporary>
+                    <stepStr>mB1-,mE2,mG2,mC3:1</stepStr>
+                </seq_action>
+                <seq_action>
+                    <one_time>true</one_time>
+                    <action_type>WaypointControl</action_type>
+                    <follow_waypoints>true</follow_waypoints>
+                    <entity_name>r7_platform8</entity_name>
+                </seq_action>
+                <seq_action>
+                    <one_time>true</one_time>
+                    <action_type>CameraControl</action_type>
+                    <setTarget>true</setTarget>
+                    <targetEntityName>r7_e4</targetEntityName>
+                    <targetTrackingFactor>0.0500000007</targetTrackingFactor>
+                    <setOffset>false</setOffset>
+                    <desiredTargetToCameraOffset>
+                        <x>0</x>
+                        <y>0</y>
+                        <z>0</z>
+                    </desiredTargetToCameraOffset>
+                    <hasMinX>false</hasMinX>
+                    <minX>0</minX>
+                    <hasMinZ>false</hasMinZ>
+                    <minZ>0</minZ>
+                    <hasMaxX>false</hasMaxX>
+                    <maxX>0</maxX>
+                    <hasMaxZ>false</hasMaxZ>
+                    <maxZ>0</maxZ>
+                </seq_action>
+                <seq_action>
+                    <one_time>true</one_time>
+                    <action_type>SetEntityActive</action_type>
+                    <entity_name>r7_connector4</entity_name>
+                    <active>false</active>
+                    <init_on_activate>true</init_on_activate>
+                </seq_action>
+            </hit_actions>
+            <off_cooldown_actions/>
+        </TypingEnemy>
+        <Base>
+            <name>r7_connector4</name>
+            <entity_active>true</entity_active>
+            <pickable>true</pickable>
+            <transform>
+                <pos>
+                    <x>116.652771</x>
+                    <y>-10</y>
+                    <z>29.4884338</z>
+                </pos>
+                <quat>
+                    <x>0</x>
+                    <y>0</y>
+                    <z>0</z>
+                    <w>1</w>
+                </quat>
+                <scale>
+                    <x>1</x>
+                    <y>1</y>
+                    <z>0.100000001</z>
+                </scale>
+            </transform>
+            <model_name>cube</model_name>
+            <model_color_vec4>
+                <x>0.800000012</x>
+                <y>0.800000012</y>
+                <z>0.800000012</z>
+                <w>1</w>
+            </model_color_vec4>
+            <flow_section_id>5</flow_section_id>
+            <tag>0</tag>
+            <waypoint_follower>
+                <mode>Waypoint</mode>
+                <local_to_entity>false</local_to_entity>
+                <waypoint_auto_start>false</waypoint_auto_start>
+                <loop_waypoints>false</loop_waypoints>
+                <start_time>3</start_time>
+                <waypoints/>
+                <follow_entity_name/>
+            </waypoint_follower>
+        </Base>
+        <TypingEnemy>
+            <name>r7_g (copy)</name>
+            <entity_active>true</entity_active>
+            <pickable>true</pickable>
+            <transform>
+                <pos>
+                    <x>117.968971</x>
+                    <y>0</y>
+                    <z>30.4846401</z>
+                </pos>
+                <quat>
+                    <x>0</x>
+                    <y>0</y>
+                    <z>0</z>
+                    <w>1</w>
+                </quat>
+                <scale>
+                    <x>0.5</x>
+                    <y>0.5</y>
+                    <z>0.5</z>
+                </scale>
+            </transform>
+            <model_name>cube</model_name>
+            <model_color_vec4>
+                <x>0.882352948</x>
+                <y>0</y>
+                <z>1</z>
+                <w>1</w>
+            </model_color_vec4>
+            <flow_section_id>5</flow_section_id>
+            <tag>0</tag>
+            <waypoint_follower>
+                <mode>Waypoint</mode>
+                <local_to_entity>true</local_to_entity>
+                <waypoint_auto_start>false</waypoint_auto_start>
+                <loop_waypoints>false</loop_waypoints>
+                <start_time>3</start_time>
+                <waypoints/>
+                <follow_entity_name/>
+            </waypoint_follower>
+            <text>g</text>
+            <type_kill>false</type_kill>
+            <all_actions_on_hit>true</all_actions_on_hit>
+            <flow_polarity>false</flow_polarity>
+            <flow_cooldown>500</flow_cooldown>
+            <show_beats_left>false</show_beats_left>
+            <cooldown_quantize_denom>0</cooldown_quantize_denom>
+            <reset_cooldown_on_any_hit>true</reset_cooldown_on_any_hit>
+            <init_hittable>true</init_hittable>
+            <active_radius>-1</active_radius>
+            <hit_actions>
+                <seq_action>
+                    <one_time>false</one_time>
+                    <action_type>ChangeStepSequencer</action_type>
+                    <seqName>bass_seq</seqName>
+                    <velOnly>false</velOnly>
+                    <temporary>true</temporary>
+                    <stepStr> mB2-:1</stepStr>
+                </seq_action>
+            </hit_actions>
+            <off_cooldown_actions/>
+        </TypingEnemy>
+        <TypingEnemy>
+            <name>r7_u (copy)</name>
+            <entity_active>true</entity_active>
+            <pickable>true</pickable>
+            <transform>
+                <pos>
+                    <x>117.981728</x>
+                    <y>0</y>
+                    <z>32.3906975</z>
+                </pos>
+                <quat>
+                    <x>0</x>
+                    <y>0</y>
+                    <z>0</z>
+                    <w>1</w>
+                </quat>
+                <scale>
+                    <x>0.5</x>
+                    <y>0.5</y>
+                    <z>0.5</z>
+                </scale>
+            </transform>
+            <model_name>cube</model_name>
+            <model_color_vec4>
+                <x>0.399798155</x>
+                <y>0.867647052</y>
+                <z>0.144607857</z>
+                <w>1</w>
+            </model_color_vec4>
+            <flow_section_id>5</flow_section_id>
+            <tag>0</tag>
+            <waypoint_follower>
+                <mode>Waypoint</mode>
+                <local_to_entity>true</local_to_entity>
+                <waypoint_auto_start>false</waypoint_auto_start>
+                <loop_waypoints>false</loop_waypoints>
+                <start_time>3</start_time>
+                <waypoints/>
+                <follow_entity_name/>
+            </waypoint_follower>
+            <text>u</text>
+            <type_kill>false</type_kill>
+            <all_actions_on_hit>true</all_actions_on_hit>
+            <flow_polarity>false</flow_polarity>
+            <flow_cooldown>500</flow_cooldown>
+            <show_beats_left>false</show_beats_left>
+            <cooldown_quantize_denom>0</cooldown_quantize_denom>
+            <reset_cooldown_on_any_hit>true</reset_cooldown_on_any_hit>
+            <init_hittable>true</init_hittable>
+            <active_radius>-1</active_radius>
+            <hit_actions>
+                <seq_action>
+                    <one_time>false</one_time>
+                    <action_type>ChangeStepSequencer</action_type>
+                    <seqName>bass_seq</seqName>
+                    <velOnly>false</velOnly>
+                    <temporary>true</temporary>
+                    <stepStr> mC3:1</stepStr>
+                </seq_action>
+            </hit_actions>
+            <off_cooldown_actions/>
+        </TypingEnemy>
+        <TypingEnemy>
+            <name>r7_h (copy)</name>
+            <entity_active>true</entity_active>
+            <pickable>true</pickable>
+            <transform>
+                <pos>
+                    <x>117.968979</x>
+                    <y>0</y>
+                    <z>31.419735</z>
+                </pos>
+                <quat>
+                    <x>0</x>
+                    <y>0</y>
+                    <z>0</z>
+                    <w>1</w>
+                </quat>
+                <scale>
+                    <x>0.5</x>
+                    <y>0.5</y>
+                    <z>0.5</z>
+                </scale>
+            </transform>
+            <model_name>cube</model_name>
+            <model_color_vec4>
+                <x>0.882352948</x>
+                <y>0</y>
+                <z>1</z>
+                <w>1</w>
+            </model_color_vec4>
+            <flow_section_id>5</flow_section_id>
+            <tag>0</tag>
+            <waypoint_follower>
+                <mode>Waypoint</mode>
+                <local_to_entity>true</local_to_entity>
+                <waypoint_auto_start>false</waypoint_auto_start>
+                <loop_waypoints>false</loop_waypoints>
+                <start_time>3</start_time>
+                <waypoints/>
+                <follow_entity_name/>
+            </waypoint_follower>
+            <text>h</text>
+            <type_kill>false</type_kill>
+            <all_actions_on_hit>true</all_actions_on_hit>
+            <flow_polarity>false</flow_polarity>
+            <flow_cooldown>500</flow_cooldown>
+            <show_beats_left>false</show_beats_left>
+            <cooldown_quantize_denom>0</cooldown_quantize_denom>
+            <reset_cooldown_on_any_hit>true</reset_cooldown_on_any_hit>
+            <init_hittable>true</init_hittable>
+            <active_radius>-1</active_radius>
+            <hit_actions>
+                <seq_action>
+                    <one_time>false</one_time>
+                    <action_type>ChangeStepSequencer</action_type>
+                    <seqName>bass_seq</seqName>
+                    <velOnly>false</velOnly>
+                    <temporary>true</temporary>
+                    <stepStr> mB2:1</stepStr>
+                </seq_action>
+            </hit_actions>
+            <off_cooldown_actions/>
+        </TypingEnemy>
     </new_entities>
 </script>

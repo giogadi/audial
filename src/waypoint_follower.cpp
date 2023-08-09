@@ -235,6 +235,9 @@ bool WaypointFollower::UpdateWaypoint(GameManager& g, float const dt, ne::BaseEn
 }
 
 bool WaypointFollower::UpdateFollowEntity(GameManager& g, float const dt, ne::BaseEntity* pEntity, Props const& p) {
+    if (g._editMode) {
+        return false;
+    }
     ne::BaseEntity* followEntity = g._neEntityManager->GetEntity(_ns._followEntityId);
     if (followEntity == nullptr) {
         return false;

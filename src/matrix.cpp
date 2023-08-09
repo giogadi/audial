@@ -109,9 +109,10 @@ Mat4 Mat4::Ortho(float width, float aspect, float zNear, float zFar) {
 }
 
 Mat4 Mat4::Ortho(float left, float right, float top, float bottom, float zNear, float zFar) {
-    assert(right - left != 0.f);
-    assert(top - bottom != 0.f);
-    assert(zFar - zNear != 0.f);
+    if (right - left == 0.f || top - bottom == 0.f || zFar - zNear == 0.f) {
+        printf("Mat4::Ortho: 0 extent!\n");
+        return Mat4();
+    }
     Mat4 m;
     m(0,0) = 2.f / (right - left);
     m(1,1) = 2.f / (top - bottom);
