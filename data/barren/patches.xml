@@ -275,7 +275,7 @@
     <patch>
         <name>pad2</name>
         <patch>
-            <Gain>0.536000013</Gain>
+            <Gain>0.649999976</Gain>
             <Mono>0</Mono>
             <Osc1Waveform>Square</Osc1Waveform>
             <Osc2Waveform>Saw</Osc2Waveform>
@@ -283,7 +283,7 @@
             <OscFader>0.833000004</OscFader>
             <Cutoff>5365.77881</Cutoff>
             <Peak>0</Peak>
-            <HpfCutoff>0</HpfCutoff>
+            <HpfCutoff>500</HpfCutoff>
             <HpfPeak>0</HpfPeak>
             <Portamento>0</Portamento>
             <PitchLFOGain>0.0270000007</PitchLFOGain>

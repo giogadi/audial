@@ -12099,6 +12099,18 @@
                     <channel>0</channel>
                     <seqEntityName>snare_seq</seqEntityName>
                 </seq_action>
+                <seq_action>
+                    <one_time>true</one_time>
+                    <action_type>SpawnAutomator</action_type>
+                    <relative>false</relative>
+                    <startValue>0.5</startValue>
+                    <endValue>1</endValue>
+                    <desiredAutomateTime>2</desiredAutomateTime>
+                    <synth>false</synth>
+                    <synthParam>Gain</synthParam>
+                    <channel>0</channel>
+                    <seqEntityName>bass_seq</seqEntityName>
+                </seq_action>
             </actions>
             <actions_on_exit/>
             <trigger_volume_entities/>
@@ -13607,6 +13619,13 @@
                     <active>false</active>
                     <init_on_activate>true</init_on_activate>
                 </seq_action>
+                <seq_action>
+                    <one_time>true</one_time>
+                    <action_type>SetAllSteps</action_type>
+                    <seq_name>bass_seq</seq_name>
+                    <step_str>mC2:1.0</step_str>
+                    <vel_only>false</vel_only>
+                </seq_action>
             </hit_actions>
             <off_cooldown_actions/>
         </TypingEnemy>
@@ -13801,6 +13820,13 @@
                     <entity_name>r7_connector3</entity_name>
                     <active>false</active>
                     <init_on_activate>true</init_on_activate>
+                </seq_action>
+                <seq_action>
+                    <one_time>true</one_time>
+                    <action_type>SetAllSteps</action_type>
+                    <seq_name>bass_seq</seq_name>
+                    <step_str>mF1:1.0</step_str>
+                    <vel_only>false</vel_only>
                 </seq_action>
             </hit_actions>
             <off_cooldown_actions/>
@@ -14588,6 +14614,13 @@
                     <entity_name>r7_connector4</entity_name>
                     <active>false</active>
                     <init_on_activate>true</init_on_activate>
+                </seq_action>
+                <seq_action>
+                    <one_time>true</one_time>
+                    <action_type>SetAllSteps</action_type>
+                    <seq_name>bass_seq</seq_name>
+                    <step_str>mC1:1.0</step_str>
+                    <vel_only>false</vel_only>
                 </seq_action>
             </hit_actions>
             <off_cooldown_actions/>
