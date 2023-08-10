@@ -417,9 +417,6 @@ int main(int argc, char** argv) {
 
     editor.Init(&gGameManager);
 
-    // bool showSynthWindow = false;
-    // bool showEntitiesWindow = false;
-    // bool showDemoWindow = false;
     float const fixedTimeStep = 1.f / 60.f;
     bool paused = false;
     while(!glfwWindowShouldClose(window)) {
@@ -454,13 +451,6 @@ int main(int argc, char** argv) {
 
         MaybeToggleMute(fixedTimeStep);
 
-        // if (gGameManager._editMode && inputManager.IsKeyPressedThisFrame(InputManager::Key::Y)) {
-        //     showSynthWindow = !showSynthWindow;
-        // }
-        // if (gGameManager._editMode && inputManager.IsShiftPressed() && inputManager.IsKeyPressedThisFrame(InputManager::Key::I)) {
-        //     showDemoWindow = !showDemoWindow;
-        // }
-
         for (auto iter = gGameManager._neEntityManager->GetAllIterator(); !iter.Finished(); iter.Next()) {
             ne::Entity* e = iter.GetEntity();
             if (gGameManager._editMode && editor._enableFlowSectionFilter && e->_flowSectionId >= 0 && editor._flowSectionFilterId != e->_flowSectionId) {
@@ -475,12 +465,6 @@ int main(int argc, char** argv) {
         ImGui::NewFrame();
 
         editor.Update(dt, synthGuiState);
-        // if (showSynthWindow) {
-        //     DrawSynthGuiAndUpdatePatch(synthGuiState, audioContext);
-        // }
-        // if (showDemoWindow) {
-        //     ImGui::ShowDemoWindow(&showDemoWindow);
-        // }
         ImGui::Render();
 
         // Rendering
