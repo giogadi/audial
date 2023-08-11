@@ -32,6 +32,7 @@ struct FlowPlayerEntity : public ne::Entity {
     bool _killIfBelowCameraView = false;
     bool _applyGravityDuringDash = false;
     bool _respawnBeforeFirstDash = true;
+    ne::EntityId _toActivateOnRespawn;
 
     void Draw(GameManager& g);
     void Respawn(GameManager &g);

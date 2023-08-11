@@ -114,13 +114,27 @@ void FlowPlayerEntity::Respawn(GameManager& g) {
             e->Init(g);
         }
     }
-    // Reactivate all inactive entities that were initially active
-    // TODO: deactivate all initially-inactive things?
+    // Reactivate all inactive entities that were initially active    
     for (ne::EntityManager::AllIterator iter = g._neEntityManager->GetAllInactiveIterator(); !iter.Finished(); iter.Next()) {
         ne::Entity* e = iter.GetEntity();
         if (e->_initActive && e->_flowSectionId >= 0 && e->_flowSectionId == _currentSectionId) {
             g._neEntityManager->TagForActivate(e->_id, /*initOnActivate=*/true);
         }
+    }
+    // deactivate all initially-inactive things
+    /*for (ne::EntityManager::AllIterator iter = g._neEntityManager->GetAllIterator(); !iter.Finished(); iter.Next()) {
+        ne::Entity* e = iter.GetEntity();
+        if (!e->_initActive && e->_flowSectionId >= 0 && e->_flowSectionId == _currentSectionId) {
+            g._neEntityManager->TagForDeactivate(e->_id);
+        }
+    }*/
+
+    // Activate the on-respawn entity
+    if (ne::Entity* e = g._neEntityManager->GetEntity(_toActivateOnRespawn, /*includeActive=*/false, /*includeInactive=*/true)) {
+        g._neEntityManager->TagForActivate(e->_id, /*initOnActivate=*/true);
+    }
+    else if (ne::Entity* e = g._neEntityManager->GetEntity(_toActivateOnRespawn)) {
+        e->Init(g);
     }
 }
 

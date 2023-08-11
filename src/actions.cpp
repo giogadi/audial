@@ -570,21 +570,36 @@ void PlayerSetSpawnPointSeqAction::LoadDerived(LoadInputs const& loadInputs, std
 
 void PlayerSetSpawnPointSeqAction::LoadDerived(serial::Ptree pt) {
     serial::LoadFromChildOf(pt, "spawn_pos", _spawnPos);
+    pt.TryGetString("action_seq_name", &_actionSeqEntityNameToActivate);
 }
 
 void PlayerSetSpawnPointSeqAction::SaveDerived(serial::Ptree pt) const {
     serial::SaveInNewChildOf(pt, "spawn_pos", _spawnPos);
+    pt.PutString("action_seq_name", _actionSeqEntityNameToActivate.c_str());
 }
 
 bool PlayerSetSpawnPointSeqAction::ImGui() {
     imgui_util::InputVec3("Spawn pos", &_spawnPos);
+    imgui_util::InputText<64>("ActionSeq to Activate", &_actionSeqEntityNameToActivate);
     return false;
+}
+
+void PlayerSetSpawnPointSeqAction::InitDerived(GameManager& g) {
+    if (!_actionSeqEntityNameToActivate.empty()) {
+        ne::Entity* e = g._neEntityManager->FindEntityByNameAndType(_actionSeqEntityNameToActivate, ne::EntityType::ActionSequencer, /*includeActive=*/true, /*includeInactive=*/true);
+        if (e) {
+            _actionSeq = e->_id;
+        } else {
+            _actionSeq = ne::EntityId();
+        }
+    }
 }
 
 void PlayerSetSpawnPointSeqAction::ExecuteDerived(GameManager& g) {
     if (g._editMode) { return; }
     FlowPlayerEntity* pPlayer = static_cast<FlowPlayerEntity*>(g._neEntityManager->GetFirstEntityOfType(ne::EntityType::FlowPlayer));
     pPlayer->_respawnPos = _spawnPos;
+    pPlayer->_toActivateOnRespawn = _actionSeq;
 }
 
 void AddToIntVariableSeqAction::LoadDerived(LoadInputs const& loadInputs, std::istream& input) {

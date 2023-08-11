@@ -172,13 +172,19 @@ struct PlayerSetKillZoneSeqAction : public SeqAction {
 
 struct PlayerSetSpawnPointSeqAction : public SeqAction {
     virtual SeqActionType Type() const override { return SeqActionType::PlayerSetSpawnPoint; }
+    
     Vec3 _spawnPos;
-    virtual void ExecuteDerived(GameManager& g) override;
+    std::string _actionSeqEntityNameToActivate;
+
+    ne::EntityId _actionSeq;
+
     virtual void LoadDerived(
         LoadInputs const& loadInputs, std::istream& input) override;
     virtual void LoadDerived(serial::Ptree pt) override;
     virtual void SaveDerived(serial::Ptree pt) const override;
     virtual bool ImGui() override;
+    virtual void InitDerived(GameManager& g) override;
+    virtual void ExecuteDerived(GameManager& g) override;
 };
 
 struct SetNewFlowSectionSeqAction : public SeqAction {

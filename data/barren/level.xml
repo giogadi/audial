@@ -798,6 +798,7 @@
                         <y>0</y>
                         <z>-5.33599997</z>
                     </spawn_pos>
+                    <action_seq_name/>
                 </seq_action>
             </actions>
             <actions_on_exit/>
@@ -1064,7 +1065,7 @@
                 <z>0.800000012</z>
                 <w>1</w>
             </model_color_vec4>
-            <flow_section_id>0</flow_section_id>
+            <flow_section_id>-1</flow_section_id>
             <tag>0</tag>
             <waypoint_follower>
                 <mode>Waypoint</mode>
@@ -1269,7 +1270,7 @@
                 <z>0.800000012</z>
                 <w>1</w>
             </model_color_vec4>
-            <flow_section_id>0</flow_section_id>
+            <flow_section_id>-1</flow_section_id>
             <tag>0</tag>
             <waypoint_follower>
                 <mode>Waypoint</mode>
@@ -1350,7 +1351,7 @@
                 <z>0.800000012</z>
                 <w>1</w>
             </model_color_vec4>
-            <flow_section_id>0</flow_section_id>
+            <flow_section_id>-1</flow_section_id>
             <tag>0</tag>
             <waypoint_follower>
                 <mode>Waypoint</mode>
@@ -1431,7 +1432,7 @@
                 <z>0.800000012</z>
                 <w>1</w>
             </model_color_vec4>
-            <flow_section_id>0</flow_section_id>
+            <flow_section_id>-1</flow_section_id>
             <tag>0</tag>
             <waypoint_follower>
                 <mode>Waypoint</mode>
@@ -1636,7 +1637,7 @@
                 <z>0.800000012</z>
                 <w>1</w>
             </model_color_vec4>
-            <flow_section_id>0</flow_section_id>
+            <flow_section_id>-1</flow_section_id>
             <tag>0</tag>
             <waypoint_follower>
                 <mode>Waypoint</mode>
@@ -1717,7 +1718,7 @@
                 <z>0.800000012</z>
                 <w>1</w>
             </model_color_vec4>
-            <flow_section_id>0</flow_section_id>
+            <flow_section_id>-1</flow_section_id>
             <tag>0</tag>
             <waypoint_follower>
                 <mode>Waypoint</mode>
@@ -2046,7 +2047,7 @@
                 <z>0.800000012</z>
                 <w>1</w>
             </model_color_vec4>
-            <flow_section_id>2</flow_section_id>
+            <flow_section_id>-1</flow_section_id>
             <tag>0</tag>
             <waypoint_follower>
                 <mode>Waypoint</mode>
@@ -2251,7 +2252,7 @@
                 <z>0.800000012</z>
                 <w>1</w>
             </model_color_vec4>
-            <flow_section_id>2</flow_section_id>
+            <flow_section_id>-1</flow_section_id>
             <tag>0</tag>
             <waypoint_follower>
                 <mode>Waypoint</mode>
@@ -2332,7 +2333,7 @@
                 <z>0.800000012</z>
                 <w>1</w>
             </model_color_vec4>
-            <flow_section_id>2</flow_section_id>
+            <flow_section_id>-1</flow_section_id>
             <tag>0</tag>
             <waypoint_follower>
                 <mode>Waypoint</mode>
@@ -2537,7 +2538,7 @@
                 <z>0.800000012</z>
                 <w>1</w>
             </model_color_vec4>
-            <flow_section_id>2</flow_section_id>
+            <flow_section_id>-1</flow_section_id>
             <tag>0</tag>
             <waypoint_follower>
                 <mode>Waypoint</mode>
@@ -2804,7 +2805,7 @@
                 <z>0.800000012</z>
                 <w>1</w>
             </model_color_vec4>
-            <flow_section_id>2</flow_section_id>
+            <flow_section_id>-1</flow_section_id>
             <tag>0</tag>
             <waypoint_follower>
                 <mode>Waypoint</mode>
@@ -2885,7 +2886,7 @@
                 <z>0.800000012</z>
                 <w>1</w>
             </model_color_vec4>
-            <flow_section_id>2</flow_section_id>
+            <flow_section_id>-1</flow_section_id>
             <tag>0</tag>
             <waypoint_follower>
                 <mode>Waypoint</mode>
@@ -3023,6 +3024,7 @@
                         <y>0</y>
                         <z>-5.33599997</z>
                     </spawn_pos>
+                    <action_seq_name/>
                 </seq_action>
                 <seq_action>
                     <one_time>true</one_time>
@@ -3187,7 +3189,7 @@
                 <z>0.800000012</z>
                 <w>1</w>
             </model_color_vec4>
-            <flow_section_id>1</flow_section_id>
+            <flow_section_id>-1</flow_section_id>
             <tag>0</tag>
             <waypoint_follower>
                 <mode>Waypoint</mode>
@@ -3392,7 +3394,7 @@
                 <z>0.800000012</z>
                 <w>1</w>
             </model_color_vec4>
-            <flow_section_id>1</flow_section_id>
+            <flow_section_id>-1</flow_section_id>
             <tag>0</tag>
             <waypoint_follower>
                 <mode>Waypoint</mode>
@@ -3473,7 +3475,7 @@
                 <z>0.800000012</z>
                 <w>1</w>
             </model_color_vec4>
-            <flow_section_id>1</flow_section_id>
+            <flow_section_id>-1</flow_section_id>
             <tag>0</tag>
             <waypoint_follower>
                 <mode>Waypoint</mode>
@@ -3678,7 +3680,7 @@
                 <z>0.800000012</z>
                 <w>1</w>
             </model_color_vec4>
-            <flow_section_id>1</flow_section_id>
+            <flow_section_id>-1</flow_section_id>
             <tag>0</tag>
             <waypoint_follower>
                 <mode>Waypoint</mode>
@@ -3883,7 +3885,7 @@
                 <z>0.800000012</z>
                 <w>1</w>
             </model_color_vec4>
-            <flow_section_id>1</flow_section_id>
+            <flow_section_id>-1</flow_section_id>
             <tag>0</tag>
             <waypoint_follower>
                 <mode>Waypoint</mode>
@@ -3964,7 +3966,7 @@
                 <z>0.800000012</z>
                 <w>1</w>
             </model_color_vec4>
-            <flow_section_id>1</flow_section_id>
+            <flow_section_id>-1</flow_section_id>
             <tag>0</tag>
             <waypoint_follower>
                 <mode>Waypoint</mode>
@@ -4100,6 +4102,7 @@
                         <y>0</y>
                         <z>-4</z>
                     </spawn_pos>
+                    <action_seq_name/>
                 </seq_action>
             </actions>
             <actions_on_exit/>
@@ -4893,6 +4896,7 @@
                         <y>0</y>
                         <z>24</z>
                     </spawn_pos>
+                    <action_seq_name>r7_init_action_seq</action_seq_name>
                 </seq_action>
                 <seq_action>
                     <one_time>true</one_time>
@@ -6232,6 +6236,7 @@
                         <y>0</y>
                         <z>-3.51999998</z>
                     </spawn_pos>
+                    <action_seq_name/>
                 </seq_action>
                 <seq_action>
                     <one_time>true</one_time>
@@ -7567,7 +7572,7 @@
                 <z>0.800000012</z>
                 <w>1</w>
             </model_color_vec4>
-            <flow_section_id>1</flow_section_id>
+            <flow_section_id>-1</flow_section_id>
             <tag>0</tag>
             <waypoint_follower>
                 <mode>Waypoint</mode>
@@ -10684,9 +10689,9 @@
             <pickable>true</pickable>
             <transform>
                 <pos>
-                    <x>71.3957291</x>
+                    <x>71.3847275</x>
                     <y>0</y>
-                    <z>25.6435204</z>
+                    <z>26.7106266</z>
                 </pos>
                 <quat>
                     <x>0</x>
@@ -10695,9 +10700,9 @@
                     <w>1</w>
                 </quat>
                 <scale>
-                    <x>2</x>
+                    <x>1.5</x>
                     <y>1</y>
-                    <z>1</z>
+                    <z>3</z>
                 </scale>
             </transform>
             <model_name/>
@@ -13878,9 +13883,9 @@
             <pickable>true</pickable>
             <transform>
                 <pos>
-                    <x>102.206062</x>
+                    <x>102.272072</x>
                     <y>0</y>
-                    <z>20.259058</z>
+                    <z>19.6319942</z>
                 </pos>
                 <quat>
                     <x>0</x>
@@ -13925,9 +13930,9 @@
             <pickable>true</pickable>
             <transform>
                 <pos>
-                    <x>102.195061</x>
+                    <x>102.283073</x>
                     <y>0</y>
-                    <z>31.304163</z>
+                    <z>32.096241</z>
                 </pos>
                 <quat>
                     <x>0</x>
@@ -13972,9 +13977,9 @@
             <pickable>true</pickable>
             <transform>
                 <pos>
-                    <x>113.999237</x>
+                    <x>114.098244</x>
                     <y>0</y>
-                    <z>24.494482</z>
+                    <z>23.5153847</z>
                 </pos>
                 <quat>
                     <x>0</x>
@@ -14019,9 +14024,9 @@
             <pickable>true</pickable>
             <transform>
                 <pos>
-                    <x>113.999237</x>
+                    <x>114.065247</x>
                     <y>0</y>
-                    <z>35.506588</z>
+                    <z>36.8267212</z>
                 </pos>
                 <quat>
                     <x>0</x>
@@ -14066,9 +14071,9 @@
             <pickable>true</pickable>
             <transform>
                 <pos>
-                    <x>126.243454</x>
+                    <x>126.298462</x>
                     <y>0</y>
-                    <z>28.0588379</z>
+                    <z>26.6616974</z>
                 </pos>
                 <quat>
                     <x>0</x>
@@ -14113,9 +14118,9 @@
             <pickable>true</pickable>
             <transform>
                 <pos>
-                    <x>126.232445</x>
+                    <x>126.254448</x>
                     <y>0</y>
-                    <z>39.0709381</z>
+                    <z>40.8641167</z>
                 </pos>
                 <quat>
                     <x>0</x>
@@ -14852,5 +14857,47 @@
             </hit_actions>
             <off_cooldown_actions/>
         </TypingEnemy>
+        <ActionSequencer>
+            <name>r7_init_action_seq</name>
+            <entity_active>false</entity_active>
+            <pickable>true</pickable>
+            <transform>
+                <pos>
+                    <x>18.75</x>
+                    <y>0</y>
+                    <z>11.2444992</z>
+                </pos>
+                <quat>
+                    <x>0</x>
+                    <y>0</y>
+                    <z>0</z>
+                    <w>1</w>
+                </quat>
+                <scale>
+                    <x>1</x>
+                    <y>1</y>
+                    <z>1</z>
+                </scale>
+            </transform>
+            <model_name/>
+            <model_color_vec4>
+                <x>0.800000012</x>
+                <y>0.800000012</y>
+                <z>0.800000012</z>
+                <w>1</w>
+            </model_color_vec4>
+            <flow_section_id>5</flow_section_id>
+            <tag>0</tag>
+            <waypoint_follower>
+                <mode>Waypoint</mode>
+                <local_to_entity>false</local_to_entity>
+                <waypoint_auto_start>false</waypoint_auto_start>
+                <loop_waypoints>false</loop_waypoints>
+                <start_time>3</start_time>
+                <waypoints/>
+                <follow_entity_name/>
+            </waypoint_follower>
+            <seq_filename>data/barren/r7_init_action_seq.txt</seq_filename>
+        </ActionSequencer>
     </new_entities>
 </script>

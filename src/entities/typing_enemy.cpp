@@ -126,6 +126,7 @@ void TypingEnemyEntity::InitDerived(GameManager& g) {
     _velocity = Vec3();
 
     _hittable = _initHittable;
+    _numHits = 0;
 }
 
 namespace {
@@ -312,7 +313,7 @@ void TypingEnemyEntity::OnHit(GameManager& g) {
     ++_numHits;
     if (_numHits == _text.length()) {
         if (_destroyAfterTyped) {
-            bool success = g._neEntityManager->TagForDestroy(_id);
+            bool success = g._neEntityManager->TagForDeactivate(_id);
             assert(success);
         }            
     }
