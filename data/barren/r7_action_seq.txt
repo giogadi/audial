@@ -1,4 +1,3 @@
-0 change_patch 0 0 bass2
 0 set_all_steps bass_seq 0 mG1:0.0
 0 set_step_seq kick_seq mG0:1 mG0:0.5 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 mG0:1 mG0:0.5 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1
 0 set_step_seq clap_seq -1:1 -1:1 -1:1 -1:1 9:1.0 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 9:1.0 -1:1 -1:1 -1:1
