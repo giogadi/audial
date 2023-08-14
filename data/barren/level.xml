@@ -4196,6 +4196,7 @@
                     <one_time>true</one_time>
                     <action_type>PlayerSetKillZone</action_type>
                     <kill_below_view>false</kill_below_view>
+                    <kill_left_of_view>false</kill_left_of_view>
                 </seq_action>
                 <seq_action>
                     <one_time>true</one_time>
@@ -4908,6 +4909,7 @@
                     <one_time>true</one_time>
                     <action_type>PlayerSetKillZone</action_type>
                     <kill_below_view>true</kill_below_view>
+                    <kill_left_of_view>true</kill_left_of_view>
                 </seq_action>
                 <seq_action>
                     <one_time>true</one_time>
@@ -16104,9 +16106,9 @@
             <pickable>true</pickable>
             <transform>
                 <pos>
-                    <x>114.243477</x>
+                    <x>114.199478</x>
                     <y>0</y>
-                    <z>39.0333557</z>
+                    <z>35.0069542</z>
                 </pos>
                 <quat>
                     <x>0</x>

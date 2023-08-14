@@ -30,6 +30,7 @@ struct FlowPlayerEntity : public ne::Entity {
     double _countOffEndTime = 3.0;
     std::optional<float> _killMaxZ;  // kill/respawn if player goes over this value
     bool _killIfBelowCameraView = false;
+    bool _killIfLeftOfCameraView = false;
     bool _applyGravityDuringDash = false;
     bool _respawnBeforeFirstDash = true;
     ne::EntityId _toActivateOnRespawn;

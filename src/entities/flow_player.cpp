@@ -360,12 +360,15 @@ void FlowPlayerEntity::Update(GameManager& g, float dt) {
             respawned = true;
         }
     }
-    if (!respawned && _killIfBelowCameraView) {
+    if (!respawned && (_killIfBelowCameraView || _killIfLeftOfCameraView)) {
         Vec3 p = _transform.Pos();
         float playerSize = _transform.Scale()._x;
         float screenX, screenY;
         geometry::ProjectWorldPointToScreenSpace(p, viewProjTransform, g._windowWidth, g._windowHeight, screenX, screenY);
-        if (screenY > g._windowHeight + 4 * playerSize) {
+        if (_killIfBelowCameraView && screenY > g._windowHeight + 4 * playerSize) {
+            Respawn(g);
+            respawned = true;
+        } else if (_killIfLeftOfCameraView && screenX < -4 * playerSize) {
             Respawn(g);
             respawned = true;
         }

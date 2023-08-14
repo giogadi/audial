@@ -162,6 +162,7 @@ struct PlayerSetKillZoneSeqAction : public SeqAction {
     virtual SeqActionType Type() const override { return SeqActionType::PlayerSetKillZone; }
     std::optional<float> _maxZ;
     bool _killIfBelowCameraView = false;
+    bool _killIfLeftOfCameraView = false;
 
     virtual void ExecuteDerived(GameManager& g) override;
     virtual void LoadDerived(LoadInputs const& loadInputs, std::istream& input) override;

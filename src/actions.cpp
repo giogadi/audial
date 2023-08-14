@@ -450,6 +450,7 @@ void WaypointControlSeqAction::ExecuteDerived(GameManager& g) {
 void PlayerSetKillZoneSeqAction::LoadDerived(LoadInputs const& loadInputs, std::istream& input) {
     _maxZ.reset();
     _killIfBelowCameraView = false;
+    _killIfLeftOfCameraView = false;
 
     std::string token, key, value;
     while (!input.eof()) {
@@ -471,6 +472,8 @@ void PlayerSetKillZoneSeqAction::LoadDerived(LoadInputs const& loadInputs, std::
             }
         } else if (key == "kill_below_view") {
             _killIfBelowCameraView = true;
+        } else if (key == "kill_left_of_view") {
+            _killIfLeftOfCameraView = true;
         }
         else {
             printf("PlayerSetKillZoneSeqAction::Load: unknown key \"%s\"\n", key.c_str());
@@ -486,14 +489,18 @@ void PlayerSetKillZoneSeqAction::LoadDerived(serial::Ptree pt) {
     }
 
     _killIfBelowCameraView = false;
-    pt.TryGetBool("kill_below_view", &_killIfBelowCameraView);    
+    pt.TryGetBool("kill_below_view", &_killIfBelowCameraView);
+
+    _killIfLeftOfCameraView = false;
+    pt.TryGetBool("kill_left_of_view", &_killIfLeftOfCameraView);
 }
 
 void PlayerSetKillZoneSeqAction::SaveDerived(serial::Ptree pt) const {
     if (_maxZ.has_value()) {
         pt.PutFloat("max_z", _maxZ.value());
     }
-    pt.PutBool("kill_below_view", _killIfBelowCameraView);    
+    pt.PutBool("kill_below_view", _killIfBelowCameraView);
+    pt.PutBool("kill_left_of_view", _killIfLeftOfCameraView);
 }
 
 bool PlayerSetKillZoneSeqAction::ImGui() {
@@ -512,6 +519,7 @@ bool PlayerSetKillZoneSeqAction::ImGui() {
     }
 
     ImGui::Checkbox("Kill below camera view", &_killIfBelowCameraView);
+    ImGui::Checkbox("Kill left of camera view", &_killIfLeftOfCameraView);
     return false;
 }
 
@@ -519,6 +527,7 @@ void PlayerSetKillZoneSeqAction::ExecuteDerived(GameManager& g) {
     FlowPlayerEntity* pPlayer = static_cast<FlowPlayerEntity*>(g._neEntityManager->GetFirstEntityOfType(ne::EntityType::FlowPlayer));
     pPlayer->_killMaxZ = _maxZ;
     pPlayer->_killIfBelowCameraView = _killIfBelowCameraView;
+    pPlayer->_killIfLeftOfCameraView = _killIfLeftOfCameraView;
 }
 
 void SetNewFlowSectionSeqAction::LoadDerived(LoadInputs const& loadInputs, std::istream& input) {
