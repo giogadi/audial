@@ -8,6 +8,7 @@
 #include "portaudio/include/pa_win_wasapi.h"
 #endif
 
+#include "util.h"
 #include "audio_util.h"
 #include "synth.h"
 #include "sound_bank.h"
@@ -31,6 +32,8 @@ void InitStateData(
     StateData& state, SoundBank const& soundBank,
     EventQueue* eventQueue, int sampleRate) {
 
+    state.sampleRate = sampleRate;
+
     for (int i = 0; i < state.synths.size(); ++i) {
         synth::StateData& s = state.synths[i];
         synth::InitStateData(s, /*channel=*/i, FRAMES_PER_BUFFER, NUM_OUTPUT_CHANNELS);
@@ -49,7 +52,7 @@ void DestroyStateData(StateData& state) {
 }
 
 double StateData::GetTimeInSeconds() const {
-    return ((double) (_bufferCounter * FRAMES_PER_BUFFER)) / SAMPLE_RATE;
+    return ((double) (_bufferCounter * FRAMES_PER_BUFFER)) / sampleRate;
 }
 
 /*
@@ -61,10 +64,11 @@ static void StreamFinished( void* userData )
 
 PaError Init(
     Context& context, SoundBank const& soundBank) {
+    int const kSupportedSampleRates[] = {
+        48000, 44100
+    };
 
     PaError err;
-
-    InitStateData(context._state, soundBank, &context._eventQueue, SAMPLE_RATE);
 
     err = Pa_Initialize();
     if( err != paNoError ) {
@@ -73,6 +77,7 @@ PaError Init(
     }
 
     void* streamInfo = nullptr;
+    context._sampleRate = kSupportedSampleRates[0];
 #ifdef _WIN32
     PaWasapiStreamInfo wasapiStreamInfo{};
     wasapiStreamInfo.size = sizeof(PaWasapiStreamInfo);
@@ -88,27 +93,39 @@ PaError Init(
     for (PaDeviceIndex deviceIx = 0; deviceIx < numDevices; ++deviceIx) {
         PaDeviceInfo const* pDeviceInfo = Pa_GetDeviceInfo(deviceIx);
         PaHostApiInfo const* pHostApiInfo = Pa_GetHostApiInfo(pDeviceInfo->hostApi);
-        if (pHostApiInfo->type == paWASAPI) {
+        if (pHostApiInfo->type != paWASAPI) {
+            err = paInvalidHostApi;
+            continue;
+        }
+        if (deviceIx == pHostApiInfo->defaultOutputDevice) {
+            context._outputParameters.device = deviceIx;
+
             PaStreamParameters testOutputParams{};
             testOutputParams.device = deviceIx;
             testOutputParams.channelCount = 2;
-            testOutputParams.sampleFormat = paFloat32;            
+            testOutputParams.sampleFormat = paFloat32;
             testOutputParams.hostApiSpecificStreamInfo = streamInfo;
-
-            if (deviceIx == pHostApiInfo->defaultOutputDevice && Pa_IsFormatSupported(NULL, &testOutputParams, SAMPLE_RATE) == paNoError) {
-                context._outputParameters.device = deviceIx;
-                break;
+            for (int sampleRateIx = 0, n = M_ARRAY_LEN(kSupportedSampleRates); sampleRateIx < n; ++sampleRateIx) {
+                context._sampleRate = kSupportedSampleRates[sampleRateIx];
+                err = Pa_IsFormatSupported(NULL, &testOutputParams, context._sampleRate);
+                if (err == paNoError) {
+                    break;
+                }
             }
+            break;
         }
     }
 #else
     context._outputParameters.device = Pa_GetDefaultOutputDevice();
 #endif     
 
-    if (context._outputParameters.device == paNoDevice) {
-      printf("Error: No supported output device.\n");
-      return err;
+    if (err != paNoError) {
+        char const* errMsg = Pa_GetErrorText(err);
+        printf("Audio error: default audio device is not supported. err: %s\n", errMsg);
+        return err;
     }
+    
+    InitStateData(context._state, soundBank, &context._eventQueue, context._sampleRate);
 
     context._outputParameters.hostApiSpecificStreamInfo = streamInfo;
     
@@ -120,7 +137,7 @@ PaError Init(
               &context._stream,
               NULL, /* no input */
               &context._outputParameters,
-              SAMPLE_RATE,
+              context._sampleRate,
               FRAMES_PER_BUFFER,
               paNoFlag,  // no flags (clipping is on)
               PortAudioCallback,
@@ -184,8 +201,8 @@ void ProcessEventQueue(EventQueue* eventQueue, boost::circular_buffer<Event>* pe
 }
 
 void PopEventsFromThisFrame(
-    boost::circular_buffer<Event>* pendingEvents, double const currentTimeSecs, unsigned long samplesPerFrame) {
-    unsigned long const frameStartTickTime = static_cast<unsigned long>(currentTimeSecs * SAMPLE_RATE);
+    boost::circular_buffer<Event>* pendingEvents, double const currentTimeSecs, int sampleRate, unsigned long samplesPerFrame) {
+    unsigned long const frameStartTickTime = static_cast<unsigned long>(currentTimeSecs * sampleRate);
     unsigned long const nextFrameStartTickTime = frameStartTickTime + samplesPerFrame;
     int lastProcessedEventIx = -1;
     for (int pendingEventIx = 0; pendingEventIx < pendingEvents->size(); ++pendingEventIx) {
@@ -254,7 +271,7 @@ int PortAudioCallback(
     // DEBUG
     gTimeSinceLastCallback = timeSecs - gLastCallbackTime;
     gTotalTime += gTimeSinceLastCallback;
-    long ticksSinceLastCallback = (long)(gTimeSinceLastCallback * SAMPLE_RATE);
+    long ticksSinceLastCallback = (long)(gTimeSinceLastCallback * state->sampleRate);
     if (ticksSinceLastCallback != samplesPerFrame) {
         ++gNumDesyncs;
     }
@@ -267,13 +284,13 @@ int PortAudioCallback(
     memset(outputBufferUntyped, 0, NUM_OUTPUT_CHANNELS * samplesPerFrame * sizeof(float));
 
     // Figure out which events apply to this invocation of the callback, and which effects should handle them.
-    ProcessEventQueue(state->events, &state->pendingEvents, timeSecs * SAMPLE_RATE);
+    ProcessEventQueue(state->events, &state->pendingEvents, timeSecs * state->sampleRate);
 
     float* outputBuffer = (float*) outputBufferUntyped;
 
     // PCM playback first
     int currentEventIx = 0;
-    unsigned long frameStartTickTime = timeSecs * SAMPLE_RATE;
+    unsigned long frameStartTickTime = timeSecs * state->sampleRate;
     for (int i = 0; i < samplesPerFrame; ++i) {
         // Handle events
         while (true) {
@@ -394,7 +411,7 @@ int PortAudioCallback(
     for (synth::StateData& s : state->synths) {
         synth::Process(
             &s, state->pendingEvents, outputBuffer,
-            NUM_OUTPUT_CHANNELS, samplesPerFrame, SAMPLE_RATE, frameStartTickTime);
+            NUM_OUTPUT_CHANNELS, samplesPerFrame, state->sampleRate, frameStartTickTime);
     }
 
     if (state->_finalGain != 1.f) {
@@ -404,11 +421,11 @@ int PortAudioCallback(
     }
 
     // Clear out events from this frame.
-    PopEventsFromThisFrame(&(state->pendingEvents), timeSecs, samplesPerFrame);
+    PopEventsFromThisFrame(&(state->pendingEvents), timeSecs, state->sampleRate, samplesPerFrame);
 
     high_resolution_clock::time_point t2 = high_resolution_clock::now();
 
-    const double kSecsPerCallback = (double) samplesPerFrame / SAMPLE_RATE;
+    const double kSecsPerCallback = static_cast<double>(samplesPerFrame) / state->sampleRate;
     double callbackTimeSecs = std::chrono::duration_cast<std::chrono::duration<double>>(t2 - t1).count();
     if (callbackTimeSecs / kSecsPerCallback > 0.9) {
         printf("Frame close to deadline: %f / %f\n", callbackTimeSecs, kSecsPerCallback);

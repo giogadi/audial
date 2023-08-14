@@ -379,7 +379,7 @@ int main(int argc, char** argv) {
         }
 
         double bpm = pt.GetDouble("script.bpm");
-        beatClock.Init(gGameManager, bpm, SAMPLE_RATE);
+        beatClock.Init(gGameManager, bpm, audioContext._sampleRate);
         beatClock.Update(gGameManager);
 
         {

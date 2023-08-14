@@ -357,7 +357,7 @@ void LoadNoteTables() {
 }
 
 // TODO!!!!!! are we going to consider beatTimeOffset?
-void LoadParamEnemy(TypingEnemyEntity& enemy, std::istream& lineStream) {
+void LoadParamEnemy(int sampleRate, TypingEnemyEntity& enemy, std::istream& lineStream) {
     
     audio::SynthParamType paramType;
     std::vector<float> values;
@@ -408,7 +408,11 @@ void LoadParamEnemy(TypingEnemyEntity& enemy, std::istream& lineStream) {
         pA->_b_e._e.type = audio::EventType::SynthParam;
         pA->_b_e._e.channel = channel;
         pA->_b_e._e.param = paramType;
-        pA->_b_e._e.paramChangeTime = (long)(fadeTime * SAMPLE_RATE);
+        if (sampleRate < 0) {
+            printf("ERROR spawn_enemy.cpp:LoadParamEnemy: uninitialized sample rate\n");
+            continue;
+        }
+        pA->_b_e._e.paramChangeTime = (long)(fadeTime * sampleRate);
         pA->_b_e._e.newParamValue = values[i];
         enemy._hitActions.push_back(std::move(pA));
     }
@@ -683,7 +687,7 @@ void SpawnEnemySeqAction::LoadDerived(LoadInputs const& loadInputs, std::istream
 
         if (key == "type") {
             if (value == "param") {
-                LoadParamEnemy(_enemy, lineStream);
+                LoadParamEnemy(loadInputs._sampleRate, _enemy, lineStream);
             } else if (value == "note") {
                 LoadNoteEnemy(_enemy, lineStream);
             } else if (value == "seq") {

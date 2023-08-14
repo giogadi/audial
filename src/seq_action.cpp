@@ -4,6 +4,7 @@
 
 #include "imgui/imgui.h"
 
+#include "audio.h"
 #include "actions.h"
 #include "seq_actions/spawn_enemy.h"
 #include "seq_actions/camera_control.h"
@@ -238,6 +239,7 @@ void SeqAction::LoadAndInitActions(GameManager& g, std::istream& input, std::vec
     double startBeatTime = 0.0;
     SeqAction::LoadInputs loadInputs;
     loadInputs._beatTimeOffset = 0.0;
+    loadInputs._sampleRate = g._audioContext->_sampleRate;
     std::string line;
     std::string token;
     int nextSectionId = 0;    

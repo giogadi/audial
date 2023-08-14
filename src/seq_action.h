@@ -28,6 +28,7 @@ struct SeqAction {
         double _beatTimeOffset = 0.0;
         bool _defaultEnemiesSave = false;
         int _sectionId = -1;
+        int _sampleRate = -1;
     };
 
     bool _oneTime = false;

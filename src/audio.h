@@ -11,7 +11,6 @@
 
 class SoundBank;
 
-#define SAMPLE_RATE   (48000)
 #define FRAMES_PER_BUFFER  (512)
 #define NUM_OUTPUT_CHANNELS (2)
 
@@ -28,6 +27,8 @@ struct PcmVoice {
 };
 
 struct StateData {
+    int sampleRate = -1;
+
     std::array<synth::StateData,kNumSynths> synths;
 
     SoundBank const* soundBank = nullptr;
@@ -58,6 +59,7 @@ int PortAudioCallback(
     void *userData);
 
 struct Context {
+    int _sampleRate = -1;
     PaStreamParameters _outputParameters;
     PaStream* _stream = nullptr;
     StateData _state;
