@@ -30,13 +30,18 @@ struct StepSequencerEntity : ne::Entity {
     int _initMaxNumVoices = -1;
     float _initGain = 1.f;
 
+    static int constexpr kChangeQueueSize = 2;
+
     // non-serialized
     bool _mute = false;
     int _currentIx = 0;
     double _loopStartBeatTime = 0.0;    
     std::vector<SeqStep> _permanentSequence;
     std::vector<SeqStep> _tempSequence;
-    std::queue<SeqStepChange> _changeQueue;
+    SeqStepChange _changeQueue[kChangeQueueSize];
+    int _changeQueueHeadIx = 0;  // points to first element
+    int _changeQueueTailIx = 0;  // points to ix one past last element (cyclical)
+    int _changeQueueCount = 0;
     int _maxNumVoices = -1;
     float _gain = 1.f;
 
@@ -59,4 +64,7 @@ struct StepSequencerEntity : ne::Entity {
     // Assumes input contains _only_ the sequence, nothing else.
     static void LoadSequenceFromInput(
         std::istream& input, std::vector<SeqStep>& sequence);
+
+private:
+    void EnqueueChange(SeqStepChange const& change);
 };

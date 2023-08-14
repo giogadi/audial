@@ -97,6 +97,15 @@ void StepSequencerEntity::LoadSequenceFromInput(std::istream& input, std::vector
     }
 }
 
+void StepSequencerEntity::EnqueueChange(SeqStepChange const& change) {
+    _changeQueue[_changeQueueTailIx] = change;
+    _changeQueueTailIx = (_changeQueueTailIx + 1) % kChangeQueueSize;
+    if (_changeQueueCount == kChangeQueueSize) {
+        _changeQueueHeadIx = (_changeQueueHeadIx + 1) % kChangeQueueSize;
+    } else {
+        ++_changeQueueCount;
+    }
+}
 
 
 void StepSequencerEntity::SetNextSeqStep(GameManager& g, SeqStep step, StepSaveType saveType) {
@@ -123,7 +132,7 @@ void StepSequencerEntity::SetNextSeqStep(GameManager& g, SeqStep step, StepSaveT
     }
     change._changeNote = true;
     change._changeVelocity = true;
-    _changeQueue.push(std::move(change));
+    EnqueueChange(change);
 }
 
 void StepSequencerEntity::SetNextSeqStepVelocity(GameManager& g, float v, StepSaveType saveType) {
@@ -139,7 +148,7 @@ void StepSequencerEntity::SetNextSeqStepVelocity(GameManager& g, float v, StepSa
     }
     change._changeNote = false;
     change._changeVelocity = true;
-    _changeQueue.push(std::move(change));
+    EnqueueChange(change);
 }
 
 void StepSequencerEntity::SetAllVelocitiesPermanent(float newValue) {
@@ -170,6 +179,10 @@ void StepSequencerEntity::InitDerived(GameManager& g) {
     _loopStartBeatTime = _initialLoopStartBeatTime;
     _maxNumVoices = _initMaxNumVoices;
     _gain = _initGain;
+
+    _changeQueueHeadIx = 0;
+    _changeQueueTailIx = 0;
+    _changeQueueCount = 0;
 }
 
 void StepSequencerEntity::Update(GameManager& g, float dt) {    
@@ -188,8 +201,8 @@ void StepSequencerEntity::Update(GameManager& g, float dt) {
         return;
     }
 
-    if (!_changeQueue.empty()) {
-        SeqStepChange const& change = _changeQueue.front();
+    if (_changeQueueCount > 0) {
+        SeqStepChange const& change = _changeQueue[_changeQueueHeadIx];
         SeqStep& tempStep = _tempSequence[_currentIx];        
         if (change._changeNote) {
             tempStep._midiNote = change._step._midiNote;
@@ -200,7 +213,8 @@ void StepSequencerEntity::Update(GameManager& g, float dt) {
         if (!change._temporary) {
             _permanentSequence[_currentIx] = tempStep;
         }
-        _changeQueue.pop();
+        _changeQueueHeadIx = (_changeQueueHeadIx + 1) % kChangeQueueSize;
+        --_changeQueueCount;
     }   
 
     // Play the sound
