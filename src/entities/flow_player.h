@@ -35,7 +35,7 @@ struct FlowPlayerEntity : public ne::Entity {
     bool _respawnBeforeFirstDash = true;
     ne::EntityId _toActivateOnRespawn;
 
-    void Draw(GameManager& g);
+    void DrawPlayer(GameManager& g);
     void Respawn(GameManager &g);
     void SetNewSection(GameManager& g, int newSectionId);
     

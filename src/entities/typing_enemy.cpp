@@ -186,7 +186,7 @@ void TypingEnemyEntity::UpdateDerived(GameManager& g, float dt) {
     } else if (_text.length() > 1) {
         if (_numHits > 0) {
             std::string_view substr = std::string_view(_text).substr(0, _numHits);
-            g._scene->DrawTextWorld(_text, _transform.GetPos(), kTextSize, Vec4(1.f, 1.f, 0.f, 1.f));
+            g._scene->DrawTextWorld(std::string(substr), _transform.GetPos(), kTextSize, Vec4(1.f, 1.f, 0.f, 1.f));
         }
         if (_numHits < _text.length()) {
             std::string_view substr = std::string_view(_text).substr(_numHits);

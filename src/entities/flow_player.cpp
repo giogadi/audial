@@ -81,7 +81,7 @@ FlowWallEntity* FindOverlapWithWall(GameManager& g, Transform const& playerTrans
 
 }  // namespace
 
-void FlowPlayerEntity::Draw(GameManager& g) {
+void FlowPlayerEntity::DrawPlayer(GameManager& g) {
     // Draw history positions
     Mat4 historyTrans;
     historyTrans.Scale(0.1f, 0.1f, 0.1f);
@@ -155,7 +155,7 @@ void FlowPlayerEntity::Update(GameManager& g, float dt) {
         float factor = math_util::SmoothStep(beatTimeFrac);
         Vec4 constexpr kFlashColor(0.f, 0.f, 0.f, 1.f);
         _currentColor = _modelColor + factor * (kFlashColor - _modelColor);
-        Draw(g);
+        DrawPlayer(g);
         return;
     } else {
         _currentColor = _modelColor;
@@ -374,5 +374,5 @@ void FlowPlayerEntity::Update(GameManager& g, float dt) {
         }
     }
 
-    Draw(g);
+    DrawPlayer(g);
 }
