@@ -22,6 +22,10 @@
 #define DRAW_WATER 0
 #define DRAW_TERRAIN 1
 
+namespace {
+constexpr int kMaxLineCount = 10;
+}
+
 namespace renderer {
 
 Mat4 Camera::GetViewMatrix() const {
@@ -232,6 +236,7 @@ public:
     std::vector<GlyphInstance> _glyphsToDraw;
     std::vector<BoundingBoxInstance> _boundingBoxesToDraw;
     std::vector<Polygon2dInstance> _polygonsToDraw;
+    std::vector<LineInstance> _linesToDraw;
 
     std::unordered_map<std::string, std::unique_ptr<BoundMeshPNU>> _meshMap;    
     std::unordered_map<std::string, unsigned int> _textureIdMap;
@@ -264,12 +269,15 @@ public:
     Shader _wireframeShader;
     int _wireframeShaderUniforms[WireframeShaderUniforms::Count];
 
-    
+    Shader _lineShader;
+    unsigned int _lineVao = 0;
+    unsigned int _lineVbo = 0;
 
     // boring cached things
     std::vector<ColorModelInstance const*> _topLayerColorModels;
     std::vector<ColorModelInstance const*> _transparentModels;
     BoundMeshPNU const* _cubeMesh = nullptr;
+    std::vector<float> _lineVertexData;
 
     GameManager* _g = nullptr;
 };
@@ -430,6 +438,10 @@ bool SceneInternal::Init(GameManager& g) {
         _wireframeShaderUniforms[i] = _wireframeShader.GetUniformLocation(WireframeShaderUniforms::NameStrings[i]);
     }
 
+    if (!_lineShader.Init("shaders/line.vert", "shaders/line.frag")) {
+        return false;
+    }
+
     unsigned int woodboxTextureId = 0;
     if (!CreateTextureFromFile("data/textures/wood_container.jpg", woodboxTextureId)) {
         return false;
@@ -485,6 +497,28 @@ bool SceneInternal::Init(GameManager& g) {
     glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 4 * sizeof(float), 0);
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     glBindVertexArray(0);
+
+    {
+        glGenVertexArrays(1, &_lineVao);
+        glBindVertexArray(_lineVao);
+        
+        constexpr int kNumValuesPerVertex = 3 + 4;
+        glGenBuffers(1, &_lineVbo);
+        glBindBuffer(GL_ARRAY_BUFFER, _lineVbo);
+        
+        glBufferData(GL_ARRAY_BUFFER, kMaxLineCount * 2 * kNumValuesPerVertex * sizeof(float), NULL, GL_DYNAMIC_DRAW);
+
+        // pos attrib
+        glVertexAttribPointer(/*attributeIndex=*/0, /*numValues=*/3, /*valueType=*/GL_FLOAT, /*normalized=*/false, /*stride=*/kNumValuesPerVertex*sizeof(float), /*offsetOfFirstValue=*/(void*)0);
+        glEnableVertexAttribArray(0);
+
+        // color attrib
+        glVertexAttribPointer(/*attributeIndex=*/1, /*numValues=*/3, /*valueType=*/GL_FLOAT, /*normalized=*/false, /*stride=*/kNumValuesPerVertex*sizeof(float), /*offsetOfFirstValue=*/(void*)(3*sizeof(float)));
+        glEnableVertexAttribArray(/*attributeIndex=*/1);
+
+        _lineVertexData.reserve(kMaxLineCount * 2 * kNumValuesPerVertex);
+    }
+    
 
     _cubeMesh = _meshMap["cube"].get();
     return true;
@@ -593,6 +627,17 @@ void Scene::DrawText(std::string_view str, float& screenX, float& screenY, float
 
     screenX = origin._x;
     screenY = origin._y;
+}
+
+void Scene::DrawLine(Vec3 const& start, Vec3 const& end, Vec4 const& color) {
+    if (_pInternal->_linesToDraw.size() == kMaxLineCount) {
+        printf("WARNING: Tried to draw too many lines!\n");
+        return;
+    }
+    LineInstance& line = _pInternal->_linesToDraw.emplace_back();
+    line._start = start;
+    line._end = end;
+    line._color = color;
 }
 
 std::pair<VersionId, PointLight*> Scene::AddPointLight() {
@@ -1111,6 +1156,45 @@ void Scene::Draw(int windowWidth, int windowHeight, float timeInSecs) {
                 }
             }
         }
+    }
+
+    // Lines
+    if (!_pInternal->_linesToDraw.empty()) {
+        auto& lineVertexData = _pInternal->_lineVertexData;
+        lineVertexData.clear();
+        for (LineInstance const& line : _pInternal->_linesToDraw) {
+            Vec4 start(line._start._x, line._start._y, line._start._z, 1.f);
+            start = viewProjTransform * start;
+            Vec4 end(line._end._x, line._end._y, line._end._z, 1.f);
+            end = viewProjTransform * end;
+            
+            lineVertexData.push_back(start._x);
+            lineVertexData.push_back(start._y);
+            lineVertexData.push_back(start._z);
+            lineVertexData.push_back(line._color._x);
+            lineVertexData.push_back(line._color._y);
+            lineVertexData.push_back(line._color._z);
+            lineVertexData.push_back(line._color._w);
+
+            lineVertexData.push_back(end._x);
+            lineVertexData.push_back(end._y);
+            lineVertexData.push_back(end._z);
+            lineVertexData.push_back(line._color._x);
+            lineVertexData.push_back(line._color._y);
+            lineVertexData.push_back(line._color._z);
+            lineVertexData.push_back(line._color._w);
+        }
+
+        Shader& shader = _pInternal->_lineShader;
+        shader.Use();
+        glBindVertexArray(_pInternal->_lineVao);
+
+        glBindBuffer(GL_ARRAY_BUFFER, _pInternal->_lineVbo);
+        glBufferSubData(GL_ARRAY_BUFFER, 0, lineVertexData.size() * sizeof(float), lineVertexData.data());
+        glBindBuffer(GL_ARRAY_BUFFER, 0);
+        glDrawArrays(GL_LINES, 0, 2 * _pInternal->_linesToDraw.size());
+        
+        _pInternal->_linesToDraw.clear();
     }
 }
 
