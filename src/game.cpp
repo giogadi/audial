@@ -244,6 +244,7 @@ int main(int argc, char** argv) {
 #endif
 
     GLFWwindow* window;
+    int refreshRate = 0;
     {
         GLFWmonitor* monitor = glfwGetPrimaryMonitor();
         GLFWvidmode const* mode = glfwGetVideoMode(monitor);
@@ -257,6 +258,7 @@ int main(int argc, char** argv) {
         // window = glfwCreateWindow(mode->width, mode->height, "Audial", monitor, NULL);
 
         window = glfwCreateWindow(mode->width, mode->height, "Audial", NULL, NULL);
+        refreshRate = mode->refreshRate;
     }
 
     if (window == nullptr) {
@@ -417,7 +419,7 @@ int main(int argc, char** argv) {
 
     editor.Init(&gGameManager);
 
-    float const fixedTimeStep = 1.f / 60.f;
+    float const fixedTimeStep = 1.f / static_cast<float>(refreshRate);
     bool paused = false;
     while(!glfwWindowShouldClose(window)) {
 
