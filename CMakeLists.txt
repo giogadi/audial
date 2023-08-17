@@ -23,6 +23,7 @@ add_executable(game
 
     src/util.h
     src/string_util.h
+    src/math_util.h
 
     src/imgui_util.h
     src/imgui_vector_util.h

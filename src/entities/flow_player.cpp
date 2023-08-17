@@ -95,6 +95,13 @@ void FlowPlayerEntity::DrawPlayer(GameManager& g) {
         renderer::ColorModelInstance& model = g._scene->DrawMesh(_model, _transform.Mat4Scale(), _currentColor);
         model._topLayer = true;
     }
+
+    if (_dashTimer >= 0.f) {
+        if (ne::Entity* dashTarget = g._neEntityManager->GetEntity(_dashTargetId)) {
+            Vec3 targetPos = dashTarget->_transform.Pos();
+            g._scene->DrawLine(_transform.Pos(), targetPos, dashTarget->_modelColor);
+        }
+    }
 }
 
 void FlowPlayerEntity::Respawn(GameManager& g) {
