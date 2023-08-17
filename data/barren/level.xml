@@ -282,7 +282,7 @@
                 <follow_entity_name/>
             </waypoint_follower>
             <sequence>mG0:1 -1:1 -1:1 -1:1 mG0:1 -1:1 -1:1 -1:1 mG0:1 -1:1 -1:1 -1:1 mG0:1 -1:1 -1:1 -1:1</sequence>
-            <start_mute>false</start_mute>
+            <start_mute>true</start_mute>
             <gain>0.75</gain>
             <channels/>
             <step_length>0.25</step_length>
@@ -1042,9 +1042,9 @@
             <pickable>true</pickable>
             <transform>
                 <pos>
-                    <x>-3.828125</x>
+                    <x>-3.85012722</x>
                     <y>0</y>
-                    <z>0</z>
+                    <z>4.58745861</z>
                 </pos>
                 <quat>
                     <x>0</x>
@@ -1247,9 +1247,9 @@
             <pickable>true</pickable>
             <transform>
                 <pos>
-                    <x>-3.828125</x>
+                    <x>-3.80612278</x>
                     <y>0</y>
-                    <z>-10.5</z>
+                    <z>-5.92354298</z>
                 </pos>
                 <quat>
                     <x>0</x>
@@ -1614,9 +1614,9 @@
             <pickable>true</pickable>
             <transform>
                 <pos>
-                    <x>5.328125</x>
+                    <x>5.33912611</x>
                     <y>0</y>
-                    <z>0</z>
+                    <z>4.54345369</z>
                 </pos>
                 <quat>
                     <x>0</x>
@@ -1697,7 +1697,7 @@
                 <pos>
                     <x>5.328125</x>
                     <y>0</y>
-                    <z>-10.5</z>
+                    <z>-6.04455519</z>
                 </pos>
                 <quat>
                     <x>0</x>
