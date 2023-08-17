@@ -282,7 +282,7 @@
                 <follow_entity_name/>
             </waypoint_follower>
             <sequence>mG0:1 -1:1 -1:1 -1:1 mG0:1 -1:1 -1:1 -1:1 mG0:1 -1:1 -1:1 -1:1 mG0:1 -1:1 -1:1 -1:1</sequence>
-            <start_mute>true</start_mute>
+            <start_mute>false</start_mute>
             <gain>0.75</gain>
             <channels/>
             <step_length>0.25</step_length>
@@ -1075,8 +1075,8 @@
                 <start_time>4</start_time>
                 <waypoints>
                     <waypoint>
-                        <wait_time>0</wait_time>
-                        <move_time>4</move_time>
+                        <wait_time>0.75</wait_time>
+                        <move_time>0.25</move_time>
                         <p>
                             <x>0</x>
                             <y>0</y>
@@ -1084,8 +1084,8 @@
                         </p>
                     </waypoint>
                     <waypoint>
-                        <wait_time>0</wait_time>
-                        <move_time>4</move_time>
+                        <wait_time>0.75</wait_time>
+                        <move_time>0.25</move_time>
                         <p>
                             <x>0</x>
                             <y>0</y>
@@ -1280,8 +1280,8 @@
                 <start_time>4</start_time>
                 <waypoints>
                     <waypoint>
-                        <wait_time>0</wait_time>
-                        <move_time>4</move_time>
+                        <wait_time>0.75</wait_time>
+                        <move_time>0.25</move_time>
                         <p>
                             <x>0</x>
                             <y>0</y>
@@ -1289,8 +1289,8 @@
                         </p>
                     </waypoint>
                     <waypoint>
-                        <wait_time>0</wait_time>
-                        <move_time>4</move_time>
+                        <wait_time>0.75</wait_time>
+                        <move_time>0.25</move_time>
                         <p>
                             <x>0</x>
                             <y>0</y>
@@ -1361,8 +1361,8 @@
                 <start_time>4</start_time>
                 <waypoints>
                     <waypoint>
-                        <wait_time>0</wait_time>
-                        <move_time>4</move_time>
+                        <wait_time>0.75</wait_time>
+                        <move_time>0.25</move_time>
                         <p>
                             <x>0</x>
                             <y>0</y>
@@ -1370,8 +1370,8 @@
                         </p>
                     </waypoint>
                     <waypoint>
-                        <wait_time>0</wait_time>
-                        <move_time>4</move_time>
+                        <wait_time>0.75</wait_time>
+                        <move_time>0.25</move_time>
                         <p>
                             <x>0</x>
                             <y>0</y>
@@ -1442,8 +1442,8 @@
                 <start_time>4</start_time>
                 <waypoints>
                     <waypoint>
-                        <wait_time>0</wait_time>
-                        <move_time>4</move_time>
+                        <wait_time>0.75</wait_time>
+                        <move_time>0.25</move_time>
                         <p>
                             <x>0</x>
                             <y>0</y>
@@ -1451,8 +1451,8 @@
                         </p>
                     </waypoint>
                     <waypoint>
-                        <wait_time>0</wait_time>
-                        <move_time>4</move_time>
+                        <wait_time>0.75</wait_time>
+                        <move_time>0.25</move_time>
                         <p>
                             <x>0</x>
                             <y>0</y>
@@ -1647,8 +1647,8 @@
                 <start_time>4</start_time>
                 <waypoints>
                     <waypoint>
-                        <wait_time>0</wait_time>
-                        <move_time>4</move_time>
+                        <wait_time>0.75</wait_time>
+                        <move_time>0.25</move_time>
                         <p>
                             <x>0</x>
                             <y>0</y>
@@ -1656,8 +1656,8 @@
                         </p>
                     </waypoint>
                     <waypoint>
-                        <wait_time>0</wait_time>
-                        <move_time>4</move_time>
+                        <wait_time>0.75</wait_time>
+                        <move_time>0.25</move_time>
                         <p>
                             <x>0</x>
                             <y>0</y>
@@ -1728,8 +1728,8 @@
                 <start_time>4</start_time>
                 <waypoints>
                     <waypoint>
-                        <wait_time>0</wait_time>
-                        <move_time>4</move_time>
+                        <wait_time>0.75</wait_time>
+                        <move_time>0.25</move_time>
                         <p>
                             <x>0</x>
                             <y>0</y>
@@ -1737,8 +1737,8 @@
                         </p>
                     </waypoint>
                     <waypoint>
-                        <wait_time>0</wait_time>
-                        <move_time>4</move_time>
+                        <wait_time>0.75</wait_time>
+                        <move_time>0.25</move_time>
                         <p>
                             <x>0</x>
                             <y>0</y>
@@ -2057,8 +2057,8 @@
                 <start_time>4</start_time>
                 <waypoints>
                     <waypoint>
-                        <wait_time>0</wait_time>
-                        <move_time>4</move_time>
+                        <wait_time>0.75</wait_time>
+                        <move_time>0.25</move_time>
                         <p>
                             <x>0</x>
                             <y>0</y>
@@ -2066,8 +2066,8 @@
                         </p>
                     </waypoint>
                     <waypoint>
-                        <wait_time>0</wait_time>
-                        <move_time>4</move_time>
+                        <wait_time>0.75</wait_time>
+                        <move_time>0.25</move_time>
                         <p>
                             <x>0</x>
                             <y>0</y>
@@ -2262,8 +2262,8 @@
                 <start_time>4</start_time>
                 <waypoints>
                     <waypoint>
-                        <wait_time>0</wait_time>
-                        <move_time>4</move_time>
+                        <wait_time>0.75</wait_time>
+                        <move_time>0.25</move_time>
                         <p>
                             <x>0</x>
                             <y>0</y>
@@ -2271,8 +2271,8 @@
                         </p>
                     </waypoint>
                     <waypoint>
-                        <wait_time>0</wait_time>
-                        <move_time>4</move_time>
+                        <wait_time>0.75</wait_time>
+                        <move_time>0.25</move_time>
                         <p>
                             <x>0</x>
                             <y>0</y>
@@ -2343,17 +2343,17 @@
                 <start_time>4</start_time>
                 <waypoints>
                     <waypoint>
-                        <wait_time>0</wait_time>
-                        <move_time>4</move_time>
+                        <wait_time>0.75</wait_time>
+                        <move_time>0.25</move_time>
                         <p>
                             <x>0</x>
                             <y>0</y>
-                            <z>-4.5</z>
+                            <z>-3.5</z>
                         </p>
                     </waypoint>
                     <waypoint>
-                        <wait_time>0</wait_time>
-                        <move_time>4</move_time>
+                        <wait_time>0.75</wait_time>
+                        <move_time>0.25</move_time>
                         <p>
                             <x>0</x>
                             <y>0</y>
@@ -2548,8 +2548,8 @@
                 <start_time>4</start_time>
                 <waypoints>
                     <waypoint>
-                        <wait_time>0</wait_time>
-                        <move_time>4</move_time>
+                        <wait_time>0.75</wait_time>
+                        <move_time>0.25</move_time>
                         <p>
                             <x>0</x>
                             <y>0</y>
@@ -2557,8 +2557,8 @@
                         </p>
                     </waypoint>
                     <waypoint>
-                        <wait_time>0</wait_time>
-                        <move_time>4</move_time>
+                        <wait_time>0.75</wait_time>
+                        <move_time>0.25</move_time>
                         <p>
                             <x>0</x>
                             <y>0</y>
@@ -2815,8 +2815,8 @@
                 <start_time>4</start_time>
                 <waypoints>
                     <waypoint>
-                        <wait_time>0</wait_time>
-                        <move_time>4</move_time>
+                        <wait_time>0.75</wait_time>
+                        <move_time>0.25</move_time>
                         <p>
                             <x>0</x>
                             <y>0</y>
@@ -2824,8 +2824,8 @@
                         </p>
                     </waypoint>
                     <waypoint>
-                        <wait_time>0</wait_time>
-                        <move_time>4</move_time>
+                        <wait_time>0.75</wait_time>
+                        <move_time>0.25</move_time>
                         <p>
                             <x>0</x>
                             <y>0</y>
@@ -2896,8 +2896,8 @@
                 <start_time>4</start_time>
                 <waypoints>
                     <waypoint>
-                        <wait_time>0</wait_time>
-                        <move_time>4</move_time>
+                        <wait_time>0.75</wait_time>
+                        <move_time>0.25</move_time>
                         <p>
                             <x>0</x>
                             <y>0</y>
@@ -2905,8 +2905,8 @@
                         </p>
                     </waypoint>
                     <waypoint>
-                        <wait_time>0</wait_time>
-                        <move_time>4</move_time>
+                        <wait_time>0.75</wait_time>
+                        <move_time>0.25</move_time>
                         <p>
                             <x>0</x>
                             <y>0</y>
@@ -3206,8 +3206,8 @@
                 <start_time>4</start_time>
                 <waypoints>
                     <waypoint>
-                        <wait_time>0</wait_time>
-                        <move_time>4</move_time>
+                        <wait_time>0.75</wait_time>
+                        <move_time>0.25</move_time>
                         <p>
                             <x>0</x>
                             <y>0</y>
@@ -3215,8 +3215,8 @@
                         </p>
                     </waypoint>
                     <waypoint>
-                        <wait_time>0</wait_time>
-                        <move_time>4</move_time>
+                        <wait_time>0.75</wait_time>
+                        <move_time>0.25</move_time>
                         <p>
                             <x>0</x>
                             <y>0</y>
@@ -3411,8 +3411,8 @@
                 <start_time>4</start_time>
                 <waypoints>
                     <waypoint>
-                        <wait_time>0</wait_time>
-                        <move_time>4</move_time>
+                        <wait_time>0.75</wait_time>
+                        <move_time>0.25</move_time>
                         <p>
                             <x>0</x>
                             <y>0</y>
@@ -3420,8 +3420,8 @@
                         </p>
                     </waypoint>
                     <waypoint>
-                        <wait_time>0</wait_time>
-                        <move_time>4</move_time>
+                        <wait_time>0.75</wait_time>
+                        <move_time>0.25</move_time>
                         <p>
                             <x>0</x>
                             <y>0</y>
@@ -3492,8 +3492,8 @@
                 <start_time>8</start_time>
                 <waypoints>
                     <waypoint>
-                        <wait_time>0</wait_time>
-                        <move_time>4</move_time>
+                        <wait_time>0.75</wait_time>
+                        <move_time>0.25</move_time>
                         <p>
                             <x>0</x>
                             <y>0</y>
@@ -3501,8 +3501,8 @@
                         </p>
                     </waypoint>
                     <waypoint>
-                        <wait_time>0</wait_time>
-                        <move_time>4</move_time>
+                        <wait_time>0.75</wait_time>
+                        <move_time>0.25</move_time>
                         <p>
                             <x>0</x>
                             <y>0</y>
@@ -3697,8 +3697,8 @@
                 <start_time>4</start_time>
                 <waypoints>
                     <waypoint>
-                        <wait_time>0</wait_time>
-                        <move_time>4</move_time>
+                        <wait_time>0.75</wait_time>
+                        <move_time>0.25</move_time>
                         <p>
                             <x>0</x>
                             <y>0</y>
@@ -3706,8 +3706,8 @@
                         </p>
                     </waypoint>
                     <waypoint>
-                        <wait_time>0</wait_time>
-                        <move_time>4</move_time>
+                        <wait_time>0.75</wait_time>
+                        <move_time>0.25</move_time>
                         <p>
                             <x>0</x>
                             <y>0</y>
@@ -3902,8 +3902,8 @@
                 <start_time>4</start_time>
                 <waypoints>
                     <waypoint>
-                        <wait_time>0</wait_time>
-                        <move_time>4</move_time>
+                        <wait_time>0.75</wait_time>
+                        <move_time>0.25</move_time>
                         <p>
                             <x>0</x>
                             <y>0</y>
@@ -3911,8 +3911,8 @@
                         </p>
                     </waypoint>
                     <waypoint>
-                        <wait_time>0</wait_time>
-                        <move_time>4</move_time>
+                        <wait_time>0.75</wait_time>
+                        <move_time>0.25</move_time>
                         <p>
                             <x>0</x>
                             <y>0</y>
@@ -3983,8 +3983,8 @@
                 <start_time>4</start_time>
                 <waypoints>
                     <waypoint>
-                        <wait_time>0</wait_time>
-                        <move_time>4</move_time>
+                        <wait_time>0.75</wait_time>
+                        <move_time>0.25</move_time>
                         <p>
                             <x>0</x>
                             <y>0</y>
@@ -3992,8 +3992,8 @@
                         </p>
                     </waypoint>
                     <waypoint>
-                        <wait_time>0</wait_time>
-                        <move_time>4</move_time>
+                        <wait_time>0.75</wait_time>
+                        <move_time>0.25</move_time>
                         <p>
                             <x>0</x>
                             <y>0</y>
@@ -7606,8 +7606,8 @@
                 <start_time>4</start_time>
                 <waypoints>
                     <waypoint>
-                        <wait_time>0</wait_time>
-                        <move_time>4</move_time>
+                        <wait_time>0.75</wait_time>
+                        <move_time>0.25</move_time>
                         <p>
                             <x>0</x>
                             <y>0</y>
@@ -7615,8 +7615,8 @@
                         </p>
                     </waypoint>
                     <waypoint>
-                        <wait_time>0</wait_time>
-                        <move_time>4</move_time>
+                        <wait_time>0.75</wait_time>
+                        <move_time>0.25</move_time>
                         <p>
                             <x>0</x>
                             <y>0</y>
