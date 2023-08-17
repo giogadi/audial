@@ -918,9 +918,9 @@
             <pickable>true</pickable>
             <transform>
                 <pos>
-                    <x>-6.953125</x>
+                    <x>-6.40306997</x>
                     <y>0</y>
-                    <z>-0.882813334</z>
+                    <z>-0.948819995</z>
                 </pos>
                 <quat>
                     <x>0</x>
@@ -980,9 +980,9 @@
             <pickable>true</pickable>
             <transform>
                 <pos>
-                    <x>-5.28125</x>
+                    <x>-4.8742094</x>
                     <y>0</y>
-                    <z>-0.914063334</z>
+                    <z>-0.958067715</z>
                 </pos>
                 <quat>
                     <x>0</x>
@@ -1042,7 +1042,7 @@
             <pickable>true</pickable>
             <transform>
                 <pos>
-                    <x>-3.85012722</x>
+                    <x>-3.54209614</x>
                     <y>0</y>
                     <z>4.58745861</z>
                 </pos>
@@ -1123,9 +1123,9 @@
             <pickable>true</pickable>
             <transform>
                 <pos>
-                    <x>-2.390625</x>
+                    <x>-2.22560835</x>
                     <y>0</y>
-                    <z>-0.929688334</z>
+                    <z>-0.940689445</z>
                 </pos>
                 <quat>
                     <x>0</x>
@@ -1185,9 +1185,9 @@
             <pickable>true</pickable>
             <transform>
                 <pos>
-                    <x>-0.953125</x>
+                    <x>-0.832112551</x>
                     <y>0</y>
-                    <z>-0.929688334</z>
+                    <z>-0.962691605</z>
                 </pos>
                 <quat>
                     <x>0</x>
@@ -1247,9 +1247,9 @@
             <pickable>true</pickable>
             <transform>
                 <pos>
-                    <x>-3.80612278</x>
+                    <x>-3.54200006</x>
                     <y>0</y>
-                    <z>-5.92354298</z>
+                    <z>-5.91254187</z>
                 </pos>
                 <quat>
                     <x>0</x>
@@ -1328,7 +1328,7 @@
             <pickable>true</pickable>
             <transform>
                 <pos>
-                    <x>0.609375</x>
+                    <x>0.620375991</x>
                     <y>0</y>
                     <z>4.5</z>
                 </pos>
@@ -1409,9 +1409,9 @@
             <pickable>true</pickable>
             <transform>
                 <pos>
-                    <x>0.609375</x>
+                    <x>0.620000005</x>
                     <y>0</y>
-                    <z>-6</z>
+                    <z>-5.97799778</z>
                 </pos>
                 <quat>
                     <x>0</x>
@@ -1490,7 +1490,7 @@
             <pickable>true</pickable>
             <transform>
                 <pos>
-                    <x>2.0625</x>
+                    <x>2.00749445</x>
                     <y>0</y>
                     <z>-0.960938394</z>
                 </pos>
@@ -1552,9 +1552,9 @@
             <pickable>true</pickable>
             <transform>
                 <pos>
-                    <x>3.734375</x>
+                    <x>3.41534305</x>
                     <y>0</y>
-                    <z>-0.976563394</z>
+                    <z>-0.987564504</z>
                 </pos>
                 <quat>
                     <x>0</x>
@@ -1614,9 +1614,9 @@
             <pickable>true</pickable>
             <transform>
                 <pos>
-                    <x>5.33912611</x>
+                    <x>5.06409836</x>
                     <y>0</y>
-                    <z>4.54345369</z>
+                    <z>4.57645702</z>
                 </pos>
                 <quat>
                     <x>0</x>
@@ -1695,9 +1695,9 @@
             <pickable>true</pickable>
             <transform>
                 <pos>
-                    <x>5.328125</x>
+                    <x>5.06400013</x>
                     <y>0</y>
-                    <z>-6.04455519</z>
+                    <z>-6.00055075</z>
                 </pos>
                 <quat>
                     <x>0</x>
@@ -1776,7 +1776,7 @@
             <pickable>true</pickable>
             <transform>
                 <pos>
-                    <x>6.796875</x>
+                    <x>6.62085724</x>
                     <y>0</y>
                     <z>-1.00781333</z>
                 </pos>
@@ -1838,7 +1838,7 @@
             <pickable>true</pickable>
             <transform>
                 <pos>
-                    <x>8.234375</x>
+                    <x>8.05835724</x>
                     <y>0</y>
                     <z>-1.00781333</z>
                 </pos>
@@ -1900,9 +1900,9 @@
             <pickable>true</pickable>
             <transform>
                 <pos>
-                    <x>29.359375</x>
+                    <x>28.5892982</x>
                     <y>0</y>
-                    <z>-1.24218833</z>
+                    <z>-1.29719377</z>
                 </pos>
                 <quat>
                     <x>0</x>
@@ -1962,9 +1962,9 @@
             <pickable>true</pickable>
             <transform>
                 <pos>
-                    <x>31.03125</x>
+                    <x>29.7441216</x>
                     <y>0</y>
-                    <z>-1.25781333</z>
+                    <z>-1.33482111</z>
                 </pos>
                 <quat>
                     <x>0</x>
@@ -2024,9 +2024,9 @@
             <pickable>true</pickable>
             <transform>
                 <pos>
-                    <x>32.484375</x>
+                    <x>32.4183693</x>
                     <y>0</y>
-                    <z>-1.5</z>
+                    <z>-1.51100111</z>
                 </pos>
                 <quat>
                     <x>0</x>
@@ -2229,9 +2229,9 @@
             <pickable>true</pickable>
             <transform>
                 <pos>
-                    <x>32.484375</x>
+                    <x>32.4179993</x>
                     <y>0</y>
-                    <z>-10.5</z>
+                    <z>-10.5349998</z>
                 </pos>
                 <quat>
                     <x>0</x>
@@ -2782,9 +2782,9 @@
             <pickable>true</pickable>
             <transform>
                 <pos>
-                    <x>27.96875</x>
+                    <x>27.1766701</x>
                     <y>0</y>
-                    <z>4.5</z>
+                    <z>4.05995655</z>
                 </pos>
                 <quat>
                     <x>0</x>
@@ -2863,9 +2863,9 @@
             <pickable>true</pickable>
             <transform>
                 <pos>
-                    <x>27.96875</x>
+                    <x>27.177</x>
                     <y>0</y>
-                    <z>-6</z>
+                    <z>-6.19801998</z>
                 </pos>
                 <quat>
                     <x>0</x>
@@ -3049,9 +3049,9 @@
             <pickable>true</pickable>
             <transform>
                 <pos>
-                    <x>11.296875</x>
+                    <x>11.153861</x>
                     <y>0</y>
-                    <z>-1.07031333</z>
+                    <z>-1.10331655</z>
                 </pos>
                 <quat>
                     <x>0</x>
@@ -3111,9 +3111,9 @@
             <pickable>true</pickable>
             <transform>
                 <pos>
-                    <x>12.96875</x>
+                    <x>12.4847012</x>
                     <y>0</y>
-                    <z>-1.08593833</z>
+                    <z>-1.11894155</z>
                 </pos>
                 <quat>
                     <x>0</x>
@@ -3173,7 +3173,7 @@
             <pickable>true</pickable>
             <transform>
                 <pos>
-                    <x>14.421875</x>
+                    <x>13.9158249</x>
                     <y>0</y>
                     <z>0.5</z>
                 </pos>
@@ -3254,9 +3254,9 @@
             <pickable>true</pickable>
             <transform>
                 <pos>
-                    <x>15.890625</x>
+                    <x>15.3295698</x>
                     <y>0</y>
-                    <z>1.58593643</z>
+                    <z>1.54193199</z>
                 </pos>
                 <quat>
                     <x>0</x>
@@ -3316,9 +3316,9 @@
             <pickable>true</pickable>
             <transform>
                 <pos>
-                    <x>17.328125</x>
+                    <x>16.8110733</x>
                     <y>0</y>
-                    <z>1.58593643</z>
+                    <z>1.48692644</z>
                 </pos>
                 <quat>
                     <x>0</x>
@@ -3378,9 +3378,9 @@
             <pickable>true</pickable>
             <transform>
                 <pos>
-                    <x>14.421875</x>
+                    <x>13.9160004</x>
                     <y>0</y>
-                    <z>-10.5</z>
+                    <z>-10.4229927</z>
                 </pos>
                 <quat>
                     <x>0</x>
@@ -3459,9 +3459,9 @@
             <pickable>true</pickable>
             <transform>
                 <pos>
-                    <x>18.7970009</x>
+                    <x>18.1259346</x>
                     <y>0</y>
-                    <z>0.499999851</z>
+                    <z>0.533003092</z>
                 </pos>
                 <quat>
                     <x>0</x>
@@ -3540,9 +3540,9 @@
             <pickable>true</pickable>
             <transform>
                 <pos>
-                    <x>20.3125</x>
+                    <x>19.6194305</x>
                     <y>0</y>
-                    <z>-1.13281345</z>
+                    <z>-1.24282444</z>
                 </pos>
                 <quat>
                     <x>0</x>
@@ -3602,9 +3602,9 @@
             <pickable>true</pickable>
             <transform>
                 <pos>
-                    <x>21.984375</x>
+                    <x>21.2142982</x>
                     <y>0</y>
-                    <z>-1.14843845</z>
+                    <z>-1.24744833</z>
                 </pos>
                 <quat>
                     <x>0</x>
@@ -3664,9 +3664,9 @@
             <pickable>true</pickable>
             <transform>
                 <pos>
-                    <x>23.578125</x>
+                    <x>22.7549992</x>
                     <y>0</y>
-                    <z>-10.5</z>
+                    <z>-10.5110016</z>
                 </pos>
                 <quat>
                     <x>0</x>
@@ -3745,9 +3745,9 @@
             <pickable>true</pickable>
             <transform>
                 <pos>
-                    <x>25.171875</x>
+                    <x>24.3137894</x>
                     <y>0</y>
-                    <z>1.55468643</z>
+                    <z>1.45567656</z>
                 </pos>
                 <quat>
                     <x>0</x>
@@ -3807,9 +3807,9 @@
             <pickable>true</pickable>
             <transform>
                 <pos>
-                    <x>26.5625</x>
+                    <x>25.7594185</x>
                     <y>0</y>
-                    <z>1.52343643</z>
+                    <z>1.44642889</z>
                 </pos>
                 <quat>
                     <x>0</x>
@@ -3869,9 +3869,9 @@
             <pickable>true</pickable>
             <transform>
                 <pos>
-                    <x>9.90625</x>
+                    <x>9.68622875</x>
                     <y>0</y>
-                    <z>4.5</z>
+                    <z>4.62101173</z>
                 </pos>
                 <quat>
                     <x>0</x>
@@ -3950,9 +3950,9 @@
             <pickable>true</pickable>
             <transform>
                 <pos>
-                    <x>9.90625</x>
+                    <x>9.68599987</x>
                     <y>0</y>
-                    <z>-6</z>
+                    <z>-6.02200222</z>
                 </pos>
                 <quat>
                     <x>0</x>
@@ -5047,7 +5047,7 @@
             <pickable>true</pickable>
             <transform>
                 <pos>
-                    <x>38.5</x>
+                    <x>37.5649071</x>
                     <y>15</y>
                     <z>-1</z>
                 </pos>
@@ -6277,9 +6277,9 @@
             <pickable>true</pickable>
             <transform>
                 <pos>
-                    <x>2.5</x>
+                    <x>2.97304726</x>
                     <y>15</y>
-                    <z>0</z>
+                    <z>0.0220021959</z>
                 </pos>
                 <quat>
                     <x>0</x>
@@ -7319,9 +7319,9 @@
             <pickable>true</pickable>
             <transform>
                 <pos>
-                    <x>21.265625</x>
+                    <x>20.5285511</x>
                     <y>0</y>
-                    <z>-3.94531322</z>
+                    <z>-3.89030814</z>
                 </pos>
                 <quat>
                     <x>0</x>
@@ -7387,9 +7387,9 @@
             <pickable>true</pickable>
             <transform>
                 <pos>
-                    <x>12.90625</x>
+                    <x>12.4442034</x>
                     <y>0</y>
-                    <z>1.60156143</z>
+                    <z>1.56855822</z>
                 </pos>
                 <quat>
                     <x>0</x>
@@ -7449,7 +7449,7 @@
             <pickable>true</pickable>
             <transform>
                 <pos>
-                    <x>16.59375</x>
+                    <x>16.0436954</x>
                     <y>0</y>
                     <z>-1.19531333</z>
                 </pos>
@@ -7511,9 +7511,9 @@
             <pickable>true</pickable>
             <transform>
                 <pos>
-                    <x>21.15625</x>
+                    <x>20.4081745</x>
                     <y>0</y>
-                    <z>1.57031143</z>
+                    <z>1.46030045</z>
                 </pos>
                 <quat>
                     <x>0</x>
@@ -7573,9 +7573,9 @@
             <pickable>true</pickable>
             <transform>
                 <pos>
-                    <x>23.734375</x>
+                    <x>22.7552776</x>
                     <y>0</y>
-                    <z>0.4375</z>
+                    <z>0.481504381</z>
                 </pos>
                 <quat>
                     <x>0</x>
@@ -7654,7 +7654,7 @@
             <pickable>true</pickable>
             <transform>
                 <pos>
-                    <x>25.859375</x>
+                    <x>25.0342922</x>
                     <y>0</y>
                     <z>-1.21093833</z>
                 </pos>
@@ -7716,9 +7716,9 @@
             <pickable>true</pickable>
             <transform>
                 <pos>
-                    <x>36.921875</x>
+                    <x>36.9199982</x>
                     <y>0</y>
-                    <z>-2.62499928</z>
+                    <z>-2.76801348</z>
                 </pos>
                 <quat>
                     <x>0</x>
@@ -7797,9 +7797,9 @@
             <pickable>true</pickable>
             <transform>
                 <pos>
-                    <x>36.9216232</x>
+                    <x>36.9199982</x>
                     <y>0</y>
-                    <z>-3.76587629</z>
+                    <z>-3.77999997</z>
                 </pos>
                 <quat>
                     <x>0</x>
@@ -7810,7 +7810,7 @@
                 <scale>
                     <x>1</x>
                     <y>1</y>
-                    <z>1.25</z>
+                    <z>1</z>
                 </scale>
             </transform>
             <model_name>cube</model_name>
@@ -7828,26 +7828,7 @@
                 <waypoint_auto_start>false</waypoint_auto_start>
                 <loop_waypoints>true</loop_waypoints>
                 <start_time>4</start_time>
-                <waypoints>
-                    <waypoint>
-                        <wait_time>0</wait_time>
-                        <move_time>4</move_time>
-                        <p>
-                            <x>0</x>
-                            <y>0</y>
-                            <z>-4.5</z>
-                        </p>
-                    </waypoint>
-                    <waypoint>
-                        <wait_time>0</wait_time>
-                        <move_time>4</move_time>
-                        <p>
-                            <x>0</x>
-                            <y>0</y>
-                            <z>0</z>
-                        </p>
-                    </waypoint>
-                </waypoints>
+                <waypoints/>
                 <follow_entity_name/>
             </waypoint_follower>
             <can_hit>true</can_hit>
@@ -7878,9 +7859,9 @@
             <pickable>true</pickable>
             <transform>
                 <pos>
-                    <x>36.921875</x>
+                    <x>36.9199982</x>
                     <y>0</y>
-                    <z>-5.64062405</z>
+                    <z>-5.53061295</z>
                 </pos>
                 <quat>
                     <x>0</x>
@@ -9285,9 +9266,9 @@
             <pickable>true</pickable>
             <transform>
                 <pos>
-                    <x>31.03125</x>
+                    <x>30.9102383</x>
                     <y>0</y>
-                    <z>-3.92968845</z>
+                    <z>-3.96269178</z>
                 </pos>
                 <quat>
                     <x>0</x>
@@ -15859,9 +15840,9 @@
             <pickable>true</pickable>
             <transform>
                 <pos>
-                    <x>27.9728451</x>
+                    <x>27.1477623</x>
                     <y>0</y>
-                    <z>-2.27597237</z>
+                    <z>-2.25397015</z>
                 </pos>
                 <quat>
                     <x>0</x>
@@ -16225,5 +16206,67 @@
                 </seq_action>
             </hit_actions>
         </FlowWall>
+        <TypingEnemy>
+            <name>r2_a</name>
+            <entity_active>true</entity_active>
+            <pickable>true</pickable>
+            <transform>
+                <pos>
+                    <x>30.8442326</x>
+                    <y>0</y>
+                    <z>-1.34582222</z>
+                </pos>
+                <quat>
+                    <x>0</x>
+                    <y>0</y>
+                    <z>0</z>
+                    <w>1</w>
+                </quat>
+                <scale>
+                    <x>0.5</x>
+                    <y>0.5</y>
+                    <z>0.5</z>
+                </scale>
+            </transform>
+            <model_name>cube</model_name>
+            <model_color_vec4>
+                <x>1</x>
+                <y>0</y>
+                <z>0</z>
+                <w>1</w>
+            </model_color_vec4>
+            <flow_section_id>2</flow_section_id>
+            <tag>0</tag>
+            <waypoint_follower>
+                <mode>Waypoint</mode>
+                <local_to_entity>false</local_to_entity>
+                <waypoint_auto_start>false</waypoint_auto_start>
+                <loop_waypoints>false</loop_waypoints>
+                <start_time>3</start_time>
+                <waypoints/>
+                <follow_entity_name/>
+            </waypoint_follower>
+            <text>a</text>
+            <type_kill>false</type_kill>
+            <all_actions_on_hit>false</all_actions_on_hit>
+            <flow_polarity>false</flow_polarity>
+            <flow_cooldown>500</flow_cooldown>
+            <show_beats_left>false</show_beats_left>
+            <cooldown_quantize_denom>0</cooldown_quantize_denom>
+            <reset_cooldown_on_any_hit>true</reset_cooldown_on_any_hit>
+            <init_hittable>true</init_hittable>
+            <active_radius>-1</active_radius>
+            <hit_actions>
+                <seq_action>
+                    <one_time>false</one_time>
+                    <action_type>ChangeStepSequencer</action_type>
+                    <seqName>chord_seq</seqName>
+                    <velOnly>false</velOnly>
+                    <temporary>true</temporary>
+                    <stepStr> mG3,mB3-,mD4,mF4:1</stepStr>
+                </seq_action>
+            </hit_actions>
+            <off_cooldown_actions/>
+        </TypingEnemy>
     </new_entities>
 </script>
