@@ -98,9 +98,7 @@ void IntVariableEntity::DrawCounter(GameManager& g) {
         Vec4 color;
         if (i < numOn) {
             color = kHitColor;
-            // if (i + 1 >= numOn) {
-                t.SetScale(Vec3(cellWidth, cellWidth, cellWidth) * newlyActiveScaleFactor);
-            // }
+            t.SetScale(Vec3(cellWidth, cellWidth, cellWidth) * newlyActiveScaleFactor);
         } else {
             color = kNoHitColor;
             t.SetScale(Vec3(cellWidth, cellWidth, cellWidth));
