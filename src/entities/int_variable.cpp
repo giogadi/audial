@@ -62,11 +62,12 @@ void IntVariableEntity::DrawCounter(GameManager& g) {
     float cellWidth = 0.25f;
     float spaceBetweenCells = 0.25f;
     float totalWidth = numSteps * cellWidth + (spaceBetweenCells * (numSteps - 1));
+    Vec3 direction(0.f, 0.f, 1.f);
     Transform t;
     t.SetScale(Vec3(cellWidth, cellWidth, cellWidth));
     Vec3 pos = _transform.Pos();
-    pos._x -= 0.5f * totalWidth;
-    pos._x += 0.5f * cellWidth;
+    pos -= 0.5f * totalWidth * direction;    
+    pos += 0.5f * cellWidth * direction;    
     int numOn = _initialValue - _currentValue;
     Vec4 constexpr kNoHitColor = Vec4(0.245098054f, 0.933390915f, 1.f, 1.f);
     Vec4 constexpr kHitColor = Vec4(0.933390915f, 0.245098054f, 1.f, 1.f);
@@ -74,7 +75,7 @@ void IntVariableEntity::DrawCounter(GameManager& g) {
     double const beatTime = g._beatClock->GetBeatTimeFromEpoch();
     double beatTimeSinceLastAdd = std::numeric_limits<double>::max();
     double constexpr kAnimTime = 0.5f;
-    float constexpr kNewlyActiveExtraScale = 2.f;
+    float constexpr kNewlyActiveExtraScale = 4.f;
     float newlyActiveScaleFactor = 1.f;
     float alpha = _modelColor._w;
     if (_currentValue == 0) {
@@ -84,7 +85,7 @@ void IntVariableEntity::DrawCounter(GameManager& g) {
         beatTimeSinceLastAdd = beatTime - _beatTimeOfLastAdd;
         if (beatTimeSinceLastAdd <= kAnimTime) {
             float factor = math_util::Clamp(beatTimeSinceLastAdd / kAnimTime, 0.0, 1.0);
-            float scaleFactor = math_util::Triangle(factor);
+            float scaleFactor = math_util::SmoothUpAndDown(factor);
             newlyActiveScaleFactor += scaleFactor * kNewlyActiveExtraScale;
 
             if (_currentValue == 0) {
@@ -108,7 +109,6 @@ void IntVariableEntity::DrawCounter(GameManager& g) {
         t.SetTranslation(pos);
         renderer::ColorModelInstance& instance = g._scene->DrawCube(t.Mat4Scale(), color);
         instance._topLayer = true;
-        pos._x += cellWidth + spaceBetweenCells;
-        
+        pos += (cellWidth + spaceBetweenCells) * direction;
     }
 }

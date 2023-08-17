@@ -5106,9 +5106,9 @@
             </transform>
             <model_name>cube</model_name>
             <model_color_vec4>
-                <x>0.800000012</x>
-                <y>0.800000012</y>
-                <z>0.800000012</z>
+                <x>0.56078434</x>
+                <y>0.56078434</y>
+                <z>0.56078434</z>
                 <w>1</w>
             </model_color_vec4>
             <flow_section_id>6</flow_section_id>
@@ -5178,9 +5178,9 @@
             </transform>
             <model_name>cube</model_name>
             <model_color_vec4>
-                <x>0.800000012</x>
-                <y>0.800000012</y>
-                <z>0.800000012</z>
+                <x>0.558823526</x>
+                <y>0.558823526</y>
+                <z>0.558823526</z>
                 <w>1</w>
             </model_color_vec4>
             <flow_section_id>6</flow_section_id>
@@ -5562,9 +5562,9 @@
             <pickable>true</pickable>
             <transform>
                 <pos>
-                    <x>-17.3156357</x>
+                    <x>-8.50375366</x>
                     <y>0</y>
-                    <z>0.460936576</z>
+                    <z>-0.69417882</z>
                 </pos>
                 <quat>
                     <x>0</x>
@@ -5597,6 +5597,7 @@
                 <follow_entity_name/>
             </waypoint_follower>
             <initial_value>3</initial_value>
+            <draw_counter>true</draw_counter>
             <actions>
                 <seq_action>
                     <one_time>true</one_time>
