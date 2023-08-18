@@ -50,7 +50,9 @@ struct StepSequencerEntity : ne::Entity {
     void SetNextSeqStepVelocity(GameManager& g, float v, StepSaveType saveType);
     void SetAllVelocitiesPermanent(float newVelocity);
     void SetAllStepsPermanent(SeqStep const& newStep);
-    void SetSequencePermanent(std::vector<SeqStep> newSequence);
+    // TODO can we do this with a move instead of copying sequence?
+    void SetSequencePermanent(std::vector<SeqStep> const& newSequence);
+    void SetSequencePermanentWithStartOffset(std::vector<SeqStep> const& newSequence);
 
     virtual void InitDerived(GameManager& g) override;
     virtual void Update(GameManager& g, float dt) override;

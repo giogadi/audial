@@ -87,6 +87,7 @@ struct SetStepSequenceSeqAction : public SeqAction {
     // serialized
     std::string _seqName;
     std::string _seqStr;
+    bool _offsetStart = false;
 
     std::vector<StepSequencerEntity::SeqStep> _sequence;
     ne::EntityId _seqId;

@@ -231,11 +231,14 @@ void SetStepSequenceSeqAction::LoadDerived(LoadInputs const& loadInputs, std::is
 void SetStepSequenceSeqAction::LoadDerived(serial::Ptree pt) {
     _seqName = pt.GetString("seq_entity_name");
     _seqStr = pt.GetString("seq_str");
+    _offsetStart = false;
+    pt.TryGetBool("offset_start", &_offsetStart);
 }
 
 void SetStepSequenceSeqAction::SaveDerived(serial::Ptree pt) const {
     pt.PutString("seq_entity_name", _seqName.c_str());
     pt.PutString("seq_str", _seqStr.c_str());
+    pt.PutBool("offset_start", _offsetStart);
 }
 
 bool SetStepSequenceSeqAction::ImGui() {
@@ -243,6 +246,8 @@ bool SetStepSequenceSeqAction::ImGui() {
 
     bool c = imgui_util::InputText<1024>("Seq str", &_seqStr);
     changed = c || changed;
+
+    ImGui::Checkbox("Offset start", &_offsetStart);
 
     return false;
 }
@@ -266,7 +271,11 @@ void SetStepSequenceSeqAction::ExecuteDerived(GameManager& g) {
     }
     StepSequencerEntity* seq = static_cast<StepSequencerEntity*>(g._neEntityManager->GetEntity(_seqId));
     if (seq) {
-        seq->SetSequencePermanent(_sequence);
+        if (_offsetStart) {
+            seq->SetSequencePermanentWithStartOffset(_sequence);
+        } else {
+            seq->SetSequencePermanent(_sequence);
+        }
     }
     else {
         printf("SetStepSequenceSeqAction: no seq entity!!\n");

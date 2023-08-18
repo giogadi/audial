@@ -2994,6 +2994,7 @@
                     <action_type>SetStepSequence</action_type>
                     <seq_entity_name>hihat_seq</seq_entity_name>
                     <seq_str>-1:1 8:0.1 8:0.2 8:0.3 -1:1 8:0.1 8:0.2 8:0.3 -1:1 8:0.1 8:0.2 8:0.3 -1:1 8:0.1 8:0.3 8:0.5</seq_str>
+                    <offset_start>false</offset_start>
                 </seq_action>
                 <seq_action>
                     <one_time>true</one_time>
@@ -4094,7 +4095,8 @@
                     <one_time>true</one_time>
                     <action_type>SetStepSequence</action_type>
                     <seq_entity_name>bass_seq</seq_entity_name>
-                    <seq_str>-1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 mG1:1 -1:1 mG2:1 -1:1 -1:1 mG1:1 -1:1 mA1:1 mB1-:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1</seq_str>
+                    <seq_str>mG1:1 -1:1 mG2:1 -1:1 -1:1 mG1:1 -1:1 mA1:1 mB1-:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 </seq_str>
+                    <offset_start>true</offset_start>
                 </seq_action>
                 <seq_action>
                     <one_time>true</one_time>

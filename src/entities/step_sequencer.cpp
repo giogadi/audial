@@ -165,11 +165,24 @@ void StepSequencerEntity::SetAllStepsPermanent(SeqStep const& newStep) {
     }
 }
 
-void StepSequencerEntity::SetSequencePermanent(std::vector<SeqStep> newSequence) {
+void StepSequencerEntity::SetSequencePermanent(std::vector<SeqStep> const& newSequence) {
     assert(_permanentSequence.size() == _tempSequence.size());
     assert(_permanentSequence.size() == newSequence.size());
     for (int i = 0, n = newSequence.size(); i < n; ++i) {
         _tempSequence[i] = _permanentSequence[i] = newSequence[i];
+    }
+}
+
+void StepSequencerEntity::SetSequencePermanentWithStartOffset(std::vector<SeqStep> const& newSequence) {
+    assert(_permanentSequence.size() == _tempSequence.size());
+    assert(_permanentSequence.size() == newSequence.size());
+
+    // HUGE HACK I'M SO SORRY. ASSUMES WE'RE QUANTIZING TO 1 BEAT AND THAT STEPS ARE 16th NOTES.
+    // maps to previous beat.
+    int startIx = ((4 * (_currentIx / 4)) + 4) % newSequence.size();
+    for (int i = 0, n = newSequence.size(); i < n; ++i) {
+        int ix = (startIx + i) % n;
+        _tempSequence[ix] = _permanentSequence[ix] = newSequence[i];
     }
 }
 
