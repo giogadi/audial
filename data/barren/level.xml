@@ -12834,7 +12834,7 @@
             <off_cooldown_actions/>
         </TypingEnemy>
         <TypingEnemy>
-            <name>r7_s</name>
+            <name>r7_d9</name>
             <entity_active>true</entity_active>
             <pickable>true</pickable>
             <transform>
@@ -12873,7 +12873,7 @@
                 <waypoints/>
                 <follow_entity_name>r7_platform7</follow_entity_name>
             </waypoint_follower>
-            <text>s</text>
+            <text>d</text>
             <type_kill>false</type_kill>
             <all_actions_on_hit>true</all_actions_on_hit>
             <flow_polarity>false</flow_polarity>
@@ -12896,7 +12896,7 @@
             <off_cooldown_actions/>
         </TypingEnemy>
         <TypingEnemy>
-            <name>r7_l</name>
+            <name>r7_k5</name>
             <entity_active>true</entity_active>
             <pickable>true</pickable>
             <transform>
@@ -12935,7 +12935,7 @@
                 <waypoints/>
                 <follow_entity_name>r7_platform7</follow_entity_name>
             </waypoint_follower>
-            <text>l</text>
+            <text>k</text>
             <type_kill>false</type_kill>
             <all_actions_on_hit>true</all_actions_on_hit>
             <flow_polarity>false</flow_polarity>
@@ -13809,7 +13809,7 @@
                     <one_time>true</one_time>
                     <action_type>CameraControl</action_type>
                     <setTarget>true</setTarget>
-                    <targetEntityName>r7_s</targetEntityName>
+                    <targetEntityName>r7_platform7</targetEntityName>
                     <targetTrackingFactor>0.0500000007</targetTrackingFactor>
                     <setOffset>false</setOffset>
                     <desiredTargetToCameraOffset>
@@ -14404,7 +14404,7 @@
             </waypoint_follower>
         </Base>
         <TypingEnemy>
-            <name>r7_e4</name>
+            <name>r7_u</name>
             <entity_active>true</entity_active>
             <pickable>true</pickable>
             <transform>
@@ -14443,7 +14443,7 @@
                 <waypoints/>
                 <follow_entity_name>r7_platform8</follow_entity_name>
             </waypoint_follower>
-            <text>e</text>
+            <text>u</text>
             <type_kill>false</type_kill>
             <all_actions_on_hit>true</all_actions_on_hit>
             <flow_polarity>false</flow_polarity>
@@ -14466,7 +14466,7 @@
             <off_cooldown_actions/>
         </TypingEnemy>
         <TypingEnemy>
-            <name>r7_i4</name>
+            <name>r7_s4</name>
             <entity_active>true</entity_active>
             <pickable>true</pickable>
             <transform>
@@ -14505,7 +14505,7 @@
                 <waypoints/>
                 <follow_entity_name>r7_platform8</follow_entity_name>
             </waypoint_follower>
-            <text>i</text>
+            <text>s</text>
             <type_kill>false</type_kill>
             <all_actions_on_hit>true</all_actions_on_hit>
             <flow_polarity>false</flow_polarity>
@@ -14603,7 +14603,7 @@
                     <one_time>true</one_time>
                     <action_type>CameraControl</action_type>
                     <setTarget>true</setTarget>
-                    <targetEntityName>r7_e4</targetEntityName>
+                    <targetEntityName>r7_platform8</targetEntityName>
                     <targetTrackingFactor>0.0500000007</targetTrackingFactor>
                     <setOffset>false</setOffset>
                     <desiredTargetToCameraOffset>
@@ -14741,7 +14741,7 @@
             <off_cooldown_actions/>
         </TypingEnemy>
         <TypingEnemy>
-            <name>r7_u (copy)</name>
+            <name>r7_i9</name>
             <entity_active>true</entity_active>
             <pickable>true</pickable>
             <transform>
@@ -14780,7 +14780,7 @@
                 <waypoints/>
                 <follow_entity_name/>
             </waypoint_follower>
-            <text>u</text>
+            <text>i</text>
             <type_kill>false</type_kill>
             <all_actions_on_hit>true</all_actions_on_hit>
             <flow_polarity>false</flow_polarity>
@@ -14907,14 +14907,14 @@
             <seq_filename>data/barren/r7_init_action_seq.txt</seq_filename>
         </ActionSequencer>
         <TypingEnemy>
-            <name>r8_t</name>
+            <name>r8_l</name>
             <entity_active>true</entity_active>
             <pickable>true</pickable>
             <transform>
                 <pos>
-                    <x>143.854553</x>
+                    <x>146.439819</x>
                     <y>0</y>
-                    <z>27.7893753</z>
+                    <z>26.8212795</z>
                 </pos>
                 <quat>
                     <x>0</x>
@@ -14946,7 +14946,7 @@
                 <waypoints/>
                 <follow_entity_name/>
             </waypoint_follower>
-            <text>t</text>
+            <text>l</text>
             <type_kill>false</type_kill>
             <all_actions_on_hit>true</all_actions_on_hit>
             <flow_polarity>false</flow_polarity>
@@ -14969,14 +14969,14 @@
             <off_cooldown_actions/>
         </TypingEnemy>
         <TypingEnemy>
-            <name>r8_h</name>
+            <name>r8_e</name>
             <entity_active>true</entity_active>
             <pickable>true</pickable>
             <transform>
                 <pos>
-                    <x>145.605484</x>
+                    <x>147.860703</x>
                     <y>0</y>
-                    <z>27.2201805</z>
+                    <z>26.923151</z>
                 </pos>
                 <quat>
                     <x>0</x>
@@ -15008,7 +15008,7 @@
                 <waypoints/>
                 <follow_entity_name/>
             </waypoint_follower>
-            <text>h</text>
+            <text>e</text>
             <type_kill>false</type_kill>
             <all_actions_on_hit>true</all_actions_on_hit>
             <flow_polarity>false</flow_polarity>
@@ -15031,14 +15031,14 @@
             <off_cooldown_actions/>
         </TypingEnemy>
         <TypingEnemy>
-            <name>r8_a</name>
+            <name>r8_t</name>
             <entity_active>true</entity_active>
             <pickable>true</pickable>
             <transform>
                 <pos>
-                    <x>147.396942</x>
+                    <x>149.157135</x>
                     <y>0</y>
-                    <z>26.9862938</z>
+                    <z>26.7112656</z>
                 </pos>
                 <quat>
                     <x>0</x>
@@ -15070,7 +15070,7 @@
                 <waypoints/>
                 <follow_entity_name/>
             </waypoint_follower>
-            <text>a</text>
+            <text>t</text>
             <type_kill>false</type_kill>
             <all_actions_on_hit>true</all_actions_on_hit>
             <flow_polarity>false</flow_polarity>
@@ -15093,14 +15093,14 @@
             <off_cooldown_actions/>
         </TypingEnemy>
         <TypingEnemy>
-            <name>r8_n</name>
+            <name>r8_u</name>
             <entity_active>true</entity_active>
             <pickable>true</pickable>
             <transform>
                 <pos>
-                    <x>148.970078</x>
+                    <x>146.58284</x>
                     <y>0</y>
-                    <z>26.7332687</z>
+                    <z>31.6287575</z>
                 </pos>
                 <quat>
                     <x>0</x>
@@ -15132,7 +15132,7 @@
                 <waypoints/>
                 <follow_entity_name/>
             </waypoint_follower>
-            <text>n</text>
+            <text>j</text>
             <type_kill>false</type_kill>
             <all_actions_on_hit>true</all_actions_on_hit>
             <flow_polarity>false</flow_polarity>
@@ -15155,14 +15155,14 @@
             <off_cooldown_actions/>
         </TypingEnemy>
         <TypingEnemy>
-            <name>r8_k</name>
+            <name>r8_s</name>
             <entity_active>true</entity_active>
             <pickable>true</pickable>
             <transform>
                 <pos>
-                    <x>150.191193</x>
+                    <x>148.089981</x>
                     <y>0</y>
-                    <z>27.6243591</z>
+                    <z>31.8707886</z>
                 </pos>
                 <quat>
                     <x>0</x>
@@ -15194,7 +15194,7 @@
                 <waypoints/>
                 <follow_entity_name/>
             </waypoint_follower>
-            <text>k</text>
+            <text>a</text>
             <type_kill>false</type_kill>
             <all_actions_on_hit>true</all_actions_on_hit>
             <flow_polarity>false</flow_polarity>
@@ -15217,14 +15217,14 @@
             <off_cooldown_actions/>
         </TypingEnemy>
         <TypingEnemy>
-            <name>r8_y</name>
+            <name>r8_j</name>
             <entity_active>true</entity_active>
             <pickable>true</pickable>
             <transform>
                 <pos>
-                    <x>147.2099</x>
+                    <x>149.476105</x>
                     <y>0</y>
-                    <z>31.1557102</z>
+                    <z>31.6067638</z>
                 </pos>
                 <quat>
                     <x>0</x>
@@ -15256,7 +15256,7 @@
                 <waypoints/>
                 <follow_entity_name/>
             </waypoint_follower>
-            <text>y</text>
+            <text>m</text>
             <type_kill>false</type_kill>
             <all_actions_on_hit>true</all_actions_on_hit>
             <flow_polarity>false</flow_polarity>
@@ -15279,14 +15279,14 @@
             <off_cooldown_actions/>
         </TypingEnemy>
         <TypingEnemy>
-            <name>r8_o</name>
-            <entity_active>true</entity_active>
+            <name>r8_a</name>
+            <entity_active>false</entity_active>
             <pickable>true</pickable>
             <transform>
                 <pos>
-                    <x>148.46402</x>
+                    <x>145.944763</x>
                     <y>0</y>
-                    <z>31.5407486</z>
+                    <z>33.5319481</z>
                 </pos>
                 <quat>
                     <x>0</x>
@@ -15318,7 +15318,7 @@
                 <waypoints/>
                 <follow_entity_name/>
             </waypoint_follower>
-            <text>o</text>
+            <text>a</text>
             <type_kill>false</type_kill>
             <all_actions_on_hit>true</all_actions_on_hit>
             <flow_polarity>false</flow_polarity>
@@ -15341,14 +15341,14 @@
             <off_cooldown_actions/>
         </TypingEnemy>
         <TypingEnemy>
-            <name>r8_u</name>
-            <entity_active>true</entity_active>
+            <name>r8_m</name>
+            <entity_active>false</entity_active>
             <pickable>true</pickable>
             <transform>
                 <pos>
-                    <x>149.78418</x>
+                    <x>143.359528</x>
                     <y>0</y>
-                    <z>31.3537331</z>
+                    <z>33.2239189</z>
                 </pos>
                 <quat>
                     <x>0</x>
@@ -15380,7 +15380,7 @@
                 <waypoints/>
                 <follow_entity_name/>
             </waypoint_follower>
-            <text>u</text>
+            <text>m</text>
             <type_kill>false</type_kill>
             <all_actions_on_hit>true</all_actions_on_hit>
             <flow_polarity>false</flow_polarity>
