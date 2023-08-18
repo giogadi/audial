@@ -5611,6 +5611,11 @@
             <initial_value>3</initial_value>
             <draw_counter>true</draw_counter>
             <draw_horizontal>false</draw_horizontal>
+            <cell_width>0.25</cell_width>
+            <cell_spacing>0.25</cell_spacing>
+            <synth_patch_channel>-1</synth_patch_channel>
+            <start_patch/>
+            <end_patch/>
             <actions>
                 <seq_action>
                     <one_time>true</one_time>
@@ -16252,9 +16257,14 @@
                 <waypoints/>
                 <follow_entity_name/>
             </waypoint_follower>
-            <initial_value>16</initial_value>
+            <initial_value>32</initial_value>
             <draw_counter>true</draw_counter>
             <draw_horizontal>true</draw_horizontal>
+            <cell_width>0.150000006</cell_width>
+            <cell_spacing>0.150000006</cell_spacing>
+            <synth_patch_channel>0</synth_patch_channel>
+            <start_patch>r2_sideroom_bass</start_patch>
+            <end_patch>r2_sideroom_bass2</end_patch>
             <actions/>
         </IntVariable>
         <FlowTrigger>

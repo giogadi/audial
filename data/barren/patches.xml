@@ -175,7 +175,7 @@
         <patch>
             <Gain>0.736999989</Gain>
             <Mono>1</Mono>
-            <Osc1Waveform>Square</Osc1Waveform>
+            <Osc1Waveform>Saw</Osc1Waveform>
             <Osc2Waveform>Square</Osc2Waveform>
             <Detune>1</Detune>
             <OscFader>0.720000029</OscFader>
@@ -299,6 +299,40 @@
             <CutoffEnvDecay>0.734000027</CutoffEnvDecay>
             <CutoffEnvSustain>0.0209999997</CutoffEnvSustain>
             <CutoffEnvRelease>0.492000014</CutoffEnvRelease>
+            <PitchEnvGain>0</PitchEnvGain>
+            <PitchEnvAttack>0</PitchEnvAttack>
+            <PitchEnvDecay>0</PitchEnvDecay>
+            <PitchEnvSustain>1</PitchEnvSustain>
+            <PitchEnvRelease>0</PitchEnvRelease>
+        </patch>
+    </patch>
+    <patch>
+        <name>r2_sideroom_bass2</name>
+        <patch>
+            <Gain>0.736999989</Gain>
+            <Mono>1</Mono>
+            <Osc1Waveform>Saw</Osc1Waveform>
+            <Osc2Waveform>Square</Osc2Waveform>
+            <Detune>1</Detune>
+            <OscFader>0.345999986</OscFader>
+            <Cutoff>1844.48706</Cutoff>
+            <Peak>1.73000002</Peak>
+            <HpfCutoff>0</HpfCutoff>
+            <HpfPeak>0</HpfPeak>
+            <Portamento>0</Portamento>
+            <PitchLFOGain>0</PitchLFOGain>
+            <PitchLFOFreq>1</PitchLFOFreq>
+            <CutoffLFOGain>0</CutoffLFOGain>
+            <CutoffLFOFreq>8.05099964</CutoffLFOFreq>
+            <AmpEnvAttack>0.00800000038</AmpEnvAttack>
+            <AmpEnvDecay>0.114</AmpEnvDecay>
+            <AmpEnvSustain>0.677999973</AmpEnvSustain>
+            <AmpEnvRelease>1.15999997</AmpEnvRelease>
+            <CutoffEnvGain>3018.25098</CutoffEnvGain>
+            <CutoffEnvAttack>0.0610000007</CutoffEnvAttack>
+            <CutoffEnvDecay>0.064000003</CutoffEnvDecay>
+            <CutoffEnvSustain>0.782999992</CutoffEnvSustain>
+            <CutoffEnvRelease>0.547999978</CutoffEnvRelease>
             <PitchEnvGain>0</PitchEnvGain>
             <PitchEnvAttack>0</PitchEnvAttack>
             <PitchEnvDecay>0</PitchEnvDecay>
