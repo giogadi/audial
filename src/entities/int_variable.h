@@ -8,6 +8,7 @@ struct IntVariableEntity : public ne::Entity {
     // serialized
     int _initialValue = -1;
     bool _drawCounter = false;
+    bool _drawHorizontal = false;
 
     // non-serialized
     int _currentValue = -1;
@@ -16,6 +17,7 @@ struct IntVariableEntity : public ne::Entity {
     double _beatTimeOfLastAdd = -1.0;
 
     void AddToVariable(int amount);
+    void Reset();
 
     void DrawCounter(GameManager& g);
 

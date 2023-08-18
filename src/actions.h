@@ -204,6 +204,7 @@ struct AddToIntVariableSeqAction : public SeqAction {
     virtual SeqActionType Type() const override { return SeqActionType::AddToIntVariable; }
     std::string _varName;
     int _addAmount = 0;
+    bool _reset = false; // if true, _addAmount is ignored
 
     virtual void ExecuteDerived(GameManager& g) override;
     virtual void LoadDerived(LoadInputs const& loadInputs, std::istream& input) override;

@@ -22,6 +22,7 @@ void IntVariableEntity::InitDerived(GameManager& g) {
 void IntVariableEntity::SaveDerived(serial::Ptree pt) const {
     pt.PutInt("initial_value", _initialValue);
     pt.PutBool("draw_counter", _drawCounter);
+    pt.PutBool("draw_horizontal", _drawHorizontal);
     SeqAction::SaveActionsInChildNode(pt, "actions", _actions);
 }
 
@@ -29,12 +30,15 @@ void IntVariableEntity::LoadDerived(serial::Ptree pt) {
     _initialValue = pt.GetInt("initial_value");
     _drawCounter = false;
     pt.TryGetBool("draw_counter", &_drawCounter);
+    _drawHorizontal = false;
+    pt.TryGetBool("draw_horizontal", &_drawHorizontal);
     SeqAction::LoadActionsFromChildNode(pt, "actions", _actions);
 }
 
 ne::Entity::ImGuiResult IntVariableEntity::ImGuiDerived(GameManager& g) {
     ImGui::InputInt("Initial value", &_initialValue);
     ImGui::Checkbox("Draw", &_drawCounter);
+    ImGui::Checkbox("Draw horiz", &_drawHorizontal);
     SeqAction::ImGui("Actions on zero", _actions);
     return ne::Entity::ImGuiResult::Done;
 }
@@ -57,12 +61,21 @@ void IntVariableEntity::AddToVariable(int amount) {
     }
 }
 
+void IntVariableEntity::Reset() {
+    _currentValue = _initialValue;
+}
+
 void IntVariableEntity::DrawCounter(GameManager& g) {
     int numSteps = _initialValue;
     float cellWidth = 0.25f;
     float spaceBetweenCells = 0.25f;
     float totalWidth = numSteps * cellWidth + (spaceBetweenCells * (numSteps - 1));
-    Vec3 direction(0.f, 0.f, 1.f);
+    Vec3 direction;
+    if (_drawHorizontal) {
+        direction.Set(1.f, 0.f, 0.f);
+    } else {
+        direction.Set(0.f, 0.f, 1.f);
+    }
     Transform t;
     t.SetScale(Vec3(cellWidth, cellWidth, cellWidth));
     Vec3 pos = _transform.Pos();

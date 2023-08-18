@@ -6,6 +6,8 @@ void VfxPulseSeqAction::InitDerived(GameManager& g) {
     _s = State();
     if (ne::Entity* e = g._neEntityManager->FindEntityByNameAndType(_p._vfxEntityName, ne::EntityType::Vfx)) {
         _s._entityId = e->_id;
+    } else {
+        printf("VfxPulseSeqAction::InitDerived: could not find vfx entity \"%s\"", _p._vfxEntityName.c_str());
     }
 }
 

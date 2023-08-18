@@ -632,16 +632,20 @@ void AddToIntVariableSeqAction::LoadDerived(LoadInputs const& loadInputs, std::i
 void AddToIntVariableSeqAction::LoadDerived(serial::Ptree pt) {
     _varName = pt.GetString("var_name");
     _addAmount = pt.GetInt("add_amount");
+    _reset = false;
+    pt.TryGetBool("reset", &_reset);
 }
 
 void AddToIntVariableSeqAction::SaveDerived(serial::Ptree pt) const {
     pt.PutString("var_name", _varName.c_str());
     pt.PutInt("add_amount", _addAmount);
+    pt.PutBool("reset", _reset);
 }
 
 bool AddToIntVariableSeqAction::ImGui() {
     imgui_util::InputText<128>("Var entity name", &_varName);
     ImGui::InputInt("Add amount", &_addAmount);
+    ImGui::Checkbox("Reset counter", &_reset);
     return false;
 }
 
@@ -654,7 +658,11 @@ void AddToIntVariableSeqAction::ExecuteDerived(GameManager& g) {
         printf("AddToIntVariableSeqAction::ExecuteDerived: couldn't entity \"%s\"!\n", _varName.c_str());
     }
     else {
-        e->AddToVariable(_addAmount);
+        if (_reset) {
+            e->Reset();
+        } else {
+            e->AddToVariable(_addAmount);
+        }        
     }
 }
 
