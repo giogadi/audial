@@ -19,6 +19,15 @@
 
 extern GameManager gGameManager;
 
+extern bool gRandomLetters;
+
+namespace {
+    int gShuffledLetterIndices[] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26 };
+    int gCurrentShuffleIx = 26; // one past
+}
+
+
+
 void TypingEnemyEntity::LoadDerived(serial::Ptree pt) {
     _text = pt.GetString("text");
     pt.TryGetBool("type_kill", &_destroyAfterTyped);
@@ -26,8 +35,7 @@ void TypingEnemyEntity::LoadDerived(serial::Ptree pt) {
     pt.TryGetBool("all_actions_on_hit", &allActionsOnHit);
     if (allActionsOnHit) {
         _hitBehavior = HitBehavior::AllActions;
-    }
-    else {
+    } else {
         _hitBehavior = HitBehavior::SingleAction;
     }
     _flowPolarity = false;
@@ -53,6 +61,23 @@ void TypingEnemyEntity::LoadDerived(serial::Ptree pt) {
 
     SeqAction::LoadActionsFromChildNode(pt, "hit_actions", _hitActions);
     SeqAction::LoadActionsFromChildNode(pt, "off_cooldown_actions", _offCooldownActions);
+
+    if (gRandomLetters) {
+        if (gCurrentShuffleIx > 25) {
+            // reshuffle
+            for (int i = 0; i < 26; ++i) {
+                int swapIx = rng::GetInt(i, 25);
+                if (swapIx != i) {
+                    std::swap(gShuffledLetterIndices[i], gShuffledLetterIndices[swapIx]);
+                }
+            }
+            gCurrentShuffleIx = 0;
+        }
+        int randLetterIx = gShuffledLetterIndices[gCurrentShuffleIx];
+        ++gCurrentShuffleIx;
+        _text.resize(1);
+        _text[0] = 'a' + randLetterIx;
+    }
 }
 
 void TypingEnemyEntity::SaveDerived(serial::Ptree pt) const {

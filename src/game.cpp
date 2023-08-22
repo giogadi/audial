@@ -147,6 +147,8 @@ void ParseCommandLineFile(CommandLineInputs& inputs, std::string fileName) {
     ParseCommandLine(inputs, fileArgv, false);
 }
 
+bool gRandomLetters = false;
+
 void ParseCommandLine(CommandLineInputs& inputs, std::vector<std::string> const& argv, bool useDefaultFile = true) {
     inputs._editMode = false;
 
@@ -180,6 +182,9 @@ void ParseCommandLine(CommandLineInputs& inputs, std::vector<std::string> const&
         } else if (argv[argIx] == "-e") {
             std::cout << "Edit mode enabled!" << std::endl;
             inputs._editMode = true;
+        } else if (argv[argIx] == "-r") {
+            std::cout << "Random enemy letters!" << std::endl;
+            gRandomLetters = true;
         }
     }
 }
