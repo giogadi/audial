@@ -12,7 +12,6 @@
 class SoundBank;
 
 #define FRAMES_PER_BUFFER  (512)
-#define NUM_OUTPUT_CHANNELS (2)
 
 namespace audio {
 

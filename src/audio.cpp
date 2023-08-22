@@ -15,6 +15,8 @@
 
 using std::chrono::high_resolution_clock;
 
+#define NUM_OUTPUT_CHANNELS (1)
+
 namespace audio {
 
 namespace {
@@ -90,6 +92,7 @@ PaError Init(
 
     context._outputParameters.device = paNoDevice;
     PaDeviceIndex numDevices = Pa_GetDeviceCount();
+    std::vector<PaError> errors;
     for (PaDeviceIndex deviceIx = 0; deviceIx < numDevices; ++deviceIx) {
         PaDeviceInfo const* pDeviceInfo = Pa_GetDeviceInfo(deviceIx);
         PaHostApiInfo const* pHostApiInfo = Pa_GetHostApiInfo(pDeviceInfo->hostApi);
@@ -98,11 +101,13 @@ PaError Init(
             continue;
         }
         if (deviceIx == pHostApiInfo->defaultOutputDevice) {
+            printf("Default device sample rate: %f\n", pDeviceInfo->defaultSampleRate);
+            printf("Default device max output channels: %d\n", pDeviceInfo->maxOutputChannels);
             context._outputParameters.device = deviceIx;
 
             PaStreamParameters testOutputParams{};
             testOutputParams.device = deviceIx;
-            testOutputParams.channelCount = 2;
+            testOutputParams.channelCount = NUM_OUTPUT_CHANNELS;
             testOutputParams.sampleFormat = paFloat32;
             testOutputParams.hostApiSpecificStreamInfo = streamInfo;
             for (int sampleRateIx = 0, n = M_ARRAY_LEN(kSupportedSampleRates); sampleRateIx < n; ++sampleRateIx) {
@@ -110,6 +115,8 @@ PaError Init(
                 err = Pa_IsFormatSupported(NULL, &testOutputParams, context._sampleRate);
                 if (err == paNoError) {
                     break;
+                } else {
+                    errors.push_back(err);
                 }
             }
             break;
@@ -120,8 +127,14 @@ PaError Init(
 #endif     
 
     if (err != paNoError) {
-        char const* errMsg = Pa_GetErrorText(err);
-        printf("Audio error: default audio device is not supported. err: %s\n", errMsg);
+        printf("Audio error: default audio device not supported.\n");
+        char const* finalErrMsg = Pa_GetErrorText(err);
+        printf("Final error: %s\n", finalErrMsg);
+        printf("Error list:\n");
+        for (int i = 0; i < errors.size(); ++i) {
+            char const* errMsg = Pa_GetErrorText(errors[i]);
+            printf("Error %d: %s\n", i, errMsg);
+        }
         return err;
     }
     
@@ -129,7 +142,7 @@ PaError Init(
 
     context._outputParameters.hostApiSpecificStreamInfo = streamInfo;
     
-    context._outputParameters.channelCount = 2;       /* stereo output */
+    context._outputParameters.channelCount = NUM_OUTPUT_CHANNELS;
     context._outputParameters.sampleFormat = paFloat32; /* 32 bit floating point output */
     context._outputParameters.suggestedLatency = Pa_GetDeviceInfo( context._outputParameters.device )->defaultLowOutputLatency;    
 
