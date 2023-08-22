@@ -256,12 +256,11 @@ int main(int argc, char** argv) {
         std::filesystem::path exePath(executablePath);
         std::filesystem::path exeDir = exePath.parent_path();
         std::filesystem::current_path(exeDir);
-    }   
- }
-#endif  /* __APPLE__ */
-
+    }
     std::filesystem::path cwd = std::filesystem::current_path();
     printf("pwd: %s\n", cwd.c_str());
+ }
+#endif  /* __APPLE__ */    
     
     CommandLineInputs cmdLineInputs;
     ParseCommandLine(cmdLineInputs, argc, argv);

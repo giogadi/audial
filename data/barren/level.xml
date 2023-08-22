@@ -9317,7 +9317,7 @@
             <off_cooldown_actions/>
         </TypingEnemy>
         <TypingEnemy>
-            <name>r2_e</name>
+            <name>r2_v</name>
             <entity_active>true</entity_active>
             <pickable>true</pickable>
             <transform>
@@ -9356,7 +9356,7 @@
                 <waypoints/>
                 <follow_entity_name/>
             </waypoint_follower>
-            <text>e</text>
+            <text>v</text>
             <type_kill>false</type_kill>
             <all_actions_on_hit>false</all_actions_on_hit>
             <flow_polarity>false</flow_polarity>
