@@ -8,6 +8,11 @@
 #include <unordered_map>
 #include <optional>
 #include <sstream>
+#include <filesystem>
+
+#if defined __APPLE__
+# include <mach-o/dyld.h>
+#endif  /* __APPLE__ */
 
 #include <portaudio.h>
 
@@ -232,6 +237,27 @@ void ShutDown(audio::Context& audioContext, SoundBank& soundBank) {
 }
 
 int main(int argc, char** argv) {
+    
+#if defined __APPLE__
+{
+    std::filesystem::path defaultCmdLineFilePath("cmd_line.txt");
+    if (!std::filesystem::exists(defaultCmdLineFilePath)) {
+        // Try changing directories to executable directory
+        char executablePath[1024];
+        uint32_t pathSize = sizeof(executablePath);
+        _NSGetExecutablePath(executablePath, &pathSize);
+        printf("executable path: %s\n", executablePath);
+        printf("changing working directory to executable directory.\n");
+        std::filesystem::path exePath(executablePath);
+        std::filesystem::path exeDir = exePath.parent_path();
+        std::filesystem::current_path(exeDir);
+    }   
+ }
+#endif  /* __APPLE__ */
+
+    std::filesystem::path cwd = std::filesystem::current_path();
+    printf("pwd: %s\n", cwd.c_str());
+    
     CommandLineInputs cmdLineInputs;
     ParseCommandLine(cmdLineInputs, argc, argv);
 
