@@ -7149,7 +7149,7 @@
             <off_cooldown_actions/>
         </TypingEnemy>
         <TypingEnemy>
-            <name>r2_secret_d</name>
+            <name>r2_secret_m</name>
             <entity_active>true</entity_active>
             <pickable>true</pickable>
             <transform>
@@ -7216,7 +7216,7 @@
             <off_cooldown_actions/>
         </TypingEnemy>
         <TypingEnemy>
-            <name>r2_secret_k</name>
+            <name>r2_secret_a</name>
             <entity_active>true</entity_active>
             <pickable>true</pickable>
             <transform>
@@ -7283,7 +7283,7 @@
             <off_cooldown_actions/>
         </TypingEnemy>
         <TypingEnemy>
-            <name>r2_secret_s</name>
+            <name>r2_secret_j</name>
             <entity_active>true</entity_active>
             <pickable>true</pickable>
             <transform>
@@ -7971,7 +7971,7 @@
             </hit_actions>
         </FlowWall>
         <TypingEnemy>
-            <name>r2_secret_m</name>
+            <name>r2_secret_n</name>
             <entity_active>true</entity_active>
             <pickable>true</pickable>
             <transform>
@@ -8038,7 +8038,7 @@
             <off_cooldown_actions/>
         </TypingEnemy>
         <TypingEnemy>
-            <name>r2_secret_e</name>
+            <name>r2_secret_w</name>
             <entity_active>true</entity_active>
             <pickable>true</pickable>
             <transform>
@@ -9250,7 +9250,7 @@
             <trigger_volume_entities/>
         </FlowTrigger>
         <TypingEnemy>
-            <name>r2_secret_i</name>
+            <name>r2_secret_o</name>
             <entity_active>true</entity_active>
             <pickable>true</pickable>
             <transform>
@@ -16265,7 +16265,36 @@
             <synth_patch_channel>0</synth_patch_channel>
             <start_patch>r2_sideroom_bass</start_patch>
             <end_patch>r2_sideroom_bass2</end_patch>
-            <actions/>
+            <actions>
+                <seq_action>
+                    <one_time>true</one_time>
+                    <action_type>SetEntityActive</action_type>
+                    <entity_name>r2_secret_l</entity_name>
+                    <active>true</active>
+                    <init_on_activate>true</init_on_activate>
+                </seq_action>
+                <seq_action>
+                    <one_time>true</one_time>
+                    <action_type>SetEntityActive</action_type>
+                    <entity_name>r2_secret_e</entity_name>
+                    <active>true</active>
+                    <init_on_activate>true</init_on_activate>
+                </seq_action>
+                <seq_action>
+                    <one_time>true</one_time>
+                    <action_type>SetEntityActive</action_type>
+                    <entity_name>r2_secret_t</entity_name>
+                    <active>true</active>
+                    <init_on_activate>true</init_on_activate>
+                </seq_action>
+                <seq_action>
+                    <one_time>true</one_time>
+                    <action_type>SetEntityActive</action_type>
+                    <entity_name>r2_secret_s</entity_name>
+                    <active>true</active>
+                    <init_on_activate>true</init_on_activate>
+                </seq_action>
+            </actions>
         </IntVariable>
         <FlowTrigger>
             <name>r2_secret_on_hit</name>
@@ -16384,7 +16413,7 @@
         </FlowTrigger>
         <TypingEnemy>
             <name>r2_secret_l</name>
-            <entity_active>true</entity_active>
+            <entity_active>false</entity_active>
             <pickable>true</pickable>
             <transform>
                 <pos>
@@ -16406,9 +16435,9 @@
             </transform>
             <model_name>cube</model_name>
             <model_color_vec4>
-                <x>0.975490212</x>
-                <y>0.052599974</y>
-                <z>0.052599974</z>
+                <x>0.0901960805</x>
+                <y>0.823529422</y>
+                <z>0.0666666701</z>
                 <w>1</w>
             </model_color_vec4>
             <flow_section_id>2</flow_section_id>
@@ -16441,7 +16470,7 @@
                 <seq_action>
                     <one_time>false</one_time>
                     <action_type>BeatTimeEvent</action_type>
-                    <quantize_denom>0.25</quantize_denom>
+                    <quantize_denom>0.5</quantize_denom>
                     <beat_time_event>
                         <event_type>PlayPcm</event_type>
                         <channel>0</channel>
@@ -16457,7 +16486,7 @@
         </TypingEnemy>
         <TypingEnemy>
             <name>r2_secret_e</name>
-            <entity_active>true</entity_active>
+            <entity_active>false</entity_active>
             <pickable>true</pickable>
             <transform>
                 <pos>
@@ -16479,9 +16508,9 @@
             </transform>
             <model_name>cube</model_name>
             <model_color_vec4>
-                <x>0.975490212</x>
-                <y>0.052599974</y>
-                <z>0.052599974</z>
+                <x>0.0901960805</x>
+                <y>0.823529422</y>
+                <z>0.0666666701</z>
                 <w>1</w>
             </model_color_vec4>
             <flow_section_id>2</flow_section_id>
@@ -16514,7 +16543,7 @@
                 <seq_action>
                     <one_time>false</one_time>
                     <action_type>BeatTimeEvent</action_type>
-                    <quantize_denom>0.25</quantize_denom>
+                    <quantize_denom>0.5</quantize_denom>
                     <beat_time_event>
                         <event_type>PlayPcm</event_type>
                         <channel>0</channel>
@@ -16530,7 +16559,7 @@
         </TypingEnemy>
         <TypingEnemy>
             <name>r2_secret_t</name>
-            <entity_active>true</entity_active>
+            <entity_active>false</entity_active>
             <pickable>true</pickable>
             <transform>
                 <pos>
@@ -16552,9 +16581,9 @@
             </transform>
             <model_name>cube</model_name>
             <model_color_vec4>
-                <x>0.975490212</x>
-                <y>0.052599974</y>
-                <z>0.052599974</z>
+                <x>0.0901960805</x>
+                <y>0.823529422</y>
+                <z>0.0666666701</z>
                 <w>1</w>
             </model_color_vec4>
             <flow_section_id>2</flow_section_id>
@@ -16572,7 +16601,7 @@
             <type_kill>false</type_kill>
             <all_actions_on_hit>true</all_actions_on_hit>
             <flow_polarity>false</flow_polarity>
-            <flow_cooldown>500</flow_cooldown>
+            <flow_cooldown>3.3332999999999999</flow_cooldown>
             <show_beats_left>false</show_beats_left>
             <cooldown_quantize_denom>0</cooldown_quantize_denom>
             <reset_cooldown_on_any_hit>false</reset_cooldown_on_any_hit>
@@ -16581,23 +16610,29 @@
             <hit_actions>
                 <seq_action>
                     <one_time>false</one_time>
-                    <action_type>ChangeStepSequencer</action_type>
-                    <seqName>bass_seq</seqName>
-                    <velOnly>false</velOnly>
-                    <temporary>true</temporary>
-                    <stepStr>mF2:1</stepStr>
+                    <action_type>Trigger</action_type>
+                    <entity_name>r2_secret_on_hit</entity_name>
                 </seq_action>
                 <seq_action>
                     <one_time>false</one_time>
-                    <action_type>Trigger</action_type>
-                    <entity_name>r2_secret_on_hit</entity_name>
+                    <action_type>BeatTimeEvent</action_type>
+                    <quantize_denom>0.5</quantize_denom>
+                    <beat_time_event>
+                        <event_type>PlayPcm</event_type>
+                        <channel>0</channel>
+                        <tick_time>0</tick_time>
+                        <sound_ix>24</sound_ix>
+                        <velocity>0.300000012</velocity>
+                        <loop>false</loop>
+                        <beat_time>0</beat_time>
+                    </beat_time_event>
                 </seq_action>
             </hit_actions>
             <off_cooldown_actions/>
         </TypingEnemy>
         <TypingEnemy>
             <name>r2_secret_s</name>
-            <entity_active>true</entity_active>
+            <entity_active>false</entity_active>
             <pickable>true</pickable>
             <transform>
                 <pos>
@@ -16619,9 +16654,9 @@
             </transform>
             <model_name>cube</model_name>
             <model_color_vec4>
-                <x>0.975490212</x>
-                <y>0.052599974</y>
-                <z>0.052599974</z>
+                <x>0.0901960805</x>
+                <y>0.823529422</y>
+                <z>0.0666666701</z>
                 <w>1</w>
             </model_color_vec4>
             <flow_section_id>2</flow_section_id>
@@ -16639,7 +16674,7 @@
             <type_kill>false</type_kill>
             <all_actions_on_hit>true</all_actions_on_hit>
             <flow_polarity>false</flow_polarity>
-            <flow_cooldown>500</flow_cooldown>
+            <flow_cooldown>3.3332999999999999</flow_cooldown>
             <show_beats_left>false</show_beats_left>
             <cooldown_quantize_denom>0</cooldown_quantize_denom>
             <reset_cooldown_on_any_hit>false</reset_cooldown_on_any_hit>
@@ -16648,16 +16683,22 @@
             <hit_actions>
                 <seq_action>
                     <one_time>false</one_time>
-                    <action_type>ChangeStepSequencer</action_type>
-                    <seqName>bass_seq</seqName>
-                    <velOnly>false</velOnly>
-                    <temporary>true</temporary>
-                    <stepStr>mF2:1</stepStr>
+                    <action_type>Trigger</action_type>
+                    <entity_name>r2_secret_on_hit</entity_name>
                 </seq_action>
                 <seq_action>
                     <one_time>false</one_time>
-                    <action_type>Trigger</action_type>
-                    <entity_name>r2_secret_on_hit</entity_name>
+                    <action_type>BeatTimeEvent</action_type>
+                    <quantize_denom>0.5</quantize_denom>
+                    <beat_time_event>
+                        <event_type>PlayPcm</event_type>
+                        <channel>0</channel>
+                        <tick_time>0</tick_time>
+                        <sound_ix>25</sound_ix>
+                        <velocity>0.400000006</velocity>
+                        <loop>false</loop>
+                        <beat_time>0</beat_time>
+                    </beat_time_event>
                 </seq_action>
             </hit_actions>
             <off_cooldown_actions/>

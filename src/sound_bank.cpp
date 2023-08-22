@@ -29,6 +29,8 @@ void SoundBank::LoadSounds() {
         , "hihat_closed_909"
         , "bunny_cbb"
         , "is_a_dbb"
+        , "satell_dc"
+        , "ite_cant_dbb"
     };
     std::vector<char const*> soundFilenames = {
         "data/sounds/kick_deep.wav"
@@ -55,6 +57,8 @@ void SoundBank::LoadSounds() {
         , "data/sounds/hihat_closed_909_48k.wav"
         , "data/sounds/biar_bunny_cbb.wav"
         , "data/sounds/biar_is_a_dbb.wav"
+        , "data/sounds/biar_satell_dc.wav"
+        , "data/sounds/biar_ite_cant_dbb.wav"
     };
     _exclusiveGroups = {
         -1,
@@ -79,6 +83,8 @@ void SoundBank::LoadSounds() {
         -1,
         -1,
         -1,
+        1,
+        1,
         1,
         1
     };
