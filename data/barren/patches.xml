@@ -313,7 +313,7 @@
             <Mono>1</Mono>
             <Osc1Waveform>Saw</Osc1Waveform>
             <Osc2Waveform>Square</Osc2Waveform>
-            <Detune>1</Detune>
+            <Detune>0.99000001</Detune>
             <OscFader>0.345999986</OscFader>
             <Cutoff>1844.48706</Cutoff>
             <Peak>1.73000002</Peak>
