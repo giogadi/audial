@@ -31,6 +31,7 @@ void SoundBank::LoadSounds() {
         , "is_a_dbb"
         , "satell_dc"
         , "ite_cant_dbb"
+        , "check_it_out_g"
     };
     std::vector<char const*> soundFilenames = {
         "data/sounds/kick_deep.wav"
@@ -59,6 +60,7 @@ void SoundBank::LoadSounds() {
         , "data/sounds/biar_is_a_dbb.wav"
         , "data/sounds/biar_satell_dc.wav"
         , "data/sounds/biar_ite_cant_dbb.wav"
+        , "data/sounds/check_it_out.wav"
     };
     _exclusiveGroups = {
         -1,
@@ -86,7 +88,8 @@ void SoundBank::LoadSounds() {
         1,
         1,
         1,
-        1
+        1,
+        -1
     };
     assert(soundFilenames.size() == _soundNames.size());
     assert(_soundNames.size() == _exclusiveGroups.size());

@@ -16294,6 +16294,20 @@
                     <active>true</active>
                     <init_on_activate>true</init_on_activate>
                 </seq_action>
+                <seq_action>
+                    <one_time>true</one_time>
+                    <action_type>BeatTimeEvent</action_type>
+                    <quantize_denom>0.5</quantize_denom>
+                    <beat_time_event>
+                        <event_type>PlayPcm</event_type>
+                        <channel>0</channel>
+                        <tick_time>0</tick_time>
+                        <sound_ix>26</sound_ix>
+                        <velocity>1</velocity>
+                        <loop>false</loop>
+                        <beat_time>0</beat_time>
+                    </beat_time_event>
+                </seq_action>
             </actions>
         </IntVariable>
         <FlowTrigger>
