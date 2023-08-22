@@ -506,18 +506,19 @@ void Process(StateData* state, boost::circular_buffer<audio::Event> const& pendi
                 if (e.paramChangeTime != 0) {
                     // Find a free automation. Also, ensure that there's no
                     // existing automation on this param.
-                    Automation* pA = nullptr;
                     for (Automation& a : state->automations) {
-                        if (a._active) {
-                            if (a._synthParamType == e.param) {
-                                pA = nullptr;
-                                break;
-                            }
-                        }
-                        else if (pA == nullptr) {
-                            pA = &a;
+                        if (a._active && a._synthParamType == e.param) {
+                            a._active = false;
                         }
                     }
+                    Automation* pA = nullptr;
+                    for (Automation& a : state->automations) {
+                        if (!a._active) {
+                            pA = &a;
+                            break;
+                        }
+                    }
+
                     if (pA == nullptr) {
                         printf("Failed to find a free automation!\n");
                         break;
@@ -545,6 +546,7 @@ void Process(StateData* state, boost::circular_buffer<audio::Event> const& pendi
             continue;
         }
         if (frameStartTickTime > a._endTickTime) {
+            patch.Get(a._synthParamType) = a._desiredValue;
             a._active = false;
             continue;
         }

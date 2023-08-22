@@ -245,9 +245,9 @@
             <Mono>1</Mono>
             <Osc1Waveform>Saw</Osc1Waveform>
             <Osc2Waveform>Saw</Osc2Waveform>
-            <Detune>1</Detune>
-            <OscFader>0.508000016</OscFader>
-            <Cutoff>3924.15308</Cutoff>
+            <Detune>0.985000014</Detune>
+            <OscFader>0.582000017</OscFader>
+            <Cutoff>8216.34961</Cutoff>
             <Peak>0</Peak>
             <HpfCutoff>0</HpfCutoff>
             <HpfPeak>0</HpfPeak>
