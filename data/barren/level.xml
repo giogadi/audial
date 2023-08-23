@@ -16323,8 +16323,8 @@
                         <event_type>PlayPcm</event_type>
                         <channel>0</channel>
                         <tick_time>0</tick_time>
-                        <sound_ix>26</sound_ix>
-                        <velocity>1</velocity>
+                        <sound_ix>27</sound_ix>
+                        <velocity>0.200000003</velocity>
                         <loop>false</loop>
                         <beat_time>0</beat_time>
                     </beat_time_event>
@@ -16803,7 +16803,7 @@
                     <velOnly>false</velOnly>
                     <temporary>false</temporary>
                     <stepStr>mG2,mB2-,mD3,mF3:1</stepStr>
-                </seq_action>                
+                </seq_action>
             </hit_actions>
             <off_cooldown_actions/>
         </TypingEnemy>

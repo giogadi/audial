@@ -80,6 +80,7 @@ PaError Init(
 
     void* streamInfo = nullptr;
     context._sampleRate = kSupportedSampleRates[0];
+    std::vector<PaError> errors;
 #ifdef _WIN32
     PaWasapiStreamInfo wasapiStreamInfo{};
     wasapiStreamInfo.size = sizeof(PaWasapiStreamInfo);
@@ -91,8 +92,7 @@ PaError Init(
     streamInfo = &wasapiStreamInfo;
 
     context._outputParameters.device = paNoDevice;
-    PaDeviceIndex numDevices = Pa_GetDeviceCount();
-    std::vector<PaError> errors;
+    PaDeviceIndex numDevices = Pa_GetDeviceCount();   
     for (PaDeviceIndex deviceIx = 0; deviceIx < numDevices; ++deviceIx) {
         PaDeviceInfo const* pDeviceInfo = Pa_GetDeviceInfo(deviceIx);
         PaHostApiInfo const* pHostApiInfo = Pa_GetHostApiInfo(pDeviceInfo->hostApi);
