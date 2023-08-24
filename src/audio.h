@@ -37,11 +37,6 @@ struct StateData {
     boost::circular_buffer<Event> pendingEvents;
 
     float _finalGain = 1.f;
-
-    // When we pause playback, this stops getting incremented.
-    int64_t _bufferCounter = 0;
-
-    double GetTimeInSeconds() const;
 };
 
 void InitStateData(

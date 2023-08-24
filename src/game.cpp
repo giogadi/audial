@@ -49,7 +49,7 @@ void InitEventQueueWithSequence(audio::EventQueue* queue, BeatClock const& beatC
     double const firstNoteBeatTime = beatClock.GetDownBeatTime() + 1.0;
     for (int i = 0; i < 16; ++i) {
         double const beatTime = firstNoteBeatTime + (double)i;
-        unsigned long const tickTime = beatClock.BeatTimeToTickTime(beatTime);
+        uint64_t const tickTime = beatClock.BeatTimeToTickTime(beatTime);
 
         audio::Event e;
         e.type = audio::EventType::NoteOn;
@@ -68,7 +68,7 @@ void InitEventQueueWithParamSequence(audio::EventQueue* queue, BeatClock const& 
     // gradually increase the cutoff from 0 to 1 in 4 measures = 16 beats.
     for (int i = 0; i < 16; ++i) {
         double const beatTime = firstNoteBeatTime + (double)i;
-        unsigned long const tickTime = beatClock.BeatTimeToTickTime(beatTime);
+        uint64_t const tickTime = beatClock.BeatTimeToTickTime(beatTime);
 
         audio::Event e;
         e.channel = 1;
@@ -245,7 +245,7 @@ void ShutDown(audio::Context& audioContext, SoundBank& soundBank) {
 
 int main(int argc, char** argv) {
 
-    log::Logger logger;
+    logger::Logger logger;
     
 #if defined __APPLE__
 {

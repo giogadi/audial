@@ -53,10 +53,6 @@ void DestroyStateData(StateData& state) {
     }
 }
 
-double StateData::GetTimeInSeconds() const {
-    return ((double) (_bufferCounter * FRAMES_PER_BUFFER)) / sampleRate;
-}
-
 /*
  * This routine is called by portaudio when playback is done.
  */
@@ -194,7 +190,7 @@ PaError ShutDown(Context& context) {
     return paNoError;
 }
 
-void ProcessEventQueue(EventQueue* eventQueue, boost::circular_buffer<Event>* pendingEvents, long tickTime) {
+void ProcessEventQueue(EventQueue* eventQueue, boost::circular_buffer<Event>* pendingEvents) {
     while (!pendingEvents->full()) {
         Event *e = eventQueue->front();
         if (e == nullptr) {
@@ -215,8 +211,8 @@ void ProcessEventQueue(EventQueue* eventQueue, boost::circular_buffer<Event>* pe
 
 void PopEventsFromThisFrame(
     boost::circular_buffer<Event>* pendingEvents, double const currentTimeSecs, int sampleRate, unsigned long samplesPerFrame) {
-    unsigned long const frameStartTickTime = static_cast<unsigned long>(currentTimeSecs * sampleRate);
-    unsigned long const nextFrameStartTickTime = frameStartTickTime + samplesPerFrame;
+    uint64_t const frameStartTickTime = static_cast<uint64_t>(currentTimeSecs * sampleRate);
+    uint64_t const nextFrameStartTickTime = frameStartTickTime + samplesPerFrame;
     int lastProcessedEventIx = -1;
     for (int pendingEventIx = 0; pendingEventIx < pendingEvents->size(); ++pendingEventIx) {
         Event const& e = (*pendingEvents)[pendingEventIx];
@@ -277,9 +273,7 @@ int PortAudioCallback(
     gLastFrameSize = samplesPerFrame;
 
     StateData* state = (StateData*)userData;
-    double const timeSecs = state->GetTimeInSeconds();
-    // TODO: do we need to wrap this in an atomic?
-    ++state->_bufferCounter;
+    double const timeSecs = timeInfo->currentTime;
 
     // DEBUG
     gTimeSinceLastCallback = timeSecs - gLastCallbackTime;
@@ -297,13 +291,13 @@ int PortAudioCallback(
     memset(outputBufferUntyped, 0, NUM_OUTPUT_CHANNELS * samplesPerFrame * sizeof(float));
 
     // Figure out which events apply to this invocation of the callback, and which effects should handle them.
-    ProcessEventQueue(state->events, &state->pendingEvents, timeSecs * state->sampleRate);
+    ProcessEventQueue(state->events, &state->pendingEvents);
 
     float* outputBuffer = (float*) outputBufferUntyped;
 
     // PCM playback first
     int currentEventIx = 0;
-    unsigned long frameStartTickTime = timeSecs * state->sampleRate;
+    uint64_t frameStartTickTime = timeSecs * state->sampleRate;
     for (int i = 0; i < samplesPerFrame; ++i) {
         // Handle events
         while (true) {

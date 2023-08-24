@@ -59,7 +59,7 @@ void DestroyStateData(StateData& state) {
     state.voiceScratchBuffer = nullptr;
 }
 
-float calcMultiplier(float startLevel, float endLevel, long numSamples) {
+float calcMultiplier(float startLevel, float endLevel, int64_t numSamples) {
     assert(numSamples > 0l);
     assert(startLevel > 0.f);
     double recip = 1.0 / numSamples;
@@ -69,10 +69,10 @@ float calcMultiplier(float startLevel, float endLevel, long numSamples) {
 }
 
 struct ADSREnvSpecInTicks {
-    long attackTime = 0l;
-    long decayTime = 0l;
+    int64_t attackTime = 0l;
+    int64_t decayTime = 0l;
     float sustainLevel = 0.f;
-    long releaseTime = 0l;
+    int64_t releaseTime = 0l;
     float minValue = 0.01f;
 };
 
@@ -421,21 +421,21 @@ Voice* FindVoiceForNoteOff(StateData& state, int midiNote, int noteOffId) {
 }
 
 void ConvertADSREnvSpec(ADSREnvSpec const& spec, ADSREnvSpecInTicks& specInTicks, int sampleRate) {
-    specInTicks.attackTime = (long)(spec.attackTime * sampleRate);
-    specInTicks.decayTime = (long)(spec.decayTime * sampleRate);
+    specInTicks.attackTime = (int64_t)(spec.attackTime * sampleRate);
+    specInTicks.decayTime = (int64_t)(spec.decayTime * sampleRate);
     specInTicks.sustainLevel = spec.sustainLevel;
-    specInTicks.releaseTime = (long)(spec.releaseTime * sampleRate);
+    specInTicks.releaseTime = (int64_t)(spec.releaseTime * sampleRate);
     specInTicks.minValue = spec.minValue;
 }
 
 void Process(StateData* state, boost::circular_buffer<audio::Event> const& pendingEvents,
     float* outputBuffer, int const numChannels, int const samplesPerFrame,
-    int const sampleRate, unsigned long frameStartTickTime) {
+    int const sampleRate, uint64_t frameStartTickTime) {
     
     Patch& patch = state->patch;
 
     // Handle all the events that will happen in this buffer frame.
-    unsigned long frameLastTickTime = frameStartTickTime + samplesPerFrame;
+    uint64_t frameLastTickTime = frameStartTickTime + samplesPerFrame;
     int currentEventIx = 0;
     while (true) {
         if (currentEventIx >= pendingEvents.size()) {

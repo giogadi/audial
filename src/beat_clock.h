@@ -1,6 +1,7 @@
 #pragma once
 
 #include <cmath>
+#include <cstdint>
 #include "game_manager.h"
 
 class BeatClock {
@@ -11,15 +12,15 @@ public:
 
     bool IsNewBeat() const { return _newBeat; }
 
-    unsigned long BeatTimeToTickTime(double beatTime) const {
-        return static_cast<unsigned long>(beatTime * (60.0 / _bpm) * _sampleRate);
+    uint64_t BeatTimeToTickTime(double beatTime) const {
+        return static_cast<uint64_t>(beatTime * (60.0 / _bpm) * _sampleRate);
     }
 
-    double TickTimeToBeatTime(unsigned long tickTime) const {
+    double TickTimeToBeatTime(uint64_t tickTime) const {
         return (double)(tickTime * _bpm) / (60.0 * _sampleRate);
     }
 
-    unsigned long EpochBeatTimeToTickTime(double beatTime) const {
+    uint64_t EpochBeatTimeToTickTime(double beatTime) const {
         return BeatTimeToTickTime(beatTime + _epochBeatTime);
     }
 
@@ -47,7 +48,7 @@ public:
     static double GetNextBeatDenomTime(double beatTime, double denom) {
         return std::floor((beatTime / denom)) * denom + denom;
     }
-    unsigned long GetTimeInTicks() const {
+    uint64_t GetTimeInTicks() const {
         return _currentTickTime;
     }
     double GetAudioTime() const {
@@ -62,7 +63,7 @@ private:
     double _bpm = 120.0;
     double _currentBeatTime = -1.0;
     double _currentAudioTime = -1.0;
-    unsigned long _currentTickTime = 0;
+    uint64_t _currentTickTime = 0;
     bool _newBeat = false;
     double _sampleRate = 44100.0;
 };

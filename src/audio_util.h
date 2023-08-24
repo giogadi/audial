@@ -21,7 +21,7 @@ struct Event {
     }
     EventType type;
     int channel;
-    long timeInTicks;
+    int64_t timeInTicks;
     union {
         struct {
             int midiNote;

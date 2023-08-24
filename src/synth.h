@@ -32,7 +32,7 @@ struct ADSREnvState {
     ADSRPhase phase = ADSRPhase::Closed;
     float currentValue = 0.f;
     float multiplier = 0.f;
-    long ticksSincePhaseStart = -1;
+    int64_t ticksSincePhaseStart = -1;
 };
 
 int constexpr kNumOscillators = 2;
@@ -73,8 +73,8 @@ struct Automation {
     audio::SynthParamType _synthParamType;
     float _startValue = 0.f;
     float _desiredValue = 0.f;
-    long _startTickTime = 0;
-    long _endTickTime = 0;    
+    int64_t _startTickTime = 0;
+    int64_t _endTickTime = 0;    
 };
 
 struct StateData {
@@ -97,5 +97,5 @@ void DestroyStateData(StateData& state);
 void Process(
     StateData* state, boost::circular_buffer<audio::Event> const& pendingEvents,
     float* outputBuffer, int const numChannels, int const framesPerBuffer,
-    int const sampleRate, unsigned long frameStartTickTime);
+    int const sampleRate, uint64_t frameStartTickTime);
 }

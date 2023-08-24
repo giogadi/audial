@@ -61,7 +61,7 @@ void SequencerEntity::Update(GameManager& g, float dt) {
             if (absBeatTime <= maxBeatTime) {
                 // queue it up!
                 double epochAdjust = g._beatClock->GetBeatTime() - currentBeatTime;
-                long tickTime = g._beatClock->BeatTimeToTickTime(absBeatTime + epochAdjust);
+                int64_t tickTime = g._beatClock->BeatTimeToTickTime(absBeatTime + epochAdjust);
                 audio::Event e = b_e._e;
                 e.timeInTicks = tickTime;
                 g._audioContext->AddEvent(e);

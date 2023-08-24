@@ -239,7 +239,7 @@ audio::Event GetEventAtBeatOffsetFromNextDenom(
     }
     // unsigned long startTickTime = beatClock.BeatTimeToTickTime(startTime);
     double epochAdjust = beatClock.GetBeatTime() - beatClock.GetBeatTimeFromEpoch();
-    unsigned long startTickTime = beatClock.BeatTimeToTickTime(startTime + epochAdjust);
+    uint64_t startTickTime = beatClock.BeatTimeToTickTime(startTime + epochAdjust);
     audio::Event e = b_e._e;
     e.timeInTicks = beatClock.BeatTimeToTickTime(b_e._beatTime) + startTickTime;
     return e;
