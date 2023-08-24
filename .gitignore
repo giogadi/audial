@@ -15,3 +15,4 @@ py_env/
 __pycache__/
 /build*/
 *.asd
+log.txt

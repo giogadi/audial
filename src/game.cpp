@@ -41,6 +41,7 @@
 #include "editor.h"
 #include "sound_bank.h"
 #include "synth_imgui.h"
+#include "logger.h"
 
 GameManager gGameManager;
 
@@ -235,13 +236,16 @@ void ShutDown(audio::Context& audioContext, SoundBank& soundBank) {
     glfwTerminate();
 
     // NOTE: Do not use BeatClock after shutting down audio.
-    if (audio::ShutDown(audioContext) != paNoError) {
-        printf("Error in shutting down Audio!\n");
-    }
+    PaError err = audio::ShutDown(audioContext);
+    if (err != paNoError) {
+        printf("Error in shutting down audio! error: %s\n", Pa_GetErrorText(err));
+    }   
     soundBank.Destroy();
 }
 
 int main(int argc, char** argv) {
+
+    log::Logger logger;
     
 #if defined __APPLE__
 {
