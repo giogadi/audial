@@ -229,7 +229,6 @@ void WriteBeatEventsToScript(
 
 audio::Event GetEventAtBeatOffsetFromNextDenom(
     double denom, BeatTimeEvent const& b_e, BeatClock const& beatClock, double slack) {
-    //double beatTime = beatClock.GetBeatTime();
     double beatTime = beatClock.GetBeatTimeFromEpoch();
     double startTime = BeatClock::GetNextBeatDenomTime(beatTime, denom);
     double prevDenom = startTime - denom;
@@ -237,10 +236,10 @@ audio::Event GetEventAtBeatOffsetFromNextDenom(
     if (timeSincePrevDenom >= 0.0 && timeSincePrevDenom <= slack) {
         startTime = beatTime;
     }
-    // unsigned long startTickTime = beatClock.BeatTimeToTickTime(startTime);
-    double epochAdjust = beatClock.GetBeatTime() - beatClock.GetBeatTimeFromEpoch();
-    uint64_t startTickTime = beatClock.BeatTimeToTickTime(startTime + epochAdjust);
+
+    double beatTimeDelay = (startTime - beatTime) + b_e._beatTime;
+    double secsDelay = beatClock.BeatTimeToSecs(beatTimeDelay);
     audio::Event e = b_e._e;
-    e.timeInTicks = beatClock.BeatTimeToTickTime(b_e._beatTime) + startTickTime;
+    e.delaySecs = secsDelay;
     return e;
 }

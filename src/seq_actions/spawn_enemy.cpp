@@ -412,7 +412,7 @@ void LoadParamEnemy(int sampleRate, TypingEnemyEntity& enemy, std::istream& line
             printf("ERROR spawn_enemy.cpp:LoadParamEnemy: uninitialized sample rate\n");
             continue;
         }
-        pA->_b_e._e.paramChangeTime = (long)(fadeTime * sampleRate);
+        pA->_b_e._e.paramChangeTimeSecs = fadeTime;
         pA->_b_e._e.newParamValue = values[i];
         enemy._hitActions.push_back(std::move(pA));
     }

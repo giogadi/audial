@@ -102,11 +102,11 @@ void IntVariableEntity::AddToVariable(int amount) {
     if (_startPatch != nullptr && _endPatch != nullptr && _synthPatchChannel >= 0) {
         float const blendFactor = 1.f - math_util::Clamp((static_cast<float>(_currentValue) / static_cast<float>(_initialValue)), 0.f, 1.f);
         double constexpr kBlendBeatTime = 0.0;
-        auto blendTickTime = _g->_beatClock->BeatTimeToTickTime(kBlendBeatTime);
+        double blendSecs = _g->_beatClock->BeatTimeToSecs(kBlendBeatTime);
         audio::Event e;
         e.type = audio::EventType::SynthParam;
         e.channel = _synthPatchChannel;
-        e.paramChangeTime = blendTickTime;
+        e.paramChangeTimeSecs = blendSecs;
         for (int paramIx = 0, n = (int)audio::SynthParamType::Count; paramIx < n; ++paramIx) {
             audio::SynthParamType paramType = (audio::SynthParamType)paramIx;
             float startV = _startPatch->Get(paramType);
@@ -129,11 +129,11 @@ void IntVariableEntity::Reset() {
     _currentValue = _initialValue;
 
     double constexpr kBlendBeatTime = 0.0;
-    auto blendTickTime = _g->_beatClock->BeatTimeToTickTime(kBlendBeatTime);
+    auto blendTimeSecs = _g->_beatClock->BeatTimeToSecs(kBlendBeatTime);
     audio::Event e;
     e.type = audio::EventType::SynthParam;
     e.channel = _synthPatchChannel;
-    e.paramChangeTime = blendTickTime;
+    e.paramChangeTimeSecs = blendTimeSecs;
     for (int paramIx = 0, n = (int)audio::SynthParamType::Count; paramIx < n; ++paramIx) {
         audio::SynthParamType paramType = (audio::SynthParamType)paramIx;
         float v = _startPatch->Get(paramType);

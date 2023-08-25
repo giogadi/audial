@@ -70,10 +70,10 @@ void ParamAutomatorEntity::Update(GameManager& g, float dt) {
         audio::Event e;
         e.type = audio::EventType::SynthParam;
         e.channel = _props._channel;
-        e.timeInTicks = 0;
+        e.delaySecs = 0.0;
         e.param = _props._synthParam;
         e.newParamValue = newValue;
-        e.paramChangeTime = 0;
+        e.paramChangeTimeSecs = 0.0;
         g._audioContext->AddEvent(e);
     } else {
         ne::Entity* seqBaseEntity = g._neEntityManager->GetEntity(_seqId);

@@ -415,8 +415,7 @@ void BeatTimeEventSeqAction::ExecuteDerived(GameManager& g) {
         e = GetEventAtBeatOffsetFromNextDenom(_quantizeDenom, _b_e, *g._beatClock, /*slack=*/0.0625);
     }
     else {
-        e = _b_e._e;
-        e.timeInTicks = g._beatClock->EpochBeatTimeToTickTime(_b_e._beatTime);
+        e = _b_e.ToEvent(*g._beatClock);
     }
     g._audioContext->AddEvent(e);
 }

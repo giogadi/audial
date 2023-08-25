@@ -12,16 +12,11 @@ public:
 
     bool IsNewBeat() const { return _newBeat; }
 
-    uint64_t BeatTimeToTickTime(double beatTime) const {
-        return static_cast<uint64_t>(beatTime * (60.0 / _bpm) * _sampleRate);
+    double BeatTimeToSecs(double beatTime) const {
+        return beatTime * 60.0 / _bpm;
     }
-
-    double TickTimeToBeatTime(uint64_t tickTime) const {
-        return (double)(tickTime * _bpm) / (60.0 * _sampleRate);
-    }
-
-    uint64_t EpochBeatTimeToTickTime(double beatTime) const {
-        return BeatTimeToTickTime(beatTime + _epochBeatTime);
+    double SecsToBeatTime(double secs) const {
+        return secs * _bpm / 60.0;
     }
 
     // These all return the values computed when Update() was called on the
@@ -48,9 +43,6 @@ public:
     static double GetNextBeatDenomTime(double beatTime, double denom) {
         return std::floor((beatTime / denom)) * denom + denom;
     }
-    uint64_t GetTimeInTicks() const {
-        return _currentTickTime;
-    }
     double GetAudioTime() const {
         return _currentAudioTime;
     }
@@ -63,7 +55,6 @@ private:
     double _bpm = 120.0;
     double _currentBeatTime = -1.0;
     double _currentAudioTime = -1.0;
-    uint64_t _currentTickTime = 0;
     bool _newBeat = false;
     double _sampleRate = 44100.0;
 };

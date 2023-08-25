@@ -20,7 +20,6 @@ void BeatClock::Update(GameManager& g) {
     }
     _currentBeatTime = beatTime;
     _currentAudioTime = audioTime;
-    _currentTickTime = (uint64_t) std::round(audioTime * _sampleRate);
 }
 
 double BeatClock::GetBeatTimeFromEpoch() const {

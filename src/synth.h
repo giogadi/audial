@@ -95,7 +95,7 @@ void InitStateData(StateData& state, int channel, int const samplesPerFrame, int
 void DestroyStateData(StateData& state);
 
 void Process(
-    StateData* state, boost::circular_buffer<audio::Event> const& pendingEvents,
-    float* outputBuffer, int const numChannels, int const framesPerBuffer,
-    int const sampleRate, uint64_t frameStartTickTime);
+    StateData* state, boost::circular_buffer<audio::PendingEvent> const& pendingEvents,
+    float* outputBuffer, int numChannels, int framesPerBuffer,
+    int sampleRate, int64_t currentBufferCounter);
 }

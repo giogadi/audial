@@ -10,11 +10,11 @@ void RequestSynthParamChange(
     double value, audio::Context& audioContext) {
     audio::Event e;
     e.channel = synthIx;
-    e.timeInTicks = 0;
+    e.delaySecs = 0.0;
     e.type = audio::EventType::SynthParam;
     e.param = param;
     e.newParamValue = value;
-    e.paramChangeTime = 0;
+    e.paramChangeTimeSecs = 0.0;
     audioContext.AddEvent(e);
 }
 
@@ -27,7 +27,7 @@ void DrawSynthGuiAndUpdatePatch(SynthGuiState& synthGuiState, audio::Context& au
                 audio::Event e;
                 e.type = audio::EventType::AllNotesOff;
                 e.channel = i;
-                e.timeInTicks = 0;
+                e.delaySecs = 0;
                 audioContext.AddEvent(e);
             }
         }

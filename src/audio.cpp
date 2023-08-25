@@ -190,13 +190,18 @@ PaError ShutDown(Context& context) {
     return paNoError;
 }
 
-void ProcessEventQueue(EventQueue* eventQueue, boost::circular_buffer<Event>* pendingEvents) {
+void ProcessEventQueue(EventQueue* eventQueue, int64_t currentBufferCounter, double sampleRate, int bufferSize, boost::circular_buffer<PendingEvent>* pendingEvents) {
+    double const secsToBuffers = sampleRate / static_cast<double>(bufferSize);
     while (!pendingEvents->full()) {
         Event *e = eventQueue->front();
         if (e == nullptr) {
             break;
         }
-        pendingEvents->push_back(*e);
+        PendingEvent p_e;
+        p_e._e = *e;
+        int64_t delayInBuffers = e->delaySecs * secsToBuffers;
+        p_e._runBufferCounter = currentBufferCounter + delayInBuffers;
+        pendingEvents->push_back(p_e);
         eventQueue->pop();
     }
     if (pendingEvents->full()) {
@@ -204,24 +209,23 @@ void ProcessEventQueue(EventQueue* eventQueue, boost::circular_buffer<Event>* pe
     }
 
     std::stable_sort(pendingEvents->begin(), pendingEvents->end(),
-        [](audio::Event const& a, audio::Event const& b) {
-            return a.timeInTicks < b.timeInTicks;
+        [](audio::PendingEvent const& a, audio::PendingEvent const& b) {
+            return a._runBufferCounter < b._runBufferCounter;
         });
 }
 
 void PopEventsFromThisFrame(
-    boost::circular_buffer<Event>* pendingEvents, double const currentTimeSecs, int sampleRate, unsigned long samplesPerFrame) {
-    uint64_t const frameStartTickTime = static_cast<uint64_t>(currentTimeSecs * sampleRate);
-    uint64_t const nextFrameStartTickTime = frameStartTickTime + samplesPerFrame;
+    boost::circular_buffer<PendingEvent>* pendingEvents, int64_t currentBufferCounter) {
     int lastProcessedEventIx = -1;
-    for (int pendingEventIx = 0; pendingEventIx < pendingEvents->size(); ++pendingEventIx) {
-        Event const& e = (*pendingEvents)[pendingEventIx];
-        if (e.timeInTicks < nextFrameStartTickTime) {
+    for (int pendingEventIx = 0, n = pendingEvents->size(); pendingEventIx < n; ++pendingEventIx) {
+        PendingEvent const& p_e = (*pendingEvents)[pendingEventIx];
+        if (p_e._runBufferCounter <= currentBufferCounter) {
             lastProcessedEventIx = pendingEventIx;
         } else {
             break;
         }
     }
+
     if (lastProcessedEventIx >= 0) {
         pendingEvents->erase_begin(lastProcessedEventIx + 1);
     }
@@ -291,23 +295,23 @@ int PortAudioCallback(
     memset(outputBufferUntyped, 0, NUM_OUTPUT_CHANNELS * samplesPerFrame * sizeof(float));
 
     // Figure out which events apply to this invocation of the callback, and which effects should handle them.
-    ProcessEventQueue(state->events, &state->pendingEvents);
+    ProcessEventQueue(state->events, state->_bufferCounter, state->sampleRate, samplesPerFrame, &state->pendingEvents);
 
     float* outputBuffer = (float*) outputBufferUntyped;
 
     // PCM playback first
     int currentEventIx = 0;
-    uint64_t frameStartTickTime = timeSecs * state->sampleRate;
     for (int i = 0; i < samplesPerFrame; ++i) {
         // Handle events
         while (true) {
             if (currentEventIx >= state->pendingEvents.size()) {
                 break;
             }
-            Event const& e = state->pendingEvents[currentEventIx];
-            if (e.timeInTicks > frameStartTickTime + i) {
+            PendingEvent const& p_e = state->pendingEvents[currentEventIx];
+            if (state->_bufferCounter < p_e._runBufferCounter) {
                 break;
             }
+            Event const& e = p_e._e;
             switch (e.type) {
                 case EventType::PlayPcm: {
                     if (e.pcmSoundIx >= state->soundBank->_sounds.size() || e.pcmSoundIx < 0) {
@@ -418,7 +422,7 @@ int PortAudioCallback(
     for (synth::StateData& s : state->synths) {
         synth::Process(
             &s, state->pendingEvents, outputBuffer,
-            NUM_OUTPUT_CHANNELS, samplesPerFrame, state->sampleRate, frameStartTickTime);
+            NUM_OUTPUT_CHANNELS, samplesPerFrame, state->sampleRate, state->_bufferCounter);
     }
 
     if (state->_finalGain != 1.f) {
@@ -428,7 +432,7 @@ int PortAudioCallback(
     }
 
     // Clear out events from this frame.
-    PopEventsFromThisFrame(&(state->pendingEvents), timeSecs, state->sampleRate, samplesPerFrame);
+    PopEventsFromThisFrame(&(state->pendingEvents), state->_bufferCounter);
 
     high_resolution_clock::time_point t2 = high_resolution_clock::now();
 
@@ -447,6 +451,8 @@ int PortAudioCallback(
     //    gAvgCallbackTime += callbackTimeSecs / kCallbacksPerSec;
     //    gMaxCallbackTime = std::max(callbackTimeSecs, gMaxCallbackTime);
     //}
+
+    ++state->_bufferCounter;
 
     return paContinue;
 }

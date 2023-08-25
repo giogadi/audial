@@ -34,9 +34,11 @@ struct StateData {
     std::array<PcmVoice,kNumPcmVoices> pcmVoices;
 
     EventQueue* events = nullptr;
-    boost::circular_buffer<Event> pendingEvents;
+    boost::circular_buffer<PendingEvent> pendingEvents;
 
     float _finalGain = 1.f;
+
+    int64_t _bufferCounter = 0;
 };
 
 void InitStateData(

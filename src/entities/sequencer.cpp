@@ -60,10 +60,10 @@ void SequencerEntity::Update(GameManager& g, float dt) {
             double absBeatTime = _currentLoopStartBeatTime + b_e._beatTime;
             if (absBeatTime <= maxBeatTime) {
                 // queue it up!
-                double epochAdjust = g._beatClock->GetBeatTime() - currentBeatTime;
-                int64_t tickTime = g._beatClock->BeatTimeToTickTime(absBeatTime + epochAdjust);
+                double beatTimeDelay = absBeatTime - currentBeatTime;
+                double secsDelay = g._beatClock->BeatTimeToSecs(beatTimeDelay);
                 audio::Event e = b_e._e;
-                e.timeInTicks = tickTime;
+                e.delaySecs = secsDelay;
                 g._audioContext->AddEvent(e);
             } else {
                 // not time yet. quit.

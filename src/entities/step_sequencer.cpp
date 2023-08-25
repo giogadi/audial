@@ -245,7 +245,7 @@ void StepSequencerEntity::Update(GameManager& g, float dt) {
         }
         if (_isSynth) {
             audio::Event e;
-            e.timeInTicks = 0;
+            e.delaySecs = 0.0;
             e.velocity = seqStep._velocity * _gain;
             e.type = audio::EventType::NoteOn;
             static int sNoteOnId = 1;
@@ -256,10 +256,9 @@ void StepSequencerEntity::Update(GameManager& g, float dt) {
                     e.channel = channel;
                     g._audioContext->AddEvent(e);
                 }
-            }
-            double noteOffBeatTime = beatClock.GetBeatTime() + _noteLength;        
+            }      
             e.type = audio::EventType::NoteOff;
-            e.timeInTicks = beatClock.BeatTimeToTickTime(noteOffBeatTime);
+            e.delaySecs = beatClock.BeatTimeToSecs(_noteLength);
             for (int i = 0; i < numVoices; ++i) {
                 e.midiNote = seqStep._midiNote[i];
                 for (int channel : _channels) {
@@ -269,7 +268,7 @@ void StepSequencerEntity::Update(GameManager& g, float dt) {
             }
         } else {
             audio::Event e;
-            e.timeInTicks = 0;
+            e.delaySecs = 0.0;
             e.pcmVelocity = seqStep._velocity * _gain;
             e.type = audio::EventType::PlayPcm;
             e.loop = false;

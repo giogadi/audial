@@ -4,11 +4,11 @@ void audio::Event::Save(serial::Ptree pt) const {
     std::string eventTypeStr = EventTypeToString(type);
     pt.PutString("event_type", eventTypeStr.c_str());
     pt.PutInt("channel", channel);
-    pt.PutLong("tick_time", timeInTicks);    
+    pt.PutDouble("delay_secs", delaySecs);    
     switch (type) {
         case EventType::SynthParam:
             pt.PutString("synth_param", SynthParamTypeToString(param));
-            pt.PutLong("change_time", paramChangeTime);
+            pt.PutDouble("change_time_secs", paramChangeTimeSecs);
             // THIS IS BROKEN AND BADDDDDDDDDDDDD not handling int case
             pt.PutFloat("value", newParamValue);
             break;
@@ -41,13 +41,22 @@ void audio::Event::Load(serial::Ptree pt) {
     std::string eventTypeStr = pt.GetString("event_type");
     type = StringToEventType(eventTypeStr.c_str());
     channel = pt.GetInt("channel");
-    timeInTicks = pt.GetLong("tick_time");
+    if (!pt.TryGetDouble("delay_secs", &delaySecs)) {
+        // backward compat. DIRTY HACK, assume 48khz sample rate.        
+        int64_t tickTime = pt.GetLong("tick_time");
+        printf("audio::Event::Load: DIRTY HACK AHOY: %lld\n", tickTime);
+        delaySecs = static_cast<double>(tickTime) / 48000.0;
+    }
     switch (type) {
         case EventType::SynthParam: {
             std::string synthParamStr = pt.GetString("synth_param");
             param = StringToSynthParamType(synthParamStr.c_str());
-            paramChangeTime = 0;
-            pt.TryGetLong("change_time", &paramChangeTime);
+            paramChangeTimeSecs = 0.0;
+            if (!pt.TryGetDouble("change_time_secs", &paramChangeTimeSecs)) {
+                int64_t tickTime = pt.GetLong("change_time");
+                printf("audio::Event::Load: DIRTY HACK PARAM AHOY: %lld\n", tickTime);
+                paramChangeTimeSecs = static_cast<double>(tickTime) / 48000.0;
+            }
             // THIS IS BROKEN AND BADDDDDDDDDDDDD not handling int case
             newParamValue = pt.GetFloat("value");            
             break;

@@ -45,41 +45,6 @@
 
 GameManager gGameManager;
 
-void InitEventQueueWithSequence(audio::EventQueue* queue, BeatClock const& beatClock) {
-    double const firstNoteBeatTime = beatClock.GetDownBeatTime() + 1.0;
-    for (int i = 0; i < 16; ++i) {
-        double const beatTime = firstNoteBeatTime + (double)i;
-        uint64_t const tickTime = beatClock.BeatTimeToTickTime(beatTime);
-
-        audio::Event e;
-        e.type = audio::EventType::NoteOn;
-        e.timeInTicks = tickTime;
-        e.midiNote = 69 + i;
-        queue->push(e);
-
-        e.type = audio::EventType::NoteOff;
-        e.timeInTicks = beatClock.BeatTimeToTickTime(beatTime + 0.5);
-        queue->push(e);
-    }
-}
-
-void InitEventQueueWithParamSequence(audio::EventQueue* queue, BeatClock const& beatClock) {
-    double const firstNoteBeatTime = beatClock.GetDownBeatTime() + 1.0;
-    // gradually increase the cutoff from 0 to 1 in 4 measures = 16 beats.
-    for (int i = 0; i < 16; ++i) {
-        double const beatTime = firstNoteBeatTime + (double)i;
-        uint64_t const tickTime = beatClock.BeatTimeToTickTime(beatTime);
-
-        audio::Event e;
-        e.channel = 1;
-        e.type = audio::EventType::SynthParam;
-        e.timeInTicks = tickTime;
-        e.param = audio::SynthParamType::Cutoff;
-        e.newParamValue = i * (1.f / 16.f);
-        queue->push(e);
-    }
-}
-
 void SetViewport(ViewportInfo const& viewport) {
     glViewport(viewport._offsetX, viewport._offsetY, viewport._width, viewport._height);
 }

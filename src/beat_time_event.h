@@ -11,14 +11,14 @@ struct BeatTimeEvent {
     audio::Event _e;  // timeInTicks is ignored.
     double _beatTime = 0.0;
 
-    audio::Event ToTickTimeEvent(BeatClock const& beatClock) const {
+    audio::Event ToEvent(BeatClock const& beatClock) const {
         audio::Event e = _e;
-        e.timeInTicks = beatClock.BeatTimeToTickTime(_beatTime);
+        e.delaySecs = beatClock.BeatTimeToSecs(_beatTime);
         return e;
     }
-    void FromTickTimeEvent(audio::Event const& e, BeatClock const& beatClock) {
+    void FromEvent(audio::Event const& e, BeatClock const& beatClock) {
         _e = e;
-        _beatTime = beatClock.TickTimeToBeatTime(e.timeInTicks);
+        _beatTime = beatClock.SecsToBeatTime(e.delaySecs);
     }
 
     void MakeTimeRelativeTo(double beatTimeReference) {
@@ -36,9 +36,8 @@ struct BeatTimeEvent {
     bool ImGui();
 };
 
-inline audio::Event BeatTimeToTickTimeEvent(BeatTimeEvent const& b_e, BeatClock const& beatClock) {
-    audio::Event e = b_e._e;
-    e.timeInTicks = beatClock.BeatTimeToTickTime(b_e._beatTime);
+inline audio::Event BeatTimeEventToEvent(BeatTimeEvent const& b_e, BeatClock const& beatClock) {
+    audio::Event e = b_e.ToEvent(beatClock);
     return e;
 }
 

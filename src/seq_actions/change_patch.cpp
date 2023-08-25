@@ -97,11 +97,11 @@ void ChangePatchSeqAction::ExecuteDerived(GameManager& g) {
     else {
         patchToUse = &_p._patch;
     }
-    auto blendTickTime = g._beatClock->BeatTimeToTickTime(_p._blendBeatTime);
+    double blendTimeSecs = g._beatClock->BeatTimeToSecs(_p._blendBeatTime);
     audio::Event e;
     e.type = audio::EventType::SynthParam;
     e.channel = _p._channelIx;
-    e.paramChangeTime = blendTickTime;
+    e.paramChangeTimeSecs = blendTimeSecs;
     for (int paramIx = 0, n = (int)audio::SynthParamType::Count; paramIx < n; ++paramIx) {
         audio::SynthParamType paramType = (audio::SynthParamType) paramIx;
         float v = patchToUse->Get(paramType);

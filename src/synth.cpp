@@ -428,24 +428,25 @@ void ConvertADSREnvSpec(ADSREnvSpec const& spec, ADSREnvSpecInTicks& specInTicks
     specInTicks.minValue = spec.minValue;
 }
 
-void Process(StateData* state, boost::circular_buffer<audio::Event> const& pendingEvents,
+void Process(StateData* state, boost::circular_buffer<audio::PendingEvent> const& pendingEvents,
     float* outputBuffer, int const numChannels, int const samplesPerFrame,
-    int const sampleRate, uint64_t frameStartTickTime) {
+    int const sampleRate, int64_t currentBufferCounter) {
     
     Patch& patch = state->patch;
 
     // Handle all the events that will happen in this buffer frame.
-    uint64_t frameLastTickTime = frameStartTickTime + samplesPerFrame;
+    int64_t frameStartTickTime = currentBufferCounter * samplesPerFrame;
+    int64_t frameLastTickTime = frameStartTickTime + samplesPerFrame;
     int currentEventIx = 0;
     while (true) {
         if (currentEventIx >= pendingEvents.size()) {
             break;
         }
-        audio::Event const& e = pendingEvents[currentEventIx];
-        if (e.timeInTicks > frameLastTickTime) {
-            // This event gets handled later.
+        audio::PendingEvent const& p_e = pendingEvents[currentEventIx];
+        if (currentBufferCounter < p_e._runBufferCounter) {
             break;
         }
+        audio::Event const& e = p_e._e;
         if (e.channel != state->channel) {
             // Not meant for this channel. Skip this message.
             ++currentEventIx;
@@ -503,7 +504,7 @@ void Process(StateData* state, boost::circular_buffer<audio::Event> const& pendi
                 break;
             }
             case audio::EventType::SynthParam: {
-                if (e.paramChangeTime != 0) {
+                if (e.paramChangeTimeSecs != 0.0) {
                     // Find a free automation. Also, ensure that there's no
                     // existing automation on this param.
                     for (Automation& a : state->automations) {
@@ -528,7 +529,8 @@ void Process(StateData* state, boost::circular_buffer<audio::Event> const& pendi
                     pA->_startValue = patch.Get(e.param);
                     pA->_desiredValue = e.newParamValue;
                     pA->_startTickTime = frameStartTickTime;
-                    pA->_endTickTime = pA->_startTickTime + e.paramChangeTime;
+                    int64_t changeTimeInTicks = e.paramChangeTimeSecs * sampleRate;
+                    pA->_endTickTime = pA->_startTickTime + changeTimeInTicks;
                     break;
                 }
                 patch.Get(e.param) = e.newParamValue;

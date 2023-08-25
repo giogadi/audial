@@ -14,14 +14,14 @@ struct Event {
     Event() {
         type = EventType::None;
         channel = 0;
-        timeInTicks = 0;
+        delaySecs = 0;
         midiNote = 0;
         velocity = 1.f;
         noteOnId = 0;
     }
     EventType type;
     int channel;
-    int64_t timeInTicks;
+    double delaySecs;
     union {
         struct {
             int midiNote;
@@ -40,7 +40,7 @@ struct Event {
         struct {
             // valid under SynthParam type
             SynthParamType param;
-            long paramChangeTime;  // if 0, param gets changed instantly.
+            double paramChangeTimeSecs;  // if 0, param gets changed instantly.
             float newParamValue;
         };
         struct {
@@ -66,6 +66,11 @@ typedef std::array<FrameEvent, 256> EventsThisFrame;
 struct PcmSound {
     float* _buffer = nullptr;
     uint64_t _bufferLength = 0;
+};
+
+struct PendingEvent {
+    Event _e;
+    int64_t _runBufferCounter = 0;
 };
 
 }  // namespace audio
