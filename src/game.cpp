@@ -8,10 +8,10 @@
 #include <unordered_map>
 #include <optional>
 #include <sstream>
-#include <filesystem>
 
 #if defined __APPLE__
-# include <mach-o/dyld.h>
+#include <mach-o/dyld.h>
+#include <unistd.h>
 #endif  /* __APPLE__ */
 
 #include <portaudio.h>
@@ -214,20 +214,34 @@ int main(int argc, char** argv) {
     
 #if defined __APPLE__
 {
-    std::filesystem::path defaultCmdLineFilePath("cmd_line.txt");
-    if (!std::filesystem::exists(defaultCmdLineFilePath)) {
+    FILE* f = fopen("cmd_line.txt", "r");
+    if (f == nullptr) {
         // Try changing directories to executable directory
         char executablePath[1024];
         uint32_t pathSize = sizeof(executablePath);
         _NSGetExecutablePath(executablePath, &pathSize);
-        printf("executable path: %s\n", executablePath);
-        printf("changing working directory to executable directory.\n");
-        std::filesystem::path exePath(executablePath);
-        std::filesystem::path exeDir = exePath.parent_path();
-        std::filesystem::current_path(exeDir);
-    }
-    std::filesystem::path cwd = std::filesystem::current_path();
-    printf("pwd: %s\n", cwd.c_str());
+        pathSize = strlen(executablePath);
+        int currentIx = pathSize - 1;
+        while (currentIx >= 0) {
+            if (executablePath[currentIx] == '/') {
+                break;
+            }
+            --currentIx;
+        }
+        if (currentIx < 0) {
+            printf("Invalid executable path: %s\n", executablePath);
+            return 1;
+        }
+        executablePath[currentIx] = '\0';
+        chdir(executablePath);
+
+        char buffer[1024];
+        uint32_t bufferSize = sizeof(buffer);
+        getcwd(buffer, bufferSize);
+        printf("pwd: %s\n", buffer);
+    } else {
+        fclose(f);
+    }   
  }
 #endif  /* __APPLE__ */    
     
