@@ -6,7 +6,7 @@
 
 class SoundBank {
 public:
-    void LoadSounds();
+    void LoadSounds(int sampleRate);
     void Destroy();    
     int GetSoundIx(char const* soundName) const;  // returns -1 if not found
     std::vector<audio::PcmSound> _sounds;

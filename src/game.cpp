@@ -318,7 +318,6 @@ int main(int argc, char** argv) {
     ImGui_ImplOpenGL3_Init(/*glsl_version=*/NULL);
 
     SoundBank soundBank;
-    soundBank.LoadSounds();
 
     synth::PatchBank synthPatchBank;
     if (cmdLineInputs._synthPatchesFilename.has_value()) {
@@ -344,6 +343,8 @@ int main(int argc, char** argv) {
             return 1;
         }
     }
+
+    soundBank.LoadSounds(audioContext._sampleRate);
 
     // TODO UGH GROSS. not thread-safe, etc etc
     {

@@ -3,66 +3,38 @@
 #define DR_WAV_IMPLEMENTATION
 #include "dr_wav.h"
 
-void SoundBank::LoadSounds() {
+// TODO: need to convert the following properly to 44100Hz:
+// kick_deep, snare, liquid_dnb, liquid_chords, liquid_dnb_drums, tech_chords, tech_drum_groove, feel_vox_*, check_it_out_g
+void SoundBank::LoadSounds(int sampleRate) {
     _soundNames = {
-        "kick"
-        , "block"
-        , "snare"
-        , "liquid_dnb_loop"
-        , "liquid_dnb_chords"
-        , "liquid_dnb_drums"
-        , "tech_chords"
-        , "tech_drum_groove"
-        , "hihat_open_909"
-        , "clap_909"
-        , "feel_vox_1"
-        , "feel_vox_2"
-        , "feel_vox_3"
-        , "feel_vox_4"
-        , "feel_vox_5"
-        , "feel_vox_6"
-        , "feel_vox_7"
-        , "feel_vox_8"
-        , "feel_vox_9"
-        , "kick_909"
-        , "snare_909"
-        , "hihat_closed_909"
-        , "bunny_cbb"
-        , "is_a_dbb"
-        , "satell_dc"
-        , "ite_cant_dbb"
-        , "check_it_out_g"
-        , "crash_909"
-    };
-    std::vector<char const*> soundFilenames = {
-        "data/sounds/kick_deep.wav"
-        , "data/sounds/woodblock_reverb_mono.wav"
-        , "data/sounds/snare_909.wav"
-        , "data/sounds/liquid_dnb.wav"
-        , "data/sounds/liquid_chords.wav"
-        , "data/sounds/liquid_dnb_drums.wav"
-        , "data/sounds/tech_chords.wav"
-        , "data/sounds/tech_drum_groove.wav"
-        , "data/sounds/hihat_open_909.wav"
-        , "data/sounds/clap_909.wav"
-        , "data/sounds/feeling_vocals/v1.wav"
-        , "data/sounds/feeling_vocals/v2.wav"
-        , "data/sounds/feeling_vocals/v3.wav"
-        , "data/sounds/feeling_vocals/v4.wav"
-        , "data/sounds/feeling_vocals/v5.wav"
-        , "data/sounds/feeling_vocals/v6.wav"
-        , "data/sounds/feeling_vocals/v7.wav"
-        , "data/sounds/feeling_vocals/v8.wav"
-        , "data/sounds/feeling_vocals/v9.wav"
-        , "data/sounds/kick_909_48k.wav"
-        , "data/sounds/snare_909_48k.wav"
-        , "data/sounds/hihat_closed_909_48k.wav"
-        , "data/sounds/biar_bunny_cbb.wav"
-        , "data/sounds/biar_is_a_dbb.wav"
-        , "data/sounds/biar_satell_dc.wav"
-        , "data/sounds/biar_ite_cant_dbb.wav"
-        , "data/sounds/check_it_out.wav"
-        , "data/sounds/crash_909.wav"
+        "kick_deep.wav"
+        , "woodblock_reverb_mono.wav"
+        , "snare.wav"
+        , "liquid_dnb.wav"
+        , "liquid_chords.wav"
+        , "liquid_dnb_drums.wav"
+        , "tech_chords.wav"
+        , "tech_drum_groove.wav"
+        , "hihat_open_909.wav"
+        , "clap_909.wav"
+        , "feeling_vocals/v1.wav"
+        , "feeling_vocals/v2.wav"
+        , "feeling_vocals/v3.wav"
+        , "feeling_vocals/v4.wav"
+        , "feeling_vocals/v5.wav"
+        , "feeling_vocals/v6.wav"
+        , "feeling_vocals/v7.wav"
+        , "feeling_vocals/v8.wav"
+        , "feeling_vocals/v9.wav"
+        , "kick_909.wav"
+        , "snare_909.wav"
+        , "hihat_closed_909.wav"
+        , "biar_bunny_cbb.wav"
+        , "biar_is_a_dbb.wav"
+        , "biar_satell_dc.wav"
+        , "biar_ite_cant_dbb.wav"
+        , "check_it_out.wav"
+        , "crash_909.wav"
     };
     _exclusiveGroups = {
         -1,
@@ -94,19 +66,33 @@ void SoundBank::LoadSounds() {
         -1,
         -1
     };
-    assert(soundFilenames.size() == _soundNames.size());
     assert(_soundNames.size() == _exclusiveGroups.size());
-    for (int i = 0, n = soundFilenames.size(); i < n; ++i) {
-        char const* filename = soundFilenames[i];
+    char filename[1024];
+    if (sampleRate == 44100) {
+        strcpy(filename, "data/sounds/sr44100/");
+    } else {
+        if (sampleRate != 48000) {
+            printf("SoundBank: WARNING unhandled sample rate: %d\n", sampleRate);
+        }
+        strcpy(filename, "data/sounds/");
+    }
+    int nameStartIx = strlen(filename);
+    char* nameStart = &(filename[nameStartIx]);
+    for (int i = 0, n = _soundNames.size(); i < n; ++i) {        
+        strcpy(nameStart, _soundNames[i]);
         audio::PcmSound sound;
         unsigned int numChannels;
-        unsigned int sampleRate;
+        unsigned int thisSampleRate;
         sound._buffer = drwav_open_file_and_read_pcm_frames_f32(
-            filename, &numChannels, &sampleRate, &sound._bufferLength, /*???*/NULL);
+            filename, &numChannels, &thisSampleRate, &sound._bufferLength, /*???*/NULL);
+        if (sound._buffer == nullptr) {
+            printf("SoundBank: error loading sample \"%s\"\n", _soundNames[i]);
+        }
         assert(numChannels == 1);
-        // assert(sampleRate == SAMPLE_RATE);
+        // if (thisSampleRate != sampleRate) {
+        //     printf("SoundBank: WARNING expected sample rate of %d, but sample \"%s\" is %u\n", sampleRate, _soundNames[i], thisSampleRate);
+        // }
         assert(sound._buffer != nullptr);
-        // printf("Loaded \"%s\": %d channels, %llu samples.\n", filename, numChannels, sound._bufferLength);
         _sounds.push_back(std::move(sound));
     }
 }
