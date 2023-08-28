@@ -10,7 +10,8 @@ struct TypingEnemyEntity : public ne::Entity {
     enum class HitBehavior { SingleAction, AllActions };
     
     // serialized
-    std::string _text;
+    std::string _keyText;
+    std::string _buttons;
     std::vector<std::unique_ptr<SeqAction>> _hitActions;
     std::vector<std::unique_ptr<SeqAction>> _offCooldownActions;
     std::vector<bool> _isOneTimeAction;
@@ -44,6 +45,7 @@ struct TypingEnemyEntity : public ne::Entity {
     void DoHitActions(GameManager& g);
     void OnHitOther(GameManager& g);
     InputManager::Key GetNextKey() const;
+    InputManager::ControllerButton GetNextButton() const;
     bool CanHit() const;
     void SetHittable(bool hittable);
 

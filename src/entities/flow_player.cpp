@@ -172,6 +172,7 @@ void FlowPlayerEntity::Update(GameManager& g, float dt) {
     float nearestDist2 = -1.f;
     Vec3 const& playerPos = _transform.GetPos();    
     Mat4 viewProjTransform = g._scene->GetViewProjTransform();
+    bool const usingController = g._inputManager->IsUsingController();
     for (ne::EntityManager::Iterator enemyIter = g._neEntityManager->GetIterator(ne::EntityType::TypingEnemy); !enemyIter.Finished(); enemyIter.Next()) {
         Vec4 constexpr kGreyColor(0.6f, 0.6f, 0.6f, 0.7f);
         TypingEnemyEntity* enemy = (TypingEnemyEntity*) enemyIter.GetEntity();
@@ -193,10 +194,17 @@ void FlowPlayerEntity::Update(GameManager& g, float dt) {
         enemy->_currentColor = enemy->_modelColor;
         enemy->_textColor.Set(1.f, 1.f, 1.f, 1.f);
 
-        InputManager::Key nextKey = enemy->GetNextKey();
-        if (!g._inputManager->IsKeyPressedThisFrame(nextKey)) {
-            continue;
-        }
+        if (usingController) {
+            InputManager::ControllerButton nextButton = enemy->GetNextButton();
+            if (!g._inputManager->IsKeyPressedThisFrame(nextButton)) {
+                continue;
+            }
+        } else {
+            InputManager::Key nextKey = enemy->GetNextKey();
+            if (!g._inputManager->IsKeyPressedThisFrame(nextKey)) {
+                continue;
+            }
+        }        
 
         if (nearest == nullptr || d2 < nearestDist2) {
 

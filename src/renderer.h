@@ -7,6 +7,7 @@
 #include "matrix.h"
 #include "constants.h"
 #include "version_id.h"
+#include "input_manager.h"
 
 struct GameManager;
 
@@ -98,6 +99,8 @@ public:
     Mat4 _transform;
     BoundMeshPNU const* _mesh = nullptr;
     unsigned int _textureId = 0;
+    bool _visible = true;
+    bool _topLayer = false;
 };
 
 struct LineInstance {
@@ -144,12 +147,16 @@ public:
 
     ColorModelInstance* DrawMesh(MeshId id);
 
+    TexturedModelInstance* DrawTexturedMesh(BoundMeshPNU const* m, unsigned int textureId);
+
     void DrawBoundingBox(Mat4 const& t, Vec4 const& color);
 
     void DrawText(std::string_view str, float& screenX, float& screenY, float scale=1.f, Vec4 const& colorRgba = Vec4(1.f, 1.f, 1.f, 1.f));
     void DrawTextWorld(std::string text, Vec3 const& pos, float scale = 1.f, Vec4 const& colorRgba = Vec4(1.f, 1.f, 1.f, 1.f));
 
     void DrawLine(Vec3 const& start, Vec3 const& end, Vec4 const& color);
+
+    TexturedModelInstance* DrawPsButton(InputManager::ControllerButton button, Mat4 const& t);
 
     Camera _camera;
 

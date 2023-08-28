@@ -11,6 +11,14 @@ struct DirLight {
 };
 uniform DirLight uDirLight;
 
+struct PointLight {
+    vec3 _pos;
+    vec3 _ambient;
+    vec3 _diffuse;
+};
+#define NUM_POINT_LIGHTS 2
+uniform PointLight uPointLights[NUM_POINT_LIGHTS];
+
 uniform sampler2D uMyTexture;
 
 out vec4 FragColor;
@@ -18,8 +26,21 @@ out vec4 FragColor;
 void main() {
     vec4 albedo = texture(uMyTexture, texCoord);
     vec3 norm = normalize(normal);
-    float diff = max(dot(norm, -uDirLight._dir), 0.0);
-    vec3 diffuse = diff*uDirLight._diffuse;
+    vec3 result = vec3(0, 0, 0);
+    // Directional light
+    {
+        float diff = max(dot(norm, -uDirLight._dir), 0.0);
+        vec3 diffuse = diff * uDirLight._diffuse;
+        result += diffuse + uDirLight._ambient;
+    }
 
-    FragColor = vec4((uDirLight._ambient + diffuse), 1.0) * albedo;
+    // Point lights
+    for (int i = 0; i < NUM_POINT_LIGHTS; ++i) {
+        PointLight light = uPointLights[i];        
+        vec3 lightDir = normalize(light._pos - fragPos);
+        float diff = max(dot(norm, lightDir), 0.0);
+        vec3 diffuse = diff*light._diffuse;
+        result += diffuse + light._ambient;
+    }
+    FragColor = vec4(result, 1.0) * albedo;
 }

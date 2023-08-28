@@ -15,6 +15,13 @@ public:
     enum class MouseButton : int {
         Left,Right,Middle,Count
     };
+    enum class ControllerButton : int {
+        PadUp,PadDown,PadLeft,PadRight,
+        ButtonTop,ButtonBottom,ButtonLeft,ButtonRight,
+        BumperLeft,BumperRight,
+        TriggerLeft,TriggerRight,
+        Count
+    };
 
     InputManager(GLFWwindow* window);
 
@@ -38,6 +45,16 @@ public:
     }
     bool IsKeyReleasedThisFrame(MouseButton k) const {
         return !_mouseButtonStates[(int)k] && _mouseButtonNewStates[(int)k];
+    }
+
+    bool IsKeyPressed(ControllerButton k) const {
+        return _controllerButtonStates[(int)k];
+    }
+    bool IsKeyPressedThisFrame(ControllerButton k) const {
+        return _controllerButtonStates[(int)k] && _controllerButtonNewStates[(int)k];
+    }
+    bool IsKeyReleasedThisFrame(ControllerButton k) const {
+        return !_controllerButtonStates[(int)k] && _controllerButtonNewStates[(int)k];
     }
 
     bool IsShiftPressed() const {
@@ -66,6 +83,10 @@ public:
         scrollY = _mouseScrollY;
     }
 
+    bool IsUsingController() const {
+        return _usingController;
+    }
+
 private:
     int MapToGlfw(Key k);
     int MapToGlfw(MouseButton b);
@@ -77,6 +98,9 @@ private:
     std::array<bool,static_cast<int>(Key::NumKeys)> _keyNewStates;
     std::array<bool,static_cast<int>(MouseButton::Count)> _mouseButtonStates;
     std::array<bool,static_cast<int>(MouseButton::Count)> _mouseButtonNewStates;
+    std::array<bool,static_cast<int>(ControllerButton::Count)> _controllerButtonStates;
+    std::array<bool,static_cast<int>(ControllerButton::Count)> _controllerButtonNewStates;
+    int _controllerId = -1;
     double _mouseX = 0.0;
     double _mouseY = 0.0;
     double _mouseMotionX = 0.0;
@@ -85,4 +109,5 @@ private:
     double _mouseScrollX = 0.0;
     double _mouseScrollY = 0.0;
     GLFWwindow* _window = nullptr;
+    bool _usingController = false;
 };

@@ -24,12 +24,32 @@ extern bool gRandomLetters;
 namespace {
     int gShuffledLetterIndices[] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26 };
     int gCurrentShuffleIx = 26; // one past
+
+    InputManager::ControllerButton CharToButton(char c) {
+        switch (c) {
+            case 'a': return InputManager::ControllerButton::ButtonTop;
+            case 's': return InputManager::ControllerButton::ButtonBottom;
+            case 'd': return InputManager::ControllerButton::ButtonLeft;
+            case 'f': return InputManager::ControllerButton::ButtonRight;
+            case 'h': return InputManager::ControllerButton::PadUp;
+            case 'j': return InputManager::ControllerButton::PadDown;
+            case 'k': return InputManager::ControllerButton::PadLeft;
+            case 'l': return InputManager::ControllerButton::PadRight;
+            case 'e': return InputManager::ControllerButton::BumperLeft;
+            case 'r': return InputManager::ControllerButton::BumperRight;
+            case 'y': return InputManager::ControllerButton::TriggerLeft;
+            case 'u': return InputManager::ControllerButton::TriggerRight;
+            default: {
+                printf("InputManager::ControllerButton::CharToButton: unrecognized char \'%c\'\n", c);
+                return InputManager::ControllerButton::Count;
+            }
+        }
+    }    
 }
 
-
-
 void TypingEnemyEntity::LoadDerived(serial::Ptree pt) {
-    _text = pt.GetString("text");
+    _keyText = pt.GetString("text");
+    pt.TryGetString("buttons", &_buttons);
     pt.TryGetBool("type_kill", &_destroyAfterTyped);
     bool allActionsOnHit = false;
     pt.TryGetBool("all_actions_on_hit", &allActionsOnHit);
@@ -75,13 +95,14 @@ void TypingEnemyEntity::LoadDerived(serial::Ptree pt) {
         }
         int randLetterIx = gShuffledLetterIndices[gCurrentShuffleIx];
         ++gCurrentShuffleIx;
-        _text.resize(1);
-        _text[0] = 'a' + randLetterIx;
+        _keyText.resize(1);
+        _keyText[0] = 'a' + randLetterIx;
     }
 }
 
 void TypingEnemyEntity::SaveDerived(serial::Ptree pt) const {
-    pt.PutString("text", _text.c_str());
+    pt.PutString("text", _keyText.c_str());
+    pt.PutString("buttons", _buttons.c_str());
     pt.PutBool("type_kill", _destroyAfterTyped);
     pt.PutBool("all_actions_on_hit", _hitBehavior == HitBehavior::AllActions);
     pt.PutBool("flow_polarity", _flowPolarity);
@@ -98,7 +119,12 @@ void TypingEnemyEntity::SaveDerived(serial::Ptree pt) const {
 ne::BaseEntity::ImGuiResult TypingEnemyEntity::ImGuiDerived(GameManager& g) {
     ImGuiResult result = ImGuiResult::Done;
 
-    imgui_util::InputText<32>("Text", &_text);
+    if (imgui_util::InputText<32>("Text", &_keyText)) {
+        result = ImGuiResult::NeedsInit;
+    }
+    if (imgui_util::InputText<32>("Buttons", &_buttons)) {
+        result = ImGuiResult::NeedsInit;
+    }
     ImGui::Checkbox("Kill on type", &_destroyAfterTyped);
 
     bool allActionsOnHit = _hitBehavior == HitBehavior::AllActions;
@@ -146,12 +172,26 @@ void TypingEnemyEntity::InitDerived(GameManager& g) {
         pAction->Init(g);
     }
 
+    if (_keyText.length() != _buttons.length()) {
+        printf("WARNING TypingEnemyEntity \"%s\" has keyText and buttons with different lengths: \"%s\" vs \"%s\"\n", _name.c_str(), _keyText.c_str(), _buttons.c_str());
+    }
+
     _flowCooldownStartBeatTime = -1.0;
     _timeOfLastHit = -1.0;
     _velocity = Vec3();
 
     _hittable = _initHittable;
     _numHits = 0;
+
+    if (_keyText.length() < _buttons.length()) {
+        for (int i = _keyText.length(); i < _buttons.length(); ++i) {
+            _keyText.push_back('a');
+        }
+    } else if (_buttons.length() < _keyText.length()) {
+        for (int i = _buttons.length(); i < _keyText.length(); ++i) {
+            _buttons.push_back('a');
+        }
+    }
 }
 
 namespace {
@@ -203,22 +243,32 @@ void TypingEnemyEntity::UpdateDerived(GameManager& g, float dt) {
         }
     }
 
-    float constexpr kTextSize = 1.5f;
-    if (_flowCooldownStartBeatTime > 0.f || !playerWithinRadius || !_hittable) {
-        Vec4 color = _textColor;
-        color._w = 0.2f;
-        g._scene->DrawTextWorld(_text, _transform.GetPos(), kTextSize, color);
-    } else if (_text.length() > 1) {
-        if (_numHits > 0) {
-            std::string_view substr = std::string_view(_text).substr(0, _numHits);
-            g._scene->DrawTextWorld(std::string(substr), _transform.GetPos(), kTextSize, Vec4(1.f, 1.f, 0.f, 1.f));
-        }
-        if (_numHits < _text.length()) {
-            std::string_view substr = std::string_view(_text).substr(_numHits);
-            g._scene->DrawTextWorld(std::string(substr), _transform.GetPos(), kTextSize, _textColor);
-        }
+    if (g._inputManager->IsUsingController()) {
+        InputManager::ControllerButton b = CharToButton(_buttons[0]);
+        Transform t = _transform;
+        t.SetScale(Vec3(0.125f, 0.125f, 0.125f));
+        t.SetTranslation(_transform.Pos() + Vec3(0.f, 5.f, 0.f));
+        renderer::TexturedModelInstance* m = g._scene->DrawPsButton(b, t.Mat4Scale());
     } else {
-        g._scene->DrawTextWorld(_text, _transform.GetPos(), kTextSize, _textColor);
+        std::string const& text = g._inputManager->IsUsingController() ? _buttons : _keyText;
+
+        float constexpr kTextSize = 1.5f;
+        if (_flowCooldownStartBeatTime > 0.f || !playerWithinRadius || !_hittable) {
+            Vec4 color = _textColor;
+            color._w = 0.2f;
+            g._scene->DrawTextWorld(text, _transform.GetPos(), kTextSize, color);
+        } else if (text.length() > 1) {
+            if (_numHits > 0) {
+                std::string_view substr = std::string_view(text).substr(0, _numHits);
+                g._scene->DrawTextWorld(std::string(substr), _transform.GetPos(), kTextSize, Vec4(1.f, 1.f, 0.f, 1.f));
+            }
+            if (_numHits < text.length()) {
+                std::string_view substr = std::string_view(text).substr(_numHits);
+                g._scene->DrawTextWorld(std::string(substr), _transform.GetPos(), kTextSize, _textColor);
+            }
+        } else {
+            g._scene->DrawTextWorld(text, _transform.GetPos(), kTextSize, _textColor);
+        }
     }
 
     // Maybe update color from getting hit
@@ -336,7 +386,7 @@ void TypingEnemyEntity::OnHit(GameManager& g) {
         _flowCooldownStartBeatTime = beatTime;
     }
     ++_numHits;
-    if (_numHits == _text.length()) {
+    if (_numHits == _keyText.length()) {
         if (_destroyAfterTyped) {
             bool success = g._neEntityManager->TagForDeactivate(_id);
             assert(success);
@@ -375,8 +425,8 @@ void TypingEnemyEntity::OnHitOther(GameManager& g) {
 }
 
 InputManager::Key TypingEnemyEntity::GetNextKey() const {
-    int textIndex = std::min(_numHits, (int) _text.length() - 1);
-    char nextChar = std::tolower(_text.at(textIndex));
+    int textIndex = std::min(_numHits, (int) _keyText.length() - 1);
+    char nextChar = std::tolower(_keyText.at(textIndex));
     int charIx = nextChar - 'a';
     if (charIx < 0 || charIx > static_cast<int>(InputManager::Key::Z)) {
         printf("WARNING: char \'%c\' not in InputManager!\n", nextChar);
@@ -384,6 +434,12 @@ InputManager::Key TypingEnemyEntity::GetNextKey() const {
     }
     InputManager::Key nextKey = static_cast<InputManager::Key>(charIx);
     return nextKey;
+}
+
+InputManager::ControllerButton TypingEnemyEntity::GetNextButton() const {
+    int textIndex = std::min(_numHits, (int)_buttons.length() - 1);
+    char nextChar = std::tolower(_buttons.at(textIndex));
+    return CharToButton(nextChar);
 }
 
 void TypingEnemyEntity::OnEditPick(GameManager& g) {
@@ -459,7 +515,7 @@ void TypingEnemyEntity::MultiSelectImGui(GameManager& g, std::vector<TypingEnemy
         for (TypingEnemyEntity* e : enemies) {
             int letterIx = rng::GetInt(0, 25);
             char letter = 'a' + letterIx;
-            e->_text = std::string(1, letter);
+            e->_keyText = std::string(1, letter);
         }
     }
 }

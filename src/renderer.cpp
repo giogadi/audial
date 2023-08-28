@@ -60,7 +60,7 @@ bool CreateTextureFromFile(char const* filename, unsigned int& textureId, bool f
         default: assert(false); break;
     }
     glTexImage2D(
-        GL_TEXTURE_2D, /*mipmapLevel=*/0, /*textureFormat=*/GL_RGB, texWidth, texHeight, /*legacy=*/0,
+        GL_TEXTURE_2D, /*mipmapLevel=*/0, /*textureFormat=*/format, texWidth, texHeight, /*legacy=*/0,
         /*sourceFormat=*/format, /*sourceDataType=*/GL_UNSIGNED_BYTE, texData);
     glGenerateMipmap(GL_TEXTURE_2D);
     stbi_image_free(texData);
@@ -128,6 +128,38 @@ namespace ColorShaderUniforms {
         "uModelTrans",
         "uModelInvTrans",
         "uColor",
+        "uDirLight._dir",
+        "uDirLight._ambient",
+        "uDirLight._diffuse",
+        "uPointLights[0]._pos",
+        "uPointLights[0]._ambient",
+        "uPointLights[0]._diffuse",
+        "uPointLights[1]._pos",
+        "uPointLights[1]._ambient",
+        "uPointLights[1]._diffuse"
+    };
+};
+
+namespace TextureShaderUniforms {
+    enum Names {
+        uMvpTrans,
+        uModelTrans,
+        uModelInvTrans,
+        uDirLightDir,
+        uDirLightAmb,
+        uDirLightDif,
+        uPointLight0Pos,
+        uPointLight0Amb,
+        uPointLight0Dif,
+        uPointLight1Pos,
+        uPointLight1Amb,
+        uPointLight1Dif,
+        Count
+    };
+    static char const* NameStrings[] = {
+        "uMvpTrans",
+        "uModelTrans",
+        "uModelInvTrans",
         "uDirLight._dir",
         "uDirLight._ambient",
         "uDirLight._diffuse",
@@ -220,12 +252,16 @@ public:
     SceneInternal() :
         _pointLights(100),
         _colorModelInstances(100),
-        _texturedModelInstances(100),
-        _topLayerColorModels(100) {
+        _texturedModelInstances(100) {
         
+        _topLayerColorModels.reserve(100);
+        _topLayerTexturedModels.reserve(100);
         _modelsToDraw.reserve(100);
+        _texturedModelsToDraw.reserve(100);
     }
     bool Init(GameManager& g);
+
+    bool LoadPsButtons();
 
     DirLight _dirLight;
     TVersionIdList<PointLight> _pointLights;
@@ -237,6 +273,7 @@ public:
     std::vector<BoundingBoxInstance> _boundingBoxesToDraw;
     std::vector<Polygon2dInstance> _polygonsToDraw;
     std::vector<LineInstance> _linesToDraw;
+    std::vector<TexturedModelInstance> _texturedModelsToDraw;
 
     std::unordered_map<std::string, std::unique_ptr<BoundMeshPNU>> _meshMap;    
     std::unordered_map<std::string, unsigned int> _textureIdMap;
@@ -249,6 +286,7 @@ public:
     int _colorShaderUniforms[ColorShaderUniforms::Count];
     
     Shader _textureShader;
+    int _textureShaderUniforms[TextureShaderUniforms::Count];
 
 #if DRAW_WATER    
     Shader _waterShader;
@@ -273,8 +311,12 @@ public:
     unsigned int _lineVao = 0;
     unsigned int _lineVbo = 0;
 
+    std::array<std::unique_ptr<BoundMeshPNU>, (int)InputManager::ControllerButton::Count> _psButtonMeshes;
+    unsigned int _psButtonsTextureId;
+
     // boring cached things
     std::vector<ColorModelInstance const*> _topLayerColorModels;
+    std::vector<TexturedModelInstance const*> _topLayerTexturedModels;
     std::vector<ColorModelInstance const*> _transparentModels;
     BoundMeshPNU const* _cubeMesh = nullptr;
     std::vector<float> _lineVertexData;
@@ -355,6 +397,73 @@ std::unique_ptr<BoundMeshPNU> MakeWaterMesh() {
 }
 }
 
+bool SceneInternal::LoadPsButtons() {
+    if (!CreateTextureFromFile("data/textures/ps_buttons.png", _psButtonsTextureId)) {
+        return false;
+    }
+
+    std::array<float, 4 * BoundMeshPNU::kNumValuesPerVertex> vertexData;
+    // top-left
+    vertexData[0] = -1.f;
+    vertexData[1] = 0.f;
+    vertexData[2] = -1.f;
+    // bottom-left
+    vertexData[BoundMeshPNU::kNumValuesPerVertex*1 + 0] = -1.f;
+    vertexData[BoundMeshPNU::kNumValuesPerVertex*1 + 1] = 0.f;
+    vertexData[BoundMeshPNU::kNumValuesPerVertex*1 + 2] = 1.f;
+    // bottom-right
+    vertexData[BoundMeshPNU::kNumValuesPerVertex*2 + 0] = 1.f;
+    vertexData[BoundMeshPNU::kNumValuesPerVertex*2 + 1] = 0.f;
+    vertexData[BoundMeshPNU::kNumValuesPerVertex*2 + 2] = 1.f;
+    //top-right
+    vertexData[BoundMeshPNU::kNumValuesPerVertex*3 + 0] = 1.f;
+    vertexData[BoundMeshPNU::kNumValuesPerVertex*3 + 1] = 0.f;
+    vertexData[BoundMeshPNU::kNumValuesPerVertex*3 + 2] = -1.f;
+
+    // normals
+    for (int i = 0; i < 4; ++i) {
+        int normalStart = (BoundMeshPNU::kNumValuesPerVertex * i) + 3;
+        vertexData[normalStart] = 0.f;
+        vertexData[normalStart + 1] = 1.f;
+        vertexData[normalStart + 2] = 0.f;
+    }
+
+    // uses triangle fan
+    uint32_t indices[] = {
+        0, 1, 2, 3
+    };
+    
+    float constexpr kIconSize = 64.f;
+    float constexpr kSheetLength = kIconSize * static_cast<int>(InputManager::ControllerButton::Count);
+    for (int i = 0; i < (int)InputManager::ControllerButton::Count; ++i) {
+        InputManager::ControllerButton buttonIx = (InputManager::ControllerButton)i;
+        float startU = kIconSize * i / kSheetLength;
+        float endU = (kIconSize * i + kIconSize - 1.f) / kSheetLength;
+        // uv's
+        // 
+        // top-left
+        vertexData[BoundMeshPNU::kNumValuesPerVertex * 0 + 6] = startU;
+        vertexData[BoundMeshPNU::kNumValuesPerVertex * 0 + 7] = 1.f;
+        // bottom-left
+        vertexData[BoundMeshPNU::kNumValuesPerVertex * 1 + 6] = startU;
+        vertexData[BoundMeshPNU::kNumValuesPerVertex * 1 + 7] = 0.f;
+        // bottom-right
+        vertexData[BoundMeshPNU::kNumValuesPerVertex * 2 + 6] = endU;
+        vertexData[BoundMeshPNU::kNumValuesPerVertex * 2 + 7] = 0.f;
+        // top-right
+        vertexData[BoundMeshPNU::kNumValuesPerVertex * 3 + 6] = endU;
+        vertexData[BoundMeshPNU::kNumValuesPerVertex * 3 + 7] = 1.f;
+
+        auto mesh = std::make_unique<BoundMeshPNU>();
+        mesh->Init(vertexData.data(), 4, indices, 4);
+        mesh->_useTriangleFan = true;
+
+        _psButtonMeshes[i] = std::move(mesh);
+    }
+
+    return true;
+}
+
 bool SceneInternal::Init(GameManager& g) {
     _g = &g;
 
@@ -389,6 +498,9 @@ bool SceneInternal::Init(GameManager& g) {
         mesh = MakeWaterMesh();
         success = _meshMap.emplace("water", std::move(mesh)).second;
         assert(success);
+
+        success = LoadPsButtons();
+        assert(success);
     }
 
     {
@@ -407,6 +519,9 @@ bool SceneInternal::Init(GameManager& g) {
 
     if (!_textureShader.Init("shaders/shader.vert", "shaders/shader.frag")) {
         return false;
+    }
+    for (int i = 0; i < TextureShaderUniforms::Count; ++i) {
+        _textureShaderUniforms[i] = _textureShader.GetUniformLocation(TextureShaderUniforms::NameStrings[i]);
     }
 
 #if DRAW_WATER    
@@ -498,6 +613,7 @@ bool SceneInternal::Init(GameManager& g) {
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     glBindVertexArray(0);
 
+    // LINE DRAWING STUFF
     {
         glGenVertexArrays(1, &_lineVao);
         glBindVertexArray(_lineVao);
@@ -546,6 +662,13 @@ BoundMeshPNU const* Scene::GetMesh(std::string const& meshName) const {
 renderer::ColorModelInstance& Scene::DrawMesh() {
     _pInternal->_modelsToDraw.emplace_back();
     return _pInternal->_modelsToDraw.back();
+}
+
+renderer::TexturedModelInstance* Scene::DrawTexturedMesh(BoundMeshPNU const* m, unsigned int textureId) {
+    renderer::TexturedModelInstance& model = _pInternal->_texturedModelsToDraw.emplace_back();
+    model._mesh = m;
+    model._textureId = textureId;
+    return &model;
 }
 
 renderer::ColorModelInstance* Scene::DrawMesh(MeshId id) {
@@ -638,6 +761,14 @@ void Scene::DrawLine(Vec3 const& start, Vec3 const& end, Vec4 const& color) {
     line._start = start;
     line._end = end;
     line._color = color;
+}
+
+renderer::TexturedModelInstance* Scene::DrawPsButton(InputManager::ControllerButton button, Mat4 const& t) {
+    BoundMeshPNU const* mesh = _pInternal->_psButtonMeshes[(int)button].get();
+
+    TexturedModelInstance* instance = DrawTexturedMesh(mesh, _pInternal->_psButtonsTextureId);
+    instance->_transform = t;
+    return instance;
 }
 
 std::pair<VersionId, PointLight*> Scene::AddPointLight() {
@@ -779,6 +910,33 @@ void SetLightUniformsColorShader(SceneInternal& sceneInternal) {
     }
 }
 
+void SetLightUniformsTextureShader(SceneInternal& sceneInternal) {
+    int const* uniforms = sceneInternal._textureShaderUniforms;
+    Shader& shader = sceneInternal._textureShader;
+    shader.SetVec3(uniforms[TextureShaderUniforms::uDirLightDir], sceneInternal._dirLight._dir);
+    shader.SetVec3(uniforms[TextureShaderUniforms::uDirLightAmb], sceneInternal._dirLight._ambient);
+    shader.SetVec3(uniforms[TextureShaderUniforms::uDirLightDif], sceneInternal._dirLight._diffuse);
+    int constexpr kMaxNumPointLights = 2;
+    if (sceneInternal._pointLights.GetCount() > kMaxNumPointLights) {
+        printf("RENDERER ERROR: TOO MANY POINT LIGHTS (%d)\n", sceneInternal._pointLights.GetCount());
+}
+    for (int i = 0; i < kMaxNumPointLights; ++i) {
+        int posLoc = uniforms[TextureShaderUniforms::uPointLight0Pos + 3 * i];
+        int ambLoc = uniforms[TextureShaderUniforms::uPointLight0Amb + 3 * i];
+        int difLoc = uniforms[TextureShaderUniforms::uPointLight0Dif + 3 * i];
+        if (i >= sceneInternal._pointLights.GetCount()) {
+            shader.SetVec3(posLoc, Vec3(0.f, 0.f, 0.f));
+            shader.SetVec3(ambLoc, Vec3(0.f, 0.f, 0.f));
+            shader.SetVec3(difLoc, Vec3(0.f, 0.f, 0.f));
+        } else {
+            PointLight const& pl = *sceneInternal._pointLights.GetItemAtIndex(i);
+            shader.SetVec3(posLoc, pl._p);
+            shader.SetVec3(ambLoc, pl._ambient);
+            shader.SetVec3(difLoc, pl._diffuse);
+        }
+    }
+}
+
 #if DRAW_WATER
 void SetLightUniformsWaterShader(SceneInternal& sceneInternal) {
     int const* uniforms = sceneInternal._waterShaderUniforms;
@@ -845,7 +1003,54 @@ void DrawColorModelInstance(SceneInternal& internal, Mat4 const& viewProjTransfo
         }
     }
 }
+
+void DrawTexturedModelInstance(SceneInternal& internal, Mat4 const& viewProjTransform, TexturedModelInstance const& m, bool deferTopLayer) {
+    if (!m._visible) {
+        return;
+    }
+    if (deferTopLayer && m._topLayer) {
+        internal._topLayerTexturedModels.push_back(&m);
+        return;
+    }
+    /*if (m._color._w < 1.f) {
+        internal._transparentModels.push_back(&m);
+        return;
+    }*/
+    Mat4 const& transMat = m._transform;
+    internal._textureShader.SetMat4(internal._textureShaderUniforms[TextureShaderUniforms::uMvpTrans], viewProjTransform * transMat);
+    internal._textureShader.SetMat4(internal._textureShaderUniforms[TextureShaderUniforms::uModelTrans], transMat);
+    Mat3 modelTransInv;
+    bool success = transMat.GetMat3().TransposeInverse(modelTransInv);
+    assert(success);
+    internal._textureShader.SetMat3(internal._textureShaderUniforms[TextureShaderUniforms::uModelInvTrans], modelTransInv);
+
+    // TEMPORARY! What we really want is to use the submeshes always unless the outer Model
+    // has defined some overrides.
+    assert(m._mesh != nullptr);
+    if (m._mesh->_subMeshes.size() == 0) {
+        glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_2D, m._textureId);
+        glBindVertexArray(m._mesh->_vao);
+        GLenum mode = GL_TRIANGLES;
+        if (m._mesh->_useTriangleFan) {
+            mode = GL_TRIANGLE_FAN;
+        }
+        glDrawElements(mode, /*count=*/m._mesh->_numIndices, GL_UNSIGNED_INT, /*start_offset=*/0);
+    }
+    //} else {
+    //    for (int subMeshIx = 0; subMeshIx < m._mesh->_subMeshes.size(); ++subMeshIx) {
+    //        BoundMeshPNU::SubMesh const& subMesh = m._mesh->_subMeshes[subMeshIx];
+    //        if (m._useMeshColor) {
+    //            internal._colorShader.SetVec4(internal._colorShaderUniforms[ColorShaderUniforms::uColor], m._color);
+    //        }
+    //        glBindVertexArray(m._mesh->_vao);
+    //        glDrawElements(GL_TRIANGLES, /*count=*/subMesh._numIndices, GL_UNSIGNED_INT,
+    //            /*start_offset=*/(void*)(sizeof(uint32_t) * subMesh._startIndex));
+    //    }
+    //}
 }
+}
+
 
 void Scene::Draw(int windowWidth, int windowHeight, float timeInSecs) {
     // TODO migrate the other shaders to multiple lights UGH.
@@ -862,9 +1067,6 @@ void Scene::Draw(int windowWidth, int windowHeight, float timeInSecs) {
     }
 
     Mat4 viewProjTransform = GetViewProjTransform();
-
-    auto& topLayerModels = _pInternal->_topLayerColorModels;
-    topLayerModels.clear();
 
     auto& transparentModels = _pInternal->_transparentModels;
     transparentModels.clear();    
@@ -938,7 +1140,19 @@ void Scene::Draw(int windowWidth, int windowHeight, float timeInSecs) {
         }
 
         _pInternal->_modelsToDraw.clear();
-    }    
+    }
+
+    // texture models
+    {
+        Shader& shader = _pInternal->_textureShader;
+        shader.Use();
+        SetLightUniformsTextureShader(*_pInternal);
+        for (TexturedModelInstance const& m : _pInternal->_texturedModelsToDraw) {
+            DrawTexturedModelInstance(*_pInternal, viewProjTransform, m, /*deferTopLayer=*/true);
+        }
+
+        _pInternal->_texturedModelsToDraw.clear();
+    }
 
     // Color models
     {
@@ -1156,6 +1370,16 @@ void Scene::Draw(int windowWidth, int windowHeight, float timeInSecs) {
                 }
             }
         }
+
+        _pInternal->_topLayerColorModels.clear();
+    }
+
+    // top-layer textured models
+    {
+        for (TexturedModelInstance const* m : _pInternal->_topLayerTexturedModels) {
+            DrawTexturedModelInstance(*_pInternal, viewProjTransform, *m, /*deferTopLayer=*/false);
+        }
+        _pInternal->_topLayerTexturedModels.clear();
     }
 
     // Lines

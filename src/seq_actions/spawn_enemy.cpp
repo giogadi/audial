@@ -709,10 +709,10 @@ void SpawnEnemySeqAction::LoadDerived(LoadInputs const& loadInputs, std::istream
             _enemy._inactiveBeatTime = std::stod(value) + loadInputs._beatTimeOffset;
         } else if (key == "text") {
             assert(value.length() > 0);
-            _enemy._text = value;
+            _enemy._keyText = value;
         } else if (key == "rand_text_len") {
             int numChars = std::stoi(value);
-            _enemy._text = string_util::GenerateRandomText(numChars);
+            _enemy._keyText = string_util::GenerateRandomText(numChars);
         } else if (key == "typekill") {
             _enemy._destroyAfterTyped = std::stoi(value) != 0;
         } else if (key == "section") {

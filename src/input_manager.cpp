@@ -25,14 +25,30 @@ InputManager::InputManager(GLFWwindow* window)
     _keyNewStates.fill(false);
     _mouseButtonStates.fill(false);
     _mouseButtonNewStates.fill(false);
+    _controllerButtonStates.fill(false);
+    _controllerButtonNewStates.fill(false);
 
     glfwSetScrollCallback(window, &InputManager::ScrollCallback);
+
+    for (int i = GLFW_JOYSTICK_1; i <= GLFW_JOYSTICK_LAST; ++i) {
+        int result = glfwJoystickIsGamepad(i);
+        if (result == GLFW_TRUE) {
+            _controllerId = i;
+            break;
+        }
+    }
 }
 
 void InputManager::Update(bool enabled) {
+    bool hasKeyInput = false;
+    bool hasControllerInput = false;
+
     for (int i = 0; i < (int)Key::NumKeys; ++i) {
         Key k = (Key) i;
         bool pressed = enabled && glfwGetKey(_window, MapToGlfw(k));
+        if (pressed) {
+            hasKeyInput = true;
+        }
         _keyNewStates[i] = (pressed != _keyStates[i]);
         _keyStates[i] = pressed;
     }
@@ -42,6 +58,50 @@ void InputManager::Update(bool enabled) {
         _mouseButtonNewStates[i] = (pressed != _mouseButtonStates[i]);
         _mouseButtonStates[i] = pressed;
     }
+    GLFWgamepadstate padState{};
+    if (_controllerId >= GLFW_JOYSTICK_1) {
+        if (!glfwGetGamepadState(_controllerId, &padState)) {
+            printf("Failed to get pad state. maybe disconnected?\n");
+            _controllerId = -1;
+        }
+    }
+    float constexpr kTriggerThreshold = 0.f;
+    for (int i = 0; i < (int)ControllerButton::Count; ++i) {
+        ControllerButton b = (ControllerButton) i;
+        bool pressed = false;
+        switch (b) {
+        case InputManager::ControllerButton::PadUp: pressed = padState.buttons[GLFW_GAMEPAD_BUTTON_DPAD_UP]; break;
+        case InputManager::ControllerButton::PadDown: pressed = padState.buttons[GLFW_GAMEPAD_BUTTON_DPAD_DOWN]; break;
+        case InputManager::ControllerButton::PadLeft: pressed = padState.buttons[GLFW_GAMEPAD_BUTTON_DPAD_LEFT]; break;
+        case InputManager::ControllerButton::PadRight: pressed = padState.buttons[GLFW_GAMEPAD_BUTTON_DPAD_RIGHT]; break;
+        case InputManager::ControllerButton::ButtonTop: pressed = padState.buttons[GLFW_GAMEPAD_BUTTON_TRIANGLE]; break;
+        case InputManager::ControllerButton::ButtonBottom: pressed = padState.buttons[GLFW_GAMEPAD_BUTTON_CROSS]; break;
+        case InputManager::ControllerButton::ButtonLeft: pressed = padState.buttons[GLFW_GAMEPAD_BUTTON_SQUARE]; break;
+        case InputManager::ControllerButton::ButtonRight: pressed = padState.buttons[GLFW_GAMEPAD_BUTTON_CIRCLE]; break;
+        case InputManager::ControllerButton::BumperLeft: pressed = padState.buttons[GLFW_GAMEPAD_BUTTON_LEFT_BUMPER]; break;
+        case InputManager::ControllerButton::BumperRight: pressed = padState.buttons[GLFW_GAMEPAD_BUTTON_RIGHT_BUMPER]; break;
+        case InputManager::ControllerButton::TriggerLeft: pressed = padState.axes[GLFW_GAMEPAD_AXIS_LEFT_TRIGGER] >= kTriggerThreshold; break;
+        case InputManager::ControllerButton::TriggerRight: {
+            pressed = padState.axes[GLFW_GAMEPAD_AXIS_RIGHT_TRIGGER] >= kTriggerThreshold;
+            break;
+        }
+        default: {
+                printf("InputManager: UNRECOGNIZED CONTROLLER BUTTON %d\n", (int)b);
+        }
+        }
+        if (pressed) {
+            hasControllerInput = true;
+        }
+        _controllerButtonNewStates[i] = (pressed != _controllerButtonStates[i]);
+        _controllerButtonStates[i] = pressed;
+    }
+
+    if (_usingController && hasKeyInput) {
+        _usingController = false;
+    } else if (!_usingController && hasControllerInput) {
+        _usingController = true;
+    }
+
     double newMouseX;
     double newMouseY;
     glfwGetCursorPos(_window, &newMouseX, &newMouseY);
