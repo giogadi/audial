@@ -246,8 +246,8 @@ void TypingEnemyEntity::UpdateDerived(GameManager& g, float dt) {
     if (g._inputManager->IsUsingController()) {
         InputManager::ControllerButton b = CharToButton(_buttons[0]);
         Transform t = _transform;
-        t.SetScale(Vec3(0.125f, 0.125f, 0.125f));
-        t.SetTranslation(_transform.Pos() + Vec3(0.f, 5.f, 0.f));
+        t.SetScale(Vec3(0.25f, 0.25f, 0.25f));
+        t.SetTranslation(_transform.Pos() + Vec3(0.25f, 5.f, 0.25f));
         renderer::TexturedModelInstance* m = g._scene->DrawPsButton(b, t.Mat4Scale());
     } else {
         std::string const& text = g._inputManager->IsUsingController() ? _buttons : _keyText;

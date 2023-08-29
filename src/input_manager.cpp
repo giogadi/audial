@@ -58,7 +58,7 @@ void InputManager::Update(bool enabled) {
         _mouseButtonNewStates[i] = (pressed != _mouseButtonStates[i]);
         _mouseButtonStates[i] = pressed;
     }
-    GLFWgamepadstate padState{};
+    GLFWgamepadstate padState{};    
     if (_controllerId >= GLFW_JOYSTICK_1) {
         if (!glfwGetGamepadState(_controllerId, &padState)) {
             printf("Failed to get pad state. maybe disconnected?\n");
@@ -69,25 +69,27 @@ void InputManager::Update(bool enabled) {
     for (int i = 0; i < (int)ControllerButton::Count; ++i) {
         ControllerButton b = (ControllerButton) i;
         bool pressed = false;
-        switch (b) {
-        case InputManager::ControllerButton::PadUp: pressed = padState.buttons[GLFW_GAMEPAD_BUTTON_DPAD_UP]; break;
-        case InputManager::ControllerButton::PadDown: pressed = padState.buttons[GLFW_GAMEPAD_BUTTON_DPAD_DOWN]; break;
-        case InputManager::ControllerButton::PadLeft: pressed = padState.buttons[GLFW_GAMEPAD_BUTTON_DPAD_LEFT]; break;
-        case InputManager::ControllerButton::PadRight: pressed = padState.buttons[GLFW_GAMEPAD_BUTTON_DPAD_RIGHT]; break;
-        case InputManager::ControllerButton::ButtonTop: pressed = padState.buttons[GLFW_GAMEPAD_BUTTON_TRIANGLE]; break;
-        case InputManager::ControllerButton::ButtonBottom: pressed = padState.buttons[GLFW_GAMEPAD_BUTTON_CROSS]; break;
-        case InputManager::ControllerButton::ButtonLeft: pressed = padState.buttons[GLFW_GAMEPAD_BUTTON_SQUARE]; break;
-        case InputManager::ControllerButton::ButtonRight: pressed = padState.buttons[GLFW_GAMEPAD_BUTTON_CIRCLE]; break;
-        case InputManager::ControllerButton::BumperLeft: pressed = padState.buttons[GLFW_GAMEPAD_BUTTON_LEFT_BUMPER]; break;
-        case InputManager::ControllerButton::BumperRight: pressed = padState.buttons[GLFW_GAMEPAD_BUTTON_RIGHT_BUMPER]; break;
-        case InputManager::ControllerButton::TriggerLeft: pressed = padState.axes[GLFW_GAMEPAD_AXIS_LEFT_TRIGGER] >= kTriggerThreshold; break;
-        case InputManager::ControllerButton::TriggerRight: {
-            pressed = padState.axes[GLFW_GAMEPAD_AXIS_RIGHT_TRIGGER] >= kTriggerThreshold;
-            break;
-        }
-        default: {
-                printf("InputManager: UNRECOGNIZED CONTROLLER BUTTON %d\n", (int)b);
-        }
+        if (_controllerId >= GLFW_JOYSTICK_1) {
+            switch (b) {
+                case InputManager::ControllerButton::PadUp: pressed = padState.buttons[GLFW_GAMEPAD_BUTTON_DPAD_UP]; break;
+                case InputManager::ControllerButton::PadDown: pressed = padState.buttons[GLFW_GAMEPAD_BUTTON_DPAD_DOWN]; break;
+                case InputManager::ControllerButton::PadLeft: pressed = padState.buttons[GLFW_GAMEPAD_BUTTON_DPAD_LEFT]; break;
+                case InputManager::ControllerButton::PadRight: pressed = padState.buttons[GLFW_GAMEPAD_BUTTON_DPAD_RIGHT]; break;
+                case InputManager::ControllerButton::ButtonTop: pressed = padState.buttons[GLFW_GAMEPAD_BUTTON_TRIANGLE]; break;
+                case InputManager::ControllerButton::ButtonBottom: pressed = padState.buttons[GLFW_GAMEPAD_BUTTON_CROSS]; break;
+                case InputManager::ControllerButton::ButtonLeft: pressed = padState.buttons[GLFW_GAMEPAD_BUTTON_SQUARE]; break;
+                case InputManager::ControllerButton::ButtonRight: pressed = padState.buttons[GLFW_GAMEPAD_BUTTON_CIRCLE]; break;
+                case InputManager::ControllerButton::BumperLeft: pressed = padState.buttons[GLFW_GAMEPAD_BUTTON_LEFT_BUMPER]; break;
+                case InputManager::ControllerButton::BumperRight: pressed = padState.buttons[GLFW_GAMEPAD_BUTTON_RIGHT_BUMPER]; break;
+                case InputManager::ControllerButton::TriggerLeft: pressed = padState.axes[GLFW_GAMEPAD_AXIS_LEFT_TRIGGER] >= kTriggerThreshold; break;
+                case InputManager::ControllerButton::TriggerRight: {
+                    pressed = padState.axes[GLFW_GAMEPAD_AXIS_RIGHT_TRIGGER] >= kTriggerThreshold;
+                    break;
+                }
+                default: {
+                    printf("InputManager: UNRECOGNIZED CONTROLLER BUTTON %d\n", (int)b);
+                }
+            }
         }
         if (pressed) {
             hasControllerInput = true;

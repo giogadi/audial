@@ -16,8 +16,8 @@ public:
         Left,Right,Middle,Count
     };
     enum class ControllerButton : int {
-        PadUp,PadDown,PadLeft,PadRight,
         ButtonTop,ButtonBottom,ButtonLeft,ButtonRight,
+        PadUp,PadDown,PadLeft,PadRight,
         BumperLeft,BumperRight,
         TriggerLeft,TriggerRight,
         Count
