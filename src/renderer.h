@@ -101,6 +101,7 @@ public:
     unsigned int _textureId = 0;
     bool _visible = true;
     bool _topLayer = false;
+    Vec4 _color = Vec4(1.f, 1.f, 1.f, 1.f);  // multiplied with the texture
 };
 
 struct LineInstance {

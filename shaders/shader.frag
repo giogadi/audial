@@ -21,10 +21,13 @@ uniform PointLight uPointLights[NUM_POINT_LIGHTS];
 
 uniform sampler2D uMyTexture;
 
+uniform vec4 uColor;
+
 out vec4 FragColor;
 
 void main() {
     vec4 albedo = texture(uMyTexture, texCoord);
+    albedo *= uColor;
     vec3 norm = normalize(normal);
     vec3 result = vec3(0, 0, 0);
     // Directional light

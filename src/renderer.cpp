@@ -142,6 +142,7 @@ namespace ColorShaderUniforms {
 
 namespace TextureShaderUniforms {
     enum Names {
+        uColor,
         uMvpTrans,
         uModelTrans,
         uModelInvTrans,
@@ -157,6 +158,7 @@ namespace TextureShaderUniforms {
         Count
     };
     static char const* NameStrings[] = {
+        "uColor",
         "uMvpTrans",
         "uModelTrans",
         "uModelInvTrans",
@@ -1016,6 +1018,7 @@ void DrawTexturedModelInstance(SceneInternal& internal, Mat4 const& viewProjTran
         internal._transparentModels.push_back(&m);
         return;
     }*/
+    internal._textureShader.SetVec4(internal._textureShaderUniforms[TextureShaderUniforms::uColor], m._color);
     Mat4 const& transMat = m._transform;
     internal._textureShader.SetMat4(internal._textureShaderUniforms[TextureShaderUniforms::uMvpTrans], viewProjTransform * transMat);
     internal._textureShader.SetMat4(internal._textureShaderUniforms[TextureShaderUniforms::uModelTrans], transMat);

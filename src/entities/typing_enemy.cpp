@@ -27,17 +27,17 @@ namespace {
 
     InputManager::ControllerButton CharToButton(char c) {
         switch (c) {
-            case 'a': return InputManager::ControllerButton::ButtonTop;
-            case 's': return InputManager::ControllerButton::ButtonBottom;
-            case 'd': return InputManager::ControllerButton::ButtonLeft;
-            case 'f': return InputManager::ControllerButton::ButtonRight;
-            case 'h': return InputManager::ControllerButton::PadUp;
-            case 'j': return InputManager::ControllerButton::PadDown;
-            case 'k': return InputManager::ControllerButton::PadLeft;
-            case 'l': return InputManager::ControllerButton::PadRight;
+            case 'a': return InputManager::ControllerButton::PadUp;
+            case 's': return InputManager::ControllerButton::PadDown;
+            case 'd': return InputManager::ControllerButton::PadLeft;
+            case 'f': return InputManager::ControllerButton::PadRight;
+            case 'h': return InputManager::ControllerButton::ButtonTop;
+            case 'j': return InputManager::ControllerButton::ButtonBottom;
+            case 'k': return InputManager::ControllerButton::ButtonLeft;
+            case 'l': return InputManager::ControllerButton::ButtonRight;            
             case 'e': return InputManager::ControllerButton::BumperLeft;
-            case 'r': return InputManager::ControllerButton::BumperRight;
-            case 'y': return InputManager::ControllerButton::TriggerLeft;
+            case 'r': return InputManager::ControllerButton::TriggerLeft;
+            case 'y': return InputManager::ControllerButton::BumperRight;
             case 'u': return InputManager::ControllerButton::TriggerRight;
             default: {
                 printf("InputManager::ControllerButton::CharToButton: unrecognized char \'%c\'\n", c);
@@ -120,10 +120,10 @@ ne::BaseEntity::ImGuiResult TypingEnemyEntity::ImGuiDerived(GameManager& g) {
     ImGuiResult result = ImGuiResult::Done;
 
     if (imgui_util::InputText<32>("Text", &_keyText)) {
-        result = ImGuiResult::NeedsInit;
+        // result = ImGuiResult::NeedsInit;
     }
     if (imgui_util::InputText<32>("Buttons", &_buttons)) {
-        result = ImGuiResult::NeedsInit;
+        // result = ImGuiResult::NeedsInit;
     }
     ImGui::Checkbox("Kill on type", &_destroyAfterTyped);
 
@@ -244,11 +244,16 @@ void TypingEnemyEntity::UpdateDerived(GameManager& g, float dt) {
     }
 
     if (g._inputManager->IsUsingController()) {
-        InputManager::ControllerButton b = CharToButton(_buttons[0]);
-        Transform t = _transform;
-        t.SetScale(Vec3(0.25f, 0.25f, 0.25f));
-        t.SetTranslation(_transform.Pos() + Vec3(0.25f, 5.f, 0.25f));
-        renderer::TexturedModelInstance* m = g._scene->DrawPsButton(b, t.Mat4Scale());
+        if (!_buttons.empty()) {
+            InputManager::ControllerButton b = CharToButton(_buttons[0]);
+            Transform t = _transform;
+            t.SetScale(Vec3(0.25f, 0.25f, 0.25f));
+            t.SetTranslation(_transform.Pos() + Vec3(-0.25f, 5.f, 0.25f));
+            renderer::TexturedModelInstance* m = g._scene->DrawPsButton(b, t.Mat4Scale());
+            if (_flowCooldownStartBeatTime > 0.f || !playerWithinRadius || !_hittable) {
+                m->_color.Set(1.f, 1.f, 1.f, 0.2f);
+            }            
+        }        
     } else {
         std::string const& text = g._inputManager->IsUsingController() ? _buttons : _keyText;
 

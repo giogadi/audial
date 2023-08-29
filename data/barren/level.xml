@@ -1016,7 +1016,7 @@
                 <follow_entity_name/>
             </waypoint_follower>
             <text>j</text>
-            <buttons>a</buttons>
+            <buttons>h</buttons>
             <type_kill>false</type_kill>
             <all_actions_on_hit>false</all_actions_on_hit>
             <flow_polarity>false</flow_polarity>
@@ -1160,7 +1160,7 @@
                 <follow_entity_name/>
             </waypoint_follower>
             <text>d</text>
-            <buttons>a</buttons>
+            <buttons>s</buttons>
             <type_kill>false</type_kill>
             <all_actions_on_hit>false</all_actions_on_hit>
             <flow_polarity>false</flow_polarity>
@@ -1223,7 +1223,7 @@
                 <follow_entity_name/>
             </waypoint_follower>
             <text>k</text>
-            <buttons>a</buttons>
+            <buttons>j</buttons>
             <type_kill>false</type_kill>
             <all_actions_on_hit>false</all_actions_on_hit>
             <flow_polarity>false</flow_polarity>
@@ -1529,7 +1529,7 @@
                 <follow_entity_name/>
             </waypoint_follower>
             <text>e</text>
-            <buttons>a</buttons>
+            <buttons>d</buttons>
             <type_kill>false</type_kill>
             <all_actions_on_hit>false</all_actions_on_hit>
             <flow_polarity>false</flow_polarity>
@@ -1592,7 +1592,7 @@
                 <follow_entity_name/>
             </waypoint_follower>
             <text>i</text>
-            <buttons>a</buttons>
+            <buttons>k</buttons>
             <type_kill>false</type_kill>
             <all_actions_on_hit>false</all_actions_on_hit>
             <flow_polarity>false</flow_polarity>
@@ -1817,7 +1817,7 @@
                 <follow_entity_name/>
             </waypoint_follower>
             <text>g</text>
-            <buttons>a</buttons>
+            <buttons>f</buttons>
             <type_kill>false</type_kill>
             <all_actions_on_hit>false</all_actions_on_hit>
             <flow_polarity>false</flow_polarity>
@@ -1880,7 +1880,7 @@
                 <follow_entity_name/>
             </waypoint_follower>
             <text>h</text>
-            <buttons>a</buttons>
+            <buttons>l</buttons>
             <type_kill>false</type_kill>
             <all_actions_on_hit>false</all_actions_on_hit>
             <flow_polarity>false</flow_polarity>
@@ -1943,7 +1943,7 @@
                 <follow_entity_name/>
             </waypoint_follower>
             <text>f</text>
-            <buttons>a</buttons>
+            <buttons>d</buttons>
             <type_kill>false</type_kill>
             <all_actions_on_hit>true</all_actions_on_hit>
             <flow_polarity>false</flow_polarity>
@@ -2006,7 +2006,7 @@
                 <follow_entity_name/>
             </waypoint_follower>
             <text>j</text>
-            <buttons>a</buttons>
+            <buttons>k</buttons>
             <type_kill>false</type_kill>
             <all_actions_on_hit>false</all_actions_on_hit>
             <flow_polarity>false</flow_polarity>
@@ -2150,7 +2150,7 @@
                 <follow_entity_name/>
             </waypoint_follower>
             <text>d</text>
-            <buttons>a</buttons>
+            <buttons>f</buttons>
             <type_kill>false</type_kill>
             <all_actions_on_hit>false</all_actions_on_hit>
             <flow_polarity>false</flow_polarity>
@@ -2213,7 +2213,7 @@
                 <follow_entity_name/>
             </waypoint_follower>
             <text>k</text>
-            <buttons>a</buttons>
+            <buttons>l</buttons>
             <type_kill>false</type_kill>
             <all_actions_on_hit>false</all_actions_on_hit>
             <flow_polarity>false</flow_polarity>
@@ -2506,7 +2506,7 @@
                 <follow_entity_name/>
             </waypoint_follower>
             <text>i</text>
-            <buttons>a</buttons>
+            <buttons>h</buttons>
             <type_kill>false</type_kill>
             <all_actions_on_hit>false</all_actions_on_hit>
             <flow_polarity>false</flow_polarity>
@@ -2717,7 +2717,7 @@
                 <follow_entity_name/>
             </waypoint_follower>
             <text>g</text>
-            <buttons>a</buttons>
+            <buttons>d</buttons>
             <type_kill>false</type_kill>
             <all_actions_on_hit>false</all_actions_on_hit>
             <flow_polarity>false</flow_polarity>
@@ -2780,7 +2780,7 @@
                 <follow_entity_name/>
             </waypoint_follower>
             <text>h</text>
-            <buttons>a</buttons>
+            <buttons>k</buttons>
             <type_kill>false</type_kill>
             <all_actions_on_hit>false</all_actions_on_hit>
             <flow_polarity>false</flow_polarity>
@@ -3111,7 +3111,7 @@
                 <follow_entity_name/>
             </waypoint_follower>
             <text>f</text>
-            <buttons>a</buttons>
+            <buttons>e</buttons>
             <type_kill>false</type_kill>
             <all_actions_on_hit>true</all_actions_on_hit>
             <flow_polarity>false</flow_polarity>
@@ -3174,7 +3174,7 @@
                 <follow_entity_name/>
             </waypoint_follower>
             <text>j</text>
-            <buttons>a</buttons>
+            <buttons>y</buttons>
             <type_kill>false</type_kill>
             <all_actions_on_hit>false</all_actions_on_hit>
             <flow_polarity>false</flow_polarity>
@@ -3318,7 +3318,7 @@
                 <follow_entity_name/>
             </waypoint_follower>
             <text>d</text>
-            <buttons>a</buttons>
+            <buttons>d</buttons>
             <type_kill>false</type_kill>
             <all_actions_on_hit>false</all_actions_on_hit>
             <flow_polarity>false</flow_polarity>
@@ -3381,7 +3381,7 @@
                 <follow_entity_name/>
             </waypoint_follower>
             <text>k</text>
-            <buttons>a</buttons>
+            <buttons>k</buttons>
             <type_kill>false</type_kill>
             <all_actions_on_hit>false</all_actions_on_hit>
             <flow_polarity>false</flow_polarity>
@@ -3669,7 +3669,7 @@
                 <follow_entity_name/>
             </waypoint_follower>
             <text>i</text>
-            <buttons>a</buttons>
+            <buttons>h</buttons>
             <type_kill>false</type_kill>
             <all_actions_on_hit>false</all_actions_on_hit>
             <flow_polarity>false</flow_polarity>
@@ -3813,7 +3813,7 @@
                 <follow_entity_name/>
             </waypoint_follower>
             <text>g</text>
-            <buttons>a</buttons>
+            <buttons>s</buttons>
             <type_kill>false</type_kill>
             <all_actions_on_hit>false</all_actions_on_hit>
             <flow_polarity>false</flow_polarity>
@@ -3876,7 +3876,7 @@
                 <follow_entity_name/>
             </waypoint_follower>
             <text>h</text>
-            <buttons>a</buttons>
+            <buttons>j</buttons>
             <type_kill>false</type_kill>
             <all_actions_on_hit>false</all_actions_on_hit>
             <flow_polarity>false</flow_polarity>
@@ -6087,7 +6087,7 @@
                 <follow_entity_name/>
             </waypoint_follower>
             <text>h</text>
-            <buttons>u</buttons>
+            <buttons>y</buttons>
             <type_kill>false</type_kill>
             <all_actions_on_hit>true</all_actions_on_hit>
             <flow_polarity>false</flow_polarity>
@@ -6841,7 +6841,7 @@
                 <follow_entity_name/>
             </waypoint_follower>
             <text>p</text>
-            <buttons>a</buttons>
+            <buttons>r</buttons>
             <type_kill>false</type_kill>
             <all_actions_on_hit>true</all_actions_on_hit>
             <flow_polarity>false</flow_polarity>
@@ -7165,7 +7165,7 @@
                 <follow_entity_name/>
             </waypoint_follower>
             <text>q</text>
-            <buttons>a</buttons>
+            <buttons>u</buttons>
             <type_kill>false</type_kill>
             <all_actions_on_hit>true</all_actions_on_hit>
             <flow_polarity>false</flow_polarity>
@@ -7234,7 +7234,7 @@
                 <follow_entity_name/>
             </waypoint_follower>
             <text>m</text>
-            <buttons>a</buttons>
+            <buttons>l</buttons>
             <type_kill>false</type_kill>
             <all_actions_on_hit>true</all_actions_on_hit>
             <flow_polarity>false</flow_polarity>
@@ -7302,7 +7302,7 @@
                 <follow_entity_name/>
             </waypoint_follower>
             <text>a</text>
-            <buttons>a</buttons>
+            <buttons>h</buttons>
             <type_kill>false</type_kill>
             <all_actions_on_hit>true</all_actions_on_hit>
             <flow_polarity>false</flow_polarity>
@@ -7370,7 +7370,7 @@
                 <follow_entity_name/>
             </waypoint_follower>
             <text>j</text>
-            <buttons>a</buttons>
+            <buttons>k</buttons>
             <type_kill>false</type_kill>
             <all_actions_on_hit>true</all_actions_on_hit>
             <flow_polarity>false</flow_polarity>
@@ -7438,7 +7438,7 @@
                 <follow_entity_name/>
             </waypoint_follower>
             <text>y</text>
-            <buttons>a</buttons>
+            <buttons>u</buttons>
             <type_kill>false</type_kill>
             <all_actions_on_hit>true</all_actions_on_hit>
             <flow_polarity>false</flow_polarity>
@@ -7507,7 +7507,7 @@
                 <follow_entity_name/>
             </waypoint_follower>
             <text>u</text>
-            <buttons>a</buttons>
+            <buttons>j</buttons>
             <type_kill>false</type_kill>
             <all_actions_on_hit>false</all_actions_on_hit>
             <flow_polarity>false</flow_polarity>
@@ -7570,7 +7570,7 @@
                 <follow_entity_name/>
             </waypoint_follower>
             <text>t</text>
-            <buttons>a</buttons>
+            <buttons>l</buttons>
             <type_kill>false</type_kill>
             <all_actions_on_hit>false</all_actions_on_hit>
             <flow_polarity>false</flow_polarity>
@@ -7633,7 +7633,7 @@
                 <follow_entity_name/>
             </waypoint_follower>
             <text>n</text>
-            <buttons>a</buttons>
+            <buttons>l</buttons>
             <type_kill>false</type_kill>
             <all_actions_on_hit>false</all_actions_on_hit>
             <flow_polarity>false</flow_polarity>
@@ -7777,7 +7777,7 @@
                 <follow_entity_name/>
             </waypoint_follower>
             <text>o</text>
-            <buttons>a</buttons>
+            <buttons>y</buttons>
             <type_kill>false</type_kill>
             <all_actions_on_hit>false</all_actions_on_hit>
             <flow_polarity>false</flow_polarity>
@@ -8064,7 +8064,7 @@
                 <follow_entity_name/>
             </waypoint_follower>
             <text>n</text>
-            <buttons>a</buttons>
+            <buttons>d</buttons>
             <type_kill>false</type_kill>
             <all_actions_on_hit>true</all_actions_on_hit>
             <flow_polarity>false</flow_polarity>
@@ -8132,7 +8132,7 @@
                 <follow_entity_name/>
             </waypoint_follower>
             <text>w</text>
-            <buttons>a</buttons>
+            <buttons>f</buttons>
             <type_kill>false</type_kill>
             <all_actions_on_hit>true</all_actions_on_hit>
             <flow_polarity>false</flow_polarity>
@@ -9490,7 +9490,7 @@
                 <follow_entity_name/>
             </waypoint_follower>
             <text>s</text>
-            <buttons>a</buttons>
+            <buttons>s</buttons>
             <type_kill>false</type_kill>
             <all_actions_on_hit>false</all_actions_on_hit>
             <flow_polarity>false</flow_polarity>
@@ -9553,7 +9553,7 @@
                 <follow_entity_name/>
             </waypoint_follower>
             <text>o</text>
-            <buttons>a</buttons>
+            <buttons>y</buttons>
             <type_kill>false</type_kill>
             <all_actions_on_hit>false</all_actions_on_hit>
             <flow_polarity>false</flow_polarity>
@@ -9616,7 +9616,7 @@
                 <follow_entity_name/>
             </waypoint_follower>
             <text>n</text>
-            <buttons>a</buttons>
+            <buttons>j</buttons>
             <type_kill>false</type_kill>
             <all_actions_on_hit>false</all_actions_on_hit>
             <flow_polarity>false</flow_polarity>
@@ -9813,7 +9813,7 @@
                 <follow_entity_name>r7_platform1</follow_entity_name>
             </waypoint_follower>
             <text>i</text>
-            <buttons>a</buttons>
+            <buttons>h</buttons>
             <type_kill>false</type_kill>
             <all_actions_on_hit>true</all_actions_on_hit>
             <flow_polarity>false</flow_polarity>
@@ -10135,7 +10135,7 @@
                 <follow_entity_name/>
             </waypoint_follower>
             <text>f</text>
-            <buttons>a</buttons>
+            <buttons>k</buttons>
             <type_kill>false</type_kill>
             <all_actions_on_hit>true</all_actions_on_hit>
             <flow_polarity>false</flow_polarity>
@@ -10198,7 +10198,7 @@
                 <follow_entity_name/>
             </waypoint_follower>
             <text>j</text>
-            <buttons>a</buttons>
+            <buttons>d</buttons>
             <type_kill>false</type_kill>
             <all_actions_on_hit>true</all_actions_on_hit>
             <flow_polarity>false</flow_polarity>
@@ -10261,7 +10261,7 @@
                 <follow_entity_name/>
             </waypoint_follower>
             <text>k</text>
-            <buttons>a</buttons>
+            <buttons>l</buttons>
             <type_kill>false</type_kill>
             <all_actions_on_hit>true</all_actions_on_hit>
             <flow_polarity>false</flow_polarity>
@@ -10334,7 +10334,7 @@
                 <follow_entity_name>r7_platform2</follow_entity_name>
             </waypoint_follower>
             <text>w</text>
-            <buttons>a</buttons>
+            <buttons>s</buttons>
             <type_kill>false</type_kill>
             <all_actions_on_hit>true</all_actions_on_hit>
             <flow_polarity>false</flow_polarity>
@@ -10412,7 +10412,7 @@
                 <follow_entity_name>r7_platform2</follow_entity_name>
             </waypoint_follower>
             <text>o</text>
-            <buttons>a</buttons>
+            <buttons>j</buttons>
             <type_kill>false</type_kill>
             <all_actions_on_hit>true</all_actions_on_hit>
             <flow_polarity>false</flow_polarity>
@@ -10671,7 +10671,7 @@
                 <follow_entity_name/>
             </waypoint_follower>
             <text>f</text>
-            <buttons>a</buttons>
+            <buttons>k</buttons>
             <type_kill>false</type_kill>
             <all_actions_on_hit>true</all_actions_on_hit>
             <flow_polarity>false</flow_polarity>
@@ -10734,7 +10734,7 @@
                 <follow_entity_name/>
             </waypoint_follower>
             <text>j</text>
-            <buttons>a</buttons>
+            <buttons>d</buttons>
             <type_kill>false</type_kill>
             <all_actions_on_hit>true</all_actions_on_hit>
             <flow_polarity>false</flow_polarity>
@@ -10797,7 +10797,7 @@
                 <follow_entity_name/>
             </waypoint_follower>
             <text>k</text>
-            <buttons>a</buttons>
+            <buttons>l</buttons>
             <type_kill>false</type_kill>
             <all_actions_on_hit>true</all_actions_on_hit>
             <flow_polarity>false</flow_polarity>
@@ -11030,7 +11030,7 @@
                 <follow_entity_name>r7_platform3</follow_entity_name>
             </waypoint_follower>
             <text>i</text>
-            <buttons>a</buttons>
+            <buttons>h</buttons>
             <type_kill>false</type_kill>
             <all_actions_on_hit>true</all_actions_on_hit>
             <flow_polarity>false</flow_polarity>
@@ -11182,7 +11182,7 @@
                 <follow_entity_name/>
             </waypoint_follower>
             <text>f</text>
-            <buttons>a</buttons>
+            <buttons>k</buttons>
             <type_kill>false</type_kill>
             <all_actions_on_hit>true</all_actions_on_hit>
             <flow_polarity>false</flow_polarity>
@@ -11245,7 +11245,7 @@
                 <follow_entity_name/>
             </waypoint_follower>
             <text>j</text>
-            <buttons>a</buttons>
+            <buttons>d</buttons>
             <type_kill>false</type_kill>
             <all_actions_on_hit>true</all_actions_on_hit>
             <flow_polarity>false</flow_polarity>
@@ -11308,7 +11308,7 @@
                 <follow_entity_name/>
             </waypoint_follower>
             <text>k</text>
-            <buttons>a</buttons>
+            <buttons>l</buttons>
             <type_kill>false</type_kill>
             <all_actions_on_hit>true</all_actions_on_hit>
             <flow_polarity>false</flow_polarity>
@@ -11438,7 +11438,7 @@
                 <follow_entity_name>r7_platform4</follow_entity_name>
             </waypoint_follower>
             <text>w</text>
-            <buttons>a</buttons>
+            <buttons>s</buttons>
             <type_kill>false</type_kill>
             <all_actions_on_hit>true</all_actions_on_hit>
             <flow_polarity>false</flow_polarity>
@@ -11511,7 +11511,7 @@
                 <follow_entity_name>r7_platform4</follow_entity_name>
             </waypoint_follower>
             <text>o</text>
-            <buttons>a</buttons>
+            <buttons>j</buttons>
             <type_kill>false</type_kill>
             <all_actions_on_hit>true</all_actions_on_hit>
             <flow_polarity>false</flow_polarity>
@@ -11762,7 +11762,7 @@
                 <follow_entity_name/>
             </waypoint_follower>
             <text>f</text>
-            <buttons>a</buttons>
+            <buttons>k</buttons>
             <type_kill>false</type_kill>
             <all_actions_on_hit>true</all_actions_on_hit>
             <flow_polarity>false</flow_polarity>
@@ -11825,7 +11825,7 @@
                 <follow_entity_name/>
             </waypoint_follower>
             <text>j</text>
-            <buttons>a</buttons>
+            <buttons>d</buttons>
             <type_kill>false</type_kill>
             <all_actions_on_hit>true</all_actions_on_hit>
             <flow_polarity>false</flow_polarity>
@@ -11888,7 +11888,7 @@
                 <follow_entity_name/>
             </waypoint_follower>
             <text>k</text>
-            <buttons>a</buttons>
+            <buttons>l</buttons>
             <type_kill>false</type_kill>
             <all_actions_on_hit>true</all_actions_on_hit>
             <flow_polarity>false</flow_polarity>
@@ -12034,7 +12034,7 @@
                 <follow_entity_name>r7_platform5</follow_entity_name>
             </waypoint_follower>
             <text>i</text>
-            <buttons>a</buttons>
+            <buttons>h</buttons>
             <type_kill>false</type_kill>
             <all_actions_on_hit>true</all_actions_on_hit>
             <flow_polarity>false</flow_polarity>
@@ -12365,7 +12365,7 @@
                 <follow_entity_name/>
             </waypoint_follower>
             <text>n</text>
-            <buttons>a</buttons>
+            <buttons>u</buttons>
             <type_kill>false</type_kill>
             <all_actions_on_hit>true</all_actions_on_hit>
             <flow_polarity>false</flow_polarity>
@@ -12428,7 +12428,7 @@
                 <follow_entity_name/>
             </waypoint_follower>
             <text>a</text>
-            <buttons>a</buttons>
+            <buttons>f</buttons>
             <type_kill>false</type_kill>
             <all_actions_on_hit>true</all_actions_on_hit>
             <flow_polarity>false</flow_polarity>
@@ -12491,7 +12491,7 @@
                 <follow_entity_name/>
             </waypoint_follower>
             <text>m</text>
-            <buttons>a</buttons>
+            <buttons>r</buttons>
             <type_kill>false</type_kill>
             <all_actions_on_hit>true</all_actions_on_hit>
             <flow_polarity>false</flow_polarity>
@@ -12553,8 +12553,8 @@
                 <waypoints/>
                 <follow_entity_name>r7_platform6</follow_entity_name>
             </waypoint_follower>
-            <text>w</text>
-            <buttons>a</buttons>
+            <text>s</text>
+            <buttons>s</buttons>
             <type_kill>false</type_kill>
             <all_actions_on_hit>true</all_actions_on_hit>
             <flow_polarity>false</flow_polarity>
@@ -12617,7 +12617,7 @@
                 <follow_entity_name>r7_platform6</follow_entity_name>
             </waypoint_follower>
             <text>o</text>
-            <buttons>a</buttons>
+            <buttons>j</buttons>
             <type_kill>false</type_kill>
             <all_actions_on_hit>true</all_actions_on_hit>
             <flow_polarity>false</flow_polarity>
@@ -12834,7 +12834,7 @@
                 <follow_entity_name/>
             </waypoint_follower>
             <text>e</text>
-            <buttons>a</buttons>
+            <buttons>k</buttons>
             <type_kill>false</type_kill>
             <all_actions_on_hit>true</all_actions_on_hit>
             <flow_polarity>false</flow_polarity>
@@ -12897,7 +12897,7 @@
                 <follow_entity_name/>
             </waypoint_follower>
             <text>y</text>
-            <buttons>a</buttons>
+            <buttons>d</buttons>
             <type_kill>false</type_kill>
             <all_actions_on_hit>true</all_actions_on_hit>
             <flow_polarity>false</flow_polarity>
@@ -12960,7 +12960,7 @@
                 <follow_entity_name/>
             </waypoint_follower>
             <text>r</text>
-            <buttons>a</buttons>
+            <buttons>l</buttons>
             <type_kill>false</type_kill>
             <all_actions_on_hit>true</all_actions_on_hit>
             <flow_polarity>false</flow_polarity>
@@ -13086,7 +13086,7 @@
                 <follow_entity_name>r7_platform7</follow_entity_name>
             </waypoint_follower>
             <text>k</text>
-            <buttons>a</buttons>
+            <buttons>h</buttons>
             <type_kill>false</type_kill>
             <all_actions_on_hit>true</all_actions_on_hit>
             <flow_polarity>false</flow_polarity>
@@ -13404,7 +13404,7 @@
                 <follow_entity_name/>
             </waypoint_follower>
             <text>q</text>
-            <buttons>a</buttons>
+            <buttons>e</buttons>
             <type_kill>true</type_kill>
             <all_actions_on_hit>true</all_actions_on_hit>
             <flow_polarity>false</flow_polarity>
@@ -13625,7 +13625,7 @@
                 <follow_entity_name/>
             </waypoint_follower>
             <text>p</text>
-            <buttons>a</buttons>
+            <buttons>y</buttons>
             <type_kill>true</type_kill>
             <all_actions_on_hit>true</all_actions_on_hit>
             <flow_polarity>false</flow_polarity>
@@ -13828,7 +13828,7 @@
                 <follow_entity_name/>
             </waypoint_follower>
             <text>q</text>
-            <buttons>a</buttons>
+            <buttons>e</buttons>
             <type_kill>true</type_kill>
             <all_actions_on_hit>true</all_actions_on_hit>
             <flow_polarity>false</flow_polarity>
@@ -14262,7 +14262,7 @@
                 <follow_entity_name/>
             </waypoint_follower>
             <text>g</text>
-            <buttons>a</buttons>
+            <buttons>l</buttons>
             <type_kill>false</type_kill>
             <all_actions_on_hit>true</all_actions_on_hit>
             <flow_polarity>false</flow_polarity>
@@ -14325,7 +14325,7 @@
                 <follow_entity_name/>
             </waypoint_follower>
             <text>u</text>
-            <buttons>a</buttons>
+            <buttons>k</buttons>
             <type_kill>false</type_kill>
             <all_actions_on_hit>true</all_actions_on_hit>
             <flow_polarity>false</flow_polarity>
@@ -14388,7 +14388,7 @@
                 <follow_entity_name/>
             </waypoint_follower>
             <text>h</text>
-            <buttons>a</buttons>
+            <buttons>d</buttons>
             <type_kill>false</type_kill>
             <all_actions_on_hit>true</all_actions_on_hit>
             <flow_polarity>false</flow_polarity>
@@ -14502,7 +14502,7 @@
                 <follow_entity_name>r7_platform8</follow_entity_name>
             </waypoint_follower>
             <text>u</text>
-            <buttons>a</buttons>
+            <buttons>s</buttons>
             <type_kill>false</type_kill>
             <all_actions_on_hit>true</all_actions_on_hit>
             <flow_polarity>false</flow_polarity>
@@ -14565,7 +14565,7 @@
                 <follow_entity_name>r7_platform8</follow_entity_name>
             </waypoint_follower>
             <text>s</text>
-            <buttons>a</buttons>
+            <buttons>j</buttons>
             <type_kill>false</type_kill>
             <all_actions_on_hit>true</all_actions_on_hit>
             <flow_polarity>false</flow_polarity>
@@ -14628,7 +14628,7 @@
                 <follow_entity_name/>
             </waypoint_follower>
             <text>p</text>
-            <buttons>a</buttons>
+            <buttons>y</buttons>
             <type_kill>true</type_kill>
             <all_actions_on_hit>true</all_actions_on_hit>
             <flow_polarity>false</flow_polarity>
@@ -14780,7 +14780,7 @@
                 <follow_entity_name/>
             </waypoint_follower>
             <text>g</text>
-            <buttons>a</buttons>
+            <buttons>d</buttons>
             <type_kill>false</type_kill>
             <all_actions_on_hit>true</all_actions_on_hit>
             <flow_polarity>false</flow_polarity>
@@ -14843,7 +14843,7 @@
                 <follow_entity_name/>
             </waypoint_follower>
             <text>i</text>
-            <buttons>a</buttons>
+            <buttons>k</buttons>
             <type_kill>false</type_kill>
             <all_actions_on_hit>true</all_actions_on_hit>
             <flow_polarity>false</flow_polarity>
@@ -14906,7 +14906,7 @@
                 <follow_entity_name/>
             </waypoint_follower>
             <text>h</text>
-            <buttons>a</buttons>
+            <buttons>l</buttons>
             <type_kill>false</type_kill>
             <all_actions_on_hit>true</all_actions_on_hit>
             <flow_polarity>false</flow_polarity>
@@ -15011,7 +15011,7 @@
                 <follow_entity_name/>
             </waypoint_follower>
             <text>l</text>
-            <buttons>a</buttons>
+            <buttons>d</buttons>
             <type_kill>false</type_kill>
             <all_actions_on_hit>true</all_actions_on_hit>
             <flow_polarity>false</flow_polarity>
@@ -15137,7 +15137,7 @@
                 <follow_entity_name/>
             </waypoint_follower>
             <text>t</text>
-            <buttons>a</buttons>
+            <buttons>f</buttons>
             <type_kill>false</type_kill>
             <all_actions_on_hit>true</all_actions_on_hit>
             <flow_polarity>false</flow_polarity>
@@ -15200,7 +15200,7 @@
                 <follow_entity_name/>
             </waypoint_follower>
             <text>j</text>
-            <buttons>a</buttons>
+            <buttons>k</buttons>
             <type_kill>false</type_kill>
             <all_actions_on_hit>true</all_actions_on_hit>
             <flow_polarity>false</flow_polarity>
@@ -15263,7 +15263,7 @@
                 <follow_entity_name/>
             </waypoint_follower>
             <text>a</text>
-            <buttons>a</buttons>
+            <buttons>h</buttons>
             <type_kill>false</type_kill>
             <all_actions_on_hit>true</all_actions_on_hit>
             <flow_polarity>false</flow_polarity>
@@ -15326,7 +15326,7 @@
                 <follow_entity_name/>
             </waypoint_follower>
             <text>m</text>
-            <buttons>a</buttons>
+            <buttons>l</buttons>
             <type_kill>false</type_kill>
             <all_actions_on_hit>true</all_actions_on_hit>
             <flow_polarity>false</flow_polarity>
@@ -16321,7 +16321,7 @@
                 <follow_entity_name/>
             </waypoint_follower>
             <text>a</text>
-            <buttons>a</buttons>
+            <buttons>e</buttons>
             <type_kill>false</type_kill>
             <all_actions_on_hit>false</all_actions_on_hit>
             <flow_polarity>false</flow_polarity>
@@ -16592,7 +16592,7 @@
                 <follow_entity_name/>
             </waypoint_follower>
             <text>l</text>
-            <buttons>a</buttons>
+            <buttons>s</buttons>
             <type_kill>false</type_kill>
             <all_actions_on_hit>true</all_actions_on_hit>
             <flow_polarity>false</flow_polarity>
@@ -16666,7 +16666,7 @@
                 <follow_entity_name/>
             </waypoint_follower>
             <text>e</text>
-            <buttons>a</buttons>
+            <buttons>j</buttons>
             <type_kill>false</type_kill>
             <all_actions_on_hit>true</all_actions_on_hit>
             <flow_polarity>false</flow_polarity>
@@ -16740,7 +16740,7 @@
                 <follow_entity_name/>
             </waypoint_follower>
             <text>t</text>
-            <buttons>a</buttons>
+            <buttons>e</buttons>
             <type_kill>false</type_kill>
             <all_actions_on_hit>true</all_actions_on_hit>
             <flow_polarity>false</flow_polarity>
@@ -16814,7 +16814,7 @@
                 <follow_entity_name/>
             </waypoint_follower>
             <text>s</text>
-            <buttons>a</buttons>
+            <buttons>y</buttons>
             <type_kill>false</type_kill>
             <all_actions_on_hit>true</all_actions_on_hit>
             <flow_polarity>false</flow_polarity>
@@ -16888,7 +16888,7 @@
                 <follow_entity_name/>
             </waypoint_follower>
             <text>q</text>
-            <buttons>a</buttons>
+            <buttons>e</buttons>
             <type_kill>false</type_kill>
             <all_actions_on_hit>true</all_actions_on_hit>
             <flow_polarity>false</flow_polarity>
@@ -16958,7 +16958,7 @@
                 <follow_entity_name/>
             </waypoint_follower>
             <text>p</text>
-            <buttons>a</buttons>
+            <buttons>r</buttons>
             <type_kill>false</type_kill>
             <all_actions_on_hit>true</all_actions_on_hit>
             <flow_polarity>false</flow_polarity>
@@ -17028,7 +17028,7 @@
                 <follow_entity_name/>
             </waypoint_follower>
             <text>w</text>
-            <buttons>a</buttons>
+            <buttons>y</buttons>
             <type_kill>false</type_kill>
             <all_actions_on_hit>true</all_actions_on_hit>
             <flow_polarity>false</flow_polarity>
@@ -17098,7 +17098,7 @@
                 <follow_entity_name/>
             </waypoint_follower>
             <text>o</text>
-            <buttons>a</buttons>
+            <buttons>u</buttons>
             <type_kill>false</type_kill>
             <all_actions_on_hit>true</all_actions_on_hit>
             <flow_polarity>false</flow_polarity>
