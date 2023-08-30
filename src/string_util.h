@@ -81,4 +81,10 @@ inline void ToLower(std::string& x) {
     }
 }
 
+inline void ToUpper(std::string& x) {
+    for (char& c : x) {
+        c = toupper(c);
+    }
+}
+
 }  // namespace string_util

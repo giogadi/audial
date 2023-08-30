@@ -284,6 +284,10 @@ void Editor::Update(float dt, SynthGuiState& synthGuiState) {
             sMultiEnemyEditorVisible = !sMultiEnemyEditorVisible;
         }
 
+        if (inputManager.IsKeyPressedThisFrame(InputManager::Key::C)) {
+            _showControllerInputs = !_showControllerInputs;
+        }
+
         if (inputManager.IsShiftPressed() && inputManager.IsKeyPressedThisFrame(InputManager::Key::I)) {
             sDemoWindowVisible = !sDemoWindowVisible;
         }

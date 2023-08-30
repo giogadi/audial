@@ -28,4 +28,5 @@ struct Editor {
     std::vector<ne::EntityId> _entityIds;
     bool _enableFlowSectionFilter = false;
     int _flowSectionFilterId = -1;
+    bool _showControllerInputs = false;  // if false, show keyboard inputs
 };

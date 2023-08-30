@@ -16,6 +16,7 @@
 #include "editor.h"
 #include "geometry.h"
 #include "entities/flow_player.h"
+#include "string_util.h"
 
 extern GameManager gGameManager;
 
@@ -243,7 +244,13 @@ void TypingEnemyEntity::UpdateDerived(GameManager& g, float dt) {
         }
     }
 
-    if (g._inputManager->IsUsingController()) {
+    bool showControllerInputs;
+    if (g._editMode) {
+        showControllerInputs = g._editor->_showControllerInputs;
+    } else {
+        showControllerInputs = g._inputManager->IsUsingController();
+    }
+    if (showControllerInputs) {
         if (!_buttons.empty()) {
             InputManager::ControllerButton b = CharToButton(_buttons[0]);
             Transform t = _transform;
@@ -255,7 +262,10 @@ void TypingEnemyEntity::UpdateDerived(GameManager& g, float dt) {
             }            
         }        
     } else {
-        std::string const& text = g._inputManager->IsUsingController() ? _buttons : _keyText;
+        // TODO THIS IS AN UGLY ALLOCATION
+        // std::string text = _keyText;
+        // string_util::ToUpper(text);
+        std::string const& text = _keyText;
 
         float constexpr kTextSize = 1.5f;
         if (_flowCooldownStartBeatTime > 0.f || !playerWithinRadius || !_hittable) {

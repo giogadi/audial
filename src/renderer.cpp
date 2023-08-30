@@ -438,7 +438,6 @@ bool SceneInternal::LoadPsButtons() {
     float constexpr kIconSize = 64.f;
     float constexpr kSheetLength = kIconSize * static_cast<int>(InputManager::ControllerButton::Count);
     for (int i = 0; i < (int)InputManager::ControllerButton::Count; ++i) {
-        InputManager::ControllerButton buttonIx = (InputManager::ControllerButton)i;
         float startU = kIconSize * i / kSheetLength;
         float endU = (kIconSize * i + kIconSize - 1.f) / kSheetLength;
         // uv's
