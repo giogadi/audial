@@ -177,6 +177,7 @@ void FlowPlayerEntity::Update(GameManager& g, float dt) {
         Vec4 constexpr kGreyColor(0.6f, 0.6f, 0.6f, 0.7f);
         TypingEnemyEntity* enemy = (TypingEnemyEntity*) enemyIter.GetEntity();
         Vec3 dp = playerPos - enemy->_transform.GetPos();
+        dp._y = 0.f;
         float d2 = dp.Length2();
         if (_selectionRadius >= 0.f && d2 > _selectionRadius * _selectionRadius) {
             enemy->_currentColor = kGreyColor;
@@ -226,6 +227,7 @@ void FlowPlayerEntity::Update(GameManager& g, float dt) {
             _respawnBeforeFirstDash = false;
             nearest->OnHit(g);
             Vec3 toEnemyDir = nearest->_transform.GetPos() - playerPos;
+            toEnemyDir._y = 0.f;
             toEnemyDir.Normalize();
             float sign = (_flowPolarity != nearest->_flowPolarity) ? 1.f : -1.f;
             _vel = toEnemyDir * (sign * _launchVel);
@@ -257,6 +259,7 @@ void FlowPlayerEntity::Update(GameManager& g, float dt) {
             if (ne::Entity* dashTarget = g._neEntityManager->GetEntity(_dashTargetId)) {
                 Vec3 playerPos = _transform.Pos();
                 Vec3 targetPos = dashTarget->_transform.Pos();
+                targetPos._y = playerPos._y;
                 Vec3 prevOffset = targetPos - playerPos;
                 playerPos += _vel * dt;
                 Vec3 nextOffset = targetPos - playerPos;
@@ -327,6 +330,7 @@ void FlowPlayerEntity::Update(GameManager& g, float dt) {
     // Check collisions between p and walls    
     Vec3 penetration;
     FlowWallEntity* pHitWall = FindOverlapWithWall(g, _transform, &penetration);
+    penetration._y = 0.f;
     if (pHitWall != nullptr) {
         // Respawn(g);
         pHitWall->OnHit(g);
@@ -336,7 +340,7 @@ void FlowPlayerEntity::Update(GameManager& g, float dt) {
         // reflect across coll normal
         Vec3 tangentPart = Vec3::Dot(newVel, collNormal) * collNormal;
         Vec3 normalPart = newVel - tangentPart;
-        newVel -= 2 * normalPart;
+        newVel -= 2 * normalPart;        
 
         // after bounce, ensure we have some velocity in the collision normal
         float constexpr kMinBounceSpeed = 20.f;
@@ -344,7 +348,7 @@ void FlowPlayerEntity::Update(GameManager& g, float dt) {
         if (speedAlongNormal < kMinBounceSpeed) {
             Vec3 correction = (kMinBounceSpeed - speedAlongNormal) * collNormal;
             newVel += correction;
-        }       
+        }        
 
         _transform.SetTranslation(p);
         _vel = newVel;

@@ -13,6 +13,7 @@ struct CameraEntity : ne::Entity {
     bool _ortho = false;
     std::string _followEntityName;
     float _initialTrackingFactor = 0.05f;
+    float _fovyDeg = 45.f;
 
     // non-serialized
     float _trackingFactor = 0.05f;

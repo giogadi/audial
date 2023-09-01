@@ -318,7 +318,8 @@ void TypingEnemyEntity::UpdateDerived(GameManager& g, float dt) {
         float constexpr zStep = 1.f / (float) kNumStepsZ;
         Mat4 localToWorld = _transform.Mat4Scale();
         Mat4 subdivMat = localToWorld;
-        subdivMat.Scale(xStep * 0.8f, 1.f, zStep * 0.8f);
+        // subdivMat.Scale(xStep * 0.8f, 1.f, zStep * 0.8f);
+        subdivMat.Scale(xStep * 0.8f, xStep * 0.8f, zStep * 0.8f);
         Vec4 color = _currentColor;
         // We adjust the scale of localToWorld AFTER setting subdivMat so that
         // changing the scale of localToWorld doesn't make the subdiv dudes
@@ -348,7 +349,7 @@ void TypingEnemyEntity::UpdateDerived(GameManager& g, float dt) {
                 Vec3 firstBeatPos = _transform.GetPos() + Vec3(rowStartXPos, 0.f, rowStartZPos);
                 Mat4 m;
                 m.SetTranslation(firstBeatPos);
-                m.ScaleUniform(kBeatCellSize);                
+                m.ScaleUniform(kBeatCellSize);
                 int const numLeft = static_cast<int>(std::ceil(_flowCooldownBeatTime - cooldownTimeElapsed));
                 for (int row = 0, beatIx = 0; row < numRows; ++row) {
                     for (int col = 0; col < 4 && beatIx < numLeft; ++col, ++beatIx) {

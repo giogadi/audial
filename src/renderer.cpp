@@ -1063,9 +1063,9 @@ void Scene::Draw(int windowWidth, int windowHeight, float timeInSecs) {
     {
         DirLight& dirLight = _pInternal->_dirLight;
         // make it point 45-degrees up from straight-down, up toward -z
-        Vec3 dir(0.f, -1.f, -1.f);
+        Vec3 dir(0.5f, -1.f, -1.f);
         dir.Normalize();
-        dirLight.Set(dir, Vec3(0.1f, 0.1f, 0.1f), Vec3(1.f, 1.f, 1.f));
+        dirLight.Set(dir, Vec3(0.4f, 0.4f, 0.4f), Vec3(0.7f, 0.7f, 0.7f));
     }
 
     Mat4 viewProjTransform = GetViewProjTransform();
@@ -1102,7 +1102,12 @@ void Scene::Draw(int windowWidth, int windowHeight, float timeInSecs) {
     {
         Mat4 transMat;
         Vec3 cameraPos = _camera._transform.GetPos();
-        Vec3 cameraPosToTerrainPos(-10.f, -15.f, -8.f);
+        Vec3 cameraPosToTerrainPos;
+        if (_camera._projectionType == Camera::ProjectionType::Orthographic) {
+            cameraPosToTerrainPos.Set(-10.f, -15.f, -8.f);
+        } else {
+            cameraPosToTerrainPos.Set(-20.f, -5.f, -8.f);
+        }
         transMat.SetTranslation(cameraPos + cameraPosToTerrainPos);
         Mat3 modelTransInv;
         assert(transMat.GetMat3().TransposeInverse(modelTransInv));

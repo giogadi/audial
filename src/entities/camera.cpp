@@ -25,6 +25,8 @@ void CameraEntity::InitDerived(GameManager& g) {
 }
 
 void CameraEntity::UpdateDerived(GameManager& g, float dt) {
+    _camera->_fovyRad = _fovyDeg * kPi / 180.f;
+    
     if (g._editMode) {
         // In this case, let Editor control the camera.
         return;
@@ -89,6 +91,7 @@ ne::Entity::ImGuiResult CameraEntity::ImGuiDerived(GameManager& g) {
     if (ImGui::Button("Move This to Debug Camera")) {
         _transform.SetFromMat4(_camera->_transform);
     }
+    ImGui::DragFloat("Fovy (deg)", &_fovyDeg, /*v_speed=*/1.f, /*v_min=*/10.f, /*v_max=*/120.f);
     return ImGuiResult::Done;
 }
 
@@ -96,6 +99,7 @@ void CameraEntity::SaveDerived(serial::Ptree pt) const {
     pt.PutBool("ortho", _ortho);
     pt.PutString("follow_entity_name", _followEntityName.c_str());
     pt.PutFloat("tracking_factor", _initialTrackingFactor);
+    pt.PutFloat("fovy_deg", _fovyDeg);
 }
 
 void CameraEntity::LoadDerived(serial::Ptree pt) {
@@ -103,4 +107,6 @@ void CameraEntity::LoadDerived(serial::Ptree pt) {
     pt.TryGetBool("ortho", &_ortho);
     pt.TryGetString("follow_entity_name", &_followEntityName);
     pt.TryGetFloat("tracking_factor", &_initialTrackingFactor);
+    _fovyDeg = 45.f;
+    pt.TryGetFloat("fovy_deg", &_fovyDeg);
 }

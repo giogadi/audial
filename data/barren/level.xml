@@ -60,7 +60,7 @@
             <transform>
                 <pos>
                     <x>0</x>
-                    <y>15</y>
+                    <y>10</y>
                     <z>0</z>
                 </pos>
                 <quat>
@@ -93,9 +93,10 @@
                 <waypoints/>
                 <follow_entity_name/>
             </waypoint_follower>
-            <ortho>true</ortho>
+            <ortho>false</ortho>
             <follow_entity_name/>
             <tracking_factor>0.0500000007</tracking_factor>
+            <fovy_deg>60</fovy_deg>
         </Camera>
         <Sequencer>
             <name>count_off</name>
@@ -4340,7 +4341,7 @@
             <transform>
                 <pos>
                     <x>43.8187447</x>
-                    <y>15</y>
+                    <y>0</y>
                     <z>-1.3640635</z>
                 </pos>
                 <quat>
@@ -4450,7 +4451,7 @@
             <transform>
                 <pos>
                     <x>43.7656403</x>
-                    <y>15</y>
+                    <y>0</y>
                     <z>9.91405773</z>
                 </pos>
                 <quat>
@@ -5044,7 +5045,7 @@
             <transform>
                 <pos>
                     <x>20.5</x>
-                    <y>15</y>
+                    <y>0</y>
                     <z>0</z>
                 </pos>
                 <quat>
@@ -5085,7 +5086,7 @@
             <transform>
                 <pos>
                     <x>37.5649071</x>
-                    <y>15</y>
+                    <y>0</y>
                     <z>-1</z>
                 </pos>
                 <quat>
@@ -5270,7 +5271,7 @@
             <transform>
                 <pos>
                     <x>-14.600009</x>
-                    <y>15</y>
+                    <y>0</y>
                     <z>0</z>
                 </pos>
                 <quat>
@@ -6333,7 +6334,7 @@
             <transform>
                 <pos>
                     <x>2.97304726</x>
-                    <y>15</y>
+                    <y>0</y>
                     <z>0.0220021959</z>
                 </pos>
                 <quat>
@@ -6649,7 +6650,7 @@
                     <setTarget>true</setTarget>
                     <targetEntityName>sideroom1_camera_target</targetEntityName>
                     <targetTrackingFactor>0.0500000007</targetTrackingFactor>
-                    <setOffset>true</setOffset>
+                    <setOffset>false</setOffset>
                     <desiredTargetToCameraOffset>
                         <x>0</x>
                         <y>15</y>
@@ -8553,10 +8554,10 @@
                     <setTarget>true</setTarget>
                     <targetEntityName>room4_camera_target_again</targetEntityName>
                     <targetTrackingFactor>0.0500000007</targetTrackingFactor>
-                    <setOffset>true</setOffset>
+                    <setOffset>false</setOffset>
                     <desiredTargetToCameraOffset>
                         <x>0</x>
-                        <y>15</y>
+                        <y>0</y>
                         <z>0</z>
                     </desiredTargetToCameraOffset>
                     <hasMinX>false</hasMinX>
@@ -9888,7 +9889,7 @@
             <transform>
                 <pos>
                     <x>43.4956322</x>
-                    <y>15</y>
+                    <y>0</y>
                     <z>26.8393555</z>
                 </pos>
                 <quat>
@@ -10446,7 +10447,7 @@
             <transform>
                 <pos>
                     <x>57.4670296</x>
-                    <y>15</y>
+                    <y>0</y>
                     <z>26.7399921</z>
                 </pos>
                 <quat>
@@ -10881,7 +10882,7 @@
                     <setTarget>true</setTarget>
                     <targetEntityName>r7_e2</targetEntityName>
                     <targetTrackingFactor>0.0500000007</targetTrackingFactor>
-                    <setOffset>true</setOffset>
+                    <setOffset>false</setOffset>
                     <desiredTargetToCameraOffset>
                         <x>0</x>
                         <y>15</y>
@@ -11615,7 +11616,7 @@
             <transform>
                 <pos>
                     <x>85.4599991</x>
-                    <y>15</y>
+                    <y>0</y>
                     <z>26.7509937</z>
                 </pos>
                 <quat>
@@ -13115,7 +13116,7 @@
             <transform>
                 <pos>
                     <x>43.4807854</x>
-                    <y>-5</y>
+                    <y>-0.25</y>
                     <z>26.8213978</z>
                 </pos>
                 <quat>
@@ -13126,7 +13127,7 @@
                 </quat>
                 <scale>
                     <x>1</x>
-                    <y>1</y>
+                    <y>0.25</y>
                     <z>2.5</z>
                 </scale>
             </transform>
@@ -13166,7 +13167,7 @@
             <transform>
                 <pos>
                     <x>57.4851837</x>
-                    <y>-5</y>
+                    <y>-0.25</y>
                     <z>21.7718945</z>
                 </pos>
                 <quat>
@@ -13177,7 +13178,7 @@
                 </quat>
                 <scale>
                     <x>2.5</x>
-                    <y>1</y>
+                    <y>0.25</y>
                     <z>1</z>
                 </scale>
             </transform>
@@ -13217,7 +13218,7 @@
             <transform>
                 <pos>
                     <x>71.368576</x>
-                    <y>-5</y>
+                    <y>-0.25</y>
                     <z>26.700386</z>
                 </pos>
                 <quat>
@@ -13228,7 +13229,7 @@
                 </quat>
                 <scale>
                     <x>1</x>
-                    <y>1</y>
+                    <y>0.25</y>
                     <z>2.5</z>
                 </scale>
             </transform>
@@ -13268,7 +13269,7 @@
             <transform>
                 <pos>
                     <x>85.4279709</x>
-                    <y>-5</y>
+                    <y>-0.25</y>
                     <z>21.7058887</z>
                 </pos>
                 <quat>
@@ -13279,7 +13280,7 @@
                 </quat>
                 <scale>
                     <x>2.5</x>
-                    <y>1</y>
+                    <y>0.25</y>
                     <z>1</z>
                 </scale>
             </transform>
@@ -13319,7 +13320,7 @@
             <transform>
                 <pos>
                     <x>99.6963959</x>
-                    <y>-5</y>
+                    <y>-0.25</y>
                     <z>25.7762966</z>
                 </pos>
                 <quat>
@@ -13330,7 +13331,7 @@
                 </quat>
                 <scale>
                     <x>2.5</x>
-                    <y>1</y>
+                    <y>0.25</y>
                     <z>1</z>
                 </scale>
             </transform>
@@ -13370,7 +13371,7 @@
             <transform>
                 <pos>
                     <x>97.6626816</x>
-                    <y>0</y>
+                    <y>-0.25</y>
                     <z>25.8010464</z>
                 </pos>
                 <quat>
@@ -13427,7 +13428,7 @@
                     <setTarget>true</setTarget>
                     <targetEntityName>r7_e3</targetEntityName>
                     <targetTrackingFactor>0.0500000007</targetTrackingFactor>
-                    <setOffset>true</setOffset>
+                    <setOffset>false</setOffset>
                     <desiredTargetToCameraOffset>
                         <x>0</x>
                         <y>15</y>
@@ -13499,7 +13500,7 @@
             <transform>
                 <pos>
                     <x>98.412941</x>
-                    <y>-10</y>
+                    <y>-0.25</y>
                     <z>25.7810669</z>
                 </pos>
                 <quat>
@@ -13510,7 +13511,7 @@
                 </quat>
                 <scale>
                     <x>1</x>
-                    <y>1</y>
+                    <y>0.100000001</y>
                     <z>0.100000001</z>
                 </scale>
             </transform>
@@ -13540,7 +13541,7 @@
             <transform>
                 <pos>
                     <x>111.852608</x>
-                    <y>-5</y>
+                    <y>-0.25</y>
                     <z>30.0007191</z>
                 </pos>
                 <quat>
@@ -13551,7 +13552,7 @@
                 </quat>
                 <scale>
                     <x>2.5</x>
-                    <y>1</y>
+                    <y>0.25</y>
                     <z>1</z>
                 </scale>
             </transform>
@@ -13591,7 +13592,7 @@
             <transform>
                 <pos>
                     <x>109.741882</x>
-                    <y>0</y>
+                    <y>-0.25</y>
                     <z>30.0694714</z>
                 </pos>
                 <quat>
@@ -13702,7 +13703,7 @@
             <transform>
                 <pos>
                     <x>110.459145</x>
-                    <y>-10</y>
+                    <y>-0.25</y>
                     <z>30.0604935</z>
                 </pos>
                 <quat>
@@ -13713,7 +13714,7 @@
                 </quat>
                 <scale>
                     <x>1</x>
-                    <y>1</y>
+                    <y>0.100000001</y>
                     <z>0.100000001</z>
                 </scale>
             </transform>
@@ -13743,7 +13744,7 @@
             <transform>
                 <pos>
                     <x>124.019821</x>
-                    <y>-5</y>
+                    <y>-0.25</y>
                     <z>33.5650787</z>
                 </pos>
                 <quat>
@@ -13754,7 +13755,7 @@
                 </quat>
                 <scale>
                     <x>2.5</x>
-                    <y>1</y>
+                    <y>0.25</y>
                     <z>1</z>
                 </scale>
             </transform>
@@ -13794,7 +13795,7 @@
             <transform>
                 <pos>
                     <x>121.700073</x>
-                    <y>0</y>
+                    <y>-0.25</y>
                     <z>33.6228256</z>
                 </pos>
                 <quat>
@@ -13905,7 +13906,7 @@
             <transform>
                 <pos>
                     <x>122.417328</x>
-                    <y>-10</y>
+                    <y>-0.25</y>
                     <z>33.6028442</z>
                 </pos>
                 <quat>
@@ -13916,7 +13917,7 @@
                 </quat>
                 <scale>
                     <x>1</x>
-                    <y>1</y>
+                    <y>0.100000001</y>
                     <z>0.100000001</z>
                 </scale>
             </transform>
@@ -14417,7 +14418,7 @@
             <transform>
                 <pos>
                     <x>136.022049</x>
-                    <y>-5</y>
+                    <y>-0.25</y>
                     <z>29.5386791</z>
                 </pos>
                 <quat>
@@ -14428,7 +14429,7 @@
                 </quat>
                 <scale>
                     <x>2.5</x>
-                    <y>1</y>
+                    <y>0.25</y>
                     <z>1</z>
                 </scale>
             </transform>
@@ -14594,7 +14595,7 @@
             <transform>
                 <pos>
                     <x>133.999313</x>
-                    <y>0</y>
+                    <y>-0.25</y>
                     <z>29.4534111</z>
                 </pos>
                 <quat>
@@ -14705,7 +14706,7 @@
             <transform>
                 <pos>
                     <x>134.705582</x>
-                    <y>-10</y>
+                    <y>-0.25</y>
                     <z>29.4334297</z>
                 </pos>
                 <quat>
@@ -14716,7 +14717,7 @@
                 </quat>
                 <scale>
                     <x>1</x>
-                    <y>1</y>
+                    <y>0.100000001</y>
                     <z>0.100000001</z>
                 </scale>
             </transform>
