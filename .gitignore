@@ -16,3 +16,4 @@ __pycache__/
 /build*/
 *.asd
 log.txt
+*.blend1

@@ -86,6 +86,7 @@ public:
     Vec4 _color;
     bool _visible = true;
     bool _topLayer = false;
+    float _explodeDist = 0.f;
 };
 
 class TexturedModelInstance {

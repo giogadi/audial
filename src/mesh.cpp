@@ -82,12 +82,17 @@ bool BoundMeshPNU::Init(char const* objFilename) {
             vertexData.push_back(v.Position.Y);
             vertexData.push_back(v.Position.Z);
 
+            subMesh._centroid += Vec3(v.Position.X, v.Position.Y, v.Position.Z);
+
             vertexData.push_back(v.Normal.X);
             vertexData.push_back(v.Normal.Y);
             vertexData.push_back(v.Normal.Z);
 
             vertexData.push_back(v.TextureCoordinate.X);
             vertexData.push_back(v.TextureCoordinate.Y);
+        }
+        if (!mesh.Vertices.empty()) {
+            subMesh._centroid /= mesh.Vertices.size();
         }
 
         for (uint32_t index : mesh.Indices) {

@@ -92,6 +92,12 @@ struct Vec3 {
         _z *= a;
         return *this;
     }
+    Vec3& operator/=(float a) {
+        _x /= a;
+        _y /= a;
+        _z /= a;
+        return *this;
+    }
 
     void CopyToArray(float* v) {
         v[0] = _x;

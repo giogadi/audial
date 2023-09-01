@@ -30,6 +30,7 @@ public:
         int _startIndex;  // index into the index buffer (not the vertex buffer)
         int _numIndices;
         Vec4 _color;
+        Vec3 _centroid;
     };
     std::vector<SubMesh> _subMeshes;
 };

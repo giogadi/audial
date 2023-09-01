@@ -63,7 +63,7 @@ static void StreamFinished( void* userData )
 PaError Init(
     Context& context, SoundBank const& soundBank) {
     int const kSupportedSampleRates[] = {
-        48000, 44100
+        48000, 44100, 96000
     };
 
     PaError err;

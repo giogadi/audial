@@ -207,6 +207,8 @@ namespace {
     }
 }
 
+#define CHUNKED_SPHERE 0
+
 void TypingEnemyEntity::UpdateDerived(GameManager& g, float dt) {      
     if (!IsActive(g)) {
         return;
@@ -311,6 +313,35 @@ void TypingEnemyEntity::UpdateDerived(GameManager& g, float dt) {
         g._scene->DrawCube(t.Mat4Scale(), kRadiusColor);
     }
 
+#if CHUNKED_SPHERE
+    {
+        Transform t = _transform;
+        t.ApplyScale(Vec3(0.7f, 0.7f, 0.7f));
+        Quaternion q = t.Quat();
+        q.SetFromAngleAxis(90.f * kPi / 180.f, Vec3(1.f, 0.f, 0.f));
+        Quaternion rot;
+        rot.SetFromAngleAxis(beatTime, Vec3(0.f, 0.f, 1.f));
+        Quaternion final = rot * q;
+        t.SetQuat(final);
+        BoundMeshPNU const* mesh = g._scene->GetMesh("chunked_sphere");
+        renderer::ColorModelInstance& model = g._scene->DrawMesh(mesh, t.Mat4Scale(), _currentColor);
+        if (_flowCooldownStartBeatTime > 0.f || !_hittable) {
+            Vec4 color = _currentColor;
+            //color._w = 0.25f;
+            model._color = color;
+
+            double const cooldownTimeElapsed = math_util::Clamp(beatTime - _flowCooldownStartBeatTime, 0.0, _flowCooldownBeatTime);
+            float factor = 1.f;
+            if (_flowCooldownStartBeatTime > 0.f) {
+                factor = 1.f - static_cast<float>(cooldownTimeElapsed / _flowCooldownBeatTime);
+                factor = math_util::SmoothStep(factor);
+            }
+            float constexpr kMaxExplode = 1.f;
+            model._explodeDist = factor * kMaxExplode;
+        }
+    }
+
+#else  // if not CHUNKED_SPHERE
     if (_flowCooldownBeatTime > 0.f || !playerWithinRadius) {
         int constexpr kNumStepsX = 2;
         int constexpr kNumStepsZ = 2;
@@ -377,6 +408,7 @@ void TypingEnemyEntity::UpdateDerived(GameManager& g, float dt) {
             g._scene->DrawMesh(_model, _transform.Mat4Scale(), _currentColor);
         }
     }   
+#endif
 }
 
 bool TypingEnemyEntity::IsActive(GameManager& g) const {

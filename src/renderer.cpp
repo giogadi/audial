@@ -112,6 +112,7 @@ namespace ColorShaderUniforms {
         uModelTrans,
         uModelInvTrans,
         uColor,
+        uExplodeVec,
         uDirLightDir,
         uDirLightAmb,
         uDirLightDif,
@@ -128,6 +129,7 @@ namespace ColorShaderUniforms {
         "uModelTrans",
         "uModelInvTrans",
         "uColor",
+        "uExplodeVec",
         "uDirLight._dir",
         "uDirLight._ambient",
         "uDirLight._diffuse",
@@ -496,6 +498,12 @@ bool SceneInternal::Init(GameManager& g) {
         success = _meshMap.emplace("cross", std::move(mesh)).second;
         assert(success);
 
+        mesh = std::make_unique<BoundMeshPNU>();
+        success = mesh->Init("data/models/chunked_sphere.obj");
+        assert(success);
+        success = _meshMap.emplace("chunked_sphere", std::move(mesh)).second;
+        assert(success);
+
         mesh = MakeWaterMesh();
         success = _meshMap.emplace("water", std::move(mesh)).second;
         assert(success);
@@ -557,6 +565,12 @@ bool SceneInternal::Init(GameManager& g) {
     if (!_lineShader.Init("shaders/line.vert", "shaders/line.frag")) {
         return false;
     }
+
+    unsigned int whiteTextureId = 0;
+    if (!CreateTextureFromFile("data/textures/white.png", whiteTextureId)) {
+        return false;
+    }
+    _textureIdMap.emplace("white", whiteTextureId);
 
     unsigned int woodboxTextureId = 0;
     if (!CreateTextureFromFile("data/textures/wood_container.jpg", woodboxTextureId)) {
@@ -958,15 +972,15 @@ void SetLightUniformsTerrainShader(SceneInternal& sceneInternal) {
 }
 #endif
 
-void DrawColorModelInstance(SceneInternal& internal, Mat4 const& viewProjTransform, ColorModelInstance const& m) {
+void DrawColorModelInstance(SceneInternal& internal, Mat4 const& viewProjTransform, ColorModelInstance const& m, bool deferTopLayer, bool deferTransparent, float explodeDist) {
     if (!m._visible) {
         return;
     }
-    if (m._topLayer) {
+    if (deferTopLayer && m._topLayer) {
         internal._topLayerColorModels.push_back(&m);
         return;
     }
-    if (m._color._w < 1.f) {
+    if (deferTransparent && m._color._w < 1.f) {
         internal._transparentModels.push_back(&m);
         return;
     }
@@ -977,6 +991,7 @@ void DrawColorModelInstance(SceneInternal& internal, Mat4 const& viewProjTransfo
     bool success = transMat.GetMat3().TransposeInverse(modelTransInv);
     assert(success);
     internal._colorShader.SetMat3(internal._colorShaderUniforms[ColorShaderUniforms::uModelInvTrans], modelTransInv);
+    internal._colorShader.SetVec3(internal._colorShaderUniforms[ColorShaderUniforms::uExplodeVec], Vec3());
 
     // TEMPORARY! What we really want is to use the submeshes always unless the outer Model
     // has defined some overrides.
@@ -997,6 +1012,10 @@ void DrawColorModelInstance(SceneInternal& internal, Mat4 const& viewProjTransfo
             BoundMeshPNU::SubMesh const& subMesh = m._mesh->_subMeshes[subMeshIx];
             if (m._useMeshColor) {
                 internal._colorShader.SetVec4(internal._colorShaderUniforms[ColorShaderUniforms::uColor], m._color);
+            }
+            if (explodeDist > 0.f) {
+                Vec3 explodeVec = subMesh._centroid.GetNormalized() * explodeDist;
+                internal._colorShader.SetVec3(internal._colorShaderUniforms[ColorShaderUniforms::uExplodeVec], explodeVec);
             }
             glBindVertexArray(m._mesh->_vao);
             glDrawElements(GL_TRIANGLES, /*count=*/subMesh._numIndices, GL_UNSIGNED_INT,
@@ -1143,7 +1162,7 @@ void Scene::Draw(int windowWidth, int windowHeight, float timeInSecs) {
         shader.Use();
         SetLightUniformsColorShader(*_pInternal);
         for (ColorModelInstance const& m : _pInternal->_modelsToDraw) {
-            DrawColorModelInstance(*_pInternal, viewProjTransform, m);
+            DrawColorModelInstance(*_pInternal, viewProjTransform, m, true, true, m._explodeDist);
         }
 
         _pInternal->_modelsToDraw.clear();
@@ -1168,7 +1187,7 @@ void Scene::Draw(int windowWidth, int windowHeight, float timeInSecs) {
         SetLightUniformsColorShader(*_pInternal);
         for (int modelIx = 0; modelIx < _pInternal->_colorModelInstances.GetCount(); ++modelIx) {
             ColorModelInstance const* m = _pInternal->_colorModelInstances.GetItemAtIndex(modelIx);
-            DrawColorModelInstance(*_pInternal, viewProjTransform, *m);
+            DrawColorModelInstance(*_pInternal, viewProjTransform, *m, true, true, m->_explodeDist);
         }
     }
 
@@ -1256,32 +1275,7 @@ void Scene::Draw(int windowWidth, int windowHeight, float timeInSecs) {
         shader.Use();
         SetLightUniformsColorShader(*_pInternal);
         for (ColorModelInstance const* m : _pInternal->_transparentModels) {
-            if (!m->_visible) {
-                continue;
-            }
-            Mat4 const& transMat = m->_transform;
-            shader.SetMat4("uMvpTrans", viewProjTransform * transMat);
-            shader.SetMat4("uModelTrans", transMat);
-            Mat3 modelTransInv;
-            bool success = transMat.GetMat3().TransposeInverse(modelTransInv);
-            assert(success);
-            shader.SetMat3("uModelInvTrans", modelTransInv);
-
-            // TEMPORARY! What we really want is to use the submeshes always unless the outer Model
-            // has defined some overrides.            
-            if (m->_mesh->_subMeshes.size() == 0) {
-                shader.SetVec4("uColor", m->_color);
-                glBindVertexArray(m->_mesh->_vao);
-                glDrawElements(GL_TRIANGLES, /*count=*/m->_mesh->_numIndices, GL_UNSIGNED_INT, /*start_offset=*/0);
-            } else {
-                for (int subMeshIx = 0; subMeshIx < m->_mesh->_subMeshes.size(); ++subMeshIx) {
-                    BoundMeshPNU::SubMesh const& subMesh = m->_mesh->_subMeshes[subMeshIx];
-                    shader.SetVec4("uColor", subMesh._color);
-                    glBindVertexArray(m->_mesh->_vao);
-                    uint64_t offset = sizeof(uint32_t) * subMesh._startIndex;
-                    glDrawElements(GL_TRIANGLES, /*count=*/subMesh._numIndices, GL_UNSIGNED_INT, (void*) offset);
-                }
-            }
+            DrawColorModelInstance(*_pInternal, viewProjTransform, *m, false, false, m->_explodeDist);
         }
     }
 
@@ -1349,33 +1343,7 @@ void Scene::Draw(int windowWidth, int windowHeight, float timeInSecs) {
         shader.Use();
         SetLightUniformsColorShader(*_pInternal);
         for (ColorModelInstance const* m : _pInternal->_topLayerColorModels) {
-            if (!m->_visible) {
-                continue;
-            }
-            Mat4 const& transMat = m->_transform;
-            shader.SetMat4("uMvpTrans", viewProjTransform * transMat);
-            shader.SetMat4("uModelTrans", transMat);
-            Mat3 modelTransInv;
-            bool success = transMat.GetMat3().TransposeInverse(modelTransInv);
-            assert(success);
-            shader.SetMat3("uModelInvTrans", modelTransInv);
-
-            // TEMPORARY! What we really want is to use the submeshes always unless the outer Model
-            // has defined some overrides.
-            if (m->_mesh->_subMeshes.size() == 0) {
-                shader.SetVec4("uColor", m->_color);
-                glBindVertexArray(m->_mesh->_vao);
-                glDrawElements(GL_TRIANGLES, /*count=*/m->_mesh->_numIndices, GL_UNSIGNED_INT, /*start_offset=*/0);
-            }
-            else {
-                for (int subMeshIx = 0; subMeshIx < m->_mesh->_subMeshes.size(); ++subMeshIx) {
-                    BoundMeshPNU::SubMesh const& subMesh = m->_mesh->_subMeshes[subMeshIx];
-                    shader.SetVec4("uColor", subMesh._color);
-                    glBindVertexArray(m->_mesh->_vao);
-                    uint64_t offset = sizeof(uint32_t) * subMesh._startIndex;
-                    glDrawElements(GL_TRIANGLES, /*count=*/subMesh._numIndices, GL_UNSIGNED_INT, (void*)offset);
-                }
-            }
+            DrawColorModelInstance(*_pInternal, viewProjTransform, *m, false, false, m->_explodeDist);
         }
 
         _pInternal->_topLayerColorModels.clear();

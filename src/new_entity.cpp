@@ -693,7 +693,9 @@ BaseEntity::ImGuiResult BaseEntity::ImGui(GameManager& g) {
     ImGui::InputInt("Flow section ID##Entity", &_flowSectionId);
     ImGui::InputInt("Tag##Entity", &_tag);
     bool modelChanged = imgui_util::InputText<64>("Model name##Entity", &_modelName, /*trueOnReturnOnly=*/true);
-    imgui_util::ColorEdit4("Model color##Entity", &_modelColor);
+    if (imgui_util::ColorEdit4("Model color##Entity", &_modelColor)) {
+        result = Entity::ImGuiResult::NeedsInit;
+    }
 
     if (ImGui::CollapsingHeader("Waypoints")) {
         if (_wpProps.ImGui()) {
