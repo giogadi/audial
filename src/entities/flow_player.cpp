@@ -87,13 +87,13 @@ void FlowPlayerEntity::DrawPlayer(GameManager& g) {
     historyTrans.Scale(0.1f, 0.1f, 0.1f);
     for (Vec3 const& prevPos : _posHistory) {
         historyTrans.SetTranslation(prevPos);
-        renderer::ColorModelInstance& model = g._scene->DrawCube(historyTrans, _currentColor);
-        model._topLayer = true;
+        renderer::ModelInstance& model = g._scene->DrawCube(historyTrans, _currentColor);
+         model._topLayer = true;
     }
 
     if (_model != nullptr) {
-        renderer::ColorModelInstance& model = g._scene->DrawMesh(_model, _transform.Mat4Scale(), _currentColor);
-        model._topLayer = true;
+        renderer::ModelInstance& model = g._scene->DrawMesh(_model, _transform.Mat4Scale(), _currentColor);
+         model._topLayer = true;
     }
 
     if (_dashTimer >= 0.f) {

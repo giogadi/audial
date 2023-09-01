@@ -257,8 +257,9 @@ void TypingEnemyEntity::UpdateDerived(GameManager& g, float dt) {
             InputManager::ControllerButton b = CharToButton(_buttons[0]);
             Transform t = _transform;
             t.SetScale(Vec3(0.25f, 0.25f, 0.25f));
-            t.SetTranslation(_transform.Pos() + Vec3(-0.25f, 5.f, 0.25f));
-            renderer::TexturedModelInstance* m = g._scene->DrawPsButton(b, t.Mat4Scale());
+            t.SetTranslation(_transform.Pos() + Vec3(-0.25f, 0.f, 0.25f));
+            renderer::ModelInstance* m = g._scene->DrawPsButton(b, t.Mat4Scale());
+            m->_topLayer = true;
             if (_flowCooldownStartBeatTime > 0.f || !playerWithinRadius || !_hittable) {
                 m->_color.Set(1.f, 1.f, 1.f, 0.2f);
             }            
@@ -324,7 +325,7 @@ void TypingEnemyEntity::UpdateDerived(GameManager& g, float dt) {
         Quaternion final = rot * q;
         t.SetQuat(final);
         BoundMeshPNU const* mesh = g._scene->GetMesh("chunked_sphere");
-        renderer::ColorModelInstance& model = g._scene->DrawMesh(mesh, t.Mat4Scale(), _currentColor);
+        renderer::ModelInstance& model = g._scene->DrawMesh(mesh, t.Mat4Scale(), _currentColor);
         if (_flowCooldownStartBeatTime > 0.f || !_hittable) {
             Vec4 color = _currentColor;
             //color._w = 0.25f;

@@ -66,30 +66,7 @@ public:
     float _zFar = 100.f;
 };
 
-class ColorModelInstance {
-public:
-    void Set(Mat4 const& t, BoundMeshPNU const* mesh) {
-        _transform = t;
-        _mesh = mesh;
-        _useMeshColor = true;
-    }
-    void Set(Mat4 const& t, BoundMeshPNU const* mesh, Vec4 const& color) {
-        _transform = t;
-        _mesh = mesh;
-        _color = color;
-        _useMeshColor = false;
-    }
-
-    Mat4 _transform;
-    BoundMeshPNU const* _mesh = nullptr;
-    bool _useMeshColor = false;
-    Vec4 _color;
-    bool _visible = true;
-    bool _topLayer = false;
-    float _explodeDist = 0.f;
-};
-
-class TexturedModelInstance {
+class ModelInstance {
 public:
     void Set(Mat4 const& t, BoundMeshPNU const* mesh, unsigned int textureId) {
         _transform = t;
@@ -103,6 +80,8 @@ public:
     bool _visible = true;
     bool _topLayer = false;
     Vec4 _color = Vec4(1.f, 1.f, 1.f, 1.f);  // multiplied with the texture
+    bool _useMeshColor = false;
+    float _explodeDist = 0.f;
 };
 
 struct LineInstance {
@@ -124,14 +103,6 @@ public:
     PointLight* GetPointLight(VersionId id);
     bool RemovePointLight(VersionId id);
 
-    std::pair<VersionId, ColorModelInstance*> AddColorModelInstance();
-    ColorModelInstance* GetColorModelInstance(VersionId id);
-    bool RemoveColorModelInstance(VersionId id);
-
-    std::pair<VersionId, TexturedModelInstance*> AddTexturedModelInstance();
-    TexturedModelInstance* GetTexturedModelInstance(VersionId id);
-    bool RemoveTexturedModelInstance(VersionId id);
-
     // Returns ID to be used for drawing and deleting
     struct MeshId {
         int _id = -1;
@@ -143,13 +114,12 @@ public:
 
     BoundMeshPNU const* GetMesh(std::string const& meshName) const;
     // TODO: inline or remove some of the call depth here
-    ColorModelInstance& DrawMesh(BoundMeshPNU const* m, Mat4 const& t, Vec4 const& color);
-    ColorModelInstance& DrawMesh();
-    ColorModelInstance& DrawCube(Mat4 const& t, Vec4 const& color);
+    ModelInstance& DrawMesh(BoundMeshPNU const* m, Mat4 const& t, Vec4 const& color);
+    ModelInstance& DrawCube(Mat4 const& t, Vec4 const& color);
 
-    ColorModelInstance* DrawMesh(MeshId id);
+    ModelInstance* DrawMesh(MeshId id);
 
-    TexturedModelInstance* DrawTexturedMesh(BoundMeshPNU const* m, unsigned int textureId);
+    ModelInstance* DrawTexturedMesh(BoundMeshPNU const* m, unsigned int textureId);
 
     void DrawBoundingBox(Mat4 const& t, Vec4 const& color);
 
@@ -158,7 +128,7 @@ public:
 
     void DrawLine(Vec3 const& start, Vec3 const& end, Vec4 const& color);
 
-    TexturedModelInstance* DrawPsButton(InputManager::ControllerButton button, Mat4 const& t);
+    ModelInstance* DrawPsButton(InputManager::ControllerButton button, Mat4 const& t);
 
     Camera _camera;
 

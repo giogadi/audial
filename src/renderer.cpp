@@ -106,45 +106,10 @@ struct GlyphInstance {
     stbtt_aligned_quad _quad;
 };
 
-namespace ColorShaderUniforms {
+namespace ModelShaderUniforms {
     enum Names {
-        uMvpTrans,
-        uModelTrans,
-        uModelInvTrans,
         uColor,
         uExplodeVec,
-        uDirLightDir,
-        uDirLightAmb,
-        uDirLightDif,
-        uPointLight0Pos,
-        uPointLight0Amb,
-        uPointLight0Dif,
-        uPointLight1Pos,
-        uPointLight1Amb,
-        uPointLight1Dif,
-        Count
-    };
-    static char const* NameStrings[] = {
-        "uMvpTrans",
-        "uModelTrans",
-        "uModelInvTrans",
-        "uColor",
-        "uExplodeVec",
-        "uDirLight._dir",
-        "uDirLight._ambient",
-        "uDirLight._diffuse",
-        "uPointLights[0]._pos",
-        "uPointLights[0]._ambient",
-        "uPointLights[0]._diffuse",
-        "uPointLights[1]._pos",
-        "uPointLights[1]._ambient",
-        "uPointLights[1]._diffuse"
-    };
-};
-
-namespace TextureShaderUniforms {
-    enum Names {
-        uColor,
         uMvpTrans,
         uModelTrans,
         uModelInvTrans,
@@ -161,6 +126,7 @@ namespace TextureShaderUniforms {
     };
     static char const* NameStrings[] = {
         "uColor",
+        "uExplodeVec",
         "uMvpTrans",
         "uModelTrans",
         "uModelInvTrans",
@@ -254,14 +220,11 @@ struct Polygon2dInstance {
 class SceneInternal {
 public:
     SceneInternal() :
-        _pointLights(100),
-        _colorModelInstances(100),
-        _texturedModelInstances(100) {
+        _pointLights(100) {
         
-        _topLayerColorModels.reserve(100);
-        _topLayerTexturedModels.reserve(100);
+        _topLayerModels.reserve(100);
+        _transparentModels.reserve(100);
         _modelsToDraw.reserve(100);
-        _texturedModelsToDraw.reserve(100);
     }
     bool Init(GameManager& g);
 
@@ -269,15 +232,12 @@ public:
 
     DirLight _dirLight;
     TVersionIdList<PointLight> _pointLights;
-    TVersionIdList<ColorModelInstance> _colorModelInstances;
-    TVersionIdList<TexturedModelInstance> _texturedModelInstances;
-    std::vector<ColorModelInstance> _modelsToDraw;
     std::vector<TextWorldInstance> _textToDraw;
     std::vector<GlyphInstance> _glyphsToDraw;
     std::vector<BoundingBoxInstance> _boundingBoxesToDraw;
     std::vector<Polygon2dInstance> _polygonsToDraw;
     std::vector<LineInstance> _linesToDraw;
-    std::vector<TexturedModelInstance> _texturedModelsToDraw;
+    std::vector<ModelInstance> _modelsToDraw;
 
     std::unordered_map<std::string, std::unique_ptr<BoundMeshPNU>> _meshMap;    
     std::unordered_map<std::string, unsigned int> _textureIdMap;
@@ -285,12 +245,11 @@ public:
     int _nextMeshId = 0;
 
     BoundMeshPB _cubeWireframeMesh;
+
+    unsigned int _whiteTextureId;   
     
-    Shader _colorShader;
-    int _colorShaderUniforms[ColorShaderUniforms::Count];
-    
-    Shader _textureShader;
-    int _textureShaderUniforms[TextureShaderUniforms::Count];
+    Shader _modelShader;
+    int _modelShaderUniforms[ModelShaderUniforms::Count];
 
 #if DRAW_WATER    
     Shader _waterShader;
@@ -319,9 +278,8 @@ public:
     unsigned int _psButtonsTextureId;
 
     // boring cached things
-    std::vector<ColorModelInstance const*> _topLayerColorModels;
-    std::vector<TexturedModelInstance const*> _topLayerTexturedModels;
-    std::vector<ColorModelInstance const*> _transparentModels;
+    std::vector<ModelInstance const*> _topLayerModels;
+    std::vector<ModelInstance const*> _transparentModels;
     BoundMeshPNU const* _cubeMesh = nullptr;
     std::vector<float> _lineVertexData;
 
@@ -519,18 +477,11 @@ bool SceneInternal::Init(GameManager& g) {
         }
     }
 
-    if (!_colorShader.Init("shaders/shader.vert", "shaders/color.frag")) {
+    if (!_modelShader.Init("shaders/shader.vert", "shaders/shader.frag")) {
         return false;
     }
-    for (int i = 0; i < ColorShaderUniforms::Count; ++i) {
-        _colorShaderUniforms[i] = _colorShader.GetUniformLocation(ColorShaderUniforms::NameStrings[i]);
-    }
-
-    if (!_textureShader.Init("shaders/shader.vert", "shaders/shader.frag")) {
-        return false;
-    }
-    for (int i = 0; i < TextureShaderUniforms::Count; ++i) {
-        _textureShaderUniforms[i] = _textureShader.GetUniformLocation(TextureShaderUniforms::NameStrings[i]);
+    for (int i = 0; i < ModelShaderUniforms::Count; ++i) {
+        _modelShaderUniforms[i] = _modelShader.GetUniformLocation(ModelShaderUniforms::NameStrings[i]);
     }
 
 #if DRAW_WATER    
@@ -566,11 +517,10 @@ bool SceneInternal::Init(GameManager& g) {
         return false;
     }
 
-    unsigned int whiteTextureId = 0;
-    if (!CreateTextureFromFile("data/textures/white.png", whiteTextureId)) {
+    if (!CreateTextureFromFile("data/textures/white.png", _whiteTextureId)) {
         return false;
     }
-    _textureIdMap.emplace("white", whiteTextureId);
+    _textureIdMap.emplace("white", _whiteTextureId);
 
     unsigned int woodboxTextureId = 0;
     if (!CreateTextureFromFile("data/textures/wood_container.jpg", woodboxTextureId)) {
@@ -674,22 +624,17 @@ BoundMeshPNU const* Scene::GetMesh(std::string const& meshName) const {
     }
 }
 
-renderer::ColorModelInstance& Scene::DrawMesh() {
-    _pInternal->_modelsToDraw.emplace_back();
-    return _pInternal->_modelsToDraw.back();
-}
-
-renderer::TexturedModelInstance* Scene::DrawTexturedMesh(BoundMeshPNU const* m, unsigned int textureId) {
-    renderer::TexturedModelInstance& model = _pInternal->_texturedModelsToDraw.emplace_back();
+renderer::ModelInstance* Scene::DrawTexturedMesh(BoundMeshPNU const* m, unsigned int textureId) {
+    renderer::ModelInstance& model = _pInternal->_modelsToDraw.emplace_back();
     model._mesh = m;
     model._textureId = textureId;
     return &model;
 }
 
-renderer::ColorModelInstance* Scene::DrawMesh(MeshId id) {
+renderer::ModelInstance* Scene::DrawMesh(MeshId id) {
     for (auto const& entry : _pInternal->_dynLoadedMeshes) {
         if (entry.first._id == id._id) {
-            renderer::ColorModelInstance* model = &(_pInternal->_modelsToDraw.emplace_back());
+            renderer::ModelInstance* model = &(_pInternal->_modelsToDraw.emplace_back());
             model->_mesh = entry.second.get();
             return model;
         }
@@ -697,16 +642,16 @@ renderer::ColorModelInstance* Scene::DrawMesh(MeshId id) {
     return nullptr;
 }
 
-renderer::ColorModelInstance& Scene::DrawMesh(BoundMeshPNU const* mesh, Mat4 const& t, Vec4 const& color) {
-    ColorModelInstance& model = DrawMesh();
+renderer::ModelInstance& Scene::DrawMesh(BoundMeshPNU const* mesh, Mat4 const& t, Vec4 const& color) {
+    ModelInstance& model = _pInternal->_modelsToDraw.emplace_back();
     model._transform = t;
     model._mesh = mesh;
     model._color = color;
-    model._useMeshColor = false;
+    model._textureId = _pInternal->_whiteTextureId;
     return model;
 }
 
-renderer::ColorModelInstance& Scene::DrawCube(Mat4 const& t, Vec4 const& color) {
+renderer::ModelInstance& Scene::DrawCube(Mat4 const& t, Vec4 const& color) {
     return DrawMesh(_pInternal->_cubeMesh, t, color);
 }
 
@@ -778,10 +723,10 @@ void Scene::DrawLine(Vec3 const& start, Vec3 const& end, Vec4 const& color) {
     line._color = color;
 }
 
-renderer::TexturedModelInstance* Scene::DrawPsButton(InputManager::ControllerButton button, Mat4 const& t) {
+renderer::ModelInstance* Scene::DrawPsButton(InputManager::ControllerButton button, Mat4 const& t) {
     BoundMeshPNU const* mesh = _pInternal->_psButtonMeshes[(int)button].get();
 
-    TexturedModelInstance* instance = DrawTexturedMesh(mesh, _pInternal->_psButtonsTextureId);
+    ModelInstance* instance = DrawTexturedMesh(mesh, _pInternal->_psButtonsTextureId);
     instance->_transform = t;
     return instance;
 }
@@ -796,30 +741,6 @@ PointLight* Scene::GetPointLight(VersionId id) {
 }
 bool Scene::RemovePointLight(VersionId id) {
     return _pInternal->_pointLights.RemoveItem(id);
-}
-
-std::pair<VersionId, ColorModelInstance*> Scene::AddColorModelInstance() {
-    ColorModelInstance* m = nullptr;
-    VersionId newId = _pInternal->_colorModelInstances.AddItem(&m);
-    return std::make_pair(newId, m);
-}
-ColorModelInstance* Scene::GetColorModelInstance(VersionId id) {
-    return _pInternal->_colorModelInstances.GetItem(id);
-}
-bool Scene::RemoveColorModelInstance(VersionId id) {
-    return _pInternal->_colorModelInstances.RemoveItem(id);
-}
-
-std::pair<VersionId, TexturedModelInstance*> Scene::AddTexturedModelInstance() {
-    TexturedModelInstance* m = nullptr;
-    VersionId newId = _pInternal->_texturedModelInstances.AddItem(&m);
-    return std::make_pair(newId, m);
-}
-TexturedModelInstance* Scene::GetTexturedModelInstance(VersionId id) {
-    return _pInternal->_texturedModelInstances.GetItem(id);
-}
-bool Scene::RemoveTexturedModelInstance(VersionId id) {
-    return _pInternal->_texturedModelInstances.RemoveItem(id);
 }
 
 Scene::MeshId Scene::LoadPolygon2d(std::vector<Vec3> const& points) {
@@ -898,47 +819,20 @@ Mat4 Scene::GetViewProjTransform() const {
 }
 
 namespace {
-void SetLightUniformsColorShader(SceneInternal& sceneInternal) {
-    int const* uniforms = sceneInternal._colorShaderUniforms;
-    Shader& shader = sceneInternal._colorShader;
-    shader.SetVec3(uniforms[ColorShaderUniforms::uDirLightDir], sceneInternal._dirLight._dir);
-    shader.SetVec3(uniforms[ColorShaderUniforms::uDirLightAmb], sceneInternal._dirLight._ambient);
-    shader.SetVec3(uniforms[ColorShaderUniforms::uDirLightDif], sceneInternal._dirLight._diffuse);
-    int constexpr kMaxNumPointLights = 2;
-    if (sceneInternal._pointLights.GetCount() > kMaxNumPointLights) {
-        printf("RENDERER ERROR: TOO MANY POINT LIGHTS (%d)\n", sceneInternal._pointLights.GetCount());
-    }
-    for (int i = 0; i < kMaxNumPointLights; ++i) {
-        int posLoc = uniforms[ColorShaderUniforms::uPointLight0Pos + 3*i];
-        int ambLoc = uniforms[ColorShaderUniforms::uPointLight0Amb + 3*i];
-        int difLoc = uniforms[ColorShaderUniforms::uPointLight0Dif + 3*i];
-        if (i >= sceneInternal._pointLights.GetCount()) {
-            shader.SetVec3(posLoc, Vec3(0.f, 0.f, 0.f));
-            shader.SetVec3(ambLoc, Vec3(0.f, 0.f, 0.f));
-            shader.SetVec3(difLoc, Vec3(0.f, 0.f, 0.f));
-        } else {
-            PointLight const& pl = *sceneInternal._pointLights.GetItemAtIndex(i);
-            shader.SetVec3(posLoc, pl._p);
-            shader.SetVec3(ambLoc, pl._ambient);
-            shader.SetVec3(difLoc, pl._diffuse);
-        }
-    }
-}
-
-void SetLightUniformsTextureShader(SceneInternal& sceneInternal) {
-    int const* uniforms = sceneInternal._textureShaderUniforms;
-    Shader& shader = sceneInternal._textureShader;
-    shader.SetVec3(uniforms[TextureShaderUniforms::uDirLightDir], sceneInternal._dirLight._dir);
-    shader.SetVec3(uniforms[TextureShaderUniforms::uDirLightAmb], sceneInternal._dirLight._ambient);
-    shader.SetVec3(uniforms[TextureShaderUniforms::uDirLightDif], sceneInternal._dirLight._diffuse);
+void SetLightUniformsModelShader(SceneInternal& sceneInternal) {
+    int const* uniforms = sceneInternal._modelShaderUniforms;
+    Shader& shader = sceneInternal._modelShader;
+    shader.SetVec3(uniforms[ModelShaderUniforms::uDirLightDir], sceneInternal._dirLight._dir);
+    shader.SetVec3(uniforms[ModelShaderUniforms::uDirLightAmb], sceneInternal._dirLight._ambient);
+    shader.SetVec3(uniforms[ModelShaderUniforms::uDirLightDif], sceneInternal._dirLight._diffuse);
     int constexpr kMaxNumPointLights = 2;
     if (sceneInternal._pointLights.GetCount() > kMaxNumPointLights) {
         printf("RENDERER ERROR: TOO MANY POINT LIGHTS (%d)\n", sceneInternal._pointLights.GetCount());
 }
     for (int i = 0; i < kMaxNumPointLights; ++i) {
-        int posLoc = uniforms[TextureShaderUniforms::uPointLight0Pos + 3 * i];
-        int ambLoc = uniforms[TextureShaderUniforms::uPointLight0Amb + 3 * i];
-        int difLoc = uniforms[TextureShaderUniforms::uPointLight0Dif + 3 * i];
+        int posLoc = uniforms[ModelShaderUniforms::uPointLight0Pos + 3 * i];
+        int ambLoc = uniforms[ModelShaderUniforms::uPointLight0Amb + 3 * i];
+        int difLoc = uniforms[ModelShaderUniforms::uPointLight0Dif + 3 * i];
         if (i >= sceneInternal._pointLights.GetCount()) {
             shader.SetVec3(posLoc, Vec3(0.f, 0.f, 0.f));
             shader.SetVec3(ambLoc, Vec3(0.f, 0.f, 0.f));
@@ -972,83 +866,24 @@ void SetLightUniformsTerrainShader(SceneInternal& sceneInternal) {
 }
 #endif
 
-void DrawColorModelInstance(SceneInternal& internal, Mat4 const& viewProjTransform, ColorModelInstance const& m, bool deferTopLayer, bool deferTransparent, float explodeDist) {
+void DrawModelInstance(SceneInternal& internal, Mat4 const& viewProjTransform, ModelInstance const& m, float explodeDist) {
     if (!m._visible) {
         return;
     }
-    if (deferTopLayer && m._topLayer) {
-        internal._topLayerColorModels.push_back(&m);
-        return;
-    }
-    if (deferTransparent && m._color._w < 1.f) {
-        internal._transparentModels.push_back(&m);
-        return;
-    }
     Mat4 const& transMat = m._transform;
-    internal._colorShader.SetMat4(internal._colorShaderUniforms[ColorShaderUniforms::uMvpTrans], viewProjTransform * transMat);
-    internal._colorShader.SetMat4(internal._colorShaderUniforms[ColorShaderUniforms::uModelTrans], transMat);
+    internal._modelShader.SetMat4(internal._modelShaderUniforms[ModelShaderUniforms::uMvpTrans], viewProjTransform * transMat);
+    internal._modelShader.SetMat4(internal._modelShaderUniforms[ModelShaderUniforms::uModelTrans], transMat);
     Mat3 modelTransInv;
     bool success = transMat.GetMat3().TransposeInverse(modelTransInv);
     assert(success);
-    internal._colorShader.SetMat3(internal._colorShaderUniforms[ColorShaderUniforms::uModelInvTrans], modelTransInv);
-    internal._colorShader.SetVec3(internal._colorShaderUniforms[ColorShaderUniforms::uExplodeVec], Vec3());
+    internal._modelShader.SetMat3(internal._modelShaderUniforms[ModelShaderUniforms::uModelInvTrans], modelTransInv);
+    internal._modelShader.SetVec3(internal._modelShaderUniforms[ModelShaderUniforms::uExplodeVec], Vec3());
 
     // TEMPORARY! What we really want is to use the submeshes always unless the outer Model
     // has defined some overrides.
     assert(m._mesh != nullptr);
     if (m._mesh->_subMeshes.size() == 0) {
-        internal._colorShader.SetVec4(internal._colorShaderUniforms[ColorShaderUniforms::uColor], m._color);
-        glBindVertexArray(m._mesh->_vao);
-        GLenum mode = GL_TRIANGLES;
-        if (m._mesh->_useTriangleFan) {
-            mode = GL_TRIANGLE_FAN;
-        }
-        glDrawElements(mode, /*count=*/m._mesh->_numIndices, GL_UNSIGNED_INT, /*start_offset=*/0);
-    } else {
-        if (!m._useMeshColor) {
-            internal._colorShader.SetVec4(internal._colorShaderUniforms[ColorShaderUniforms::uColor], m._color);
-        }
-        for (int subMeshIx = 0; subMeshIx < m._mesh->_subMeshes.size(); ++subMeshIx) {
-            BoundMeshPNU::SubMesh const& subMesh = m._mesh->_subMeshes[subMeshIx];
-            if (m._useMeshColor) {
-                internal._colorShader.SetVec4(internal._colorShaderUniforms[ColorShaderUniforms::uColor], m._color);
-            }
-            if (explodeDist > 0.f) {
-                Vec3 explodeVec = subMesh._centroid.GetNormalized() * explodeDist;
-                internal._colorShader.SetVec3(internal._colorShaderUniforms[ColorShaderUniforms::uExplodeVec], explodeVec);
-            }
-            glBindVertexArray(m._mesh->_vao);
-            glDrawElements(GL_TRIANGLES, /*count=*/subMesh._numIndices, GL_UNSIGNED_INT,
-                           /*start_offset=*/(void*)(sizeof(uint32_t) * subMesh._startIndex));
-        }
-    }
-}
-
-void DrawTexturedModelInstance(SceneInternal& internal, Mat4 const& viewProjTransform, TexturedModelInstance const& m, bool deferTopLayer) {
-    if (!m._visible) {
-        return;
-    }
-    if (deferTopLayer && m._topLayer) {
-        internal._topLayerTexturedModels.push_back(&m);
-        return;
-    }
-    /*if (m._color._w < 1.f) {
-        internal._transparentModels.push_back(&m);
-        return;
-    }*/
-    internal._textureShader.SetVec4(internal._textureShaderUniforms[TextureShaderUniforms::uColor], m._color);
-    Mat4 const& transMat = m._transform;
-    internal._textureShader.SetMat4(internal._textureShaderUniforms[TextureShaderUniforms::uMvpTrans], viewProjTransform * transMat);
-    internal._textureShader.SetMat4(internal._textureShaderUniforms[TextureShaderUniforms::uModelTrans], transMat);
-    Mat3 modelTransInv;
-    bool success = transMat.GetMat3().TransposeInverse(modelTransInv);
-    assert(success);
-    internal._textureShader.SetMat3(internal._textureShaderUniforms[TextureShaderUniforms::uModelInvTrans], modelTransInv);
-
-    // TEMPORARY! What we really want is to use the submeshes always unless the outer Model
-    // has defined some overrides.
-    assert(m._mesh != nullptr);
-    if (m._mesh->_subMeshes.size() == 0) {
+        internal._modelShader.SetVec4(internal._modelShaderUniforms[ModelShaderUniforms::uColor], m._color);
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, m._textureId);
         glBindVertexArray(m._mesh->_vao);
@@ -1057,18 +892,24 @@ void DrawTexturedModelInstance(SceneInternal& internal, Mat4 const& viewProjTran
             mode = GL_TRIANGLE_FAN;
         }
         glDrawElements(mode, /*count=*/m._mesh->_numIndices, GL_UNSIGNED_INT, /*start_offset=*/0);
+    } else {
+        if (!m._useMeshColor) {
+            internal._modelShader.SetVec4(internal._modelShaderUniforms[ModelShaderUniforms::uColor], m._color);
+        }
+        for (int subMeshIx = 0; subMeshIx < m._mesh->_subMeshes.size(); ++subMeshIx) {
+            BoundMeshPNU::SubMesh const& subMesh = m._mesh->_subMeshes[subMeshIx];
+            if (m._useMeshColor) {
+                internal._modelShader.SetVec4(internal._modelShaderUniforms[ModelShaderUniforms::uColor], subMesh._color);
+            }
+            if (explodeDist > 0.f) {
+                Vec3 explodeVec = subMesh._centroid.GetNormalized() * explodeDist;
+                internal._modelShader.SetVec3(internal._modelShaderUniforms[ModelShaderUniforms::uExplodeVec], explodeVec);
+            }
+            glBindVertexArray(m._mesh->_vao);
+            glDrawElements(GL_TRIANGLES, /*count=*/subMesh._numIndices, GL_UNSIGNED_INT,
+                /*start_offset=*/(void*)(sizeof(uint32_t) * subMesh._startIndex));
+        }
     }
-    //} else {
-    //    for (int subMeshIx = 0; subMeshIx < m._mesh->_subMeshes.size(); ++subMeshIx) {
-    //        BoundMeshPNU::SubMesh const& subMesh = m._mesh->_subMeshes[subMeshIx];
-    //        if (m._useMeshColor) {
-    //            internal._colorShader.SetVec4(internal._colorShaderUniforms[ColorShaderUniforms::uColor], m._color);
-    //        }
-    //        glBindVertexArray(m._mesh->_vao);
-    //        glDrawElements(GL_TRIANGLES, /*count=*/subMesh._numIndices, GL_UNSIGNED_INT,
-    //            /*start_offset=*/(void*)(sizeof(uint32_t) * subMesh._startIndex));
-    //    }
-    //}
 }
 }
 
@@ -1090,7 +931,9 @@ void Scene::Draw(int windowWidth, int windowHeight, float timeInSecs) {
     Mat4 viewProjTransform = GetViewProjTransform();
 
     auto& transparentModels = _pInternal->_transparentModels;
-    transparentModels.clear();    
+    transparentModels.clear();
+
+    _pInternal->_topLayerModels.clear();
 
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -1156,83 +999,39 @@ void Scene::Draw(int windowWidth, int windowHeight, float timeInSecs) {
 
     glClear(GL_DEPTH_BUFFER_BIT);
 
-    // buffered Color models (immediate API)
     {
-        Shader& shader = _pInternal->_colorShader;
+        Shader& shader = _pInternal->_modelShader;
         shader.Use();
-        SetLightUniformsColorShader(*_pInternal);
-        for (ColorModelInstance const& m : _pInternal->_modelsToDraw) {
-            DrawColorModelInstance(*_pInternal, viewProjTransform, m, true, true, m._explodeDist);
-        }
-
-        _pInternal->_modelsToDraw.clear();
-    }
-
-    // texture models
-    {
-        Shader& shader = _pInternal->_textureShader;
-        shader.Use();
-        SetLightUniformsTextureShader(*_pInternal);
-        for (TexturedModelInstance const& m : _pInternal->_texturedModelsToDraw) {
-            DrawTexturedModelInstance(*_pInternal, viewProjTransform, m, /*deferTopLayer=*/true);
-        }
-
-        _pInternal->_texturedModelsToDraw.clear();
-    }
-
-    // Color models
-    {
-        Shader& shader = _pInternal->_colorShader;
-        shader.Use();
-        SetLightUniformsColorShader(*_pInternal);
-        for (int modelIx = 0; modelIx < _pInternal->_colorModelInstances.GetCount(); ++modelIx) {
-            ColorModelInstance const* m = _pInternal->_colorModelInstances.GetItemAtIndex(modelIx);
-            DrawColorModelInstance(*_pInternal, viewProjTransform, *m, true, true, m->_explodeDist);
+        SetLightUniformsModelShader(*_pInternal);
+        for (ModelInstance const& m : _pInternal->_modelsToDraw) {
+            if (m._topLayer) {
+                _pInternal->_topLayerModels.push_back(&m);
+                continue;
+            } else if (m._color._w < 1.f) {
+                transparentModels.push_back(&m);
+                continue;
+            }
+            DrawModelInstance(*_pInternal, viewProjTransform, m, m._explodeDist);
         }
     }
 
     // Polygons (immediate API)
+    //
+    // TODO: not sure this works yet after the great model unification
     {
-        Shader& shader = _pInternal->_colorShader;
+        Shader& shader = _pInternal->_modelShader;
         shader.Use();
-        SetLightUniformsColorShader(*_pInternal);
+        SetLightUniformsModelShader(*_pInternal);
         for (Polygon2dInstance const& poly : _pInternal->_polygonsToDraw) {
-            _pInternal->_colorShader.SetMat4(_pInternal->_colorShaderUniforms[ColorShaderUniforms::uMvpTrans], viewProjTransform * poly._t);
-            _pInternal->_colorShader.SetMat4(_pInternal->_colorShaderUniforms[ColorShaderUniforms::uModelTrans], poly._t);
+            _pInternal->_modelShader.SetMat4(_pInternal->_modelShaderUniforms[ModelShaderUniforms::uMvpTrans], viewProjTransform * poly._t);
+            _pInternal->_modelShader.SetMat4(_pInternal->_modelShaderUniforms[ModelShaderUniforms::uModelTrans], poly._t);
             Mat3 modelTransInv;
             bool success = poly._t.GetMat3().TransposeInverse(modelTransInv);
             assert(success);
-            _pInternal->_colorShader.SetMat3(_pInternal->_colorShaderUniforms[ColorShaderUniforms::uModelInvTrans], modelTransInv);
+            _pInternal->_modelShader.SetMat3(_pInternal->_modelShaderUniforms[ModelShaderUniforms::uModelInvTrans], modelTransInv);
             
         }
     }
-
-    // Textured models
-#if 0    
-    {        
-        Shader& shader = _pInternal->_textureShader;
-        shader.Use();
-        // TODO update to use new multi lights!!!
-        assert(false);
-        shader.SetVec3("uLightPos", light._p);
-        shader.SetVec3("uAmbient", light._ambient);
-        shader.SetVec3("uDiffuse", light._diffuse);
-        for (int modelIx = 0; modelIx < _pInternal->_texturedModelInstances.GetCount(); ++modelIx) {
-            TexturedModelInstance const* m = _pInternal->_texturedModelInstances.GetItemAtIndex(modelIx);
-            Mat4 const& transMat = m->_transform;
-            shader.SetMat4("uMvpTrans", viewProjTransform * transMat);
-            shader.SetMat4("uModelTrans", transMat);
-            Mat3 modelTransInv;
-            bool success = transMat.GetMat3().TransposeInverse(modelTransInv);
-            assert(success);
-            shader.SetMat3("uModelInvTrans", modelTransInv);
-            glActiveTexture(GL_TEXTURE0);
-            glBindTexture(GL_TEXTURE_2D, m->_textureId);
-            glBindVertexArray(m->_mesh->_vao);
-            glDrawElements(GL_TRIANGLES, /*count=*/m->_mesh->_numIndices, GL_UNSIGNED_INT, /*start_offset=*/0);
-        }
-    }
-#endif
 
     // WIREFRAME
     {
@@ -1265,17 +1064,17 @@ void Scene::Draw(int windowWidth, int windowHeight, float timeInSecs) {
     // Sort models farthest to nearest
     // TODO: should we cache the dists so that we don't recompute them every time we
     // examine an element?
-    std::sort(_pInternal->_transparentModels.begin(), _pInternal->_transparentModels.end(), [&](ColorModelInstance const* lhs, ColorModelInstance const* rhs) {
+    std::sort(transparentModels.begin(), transparentModels.end(), [&](ModelInstance const* lhs, ModelInstance const* rhs) {
         float lhsD2 = (lhs->_transform.GetPos() - _camera._transform.GetPos()).Length2();
         float rhsD2 = (rhs->_transform.GetPos() - _camera._transform.GetPos()).Length2();
         return lhsD2 > rhsD2;
-    });
+        });
     {
-        Shader& shader = _pInternal->_colorShader;
+        Shader& shader = _pInternal->_modelShader;
         shader.Use();
-        SetLightUniformsColorShader(*_pInternal);
-        for (ColorModelInstance const* m : _pInternal->_transparentModels) {
-            DrawColorModelInstance(*_pInternal, viewProjTransform, *m, false, false, m->_explodeDist);
+        SetLightUniformsModelShader(*_pInternal);
+        for (ModelInstance const* m : transparentModels) {
+            DrawModelInstance(*_pInternal, viewProjTransform, *m, m->_explodeDist);
         }
     }
 
@@ -1335,26 +1134,14 @@ void Scene::Draw(int windowWidth, int windowHeight, float timeInSecs) {
         _pInternal->_glyphsToDraw.clear();
     }
 
-    // Top layer color models.
-    // TODO prolly refactor both color draws into a common function
-    // Color models
+    // top-layer models
     {
-        Shader& shader = _pInternal->_colorShader;
+        Shader& shader = _pInternal->_modelShader;
         shader.Use();
-        SetLightUniformsColorShader(*_pInternal);
-        for (ColorModelInstance const* m : _pInternal->_topLayerColorModels) {
-            DrawColorModelInstance(*_pInternal, viewProjTransform, *m, false, false, m->_explodeDist);
-        }
-
-        _pInternal->_topLayerColorModels.clear();
-    }
-
-    // top-layer textured models
-    {
-        for (TexturedModelInstance const* m : _pInternal->_topLayerTexturedModels) {
-            DrawTexturedModelInstance(*_pInternal, viewProjTransform, *m, /*deferTopLayer=*/false);
-        }
-        _pInternal->_topLayerTexturedModels.clear();
+        SetLightUniformsModelShader(*_pInternal);
+        for (ModelInstance const* m : _pInternal->_topLayerModels) {
+            DrawModelInstance(*_pInternal, viewProjTransform, *m, m->_explodeDist);
+        }        
     }
 
     // Lines
@@ -1395,6 +1182,8 @@ void Scene::Draw(int windowWidth, int windowHeight, float timeInSecs) {
         
         _pInternal->_linesToDraw.clear();
     }
+
+    _pInternal->_modelsToDraw.clear();
 }
 
 } // namespace renderer

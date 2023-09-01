@@ -333,11 +333,9 @@ void Editor::Update(float dt, SynthGuiState& synthGuiState) {
         if (selectedEntity == nullptr) {            
             continue;
         }
-        renderer::ColorModelInstance& axesModel = _g->_scene->DrawMesh();
-        axesModel._mesh = _axesMesh;
+        renderer::ModelInstance& axesModel = _g->_scene->DrawMesh(_axesMesh, selectedEntity->_transform.Mat4NoScale(), Vec4());
         axesModel._topLayer = true;
         axesModel._useMeshColor = true;
-        axesModel._transform = selectedEntity->_transform.Mat4NoScale();
 
         Transform bbTrans = selectedEntity->_transform;
         bbTrans.SetScale(bbTrans.Scale() + Vec3(0.1f, 0.1f, 0.1f));

@@ -196,7 +196,7 @@ void IntVariableEntity::DrawCounter(GameManager& g) {
         color._w = alpha;
 
         t.SetTranslation(pos);
-        renderer::ColorModelInstance& instance = g._scene->DrawCube(t.Mat4Scale(), color);
+        renderer::ModelInstance& instance = g._scene->DrawCube(t.Mat4Scale(), color);
         instance._topLayer = true;
         pos += (_cellWidth + _cellSpacing) * direction;
     }

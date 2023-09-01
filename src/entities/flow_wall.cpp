@@ -70,7 +70,7 @@ void FlowWallEntity::Update(GameManager& g, float dt) {
         _currentColor = kFadeColor + fadeFactor * (colorAfterHp - kFadeColor);
     }
 
-    if (renderer::ColorModelInstance* model = g._scene->DrawMesh(_meshId)) {
+    if (renderer::ModelInstance* model = g._scene->DrawMesh(_meshId)) {
         model->_transform = _transform.Mat4Scale();
         model->_color = _currentColor;
     } else if (_model != nullptr) {
