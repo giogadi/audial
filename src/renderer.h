@@ -15,29 +15,16 @@ class BoundMeshPNU;
 
 namespace renderer {
 
-struct DirLight {
-    void Set(Vec3 const& dir, Vec3 const& ambient, Vec3 const& diffuse) {
-        _dir = dir;
-        _ambient = ambient;
-        _diffuse = diffuse;
-    }
-    
-    Vec3 _dir;
-    Vec3 _ambient;
-    Vec3 _diffuse;
-};
-
-class PointLight {
-public:
+struct Light {
     void Set(Vec3 const& p, Vec3 const& ambient, Vec3 const& diffuse) {
         _p = p;
         _ambient = ambient;
         _diffuse = diffuse;
     }
-
-    Vec3 _p;
+    bool _isDirectional = false;
+    Vec3 _p;  // if directional, this is the direction; otherwise, it's the position.
     Vec3 _ambient;
-    Vec3 _diffuse;    
+    Vec3 _diffuse;
 };
 
 class Camera {
@@ -98,10 +85,10 @@ public:
 
     bool Init(GameManager& g);
 
-    // DON'T STORE THE POINTERS!!!
-    std::pair<VersionId, PointLight*> AddPointLight();
-    PointLight* GetPointLight(VersionId id);
-    bool RemovePointLight(VersionId id);
+    // Must be called every frame to continue lighting.
+    // Don't store the pointer!
+    Light* DrawLight();
+    
 
     // Returns ID to be used for drawing and deleting
     struct MeshId {

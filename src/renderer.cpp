@@ -24,9 +24,15 @@
 
 namespace {
 constexpr int kMaxLineCount = 10;
+int constexpr kMaxNumPointLights = 2;
 }
 
 namespace renderer {
+
+struct Lights {
+    Light _dirLight;
+    std::array<Light, kMaxNumPointLights> _pointLights;
+};
 
 Mat4 Camera::GetViewMatrix() const {
     Vec3 p = _transform.GetPos();
@@ -219,8 +225,7 @@ struct Polygon2dInstance {
 
 class SceneInternal {
 public:
-    SceneInternal() :
-        _pointLights(100) {
+    SceneInternal() {
         
         _topLayerModels.reserve(100);
         _transparentModels.reserve(100);
@@ -230,8 +235,7 @@ public:
 
     bool LoadPsButtons();
 
-    DirLight _dirLight;
-    TVersionIdList<PointLight> _pointLights;
+    std::vector<Light> _lightsToDraw;
     std::vector<TextWorldInstance> _textToDraw;
     std::vector<GlyphInstance> _glyphsToDraw;
     std::vector<BoundingBoxInstance> _boundingBoxesToDraw;
@@ -427,8 +431,6 @@ bool SceneInternal::LoadPsButtons() {
 
 bool SceneInternal::Init(GameManager& g) {
     _g = &g;
-
-    _dirLight.Set(/*dir=*/Vec3(0.f, -1.f, 0.f), /*amb=*/Vec3(), /*dif=*/Vec3());    
 
     // More OpenGL stuff
     glEnable(GL_CULL_FACE);
@@ -731,18 +733,6 @@ renderer::ModelInstance* Scene::DrawPsButton(InputManager::ControllerButton butt
     return instance;
 }
 
-std::pair<VersionId, PointLight*> Scene::AddPointLight() {
-    PointLight* light = nullptr;
-    VersionId newId = _pInternal->_pointLights.AddItem(&light);
-    return std::make_pair(newId, light);
-}
-PointLight* Scene::GetPointLight(VersionId id) {
-    return _pInternal->_pointLights.GetItem(id);
-}
-bool Scene::RemovePointLight(VersionId id) {
-    return _pInternal->_pointLights.RemoveItem(id);
-}
-
 Scene::MeshId Scene::LoadPolygon2d(std::vector<Vec3> const& points) {
     if (points.size() < 3) {
         return MeshId();
@@ -819,50 +809,40 @@ Mat4 Scene::GetViewProjTransform() const {
 }
 
 namespace {
-void SetLightUniformsModelShader(SceneInternal& sceneInternal) {
+void SetLightUniformsModelShader(Lights const& lights, SceneInternal& sceneInternal) {
     int const* uniforms = sceneInternal._modelShaderUniforms;
     Shader& shader = sceneInternal._modelShader;
-    shader.SetVec3(uniforms[ModelShaderUniforms::uDirLightDir], sceneInternal._dirLight._dir);
-    shader.SetVec3(uniforms[ModelShaderUniforms::uDirLightAmb], sceneInternal._dirLight._ambient);
-    shader.SetVec3(uniforms[ModelShaderUniforms::uDirLightDif], sceneInternal._dirLight._diffuse);
-    int constexpr kMaxNumPointLights = 2;
-    if (sceneInternal._pointLights.GetCount() > kMaxNumPointLights) {
-        printf("RENDERER ERROR: TOO MANY POINT LIGHTS (%d)\n", sceneInternal._pointLights.GetCount());
-}
+    shader.SetVec3(uniforms[ModelShaderUniforms::uDirLightDir], lights._dirLight._p);
+    shader.SetVec3(uniforms[ModelShaderUniforms::uDirLightAmb], lights._dirLight._ambient);
+    shader.SetVec3(uniforms[ModelShaderUniforms::uDirLightDif], lights._dirLight._diffuse);
     for (int i = 0; i < kMaxNumPointLights; ++i) {
         int posLoc = uniforms[ModelShaderUniforms::uPointLight0Pos + 3 * i];
         int ambLoc = uniforms[ModelShaderUniforms::uPointLight0Amb + 3 * i];
         int difLoc = uniforms[ModelShaderUniforms::uPointLight0Dif + 3 * i];
-        if (i >= sceneInternal._pointLights.GetCount()) {
-            shader.SetVec3(posLoc, Vec3(0.f, 0.f, 0.f));
-            shader.SetVec3(ambLoc, Vec3(0.f, 0.f, 0.f));
-            shader.SetVec3(difLoc, Vec3(0.f, 0.f, 0.f));
-        } else {
-            PointLight const& pl = *sceneInternal._pointLights.GetItemAtIndex(i);
-            shader.SetVec3(posLoc, pl._p);
-            shader.SetVec3(ambLoc, pl._ambient);
-            shader.SetVec3(difLoc, pl._diffuse);
-        }
+        Light const& pl = lights._pointLights[i];
+        shader.SetVec3(posLoc, pl._p);
+        shader.SetVec3(ambLoc, pl._ambient);
+        shader.SetVec3(difLoc, pl._diffuse);
     }
 }
 
 #if DRAW_WATER
-void SetLightUniformsWaterShader(SceneInternal& sceneInternal) {
+void SetLightUniformsWaterShader(Lights const& lights, SceneInternal& sceneInternal) {
     int const* uniforms = sceneInternal._waterShaderUniforms;
     Shader& shader = sceneInternal._waterShader;
-    shader.SetVec3(uniforms[WaterShaderUniforms::uDirLightDir], sceneInternal._dirLight._dir);
-    shader.SetVec3(uniforms[WaterShaderUniforms::uDirLightAmb], sceneInternal._dirLight._ambient);
-    shader.SetVec3(uniforms[WaterShaderUniforms::uDirLightDif], sceneInternal._dirLight._diffuse);
+    shader.SetVec3(uniforms[WaterShaderUniforms::uDirLightDir], lights._dirLight._p);
+    shader.SetVec3(uniforms[WaterShaderUniforms::uDirLightAmb], lights._dirLight._ambient);
+    shader.SetVec3(uniforms[WaterShaderUniforms::uDirLightDif], lights._dirLight._diffuse);
 }
 #endif
 
 #if DRAW_TERRAIN
-void SetLightUniformsTerrainShader(SceneInternal& sceneInternal) {
+void SetLightUniformsTerrainShader(Lights const& lights, SceneInternal& sceneInternal) {
     int const* uniforms = sceneInternal._terrainShaderUniforms;
     Shader& shader = sceneInternal._terrainShader;
-    shader.SetVec3(uniforms[TerrainShaderUniforms::uDirLightDir], sceneInternal._dirLight._dir);
-    // shader.SetVec3(uniforms[TerrainShaderUniforms::uDirLightAmb], sceneInternal._dirLight._ambient);
-    shader.SetVec3(uniforms[TerrainShaderUniforms::uDirLightDif], sceneInternal._dirLight._diffuse);
+    shader.SetVec3(uniforms[TerrainShaderUniforms::uDirLightDir], lights._dirLight._p);
+    // shader.SetVec3(uniforms[TerrainShaderUniforms::uDirLightAmb], lights._dirLight._ambient);
+    shader.SetVec3(uniforms[TerrainShaderUniforms::uDirLightDif], lights._dirLight._diffuse);
 }
 #endif
 
@@ -915,18 +895,22 @@ void DrawModelInstance(SceneInternal& internal, Mat4 const& viewProjTransform, M
 
 
 void Scene::Draw(int windowWidth, int windowHeight, float timeInSecs) {
-    // TODO migrate the other shaders to multiple lights UGH.
-    // assert(_pInternal->_pointLights.GetCount() == 1);
-    // PointLight const& light = *(_pInternal->_pointLights.GetItemAtIndex(0));
 
-    // TODO LOAD THE DIR LIGHT IN FROM DATA
+    Lights lights;
+    int numDir = 0;
+    int numPoint = 0;
     {
-        DirLight& dirLight = _pInternal->_dirLight;
-        // make it point 45-degrees up from straight-down, up toward -z
-        Vec3 dir(0.5f, -1.f, -1.f);
-        dir.Normalize();
-        dirLight.Set(dir, Vec3(0.4f, 0.4f, 0.4f), Vec3(0.7f, 0.7f, 0.7f));
-    }
+        for (Light const& light : _pInternal->_lightsToDraw) {
+            if (light._isDirectional) {                
+                lights._dirLight = light;
+                ++numDir;
+            } else if (numPoint < lights._pointLights.size()) {
+                lights._pointLights[numPoint] = light;
+                ++numPoint;
+            }
+        }
+        _pInternal->_lightsToDraw.clear();
+    }   
 
     Mat4 viewProjTransform = GetViewProjTransform();
 
@@ -947,7 +931,7 @@ void Scene::Draw(int windowWidth, int windowHeight, float timeInSecs) {
 
         Shader& shader = _pInternal->_waterShader;
         shader.Use();
-        SetLightUniformsWaterShader(*_pInternal);        
+        SetLightUniformsWaterShader(lights, *_pInternal);
         shader.SetMat4("uMvpTrans", viewProjTransform * transMat);
         shader.SetMat4("uModelTrans", transMat);
         shader.SetMat3("uModelInvTrans", modelTransInv);
@@ -976,7 +960,7 @@ void Scene::Draw(int windowWidth, int windowHeight, float timeInSecs) {
 
         Shader& shader = _pInternal->_terrainShader;
         shader.Use();
-        SetLightUniformsTerrainShader(*_pInternal);  
+        SetLightUniformsTerrainShader(lights, *_pInternal);  
         shader.SetMat4("uMvpTrans", viewProjTransform * transMat);
         shader.SetMat4("uModelTrans", transMat);
         shader.SetMat3("uModelInvTrans", modelTransInv);
@@ -1002,7 +986,7 @@ void Scene::Draw(int windowWidth, int windowHeight, float timeInSecs) {
     {
         Shader& shader = _pInternal->_modelShader;
         shader.Use();
-        SetLightUniformsModelShader(*_pInternal);
+        SetLightUniformsModelShader(lights, *_pInternal);
         for (ModelInstance const& m : _pInternal->_modelsToDraw) {
             if (m._topLayer) {
                 _pInternal->_topLayerModels.push_back(&m);
@@ -1021,7 +1005,7 @@ void Scene::Draw(int windowWidth, int windowHeight, float timeInSecs) {
     {
         Shader& shader = _pInternal->_modelShader;
         shader.Use();
-        SetLightUniformsModelShader(*_pInternal);
+        SetLightUniformsModelShader(lights, *_pInternal);
         for (Polygon2dInstance const& poly : _pInternal->_polygonsToDraw) {
             _pInternal->_modelShader.SetMat4(_pInternal->_modelShaderUniforms[ModelShaderUniforms::uMvpTrans], viewProjTransform * poly._t);
             _pInternal->_modelShader.SetMat4(_pInternal->_modelShaderUniforms[ModelShaderUniforms::uModelTrans], poly._t);
@@ -1072,7 +1056,7 @@ void Scene::Draw(int windowWidth, int windowHeight, float timeInSecs) {
     {
         Shader& shader = _pInternal->_modelShader;
         shader.Use();
-        SetLightUniformsModelShader(*_pInternal);
+        SetLightUniformsModelShader(lights, *_pInternal);
         for (ModelInstance const* m : transparentModels) {
             DrawModelInstance(*_pInternal, viewProjTransform, *m, m->_explodeDist);
         }
@@ -1138,7 +1122,7 @@ void Scene::Draw(int windowWidth, int windowHeight, float timeInSecs) {
     {
         Shader& shader = _pInternal->_modelShader;
         shader.Use();
-        SetLightUniformsModelShader(*_pInternal);
+        SetLightUniformsModelShader(lights, *_pInternal);
         for (ModelInstance const* m : _pInternal->_topLayerModels) {
             DrawModelInstance(*_pInternal, viewProjTransform, *m, m->_explodeDist);
         }        
@@ -1184,6 +1168,10 @@ void Scene::Draw(int windowWidth, int windowHeight, float timeInSecs) {
     }
 
     _pInternal->_modelsToDraw.clear();
+}
+
+renderer::Light* Scene::DrawLight() {
+    return &_pInternal->_lightsToDraw.emplace_back();
 }
 
 } // namespace renderer

@@ -13,23 +13,33 @@ void LightEntity::DebugPrint() {
 void LightEntity::SaveDerived(serial::Ptree pt) const {
     serial::SaveInNewChildOf(pt, "ambient", _ambient);
     serial::SaveInNewChildOf(pt, "diffuse", _diffuse);
+    pt.PutBool("is_directional", _isDirectional);
 }
 void LightEntity::LoadDerived(serial::Ptree pt) {
     _ambient.Load(pt.GetChild("ambient"));
     _diffuse.Load(pt.GetChild("diffuse"));
+    _isDirectional = false;
+    pt.TryGetBool("is_directional", &_isDirectional);
 }
 ne::Entity::ImGuiResult LightEntity::ImGuiDerived(GameManager& g) {
+    ImGui::Checkbox("Directional", &_isDirectional);
     imgui_util::ColorEdit3("Diffuse", &_diffuse);
     imgui_util::ColorEdit3("Ambient", &_ambient);
     return ImGuiResult::Done;
 }
 void LightEntity::InitDerived(GameManager& g) {
-    _lightId = g._scene->AddPointLight().first;
+    
 }
 void LightEntity::UpdateDerived(GameManager& g, float dt) {
-    renderer::PointLight* light = g._scene->GetPointLight(_lightId);
-    light->Set(_transform.GetPos(), _ambient, _diffuse);
+    renderer::Light* l = g._scene->DrawLight();
+    l->_isDirectional = _isDirectional;
+    if (_isDirectional) {
+        l->_p = _transform.GetZAxis();
+    } else {
+        l->_p = _transform.Pos();
+    }
+    l->_ambient = _ambient;
+    l->_diffuse = _diffuse;   
 }
 void LightEntity::Destroy(GameManager& g) {
-    g._scene->RemovePointLight(_lightId);
 }

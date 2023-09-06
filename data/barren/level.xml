@@ -3,20 +3,20 @@
     <bpm>100</bpm>
     <new_entities>
         <Light>
-            <name>light</name>
+            <name>dir_light</name>
             <entity_active>true</entity_active>
             <pickable>false</pickable>
             <transform>
                 <pos>
                     <x>0</x>
-                    <y>10</y>
+                    <y>0</y>
                     <z>0</z>
                 </pos>
                 <quat>
-                    <x>0</x>
+                    <x>0.707106769</x>
                     <y>0</y>
                     <z>0</z>
-                    <w>1</w>
+                    <w>0.707106769</w>
                 </quat>
                 <scale>
                     <x>1</x>
@@ -43,15 +43,16 @@
                 <follow_entity_name/>
             </waypoint_follower>
             <ambient>
-                <x>0</x>
-                <y>0</y>
-                <z>0</z>
+                <x>0.426470578</x>
+                <y>0.426470578</y>
+                <z>0.426470578</z>
             </ambient>
             <diffuse>
-                <x>0</x>
-                <y>0</y>
-                <z>0</z>
+                <x>0.549019575</x>
+                <y>0.540945768</y>
+                <z>0.540945768</z>
             </diffuse>
+            <is_directional>true</is_directional>
         </Light>
         <Camera>
             <name>camera</name>
@@ -93,7 +94,7 @@
                 <waypoints/>
                 <follow_entity_name/>
             </waypoint_follower>
-            <ortho>false</ortho>
+            <ortho>true</ortho>
             <follow_entity_name/>
             <tracking_factor>0.0500000007</tracking_factor>
             <fovy_deg>60</fovy_deg>

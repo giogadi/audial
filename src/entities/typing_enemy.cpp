@@ -337,7 +337,7 @@ void TypingEnemyEntity::UpdateDerived(GameManager& g, float dt) {
                 factor = 1.f - static_cast<float>(cooldownTimeElapsed / _flowCooldownBeatTime);
                 factor = math_util::SmoothStep(factor);
             }
-            float constexpr kMaxExplode = 1.f;
+            float constexpr kMaxExplode = 0.5;
             model._explodeDist = factor * kMaxExplode;
         }
     }

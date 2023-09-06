@@ -8,6 +8,9 @@ struct LightEntity : public ne::Entity {
     Vec3 _ambient;
     Vec3 _diffuse;
 
+    // If true, light shines along +z. if false, it's a point light.
+    bool _isDirectional = false;
+
     VersionId _lightId;
     virtual void InitDerived(GameManager& g) override;
     virtual void UpdateDerived(GameManager& g, float dt) override;
