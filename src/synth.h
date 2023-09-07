@@ -94,6 +94,10 @@ struct StateData {
 void InitStateData(StateData& state, int channel, int const samplesPerFrame, int const numBufferChannels);
 void DestroyStateData(StateData& state);
 
+void NoteOn(StateData& state, int midiNote, float velocity, int noteOnId = 0);
+void NoteOff(StateData& state, int midiNote, int noteOffId = 0);
+void AllNotesOff(StateData& state);
+
 void Process(
     StateData* state, boost::circular_buffer<audio::PendingEvent> const& pendingEvents,
     float* outputBuffer, int numChannels, int framesPerBuffer,

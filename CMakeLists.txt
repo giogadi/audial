@@ -193,3 +193,16 @@ target_include_directories(matrix_test PUBLIC src/)
 
 add_executable(bser_test EXCLUDE_FROM_ALL
     src/bser_test.c)
+
+add_executable(synth_render EXCLUDE_FROM_ALL
+    src/synth_render.cpp
+    src/imgui/imgui.cpp src/imgui/imgui_draw.cpp
+    src/imgui/imgui_tables.cpp src/imgui/imgui_widgets.cpp
+    src/synth.cpp
+    src/synth_patch.cpp
+    src/synth_patch_bank.cpp
+    src/serial.cpp
+    src/enums/audio_EventType.cpp
+    src/enums/audio_SynthParamType.cpp
+    src/enums/synth_Waveform.cpp)
+target_include_directories(synth_render PUBLIC src/ ./)

@@ -229,6 +229,10 @@ void ProcessVoice(Voice& voice, int const sampleRate, float pitchLFOValue,
     // this line.
     modulatedCutoff = math_util::Clamp(modulatedCutoff, 0.f, 22050.f);
 
+    if (voice.ampEnvState.phase != ADSRPhase::Closed) {
+        modulatedCutoff *= 1.f;
+    }
+
     // Amplitude envelope
     // TODO: move this up top so we can early-exit if the envelope is closed and save some computation.
     // TODO: consider only doing the envelope computation once per buffer frame.
@@ -428,6 +432,52 @@ void ConvertADSREnvSpec(ADSREnvSpec const& spec, ADSREnvSpecInTicks& specInTicks
     specInTicks.minValue = spec.minValue;
 }
 
+void NoteOn(StateData& state, int midiNote, float velocity, int noteOnId) {
+    Voice* v = FindVoiceForNoteOn(state, midiNote);
+    if (v != nullptr) {
+        v->oscillators[0].f = synth::MidiToFreq(midiNote);
+        v->currentMidiNote = midiNote;
+        v->velocity = velocity;
+        v->noteOnId = noteOnId;
+        /*if (v->ampEnvState.phase != synth::ADSRPhase::Closed) {
+            v->ampEnvState.ticksSincePhaseStart = (unsigned long)(v->ampEnvState.currentValue * patch.Get(SynthParamType::AmpEnvAttack) * sampleRate);
+        }
+        else*/ {
+            v->ampEnvState.ticksSincePhaseStart = 0;
+        }
+        v->ampEnvState.phase = synth::ADSRPhase::Attack;
+        v->cutoffEnvState.phase = synth::ADSRPhase::Attack;
+        v->cutoffEnvState.ticksSincePhaseStart = v->ampEnvState.ticksSincePhaseStart;
+        v->pitchEnvState.phase = synth::ADSRPhase::Attack;
+        v->pitchEnvState.ticksSincePhaseStart = v->ampEnvState.ticksSincePhaseStart;
+    } else {
+        std::cout << "couldn't find a note for noteon" << std::endl;
+    }
+}
+void NoteOff(StateData& state, int midiNote, int noteOnId) {
+    Voice* v = FindVoiceForNoteOff(state, midiNote, noteOnId);
+    if (v != nullptr) {
+        v->ampEnvState.phase = synth::ADSRPhase::Release;
+        v->ampEnvState.ticksSincePhaseStart = 0;
+        v->cutoffEnvState.phase = synth::ADSRPhase::Release;
+        v->cutoffEnvState.ticksSincePhaseStart = 0;
+        v->pitchEnvState.phase = synth::ADSRPhase::Release;
+        v->pitchEnvState.ticksSincePhaseStart = 0;
+    }
+}
+void AllNotesOff(StateData& state) {
+    for (Voice& v : state.voices) {
+        if (v.currentMidiNote != -1) {
+            v.ampEnvState.phase = synth::ADSRPhase::Release;
+            v.ampEnvState.ticksSincePhaseStart = 0;
+            v.cutoffEnvState.phase = synth::ADSRPhase::Release;
+            v.cutoffEnvState.ticksSincePhaseStart = 0;
+            v.pitchEnvState.phase = synth::ADSRPhase::Release;
+            v.pitchEnvState.ticksSincePhaseStart = 0;
+        }
+    }
+}
+
 void Process(StateData* state, boost::circular_buffer<audio::PendingEvent> const& pendingEvents,
     float* outputBuffer, int const numChannels, int const samplesPerFrame,
     int const sampleRate, int64_t currentBufferCounter) {
@@ -455,52 +505,15 @@ void Process(StateData* state, boost::circular_buffer<audio::PendingEvent> const
         ++currentEventIx;
         switch (e.type) {
             case audio::EventType::NoteOn: {
-                Voice* v = FindVoiceForNoteOn(*state, e.midiNote);
-                if (v != nullptr) {
-                    v->oscillators[0].f = synth::MidiToFreq(e.midiNote);
-                    v->currentMidiNote = e.midiNote;
-                    v->velocity = e.velocity;
-                    v->noteOnId = e.noteOnId;
-                    /*if (v->ampEnvState.phase != synth::ADSRPhase::Closed) {
-                        v->ampEnvState.ticksSincePhaseStart = (unsigned long)(v->ampEnvState.currentValue * patch.Get(SynthParamType::AmpEnvAttack) * sampleRate);
-                    }
-                    else*/ {
-                        v->ampEnvState.ticksSincePhaseStart = 0;
-                    }
-                    v->ampEnvState.phase = synth::ADSRPhase::Attack;
-                    v->cutoffEnvState.phase = synth::ADSRPhase::Attack;
-                    v->cutoffEnvState.ticksSincePhaseStart = v->ampEnvState.ticksSincePhaseStart;
-                    v->pitchEnvState.phase = synth::ADSRPhase::Attack;
-                    v->pitchEnvState.ticksSincePhaseStart = v->ampEnvState.ticksSincePhaseStart;
-                }
-                else {
-                    std::cout << "couldn't find a note for noteon" << std::endl;
-                }
+                NoteOn(*state, e.midiNote, e.velocity, e.noteOnId);
                 break;
             }
             case audio::EventType::NoteOff: {
-                Voice* v = FindVoiceForNoteOff(*state, e.midiNote, e.noteOnId);
-                if (v != nullptr) {
-                    v->ampEnvState.phase = synth::ADSRPhase::Release;
-                    v->ampEnvState.ticksSincePhaseStart = 0;
-                    v->cutoffEnvState.phase = synth::ADSRPhase::Release;
-                    v->cutoffEnvState.ticksSincePhaseStart = 0;
-                    v->pitchEnvState.phase = synth::ADSRPhase::Release;
-                    v->pitchEnvState.ticksSincePhaseStart = 0;
-                }
+                NoteOff(*state, e.midiNote, e.noteOnId);
                 break;
             }
             case audio::EventType::AllNotesOff: {
-                for (Voice& v : state->voices) {
-                    if (v.currentMidiNote != -1) {
-                        v.ampEnvState.phase = synth::ADSRPhase::Release;
-                        v.ampEnvState.ticksSincePhaseStart = 0;
-                        v.cutoffEnvState.phase = synth::ADSRPhase::Release;
-                        v.cutoffEnvState.ticksSincePhaseStart = 0;
-                        v.pitchEnvState.phase = synth::ADSRPhase::Release;
-                        v.pitchEnvState.ticksSincePhaseStart = 0;
-                    }
-                }
+                AllNotesOff(*state);
                 break;
             }
             case audio::EventType::SynthParam: {
