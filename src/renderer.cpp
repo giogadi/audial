@@ -862,11 +862,11 @@ void DrawModelInstance(SceneInternal& internal, Mat4 const& viewProjTransform, M
     // TEMPORARY! What we really want is to use the submeshes always unless the outer Model
     // has defined some overrides.
     assert(m._mesh != nullptr);
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D, m._textureId);
+    glBindVertexArray(m._mesh->_vao);
     if (m._mesh->_subMeshes.size() == 0) {
         internal._modelShader.SetVec4(internal._modelShaderUniforms[ModelShaderUniforms::uColor], m._color);
-        glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_2D, m._textureId);
-        glBindVertexArray(m._mesh->_vao);
         GLenum mode = GL_TRIANGLES;
         if (m._mesh->_useTriangleFan) {
             mode = GL_TRIANGLE_FAN;
