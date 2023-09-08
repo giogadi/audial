@@ -38,7 +38,7 @@ void InitStateData(
 
     for (int i = 0; i < state.synths.size(); ++i) {
         synth::StateData& s = state.synths[i];
-        synth::InitStateData(s, /*channel=*/i, FRAMES_PER_BUFFER, NUM_OUTPUT_CHANNELS);
+        synth::InitStateData(s, /*channel=*/i, sampleRate, FRAMES_PER_BUFFER, NUM_OUTPUT_CHANNELS);
     }
 
     state.soundBank = &soundBank;

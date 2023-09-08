@@ -48,10 +48,11 @@ float GenerateSaw(float const phase, float const phaseChange) {
 }
 }  // namespace
 
-void InitStateData(StateData& state, int channel, int const samplesPerFrame, int const numBufferChannels) {
+void InitStateData(StateData& state, int channel, int const sampleRate, int const samplesPerFrame, int const numBufferChannels) {
     state = StateData();
     state.channel = channel;
     state.voiceScratchBuffer = new float[samplesPerFrame * numBufferChannels];
+    state.sampleRate = sampleRate;
 }
 
 void DestroyStateData(StateData& state) {
@@ -59,9 +60,67 @@ void DestroyStateData(StateData& state) {
     state.voiceScratchBuffer = nullptr;
 }
 
+struct ADSREnvSpecInTicksNew {
+    float attackRate = 0.f;  // gain / sample
+    float decayRate = 0.f;
+    float releaseRate = 0.f;
+    float sustainLevel = 0.f;
+};
+
+float constexpr kMinValue = 0.001f;
+
+void AdsrTick(ADSREnvSpecInTicksNew const& spec, ADSRStateNew* state) {
+    ADSRPhase prevPhase = state->phase;
+    switch (state->phase) {
+        case ADSRPhase::Attack: {            
+            state->value += spec.attackRate;
+            if (state->value > 1.f) {
+                state->value = 1.f;
+                state->phase = ADSRPhase::Decay;
+            }
+            break;
+        }
+        case ADSRPhase::Decay: {
+            state->value -= spec.decayRate;
+            if (state->value < spec.sustainLevel) {
+                state->value = spec.sustainLevel;
+                state->phase = ADSRPhase::Sustain;
+            }
+            break;
+        }
+        case ADSRPhase::Sustain: {
+            break;
+        }
+        case ADSRPhase::Release: {
+            state->value *= state->multiplier;
+            if (state->value < kMinValue) {
+                state->value = 0.f;
+                state->phase = ADSRPhase::Closed;
+            }
+            
+            // state->value -= spec.releaseRate;
+            // if (state->value < 0.f) {
+            //     state->value = 0.f;
+            //     state->phase = ADSRPhase::Closed;
+            // }
+            break;
+        }
+        case ADSRPhase::Closed: {
+            break;
+        }
+    }
+    if (prevPhase != state->phase) {
+        state->ticksSincePhaseStart = 0;
+    } else {
+        ++state->ticksSincePhaseStart;
+    }
+}
+
 float calcMultiplier(float startLevel, float endLevel, int64_t numSamples) {
     assert(numSamples > 0l);
     assert(startLevel > 0.f);
+    assert(startLevel <= 1.f);
+    assert(endLevel <= 1.f);
     double recip = 1.0 / numSamples;
     double endOverStart = endLevel / startLevel;
     double val = pow(endOverStart, recip);
@@ -162,6 +221,92 @@ void adsrEnvelope(ADSREnvSpecInTicks const& spec, int const samplesPerFrame, ADS
     state.currentValue = std::min(1.f, state.currentValue);
 }
 
+// void adsrEnvelope(ADSREnvSpecInTicks const& spec, int const samplesPerFrame, ADSREnvState& state) {
+//     switch (state.phase) {
+//         case ADSRPhase::Closed:
+//             state.currentValue = 0.f;
+//             break;
+//         case ADSRPhase::Attack:
+//             // EXPONENTIAL ATTACK
+//             // if (state.ticksSincePhaseStart == 0) {
+//             //     if (spec.attackTimeInTicks == 0) {
+//             //         state.currentValue = 1.f;
+//             //         state.multiplier = 1.f;
+//             //     } else {
+//             //         state.currentValue = spec.minValue;
+//             //         state.multiplier = calcMultiplier(spec.minValue, 1.f, spec.attackTimeInTicks);
+//             //     }
+//             // }
+//             // state.currentValue *= state.multiplier;
+//             // ++state.ticksSincePhaseStart;
+//             // if (state.ticksSincePhaseStart >= spec.attackTimeInTicks) {
+//             //     state.phase = ADSRPhase::Decay;
+//             //     state.ticksSincePhaseStart = 0;
+//             // }
+//             // LINEAR ATTACK code
+//             if (state.ticksSincePhaseStart == 0) {
+//                 state.currentValue = 0.f;
+//                 if (spec.attackTime == 0) {
+//                     state.currentValue = 1.f;
+//                 }
+//             } else {
+//                 state.currentValue = (float)state.ticksSincePhaseStart / (float)spec.attackTime;
+//             }
+//             state.ticksSincePhaseStart += samplesPerFrame;
+//             if (state.ticksSincePhaseStart >= spec.attackTime) {
+//                 state.phase = ADSRPhase::Decay;
+//                 state.ticksSincePhaseStart = 0;
+//             }
+//             break;
+//         case ADSRPhase::Decay:
+//             if (state.ticksSincePhaseStart == 0) {
+//                 if (spec.decayTime == 0) {
+//                     state.currentValue = spec.sustainLevel;
+//                     state.multiplier = 1.f;
+//                 } else {
+//                     state.currentValue = 1.f;
+//                     state.multiplier = calcMultiplier(1.f, spec.sustainLevel, (float)spec.decayTime / (float)samplesPerFrame);
+//                 }
+//             }
+//             state.currentValue *= state.multiplier;
+//             state.ticksSincePhaseStart += samplesPerFrame;
+//             if (state.ticksSincePhaseStart >= spec.decayTime) {
+//                 state.phase = ADSRPhase::Sustain;
+//                 state.ticksSincePhaseStart = 0;
+//             }
+//             break;
+//         case ADSRPhase::Sustain:
+//             // Do nothing. waiting for external signal to enter Release.
+//             break;
+//         case ADSRPhase::Release: {
+//             if (state.ticksSincePhaseStart == 0) {
+//                 if (spec.releaseTime == 0) {
+//                     state.multiplier = 0.f;
+//                 } else {
+//                     // Keep current level. might have hit release before hitting
+//                     // sustain level
+//                     //
+//                     // TODO: calculate release from sustain to 0, or from
+//                     // current level to 0? I like sustain better.
+//                     state.multiplier = calcMultiplier(spec.sustainLevel, spec.minValue, (float)spec.releaseTime / (float) samplesPerFrame);
+//                 }
+//             }
+//             state.currentValue *= state.multiplier;
+//             state.ticksSincePhaseStart += samplesPerFrame;
+//             if (state.ticksSincePhaseStart >= spec.releaseTime) {
+//                 state.phase = ADSRPhase::Closed;
+//                 state.ticksSincePhaseStart = -1;
+//                 state.currentValue = 0.f;
+//             }
+//             break;
+//         }
+//     }
+//     // This is important right now because when we modify attack times, it
+//     // can cause the precomputed multiplier to be applied for longer than
+//     // expected and thus result in gains > 1.
+//     state.currentValue = std::min(1.f, state.currentValue);
+// }
+
 // https://www.cytomic.com/files/dsp/SvfLinearTrapOptimised2.pdf
 //
 // For now assumes peak is 0,4
@@ -185,7 +330,7 @@ float UpdateFilter(float const a1, float const a2, float const a3, float const k
 }
 
 void ProcessVoice(Voice& voice, int const sampleRate, float pitchLFOValue,
-    float modulatedCutoff, ADSREnvSpecInTicks const& ampEnvSpec,
+    float modulatedCutoff, ADSREnvSpecInTicksNew const& ampEnvSpec,
     ADSREnvSpecInTicks const& cutoffEnvSpec,
     ADSREnvSpecInTicks const& pitchEnvSpec,
     Patch const& patch, float* outputBuffer, int const numChannels, int const samplesPerFrame) {
@@ -229,17 +374,13 @@ void ProcessVoice(Voice& voice, int const sampleRate, float pitchLFOValue,
     // this line.
     modulatedCutoff = math_util::Clamp(modulatedCutoff, 0.f, 22050.f);
 
-    if (voice.ampEnvState.phase != ADSRPhase::Closed) {
-        modulatedCutoff *= 1.f;
-    }
-
     // Amplitude envelope
     // TODO: move this up top so we can early-exit if the envelope is closed and save some computation.
     // TODO: consider only doing the envelope computation once per buffer frame.
-    adsrEnvelope(ampEnvSpec, samplesPerFrame, voice.ampEnvState);
-    if (voice.ampEnvState.phase == ADSRPhase::Closed) {
-        voice.currentMidiNote = -1;
-    }
+    // adsrEnvelope(ampEnvSpec, samplesPerFrame, voice.ampEnvState);
+    // if (voice.ampEnvState.phase == ADSRPhase::Closed) {
+    //     voice.currentMidiNote = -1;
+    // }
 
     // final gain. Map from linear [0,1] to exponential from -80db to 0db.
     float const startAmp = 0.01f;
@@ -324,7 +465,12 @@ void ProcessVoice(Voice& voice, int const sampleRate, float pitchLFOValue,
             float v = outputBuffer[outputIx];      
             v = UpdateFilter(lpfA1, lpfA2, lpfA3, lpfK, v, FilterType::LowPass, voice.lpfState);
             v = UpdateFilter(hpfA1, hpfA2, hpfA3, hpfK, v, FilterType::HighPass, voice.hpfState);
-            v *= voice.ampEnvState.currentValue;
+            // adsrEnvelope(ampEnvSpec, samplesPerFrame, voice.ampEnvState);
+            AdsrTick(ampEnvSpec, &voice.ampEnvState);
+            if (voice.ampEnvState.phase == ADSRPhase::Closed) {
+                voice.currentMidiNote = -1;
+            }
+            v *= voice.ampEnvState.value;
             v *= voice.velocity;
             v *= gain;
 
@@ -457,8 +603,19 @@ void NoteOn(StateData& state, int midiNote, float velocity, int noteOnId) {
 void NoteOff(StateData& state, int midiNote, int noteOnId) {
     Voice* v = FindVoiceForNoteOff(state, midiNote, noteOnId);
     if (v != nullptr) {
-        v->ampEnvState.phase = synth::ADSRPhase::Release;
-        v->ampEnvState.ticksSincePhaseStart = 0;
+        {
+            v->ampEnvState.phase = synth::ADSRPhase::Release;
+            v->ampEnvState.ticksSincePhaseStart = 0;
+            float releaseTime = state.patch.GetAmpEnvSpec().releaseTime;
+            if (releaseTime <= 0.f) {
+                v->ampEnvState.multiplier = 1.f;
+                v->ampEnvState.value = 0.f;
+            } else {
+                int64_t numSamples = releaseTime * state.sampleRate;
+                v->ampEnvState.multiplier = calcMultiplier(1.f, kMinValue, numSamples);
+            }
+        }
+        
         v->cutoffEnvState.phase = synth::ADSRPhase::Release;
         v->cutoffEnvState.ticksSincePhaseStart = 0;
         v->pitchEnvState.phase = synth::ADSRPhase::Release;
@@ -592,10 +749,32 @@ void Process(StateData* state, boost::circular_buffer<audio::PendingEvent> const
     // float const modulatedCutoff = patch.cutoffFreq * powf(2.0f, cutoffLFOValue);
     float const modulatedCutoff = math_util::Clamp(patch.Get(SynthParamType::Cutoff) + 20000 * cutoffLFOValue, 0.f, (float)sampleRate);
 
-    ADSREnvSpecInTicks ampEnvSpec, cutoffEnvSpec, pitchEnvSpec;
-    ConvertADSREnvSpec(patch.GetAmpEnvSpec(), ampEnvSpec, sampleRate);
+    ADSREnvSpecInTicks /*ampEnvSpec,*/ cutoffEnvSpec, pitchEnvSpec;
+    //ConvertADSREnvSpec(patch.GetAmpEnvSpec(), ampEnvSpec, sampleRate);
     ConvertADSREnvSpec(patch.GetCutoffEnvSpec(), cutoffEnvSpec, sampleRate);
-    ConvertADSREnvSpec(patch.GetPitchEnvSpec(), pitchEnvSpec, sampleRate);    
+    ConvertADSREnvSpec(patch.GetPitchEnvSpec(), pitchEnvSpec, sampleRate);
+
+    ADSREnvSpecInTicksNew ampEnvSpec;
+    {
+        ADSREnvSpec const& s = patch.GetAmpEnvSpec();
+        if (s.attackTime == 0.f) {
+            ampEnvSpec.attackRate = 1.f;
+        } else {
+            ampEnvSpec.attackRate = 1.f / (s.attackTime * sampleRate);
+        }
+        if (s.decayTime == 0.f) {
+            ampEnvSpec.decayRate = 1.f;
+        } else {
+            ampEnvSpec.decayRate = 1.f / (s.decayTime * sampleRate);
+        }        
+        if (s.releaseTime == 0.f) {
+            ampEnvSpec.releaseRate = 1.f;
+        } else {
+            ampEnvSpec.releaseRate = 1.f / (s.releaseTime * sampleRate);
+        }
+
+        ampEnvSpec.sustainLevel = s.sustainLevel;
+    }
 
     for (Voice& voice : state->voices) {
         // zero out the voice scratch buffer.

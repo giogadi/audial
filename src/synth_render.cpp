@@ -116,6 +116,9 @@ int main(int argc, char** argv) {
                 buffer[i] = 0.f;
             }
             synth::Process(&synthState, events, buffer, kNumChannels, kBufferSize, kSampleRate, bufferIx);
+            for (int i = 0; i < kBufferSize; ++i) {
+                printf("%f\n", buffer[kNumChannels * i]);
+            }
             int32_t buffer32[kBufferSize * kNumChannels];
             drwav_f32_to_s32(buffer32, buffer, kBufferSize * kNumChannels);
             drwav_write_pcm_frames(&wav, kBufferSize, buffer32);

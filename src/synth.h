@@ -35,6 +35,13 @@ struct ADSREnvState {
     int64_t ticksSincePhaseStart = -1;
 };
 
+struct ADSRStateNew {
+    ADSRPhase phase = ADSRPhase::Closed;
+    float value = 0.f;
+    float multiplier = 0.f;
+    int64_t ticksSincePhaseStart = 0;
+};
+
 int constexpr kNumOscillators = 2;
 
 struct Oscillator {
@@ -51,7 +58,8 @@ struct Voice {
     // We assign the voice's "center" frequency using oscillators[0]. I know, this is gross.
     std::array<Oscillator, kNumOscillators> oscillators;
 
-    ADSREnvState ampEnvState;
+    // ADSREnvState ampEnvState;
+    ADSRStateNew ampEnvState;
     ADSREnvState cutoffEnvState;
     ADSREnvState pitchEnvState;
     int currentMidiNote = -1;
@@ -89,9 +97,11 @@ struct StateData {
     float cutoffLFOPhase = 0.0f;
 
     float* voiceScratchBuffer = nullptr;
+
+    int sampleRate;
 };
 
-void InitStateData(StateData& state, int channel, int const samplesPerFrame, int const numBufferChannels);
+void InitStateData(StateData& state, int channel, int const sampleRate, int const samplesPerFrame, int const numBufferChannels);
 void DestroyStateData(StateData& state);
 
 void NoteOn(StateData& state, int midiNote, float velocity, int noteOnId = 0);
