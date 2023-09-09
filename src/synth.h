@@ -39,6 +39,7 @@ struct ADSRStateNew {
     ADSRPhase phase = ADSRPhase::Closed;
     float value = 0.f;
     float multiplier = 0.f;
+    float atkAuxVal = 0.f;
     float targetLevel = 0.f;
     int64_t ticksSincePhaseStart = 0;
 };
