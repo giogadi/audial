@@ -61,31 +61,54 @@ void DestroyStateData(StateData& state) {
 }
 
 struct ADSREnvSpecInTicksNew {
-    float attackRate = 0.f;  // gain / sample
-    float decayRate = 0.f;
-    float releaseRate = 0.f;
+    // float attackRate = 0.f;  // gain / sample
+    // float decayRate = 0.f;
+    // float releaseRate = 0.f;
+    int64_t decayTime = 0;
     float sustainLevel = 0.f;
 };
 
 float constexpr kMinValue = 0.001f;
 
+float calcMultiplier(float startLevel, float endLevel, int64_t numSamples) {
+    assert(numSamples > 0l);
+    assert(startLevel > 0.f);
+    assert(startLevel <= 1.f);
+    assert(endLevel <= 1.f);
+    double recip = 1.0 / numSamples;
+    double endOverStart = endLevel / startLevel;
+    double val = pow(endOverStart, recip);
+    return (float) val;
+}
+
 void AdsrTick(ADSREnvSpecInTicksNew const& spec, ADSRStateNew* state) {
     ADSRPhase prevPhase = state->phase;
     switch (state->phase) {
-        case ADSRPhase::Attack: {            
-            state->value += spec.attackRate;
-            if (state->value > 1.f) {
+        case ADSRPhase::Attack: {
+            state->value *= state->multiplier;
+            if (state->value >= 1.f) {
                 state->value = 1.f;
                 state->phase = ADSRPhase::Decay;
+                state->targetLevel = spec.sustainLevel;
+                if (spec.decayTime <= 0) {
+                    state->value = spec.sustainLevel;
+                    state->multiplier = 1.f;
+                } else {
+                    state->multiplier = calcMultiplier(1.f, kMinValue, spec.decayTime);
+                }
             }
+            
             break;
         }
         case ADSRPhase::Decay: {
-            state->value -= spec.decayRate;
-            if (state->value < spec.sustainLevel) {
-                state->value = spec.sustainLevel;
+            state->value *= state->multiplier;
+            // I use the stored targetLevel instead of the spec's sustain level
+            // so that we don't get weird behavior when changing sustain level
+            // while a note is being held.
+            if (state->value <= state->targetLevel) {
+                state->value = state->targetLevel;
                 state->phase = ADSRPhase::Sustain;
-            }
+            }           
             break;
         }
         case ADSRPhase::Sustain: {
@@ -93,16 +116,10 @@ void AdsrTick(ADSREnvSpecInTicksNew const& spec, ADSRStateNew* state) {
         }
         case ADSRPhase::Release: {
             state->value *= state->multiplier;
-            if (state->value < kMinValue) {
+            if (state->value <= kMinValue) {
                 state->value = 0.f;
                 state->phase = ADSRPhase::Closed;
-            }
-            
-            // state->value -= spec.releaseRate;
-            // if (state->value < 0.f) {
-            //     state->value = 0.f;
-            //     state->phase = ADSRPhase::Closed;
-            // }
+            }           
             break;
         }
         case ADSRPhase::Closed: {
@@ -114,17 +131,6 @@ void AdsrTick(ADSREnvSpecInTicksNew const& spec, ADSRStateNew* state) {
     } else {
         ++state->ticksSincePhaseStart;
     }
-}
-
-float calcMultiplier(float startLevel, float endLevel, int64_t numSamples) {
-    assert(numSamples > 0l);
-    assert(startLevel > 0.f);
-    assert(startLevel <= 1.f);
-    assert(endLevel <= 1.f);
-    double recip = 1.0 / numSamples;
-    double endOverStart = endLevel / startLevel;
-    double val = pow(endOverStart, recip);
-    return (float) val;
 }
 
 struct ADSREnvSpecInTicks {
@@ -465,7 +471,6 @@ void ProcessVoice(Voice& voice, int const sampleRate, float pitchLFOValue,
             float v = outputBuffer[outputIx];      
             v = UpdateFilter(lpfA1, lpfA2, lpfA3, lpfK, v, FilterType::LowPass, voice.lpfState);
             v = UpdateFilter(hpfA1, hpfA2, hpfA3, hpfK, v, FilterType::HighPass, voice.hpfState);
-            // adsrEnvelope(ampEnvSpec, samplesPerFrame, voice.ampEnvState);
             AdsrTick(ampEnvSpec, &voice.ampEnvState);
             if (voice.ampEnvState.phase == ADSRPhase::Closed) {
                 voice.currentMidiNote = -1;
@@ -592,6 +597,18 @@ void NoteOn(StateData& state, int midiNote, float velocity, int noteOnId) {
             v->ampEnvState.ticksSincePhaseStart = 0;
         }
         v->ampEnvState.phase = synth::ADSRPhase::Attack;
+        float attackTime = state.patch.GetAmpEnvSpec().attackTime;
+        if (attackTime <= 0.f) {
+            v->ampEnvState.multiplier = 1.f;
+            v->ampEnvState.value = 1.f;
+        } else {
+            int64_t numSamples = attackTime * state.sampleRate;
+            v->ampEnvState.multiplier = calcMultiplier(kMinValue, 1.f, numSamples);
+        }
+        if (v->ampEnvState.value < kMinValue) {
+            v->ampEnvState.value = kMinValue;
+        }
+        
         v->cutoffEnvState.phase = synth::ADSRPhase::Attack;
         v->cutoffEnvState.ticksSincePhaseStart = v->ampEnvState.ticksSincePhaseStart;
         v->pitchEnvState.phase = synth::ADSRPhase::Attack;
@@ -600,6 +617,7 @@ void NoteOn(StateData& state, int midiNote, float velocity, int noteOnId) {
         std::cout << "couldn't find a note for noteon" << std::endl;
     }
 }
+
 void NoteOff(StateData& state, int midiNote, int noteOnId) {
     Voice* v = FindVoiceForNoteOff(state, midiNote, noteOnId);
     if (v != nullptr) {
@@ -632,6 +650,35 @@ void AllNotesOff(StateData& state) {
             v.pitchEnvState.phase = synth::ADSRPhase::Release;
             v.pitchEnvState.ticksSincePhaseStart = 0;
         }
+    }
+}
+
+void OnParamChange(StateData& state, audio::SynthParamType paramType, float newValue, Voice* v) {
+    switch (paramType) {
+        // So we didn't need this at all???? COOL
+        // case audio::SynthParamType::AmpEnvAttack: {
+        //     float attackTime = newValue;
+        //     if (attackTime <= 0.f) {
+        //         v->ampEnvState.multiplier = 1.f;
+        //         v->ampEnvState.value = 1.f;
+        //     } else {
+        //         int64_t numSamples = attackTime * state.sampleRate;
+        //         v->ampEnvState.multiplier = calcMultiplier(kMinValue, 1.f, numSamples);
+        //     }
+        //     break;
+        // }
+        // case audio::SynthParamType::AmpEnvRelease: {
+        //     float releaseTime = newValue;
+        //     if (releaseTime <= 0.f) {
+        //         v->ampEnvState.multiplier = 1.f;
+        //         v->ampEnvState.value = 0.f;
+        //     } else {
+        //         int64_t numSamples = releaseTime * state.sampleRate;
+        //         v->ampEnvState.multiplier = calcMultiplier(1.f, kMinValue, numSamples);
+        //     }
+        //     break;
+        // }
+        default: break;
     }
 }
 
@@ -704,6 +751,10 @@ void Process(StateData* state, boost::circular_buffer<audio::PendingEvent> const
                     break;
                 }
                 patch.Get(e.param) = e.newParamValue;
+
+                for (Voice& v : state->voices) {
+                    OnParamChange(*state, e.param, e.newParamValue, &v);
+                }
                 break;
             }
             default: {
@@ -729,6 +780,10 @@ void Process(StateData* state, boost::circular_buffer<audio::PendingEvent> const
         float& currentValue = patch.Get(a._synthParamType);
         float newValue = a._startValue + factor * (a._desiredValue - a._startValue);
         currentValue = newValue;
+
+        for (Voice& v : state->voices) {
+            OnParamChange(*state, a._synthParamType, newValue, &v);
+        }
     }
 
     // Get pitch LFO value
@@ -757,21 +812,22 @@ void Process(StateData* state, boost::circular_buffer<audio::PendingEvent> const
     ADSREnvSpecInTicksNew ampEnvSpec;
     {
         ADSREnvSpec const& s = patch.GetAmpEnvSpec();
-        if (s.attackTime == 0.f) {
-            ampEnvSpec.attackRate = 1.f;
-        } else {
-            ampEnvSpec.attackRate = 1.f / (s.attackTime * sampleRate);
-        }
-        if (s.decayTime == 0.f) {
-            ampEnvSpec.decayRate = 1.f;
-        } else {
-            ampEnvSpec.decayRate = 1.f / (s.decayTime * sampleRate);
-        }        
-        if (s.releaseTime == 0.f) {
-            ampEnvSpec.releaseRate = 1.f;
-        } else {
-            ampEnvSpec.releaseRate = 1.f / (s.releaseTime * sampleRate);
-        }
+        // if (s.attackTime == 0.f) {
+        //     ampEnvSpec.attackRate = 1.f;
+        // } else {
+        //     ampEnvSpec.attackRate = 1.f / (s.attackTime * sampleRate);
+        // }
+        // if (s.decayTime == 0.f) {
+        //     ampEnvSpec.decayRate = 1.f;
+        // } else {
+        //     ampEnvSpec.decayRate = 1.f / (s.decayTime * sampleRate);
+        // }        
+        // if (s.releaseTime == 0.f) {
+        //     ampEnvSpec.releaseRate = 1.f;
+        // } else {
+        //     ampEnvSpec.releaseRate = 1.f / (s.releaseTime * sampleRate);
+        // }
+        ampEnvSpec.decayTime = s.decayTime * sampleRate;
 
         ampEnvSpec.sustainLevel = s.sustainLevel;
     }

@@ -154,10 +154,10 @@
             <PitchLFOFreq>4.23699999</PitchLFOFreq>
             <CutoffLFOGain>0</CutoffLFOGain>
             <CutoffLFOFreq>0.423999995</CutoffLFOFreq>
-            <AmpEnvAttack>0.51700002</AmpEnvAttack>
+            <AmpEnvAttack>0.165000007</AmpEnvAttack>
             <AmpEnvDecay>0.136000007</AmpEnvDecay>
             <AmpEnvSustain>1</AmpEnvSustain>
-            <AmpEnvRelease>0.532000005</AmpEnvRelease>
+            <AmpEnvRelease>1.52499998</AmpEnvRelease>
             <CutoffEnvGain>0</CutoffEnvGain>
             <CutoffEnvAttack>0.0719999969</CutoffEnvAttack>
             <CutoffEnvDecay>0.411000013</CutoffEnvDecay>
@@ -222,7 +222,7 @@
             <PitchLFOFreq>1</PitchLFOFreq>
             <CutoffLFOGain>0</CutoffLFOGain>
             <CutoffLFOFreq>8.05099964</CutoffLFOFreq>
-            <AmpEnvAttack>0</AmpEnvAttack>
+            <AmpEnvAttack>0.0209999997</AmpEnvAttack>
             <AmpEnvDecay>0.114</AmpEnvDecay>
             <AmpEnvSustain>0.677999973</AmpEnvSustain>
             <AmpEnvRelease>0.402999997</AmpEnvRelease>

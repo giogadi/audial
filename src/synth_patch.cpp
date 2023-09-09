@@ -238,6 +238,10 @@ Patch::ImGuiResult Patch::ImGui() {
                 changed = ImGui::SliderFloat(paramName, &_data[i], 0.f, 100.f);
                 break;
             }
+            case audio::SynthParamType::AmpEnvDecay: {
+                changed = ImGui::SliderFloat(paramName, &_data[i], 0.f, 5.f);
+                break;
+            }
             case audio::SynthParamType::AmpEnvRelease: {
                 changed = ImGui::SliderFloat(paramName, &_data[i], 0.f, 5.f);
                 break;
@@ -252,7 +256,6 @@ Patch::ImGuiResult Patch::ImGui() {
             case audio::SynthParamType::PitchLFOGain:
             case audio::SynthParamType::CutoffLFOGain:
             case audio::SynthParamType::AmpEnvAttack:
-            case audio::SynthParamType::AmpEnvDecay:
             case audio::SynthParamType::AmpEnvSustain:
             case audio::SynthParamType::CutoffEnvAttack:
             case audio::SynthParamType::CutoffEnvDecay:
