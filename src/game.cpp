@@ -346,12 +346,22 @@ int main(int argc, char** argv) {
 
     soundBank.LoadSounds(audioContext._sampleRate);
 
-    // TODO UGH GROSS. not thread-safe, etc etc
+    // Initialize synth to starting patches.
     {
         int const numSynths = audioContext._state.synths.size();
+        audio::Event e;
+        e.type = audio::EventType::SynthParam;
+        e.paramChangeTimeSecs = 0.0;
         for (int ii = 0; ii < numSynths && ii < synthPatchBank._patches.size(); ++ii) {
-            synth::StateData& synth = audioContext._state.synths[ii];
-            synth.patch = synthPatchBank._patches[ii];
+            synth::Patch const& patch = synthPatchBank._patches[ii];
+            e.channel = ii;
+            for (int paramIx = 0, n = (int)audio::SynthParamType::Count; paramIx < n; ++paramIx) {
+                audio::SynthParamType paramType = (audio::SynthParamType) paramIx;
+                float v = patch.Get(paramType);
+                e.param = paramType;
+                e.newParamValue = v;
+                audioContext.AddEvent(e);
+            }
         }
     }
 

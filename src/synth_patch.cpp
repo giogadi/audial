@@ -211,11 +211,11 @@ Patch::ImGuiResult Patch::ImGui() {
                 break;
             }
             case audio::SynthParamType::Cutoff: {
-                changed = ImGui::SliderFloat(paramName, &_data[i], 0.f, 44100.f);
+                changed = ImGui::SliderFloat(paramName, &_data[i], 0.f, 24000.f);
                 break;
             }
             case audio::SynthParamType::Peak: {
-                changed = ImGui::SliderFloat(paramName, &_data[i], 0.f, 3.99f);
+                changed = ImGui::SliderFloat(paramName, &_data[i], 0.f, 10.f);
                 break;
             }
             case audio::SynthParamType::HpfCutoff: {
@@ -238,6 +238,10 @@ Patch::ImGuiResult Patch::ImGui() {
                 changed = ImGui::SliderFloat(paramName, &_data[i], 0.f, 100.f);
                 break;
             }
+            case audio::SynthParamType::AmpEnvAttack: {
+                changed = ImGui::SliderFloat(paramName, &_data[i], 0.f, 3.f);
+                break;
+            }
             case audio::SynthParamType::AmpEnvDecay: {
                 changed = ImGui::SliderFloat(paramName, &_data[i], 0.f, 5.f);
                 break;
@@ -250,15 +254,20 @@ Patch::ImGuiResult Patch::ImGui() {
                 changed = ImGui::SliderFloat(paramName, &_data[i], 0.f, 44100.f);
                 break;
             }
+            case audio::SynthParamType::CutoffEnvAttack: {
+                changed = ImGui::SliderFloat(paramName, &_data[i], 0.f, 3.f);
+                break;
+            }
+            case audio::SynthParamType::CutoffEnvDecay: {
+                changed = ImGui::SliderFloat(paramName, &_data[i], 0.f, 5.f);
+                break;
+            }
             case audio::SynthParamType::Gain: // fallthrough
             case audio::SynthParamType::Detune:
             case audio::SynthParamType::OscFader:
             case audio::SynthParamType::PitchLFOGain:
             case audio::SynthParamType::CutoffLFOGain:
-            case audio::SynthParamType::AmpEnvAttack:
             case audio::SynthParamType::AmpEnvSustain:
-            case audio::SynthParamType::CutoffEnvAttack:
-            case audio::SynthParamType::CutoffEnvDecay:
             case audio::SynthParamType::CutoffEnvSustain:
             case audio::SynthParamType::CutoffEnvRelease:
             case audio::SynthParamType::PitchEnvGain:

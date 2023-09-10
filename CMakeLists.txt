@@ -38,6 +38,8 @@ add_executable(game
 
     src/game_manager.h
 
+    src/filter.cpp
+
     src/serial.cpp src/serial.h
     src/serial_vector_util.h
     src/rng.cpp src/rng.h

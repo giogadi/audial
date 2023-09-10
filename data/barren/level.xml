@@ -16619,7 +16619,7 @@
                         <channel>0</channel>
                         <delay_secs>0</delay_secs>
                         <sound_ix>22</sound_ix>
-                        <velocity>0.300000012</velocity>
+                        <velocity>0.550000012</velocity>
                         <loop>false</loop>
                         <beat_time>0</beat_time>
                     </beat_time_event>
@@ -16693,7 +16693,7 @@
                         <channel>0</channel>
                         <delay_secs>0</delay_secs>
                         <sound_ix>23</sound_ix>
-                        <velocity>0.25</velocity>
+                        <velocity>0.5</velocity>
                         <loop>false</loop>
                         <beat_time>0</beat_time>
                     </beat_time_event>
@@ -16767,7 +16767,7 @@
                         <channel>0</channel>
                         <delay_secs>0</delay_secs>
                         <sound_ix>24</sound_ix>
-                        <velocity>0.300000012</velocity>
+                        <velocity>0.5</velocity>
                         <loop>false</loop>
                         <beat_time>0</beat_time>
                     </beat_time_event>
@@ -16841,7 +16841,7 @@
                         <channel>0</channel>
                         <delay_secs>0</delay_secs>
                         <sound_ix>25</sound_ix>
-                        <velocity>0.400000006</velocity>
+                        <velocity>0.600000024</velocity>
                         <loop>false</loop>
                         <beat_time>0</beat_time>
                     </beat_time_event>

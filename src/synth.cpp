@@ -53,6 +53,11 @@ void InitStateData(StateData& state, int channel, int const sampleRate, int cons
     state.channel = channel;
     state.voiceScratchBuffer = new float[samplesPerFrame * numBufferChannels];
     state.sampleRate = sampleRate;
+    state.framesPerBuffer = samplesPerFrame;
+
+    for (Voice& v : state.voices) {
+        v.moogLpfState.reset(sampleRate);
+    }
 }
 
 void DestroyStateData(StateData& state) {
@@ -84,7 +89,7 @@ void AdsrTick(ADSREnvSpecInTicksNew const& spec, ADSRStateNew* state) {
         case ADSRPhase::Attack: {
             state->atkAuxVal *= state->multiplier;
             state->value = 1 - state->atkAuxVal;
-            if (state->value >= 0.99f) {
+            if (state->value >= 0.95f) {
                 state->value = 1.f;
                 state->phase = ADSRPhase::Decay;
                 state->targetLevel = spec.sustainLevel;
@@ -249,7 +254,7 @@ float UpdateFilter(float const a1, float const a2, float const a3, float const k
 
 void ProcessVoice(Voice& voice, int const sampleRate, float pitchLFOValue,
     float modulatedCutoff, ADSREnvSpecInTicksNew const& ampEnvSpec,
-    ADSREnvSpecInTicks const& cutoffEnvSpec,
+    ADSREnvSpecInTicksNew const& cutoffEnvSpec,
     ADSREnvSpecInTicks const& pitchEnvSpec,
     Patch const& patch, float* outputBuffer, int const numChannels, int const samplesPerFrame) {
     float const dt = 1.f / sampleRate;
@@ -286,11 +291,23 @@ void ProcessVoice(Voice& voice, int const sampleRate, float pitchLFOValue,
     // TODO: clamp F?
 
     // Cutoff envelope
-    adsrEnvelope(cutoffEnvSpec, samplesPerFrame, voice.cutoffEnvState);
-    modulatedCutoff += patch.Get(SynthParamType::CutoffEnvGain) * voice.cutoffEnvState.currentValue;
-    // The fancy filter below blows up for some reason if we don't include
-    // this line.
-    modulatedCutoff = math_util::Clamp(modulatedCutoff, 0.f, 22050.f);
+    // adsrEnvelope(cutoffEnvSpec, samplesPerFrame, voice.cutoffEnvState);
+    // modulatedCutoff += patch.Get(SynthParamType::CutoffEnvGain) * voice.cutoffEnvState.currentValue;
+    // // The fancy filter below blows up for some reason if we don't include
+    // // this line.
+    // modulatedCutoff = math_util::Clamp(modulatedCutoff, 0.f, 22050.f);
+
+    // voice.moogLpfState.setFilterParams(
+    //     modulatedCutoff, patch.Get(SynthParamType::Peak));
+
+    AdsrTick(cutoffEnvSpec, &voice.cutoffEnvState);
+    if (voice.cutoffEnvState.value > 0.f) {
+        voice.cutoffEnvState.value *= 1.f;
+    }
+    modulatedCutoff += patch.Get(SynthParamType::CutoffEnvGain) * voice.cutoffEnvState.value;
+    modulatedCutoff = math_util::Clamp(modulatedCutoff, 0.f, 20000.f);
+    voice.moogLpfState.setFilterParams(
+        modulatedCutoff, patch.Get(SynthParamType::Peak));
 
     // final gain. Map from linear [0,1] to exponential from -80db to 0db.
     float const startAmp = 0.01f;
@@ -301,16 +318,16 @@ void ProcessVoice(Voice& voice, int const sampleRate, float pitchLFOValue,
         gain = startAmp * powf(factor, patch.Get(SynthParamType::Gain));
     }    
 
-    float lpfA1, lpfA2, lpfA3, lpfK;  // filter shit
-    {
-        float res = patch.Get(SynthParamType::Peak) / 4.f;
-        float g = tan(kPi * modulatedCutoff * dt);
-        lpfK = 2 - 2 * res;
-        assert((1 + g * (g + lpfK)) != 0.f);
-        lpfA1 = 1 / (1 + g * (g + lpfK));
-        lpfA2 = g * lpfA1;
-        lpfA3 = g * lpfA2;
-    }
+    // float lpfA1, lpfA2, lpfA3, lpfK;  // filter shit
+    // {
+    //     float res = patch.Get(SynthParamType::Peak) / 4.f;
+    //     float g = tan(kPi * modulatedCutoff * dt);
+    //     lpfK = 2 - 2 * res;
+    //     assert((1 + g * (g + lpfK)) != 0.f);
+    //     lpfA1 = 1 / (1 + g * (g + lpfK));
+    //     lpfA2 = g * lpfA1;
+    //     lpfA3 = g * lpfA2;
+    // }
 
     float hpfA1, hpfA2, hpfA3, hpfK;  // filter shit
     {
@@ -322,6 +339,8 @@ void ProcessVoice(Voice& voice, int const sampleRate, float pitchLFOValue,
         hpfA2 = g * hpfA1;
         hpfA3 = g * hpfA2;
     }
+
+    
 
     for (int oscIx = 0; oscIx < voice.oscillators.size(); ++oscIx) {
         Oscillator& osc = voice.oscillators[oscIx];
@@ -372,8 +391,21 @@ void ProcessVoice(Voice& voice, int const sampleRate, float pitchLFOValue,
     {
         int outputIx = 0;
         for (int sampleIx = 0; sampleIx < samplesPerFrame; ++sampleIx) {
-            float v = outputBuffer[outputIx];      
-            v = UpdateFilter(lpfA1, lpfA2, lpfA3, lpfK, v, FilterType::LowPass, voice.lpfState);
+            float v = outputBuffer[outputIx];
+
+            // Cutoff envelope            
+            // AdsrTick(cutoffEnvSpec, &voice.cutoffEnvState);
+        //     if (voice.cutoffEnvState.value > 0.f) {
+        //         voice.cutoffEnvState.value *= 1.f;
+        //     }
+        //     modulatedCutoff += patch.Get(SynthParamType::CutoffEnvGain) * voice.cutoffEnvState.value;
+        //     modulatedCutoff = math_util::Clamp(modulatedCutoff, 0.f, 20000.f);
+        //     voice.moogLpfState.setFilterParams(
+        // modulatedCutoff, patch.Get(SynthParamType::Peak));
+            
+            // v = UpdateFilter(lpfA1, lpfA2, lpfA3, lpfK, v, FilterType::LowPass, voice.lpfState);
+            filter::FilterOutput* fo = voice.moogLpfState.process(v);
+            v = fo->filter[filter::ANM_LPF4];
             v = UpdateFilter(hpfA1, hpfA2, hpfA3, hpfK, v, FilterType::HighPass, voice.hpfState);
             AdsrTick(ampEnvSpec, &voice.ampEnvState);
             if (voice.ampEnvState.phase == ADSRPhase::Closed) {
@@ -456,6 +488,22 @@ void ConvertADSREnvSpec(ADSREnvSpec const& spec, ADSREnvSpecInTicks& specInTicks
     specInTicks.minValue = spec.minValue;
 }
 
+void ADSRNoteOn(ADSRStateNew& adsrState, int64_t numAttackSamples) {
+    adsrState.ticksSincePhaseStart = 0;
+    adsrState.phase = synth::ADSRPhase::Attack;
+    if (numAttackSamples <= 0.f) {
+        adsrState.multiplier = 1.f;
+        adsrState.value = 1.f;
+        adsrState.atkAuxVal = 0.f;
+    } else {
+        adsrState.multiplier = calcMultiplier(1.f, kMinValue, numAttackSamples);
+        adsrState.atkAuxVal = 1.f - adsrState.value;
+    }
+    if (adsrState.value < kMinValue) {
+        adsrState.value = kMinValue;
+    }
+}
+
 void NoteOn(StateData& state, int midiNote, float velocity, int noteOnId) {
     Voice* v = FindVoiceForNoteOn(state, midiNote);
     if (v != nullptr) {
@@ -463,24 +511,12 @@ void NoteOn(StateData& state, int midiNote, float velocity, int noteOnId) {
         v->currentMidiNote = midiNote;
         v->velocity = velocity;
         v->noteOnId = noteOnId;
-        v->ampEnvState.ticksSincePhaseStart = 0;
-        v->ampEnvState.phase = synth::ADSRPhase::Attack;
-        float attackTime = state.patch.GetAmpEnvSpec().attackTime;
-        if (attackTime <= 0.f) {
-            v->ampEnvState.multiplier = 1.f;
-            v->ampEnvState.value = 1.f;
-            v->ampEnvState.atkAuxVal = 0.f;
-        } else {
-            int64_t numSamples = attackTime * state.sampleRate;
-            v->ampEnvState.multiplier = calcMultiplier(1.f, kMinValue, numSamples);
-            v->ampEnvState.atkAuxVal = 1.f;
-        }
-        if (v->ampEnvState.value < kMinValue) {
-            v->ampEnvState.value = kMinValue;
-        }
         
-        v->cutoffEnvState.phase = synth::ADSRPhase::Attack;
-        v->cutoffEnvState.ticksSincePhaseStart = v->ampEnvState.ticksSincePhaseStart;
+        ADSRNoteOn(v->ampEnvState, state.patch.GetAmpEnvSpec().attackTime * state.sampleRate);
+        ADSRNoteOn(v->cutoffEnvState, state.patch.GetCutoffEnvSpec().attackTime * static_cast<float>(state.sampleRate) / static_cast<float>(state.framesPerBuffer));
+        
+        // v->cutoffEnvState.phase = synth::ADSRPhase::Attack;
+        // v->cutoffEnvState.ticksSincePhaseStart = v->ampEnvState.ticksSincePhaseStart;
         v->pitchEnvState.phase = synth::ADSRPhase::Attack;
         v->pitchEnvState.ticksSincePhaseStart = v->ampEnvState.ticksSincePhaseStart;
     } else {
@@ -488,24 +524,37 @@ void NoteOn(StateData& state, int midiNote, float velocity, int noteOnId) {
     }
 }
 
+void ADSRNoteOff(ADSRStateNew& adsrState, int64_t numReleaseSamples) {
+    adsrState.phase = synth::ADSRPhase::Release;
+    adsrState.ticksSincePhaseStart = 0;
+    if (numReleaseSamples <= 0.f) {
+        adsrState.multiplier = 1.f;
+        adsrState.value = 0.f;
+    } else {
+        adsrState.multiplier = calcMultiplier(1.f, kMinValue, numReleaseSamples);
+    }
+}
+
 void NoteOff(StateData& state, int midiNote, int noteOnId) {
     Voice* v = FindVoiceForNoteOff(state, midiNote, noteOnId);
     if (v != nullptr) {
-        {
-            v->ampEnvState.phase = synth::ADSRPhase::Release;
-            v->ampEnvState.ticksSincePhaseStart = 0;
-            float releaseTime = state.patch.GetAmpEnvSpec().releaseTime;
-            if (releaseTime <= 0.f) {
-                v->ampEnvState.multiplier = 1.f;
-                v->ampEnvState.value = 0.f;
-            } else {
-                int64_t numSamples = releaseTime * state.sampleRate;
-                v->ampEnvState.multiplier = calcMultiplier(1.f, kMinValue, numSamples);
-            }
-        }
+        // {
+        //     v->ampEnvState.phase = synth::ADSRPhase::Release;
+        //     v->ampEnvState.ticksSincePhaseStart = 0;
+        //     float releaseTime = state.patch.GetAmpEnvSpec().releaseTime;
+        //     if (releaseTime <= 0.f) {
+        //         v->ampEnvState.multiplier = 1.f;
+        //         v->ampEnvState.value = 0.f;
+        //     } else {
+        //         int64_t numSamples = releaseTime * state.sampleRate;
+        //         v->ampEnvState.multiplier = calcMultiplier(1.f, kMinValue, numSamples);
+        //     }
+        // }
+        ADSRNoteOff(v->ampEnvState, state.patch.GetAmpEnvSpec().releaseTime * state.sampleRate);
+        ADSRNoteOff(v->cutoffEnvState, state.patch.GetCutoffEnvSpec().releaseTime * static_cast<float>(state.sampleRate) / static_cast<float>(state.framesPerBuffer));
         
-        v->cutoffEnvState.phase = synth::ADSRPhase::Release;
-        v->cutoffEnvState.ticksSincePhaseStart = 0;
+        // v->cutoffEnvState.phase = synth::ADSRPhase::Release;
+        // v->cutoffEnvState.ticksSincePhaseStart = 0;
         v->pitchEnvState.phase = synth::ADSRPhase::Release;
         v->pitchEnvState.ticksSincePhaseStart = 0;
     }
@@ -545,6 +594,23 @@ void OnParamChange(StateData& state, audio::SynthParamType paramType, float newV
         //     } else {
         //         int64_t numSamples = releaseTime * state.sampleRate;
         //         v->ampEnvState.multiplier = calcMultiplier(1.f, kMinValue, numSamples);
+        //     }
+        //     break;
+        // }
+
+        
+        // MIGHT NOT NEED THIS IF WE'RE CALLING STUFF EVERY BLOCK?
+        // case audio::SynthParamType::Cutoff: {
+        //     float peak = state.patch.Get(audio::SynthParamType::Peak);
+        //     for (Voice& v : state.voices) {
+        //         v.moogLpfState.setFilterParams(newValue, peak);
+        //     }
+        //     break;
+        // }
+        // case audio::SynthParamType::Peak: {
+        //     float cutoff = state.patch.Get(audio::SynthParamType::Cutoff);
+        //     for (Voice& v : state.voices) {
+        //         v.moogLpfState.setFilterParams(cutoff, newValue);
         //     }
         //     break;
         // }
@@ -591,7 +657,7 @@ void Process(StateData* state, boost::circular_buffer<audio::PendingEvent> const
                 break;
             }
             case audio::EventType::SynthParam: {
-                if (e.paramChangeTimeSecs != 0.0) {
+                if (e.paramChangeTimeSecs > 0.0) {
                     // Find a free automation. Also, ensure that there's no
                     // existing automation on this param.
                     for (Automation& a : state->automations) {
@@ -618,6 +684,9 @@ void Process(StateData* state, boost::circular_buffer<audio::PendingEvent> const
                     pA->_startTickTime = frameStartTickTime;
                     int64_t changeTimeInTicks = e.paramChangeTimeSecs * sampleRate;
                     pA->_endTickTime = pA->_startTickTime + changeTimeInTicks;
+                    for (Voice& v : state->voices) {
+                        OnParamChange(*state, e.param, e.newParamValue, &v);
+                    }
                     break;
                 }
                 patch.Get(e.param) = e.newParamValue;
@@ -672,17 +741,24 @@ void Process(StateData* state, boost::circular_buffer<audio::PendingEvent> const
     float const cutoffLFOValue = patch.Get(SynthParamType::CutoffLFOGain) * sinf(state->cutoffLFOPhase);
     state->cutoffLFOPhase += (patch.Get(SynthParamType::CutoffLFOFreq) * 2 * kPi * samplesPerFrame / sampleRate);
     // float const modulatedCutoff = patch.cutoffFreq * powf(2.0f, cutoffLFOValue);
-    float const modulatedCutoff = math_util::Clamp(patch.Get(SynthParamType::Cutoff) + 20000 * cutoffLFOValue, 0.f, (float)sampleRate);
+    float const modulatedCutoff = math_util::Clamp(patch.Get(SynthParamType::Cutoff) + 10000 * cutoffLFOValue, 0.f, (float)sampleRate);
 
-    ADSREnvSpecInTicks cutoffEnvSpec, pitchEnvSpec;
-    ConvertADSREnvSpec(patch.GetCutoffEnvSpec(), cutoffEnvSpec, sampleRate);
+    ADSREnvSpecInTicks pitchEnvSpec;
+    // ConvertADSREnvSpec(patch.GetCutoffEnvSpec(), cutoffEnvSpec, sampleRate);
     ConvertADSREnvSpec(patch.GetPitchEnvSpec(), pitchEnvSpec, sampleRate);
 
     ADSREnvSpecInTicksNew ampEnvSpec;
     {
         ADSREnvSpec const& s = patch.GetAmpEnvSpec();
         ampEnvSpec.decayTime = s.decayTime * sampleRate;
-        ampEnvSpec.sustainLevel = s.sustainLevel;
+        ampEnvSpec.sustainLevel = s.sustainLevel;        
+    }
+
+    ADSREnvSpecInTicksNew cutoffEnvSpec;
+    {
+        ADSREnvSpec const& s = patch.GetCutoffEnvSpec();
+        cutoffEnvSpec.decayTime = s.decayTime * static_cast<float>(sampleRate) / static_cast<float>(samplesPerFrame);
+        cutoffEnvSpec.sustainLevel = s.sustainLevel;
     }
 
     for (Voice& voice : state->voices) {

@@ -11,6 +11,7 @@
 #include "serial.h"
 #include "enums/synth_Waveform.h"
 #include "synth_patch.h"
+#include "filter.h"
 
 namespace synth {
 static inline float const kSemitoneRatio = 1.05946309f;
@@ -62,20 +63,18 @@ struct Voice {
 
     // ADSREnvState ampEnvState;
     ADSRStateNew ampEnvState;
-    ADSREnvState cutoffEnvState;
+    // ADSREnvState cutoffEnvState;
+    ADSRStateNew cutoffEnvState;
     ADSREnvState pitchEnvState;
     int currentMidiNote = -1;
     float velocity = 1.f;
     int noteOnId = 0;
     float postPortamentoF = 0.f;  // latest output of applying porta to center freq.
 
-    // float lp0 = 0.0f;
-    // float lp1 = 0.0f;
-    // float lp2 = 0.0f;
-    // float lp3 = 0.0f;
-
     FilterState lpfState;
     FilterState hpfState;
+
+    filter::VAMoogFilter moogLpfState;
 };
 
 struct Automation {
@@ -101,6 +100,7 @@ struct StateData {
     float* voiceScratchBuffer = nullptr;
 
     int sampleRate;
+    int framesPerBuffer;
 };
 
 void InitStateData(StateData& state, int channel, int const sampleRate, int const samplesPerFrame, int const numBufferChannels);
