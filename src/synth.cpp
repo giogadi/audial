@@ -268,9 +268,9 @@ void ProcessVoice(Voice& voice, int const sampleRate, float pitchLFOValue,
     if (framesPerOctave <= 0.f) {
         voice.postPortamentoF = voice.oscillators[0].f;
     }
-    else if (voice.ampEnvState.phase == ADSRPhase::Attack ||
+    else if (/*voice.ampEnvState.phase == ADSRPhase::Attack ||
         voice.ampEnvState.phase == ADSRPhase::Decay ||
-        voice.ampEnvState.phase == ADSRPhase::Sustain) {
+        voice.ampEnvState.phase == ADSRPhase::Sustain*/true) {
         float const kPortamentoFactor = powf(2.f, 1.f / framesPerOctave);
         if (voice.postPortamentoF > voice.oscillators[0].f) {
             voice.postPortamentoF /= kPortamentoFactor;
