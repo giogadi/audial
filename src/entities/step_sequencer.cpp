@@ -189,10 +189,15 @@ void StepSequencerEntity::SetSequencePermanentWithStartOffset(std::vector<SeqSte
 void StepSequencerEntity::InitDerived(GameManager& g) {
     _mute = _startMute;
     _tempSequence = _permanentSequence = _initialMidiSequenceDoNotChange;
-    _loopStartBeatTime = _initialLoopStartBeatTime;
+    // _loopStartBeatTime = _initialLoopStartBeatTime;
+    _loopStartBeatTime = g._beatClock->GetNextDownBeatTime(g._beatClock->GetBeatTimeFromEpoch());
     _maxNumVoices = _initMaxNumVoices;
     _gain = _initGain;
 
+    _changeQueueHeadIx = 0;
+    _changeQueueTailIx = 0;
+    _changeQueueCount = 0;
+    _currentIx = 0;
     _changeQueueHeadIx = 0;
     _changeQueueTailIx = 0;
     _changeQueueCount = 0;
@@ -368,6 +373,13 @@ ne::BaseEntity::ImGuiResult StepSequencerEntity::ImGuiDerived(GameManager& g) {
     ImGui::Checkbox("Start mute", &_startMute);
     if (ImGui::InputFloat("Gain", &_initGain)) {
         _gain = _initGain;
+    }
+    ImGui::InputDouble("Note length", &_noteLength, 0.0, 0.0, "%.6f", ImGuiInputTextFlags_EnterReturnsTrue);    
+    static float allVelocity = 1.f;
+    ImGui::InputFloat("Set all velocities", &allVelocity);
+    ImGui::SameLine();
+    if (ImGui::Button("Apply")) {
+        SetAllVelocitiesPermanent(allVelocity);
     }
     return ImGuiResult::Done;
 }

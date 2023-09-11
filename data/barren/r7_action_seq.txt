@@ -5,4 +5,4 @@
 0 step_seq_mute kick_seq 1
 0 step_seq_mute clap_seq 1
 0 step_seq_mute hihat_seq 1
-4 automate seq_velocity bass_seq 0 0.5 4
+4 automate seq_velocity bass_seq 0 0.5 1
