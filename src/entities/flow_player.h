@@ -25,6 +25,7 @@ struct FlowPlayerEntity : public ne::Entity {
     ne::EntityId _cameraId;
     float _dashTimer = -1.f;
     ne::EntityId _dashTargetId;
+    Vec3 _lastKnownDashTarget;
     Vec4 _currentColor;
     bool _flowPolarity = true;
     double _countOffEndTime = 3.0;

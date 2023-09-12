@@ -233,6 +233,8 @@ void FlowPlayerEntity::Update(GameManager& g, float dt) {
             _vel = toEnemyDir * (sign * _launchVel);
             _dashTimer = 0.f;
             _dashTargetId = nearest->_id;
+            _lastKnownDashTarget = nearest->_transform.Pos();
+            _lastKnownDashTarget._y = _transform.Pos()._y;;
             _applyGravityDuringDash = false;
             
             for (auto enemyIter = g._neEntityManager->GetIterator(ne::EntityType::TypingEnemy); !enemyIter.Finished(); enemyIter.Next()) {
@@ -256,18 +258,18 @@ void FlowPlayerEntity::Update(GameManager& g, float dt) {
         if (_dashTimer >= _dashTime) {
             doneDashing = true;
         } else if (_dashTimer >= 0.f) {
+            Vec3 playerPos = _transform.Pos();
             if (ne::Entity* dashTarget = g._neEntityManager->GetEntity(_dashTargetId)) {
-                Vec3 playerPos = _transform.Pos();
-                Vec3 targetPos = dashTarget->_transform.Pos();
-                targetPos._y = playerPos._y;
-                Vec3 prevOffset = targetPos - playerPos;
-                playerPos += _vel * dt;
-                Vec3 nextOffset = targetPos - playerPos;
-                float dotp = Vec3::Dot(prevOffset, nextOffset);
-                if (dotp < 0.f) {
-                    doneDashing = true;
-                    passedDashTarget = true;
-                }
+                _lastKnownDashTarget = dashTarget->_transform.Pos();
+                _lastKnownDashTarget._y = playerPos._y;
+            }            
+            Vec3 prevOffset = _lastKnownDashTarget - playerPos;
+            playerPos += _vel * dt;
+            Vec3 nextOffset = _lastKnownDashTarget - playerPos;
+            float dotp = Vec3::Dot(prevOffset, nextOffset);
+            if (dotp < 0.f) {
+                doneDashing = true;
+                passedDashTarget = true;
             }
         }
 
