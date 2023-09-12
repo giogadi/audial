@@ -56,7 +56,7 @@ void InitStateData(StateData& state, int channel, int const sampleRate, int cons
     state.sampleRate = sampleRate;
     state.framesPerBuffer = samplesPerFrame;
 
-    int constexpr kSamplesPerCutoffEnvModulate = 32;
+    int constexpr kSamplesPerCutoffEnvModulate = 1;
     state.samplesPerMoogCutoffUpdate = std::min(samplesPerFrame, kSamplesPerCutoffEnvModulate);
 
     for (Voice& v : state.voices) {
@@ -307,6 +307,7 @@ void ProcessVoice(Voice& voice, int const sampleRate, float pitchLFOValue,
     //     lpfA3 = g * lpfA2;
     // }
 
+    // TODO: only run this if cutoff has changed.
     float hpfA1, hpfA2, hpfA3, hpfK;  // filter shit
     {
         float res = patch.Get(SynthParamType::HpfPeak) / 4.f;
@@ -385,7 +386,8 @@ void ProcessVoice(Voice& voice, int const sampleRate, float pitchLFOValue,
             
             // v = UpdateFilter(lpfA1, lpfA2, lpfA3, lpfK, v, FilterType::LowPass, voice.lpfState);
             filter::FilterOutput* fo = voice.moogLpfState.process(v);
-            v = fo->filter[filter::ANM_LPF4];
+            // v = fo->filter[filter::ANM_LPF4];
+            v = fo->filter[filter::LPF4];
             v = UpdateFilter(hpfA1, hpfA2, hpfA3, hpfK, v, FilterType::HighPass, voice.hpfState);
             AdsrTick(ampEnvSpec, &voice.ampEnvState);
             if (voice.ampEnvState.phase == ADSRPhase::Closed) {

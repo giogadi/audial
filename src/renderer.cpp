@@ -105,6 +105,7 @@ struct TextWorldInstance {
     Vec3 _pos;
     float _scale = 1.f;
     std::string _text;
+    bool _appendToPrevious = false;
 };
 
 struct GlyphInstance {
@@ -664,12 +665,13 @@ void Scene::DrawBoundingBox(Mat4 const& t, Vec4 const& color) {
     bb._color = color;
 }
 
-void Scene::DrawTextWorld(std::string text, Vec3 const& pos, float scale, Vec4 const& colorRgba) {
+void Scene::DrawTextWorld(std::string text, Vec3 const& pos, float scale, Vec4 const& colorRgba, bool appendToPrevious) {
     TextWorldInstance& t = _pInternal->_textToDraw.emplace_back();
     t._text = std::move(text);
     t._pos = pos;
     t._scale = scale;
     t._colorRgba = colorRgba;
+    t._appendToPrevious = appendToPrevious;
 }
 
 void Scene::DrawText(std::string_view str, float& screenX, float& screenY, float scale, Vec4 const& colorRgba) {
@@ -1073,9 +1075,11 @@ void Scene::Draw(int windowWidth, int windowHeight, float timeInSecs) {
     // First go through our world text strings and convert them into glyphs to draw
     {
         ViewportInfo const& vp = _pInternal->_g->_viewportInfo;
+        float screenX = 0.f, screenY = 0.f;
         for (TextWorldInstance const& text : _pInternal->_textToDraw) {
-            float screenX, screenY;
-            geometry::ProjectWorldPointToScreenSpace(text._pos, viewProjTransform, vp._width, vp._height, screenX, screenY);
+            if (!text._appendToPrevious) {
+                geometry::ProjectWorldPointToScreenSpace(text._pos, viewProjTransform, vp._width, vp._height, screenX, screenY);
+            }
 
             screenX = std::round(screenX);
             screenY = std::round(screenY);

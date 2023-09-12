@@ -120,11 +120,11 @@ void TypingEnemyEntity::SaveDerived(serial::Ptree pt) const {
 ne::BaseEntity::ImGuiResult TypingEnemyEntity::ImGuiDerived(GameManager& g) {
     ImGuiResult result = ImGuiResult::Done;
 
-    if (imgui_util::InputText<32>("Text", &_keyText)) {
-        // result = ImGuiResult::NeedsInit;
+    if (imgui_util::InputText<32>("Text", &_keyText, true)) {
+        result = ImGuiResult::NeedsInit;
     }
-    if (imgui_util::InputText<32>("Buttons", &_buttons)) {
-        // result = ImGuiResult::NeedsInit;
+    if (imgui_util::InputText<32>("Buttons", &_buttons, true)) {
+        result = ImGuiResult::NeedsInit;
     }
     ImGui::Checkbox("Kill on type", &_destroyAfterTyped);
 
@@ -243,6 +243,8 @@ void TypingEnemyEntity::UpdateDerived(GameManager& g, float dt) {
                 pAction->Execute(g);
             }
             _flowCooldownStartBeatTime = -1.0;
+            _numHits = 0;
+            _timeOfLastHit = -1.0;
         }
     }
 
@@ -252,40 +254,46 @@ void TypingEnemyEntity::UpdateDerived(GameManager& g, float dt) {
     } else {
         showControllerInputs = g._inputManager->IsUsingController();
     }
-    if (showControllerInputs) {
-        if (!_buttons.empty()) {
-            InputManager::ControllerButton b = CharToButton(_buttons[0]);
+    
+    {
+        int numFadedButtons = 0;
+        if (_flowCooldownStartBeatTime > 0.f || !_hittable || !playerWithinRadius) {
+            numFadedButtons = _keyText.length();
+        } else {
+            numFadedButtons = _numHits;
+        }
+        float constexpr kFadeAlpha = 0.2f;
+        if (showControllerInputs) {
             Transform t = _transform;
-            t.SetScale(Vec3(0.25f, 0.25f, 0.25f));
-            t.SetTranslation(_transform.Pos() + Vec3(-0.25f, 0.f, 0.25f));
-            renderer::ModelInstance* m = g._scene->DrawPsButton(b, t.Mat4Scale());
-            m->_topLayer = true;
-            if (_flowCooldownStartBeatTime > 0.f || !playerWithinRadius || !_hittable) {
-                m->_color.Set(1.f, 1.f, 1.f, 0.2f);
-            }            
-        }        
-    } else {
-        // TODO THIS IS AN UGLY ALLOCATION
-        // std::string text = _keyText;
-        // string_util::ToUpper(text);
-        std::string const& text = _keyText;
-
-        float constexpr kTextSize = 1.5f;
-        if (_flowCooldownStartBeatTime > 0.f || !playerWithinRadius || !_hittable) {
-            Vec4 color = _textColor;
-            color._w = 0.2f;
-            g._scene->DrawTextWorld(text, _transform.GetPos(), kTextSize, color);
-        } else if (text.length() > 1) {
-            if (_numHits > 0) {
-                std::string_view substr = std::string_view(text).substr(0, _numHits);
-                g._scene->DrawTextWorld(std::string(substr), _transform.GetPos(), kTextSize, Vec4(1.f, 1.f, 0.f, 1.f));
-            }
-            if (_numHits < text.length()) {
-                std::string_view substr = std::string_view(text).substr(_numHits);
-                g._scene->DrawTextWorld(std::string(substr), _transform.GetPos(), kTextSize, _textColor);
+            float const size = 0.25f;
+            t.SetScale(Vec3(size, size, size));
+            t.SetTranslation(_transform.Pos() + Vec3(-size, 0.f, size));
+            for (int i = 0; i < _buttons.length(); ++i) {
+                InputManager::ControllerButton b = CharToButton(_buttons[i]);
+                renderer::ModelInstance* m = g._scene->DrawPsButton(b, t.Mat4Scale());
+                m->_topLayer = true;
+                if (i < numFadedButtons) {
+                    m->_color._w = kFadeAlpha;
+                }
+                Vec3 p = t.GetPos();
+                p._x += 2 * size;
+                t.SetTranslation(p);
             }
         } else {
-            g._scene->DrawTextWorld(text, _transform.GetPos(), kTextSize, _textColor);
+            float constexpr kTextSize = 1.5f;
+            std::string_view fadedText = std::string_view(_keyText).substr(0, numFadedButtons);
+            Vec4 color(1.f, 1.f, 1.f, kFadeAlpha);
+            if (!fadedText.empty()) {
+                // AHHHH ALLOCATION
+                g._scene->DrawTextWorld(std::string(fadedText), _transform.GetPos(), kTextSize, color);
+            }
+            color._w = 1.f;
+            std::string_view activeText = std::string_view(_keyText).substr(numFadedButtons);
+            if (!activeText.empty()) {
+                bool appendToPrevious = numFadedButtons > 0;
+                // AHHHH ALLOCATION
+                g._scene->DrawTextWorld(std::string(activeText), _transform.GetPos(), kTextSize, color, appendToPrevious);
+            }
         }
     }
 
@@ -428,18 +436,18 @@ bool TypingEnemyEntity::IsActive(GameManager& g) const {
 
 void TypingEnemyEntity::OnHit(GameManager& g) {
     double beatTime = g._beatClock->GetBeatTimeFromEpoch();
-    if (_cooldownQuantizeDenom > 0.f) {
-        _flowCooldownStartBeatTime = BeatClock::GetNextBeatDenomTime(beatTime, _cooldownQuantizeDenom);
-    }
-    else {
-        _flowCooldownStartBeatTime = beatTime;
-    }
     ++_numHits;
-    if (_numHits == _keyText.length()) {
+    if (_numHits >= _keyText.length()) {
+        _numHits = _keyText.length();
+        if (_cooldownQuantizeDenom > 0.f) {
+            _flowCooldownStartBeatTime = BeatClock::GetNextBeatDenomTime(beatTime, _cooldownQuantizeDenom);
+        } else {
+            _flowCooldownStartBeatTime = beatTime;
+        }
         if (_destroyAfterTyped) {
             bool success = g._neEntityManager->TagForDeactivate(_id);
             assert(success);
-        }            
+        }
     }
     _timeOfLastHit = beatTime;
 
@@ -470,6 +478,8 @@ void TypingEnemyEntity::DoHitActions(GameManager& g) {
 void TypingEnemyEntity::OnHitOther(GameManager& g) {
     if (_resetCooldownOnAnyHit) {
         _flowCooldownStartBeatTime = -1.0;
+        _numHits = 0;
+        _timeOfLastHit = -1.0;
     }
 }
 

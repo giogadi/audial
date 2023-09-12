@@ -65,13 +65,13 @@ FilterOutput* VA1Filter::process(double xn)
     output.filter[LPF1] = ((xn - sn)*coeffs.alpha) + sn;
 
     // --- form the HPF = INPUT = LPF
-    output.filter[HPF1] = xn - output.filter[LPF1];
+    // output.filter[HPF1] = xn - output.filter[LPF1];
 
     // --- form the APF = LPF - HPF
-    output.filter[APF1] = output.filter[LPF1] - output.filter[HPF1];
+    // output.filter[APF1] = output.filter[LPF1] - output.filter[HPF1];
 
     // --- anm output
-    output.filter[ANM_LPF1] = output.filter[LPF1] + coeffs.alpha*output.filter[HPF1];
+    // output.filter[ANM_LPF1] = output.filter[LPF1] + coeffs.alpha*output.filter[HPF1];
 
     // --- update memory
     sn = vn + output.filter[LPF1];
@@ -154,7 +154,7 @@ FilterOutput* VAMoogFilter::process(double xn)
 
     // --- send u -> LPF1 and then cascade the outputs to form y(n)
     FilterOutput* subFltOut[4];
-    FilterOutput* subFltOutFGN[4];
+    // FilterOutput* subFltOutFGN[4];
 
     subFltOut[FLT1] = subFilter[FLT1].process(u);
     subFltOut[FLT2] = subFilter[FLT2].process(subFltOut[FLT1]->filter[LPF1]);
@@ -162,26 +162,26 @@ FilterOutput* VAMoogFilter::process(double xn)
     subFltOut[FLT4] = subFilter[FLT4].process(subFltOut[FLT3]->filter[LPF1]);
 
     // --- optional outputs 1,2,3
-    output.filter[LPF1] = subFltOut[FLT1]->filter[LPF1];
+    /*output.filter[LPF1] = subFltOut[FLT1]->filter[LPF1];
     output.filter[LPF2] = subFltOut[FLT2]->filter[LPF1];
-    output.filter[LPF3] = subFltOut[FLT3]->filter[LPF1];
+    output.filter[LPF3] = subFltOut[FLT3]->filter[LPF1];*/
 
     // --- MOOG LP4 output
     output.filter[LPF4] = subFltOut[FLT4]->filter[LPF1];
 
     // --- OPTIONAL: analog nyquist matched version
-    subFltOutFGN[FLT1] = subFilterFGN[FLT1].process(u);
-    subFltOutFGN[FLT2] = subFilterFGN[FLT2].process(subFltOutFGN[FLT1]->filter[ANM_LPF1]);
-    subFltOutFGN[FLT3] = subFilterFGN[FLT3].process(subFltOutFGN[FLT2]->filter[ANM_LPF1]);
-    subFltOutFGN[FLT4] = subFilterFGN[FLT4].process(subFltOutFGN[FLT3]->filter[ANM_LPF1]);
+    //subFltOutFGN[FLT1] = subFilterFGN[FLT1].process(u);
+    //subFltOutFGN[FLT2] = subFilterFGN[FLT2].process(subFltOutFGN[FLT1]->filter[ANM_LPF1]);
+    //subFltOutFGN[FLT3] = subFilterFGN[FLT3].process(subFltOutFGN[FLT2]->filter[ANM_LPF1]);
+    //subFltOutFGN[FLT4] = subFilterFGN[FLT4].process(subFltOutFGN[FLT3]->filter[ANM_LPF1]);
 
-    // --- optional outputs 1,2,3
-    output.filter[ANM_LPF1] = subFltOutFGN[FLT1]->filter[ANM_LPF1];
-    output.filter[ANM_LPF2] = subFltOutFGN[FLT2]->filter[ANM_LPF1];
-    output.filter[ANM_LPF3] = subFltOutFGN[FLT3]->filter[ANM_LPF1];
+    //// --- optional outputs 1,2,3
+    //output.filter[ANM_LPF1] = subFltOutFGN[FLT1]->filter[ANM_LPF1];
+    //output.filter[ANM_LPF2] = subFltOutFGN[FLT2]->filter[ANM_LPF1];
+    //output.filter[ANM_LPF3] = subFltOutFGN[FLT3]->filter[ANM_LPF1];
 
-    // --- MOOG LP4 output
-    output.filter[ANM_LPF4] = subFltOutFGN[FLT4]->filter[ANM_LPF1];
+    //// --- MOOG LP4 output
+    //output.filter[ANM_LPF4] = subFltOutFGN[FLT4]->filter[ANM_LPF1];
 
     return &output;
 }
