@@ -30,6 +30,7 @@ struct TypingEnemyEntity : public ne::Entity {
     bool _showBeatsLeft = false;
     float _cooldownQuantizeDenom = 0.f;
     bool _initHittable = true;
+    float _bounceRadius = -1;
     
     // non-serialized
     int _numHits = 0;

@@ -225,7 +225,9 @@ void FlowPlayerEntity::Update(GameManager& g, float dt) {
         ne::EntityId nearestId = nearest->_id;
         if (nearest->CanHit()) {
             _respawnBeforeFirstDash = false;
-            nearest->OnHit(g);
+            if (nearest->_bounceRadius < 0.f) {
+                nearest->OnHit(g);
+            }            
             Vec3 toEnemyDir = nearest->_transform.GetPos() - playerPos;
             toEnemyDir._y = 0.f;
             toEnemyDir.Normalize();
@@ -234,7 +236,7 @@ void FlowPlayerEntity::Update(GameManager& g, float dt) {
             _dashTimer = 0.f;
             _dashTargetId = nearest->_id;
             _lastKnownDashTarget = nearest->_transform.Pos();
-            _lastKnownDashTarget._y = _transform.Pos()._y;;
+            _lastKnownDashTarget._y = _transform.Pos()._y;
             _applyGravityDuringDash = false;
             
             for (auto enemyIter = g._neEntityManager->GetIterator(ne::EntityType::TypingEnemy); !enemyIter.Finished(); enemyIter.Next()) {
@@ -243,33 +245,50 @@ void FlowPlayerEntity::Update(GameManager& g, float dt) {
                     enemy->OnHitOther(g);
                 }
             }
-
-            // for (auto vfxIter = g._neEntityManager->GetIterator(ne::EntityType::Vfx); !vfxIter.Finished(); vfxIter.Next()) {
-            //     VfxEntity* vfx = (VfxEntity*) vfxIter.GetEntity();
-            //     vfx->OnHit(g);
-            // }
         }
     }
 
     // Check if we're done dashing
     {
         bool doneDashing = false;
-        bool passedDashTarget = false;
+        bool passedDashTarget = false;        
         if (_dashTimer >= _dashTime) {
             doneDashing = true;
         } else if (_dashTimer >= 0.f) {
             Vec3 playerPos = _transform.Pos();
-            if (ne::Entity* dashTarget = g._neEntityManager->GetEntity(_dashTargetId)) {
+            TypingEnemyEntity* dashTarget = static_cast<TypingEnemyEntity*>(g._neEntityManager->GetEntity(_dashTargetId));
+            if (dashTarget != nullptr) {
                 _lastKnownDashTarget = dashTarget->_transform.Pos();
                 _lastKnownDashTarget._y = playerPos._y;
-            }            
-            Vec3 prevOffset = _lastKnownDashTarget - playerPos;
-            playerPos += _vel * dt;
-            Vec3 nextOffset = _lastKnownDashTarget - playerPos;
-            float dotp = Vec3::Dot(prevOffset, nextOffset);
-            if (dotp < 0.f) {
-                doneDashing = true;
-                passedDashTarget = true;
+                TypingEnemyEntity* te = static_cast<TypingEnemyEntity*>(dashTarget);
+            }
+            if (dashTarget && dashTarget->_bounceRadius > 0.f) {
+                playerPos += _vel * dt;
+                Vec3 offset = playerPos - _lastKnownDashTarget;
+                if (offset.Length2() < dashTarget->_bounceRadius * dashTarget->_bounceRadius) {
+                    dashTarget->OnHit(g);
+                    Vec3 awayFromEnemyDir = -_vel.GetNormalized();
+                    _vel = -_vel;
+                    float speed = _vel.Length();
+                    float constexpr kMinBounceSpeed = 10.f;
+                    float constexpr kMaxBounceSpeed = 10.f;
+                    if (speed < kMinBounceSpeed) {
+                        _vel = awayFromEnemyDir * kMinBounceSpeed;
+                    } else if (speed > kMaxBounceSpeed) {
+                        _vel = awayFromEnemyDir * kMaxBounceSpeed;
+                    }
+                    playerPos = _lastKnownDashTarget + awayFromEnemyDir * dashTarget->_bounceRadius;
+                    _dashTimer = 0.25f * _dashTime;
+                }
+            } else {
+                Vec3 prevOffset = _lastKnownDashTarget - playerPos;
+                playerPos += _vel * dt;
+                Vec3 nextOffset = _lastKnownDashTarget - playerPos;
+                float dotp = Vec3::Dot(prevOffset, nextOffset);
+                if (dotp < 0.f) {
+                    doneDashing = true;
+                    passedDashTarget = true;
+                }
             }
         }
 

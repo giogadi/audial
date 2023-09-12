@@ -59,6 +59,8 @@ void TypingEnemyEntity::LoadDerived(serial::Ptree pt) {
     } else {
         _hitBehavior = HitBehavior::SingleAction;
     }
+    _bounceRadius = -1.f;
+    pt.TryGetFloat("bounce_radius", &_bounceRadius);
     _flowPolarity = false;
     pt.TryGetBool("flow_polarity", &_flowPolarity);
 
@@ -106,6 +108,7 @@ void TypingEnemyEntity::SaveDerived(serial::Ptree pt) const {
     pt.PutString("buttons", _buttons.c_str());
     pt.PutBool("type_kill", _destroyAfterTyped);
     pt.PutBool("all_actions_on_hit", _hitBehavior == HitBehavior::AllActions);
+    pt.PutFloat("bounce_radius", _bounceRadius);
     pt.PutBool("flow_polarity", _flowPolarity);
     pt.PutDouble("flow_cooldown", _flowCooldownBeatTime);
     pt.PutBool("show_beats_left", _showBeatsLeft);
@@ -136,7 +139,9 @@ ne::BaseEntity::ImGuiResult TypingEnemyEntity::ImGuiDerived(GameManager& g) {
     else {
         _hitBehavior = HitBehavior::SingleAction;
     }
-
+    if (ImGui::InputFloat("Bounce radius", &_bounceRadius)) {
+        result = ImGuiResult::NeedsInit;
+    }
     ImGui::Checkbox("Flow polarity", &_flowPolarity);
     ImGui::InputDouble("Flow cooldown (beat)", &_flowCooldownBeatTime);
     ImGui::InputFloat("Cooldown quantize denom", &_cooldownQuantizeDenom);
@@ -207,7 +212,7 @@ namespace {
     }
 }
 
-#define CHUNKED_SPHERE 0
+#define CHUNKED_SPHERE 1
 
 void TypingEnemyEntity::UpdateDerived(GameManager& g, float dt) {      
     if (!IsActive(g)) {
@@ -299,7 +304,7 @@ void TypingEnemyEntity::UpdateDerived(GameManager& g, float dt) {
 
     // Maybe update color from getting hit
     // turn to FadeColor on hit, then fade back to regular color
-    if (_timeOfLastHit >= 0.0) {
+    /*if (_timeOfLastHit >= 0.0) {
         double const beatTime = g._beatClock->GetBeatTimeFromEpoch();
         double constexpr kFadeTime = 0.25;
         double fadeFactor = (beatTime - _timeOfLastHit) / kFadeTime;        
@@ -309,7 +314,7 @@ void TypingEnemyEntity::UpdateDerived(GameManager& g, float dt) {
             _timeOfLastHit = -1.0;
         }
         _currentColor = kFadeColor + fadeFactor * (_modelColor - kFadeColor);
-    }   
+    }   */
 
     if (_activeRadius >= 0.f) {
         Transform t = _transform;
@@ -322,8 +327,7 @@ void TypingEnemyEntity::UpdateDerived(GameManager& g, float dt) {
         g._scene->DrawCube(t.Mat4Scale(), kRadiusColor);
     }
 
-#if CHUNKED_SPHERE
-    {
+    if (_bounceRadius > 0.f) {
         Transform t = _transform;
         t.ApplyScale(Vec3(0.7f, 0.7f, 0.7f));
         Quaternion q = t.Quat();
@@ -334,24 +338,32 @@ void TypingEnemyEntity::UpdateDerived(GameManager& g, float dt) {
         t.SetQuat(final);
         BoundMeshPNU const* mesh = g._scene->GetMesh("chunked_sphere");
         renderer::ModelInstance& model = g._scene->DrawMesh(mesh, t.Mat4Scale(), _currentColor);
-        if (_flowCooldownStartBeatTime > 0.f || !_hittable) {
-            Vec4 color = _currentColor;
-            //color._w = 0.25f;
-            model._color = color;
+        float constexpr kMaxExplode = 1.f;
+        // explode more as hits are taken
+        float const hitFactor = static_cast<float>(_numHits) / _keyText.length();
+        double constexpr kBoomTime = 0.25;
+        float boomPhase = math_util::Clamp((beatTime - _timeOfLastHit) / kBoomTime, 0.0, 1.0);
+        boomPhase = math_util::SmoothUpAndDown(boomPhase);
+        float constexpr kMaxBoomFactor = 0.75f;
 
-            double const cooldownTimeElapsed = math_util::Clamp(beatTime - _flowCooldownStartBeatTime, 0.0, _flowCooldownBeatTime);
-            float factor = 1.f;
-            if (_flowCooldownStartBeatTime > 0.f) {
-                factor = 1.f - static_cast<float>(cooldownTimeElapsed / _flowCooldownBeatTime);
-                factor = math_util::SmoothStep(factor);
-            }
-            float constexpr kMaxExplode = 0.5;
-            model._explodeDist = factor * kMaxExplode;
-        }
+        model._explodeDist = hitFactor * kMaxExplode + kMaxBoomFactor * boomPhase;
+
+        // TODOOOOO
+        //if (_flowCooldownStartBeatTime > 0.f || !_hittable) {
+        //    Vec4 color = _currentColor;
+        //    //color._w = 0.25f;
+        //    model._color = color;
+
+        //    double const cooldownTimeElapsed = math_util::Clamp(beatTime - _flowCooldownStartBeatTime, 0.0, _flowCooldownBeatTime);
+        //    float factor = 1.f;
+        //    if (_flowCooldownStartBeatTime > 0.f) {
+        //        factor = 1.f - static_cast<float>(cooldownTimeElapsed / _flowCooldownBeatTime);
+        //        factor = math_util::SmoothStep(factor);
+        //    }            
+        //    model._explodeDist = factor * kMaxExplode;
+        //}
     }
-
-#else  // if not CHUNKED_SPHERE
-    if (_flowCooldownBeatTime > 0.f || !playerWithinRadius) {
+    else if (_flowCooldownBeatTime > 0.f || !playerWithinRadius) {
         int constexpr kNumStepsX = 2;
         int constexpr kNumStepsZ = 2;
         float constexpr xStep = 1.f / (float) kNumStepsX;
@@ -417,7 +429,6 @@ void TypingEnemyEntity::UpdateDerived(GameManager& g, float dt) {
             g._scene->DrawMesh(_model, _transform.Mat4Scale(), _currentColor);
         }
     }   
-#endif
 }
 
 bool TypingEnemyEntity::IsActive(GameManager& g) const {
