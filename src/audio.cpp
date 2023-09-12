@@ -16,6 +16,7 @@
 using std::chrono::high_resolution_clock;
 
 #define NUM_OUTPUT_CHANNELS (1)
+#define FRAMES_PER_BUFFER  (512)
 
 namespace audio {
 

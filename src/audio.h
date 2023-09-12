@@ -11,8 +11,6 @@
 
 class SoundBank;
 
-#define FRAMES_PER_BUFFER  (512)
-
 namespace audio {
 
 int constexpr kNumSynths = 4;

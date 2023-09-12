@@ -61,9 +61,7 @@ struct Voice {
     // We assign the voice's "center" frequency using oscillators[0]. I know, this is gross.
     std::array<Oscillator, kNumOscillators> oscillators;
 
-    // ADSREnvState ampEnvState;
     ADSRStateNew ampEnvState;
-    // ADSREnvState cutoffEnvState;
     ADSRStateNew cutoffEnvState;
     ADSREnvState pitchEnvState;
     int currentMidiNote = -1;
@@ -86,6 +84,15 @@ struct Automation {
     int64_t _endTickTime = 0;    
 };
 
+// All times are in "modulation steps". Could be samples, buffers, whatever the caller wants.
+struct ADSREnvSpecInternal {
+    float modulationHz = 1.f;
+    float attackTime = 0.f;
+    float decayTime = 0.f;
+    float sustainLevel = 0.f;
+    float releaseTime = 0.f;
+};
+
 struct StateData {
     int channel = -1;
 
@@ -101,6 +108,9 @@ struct StateData {
 
     int sampleRate;
     int framesPerBuffer;
+
+    ADSREnvSpecInternal ampEnvSpecInternal;
+    ADSREnvSpecInternal cutoffEnvSpecInternal;
 };
 
 void InitStateData(StateData& state, int channel, int const sampleRate, int const samplesPerFrame, int const numBufferChannels);
