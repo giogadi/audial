@@ -251,7 +251,7 @@
             <Peak>2.58599997</Peak>
             <HpfCutoff>0</HpfCutoff>
             <HpfPeak>0</HpfPeak>
-            <Portamento>0</Portamento>
+            <Portamento>0.0340000018</Portamento>
             <PitchLFOGain>0</PitchLFOGain>
             <PitchLFOFreq>1</PitchLFOFreq>
             <CutoffLFOGain>0</CutoffLFOGain>
@@ -283,7 +283,7 @@
             <OscFader>0.421999991</OscFader>
             <Cutoff>6935.36084</Cutoff>
             <Peak>1.63499999</Peak>
-            <HpfCutoff>600</HpfCutoff>
+            <HpfCutoff>934.322021</HpfCutoff>
             <HpfPeak>0</HpfPeak>
             <Portamento>0</Portamento>
             <PitchLFOGain>0.0270000007</PitchLFOGain>

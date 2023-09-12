@@ -111,6 +111,7 @@ struct StateData {
 
     ADSREnvSpecInternal ampEnvSpecInternal;
     ADSREnvSpecInternal cutoffEnvSpecInternal;
+    int samplesPerMoogCutoffUpdate = 1;
 };
 
 void InitStateData(StateData& state, int channel, int const sampleRate, int const samplesPerFrame, int const numBufferChannels);

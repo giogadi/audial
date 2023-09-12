@@ -11,8 +11,6 @@ using audio::SynthParamType;
 namespace synth {
 namespace {
 
-int constexpr kSamplesPerCutoffEnvModulate = 512;
-
 float Polyblep(float t, float dt) {
     if (t < dt) {
         t /= dt;
@@ -57,6 +55,9 @@ void InitStateData(StateData& state, int channel, int const sampleRate, int cons
     state.voiceScratchBuffer = new float[samplesPerFrame * numBufferChannels];
     state.sampleRate = sampleRate;
     state.framesPerBuffer = samplesPerFrame;
+
+    int constexpr kSamplesPerCutoffEnvModulate = 32;
+    state.samplesPerMoogCutoffUpdate = std::min(samplesPerFrame, kSamplesPerCutoffEnvModulate);
 
     for (Voice& v : state.voices) {
         v.moogLpfState.reset(sampleRate);
@@ -254,7 +255,7 @@ void ProcessVoice(Voice& voice, int const sampleRate, float pitchLFOValue,
     float modulatedCutoff, ADSREnvSpecInternal const& ampEnvSpec,
     ADSREnvSpecInternal const& cutoffEnvSpec,
     ADSREnvSpecInTicks const& pitchEnvSpec,
-    Patch const& patch, float* outputBuffer, int const numChannels, int const samplesPerFrame) {
+                  Patch const& patch, float* outputBuffer, int const numChannels, int const samplesPerFrame, int const samplesPerMoogCutoffUpdate) {
     float const dt = 1.f / sampleRate;
 
     // portamento
@@ -373,7 +374,7 @@ void ProcessVoice(Voice& voice, int const sampleRate, float pitchLFOValue,
 
             // Cutoff envelope
             if (cutoffModulateCounter <= 0) {
-                cutoffModulateCounter = kSamplesPerCutoffEnvModulate;
+                cutoffModulateCounter = samplesPerMoogCutoffUpdate;
                 AdsrTick(cutoffEnvSpec, &voice.cutoffEnvState);
                 float c = modulatedCutoff + patch.Get(SynthParamType::CutoffEnvGain) * voice.cutoffEnvState.value;
                 c = math_util::Clamp(c, 0.f, 20000.f);
@@ -557,7 +558,7 @@ void OnParamChange(StateData& state, audio::SynthParamType paramType, float newV
     case audio::SynthParamType::CutoffEnvDecay:
     case audio::SynthParamType::CutoffEnvSustain:
     case audio::SynthParamType::CutoffEnvRelease:
-        ConvertADSREnvSpec(state.patch.GetCutoffEnvSpec(), state.cutoffEnvSpecInternal, state.sampleRate, kSamplesPerCutoffEnvModulate);
+        ConvertADSREnvSpec(state.patch.GetCutoffEnvSpec(), state.cutoffEnvSpecInternal, state.sampleRate, state.samplesPerMoogCutoffUpdate);
         break;
 
         // So we didn't need this at all???? COOL
@@ -735,7 +736,7 @@ void Process(StateData* state, boost::circular_buffer<audio::PendingEvent> const
     for (Voice& voice : state->voices) {
         // zero out the voice scratch buffer.
         memset(state->voiceScratchBuffer, 0, numChannels * samplesPerFrame * sizeof(float));
-        ProcessVoice(voice, sampleRate, pitchLFOValue, modulatedCutoff, state->ampEnvSpecInternal, state->cutoffEnvSpecInternal, pitchEnvSpec, patch, state->voiceScratchBuffer, numChannels, samplesPerFrame);
+        ProcessVoice(voice, sampleRate, pitchLFOValue, modulatedCutoff, state->ampEnvSpecInternal, state->cutoffEnvSpecInternal, pitchEnvSpec, patch, state->voiceScratchBuffer, numChannels, samplesPerFrame, state->samplesPerMoogCutoffUpdate);
         for (int outputIx = 0; outputIx < numChannels * samplesPerFrame; ++outputIx) {
             outputBuffer[outputIx] += state->voiceScratchBuffer[outputIx];
         }
