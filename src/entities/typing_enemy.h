@@ -13,6 +13,7 @@ struct TypingEnemyEntity : public ne::Entity {
     std::string _keyText;
     std::string _buttons;
     std::vector<std::unique_ptr<SeqAction>> _hitActions;
+    std::vector<std::unique_ptr<SeqAction>> _allHitActions;
     std::vector<std::unique_ptr<SeqAction>> _offCooldownActions;
     std::vector<bool> _isOneTimeAction;
     HitBehavior _hitBehavior = HitBehavior::SingleAction; // TODO

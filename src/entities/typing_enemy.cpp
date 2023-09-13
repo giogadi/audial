@@ -83,6 +83,7 @@ void TypingEnemyEntity::LoadDerived(serial::Ptree pt) {
     pt.TryGetFloat("active_radius", &_activeRadius);
 
     SeqAction::LoadActionsFromChildNode(pt, "hit_actions", _hitActions);
+    SeqAction::LoadActionsFromChildNode(pt, "all_hit_actions", _allHitActions);
     SeqAction::LoadActionsFromChildNode(pt, "off_cooldown_actions", _offCooldownActions);
 
     if (gRandomLetters) {
@@ -117,6 +118,7 @@ void TypingEnemyEntity::SaveDerived(serial::Ptree pt) const {
     pt.PutBool("init_hittable", _initHittable);
     pt.PutFloat("active_radius", _activeRadius);
     SeqAction::SaveActionsInChildNode(pt, "hit_actions", _hitActions);
+    SeqAction::SaveActionsInChildNode(pt, "all_hit_actions", _allHitActions);
     SeqAction::SaveActionsInChildNode(pt, "off_cooldown_actions", _offCooldownActions);
 }
 
@@ -152,6 +154,9 @@ ne::BaseEntity::ImGuiResult TypingEnemyEntity::ImGuiDerived(GameManager& g) {
     if (SeqAction::ImGui("Hit actions", _hitActions)) {
         result = ImGuiResult::NeedsInit;
     }
+    if (SeqAction::ImGui("On-All-Hit actions", _allHitActions)) {
+        result = ImGuiResult::NeedsInit;
+    }
     if (SeqAction::ImGui("Off-cooldown actions", _offCooldownActions)) {
         result = ImGuiResult::NeedsInit;
     }
@@ -171,6 +176,9 @@ void TypingEnemyEntity::InitDerived(GameManager& g) {
     }
 
     for (auto const& pAction : _hitActions) {
+        pAction->Init(g);
+    }
+    for (auto const& pAction : _allHitActions) {
         pAction->Init(g);
     }
 
@@ -220,6 +228,18 @@ void TypingEnemyEntity::UpdateDerived(GameManager& g, float dt) {
     }
 
     bool playerWithinRadius = true;
+
+    if (_activeRadius > 0.f) {
+        // draw active radius
+        static BoundMeshPNU const* sSphereMesh = nullptr;
+        if (sSphereMesh == nullptr) {
+            sSphereMesh = g._scene->GetMesh("sphere");
+        }
+        Transform t = _transform;
+        t.SetScale(Vec3(_activeRadius, _activeRadius, _activeRadius));
+        Vec4 color(1.f, 1.f, 1.f, 0.2f);
+        g._scene->DrawMesh(sSphereMesh, t.Mat4Scale(), color);       
+    }
 
     if (!g._editMode) {
         Vec3 p  = _transform.GetPos();
@@ -315,17 +335,6 @@ void TypingEnemyEntity::UpdateDerived(GameManager& g, float dt) {
         }
         _currentColor = kFadeColor + fadeFactor * (_modelColor - kFadeColor);
     }   */
-
-    if (_activeRadius >= 0.f) {
-        Transform t = _transform;
-        Vec3 scale = 2.f * _activeRadius * Vec3(1.f, 1.f, 1.f);
-        scale._y = 0.1f;
-        t.SetScale(2.f * _activeRadius * Vec3(1.f, 0.1f, 1.f));        
-        t.SetPosY(_transform.GetPos()._y - 1.f);
-        t.SetQuat(Quaternion());        
-        Vec4 constexpr kRadiusColor(0.f, 1.f, 1.f, 0.25f);
-        g._scene->DrawCube(t.Mat4Scale(), kRadiusColor);
-    }
 
     if (_bounceRadius > 0.f) {
         Transform t = _transform;
@@ -448,6 +457,11 @@ bool TypingEnemyEntity::IsActive(GameManager& g) const {
 void TypingEnemyEntity::OnHit(GameManager& g) {
     double beatTime = g._beatClock->GetBeatTimeFromEpoch();
     ++_numHits;
+    if (_numHits == _keyText.length()) {
+        for (auto const& pAction : _allHitActions) {
+            pAction->Execute(g);
+        }
+    }
     if (_numHits >= _keyText.length()) {
         _numHits = _keyText.length();
         if (_cooldownQuantizeDenom > 0.f) {

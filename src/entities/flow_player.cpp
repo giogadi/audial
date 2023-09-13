@@ -260,7 +260,6 @@ void FlowPlayerEntity::Update(GameManager& g, float dt) {
             if (dashTarget != nullptr) {
                 _lastKnownDashTarget = dashTarget->_transform.Pos();
                 _lastKnownDashTarget._y = playerPos._y;
-                TypingEnemyEntity* te = static_cast<TypingEnemyEntity*>(dashTarget);
             }
             if (dashTarget && dashTarget->_bounceRadius > 0.f) {
                 playerPos += _vel * dt;

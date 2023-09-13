@@ -465,6 +465,12 @@ bool SceneInternal::Init(GameManager& g) {
         success = _meshMap.emplace("chunked_sphere", std::move(mesh)).second;
         assert(success);
 
+        mesh = std::make_unique<BoundMeshPNU>();
+        success = mesh->Init("data/models/sphere.obj");
+        assert(success);
+        success = _meshMap.emplace("sphere", std::move(mesh)).second;
+        assert(success);
+
         mesh = MakeWaterMesh();
         success = _meshMap.emplace("water", std::move(mesh)).second;
         assert(success);
