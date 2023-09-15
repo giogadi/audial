@@ -234,6 +234,7 @@ void FlowPlayerEntity::Update(GameManager& g, float dt) {
             float sign = (_flowPolarity != nearest->_flowPolarity) ? 1.f : -1.f;
             _vel = toEnemyDir * (sign * _launchVel);
             _dashTimer = 0.f;
+            _useLastKnownDashTarget = true;
             _dashTargetId = nearest->_id;
             _lastKnownDashTarget = nearest->_transform.Pos();
             _lastKnownDashTarget._y = _transform.Pos()._y;
@@ -279,7 +280,8 @@ void FlowPlayerEntity::Update(GameManager& g, float dt) {
                     playerPos = _lastKnownDashTarget + awayFromEnemyDir * dashTarget->_bounceRadius;
                     _dashTimer = 0.25f * _dashTime;
                 }
-            } else {
+            } else if (_useLastKnownDashTarget) {
+                _vel = (_lastKnownDashTarget - playerPos).GetNormalized() * _launchVel;
                 Vec3 prevOffset = _lastKnownDashTarget - playerPos;
                 playerPos += _vel * dt;
                 Vec3 nextOffset = _lastKnownDashTarget - playerPos;
@@ -353,7 +355,7 @@ void FlowPlayerEntity::Update(GameManager& g, float dt) {
     penetration._y = 0.f;
     if (pHitWall != nullptr) {
         // Respawn(g);
-        pHitWall->OnHit(g);
+        pHitWall->OnHit(g, -penetration.GetNormalized());
         p += penetration * 1.1f;  // Add some padding to ensure we're outta collision
         Vec3 collNormal = penetration.GetNormalized();
         Vec3 newVel = -_vel;
@@ -363,19 +365,24 @@ void FlowPlayerEntity::Update(GameManager& g, float dt) {
         newVel -= 2 * normalPart;        
 
         // after bounce, ensure we have some velocity in the collision normal
-        float constexpr kMinBounceSpeed = 20.f;
-        float speedAlongNormal = Vec3::Dot(newVel, collNormal);
-        if (speedAlongNormal < kMinBounceSpeed) {
-            Vec3 correction = (kMinBounceSpeed - speedAlongNormal) * collNormal;
-            newVel += correction;
-        }        
+        // float constexpr kMinBounceSpeed = 20.f;
+        // float speedAlongNormal = Vec3::Dot(newVel, collNormal);
+        // if (speedAlongNormal < kMinBounceSpeed) {
+        //     Vec3 correction = (kMinBounceSpeed - speedAlongNormal) * collNormal;
+        //     newVel += correction;
+        // }
+        float constexpr kBounceSpeed = 5.f;
+        newVel = tangentPart.GetNormalized() * kBounceSpeed;
 
         _transform.SetTranslation(p);
         _vel = newVel;
 
         // Pretend it's a new dash with gravity applied
-        _dashTimer = 0.5f * _dashTime;
+        // _dashTimer = 0.5f * _dashTime;
+        _dashTimer = 0.25f * _dashTime;
         _applyGravityDuringDash = false;
+        _dashTargetId = ne::EntityId();
+        _useLastKnownDashTarget = false;
     }
 
     // Check if we hit any pickups

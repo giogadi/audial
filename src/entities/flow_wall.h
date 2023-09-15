@@ -15,14 +15,17 @@ struct FlowWallEntity : public ne::Entity {
     float _rotVel = 0.f;
     int _maxHp = -1;
     bool _canHit = true;
+    std::vector<std::string> _childrenNames;  // for making other things bounce
 
     // non-serialized
     double _timeOfLastHit = -1.0;
+    Vec3 _lastHitDirection;
     Vec4 _currentColor;
     int _hp = -1;
     renderer::Scene::MeshId _meshId;
+    std::vector<ne::EntityId> _children;
 
-    void OnHit(GameManager& g);
+    void OnHit(GameManager& g, Vec3 const& hitDirection);
        
     virtual void Update(GameManager& g, float dt) override;
     /* virtual void Destroy(GameManager& g) {} */

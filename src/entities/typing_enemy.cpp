@@ -23,29 +23,43 @@ extern GameManager gGameManager;
 extern bool gRandomLetters;
 
 namespace {
-    int gShuffledLetterIndices[] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26 };
-    int gCurrentShuffleIx = 26; // one past
+int gShuffledLetterIndices[] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26 };
+int gCurrentShuffleIx = 26; // one past
 
-    InputManager::ControllerButton CharToButton(char c) {
-        switch (c) {
-            case 'a': return InputManager::ControllerButton::PadUp;
-            case 's': return InputManager::ControllerButton::PadDown;
-            case 'd': return InputManager::ControllerButton::PadLeft;
-            case 'f': return InputManager::ControllerButton::PadRight;
-            case 'h': return InputManager::ControllerButton::ButtonTop;
-            case 'j': return InputManager::ControllerButton::ButtonBottom;
-            case 'k': return InputManager::ControllerButton::ButtonLeft;
-            case 'l': return InputManager::ControllerButton::ButtonRight;            
-            case 'e': return InputManager::ControllerButton::BumperLeft;
-            case 'r': return InputManager::ControllerButton::TriggerLeft;
-            case 'y': return InputManager::ControllerButton::BumperRight;
-            case 'u': return InputManager::ControllerButton::TriggerRight;
-            default: {
-                printf("InputManager::ControllerButton::CharToButton: unrecognized char \'%c\'\n", c);
-                return InputManager::ControllerButton::Count;
-            }
+InputManager::ControllerButton CharToButton(char c) {
+    switch (c) {
+        case 'a': return InputManager::ControllerButton::PadUp;
+        case 's': return InputManager::ControllerButton::PadDown;
+        case 'd': return InputManager::ControllerButton::PadLeft;
+        case 'f': return InputManager::ControllerButton::PadRight;
+        case 'h': return InputManager::ControllerButton::ButtonTop;
+        case 'j': return InputManager::ControllerButton::ButtonBottom;
+        case 'k': return InputManager::ControllerButton::ButtonLeft;
+        case 'l': return InputManager::ControllerButton::ButtonRight;            
+        case 'e': return InputManager::ControllerButton::BumperLeft;
+        case 'r': return InputManager::ControllerButton::TriggerLeft;
+        case 'y': return InputManager::ControllerButton::BumperRight;
+        case 'u': return InputManager::ControllerButton::TriggerRight;
+        default: {
+            printf("InputManager::ControllerButton::CharToButton: unrecognized char \'%c\'\n", c);
+            return InputManager::ControllerButton::Count;
         }
-    }    
+    }
+}
+
+// force b to match a length
+void ForceStringsSameLength(std::string const& name, std::string& a, std::string& b) {
+    if (a.length() != b.length()) {
+        printf("WARNING TypingEnemyEntity \"%s\" has keyText and buttons with different lengths: \"%s\" vs \"%s\"\n", name.c_str(), a.c_str(), b.c_str());
+    }
+    if (a.length() < b.length()) {
+        b.resize(a.length());
+    } else if (b.length() < a.length()) {
+        for (int i = b.length(); i < a.length(); ++i) {
+            b.push_back('a');
+        }
+    }
+}
 }
 
 void TypingEnemyEntity::LoadDerived(serial::Ptree pt) {
@@ -104,7 +118,7 @@ void TypingEnemyEntity::LoadDerived(serial::Ptree pt) {
     }
 }
 
-void TypingEnemyEntity::SaveDerived(serial::Ptree pt) const {
+void TypingEnemyEntity::SaveDerived(serial::Ptree pt) const {    
     pt.PutString("text", _keyText.c_str());
     pt.PutString("buttons", _buttons.c_str());
     pt.PutBool("type_kill", _destroyAfterTyped);
@@ -186,9 +200,7 @@ void TypingEnemyEntity::InitDerived(GameManager& g) {
         pAction->Init(g);
     }
 
-    if (_keyText.length() != _buttons.length()) {
-        printf("WARNING TypingEnemyEntity \"%s\" has keyText and buttons with different lengths: \"%s\" vs \"%s\"\n", _name.c_str(), _keyText.c_str(), _buttons.c_str());
-    }
+    ForceStringsSameLength(_name, _keyText, _buttons);
 
     _flowCooldownStartBeatTime = -1.0;
     _timeOfLastHit = -1.0;
@@ -196,16 +208,6 @@ void TypingEnemyEntity::InitDerived(GameManager& g) {
 
     _hittable = _initHittable;
     _numHits = 0;
-
-    if (_keyText.length() < _buttons.length()) {
-        for (int i = _keyText.length(); i < _buttons.length(); ++i) {
-            _keyText.push_back('a');
-        }
-    } else if (_buttons.length() < _keyText.length()) {
-        for (int i = _buttons.length(); i < _keyText.length(); ++i) {
-            _buttons.push_back('a');
-        }
-    }
 }
 
 namespace {

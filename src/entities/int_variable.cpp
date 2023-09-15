@@ -164,12 +164,13 @@ void IntVariableEntity::DrawCounter(GameManager& g) {
     double const beatTime = g._beatClock->GetBeatTimeFromEpoch();
     double beatTimeSinceLastAdd = std::numeric_limits<double>::max();
     double constexpr kAnimTime = 0.5f;
-    float constexpr kNewlyActiveExtraScale = 4.f;
+    // float constexpr kNewlyActiveExtraScale = 4.f;
+    float constexpr kNewlyActiveExtraScale = 2.f;
     float newlyActiveScaleFactor = 1.f;
     float alpha = _modelColor._w;
-    if (_currentValue == 0) {
-        alpha = 0.f;
-    }
+    // if (_currentValue == 0) {
+    //     alpha = 0.f;
+    // }
     if (_beatTimeOfLastAdd >= 0.0) {
         beatTimeSinceLastAdd = beatTime - _beatTimeOfLastAdd;
         if (beatTimeSinceLastAdd <= kAnimTime) {
@@ -177,9 +178,9 @@ void IntVariableEntity::DrawCounter(GameManager& g) {
             float scaleFactor = math_util::SmoothUpAndDown(factor);
             newlyActiveScaleFactor += scaleFactor * kNewlyActiveExtraScale;
 
-            if (_currentValue == 0) {
-                alpha = _modelColor._w + factor * (0.f - _modelColor._w);
-            }
+            // if (_currentValue == 0) {
+            //     alpha = _modelColor._w + factor * (0.f - _modelColor._w);
+            // }
         } else {
             _beatTimeOfLastAdd = -1.0;
         }
@@ -197,7 +198,7 @@ void IntVariableEntity::DrawCounter(GameManager& g) {
 
         t.SetTranslation(pos);
         renderer::ModelInstance& instance = g._scene->DrawCube(t.Mat4Scale(), color);
-        instance._topLayer = true;
+        // instance._topLayer = true;
         pos += (_cellWidth + _cellSpacing) * direction;
     }
 }

@@ -18,6 +18,13 @@ void FlowWallEntity::InitDerived(GameManager& g) {
     _currentColor = _modelColor;
     _hp = _maxHp;
     _meshId = g._scene->LoadPolygon2d(_polygon);
+
+    _children.clear();
+    _children.reserve(_childrenNames.size());
+    for (std::string const& name : _childrenNames) {
+        ne::BaseEntity* e = g._neEntityManager->FindEntityByName(name, /*includeActive=*/true, /*includeInactive=*/true);
+        _children.push_back(e->_id);
+    }
 }
 
 void FlowWallEntity::Update(GameManager& g, float dt) {
@@ -52,6 +59,27 @@ void FlowWallEntity::Update(GameManager& g, float dt) {
         float fracOfMaxHp = (float)_hp / (float)_maxHp;
         colorAfterHp = kDyingColor + fracOfMaxHp * (_modelColor - kDyingColor);
     }
+
+    Transform drawTransform = _transform;
+    if (_timeOfLastHit >= 0.0) {
+        double const beatTime = g._beatClock->GetBeatTimeFromEpoch();
+        double constexpr kEffectTime = 0.25;
+        double effectPhase = (beatTime - _timeOfLastHit) / kEffectTime;
+        effectPhase = math_util::Clamp(effectPhase, 0.0, 1.0);
+        float factor = math_util::SmoothUpAndDown(effectPhase);
+        float constexpr kMaxEffectAmount = 0.5f;
+        Vec3 p = drawTransform.Pos();
+        Vec3 dp = (factor * kMaxEffectAmount) * _lastHitDirection;
+        p += dp;
+        drawTransform.SetPos(p);
+        for (ne::EntityId const& eId : _children) {
+            if (ne::BaseEntity* child = g._neEntityManager->GetEntity(eId)) {
+                Vec3 childP = child->_initTransform.Pos();
+                childP += dp;
+                child->_transform.SetPos(childP);
+            }
+        }
+    }
     
 
     // Maybe update color from getting hit
@@ -59,7 +87,7 @@ void FlowWallEntity::Update(GameManager& g, float dt) {
     if (_timeOfLastHit >= 0.0) {
         double const beatTime = g._beatClock->GetBeatTimeFromEpoch();
         double constexpr kFadeTime = 0.25;
-        double fadeFactor = (beatTime - _timeOfLastHit) / kFadeTime;        
+        double fadeFactor = (beatTime - _timeOfLastHit) / kFadeTime;
         fadeFactor = math_util::Clamp(fadeFactor, 0.0, 1.0);
         // Use same alpha as the model color on the entity
         
@@ -71,10 +99,10 @@ void FlowWallEntity::Update(GameManager& g, float dt) {
     }
 
     if (renderer::ModelInstance* model = g._scene->DrawMesh(_meshId)) {
-        model->_transform = _transform.Mat4Scale();
+        model->_transform = drawTransform.Mat4Scale();
         model->_color = _currentColor;
     } else if (_model != nullptr) {
-        g._scene->DrawMesh(_model, _transform.Mat4Scale(), _currentColor);
+        g._scene->DrawMesh(_model, drawTransform.Mat4Scale(), _currentColor);
     }
 
 }
@@ -90,6 +118,7 @@ void FlowWallEntity::SaveDerived(serial::Ptree pt) const {
     pt.PutFloat("rot_vel", _rotVel);
     serial::SaveVectorInChildNode(pt, "polygon", "point", _polygon);
     SeqAction::SaveActionsInChildNode(pt, "hit_actions", _hitActions);
+    serial::SaveVectorInChildNode(pt, "children", "child", _childrenNames);
 }
 
 void FlowWallEntity::LoadDerived(serial::Ptree pt) {
@@ -108,6 +137,7 @@ void FlowWallEntity::LoadDerived(serial::Ptree pt) {
     pt.TryGetFloat("rot_vel", &_rotVel);
     serial::LoadVectorFromChildNode(pt, "polygon", _polygon);
     SeqAction::LoadActionsFromChildNode(pt, "hit_actions", _hitActions);
+    serial::LoadVectorFromChildNode(pt, "children", _childrenNames);
 }
 
 FlowWallEntity::ImGuiResult FlowWallEntity::ImGuiDerived(GameManager& g)  {
@@ -126,7 +156,12 @@ FlowWallEntity::ImGuiResult FlowWallEntity::ImGuiDerived(GameManager& g)  {
         if (ImGui::CollapsingHeader("Random")) {
             _randomWander.ImGui();
         }
-    }    
+    }
+
+    if (ImGui::TreeNode("Children")) {
+        imgui_util::InputVector(_childrenNames);
+        ImGui::TreePop();
+    }
 
     if (ImGui::CollapsingHeader("Polygon")) {
         imgui_util::InputVector(_polygon);        
@@ -139,7 +174,7 @@ FlowWallEntity::ImGuiResult FlowWallEntity::ImGuiDerived(GameManager& g)  {
     return result;
 }
 
-void FlowWallEntity::OnHit(GameManager& g) {
+void FlowWallEntity::OnHit(GameManager& g, Vec3 const& hitDirection) {
     if (!g._editMode) {
         if (_maxHp > 0) {
             --_hp;
@@ -149,6 +184,7 @@ void FlowWallEntity::OnHit(GameManager& g) {
         }
 
         _timeOfLastHit = g._beatClock->GetBeatTimeFromEpoch();
+        _lastHitDirection = hitDirection;
     }
     
     for (auto const& pAction : _hitActions) {
@@ -158,5 +194,5 @@ void FlowWallEntity::OnHit(GameManager& g) {
 }
 
 void FlowWallEntity::OnEditPick(GameManager& g) {
-    OnHit(g);
+    OnHit(g, Vec3());
 }
