@@ -37,13 +37,13 @@
     <patch>
         <name>lead</name>
         <patch>
-            <Gain>0.708000004</Gain>
+            <Gain>0.869000018</Gain>
             <Mono>0</Mono>
             <Osc1Waveform>Saw</Osc1Waveform>
             <Osc2Waveform>Square</Osc2Waveform>
             <Detune>0.0299999993</Detune>
             <OscFader>0</OscFader>
-            <Cutoff>7423.729</Cutoff>
+            <Cutoff>3050.84692</Cutoff>
             <Peak>0</Peak>
             <HpfCutoff>0</HpfCutoff>
             <HpfPeak>0</HpfPeak>
