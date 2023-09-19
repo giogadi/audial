@@ -37,14 +37,14 @@
     <patch>
         <name>lead</name>
         <patch>
-            <Gain>0.869000018</Gain>
+            <Gain>0.822000027</Gain>
             <Mono>0</Mono>
             <Osc1Waveform>Saw</Osc1Waveform>
             <Osc2Waveform>Square</Osc2Waveform>
-            <Detune>0.0299999993</Detune>
-            <OscFader>0</OscFader>
-            <Cutoff>3050.84692</Cutoff>
-            <Peak>0</Peak>
+            <Detune>0.00300000003</Detune>
+            <OscFader>0.5</OscFader>
+            <Cutoff>2000</Cutoff>
+            <Peak>0.492000014</Peak>
             <HpfCutoff>0</HpfCutoff>
             <HpfPeak>0</HpfPeak>
             <Portamento>0</Portamento>
@@ -52,7 +52,7 @@
             <PitchLFOFreq>0</PitchLFOFreq>
             <CutoffLFOGain>0</CutoffLFOGain>
             <CutoffLFOFreq>9.375</CutoffLFOFreq>
-            <AmpEnvAttack>0.0250000004</AmpEnvAttack>
+            <AmpEnvAttack>0.476999998</AmpEnvAttack>
             <AmpEnvDecay>0.458000004</AmpEnvDecay>
             <AmpEnvSustain>0.423999995</AmpEnvSustain>
             <AmpEnvRelease>5</AmpEnvRelease>

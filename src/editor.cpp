@@ -1,6 +1,8 @@
 #include "editor.h"
 
 #include <map>
+#include <cctype>
+#include <sstream>
 
 #include "imgui/imgui.h"
 #include "imgui_util.h"
@@ -11,6 +13,7 @@
 #include "entity_picking.h"
 #include "entities/typing_enemy.h"
 #include "util.h"
+#include "string_util.h"
 
 static float gScrollFactorForDebugCameraMove = 1.f;
 
@@ -359,6 +362,31 @@ void Editor::Update(float dt, SynthGuiState& synthGuiState) {
     }
 }
 
+namespace {
+    std::pair<std::string_view, int> SplitIntoNameAndNumberSuffix(std::string const& str) {
+        int numIx = -1;
+        for (int charIx = str.length() - 1; charIx >= 0; --charIx) {
+            if (isdigit(str[charIx])) {
+                numIx = charIx;
+            } else {
+                break;
+            }
+        }
+        if (numIx < 0) {
+            return std::make_pair(std::string_view(str), -1);
+        }
+        std::string_view nameStr(str.c_str(), numIx);
+        std::string_view numStr(str.c_str() + numIx);
+        int suffixNum = -1;
+        if (string_util::MaybeStoi(numStr, suffixNum)) {            
+            return std::make_pair(nameStr, suffixNum);
+        } else {
+            printf("WARNING: bad number suffix starting at %d in %s\n", numIx, str.c_str());
+            return std::make_pair(std::string_view(str), -1);
+        }
+    }
+}
+
 void Editor::DrawWindow() {
     ImGui::Begin("Editor");
 
@@ -485,7 +513,32 @@ void Editor::DrawWindow() {
                 newEntity->Load(pt);
                 pt.DeleteData();
             }
-            newEntity->_name += " (copy)";
+            // Pick new name for duplicate
+            {
+                auto [nameStr, suffixNum] = SplitIntoNameAndNumberSuffix(newEntity->_name);
+                for (ne::EntityManager::AllIterator eIter = _g->_neEntityManager->GetAllIterator(); !eIter.Finished(); eIter.Next()) {
+                    if (ne::Entity* entity = eIter.GetEntity()) {
+                        auto [otherNameStr, otherSuffixNum] = SplitIntoNameAndNumberSuffix(entity->_name);
+                        if (nameStr == otherNameStr) {
+                            suffixNum = std::max(suffixNum, otherSuffixNum);
+                        }
+                    }
+                }
+                for (ne::EntityManager::AllIterator eIter = _g->_neEntityManager->GetAllInactiveIterator(); !eIter.Finished(); eIter.Next()) {
+                    if (ne::Entity* entity = eIter.GetEntity()) {
+                        auto [otherNameStr, otherSuffixNum] = SplitIntoNameAndNumberSuffix(entity->_name);
+                        if (nameStr == otherNameStr) {
+                            suffixNum = std::max(suffixNum, otherSuffixNum);
+                        }
+                    }
+                }
+                ++suffixNum;
+                std::stringstream ss;
+                ss << nameStr << suffixNum;
+                newEntity->_name = ss.str();
+                // nameStr is invalid here!!!
+            }
+
             _entityIds.push_back(newEntity->_id);
             newEntity->Init(*_g);
 
