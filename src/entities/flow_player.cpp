@@ -17,21 +17,30 @@ void FlowPlayerEntity::SaveDerived(serial::Ptree pt) const {
     pt.PutFloat("selection_radius", _selectionRadius);
     pt.PutFloat("launch_vel", _launchVel);
     pt.PutFloat("max_horiz_speed_after_dash", _maxHorizSpeedAfterDash);
+    pt.PutFloat("max_vert_speed_after_dash", _maxVertSpeedAfterDash);
+    pt.PutFloat("max_overall_speed_after_dash", _maxOverallSpeedAfterDash);
     pt.PutFloat("dash_time", _dashTime);
     serial::SaveInNewChildOf(pt, "gravity", _gravity);
     serial::SaveInNewChildOf(pt, "respawn_pos", _respawnPos);
     pt.PutFloat("max_speed", _maxSpeed);
+    pt.PutBool("stop_dash_on_pass_enemy", _stopDashOnPassEnemy);
 }
 
 void FlowPlayerEntity::LoadDerived(serial::Ptree pt) {
     _selectionRadius = pt.GetFloat("selection_radius");
     _launchVel = pt.GetFloat("launch_vel");
     pt.TryGetFloat("max_horiz_speed_after_dash", &_maxHorizSpeedAfterDash);
+    _maxVertSpeedAfterDash = 0.f;
+    pt.TryGetFloat("max_vert_speed_after_dash", &_maxVertSpeedAfterDash);
+    _maxOverallSpeedAfterDash = -1.f;
+    pt.TryGetFloat("max_overall_speed_after_dash", &_maxOverallSpeedAfterDash);
     pt.TryGetFloat("dash_time", &_dashTime);
     serial::LoadFromChildOf(pt, "gravity", _gravity);
     serial::LoadFromChildOf(pt, "respawn_pos", _respawnPos);
     _maxSpeed = 20.f;
     pt.TryGetFloat("max_speed", &_maxSpeed);
+    _stopDashOnPassEnemy = true;
+    pt.TryGetBool("stop_dash_on_pass_enemy", &_stopDashOnPassEnemy);
 }
 
 void FlowPlayerEntity::InitDerived(GameManager& g) {
@@ -281,14 +290,25 @@ void FlowPlayerEntity::Update(GameManager& g, float dt) {
                     _dashTimer = 0.25f * _dashTime;
                 }
             } else if (_useLastKnownDashTarget) {
-                _vel = (_lastKnownDashTarget - playerPos).GetNormalized() * _launchVel;
-                Vec3 prevOffset = _lastKnownDashTarget - playerPos;
-                playerPos += _vel * dt;
-                Vec3 nextOffset = _lastKnownDashTarget - playerPos;
-                float dotp = Vec3::Dot(prevOffset, nextOffset);
-                if (dotp < 0.f) {
-                    doneDashing = true;
+                Vec3 playerToTargetDir = _lastKnownDashTarget - playerPos;
+                float dotP = Vec3::Dot(playerToTargetDir, _vel);
+                if (dotP < 0.f) {
                     passedDashTarget = true;
+                    _useLastKnownDashTarget = false;
+                } else {
+                    float currentSpeed = _vel.Length();
+                    Vec3 newVel = playerToTargetDir.GetNormalized() * currentSpeed;
+                    Vec3 newPos = playerPos + newVel * dt;
+                    float dotPAgain = Vec3::Dot(newPos - _lastKnownDashTarget, playerPos - _lastKnownDashTarget);
+                    if (dotPAgain < 0.f) {
+                        passedDashTarget = true;
+                        _useLastKnownDashTarget = false;
+                    } else {
+                        _vel = newVel;
+                    }
+                }
+                if (passedDashTarget && _stopDashOnPassEnemy) {
+                    doneDashing = true;
                 }
             }
         }
@@ -300,8 +320,17 @@ void FlowPlayerEntity::Update(GameManager& g, float dt) {
                 speed = std::min(speed, kPassTargetSpeed);
                 _vel *= speed;
             } else {
-                _vel._x = math_util::Clamp(_vel._x, -_maxHorizSpeedAfterDash, _maxHorizSpeedAfterDash);
-                _vel._z = 0.f;
+                if (_maxHorizSpeedAfterDash >= 0.f) {
+                    _vel._x = math_util::Clamp(_vel._x, -_maxHorizSpeedAfterDash, _maxHorizSpeedAfterDash);
+                }
+                if (_maxVertSpeedAfterDash >= 0.f) {
+                    _vel._z = math_util::Clamp(_vel._z, -_maxVertSpeedAfterDash, _maxVertSpeedAfterDash);
+                }
+                if (_maxOverallSpeedAfterDash >= 0.f) {
+                    float speed = _vel.Normalize();
+                    speed = std::min(_maxOverallSpeedAfterDash, speed);
+                    _vel *= speed;
+                }
             }
             _dashTimer = -1.f;
             _dashTargetId = ne::EntityId();
@@ -323,13 +352,6 @@ void FlowPlayerEntity::Update(GameManager& g, float dt) {
             _vel._y = std::max(-_maxSpeed, _vel._y);
         }
     }
-
-    // limit to _maxSpeed
-    // {
-    //     float speed = std::min(_vel.Length(), _maxSpeed);
-    //     _vel.Normalize();
-    //     _vel *= speed;
-    // }
 
     Vec3 p = _transform.GetPos();
 

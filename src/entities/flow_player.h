@@ -11,10 +11,13 @@ struct FlowPlayerEntity : public ne::Entity {
     float _selectionRadius = -1.f;  // ignored if < 0
     float _launchVel = 4.f; // > 0
     Vec3 _gravity = Vec3(0.f, 0.f, 9.81f);
-    float _maxHorizSpeedAfterDash = 20.f;
+    float _maxHorizSpeedAfterDash = 2.f;
+    float _maxVertSpeedAfterDash = 0.f;
+    float _maxOverallSpeedAfterDash = -1.f;
     float _dashTime = 0.5f;
     Vec3 _respawnPos;
     float _maxSpeed = 20.f; // DUE TO GRAVITY ONLY
+    bool _stopDashOnPassEnemy = true;
 
     // non-serialized
     Vec3 _vel;

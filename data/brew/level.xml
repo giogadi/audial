@@ -229,7 +229,9 @@
             </waypoint_follower>
             <selection_radius>-1</selection_radius>
             <launch_vel>20</launch_vel>
-            <max_horiz_speed_after_dash>4</max_horiz_speed_after_dash>
+            <max_horiz_speed_after_dash>-1</max_horiz_speed_after_dash>
+            <max_vert_speed_after_dash>-1</max_vert_speed_after_dash>
+            <max_overall_speed_after_dash>4</max_overall_speed_after_dash>
             <dash_time>0.150000006</dash_time>
             <gravity>
                 <x>0</x>
@@ -242,6 +244,7 @@
                 <z>-4.125</z>
             </respawn_pos>
             <max_speed>10</max_speed>
+            <stop_dash_on_pass_enemy>false</stop_dash_on_pass_enemy>
         </FlowPlayer>
         <StepSequencer>
             <name>kick_seq</name>
