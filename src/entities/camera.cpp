@@ -89,7 +89,9 @@ ne::Entity::ImGuiResult CameraEntity::ImGuiDerived(GameManager& g) {
         _camera->_transform = _transform.Mat4NoScale();
     }
     if (ImGui::Button("Move This to Debug Camera")) {
-        _transform.SetFromMat4(_camera->_transform);
+        Transform t;
+        t.SetFromMat4(_camera->_transform);
+        SetAllTransforms(t);
     }
     ImGui::DragFloat("Fovy (deg)", &_fovyDeg, /*v_speed=*/1.f, /*v_min=*/10.f, /*v_max=*/120.f);
     return ImGuiResult::Done;

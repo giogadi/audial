@@ -286,6 +286,8 @@ struct Vec4 {
         v[3] = _w;
     }
 
+    Vec3 GetXYZ() const { return Vec3(_x, _y, _z); }
+
     void Save(serial::Ptree pt) const {
         pt.PutFloat("x", _x);
         pt.PutFloat("y", _y);

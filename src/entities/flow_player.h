@@ -30,6 +30,7 @@ struct FlowPlayerEntity : public ne::Entity {
     ne::EntityId _dashTargetId;
     Vec3 _lastKnownDashTarget;
     bool _useLastKnownDashTarget = false;
+    Vec4 _lastDashTargetColor;
     Vec4 _currentColor;
     bool _flowPolarity = true;
     double _countOffEndTime = 3.0;

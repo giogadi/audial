@@ -41,6 +41,8 @@ void FlowPlayerEntity::LoadDerived(serial::Ptree pt) {
     pt.TryGetFloat("max_speed", &_maxSpeed);
     _stopDashOnPassEnemy = true;
     pt.TryGetBool("stop_dash_on_pass_enemy", &_stopDashOnPassEnemy);
+
+    _respawnPos = _initTransform.Pos();
 }
 
 void FlowPlayerEntity::InitDerived(GameManager& g) {
@@ -105,11 +107,8 @@ void FlowPlayerEntity::DrawPlayer(GameManager& g) {
          model._topLayer = true;
     }
 
-    if (_dashTimer >= 0.f) {
-        if (ne::Entity* dashTarget = g._neEntityManager->GetEntity(_dashTargetId)) {
-            Vec3 targetPos = dashTarget->_transform.Pos();
-            g._scene->DrawLine(_transform.Pos(), targetPos, dashTarget->_modelColor);
-        }
+    if (_dashTimer >= 0.f && _useLastKnownDashTarget) {
+        g._scene->DrawLine(_transform.Pos(), _lastKnownDashTarget, _lastDashTargetColor);
     }
 }
 
@@ -247,6 +246,8 @@ void FlowPlayerEntity::Update(GameManager& g, float dt) {
             _dashTargetId = nearest->_id;
             _lastKnownDashTarget = nearest->_transform.Pos();
             _lastKnownDashTarget._y = _transform.Pos()._y;
+            _lastDashTargetColor = nearest->_modelColor;
+            _lastDashTargetColor._w = 1.f;
             _applyGravityDuringDash = false;
             
             for (auto enemyIter = g._neEntityManager->GetIterator(ne::EntityType::TypingEnemy); !enemyIter.Finished(); enemyIter.Next()) {
