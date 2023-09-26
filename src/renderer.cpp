@@ -753,7 +753,7 @@ Scene::MeshId Scene::LoadPolygon2d(std::vector<Vec3> const& points) {
     for (Vec3 const& p : points) {
         centroid += p;
     }
-    centroid = centroid / points.size();
+    centroid = centroid / static_cast<float>(points.size());
 
     std::vector<float> vertexData;
     vertexData.reserve((points.size() + 1) * BoundMeshPNU::kNumValuesPerVertex);
@@ -1145,8 +1145,10 @@ void Scene::Draw(int windowWidth, int windowHeight, float timeInSecs) {
         for (LineInstance const& line : _pInternal->_linesToDraw) {
             Vec4 start(line._start._x, line._start._y, line._start._z, 1.f);
             start = viewProjTransform * start;
+            start /= start._w;
             Vec4 end(line._end._x, line._end._y, line._end._z, 1.f);
             end = viewProjTransform * end;
+            end /= end._w;
             
             lineVertexData.push_back(start._x);
             lineVertexData.push_back(start._y);
