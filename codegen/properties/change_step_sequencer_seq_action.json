@@ -2,8 +2,8 @@
     "propertiesName": "ChangeStepSequencerSeqAction",
     "props": [
         {
-            "name": "seqName",
-            "type": "string"
+            "name": "seqEntityEditorId",
+            "type": "editor_id"
         },
         {
             "name": "velOnly",

@@ -8,7 +8,7 @@ struct FlowTriggerEntity : public ne::Entity {
     struct Props {
         std::vector<std::unique_ptr<SeqAction>> _actions;
         std::vector<std::unique_ptr<SeqAction>> _actionsOnExit;
-        std::vector<std::string> _triggerVolumeEntityNames;
+        std::vector<EditorId> _triggerVolumeEditorIds;
         bool _triggerOnPlayerEnter = true;
         int _randomActionCount = -1;
         bool _useTriggerVolumes = false;

@@ -8,13 +8,13 @@
 
 void VfxPulseSeqActionProps::Load(serial::Ptree pt) {
    
-   pt.TryGetString("vfxEntityName", &_vfxEntityName);
+   serial::LoadFromChildOf(pt, "vfxEditorId", _vfxEditorId);
    
 }
 
 void VfxPulseSeqActionProps::Save(serial::Ptree pt) const {
     
-    pt.PutString("vfxEntityName", _vfxEntityName.c_str());
+    serial::SaveInNewChildOf(pt, "vfxEditorId", _vfxEditorId);
     
 }
 
@@ -22,7 +22,7 @@ bool VfxPulseSeqActionProps::ImGui() {
     bool changed = false;
     
     {
-        bool thisChanged = imgui_util::InputText<128>("vfxEntityName", &_vfxEntityName);
+        bool thisChanged = imgui_util::InputEditorId("vfxEditorId", &_vfxEditorId);
         changed = changed || thisChanged;
     }
     

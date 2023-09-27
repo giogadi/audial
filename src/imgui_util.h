@@ -2,6 +2,7 @@
 
 #include "matrix.h"
 #include "imgui/imgui.h"
+#include "editor_id.h"
 
 namespace imgui_util {
 
@@ -45,5 +46,7 @@ inline bool ColorEdit4(char const* label, Vec4* v) {
     }
     return changed;
 }
+
+bool InputEditorId(char const* label, EditorId* v);
 
 }

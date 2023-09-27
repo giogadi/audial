@@ -24,7 +24,7 @@ struct SpawnAutomatorSeqAction : public SeqAction {
         _props.Load(pt);
     }
     virtual void SaveDerived(serial::Ptree pt) const override {
-        _props.Save(pt);
+        _props.Save(pt); 
     }
     virtual bool ImGui() override {
         return _props.ImGui();
@@ -34,7 +34,7 @@ struct SpawnAutomatorSeqAction : public SeqAction {
 
 struct RemoveEntitySeqAction : public SeqAction {
     virtual SeqActionType Type() const override { return SeqActionType::RemoveEntity; }
-    std::string _entityName;
+    EditorId _entityEditorId;
 
     virtual void ExecuteDerived(GameManager& g) override;
     virtual void LoadDerived(
@@ -65,7 +65,7 @@ struct ChangeStepSequencerSeqAction : public SeqAction {
 struct SetAllStepsSeqAction : public SeqAction {
     virtual SeqActionType Type() const override { return SeqActionType::SetAllSteps; }
     // serialized
-    std::string _seqName;
+    EditorId _seqEditorId;
     std::string _stepStr;
     bool _velOnly = false;
 
@@ -85,7 +85,7 @@ struct SetAllStepsSeqAction : public SeqAction {
 struct SetStepSequenceSeqAction : public SeqAction {
     virtual SeqActionType Type() const override { return SeqActionType::SetStepSequence; }
     // serialized
-    std::string _seqName;
+    EditorId _seqEditorId;
     std::string _seqStr;
     bool _offsetStart = false;
 
@@ -104,7 +104,7 @@ struct SetStepSequenceSeqAction : public SeqAction {
 struct SetStepSequencerMuteSeqAction : public SeqAction {
     virtual SeqActionType Type() const override { return SeqActionType::SetStepSequencerMute; }
     // serialized
-    std::string _seqName;
+    EditorId _seqEditorId;
     bool _mute;
 
     ne::EntityId _seqId;
@@ -149,7 +149,7 @@ struct WaypointControlSeqAction : public SeqAction {
     virtual SeqActionType Type() const override { return SeqActionType::WaypointControl; }
     // serialize
     bool _followWaypoints = true;
-    std::string _entityName;
+    EditorId _entityEditorId;
 
     virtual void ExecuteDerived(GameManager& g) override;
     virtual void LoadDerived(
@@ -176,7 +176,7 @@ struct PlayerSetSpawnPointSeqAction : public SeqAction {
     virtual SeqActionType Type() const override { return SeqActionType::PlayerSetSpawnPoint; }
     
     Vec3 _spawnPos;
-    std::string _actionSeqEntityNameToActivate;
+    EditorId _actionSeqEditorId;
 
     ne::EntityId _actionSeq;
 
@@ -202,7 +202,7 @@ struct SetNewFlowSectionSeqAction : public SeqAction {
 
 struct AddToIntVariableSeqAction : public SeqAction {
     virtual SeqActionType Type() const override { return SeqActionType::AddToIntVariable; }
-    std::string _varName;
+    EditorId _varEditorId;
     int _addAmount = 0;
     bool _reset = false; // if true, _addAmount is ignored
 
@@ -215,7 +215,7 @@ struct AddToIntVariableSeqAction : public SeqAction {
 
 struct SetEntityActiveSeqAction : public SeqAction {
     virtual SeqActionType Type() const override { return SeqActionType::SetEntityActive; }
-    std::string _entityName;
+    EditorId _entityEditorId;
     bool _active = true;
     bool _initOnActivate = true;
 
@@ -239,7 +239,9 @@ struct ChangeStepSeqMaxVoicesSeqAction : public SeqAction {
 
     virtual void LoadDerived(LoadInputs const& loadInputs, std::istream& input) override;
     virtual void LoadDerived(serial::Ptree pt) override { _props.Load(pt); }
-    virtual void SaveDerived(serial::Ptree pt) const override { _props.Save(pt); }
+    virtual void SaveDerived(serial::Ptree pt) const override {
+        _props.Save(pt);        
+    }
     virtual bool ImGui() override { return _props.ImGui(); }
     virtual void InitDerived(GameManager& g) override;
     virtual void ExecuteDerived(GameManager& g) override;
@@ -247,7 +249,7 @@ struct ChangeStepSeqMaxVoicesSeqAction : public SeqAction {
 
 struct TriggerSeqAction : public SeqAction {
     virtual SeqActionType Type() const override { return SeqActionType::Trigger; }
-    std::string _entityName;
+    EditorId _entityEditorId;
 
     ne::EntityId _entityId;
 

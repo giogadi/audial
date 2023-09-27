@@ -19,6 +19,8 @@ struct Editor {
 
     bool IsEntitySelected(ne::EntityId entityId);
 
+    ne::Entity* ImGuiEntitySelector(char const* buttonLabel, char const* popupLabel);
+
     GameManager* _g = nullptr;
     bool _entityWindowVisible = false;
     std::set<ne::EntityId> _selectedEntityIds;
@@ -29,4 +31,5 @@ struct Editor {
     bool _enableFlowSectionFilter = false;
     int _flowSectionFilterId = -1;
     bool _showControllerInputs = false;  // if false, show keyboard inputs
+    int64_t _nextEditorId = -1;
 };

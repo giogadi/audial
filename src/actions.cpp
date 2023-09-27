@@ -15,6 +15,8 @@
 #include "sound_bank.h"
 #include "imgui_util.h"
 
+extern GameManager gGameManager;
+
 void SpawnAutomatorSeqAction::LoadDerived(LoadInputs const& loadInputs, std::istream& input) {
     std::string paramName;
     std::string token;
@@ -28,7 +30,7 @@ void SpawnAutomatorSeqAction::LoadDerived(LoadInputs const& loadInputs, std::ist
     }
     if (paramName == "seq_velocity") {
         _props._synth = false;
-        input >> _props._seqEntityName;
+        input >> _props._seqEditorId;
     }
     else {
         _props._synth = true;
@@ -50,26 +52,23 @@ void SpawnAutomatorSeqAction::ExecuteDerived(GameManager& g) {
 }
 
 void RemoveEntitySeqAction::LoadDerived(LoadInputs const& loadInputs, std::istream& input) {
-    input >> _entityName;
+    input >> _entityEditorId;
 }
 
 void RemoveEntitySeqAction::LoadDerived(serial::Ptree pt) {
-    _entityName = pt.GetString("entity_name");
+    serial::LoadFromChildOf(pt, "entity_editor_id", _entityEditorId);
 }
 void RemoveEntitySeqAction::SaveDerived(serial::Ptree pt) const {
-    pt.PutString("entity_name", _entityName.c_str());
+    serial::SaveInNewChildOf(pt, "entity_editor_id", _entityEditorId);
 }
 bool RemoveEntitySeqAction::ImGui() {
-    return imgui_util::InputText<128>("Entity name", &_entityName);
+    return imgui_util::InputEditorId("Entity ID", &_entityEditorId);
 }
 
 void RemoveEntitySeqAction::ExecuteDerived(GameManager& g) {
-    ne::Entity* e = g._neEntityManager->FindEntityByName(_entityName);
+    ne::Entity* e = g._neEntityManager->FindEntityByEditorId(_entityEditorId, nullptr, "RemoveEntitySeqAction");
     if (e) {
         g._neEntityManager->TagForDestroy(e->_id);
-    }
-    else {
-        printf("RemoveEntitySeqAction could not find entity with name \"%s\"\n", _entityName.c_str());
     }
 }
 
@@ -101,7 +100,8 @@ void ChangeStepSequencerSeqAction::ExecuteDerived(GameManager& g) {
 }
 
 void ChangeStepSequencerSeqAction::LoadDerived(LoadInputs const& loadInputs, std::istream& input) {
-    input >> _props._seqName;
+    assert(false); // TODO
+    input >> _props._seqEntityEditorId;
 
     input >> _props._velOnly;
     input >> _props._temporary;
@@ -114,7 +114,7 @@ void ChangeStepSequencerSeqAction::LoadDerived(serial::Ptree pt) {
 }
 
 void ChangeStepSequencerSeqAction::SaveDerived(serial::Ptree pt) const {
-    _props.Save(pt);
+    _props.Save(pt);    
 }
 
 bool ChangeStepSequencerSeqAction::ImGui() {
@@ -122,12 +122,9 @@ bool ChangeStepSequencerSeqAction::ImGui() {
 }
 
 void ChangeStepSequencerSeqAction::InitDerived(GameManager& g) {
-    ne::Entity* e = g._neEntityManager->FindEntityByName(_props._seqName);
+    ne::Entity* e = g._neEntityManager->FindEntityByEditorId(_props._seqEntityEditorId, nullptr, "ChangeStepSequencerSeqAction");
     if (e) {
         _seqId = e->_id;
-    }
-    else {
-        printf("ChangeStepSequencerSeqAction: could not find seq entity \"%s\"\n", _props._seqName.c_str());
     }
 
     std::stringstream ss(_props._stepStr);
@@ -142,50 +139,33 @@ void ChangeStepSequencerSeqAction::InitDerived(GameManager& g) {
 }
 
 void SetAllStepsSeqAction::LoadDerived(LoadInputs const& loadInputs, std::istream& input) {
-    input >> _seqName;
+    input >> _seqEditorId;
     input >> _velOnly;
 
     std::getline(input, _stepStr);
-
-    // std::string token;
-    // input >> token;
-    // if (token == "vel_only") {
-    //     _velOnly = true;
-    //     input >> _seqName;
-    // } else {
-    //     _seqName = token;
-    // }
-    // if (!_velOnly) {
-    //     assert(_midiNotes.size() == 4);
-    //     input >> _midiNotes[0] >> _midiNotes[1] >> _midiNotes[2] >> _midiNotes[3];
-    // }
-    // input >> _velocity;
 }
 void SetAllStepsSeqAction::LoadDerived(serial::Ptree pt) {
-    _seqName = pt.GetString("seq_name");
+    serial::LoadFromChildOf(pt, "seq_editor_id", _seqEditorId);
     _stepStr = pt.GetString("step_str");
     _velOnly = pt.GetBool("vel_only");
 }
 void SetAllStepsSeqAction::SaveDerived(serial::Ptree pt) const {
-    pt.PutString("seq_name", _seqName.c_str());
+    serial::SaveInNewChildOf(pt, "seq_editor_id", _seqEditorId);
     pt.PutString("step_str", _stepStr.c_str());
     pt.PutBool("vel_only", _velOnly);
 }
 bool SetAllStepsSeqAction::ImGui() {
-    imgui_util::InputText<128>("Seq entity name", &_seqName);
+    imgui_util::InputEditorId("Seq editor ID", &_seqEditorId);
     imgui_util::InputText<128>("Step string", &_stepStr);
     ImGui::Checkbox("Velocity only", &_velOnly);
     return false;
 }
 
 void SetAllStepsSeqAction::InitDerived(GameManager& g) {
-    ne::Entity* e = g._neEntityManager->FindEntityByName(_seqName);
+    ne::Entity* e = g._neEntityManager->FindEntityByEditorIdAndType(_seqEditorId, ne::EntityType::StepSequencer, nullptr, "SetAllStepsSeqAction");
     if (e) {
         _seqId = e->_id;
-    }
-    else {
-        printf("SetAllStepsSeqAction: could not find seq entity \"%s\"\n", _seqName.c_str());
-    }
+    }    
 
     std::stringstream ss(_stepStr);
     StepSequencerEntity::SeqStep step;
@@ -223,26 +203,26 @@ void SetAllStepsSeqAction::ExecuteDerived(GameManager& g) {
 }
 
 void SetStepSequenceSeqAction::LoadDerived(LoadInputs const& loadInputs, std::istream& input) {
-    input >> _seqName;
+    input >> _seqEditorId;
     // ASSUMES WE ONLY HAVE ONE LINE
     std::getline(input, _seqStr);
 }
 
 void SetStepSequenceSeqAction::LoadDerived(serial::Ptree pt) {
-    _seqName = pt.GetString("seq_entity_name");
+    serial::LoadFromChildOf(pt, "seq_editor_id", _seqEditorId);
     _seqStr = pt.GetString("seq_str");
     _offsetStart = false;
     pt.TryGetBool("offset_start", &_offsetStart);
 }
 
 void SetStepSequenceSeqAction::SaveDerived(serial::Ptree pt) const {
-    pt.PutString("seq_entity_name", _seqName.c_str());
+    serial::SaveInNewChildOf(pt, "seq_editor_id", _seqEditorId);
     pt.PutString("seq_str", _seqStr.c_str());
     pt.PutBool("offset_start", _offsetStart);
 }
 
 bool SetStepSequenceSeqAction::ImGui() {
-    bool changed = imgui_util::InputText<128>("Seq entity name", &_seqName);
+    bool changed = imgui_util::InputEditorId("Seq editor ID", &_seqEditorId);
 
     bool c = imgui_util::InputText<1024>("Seq str", &_seqStr);
     changed = c || changed;
@@ -253,12 +233,9 @@ bool SetStepSequenceSeqAction::ImGui() {
 }
 
 void SetStepSequenceSeqAction::InitDerived(GameManager& g) {
-    ne::Entity* e = g._neEntityManager->FindEntityByName(_seqName);
+    ne::Entity* e = g._neEntityManager->FindEntityByEditorIdAndType(_seqEditorId, ne::EntityType::StepSequencer, nullptr, "SetStepSequenceSeqAction");
     if (e) {
         _seqId = e->_id;
-    }
-    else {
-        printf("SetStepSequenceSeqAction: could not find seq entity \"%s\"\n", _seqName.c_str());
     }
 
     std::stringstream ss(_seqStr);
@@ -341,33 +318,30 @@ void NoteOnOffSeqAction::ExecuteDerived(GameManager& g) {
 }
 
 void SetStepSequencerMuteSeqAction::LoadDerived(LoadInputs const& loadInputs, std::istream& input) {
-    input >> _seqName;
+    input >> _seqEditorId;
     input >> _mute;
 }
 
 void SetStepSequencerMuteSeqAction::LoadDerived(serial::Ptree pt) {
-    _seqName = pt.GetString("seq_name");
+    serial::LoadFromChildOf(pt, "seq_editor_id", _seqEditorId);
     _mute = pt.GetBool("mute");
 }
 
 void SetStepSequencerMuteSeqAction::SaveDerived(serial::Ptree pt) const {
-    pt.PutString("seq_name", _seqName.c_str());
+    serial::SaveInNewChildOf(pt, "seq_editor_id", _seqEditorId);
     pt.PutBool("mute", _mute);
 }
 
 bool SetStepSequencerMuteSeqAction::ImGui() {
-    imgui_util::InputText<128>("Seq entity name", &_seqName);
+    imgui_util::InputEditorId("Seq editor ID", &_seqEditorId);
     ImGui::Checkbox("Mute", &_mute);
     return false;
 }
 
 void SetStepSequencerMuteSeqAction::InitDerived(GameManager& g) {
-    ne::Entity* e = g._neEntityManager->FindEntityByName(_seqName);
+    ne::Entity* e = g._neEntityManager->FindEntityByEditorIdAndType(_seqEditorId, ne::EntityType::StepSequencer, nullptr, "SetStepSequenceMuteSeqAction");
     if (e) {
         _seqId = e->_id;
-    }
-    else {
-        printf("SetStepSequenceMuteSeqAction: could not find seq entity \"%s\"\n", _seqName.c_str());
     }
 }
 
@@ -421,32 +395,28 @@ void BeatTimeEventSeqAction::ExecuteDerived(GameManager& g) {
 }
 
 void WaypointControlSeqAction::LoadDerived(LoadInputs const& loadInputs, std::istream& input) {
-    input >> _entityName;
+    input >> _entityEditorId;
     input >> _followWaypoints;
 }
 
 void WaypointControlSeqAction::LoadDerived(serial::Ptree pt) {
     _followWaypoints = pt.GetBool("follow_waypoints");
-    _entityName = pt.GetString("entity_name");
+    serial::LoadFromChildOf(pt, "entity_editor_id", _entityEditorId);
 }
 
 void WaypointControlSeqAction::SaveDerived(serial::Ptree pt) const {
     pt.PutBool("follow_waypoints", _followWaypoints);
-    pt.PutString("entity_name", _entityName.c_str());
+    serial::SaveInNewChildOf(pt, "entity_editor_id", _entityEditorId);
 }
 
 bool WaypointControlSeqAction::ImGui() {
     ImGui::Checkbox("Follow", &_followWaypoints);
-    imgui_util::InputText<128>("Entity name", &_entityName);
+    imgui_util::InputEditorId("Entity editor ID", &_entityEditorId);
     return false;
 }
 
 void WaypointControlSeqAction::ExecuteDerived(GameManager& g) {
-    ne::Entity* e = g._neEntityManager->FindEntityByName(_entityName);
-    if (e == nullptr) {
-        printf("ERROR: WaypointControlSeqAction could not find entity \"%s\"\n", _entityName.c_str());
-        return;
-    }
+    ne::Entity* e = g._neEntityManager->FindEntityByEditorId(_entityEditorId, nullptr, "WaypointControlSeqAction");
     if (_followWaypoints) {
         e->_wpFollower.Start(g, *e);
     }
@@ -587,23 +557,23 @@ void PlayerSetSpawnPointSeqAction::LoadDerived(LoadInputs const& loadInputs, std
 
 void PlayerSetSpawnPointSeqAction::LoadDerived(serial::Ptree pt) {
     serial::LoadFromChildOf(pt, "spawn_pos", _spawnPos);
-    pt.TryGetString("action_seq_name", &_actionSeqEntityNameToActivate);
+    serial::LoadFromChildOf(pt, "action_seq_editor_id", _actionSeqEditorId);
 }
 
 void PlayerSetSpawnPointSeqAction::SaveDerived(serial::Ptree pt) const {
     serial::SaveInNewChildOf(pt, "spawn_pos", _spawnPos);
-    pt.PutString("action_seq_name", _actionSeqEntityNameToActivate.c_str());
+    serial::SaveInNewChildOf(pt, "action_seq_editor_id", _actionSeqEditorId);
 }
 
 bool PlayerSetSpawnPointSeqAction::ImGui() {
     imgui_util::InputVec3("Spawn pos", &_spawnPos);
-    imgui_util::InputText<64>("ActionSeq to Activate", &_actionSeqEntityNameToActivate);
+    imgui_util::InputEditorId("ActionSeq to Activate", &_actionSeqEditorId);
     return false;
 }
 
 void PlayerSetSpawnPointSeqAction::InitDerived(GameManager& g) {
-    if (!_actionSeqEntityNameToActivate.empty()) {
-        ne::Entity* e = g._neEntityManager->FindEntityByNameAndType(_actionSeqEntityNameToActivate, ne::EntityType::ActionSequencer, /*includeActive=*/true, /*includeInactive=*/true);
+    if (_actionSeqEditorId.IsValid()) {
+        ne::Entity* e = g._neEntityManager->FindEntityByEditorIdAndType(_actionSeqEditorId, ne::EntityType::ActionSequencer, nullptr, "PlayerSetSpawnPointSeqAction");
         if (e) {
             _actionSeq = e->_id;
         } else {
@@ -621,7 +591,7 @@ void PlayerSetSpawnPointSeqAction::ExecuteDerived(GameManager& g) {
 
 void AddToIntVariableSeqAction::LoadDerived(LoadInputs const& loadInputs, std::istream& input) {
     try {
-        input >> _varName >> _addAmount;
+        input >> _varEditorId >> _addAmount;
     }
     catch (std::exception&) {
         printf("AddToIntVariableSeqAction::Load: could not parse input\n");
@@ -629,20 +599,20 @@ void AddToIntVariableSeqAction::LoadDerived(LoadInputs const& loadInputs, std::i
 }
 
 void AddToIntVariableSeqAction::LoadDerived(serial::Ptree pt) {
-    _varName = pt.GetString("var_name");
+    serial::LoadFromChildOf(pt, "var_editor_id", _varEditorId);
     _addAmount = pt.GetInt("add_amount");
     _reset = false;
     pt.TryGetBool("reset", &_reset);
 }
 
 void AddToIntVariableSeqAction::SaveDerived(serial::Ptree pt) const {
-    pt.PutString("var_name", _varName.c_str());
+    serial::SaveInNewChildOf(pt, "var_editor_id", _varEditorId);
     pt.PutInt("add_amount", _addAmount);
     pt.PutBool("reset", _reset);
 }
 
 bool AddToIntVariableSeqAction::ImGui() {
-    imgui_util::InputText<128>("Var entity name", &_varName);
+    imgui_util::InputEditorId("Var editor id", &_varEditorId);
     ImGui::InputInt("Add amount", &_addAmount);
     ImGui::Checkbox("Reset counter", &_reset);
     return false;
@@ -652,11 +622,8 @@ void AddToIntVariableSeqAction::ExecuteDerived(GameManager& g) {
     if (g._editMode) {
         return;
     }
-    IntVariableEntity* e = static_cast<IntVariableEntity*>(g._neEntityManager->FindEntityByNameAndType(_varName, ne::EntityType::IntVariable));
-    if (e == nullptr) {
-        printf("AddToIntVariableSeqAction::ExecuteDerived: couldn't entity \"%s\"!\n", _varName.c_str());
-    }
-    else {
+    IntVariableEntity* e = static_cast<IntVariableEntity*>(g._neEntityManager->FindEntityByEditorIdAndType(_varEditorId, ne::EntityType::IntVariable, nullptr, "AddToIntVariableSeqAction"));
+    if (e) {
         if (_reset) {
             e->Reset();
         } else {
@@ -666,23 +633,23 @@ void AddToIntVariableSeqAction::ExecuteDerived(GameManager& g) {
 }
 
 void SetEntityActiveSeqAction::LoadDerived(LoadInputs const& loadInputs, std::istream& input) {
-    input >> _entityName >> _active >> _initOnActivate;
+    input >> _entityEditorId >> _active >> _initOnActivate;
 }
 
 void SetEntityActiveSeqAction::LoadDerived(serial::Ptree pt) {
-    _entityName = pt.GetString("entity_name");
+    serial::LoadFromChildOf(pt, "entity_editor_id", _entityEditorId);
     _active = pt.GetBool("active");
     _initOnActivate = pt.GetBool("init_on_activate");
 }
 
 void SetEntityActiveSeqAction::SaveDerived(serial::Ptree pt) const {
-    pt.PutString("entity_name", _entityName.c_str());
+    serial::SaveInNewChildOf(pt, "entity_editor_id", _entityEditorId);
     pt.PutBool("active", _active);
     pt.PutBool("init_on_activate", _initOnActivate);
 }
 
 bool SetEntityActiveSeqAction::ImGui() {
-    imgui_util::InputText<128>("Entity name", &_entityName);
+    imgui_util::InputEditorId("Entity editor ID", &_entityEditorId);
     ImGui::Checkbox("Active", &_active);
     ImGui::Checkbox("Init on activate", &_initOnActivate);
     return false;
@@ -690,12 +657,9 @@ bool SetEntityActiveSeqAction::ImGui() {
 
 void SetEntityActiveSeqAction::InitDerived(GameManager& g) {
     ne::Entity* e = nullptr;
-    e = g._neEntityManager->FindEntityByName(_entityName, true, true);
+    e = g._neEntityManager->FindEntityByEditorId(_entityEditorId, nullptr, "SetEntityActiveSeqAction");
     if (e) {
         _entityId = e->_id;
-    }
-    else {
-        printf("SetEntityActiveSeqAction: could not find entity %s\n", _entityName.c_str());
     }
 }
 
@@ -712,16 +676,13 @@ void SetEntityActiveSeqAction::ExecuteDerived(GameManager& g) {
 }
 
 void ChangeStepSeqMaxVoicesSeqAction::LoadDerived(LoadInputs const& loadInputs, std::istream& input) {
-    input >> _props._entityName >> _props._relative >> _props._numVoices;
+    input >> _props._seqEditorId >> _props._relative >> _props._numVoices;
 }
 
 void ChangeStepSeqMaxVoicesSeqAction::InitDerived(GameManager& g) {
-    ne::Entity* e = g._neEntityManager->FindEntityByNameAndType(_props._entityName, ne::EntityType::StepSequencer);
+    ne::Entity* e = g._neEntityManager->FindEntityByEditorIdAndType(_props._seqEditorId, ne::EntityType::StepSequencer, nullptr, "ChangeStepSeqMaxVoicesSeqAction");
     if (e) {
         _entityId = e->_id;
-    }
-    else {
-        printf("ChangeStepSeqMaxVoicesSeqAction::Init: couldn't find entity \"%s\"\n", _props._entityName.c_str());
     }
 }
 
@@ -740,29 +701,26 @@ void ChangeStepSeqMaxVoicesSeqAction::ExecuteDerived(GameManager& g) {
 }
 
 void TriggerSeqAction::LoadDerived(serial::Ptree pt) {
-    _entityName = pt.GetString("entity_name");
+    serial::LoadFromChildOf(pt, "entity_editor_id", _entityEditorId);
 }
 
 void TriggerSeqAction::LoadDerived(LoadInputs const& loadInputs, std::istream& input) {
-    input >> _entityName;
+    input >> _entityEditorId;
 }
 
 void TriggerSeqAction::SaveDerived(serial::Ptree pt) const {
-    pt.PutString("entity_name", _entityName.c_str());
+    serial::SaveInNewChildOf(pt, "entity_editor_id", _entityEditorId);
 }
 
 bool TriggerSeqAction::ImGui() {
-    return imgui_util::InputText<128>("Entity name", &_entityName);
+    return imgui_util::InputEditorId("Entity editor ID", &_entityEditorId);
 }
 
 void TriggerSeqAction::InitDerived(GameManager& g) {
     ne::Entity* e = nullptr;
-    e = g._neEntityManager->FindEntityByNameAndType(_entityName, ne::EntityType::FlowTrigger, true, true);
+    e = g._neEntityManager->FindEntityByEditorIdAndType(_entityEditorId, ne::EntityType::FlowTrigger, nullptr, "TriggerSeqAction");
     if (e) {
         _entityId = e->_id;
-    }
-    else {
-        printf("TriggerSeqAction: could not find entity %s\n", _entityName.c_str());
     }
 }
 

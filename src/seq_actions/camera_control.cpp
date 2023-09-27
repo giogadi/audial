@@ -72,7 +72,7 @@ void CameraControlSeqAction::LoadDerived(LoadInputs const& loadInputs, std::istr
             _props._desiredTargetToCameraOffset = camera_util::GetDefaultCameraOffset(offsetFromCamera);            
             _props._setOffset = true;
         } else if (key == "target") {
-            _props._targetEntityName = value;
+            _props._targetEditorId.SetFromString(value);
             _props._setTarget = true;
         } else if (key == "tracking") {
             if (!string_util::MaybeStof(value, _props._targetTrackingFactor)) {
@@ -93,19 +93,17 @@ void CameraControlSeqAction::LoadDerived(LoadInputs const& loadInputs, std::istr
 }
 
 void CameraControlSeqAction::InitDerived(GameManager& g) {
-    if (!_props._targetEntityName.empty()) {
-        ne::Entity* e = g._neEntityManager->FindEntityByName(_props._targetEntityName);
+    if (_props._targetEditorId.IsValid()) {
+        ne::Entity* e = g._neEntityManager->FindEntityByEditorId(_props._targetEditorId, nullptr, "CameraControlSeqAction");
         if (e) {
             _targetEntityId = e->_id;
-        } else {
-            printf("CameraControlSeqAction: could not find seq entity \"%s\"\n", _props._targetEntityName.c_str());
         }
     }
 }
 
 bool CameraControlSeqAction::ImGui() {
     if (ImGui::Button("Move Dbg cam to target")) {
-        ne::Entity* e = gGameManager._neEntityManager->FindEntityByName(_props._targetEntityName);
+        ne::Entity* e = gGameManager._neEntityManager->FindEntityByEditorId(_props._targetEditorId);
         if (e) {
             Vec3 targetPos = e->_transform.Pos();
             Vec3 newCameraPos = targetPos + _props._desiredTargetToCameraOffset;

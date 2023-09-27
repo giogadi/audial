@@ -1,12 +1,14 @@
 #pragma once
 
 
+#include "editor_id.h"
+
 
 #include "serial.h"
 
 struct ChangeStepSequencerSeqActionProps {
     
-    std::string _seqName;
+    EditorId _seqEntityEditorId;
     
     bool _velOnly;
     

@@ -1,4 +1,4 @@
-0 camera target:room7_camera_target
+0 camera target:151
 0 change_patch 0 0 bass2
-0 automate seq_velocity snare_seq 0.5 0 1.0
-0 automate seq_velocity hihat_seq 0.5 0 1.0
+0 automate seq_velocity 5 0.5 0 1.0
+0 automate seq_velocity 6 0.5 0 1.0

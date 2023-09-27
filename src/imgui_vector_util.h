@@ -42,6 +42,11 @@ inline bool ImGuiElement<Vec3>(Vec3& v) {
     return imgui_util::InputVec3("", &v);
 }
 
+template <>
+inline bool ImGuiElement<EditorId>(EditorId& v) {
+    return imgui_util::InputEditorId("", &v);
+}
+
 template <typename T>
 inline bool InputVector(std::vector<T>& v) {
     bool changed = false;

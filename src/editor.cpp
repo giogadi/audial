@@ -3,6 +3,7 @@
 #include <map>
 #include <cctype>
 #include <sstream>
+#include <unordered_set>
 
 #include "imgui/imgui.h"
 #include "imgui_util.h"
@@ -23,16 +24,27 @@ void Editor::Init(GameManager* g) {
     // Collect all our entities, and init the inactive ones (Active ones should
     // already have been init). For example, this sets all dudes' transforms to
     // their initial transforms.
+    std::unordered_set<int64_t> editorIds;
     for (ne::EntityManager::AllIterator iter = g->_neEntityManager->GetAllIterator(); !iter.Finished(); iter.Next()) {
         if (ne::Entity* e = iter.GetEntity()) {
             // no init necessary
             _entityIds.push_back(e->_id);
+            if (e->_editorId._id >= 0) {
+                _nextEditorId = std::max(_nextEditorId, e->_editorId._id + 1);
+                auto result = editorIds.insert(e->_editorId._id);
+                assert(result.second);
+            }
         }
     }
     for (ne::EntityManager::AllIterator iter = g->_neEntityManager->GetAllInactiveIterator(); !iter.Finished(); iter.Next()) {
         if (ne::Entity* e = iter.GetEntity()) {
             e->Init(*g);
             _entityIds.push_back(e->_id);
+            if (e->_editorId._id >= 0) {
+                _nextEditorId = std::max(_nextEditorId, e->_editorId._id + 1);
+                auto result = editorIds.insert(e->_editorId._id);
+                assert(result.second);
+            }
         }
     }
 
@@ -475,6 +487,7 @@ void Editor::DrawWindow() {
     if (ImGui::Button("Add Entity")) {
         ne::Entity* entity = _g->_neEntityManager->AddEntity((ne::EntityType)_selectedEntityTypeIx);
         entity->_name = "new_entity";
+        entity->_editorId._id = _nextEditorId++;
         _entityIds.push_back(entity->_id);        
         // place entity at center of view
         Vec3 newPos;
@@ -494,16 +507,18 @@ void Editor::DrawWindow() {
         std::vector<ne::EntityId> newIds;
         newIds.reserve(_selectedEntityIds.size());
         for (ne::EntityId selectedId : _selectedEntityIds) {
-            if (!_g->_neEntityManager->GetActiveOrInactiveEntity(selectedId)) {
+            bool selectedEntityActive = true;
+            if (!_g->_neEntityManager->GetActiveOrInactiveEntity(selectedId, &selectedEntityActive)) {
                 // NOTE: In the case that GetEntity() returns non-null, we DO
                 // NOT STORE it because we're about to add an entity to the
                 // manager. pointers are NOT STABLE after addition.
                 continue;
             }
 
-            ne::Entity* newEntity = _g->_neEntityManager->AddEntity(selectedId._type);
+            ne::Entity* newEntity = _g->_neEntityManager->AddEntity(selectedId._type, selectedEntityActive);
             assert(newEntity != nullptr);
 
+            // NOTE! MUST do this AFTER doing AddEntity() above or else selectedEntity pointer can get invalidated.
             ne::Entity* selectedEntity = _g->_neEntityManager->GetActiveOrInactiveEntity(selectedId);
             assert(selectedEntity != nullptr);
 
@@ -513,6 +528,9 @@ void Editor::DrawWindow() {
                 newEntity->Load(pt);
                 pt.DeleteData();
             }
+
+            newEntity->_editorId._id = _nextEditorId++;
+
             // Pick new name for duplicate
             {
                 auto [nameStr, suffixNum] = SplitIntoNameAndNumberSuffix(newEntity->_name);
@@ -540,6 +558,7 @@ void Editor::DrawWindow() {
             }
 
             _entityIds.push_back(newEntity->_id);
+            // TODO: are we cool with Init-ing an inactive dude?
             newEntity->Init(*_g);
 
             newIds.push_back(newEntity->_id);
@@ -608,4 +627,33 @@ bool Editor::IsEntitySelected(ne::EntityId entityId) {
     auto iter = _selectedEntityIds.find(entityId);
     bool selected = iter != _selectedEntityIds.end();
     return selected;
+}
+
+ne::Entity* Editor::ImGuiEntitySelector(char const* buttonLabel, char const* popupLabel) {
+    bool selected = false;
+    ne::Entity* selectedEntity = nullptr;
+    if (ImGui::Button(buttonLabel)) {
+        ImGui::OpenPopup(popupLabel);
+    }
+    if (ImGui::BeginPopup(popupLabel)) {
+        if (ImGui::BeginListBox("Entities")) {
+            for (auto entityIdIter = _entityIds.begin(); entityIdIter != _entityIds.end(); ++entityIdIter) {
+                ne::EntityId entityId = *entityIdIter;
+                ImGui::PushID(entityId._id);
+                ne::Entity* entity = _g->_neEntityManager->GetActiveOrInactiveEntity(entityId);
+                bool clicked = ImGui::Selectable(entity->_name.c_str(), false);
+                if (clicked) {
+                    selectedEntity = entity;
+                    selected = true;
+                }
+                ImGui::PopID();
+            }
+            ImGui::EndListBox();
+        }
+        if (selected) {
+            ImGui::CloseCurrentPopup();
+        }
+        ImGui::EndPopup();
+    }
+    return selectedEntity;
 }

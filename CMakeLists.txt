@@ -21,12 +21,13 @@ add_executable(game
     src/imgui/backends/imgui_impl_opengl3.cpp
     src/glad/src/glad.cpp
 
+    src/editor_id.cpp src/editor_id.h
     src/util.h
     src/string_util.h
     src/math_util.h
     src/logger.h
 
-    src/imgui_util.h
+    src/imgui_util.cpp src/imgui_util.h
     src/imgui_vector_util.h
 
     src/viewport.cpp src/viewport.h

@@ -10,7 +10,7 @@ void CameraControlSeqActionProps::Load(serial::Ptree pt) {
    
    pt.TryGetBool("setTarget", &_setTarget);
    
-   pt.TryGetString("targetEntityName", &_targetEntityName);
+   serial::LoadFromChildOf(pt, "targetEditorId", _targetEditorId);
    
    pt.TryGetFloat("targetTrackingFactor", &_targetTrackingFactor);
    
@@ -40,7 +40,7 @@ void CameraControlSeqActionProps::Save(serial::Ptree pt) const {
     
     pt.PutBool("setTarget", _setTarget);
     
-    pt.PutString("targetEntityName", _targetEntityName.c_str());
+    serial::SaveInNewChildOf(pt, "targetEditorId", _targetEditorId);
     
     pt.PutFloat("targetTrackingFactor", _targetTrackingFactor);
     
@@ -75,7 +75,7 @@ bool CameraControlSeqActionProps::ImGui() {
     }
     
     {
-        bool thisChanged = imgui_util::InputText<128>("targetEntityName", &_targetEntityName);
+        bool thisChanged = imgui_util::InputEditorId("targetEditorId", &_targetEditorId);
         changed = changed || thisChanged;
     }
     

@@ -3,6 +3,8 @@
 
 #include "matrix.h"
 
+#include "editor_id.h"
+
 
 #include "serial.h"
 
@@ -10,7 +12,7 @@ struct CameraControlSeqActionProps {
     
     bool _setTarget = false;
     
-    std::string _targetEntityName;
+    EditorId _targetEditorId;
     
     float _targetTrackingFactor = 0.05f;
     

@@ -8,7 +8,7 @@
 
 void ChangeStepSeqMaxVoicesProps::Load(serial::Ptree pt) {
    
-   pt.TryGetString("entityName", &_entityName);
+   serial::LoadFromChildOf(pt, "seqEditorId", _seqEditorId);
    
    pt.TryGetBool("relative", &_relative);
    
@@ -18,7 +18,7 @@ void ChangeStepSeqMaxVoicesProps::Load(serial::Ptree pt) {
 
 void ChangeStepSeqMaxVoicesProps::Save(serial::Ptree pt) const {
     
-    pt.PutString("entityName", _entityName.c_str());
+    serial::SaveInNewChildOf(pt, "seqEditorId", _seqEditorId);
     
     pt.PutBool("relative", _relative);
     
@@ -30,7 +30,7 @@ bool ChangeStepSeqMaxVoicesProps::ImGui() {
     bool changed = false;
     
     {
-        bool thisChanged = imgui_util::InputText<128>("entityName", &_entityName);
+        bool thisChanged = imgui_util::InputEditorId("seqEditorId", &_seqEditorId);
         changed = changed || thisChanged;
     }
     

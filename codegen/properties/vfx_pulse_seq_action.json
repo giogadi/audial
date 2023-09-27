@@ -2,8 +2,8 @@
     "propertiesName": "VfxPulseSeqAction",
     "props": [
         {
-            "name": "vfxEntityName",
-            "type": "string"
+            "name": "vfxEditorId",
+            "type": "editor_id"
         }
     ]
 }

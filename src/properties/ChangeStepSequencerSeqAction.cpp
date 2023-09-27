@@ -8,7 +8,7 @@
 
 void ChangeStepSequencerSeqActionProps::Load(serial::Ptree pt) {
    
-   pt.TryGetString("seqName", &_seqName);
+   serial::LoadFromChildOf(pt, "seqEntityEditorId", _seqEntityEditorId);
    
    pt.TryGetBool("velOnly", &_velOnly);
    
@@ -20,7 +20,7 @@ void ChangeStepSequencerSeqActionProps::Load(serial::Ptree pt) {
 
 void ChangeStepSequencerSeqActionProps::Save(serial::Ptree pt) const {
     
-    pt.PutString("seqName", _seqName.c_str());
+    serial::SaveInNewChildOf(pt, "seqEntityEditorId", _seqEntityEditorId);
     
     pt.PutBool("velOnly", _velOnly);
     
@@ -34,7 +34,7 @@ bool ChangeStepSequencerSeqActionProps::ImGui() {
     bool changed = false;
     
     {
-        bool thisChanged = imgui_util::InputText<128>("seqName", &_seqName);
+        bool thisChanged = imgui_util::InputEditorId("seqEntityEditorId", &_seqEntityEditorId);
         changed = changed || thisChanged;
     }
     

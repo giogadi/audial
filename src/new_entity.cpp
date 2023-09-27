@@ -2,6 +2,7 @@
 
 #include <cassert>
 #include <vector>
+#include <cinttypes>
 
 #include "imgui/imgui.h"
 #include "imgui_util.h"
@@ -12,8 +13,6 @@
 
 #include "entities/light.h"
 #include "entities/camera.h"
-// #include "entities/lane_note_enemy.h"
-// #include "entities/lane_note_player.h"
 #include "entities/sequencer.h"
 #include "entities/typing_player.h"
 #include "entities/typing_enemy.h"
@@ -26,6 +25,8 @@
 #include "entities/flow_trigger.h"
 #include "entities/int_variable.h"
 #include "entities/vfx.h"
+
+extern GameManager gGameManager;
 
 namespace ne {
 
@@ -112,10 +113,10 @@ std::pair<Entity*, int> EntityManager::GetEntitiesOfType(EntityType type, bool a
         case EntityType::NAME: { \
             if (active) { \
                 auto& entities = _p->_entities##NAME; \
-                return std::make_pair(entities.data(), entities.size()); \
+                return std::make_pair(entities.data(), static_cast<int>(entities.size())); \
             } else { \
                 auto& entities = _p->_inactiveEntities##NAME; \
-                return std::make_pair(entities.data(), entities.size()); \
+                return std::make_pair(entities.data(), static_cast<int>(entities.size())); \
             } \
         }
         M_ENTITY_TYPES
@@ -257,6 +258,67 @@ void EntityManager::FindEntitiesByTagAndType(int tag, EntityType entityType, boo
             }
         }
     }
+}
+
+Entity* EntityManager::FindEntityByEditorId(EditorId editorId, bool* isActive, char const* errorPrefix) {
+    if (!editorId.IsValid()) {
+        return nullptr;
+    }
+    for (AllIterator iter = GetAllIterator(); !iter.Finished(); iter.Next()) {
+        Entity* e = iter.GetEntity();
+        if (e->_editorId == editorId) {
+            if (isActive != nullptr) {
+                *isActive = true;
+            }
+            return e;
+        }
+    }
+
+    for (AllIterator iter = GetAllInactiveIterator(); !iter.Finished(); iter.Next()) {
+        Entity* e = iter.GetEntity();
+        if (e->_editorId == editorId) {
+            if (isActive != nullptr) {
+                *isActive = false;
+            }
+            return e;
+        }
+    }
+    if (errorPrefix) {
+        std::string idStr = editorId.ToString();
+        printf("%s: could not find entity editor ID %s\n", errorPrefix, idStr.c_str());
+    }    
+    return nullptr;
+}
+
+Entity* EntityManager::FindEntityByEditorIdAndType(EditorId editorId, EntityType entityType, bool* isActive, char const* errorPrefix) {
+    if (!editorId.IsValid()) {
+        return nullptr;
+    }
+    for (Iterator iter = GetIterator(entityType); !iter.Finished(); iter.Next()) {
+        Entity* e = iter.GetEntity();
+        if (e->_editorId == editorId) {
+            if (isActive != nullptr) {
+                *isActive = true;
+            }
+            return e;
+        }
+    }
+
+    for (Iterator iter = GetInactiveIterator(entityType); !iter.Finished(); iter.Next()) {
+        Entity* e = iter.GetEntity();
+        if (e->_editorId == editorId) {
+            if (isActive != nullptr) {
+                *isActive = false;
+            }
+            return e;
+        }
+    }
+    if (errorPrefix) {
+        std::string idStr = editorId.ToString();
+        char const* entityTypeName = gkEntityTypeNames[static_cast<int>(entityType)];
+        printf("%s: could not find entity editor ID \"%s\" (%s)\n", errorPrefix, idStr.c_str(), entityTypeName);
+    }
+    return nullptr;
 }
 
 bool EntityManager::RemoveEntity(EntityId idToRemove) {
@@ -602,7 +664,8 @@ void BaseEntity::DebugPrint() {
     Vec3 p = _transform.GetPos();
     printf("pos: %f %f %f\n", p._x, p._y, p._z);
 }
-void BaseEntity::Save(serial::Ptree pt) const {    
+void BaseEntity::Save(serial::Ptree pt) const {
+    serial::SaveInNewChildOf(pt, "editor_id", _editorId);
     pt.PutString("name", _name.c_str());
     pt.PutBool("entity_active", _initActive);
     pt.PutBool("pickable", _pickable);
@@ -616,6 +679,8 @@ void BaseEntity::Save(serial::Ptree pt) const {
     SaveDerived(pt);
 }
 void BaseEntity::Load(serial::Ptree pt) {
+    _editorId = EditorId();
+    serial::LoadFromChildOf(pt, "editor_id", _editorId);
     _name = pt.GetString("name");
     _initActive = true;
     pt.TryGetBool("entity_active", &_initActive);
@@ -641,6 +706,11 @@ void BaseEntity::Load(serial::Ptree pt) {
     LoadDerived(pt);
 }
 BaseEntity::ImGuiResult BaseEntity::ImGui(GameManager& g) {
+    {
+        char editorIdBuf[32];
+        sprintf(editorIdBuf, "%" PRId64, _editorId._id);
+        ImGui::InputText("EditorId", editorIdBuf, 32, ImGuiInputTextFlags_ReadOnly);
+    }
     imgui_util::InputText<128>("Entity name##TopLevel", &_name);
     ImGui::Text("Entity type: %s", ne::gkEntityTypeNames[(int)_id._type]);
     bool activeChanged = ImGui::Checkbox("Entity active", &_initActive);

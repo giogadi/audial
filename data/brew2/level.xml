@@ -3,6 +3,9 @@
     <bpm>140</bpm>
     <new_entities>
         <Light>
+            <editor_id>
+                <id>0</id>
+            </editor_id>
             <name>dir_light</name>
             <entity_active>true</entity_active>
             <pickable>false</pickable>
@@ -55,6 +58,9 @@
             <is_directional>true</is_directional>
         </Light>
         <Camera>
+            <editor_id>
+                <id>1</id>
+            </editor_id>
             <name>camera</name>
             <entity_active>true</entity_active>
             <pickable>false</pickable>
@@ -100,6 +106,9 @@
             <fovy_deg>60</fovy_deg>
         </Camera>
         <FlowPlayer>
+            <editor_id>
+                <id>2</id>
+            </editor_id>
             <name>player</name>
             <entity_active>true</entity_active>
             <pickable>true</pickable>
@@ -151,14 +160,17 @@
                 <z>9.81000042</z>
             </gravity>
             <respawn_pos>
-                <x>-8.703125</x>
+                <x>-7.015625</x>
                 <y>0</y>
-                <z>-4.125</z>
+                <z>-4.95312452</z>
             </respawn_pos>
             <max_speed>10</max_speed>
             <stop_dash_on_pass_enemy>true</stop_dash_on_pass_enemy>
         </FlowPlayer>
         <StepSequencer>
+            <editor_id>
+                <id>3</id>
+            </editor_id>
             <name>kick_seq</name>
             <entity_active>true</entity_active>
             <pickable>false</pickable>
@@ -210,6 +222,9 @@
             <max_voices>-1</max_voices>
         </StepSequencer>
         <StepSequencer>
+            <editor_id>
+                <id>4</id>
+            </editor_id>
             <name>snare_seq</name>
             <entity_active>true</entity_active>
             <pickable>false</pickable>
@@ -261,6 +276,9 @@
             <max_voices>-1</max_voices>
         </StepSequencer>
         <StepSequencer>
+            <editor_id>
+                <id>5</id>
+            </editor_id>
             <name>hihat_seq</name>
             <entity_active>true</entity_active>
             <pickable>false</pickable>
@@ -312,6 +330,9 @@
             <max_voices>-1</max_voices>
         </StepSequencer>
         <StepSequencer>
+            <editor_id>
+                <id>6</id>
+            </editor_id>
             <name>clap_seq</name>
             <entity_active>true</entity_active>
             <pickable>false</pickable>
@@ -363,6 +384,9 @@
             <max_voices>-1</max_voices>
         </StepSequencer>
         <StepSequencer>
+            <editor_id>
+                <id>7</id>
+            </editor_id>
             <name>chord_seq</name>
             <entity_active>true</entity_active>
             <pickable>false</pickable>
@@ -416,6 +440,9 @@
             <max_voices>4</max_voices>
         </StepSequencer>
         <StepSequencer>
+            <editor_id>
+                <id>8</id>
+            </editor_id>
             <name>other_seq</name>
             <entity_active>true</entity_active>
             <pickable>false</pickable>
@@ -469,6 +496,9 @@
             <max_voices>-1</max_voices>
         </StepSequencer>
         <StepSequencer>
+            <editor_id>
+                <id>9</id>
+            </editor_id>
             <name>bass_seq</name>
             <entity_active>true</entity_active>
             <pickable>false</pickable>
@@ -522,6 +552,9 @@
             <max_voices>-1</max_voices>
         </StepSequencer>
         <StepSequencer>
+            <editor_id>
+                <id>10</id>
+            </editor_id>
             <name>lead_seq</name>
             <entity_active>true</entity_active>
             <pickable>false</pickable>
@@ -575,6 +608,9 @@
             <max_voices>-1</max_voices>
         </StepSequencer>
         <TypingEnemy>
+            <editor_id>
+                <id>11</id>
+            </editor_id>
             <name>r0_n0</name>
             <entity_active>true</entity_active>
             <pickable>true</pickable>
@@ -630,7 +666,13 @@
                 <seq_action>
                     <one_time>false</one_time>
                     <action_type>ChangeStepSequencer</action_type>
+                    <seqEntityEditorId>
+                        <id>10</id>
+                    </seqEntityEditorId>
                     <seqName>lead_seq</seqName>
+                    <seqEntityEditorId>
+                        <id>-1</id>
+                    </seqEntityEditorId>
                     <velOnly>false</velOnly>
                     <temporary>true</temporary>
                     <stepStr>mB4:1</stepStr>
@@ -640,6 +682,9 @@
             <off_cooldown_actions/>
         </TypingEnemy>
         <TypingEnemy>
+            <editor_id>
+                <id>12</id>
+            </editor_id>
             <name>r0_n1</name>
             <entity_active>true</entity_active>
             <pickable>true</pickable>
@@ -695,7 +740,13 @@
                 <seq_action>
                     <one_time>false</one_time>
                     <action_type>ChangeStepSequencer</action_type>
+                    <seqEntityEditorId>
+                        <id>10</id>
+                    </seqEntityEditorId>
                     <seqName>lead_seq</seqName>
+                    <seqEntityEditorId>
+                        <id>-1</id>
+                    </seqEntityEditorId>
                     <velOnly>false</velOnly>
                     <temporary>true</temporary>
                     <stepStr>mC5:1</stepStr>
@@ -705,6 +756,9 @@
             <off_cooldown_actions/>
         </TypingEnemy>
         <TypingEnemy>
+            <editor_id>
+                <id>13</id>
+            </editor_id>
             <name>r0_n2</name>
             <entity_active>true</entity_active>
             <pickable>true</pickable>
@@ -760,7 +814,13 @@
                 <seq_action>
                     <one_time>false</one_time>
                     <action_type>ChangeStepSequencer</action_type>
+                    <seqEntityEditorId>
+                        <id>10</id>
+                    </seqEntityEditorId>
                     <seqName>lead_seq</seqName>
+                    <seqEntityEditorId>
+                        <id>-1</id>
+                    </seqEntityEditorId>
                     <velOnly>false</velOnly>
                     <temporary>true</temporary>
                     <stepStr>mB4:1</stepStr>
@@ -770,6 +830,9 @@
             <off_cooldown_actions/>
         </TypingEnemy>
         <TypingEnemy>
+            <editor_id>
+                <id>14</id>
+            </editor_id>
             <name>r0_n3</name>
             <entity_active>true</entity_active>
             <pickable>true</pickable>
@@ -825,7 +888,13 @@
                 <seq_action>
                     <one_time>false</one_time>
                     <action_type>ChangeStepSequencer</action_type>
+                    <seqEntityEditorId>
+                        <id>10</id>
+                    </seqEntityEditorId>
                     <seqName>lead_seq</seqName>
+                    <seqEntityEditorId>
+                        <id>-1</id>
+                    </seqEntityEditorId>
                     <velOnly>false</velOnly>
                     <temporary>true</temporary>
                     <stepStr>mA4:1</stepStr>
@@ -835,6 +904,9 @@
             <off_cooldown_actions/>
         </TypingEnemy>
         <FlowWall>
+            <editor_id>
+                <id>15</id>
+            </editor_id>
             <name>r0_wall1</name>
             <entity_active>true</entity_active>
             <pickable>true</pickable>
@@ -881,8 +953,12 @@
             <polygon/>
             <hit_actions/>
             <children/>
+            <children_editor_ids/>
         </FlowWall>
         <TypingEnemy>
+            <editor_id>
+                <id>16</id>
+            </editor_id>
             <name>r0_n4</name>
             <entity_active>true</entity_active>
             <pickable>true</pickable>
@@ -938,7 +1014,13 @@
                 <seq_action>
                     <one_time>false</one_time>
                     <action_type>ChangeStepSequencer</action_type>
+                    <seqEntityEditorId>
+                        <id>10</id>
+                    </seqEntityEditorId>
                     <seqName>lead_seq</seqName>
+                    <seqEntityEditorId>
+                        <id>-1</id>
+                    </seqEntityEditorId>
                     <velOnly>false</velOnly>
                     <temporary>true</temporary>
                     <stepStr>mG4:1</stepStr>
@@ -948,6 +1030,9 @@
             <off_cooldown_actions/>
         </TypingEnemy>
         <TypingEnemy>
+            <editor_id>
+                <id>17</id>
+            </editor_id>
             <name>r0_n5</name>
             <entity_active>true</entity_active>
             <pickable>true</pickable>
@@ -1003,7 +1088,13 @@
                 <seq_action>
                     <one_time>false</one_time>
                     <action_type>ChangeStepSequencer</action_type>
+                    <seqEntityEditorId>
+                        <id>10</id>
+                    </seqEntityEditorId>
                     <seqName>lead_seq</seqName>
+                    <seqEntityEditorId>
+                        <id>-1</id>
+                    </seqEntityEditorId>
                     <velOnly>false</velOnly>
                     <temporary>true</temporary>
                     <stepStr>mE4:1</stepStr>
@@ -1013,6 +1104,9 @@
             <off_cooldown_actions/>
         </TypingEnemy>
         <ActionSequencer>
+            <editor_id>
+                <id>18</id>
+            </editor_id>
             <name>r0_action_seq</name>
             <entity_active>true</entity_active>
             <pickable>true</pickable>
@@ -1055,6 +1149,9 @@
             <seq_filename>data/brew2/r0_action_seq.txt</seq_filename>
         </ActionSequencer>
         <FlowWall>
+            <editor_id>
+                <id>19</id>
+            </editor_id>
             <name>r0_wall2</name>
             <entity_active>true</entity_active>
             <pickable>true</pickable>
@@ -1101,8 +1198,12 @@
             <polygon/>
             <hit_actions/>
             <children/>
+            <children_editor_ids/>
         </FlowWall>
         <FlowWall>
+            <editor_id>
+                <id>20</id>
+            </editor_id>
             <name>r0_wall3</name>
             <entity_active>true</entity_active>
             <pickable>true</pickable>
@@ -1149,8 +1250,12 @@
             <polygon/>
             <hit_actions/>
             <children/>
+            <children_editor_ids/>
         </FlowWall>
         <FlowWall>
+            <editor_id>
+                <id>21</id>
+            </editor_id>
             <name>r0_wall4</name>
             <entity_active>true</entity_active>
             <pickable>true</pickable>
@@ -1197,8 +1302,12 @@
             <polygon/>
             <hit_actions/>
             <children/>
+            <children_editor_ids/>
         </FlowWall>
         <FlowWall>
+            <editor_id>
+                <id>22</id>
+            </editor_id>
             <name>r0_wall5</name>
             <entity_active>true</entity_active>
             <pickable>true</pickable>
@@ -1264,8 +1373,12 @@
             <polygon/>
             <hit_actions/>
             <children/>
+            <children_editor_ids/>
         </FlowWall>
         <StepSequencer>
+            <editor_id>
+                <id>23</id>
+            </editor_id>
             <name>metronome</name>
             <entity_active>false</entity_active>
             <pickable>true</pickable>

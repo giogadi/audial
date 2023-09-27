@@ -3,6 +3,7 @@
 #include <vector>
 
 #include "new_entity_id.h"
+#include "editor_id.h"
 #include "serial.h"
 #include "matrix.h"
 
@@ -32,6 +33,7 @@ struct WaypointFollower {
         bool _localToEntity = false;
         double _initWpStartTime = 3.0;
         // FollowEntity mode
+        EditorId _followEditorId;
         std::string _followEntityName;
         void Save(serial::Ptree pt) const;
         void Load(serial::Ptree pt);

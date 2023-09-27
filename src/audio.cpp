@@ -200,7 +200,7 @@ void ProcessEventQueue(EventQueue* eventQueue, int64_t currentBufferCounter, dou
         }
         PendingEvent p_e;
         p_e._e = *e;
-        int64_t delayInBuffers = e->delaySecs * secsToBuffers;
+        int64_t delayInBuffers = static_cast<int64_t>(e->delaySecs * secsToBuffers);
         p_e._runBufferCounter = currentBufferCounter + delayInBuffers;
         pendingEvents->push_back(p_e);
         eventQueue->pop();

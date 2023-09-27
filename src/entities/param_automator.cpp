@@ -16,16 +16,16 @@ void ParamAutomatorEntity::SaveDerived(serial::Ptree pt) const {
 }
 
 void ParamAutomatorEntity::InitDerived(GameManager& g) {
-    if (!_props._seqEntityName.empty()) {
-        ne::Entity* e = g._neEntityManager->FindEntityByNameAndType(_props._seqEntityName, ne::EntityType::StepSequencer);
+    if (_props._seqEditorId.IsValid()) {
+        ne::Entity* e = g._neEntityManager->FindEntityByEditorIdAndType(_props._seqEditorId, ne::EntityType::StepSequencer);
         if (e == nullptr) {
-            e = g._neEntityManager->FindEntityByNameAndType(_props._seqEntityName, ne::EntityType::Sequencer);
+            e = g._neEntityManager->FindEntityByEditorIdAndType(_props._seqEditorId, ne::EntityType::Sequencer);
         }
         if (e == nullptr) {
-            printf("ParamAutomatorEntity::Init (\"%s\"): could not find seq/stepseq entity with name \"%s\"\n", _name.c_str(), _props._seqEntityName.c_str());
+            printf("ParamAutomatorEntity::Init (\"%s\"): could not find seq/stepseq entity with name \"%lld\"\n", _name.c_str(), _props._seqEditorId._id);
             return;
         }
-        _seqId = e->_id;               
+        _seqId = e->_id;
     }
     _automateStartTime = g._beatClock->GetBeatTimeFromEpoch();
 

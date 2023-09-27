@@ -40,8 +40,8 @@
             "default": "0"
         },
         {
-            "name": "seqEntityName",
-            "type": "string"
+            "name": "seqEditorId",
+            "type": "editor_id"
         }
     ]
 }

@@ -22,7 +22,7 @@ void SpawnAutomatorSeqActionProps::Load(serial::Ptree pt) {
    
    pt.TryGetInt("channel", &_channel);
    
-   pt.TryGetString("seqEntityName", &_seqEntityName);
+   serial::LoadFromChildOf(pt, "seqEditorId", _seqEditorId);
    
 }
 
@@ -42,7 +42,7 @@ void SpawnAutomatorSeqActionProps::Save(serial::Ptree pt) const {
     
     pt.PutInt("channel", _channel);
     
-    pt.PutString("seqEntityName", _seqEntityName.c_str());
+    serial::SaveInNewChildOf(pt, "seqEditorId", _seqEditorId);
     
 }
 
@@ -85,7 +85,7 @@ bool SpawnAutomatorSeqActionProps::ImGui() {
     }
     
     {
-        bool thisChanged = imgui_util::InputText<128>("seqEntityName", &_seqEntityName);
+        bool thisChanged = imgui_util::InputEditorId("seqEditorId", &_seqEditorId);
         changed = changed || thisChanged;
     }
     

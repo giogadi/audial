@@ -20,21 +20,21 @@ public:
     
     void PutString(char const* name, char const* v);
     void PutInt(char const* name, int v);
-    void PutLong(char const* name, long v);
+    void PutInt64(char const* name, int64_t v);
     void PutBool(char const* name, bool v);
     void PutFloat(char const* name, float v);
     void PutDouble(char const* name, double v);
 
     bool TryGetString(char const* name, std::string* v);
     bool TryGetInt(char const* name, int* v);
-    bool TryGetLong(char const* name, long* v);
+    bool TryGetInt64(char const* name, int64_t* v);
     bool TryGetBool(char const* name, bool* v);
     bool TryGetFloat(char const* name, float* v);
     bool TryGetDouble(char const* name, double* v);
 
     std::string GetString(char const* name);
     int GetInt(char const* name);
-    long GetLong(char const* name);
+    int64_t GetInt64(char const* name);
     bool GetBool(char const* name);
     float GetFloat(char const* name);
     double GetDouble(char const* name);
@@ -48,6 +48,7 @@ public:
     
     std::string GetStringValue();
     int GetIntValue();
+    int64_t GetInt64Value();
     bool GetBoolValue();
     float GetFloatValue();
     double GetDoubleValue();

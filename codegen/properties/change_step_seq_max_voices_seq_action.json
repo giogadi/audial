@@ -2,8 +2,8 @@
     "propertiesName": "ChangeStepSeqMaxVoices",
     "props": [
         {
-            "name": "entityName",
-            "type": "string"
+            "name": "seqEditorId",
+            "type": "editor_id"
         },
         {
             "name": "relative",

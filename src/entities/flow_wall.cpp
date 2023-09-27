@@ -20,10 +20,12 @@ void FlowWallEntity::InitDerived(GameManager& g) {
     _meshId = g._scene->LoadPolygon2d(_polygon);
 
     _children.clear();
-    _children.reserve(_childrenNames.size());
-    for (std::string const& name : _childrenNames) {
-        ne::BaseEntity* e = g._neEntityManager->FindEntityByName(name, /*includeActive=*/true, /*includeInactive=*/true);
-        _children.push_back(e->_id);
+    _children.reserve(_childrenEditorIds.size());
+    for (EditorId const& id : _childrenEditorIds) {
+        ne::BaseEntity* e = g._neEntityManager->FindEntityByEditorId(id, nullptr, "FlowWallEntity");
+        if (e) {
+            _children.push_back(e->_id);
+        }        
     }
 }
 
@@ -118,7 +120,7 @@ void FlowWallEntity::SaveDerived(serial::Ptree pt) const {
     pt.PutFloat("rot_vel", _rotVel);
     serial::SaveVectorInChildNode(pt, "polygon", "point", _polygon);
     SeqAction::SaveActionsInChildNode(pt, "hit_actions", _hitActions);
-    serial::SaveVectorInChildNode(pt, "children", "child", _childrenNames);
+    serial::SaveVectorInChildNode(pt, "children_editor_ids", "child", _childrenEditorIds);
 }
 
 void FlowWallEntity::LoadDerived(serial::Ptree pt) {
@@ -137,7 +139,7 @@ void FlowWallEntity::LoadDerived(serial::Ptree pt) {
     pt.TryGetFloat("rot_vel", &_rotVel);
     serial::LoadVectorFromChildNode(pt, "polygon", _polygon);
     SeqAction::LoadActionsFromChildNode(pt, "hit_actions", _hitActions);
-    serial::LoadVectorFromChildNode(pt, "children", _childrenNames);
+    serial::LoadVectorFromChildNode(pt, "children_editor_ids", _childrenEditorIds);
 }
 
 FlowWallEntity::ImGuiResult FlowWallEntity::ImGuiDerived(GameManager& g)  {
@@ -159,7 +161,7 @@ FlowWallEntity::ImGuiResult FlowWallEntity::ImGuiDerived(GameManager& g)  {
     }
 
     if (ImGui::TreeNode("Children")) {
-        imgui_util::InputVector(_childrenNames);
+        imgui_util::InputVector(_childrenEditorIds);
         ImGui::TreePop();
     }
 

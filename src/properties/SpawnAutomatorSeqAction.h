@@ -3,6 +3,8 @@
 
 #include "enums/audio_SynthParamType.h"
 
+#include "editor_id.h"
+
 
 #include "serial.h"
 
@@ -22,7 +24,7 @@ struct SpawnAutomatorSeqActionProps {
     
     int _channel = 0;
     
-    std::string _seqEntityName;
+    EditorId _seqEditorId;
     
 
     void Load(serial::Ptree pt);

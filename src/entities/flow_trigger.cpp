@@ -17,9 +17,9 @@ void FlowTriggerEntity::InitDerived(GameManager& g) {
     }
 
     _triggerVolumeEntities.clear();
-    _triggerVolumeEntities.reserve(_p._triggerVolumeEntityNames.size());
-    for (std::string const& name : _p._triggerVolumeEntityNames) {
-        ne::Entity* e = g._neEntityManager->FindEntityByName(name);
+    _triggerVolumeEntities.reserve(_p._triggerVolumeEditorIds.size());
+    for (EditorId const& id : _p._triggerVolumeEditorIds) {
+        ne::Entity* e = g._neEntityManager->FindEntityByEditorId(id);
         if (e) {
             _triggerVolumeEntities.push_back(e->_id);
         }
@@ -34,7 +34,7 @@ void FlowTriggerEntity::SaveDerived(serial::Ptree pt) const {
     pt.PutInt("random_action_count", _p._randomActionCount);
     SeqAction::SaveActionsInChildNode(pt, "actions", _p._actions);
     SeqAction::SaveActionsInChildNode(pt, "actions_on_exit", _p._actionsOnExit);
-    serial::SaveVectorInChildNode(pt, "trigger_volume_entities", "entity_name", _p._triggerVolumeEntityNames);
+    serial::SaveVectorInChildNode(pt, "trigger_volume_entities", "editor_id", _p._triggerVolumeEditorIds);
 }
 
 void FlowTriggerEntity::LoadDerived(serial::Ptree pt) {
@@ -44,7 +44,7 @@ void FlowTriggerEntity::LoadDerived(serial::Ptree pt) {
     pt.TryGetInt("random_action_count", &_p._randomActionCount);
     SeqAction::LoadActionsFromChildNode(pt, "actions", _p._actions);
     SeqAction::LoadActionsFromChildNode(pt, "actions_on_exit", _p._actionsOnExit);
-    serial::LoadVectorFromChildNode(pt, "trigger_volume_entities", _p._triggerVolumeEntityNames);
+    serial::LoadVectorFromChildNode(pt, "trigger_volume_entities", _p._triggerVolumeEditorIds);
 }
 
 FlowTriggerEntity::ImGuiResult FlowTriggerEntity::ImGuiDerived(GameManager& g)  {
@@ -60,7 +60,7 @@ FlowTriggerEntity::ImGuiResult FlowTriggerEntity::ImGuiDerived(GameManager& g)  
     SeqAction::ImGui("Actions on Exit", _p._actionsOnExit);
     if (ImGui::CollapsingHeader("Trigger Volume Entities")) {
         ImGui::PushID("trigger_volumes");
-        imgui_util::InputVector<std::string>(_p._triggerVolumeEntityNames);
+        imgui_util::InputVector<EditorId>(_p._triggerVolumeEditorIds);
         ImGui::PopID();
     }    
     return result;

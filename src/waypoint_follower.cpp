@@ -50,6 +50,7 @@ void WaypointFollower::Props::Save(serial::Ptree pt) const {
     serial::SaveVectorInChildNode(pt, "waypoints", "waypoint", _waypoints);
 
     pt.PutString("follow_entity_name", _followEntityName.c_str());
+    serial::SaveInNewChildOf(pt, "follow_entity_editor_id", _followEditorId);    
 }
 
 void WaypointFollower::Props::Load(serial::Ptree pt) {
@@ -73,6 +74,7 @@ void WaypointFollower::Props::Load(serial::Ptree pt) {
     serial::LoadVectorFromChildNode(pt, "waypoints", _waypoints);
 
     pt.TryGetString("follow_entity_name", &_followEntityName);
+    serial::LoadFromChildOf(pt, "follow_entity_editor_id", _followEditorId);
 }
 
 namespace {
@@ -104,7 +106,7 @@ bool WaypointFollower::Props::ImGui() {
         break;
     }
     case Props::Mode::FollowEntity: {
-        changed = imgui_util::InputText<64>("Follow entity name", &_followEntityName, true) || changed;
+        changed = imgui_util::InputEditorId("Follow entity ID", &_followEditorId) || changed;
         break;
     }
     }
@@ -134,7 +136,7 @@ void WaypointFollower::Init(GameManager& g, ne::BaseEntity const& entity, Props 
         break;
     }
     case Props::Mode::FollowEntity: {
-        ne::BaseEntity* e = g._neEntityManager->FindEntityByName(p._followEntityName);
+        ne::BaseEntity* e = g._neEntityManager->FindEntityByEditorId(p._followEditorId);
         if (e) {
             _ns._followEntityId = e->_id;
             _ns._offsetFromFollowEntity = entity._initTransform.GetPos() - e->_initTransform.GetPos();

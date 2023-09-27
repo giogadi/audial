@@ -43,7 +43,7 @@ void audio::Event::Load(serial::Ptree pt) {
     channel = pt.GetInt("channel");
     if (!pt.TryGetDouble("delay_secs", &delaySecs)) {
         // backward compat. DIRTY HACK, assume 48khz sample rate.        
-        int64_t tickTime = pt.GetLong("tick_time");
+        int64_t tickTime = pt.GetInt64("tick_time");
         printf("audio::Event::Load: DIRTY HACK AHOY: %lld\n", tickTime);
         delaySecs = static_cast<double>(tickTime) / 48000.0;
     }
@@ -53,7 +53,7 @@ void audio::Event::Load(serial::Ptree pt) {
             param = StringToSynthParamType(synthParamStr.c_str());
             paramChangeTimeSecs = 0.0;
             if (!pt.TryGetDouble("change_time_secs", &paramChangeTimeSecs)) {
-                int64_t tickTime = pt.GetLong("change_time");
+                int64_t tickTime = pt.GetInt64("change_time");
                 printf("audio::Event::Load: DIRTY HACK PARAM AHOY: %lld\n", tickTime);
                 paramChangeTimeSecs = static_cast<double>(tickTime) / 48000.0;
             }

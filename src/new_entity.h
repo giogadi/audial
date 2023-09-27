@@ -6,6 +6,7 @@
 #include <string_view>
 
 #include "new_entity_id.h"
+#include "editor_id.h"
 #include "serial.h"
 #include "transform.h"
 #include "waypoint_follower.h"
@@ -22,6 +23,7 @@ extern std::size_t const gkEntitySizes[];
 
 struct BaseEntity {
     // serialized
+    EditorId _editorId;
     Transform _initTransform;
     bool _initActive = true;
     std::string _name;
@@ -88,6 +90,8 @@ struct EntityManager {
     Entity* FindEntityByName(std::string_view name, bool includeActive, bool includeInactive);
     Entity* FindEntityByNameAndType(std::string_view name, EntityType entityType);
     Entity* FindEntityByNameAndType(std::string_view name, EntityType entityType, bool includeActive, bool includeInactive);
+    Entity* FindEntityByEditorId(EditorId editorId, bool* isActive = nullptr, char const* errorPrefix = nullptr);
+    Entity* FindEntityByEditorIdAndType(EditorId editorId, EntityType entityType, bool* isActive = nullptr, char const* errorPrefix = nullptr);
     Entity* GetFirstEntityOfType(EntityType entityType);
 
     void FindEntitiesByTagAndType(int tag, EntityType entityType, bool includeActive, bool includeInactive, std::vector<ne::Entity*>* entities);

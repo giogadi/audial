@@ -1,8 +1,8 @@
-0 set_all_steps bass_seq 0 mG1:0.0
-0 set_step_seq kick_seq mG0:1 mG0:0.5 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 mG0:1 mG0:0.5 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1
-0 set_step_seq clap_seq -1:1 -1:1 -1:1 -1:1 9:1.0 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 9:1.0 -1:1 -1:1 -1:1
-0 set_step_seq hihat_seq -1:1 -1:1 8:0.25 -1:1 -1:1 -1:1 8:0.25 -1:1 -1:1 -1:1 8:0.25 -1:1 -1:1 -1:1 8:0.25 -1:1
-0 step_seq_mute kick_seq 1
-0 step_seq_mute clap_seq 1
-0 step_seq_mute hihat_seq 1
-4 automate seq_velocity bass_seq 0 0.5 1
+0 set_all_steps 10 0 mG1:0.0
+0 set_step_seq 4 mG0:1 mG0:0.5 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 mG0:1 mG0:0.5 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1
+0 set_step_seq 7 -1:1 -1:1 -1:1 -1:1 9:1.0 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 9:1.0 -1:1 -1:1 -1:1
+0 set_step_seq 6 -1:1 -1:1 8:0.25 -1:1 -1:1 -1:1 8:0.25 -1:1 -1:1 -1:1 8:0.25 -1:1 -1:1 -1:1 8:0.25 -1:1
+0 step_seq_mute 4 1
+0 step_seq_mute 7 1
+0 step_seq_mute 6 1
+4 automate seq_velocity 10 0 0.5 1

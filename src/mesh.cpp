@@ -92,7 +92,7 @@ bool BoundMeshPNU::Init(char const* objFilename) {
             vertexData.push_back(v.TextureCoordinate.Y);
         }
         if (!mesh.Vertices.empty()) {
-            subMesh._centroid /= mesh.Vertices.size();
+            subMesh._centroid /= static_cast<float>(mesh.Vertices.size());
         }
 
         for (uint32_t index : mesh.Indices) {

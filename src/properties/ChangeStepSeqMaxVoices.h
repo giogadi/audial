@@ -1,12 +1,14 @@
 #pragma once
 
 
+#include "editor_id.h"
+
 
 #include "serial.h"
 
 struct ChangeStepSeqMaxVoicesProps {
     
-    std::string _entityName;
+    EditorId _seqEditorId;
     
     bool _relative = false;
     

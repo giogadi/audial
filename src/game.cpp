@@ -415,12 +415,17 @@ int main(int argc, char** argv) {
             serial::Ptree entitiesPt = pt.GetChild("script.new_entities");
             int numEntities = 0;
             serial::NameTreePair* children = entitiesPt.GetChildren(&numEntities);
+            int64_t nextEditorId = 0;
             for (int i = 0; i < numEntities; ++i) {
                 ne::EntityType entityType = ne::StringToEntityType(children[i]._name);
                 bool active = true;
                 children[i]._pt.TryGetBool("entity_active", &active);
                 ne::Entity* entity = gGameManager._neEntityManager->AddEntity(entityType, active);
                 entity->Load(children[i]._pt);
+                // TODO: THIS SHOULD NOT BE NECESSARY NOW THAT LEVELS ARE UPDATED.
+                if (entity->_editorId._id < 0) {
+                    entity->_editorId._id = nextEditorId++;
+                }
             }
             delete[] children;
 

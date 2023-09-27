@@ -483,41 +483,41 @@ void LoadSeqEnemy(SeqAction::LoadInputs const& loadInputs, TypingEnemyEntity& en
         return;
     }
 
-    if (noteTable) {
-        std::stringstream ss;
-        for (std::array<int,4> const& n : *noteTable) {
-            StepSequencerEntity::SeqStep step;
-            step._midiNote = n;
-            step._velocity = velocity;
-            ss.str("");
-            StepSequencerEntity::WriteSeqStep(step, ss);
-                        
-            auto pAction = std::make_unique<ChangeStepSequencerSeqAction>();
-            pAction->_props._seqName = seqName;
-            pAction->_props._stepStr = ss.str();
-            // pAction->_midiNotes = n;
-            // pAction->_velocity = velocity;
-            pAction->_props._velOnly = velOnly;
-            pAction->_props._temporary = !saveSeqChange;
-            enemy._hitActions.push_back(std::move(pAction));
-        }
-    } else {
-        std::stringstream ss;
-        StepSequencerEntity::SeqStep step;
-        step._midiNote = midiNotes;
-        step._velocity = velocity;
-        StepSequencerEntity::WriteSeqStep(step, ss);
-        
-        auto pAction = std::make_unique<ChangeStepSequencerSeqAction>();
-        pAction->_props._seqName = seqName;
-        pAction->_props._stepStr = ss.str();
-        // pAction->_midiNotes = midiNotes;
-        // pAction->_velocity = velocity;
-        pAction->_props._velOnly = velOnly;
-        pAction->_props._temporary = !saveSeqChange;
-        enemy._hitActions.push_back(std::move(pAction));
-       
-    }
+    //if (noteTable) {
+    //    std::stringstream ss;
+    //    for (std::array<int,4> const& n : *noteTable) {
+    //        StepSequencerEntity::SeqStep step;
+    //        step._midiNote = n;
+    //        step._velocity = velocity;
+    //        ss.str("");
+    //        StepSequencerEntity::WriteSeqStep(step, ss);
+    //                    
+    //        auto pAction = std::make_unique<ChangeStepSequencerSeqAction>();
+    //        pAction->_props._seqName = seqName;
+    //        pAction->_props._stepStr = ss.str();
+    //        // pAction->_midiNotes = n;
+    //        // pAction->_velocity = velocity;
+    //        pAction->_props._velOnly = velOnly;
+    //        pAction->_props._temporary = !saveSeqChange;
+    //        enemy._hitActions.push_back(std::move(pAction));
+    //    }
+    //} else {
+    //    std::stringstream ss;
+    //    StepSequencerEntity::SeqStep step;
+    //    step._midiNote = midiNotes;
+    //    step._velocity = velocity;
+    //    StepSequencerEntity::WriteSeqStep(step, ss);
+    //    
+    //    auto pAction = std::make_unique<ChangeStepSequencerSeqAction>();
+    //    pAction->_props._seqName = seqName;
+    //    pAction->_props._stepStr = ss.str();
+    //    // pAction->_midiNotes = midiNotes;
+    //    // pAction->_velocity = velocity;
+    //    pAction->_props._velOnly = velOnly;
+    //    pAction->_props._temporary = !saveSeqChange;
+    //    enemy._hitActions.push_back(std::move(pAction));
+    //   
+    //}
 }
 
 void LoadNoteEnemy(TypingEnemyEntity& enemy, std::istream& lineStream) {
@@ -765,12 +765,12 @@ void SpawnEnemySeqAction::LoadDerived(LoadInputs const& loadInputs, std::istream
             }
             gHorizontal = !gHorizontal;
         } else if (key == "camera_target") {
-            auto pAction = std::make_unique<CameraControlSeqAction>();
+            /*auto pAction = std::make_unique<CameraControlSeqAction>();
             pAction->_props._targetEntityName = value;
             pAction->_props._desiredTargetToCameraOffset.Set(0.f, 5.f, 0.f);
             pAction->_props._setTarget = true;
             pAction->_props._setOffset = true;
-            _enemy._hitActions.push_back(std::move(pAction));           
+            _enemy._hitActions.push_back(std::move(pAction));    */       
         } else if (key == "camera_offset") {
             assert(false);  // UNSUPPORTED
             // auto pAction = std::make_unique<CameraControlSeqAction>();

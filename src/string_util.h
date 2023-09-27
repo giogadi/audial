@@ -4,6 +4,7 @@
 #include <charconv>
 #include <string_view>
 #include <optional>
+#include <cstdint>
 
 #include "rng.h"
 
@@ -60,7 +61,10 @@ inline float StofOrDie(std::string_view const str) {
     assert(success);
     return x;
 }
-
+inline bool MaybeStoi64(std::string_view const str, int64_t& output) {
+    auto [ptr, ec] = std::from_chars(str.data(), str.data() + str.length(), output);
+    return ec == std::errc();
+}
 inline bool EqualsIgnoreCase(std::string_view const x, std::string_view const y) {
     int xn = x.length();
     int yn = y.length();

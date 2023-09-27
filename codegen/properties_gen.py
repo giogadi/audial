@@ -14,11 +14,13 @@ def renderFromTemplateFile(templateFilename, dataDict, outputFilename):
     outputFile.close()
 
 def isPrimitiveType(typeName):
-    return typeName == 'int' or typeName == 'float' or typeName == 'double' or typeName == 'bool' or typeName == 'string'
+    return typeName == 'int' or typeName == 'float' or typeName == 'double' or typeName == 'bool' or typeName == 'string' or typeName == 'editor_id'
 
 def getCppTypeName(typeName):
     if typeName == 'string':
         return 'std::string'
+    elif typeName == 'editor_id':
+        return 'EditorId'
     else:
         return typeName    
 
@@ -76,6 +78,12 @@ def getProp(propName, propType, isArray, enumType, maybeNamespace, maybeDefault)
             outProp['load'] = 'pt.TryGetString(\"{name}\", &_{name});'.format(name = outProp['name'])
             outProp['save'] = 'pt.PutString(\"{name}\", _{name}.c_str());'.format(name = outProp['name'])
             outProp['imgui'] = 'imgui_util::InputText<128>(\"{name}\", &_{name});'.format(name = outProp['name'])
+        elif propType == 'editor_id':
+            outProp['type'] = 'EditorId'
+            outProp['load'] = 'serial::LoadFromChildOf(pt, \"{name}\", _{name});'.format(name = outProp['name'])
+            outProp['save'] = 'serial::SaveInNewChildOf(pt, \"{name}\", _{name});'.format(name = outProp['name'])
+            outProp['imgui'] = 'imgui_util::InputEditorId(\"{name}\", &_{name});'.format(name = outProp['name'])
+            outProp['header_includes'].append('\"editor_id.h\"')
         elif propType == 'enum':
             if maybeNamespace is None:
                 outProp['type'] = enumType

@@ -94,17 +94,17 @@ bool Ptree::TryGetInt(char const* name, int* v) {
     return false;
 }
 
-void Ptree::PutLong(char const* name, long v) {
+void Ptree::PutInt64(char const* name, int64_t v) {
     assert(IsValid());
     GetInternal(_internal)->add(name, v);
 }
-long Ptree::GetLong(char const* name) {
+int64_t Ptree::GetInt64(char const* name) {
     assert(IsValid());
-    return GetInternal(_internal)->get<long>(name);
+    return GetInternal(_internal)->get<int64_t>(name);
 }
-bool Ptree::TryGetLong(char const* name, long* v) {
+bool Ptree::TryGetInt64(char const* name, int64_t* v) {
     assert(IsValid());
-    auto const maybe_val = GetInternal(_internal)->get_optional<long>(name);
+    auto const maybe_val = GetInternal(_internal)->get_optional<int64_t>(name);
     if (maybe_val.has_value()) {
         *v = maybe_val.value();
         return true;
@@ -181,6 +181,11 @@ std::string Ptree::GetStringValue() {
 int Ptree::GetIntValue() {
     assert(IsValid());
     return GetInternal(_internal)->get_value<int>();
+}
+
+int64_t Ptree::GetInt64Value() {
+    assert(IsValid());
+    return GetInternal(_internal)->get_value<int64_t>();
 }
 
 bool Ptree::GetBoolValue() {

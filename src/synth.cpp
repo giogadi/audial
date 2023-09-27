@@ -419,7 +419,7 @@ namespace {
 
 Voice* FindVoiceForNoteOn(StateData& state, int const midiNote) {
     int bestIx = -1;
-    std::pair<int, int> bestPhaseAgePair = std::make_pair(-1, -1);
+    std::pair<int, int64_t> bestPhaseAgePair = std::make_pair(-1, -1);
     int numVoices = 1;
     if (!state.patch.Get(SynthParamType::Mono)) {
         numVoices = state.voices.size();

@@ -1,12 +1,14 @@
 #pragma once
 
 
+#include "editor_id.h"
+
 
 #include "serial.h"
 
 struct VfxPulseSeqActionProps {
     
-    std::string _vfxEntityName;
+    EditorId _vfxEditorId;
     
 
     void Load(serial::Ptree pt);

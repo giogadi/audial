@@ -7,8 +7,8 @@
             "default": "false"
         },
         {
-            "name": "targetEntityName",
-            "type": "string"            
+            "name": "targetEditorId",
+            "type": "editor_id"            
         },
         {
             "name": "targetTrackingFactor",

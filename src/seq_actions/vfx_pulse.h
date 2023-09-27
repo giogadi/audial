@@ -15,7 +15,9 @@ struct VfxPulseSeqAction : public SeqAction {
     
     virtual void ExecuteDerived(GameManager& g) override;   
     virtual void LoadDerived(serial::Ptree pt) override { _p.Load(pt); }
-    virtual void SaveDerived(serial::Ptree pt) const override { _p.Save(pt); }
+    virtual void SaveDerived(serial::Ptree pt) const override {
+        _p.Save(pt);        
+    }
     virtual bool ImGui() override { return _p.ImGui(); };
     virtual void InitDerived(GameManager& g) override;
 };
