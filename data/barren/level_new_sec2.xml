@@ -106,7 +106,7 @@
                     <id>-1</id>
                 </follow_entity_editor_id>
             </waypoint_follower>
-            <ortho>false</ortho>
+            <ortho>true</ortho>
             <follow_entity_name/>
             <tracking_factor>0.0500000007</tracking_factor>
             <fovy_deg>60</fovy_deg>

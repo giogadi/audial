@@ -316,7 +316,7 @@ void FlowPlayerEntity::Update(GameManager& g, float dt) {
 
         if (doneDashing) {
             if (passedDashTarget) {
-                constexpr float kPassTargetSpeed = 2.f;
+                constexpr float kPassTargetSpeed = 1.f;
                 float speed = _vel.Normalize();
                 speed = std::min(speed, kPassTargetSpeed);
                 _vel *= speed;
