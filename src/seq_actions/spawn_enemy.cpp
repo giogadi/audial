@@ -572,22 +572,22 @@ void LoadNoteEnemy(TypingEnemyEntity& enemy, std::istream& lineStream) {
     }
 
     if (noteTable) {
-        for (std::array<int, 4> const& n : *noteTable) {
-            auto pAction = std::make_unique<NoteOnOffSeqAction>();
-            pAction->_props._channel = channel;
-            // HOWDYYYYY
-            pAction->_props._midiNote = n[0];
-            pAction->_props._noteLength = noteLength;
-            pAction->_props._velocity = velocity;
-            enemy._hitActions.push_back(std::move(pAction));            
-        }
+        //for (std::array<int, 4> const& n : *noteTable) {
+        //    auto pAction = std::make_unique<NoteOnOffSeqAction>();
+        //    pAction->_props._channel = channel;
+        //    // HOWDYYYYY
+        //    pAction->_props._midiNote = n[0];
+        //    pAction->_props._noteLength = noteLength;
+        //    pAction->_props._velocity = velocity;
+        //    enemy._hitActions.push_back(std::move(pAction));            
+        //}
     } else {
-        auto pAction = std::make_unique<NoteOnOffSeqAction>();
+        /*auto pAction = std::make_unique<NoteOnOffSeqAction>();
         pAction->_props._channel = channel;
         pAction->_props._midiNote = midiNote;
         pAction->_props._noteLength = noteLength;
         pAction->_props._velocity = velocity;
-        enemy._hitActions.push_back(std::move(pAction));       
+        enemy._hitActions.push_back(std::move(pAction));  */     
     }
 }
 

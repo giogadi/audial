@@ -3,12 +3,12 @@
     <patch>
         <name>bass</name>
         <patch>
-            <Gain>0.697000027</Gain>
+            <Gain>0.898000002</Gain>
             <Mono>1</Mono>
-            <Osc1Waveform>Square</Osc1Waveform>
+            <Osc1Waveform>Saw</Osc1Waveform>
             <Osc2Waveform>Saw</Osc2Waveform>
             <Detune>1</Detune>
-            <OscFader>0.469999999</OscFader>
+            <OscFader>0.405000001</OscFader>
             <Cutoff>363.635986</Cutoff>
             <Peak>0</Peak>
             <HpfCutoff>0</HpfCutoff>
@@ -19,12 +19,12 @@
             <CutoffLFOGain>0.0340000018</CutoffLFOGain>
             <CutoffLFOFreq>4.16699982</CutoffLFOFreq>
             <AmpEnvAttack>0.057</AmpEnvAttack>
-            <AmpEnvDecay>1.36399996</AmpEnvDecay>
+            <AmpEnvDecay>1.43900001</AmpEnvDecay>
             <AmpEnvSustain>0.284000009</AmpEnvSustain>
             <AmpEnvRelease>2.65199995</AmpEnvRelease>
             <CutoffEnvGain>835.22699</CutoffEnvGain>
             <CutoffEnvAttack>0.057</CutoffEnvAttack>
-            <CutoffEnvDecay>3.76900005</CutoffEnvDecay>
+            <CutoffEnvDecay>4.52699995</CutoffEnvDecay>
             <CutoffEnvSustain>0.451000005</CutoffEnvSustain>
             <CutoffEnvRelease>3</CutoffEnvRelease>
             <PitchEnvGain>0</PitchEnvGain>

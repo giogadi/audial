@@ -1,6 +1,8 @@
 #pragma once
 
 
+#include <vector>
+
 
 #include "serial.h"
 
@@ -8,7 +10,7 @@ struct NoteOnOffSeqActionProps {
     
     int _channel = 0;
     
-    int _midiNote = -1;
+    std::vector<std::string> _midiNoteNames;
     
     double _noteLength = 0.0;
     

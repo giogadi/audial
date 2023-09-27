@@ -164,7 +164,7 @@
                 <y>0</y>
                 <z>-4.125</z>
             </respawn_pos>
-            <max_speed>10</max_speed>
+            <max_fall_speed>-1</max_fall_speed>
             <stop_dash_on_pass_enemy>false</stop_dash_on_pass_enemy>
         </FlowPlayer>
         <StepSequencer>

@@ -22,7 +22,7 @@ void FlowPlayerEntity::SaveDerived(serial::Ptree pt) const {
     pt.PutFloat("dash_time", _dashTime);
     serial::SaveInNewChildOf(pt, "gravity", _gravity);
     serial::SaveInNewChildOf(pt, "respawn_pos", _respawnPos);
-    pt.PutFloat("max_speed", _maxSpeed);
+    pt.PutFloat("max_fall_speed", _maxFallSpeed);
     pt.PutBool("stop_dash_on_pass_enemy", _stopDashOnPassEnemy);
 }
 
@@ -37,8 +37,8 @@ void FlowPlayerEntity::LoadDerived(serial::Ptree pt) {
     pt.TryGetFloat("dash_time", &_dashTime);
     serial::LoadFromChildOf(pt, "gravity", _gravity);
     serial::LoadFromChildOf(pt, "respawn_pos", _respawnPos);
-    _maxSpeed = 20.f;
-    pt.TryGetFloat("max_speed", &_maxSpeed);
+    _maxFallSpeed = 10.f;
+    pt.TryGetFloat("max_fall_speed", &_maxFallSpeed);
     _stopDashOnPassEnemy = true;
     pt.TryGetBool("stop_dash_on_pass_enemy", &_stopDashOnPassEnemy);
 
@@ -350,7 +350,9 @@ void FlowPlayerEntity::Update(GameManager& g, float dt) {
         // Not dashing. Apply gravity if we've dashed since respawn.
         if (!_respawnBeforeFirstDash) {
             _vel += _gravity * dt;
-            _vel._y = std::max(-_maxSpeed, _vel._y);
+            if (_maxFallSpeed >= 0.f) {
+                _vel._z = std::min(_maxFallSpeed, _vel._z);
+            }            
         }
     }
 

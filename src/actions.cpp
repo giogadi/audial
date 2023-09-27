@@ -260,61 +260,79 @@ void SetStepSequenceSeqAction::ExecuteDerived(GameManager& g) {
     }
 }
 
-void NoteOnOffSeqAction::LoadDerived(LoadInputs const& loadInputs, std::istream& input) {
-    std::string token, key, value;
-    while (!input.eof()) {
-        {
-            input >> token;
-            std::size_t delimIx = token.find_first_of(':');
-            if (delimIx == std::string::npos) {
-                printf("Token missing \":\" - \"%s\"\n", token.c_str());
-                continue;
-            }
+//void NoteOnOffSeqAction::LoadDerived(LoadInputs const& loadInputs, std::istream& input) {
+//    std::string token, key, value;
+//    while (!input.eof()) {
+//        {
+//            input >> token;
+//            std::size_t delimIx = token.find_first_of(':');
+//            if (delimIx == std::string::npos) {
+//                printf("Token missing \":\" - \"%s\"\n", token.c_str());
+//                continue;
+//            }
+//
+//            key = token.substr(0, delimIx);
+//            value = token.substr(delimIx + 1);
+//        }
+//        if (key == "channel") {
+//            _props._channel = std::stoi(value);
+//        }
+//        else if (key == "note") {
+//            _props._midiNote = GetMidiNote(value.c_str());
+//        }
+//        else if (key == "length") {
+//            _props._noteLength = std::stod(value);
+//        }
+//        else if (key == "velocity") {
+//            _props._velocity = std::stof(value);
+//        }
+//        else if (key == "quantize") {
+//            _props._quantizeDenom = std::stod(value);
+//        }
+//        else {
+//            printf("NoteOnOffSeqAction::Load: unknown key \"%s\"\n", key.c_str());
+//        }
+//    }
+//}
 
-            key = token.substr(0, delimIx);
-            value = token.substr(delimIx + 1);
+void NoteOnOffSeqAction::LoadDerived(serial::Ptree pt) {
+    _props.Load(pt);
+    int midiNote = -1;
+    if (pt.TryGetInt("midiNote", &midiNote)) {
+        // backward compat
+        if (!_props._midiNoteNames.empty()) {
+            printf("NoteOnOffSeqAction: UNEXPECTED MIDI NOTE NAMES!!!!\n");
         }
-        if (key == "channel") {
-            _props._channel = std::stoi(value);
-        }
-        else if (key == "note") {
-            _props._midiNote = GetMidiNote(value.c_str());
-        }
-        else if (key == "length") {
-            _props._noteLength = std::stod(value);
-        }
-        else if (key == "velocity") {
-            _props._velocity = std::stof(value);
-        }
-        else if (key == "quantize") {
-            _props._quantizeDenom = std::stod(value);
-        }
-        else {
-            printf("NoteOnOffSeqAction::Load: unknown key \"%s\"\n", key.c_str());
-        }
+        _props._midiNoteNames.clear();
+        std::string& noteName = _props._midiNoteNames.emplace_back();
+        GetNoteName(midiNote, noteName);
     }
 }
 
 void NoteOnOffSeqAction::ExecuteDerived(GameManager& g) {
-    if (_props._midiNote < 0) {
-        return;
-    }
-    BeatTimeEvent b_e;
-    b_e._beatTime = 0.0;
-    b_e._e.type = audio::EventType::NoteOn;
-    b_e._e.channel = _props._channel;
-    b_e._e.midiNote = _props._midiNote;
-    b_e._e.velocity = _props._velocity;
+    BeatTimeEvent b_e;    
+    b_e._e.channel = _props._channel;    
+    b_e._e.velocity = _props._velocity;    
+
     static int sNoteOnId = 1;
-    b_e._e.noteOnId = sNoteOnId++;
+    for (std::string const& noteName : _props._midiNoteNames) {
+        int midiNote = GetMidiNote(noteName);
+        if (midiNote < 0) {
+            continue;
+        }
+        b_e._beatTime = 0.0;
+        b_e._e.midiNote = midiNote;
+        b_e._e.noteOnId = sNoteOnId++;
+        b_e._e.type = audio::EventType::NoteOn;
 
-    audio::Event e = GetEventAtBeatOffsetFromNextDenom(_props._quantizeDenom, b_e, *g._beatClock, /*slack=*/0.0625);
-    g._audioContext->AddEvent(e);
+        audio::Event e = GetEventAtBeatOffsetFromNextDenom(_props._quantizeDenom, b_e, *g._beatClock, /*slack=*/0.0625);
+        g._audioContext->AddEvent(e);
 
-    b_e._e.type = audio::EventType::NoteOff;
-    b_e._beatTime = _props._noteLength;
-    e = GetEventAtBeatOffsetFromNextDenom(_props._quantizeDenom, b_e, *g._beatClock, /*slack=*/0.0625);
-    g._audioContext->AddEvent(e);
+        b_e._e.type = audio::EventType::NoteOff;
+        b_e._beatTime = _props._noteLength;
+        e = GetEventAtBeatOffsetFromNextDenom(_props._quantizeDenom, b_e, *g._beatClock, /*slack=*/0.0625);
+        g._audioContext->AddEvent(e);
+    }
 }
 
 void SetStepSequencerMuteSeqAction::LoadDerived(LoadInputs const& loadInputs, std::istream& input) {

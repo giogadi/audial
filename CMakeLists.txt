@@ -30,6 +30,8 @@ add_executable(game
     src/imgui_util.cpp src/imgui_util.h
     src/imgui_vector_util.h
 
+    src/midi_util.h
+
     src/viewport.cpp src/viewport.h
 
     src/matrix.cpp src/matrix.h
@@ -64,6 +66,7 @@ add_executable(game
     src/new_entity_id.h
     src/new_entity.cpp src/new_entity.h
     src/renderer.cpp src/renderer.h
+    src/camera_util.h
     src/stb_truetype.cpp src/stb_truetype.h
     src/geometry.cpp src/geometry.h
 

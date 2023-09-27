@@ -16,7 +16,7 @@ struct FlowPlayerEntity : public ne::Entity {
     float _maxOverallSpeedAfterDash = -1.f;
     float _dashTime = 0.5f;
     Vec3 _respawnPos;
-    float _maxSpeed = 20.f; // DUE TO GRAVITY ONLY
+    float _maxFallSpeed = 10.f;
     bool _stopDashOnPassEnemy = true;
 
     // non-serialized

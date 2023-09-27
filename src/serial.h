@@ -53,7 +53,7 @@ public:
     float GetFloatValue();
     double GetDoubleValue();
 
-    // Returns pointer to allocated memory. Up to user to delete.
+    // Returns pointer to allocated memory. Up to user to delete[].
     NameTreePair* GetChildren(int* numChildren);
 
     Ptree(Ptree const& other);

@@ -5,12 +5,16 @@
 #include "imgui_util.h"
 
 
+#include "serial_vector_util.h"
+
+#include "imgui_vector_util.h"
+
 
 void NoteOnOffSeqActionProps::Load(serial::Ptree pt) {
    
    pt.TryGetInt("channel", &_channel);
    
-   pt.TryGetInt("midiNote", &_midiNote);
+   serial::LoadVectorFromChildNode<std::string>(pt, "midiNoteNames", _midiNoteNames);
    
    pt.TryGetDouble("noteLength", &_noteLength);
    
@@ -24,7 +28,7 @@ void NoteOnOffSeqActionProps::Save(serial::Ptree pt) const {
     
     pt.PutInt("channel", _channel);
     
-    pt.PutInt("midiNote", _midiNote);
+    serial::SaveVectorInChildNode<std::string>(pt, "midiNoteNames", "array_item", _midiNoteNames);
     
     pt.PutDouble("noteLength", _noteLength);
     
@@ -43,7 +47,7 @@ bool NoteOnOffSeqActionProps::ImGui() {
     }
     
     {
-        bool thisChanged = ImGui::InputInt("midiNote", &_midiNote);
+        bool thisChanged = imgui_util::InputVector(_midiNoteNames);
         changed = changed || thisChanged;
     }
     

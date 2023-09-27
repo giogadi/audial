@@ -70,14 +70,21 @@ inline bool MaybeGetMidiNoteFromStr(std::string_view noteName, int& midiNote) {
 
 // Returns -1 on failure
 inline int GetMidiNote(std::string_view noteName) {
-    int note;
+    int note = -1;
     bool success = MaybeGetMidiNoteFromStr(noteName, note);
-    assert(success);
-    return note;
+    if (success) {
+        return note;
+    } else {
+        return -1;
+    }
 }
 
 inline void GetNoteName(int midiNote, std::string& name) {
     int octave = (midiNote - 12) / 12;
+    if (octave < 0 || octave >= 8) {
+        name = "***";
+        return;
+    }
     char octaveChar = '0' + octave;
     int offsetFromC = midiNote % 12;
     name.clear();
