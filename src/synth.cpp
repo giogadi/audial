@@ -492,10 +492,10 @@ void NoteOn(StateData& state, int midiNote, float velocity, int noteOnId) {
     Voice* v = FindVoiceForNoteOn(state, midiNote);
     if (v != nullptr) {
         v->oscillators[0].f = synth::MidiToFreq(midiNote);
-        for (int oscIx = 1; oscIx < v->oscillators.size(); ++oscIx) {
+        /*for (int oscIx = 1; oscIx < v->oscillators.size(); ++oscIx) {
             Oscillator& osc = v->oscillators[oscIx];
             osc.phase = v->oscillators[0].phase;
-        }
+        }*/
         v->currentMidiNote = midiNote;
         v->velocity = velocity;
         v->noteOnId = noteOnId;

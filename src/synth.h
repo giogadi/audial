@@ -94,11 +94,11 @@ struct Automation {
 
 // All times are in "modulation steps". Could be samples, buffers, whatever the caller wants.
 struct ADSREnvSpecInternal {
-    int64_t modulationHz = 1.f;
-    int64_t attackTime = 0.f;
-    int64_t decayTime = 0.f;
+    int64_t modulationHz = 1;
+    int64_t attackTime = 0;
+    int64_t decayTime = 0;
     float sustainLevel = 0.f;
-    int64_t releaseTime = 0.f;
+    int64_t releaseTime = 0;
 
     float attackCoeff = 0.f;
     float attackOffset = 0.f;

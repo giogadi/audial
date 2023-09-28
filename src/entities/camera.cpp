@@ -45,7 +45,15 @@ void CameraEntity::UpdateDerived(GameManager& g, float dt) {
     Vec3 targetToCameraOffset = cameraPos - targetPos;
     float k = _trackingFactor * 60.f;  // TOD0: 60 is the expected fps right???
     Vec3 diff = _desiredTargetToCameraOffset - targetToCameraOffset;
+    Vec3 diffDir = diff;
+    float diffLength = diffDir.Normalize();
+    diff += diffDir * 0.2f;  // overshoot
     Vec3 newOffset = targetToCameraOffset + k * dt * diff;
+    Vec3 newDiff = _desiredTargetToCameraOffset - newOffset;
+    if (Vec3::Dot(newDiff, diff) < 0.f) {
+        // We've crossed the desired offset
+        newOffset = _desiredTargetToCameraOffset;
+    }
     Vec3 newPos = targetPos + newOffset;
 
     // Fade in the constraints

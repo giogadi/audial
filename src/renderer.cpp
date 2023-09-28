@@ -1087,8 +1087,8 @@ void Scene::Draw(int windowWidth, int windowHeight, float timeInSecs) {
                 geometry::ProjectWorldPointToScreenSpace(text._pos, viewProjTransform, vp._width, vp._height, screenX, screenY);
             }
 
-            screenX = std::round(screenX);
-            screenY = std::round(screenY);
+            /*screenX = std::round(screenX);
+            screenY = std::round(screenY);*/
             DrawText(text._text, screenX, screenY, text._scale, text._colorRgba);
         }
         _pInternal->_textToDraw.clear();

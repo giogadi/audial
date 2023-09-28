@@ -16935,7 +16935,7 @@
                     </seqEntityEditorId>
                     <velOnly>false</velOnly>
                     <temporary>true</temporary>
-                    <stepStr> mC3:1</stepStr>
+                    <stepStr> mC2:1</stepStr>
                 </seq_action>
             </hit_actions>
             <all_hit_actions/>
@@ -17008,7 +17008,7 @@
                     </seqEntityEditorId>
                     <velOnly>false</velOnly>
                     <temporary>true</temporary>
-                    <stepStr> mC4:1</stepStr>
+                    <stepStr> mC3:1</stepStr>
                 </seq_action>
             </hit_actions>
             <all_hit_actions/>
@@ -17081,7 +17081,7 @@
                     </seqEntityEditorId>
                     <velOnly>false</velOnly>
                     <temporary>true</temporary>
-                    <stepStr> mB3-:1</stepStr>
+                    <stepStr> mB2-:1</stepStr>
                 </seq_action>
             </hit_actions>
             <all_hit_actions/>
@@ -17154,7 +17154,7 @@
                     </seqEntityEditorId>
                     <velOnly>false</velOnly>
                     <temporary>true</temporary>
-                    <stepStr> mG3:1</stepStr>
+                    <stepStr> mG2:1</stepStr>
                 </seq_action>
             </hit_actions>
             <all_hit_actions/>
@@ -17227,7 +17227,7 @@
                     </seqEntityEditorId>
                     <velOnly>false</velOnly>
                     <temporary>true</temporary>
-                    <stepStr> mF3:1</stepStr>
+                    <stepStr> mF2:1</stepStr>
                 </seq_action>
             </hit_actions>
             <all_hit_actions/>
@@ -17300,7 +17300,7 @@
                     </seqEntityEditorId>
                     <velOnly>false</velOnly>
                     <temporary>true</temporary>
-                    <stepStr> mE3-:1</stepStr>
+                    <stepStr> mE2-:1</stepStr>
                 </seq_action>
             </hit_actions>
             <all_hit_actions/>
