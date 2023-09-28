@@ -71,7 +71,7 @@
     <patch>
         <name>pad</name>
         <patch>
-            <Gain>0.741999984</Gain>
+            <Gain>0.841000021</Gain>
             <Mono>0</Mono>
             <Osc1Waveform>Square</Osc1Waveform>
             <Osc2Waveform>Saw</Osc2Waveform>

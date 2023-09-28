@@ -26,6 +26,11 @@
             "name": "quantizeDenom",
             "type": "double",
             "default": "0.25"
+        },
+        {
+            "name": "doNoteOff",
+            "type": "bool",
+            "default": "true"
         }
     ]
 }

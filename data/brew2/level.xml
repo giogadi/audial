@@ -3375,8 +3375,8 @@
             <editor_id>
                 <id>54</id>
             </editor_id>
-            <name>r2_fm_chord_trigger</name>
-            <entity_active>true</entity_active>
+            <name>r0_TEST_fm_chord_trigger</name>
+            <entity_active>false</entity_active>
             <pickable>true</pickable>
             <transform>
                 <pos>
@@ -3433,6 +3433,75 @@
                     <noteLength>4</noteLength>
                     <velocity>1</velocity>
                     <quantizeDenom>0.25</quantizeDenom>
+                    <doNoteOff>false</doNoteOff>
+                </seq_action>
+            </actions>
+            <actions_on_exit/>
+            <trigger_volume_entities/>
+        </FlowTrigger>
+        <FlowTrigger>
+            <editor_id>
+                <id>55</id>
+            </editor_id>
+            <name>r2_fm_chord_trigger</name>
+            <entity_active>true</entity_active>
+            <pickable>true</pickable>
+            <transform>
+                <pos>
+                    <x>20.7921352</x>
+                    <y>0</y>
+                    <z>43.0405807</z>
+                </pos>
+                <quat>
+                    <x>0</x>
+                    <y>0</y>
+                    <z>0</z>
+                    <w>1</w>
+                </quat>
+                <scale>
+                    <x>1</x>
+                    <y>1</y>
+                    <z>2</z>
+                </scale>
+            </transform>
+            <model_name/>
+            <model_color_vec4>
+                <x>0.800000012</x>
+                <y>0.800000012</y>
+                <z>0.800000012</z>
+                <w>1</w>
+            </model_color_vec4>
+            <flow_section_id>-1</flow_section_id>
+            <tag>0</tag>
+            <waypoint_follower>
+                <mode>Waypoint</mode>
+                <local_to_entity>false</local_to_entity>
+                <waypoint_auto_start>false</waypoint_auto_start>
+                <loop_waypoints>false</loop_waypoints>
+                <start_time>3</start_time>
+                <waypoints/>
+                <follow_entity_name/>
+                <follow_entity_editor_id>
+                    <id>-1</id>
+                </follow_entity_editor_id>
+            </waypoint_follower>
+            <on_player_enter>true</on_player_enter>
+            <use_trigger_volumes>false</use_trigger_volumes>
+            <random_action_count>-1</random_action_count>
+            <actions>
+                <seq_action>
+                    <one_time>true</one_time>
+                    <action_type>NoteOnOff</action_type>
+                    <channel>2</channel>
+                    <midiNoteNames>
+                        <array_item>C4</array_item>
+                        <array_item>F4</array_item>
+                        <array_item>A4</array_item>
+                    </midiNoteNames>
+                    <noteLength>4</noteLength>
+                    <velocity>1</velocity>
+                    <quantizeDenom>0.25</quantizeDenom>
+                    <doNoteOff>false</doNoteOff>
                 </seq_action>
             </actions>
             <actions_on_exit/>

@@ -18,6 +18,8 @@ struct NoteOnOffSeqActionProps {
     
     double _quantizeDenom = 0.25;
     
+    bool _doNoteOff = true;
+    
 
     void Load(serial::Ptree pt);
     void Save(serial::Ptree pt) const;

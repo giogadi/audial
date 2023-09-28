@@ -5,9 +5,9 @@
 #include "imgui_util.h"
 
 
-#include "serial_vector_util.h"
-
 #include "imgui_vector_util.h"
+
+#include "serial_vector_util.h"
 
 
 void NoteOnOffSeqActionProps::Load(serial::Ptree pt) {
@@ -22,6 +22,8 @@ void NoteOnOffSeqActionProps::Load(serial::Ptree pt) {
    
    pt.TryGetDouble("quantizeDenom", &_quantizeDenom);
    
+   pt.TryGetBool("doNoteOff", &_doNoteOff);
+   
 }
 
 void NoteOnOffSeqActionProps::Save(serial::Ptree pt) const {
@@ -35,6 +37,8 @@ void NoteOnOffSeqActionProps::Save(serial::Ptree pt) const {
     pt.PutFloat("velocity", _velocity);
     
     pt.PutDouble("quantizeDenom", _quantizeDenom);
+    
+    pt.PutBool("doNoteOff", _doNoteOff);
     
 }
 
@@ -63,6 +67,11 @@ bool NoteOnOffSeqActionProps::ImGui() {
     
     {
         bool thisChanged = ImGui::InputDouble("quantizeDenom", &_quantizeDenom);
+        changed = changed || thisChanged;
+    }
+    
+    {
+        bool thisChanged = ImGui::Checkbox("doNoteOff", &_doNoteOff);
         changed = changed || thisChanged;
     }
     

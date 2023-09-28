@@ -328,10 +328,12 @@ void NoteOnOffSeqAction::ExecuteDerived(GameManager& g) {
         audio::Event e = GetEventAtBeatOffsetFromNextDenom(_props._quantizeDenom, b_e, *g._beatClock, /*slack=*/0.0625);
         g._audioContext->AddEvent(e);
 
-        b_e._e.type = audio::EventType::NoteOff;
-        b_e._beatTime = _props._noteLength;
-        e = GetEventAtBeatOffsetFromNextDenom(_props._quantizeDenom, b_e, *g._beatClock, /*slack=*/0.0625);
-        g._audioContext->AddEvent(e);
+        if (_props._doNoteOff) {
+            b_e._e.type = audio::EventType::NoteOff;
+            b_e._beatTime = _props._noteLength;
+            e = GetEventAtBeatOffsetFromNextDenom(_props._quantizeDenom, b_e, *g._beatClock, /*slack=*/0.0625);
+            g._audioContext->AddEvent(e);
+        }        
     }
 }
 
