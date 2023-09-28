@@ -38,11 +38,19 @@ struct ADSREnvState {
 
 struct ADSRStateNew {
     ADSRPhase phase = ADSRPhase::Closed;
-    float value = 0.f;
-    float multiplier = 0.f;
-    float atkAuxVal = 0.f;
-    float targetLevel = 0.f;
     int64_t ticksSincePhaseStart = 0;
+    float value = 0.f;
+    float attackCoeff = 0.f;
+    float attackOffset = 0.f;
+    float attackTCO = 0.f;
+
+    float decayCoeff = 0.f;
+    float decayOffset = 0.f;
+    float decayTCO = 0.f;
+
+    float releaseCoeff = 0.f;
+    float releaseOffset = 0.f;
+    float releaseTCO = 0.f;
 };
 
 int constexpr kNumOscillators = 2;
@@ -86,11 +94,23 @@ struct Automation {
 
 // All times are in "modulation steps". Could be samples, buffers, whatever the caller wants.
 struct ADSREnvSpecInternal {
-    float modulationHz = 1.f;
-    float attackTime = 0.f;
-    float decayTime = 0.f;
+    int64_t modulationHz = 1.f;
+    int64_t attackTime = 0.f;
+    int64_t decayTime = 0.f;
     float sustainLevel = 0.f;
-    float releaseTime = 0.f;
+    int64_t releaseTime = 0.f;
+
+    float attackCoeff = 0.f;
+    float attackOffset = 0.f;
+    float attackTCO = 0.f;
+
+    float decayCoeff = 0.f;
+    float decayOffset = 0.f;
+    float decayTCO = 0.f;
+
+    float releaseCoeff = 0.f;
+    float releaseOffset = 0.f;
+    float releaseTCO = 0.f;
 };
 
 struct StateData {

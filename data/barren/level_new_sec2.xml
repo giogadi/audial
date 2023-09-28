@@ -6455,10 +6455,13 @@
                     <one_time>false</one_time>
                     <action_type>NoteOnOff</action_type>
                     <channel>0</channel>
-                    <midiNote>43</midiNote>
+                    <midiNoteNames>
+                        <array_item>G2</array_item>
+                    </midiNoteNames>
                     <noteLength>0.10000000000000001</noteLength>
                     <velocity>0.5</velocity>
                     <quantizeDenom>0.25</quantizeDenom>
+                    <doNoteOff>true</doNoteOff>
                 </seq_action>
             </actions>
         </FlowPickup>
@@ -6531,10 +6534,13 @@
                     <one_time>false</one_time>
                     <action_type>NoteOnOff</action_type>
                     <channel>0</channel>
-                    <midiNote>43</midiNote>
+                    <midiNoteNames>
+                        <array_item>G2</array_item>
+                    </midiNoteNames>
                     <noteLength>0.10000000000000001</noteLength>
                     <velocity>0.5</velocity>
                     <quantizeDenom>0.25</quantizeDenom>
+                    <doNoteOff>true</doNoteOff>
                 </seq_action>
             </actions>
         </FlowPickup>
@@ -6607,10 +6613,13 @@
                     <one_time>false</one_time>
                     <action_type>NoteOnOff</action_type>
                     <channel>0</channel>
-                    <midiNote>43</midiNote>
+                    <midiNoteNames>
+                        <array_item>G2</array_item>
+                    </midiNoteNames>
                     <noteLength>0.10000000000000001</noteLength>
                     <velocity>0.5</velocity>
                     <quantizeDenom>0.25</quantizeDenom>
+                    <doNoteOff>true</doNoteOff>
                 </seq_action>
             </actions>
         </FlowPickup>
@@ -7385,10 +7394,13 @@
                     <one_time>false</one_time>
                     <action_type>NoteOnOff</action_type>
                     <channel>1</channel>
-                    <midiNote>47</midiNote>
+                    <midiNoteNames>
+                        <array_item>B2</array_item>
+                    </midiNoteNames>
                     <noteLength>0.20000000000000001</noteLength>
                     <velocity>1</velocity>
                     <quantizeDenom>0.25</quantizeDenom>
+                    <doNoteOff>true</doNoteOff>
                 </seq_action>
             </actions>
         </FlowPickup>
@@ -7455,10 +7467,13 @@
                     <one_time>false</one_time>
                     <action_type>NoteOnOff</action_type>
                     <channel>1</channel>
-                    <midiNote>58</midiNote>
+                    <midiNoteNames>
+                        <array_item>B3-</array_item>
+                    </midiNoteNames>
                     <noteLength>0.5</noteLength>
                     <velocity>1</velocity>
                     <quantizeDenom>0.25</quantizeDenom>
+                    <doNoteOff>true</doNoteOff>
                 </seq_action>
             </hit_actions>
             <all_hit_actions/>
@@ -7688,10 +7703,13 @@
                     <one_time>false</one_time>
                     <action_type>NoteOnOff</action_type>
                     <channel>1</channel>
-                    <midiNote>52</midiNote>
+                    <midiNoteNames>
+                        <array_item>E3</array_item>
+                    </midiNoteNames>
                     <noteLength>0.5</noteLength>
                     <velocity>1</velocity>
                     <quantizeDenom>0.25</quantizeDenom>
+                    <doNoteOff>true</doNoteOff>
                 </seq_action>
             </hit_actions>
             <all_hit_actions/>
@@ -7760,10 +7778,13 @@
                     <one_time>false</one_time>
                     <action_type>NoteOnOff</action_type>
                     <channel>1</channel>
-                    <midiNote>47</midiNote>
+                    <midiNoteNames>
+                        <array_item>B2</array_item>
+                    </midiNoteNames>
                     <noteLength>0.20000000000000001</noteLength>
                     <velocity>1</velocity>
                     <quantizeDenom>0.25</quantizeDenom>
+                    <doNoteOff>true</doNoteOff>
                 </seq_action>
                 <seq_action>
                     <one_time>false</one_time>
@@ -8112,10 +8133,13 @@
                     <one_time>false</one_time>
                     <action_type>NoteOnOff</action_type>
                     <channel>1</channel>
-                    <midiNote>47</midiNote>
+                    <midiNoteNames>
+                        <array_item>B2</array_item>
+                    </midiNoteNames>
                     <noteLength>0.5</noteLength>
                     <velocity>1</velocity>
                     <quantizeDenom>0.25</quantizeDenom>
+                    <doNoteOff>true</doNoteOff>
                 </seq_action>
                 <seq_action>
                     <one_time>false</one_time>
@@ -16911,7 +16935,7 @@
                     </seqEntityEditorId>
                     <velOnly>false</velOnly>
                     <temporary>true</temporary>
-                    <stepStr> mC2:1</stepStr>
+                    <stepStr> mC3:1</stepStr>
                 </seq_action>
             </hit_actions>
             <all_hit_actions/>
@@ -16984,7 +17008,7 @@
                     </seqEntityEditorId>
                     <velOnly>false</velOnly>
                     <temporary>true</temporary>
-                    <stepStr> mC3:1</stepStr>
+                    <stepStr> mC4:1</stepStr>
                 </seq_action>
             </hit_actions>
             <all_hit_actions/>
@@ -17057,7 +17081,7 @@
                     </seqEntityEditorId>
                     <velOnly>false</velOnly>
                     <temporary>true</temporary>
-                    <stepStr> mB2-:1</stepStr>
+                    <stepStr> mB3-:1</stepStr>
                 </seq_action>
             </hit_actions>
             <all_hit_actions/>
@@ -17130,7 +17154,7 @@
                     </seqEntityEditorId>
                     <velOnly>false</velOnly>
                     <temporary>true</temporary>
-                    <stepStr> mG2:1</stepStr>
+                    <stepStr> mG3:1</stepStr>
                 </seq_action>
             </hit_actions>
             <all_hit_actions/>
@@ -17203,7 +17227,7 @@
                     </seqEntityEditorId>
                     <velOnly>false</velOnly>
                     <temporary>true</temporary>
-                    <stepStr> mF2:1</stepStr>
+                    <stepStr> mF3:1</stepStr>
                 </seq_action>
             </hit_actions>
             <all_hit_actions/>
@@ -17276,7 +17300,7 @@
                     </seqEntityEditorId>
                     <velOnly>false</velOnly>
                     <temporary>true</temporary>
-                    <stepStr> mE2-:1</stepStr>
+                    <stepStr> mE3-:1</stepStr>
                 </seq_action>
             </hit_actions>
             <all_hit_actions/>
@@ -19052,6 +19076,15 @@
                     <temporary>false</temporary>
                     <stepStr>mG3,mB3-,mD4,mF4:1</stepStr>
                 </seq_action>
+                <seq_action>
+                    <one_time>false</one_time>
+                    <action_type>SetAllSteps</action_type>
+                    <seq_editor_id>
+                        <id>10</id>
+                    </seq_editor_id>
+                    <step_str>mG1:1.0</step_str>
+                    <vel_only>false</vel_only>
+                </seq_action>
             </hit_actions>
             <all_hit_actions/>
             <off_cooldown_actions/>
@@ -19133,6 +19166,15 @@
                     <velOnly>false</velOnly>
                     <temporary>false</temporary>
                     <stepStr>mG3,mB3-,mC4,mE4:1</stepStr>
+                </seq_action>
+                <seq_action>
+                    <one_time>false</one_time>
+                    <action_type>SetAllSteps</action_type>
+                    <seq_editor_id>
+                        <id>10</id>
+                    </seq_editor_id>
+                    <step_str>mC2:1.0</step_str>
+                    <vel_only>false</vel_only>
                 </seq_action>
             </hit_actions>
             <all_hit_actions/>
@@ -19216,6 +19258,15 @@
                     <temporary>false</temporary>
                     <stepStr>mF3,mA3-,mC4,mE4-:1</stepStr>
                 </seq_action>
+                <seq_action>
+                    <one_time>false</one_time>
+                    <action_type>SetAllSteps</action_type>
+                    <seq_editor_id>
+                        <id>10</id>
+                    </seq_editor_id>
+                    <step_str>mF1:1.0</step_str>
+                    <vel_only>false</vel_only>
+                </seq_action>
             </hit_actions>
             <all_hit_actions/>
             <off_cooldown_actions/>
@@ -19297,6 +19348,15 @@
                     <velOnly>false</velOnly>
                     <temporary>false</temporary>
                     <stepStr>mB2-,mE3,mG3,mC4:1</stepStr>
+                </seq_action>
+                <seq_action>
+                    <one_time>false</one_time>
+                    <action_type>SetAllSteps</action_type>
+                    <seq_editor_id>
+                        <id>10</id>
+                    </seq_editor_id>
+                    <step_str>mC1:1.0</step_str>
+                    <vel_only>false</vel_only>
                 </seq_action>
             </hit_actions>
             <all_hit_actions/>

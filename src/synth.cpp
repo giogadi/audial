@@ -69,8 +69,6 @@ void DestroyStateData(StateData& state) {
     state.voiceScratchBuffer = nullptr;
 }
 
-float constexpr kMinValue = 0.001f;
-
 float calcMultiplier(float startLevel, float endLevel, int64_t numSamples) {
     assert(numSamples > 0l);
     assert(startLevel > 0.f);
@@ -84,50 +82,41 @@ float calcMultiplier(float startLevel, float endLevel, int64_t numSamples) {
 
 void AdsrTick(ADSREnvSpecInternal const& spec, ADSRStateNew* state) {
     ADSRPhase prevPhase = state->phase;
+
     switch (state->phase) {
         case ADSRPhase::Attack: {
-            state->atkAuxVal *= state->multiplier;
-            state->value = 1 - state->atkAuxVal;
-            if (state->value >= 0.95f) {
+            state->value = spec.attackOffset + state->value*spec.attackCoeff;
+            if (state->value >= 1.f || spec.attackTime <= 0) {
                 state->value = 1.f;
                 state->phase = ADSRPhase::Decay;
-                state->targetLevel = spec.sustainLevel;
-                if (spec.decayTime <= 0) {
-                    state->value = spec.sustainLevel;
-                    state->multiplier = 1.f;
-                } else {
-                    state->multiplier = calcMultiplier(1.f, kMinValue, spec.decayTime);
-                }
             }
-            
             break;
         }
         case ADSRPhase::Decay: {
-            state->value *= state->multiplier;
-            // I use the stored targetLevel instead of the spec's sustain level
-            // so that we don't get weird behavior when changing sustain level
-            // while a note is being held.
-            if (state->value <= state->targetLevel) {
-                state->value = state->targetLevel;
+            state->value = spec.decayOffset + state->value * spec.decayCoeff;
+            if (state->value <= spec.sustainLevel || spec.decayTime <= 0) {
+                state->value = spec.sustainLevel;
                 state->phase = ADSRPhase::Sustain;
-            }           
+            }
             break;
         }
         case ADSRPhase::Sustain: {
+            state->value = spec.sustainLevel;
             break;
         }
         case ADSRPhase::Release: {
-            state->value *= state->multiplier;
-            if (state->value <= kMinValue) {
+            state->value = spec.releaseOffset + state->value * spec.releaseCoeff;
+            if (state->value <= 0.f || spec.releaseTime <= 0) {
                 state->value = 0.f;
                 state->phase = ADSRPhase::Closed;
-            }           
+            }
             break;
         }
         case ADSRPhase::Closed: {
             break;
         }
     }
+    
     if (prevPhase != state->phase) {
         state->ticksSincePhaseStart = 0;
     } else {
@@ -471,11 +460,25 @@ void ConvertADSREnvSpec(ADSREnvSpec const& spec, ADSREnvSpecInTicks& specInTicks
 }
 
 void ConvertADSREnvSpec(ADSREnvSpec const& spec, ADSREnvSpecInternal& specInternal, float sampleRate, int samplesPerModulation) {
-    specInternal.modulationHz = sampleRate / samplesPerModulation;
-    specInternal.attackTime = spec.attackTime * sampleRate / samplesPerModulation;
-    specInternal.decayTime = spec.decayTime * sampleRate / samplesPerModulation;
+    specInternal.modulationHz = (int64_t)(sampleRate / samplesPerModulation);
+    specInternal.attackTime = (int64_t)(spec.attackTime * sampleRate / samplesPerModulation);
+    specInternal.decayTime = (int64_t)(spec.decayTime * sampleRate / samplesPerModulation);
     specInternal.sustainLevel = spec.sustainLevel;
-    specInternal.releaseTime = spec.releaseTime * sampleRate / samplesPerModulation;
+    specInternal.releaseTime = (int64_t)(spec.releaseTime * sampleRate / samplesPerModulation);
+
+    specInternal.attackTCO = exp(-1.5f);
+    specInternal.decayTCO = exp(-4.95f);
+    specInternal.releaseTCO = specInternal.decayTCO;
+
+    // TODO: only update each of these if the value changed
+    specInternal.attackCoeff = exp(-log((1.f + specInternal.attackTCO) / specInternal.attackTCO) / specInternal.attackTime);
+    specInternal.attackOffset = (1.f + specInternal.attackTCO)*(1.f - specInternal.attackCoeff);
+
+    specInternal.decayCoeff = exp(-log((1.f + specInternal.decayTCO) / specInternal.decayTCO) / specInternal.decayTime);
+    specInternal.decayOffset = (specInternal.sustainLevel - specInternal.decayTCO)*(1.f - specInternal.decayCoeff);
+
+    specInternal.releaseCoeff = exp(-log((1.f + specInternal.releaseTCO) / specInternal.releaseTCO) / specInternal.releaseTime);
+    specInternal.releaseOffset = -specInternal.releaseTCO*(1.f - specInternal.releaseCoeff);
 }
 
 // "Samples" is simply the number of iterations we plan to run this envelope. In some cases it might actually be number of samples;
@@ -483,17 +486,6 @@ void ConvertADSREnvSpec(ADSREnvSpec const& spec, ADSREnvSpecInternal& specIntern
 void ADSRNoteOn(ADSREnvSpecInternal const& spec, ADSRStateNew& adsrState) {
     adsrState.ticksSincePhaseStart = 0;
     adsrState.phase = synth::ADSRPhase::Attack;
-    if (spec.attackTime <= 0.f) {
-        adsrState.multiplier = 1.f;
-        adsrState.value = 1.f;
-        adsrState.atkAuxVal = 0.f;
-    } else {
-        adsrState.multiplier = calcMultiplier(1.f, kMinValue, spec.attackTime);
-        adsrState.atkAuxVal = 1.f - adsrState.value;
-    }
-    if (adsrState.value < kMinValue) {
-        adsrState.value = kMinValue;
-    }
 }
 
 void NoteOn(StateData& state, int midiNote, float velocity, int noteOnId) {
@@ -521,12 +513,6 @@ void NoteOn(StateData& state, int midiNote, float velocity, int noteOnId) {
 void ADSRNoteOff(ADSREnvSpecInternal const& spec, ADSRStateNew& adsrState) {
     adsrState.phase = synth::ADSRPhase::Release;
     adsrState.ticksSincePhaseStart = 0;
-    if (spec.releaseTime <= 0.f) {
-        adsrState.multiplier = 1.f;
-        adsrState.value = 0.f;
-    } else {
-        adsrState.multiplier = calcMultiplier(1.f, kMinValue, spec.releaseTime);
-    }
 }
 
 void NoteOff(StateData& state, int midiNote, int noteOnId) {
@@ -619,7 +605,6 @@ void Process(StateData* state, boost::circular_buffer<audio::PendingEvent> const
 
     // Handle all the events that will happen in this buffer frame.
     int64_t frameStartTickTime = currentBufferCounter * samplesPerFrame;
-    int64_t frameLastTickTime = frameStartTickTime + samplesPerFrame;
     int currentEventIx = 0;
     while (true) {
         if (currentEventIx >= pendingEvents.size()) {
