@@ -695,7 +695,13 @@ void Process(StateData* state, boost::circular_buffer<audio::PendingEvent> const
         double timeSoFar = frameStartTickTime - a._startTickTime;
         double factor = std::min(timeSoFar / totalTime, 1.0);
         float& currentValue = patch.Get(a._synthParamType);
-        float newValue = a._startValue + factor * (a._desiredValue - a._startValue);
+        float newValue = -1.f;
+        if (a._synthParamType == audio::SynthParamType::Cutoff) {
+            if (factor != 0.0) {
+                factor = std::pow(2, 10.0 * factor - 10.0);
+            }
+        }
+        newValue = a._startValue + factor * (a._desiredValue - a._startValue);
         currentValue = newValue;
 
         for (Voice& v : state->voices) {
