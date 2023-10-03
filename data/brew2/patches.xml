@@ -293,7 +293,7 @@
             <AmpEnvAttack>0.294999987</AmpEnvAttack>
             <AmpEnvDecay>0.136000007</AmpEnvDecay>
             <AmpEnvSustain>1</AmpEnvSustain>
-            <AmpEnvRelease>2.45799994</AmpEnvRelease>
+            <AmpEnvRelease>4.68200016</AmpEnvRelease>
             <CutoffEnvGain>0</CutoffEnvGain>
             <CutoffEnvAttack>0.0719999969</CutoffEnvAttack>
             <CutoffEnvDecay>0.411000013</CutoffEnvDecay>
