@@ -207,14 +207,14 @@
     <patch>
         <name>bass2</name>
         <patch>
-            <Gain>0.843999982</Gain>
+            <Gain>0.745999992</Gain>
             <Mono>1</Mono>
-            <Osc1Waveform>Square</Osc1Waveform>
+            <Osc1Waveform>Saw</Osc1Waveform>
             <Osc2Waveform>Saw</Osc2Waveform>
             <Detune>1</Detune>
-            <OscFader>0</OscFader>
-            <Cutoff>0</Cutoff>
-            <Peak>0</Peak>
+            <OscFader>0.508000016</OscFader>
+            <Cutoff>2636.36401</Cutoff>
+            <Peak>3.59800005</Peak>
             <HpfCutoff>0</HpfCutoff>
             <HpfPeak>0</HpfPeak>
             <Portamento>0</Portamento>
@@ -224,9 +224,9 @@
             <CutoffLFOFreq>8.05099964</CutoffLFOFreq>
             <AmpEnvAttack>0.0209999997</AmpEnvAttack>
             <AmpEnvDecay>0.114</AmpEnvDecay>
-            <AmpEnvSustain>0.677999973</AmpEnvSustain>
-            <AmpEnvRelease>1.20799994</AmpEnvRelease>
-            <CutoffEnvGain>2347.52905</CutoffEnvGain>
+            <AmpEnvSustain>1</AmpEnvSustain>
+            <AmpEnvRelease>0.303000003</AmpEnvRelease>
+            <CutoffEnvGain>0</CutoffEnvGain>
             <CutoffEnvAttack>0.0149999997</CutoffEnvAttack>
             <CutoffEnvDecay>0.317999989</CutoffEnvDecay>
             <CutoffEnvSustain>0.186000004</CutoffEnvSustain>
@@ -275,13 +275,13 @@
     <patch>
         <name>pad2</name>
         <patch>
-            <Gain>0.639999986</Gain>
+            <Gain>0.601999998</Gain>
             <Mono>0</Mono>
             <Osc1Waveform>Square</Osc1Waveform>
             <Osc2Waveform>Saw</Osc2Waveform>
             <Detune>1</Detune>
             <OscFader>0.681999981</OscFader>
-            <Cutoff>6406.77881</Cutoff>
+            <Cutoff>9818.18164</Cutoff>
             <Peak>0</Peak>
             <HpfCutoff>0</HpfCutoff>
             <HpfPeak>0</HpfPeak>
@@ -349,8 +349,8 @@
             <Osc2Waveform>Saw</Osc2Waveform>
             <Detune>0.995999992</Detune>
             <OscFader>0.5</OscFader>
-            <Cutoff>5593.22119</Cutoff>
-            <Peak>2.71199989</Peak>
+            <Cutoff>9545.45508</Cutoff>
+            <Peak>4.69700003</Peak>
             <HpfCutoff>0</HpfCutoff>
             <HpfPeak>0</HpfPeak>
             <Portamento>0</Portamento>
@@ -377,7 +377,7 @@
     <patch>
         <name>pad2_closed</name>
         <patch>
-            <Gain>0.639999986</Gain>
+            <Gain>0.601999998</Gain>
             <Mono>0</Mono>
             <Osc1Waveform>Square</Osc1Waveform>
             <Osc2Waveform>Saw</Osc2Waveform>
@@ -395,7 +395,7 @@
             <AmpEnvAttack>0.294999987</AmpEnvAttack>
             <AmpEnvDecay>0.136000007</AmpEnvDecay>
             <AmpEnvSustain>1</AmpEnvSustain>
-            <AmpEnvRelease>2.45799994</AmpEnvRelease>
+            <AmpEnvRelease>4.68200016</AmpEnvRelease>
             <CutoffEnvGain>0</CutoffEnvGain>
             <CutoffEnvAttack>0.0719999969</CutoffEnvAttack>
             <CutoffEnvDecay>0.411000013</CutoffEnvDecay>

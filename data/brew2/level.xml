@@ -4144,7 +4144,7 @@
                     <one_time>true</one_time>
                     <action_type>ChangePatch</action_type>
                     <channel>3</channel>
-                    <blend_beat_time>16</blend_beat_time>
+                    <blend_beat_time>12</blend_beat_time>
                     <use_patch_bank>true</use_patch_bank>
                     <patch_name>idk2</patch_name>
                 </seq_action>
@@ -5974,6 +5974,14 @@
                         <beat_time>0</beat_time>
                     </beat_time_event>
                 </seq_action>
+                <seq_action>
+                    <one_time>true</one_time>
+                    <action_type>ChangePatch</action_type>
+                    <channel>0</channel>
+                    <blend_beat_time>0</blend_beat_time>
+                    <use_patch_bank>true</use_patch_bank>
+                    <patch_name>bass2</patch_name>
+                </seq_action>
             </actions>
             <actions_on_exit/>
             <trigger_volume_entities/>
@@ -6155,9 +6163,9 @@
             <pickable>true</pickable>
             <transform>
                 <pos>
-                    <x>56.2973366</x>
+                    <x>55.4942589</x>
                     <y>0</y>
-                    <z>0.604855776</z>
+                    <z>1.1549108</z>
                 </pos>
                 <quat>
                     <x>0</x>
@@ -6192,7 +6200,7 @@
                     <id>-1</id>
                 </follow_entity_editor_id>
             </waypoint_follower>
-            <text>r</text>
+            <text>f</text>
             <buttons>a</buttons>
             <type_kill>false</type_kill>
             <all_actions_on_hit>true</all_actions_on_hit>
@@ -6287,9 +6295,9 @@
             <pickable>true</pickable>
             <transform>
                 <pos>
-                    <x>57.7660866</x>
+                    <x>56.3029404</x>
                     <y>0</y>
-                    <z>-0.629519105</z>
+                    <z>-0.475503683</z>
                 </pos>
                 <quat>
                     <x>0</x>
@@ -6324,7 +6332,7 @@
                     <id>-1</id>
                 </follow_entity_editor_id>
             </waypoint_follower>
-            <text>r</text>
+            <text>d</text>
             <buttons>a</buttons>
             <type_kill>false</type_kill>
             <all_actions_on_hit>true</all_actions_on_hit>
@@ -6360,9 +6368,9 @@
             <pickable>true</pickable>
             <transform>
                 <pos>
-                    <x>59.4848366</x>
+                    <x>57.2186089</x>
                     <y>0</y>
-                    <z>-0.395144105</z>
+                    <z>0.539949179</z>
                 </pos>
                 <quat>
                     <x>0</x>
@@ -6397,7 +6405,7 @@
                     <id>-1</id>
                 </follow_entity_editor_id>
             </waypoint_follower>
-            <text>r</text>
+            <text>s</text>
             <buttons>a</buttons>
             <type_kill>false</type_kill>
             <all_actions_on_hit>true</all_actions_on_hit>
@@ -6433,9 +6441,9 @@
             <pickable>true</pickable>
             <transform>
                 <pos>
-                    <x>60.8754616</x>
+                    <x>58.2682037</x>
                     <y>0</y>
-                    <z>-1.58264387</z>
+                    <z>-4.43192816</z>
                 </pos>
                 <quat>
                     <x>0</x>
@@ -6470,7 +6478,7 @@
                     <id>-1</id>
                 </follow_entity_editor_id>
             </waypoint_follower>
-            <text>r</text>
+            <text>i</text>
             <buttons>a</buttons>
             <type_kill>false</type_kill>
             <all_actions_on_hit>true</all_actions_on_hit>
@@ -6506,9 +6514,9 @@
             <pickable>true</pickable>
             <transform>
                 <pos>
-                    <x>62.2817116</x>
+                    <x>60.4665298</x>
                     <y>0</y>
-                    <z>-1.17639399</z>
+                    <z>-3.04658103</z>
                 </pos>
                 <quat>
                     <x>0</x>
@@ -6543,7 +6551,7 @@
                     <id>-1</id>
                 </follow_entity_editor_id>
             </waypoint_follower>
-            <text>r</text>
+            <text>j</text>
             <buttons>a</buttons>
             <type_kill>false</type_kill>
             <all_actions_on_hit>true</all_actions_on_hit>
@@ -6579,9 +6587,9 @@
             <pickable>true</pickable>
             <transform>
                 <pos>
-                    <x>63.8442116</x>
+                    <x>61.5999908</x>
                     <y>0</y>
-                    <z>-1.06701899</z>
+                    <z>-3.01421356</z>
                 </pos>
                 <quat>
                     <x>0</x>
@@ -6616,7 +6624,7 @@
                     <id>-1</id>
                 </follow_entity_editor_id>
             </waypoint_follower>
-            <text>r</text>
+            <text>k</text>
             <buttons>a</buttons>
             <type_kill>false</type_kill>
             <all_actions_on_hit>true</all_actions_on_hit>
@@ -6652,9 +6660,9 @@
             <pickable>true</pickable>
             <transform>
                 <pos>
-                    <x>65.1098328</x>
+                    <x>64.4827728</x>
                     <y>0</y>
-                    <z>-1.05139399</z>
+                    <z>0.345745742</z>
                 </pos>
                 <quat>
                     <x>0</x>
@@ -6689,7 +6697,7 @@
                     <id>-1</id>
                 </follow_entity_editor_id>
             </waypoint_follower>
-            <text>r</text>
+            <text>l</text>
             <buttons>a</buttons>
             <type_kill>false</type_kill>
             <all_actions_on_hit>true</all_actions_on_hit>
@@ -6725,9 +6733,9 @@
             <pickable>true</pickable>
             <transform>
                 <pos>
-                    <x>66.6723328</x>
+                    <x>63.702034</x>
                     <y>0</y>
-                    <z>-1.09826899</z>
+                    <z>1.35497594</z>
                 </pos>
                 <quat>
                     <x>0</x>
@@ -6762,7 +6770,7 @@
                     <id>-1</id>
                 </follow_entity_editor_id>
             </waypoint_follower>
-            <text>r</text>
+            <text>u</text>
             <buttons>a</buttons>
             <type_kill>false</type_kill>
             <all_actions_on_hit>true</all_actions_on_hit>
@@ -6798,9 +6806,9 @@
             <pickable>true</pickable>
             <transform>
                 <pos>
-                    <x>68.2504578</x>
+                    <x>62.1558495</x>
                     <y>0</y>
-                    <z>-1.83264399</z>
+                    <z>1.1376524</z>
                 </pos>
                 <quat>
                     <x>0</x>
@@ -6835,7 +6843,7 @@
                     <id>-1</id>
                 </follow_entity_editor_id>
             </waypoint_follower>
-            <text>r</text>
+            <text>v</text>
             <buttons>a</buttons>
             <type_kill>false</type_kill>
             <all_actions_on_hit>true</all_actions_on_hit>
@@ -6856,11 +6864,208 @@
                     </seqEntityEditorId>
                     <velOnly>false</velOnly>
                     <temporary>true</temporary>
-                    <stepStr>mB2:1</stepStr>
+                    <stepStr>mG2:1</stepStr>
                 </seq_action>
             </hit_actions>
             <all_hit_actions/>
             <off_cooldown_actions/>
         </TypingEnemy>
+        <TypingEnemy>
+            <editor_id>
+                <id>106</id>
+            </editor_id>
+            <name>r5_n9</name>
+            <entity_active>true</entity_active>
+            <pickable>true</pickable>
+            <transform>
+                <pos>
+                    <x>60.7037048</x>
+                    <y>0</y>
+                    <z>0.807619631</z>
+                </pos>
+                <quat>
+                    <x>0</x>
+                    <y>0</y>
+                    <z>0</z>
+                    <w>1</w>
+                </quat>
+                <scale>
+                    <x>0.5</x>
+                    <y>0.5</y>
+                    <z>0.5</z>
+                </scale>
+            </transform>
+            <model_name>cube</model_name>
+            <model_color_vec4>
+                <x>0.0170607343</x>
+                <y>0.69607842</y>
+                <z>0.0969450846</z>
+                <w>1</w>
+            </model_color_vec4>
+            <flow_section_id>1</flow_section_id>
+            <tag>0</tag>
+            <waypoint_follower>
+                <mode>Waypoint</mode>
+                <local_to_entity>false</local_to_entity>
+                <waypoint_auto_start>false</waypoint_auto_start>
+                <loop_waypoints>false</loop_waypoints>
+                <start_time>3</start_time>
+                <waypoints/>
+                <follow_entity_name/>
+                <follow_entity_editor_id>
+                    <id>-1</id>
+                </follow_entity_editor_id>
+            </waypoint_follower>
+            <text>n</text>
+            <buttons>a</buttons>
+            <type_kill>false</type_kill>
+            <all_actions_on_hit>true</all_actions_on_hit>
+            <bounce_radius>-1</bounce_radius>
+            <flow_polarity>false</flow_polarity>
+            <flow_cooldown>500</flow_cooldown>
+            <show_beats_left>false</show_beats_left>
+            <cooldown_quantize_denom>0</cooldown_quantize_denom>
+            <reset_cooldown_on_any_hit>true</reset_cooldown_on_any_hit>
+            <init_hittable>true</init_hittable>
+            <active_radius>-1</active_radius>
+            <hit_actions>
+                <seq_action>
+                    <one_time>false</one_time>
+                    <action_type>ChangeStepSequencer</action_type>
+                    <seqEntityEditorId>
+                        <id>97</id>
+                    </seqEntityEditorId>
+                    <velOnly>false</velOnly>
+                    <temporary>true</temporary>
+                    <stepStr>mG2+:1</stepStr>
+                </seq_action>
+            </hit_actions>
+            <all_hit_actions/>
+            <off_cooldown_actions/>
+        </TypingEnemy>
+        <Base>
+            <editor_id>
+                <id>107</id>
+            </editor_id>
+            <name>r5_camera_target</name>
+            <entity_active>true</entity_active>
+            <pickable>true</pickable>
+            <transform>
+                <pos>
+                    <x>60.5924988</x>
+                    <y>0</y>
+                    <z>-2.31914544</z>
+                </pos>
+                <quat>
+                    <x>0</x>
+                    <y>0</y>
+                    <z>0</z>
+                    <w>1</w>
+                </quat>
+                <scale>
+                    <x>1</x>
+                    <y>1</y>
+                    <z>1</z>
+                </scale>
+            </transform>
+            <model_name/>
+            <model_color_vec4>
+                <x>0.800000012</x>
+                <y>0.800000012</y>
+                <z>0.800000012</z>
+                <w>1</w>
+            </model_color_vec4>
+            <flow_section_id>-1</flow_section_id>
+            <tag>0</tag>
+            <waypoint_follower>
+                <mode>Waypoint</mode>
+                <local_to_entity>false</local_to_entity>
+                <waypoint_auto_start>false</waypoint_auto_start>
+                <loop_waypoints>false</loop_waypoints>
+                <start_time>3</start_time>
+                <waypoints/>
+                <follow_entity_name/>
+                <follow_entity_editor_id>
+                    <id>-1</id>
+                </follow_entity_editor_id>
+            </waypoint_follower>
+        </Base>
+        <FlowTrigger>
+            <editor_id>
+                <id>108</id>
+            </editor_id>
+            <name>r4_to_r5_trigger</name>
+            <entity_active>true</entity_active>
+            <pickable>true</pickable>
+            <transform>
+                <pos>
+                    <x>55.9720383</x>
+                    <y>0</y>
+                    <z>1.28755963</z>
+                </pos>
+                <quat>
+                    <x>0</x>
+                    <y>0</y>
+                    <z>0</z>
+                    <w>1</w>
+                </quat>
+                <scale>
+                    <x>3</x>
+                    <y>1</y>
+                    <z>1</z>
+                </scale>
+            </transform>
+            <model_name/>
+            <model_color_vec4>
+                <x>0.800000012</x>
+                <y>0.800000012</y>
+                <z>0.800000012</z>
+                <w>1</w>
+            </model_color_vec4>
+            <flow_section_id>-1</flow_section_id>
+            <tag>0</tag>
+            <waypoint_follower>
+                <mode>Waypoint</mode>
+                <local_to_entity>false</local_to_entity>
+                <waypoint_auto_start>false</waypoint_auto_start>
+                <loop_waypoints>false</loop_waypoints>
+                <start_time>3</start_time>
+                <waypoints/>
+                <follow_entity_name/>
+                <follow_entity_editor_id>
+                    <id>-1</id>
+                </follow_entity_editor_id>
+            </waypoint_follower>
+            <on_player_enter>true</on_player_enter>
+            <use_trigger_volumes>false</use_trigger_volumes>
+            <random_action_count>-1</random_action_count>
+            <actions>
+                <seq_action>
+                    <one_time>true</one_time>
+                    <action_type>CameraControl</action_type>
+                    <setTarget>true</setTarget>
+                    <targetEditorId>
+                        <id>107</id>
+                    </targetEditorId>
+                    <targetTrackingFactor>0.0500000007</targetTrackingFactor>
+                    <setOffset>true</setOffset>
+                    <desiredTargetToCameraOffset>
+                        <x>0</x>
+                        <y>10</y>
+                        <z>0</z>
+                    </desiredTargetToCameraOffset>
+                    <hasMinX>false</hasMinX>
+                    <minX>0</minX>
+                    <hasMinZ>false</hasMinZ>
+                    <minZ>0</minZ>
+                    <hasMaxX>false</hasMaxX>
+                    <maxX>0</maxX>
+                    <hasMaxZ>false</hasMaxZ>
+                    <maxZ>0</maxZ>
+                </seq_action>
+            </actions>
+            <actions_on_exit/>
+            <trigger_volume_entities/>
+        </FlowTrigger>
     </new_entities>
 </script>
