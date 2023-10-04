@@ -10,6 +10,7 @@
 #include "game_manager.h"
 #include "midi_util.h"
 #include "string_util.h"
+#include "math_util.h"
 
 void StepSequencerEntity::WriteSeqStep(SeqStep const& step, std::ostream& output) {
     std::string noteName;
@@ -97,6 +98,83 @@ void StepSequencerEntity::LoadSequenceFromInput(std::istream& input, std::vector
     }
 }
 
+bool StepSequencerEntity::SeqImGui(char const* label, std::vector<SeqStep>& sequence) {
+    int constexpr kMaxRows = 256;
+
+    bool changed = false;
+    
+    int numSteps = sequence.size();
+    if (ImGui::InputInt("# steps", &numSteps, 1, 1, ImGuiInputTextFlags_EnterReturnsTrue)) {
+        numSteps = math_util::Clamp(numSteps, 1, kMaxRows);
+        sequence.resize(numSteps);
+        changed = true;
+    }
+    
+    float const textBaseHeight = ImGui::GetTextLineHeightWithSpacing();
+    static ImGuiTableFlags flags = ImGuiTableFlags_ScrollY | ImGuiTableFlags_RowBg | ImGuiTableFlags_BordersOuter | ImGuiTableFlags_BordersV | ImGuiTableFlags_Resizable | ImGuiTableFlags_Reorderable | ImGuiTableFlags_Hideable;
+    ImVec2 outerSize = ImVec2(0.f, textBaseHeight * 8);
+    int constexpr kStepColIx = 0;
+    int constexpr kFirstNoteColIx = 1;
+    int constexpr kNumNotes = StepSequencerEntity::SeqStep::kNumNotes;
+    int constexpr kVelColIx = kFirstNoteColIx + kNumNotes;
+    int constexpr kNumColumns = kVelColIx + 1;
+    if (ImGui::BeginTable(label, kNumColumns, flags, outerSize)) {
+        ImGui::TableSetupScrollFreeze(0, 1);
+        ImGui::TableSetupColumn("Step", ImGuiTableColumnFlags_None);
+        char noteStr[] = "NoteX";
+        assert(kNumNotes < 10);
+        for (int i = 0; i < kNumNotes; ++i) {
+            sprintf(noteStr, "Note%d", i);
+            ImGui::TableSetupColumn(noteStr, ImGuiTableColumnFlags_None);
+        }
+        ImGui::TableSetupColumn("Vel", ImGuiTableColumnFlags_None);
+        ImGui::TableHeadersRow();
+
+        ImGuiListClipper clipper;
+        clipper.Begin(sequence.size());        
+
+        int constexpr kStringSize = 4;
+        static char sNoteStrings[kMaxRows][kNumNotes][kStringSize] = {};        
+        
+        
+        while (clipper.Step()) {
+            assert(clipper.DisplayStart < sequence.size());
+            assert(clipper.DisplayEnd <= sequence.size());
+            for (int row = clipper.DisplayStart; row < clipper.DisplayEnd; ++row) {
+                ImGui::TableNextRow();
+                ImGui::PushID(row);
+                ImGui::TableSetColumnIndex(kStepColIx);
+                ImGui::Text("%d", row);
+                for (int noteIx = 0; noteIx < kNumNotes; ++noteIx) {
+                    int columnIx = kFirstNoteColIx + noteIx;
+                    ImGui::TableSetColumnIndex(columnIx);
+                    ImGui::PushID(columnIx);
+                    int midiNote = sequence[row]._midiNote[noteIx];
+                    char* noteStr = sNoteStrings[row][noteIx];
+                    GetNoteName(midiNote, noteStr);
+                    if (ImGui::InputText("", noteStr, kStringSize+1, ImGuiInputTextFlags_EnterReturnsTrue)) {
+                        int len = strlen(noteStr);
+                        std::string_view noteStrView(noteStr, len);
+                        midiNote = GetMidiNote(noteStrView);
+                        sequence[row]._midiNote[noteIx] = midiNote;
+                        changed = true;
+                        // GetNoteName(midiNote, noteStr);
+                    }
+                    ImGui::PopID();
+                }
+                ImGui::TableSetColumnIndex(kVelColIx);  // velocity
+                float v = sequence[row]._velocity;
+                ImGui::InputFloat("##vel", &v);
+                sequence[row]._velocity = v;
+                ImGui::PopID();
+            }
+        }
+        ImGui::EndTable();
+    }
+
+    return changed;
+}
+
 void StepSequencerEntity::EnqueueChange(SeqStepChange const& change) {
     _changeQueue[_changeQueueTailIx] = change;
     _changeQueueTailIx = (_changeQueueTailIx + 1) % kChangeQueueSize;
@@ -179,10 +257,14 @@ void StepSequencerEntity::SetSequencePermanentWithStartOffset(std::vector<SeqSte
 
     // HUGE HACK I'M SO SORRY. ASSUMES WE'RE QUANTIZING TO 1 BEAT AND THAT STEPS ARE 16th NOTES.
     // maps to previous beat.
-    int startIx = ((4 * (_currentIx / 4)) + 4) % newSequence.size();
-    for (int i = 0, n = newSequence.size(); i < n; ++i) {
-        int ix = (startIx + i) % n;
-        _tempSequence[ix] = _permanentSequence[ix] = newSequence[i];
+    if (std::abs(_stepBeatLength - 0.25) > 0.00001) {
+        printf("StepSequencerEntity::SetSequencePermanentWithStartOffset: WARNING I only support 0.25 beat lengths, but this beat length is %f\n", _stepBeatLength);
+    } else {
+        int startIx = ((4 * (_currentIx / 4)) + 4) % newSequence.size();
+        for (int i = 0, n = newSequence.size(); i < n; ++i) {
+            int ix = (startIx + i) % n;
+            _tempSequence[ix] = _permanentSequence[ix] = newSequence[i];
+        }
     }
 }
 
@@ -369,6 +451,7 @@ void StepSequencerEntity::LoadDerived(serial::Ptree pt) {
 }
 
 ne::BaseEntity::ImGuiResult StepSequencerEntity::ImGuiDerived(GameManager& g) {
+    bool needsInit = false;
     ImGui::Checkbox("Mute in Editor", &_editorMute);
     ImGui::Checkbox("Start mute", &_startMute);
     if (ImGui::InputFloat("Gain", &_initGain)) {
@@ -381,5 +464,13 @@ ne::BaseEntity::ImGuiResult StepSequencerEntity::ImGuiDerived(GameManager& g) {
     if (ImGui::Button("Apply")) {
         SetAllVelocitiesPermanent(allVelocity);
     }
-    return ImGuiResult::Done;
+    if (ImGui::TreeNode("Sequence")) {
+        needsInit = SeqImGui("Sequence", _initialMidiSequenceDoNotChange) || needsInit;
+        ImGui::TreePop();
+    }
+    if (needsInit) {
+        return ImGuiResult::NeedsInit;
+    } else {
+        return ImGuiResult::Done;
+    }
 }

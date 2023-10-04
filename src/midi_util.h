@@ -79,10 +79,66 @@ inline int GetMidiNote(std::string_view noteName) {
     }
 }
 
+inline void GetNoteName(int midiNote, char* nameStr) {
+    // ASSUMES nameStr CAN STORE 3 CHARS PLUS \0
+    int octave = (midiNote - 12) / 12;
+    if (octave < 0 || octave >= 8) {
+        strcpy(nameStr, "**");
+        return;
+    }
+    char octaveChar = '0' + octave;
+    int offsetFromC = midiNote % 12;
+    nameStr[1] = octaveChar;
+    nameStr[2] = '\0';
+    switch (offsetFromC) {
+        case 0:
+            nameStr[0] = 'C';
+            break;
+        case 1:
+            nameStr[0] = 'D';
+            nameStr[2] = '-';
+            break;
+        case 2:
+            nameStr[0] = 'D';
+            break;            
+        case 3:
+            nameStr[0] = 'E';
+            nameStr[2] = '-';
+            break;
+        case 4:
+            nameStr[0] = 'E';
+            break;
+        case 5:
+            nameStr[0] = 'F';
+            break;
+        case 6:
+            nameStr[0] = 'G';
+            nameStr[2] = '-';
+            break;
+        case 7:
+            nameStr[0] = 'G';
+            break;
+        case 8:
+            nameStr[0] = 'A';
+            nameStr[2] = '-';
+            break;
+        case 9:
+            nameStr[0] = 'A';
+            break;
+        case 10:
+            nameStr[0] = 'B';
+            nameStr[2] = '-';
+            break;
+        case 11:
+            nameStr[0] = 'B';
+            break;
+    }
+}
+
 inline void GetNoteName(int midiNote, std::string& name) {
     int octave = (midiNote - 12) / 12;
     if (octave < 0 || octave >= 8) {
-        name = "***";
+        name = "**";
         return;
     }
     char octaveChar = '0' + octave;
@@ -145,7 +201,7 @@ inline void GetNoteName(int midiNote, std::string& name) {
             break;
         default:
             assert(false);
-            name = "***";
+            name = "**";
             break;
     }
 }

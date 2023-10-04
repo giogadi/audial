@@ -229,6 +229,11 @@ bool SetStepSequenceSeqAction::ImGui() {
 
     ImGui::Checkbox("Offset start", &_offsetStart);
 
+    // if (ImGui::TreeNode("Sequence")) {
+    //     StepSequencerEntity::SeqImGui("Sequence", _sequence);        
+    //     ImGui::TreePop();
+    // }
+
     return false;
 }
 

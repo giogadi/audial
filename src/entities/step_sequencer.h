@@ -9,7 +9,8 @@
 struct StepSequencerEntity : ne::Entity {
     struct SeqStep {
         SeqStep() {}
-        std::array<int,4> _midiNote = {-1, -1, -1, -1};
+        static constexpr int kNumNotes = 4;
+        std::array<int,kNumNotes> _midiNote = {-1, -1, -1, -1};
         float _velocity = 1.f;
     };
     struct SeqStepChange {
@@ -18,6 +19,9 @@ struct StepSequencerEntity : ne::Entity {
         bool _changeVelocity = true;
         bool _temporary = true;
     };
+
+    static bool SeqImGui(char const* label, std::vector<SeqStep>& sequence);
+    
     // Serialized
     std::vector<SeqStep> _initialMidiSequenceDoNotChange;
     double _stepBeatLength = 0.25;
