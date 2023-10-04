@@ -86,10 +86,9 @@ struct SetStepSequenceSeqAction : public SeqAction {
     virtual SeqActionType Type() const override { return SeqActionType::SetStepSequence; }
     // serialized
     EditorId _seqEditorId;
-    std::string _seqStr;
+    std::vector<StepSequencerEntity::SeqStep> _sequence;
     bool _offsetStart = false;
 
-    std::vector<StepSequencerEntity::SeqStep> _sequence;
     ne::EntityId _seqId;
 
     virtual void ExecuteDerived(GameManager& g) override;

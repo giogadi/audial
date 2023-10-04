@@ -205,46 +205,53 @@ void SetAllStepsSeqAction::ExecuteDerived(GameManager& g) {
 void SetStepSequenceSeqAction::LoadDerived(LoadInputs const& loadInputs, std::istream& input) {
     input >> _seqEditorId;
     // ASSUMES WE ONLY HAVE ONE LINE
-    std::getline(input, _seqStr);
+    std::string seqStr;
+    std::getline(input, seqStr);
+    std::stringstream ss(seqStr);
+    StepSequencerEntity::LoadSequenceFromInput(ss, _sequence);
 }
 
 void SetStepSequenceSeqAction::LoadDerived(serial::Ptree pt) {
     serial::LoadFromChildOf(pt, "seq_editor_id", _seqEditorId);
-    _seqStr = pt.GetString("seq_str");
+    std::string seqStr = pt.GetString("seq_str");
+    std::stringstream ss(seqStr);
+    StepSequencerEntity::LoadSequenceFromInput(ss, _sequence);
     _offsetStart = false;
     pt.TryGetBool("offset_start", &_offsetStart);
 }
 
 void SetStepSequenceSeqAction::SaveDerived(serial::Ptree pt) const {
     serial::SaveInNewChildOf(pt, "seq_editor_id", _seqEditorId);
-    pt.PutString("seq_str", _seqStr.c_str());
+    std::stringstream ss;
+    for (StepSequencerEntity::SeqStep const& step : _sequence) {
+        StepSequencerEntity::WriteSeqStep(step, ss);
+        ss << " ";
+    }
+    std::string seqStr = ss.str();
+    pt.PutString("seq_str", seqStr.c_str());
     pt.PutBool("offset_start", _offsetStart);
 }
 
 bool SetStepSequenceSeqAction::ImGui() {
-    bool changed = imgui_util::InputEditorId("Seq editor ID", &_seqEditorId);
-
-    bool c = imgui_util::InputText<1024>("Seq str", &_seqStr);
-    changed = c || changed;
+    bool changed = imgui_util::InputEditorId("Seq editor ID", &_seqEditorId);    
 
     ImGui::Checkbox("Offset start", &_offsetStart);
 
-    // if (ImGui::TreeNode("Sequence")) {
-    //     StepSequencerEntity::SeqImGui("Sequence", _sequence);        
-    //     ImGui::TreePop();
-    // }
+    static bool sIsSynth = true;
+    ImGui::Checkbox("Is synth", &sIsSynth);
+    if (ImGui::TreeNode("Sequence")) {
+        changed = StepSequencerEntity::SeqImGui("Sequence", !sIsSynth, _sequence) || changed;
+        ImGui::TreePop();
+    }
 
-    return false;
+    return changed;
 }
 
 void SetStepSequenceSeqAction::InitDerived(GameManager& g) {
     ne::Entity* e = g._neEntityManager->FindEntityByEditorIdAndType(_seqEditorId, ne::EntityType::StepSequencer, nullptr, "SetStepSequenceSeqAction");
     if (e) {
         _seqId = e->_id;
-    }
-
-    std::stringstream ss(_seqStr);
-    StepSequencerEntity::LoadSequenceFromInput(ss, _sequence);
+    }   
 }
 
 void SetStepSequenceSeqAction::ExecuteDerived(GameManager& g) {

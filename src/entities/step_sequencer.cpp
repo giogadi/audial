@@ -11,6 +11,9 @@
 #include "midi_util.h"
 #include "string_util.h"
 #include "math_util.h"
+#include "sound_bank.h"
+
+extern GameManager gGameManager;
 
 void StepSequencerEntity::WriteSeqStep(SeqStep const& step, std::ostream& output) {
     std::string noteName;
@@ -98,14 +101,17 @@ void StepSequencerEntity::LoadSequenceFromInput(std::istream& input, std::vector
     }
 }
 
-bool StepSequencerEntity::SeqImGui(char const* label, std::vector<SeqStep>& sequence) {
+bool StepSequencerEntity::SeqImGui(char const* label, bool drumKit, std::vector<SeqStep>& sequence) {
     int constexpr kMaxRows = 256;
+
+    std::vector<char const*> const& soundNames = gGameManager._soundBank->_soundNames;
+    int const numSounds = static_cast<int>(soundNames.size());
 
     bool changed = false;
     
     int numSteps = sequence.size();
     if (ImGui::InputInt("# steps", &numSteps, 1, 1, ImGuiInputTextFlags_EnterReturnsTrue)) {
-        numSteps = math_util::Clamp(numSteps, 1, kMaxRows);
+        numSteps = math_util::Clamp(numSteps, 0, kMaxRows);
         sequence.resize(numSteps);
         changed = true;
     }
@@ -138,7 +144,7 @@ bool StepSequencerEntity::SeqImGui(char const* label, std::vector<SeqStep>& sequ
         
         
         while (clipper.Step()) {
-            assert(clipper.DisplayStart < sequence.size());
+            // assert(clipper.DisplayStart < sequence.size());
             assert(clipper.DisplayEnd <= sequence.size());
             for (int row = clipper.DisplayStart; row < clipper.DisplayEnd; ++row) {
                 ImGui::TableNextRow();
@@ -150,15 +156,44 @@ bool StepSequencerEntity::SeqImGui(char const* label, std::vector<SeqStep>& sequ
                     ImGui::TableSetColumnIndex(columnIx);
                     ImGui::PushID(columnIx);
                     int midiNote = sequence[row]._midiNote[noteIx];
-                    char* noteStr = sNoteStrings[row][noteIx];
-                    GetNoteName(midiNote, noteStr);
-                    if (ImGui::InputText("", noteStr, kStringSize+1, ImGuiInputTextFlags_EnterReturnsTrue)) {
-                        int len = strlen(noteStr);
-                        std::string_view noteStrView(noteStr, len);
-                        midiNote = GetMidiNote(noteStrView);
-                        sequence[row]._midiNote[noteIx] = midiNote;
-                        changed = true;
-                        // GetNoteName(midiNote, noteStr);
+                    if (drumKit) {
+                        char const* preview = nullptr;
+                        char const* kNoneStr = "None";
+                        if (midiNote < 0 || midiNote >= numSounds) {
+                            preview = kNoneStr;
+                        } else {
+                            preview = soundNames[midiNote];
+                        }
+                        if (ImGui::BeginCombo("", preview)) {
+                            bool selected = ImGui::Selectable(kNoneStr, midiNote < 0);
+                            if (selected) {                                
+                                midiNote = -1;
+                                sequence[row]._midiNote[noteIx] = midiNote;
+                                changed = true;
+                            }
+                            for (int soundIx = 0; soundIx < numSounds; ++soundIx) {
+                                char const* soundName = soundNames[soundIx];
+                                bool selected = ImGui::Selectable(soundName, midiNote == soundIx);
+                                if (selected) {
+                                    midiNote = soundIx;
+                                    sequence[row]._midiNote[noteIx] = midiNote;
+                                    changed = true;
+                                }
+                            }
+                            ImGui::EndCombo();
+                        }                        
+                    } else {
+                        // not drumkit
+                        char* noteStr = sNoteStrings[row][noteIx];
+                        GetNoteName(midiNote, noteStr);
+                        if (ImGui::InputText("", noteStr, kStringSize+1, ImGuiInputTextFlags_EnterReturnsTrue)) {
+                            int len = strlen(noteStr);
+                            std::string_view noteStrView(noteStr, len);
+                            midiNote = GetMidiNote(noteStrView);
+                            sequence[row]._midiNote[noteIx] = midiNote;
+                            changed = true;
+                            // GetNoteName(midiNote, noteStr);
+                        }
                     }
                     ImGui::PopID();
                 }
@@ -244,11 +279,11 @@ void StepSequencerEntity::SetAllStepsPermanent(SeqStep const& newStep) {
 }
 
 void StepSequencerEntity::SetSequencePermanent(std::vector<SeqStep> const& newSequence) {
-    assert(_permanentSequence.size() == _tempSequence.size());
-    assert(_permanentSequence.size() == newSequence.size());
-    for (int i = 0, n = newSequence.size(); i < n; ++i) {
-        _tempSequence[i] = _permanentSequence[i] = newSequence[i];
+    bool sizeChanged = newSequence.size() != _permanentSequence.size();
+    if (sizeChanged) {
+        _seqNeedsReset = true;
     }
+    _tempSequence = _permanentSequence = newSequence;    
 }
 
 void StepSequencerEntity::SetSequencePermanentWithStartOffset(std::vector<SeqStep> const& newSequence) {
@@ -271,18 +306,9 @@ void StepSequencerEntity::SetSequencePermanentWithStartOffset(std::vector<SeqSte
 void StepSequencerEntity::InitDerived(GameManager& g) {
     _mute = _startMute;
     _tempSequence = _permanentSequence = _initialMidiSequenceDoNotChange;
-    // _loopStartBeatTime = _initialLoopStartBeatTime;
-    _loopStartBeatTime = g._beatClock->GetNextDownBeatTime(g._beatClock->GetBeatTimeFromEpoch());
     _maxNumVoices = _initMaxNumVoices;
     _gain = _initGain;
-
-    _changeQueueHeadIx = 0;
-    _changeQueueTailIx = 0;
-    _changeQueueCount = 0;
-    _currentIx = 0;
-    _changeQueueHeadIx = 0;
-    _changeQueueTailIx = 0;
-    _changeQueueCount = 0;
+    _seqNeedsReset = true;
 }
 
 void StepSequencerEntity::Update(GameManager& g, float dt) {    
@@ -293,6 +319,18 @@ void StepSequencerEntity::Update(GameManager& g, float dt) {
     BeatClock const& beatClock = *g._beatClock;
 
     double const beatTime = beatClock.GetBeatTimeFromEpoch();
+
+    if (_seqNeedsReset) {
+        _loopStartBeatTime = g._beatClock->GetNextDownBeatTime(beatTime);
+        _changeQueueHeadIx = 0;
+        _changeQueueTailIx = 0;
+        _changeQueueCount = 0;
+        _currentIx = 0;
+        _changeQueueHeadIx = 0;
+        _changeQueueTailIx = 0;
+        _changeQueueCount = 0;
+        _seqNeedsReset = false;
+    }
 
     // Play sound on the first frame at-or-after the target beat time
     double nextStepBeatTime = _loopStartBeatTime + _currentIx * _stepBeatLength;
@@ -457,6 +495,7 @@ ne::BaseEntity::ImGuiResult StepSequencerEntity::ImGuiDerived(GameManager& g) {
     if (ImGui::InputFloat("Gain", &_initGain)) {
         _gain = _initGain;
     }
+    ImGui::Checkbox("Is synth", &_isSynth);
     ImGui::InputDouble("Note length", &_noteLength, 0.0, 0.0, "%.6f", ImGuiInputTextFlags_EnterReturnsTrue);    
     static float allVelocity = 1.f;
     ImGui::InputFloat("Set all velocities", &allVelocity);
@@ -465,7 +504,7 @@ ne::BaseEntity::ImGuiResult StepSequencerEntity::ImGuiDerived(GameManager& g) {
         SetAllVelocitiesPermanent(allVelocity);
     }
     if (ImGui::TreeNode("Sequence")) {
-        needsInit = SeqImGui("Sequence", _initialMidiSequenceDoNotChange) || needsInit;
+        needsInit = SeqImGui("Sequence", !_isSynth, _initialMidiSequenceDoNotChange) || needsInit;
         ImGui::TreePop();
     }
     if (needsInit) {

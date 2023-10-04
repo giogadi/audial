@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <script>
-    <bpm>140</bpm>
+    <bpm>160</bpm>
     <new_entities>
         <Light>
             <editor_id>
@@ -222,7 +222,7 @@
                     <id>-1</id>
                 </follow_entity_editor_id>
             </waypoint_follower>
-            <sequence>mG0:1 -1:1 -1:1 -1:1 mG0:1 -1:1 -1:1 -1:1 mG0:1 -1:1 -1:1 -1:1 mG0:1 -1:1 -1:1 -1:1</sequence>
+            <sequence>mG0:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 mG0:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1</sequence>
             <start_mute>true</start_mute>
             <gain>0.75</gain>
             <channels/>
@@ -6279,7 +6279,7 @@
             <channels>
                 <channel>0</channel>
             </channels>
-            <step_length>0.25</step_length>
+            <step_length>0.5</step_length>
             <note_length>0.25</note_length>
             <start_time>4</start_time>
             <is_synth>true</is_synth>
@@ -7062,6 +7062,23 @@
                     <maxX>0</maxX>
                     <hasMaxZ>false</hasMaxZ>
                     <maxZ>0</maxZ>
+                </seq_action>
+                <seq_action>
+                    <one_time>true</one_time>
+                    <action_type>SetStepSequence</action_type>
+                    <seq_editor_id>
+                        <id>3</id>
+                    </seq_editor_id>
+                    <seq_str>mG0:1 -1:1 -1:1 -1:1 mG0:1 -1:1 -1:1 -1:1 mA0-:1 -1:1 mG0:1 -1:1 -1:1 -1:1 mG0:1 -1:1 -1:1 -1:1 mG0:1 -1:1 -1:1 -1:1 mG0:1 -1:1 mA0-:1 -1:1 mG0:1 -1:1 -1:1 -1:1 -1:1 -1:1 </seq_str>
+                    <offset_start>false</offset_start>
+                </seq_action>
+                <seq_action>
+                    <one_time>true</one_time>
+                    <action_type>SetStepSequencerMute</action_type>
+                    <seq_editor_id>
+                        <id>3</id>
+                    </seq_editor_id>
+                    <mute>false</mute>
                 </seq_action>
             </actions>
             <actions_on_exit/>

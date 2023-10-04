@@ -20,7 +20,7 @@ struct StepSequencerEntity : ne::Entity {
         bool _temporary = true;
     };
 
-    static bool SeqImGui(char const* label, std::vector<SeqStep>& sequence);
+    static bool SeqImGui(char const* label, bool drumKit, std::vector<SeqStep>& sequence);
     
     // Serialized
     std::vector<SeqStep> _initialMidiSequenceDoNotChange;
@@ -48,6 +48,7 @@ struct StepSequencerEntity : ne::Entity {
     int _changeQueueCount = 0;
     int _maxNumVoices = -1;
     float _gain = 1.f;
+    bool _seqNeedsReset = true;
 
     enum StepSaveType { Temporary, Permanent };
     void SetNextSeqStep(GameManager& g, SeqStep step, StepSaveType saveType);
