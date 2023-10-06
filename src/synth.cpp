@@ -696,7 +696,7 @@ void Process(StateData* state, boost::circular_buffer<audio::PendingEvent> const
         double factor = std::min(timeSoFar / totalTime, 1.0);
         float& currentValue = patch.Get(a._synthParamType);
         float newValue = -1.f;
-        if (a._synthParamType == audio::SynthParamType::Cutoff) {
+        if (a._synthParamType == audio::SynthParamType::Cutoff || a._synthParamType == audio::SynthParamType::CutoffEnvGain) {
             if (factor != 0.0) {
                 factor = std::pow(2, 10.0 * factor - 10.0);
             }
