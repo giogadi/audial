@@ -290,7 +290,7 @@
             <PitchLFOFreq>4.23699999</PitchLFOFreq>
             <CutoffLFOGain>0</CutoffLFOGain>
             <CutoffLFOFreq>4.16699982</CutoffLFOFreq>
-            <AmpEnvAttack>0.294999987</AmpEnvAttack>
+            <AmpEnvAttack>0.648000002</AmpEnvAttack>
             <AmpEnvDecay>0.136000007</AmpEnvDecay>
             <AmpEnvSustain>1</AmpEnvSustain>
             <AmpEnvRelease>4.68200016</AmpEnvRelease>
