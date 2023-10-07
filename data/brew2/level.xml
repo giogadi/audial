@@ -222,11 +222,11 @@
                     <id>-1</id>
                 </follow_entity_editor_id>
             </waypoint_follower>
-            <sequence>mG0:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 mG0:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1</sequence>
-            <start_mute>true</start_mute>
+            <sequence>mG0:0 mG0:0 mG0:0 mG0:0 mG0:0 mG0:0 mG0:0 mG0:0 mG0:0 mG0:0 mG0:0 mG0:0</sequence>
+            <start_mute>false</start_mute>
             <gain>0.75</gain>
             <channels/>
-            <step_length>0.25</step_length>
+            <step_length>0.66666666666666663</step_length>
             <note_length>0.125</note_length>
             <start_time>4</start_time>
             <is_synth>false</is_synth>
@@ -279,7 +279,7 @@
                     <id>-1</id>
                 </follow_entity_editor_id>
             </waypoint_follower>
-            <sequence>-1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1</sequence>
+            <sequence>mG0:0 mG0:0 mG0:0 mG0:0 mG0:0 mG0:0 mG0:0 mG0:0 mG0:0 mG0:0 mG0:0 mG0:0</sequence>
             <start_mute>false</start_mute>
             <gain>1</gain>
             <channels/>
@@ -399,6 +399,65 @@
             <channels/>
             <step_length>0.25</step_length>
             <note_length>0.125</note_length>
+            <start_time>0</start_time>
+            <is_synth>false</is_synth>
+            <editor_mute>false</editor_mute>
+            <max_voices>-1</max_voices>
+        </StepSequencer>
+        <StepSequencer>
+            <editor_id>
+                <id>206</id>
+            </editor_id>
+            <name>crash_seq</name>
+            <entity_active>true</entity_active>
+            <pickable>true</pickable>
+            <transform>
+                <pos>
+                    <x>0</x>
+                    <y>0</y>
+                    <z>0</z>
+                </pos>
+                <quat>
+                    <x>0</x>
+                    <y>0</y>
+                    <z>0</z>
+                    <w>1</w>
+                </quat>
+                <scale>
+                    <x>1</x>
+                    <y>1</y>
+                    <z>1</z>
+                </scale>
+            </transform>
+            <model_name/>
+            <model_color_vec4>
+                <x>0.800000012</x>
+                <y>0.800000012</y>
+                <z>0.800000012</z>
+                <w>1</w>
+            </model_color_vec4>
+            <flow_section_id>-1</flow_section_id>
+            <tag>0</tag>
+            <waypoint_follower>
+                <mode>Waypoint</mode>
+                <local_to_entity>false</local_to_entity>
+                <waypoint_auto_start>false</waypoint_auto_start>
+                <loop_waypoints>false</loop_waypoints>
+                <start_time>3</start_time>
+                <waypoints/>
+                <follow_entity_name/>
+                <follow_entity_editor_id>
+                    <id>-1</id>
+                </follow_entity_editor_id>
+            </waypoint_follower>
+            <sequence>mE1-:0 mE1-:0 mE1-:0 mE1-:0 mE1-:0 mE1-:0 mE1-:0 mE1-:0 mE1-:0 mE1-:0 mE1-:0 mE1-:0</sequence>
+            <start_mute>false</start_mute>
+            <gain>1</gain>
+            <channels>
+                <channel>0</channel>
+            </channels>
+            <step_length>0.66666666666666663</step_length>
+            <note_length>0.25</note_length>
             <start_time>0</start_time>
             <is_synth>false</is_synth>
             <editor_mute>false</editor_mute>
@@ -8249,7 +8308,7 @@
             <editor_id>
                 <id>136</id>
             </editor_id>
-            <name>r4_start_am_chord2</name>
+            <name>r4_start_am_chord2_and_kick</name>
             <entity_active>true</entity_active>
             <pickable>true</pickable>
             <transform>
@@ -8308,6 +8367,20 @@
                     <velocity>1</velocity>
                     <quantizeDenom>2</quantizeDenom>
                     <doNoteOff>false</doNoteOff>
+                </seq_action>
+                <seq_action>
+                    <one_time>true</one_time>
+                    <action_type>SpawnAutomator</action_type>
+                    <relative>false</relative>
+                    <startValue>0</startValue>
+                    <endValue>0.5</endValue>
+                    <desiredAutomateTime>12</desiredAutomateTime>
+                    <synth>false</synth>
+                    <synthParam>Gain</synthParam>
+                    <channel>0</channel>
+                    <seqEditorId>
+                        <id>3</id>
+                    </seqEditorId>
                 </seq_action>
             </actions>
             <actions_on_exit/>
@@ -9258,7 +9331,7 @@
             <editor_id>
                 <id>150</id>
             </editor_id>
-            <name>r4_start_dm7_chord</name>
+            <name>r4_start_dm7_chord_and_crash</name>
             <entity_active>true</entity_active>
             <pickable>true</pickable>
             <transform>
@@ -9318,6 +9391,20 @@
                     <velocity>1</velocity>
                     <quantizeDenom>2</quantizeDenom>
                     <doNoteOff>false</doNoteOff>
+                </seq_action>
+                <seq_action>
+                    <one_time>true</one_time>
+                    <action_type>SpawnAutomator</action_type>
+                    <relative>false</relative>
+                    <startValue>0</startValue>
+                    <endValue>0.170000002</endValue>
+                    <desiredAutomateTime>12</desiredAutomateTime>
+                    <synth>false</synth>
+                    <synthParam>Gain</synthParam>
+                    <channel>0</channel>
+                    <seqEditorId>
+                        <id>206</id>
+                    </seqEditorId>
                 </seq_action>
             </actions>
             <actions_on_exit/>

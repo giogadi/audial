@@ -501,7 +501,11 @@ ne::BaseEntity::ImGuiResult StepSequencerEntity::ImGuiDerived(GameManager& g) {
     ImGui::InputFloat("Set all velocities", &allVelocity);
     ImGui::SameLine();
     if (ImGui::Button("Apply")) {
-        SetAllVelocitiesPermanent(allVelocity);
+        // SetAllVelocitiesPermanent(allVelocity);
+        for (int i = 0, n = _initialMidiSequenceDoNotChange.size(); i < n; ++i) {
+            _initialMidiSequenceDoNotChange[i]._velocity = allVelocity;
+        }
+        needsInit = true;
     }
     if (ImGui::TreeNode("Sequence")) {
         needsInit = SeqImGui("Sequence", !_isSynth, _initialMidiSequenceDoNotChange) || needsInit;
