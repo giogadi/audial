@@ -6,6 +6,7 @@
 struct FlowTriggerEntity : public ne::Entity {
     // serialized
     struct Props {
+        double _triggerDelayBeatTime = -1.0;
         std::vector<std::unique_ptr<SeqAction>> _actions;
         std::vector<std::unique_ptr<SeqAction>> _actionsOnExit;
         std::vector<EditorId> _triggerVolumeEditorIds;
@@ -19,6 +20,7 @@ struct FlowTriggerEntity : public ne::Entity {
     bool _isTriggering = false;
     std::vector<int> _randomDrawList;
     std::vector<ne::EntityId> _triggerVolumeEntities;
+    double _triggerTime = -1.0;  // time to trigger, AFTER APPLYING DELAY.
 
     
     void OnTrigger(GameManager& g);
@@ -34,4 +36,7 @@ struct FlowTriggerEntity : public ne::Entity {
     FlowTriggerEntity(FlowTriggerEntity const&) = delete;
     FlowTriggerEntity(FlowTriggerEntity&&) = default;
     FlowTriggerEntity& operator=(FlowTriggerEntity&&) = default;
+
+private:
+    void RunActions(GameManager& g);
 };

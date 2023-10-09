@@ -1,1 +1,3 @@
-#0 camera target:player offset:Down
+# load into Bill Evans
+#0 trigger 238
+#0 respawn

@@ -17,3 +17,4 @@ __pycache__/
 *.asd
 log.txt
 *.blend1
+cmd_line.txt

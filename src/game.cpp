@@ -80,6 +80,7 @@ void ToggleMute(float dt) {
 struct CommandLineInputs {
     std::optional<std::string> _scriptFilename;
     std::optional<std::string> _synthPatchesFilename;
+    float _gain = 1.f;
     bool _editMode = false;
 };
 
@@ -151,6 +152,18 @@ void ParseCommandLine(CommandLineInputs& inputs, std::vector<std::string> const&
         } else if (argv[argIx] == "-r") {
             std::cout << "Random enemy letters!" << std::endl;
             gRandomLetters = true;
+        } else if (argv[argIx] == "-g") {
+            ++argIx;
+            if (argIx >= argv.size()) {
+                std::cout << "Expected a float argument to -g" << std::endl;
+                continue;
+            }
+            std::string gainValueStr = argv[argIx];
+            try {
+                inputs._gain = std::stof(gainValueStr);
+            } catch (std::exception& e) {
+                std::cout << "-g: Failed to parse \"" << gainValueStr << "\" as a float." << std::endl;
+            }
         }
     }
 }
@@ -337,12 +350,15 @@ int main(int argc, char** argv) {
 
     // Init audio
     audio::Context audioContext;
+    // Set gain from command line
+    audioContext._state._finalGain = cmdLineInputs._gain;
+
     {        
         if (audio::Init(audioContext, soundBank) != paNoError) {
             ShutDown(audioContext, soundBank);
             return 1;
         }
-    }
+    }    
 
     soundBank.LoadSounds(audioContext._sampleRate);
 

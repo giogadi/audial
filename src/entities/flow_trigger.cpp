@@ -29,6 +29,7 @@ void FlowTriggerEntity::InitDerived(GameManager& g) {
 }
 
 void FlowTriggerEntity::SaveDerived(serial::Ptree pt) const {
+    pt.PutDouble("trigger_delay_beat_time", _p._triggerDelayBeatTime);
     pt.PutBool("on_player_enter", _p._triggerOnPlayerEnter);
     pt.PutBool("use_trigger_volumes", _p._useTriggerVolumes);
     pt.PutInt("random_action_count", _p._randomActionCount);
@@ -39,6 +40,7 @@ void FlowTriggerEntity::SaveDerived(serial::Ptree pt) const {
 
 void FlowTriggerEntity::LoadDerived(serial::Ptree pt) {
     _p = Props();
+    pt.TryGetDouble("trigger_delay_beat_time", &_p._triggerDelayBeatTime);
     pt.TryGetBool("on_player_enter", &_p._triggerOnPlayerEnter);
     pt.TryGetBool("use_trigger_volumes", &_p._useTriggerVolumes);
     pt.TryGetInt("random_action_count", &_p._randomActionCount);
@@ -49,7 +51,7 @@ void FlowTriggerEntity::LoadDerived(serial::Ptree pt) {
 
 FlowTriggerEntity::ImGuiResult FlowTriggerEntity::ImGuiDerived(GameManager& g)  {
     ImGuiResult result = ImGuiResult::Done;
-
+    ImGui::InputDouble("Trigger delay (beats)", &_p._triggerDelayBeatTime);
     ImGui::Checkbox("On player enter", &_p._triggerOnPlayerEnter);
     ImGui::Checkbox("Use trigger volumes", &_p._useTriggerVolumes);
     ImGui::InputInt("Rand action count", &_p._randomActionCount);
@@ -66,7 +68,18 @@ FlowTriggerEntity::ImGuiResult FlowTriggerEntity::ImGuiDerived(GameManager& g)  
     return result;
 }
 
-void FlowTriggerEntity::OnTrigger(GameManager& g) {
+void FlowTriggerEntity::OnTrigger(GameManager& g) {    
+    if (_p._triggerDelayBeatTime >= 0.0) {
+        double currentBeatTime = g._beatClock->GetBeatTimeFromEpoch();
+        // TODO make denom an editable property
+        double quantized = g._beatClock->GetNextBeatDenomTime(currentBeatTime, 1.0);
+        _triggerTime = quantized + _p._triggerDelayBeatTime;
+    } else {
+        RunActions(g);
+    }
+}
+
+void FlowTriggerEntity::RunActions(GameManager& g) {
     if (_p._randomActionCount > 0) {
         int const actionCount = _p._actions.size();
         _randomDrawList.resize(actionCount);
@@ -90,38 +103,46 @@ void FlowTriggerEntity::OnTrigger(GameManager& g) {
 }
 
 void FlowTriggerEntity::UpdateDerived(GameManager& g, float dt) {
-    if (g._editMode || !_p._triggerOnPlayerEnter) {
+    if (g._editMode) {
         return;
-    }
+    }    
 
-    FlowPlayerEntity const* player = static_cast<FlowPlayerEntity*>(g._neEntityManager->GetFirstEntityOfType(ne::EntityType::FlowPlayer));
-    if (player == nullptr) {
-        return;
-    }
+    if (_p._triggerOnPlayerEnter) {
+        FlowPlayerEntity const* player = static_cast<FlowPlayerEntity*>(g._neEntityManager->GetFirstEntityOfType(ne::EntityType::FlowPlayer));
+        if (player == nullptr) {
+            return;
+        }
 
-    bool hasOverlap = false;
-    if (_p._useTriggerVolumes) {
-        for (ne::EntityId id : _triggerVolumeEntities) {
-            ne::Entity* e = g._neEntityManager->GetEntity(id);
-            if (e) {
-                hasOverlap = geometry::DoAABBsOverlap(e->_transform, player->_transform, nullptr);
-                if (hasOverlap) {
-                    break;
+        bool hasOverlap = false;
+        if (_p._useTriggerVolumes) {
+            for (ne::EntityId id : _triggerVolumeEntities) {
+                ne::Entity* e = g._neEntityManager->GetEntity(id);
+                if (e) {
+                    hasOverlap = geometry::DoAABBsOverlap(e->_transform, player->_transform, nullptr);
+                    if (hasOverlap) {
+                        break;
+                    }
                 }
             }
+        } else {
+            hasOverlap = geometry::DoAABBsOverlap(_transform, player->_transform, nullptr);
         }
-    } else {
-        hasOverlap = geometry::DoAABBsOverlap(_transform, player->_transform, nullptr);
+
+        if (!_isTriggering && hasOverlap) {
+            // Just entered the trigger!
+            OnTrigger(g);
+        } else if (_isTriggering && !hasOverlap) {
+            for (auto const& pAction : _p._actionsOnExit) {
+                pAction->Execute(g);
+            }
+        }
+        _isTriggering = hasOverlap;
     }
 
-    if (!_isTriggering && hasOverlap) {
-        // Just entered the trigger!
-        OnTrigger(g);
+    double beatTime = g._beatClock->GetBeatTimeFromEpoch();
+    if (_triggerTime >= 0.0 && beatTime >= _triggerTime) {
+        RunActions(g);
+
+        _triggerTime = -1.0;
     }
-    else if (_isTriggering && !hasOverlap) {
-        for (auto const& pAction : _p._actionsOnExit) {
-            pAction->Execute(g);
-        }
-    }
-    _isTriggering = hasOverlap;
 }
