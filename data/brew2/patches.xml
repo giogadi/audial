@@ -445,14 +445,14 @@
     <patch>
         <name>bill_evans</name>
         <patch>
-            <Gain>0.726999998</Gain>
+            <Gain>0.758000016</Gain>
             <Mono>0</Mono>
-            <Osc1Waveform>Saw</Osc1Waveform>
-            <Osc2Waveform>Saw</Osc2Waveform>
-            <Detune>0.995999992</Detune>
-            <OscFader>0.633000016</OscFader>
-            <Cutoff>1363.63599</Cutoff>
-            <Peak>1.09800005</Peak>
+            <Osc1Waveform>Square</Osc1Waveform>
+            <Osc2Waveform>Square</Osc2Waveform>
+            <Detune>0</Detune>
+            <OscFader>0</OscFader>
+            <Cutoff>1090.90906</Cutoff>
+            <Peak>0</Peak>
             <HpfCutoff>0</HpfCutoff>
             <HpfPeak>0</HpfPeak>
             <Portamento>0</Portamento>
@@ -461,14 +461,14 @@
             <CutoffLFOGain>0</CutoffLFOGain>
             <CutoffLFOFreq>4.47800016</CutoffLFOFreq>
             <AmpEnvAttack>0.00999999978</AmpEnvAttack>
-            <AmpEnvDecay>0.492000014</AmpEnvDecay>
-            <AmpEnvSustain>0.492000014</AmpEnvSustain>
+            <AmpEnvDecay>0.133000001</AmpEnvDecay>
+            <AmpEnvSustain>0.264999986</AmpEnvSustain>
             <AmpEnvRelease>2.31100011</AmpEnvRelease>
-            <CutoffEnvGain>0</CutoffEnvGain>
-            <CutoffEnvAttack>0.00800000038</CutoffEnvAttack>
-            <CutoffEnvDecay>0.127000004</CutoffEnvDecay>
-            <CutoffEnvSustain>0.0469999984</CutoffEnvSustain>
-            <CutoffEnvRelease>0.287999988</CutoffEnvRelease>
+            <CutoffEnvGain>2004.54602</CutoffEnvGain>
+            <CutoffEnvAttack>0.00999999978</CutoffEnvAttack>
+            <CutoffEnvDecay>0.208000004</CutoffEnvDecay>
+            <CutoffEnvSustain>0</CutoffEnvSustain>
+            <CutoffEnvRelease>0.370999992</CutoffEnvRelease>
             <PitchEnvGain>0</PitchEnvGain>
             <PitchEnvAttack>0</PitchEnvAttack>
             <PitchEnvDecay>0</PitchEnvDecay>

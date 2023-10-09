@@ -32,19 +32,19 @@ float GenerateSquare(float const phase, float const phaseChange) {
         v = -1.0f;
     }
     // polyblep
-    // float dt = phaseChange / (2*kPi);
-    // float t = phase / (2*kPi);
-    // v += Polyblep(t, dt);
-    // v -= Polyblep(fmod(t + 0.5f, 1.0f), dt);
+     float dt = phaseChange / (2*kPi);
+     float t = phase / (2*kPi);
+     v += Polyblep(t, dt);
+     v -= Polyblep(fmod(t + 0.5f, 1.0f), dt);
     return v;
 }
 
 float GenerateSaw(float const phase, float const phaseChange) {
     float v = (phase / kPi) - 1.0f;
     // polyblep
-    // float dt = phaseChange / (2*kPi);
-    // float t = phase / (2*kPi);
-    // v -= Polyblep(t, dt);
+     float dt = phaseChange / (2*kPi);
+     float t = phase / (2*kPi);
+     v -= Polyblep(t, dt);
     return v;
 }
 }  // namespace

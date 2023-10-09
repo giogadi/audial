@@ -242,7 +242,7 @@ void FlowPlayerEntity::Update(GameManager& g, float dt) {
             float sign = (_flowPolarity != nearest->_flowPolarity) ? 1.f : -1.f;
             _vel = toEnemyDir * (sign * _launchVel);
             _dashTimer = 0.f;
-            _useLastKnownDashTarget = true;
+            _useLastKnownDashTarget = sign > 0.f;
             _dashTargetId = nearest->_id;
             _lastKnownDashTarget = nearest->_transform.Pos();
             _lastKnownDashTarget._y = _transform.Pos()._y;
