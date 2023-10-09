@@ -476,4 +476,38 @@
             <PitchEnvRelease>0</PitchEnvRelease>
         </patch>
     </patch>
+    <patch>
+        <name>bass_bill_evans</name>
+        <patch>
+            <Gain>0.825999975</Gain>
+            <Mono>1</Mono>
+            <Osc1Waveform>Square</Osc1Waveform>
+            <Osc2Waveform>Square</Osc2Waveform>
+            <Detune>1</Detune>
+            <OscFader>0</OscFader>
+            <Cutoff>1181.81799</Cutoff>
+            <Peak>0</Peak>
+            <HpfCutoff>0</HpfCutoff>
+            <HpfPeak>0</HpfPeak>
+            <Portamento>0</Portamento>
+            <PitchLFOGain>0</PitchLFOGain>
+            <PitchLFOFreq>1</PitchLFOFreq>
+            <CutoffLFOGain>0</CutoffLFOGain>
+            <CutoffLFOFreq>3.3900001</CutoffLFOFreq>
+            <AmpEnvAttack>0.00499999989</AmpEnvAttack>
+            <AmpEnvDecay>0.232999995</AmpEnvDecay>
+            <AmpEnvSustain>0.0759999976</AmpEnvSustain>
+            <AmpEnvRelease>2.41499996</AmpEnvRelease>
+            <CutoffEnvGain>0</CutoffEnvGain>
+            <CutoffEnvAttack>0.00499999989</CutoffEnvAttack>
+            <CutoffEnvDecay>2.25399995</CutoffEnvDecay>
+            <CutoffEnvSustain>1</CutoffEnvSustain>
+            <CutoffEnvRelease>3</CutoffEnvRelease>
+            <PitchEnvGain>0</PitchEnvGain>
+            <PitchEnvAttack>0</PitchEnvAttack>
+            <PitchEnvDecay>0</PitchEnvDecay>
+            <PitchEnvSustain>1</PitchEnvSustain>
+            <PitchEnvRelease>0</PitchEnvRelease>
+        </patch>
+    </patch>
 </patches>

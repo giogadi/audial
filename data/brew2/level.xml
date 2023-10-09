@@ -13206,20 +13206,16 @@
             <use_trigger_volumes>false</use_trigger_volumes>
             <random_action_count>-1</random_action_count>
             <actions>
-                <seq_action>
+            <seq_action>
                     <one_time>true</one_time>
-                    <action_type>NoteOnOff</action_type>
-                    <channel>2</channel>
-                    <midiNoteNames>
-                        <array_item>C3</array_item>
-                        <array_item>E3</array_item>
-                        <array_item>G3</array_item>
-                        <array_item>B3</array_item>
-                    </midiNoteNames>
-                    <noteLength>6</noteLength>
-                    <velocity>1</velocity>
-                    <quantizeDenom>0.25</quantizeDenom>
-                    <doNoteOff>true</doNoteOff>
+                    <action_type>BeatTimeEvent</action_type>
+                    <quantize_denom>0.25</quantize_denom>
+                    <beat_time_event>
+                        <event_type>AllNotesOff</event_type>
+                        <channel>2</channel>
+                        <delay_secs>0</delay_secs>
+                        <beat_time>0</beat_time>
+                    </beat_time_event>
                 </seq_action>
                 <seq_action>
                     <one_time>true</one_time>
@@ -13241,15 +13237,6 @@
                 </seq_action>
                 <seq_action>
                     <one_time>true</one_time>
-                    <action_type>SetStepSequence</action_type>
-                    <seq_editor_id>
-                        <id>7</id>
-                    </seq_editor_id>
-                    <seq_str>mC3,mE3,mG3,mB3:1 -1:1 -1:1 -1:1 -1:1 -1:1 mC3,mE3,mG3,mB3:1 -1:1 mC3,mE3,mF3,mA3:1 -1:1 -1:1 -1:1 -1:1 -1:1 mC3,mE3,mF3,mA3:1 -1:1 </seq_str>
-                    <offset_start>false</offset_start>
-                </seq_action>
-                <seq_action>
-                    <one_time>true</one_time>
                     <action_type>SetEntityActive</action_type>
                     <entity_editor_id>
                         <id>241</id>
@@ -13263,7 +13250,7 @@
                     <channel>3</channel>
                     <blend_beat_time>0</blend_beat_time>
                     <use_patch_bank>true</use_patch_bank>
-                    <patch_name>bill_evans</patch_name>
+                    <patch_name>idk</patch_name>
                 </seq_action>
                 <seq_action>
                     <one_time>true</one_time>
@@ -13273,6 +13260,46 @@
                     <use_patch_bank>true</use_patch_bank>
                     <patch_name>bill_evans</patch_name>
                 </seq_action>
+                <seq_action>
+                    <one_time>true</one_time>
+                    <action_type>CameraControl</action_type>
+                    <setTarget>false</setTarget>
+                    <targetEditorId>
+                        <id>246</id>
+                    </targetEditorId>
+                    <targetTrackingFactor>0.0500000007</targetTrackingFactor>
+                    <setOffset>true</setOffset>
+                    <desiredTargetToCameraOffset>
+                        <x>0</x>
+                        <y>10</y>
+                        <z>0</z>
+                    </desiredTargetToCameraOffset>
+                    <hasMinX>false</hasMinX>
+                    <minX>0</minX>
+                    <hasMinZ>false</hasMinZ>
+                    <minZ>0</minZ>
+                    <hasMaxX>false</hasMaxX>
+                    <maxX>0</maxX>
+                    <hasMaxZ>false</hasMaxZ>
+                    <maxZ>0</maxZ>
+                </seq_action>
+                <seq_action>
+                    <one_time>true</one_time>
+                    <action_type>ChangePatch</action_type>
+                    <channel>0</channel>
+                    <blend_beat_time>0</blend_beat_time>
+                    <use_patch_bank>true</use_patch_bank>
+                    <patch_name>bass_bill_evans</patch_name>
+                </seq_action>
+                <seq_action>
+                    <one_time>true</one_time>
+                    <action_type>SetEntityActive</action_type>
+                    <entity_editor_id>
+                        <id>247</id>
+                    </entity_editor_id>
+                    <active>true</active>
+                    <init_on_activate>true</init_on_activate>
+                </seq_action>                
             </actions>
             <actions_on_exit/>
             <trigger_volume_entities/>
@@ -13286,9 +13313,9 @@
             <pickable>true</pickable>
             <transform>
                 <pos>
-                    <x>95.7199783</x>
+                    <x>95.675972</x>
                     <y>0</y>
-                    <z>-130.712296</z>
+                    <z>-133.121536</z>
                 </pos>
                 <quat>
                     <x>0</x>
@@ -13474,7 +13501,7 @@
                     <id>-1</id>
                 </follow_entity_editor_id>
             </waypoint_follower>
-            <sequence>mC3,mE3,mG3,mB3:1 -1:1 -1:1 -1:1 -1:1 -1:1 mC3,mE3,mG3,mB3:1 -1:1 mC3,mE3,mF3,mA3:1 -1:1 -1:1 -1:1 -1:1 -1:1 mC3,mE3,mF3,mA3:1 -1:1</sequence>
+            <sequence>mC3,mE3,mG3,mB3:1 -1:1 mC3,mE3,mG3,mB3:1 -1:1 mC3,mE3,mG3,mB3:1 -1:1 mC3,mE3,mG3,mB3:1 -1:1 mC3,mE3,mF3,mA3:1 -1:1 mC3,mE3,mF3,mA3:1 -1:1 mC3,mE3,mF3,mA3:1 -1:1 mC3,mE3,mF3,mA3:1 -1:1</sequence>
             <start_mute>false</start_mute>
             <gain>1</gain>
             <channels>
@@ -13496,9 +13523,9 @@
             <pickable>true</pickable>
             <transform>
                 <pos>
-                    <x>97.6671753</x>
+                    <x>98.2282333</x>
                     <y>0</y>
-                    <z>-130.833313</z>
+                    <z>-133.28656</z>
                 </pos>
                 <quat>
                     <x>0</x>
@@ -13569,9 +13596,9 @@
             <pickable>true</pickable>
             <transform>
                 <pos>
-                    <x>96.5560684</x>
+                    <x>96.149025</x>
                     <y>0</y>
-                    <z>-129.568176</z>
+                    <z>-131.702377</z>
                 </pos>
                 <quat>
                     <x>0</x>
@@ -13642,9 +13669,9 @@
             <pickable>true</pickable>
             <transform>
                 <pos>
-                    <x>97.9752121</x>
+                    <x>98.2942429</x>
                     <y>0</y>
-                    <z>-129.337158</z>
+                    <z>-131.691391</z>
                 </pos>
                 <quat>
                     <x>0</x>
@@ -13771,5 +13798,111 @@
             <actions_on_exit/>
             <trigger_volume_entities/>
         </FlowTrigger>
+        <Base>
+            <editor_id>
+                <id>246</id>
+            </editor_id>
+            <name>r5_camera_target</name>
+            <entity_active>true</entity_active>
+            <pickable>true</pickable>
+            <transform>
+                <pos>
+                    <x>98.1998901</x>
+                    <y>0</y>
+                    <z>-132.238403</z>
+                </pos>
+                <quat>
+                    <x>0</x>
+                    <y>0</y>
+                    <z>0</z>
+                    <w>1</w>
+                </quat>
+                <scale>
+                    <x>1</x>
+                    <y>1</y>
+                    <z>1</z>
+                </scale>
+            </transform>
+            <model_name/>
+            <model_color_vec4>
+                <x>0.800000012</x>
+                <y>0.800000012</y>
+                <z>0.800000012</z>
+                <w>1</w>
+            </model_color_vec4>
+            <flow_section_id>-1</flow_section_id>
+            <tag>0</tag>
+            <waypoint_follower>
+                <mode>Waypoint</mode>
+                <local_to_entity>false</local_to_entity>
+                <waypoint_auto_start>false</waypoint_auto_start>
+                <loop_waypoints>false</loop_waypoints>
+                <start_time>3</start_time>
+                <waypoints/>
+                <follow_entity_name/>
+                <follow_entity_editor_id>
+                    <id>-1</id>
+                </follow_entity_editor_id>
+            </waypoint_follower>
+        </Base>
+        <StepSequencer>
+            <editor_id>
+                <id>247</id>
+            </editor_id>
+            <name>bill_evans_bass_seq</name>
+            <entity_active>false</entity_active>
+            <pickable>true</pickable>
+            <transform>
+                <pos>
+                    <x>0.5333336</x>
+                    <y>0</y>
+                    <z>-7.90550232</z>
+                </pos>
+                <quat>
+                    <x>0</x>
+                    <y>0</y>
+                    <z>0</z>
+                    <w>1</w>
+                </quat>
+                <scale>
+                    <x>1</x>
+                    <y>1</y>
+                    <z>1</z>
+                </scale>
+            </transform>
+            <model_name/>
+            <model_color_vec4>
+                <x>0.800000012</x>
+                <y>0.800000012</y>
+                <z>0.800000012</z>
+                <w>1</w>
+            </model_color_vec4>
+            <flow_section_id>-1</flow_section_id>
+            <tag>0</tag>
+            <waypoint_follower>
+                <mode>Waypoint</mode>
+                <local_to_entity>false</local_to_entity>
+                <waypoint_auto_start>false</waypoint_auto_start>
+                <loop_waypoints>false</loop_waypoints>
+                <start_time>3</start_time>
+                <waypoints/>
+                <follow_entity_name/>
+                <follow_entity_editor_id>
+                    <id>-1</id>
+                </follow_entity_editor_id>
+            </waypoint_follower>
+            <sequence>mC2:1 -1:1 -1:1 -1:1 -1:1 -1:1 mG2:1 -1:1 mF2:1 -1:1 -1:1 -1:1 -1:1 -1:1 mG2:1 -1:1</sequence>
+            <start_mute>false</start_mute>
+            <gain>1</gain>
+            <channels>
+                <channel>0</channel>
+            </channels>
+            <step_length>1</step_length>
+            <note_length>0.25</note_length>
+            <start_time>4</start_time>
+            <is_synth>true</is_synth>
+            <editor_mute>false</editor_mute>
+            <max_voices>-1</max_voices>
+        </StepSequencer>
     </new_entities>
 </script>
