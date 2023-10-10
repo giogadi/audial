@@ -283,7 +283,9 @@ int main(int argc, char** argv) {
         // Full screen
         // window = glfwCreateWindow(mode->width, mode->height, "Audial", monitor, NULL);
 
-        window = glfwCreateWindow(mode->width, mode->height, "Audial", NULL, NULL);
+        int width = (int)(0.9f * mode->width);
+        int height = (int)(0.9f * mode->height);
+        window = glfwCreateWindow(width, height, "Audial", NULL, NULL);
         refreshRate = mode->refreshRate;
     }
 

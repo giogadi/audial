@@ -33,6 +33,7 @@ struct StepSequencerEntity : ne::Entity {
     bool _editorMute = false;
     int _initMaxNumVoices = -1;
     float _initGain = 1.f;
+    bool _quantizeTempStepChanges = true;
 
     static int constexpr kChangeQueueSize = 2;
 
@@ -70,8 +71,9 @@ struct StepSequencerEntity : ne::Entity {
 
     // Assumes input contains _only_ the sequence, nothing else.
     static void LoadSequenceFromInput(
-        std::istream& input, std::vector<SeqStep>& sequence);
+        std::istream& input, std::vector<SeqStep>& sequence);    
 
 private:
     void EnqueueChange(SeqStepChange const& change);
+    void PlayStep(GameManager& g, SeqStep const& seqStep);
 };

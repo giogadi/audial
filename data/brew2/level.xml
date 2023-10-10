@@ -232,6 +232,7 @@
             <is_synth>false</is_synth>
             <editor_mute>true</editor_mute>
             <max_voices>-1</max_voices>
+            <quantize_temp_changes>true</quantize_temp_changes>
         </StepSequencer>
         <StepSequencer>
             <editor_id>
@@ -289,6 +290,7 @@
             <is_synth>false</is_synth>
             <editor_mute>true</editor_mute>
             <max_voices>-1</max_voices>
+            <quantize_temp_changes>true</quantize_temp_changes>
         </StepSequencer>
         <StepSequencer>
             <editor_id>
@@ -346,6 +348,7 @@
             <is_synth>false</is_synth>
             <editor_mute>true</editor_mute>
             <max_voices>-1</max_voices>
+            <quantize_temp_changes>true</quantize_temp_changes>
         </StepSequencer>
         <StepSequencer>
             <editor_id>
@@ -403,6 +406,7 @@
             <is_synth>false</is_synth>
             <editor_mute>false</editor_mute>
             <max_voices>-1</max_voices>
+            <quantize_temp_changes>true</quantize_temp_changes>
         </StepSequencer>
         <StepSequencer>
             <editor_id>
@@ -462,6 +466,7 @@
             <is_synth>false</is_synth>
             <editor_mute>false</editor_mute>
             <max_voices>-1</max_voices>
+            <quantize_temp_changes>true</quantize_temp_changes>
         </StepSequencer>
         <StepSequencer>
             <editor_id>
@@ -521,6 +526,7 @@
             <is_synth>true</is_synth>
             <editor_mute>false</editor_mute>
             <max_voices>4</max_voices>
+            <quantize_temp_changes>true</quantize_temp_changes>
         </StepSequencer>
         <StepSequencer>
             <editor_id>
@@ -580,6 +586,7 @@
             <is_synth>true</is_synth>
             <editor_mute>false</editor_mute>
             <max_voices>-1</max_voices>
+            <quantize_temp_changes>true</quantize_temp_changes>
         </StepSequencer>
         <StepSequencer>
             <editor_id>
@@ -639,6 +646,7 @@
             <is_synth>true</is_synth>
             <editor_mute>true</editor_mute>
             <max_voices>-1</max_voices>
+            <quantize_temp_changes>true</quantize_temp_changes>
         </StepSequencer>
         <StepSequencer>
             <editor_id>
@@ -698,6 +706,7 @@
             <is_synth>true</is_synth>
             <editor_mute>false</editor_mute>
             <max_voices>-1</max_voices>
+            <quantize_temp_changes>true</quantize_temp_changes>
         </StepSequencer>
         <TypingEnemy>
             <editor_id>
@@ -1530,6 +1539,7 @@
             <is_synth>false</is_synth>
             <editor_mute>false</editor_mute>
             <max_voices>-1</max_voices>
+            <quantize_temp_changes>true</quantize_temp_changes>
         </StepSequencer>
         <FlowWall>
             <editor_id>
@@ -13403,7 +13413,7 @@
                     </seqEntityEditorId>
                     <velOnly>false</velOnly>
                     <temporary>true</temporary>
-                    <stepStr>mB4:1</stepStr>
+                    <stepStr>mB4,mD5:1</stepStr>
                 </seq_action>
             </hit_actions>
             <all_hit_actions/>
@@ -13545,6 +13555,7 @@
             <is_synth>true</is_synth>
             <editor_mute>false</editor_mute>
             <max_voices>-1</max_voices>
+            <quantize_temp_changes>true</quantize_temp_changes>
         </StepSequencer>
         <TypingEnemy>
             <editor_id>
@@ -13613,7 +13624,7 @@
                     </seqEntityEditorId>
                     <velOnly>false</velOnly>
                     <temporary>true</temporary>
-                    <stepStr>mA4:1</stepStr>
+                    <stepStr>mA4,mC5:1</stepStr>
                 </seq_action>
             </hit_actions>
             <all_hit_actions/>
@@ -13686,7 +13697,7 @@
                     </seqEntityEditorId>
                     <velOnly>false</velOnly>
                     <temporary>true</temporary>
-                    <stepStr>mG4:1</stepStr>
+                    <stepStr>mG4,mB4:1</stepStr>
                 </seq_action>
             </hit_actions>
             <all_hit_actions/>
@@ -13759,7 +13770,7 @@
                     </seqEntityEditorId>
                     <velOnly>false</velOnly>
                     <temporary>true</temporary>
-                    <stepStr>mE4:1</stepStr>
+                    <stepStr>mE4,mG4:1</stepStr>
                 </seq_action>
             </hit_actions>
             <all_hit_actions/>
@@ -13936,6 +13947,7 @@
             <is_synth>true</is_synth>
             <editor_mute>false</editor_mute>
             <max_voices>-1</max_voices>
+            <quantize_temp_changes>true</quantize_temp_changes>
         </StepSequencer>
         <FlowTrigger>
             <editor_id>
@@ -14085,7 +14097,7 @@
                     </seqEntityEditorId>
                     <velOnly>false</velOnly>
                     <temporary>true</temporary>
-                    <stepStr>mD5:1</stepStr>
+                    <stepStr>mD5,mF5+:1</stepStr>
                 </seq_action>
             </hit_actions>
             <all_hit_actions/>
@@ -14158,7 +14170,7 @@
                     </seqEntityEditorId>
                     <velOnly>false</velOnly>
                     <temporary>true</temporary>
-                    <stepStr>mC5:1</stepStr>
+                    <stepStr>mC5,mE5:1</stepStr>
                 </seq_action>
             </hit_actions>
             <all_hit_actions/>
@@ -14231,7 +14243,7 @@
                     </seqEntityEditorId>
                     <velOnly>false</velOnly>
                     <temporary>true</temporary>
-                    <stepStr>mA4:1</stepStr>
+                    <stepStr>mA4,mC5:1</stepStr>
                 </seq_action>
             </hit_actions>
             <all_hit_actions/>
@@ -14246,9 +14258,9 @@
             <pickable>true</pickable>
             <transform>
                 <pos>
-                    <x>113.640785</x>
+                    <x>114.685829</x>
                     <y>0</y>
-                    <z>-134.001602</z>
+                    <z>-133.917511</z>
                 </pos>
                 <quat>
                     <x>0</x>
@@ -14304,7 +14316,7 @@
                     </seqEntityEditorId>
                     <velOnly>false</velOnly>
                     <temporary>true</temporary>
-                    <stepStr>mA4:1</stepStr>
+                    <stepStr>mA4,mC5:1</stepStr>
                 </seq_action>
             </hit_actions>
             <all_hit_actions/>
@@ -14319,9 +14331,9 @@
             <pickable>true</pickable>
             <transform>
                 <pos>
-                    <x>119.592377</x>
+                    <x>120.637421</x>
                     <y>0</y>
-                    <z>-134.056595</z>
+                    <z>-133.972504</z>
                 </pos>
                 <quat>
                     <x>0</x>
@@ -14377,7 +14389,7 @@
                     </seqEntityEditorId>
                     <velOnly>false</velOnly>
                     <temporary>true</temporary>
-                    <stepStr>mG4:1</stepStr>
+                    <stepStr>mG4,mB4:1</stepStr>
                 </seq_action>
             </hit_actions>
             <all_hit_actions/>
@@ -14392,9 +14404,9 @@
             <pickable>true</pickable>
             <transform>
                 <pos>
-                    <x>115.389145</x>
+                    <x>116.434189</x>
                     <y>0</y>
-                    <z>-133.983109</z>
+                    <z>-133.899017</z>
                 </pos>
                 <quat>
                     <x>0</x>
@@ -14450,7 +14462,7 @@
                     </seqEntityEditorId>
                     <velOnly>false</velOnly>
                     <temporary>true</temporary>
-                    <stepStr>mE4:1</stepStr>
+                    <stepStr>mE4,mG4:1</stepStr>
                 </seq_action>
             </hit_actions>
             <all_hit_actions/>
@@ -14465,9 +14477,9 @@
             <pickable>true</pickable>
             <transform>
                 <pos>
-                    <x>116.766998</x>
+                    <x>117.812042</x>
                     <y>0</y>
-                    <z>-133.979599</z>
+                    <z>-133.895508</z>
                 </pos>
                 <quat>
                     <x>0</x>
@@ -14523,7 +14535,7 @@
                     </seqEntityEditorId>
                     <velOnly>false</velOnly>
                     <temporary>true</temporary>
-                    <stepStr>mE4-:1</stepStr>
+                    <stepStr>mE4-,mG4:1</stepStr>
                 </seq_action>
             </hit_actions>
             <all_hit_actions/>
@@ -14538,9 +14550,9 @@
             <pickable>true</pickable>
             <transform>
                 <pos>
-                    <x>118.063217</x>
+                    <x>119.108261</x>
                     <y>0</y>
-                    <z>-134.001587</z>
+                    <z>-133.917496</z>
                 </pos>
                 <quat>
                     <x>0</x>
@@ -14596,7 +14608,7 @@
                     </seqEntityEditorId>
                     <velOnly>false</velOnly>
                     <temporary>true</temporary>
-                    <stepStr>mD4:1</stepStr>
+                    <stepStr>mD4,mG4:1</stepStr>
                 </seq_action>
             </hit_actions>
             <all_hit_actions/>
@@ -14611,9 +14623,9 @@
             <pickable>true</pickable>
             <transform>
                 <pos>
-                    <x>102.00161</x>
+                    <x>101.90551</x>
                     <y>0</y>
-                    <z>-135.569244</z>
+                    <z>-136.854538</z>
                 </pos>
                 <quat>
                     <x>0</x>
@@ -14659,7 +14671,8 @@
             <start_time>4</start_time>
             <is_synth>true</is_synth>
             <editor_mute>false</editor_mute>
-            <max_voices>-1</max_voices>
+            <max_voices>1</max_voices>
+            <quantize_temp_changes>false</quantize_temp_changes>
         </StepSequencer>
         <TypingEnemy>
             <editor_id>
@@ -14728,7 +14741,7 @@
                     </seqEntityEditorId>
                     <velOnly>false</velOnly>
                     <temporary>true</temporary>
-                    <stepStr>mE4:1</stepStr>
+                    <stepStr>mE4,mG4:1</stepStr>
                 </seq_action>
             </hit_actions>
             <all_hit_actions/>
@@ -14801,7 +14814,7 @@
                     </seqEntityEditorId>
                     <velOnly>false</velOnly>
                     <temporary>true</temporary>
-                    <stepStr>mC4:1</stepStr>
+                    <stepStr>mC4,mE4:1</stepStr>
                 </seq_action>
             </hit_actions>
             <all_hit_actions/>
@@ -14874,7 +14887,7 @@
                     </seqEntityEditorId>
                     <velOnly>false</velOnly>
                     <temporary>true</temporary>
-                    <stepStr>mG4:1</stepStr>
+                    <stepStr>mG4,mB4:1</stepStr>
                 </seq_action>
             </hit_actions>
             <all_hit_actions/>
@@ -14947,7 +14960,7 @@
                     </seqEntityEditorId>
                     <velOnly>false</velOnly>
                     <temporary>true</temporary>
-                    <stepStr>mB4:1</stepStr>
+                    <stepStr>mB4,mD5:1</stepStr>
                 </seq_action>
             </hit_actions>
             <all_hit_actions/>
@@ -15020,7 +15033,7 @@
                     </seqEntityEditorId>
                     <velOnly>false</velOnly>
                     <temporary>true</temporary>
-                    <stepStr>mG4:1</stepStr>
+                    <stepStr>mG4,mB4:1</stepStr>
                 </seq_action>
             </hit_actions>
             <all_hit_actions/>
@@ -15093,7 +15106,7 @@
                     </seqEntityEditorId>
                     <velOnly>false</velOnly>
                     <temporary>true</temporary>
-                    <stepStr>mE4:1</stepStr>
+                    <stepStr>mE4,mG4:1</stepStr>
                 </seq_action>
             </hit_actions>
             <all_hit_actions/>
@@ -15220,7 +15233,7 @@
                     </seqEntityEditorId>
                     <velOnly>false</velOnly>
                     <temporary>true</temporary>
-                    <stepStr>mB4:1</stepStr>
+                    <stepStr>mB4,mD5:1</stepStr>
                 </seq_action>
             </hit_actions>
             <all_hit_actions/>
@@ -15293,7 +15306,7 @@
                     </seqEntityEditorId>
                     <velOnly>false</velOnly>
                     <temporary>true</temporary>
-                    <stepStr>mA4:1</stepStr>
+                    <stepStr>mA4,mC5:1</stepStr>
                 </seq_action>
             </hit_actions>
             <all_hit_actions/>
@@ -15366,7 +15379,7 @@
                     </seqEntityEditorId>
                     <velOnly>false</velOnly>
                     <temporary>true</temporary>
-                    <stepStr>mG4:1</stepStr>
+                    <stepStr>mG4,mB4:1</stepStr>
                 </seq_action>
             </hit_actions>
             <all_hit_actions/>
@@ -15439,7 +15452,7 @@
                     </seqEntityEditorId>
                     <velOnly>false</velOnly>
                     <temporary>true</temporary>
-                    <stepStr>mE4:1</stepStr>
+                    <stepStr>mE4,mG4:1</stepStr>
                 </seq_action>
             </hit_actions>
             <all_hit_actions/>
@@ -15512,7 +15525,7 @@
                     </seqEntityEditorId>
                     <velOnly>false</velOnly>
                     <temporary>true</temporary>
-                    <stepStr>mD4:1</stepStr>
+                    <stepStr>mD4,mF4+:1</stepStr>
                 </seq_action>
             </hit_actions>
             <all_hit_actions/>
@@ -15585,7 +15598,7 @@
                     </seqEntityEditorId>
                     <velOnly>false</velOnly>
                     <temporary>true</temporary>
-                    <stepStr>mE4:1</stepStr>
+                    <stepStr>mE4,mG4:1</stepStr>
                 </seq_action>
             </hit_actions>
             <all_hit_actions/>
@@ -15658,7 +15671,7 @@
                     </seqEntityEditorId>
                     <velOnly>false</velOnly>
                     <temporary>true</temporary>
-                    <stepStr>mC4:1</stepStr>
+                    <stepStr>mC4,mE4:1</stepStr>
                 </seq_action>
             </hit_actions>
             <all_hit_actions/>
@@ -15731,7 +15744,7 @@
                     </seqEntityEditorId>
                     <velOnly>false</velOnly>
                     <temporary>true</temporary>
-                    <stepStr>mG4:1</stepStr>
+                    <stepStr>mG4,mB4:1</stepStr>
                 </seq_action>
             </hit_actions>
             <all_hit_actions/>
@@ -15804,7 +15817,7 @@
                     </seqEntityEditorId>
                     <velOnly>false</velOnly>
                     <temporary>true</temporary>
-                    <stepStr>mA4:1</stepStr>
+                    <stepStr>mA4,mC5:1</stepStr>
                 </seq_action>
             </hit_actions>
             <all_hit_actions/>
@@ -15931,11 +15944,140 @@
                     </seqEntityEditorId>
                     <velOnly>false</velOnly>
                     <temporary>true</temporary>
-                    <stepStr>mC5:1</stepStr>
+                    <stepStr>mC5,mE5:1</stepStr>
                 </seq_action>
             </hit_actions>
             <all_hit_actions/>
             <off_cooldown_actions/>
         </TypingEnemy>
+        <FlowTrigger>
+            <editor_id>
+                <id>279</id>
+            </editor_id>
+            <name>r5_delay_lead_1_voice</name>
+            <entity_active>true</entity_active>
+            <pickable>true</pickable>
+            <transform>
+                <pos>
+                    <x>104.975098</x>
+                    <y>0</y>
+                    <z>-138.154037</z>
+                </pos>
+                <quat>
+                    <x>0</x>
+                    <y>0</y>
+                    <z>0</z>
+                    <w>1</w>
+                </quat>
+                <scale>
+                    <x>1</x>
+                    <y>1</y>
+                    <z>1</z>
+                </scale>
+            </transform>
+            <model_name/>
+            <model_color_vec4>
+                <x>0.800000012</x>
+                <y>0.800000012</y>
+                <z>0.800000012</z>
+                <w>1</w>
+            </model_color_vec4>
+            <flow_section_id>-1</flow_section_id>
+            <tag>0</tag>
+            <waypoint_follower>
+                <mode>Waypoint</mode>
+                <local_to_entity>false</local_to_entity>
+                <waypoint_auto_start>false</waypoint_auto_start>
+                <loop_waypoints>false</loop_waypoints>
+                <start_time>3</start_time>
+                <waypoints/>
+                <follow_entity_name/>
+                <follow_entity_editor_id>
+                    <id>-1</id>
+                </follow_entity_editor_id>
+            </waypoint_follower>
+            <trigger_delay_beat_time>8</trigger_delay_beat_time>
+            <on_player_enter>false</on_player_enter>
+            <use_trigger_volumes>false</use_trigger_volumes>
+            <random_action_count>-1</random_action_count>
+            <actions>
+                <seq_action>
+                    <one_time>false</one_time>
+                    <action_type>ChangeStepSeqMaxVoices</action_type>
+                    <seqEditorId>
+                        <id>260</id>
+                    </seqEditorId>
+                    <relative>false</relative>
+                    <numVoices>1</numVoices>
+                </seq_action>
+            </actions>
+            <actions_on_exit/>
+            <trigger_volume_entities/>
+        </FlowTrigger>
+        <FlowPickup>
+            <editor_id>
+                <id>280</id>
+            </editor_id>
+            <name>r5_pickup</name>
+            <entity_active>true</entity_active>
+            <pickable>true</pickable>
+            <transform>
+                <pos>
+                    <x>102.656776</x>
+                    <y>0</y>
+                    <z>-133.541443</z>
+                </pos>
+                <quat>
+                    <x>0</x>
+                    <y>0.382683456</y>
+                    <z>0</z>
+                    <w>0.923879504</w>
+                </quat>
+                <scale>
+                    <x>0.5</x>
+                    <y>0.5</y>
+                    <z>0.5</z>
+                </scale>
+            </transform>
+            <model_name>cube</model_name>
+            <model_color_vec4>
+                <x>0.245098054</x>
+                <y>0.933390915</y>
+                <z>1</z>
+                <w>1</w>
+            </model_color_vec4>
+            <flow_section_id>-1</flow_section_id>
+            <tag>0</tag>
+            <waypoint_follower>
+                <mode>Waypoint</mode>
+                <local_to_entity>false</local_to_entity>
+                <waypoint_auto_start>false</waypoint_auto_start>
+                <loop_waypoints>false</loop_waypoints>
+                <start_time>3</start_time>
+                <waypoints/>
+                <follow_entity_name/>
+                <follow_entity_editor_id>
+                    <id>-1</id>
+                </follow_entity_editor_id>
+            </waypoint_follower>
+            <actions>
+                <seq_action>
+                    <one_time>true</one_time>
+                    <action_type>ChangeStepSeqMaxVoices</action_type>
+                    <seqEditorId>
+                        <id>260</id>
+                    </seqEditorId>
+                    <relative>false</relative>
+                    <numVoices>2</numVoices>
+                </seq_action>
+                <seq_action>
+                    <one_time>true</one_time>
+                    <action_type>Trigger</action_type>
+                    <entity_editor_id>
+                        <id>279</id>
+                    </entity_editor_id>
+                </seq_action>
+            </actions>
+        </FlowPickup>
     </new_entities>
 </script>

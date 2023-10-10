@@ -8,9 +8,14 @@
 
 using audio::SynthParamType;
 
+#define POLYBLEP 0
+
 namespace synth {
 namespace {
 
+int constexpr kSamplesPerCutoffEnvModulate = 64;
+
+#if POLYBLEP
 float Polyblep(float t, float dt) {
     if (t < dt) {
         t /= dt;
@@ -23,6 +28,7 @@ float Polyblep(float t, float dt) {
         return 0.0f;
     }
 }
+#endif
 
 float GenerateSquare(float const phase, float const phaseChange) {
     float v = 0.0f;
@@ -31,20 +37,24 @@ float GenerateSquare(float const phase, float const phaseChange) {
     } else {
         v = -1.0f;
     }
+#if POLYBLEP
     // polyblep
      float dt = phaseChange / (2*kPi);
      float t = phase / (2*kPi);
      v += Polyblep(t, dt);
      v -= Polyblep(fmod(t + 0.5f, 1.0f), dt);
+#endif
     return v;
 }
 
 float GenerateSaw(float const phase, float const phaseChange) {
     float v = (phase / kPi) - 1.0f;
+#if POLYBLEP
     // polyblep
      float dt = phaseChange / (2*kPi);
      float t = phase / (2*kPi);
      v -= Polyblep(t, dt);
+#endif
     return v;
 }
 }  // namespace
@@ -55,8 +65,7 @@ void InitStateData(StateData& state, int channel, int const sampleRate, int cons
     state.voiceScratchBuffer = new float[samplesPerFrame * numBufferChannels];
     state.sampleRate = sampleRate;
     state.framesPerBuffer = samplesPerFrame;
-
-    int constexpr kSamplesPerCutoffEnvModulate = 1;
+    
     state.samplesPerMoogCutoffUpdate = std::min(samplesPerFrame, kSamplesPerCutoffEnvModulate);
 
     for (Voice& v : state.voices) {
