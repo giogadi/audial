@@ -13297,11 +13297,11 @@
                     <hasMinX>true</hasMinX>
                     <minX>104.757004</minX>
                     <hasMinZ>true</hasMinZ>
-                    <minZ>-132.557007</minZ>
+                    <minZ>-135.026001</minZ>
                     <hasMaxX>false</hasMaxX>
                     <maxX>0</maxX>
                     <hasMaxZ>true</hasMaxZ>
-                    <maxZ>-132.557007</maxZ>
+                    <maxZ>-135.026001</maxZ>
                 </seq_action>
                 <seq_action>
                     <one_time>true</one_time>
@@ -13840,9 +13840,9 @@
             <pickable>true</pickable>
             <transform>
                 <pos>
-                    <x>104.756546</x>
+                    <x>105.053421</x>
                     <y>0</y>
-                    <z>-132.557434</z>
+                    <z>-135.026184</z>
                 </pos>
                 <quat>
                     <x>0</x>
@@ -14210,8 +14210,8 @@
                     <id>-1</id>
                 </follow_entity_editor_id>
             </waypoint_follower>
-            <text>w</text>
-            <buttons>a</buttons>
+            <text>www</text>
+            <buttons>aaa</buttons>
             <type_kill>false</type_kill>
             <all_actions_on_hit>true</all_actions_on_hit>
             <bounce_radius>-1</bounce_radius>
@@ -14283,8 +14283,8 @@
                     <id>-1</id>
                 </follow_entity_editor_id>
             </waypoint_follower>
-            <text>c</text>
-            <buttons>a</buttons>
+            <text>ccc</text>
+            <buttons>aaa</buttons>
             <type_kill>false</type_kill>
             <all_actions_on_hit>true</all_actions_on_hit>
             <bounce_radius>-1</bounce_radius>
@@ -14429,7 +14429,7 @@
                     <id>-1</id>
                 </follow_entity_editor_id>
             </waypoint_follower>
-            <text>f</text>
+            <text>u</text>
             <buttons>a</buttons>
             <type_kill>false</type_kill>
             <all_actions_on_hit>true</all_actions_on_hit>
@@ -14502,7 +14502,7 @@
                     <id>-1</id>
                 </follow_entity_editor_id>
             </waypoint_follower>
-            <text>a</text>
+            <text>i</text>
             <buttons>a</buttons>
             <type_kill>false</type_kill>
             <all_actions_on_hit>true</all_actions_on_hit>
@@ -14575,7 +14575,7 @@
                     <id>-1</id>
                 </follow_entity_editor_id>
             </waypoint_follower>
-            <text>r</text>
+            <text>o</text>
             <buttons>a</buttons>
             <type_kill>false</type_kill>
             <all_actions_on_hit>true</all_actions_on_hit>
@@ -15637,7 +15637,7 @@
                     <id>-1</id>
                 </follow_entity_editor_id>
             </waypoint_follower>
-            <text>g</text>
+            <text>j</text>
             <buttons>a</buttons>
             <type_kill>false</type_kill>
             <all_actions_on_hit>true</all_actions_on_hit>

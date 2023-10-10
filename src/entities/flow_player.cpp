@@ -192,6 +192,10 @@ void FlowPlayerEntity::Update(GameManager& g, float dt) {
             enemy->_textColor = kGreyColor;
             continue;
         }
+        if (!enemy->CanHit()) {
+            continue;
+        }
+        
         // bool clear = IsCollisionFree(g, playerPos, enemy->_transform.GetPos());
         // if (!clear) {
         //     enemy->_currentColor = kGreyColor;
@@ -231,30 +235,28 @@ void FlowPlayerEntity::Update(GameManager& g, float dt) {
 
     if (nearest != nullptr) {
         ne::EntityId nearestId = nearest->_id;
-        if (nearest->CanHit()) {
-            _respawnBeforeFirstDash = false;
-            if (nearest->_bounceRadius < 0.f) {
-                nearest->OnHit(g);
-            }            
-            Vec3 toEnemyDir = nearest->_transform.GetPos() - playerPos;
-            toEnemyDir._y = 0.f;
-            toEnemyDir.Normalize();
-            float sign = (_flowPolarity != nearest->_flowPolarity) ? 1.f : -1.f;
-            _vel = toEnemyDir * (sign * _launchVel);
-            _dashTimer = 0.f;
-            _useLastKnownDashTarget = sign > 0.f;
-            _dashTargetId = nearest->_id;
-            _lastKnownDashTarget = nearest->_transform.Pos();
-            _lastKnownDashTarget._y = _transform.Pos()._y;
-            _lastDashTargetColor = nearest->_modelColor;
-            _lastDashTargetColor._w = 1.f;
-            _applyGravityDuringDash = false;
+        _respawnBeforeFirstDash = false;
+        if (nearest->_bounceRadius < 0.f) {
+            nearest->OnHit(g);
+        }            
+        Vec3 toEnemyDir = nearest->_transform.GetPos() - playerPos;
+        toEnemyDir._y = 0.f;
+        toEnemyDir.Normalize();
+        float sign = (_flowPolarity != nearest->_flowPolarity) ? 1.f : -1.f;
+        _vel = toEnemyDir * (sign * _launchVel);
+        _dashTimer = 0.f;
+        _useLastKnownDashTarget = sign > 0.f;
+        _dashTargetId = nearest->_id;
+        _lastKnownDashTarget = nearest->_transform.Pos();
+        _lastKnownDashTarget._y = _transform.Pos()._y;
+        _lastDashTargetColor = nearest->_modelColor;
+        _lastDashTargetColor._w = 1.f;
+        _applyGravityDuringDash = false;
             
-            for (auto enemyIter = g._neEntityManager->GetIterator(ne::EntityType::TypingEnemy); !enemyIter.Finished(); enemyIter.Next()) {
-                TypingEnemyEntity* enemy = (TypingEnemyEntity*) enemyIter.GetEntity();
-                if (enemy->_id != nearestId) {
-                    enemy->OnHitOther(g);
-                }
+        for (auto enemyIter = g._neEntityManager->GetIterator(ne::EntityType::TypingEnemy); !enemyIter.Finished(); enemyIter.Next()) {
+            TypingEnemyEntity* enemy = (TypingEnemyEntity*) enemyIter.GetEntity();
+            if (enemy->_id != nearestId) {
+                enemy->OnHitOther(g);
             }
         }
     }
