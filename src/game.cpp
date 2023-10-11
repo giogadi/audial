@@ -286,6 +286,14 @@ int main(int argc, char** argv) {
         int width = (int)(0.9f * mode->width);
         int height = (int)(0.9f * mode->height);
         window = glfwCreateWindow(width, height, "Audial", NULL, NULL);
+        {
+            // Place window at top-left of screen
+            int leftDist, topDist, rightDist, bottomDist;
+            glfwGetWindowFrameSize(window, &leftDist, &topDist, &rightDist, &bottomDist);
+            int xPos = 0 + leftDist;
+            int yPos = 0 + topDist;
+            glfwSetWindowPos(window, xPos, yPos);
+        }        
         refreshRate = mode->refreshRate;
     }
 
