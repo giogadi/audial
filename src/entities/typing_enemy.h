@@ -27,7 +27,7 @@ struct TypingEnemyEntity : public ne::Entity {
     bool _flowPolarity = false;
     double _flowCooldownBeatTime = -1.0;
     bool _resetCooldownOnAnyHit = false;
-    float _activeRadius = -1.f;  // If >= 0, player must be within this (L1) distance to be dashable toward enemy
+    Vec3 _activeExtents = Vec3(-1.f, -1.f, -1.f); // lengths in x, y, and z of active box around center. y ignored.
     bool _showBeatsLeft = false;
     float _cooldownQuantizeDenom = 0.f;
     bool _initHittable = true;

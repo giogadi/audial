@@ -242,7 +242,8 @@ void FlowPlayerEntity::Update(GameManager& g, float dt) {
         Vec3 toEnemyDir = nearest->_transform.GetPos() - playerPos;
         toEnemyDir._y = 0.f;
         toEnemyDir.Normalize();
-        float sign = (_flowPolarity != nearest->_flowPolarity) ? 1.f : -1.f;
+        _isPushDash = _flowPolarity == nearest->_flowPolarity;
+        float sign = _isPushDash ? -1.f : 1.f;
         _vel = toEnemyDir * (sign * _launchVel);
         _dashTimer = 0.f;
         _useLastKnownDashTarget = sign > 0.f;
@@ -296,16 +297,21 @@ void FlowPlayerEntity::Update(GameManager& g, float dt) {
                 Vec3 playerToTargetDir = _lastKnownDashTarget - playerPos;
                 float dotP = Vec3::Dot(playerToTargetDir, _vel);
                 if (dotP < 0.f) {
+                    // TODO: do we even need this case? We're already "looking
+                    // ahead" for crossings in the dotPAhead case below.
                     passedDashTarget = true;
                     _useLastKnownDashTarget = false;
+                    _transform.SetPos(_lastKnownDashTarget);
                 } else {
                     float currentSpeed = _vel.Length();
                     Vec3 newVel = playerToTargetDir.GetNormalized() * currentSpeed;
+                    _vel = newVel;
                     Vec3 newPos = playerPos + newVel * dt;
                     float dotPAgain = Vec3::Dot(newPos - _lastKnownDashTarget, playerPos - _lastKnownDashTarget);
                     if (dotPAgain < 0.f) {
                         passedDashTarget = true;
                         _useLastKnownDashTarget = false;
+                        _transform.SetPos(_lastKnownDashTarget);
                     } else {
                         _vel = newVel;
                     }
@@ -316,15 +322,25 @@ void FlowPlayerEntity::Update(GameManager& g, float dt) {
             }
         }
 
+        if (passedDashTarget) {
+            // constexpr float kPassTargetSpeed = 1.f;
+            constexpr float kPassTargetSpeed = 0.f;
+            float speed = _vel.Normalize();
+            speed = std::min(speed, kPassTargetSpeed);
+            _vel *= speed;
+        }
+
         if (doneDashing) {
             if (passedDashTarget) {
-                constexpr float kPassTargetSpeed = 1.f;
+                constexpr float kPassTargetSpeed = 0.f;
                 float speed = _vel.Normalize();
                 speed = std::min(speed, kPassTargetSpeed);
                 _vel *= speed;
             } else {
                 if (_maxHorizSpeedAfterDash >= 0.f) {
-                    _vel._x = math_util::Clamp(_vel._x, -_maxHorizSpeedAfterDash, _maxHorizSpeedAfterDash);
+                    // TODO: make "maxSpeedAfterPush" a separate property.
+                    float const maxSpeed = _isPushDash ? 2.f : _maxHorizSpeedAfterDash;
+                    _vel._x = math_util::Clamp(_vel._x, -maxSpeed, maxSpeed);
                 }
                 if (_maxVertSpeedAfterDash >= 0.f) {
                     _vel._z = math_util::Clamp(_vel._z, -_maxVertSpeedAfterDash, _maxVertSpeedAfterDash);

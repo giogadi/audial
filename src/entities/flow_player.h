@@ -27,6 +27,7 @@ struct FlowPlayerEntity : public ne::Entity {
     int _currentSectionId = -1;
     ne::EntityId _cameraId;
     float _dashTimer = -1.f;
+    bool _isPushDash = false;
     ne::EntityId _dashTargetId;
     Vec3 _lastKnownDashTarget;
     bool _useLastKnownDashTarget = false;

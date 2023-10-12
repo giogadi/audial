@@ -93,8 +93,16 @@ void TypingEnemyEntity::LoadDerived(serial::Ptree pt) {
     _initHittable = true;
     pt.TryGetBool("init_hittable", &_initHittable);
 
-    _activeRadius = -1.f;
-    pt.TryGetFloat("active_radius", &_activeRadius);
+    _activeExtents = Vec3(-1.f, -1.f, -1.f);
+    if (!serial::LoadFromChildOf(pt, "active_extents", _activeExtents)) {
+        // backward compat (who cares)
+        float radius = -1.f;
+        pt.TryGetFloat("active_radius", &radius);
+        if (radius >= 0.f) {
+            _activeExtents._x = 2 * radius;
+            _activeExtents._z = 2 * radius;
+        }
+    }   
 
     SeqAction::LoadActionsFromChildNode(pt, "hit_actions", _hitActions);
     SeqAction::LoadActionsFromChildNode(pt, "all_hit_actions", _allHitActions);
@@ -130,7 +138,7 @@ void TypingEnemyEntity::SaveDerived(serial::Ptree pt) const {
     pt.PutFloat("cooldown_quantize_denom", _cooldownQuantizeDenom);
     pt.PutBool("reset_cooldown_on_any_hit", _resetCooldownOnAnyHit);
     pt.PutBool("init_hittable", _initHittable);
-    pt.PutFloat("active_radius", _activeRadius);
+    serial::SaveInNewChildOf(pt, "active_extents", _activeExtents);
     SeqAction::SaveActionsInChildNode(pt, "hit_actions", _hitActions);
     SeqAction::SaveActionsInChildNode(pt, "all_hit_actions", _allHitActions);
     SeqAction::SaveActionsInChildNode(pt, "off_cooldown_actions", _offCooldownActions);
@@ -164,7 +172,7 @@ ne::BaseEntity::ImGuiResult TypingEnemyEntity::ImGuiDerived(GameManager& g) {
     ImGui::Checkbox("Show beats left", &_showBeatsLeft);
     ImGui::Checkbox("Reset cooldown on any hit", &_resetCooldownOnAnyHit);
     ImGui::Checkbox("Init hittable", &_initHittable);
-    ImGui::InputFloat("Active radius", &_activeRadius);
+    imgui_util::InputVec3("Active extents", &_activeExtents);
     if (SeqAction::ImGui("Hit actions", _hitActions)) {
         result = ImGuiResult::NeedsInit;
     }
@@ -211,15 +219,22 @@ void TypingEnemyEntity::InitDerived(GameManager& g) {
 }
 
 namespace {
-    bool PlayerWithinRadius(TypingEnemyEntity const& enemy) {
-        if (enemy._activeRadius < 0.f) {
-            return true;
-        }
-        ne::Entity* e = gGameManager._neEntityManager->GetFirstEntityOfType(ne::EntityType::FlowPlayer);
-        FlowPlayerEntity* player = static_cast<FlowPlayerEntity*>(e);
-        Vec3 dp = player->_transform.GetPos() - enemy._transform.GetPos();
-        return std::abs(dp._x) < enemy._activeRadius && std::abs(dp._z) < enemy._activeRadius;
+bool EnemyHasRadius(TypingEnemyEntity const& enemy) {
+    Vec3 const& extents = enemy._activeExtents;
+    return extents._x >= 0.f && extents._z >= 0.f;
+}
+bool PlayerWithinRadius(TypingEnemyEntity const& enemy) {
+    if (!EnemyHasRadius(enemy)) {
+        return true;
     }
+    ne::Entity* e = gGameManager._neEntityManager->GetFirstEntityOfType(ne::EntityType::FlowPlayer);
+    Vec3 halfExtents = enemy._activeExtents * 0.5f;
+    FlowPlayerEntity* player = static_cast<FlowPlayerEntity*>(e);
+    Vec3 dp = player->_transform.GetPos() - enemy._transform.GetPos();
+    bool inX = std::abs(dp._x) <= halfExtents._x;
+    bool inZ = std::abs(dp._z) <= halfExtents._z;
+    return inX && inZ;
+}
 }
 
 #define CHUNKED_SPHERE 1
@@ -231,16 +246,16 @@ void TypingEnemyEntity::UpdateDerived(GameManager& g, float dt) {
 
     bool playerWithinRadius = true;
 
-    if (_activeRadius > 0.f) {
+    if (EnemyHasRadius(*this)) {
         // draw active radius
-        static BoundMeshPNU const* sSphereMesh = nullptr;
-        if (sSphereMesh == nullptr) {
-            sSphereMesh = g._scene->GetMesh("sphere");
-        }
+        Vec4 color = _currentColor;
+        color._w = 0.2f;
+        // Vec4 color(1.f, 1.f, 1.f, 0.2f);
+        
         Transform t = _transform;
-        t.SetScale(Vec3(_activeRadius, _activeRadius, _activeRadius));
-        Vec4 color(1.f, 1.f, 1.f, 0.2f);
-        g._scene->DrawMesh(sSphereMesh, t.Mat4Scale(), color);       
+        constexpr float kExtentY = 0.5f;
+        t.SetScale(Vec3(_activeExtents._x, kExtentY, _activeExtents._z));
+        g._scene->DrawCube(t.Mat4Scale(), color);              
     }
 
     if (!g._editMode) {
