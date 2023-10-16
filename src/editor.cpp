@@ -278,6 +278,12 @@ void Editor::Update(float dt, SynthGuiState& synthGuiState) {
     if (!_g->_editMode) {
         return;
     }
+
+    if (_requestedNewSelection.IsValid()) {
+        _selectedEntityIds.clear();
+        _selectedEntityIds.insert(_requestedNewSelection);
+        _requestedNewSelection = ne::EntityId();
+    }
     
     InputManager const& inputManager = *_g->_inputManager;
 
@@ -656,4 +662,8 @@ ne::Entity* Editor::ImGuiEntitySelector(char const* buttonLabel, char const* pop
         ImGui::EndPopup();
     }
     return selectedEntity;
+}
+
+void Editor::SelectEntity(ne::Entity& e) {
+    _requestedNewSelection = e._id;
 }

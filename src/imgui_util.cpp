@@ -19,9 +19,21 @@ bool InputEditorId(char const* label, EditorId* v) {
 	} else {
 		ImGui::Text("<Entity not found>");
 	}
-	e = gGameManager._editor->ImGuiEntitySelector("Browse", "EntityPopup");
-	if (e != nullptr) {
-		*v = e->_editorId;
+    ne::Entity* newSelection = gGameManager._editor->ImGuiEntitySelector("Browse", "EntityPopup");
+    ImGui::SameLine();
+    if (e == nullptr) {
+        ImGui::BeginDisabled(true);
+    }
+    if (ImGui::Button("Go to")) {
+        assert(e);
+        gGameManager._editor->SelectEntity(*e);
+    }
+    if (e == nullptr) {
+        ImGui::EndDisabled();
+    }
+	if (newSelection != nullptr) {
+		*v = newSelection->_editorId;
+        result = true;
 	}
 	return result;
 }

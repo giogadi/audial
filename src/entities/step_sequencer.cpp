@@ -12,6 +12,7 @@
 #include "string_util.h"
 #include "math_util.h"
 #include "sound_bank.h"
+#include "imgui_vector_util.h"
 
 extern GameManager gGameManager;
 
@@ -508,7 +509,11 @@ ne::BaseEntity::ImGuiResult StepSequencerEntity::ImGuiDerived(GameManager& g) {
         _gain = _initGain;
     }
     ImGui::Checkbox("Is synth", &_isSynth);
-    ImGui::InputDouble("Note length", &_noteLength, 0.0, 0.0, "%.6f", ImGuiInputTextFlags_EnterReturnsTrue);    
+    ImGui::InputDouble("Note length", &_noteLength, 0.0, 0.0, "%.6f", ImGuiInputTextFlags_EnterReturnsTrue);
+    if (ImGui::TreeNode("Channels")) {
+        imgui_util::InputVector(_channels);
+        ImGui::TreePop();
+    }
     static float allVelocity = 1.f;
     ImGui::InputFloat("Set all velocities", &allVelocity);
     ImGui::SameLine();
