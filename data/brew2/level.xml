@@ -13838,6 +13838,14 @@
                     <active>false</active>
                     <init_on_activate>true</init_on_activate>
                 </seq_action>
+                <seq_action>
+                    <one_time>true</one_time>
+                    <action_type>ChangePatch</action_type>
+                    <channel>2</channel>
+                    <blend_beat_time>0</blend_beat_time>
+                    <use_patch_bank>true</use_patch_bank>
+                    <patch_name>billevans_soft</patch_name>
+                </seq_action>
             </actions>
             <actions_on_exit/>
             <trigger_volume_entities/>
@@ -16803,9 +16811,9 @@
             <pickable>true</pickable>
             <transform>
                 <pos>
-                    <x>101.059563</x>
+                    <x>101.007484</x>
                     <y>0</y>
-                    <z>-136.197723</z>
+                    <z>-136.336609</z>
                 </pos>
                 <quat>
                     <x>0</x>
@@ -19261,6 +19269,75 @@
                     </var_editor_id>
                     <add_amount>-1</add_amount>
                     <reset>false</reset>
+                </seq_action>
+            </actions>
+            <actions_on_exit/>
+            <trigger_volume_entities/>
+        </FlowTrigger>
+        <FlowTrigger>
+            <editor_id>
+                <id>326</id>
+            </editor_id>
+            <name>billevans_cgc_zone</name>
+            <entity_active>true</entity_active>
+            <pickable>true</pickable>
+            <transform>
+                <pos>
+                    <x>105.04908</x>
+                    <y>0</y>
+                    <z>-136.039124</z>
+                </pos>
+                <quat>
+                    <x>0</x>
+                    <y>0</y>
+                    <z>0</z>
+                    <w>1</w>
+                </quat>
+                <scale>
+                    <x>1</x>
+                    <y>1</y>
+                    <z>5</z>
+                </scale>
+            </transform>
+            <model_name>cube</model_name>
+            <model_color_vec4>
+                <x>0.0235294122</x>
+                <y>0.894117653</y>
+                <z>0.839215696</z>
+                <w>0.392156869</w>
+            </model_color_vec4>
+            <flow_section_id>-1</flow_section_id>
+            <tag>0</tag>
+            <waypoint_follower>
+                <mode>Waypoint</mode>
+                <local_to_entity>false</local_to_entity>
+                <waypoint_auto_start>false</waypoint_auto_start>
+                <loop_waypoints>false</loop_waypoints>
+                <start_time>3</start_time>
+                <waypoints/>
+                <follow_entity_name/>
+                <follow_entity_editor_id>
+                    <id>-1</id>
+                </follow_entity_editor_id>
+            </waypoint_follower>
+            <trigger_delay_beat_time>-1</trigger_delay_beat_time>
+            <on_player_enter>true</on_player_enter>
+            <use_trigger_volumes>false</use_trigger_volumes>
+            <random_action_count>-1</random_action_count>
+            <actions>
+                <seq_action>
+                    <one_time>true</one_time>
+                    <action_type>NoteOnOff</action_type>
+                    <channel>2</channel>
+                    <midiNoteNames>
+                        <array_item>C4</array_item>
+                        <array_item>G4</array_item>
+                        <array_item>C5</array_item>
+                    </midiNoteNames>
+                    <noteLength>2</noteLength>
+                    <velocity>1</velocity>
+                    <quantizeDenom>0.5</quantizeDenom>
+                    <doNoteOff>true</doNoteOff>
                 </seq_action>
             </actions>
             <actions_on_exit/>
