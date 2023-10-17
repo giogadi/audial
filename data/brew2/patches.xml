@@ -586,15 +586,15 @@
             <Osc1Waveform>Square</Osc1Waveform>
             <Osc2Waveform>Saw</Osc2Waveform>
             <Detune>1</Detune>
-            <OscFader>0.588999987</OscFader>
-            <Cutoff>3355.93188</Cutoff>
+            <OscFader>0.537999988</OscFader>
+            <Cutoff>1627.11902</Cutoff>
             <Peak>1.22899997</Peak>
             <HpfCutoff>0</HpfCutoff>
             <HpfPeak>0</HpfPeak>
             <Portamento>0</Portamento>
             <PitchLFOGain>0.0149999997</PitchLFOGain>
             <PitchLFOFreq>2.11899996</PitchLFOFreq>
-            <CutoffLFOGain>0.219999999</CutoffLFOGain>
+            <CutoffLFOGain>0.0719999969</CutoffLFOGain>
             <CutoffLFOFreq>0.300000012</CutoffLFOFreq>
             <AmpEnvAttack>0.00999999978</AmpEnvAttack>
             <AmpEnvDecay>0.296999991</AmpEnvDecay>
