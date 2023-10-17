@@ -432,7 +432,7 @@ int main(int argc, char** argv) {
 
         double bpm = pt.GetDouble("script.bpm");
         beatClock.Init(gGameManager, bpm, audioContext._sampleRate);
-        beatClock.Update(gGameManager);
+        beatClock.Update(gGameManager);        
 
         {
             // New entity loading. Manually add them in this order to the editor to keep ordering consistent.
@@ -459,6 +459,13 @@ int main(int argc, char** argv) {
             for (auto iter = gGameManager._neEntityManager->GetAllIterator(); !iter.Finished(); iter.Next()) {
                 iter.GetEntity()->Init(gGameManager);
             }
+        }
+
+        {
+            // Editor config loading
+            editor._g = &gGameManager;
+            serial::Ptree scriptPt = pt.GetChild("script");
+            editor.Load(scriptPt);
         }
 
         pt.DeleteData();

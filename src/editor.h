@@ -10,6 +10,9 @@
 class BoundMeshPNU;
 
 struct Editor {
+    void Load(serial::Ptree pt);
+    void Save(serial::Ptree pt) const;
+
     void Init(GameManager* g);
     void Update(float dt, SynthGuiState& synthGuiState);
     void DrawWindow();

@@ -18,6 +18,51 @@
 
 static float gScrollFactorForDebugCameraMove = 1.f;
 
+static std::vector<ne::EntityId> gControlGroups[10];
+
+void Editor::Save(serial::Ptree pt) const {
+    serial::Ptree groupsPt = pt.AddChild("ctrl_groups");
+    std::stringstream ss;
+    for (int ctrlGroupIx = 0; ctrlGroupIx <= 9; ++ctrlGroupIx) {
+        ss.str("");
+        ss << "group" << ctrlGroupIx;
+        std::string groupName = ss.str();
+        serial::Ptree groupPt = groupsPt.AddChild(groupName.c_str());
+        std::vector<ne::EntityId> const& ctrlGroup = gControlGroups[ctrlGroupIx];
+        for (ne::EntityId eId : ctrlGroup) {
+            if (ne::Entity* e = _g->_neEntityManager->GetActiveOrInactiveEntity(eId)) {
+                serial::SaveInNewChildOf(groupPt, "editor_id", e->_editorId);
+            }
+        }
+    }
+}
+
+void Editor::Load(serial::Ptree pt) {
+    serial::Ptree groupsPt = pt.TryGetChild("ctrl_groups");
+    if (!groupsPt.IsValid()) {
+        return;
+    }
+    int numChildrenGroups = 0;
+    serial::NameTreePair* childrenGroups = groupsPt.GetChildren(&numChildrenGroups);
+    for (int groupIx = 0; groupIx < numChildrenGroups; ++groupIx) {
+        int numChildrenEntities = 0;
+        serial::Ptree* groupPt = &childrenGroups[groupIx]._pt;
+        serial::NameTreePair* childrenEntities = groupPt->GetChildren(&numChildrenEntities);
+        auto& ctrlGroup = gControlGroups[groupIx];
+        ctrlGroup.clear();
+        for (int entityIx = 0; entityIx < numChildrenEntities; ++entityIx) {
+            serial::Ptree* eIdPt = &childrenEntities[entityIx]._pt;
+            EditorId editorId;
+            editorId.Load(*eIdPt);
+            if (ne::Entity* entity = _g->_neEntityManager->FindEntityByEditorId(editorId)) {
+                ctrlGroup.push_back(entity->_id);
+            }
+        }
+        delete[] childrenEntities;
+    }
+    delete[] childrenGroups;
+}
+
 void Editor::Init(GameManager* g) {
     _g = g;
     _axesMesh = _g->_scene->GetMesh("axes");
@@ -292,6 +337,23 @@ void Editor::Update(float dt, SynthGuiState& synthGuiState) {
     }
 
     if (sInputMode == InputMode::Default) {
+        // Control groups
+        if (inputManager.IsCtrlPressed()) {
+            int ctrlGroupIx = inputManager.GetNumPressedThisFrame();
+            if (ctrlGroupIx >= 0) {
+                std::vector<ne::EntityId>& ctrlGroup = gControlGroups[ctrlGroupIx];
+                ctrlGroup.clear();
+                ctrlGroup.insert(ctrlGroup.begin(), _selectedEntityIds.begin(), _selectedEntityIds.end());
+            }
+        } else {
+            int ctrlGroupIx = inputManager.GetNumPressedThisFrame();
+            if (ctrlGroupIx >= 0) {
+                std::vector<ne::EntityId>& ctrlGroup = gControlGroups[ctrlGroupIx];
+                _selectedEntityIds.clear();
+                _selectedEntityIds.insert(ctrlGroup.begin(), ctrlGroup.end());
+            }            
+        }
+
         if (inputManager.IsKeyPressedThisFrame(InputManager::Key::Y)) {
             sSynthWindowVisible = !sSynthWindowVisible;
         }
@@ -413,6 +475,7 @@ void Editor::DrawWindow() {
         serial::Ptree pt = serial::Ptree::MakeNew();
         serial::Ptree scriptPt = pt.AddChild("script");
         scriptPt.PutDouble("bpm", _g->_beatClock->GetBpm());
+        Save(scriptPt);
         serial::Ptree entitiesPt = scriptPt.AddChild("new_entities");
         for (ne::EntityId id : _entityIds) {
             bool active = false;

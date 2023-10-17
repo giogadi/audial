@@ -8,7 +8,8 @@ class InputManager {
 public:
     enum class Key : int {
         A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z,
-        Escape,Space,Left,Right,LeftShift,RightShift,LeftAlt,RightAlt,Tab,Backspace,
+        Escape,Space,Left,Right,LeftShift,RightShift,LeftAlt,RightAlt,LeftCtrl,RightCtrl,Tab,Backspace,
+        NUM_0,NUM_1,NUM_2,NUM_3,NUM_4,NUM_5,NUM_6,NUM_7,NUM_8,NUM_9,
         Enter,
         NumKeys
     };
@@ -63,6 +64,12 @@ public:
     bool IsAltPressed() const {
         return IsKeyPressed(Key::LeftAlt) || IsKeyPressed(Key::RightAlt);
     }
+    bool IsCtrlPressed() const {
+        return IsKeyPressed(Key::LeftCtrl) || IsKeyPressed(Key::RightCtrl);
+    }
+
+    // returns -1 if no numbers pressed. returns the least number if multiple are pressed
+    int GetNumPressedThisFrame() const;
 
     // SCREEN COORDINATES, (0,0) is top-left corner of window
     void GetMousePos(double& mouseX, double& mouseY) const {
