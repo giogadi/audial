@@ -615,7 +615,7 @@
     <patch>
         <name>billevans_soft</name>
         <patch>
-            <Gain>0.690999985</Gain>
+            <Gain>0.648</Gain>
             <Mono>0</Mono>
             <Osc1Waveform>Square</Osc1Waveform>
             <Osc2Waveform>Saw</Osc2Waveform>
@@ -630,7 +630,7 @@
             <PitchLFOFreq>4.23699999</PitchLFOFreq>
             <CutoffLFOGain>0.0590000004</CutoffLFOGain>
             <CutoffLFOFreq>4.16699982</CutoffLFOFreq>
-            <AmpEnvAttack>0.699000001</AmpEnvAttack>
+            <AmpEnvAttack>1.227</AmpEnvAttack>
             <AmpEnvDecay>0.136000007</AmpEnvDecay>
             <AmpEnvSustain>1</AmpEnvSustain>
             <AmpEnvRelease>2.45799994</AmpEnvRelease>
