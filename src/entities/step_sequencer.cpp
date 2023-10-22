@@ -16,7 +16,7 @@
 
 extern GameManager gGameManager;
 
-void StepSequencerEntity::WriteSeqStep(SeqStep const& step, std::ostream& output) {
+void StepSequencerEntity::WriteSeqStep(SeqStep const& step, bool writeNoteName, std::ostream& output) {
     std::string noteName;
     for (int i = 0, n = step._midiNote.size(); i < n; ++i) {
         int midiNote = step._midiNote[i];
@@ -29,8 +29,12 @@ void StepSequencerEntity::WriteSeqStep(SeqStep const& step, std::ostream& output
         if (midiNote < 0) {
             output << "-1";
         } else {
-            GetNoteName(midiNote, noteName);
-            output << "m" << noteName;
+            if (writeNoteName) {
+                GetNoteName(midiNote, noteName);
+                output << "m" << noteName;
+            } else {
+                output << midiNote;
+            }
         }
     }
     output << ":" << step._velocity;

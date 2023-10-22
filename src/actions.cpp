@@ -213,6 +213,8 @@ void SetStepSequenceSeqAction::LoadDerived(LoadInputs const& loadInputs, std::is
 
 void SetStepSequenceSeqAction::LoadDerived(serial::Ptree pt) {
     serial::LoadFromChildOf(pt, "seq_editor_id", _seqEditorId);
+    _isSynth = false;
+    pt.TryGetBool("is_synth", &_isSynth);
     std::string seqStr = pt.GetString("seq_str");
     std::stringstream ss(seqStr);
     StepSequencerEntity::LoadSequenceFromInput(ss, _sequence);
@@ -222,9 +224,10 @@ void SetStepSequenceSeqAction::LoadDerived(serial::Ptree pt) {
 
 void SetStepSequenceSeqAction::SaveDerived(serial::Ptree pt) const {
     serial::SaveInNewChildOf(pt, "seq_editor_id", _seqEditorId);
+    pt.PutBool("is_synth", _isSynth);
     std::stringstream ss;
     for (StepSequencerEntity::SeqStep const& step : _sequence) {
-        StepSequencerEntity::WriteSeqStep(step, ss);
+        StepSequencerEntity::WriteSeqStep(step, _isSynth, ss);
         ss << " ";
     }
     std::string seqStr = ss.str();
@@ -234,13 +237,10 @@ void SetStepSequenceSeqAction::SaveDerived(serial::Ptree pt) const {
 
 bool SetStepSequenceSeqAction::ImGui() {
     bool changed = imgui_util::InputEditorId("Seq editor ID", &_seqEditorId);    
-
+    ImGui::Checkbox("Synth", &_isSynth);
     ImGui::Checkbox("Offset start", &_offsetStart);
-
-    static bool sIsSynth = true;
-    ImGui::Checkbox("Is synth", &sIsSynth);
     if (ImGui::TreeNode("Sequence")) {
-        changed = StepSequencerEntity::SeqImGui("Sequence", !sIsSynth, _sequence) || changed;
+        changed = StepSequencerEntity::SeqImGui("Sequence", !_isSynth, _sequence) || changed;
         ImGui::TreePop();
     }
 

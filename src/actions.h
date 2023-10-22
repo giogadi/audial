@@ -88,6 +88,7 @@ struct SetStepSequenceSeqAction : public SeqAction {
     EditorId _seqEditorId;
     std::vector<StepSequencerEntity::SeqStep> _sequence;
     bool _offsetStart = false;
+    bool _isSynth = false;
 
     ne::EntityId _seqId;
 
