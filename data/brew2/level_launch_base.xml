@@ -19595,5 +19595,65 @@
             <max_voices>-1</max_voices>
             <quantize_temp_changes>true</quantize_temp_changes>
         </StepSequencer>
+        <StepSequencer>
+            <editor_id>
+                <id>369</id>
+            </editor_id>
+            <name>launch_base_bass_seq0</name>
+            <entity_active>false</entity_active>
+            <pickable>true</pickable>
+            <transform>
+                <pos>
+                    <x>0.5333336</x>
+                    <y>0</y>
+                    <z>-7.90550232</z>
+                </pos>
+                <quat>
+                    <x>0</x>
+                    <y>0</y>
+                    <z>0</z>
+                    <w>1</w>
+                </quat>
+                <scale>
+                    <x>1</x>
+                    <y>1</y>
+                    <z>1</z>
+                </scale>
+            </transform>
+            <model_name/>
+            <model_color_vec4>
+                <x>0.800000012</x>
+                <y>0.800000012</y>
+                <z>0.800000012</z>
+                <w>1</w>
+            </model_color_vec4>
+            <flow_section_id>-1</flow_section_id>
+            <tag>0</tag>
+            <waypoint_follower>
+                <mode>Waypoint</mode>
+                <local_to_entity>false</local_to_entity>
+                <waypoint_auto_start>false</waypoint_auto_start>
+                <loop_waypoints>false</loop_waypoints>
+                <start_time>3</start_time>
+                <waypoints/>
+                <follow_entity_name/>
+                <follow_entity_editor_id>
+                    <id>-1</id>
+                </follow_entity_editor_id>
+            </waypoint_follower>
+            <sequence>mC2:1 -1:1 -1:1 mG2:1 -1:1 -1:1 mD3:1 mE3-:1 mD3:1 -1:1 -1:1 mB2-:1 -1:1 -1:1 mG2:1 -1:1 mC2:1 -1:1 -1:1 mG2:1 -1:1 -1:1 mD3:1 mE3-:1 mD3:1 -1:1 -1:1 mB2-:1 -1:1 -1:1 mG2:1 -1:1 mF2:1 -1 -1 mC3:1 -1 -1 mB2-:1 -1 mF3:1 -1 -1 mC3:1 -1 -1 mE3-:1 -1 mF2:1 -1 -1 mC3:1 -1 -1 mB2-:1 -1 mF3:1 -1 -1 mC3:1 -1 -1 mE3-:1 -1</sequence>
+            <start_mute>false</start_mute>
+            <gain>1</gain>
+            <channels>
+                <channel>0</channel>
+            </channels>
+            <step_length>0.25</step_length>
+            <note_length>0.25</note_length>
+            <start_time>4</start_time>
+            <is_synth>true</is_synth>
+            <editor_mute>false</editor_mute>
+            <max_voices>-1</max_voices>
+            <quantize_temp_changes>true</quantize_temp_changes>
+        </StepSequencer>
     </new_entities>
 </script>
