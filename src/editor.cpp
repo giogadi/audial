@@ -498,7 +498,13 @@ void Editor::DrawWindow() {
     ImGui::Checkbox("Filter by flow section ID", &_enableFlowSectionFilter);
     if (_enableFlowSectionFilter) {
         ImGui::InputInt("Flow section ID", &_flowSectionFilterId);;
-    }   
+    }
+
+    static int64_t sEditorIdFilter = -1;
+    ImGui::InputScalar("Editor ID Filter", ImGuiDataType_S64, &sEditorIdFilter);
+
+    static std::string sNameFilter;
+    imgui_util::InputText<128>("Name Filter", &sNameFilter);
 
     // Entities  
     if (ImGui::BeginListBox("Entities")) {
@@ -514,6 +520,20 @@ void Editor::DrawWindow() {
 
             if (_enableFlowSectionFilter) {
                 if (entity->_flowSectionId != _flowSectionFilterId) {
+                    ++entityIdIter;
+                    continue;
+                }
+            }
+
+            if (sEditorIdFilter >= 0) {
+                if (entity->_editorId._id != sEditorIdFilter) {
+                    ++entityIdIter;
+                    continue;
+                }
+            }
+
+            if (!sNameFilter.empty()) {
+                if (!string_util::Contains(entity->_name, sNameFilter)) {
                     ++entityIdIter;
                     continue;
                 }

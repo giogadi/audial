@@ -1057,9 +1057,14 @@ void Scene::Draw(int windowWidth, int windowHeight, float timeInSecs) {
     // TODO: should we cache the dists so that we don't recompute them every time we
     // examine an element?
     std::sort(transparentModels.begin(), transparentModels.end(), [&](ModelInstance const* lhs, ModelInstance const* rhs) {
-        float lhsD2 = (lhs->_transform.GetPos() - _camera._transform.GetPos()).Length2();
-        float rhsD2 = (rhs->_transform.GetPos() - _camera._transform.GetPos()).Length2();
-        return lhsD2 > rhsD2;
+        // Sort by Y specifically
+        Vec3 lhsP = lhs->_transform.GetPos();
+        Vec3 rhsP = rhs->_transform.GetPos();
+        return lhsP._y < rhsP._y;
+        
+        // float lhsD2 = (lhs->_transform.GetPos() - _camera._transform.GetPos()).Length2();
+        // float rhsD2 = (rhs->_transform.GetPos() - _camera._transform.GetPos()).Length2();
+        // return lhsD2 > rhsD2;
         });
     {
         Shader& shader = _pInternal->_modelShader;

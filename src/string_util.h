@@ -91,4 +91,21 @@ inline void ToUpper(std::string& x) {
     }
 }
 
+inline bool Contains(std::string_view const str, std::string_view const substr) {
+    int const endIx = str.length() - substr.length();
+    for (int strIx = 0; strIx < endIx; ++strIx) {
+        bool match = true;
+        for (int substrIx = 0; substrIx < substr.length(); ++substrIx) {
+            if (str[strIx + substrIx] != substr[substrIx]) {
+                match = false;
+                break;
+            }
+        }
+        if (match) {
+            return true;
+        }
+    }
+    return false;
+}
+
 }  // namespace string_util
