@@ -192,7 +192,7 @@ void FlowPlayerEntity::Update(GameManager& g, float dt) {
             enemy->_textColor = kGreyColor;
             continue;
         }
-        if (!enemy->CanHit()) {
+        if (!enemy->CanHit(*this, g)) {
             continue;
         }
         

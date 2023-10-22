@@ -29,7 +29,7 @@ namespace ne {
     };
 
     struct EntityId {
-        bool IsValid() { return _id >= 0; }
+        bool IsValid() const { return _id >= 0; }
         int _id = -1;
         EntityType _type;
         bool operator==(EntityId const& rhs) const {

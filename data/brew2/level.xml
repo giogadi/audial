@@ -1,6 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <script>
     <bpm>140</bpm>
+    <ctrl_groups>
+        <group0/>
+        <group1/>
+        <group2/>
+        <group3/>
+        <group4/>
+        <group5/>
+        <group6/>
+        <group7/>
+        <group8/>
+        <group9/>
+    </ctrl_groups>
     <new_entities>
         <Light>
             <editor_id>
@@ -770,6 +782,9 @@
                 <y>-1</y>
                 <z>-1</z>
             </active_extents>
+            <active_region_editor_id>
+                <id>-1</id>
+            </active_region_editor_id>
             <hit_actions>
                 <seq_action>
                     <one_time>false</one_time>
@@ -847,6 +862,9 @@
                 <y>-1</y>
                 <z>-1</z>
             </active_extents>
+            <active_region_editor_id>
+                <id>-1</id>
+            </active_region_editor_id>
             <hit_actions>
                 <seq_action>
                     <one_time>false</one_time>
@@ -924,6 +942,9 @@
                 <y>-1</y>
                 <z>-1</z>
             </active_extents>
+            <active_region_editor_id>
+                <id>-1</id>
+            </active_region_editor_id>
             <hit_actions>
                 <seq_action>
                     <one_time>false</one_time>
@@ -1001,6 +1022,9 @@
                 <y>-1</y>
                 <z>-1</z>
             </active_extents>
+            <active_region_editor_id>
+                <id>-1</id>
+            </active_region_editor_id>
             <hit_actions>
                 <seq_action>
                     <one_time>false</one_time>
@@ -1132,6 +1156,9 @@
                 <y>-1</y>
                 <z>-1</z>
             </active_extents>
+            <active_region_editor_id>
+                <id>-1</id>
+            </active_region_editor_id>
             <hit_actions>
                 <seq_action>
                     <one_time>false</one_time>
@@ -1209,6 +1236,9 @@
                 <y>-1</y>
                 <z>-1</z>
             </active_extents>
+            <active_region_editor_id>
+                <id>-1</id>
+            </active_region_editor_id>
             <hit_actions>
                 <seq_action>
                     <one_time>false</one_time>
@@ -1759,6 +1789,9 @@
                 <y>-1</y>
                 <z>-1</z>
             </active_extents>
+            <active_region_editor_id>
+                <id>-1</id>
+            </active_region_editor_id>
             <hit_actions>
                 <seq_action>
                     <one_time>false</one_time>
@@ -1836,6 +1869,9 @@
                 <y>-1</y>
                 <z>-1</z>
             </active_extents>
+            <active_region_editor_id>
+                <id>-1</id>
+            </active_region_editor_id>
             <hit_actions>
                 <seq_action>
                     <one_time>false</one_time>
@@ -1913,6 +1949,9 @@
                 <y>-1</y>
                 <z>-1</z>
             </active_extents>
+            <active_region_editor_id>
+                <id>-1</id>
+            </active_region_editor_id>
             <hit_actions>
                 <seq_action>
                     <one_time>false</one_time>
@@ -1990,6 +2029,9 @@
                 <y>-1</y>
                 <z>-1</z>
             </active_extents>
+            <active_region_editor_id>
+                <id>-1</id>
+            </active_region_editor_id>
             <hit_actions>
                 <seq_action>
                     <one_time>false</one_time>
@@ -2121,6 +2163,9 @@
                 <y>-1</y>
                 <z>-1</z>
             </active_extents>
+            <active_region_editor_id>
+                <id>-1</id>
+            </active_region_editor_id>
             <hit_actions>
                 <seq_action>
                     <one_time>false</one_time>
@@ -2198,6 +2243,9 @@
                 <y>-1</y>
                 <z>-1</z>
             </active_extents>
+            <active_region_editor_id>
+                <id>-1</id>
+            </active_region_editor_id>
             <hit_actions>
                 <seq_action>
                     <one_time>false</one_time>
@@ -2592,6 +2640,9 @@
                 <y>-1</y>
                 <z>-1</z>
             </active_extents>
+            <active_region_editor_id>
+                <id>-1</id>
+            </active_region_editor_id>
             <hit_actions>
                 <seq_action>
                     <one_time>false</one_time>
@@ -2669,6 +2720,9 @@
                 <y>-1</y>
                 <z>-1</z>
             </active_extents>
+            <active_region_editor_id>
+                <id>-1</id>
+            </active_region_editor_id>
             <hit_actions>
                 <seq_action>
                     <one_time>false</one_time>
@@ -2746,6 +2800,9 @@
                 <y>-1</y>
                 <z>-1</z>
             </active_extents>
+            <active_region_editor_id>
+                <id>-1</id>
+            </active_region_editor_id>
             <hit_actions>
                 <seq_action>
                     <one_time>false</one_time>
@@ -2823,6 +2880,9 @@
                 <y>-1</y>
                 <z>-1</z>
             </active_extents>
+            <active_region_editor_id>
+                <id>-1</id>
+            </active_region_editor_id>
             <hit_actions>
                 <seq_action>
                     <one_time>false</one_time>
@@ -2954,6 +3014,9 @@
                 <y>-1</y>
                 <z>-1</z>
             </active_extents>
+            <active_region_editor_id>
+                <id>-1</id>
+            </active_region_editor_id>
             <hit_actions>
                 <seq_action>
                     <one_time>false</one_time>
@@ -3031,6 +3094,9 @@
                 <y>-1</y>
                 <z>-1</z>
             </active_extents>
+            <active_region_editor_id>
+                <id>-1</id>
+            </active_region_editor_id>
             <hit_actions>
                 <seq_action>
                     <one_time>false</one_time>
@@ -3378,6 +3444,9 @@
                 <y>-1</y>
                 <z>-1</z>
             </active_extents>
+            <active_region_editor_id>
+                <id>-1</id>
+            </active_region_editor_id>
             <hit_actions>
                 <seq_action>
                     <one_time>false</one_time>
@@ -3738,7 +3807,8 @@
                     <seq_editor_id>
                         <id>9</id>
                     </seq_editor_id>
-                    <seq_str>mG1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 </seq_str>
+                    <is_synth>false</is_synth>
+                    <seq_str>31:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 </seq_str>
                     <offset_start>false</offset_start>
                 </seq_action>
             </actions>
@@ -3986,6 +4056,9 @@
                 <y>-1</y>
                 <z>-1</z>
             </active_extents>
+            <active_region_editor_id>
+                <id>-1</id>
+            </active_region_editor_id>
             <hit_actions>
                 <seq_action>
                     <one_time>false</one_time>
@@ -4063,6 +4136,9 @@
                 <y>-1</y>
                 <z>-1</z>
             </active_extents>
+            <active_region_editor_id>
+                <id>-1</id>
+            </active_region_editor_id>
             <hit_actions>
                 <seq_action>
                     <one_time>false</one_time>
@@ -4140,6 +4216,9 @@
                 <y>-1</y>
                 <z>-1</z>
             </active_extents>
+            <active_region_editor_id>
+                <id>-1</id>
+            </active_region_editor_id>
             <hit_actions>
                 <seq_action>
                     <one_time>false</one_time>
@@ -4217,6 +4296,9 @@
                 <y>-1</y>
                 <z>-1</z>
             </active_extents>
+            <active_region_editor_id>
+                <id>-1</id>
+            </active_region_editor_id>
             <hit_actions>
                 <seq_action>
                     <one_time>false</one_time>
@@ -4331,7 +4413,8 @@
                     <seq_editor_id>
                         <id>9</id>
                     </seq_editor_id>
-                    <seq_str>mA1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 </seq_str>
+                    <is_synth>false</is_synth>
+                    <seq_str>33:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 </seq_str>
                     <offset_start>false</offset_start>
                 </seq_action>
             </actions>
@@ -4400,6 +4483,9 @@
                 <y>-1</y>
                 <z>-1</z>
             </active_extents>
+            <active_region_editor_id>
+                <id>-1</id>
+            </active_region_editor_id>
             <hit_actions>
                 <seq_action>
                     <one_time>false</one_time>
@@ -4477,6 +4563,9 @@
                 <y>-1</y>
                 <z>-1</z>
             </active_extents>
+            <active_region_editor_id>
+                <id>-1</id>
+            </active_region_editor_id>
             <hit_actions>
                 <seq_action>
                     <one_time>false</one_time>
@@ -4554,6 +4643,9 @@
                 <y>-1</y>
                 <z>-1</z>
             </active_extents>
+            <active_region_editor_id>
+                <id>-1</id>
+            </active_region_editor_id>
             <hit_actions>
                 <seq_action>
                     <one_time>false</one_time>
@@ -4631,6 +4723,9 @@
                 <y>-1</y>
                 <z>-1</z>
             </active_extents>
+            <active_region_editor_id>
+                <id>-1</id>
+            </active_region_editor_id>
             <hit_actions>
                 <seq_action>
                     <one_time>false</one_time>
@@ -4708,6 +4803,9 @@
                 <y>-1</y>
                 <z>-1</z>
             </active_extents>
+            <active_region_editor_id>
+                <id>-1</id>
+            </active_region_editor_id>
             <hit_actions>
                 <seq_action>
                     <one_time>false</one_time>
@@ -4785,6 +4883,9 @@
                 <y>-1</y>
                 <z>-1</z>
             </active_extents>
+            <active_region_editor_id>
+                <id>-1</id>
+            </active_region_editor_id>
             <hit_actions>
                 <seq_action>
                     <one_time>false</one_time>
@@ -4862,6 +4963,9 @@
                 <y>-1</y>
                 <z>-1</z>
             </active_extents>
+            <active_region_editor_id>
+                <id>-1</id>
+            </active_region_editor_id>
             <hit_actions>
                 <seq_action>
                     <one_time>false</one_time>
@@ -4939,6 +5043,9 @@
                 <y>-1</y>
                 <z>-1</z>
             </active_extents>
+            <active_region_editor_id>
+                <id>-1</id>
+            </active_region_editor_id>
             <hit_actions>
                 <seq_action>
                     <one_time>false</one_time>
@@ -5016,6 +5123,9 @@
                 <y>-1</y>
                 <z>-1</z>
             </active_extents>
+            <active_region_editor_id>
+                <id>-1</id>
+            </active_region_editor_id>
             <hit_actions>
                 <seq_action>
                     <one_time>false</one_time>
@@ -5093,6 +5203,9 @@
                 <y>-1</y>
                 <z>-1</z>
             </active_extents>
+            <active_region_editor_id>
+                <id>-1</id>
+            </active_region_editor_id>
             <hit_actions>
                 <seq_action>
                     <one_time>false</one_time>
@@ -5170,6 +5283,9 @@
                 <y>-1</y>
                 <z>-1</z>
             </active_extents>
+            <active_region_editor_id>
+                <id>-1</id>
+            </active_region_editor_id>
             <hit_actions>
                 <seq_action>
                     <one_time>false</one_time>
@@ -5247,6 +5363,9 @@
                 <y>-1</y>
                 <z>-1</z>
             </active_extents>
+            <active_region_editor_id>
+                <id>-1</id>
+            </active_region_editor_id>
             <hit_actions>
                 <seq_action>
                     <one_time>false</one_time>
@@ -5324,6 +5443,9 @@
                 <y>-1</y>
                 <z>-1</z>
             </active_extents>
+            <active_region_editor_id>
+                <id>-1</id>
+            </active_region_editor_id>
             <hit_actions>
                 <seq_action>
                     <one_time>false</one_time>
@@ -5401,6 +5523,9 @@
                 <y>-1</y>
                 <z>-1</z>
             </active_extents>
+            <active_region_editor_id>
+                <id>-1</id>
+            </active_region_editor_id>
             <hit_actions>
                 <seq_action>
                     <one_time>false</one_time>
@@ -5478,6 +5603,9 @@
                 <y>-1</y>
                 <z>-1</z>
             </active_extents>
+            <active_region_editor_id>
+                <id>-1</id>
+            </active_region_editor_id>
             <hit_actions>
                 <seq_action>
                     <one_time>false</one_time>
@@ -5555,6 +5683,9 @@
                 <y>-1</y>
                 <z>-1</z>
             </active_extents>
+            <active_region_editor_id>
+                <id>-1</id>
+            </active_region_editor_id>
             <hit_actions>
                 <seq_action>
                     <one_time>false</one_time>
@@ -5632,6 +5763,9 @@
                 <y>-1</y>
                 <z>-1</z>
             </active_extents>
+            <active_region_editor_id>
+                <id>-1</id>
+            </active_region_editor_id>
             <hit_actions>
                 <seq_action>
                     <one_time>false</one_time>
@@ -5709,6 +5843,9 @@
                 <y>-1</y>
                 <z>-1</z>
             </active_extents>
+            <active_region_editor_id>
+                <id>-1</id>
+            </active_region_editor_id>
             <hit_actions>
                 <seq_action>
                     <one_time>false</one_time>
@@ -5786,6 +5923,9 @@
                 <y>-1</y>
                 <z>-1</z>
             </active_extents>
+            <active_region_editor_id>
+                <id>-1</id>
+            </active_region_editor_id>
             <hit_actions>
                 <seq_action>
                     <one_time>false</one_time>
@@ -5863,6 +6003,9 @@
                 <y>-1</y>
                 <z>-1</z>
             </active_extents>
+            <active_region_editor_id>
+                <id>-1</id>
+            </active_region_editor_id>
             <hit_actions>
                 <seq_action>
                     <one_time>false</one_time>
@@ -5940,6 +6083,9 @@
                 <y>-1</y>
                 <z>-1</z>
             </active_extents>
+            <active_region_editor_id>
+                <id>-1</id>
+            </active_region_editor_id>
             <hit_actions>
                 <seq_action>
                     <one_time>false</one_time>
@@ -6017,6 +6163,9 @@
                 <y>-1</y>
                 <z>-1</z>
             </active_extents>
+            <active_region_editor_id>
+                <id>-1</id>
+            </active_region_editor_id>
             <hit_actions>
                 <seq_action>
                     <one_time>false</one_time>
@@ -6094,6 +6243,9 @@
                 <y>-1</y>
                 <z>-1</z>
             </active_extents>
+            <active_region_editor_id>
+                <id>-1</id>
+            </active_region_editor_id>
             <hit_actions>
                 <seq_action>
                     <one_time>false</one_time>
@@ -6171,6 +6323,9 @@
                 <y>-1</y>
                 <z>-1</z>
             </active_extents>
+            <active_region_editor_id>
+                <id>-1</id>
+            </active_region_editor_id>
             <hit_actions>
                 <seq_action>
                     <one_time>false</one_time>
@@ -6564,6 +6719,9 @@
                 <y>-1</y>
                 <z>-1</z>
             </active_extents>
+            <active_region_editor_id>
+                <id>-1</id>
+            </active_region_editor_id>
             <hit_actions>
                 <seq_action>
                     <one_time>false</one_time>
@@ -6776,6 +6934,9 @@
                 <y>-1</y>
                 <z>-1</z>
             </active_extents>
+            <active_region_editor_id>
+                <id>-1</id>
+            </active_region_editor_id>
             <hit_actions>
                 <seq_action>
                     <one_time>false</one_time>
@@ -6853,6 +7014,9 @@
                 <y>-1</y>
                 <z>-1</z>
             </active_extents>
+            <active_region_editor_id>
+                <id>-1</id>
+            </active_region_editor_id>
             <hit_actions>
                 <seq_action>
                     <one_time>false</one_time>
@@ -6930,6 +7094,9 @@
                 <y>-1</y>
                 <z>-1</z>
             </active_extents>
+            <active_region_editor_id>
+                <id>-1</id>
+            </active_region_editor_id>
             <hit_actions>
                 <seq_action>
                     <one_time>false</one_time>
@@ -7007,6 +7174,9 @@
                 <y>-1</y>
                 <z>-1</z>
             </active_extents>
+            <active_region_editor_id>
+                <id>-1</id>
+            </active_region_editor_id>
             <hit_actions>
                 <seq_action>
                     <one_time>false</one_time>
@@ -7084,6 +7254,9 @@
                 <y>-1</y>
                 <z>-1</z>
             </active_extents>
+            <active_region_editor_id>
+                <id>-1</id>
+            </active_region_editor_id>
             <hit_actions>
                 <seq_action>
                     <one_time>false</one_time>
@@ -7161,6 +7334,9 @@
                 <y>-1</y>
                 <z>-1</z>
             </active_extents>
+            <active_region_editor_id>
+                <id>-1</id>
+            </active_region_editor_id>
             <hit_actions>
                 <seq_action>
                     <one_time>false</one_time>
@@ -7238,6 +7414,9 @@
                 <y>-1</y>
                 <z>-1</z>
             </active_extents>
+            <active_region_editor_id>
+                <id>-1</id>
+            </active_region_editor_id>
             <hit_actions>
                 <seq_action>
                     <one_time>false</one_time>
@@ -7315,6 +7494,9 @@
                 <y>-1</y>
                 <z>-1</z>
             </active_extents>
+            <active_region_editor_id>
+                <id>-1</id>
+            </active_region_editor_id>
             <hit_actions>
                 <seq_action>
                     <one_time>false</one_time>
@@ -7392,6 +7574,9 @@
                 <y>-1</y>
                 <z>-1</z>
             </active_extents>
+            <active_region_editor_id>
+                <id>-1</id>
+            </active_region_editor_id>
             <hit_actions>
                 <seq_action>
                     <one_time>false</one_time>
@@ -7469,6 +7654,9 @@
                 <y>-1</y>
                 <z>-1</z>
             </active_extents>
+            <active_region_editor_id>
+                <id>-1</id>
+            </active_region_editor_id>
             <hit_actions>
                 <seq_action>
                     <one_time>false</one_time>
@@ -7546,6 +7734,9 @@
                 <y>-1</y>
                 <z>-1</z>
             </active_extents>
+            <active_region_editor_id>
+                <id>-1</id>
+            </active_region_editor_id>
             <hit_actions>
                 <seq_action>
                     <one_time>false</one_time>
@@ -7623,6 +7814,9 @@
                 <y>-1</y>
                 <z>-1</z>
             </active_extents>
+            <active_region_editor_id>
+                <id>-1</id>
+            </active_region_editor_id>
             <hit_actions>
                 <seq_action>
                     <one_time>false</one_time>
@@ -7700,6 +7894,9 @@
                 <y>-1</y>
                 <z>-1</z>
             </active_extents>
+            <active_region_editor_id>
+                <id>-1</id>
+            </active_region_editor_id>
             <hit_actions>
                 <seq_action>
                     <one_time>false</one_time>
@@ -7777,6 +7974,9 @@
                 <y>-1</y>
                 <z>-1</z>
             </active_extents>
+            <active_region_editor_id>
+                <id>-1</id>
+            </active_region_editor_id>
             <hit_actions>
                 <seq_action>
                     <one_time>false</one_time>
@@ -7854,6 +8054,9 @@
                 <y>-1</y>
                 <z>-1</z>
             </active_extents>
+            <active_region_editor_id>
+                <id>-1</id>
+            </active_region_editor_id>
             <hit_actions>
                 <seq_action>
                     <one_time>false</one_time>
@@ -7931,6 +8134,9 @@
                 <y>-1</y>
                 <z>-1</z>
             </active_extents>
+            <active_region_editor_id>
+                <id>-1</id>
+            </active_region_editor_id>
             <hit_actions>
                 <seq_action>
                     <one_time>false</one_time>
@@ -8008,6 +8214,9 @@
                 <y>-1</y>
                 <z>-1</z>
             </active_extents>
+            <active_region_editor_id>
+                <id>-1</id>
+            </active_region_editor_id>
             <hit_actions>
                 <seq_action>
                     <one_time>false</one_time>
@@ -8220,6 +8429,9 @@
                 <y>-1</y>
                 <z>-1</z>
             </active_extents>
+            <active_region_editor_id>
+                <id>-1</id>
+            </active_region_editor_id>
             <hit_actions>
                 <seq_action>
                     <one_time>false</one_time>
@@ -8297,6 +8509,9 @@
                 <y>-1</y>
                 <z>-1</z>
             </active_extents>
+            <active_region_editor_id>
+                <id>-1</id>
+            </active_region_editor_id>
             <hit_actions>
                 <seq_action>
                     <one_time>false</one_time>
@@ -8374,6 +8589,9 @@
                 <y>-1</y>
                 <z>-1</z>
             </active_extents>
+            <active_region_editor_id>
+                <id>-1</id>
+            </active_region_editor_id>
             <hit_actions>
                 <seq_action>
                     <one_time>false</one_time>
@@ -8451,6 +8669,9 @@
                 <y>-1</y>
                 <z>-1</z>
             </active_extents>
+            <active_region_editor_id>
+                <id>-1</id>
+            </active_region_editor_id>
             <hit_actions>
                 <seq_action>
                     <one_time>false</one_time>
@@ -8528,6 +8749,9 @@
                 <y>-1</y>
                 <z>-1</z>
             </active_extents>
+            <active_region_editor_id>
+                <id>-1</id>
+            </active_region_editor_id>
             <hit_actions>
                 <seq_action>
                     <one_time>false</one_time>
@@ -8605,6 +8829,9 @@
                 <y>-1</y>
                 <z>-1</z>
             </active_extents>
+            <active_region_editor_id>
+                <id>-1</id>
+            </active_region_editor_id>
             <hit_actions>
                 <seq_action>
                     <one_time>false</one_time>
@@ -8831,6 +9058,9 @@
                 <y>-1</y>
                 <z>-1</z>
             </active_extents>
+            <active_region_editor_id>
+                <id>-1</id>
+            </active_region_editor_id>
             <hit_actions>
                 <seq_action>
                     <one_time>false</one_time>
@@ -8908,6 +9138,9 @@
                 <y>-1</y>
                 <z>-1</z>
             </active_extents>
+            <active_region_editor_id>
+                <id>-1</id>
+            </active_region_editor_id>
             <hit_actions>
                 <seq_action>
                     <one_time>false</one_time>
@@ -8985,6 +9218,9 @@
                 <y>-1</y>
                 <z>-1</z>
             </active_extents>
+            <active_region_editor_id>
+                <id>-1</id>
+            </active_region_editor_id>
             <hit_actions>
                 <seq_action>
                     <one_time>false</one_time>
@@ -9062,6 +9298,9 @@
                 <y>-1</y>
                 <z>-1</z>
             </active_extents>
+            <active_region_editor_id>
+                <id>-1</id>
+            </active_region_editor_id>
             <hit_actions>
                 <seq_action>
                     <one_time>false</one_time>
@@ -9139,6 +9378,9 @@
                 <y>-1</y>
                 <z>-1</z>
             </active_extents>
+            <active_region_editor_id>
+                <id>-1</id>
+            </active_region_editor_id>
             <hit_actions>
                 <seq_action>
                     <one_time>false</one_time>
@@ -9216,6 +9458,9 @@
                 <y>-1</y>
                 <z>-1</z>
             </active_extents>
+            <active_region_editor_id>
+                <id>-1</id>
+            </active_region_editor_id>
             <hit_actions>
                 <seq_action>
                     <one_time>false</one_time>
@@ -9293,6 +9538,9 @@
                 <y>-1</y>
                 <z>-1</z>
             </active_extents>
+            <active_region_editor_id>
+                <id>-1</id>
+            </active_region_editor_id>
             <hit_actions>
                 <seq_action>
                     <one_time>false</one_time>
@@ -9370,6 +9618,9 @@
                 <y>-1</y>
                 <z>-1</z>
             </active_extents>
+            <active_region_editor_id>
+                <id>-1</id>
+            </active_region_editor_id>
             <hit_actions>
                 <seq_action>
                     <one_time>false</one_time>
@@ -9447,6 +9698,9 @@
                 <y>-1</y>
                 <z>-1</z>
             </active_extents>
+            <active_region_editor_id>
+                <id>-1</id>
+            </active_region_editor_id>
             <hit_actions>
                 <seq_action>
                     <one_time>false</one_time>
@@ -9524,6 +9778,9 @@
                 <y>-1</y>
                 <z>-1</z>
             </active_extents>
+            <active_region_editor_id>
+                <id>-1</id>
+            </active_region_editor_id>
             <hit_actions>
                 <seq_action>
                     <one_time>false</one_time>
@@ -9601,6 +9858,9 @@
                 <y>-1</y>
                 <z>-1</z>
             </active_extents>
+            <active_region_editor_id>
+                <id>-1</id>
+            </active_region_editor_id>
             <hit_actions>
                 <seq_action>
                     <one_time>false</one_time>
@@ -9678,6 +9938,9 @@
                 <y>-1</y>
                 <z>-1</z>
             </active_extents>
+            <active_region_editor_id>
+                <id>-1</id>
+            </active_region_editor_id>
             <hit_actions>
                 <seq_action>
                     <one_time>false</one_time>
@@ -9904,6 +10167,9 @@
                 <y>-1</y>
                 <z>-1</z>
             </active_extents>
+            <active_region_editor_id>
+                <id>-1</id>
+            </active_region_editor_id>
             <hit_actions>
                 <seq_action>
                     <one_time>false</one_time>
@@ -9981,6 +10247,9 @@
                 <y>-1</y>
                 <z>-1</z>
             </active_extents>
+            <active_region_editor_id>
+                <id>-1</id>
+            </active_region_editor_id>
             <hit_actions>
                 <seq_action>
                     <one_time>false</one_time>
@@ -10058,6 +10327,9 @@
                 <y>-1</y>
                 <z>-1</z>
             </active_extents>
+            <active_region_editor_id>
+                <id>-1</id>
+            </active_region_editor_id>
             <hit_actions>
                 <seq_action>
                     <one_time>false</one_time>
@@ -10135,6 +10407,9 @@
                 <y>-1</y>
                 <z>-1</z>
             </active_extents>
+            <active_region_editor_id>
+                <id>-1</id>
+            </active_region_editor_id>
             <hit_actions>
                 <seq_action>
                     <one_time>false</one_time>
@@ -10212,6 +10487,9 @@
                 <y>-1</y>
                 <z>-1</z>
             </active_extents>
+            <active_region_editor_id>
+                <id>-1</id>
+            </active_region_editor_id>
             <hit_actions>
                 <seq_action>
                     <one_time>false</one_time>
@@ -10289,6 +10567,9 @@
                 <y>-1</y>
                 <z>-1</z>
             </active_extents>
+            <active_region_editor_id>
+                <id>-1</id>
+            </active_region_editor_id>
             <hit_actions>
                 <seq_action>
                     <one_time>false</one_time>
@@ -10366,6 +10647,9 @@
                 <y>-1</y>
                 <z>-1</z>
             </active_extents>
+            <active_region_editor_id>
+                <id>-1</id>
+            </active_region_editor_id>
             <hit_actions>
                 <seq_action>
                     <one_time>false</one_time>
@@ -10443,6 +10727,9 @@
                 <y>-1</y>
                 <z>-1</z>
             </active_extents>
+            <active_region_editor_id>
+                <id>-1</id>
+            </active_region_editor_id>
             <hit_actions>
                 <seq_action>
                     <one_time>false</one_time>
@@ -10520,6 +10807,9 @@
                 <y>-1</y>
                 <z>-1</z>
             </active_extents>
+            <active_region_editor_id>
+                <id>-1</id>
+            </active_region_editor_id>
             <hit_actions>
                 <seq_action>
                     <one_time>false</one_time>
@@ -10597,6 +10887,9 @@
                 <y>-1</y>
                 <z>-1</z>
             </active_extents>
+            <active_region_editor_id>
+                <id>-1</id>
+            </active_region_editor_id>
             <hit_actions>
                 <seq_action>
                     <one_time>false</one_time>
@@ -10674,6 +10967,9 @@
                 <y>-1</y>
                 <z>-1</z>
             </active_extents>
+            <active_region_editor_id>
+                <id>-1</id>
+            </active_region_editor_id>
             <hit_actions>
                 <seq_action>
                     <one_time>false</one_time>
@@ -10751,6 +11047,9 @@
                 <y>-1</y>
                 <z>-1</z>
             </active_extents>
+            <active_region_editor_id>
+                <id>-1</id>
+            </active_region_editor_id>
             <hit_actions>
                 <seq_action>
                     <one_time>false</one_time>
@@ -10976,6 +11275,9 @@
                 <y>-1</y>
                 <z>-1</z>
             </active_extents>
+            <active_region_editor_id>
+                <id>-1</id>
+            </active_region_editor_id>
             <hit_actions>
                 <seq_action>
                     <one_time>false</one_time>
@@ -11053,6 +11355,9 @@
                 <y>-1</y>
                 <z>-1</z>
             </active_extents>
+            <active_region_editor_id>
+                <id>-1</id>
+            </active_region_editor_id>
             <hit_actions>
                 <seq_action>
                     <one_time>false</one_time>
@@ -11130,6 +11435,9 @@
                 <y>-1</y>
                 <z>-1</z>
             </active_extents>
+            <active_region_editor_id>
+                <id>-1</id>
+            </active_region_editor_id>
             <hit_actions>
                 <seq_action>
                     <one_time>false</one_time>
@@ -11207,6 +11515,9 @@
                 <y>-1</y>
                 <z>-1</z>
             </active_extents>
+            <active_region_editor_id>
+                <id>-1</id>
+            </active_region_editor_id>
             <hit_actions>
                 <seq_action>
                     <one_time>false</one_time>
@@ -11284,6 +11595,9 @@
                 <y>-1</y>
                 <z>-1</z>
             </active_extents>
+            <active_region_editor_id>
+                <id>-1</id>
+            </active_region_editor_id>
             <hit_actions>
                 <seq_action>
                     <one_time>false</one_time>
@@ -11361,6 +11675,9 @@
                 <y>-1</y>
                 <z>-1</z>
             </active_extents>
+            <active_region_editor_id>
+                <id>-1</id>
+            </active_region_editor_id>
             <hit_actions>
                 <seq_action>
                     <one_time>false</one_time>
@@ -11438,6 +11755,9 @@
                 <y>-1</y>
                 <z>-1</z>
             </active_extents>
+            <active_region_editor_id>
+                <id>-1</id>
+            </active_region_editor_id>
             <hit_actions>
                 <seq_action>
                     <one_time>false</one_time>
@@ -11515,6 +11835,9 @@
                 <y>-1</y>
                 <z>-1</z>
             </active_extents>
+            <active_region_editor_id>
+                <id>-1</id>
+            </active_region_editor_id>
             <hit_actions>
                 <seq_action>
                     <one_time>false</one_time>
@@ -11592,6 +11915,9 @@
                 <y>-1</y>
                 <z>-1</z>
             </active_extents>
+            <active_region_editor_id>
+                <id>-1</id>
+            </active_region_editor_id>
             <hit_actions>
                 <seq_action>
                     <one_time>false</one_time>
@@ -11669,6 +11995,9 @@
                 <y>-1</y>
                 <z>-1</z>
             </active_extents>
+            <active_region_editor_id>
+                <id>-1</id>
+            </active_region_editor_id>
             <hit_actions>
                 <seq_action>
                     <one_time>false</one_time>
@@ -11746,6 +12075,9 @@
                 <y>-1</y>
                 <z>-1</z>
             </active_extents>
+            <active_region_editor_id>
+                <id>-1</id>
+            </active_region_editor_id>
             <hit_actions>
                 <seq_action>
                     <one_time>false</one_time>
@@ -11823,6 +12155,9 @@
                 <y>-1</y>
                 <z>-1</z>
             </active_extents>
+            <active_region_editor_id>
+                <id>-1</id>
+            </active_region_editor_id>
             <hit_actions>
                 <seq_action>
                     <one_time>false</one_time>
@@ -11900,6 +12235,9 @@
                 <y>-1</y>
                 <z>-1</z>
             </active_extents>
+            <active_region_editor_id>
+                <id>-1</id>
+            </active_region_editor_id>
             <hit_actions>
                 <seq_action>
                     <one_time>false</one_time>
@@ -11977,6 +12315,9 @@
                 <y>-1</y>
                 <z>-1</z>
             </active_extents>
+            <active_region_editor_id>
+                <id>-1</id>
+            </active_region_editor_id>
             <hit_actions>
                 <seq_action>
                     <one_time>false</one_time>
@@ -12054,6 +12395,9 @@
                 <y>-1</y>
                 <z>-1</z>
             </active_extents>
+            <active_region_editor_id>
+                <id>-1</id>
+            </active_region_editor_id>
             <hit_actions>
                 <seq_action>
                     <one_time>false</one_time>
@@ -12131,6 +12475,9 @@
                 <y>-1</y>
                 <z>-1</z>
             </active_extents>
+            <active_region_editor_id>
+                <id>-1</id>
+            </active_region_editor_id>
             <hit_actions>
                 <seq_action>
                     <one_time>false</one_time>
@@ -12480,6 +12827,9 @@
                 <y>-1</y>
                 <z>-1</z>
             </active_extents>
+            <active_region_editor_id>
+                <id>-1</id>
+            </active_region_editor_id>
             <hit_actions>
                 <seq_action>
                     <one_time>false</one_time>
@@ -12557,6 +12907,9 @@
                 <y>-1</y>
                 <z>-1</z>
             </active_extents>
+            <active_region_editor_id>
+                <id>-1</id>
+            </active_region_editor_id>
             <hit_actions>
                 <seq_action>
                     <one_time>false</one_time>
@@ -12634,6 +12987,9 @@
                 <y>-1</y>
                 <z>-1</z>
             </active_extents>
+            <active_region_editor_id>
+                <id>-1</id>
+            </active_region_editor_id>
             <hit_actions>
                 <seq_action>
                     <one_time>false</one_time>
@@ -12711,6 +13067,9 @@
                 <y>-1</y>
                 <z>-1</z>
             </active_extents>
+            <active_region_editor_id>
+                <id>-1</id>
+            </active_region_editor_id>
             <hit_actions>
                 <seq_action>
                     <one_time>false</one_time>
@@ -12788,6 +13147,9 @@
                 <y>-1</y>
                 <z>-1</z>
             </active_extents>
+            <active_region_editor_id>
+                <id>-1</id>
+            </active_region_editor_id>
             <hit_actions>
                 <seq_action>
                     <one_time>false</one_time>
@@ -12865,6 +13227,9 @@
                 <y>-1</y>
                 <z>-1</z>
             </active_extents>
+            <active_region_editor_id>
+                <id>-1</id>
+            </active_region_editor_id>
             <hit_actions>
                 <seq_action>
                     <one_time>false</one_time>
@@ -12942,6 +13307,9 @@
                 <y>-1</y>
                 <z>-1</z>
             </active_extents>
+            <active_region_editor_id>
+                <id>-1</id>
+            </active_region_editor_id>
             <hit_actions>
                 <seq_action>
                     <one_time>false</one_time>
@@ -13019,6 +13387,9 @@
                 <y>-1</y>
                 <z>-1</z>
             </active_extents>
+            <active_region_editor_id>
+                <id>-1</id>
+            </active_region_editor_id>
             <hit_actions>
                 <seq_action>
                     <one_time>false</one_time>
@@ -13096,6 +13467,9 @@
                 <y>-1</y>
                 <z>-1</z>
             </active_extents>
+            <active_region_editor_id>
+                <id>-1</id>
+            </active_region_editor_id>
             <hit_actions>
                 <seq_action>
                     <one_time>false</one_time>
@@ -13173,6 +13547,9 @@
                 <y>-1</y>
                 <z>-1</z>
             </active_extents>
+            <active_region_editor_id>
+                <id>-1</id>
+            </active_region_editor_id>
             <hit_actions>
                 <seq_action>
                     <one_time>false</one_time>
@@ -13250,6 +13627,9 @@
                 <y>-1</y>
                 <z>-1</z>
             </active_extents>
+            <active_region_editor_id>
+                <id>-1</id>
+            </active_region_editor_id>
             <hit_actions>
                 <seq_action>
                     <one_time>false</one_time>
@@ -13327,6 +13707,9 @@
                 <y>-1</y>
                 <z>-1</z>
             </active_extents>
+            <active_region_editor_id>
+                <id>-1</id>
+            </active_region_editor_id>
             <hit_actions>
                 <seq_action>
                     <one_time>false</one_time>
@@ -13670,6 +14053,9 @@
                 <y>-1</y>
                 <z>-1</z>
             </active_extents>
+            <active_region_editor_id>
+                <id>-1</id>
+            </active_region_editor_id>
             <hit_actions>
                 <seq_action>
                     <one_time>false</one_time>
@@ -13912,6 +14298,9 @@
                 <y>-1</y>
                 <z>-1</z>
             </active_extents>
+            <active_region_editor_id>
+                <id>-1</id>
+            </active_region_editor_id>
             <hit_actions>
                 <seq_action>
                     <one_time>false</one_time>
@@ -13989,6 +14378,9 @@
                 <y>-1</y>
                 <z>-1</z>
             </active_extents>
+            <active_region_editor_id>
+                <id>-1</id>
+            </active_region_editor_id>
             <hit_actions>
                 <seq_action>
                     <one_time>false</one_time>
@@ -14131,6 +14523,9 @@
                 <y>-1</y>
                 <z>-1</z>
             </active_extents>
+            <active_region_editor_id>
+                <id>-1</id>
+            </active_region_editor_id>
             <hit_actions>
                 <seq_action>
                     <one_time>false</one_time>
@@ -14208,6 +14603,9 @@
                 <y>-1</y>
                 <z>-1</z>
             </active_extents>
+            <active_region_editor_id>
+                <id>-1</id>
+            </active_region_editor_id>
             <hit_actions>
                 <seq_action>
                     <one_time>false</one_time>
@@ -14285,6 +14683,9 @@
                 <y>-1</y>
                 <z>-1</z>
             </active_extents>
+            <active_region_editor_id>
+                <id>-1</id>
+            </active_region_editor_id>
             <hit_actions>
                 <seq_action>
                     <one_time>false</one_time>
@@ -14616,6 +15017,9 @@
                 <y>-1</y>
                 <z>-1</z>
             </active_extents>
+            <active_region_editor_id>
+                <id>-1</id>
+            </active_region_editor_id>
             <hit_actions>
                 <seq_action>
                     <one_time>false</one_time>
@@ -14693,6 +15097,9 @@
                 <y>-1</y>
                 <z>4</z>
             </active_extents>
+            <active_region_editor_id>
+                <id>327</id>
+            </active_region_editor_id>
             <hit_actions>
                 <seq_action>
                     <one_time>false</one_time>
@@ -14770,6 +15177,9 @@
                 <y>-1</y>
                 <z>4</z>
             </active_extents>
+            <active_region_editor_id>
+                <id>328</id>
+            </active_region_editor_id>
             <hit_actions>
                 <seq_action>
                     <one_time>false</one_time>
@@ -14847,6 +15257,9 @@
                 <y>-1</y>
                 <z>4</z>
             </active_extents>
+            <active_region_editor_id>
+                <id>330</id>
+            </active_region_editor_id>
             <hit_actions>
                 <seq_action>
                     <one_time>false</one_time>
@@ -14924,6 +15337,9 @@
                 <y>-1</y>
                 <z>4</z>
             </active_extents>
+            <active_region_editor_id>
+                <id>329</id>
+            </active_region_editor_id>
             <hit_actions>
                 <seq_action>
                     <one_time>false</one_time>
@@ -15001,6 +15417,9 @@
                 <y>-1</y>
                 <z>-1</z>
             </active_extents>
+            <active_region_editor_id>
+                <id>-1</id>
+            </active_region_editor_id>
             <hit_actions>
                 <seq_action>
                     <one_time>false</one_time>
@@ -15078,6 +15497,9 @@
                 <y>-1</y>
                 <z>-1</z>
             </active_extents>
+            <active_region_editor_id>
+                <id>-1</id>
+            </active_region_editor_id>
             <hit_actions>
                 <seq_action>
                     <one_time>false</one_time>
@@ -15215,6 +15637,9 @@
                 <y>-1</y>
                 <z>-1</z>
             </active_extents>
+            <active_region_editor_id>
+                <id>-1</id>
+            </active_region_editor_id>
             <hit_actions>
                 <seq_action>
                     <one_time>false</one_time>
@@ -15292,6 +15717,9 @@
                 <y>-1</y>
                 <z>-1</z>
             </active_extents>
+            <active_region_editor_id>
+                <id>-1</id>
+            </active_region_editor_id>
             <hit_actions>
                 <seq_action>
                     <one_time>false</one_time>
@@ -15369,6 +15797,9 @@
                 <y>-1</y>
                 <z>-1</z>
             </active_extents>
+            <active_region_editor_id>
+                <id>-1</id>
+            </active_region_editor_id>
             <hit_actions>
                 <seq_action>
                     <one_time>false</one_time>
@@ -15446,6 +15877,9 @@
                 <y>-1</y>
                 <z>-1</z>
             </active_extents>
+            <active_region_editor_id>
+                <id>-1</id>
+            </active_region_editor_id>
             <hit_actions>
                 <seq_action>
                     <one_time>false</one_time>
@@ -15523,6 +15957,9 @@
                 <y>-1</y>
                 <z>-1</z>
             </active_extents>
+            <active_region_editor_id>
+                <id>-1</id>
+            </active_region_editor_id>
             <hit_actions>
                 <seq_action>
                     <one_time>false</one_time>
@@ -15600,6 +16037,9 @@
                 <y>-1</y>
                 <z>-1</z>
             </active_extents>
+            <active_region_editor_id>
+                <id>-1</id>
+            </active_region_editor_id>
             <hit_actions>
                 <seq_action>
                     <one_time>false</one_time>
@@ -15731,6 +16171,9 @@
                 <y>-1</y>
                 <z>-1</z>
             </active_extents>
+            <active_region_editor_id>
+                <id>-1</id>
+            </active_region_editor_id>
             <hit_actions>
                 <seq_action>
                     <one_time>false</one_time>
@@ -15808,6 +16251,9 @@
                 <y>-1</y>
                 <z>-1</z>
             </active_extents>
+            <active_region_editor_id>
+                <id>-1</id>
+            </active_region_editor_id>
             <hit_actions>
                 <seq_action>
                     <one_time>false</one_time>
@@ -15885,6 +16331,9 @@
                 <y>-1</y>
                 <z>-1</z>
             </active_extents>
+            <active_region_editor_id>
+                <id>-1</id>
+            </active_region_editor_id>
             <hit_actions>
                 <seq_action>
                     <one_time>false</one_time>
@@ -15962,6 +16411,9 @@
                 <y>-1</y>
                 <z>-1</z>
             </active_extents>
+            <active_region_editor_id>
+                <id>-1</id>
+            </active_region_editor_id>
             <hit_actions>
                 <seq_action>
                     <one_time>false</one_time>
@@ -16039,6 +16491,9 @@
                 <y>-1</y>
                 <z>-1</z>
             </active_extents>
+            <active_region_editor_id>
+                <id>-1</id>
+            </active_region_editor_id>
             <hit_actions>
                 <seq_action>
                     <one_time>false</one_time>
@@ -16116,6 +16571,9 @@
                 <y>-1</y>
                 <z>-1</z>
             </active_extents>
+            <active_region_editor_id>
+                <id>-1</id>
+            </active_region_editor_id>
             <hit_actions>
                 <seq_action>
                     <one_time>false</one_time>
@@ -16193,6 +16651,9 @@
                 <y>-1</y>
                 <z>-1</z>
             </active_extents>
+            <active_region_editor_id>
+                <id>-1</id>
+            </active_region_editor_id>
             <hit_actions>
                 <seq_action>
                     <one_time>false</one_time>
@@ -16270,6 +16731,9 @@
                 <y>-1</y>
                 <z>-1</z>
             </active_extents>
+            <active_region_editor_id>
+                <id>-1</id>
+            </active_region_editor_id>
             <hit_actions>
                 <seq_action>
                     <one_time>false</one_time>
@@ -16347,6 +16811,9 @@
                 <y>-1</y>
                 <z>-1</z>
             </active_extents>
+            <active_region_editor_id>
+                <id>-1</id>
+            </active_region_editor_id>
             <hit_actions>
                 <seq_action>
                     <one_time>false</one_time>
@@ -16478,6 +16945,9 @@
                 <y>-1</y>
                 <z>-1</z>
             </active_extents>
+            <active_region_editor_id>
+                <id>-1</id>
+            </active_region_editor_id>
             <hit_actions>
                 <seq_action>
                     <one_time>false</one_time>
@@ -16731,6 +17201,9 @@
                 <y>-1</y>
                 <z>-1</z>
             </active_extents>
+            <active_region_editor_id>
+                <id>-1</id>
+            </active_region_editor_id>
             <hit_actions>
                 <seq_action>
                     <one_time>false</one_time>
@@ -16920,6 +17393,9 @@
                 <y>-1</y>
                 <z>-1</z>
             </active_extents>
+            <active_region_editor_id>
+                <id>-1</id>
+            </active_region_editor_id>
             <hit_actions>
                 <seq_action>
                     <one_time>false</one_time>
@@ -16997,6 +17473,9 @@
                 <y>-1</y>
                 <z>-1</z>
             </active_extents>
+            <active_region_editor_id>
+                <id>-1</id>
+            </active_region_editor_id>
             <hit_actions>
                 <seq_action>
                     <one_time>false</one_time>
@@ -17332,6 +17811,9 @@
                 <y>-1</y>
                 <z>3</z>
             </active_extents>
+            <active_region_editor_id>
+                <id>332</id>
+            </active_region_editor_id>
             <hit_actions>
                 <seq_action>
                     <one_time>false</one_time>
@@ -17409,6 +17891,9 @@
                 <y>-1</y>
                 <z>2</z>
             </active_extents>
+            <active_region_editor_id>
+                <id>335</id>
+            </active_region_editor_id>
             <hit_actions>
                 <seq_action>
                     <one_time>false</one_time>
@@ -17486,6 +17971,9 @@
                 <y>-1</y>
                 <z>2</z>
             </active_extents>
+            <active_region_editor_id>
+                <id>334</id>
+            </active_region_editor_id>
             <hit_actions>
                 <seq_action>
                     <one_time>false</one_time>
@@ -17563,6 +18051,9 @@
                 <y>-1</y>
                 <z>2</z>
             </active_extents>
+            <active_region_editor_id>
+                <id>334</id>
+            </active_region_editor_id>
             <hit_actions>
                 <seq_action>
                     <one_time>false</one_time>
@@ -17640,6 +18131,9 @@
                 <y>-1</y>
                 <z>-1</z>
             </active_extents>
+            <active_region_editor_id>
+                <id>-1</id>
+            </active_region_editor_id>
             <hit_actions>
                 <seq_action>
                     <one_time>false</one_time>
@@ -17808,6 +18302,9 @@
                 <y>-1</y>
                 <z>-1</z>
             </active_extents>
+            <active_region_editor_id>
+                <id>-1</id>
+            </active_region_editor_id>
             <hit_actions>
                 <seq_action>
                     <one_time>false</one_time>
@@ -17885,6 +18382,9 @@
                 <y>-1</y>
                 <z>-1</z>
             </active_extents>
+            <active_region_editor_id>
+                <id>-1</id>
+            </active_region_editor_id>
             <hit_actions>
                 <seq_action>
                     <one_time>false</one_time>
@@ -17962,6 +18462,9 @@
                 <y>-1</y>
                 <z>-1</z>
             </active_extents>
+            <active_region_editor_id>
+                <id>-1</id>
+            </active_region_editor_id>
             <hit_actions>
                 <seq_action>
                     <one_time>false</one_time>
@@ -18039,6 +18542,9 @@
                 <y>-1</y>
                 <z>-1</z>
             </active_extents>
+            <active_region_editor_id>
+                <id>-1</id>
+            </active_region_editor_id>
             <hit_actions>
                 <seq_action>
                     <one_time>false</one_time>
@@ -18116,6 +18622,9 @@
                 <y>-1</y>
                 <z>-1</z>
             </active_extents>
+            <active_region_editor_id>
+                <id>-1</id>
+            </active_region_editor_id>
             <hit_actions>
                 <seq_action>
                     <one_time>false</one_time>
@@ -18193,6 +18702,9 @@
                 <y>-1</y>
                 <z>-1</z>
             </active_extents>
+            <active_region_editor_id>
+                <id>-1</id>
+            </active_region_editor_id>
             <hit_actions>
                 <seq_action>
                     <one_time>false</one_time>
@@ -18270,6 +18782,9 @@
                 <y>-1</y>
                 <z>-1</z>
             </active_extents>
+            <active_region_editor_id>
+                <id>-1</id>
+            </active_region_editor_id>
             <hit_actions>
                 <seq_action>
                     <one_time>false</one_time>
@@ -18347,6 +18862,9 @@
                 <y>-1</y>
                 <z>-1</z>
             </active_extents>
+            <active_region_editor_id>
+                <id>-1</id>
+            </active_region_editor_id>
             <hit_actions>
                 <seq_action>
                     <one_time>false</one_time>
@@ -18424,6 +18942,9 @@
                 <y>-1</y>
                 <z>-1</z>
             </active_extents>
+            <active_region_editor_id>
+                <id>-1</id>
+            </active_region_editor_id>
             <hit_actions>
                 <seq_action>
                     <one_time>false</one_time>
@@ -18501,6 +19022,9 @@
                 <y>-1</y>
                 <z>-1</z>
             </active_extents>
+            <active_region_editor_id>
+                <id>-1</id>
+            </active_region_editor_id>
             <hit_actions>
                 <seq_action>
                     <one_time>false</one_time>
@@ -18578,6 +19102,9 @@
                 <y>-1</y>
                 <z>-1</z>
             </active_extents>
+            <active_region_editor_id>
+                <id>-1</id>
+            </active_region_editor_id>
             <hit_actions>
                 <seq_action>
                     <one_time>false</one_time>
@@ -18655,6 +19182,9 @@
                 <y>-1</y>
                 <z>-1</z>
             </active_extents>
+            <active_region_editor_id>
+                <id>-1</id>
+            </active_region_editor_id>
             <hit_actions>
                 <seq_action>
                     <one_time>false</one_time>
@@ -18732,6 +19262,9 @@
                 <y>-1</y>
                 <z>1</z>
             </active_extents>
+            <active_region_editor_id>
+                <id>331</id>
+            </active_region_editor_id>
             <hit_actions>
                 <seq_action>
                     <one_time>false</one_time>
@@ -18863,6 +19396,9 @@
                 <y>-1</y>
                 <z>3</z>
             </active_extents>
+            <active_region_editor_id>
+                <id>333</id>
+            </active_region_editor_id>
             <hit_actions>
                 <seq_action>
                     <one_time>false</one_time>
@@ -19343,5 +19879,428 @@
             <actions_on_exit/>
             <trigger_volume_entities/>
         </FlowTrigger>
+        <Base>
+            <editor_id>
+                <id>327</id>
+            </editor_id>
+            <name>r5_region0</name>
+            <entity_active>true</entity_active>
+            <pickable>true</pickable>
+            <transform>
+                <pos>
+                    <x>109.262886</x>
+                    <y>0</y>
+                    <z>-135.97673</z>
+                </pos>
+                <quat>
+                    <x>0</x>
+                    <y>0</y>
+                    <z>0</z>
+                    <w>1</w>
+                </quat>
+                <scale>
+                    <x>4</x>
+                    <y>1</y>
+                    <z>4</z>
+                </scale>
+            </transform>
+            <model_name>cube</model_name>
+            <model_color_vec4>
+                <x>0.0934128985</x>
+                <y>0.617647052</y>
+                <z>0.00302767218</z>
+                <w>0.200000003</w>
+            </model_color_vec4>
+            <flow_section_id>-1</flow_section_id>
+            <tag>0</tag>
+            <waypoint_follower>
+                <mode>Waypoint</mode>
+                <local_to_entity>false</local_to_entity>
+                <waypoint_auto_start>false</waypoint_auto_start>
+                <loop_waypoints>false</loop_waypoints>
+                <start_time>3</start_time>
+                <waypoints/>
+                <follow_entity_name/>
+                <follow_entity_editor_id>
+                    <id>-1</id>
+                </follow_entity_editor_id>
+            </waypoint_follower>
+        </Base>
+        <Base>
+            <editor_id>
+                <id>328</id>
+            </editor_id>
+            <name>r5_region1</name>
+            <entity_active>true</entity_active>
+            <pickable>true</pickable>
+            <transform>
+                <pos>
+                    <x>109.310936</x>
+                    <y>0</y>
+                    <z>-138.775528</z>
+                </pos>
+                <quat>
+                    <x>0</x>
+                    <y>0</y>
+                    <z>0</z>
+                    <w>1</w>
+                </quat>
+                <scale>
+                    <x>4</x>
+                    <y>1</y>
+                    <z>4</z>
+                </scale>
+            </transform>
+            <model_name>cube</model_name>
+            <model_color_vec4>
+                <x>0.0934128985</x>
+                <y>0.617647052</y>
+                <z>0.00302767218</z>
+                <w>0.200000003</w>
+            </model_color_vec4>
+            <flow_section_id>-1</flow_section_id>
+            <tag>0</tag>
+            <waypoint_follower>
+                <mode>Waypoint</mode>
+                <local_to_entity>false</local_to_entity>
+                <waypoint_auto_start>false</waypoint_auto_start>
+                <loop_waypoints>false</loop_waypoints>
+                <start_time>3</start_time>
+                <waypoints/>
+                <follow_entity_name/>
+                <follow_entity_editor_id>
+                    <id>-1</id>
+                </follow_entity_editor_id>
+            </waypoint_follower>
+        </Base>
+        <Base>
+            <editor_id>
+                <id>329</id>
+            </editor_id>
+            <name>r5_region2</name>
+            <entity_active>true</entity_active>
+            <pickable>true</pickable>
+            <transform>
+                <pos>
+                    <x>113.17881</x>
+                    <y>0</y>
+                    <z>-138.811569</z>
+                </pos>
+                <quat>
+                    <x>0</x>
+                    <y>0</y>
+                    <z>0</z>
+                    <w>1</w>
+                </quat>
+                <scale>
+                    <x>4</x>
+                    <y>1</y>
+                    <z>4</z>
+                </scale>
+            </transform>
+            <model_name>cube</model_name>
+            <model_color_vec4>
+                <x>0.0934128985</x>
+                <y>0.617647052</y>
+                <z>0.00302767218</z>
+                <w>0.200000003</w>
+            </model_color_vec4>
+            <flow_section_id>-1</flow_section_id>
+            <tag>0</tag>
+            <waypoint_follower>
+                <mode>Waypoint</mode>
+                <local_to_entity>false</local_to_entity>
+                <waypoint_auto_start>false</waypoint_auto_start>
+                <loop_waypoints>false</loop_waypoints>
+                <start_time>3</start_time>
+                <waypoints/>
+                <follow_entity_name/>
+                <follow_entity_editor_id>
+                    <id>-1</id>
+                </follow_entity_editor_id>
+            </waypoint_follower>
+        </Base>
+        <Base>
+            <editor_id>
+                <id>330</id>
+            </editor_id>
+            <name>r5_region3</name>
+            <entity_active>true</entity_active>
+            <pickable>true</pickable>
+            <transform>
+                <pos>
+                    <x>119.617249</x>
+                    <y>0</y>
+                    <z>-138.475235</z>
+                </pos>
+                <quat>
+                    <x>0</x>
+                    <y>0</y>
+                    <z>0</z>
+                    <w>1</w>
+                </quat>
+                <scale>
+                    <x>4</x>
+                    <y>1</y>
+                    <z>4</z>
+                </scale>
+            </transform>
+            <model_name>cube</model_name>
+            <model_color_vec4>
+                <x>0.0934128985</x>
+                <y>0.617647052</y>
+                <z>0.00302767218</z>
+                <w>0.200000003</w>
+            </model_color_vec4>
+            <flow_section_id>-1</flow_section_id>
+            <tag>0</tag>
+            <waypoint_follower>
+                <mode>Waypoint</mode>
+                <local_to_entity>false</local_to_entity>
+                <waypoint_auto_start>false</waypoint_auto_start>
+                <loop_waypoints>false</loop_waypoints>
+                <start_time>3</start_time>
+                <waypoints/>
+                <follow_entity_name/>
+                <follow_entity_editor_id>
+                    <id>-1</id>
+                </follow_entity_editor_id>
+            </waypoint_follower>
+        </Base>
+        <Base>
+            <editor_id>
+                <id>331</id>
+            </editor_id>
+            <name>r5_region4</name>
+            <entity_active>true</entity_active>
+            <pickable>true</pickable>
+            <transform>
+                <pos>
+                    <x>125.070702</x>
+                    <y>0</y>
+                    <z>-130.715469</z>
+                </pos>
+                <quat>
+                    <x>0</x>
+                    <y>0</y>
+                    <z>0</z>
+                    <w>1</w>
+                </quat>
+                <scale>
+                    <x>4</x>
+                    <y>1</y>
+                    <z>1</z>
+                </scale>
+            </transform>
+            <model_name/>
+            <model_color_vec4>
+                <x>0.800000012</x>
+                <y>0.800000012</y>
+                <z>0.800000012</z>
+                <w>1</w>
+            </model_color_vec4>
+            <flow_section_id>-1</flow_section_id>
+            <tag>0</tag>
+            <waypoint_follower>
+                <mode>Waypoint</mode>
+                <local_to_entity>false</local_to_entity>
+                <waypoint_auto_start>false</waypoint_auto_start>
+                <loop_waypoints>false</loop_waypoints>
+                <start_time>3</start_time>
+                <waypoints/>
+                <follow_entity_name/>
+                <follow_entity_editor_id>
+                    <id>-1</id>
+                </follow_entity_editor_id>
+            </waypoint_follower>
+        </Base>
+        <Base>
+            <editor_id>
+                <id>332</id>
+            </editor_id>
+            <name>r5_region5</name>
+            <entity_active>true</entity_active>
+            <pickable>true</pickable>
+            <transform>
+                <pos>
+                    <x>130.908539</x>
+                    <y>0</y>
+                    <z>-136.373123</z>
+                </pos>
+                <quat>
+                    <x>0</x>
+                    <y>0</y>
+                    <z>0</z>
+                    <w>1</w>
+                </quat>
+                <scale>
+                    <x>5</x>
+                    <y>1</y>
+                    <z>3</z>
+                </scale>
+            </transform>
+            <model_name>cube</model_name>
+            <model_color_vec4>
+                <x>0.0934128985</x>
+                <y>0.617647052</y>
+                <z>0.00302767218</z>
+                <w>0.200000003</w>
+            </model_color_vec4>
+            <flow_section_id>-1</flow_section_id>
+            <tag>0</tag>
+            <waypoint_follower>
+                <mode>Waypoint</mode>
+                <local_to_entity>false</local_to_entity>
+                <waypoint_auto_start>false</waypoint_auto_start>
+                <loop_waypoints>false</loop_waypoints>
+                <start_time>3</start_time>
+                <waypoints/>
+                <follow_entity_name/>
+                <follow_entity_editor_id>
+                    <id>-1</id>
+                </follow_entity_editor_id>
+            </waypoint_follower>
+        </Base>
+        <Base>
+            <editor_id>
+                <id>333</id>
+            </editor_id>
+            <name>r5_region6</name>
+            <entity_active>true</entity_active>
+            <pickable>true</pickable>
+            <transform>
+                <pos>
+                    <x>132.398026</x>
+                    <y>0</y>
+                    <z>-137.141891</z>
+                </pos>
+                <quat>
+                    <x>0</x>
+                    <y>0</y>
+                    <z>0</z>
+                    <w>1</w>
+                </quat>
+                <scale>
+                    <x>3</x>
+                    <y>1</y>
+                    <z>3</z>
+                </scale>
+            </transform>
+            <model_name>cube</model_name>
+            <model_color_vec4>
+                <x>0.926470578</x>
+                <y>0.040873684</y>
+                <z>0.040873684</z>
+                <w>0.200000003</w>
+            </model_color_vec4>
+            <flow_section_id>-1</flow_section_id>
+            <tag>0</tag>
+            <waypoint_follower>
+                <mode>Waypoint</mode>
+                <local_to_entity>false</local_to_entity>
+                <waypoint_auto_start>false</waypoint_auto_start>
+                <loop_waypoints>false</loop_waypoints>
+                <start_time>3</start_time>
+                <waypoints/>
+                <follow_entity_name/>
+                <follow_entity_editor_id>
+                    <id>-1</id>
+                </follow_entity_editor_id>
+            </waypoint_follower>
+        </Base>
+        <Base>
+            <editor_id>
+                <id>334</id>
+            </editor_id>
+            <name>r5_region7</name>
+            <entity_active>true</entity_active>
+            <pickable>true</pickable>
+            <transform>
+                <pos>
+                    <x>136.217834</x>
+                    <y>0</y>
+                    <z>-139.580322</z>
+                </pos>
+                <quat>
+                    <x>0</x>
+                    <y>0</y>
+                    <z>0</z>
+                    <w>1</w>
+                </quat>
+                <scale>
+                    <x>4</x>
+                    <y>1</y>
+                    <z>2</z>
+                </scale>
+            </transform>
+            <model_name>cube</model_name>
+            <model_color_vec4>
+                <x>0.0934128985</x>
+                <y>0.617647052</y>
+                <z>0.00302767218</z>
+                <w>0.200000003</w>
+            </model_color_vec4>
+            <flow_section_id>-1</flow_section_id>
+            <tag>0</tag>
+            <waypoint_follower>
+                <mode>Waypoint</mode>
+                <local_to_entity>false</local_to_entity>
+                <waypoint_auto_start>false</waypoint_auto_start>
+                <loop_waypoints>false</loop_waypoints>
+                <start_time>3</start_time>
+                <waypoints/>
+                <follow_entity_name/>
+                <follow_entity_editor_id>
+                    <id>-1</id>
+                </follow_entity_editor_id>
+            </waypoint_follower>
+        </Base>
+        <Base>
+            <editor_id>
+                <id>335</id>
+            </editor_id>
+            <name>r5_region8</name>
+            <entity_active>true</entity_active>
+            <pickable>true</pickable>
+            <transform>
+                <pos>
+                    <x>142.572189</x>
+                    <y>0</y>
+                    <z>-137.262009</z>
+                </pos>
+                <quat>
+                    <x>0</x>
+                    <y>0</y>
+                    <z>0</z>
+                    <w>1</w>
+                </quat>
+                <scale>
+                    <x>2</x>
+                    <y>1</y>
+                    <z>2</z>
+                </scale>
+            </transform>
+            <model_name>cube</model_name>
+            <model_color_vec4>
+                <x>0.0934128985</x>
+                <y>0.617647052</y>
+                <z>0.00302767218</z>
+                <w>0.200000003</w>
+            </model_color_vec4>
+            <flow_section_id>-1</flow_section_id>
+            <tag>0</tag>
+            <waypoint_follower>
+                <mode>Waypoint</mode>
+                <local_to_entity>false</local_to_entity>
+                <waypoint_auto_start>false</waypoint_auto_start>
+                <loop_waypoints>false</loop_waypoints>
+                <start_time>3</start_time>
+                <waypoints/>
+                <follow_entity_name/>
+                <follow_entity_editor_id>
+                    <id>-1</id>
+                </follow_entity_editor_id>
+            </waypoint_follower>
+        </Base>
     </new_entities>
 </script>

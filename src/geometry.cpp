@@ -209,4 +209,17 @@ void ProjectWorldPointToScreenSpace(Vec3 const& worldPos, Mat4 const& viewProjMa
     screenY = (-pos._y * 0.5f + 0.5f) * screenHeight;
 }
 
+bool IsPointInBoundingBox(Vec3 const& p, Transform const& transform) {
+    Vec3 dpGlobal = p - transform.GetPos();
+    Quaternion localToGlobal = transform.Quat();
+    Quaternion globalToLocal = localToGlobal.Inverse();
+    Mat3 globalToLocalMat;
+    globalToLocal.GetRotMat(globalToLocalMat);
+    Vec3 dpLocal = globalToLocalMat * dpGlobal;
+    Vec3 halfExtents = transform.Scale();
+    halfExtents *= 0.5f;
+    bool outside = dpLocal._x < -halfExtents._x || dpLocal._x > halfExtents._x || dpLocal._y < -halfExtents._y || dpLocal._y > halfExtents._y || dpLocal._z < -halfExtents._z || dpLocal._z > halfExtents._z;
+    return !outside;
+}
+
 }  // namespace geometry

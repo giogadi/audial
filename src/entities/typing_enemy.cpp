@@ -93,16 +93,8 @@ void TypingEnemyEntity::LoadDerived(serial::Ptree pt) {
     _initHittable = true;
     pt.TryGetBool("init_hittable", &_initHittable);
 
-    _activeExtents = Vec3(-1.f, -1.f, -1.f);
-    if (!serial::LoadFromChildOf(pt, "active_extents", _activeExtents)) {
-        // backward compat (who cares)
-        float radius = -1.f;
-        pt.TryGetFloat("active_radius", &radius);
-        if (radius >= 0.f) {
-            _activeExtents._x = 2 * radius;
-            _activeExtents._z = 2 * radius;
-        }
-    }   
+    _activeRegionEditorId = EditorId();
+    serial::LoadFromChildOf(pt, "active_region_editor_id", _activeRegionEditorId);
 
     SeqAction::LoadActionsFromChildNode(pt, "hit_actions", _hitActions);
     SeqAction::LoadActionsFromChildNode(pt, "all_hit_actions", _allHitActions);
@@ -138,7 +130,7 @@ void TypingEnemyEntity::SaveDerived(serial::Ptree pt) const {
     pt.PutFloat("cooldown_quantize_denom", _cooldownQuantizeDenom);
     pt.PutBool("reset_cooldown_on_any_hit", _resetCooldownOnAnyHit);
     pt.PutBool("init_hittable", _initHittable);
-    serial::SaveInNewChildOf(pt, "active_extents", _activeExtents);
+    serial::SaveInNewChildOf(pt, "active_region_editor_id", _activeRegionEditorId);
     SeqAction::SaveActionsInChildNode(pt, "hit_actions", _hitActions);
     SeqAction::SaveActionsInChildNode(pt, "all_hit_actions", _allHitActions);
     SeqAction::SaveActionsInChildNode(pt, "off_cooldown_actions", _offCooldownActions);
@@ -172,7 +164,14 @@ ne::BaseEntity::ImGuiResult TypingEnemyEntity::ImGuiDerived(GameManager& g) {
     ImGui::Checkbox("Show beats left", &_showBeatsLeft);
     ImGui::Checkbox("Reset cooldown on any hit", &_resetCooldownOnAnyHit);
     ImGui::Checkbox("Init hittable", &_initHittable);
-    imgui_util::InputVec3("Active extents", &_activeExtents);
+    imgui_util::InputEditorId("Active Region", &_activeRegionEditorId);
+    if (ImGui::Button("Set Region color")) {
+        if (ne::Entity* e = g._neEntityManager->FindEntityByEditorIdAndType(_activeRegionEditorId, ne::EntityType::Base)) {
+            Vec4 color = _modelColor;
+            color._w = 0.2f;
+            e->_modelColor = color;
+        }
+    }
     if (SeqAction::ImGui("Hit actions", _hitActions)) {
         result = ImGuiResult::NeedsInit;
     }
@@ -216,24 +215,23 @@ void TypingEnemyEntity::InitDerived(GameManager& g) {
 
     _hittable = _initHittable;
     _numHits = 0;
+
+    _activeRegionId = ne::EntityId();
+    if (ne::Entity* e = g._neEntityManager->FindEntityByEditorIdAndType(_activeRegionEditorId, ne::EntityType::Base)) {
+        _activeRegionId = e->_id;
+    }
 }
 
 namespace {
-bool EnemyHasRadius(TypingEnemyEntity const& enemy) {
-    Vec3 const& extents = enemy._activeExtents;
-    return extents._x >= 0.f && extents._z >= 0.f;
-}
-bool PlayerWithinRadius(TypingEnemyEntity const& enemy) {
-    if (!EnemyHasRadius(enemy)) {
+bool PlayerWithinRadius(FlowPlayerEntity const& player, TypingEnemyEntity const& enemy, GameManager& g) {
+    if (!enemy._activeRegionId.IsValid()) {
         return true;
     }
-    ne::Entity* e = gGameManager._neEntityManager->GetFirstEntityOfType(ne::EntityType::FlowPlayer);
-    Vec3 halfExtents = enemy._activeExtents * 0.5f;
-    FlowPlayerEntity* player = static_cast<FlowPlayerEntity*>(e);
-    Vec3 dp = player->_transform.GetPos() - enemy._transform.GetPos();
-    bool inX = std::abs(dp._x) <= halfExtents._x;
-    bool inZ = std::abs(dp._z) <= halfExtents._z;
-    return inX && inZ;
+    if (ne::Entity* region = g._neEntityManager->GetEntity(enemy._activeRegionId)) {
+        bool inside = geometry::IsPointInBoundingBox(player._transform.Pos(), region->_transform);
+        return inside;
+    }
+    return true;
 }
 }
 
@@ -245,18 +243,6 @@ void TypingEnemyEntity::UpdateDerived(GameManager& g, float dt) {
     }
 
     bool playerWithinRadius = true;
-
-    if (EnemyHasRadius(*this)) {
-        // draw active radius
-        Vec4 color = _currentColor;
-        color._w = 0.2f;
-        // Vec4 color(1.f, 1.f, 1.f, 0.2f);
-        
-        Transform t = _transform;
-        constexpr float kExtentY = 0.5f;
-        t.SetScale(Vec3(_activeExtents._x, kExtentY, _activeExtents._z));
-        g._scene->DrawCube(t.Mat4Scale(), color);              
-    }
 
     if (!g._editMode) {
         Vec3 p  = _transform.GetPos();
@@ -273,7 +259,12 @@ void TypingEnemyEntity::UpdateDerived(GameManager& g, float dt) {
             }
         }
 
-        playerWithinRadius = PlayerWithinRadius(*this);
+        // TODO: we're computing twice per frame whether enemies are within this radius. BORING
+        FlowPlayerEntity* player = static_cast<FlowPlayerEntity*>(g._neEntityManager->GetFirstEntityOfType(ne::EntityType::FlowPlayer));
+        if (player) {
+            
+            playerWithinRadius = PlayerWithinRadius(*player, *this, g);
+        }        
     }
 
     double const beatTime = g._beatClock->GetBeatTimeFromEpoch();
@@ -547,8 +538,8 @@ void TypingEnemyEntity::OnEditPick(GameManager& g) {
     DoHitActions(g);
 }
 
-bool TypingEnemyEntity::CanHit() const {
-    if (!PlayerWithinRadius(*this)) {
+bool TypingEnemyEntity::CanHit(FlowPlayerEntity const& player, GameManager& g) const {
+    if (!PlayerWithinRadius(player, *this, g)) {
         return false;
     }
     if (!_hittable) {

@@ -6,6 +6,8 @@
 #include "seq_action.h"
 #include "input_manager.h"
 
+struct FlowPlayerEntity;
+
 struct TypingEnemyEntity : public ne::Entity {
     enum class HitBehavior { SingleAction, AllActions };
     
@@ -27,7 +29,7 @@ struct TypingEnemyEntity : public ne::Entity {
     bool _flowPolarity = false;
     double _flowCooldownBeatTime = -1.0;
     bool _resetCooldownOnAnyHit = false;
-    Vec3 _activeExtents = Vec3(-1.f, -1.f, -1.f); // lengths in x, y, and z of active box around center. y ignored.
+    EditorId _activeRegionEditorId;
     bool _showBeatsLeft = false;
     float _cooldownQuantizeDenom = 0.f;
     bool _initHittable = true;
@@ -41,6 +43,7 @@ struct TypingEnemyEntity : public ne::Entity {
     double _timeOfLastHit = -1.0;
     double _flowCooldownStartBeatTime = -1.0;
     bool _hittable = true;
+    ne::EntityId _activeRegionId;
 
     bool IsActive(GameManager& g) const;
     void OnHit(GameManager& g);
@@ -48,7 +51,7 @@ struct TypingEnemyEntity : public ne::Entity {
     void OnHitOther(GameManager& g);
     InputManager::Key GetNextKey() const;
     InputManager::ControllerButton GetNextButton() const;
-    bool CanHit() const;
+    bool CanHit(FlowPlayerEntity const& player, GameManager& g) const;
     void SetHittable(bool hittable);
 
     

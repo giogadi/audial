@@ -24,4 +24,6 @@ bool PointInConvexPolygon2D(Vec3 const& queryP, std::vector<Vec3> const& convexP
 
 void ProjectWorldPointToScreenSpace(Vec3 const& worldPos, Mat4 const& viewProjMatrix, int screenWidth, int screenHeight, float& screenX, float& screenY);
 
+bool IsPointInBoundingBox(Vec3 const& p, Transform const& transform);
+
 }  // namespace geometry
