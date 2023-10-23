@@ -92,6 +92,11 @@ inline void ToUpper(std::string& x) {
 }
 
 inline bool Contains(std::string_view const str, std::string_view const substr) {
+    auto result = str.find(substr);
+    return result != std::string_view::npos;
+    /*if (str.empty() || substr.empty() || substr.length() > str.length()) {
+        return false;
+    }
     int const endIx = str.length() - substr.length() + 1;
     for (int strIx = 0; strIx < endIx; ++strIx) {
         bool match = true;
@@ -105,7 +110,7 @@ inline bool Contains(std::string_view const str, std::string_view const substr) 
             return true;
         }
     }
-    return false;
+    return false;*/
 }
 
 }  // namespace string_util
