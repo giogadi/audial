@@ -669,18 +669,22 @@ void SetEntityActiveSeqAction::LoadDerived(LoadInputs const& loadInputs, std::is
 }
 
 void SetEntityActiveSeqAction::LoadDerived(serial::Ptree pt) {
+    _entitiesTag = -1;
+    pt.TryGetInt("entities_tag", &_entitiesTag);
     serial::LoadFromChildOf(pt, "entity_editor_id", _entityEditorId);
     _active = pt.GetBool("active");
     _initOnActivate = pt.GetBool("init_on_activate");
 }
 
 void SetEntityActiveSeqAction::SaveDerived(serial::Ptree pt) const {
+    pt.PutInt("entities_tag", _entitiesTag);
     serial::SaveInNewChildOf(pt, "entity_editor_id", _entityEditorId);
     pt.PutBool("active", _active);
     pt.PutBool("init_on_activate", _initOnActivate);
 }
 
 bool SetEntityActiveSeqAction::ImGui() {
+    ImGui::InputInt("Tag", &_entitiesTag);
     imgui_util::InputEditorId("Entity editor ID", &_entityEditorId);
     ImGui::Checkbox("Active", &_active);
     ImGui::Checkbox("Init on activate", &_initOnActivate);
@@ -699,11 +703,24 @@ void SetEntityActiveSeqAction::ExecuteDerived(GameManager& g) {
     if (g._editMode) {
         return;
     }
+    std::vector<ne::Entity*> entities;
+    bool const includeActive = !_active;
+    bool const includeInactive = _active;
+    if (_entitiesTag >= 0) {
+        g._neEntityManager->FindEntitiesByTag(_entitiesTag, includeActive, includeInactive, &entities);
+    }
+    if (ne::Entity* e = g._neEntityManager->GetActiveOrInactiveEntity(_entityId)) {
+        entities.push_back(e);
+    }
     if (_active) {
-        g._neEntityManager->TagForActivate(_entityId, _initOnActivate);
+        for (ne::Entity* e : entities) {
+            g._neEntityManager->TagForActivate(e->_id, _initOnActivate);
+        }
     }
     else {
-        g._neEntityManager->TagForDeactivate(_entityId);
+        for (ne::Entity* e : entities) {
+            g._neEntityManager->TagForDeactivate(e->_id);
+        }
     }
 }
 

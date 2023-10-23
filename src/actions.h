@@ -216,6 +216,7 @@ struct AddToIntVariableSeqAction : public SeqAction {
 struct SetEntityActiveSeqAction : public SeqAction {
     virtual SeqActionType Type() const override { return SeqActionType::SetEntityActive; }
     EditorId _entityEditorId;
+    int _entitiesTag = -1;
     bool _active = true;
     bool _initOnActivate = true;
 

@@ -1,9 +1,9 @@
 #pragma once
 
 
-#include "matrix.h"
-
 #include "editor_id.h"
+
+#include "matrix.h"
 
 
 #include "serial.h"
@@ -11,6 +11,8 @@
 struct CameraControlSeqActionProps {
     
     bool _setTarget = false;
+    
+    bool _jumpToTarget = false;
     
     EditorId _targetEditorId;
     

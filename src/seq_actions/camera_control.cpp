@@ -46,6 +46,11 @@ void CameraControlSeqAction::ExecuteDerived(GameManager& g) {
     if (camera->_minX.has_value() || camera->_minZ.has_value() || camera->_maxX.has_value() || camera->_maxZ.has_value()) {
         camera->ResetConstraintBlend();
     }
+    if (_props._jumpToTarget) {
+        if (ne::Entity* target = g._neEntityManager->GetEntity(_targetEntityId)) {
+            camera->JumpToPosition(target->_transform.GetPos());
+        }
+    }
 }
 
 void CameraControlSeqAction::LoadDerived(LoadInputs const& loadInputs, std::istream& input) {

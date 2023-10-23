@@ -725,11 +725,21 @@ ne::Entity* Editor::ImGuiEntitySelector(char const* buttonLabel, char const* pop
         ImGui::OpenPopup(popupLabel);
     }
     if (ImGui::BeginPopup(popupLabel)) {
+        static std::string sNameFilter;
+        imgui_util::InputText<128>("Search", &sNameFilter);
         if (ImGui::BeginListBox("Entities")) {
             for (auto entityIdIter = _entityIds.begin(); entityIdIter != _entityIds.end(); ++entityIdIter) {
                 ne::EntityId entityId = *entityIdIter;
-                ImGui::PushID(entityId._id);
                 ne::Entity* entity = _g->_neEntityManager->GetActiveOrInactiveEntity(entityId);
+                if (entity == nullptr) {
+                    continue;
+                }
+                if (!sNameFilter.empty()) {
+                    if (!string_util::Contains(entity->_name, sNameFilter)) {
+                        continue;
+                    }
+                }
+                ImGui::PushID(entityId._id);
                 bool clicked = ImGui::Selectable(entity->_name.c_str(), false);
                 if (clicked) {
                     selectedEntity = entity;

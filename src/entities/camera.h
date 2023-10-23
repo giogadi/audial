@@ -27,6 +27,9 @@ struct CameraEntity : ne::Entity {
 
     void ResetConstraintBlend() { _constraintBlend = 0.f; };
 
+    // Immediately sets camera position to this position (plus target offsets)
+    void JumpToPosition(Vec3 const& p);
+
     virtual void InitDerived(GameManager& g) override;
     virtual void UpdateDerived(GameManager& g, float dt) override;
 protected:

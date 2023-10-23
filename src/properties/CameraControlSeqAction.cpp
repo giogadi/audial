@@ -10,6 +10,8 @@ void CameraControlSeqActionProps::Load(serial::Ptree pt) {
    
    pt.TryGetBool("setTarget", &_setTarget);
    
+   pt.TryGetBool("jumpToTarget", &_jumpToTarget);
+   
    serial::LoadFromChildOf(pt, "targetEditorId", _targetEditorId);
    
    pt.TryGetFloat("targetTrackingFactor", &_targetTrackingFactor);
@@ -39,6 +41,8 @@ void CameraControlSeqActionProps::Load(serial::Ptree pt) {
 void CameraControlSeqActionProps::Save(serial::Ptree pt) const {
     
     pt.PutBool("setTarget", _setTarget);
+    
+    pt.PutBool("jumpToTarget", _jumpToTarget);
     
     serial::SaveInNewChildOf(pt, "targetEditorId", _targetEditorId);
     
@@ -71,6 +75,11 @@ bool CameraControlSeqActionProps::ImGui() {
     
     {
         bool thisChanged = ImGui::Checkbox("setTarget", &_setTarget);
+        changed = changed || thisChanged;
+    }
+    
+    {
+        bool thisChanged = ImGui::Checkbox("jumpToTarget", &_jumpToTarget);
         changed = changed || thisChanged;
     }
     

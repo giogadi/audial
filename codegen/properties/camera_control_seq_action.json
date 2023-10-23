@@ -7,6 +7,12 @@
             "default": "false"
         },
         {
+            "name": "jumpToTarget",
+            "type": "bool",
+            "default": "false",
+            "comment": "Instantly set position to target position. Does not set camera's target unless setTarget is true"
+        },
+        {
             "name": "targetEditorId",
             "type": "editor_id"            
         },

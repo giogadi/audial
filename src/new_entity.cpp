@@ -241,6 +241,25 @@ Entity* EntityManager::FindEntityByNameAndType(std::string_view name, EntityType
     return nullptr;
 }
 
+void EntityManager::FindEntitiesByTag(int tag, bool includeActive, bool includeInactive, std::vector<ne::Entity*>* entities) {
+    if (includeActive) {
+        for (AllIterator iter = GetAllIterator(); !iter.Finished(); iter.Next()) {
+            Entity* e = iter.GetEntity();
+            if (e->_tag == tag) {
+                entities->push_back(e);
+            }
+        }
+    }
+    if (includeInactive) {
+        for (AllIterator iter = GetAllInactiveIterator(); !iter.Finished(); iter.Next()) {
+            Entity* e = iter.GetEntity();
+            if (e->_tag == tag) {
+                entities->push_back(e);
+            }
+        }
+    }
+}
+
 void EntityManager::FindEntitiesByTagAndType(int tag, EntityType entityType, bool includeActive, bool includeInactive, std::vector<ne::Entity*>* entities) {
     if (includeActive) {
         for (Iterator iter = GetIterator(entityType); !iter.Finished(); iter.Next()) {

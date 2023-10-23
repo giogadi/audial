@@ -120,3 +120,8 @@ void CameraEntity::LoadDerived(serial::Ptree pt) {
     _fovyDeg = 45.f;
     pt.TryGetFloat("fovy_deg", &_fovyDeg);
 }
+
+void CameraEntity::JumpToPosition(Vec3 const& p) {
+    Vec3 newPos = p + _desiredTargetToCameraOffset;
+    _transform.SetPos(newPos);
+}

@@ -35,6 +35,11 @@ bool InputEditorId(char const* label, EditorId* v) {
 		*v = newSelection->_editorId;
         result = true;
 	}
+	ImGui::SameLine();
+	if (ImGui::Button("Clear")) {
+		*v = EditorId();
+		result = true;
+	}
 	return result;
 }
 

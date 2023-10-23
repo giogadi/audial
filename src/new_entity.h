@@ -94,6 +94,7 @@ struct EntityManager {
     Entity* FindEntityByEditorIdAndType(EditorId editorId, EntityType entityType, bool* isActive = nullptr, char const* errorPrefix = nullptr);
     Entity* GetFirstEntityOfType(EntityType entityType);
 
+    void FindEntitiesByTag(int tag, bool includeActive, bool includeInactive, std::vector<ne::Entity*>* entities);
     void FindEntitiesByTagAndType(int tag, EntityType entityType, bool includeActive, bool includeInactive, std::vector<ne::Entity*>* entities);
     
     bool TagForDestroy(EntityId id);

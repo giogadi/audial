@@ -124,21 +124,21 @@ bool SeqAction::ImGui(char const* label, std::vector<std::unique_ptr<SeqAction>>
             changed = true;
         }        
         int deleteIx = -1;
-        std::pair<int, int> swapIndices = std::make_pair(-1, -1);
+        std::pair<int, int> moveFromToIndices = std::make_pair(-1, -1);
         char actionId[8];
         for (int i = 0, n = actions.size(); i < n; ++i) {
             sprintf(actionId, "%d", i);
             bool selected = ImGui::TreeNode(actionId, "%s", SeqActionTypeToString(actions[i]->Type()));
             if (ImGui::BeginDragDropSource(ImGuiDragDropFlags_None)) {
                 ImGui::SetDragDropPayload("SeqActionDND", &i, sizeof(int));
-                ImGui::Text("Swap action");
+                ImGui::Text("Move action to");
                 ImGui::EndDragDropSource();
             }
             if (ImGui::BeginDragDropTarget()) {
                 if (ImGuiPayload const* payload = ImGui::AcceptDragDropPayload("SeqActionDND")) {
                     assert(payload->DataSize == sizeof(int));
                     int payloadIx = *(static_cast<int const*>(payload->Data));
-                    swapIndices = std::make_pair(i, payloadIx);
+                    moveFromToIndices = std::make_pair(payloadIx, i);
                 }
                 ImGui::EndDragDropTarget();
             }
@@ -156,8 +156,10 @@ bool SeqAction::ImGui(char const* label, std::vector<std::unique_ptr<SeqAction>>
                 ImGui::TreePop();
             }
         }
-        if (swapIndices.first >= 0 && swapIndices.first != swapIndices.second) {
-            std::swap(actions[swapIndices.first], actions[swapIndices.second]);
+        if (moveFromToIndices.first >= 0 && moveFromToIndices.first != moveFromToIndices.second) {
+            std::unique_ptr<SeqAction> movedAction = std::move(actions[moveFromToIndices.first]);
+            actions.erase(actions.begin() + moveFromToIndices.first);
+            actions.insert(actions.begin() + moveFromToIndices.second, std::move(movedAction));
         } else if (deleteIx >= 0) {
             actions.erase(actions.begin() + deleteIx);
         }
