@@ -748,4 +748,38 @@
             <PitchEnvRelease>0</PitchEnvRelease>
         </patch>
     </patch>
+    <patch>
+        <name>pre_billevans</name>
+        <patch>
+            <Gain>0.735000014</Gain>
+            <Mono>0</Mono>
+            <Osc1Waveform>Square</Osc1Waveform>
+            <Osc2Waveform>Saw</Osc2Waveform>
+            <Detune>0</Detune>
+            <OscFader>0.333000004</OscFader>
+            <Cutoff>3181.81812</Cutoff>
+            <Peak>0</Peak>
+            <HpfCutoff>0</HpfCutoff>
+            <HpfPeak>0</HpfPeak>
+            <Portamento>0</Portamento>
+            <PitchLFOGain>0</PitchLFOGain>
+            <PitchLFOFreq>1</PitchLFOFreq>
+            <CutoffLFOGain>0.0489999987</CutoffLFOGain>
+            <CutoffLFOFreq>4.16699982</CutoffLFOFreq>
+            <AmpEnvAttack>0.00499999989</AmpEnvAttack>
+            <AmpEnvDecay>0.284000009</AmpEnvDecay>
+            <AmpEnvSustain>0.237000003</AmpEnvSustain>
+            <AmpEnvRelease>2.02699995</AmpEnvRelease>
+            <CutoffEnvGain>0</CutoffEnvGain>
+            <CutoffEnvAttack>0.057</CutoffEnvAttack>
+            <CutoffEnvDecay>3.76900005</CutoffEnvDecay>
+            <CutoffEnvSustain>0.583000004</CutoffEnvSustain>
+            <CutoffEnvRelease>3</CutoffEnvRelease>
+            <PitchEnvGain>0</PitchEnvGain>
+            <PitchEnvAttack>0</PitchEnvAttack>
+            <PitchEnvDecay>0</PitchEnvDecay>
+            <PitchEnvSustain>1</PitchEnvSustain>
+            <PitchEnvRelease>0</PitchEnvRelease>
+        </patch>
+    </patch>
 </patches>

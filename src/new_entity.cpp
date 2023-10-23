@@ -658,6 +658,10 @@ void BaseEntity::Draw(GameManager& g, float dt) {
     if (_model != nullptr) {
         Mat4 const& mat = _transform.Mat4Scale();
         g._scene->DrawMesh(_model, mat, _modelColor);
+    } else if (g._editMode) {
+        Mat4 const& mat = _transform.Mat4Scale();
+        Vec4 constexpr bbColor(0.5f, 0.5f, 0.5f, 1.f);
+        g._scene->DrawBoundingBox(mat, bbColor);
     }
 }
 void BaseEntity::DebugPrint() {
