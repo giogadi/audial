@@ -107,7 +107,7 @@ void FlowPlayerEntity::DrawPlayer(GameManager& g) {
          model._topLayer = true;
     }
 
-    if (_dashTimer >= 0.f && _useLastKnownDashTarget) {
+    if (_dashTimer >= 0.f && (_useLastKnownDashTarget || _isPushDash)) {
         g._scene->DrawLine(_transform.Pos(), _lastKnownDashTarget, _lastDashTargetColor);
     }
 }
@@ -426,6 +426,7 @@ void FlowPlayerEntity::Update(GameManager& g, float dt) {
         _applyGravityDuringDash = false;
         _dashTargetId = ne::EntityId();
         _useLastKnownDashTarget = false;
+        _isPushDash = false;
     }
 
     // Check if we hit any pickups
