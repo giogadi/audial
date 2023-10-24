@@ -10,7 +10,6 @@ namespace ne {
     X(Camera) \
     X(Sequencer) \
     X(ActionSequencer) \
-    X(TypingPlayer) \
     X(TypingEnemy)  \
     X(FlowPlayer) \
     X(StepSequencer) \

@@ -8,7 +8,6 @@
 
 struct FlowPlayerEntity : public ne::Entity {
     // serialized
-    float _selectionRadius = -1.f;  // ignored if < 0
     float _defaultLaunchVel = 4.f; // > 0
     Vec3 _gravity = Vec3(0.f, 0.f, 9.81f);
     float _maxHorizSpeedAfterDash = 2.f;
@@ -32,7 +31,6 @@ struct FlowPlayerEntity : public ne::Entity {
     bool _useLastKnownDashTarget = false;
     Vec4 _lastDashTargetColor;
     Vec4 _currentColor;
-    bool _flowPolarity = true;
     double _countOffEndTime = 3.0;
     std::optional<float> _killMaxZ;  // kill/respawn if player goes over this value
     bool _killIfBelowCameraView = false;

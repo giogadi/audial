@@ -6,12 +6,10 @@
 
 #include "audio.h"
 #include "actions.h"
-#include "seq_actions/spawn_enemy.h"
 #include "seq_actions/camera_control.h"
 #include "seq_actions/change_patch.h"
 #include "seq_actions/vfx_pulse.h"
 #include "seq_actions/set_enemy_hittable.h"
-#include "entities/typing_player.h"
 #include "imgui_util.h"
 
 void SeqAction::Save(serial::Ptree pt) const {
@@ -44,7 +42,6 @@ std::unique_ptr<SeqAction> SeqAction::New(SeqActionType actionType) {
         case SeqActionType::SetNewFlowSection: return std::make_unique<SetNewFlowSectionSeqAction>();
         case SeqActionType::AddToIntVariable: return std::make_unique<AddToIntVariableSeqAction>();
         case SeqActionType::CameraControl: return std::make_unique<CameraControlSeqAction>();
-        case SeqActionType::SpawnEnemy: return std::make_unique<SpawnEnemySeqAction>();
         case SeqActionType::SetEntityActive: return std::make_unique<SetEntityActiveSeqAction>();
         case SeqActionType::ChangeStepSeqMaxVoices: return std::make_unique<ChangeStepSeqMaxVoicesSeqAction>();
         case SeqActionType::ChangePatch: return std::make_unique<ChangePatchSeqAction>();
@@ -196,8 +193,6 @@ std::unique_ptr<SeqAction> SeqAction::LoadAction(LoadInputs const& loadInputs, s
         pAction = std::make_unique<SetStepSequencerMuteSeqAction>();
     } else if (token == "note_on_off") {
         pAction = std::make_unique<NoteOnOffSeqAction>();
-    } else if (token == "e") {
-        pAction = std::make_unique<SpawnEnemySeqAction>();
     } else if (token == "b_e") {
         pAction = std::make_unique<BeatTimeEventSeqAction>();
     } else if (token == "camera") {
@@ -282,18 +277,6 @@ void SeqAction::LoadAndInitActions(GameManager& g, std::istream& input, std::vec
             continue;
         } else if (token == "stop_save") {
             loadInputs._defaultEnemiesSave = false;
-            continue;
-        } else if (token == "section") {
-            // lineStream >> loadInputs._sectionId;
-            loadInputs._sectionId = nextSectionId++;
-            int sectionNumBeats;
-            lineStream >> sectionNumBeats;
-            int numEntities = 0;
-            ne::EntityManager::Iterator eIter = g._neEntityManager->GetIterator(ne::EntityType::TypingPlayer, &numEntities);
-            assert(numEntities == 1);
-            TypingPlayerEntity* player = static_cast<TypingPlayerEntity*>(eIter.GetEntity());
-            assert(player != nullptr);
-            player->SetSectionLength(loadInputs._sectionId, sectionNumBeats);
             continue;
         }
 

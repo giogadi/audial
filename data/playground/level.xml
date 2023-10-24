@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <script>
-    <version>0</version>
+    <version>1</version>
     <bpm>140</bpm>
     <ctrl_groups>
         <group0/>
@@ -170,7 +170,6 @@
                     <id>-1</id>
                 </follow_entity_editor_id>
             </waypoint_follower>
-            <selection_radius>-1</selection_radius>
             <launch_vel>20</launch_vel>
             <max_horiz_speed_after_dash>0</max_horiz_speed_after_dash>
             <max_vert_speed_after_dash>0</max_vert_speed_after_dash>
@@ -766,12 +765,11 @@
                     <id>-1</id>
                 </follow_entity_editor_id>
             </waypoint_follower>
+            <enemy_type>Pull</enemy_type>
             <text>f</text>
             <buttons>a</buttons>
             <type_kill>true</type_kill>
             <all_actions_on_hit>true</all_actions_on_hit>
-            <bounce_radius>-1</bounce_radius>
-            <flow_polarity>false</flow_polarity>
             <flow_cooldown>-1</flow_cooldown>
             <show_beats_left>false</show_beats_left>
             <cooldown_quantize_denom>0</cooldown_quantize_denom>
@@ -1005,12 +1003,11 @@
                     <id>-1</id>
                 </follow_entity_editor_id>
             </waypoint_follower>
+            <enemy_type>Pull</enemy_type>
             <text>i</text>
             <buttons>a</buttons>
             <type_kill>true</type_kill>
             <all_actions_on_hit>true</all_actions_on_hit>
-            <bounce_radius>-1</bounce_radius>
-            <flow_polarity>false</flow_polarity>
             <flow_cooldown>-1</flow_cooldown>
             <show_beats_left>false</show_beats_left>
             <cooldown_quantize_denom>0</cooldown_quantize_denom>
@@ -1082,12 +1079,11 @@
                     <id>-1</id>
                 </follow_entity_editor_id>
             </waypoint_follower>
+            <enemy_type>Pull</enemy_type>
             <text>g</text>
             <buttons>a</buttons>
             <type_kill>true</type_kill>
             <all_actions_on_hit>true</all_actions_on_hit>
-            <bounce_radius>-1</bounce_radius>
-            <flow_polarity>false</flow_polarity>
             <flow_cooldown>-1</flow_cooldown>
             <show_beats_left>false</show_beats_left>
             <cooldown_quantize_denom>0</cooldown_quantize_denom>
@@ -1159,12 +1155,11 @@
                     <id>-1</id>
                 </follow_entity_editor_id>
             </waypoint_follower>
+            <enemy_type>Pull</enemy_type>
             <text>h</text>
             <buttons>a</buttons>
             <type_kill>true</type_kill>
             <all_actions_on_hit>true</all_actions_on_hit>
-            <bounce_radius>-1</bounce_radius>
-            <flow_polarity>false</flow_polarity>
             <flow_cooldown>-1</flow_cooldown>
             <show_beats_left>false</show_beats_left>
             <cooldown_quantize_denom>0</cooldown_quantize_denom>
@@ -1236,12 +1231,11 @@
                     <id>-1</id>
                 </follow_entity_editor_id>
             </waypoint_follower>
+            <enemy_type>Pull</enemy_type>
             <text>t</text>
             <buttons>a</buttons>
             <type_kill>true</type_kill>
             <all_actions_on_hit>true</all_actions_on_hit>
-            <bounce_radius>-1</bounce_radius>
-            <flow_polarity>false</flow_polarity>
             <flow_cooldown>-1</flow_cooldown>
             <show_beats_left>false</show_beats_left>
             <cooldown_quantize_denom>0</cooldown_quantize_denom>
@@ -1435,12 +1429,11 @@
                     <id>-1</id>
                 </follow_entity_editor_id>
             </waypoint_follower>
+            <enemy_type>Push</enemy_type>
             <text>n</text>
             <buttons>a</buttons>
             <type_kill>false</type_kill>
             <all_actions_on_hit>true</all_actions_on_hit>
-            <bounce_radius>-1</bounce_radius>
-            <flow_polarity>true</flow_polarity>
             <flow_cooldown>4</flow_cooldown>
             <show_beats_left>false</show_beats_left>
             <cooldown_quantize_denom>0</cooldown_quantize_denom>
@@ -1502,12 +1495,11 @@
                     <id>-1</id>
                 </follow_entity_editor_id>
             </waypoint_follower>
+            <enemy_type>Pull</enemy_type>
             <text>d</text>
             <buttons>a</buttons>
             <type_kill>false</type_kill>
             <all_actions_on_hit>true</all_actions_on_hit>
-            <bounce_radius>-1</bounce_radius>
-            <flow_polarity>false</flow_polarity>
             <flow_cooldown>4</flow_cooldown>
             <show_beats_left>false</show_beats_left>
             <cooldown_quantize_denom>0</cooldown_quantize_denom>
@@ -1569,12 +1561,11 @@
                     <id>-1</id>
                 </follow_entity_editor_id>
             </waypoint_follower>
+            <enemy_type>Pull</enemy_type>
             <text>w</text>
             <buttons>a</buttons>
             <type_kill>false</type_kill>
             <all_actions_on_hit>true</all_actions_on_hit>
-            <bounce_radius>-1</bounce_radius>
-            <flow_polarity>false</flow_polarity>
             <flow_cooldown>4</flow_cooldown>
             <show_beats_left>false</show_beats_left>
             <cooldown_quantize_denom>0</cooldown_quantize_denom>
@@ -1636,12 +1627,11 @@
                     <id>-1</id>
                 </follow_entity_editor_id>
             </waypoint_follower>
+            <enemy_type>Pull</enemy_type>
             <text>o</text>
             <buttons>a</buttons>
             <type_kill>false</type_kill>
             <all_actions_on_hit>true</all_actions_on_hit>
-            <bounce_radius>-1</bounce_radius>
-            <flow_polarity>false</flow_polarity>
             <flow_cooldown>4</flow_cooldown>
             <show_beats_left>false</show_beats_left>
             <cooldown_quantize_denom>0</cooldown_quantize_denom>
@@ -1783,12 +1773,11 @@
                     <id>-1</id>
                 </follow_entity_editor_id>
             </waypoint_follower>
+            <enemy_type>Push</enemy_type>
             <text>o</text>
             <buttons>a</buttons>
             <type_kill>false</type_kill>
             <all_actions_on_hit>true</all_actions_on_hit>
-            <bounce_radius>-1</bounce_radius>
-            <flow_polarity>true</flow_polarity>
             <flow_cooldown>4</flow_cooldown>
             <show_beats_left>false</show_beats_left>
             <cooldown_quantize_denom>0</cooldown_quantize_denom>
@@ -1944,12 +1933,11 @@
                     <id>-1</id>
                 </follow_entity_editor_id>
             </waypoint_follower>
+            <enemy_type>Pull</enemy_type>
             <text>a</text>
             <buttons>a</buttons>
             <type_kill>false</type_kill>
             <all_actions_on_hit>true</all_actions_on_hit>
-            <bounce_radius>-1</bounce_radius>
-            <flow_polarity>false</flow_polarity>
             <flow_cooldown>4</flow_cooldown>
             <show_beats_left>false</show_beats_left>
             <cooldown_quantize_denom>0</cooldown_quantize_denom>
@@ -2011,12 +1999,11 @@
                     <id>-1</id>
                 </follow_entity_editor_id>
             </waypoint_follower>
+            <enemy_type>Pull</enemy_type>
             <text>s</text>
             <buttons>a</buttons>
             <type_kill>false</type_kill>
             <all_actions_on_hit>true</all_actions_on_hit>
-            <bounce_radius>-1</bounce_radius>
-            <flow_polarity>false</flow_polarity>
             <flow_cooldown>4</flow_cooldown>
             <show_beats_left>false</show_beats_left>
             <cooldown_quantize_denom>0</cooldown_quantize_denom>
@@ -2078,12 +2065,11 @@
                     <id>-1</id>
                 </follow_entity_editor_id>
             </waypoint_follower>
+            <enemy_type>Pull</enemy_type>
             <text>d</text>
             <buttons>a</buttons>
             <type_kill>false</type_kill>
             <all_actions_on_hit>true</all_actions_on_hit>
-            <bounce_radius>-1</bounce_radius>
-            <flow_polarity>false</flow_polarity>
             <flow_cooldown>4</flow_cooldown>
             <show_beats_left>false</show_beats_left>
             <cooldown_quantize_denom>0</cooldown_quantize_denom>
@@ -2145,12 +2131,11 @@
                     <id>-1</id>
                 </follow_entity_editor_id>
             </waypoint_follower>
+            <enemy_type>Pull</enemy_type>
             <text>f</text>
             <buttons>a</buttons>
             <type_kill>false</type_kill>
             <all_actions_on_hit>true</all_actions_on_hit>
-            <bounce_radius>-1</bounce_radius>
-            <flow_polarity>false</flow_polarity>
             <flow_cooldown>4</flow_cooldown>
             <show_beats_left>false</show_beats_left>
             <cooldown_quantize_denom>0</cooldown_quantize_denom>
@@ -2212,12 +2197,11 @@
                     <id>-1</id>
                 </follow_entity_editor_id>
             </waypoint_follower>
+            <enemy_type>Pull</enemy_type>
             <text>j</text>
             <buttons>a</buttons>
             <type_kill>false</type_kill>
             <all_actions_on_hit>true</all_actions_on_hit>
-            <bounce_radius>-1</bounce_radius>
-            <flow_polarity>false</flow_polarity>
             <flow_cooldown>4</flow_cooldown>
             <show_beats_left>false</show_beats_left>
             <cooldown_quantize_denom>0</cooldown_quantize_denom>
@@ -2279,12 +2263,11 @@
                     <id>-1</id>
                 </follow_entity_editor_id>
             </waypoint_follower>
+            <enemy_type>Pull</enemy_type>
             <text>k</text>
             <buttons>a</buttons>
             <type_kill>false</type_kill>
             <all_actions_on_hit>true</all_actions_on_hit>
-            <bounce_radius>-1</bounce_radius>
-            <flow_polarity>false</flow_polarity>
             <flow_cooldown>4</flow_cooldown>
             <show_beats_left>false</show_beats_left>
             <cooldown_quantize_denom>0</cooldown_quantize_denom>
@@ -2346,12 +2329,11 @@
                     <id>-1</id>
                 </follow_entity_editor_id>
             </waypoint_follower>
+            <enemy_type>Pull</enemy_type>
             <text>l</text>
             <buttons>a</buttons>
             <type_kill>false</type_kill>
             <all_actions_on_hit>true</all_actions_on_hit>
-            <bounce_radius>-1</bounce_radius>
-            <flow_polarity>false</flow_polarity>
             <flow_cooldown>4</flow_cooldown>
             <show_beats_left>false</show_beats_left>
             <cooldown_quantize_denom>0</cooldown_quantize_denom>
@@ -2467,12 +2449,11 @@
                     <id>-1</id>
                 </follow_entity_editor_id>
             </waypoint_follower>
+            <enemy_type>Pull</enemy_type>
             <text>s</text>
             <buttons>a</buttons>
             <type_kill>true</type_kill>
             <all_actions_on_hit>true</all_actions_on_hit>
-            <bounce_radius>-1</bounce_radius>
-            <flow_polarity>false</flow_polarity>
             <flow_cooldown>4</flow_cooldown>
             <show_beats_left>false</show_beats_left>
             <cooldown_quantize_denom>0</cooldown_quantize_denom>
@@ -2544,12 +2525,11 @@
                     <id>-1</id>
                 </follow_entity_editor_id>
             </waypoint_follower>
+            <enemy_type>Pull</enemy_type>
             <text>o</text>
             <buttons>a</buttons>
             <type_kill>true</type_kill>
             <all_actions_on_hit>true</all_actions_on_hit>
-            <bounce_radius>-1</bounce_radius>
-            <flow_polarity>false</flow_polarity>
             <flow_cooldown>4</flow_cooldown>
             <show_beats_left>false</show_beats_left>
             <cooldown_quantize_denom>0</cooldown_quantize_denom>
@@ -2621,12 +2601,11 @@
                     <id>-1</id>
                 </follow_entity_editor_id>
             </waypoint_follower>
+            <enemy_type>Pull</enemy_type>
             <text>l</text>
             <buttons>a</buttons>
             <type_kill>true</type_kill>
             <all_actions_on_hit>true</all_actions_on_hit>
-            <bounce_radius>-1</bounce_radius>
-            <flow_polarity>false</flow_polarity>
             <flow_cooldown>4</flow_cooldown>
             <show_beats_left>false</show_beats_left>
             <cooldown_quantize_denom>0</cooldown_quantize_denom>
@@ -2688,12 +2667,11 @@
                     <id>-1</id>
                 </follow_entity_editor_id>
             </waypoint_follower>
+            <enemy_type>Pull</enemy_type>
             <text>r</text>
             <buttons>a</buttons>
             <type_kill>true</type_kill>
             <all_actions_on_hit>true</all_actions_on_hit>
-            <bounce_radius>-1</bounce_radius>
-            <flow_polarity>false</flow_polarity>
             <flow_cooldown>4</flow_cooldown>
             <show_beats_left>false</show_beats_left>
             <cooldown_quantize_denom>0</cooldown_quantize_denom>
@@ -2755,12 +2733,11 @@
                     <id>-1</id>
                 </follow_entity_editor_id>
             </waypoint_follower>
+            <enemy_type>Pull</enemy_type>
             <text>u</text>
             <buttons>a</buttons>
             <type_kill>true</type_kill>
             <all_actions_on_hit>true</all_actions_on_hit>
-            <bounce_radius>-1</bounce_radius>
-            <flow_polarity>false</flow_polarity>
             <flow_cooldown>4</flow_cooldown>
             <show_beats_left>false</show_beats_left>
             <cooldown_quantize_denom>0</cooldown_quantize_denom>
@@ -2973,12 +2950,11 @@
                     <id>-1</id>
                 </follow_entity_editor_id>
             </waypoint_follower>
+            <enemy_type>Push</enemy_type>
             <text>n</text>
             <buttons>a</buttons>
             <type_kill>false</type_kill>
             <all_actions_on_hit>true</all_actions_on_hit>
-            <bounce_radius>-1</bounce_radius>
-            <flow_polarity>true</flow_polarity>
             <flow_cooldown>4</flow_cooldown>
             <show_beats_left>false</show_beats_left>
             <cooldown_quantize_denom>0</cooldown_quantize_denom>
@@ -3040,12 +3016,11 @@
                     <id>-1</id>
                 </follow_entity_editor_id>
             </waypoint_follower>
+            <enemy_type>Push</enemy_type>
             <text>p</text>
             <buttons>a</buttons>
             <type_kill>false</type_kill>
             <all_actions_on_hit>true</all_actions_on_hit>
-            <bounce_radius>-1</bounce_radius>
-            <flow_polarity>true</flow_polarity>
             <flow_cooldown>4</flow_cooldown>
             <show_beats_left>false</show_beats_left>
             <cooldown_quantize_denom>0</cooldown_quantize_denom>

@@ -5,50 +5,47 @@
 #include "new_entity.h"
 #include "seq_action.h"
 #include "input_manager.h"
+#include "enums/TypingEnemyType.h"
 
 struct FlowPlayerEntity;
 
 struct TypingEnemyEntity : public ne::Entity {
     enum class HitBehavior { SingleAction, AllActions };
     
-    // serialized
-    std::string _keyText;
-    std::string _buttons;
-    std::vector<std::unique_ptr<SeqAction>> _hitActions;
-    std::vector<std::unique_ptr<SeqAction>> _allHitActions;
-    std::vector<std::unique_ptr<SeqAction>> _offCooldownActions;
-    std::vector<bool> _isOneTimeAction;
-    HitBehavior _hitBehavior = HitBehavior::SingleAction; // TODO
-    double _activeBeatTime = -1.0; // TODO
-    double _inactiveBeatTime = -1.0; // TODO
-    bool _destroyIfOffscreenLeft = false; // TODO
-    bool _destroyAfterTyped = true;
-    int _typingSectionId = -1; // TODO
-    Vec3 _sectionLocalPos; // TODO
-    Vec4 _textColor = Vec4(1.f, 1.f, 1.f, 1.f); // TODO
-    bool _flowPolarity = false;
-    double _flowCooldownBeatTime = -1.0;
-    bool _resetCooldownOnAnyHit = false;
-    EditorId _activeRegionEditorId;
-    bool _showBeatsLeft = false;
-    float _cooldownQuantizeDenom = 0.f;
-    bool _initHittable = true;
-    float _bounceRadius = -1;
-    bool _stopOnPass = true;
-    float _dashVelocity = -1.f;  // if <0, use player's default dash velocity
-    float _pushAngleDeg = -1.f; // if <0, just use angle-to-player
+    struct Props {
+        TypingEnemyType _enemyType = TypingEnemyType::Pull;
+        std::string _keyText;
+        std::string _buttons;
+        std::vector<std::unique_ptr<SeqAction>> _hitActions;
+        std::vector<std::unique_ptr<SeqAction>> _allHitActions;
+        std::vector<std::unique_ptr<SeqAction>> _offCooldownActions;
+        HitBehavior _hitBehavior = HitBehavior::SingleAction; // TODO
+        bool _destroyAfterTyped = true;
+        double _flowCooldownBeatTime = -1.0;
+        bool _resetCooldownOnAnyHit = false;
+        EditorId _activeRegionEditorId;
+        bool _showBeatsLeft = false;
+        float _cooldownQuantizeDenom = 0.f;
+        bool _initHittable = true;
+        bool _stopOnPass = true;
+        float _dashVelocity = -1.f;  // if <0, use player's default dash velocity
+        float _pushAngleDeg = -1.f; // if <0, just use angle-to-player
+    };
+    Props _p;
     
     // non-serialized
-    int _numHits = 0;
-    Vec3 _velocity; // spatial, not audio
-    Vec4 _currentColor;
-    bool _useHitActionsOnInitHack = false;
-    double _timeOfLastHit = -1.0;
-    double _flowCooldownStartBeatTime = -1.0;
-    bool _hittable = true;
-    ne::EntityId _activeRegionId;
+    struct State {
+        int _numHits = 0;
+        Vec3 _velocity; // spatial, not audio
+        Vec4 _currentColor;
+        bool _useHitActionsOnInitHack = false;
+        double _timeOfLastHit = -1.0;
+        double _flowCooldownStartBeatTime = -1.0;
+        bool _hittable = true;
+        ne::EntityId _activeRegionId;
+    };
+    State _s;
 
-    bool IsActive(GameManager& g) const;
     void OnHit(GameManager& g);
     void DoHitActions(GameManager& g);
     void OnHitOther(GameManager& g);

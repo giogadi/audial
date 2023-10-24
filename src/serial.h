@@ -10,6 +10,8 @@ class Ptree {
 public:
     Ptree() {}
 
+    int GetVersion() const { return _version; }
+
     Ptree AddChild(char const* name);
 
     // Crashes if it fails.

@@ -6,7 +6,6 @@
 #include "audio.h"
 #include "midi_util.h"
 #include "string_util.h"
-#include "entities/typing_player.h"
 #include "entities/flow_player.h"
 #include "entities/flow_wall.h"
 #include "entities/int_variable.h"

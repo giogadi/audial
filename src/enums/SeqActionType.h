@@ -32,8 +32,6 @@ enum class SeqActionType : int {
     
     CameraControl,
     
-    SpawnEnemy,
-    
     SetEntityActive,
     
     ChangeStepSeqMaxVoices,

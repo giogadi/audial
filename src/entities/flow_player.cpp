@@ -14,7 +14,6 @@
 #include "entities/vfx.h"
 
 void FlowPlayerEntity::SaveDerived(serial::Ptree pt) const {
-    pt.PutFloat("selection_radius", _selectionRadius);
     pt.PutFloat("launch_vel", _defaultLaunchVel);
     pt.PutFloat("max_horiz_speed_after_dash", _maxHorizSpeedAfterDash);
     pt.PutFloat("max_vert_speed_after_dash", _maxVertSpeedAfterDash);
@@ -26,7 +25,6 @@ void FlowPlayerEntity::SaveDerived(serial::Ptree pt) const {
 }
 
 void FlowPlayerEntity::LoadDerived(serial::Ptree pt) {
-    _selectionRadius = pt.GetFloat("selection_radius");
     _defaultLaunchVel = pt.GetFloat("launch_vel");
     pt.TryGetFloat("max_horiz_speed_after_dash", &_maxHorizSpeedAfterDash);
     _maxVertSpeedAfterDash = 0.f;
@@ -184,11 +182,6 @@ void FlowPlayerEntity::Update(GameManager& g, float dt) {
         Vec3 dp = playerPos - enemy->_transform.GetPos();
         dp._y = 0.f;
         float d2 = dp.Length2();
-        if (_selectionRadius >= 0.f && d2 > _selectionRadius * _selectionRadius) {
-            enemy->_currentColor = kGreyColor;
-            enemy->_textColor = kGreyColor;
-            continue;
-        }
         if (!enemy->CanHit(*this, g)) {
             continue;
         }
@@ -200,9 +193,8 @@ void FlowPlayerEntity::Update(GameManager& g, float dt) {
         //     continue;
         // }
 
-        // UGLY
-        enemy->_currentColor = enemy->_modelColor;
-        enemy->_textColor.Set(1.f, 1.f, 1.f, 1.f);
+        // TODO: WTF IS THIS FOR? Maybe for IsCollisionFree?
+        enemy->_s._currentColor = enemy->_modelColor;
 
         if (usingController) {
             InputManager::ControllerButton nextButton = enemy->GetNextButton();
@@ -233,12 +225,10 @@ void FlowPlayerEntity::Update(GameManager& g, float dt) {
     if (nearest != nullptr) {
         ne::EntityId nearestId = nearest->_id;
         _respawnBeforeFirstDash = false;
-        if (nearest->_bounceRadius < 0.f) {
-            nearest->OnHit(g);
-        }
+        nearest->OnHit(g);
         Vec3 toEnemyDir;
-        if (nearest->_pushAngleDeg >= 0.f) {
-            float angleRad = nearest->_pushAngleDeg * kDeg2Rad;
+        if (nearest->_p._pushAngleDeg >= 0.f) {
+            float angleRad = nearest->_p._pushAngleDeg * kDeg2Rad;
             toEnemyDir._x = -cos(angleRad);
             toEnemyDir._z = sin(angleRad);
         } else {
@@ -246,9 +236,9 @@ void FlowPlayerEntity::Update(GameManager& g, float dt) {
         }
         toEnemyDir._y = 0.f;
         toEnemyDir.Normalize();
-        _isPushDash = _flowPolarity == nearest->_flowPolarity;
+        _isPushDash = nearest->_p._enemyType == TypingEnemyType::Push;
         float sign = _isPushDash ? -1.f : 1.f;
-        float launchVel = (nearest->_dashVelocity >= 0.f) ? nearest->_dashVelocity : _defaultLaunchVel;
+        float launchVel = (nearest->_p._dashVelocity >= 0.f) ? nearest->_p._dashVelocity : _defaultLaunchVel;
         _vel = toEnemyDir * (sign * launchVel);
         _dashTimer = 0.f;
         _useLastKnownDashTarget = sign > 0.f;
@@ -258,7 +248,7 @@ void FlowPlayerEntity::Update(GameManager& g, float dt) {
         _lastDashTargetColor = nearest->_modelColor;
         _lastDashTargetColor._w = 1.f;
         _applyGravityDuringDash = false;
-        _stopDashOnPassEnemy = nearest->_stopOnPass;
+        _stopDashOnPassEnemy = nearest->_p._stopOnPass;
             
         for (auto enemyIter = g._neEntityManager->GetIterator(ne::EntityType::TypingEnemy); !enemyIter.Finished(); enemyIter.Next()) {
             TypingEnemyEntity* enemy = (TypingEnemyEntity*) enemyIter.GetEntity();
@@ -281,25 +271,7 @@ void FlowPlayerEntity::Update(GameManager& g, float dt) {
                 _lastKnownDashTarget = dashTarget->_transform.Pos();
                 _lastKnownDashTarget._y = playerPos._y;
             }
-            if (dashTarget && dashTarget->_bounceRadius > 0.f) {
-                playerPos += _vel * dt;
-                Vec3 offset = playerPos - _lastKnownDashTarget;
-                if (offset.Length2() < dashTarget->_bounceRadius * dashTarget->_bounceRadius) {
-                    dashTarget->OnHit(g);
-                    Vec3 awayFromEnemyDir = -_vel.GetNormalized();
-                    _vel = -_vel;
-                    float speed = _vel.Length();
-                    float constexpr kMinBounceSpeed = 10.f;
-                    float constexpr kMaxBounceSpeed = 10.f;
-                    if (speed < kMinBounceSpeed) {
-                        _vel = awayFromEnemyDir * kMinBounceSpeed;
-                    } else if (speed > kMaxBounceSpeed) {
-                        _vel = awayFromEnemyDir * kMaxBounceSpeed;
-                    }
-                    playerPos = _lastKnownDashTarget + awayFromEnemyDir * dashTarget->_bounceRadius;
-                    _dashTimer = 0.25f * _dashTime;
-                }
-            } else if (_useLastKnownDashTarget) {
+            if (_useLastKnownDashTarget) {
                 Vec3 playerToTargetDir = _lastKnownDashTarget - playerPos;
                 float dotP = Vec3::Dot(playerToTargetDir, _vel);
                 if (dotP < 0.f) {

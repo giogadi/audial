@@ -16,7 +16,6 @@
         "SetNewFlowSection",
         "AddToIntVariable",
         "CameraControl",
-        "SpawnEnemy",
         "SetEntityActive",
         "ChangeStepSeqMaxVoices",
         "ChangePatch",

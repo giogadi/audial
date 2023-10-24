@@ -88,7 +88,6 @@ add_executable(game
 
     src/seq_action.cpp src/seq_action.h
     src/actions.cpp src/actions.h
-    src/seq_actions/spawn_enemy.cpp src/seq_actions/spawn_enemy.h
     src/seq_actions/camera_control.cpp src/seq_actions/camera_control.h
     src/seq_actions/change_patch.cpp src/seq_actions/change_patch.h
     src/seq_actions/vfx_pulse.cpp src/seq_actions/vfx_pulse.h
@@ -97,7 +96,6 @@ add_executable(game
     src/entities/light.cpp src/entities/light.h
     src/entities/camera.cpp src/entities/camera.h    
     src/entities/sequencer.cpp src/entities/sequencer.h
-    src/entities/typing_player.cpp src/entities/typing_player.h
     src/entities/typing_enemy.cpp src/entities/typing_enemy.h
     src/entities/step_sequencer.cpp src/entities/step_sequencer.h
     src/entities/action_sequencer.cpp src/entities/action_sequencer.h
@@ -118,6 +116,7 @@ add_executable(game
     src/enums/Direction.cpp src/enums/Direction.h
     src/enums/WaypointFollowerMode.cpp src/enums/WaypointFollowerMode.h
     src/enums/SeqActionType.cpp src/enums/SeqActionType.h
+    src/enums/TypingEnemyType.cpp src/enums/TypingEnemyType.h
 )
 
 ## GLFW ##

@@ -40,8 +40,6 @@ std::unordered_map<std::string, SeqActionType> const gStringToSeqActionType = {
     
     { "CameraControl", SeqActionType::CameraControl },
     
-    { "SpawnEnemy", SeqActionType::SpawnEnemy },
-    
     { "SetEntityActive", SeqActionType::SetEntityActive },
     
     { "ChangeStepSeqMaxVoices", SeqActionType::ChangeStepSeqMaxVoices },
@@ -89,8 +87,6 @@ char const* gSeqActionTypeStrings[] = {
     "AddToIntVariable",
     
     "CameraControl",
-    
-    "SpawnEnemy",
     
     "SetEntityActive",
     

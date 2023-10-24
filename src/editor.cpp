@@ -16,7 +16,7 @@
 #include "util.h"
 #include "string_util.h"
 
-int gkScriptVersion = 0;
+int gkScriptVersion = 1;
 
 static float gScrollFactorForDebugCameraMove = 1.f;
 
