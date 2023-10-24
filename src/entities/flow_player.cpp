@@ -15,7 +15,7 @@
 
 void FlowPlayerEntity::SaveDerived(serial::Ptree pt) const {
     pt.PutFloat("selection_radius", _selectionRadius);
-    pt.PutFloat("launch_vel", _launchVel);
+    pt.PutFloat("launch_vel", _defaultLaunchVel);
     pt.PutFloat("max_horiz_speed_after_dash", _maxHorizSpeedAfterDash);
     pt.PutFloat("max_vert_speed_after_dash", _maxVertSpeedAfterDash);
     pt.PutFloat("max_overall_speed_after_dash", _maxOverallSpeedAfterDash);
@@ -23,12 +23,11 @@ void FlowPlayerEntity::SaveDerived(serial::Ptree pt) const {
     serial::SaveInNewChildOf(pt, "gravity", _gravity);
     serial::SaveInNewChildOf(pt, "respawn_pos", _respawnPos);
     pt.PutFloat("max_fall_speed", _maxFallSpeed);
-    pt.PutBool("stop_dash_on_pass_enemy", _stopDashOnPassEnemy);
 }
 
 void FlowPlayerEntity::LoadDerived(serial::Ptree pt) {
     _selectionRadius = pt.GetFloat("selection_radius");
-    _launchVel = pt.GetFloat("launch_vel");
+    _defaultLaunchVel = pt.GetFloat("launch_vel");
     pt.TryGetFloat("max_horiz_speed_after_dash", &_maxHorizSpeedAfterDash);
     _maxVertSpeedAfterDash = 0.f;
     pt.TryGetFloat("max_vert_speed_after_dash", &_maxVertSpeedAfterDash);
@@ -39,8 +38,6 @@ void FlowPlayerEntity::LoadDerived(serial::Ptree pt) {
     serial::LoadFromChildOf(pt, "respawn_pos", _respawnPos);
     _maxFallSpeed = 10.f;
     pt.TryGetFloat("max_fall_speed", &_maxFallSpeed);
-    _stopDashOnPassEnemy = true;
-    pt.TryGetBool("stop_dash_on_pass_enemy", &_stopDashOnPassEnemy);
 
     _respawnPos = _initTransform.Pos();
 }
@@ -238,13 +235,21 @@ void FlowPlayerEntity::Update(GameManager& g, float dt) {
         _respawnBeforeFirstDash = false;
         if (nearest->_bounceRadius < 0.f) {
             nearest->OnHit(g);
-        }            
-        Vec3 toEnemyDir = nearest->_transform.GetPos() - playerPos;
+        }
+        Vec3 toEnemyDir;
+        if (nearest->_pushAngleDeg >= 0.f) {
+            float angleRad = nearest->_pushAngleDeg * kDeg2Rad;
+            toEnemyDir._x = -cos(angleRad);
+            toEnemyDir._z = sin(angleRad);
+        } else {
+            toEnemyDir = nearest->_transform.GetPos() - playerPos;
+        }
         toEnemyDir._y = 0.f;
         toEnemyDir.Normalize();
         _isPushDash = _flowPolarity == nearest->_flowPolarity;
         float sign = _isPushDash ? -1.f : 1.f;
-        _vel = toEnemyDir * (sign * _launchVel);
+        float launchVel = (nearest->_dashVelocity >= 0.f) ? nearest->_dashVelocity : _defaultLaunchVel;
+        _vel = toEnemyDir * (sign * launchVel);
         _dashTimer = 0.f;
         _useLastKnownDashTarget = sign > 0.f;
         _dashTargetId = nearest->_id;
@@ -253,6 +258,7 @@ void FlowPlayerEntity::Update(GameManager& g, float dt) {
         _lastDashTargetColor = nearest->_modelColor;
         _lastDashTargetColor._w = 1.f;
         _applyGravityDuringDash = false;
+        _stopDashOnPassEnemy = nearest->_stopOnPass;
             
         for (auto enemyIter = g._neEntityManager->GetIterator(ne::EntityType::TypingEnemy); !enemyIter.Finished(); enemyIter.Next()) {
             TypingEnemyEntity* enemy = (TypingEnemyEntity*) enemyIter.GetEntity();
@@ -316,13 +322,10 @@ void FlowPlayerEntity::Update(GameManager& g, float dt) {
                         _vel = newVel;
                     }
                 }
-                if (passedDashTarget && _stopDashOnPassEnemy) {
-                    doneDashing = true;
-                }
             }
         }
 
-        if (passedDashTarget) {
+        if (passedDashTarget && _stopDashOnPassEnemy) {
             // constexpr float kPassTargetSpeed = 1.f;
             constexpr float kPassTargetSpeed = 0.f;
             float speed = _vel.Normalize();

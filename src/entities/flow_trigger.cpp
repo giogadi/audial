@@ -26,11 +26,16 @@ void FlowTriggerEntity::InitDerived(GameManager& g) {
     }
 
     _isTriggering = false;
+
+    if (_p._executeOnInit) {
+        RunActions(g);
+    }
 }
 
 void FlowTriggerEntity::SaveDerived(serial::Ptree pt) const {
     pt.PutDouble("trigger_delay_beat_time", _p._triggerDelayBeatTime);
     pt.PutBool("on_player_enter", _p._triggerOnPlayerEnter);
+    pt.PutBool("execute_on_init", _p._executeOnInit);
     pt.PutBool("use_trigger_volumes", _p._useTriggerVolumes);
     pt.PutInt("random_action_count", _p._randomActionCount);
     SeqAction::SaveActionsInChildNode(pt, "actions", _p._actions);
@@ -42,6 +47,7 @@ void FlowTriggerEntity::LoadDerived(serial::Ptree pt) {
     _p = Props();
     pt.TryGetDouble("trigger_delay_beat_time", &_p._triggerDelayBeatTime);
     pt.TryGetBool("on_player_enter", &_p._triggerOnPlayerEnter);
+    pt.TryGetBool("execute_on_init", &_p._executeOnInit);
     pt.TryGetBool("use_trigger_volumes", &_p._useTriggerVolumes);
     pt.TryGetInt("random_action_count", &_p._randomActionCount);
     SeqAction::LoadActionsFromChildNode(pt, "actions", _p._actions);
@@ -53,6 +59,7 @@ FlowTriggerEntity::ImGuiResult FlowTriggerEntity::ImGuiDerived(GameManager& g)  
     ImGuiResult result = ImGuiResult::Done;
     ImGui::InputDouble("Trigger delay (beats)", &_p._triggerDelayBeatTime);
     ImGui::Checkbox("On player enter", &_p._triggerOnPlayerEnter);
+    ImGui::Checkbox("Execute on Init", &_p._executeOnInit);
     ImGui::Checkbox("Use trigger volumes", &_p._useTriggerVolumes);
     ImGui::InputInt("Rand action count", &_p._randomActionCount);
     bool needsInit = SeqAction::ImGui("Actions", _p._actions);

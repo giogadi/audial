@@ -34,6 +34,9 @@ struct TypingEnemyEntity : public ne::Entity {
     float _cooldownQuantizeDenom = 0.f;
     bool _initHittable = true;
     float _bounceRadius = -1;
+    bool _stopOnPass = true;
+    float _dashVelocity = -1.f;  // if <0, use player's default dash velocity
+    float _pushAngleDeg = -1.f; // if <0, just use angle-to-player
     
     // non-serialized
     int _numHits = 0;

@@ -9,15 +9,14 @@
 struct FlowPlayerEntity : public ne::Entity {
     // serialized
     float _selectionRadius = -1.f;  // ignored if < 0
-    float _launchVel = 4.f; // > 0
+    float _defaultLaunchVel = 4.f; // > 0
     Vec3 _gravity = Vec3(0.f, 0.f, 9.81f);
     float _maxHorizSpeedAfterDash = 2.f;
     float _maxVertSpeedAfterDash = 0.f;
     float _maxOverallSpeedAfterDash = -1.f;
     float _dashTime = 0.5f;
     Vec3 _respawnPos;
-    float _maxFallSpeed = 10.f;
-    bool _stopDashOnPassEnemy = true;
+    float _maxFallSpeed = 10.f;    
 
     // non-serialized
     Vec3 _vel;
@@ -41,6 +40,7 @@ struct FlowPlayerEntity : public ne::Entity {
     bool _applyGravityDuringDash = false;
     bool _respawnBeforeFirstDash = true;
     ne::EntityId _toActivateOnRespawn;
+    bool _stopDashOnPassEnemy = true;
 
     void DrawPlayer(GameManager& g);
     void Respawn(GameManager &g);

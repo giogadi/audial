@@ -93,6 +93,15 @@ void TypingEnemyEntity::LoadDerived(serial::Ptree pt) {
     _initHittable = true;
     pt.TryGetBool("init_hittable", &_initHittable);
 
+    _stopOnPass = true;
+    pt.TryGetBool("stop_on_pass", &_stopOnPass);
+
+    _dashVelocity = -1.f;
+    pt.TryGetFloat("dash_vel", &_dashVelocity);
+
+    _pushAngleDeg = -1.f;
+    pt.TryGetFloat("push_angle_deg", &_pushAngleDeg);
+
     _activeRegionEditorId = EditorId();
     serial::LoadFromChildOf(pt, "active_region_editor_id", _activeRegionEditorId);
 
@@ -130,6 +139,9 @@ void TypingEnemyEntity::SaveDerived(serial::Ptree pt) const {
     pt.PutFloat("cooldown_quantize_denom", _cooldownQuantizeDenom);
     pt.PutBool("reset_cooldown_on_any_hit", _resetCooldownOnAnyHit);
     pt.PutBool("init_hittable", _initHittable);
+    pt.PutBool("stop_on_pass", _stopOnPass);
+    pt.PutFloat("dash_vel", _dashVelocity);
+    pt.PutFloat("push_angle_deg", _pushAngleDeg);
     serial::SaveInNewChildOf(pt, "active_region_editor_id", _activeRegionEditorId);
     SeqAction::SaveActionsInChildNode(pt, "hit_actions", _hitActions);
     SeqAction::SaveActionsInChildNode(pt, "all_hit_actions", _allHitActions);
@@ -164,6 +176,9 @@ ne::BaseEntity::ImGuiResult TypingEnemyEntity::ImGuiDerived(GameManager& g) {
     ImGui::Checkbox("Show beats left", &_showBeatsLeft);
     ImGui::Checkbox("Reset cooldown on any hit", &_resetCooldownOnAnyHit);
     ImGui::Checkbox("Init hittable", &_initHittable);
+    ImGui::Checkbox("Stop on pass", &_stopOnPass);
+    ImGui::InputFloat("Dash vel", &_dashVelocity);
+    ImGui::InputFloat("Push angle (deg)", &_pushAngleDeg);
     imgui_util::InputEditorId("Active Region", &_activeRegionEditorId);
     if (ImGui::Button("Set Region color")) {
         if (ne::Entity* e = g._neEntityManager->FindEntityByEditorIdAndType(_activeRegionEditorId, ne::EntityType::Base)) {
@@ -380,7 +395,8 @@ void TypingEnemyEntity::UpdateDerived(GameManager& g, float dt) {
         //    model._explodeDist = factor * kMaxExplode;
         //}
     }
-    else if (_flowCooldownBeatTime > 0.f || !playerWithinRadius) {
+    else if (true) {
+    // else if (_flowCooldownBeatTime > 0.f || !playerWithinRadius || !_hittable) {
         int constexpr kNumStepsX = 2;
         int constexpr kNumStepsZ = 2;
         float constexpr xStep = 1.f / (float) kNumStepsX;
@@ -393,8 +409,13 @@ void TypingEnemyEntity::UpdateDerived(GameManager& g, float dt) {
         // We adjust the scale of localToWorld AFTER setting subdivMat so that
         // changing the scale of localToWorld doesn't make the subdiv dudes
         // bigger
-        if (_flowCooldownStartBeatTime > 0.f || !_hittable) {
-            color._w = 0.5f;
+        if (_flowCooldownStartBeatTime > 0.f || !_hittable || !playerWithinRadius) {
+            color._x *= 0.5f;
+            color._y *= 0.5f;
+            color._z *= 0.5f;
+            // color._w = 0.5f;
+        }
+        if (_flowCooldownStartBeatTime > 0.f /* || !_hittable*/) {
             // timeLeft: [0, flowCooldown] --> [1, explodeScale]
             float constexpr kExplodeMaxScale = 2.f;
             double const cooldownTimeElapsed = math_util::Clamp(beatTime - _flowCooldownStartBeatTime, 0.0, _flowCooldownBeatTime);
