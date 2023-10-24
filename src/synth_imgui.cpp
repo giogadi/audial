@@ -5,6 +5,8 @@
 #include "imgui_util.h"
 #include "math_util.h"
 
+extern int gkScriptVersion;
+
 void RequestSynthParamChange(
     int synthIx, audio::SynthParamType const& param,
     double value, audio::Context& audioContext) {
@@ -38,7 +40,8 @@ void DrawSynthGuiAndUpdatePatch(SynthGuiState& synthGuiState, audio::Context& au
         ImGui::InputText("Save filename", saveFilenameBuffer, 256);
         synthGuiState._saveFilename = saveFilenameBuffer;
         if (ImGui::Button("Save")) {
-            serial::SaveToFile(synthGuiState._saveFilename.c_str(), "patches", *synthGuiState._synthPatches);            
+            serial::SaveToFile(gkScriptVersion, synthGuiState._saveFilename.c_str(), "patches", *synthGuiState._synthPatches);
+            printf("Saved patches to \"%s\"\n", synthGuiState._saveFilename.c_str());
         }
         ImGui::SameLine();
         if (ImGui::Button("Load")) {

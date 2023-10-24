@@ -20,6 +20,7 @@ Ptree Ptree::AddChild(char const* name) {
     ptree& internalChildPt = GetInternal(_internal)->add_child(name, ptree());
     Ptree childPt;
     childPt._internal = (void*)(&internalChildPt);
+    childPt._version = _version;
     return childPt;
 }
 
@@ -28,6 +29,7 @@ Ptree Ptree::GetChild(char const* name) {
     ptree& internalChildPt = GetInternal(_internal)->get_child(name);
     Ptree childPt;
     childPt._internal = (void*)(&internalChildPt);
+    childPt._version = _version;
     return childPt;
 }
 
@@ -37,6 +39,7 @@ Ptree Ptree::TryGetChild(char const* name) {
     Ptree childPt;
     if (maybeChildPtInternal.has_value()) {
         childPt._internal = (void*)(&maybeChildPtInternal.value());
+        childPt._version = _version;
     }
     return childPt;
 }
@@ -206,14 +209,13 @@ double Ptree::GetDoubleValue() {
 NameTreePair* Ptree::GetChildren(int* numChildren) {
     assert(IsValid());
     NameTreePair* children = new NameTreePair[GetInternal(_internal)->size()];
-    // void* rawMemory = malloc(_internal->size() * sizeof(NameTreePair));
-    // NameTreePair* children = static_cast<NameTreePair*>(rawMemory);
     int index = 0;
     ptree* internal = GetInternal(_internal);
     for (auto& item : *internal) {
         NameTreePair& c = children[index];
         c._name = item.first.c_str();
         c._pt._internal = (void*)(&item.second);
+        c._pt._version = _version;
         ++index;
     }
     *numChildren = index;
@@ -222,10 +224,12 @@ NameTreePair* Ptree::GetChildren(int* numChildren) {
 
 Ptree::Ptree(Ptree const& other) {
     _internal = other._internal;
+    _version = other._version;
 }
 
 Ptree& Ptree::operator=(Ptree const& other) {
     _internal = other._internal;
+    _version = other._version;
     return *this;
 }
 
@@ -242,6 +246,22 @@ void Ptree::DeleteData() {
 
 bool Ptree::WriteToFile(char const* filename) {
     assert(_internal != nullptr);
+    {
+        // Check that we have a version in the tree.
+        // TODO this is gross, but it works
+        int numChildren = 0;
+        NameTreePair* children = GetChildren(&numChildren);
+        if (numChildren != 1) {
+            printf("Ptree::WriteToFile: Expected one root node, but got %d!\n", numChildren);
+            return false;
+        }
+        NameTreePair& root = children[0];
+        int version = 0;
+        if (!root._pt.TryGetInt("version", &version)) {
+            printf("Ptree::WriteToFile: while writing to \"%s\", no version node was found! Add one before calling WriteToFile.\n", filename);
+        }
+        delete[] children;
+    }
     std::ofstream outFile(filename);
     if (!outFile.is_open()) {
         printf("Couldn't open file %s for saving. Not saving.\n", filename);
@@ -259,7 +279,19 @@ bool Ptree::LoadFromFile(char const* filename) {
         printf("Couldn't open file %s for loading.\n", filename);
         return false;
     }
-    boost::property_tree::read_xml(inFile, *GetInternal(_internal));
+    boost::property_tree::read_xml(inFile, *GetInternal(_internal));    
+    // Try to read version out of tree
+    // TODO this is gross, but it works
+    int numChildren = 0;
+    NameTreePair* children = GetChildren(&numChildren);
+    if (numChildren != 1) {
+        printf("Ptree::LoadFromFile: Expected one root node, but got %d!\n", numChildren);
+        return false;
+    }
+    NameTreePair& root = children[0];
+    _version = 0;
+    root._pt.TryGetInt("version", &_version);
+    delete[] children;
     return true;
 }
 

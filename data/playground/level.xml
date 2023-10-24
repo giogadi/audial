@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <script>
+    <version>0</version>
     <bpm>140</bpm>
     <ctrl_groups>
         <group0/>
