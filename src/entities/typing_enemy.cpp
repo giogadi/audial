@@ -229,26 +229,147 @@ bool PlayerWithinRadius(FlowPlayerEntity const& player, TypingEnemyEntity const&
     }
     return true;
 }
+
+void DrawPullEnemy(GameManager& g, TypingEnemyEntity const& e, FlowPlayerEntity const* player) {
+    double const beatTime = g._beatClock->GetBeatTimeFromEpoch();
+    
+    bool playerWithinRadius = true;
+    // TODO: we're computing twice per frame whether enemies are within this radius. BORING    
+    if (player) {            
+        playerWithinRadius = PlayerWithinRadius(*player, e, g);
+    }
+
+    bool showControllerInputs;
+    if (g._editMode) {
+        showControllerInputs = g._editor->_showControllerInputs;
+    } else {
+        showControllerInputs = g._inputManager->IsUsingController();
+    }
+
+    //
+    // TEXT DRAWING
+    //
+    {
+        int numFadedButtons = 0;
+        if (e._s._flowCooldownStartBeatTime > 0.f || !e._s._hittable || !playerWithinRadius) {
+            numFadedButtons = e._p._keyText.length();
+        } else {
+            numFadedButtons = e._s._numHits;
+        }
+        float constexpr kFadeAlpha = 0.2f;
+        if (showControllerInputs) {
+            Transform t = e._transform;
+            float const size = 0.25f;
+            t.SetScale(Vec3(size, size, size));
+            t.SetTranslation(e._transform.Pos() + Vec3(-size, 0.f, size));
+            for (int i = 0; i < e._p._buttons.length(); ++i) {
+                InputManager::ControllerButton b = CharToButton(e._p._buttons[i]);
+                renderer::ModelInstance* m = g._scene->DrawPsButton(b, t.Mat4Scale());
+                m->_topLayer = true;
+                if (i < numFadedButtons) {
+                    m->_color._w = kFadeAlpha;
+                }
+                Vec3 p = t.GetPos();
+                p._x += 2 * size;
+                t.SetTranslation(p);
+            }
+        } else {
+            float constexpr kTextSize = 1.5f;
+            std::string_view fadedText = std::string_view(e._p._keyText).substr(0, numFadedButtons);
+            Vec4 color(1.f, 1.f, 1.f, kFadeAlpha);
+            if (!fadedText.empty()) {
+                // AHHHH ALLOCATION
+                g._scene->DrawTextWorld(std::string(fadedText), e._transform.GetPos(), kTextSize, color);
+            }
+            color._w = 1.f;
+            std::string_view activeText = std::string_view(e._p._keyText).substr(numFadedButtons);
+            if (!activeText.empty()) {
+                bool appendToPrevious = numFadedButtons > 0;
+                // AHHHH ALLOCATION
+                g._scene->DrawTextWorld(std::string(activeText), e._transform.GetPos(), kTextSize, color, appendToPrevious);
+            }
+        }
+    }
+    
+    int constexpr kNumStepsX = 2;
+    int constexpr kNumStepsZ = 2;
+    float constexpr xStep = 1.f / (float) kNumStepsX;
+    float constexpr zStep = 1.f / (float) kNumStepsZ;
+    Mat4 localToWorld = e._transform.Mat4Scale();
+    Mat4 subdivMat = localToWorld;
+    // subdivMat.Scale(xStep * 0.8f, 1.f, zStep * 0.8f);
+    subdivMat.Scale(xStep * 0.8f, xStep * 0.8f, zStep * 0.8f);
+    Vec4 color = e._s._currentColor;
+    // We adjust the scale of localToWorld AFTER setting subdivMat so that
+    // changing the scale of localToWorld doesn't make the subdiv dudes
+    // bigger
+    if (e._s._flowCooldownStartBeatTime > 0.f || !e._s._hittable || !playerWithinRadius) {
+        color._x *= 0.5f;
+        color._y *= 0.5f;
+        color._z *= 0.5f;
+        // color._w = 0.5f;
+    }
+    if (e._s._flowCooldownStartBeatTime > 0.f /* || !_hittable*/) {
+        // timeLeft: [0, flowCooldown] --> [1, explodeScale]
+        float constexpr kExplodeMaxScale = 2.f;
+        double const cooldownTimeElapsed = math_util::Clamp(beatTime - e._s._flowCooldownStartBeatTime, 0.0, e._p._flowCooldownBeatTime);
+        float factor = 1.f;
+        if (e._s._flowCooldownStartBeatTime > 0.f) {
+            factor = 1.f - static_cast<float>(cooldownTimeElapsed / e._p._flowCooldownBeatTime);
+            factor = math_util::SmoothStep(factor);
+        }
+        float explodeScale = 1.f + factor * (kExplodeMaxScale - 1.f);
+        localToWorld.Scale(explodeScale, 1.f, explodeScale);
+        if (e._p._showBeatsLeft) {
+            float constexpr kBeatCellSize = 0.25f;
+            float constexpr kSpacing = 0.1f;
+            float constexpr kRowSpacing = 0.1f;
+            float constexpr kRowLength = 4.f * kBeatCellSize + (3.f) * kSpacing;
+            float const totalBeats = std::ceil(e._p._flowCooldownBeatTime);
+            int const numRows = ((static_cast<int>(totalBeats) - 1) / 4) + 1;
+            float const vertSize = numRows * kBeatCellSize + (numRows - 1) * kRowSpacing;
+            float const rowStartXPos = e._transform.GetPos()._x - 0.5f * kRowLength;
+            float const rowStartZPos = e._transform.GetPos()._z - 0.5f - vertSize;
+            Vec3 firstBeatPos = e._transform.GetPos() + Vec3(rowStartXPos, 0.f, rowStartZPos);
+            Mat4 m;
+            m.SetTranslation(firstBeatPos);
+            m.ScaleUniform(kBeatCellSize);
+            int const numLeft = static_cast<int>(std::ceil(e._p._flowCooldownBeatTime - cooldownTimeElapsed));
+            for (int row = 0, beatIx = 0; row < numRows; ++row) {
+                for (int col = 0; col < 4 && beatIx < numLeft; ++col, ++beatIx) {
+                    Vec3 p(rowStartXPos + col * (kSpacing + kBeatCellSize), 0.f, rowStartZPos + row * (kRowSpacing + kBeatCellSize));
+                    m.SetTranslation(p);
+                    g._scene->DrawCube(m, Vec4(0.f, 1.f, 0.f, 1.f));
+                }
+            }
+        }
+    }
+        
+    Vec4 localPos(-0.5f + 0.5f * xStep, 0.f, -0.5f + 0.5f * zStep, 1.f);
+    for (int z = 0; z < kNumStepsZ; ++z) {
+        localPos._x = -0.5f + 0.5f * xStep;
+        for (int x = 0; x < kNumStepsX; ++x) {
+            Vec4 worldPos = localToWorld * localPos;
+            subdivMat.SetCol(3, worldPos);
+            g._scene->DrawCube(subdivMat, color);
+            localPos._x += xStep;
+        }
+        localPos._z += zStep;
+    }
 }
 
-#define CHUNKED_SPHERE 1
+void DrawPushEnemy(GameManager& g, TypingEnemyEntity const& e, FlowPlayerEntity const* player) {
+    DrawPullEnemy(g, e, player);
+}
+}
 
 void TypingEnemyEntity::UpdateDerived(GameManager& g, float dt) {      
-    bool playerWithinRadius = true;
-
     if (!g._editMode) {
         Vec3 p  = _transform.GetPos();
     
         Vec3 dp = _s._velocity * dt;
         p += dp;
-        _transform.SetTranslation(p);
-
-        // TODO: we're computing twice per frame whether enemies are within this radius. BORING
-        FlowPlayerEntity* player = static_cast<FlowPlayerEntity*>(g._neEntityManager->GetFirstEntityOfType(ne::EntityType::FlowPlayer));
-        if (player) {
-            
-            playerWithinRadius = PlayerWithinRadius(*player, *this, g);
-        }        
+        _transform.SetTranslation(p);        
     }
 
     double const beatTime = g._beatClock->GetBeatTimeFromEpoch();
@@ -263,129 +384,24 @@ void TypingEnemyEntity::UpdateDerived(GameManager& g, float dt) {
             _s._numHits = 0;
             _s._timeOfLastHit = -1.0;
         }
-    }
+    }    
+}
 
-    bool showControllerInputs;
-    if (g._editMode) {
-        showControllerInputs = g._editor->_showControllerInputs;
-    } else {
-        showControllerInputs = g._inputManager->IsUsingController();
-    }
-    
-    {
-        int numFadedButtons = 0;
-        if (_s._flowCooldownStartBeatTime > 0.f || !_s._hittable || !playerWithinRadius) {
-            numFadedButtons = _p._keyText.length();
-        } else {
-            numFadedButtons = _s._numHits;
-        }
-        float constexpr kFadeAlpha = 0.2f;
-        if (showControllerInputs) {
-            Transform t = _transform;
-            float const size = 0.25f;
-            t.SetScale(Vec3(size, size, size));
-            t.SetTranslation(_transform.Pos() + Vec3(-size, 0.f, size));
-            for (int i = 0; i < _p._buttons.length(); ++i) {
-                InputManager::ControllerButton b = CharToButton(_p._buttons[i]);
-                renderer::ModelInstance* m = g._scene->DrawPsButton(b, t.Mat4Scale());
-                m->_topLayer = true;
-                if (i < numFadedButtons) {
-                    m->_color._w = kFadeAlpha;
-                }
-                Vec3 p = t.GetPos();
-                p._x += 2 * size;
-                t.SetTranslation(p);
-            }
-        } else {
-            float constexpr kTextSize = 1.5f;
-            std::string_view fadedText = std::string_view(_p._keyText).substr(0, numFadedButtons);
-            Vec4 color(1.f, 1.f, 1.f, kFadeAlpha);
-            if (!fadedText.empty()) {
-                // AHHHH ALLOCATION
-                g._scene->DrawTextWorld(std::string(fadedText), _transform.GetPos(), kTextSize, color);
-            }
-            color._w = 1.f;
-            std::string_view activeText = std::string_view(_p._keyText).substr(numFadedButtons);
-            if (!activeText.empty()) {
-                bool appendToPrevious = numFadedButtons > 0;
-                // AHHHH ALLOCATION
-                g._scene->DrawTextWorld(std::string(activeText), _transform.GetPos(), kTextSize, color, appendToPrevious);
-            }
-        }
-    }
+void TypingEnemyEntity::Draw(GameManager& g, float dt) {
 
-    if (true) {
-    // else if (_flowCooldownBeatTime > 0.f || !playerWithinRadius || !_hittable) {
-        int constexpr kNumStepsX = 2;
-        int constexpr kNumStepsZ = 2;
-        float constexpr xStep = 1.f / (float) kNumStepsX;
-        float constexpr zStep = 1.f / (float) kNumStepsZ;
-        Mat4 localToWorld = _transform.Mat4Scale();
-        Mat4 subdivMat = localToWorld;
-        // subdivMat.Scale(xStep * 0.8f, 1.f, zStep * 0.8f);
-        subdivMat.Scale(xStep * 0.8f, xStep * 0.8f, zStep * 0.8f);
-        Vec4 color = _s._currentColor;
-        // We adjust the scale of localToWorld AFTER setting subdivMat so that
-        // changing the scale of localToWorld doesn't make the subdiv dudes
-        // bigger
-        if (_s._flowCooldownStartBeatTime > 0.f || !_s._hittable || !playerWithinRadius) {
-            color._x *= 0.5f;
-            color._y *= 0.5f;
-            color._z *= 0.5f;
-            // color._w = 0.5f;
-        }
-        if (_s._flowCooldownStartBeatTime > 0.f /* || !_hittable*/) {
-            // timeLeft: [0, flowCooldown] --> [1, explodeScale]
-            float constexpr kExplodeMaxScale = 2.f;
-            double const cooldownTimeElapsed = math_util::Clamp(beatTime - _s._flowCooldownStartBeatTime, 0.0, _p._flowCooldownBeatTime);
-            float factor = 1.f;
-            if (_s._flowCooldownStartBeatTime > 0.f) {
-                factor = 1.f - static_cast<float>(cooldownTimeElapsed / _p._flowCooldownBeatTime);
-                factor = math_util::SmoothStep(factor);
-            }
-            float explodeScale = 1.f + factor * (kExplodeMaxScale - 1.f);
-            localToWorld.Scale(explodeScale, 1.f, explodeScale);
-            if (_p._showBeatsLeft) {
-                float constexpr kBeatCellSize = 0.25f;
-                float constexpr kSpacing = 0.1f;
-                float constexpr kRowSpacing = 0.1f;
-                float constexpr kRowLength = 4.f * kBeatCellSize + (3.f) * kSpacing;
-                float const totalBeats = std::ceil(_p._flowCooldownBeatTime);
-                int const numRows = ((static_cast<int>(totalBeats) - 1) / 4) + 1;
-                float const vertSize = numRows * kBeatCellSize + (numRows - 1) * kRowSpacing;
-                float const rowStartXPos = _transform.GetPos()._x - 0.5f * kRowLength;
-                float const rowStartZPos = _transform.GetPos()._z - 0.5f - vertSize;
-                Vec3 firstBeatPos = _transform.GetPos() + Vec3(rowStartXPos, 0.f, rowStartZPos);
-                Mat4 m;
-                m.SetTranslation(firstBeatPos);
-                m.ScaleUniform(kBeatCellSize);
-                int const numLeft = static_cast<int>(std::ceil(_p._flowCooldownBeatTime - cooldownTimeElapsed));
-                for (int row = 0, beatIx = 0; row < numRows; ++row) {
-                    for (int col = 0; col < 4 && beatIx < numLeft; ++col, ++beatIx) {
-                        Vec3 p(rowStartXPos + col * (kSpacing + kBeatCellSize), 0.f, rowStartZPos + row * (kRowSpacing + kBeatCellSize));
-                        m.SetTranslation(p);
-                        g._scene->DrawCube(m, Vec4(0.f, 1.f, 0.f, 1.f));
-                    }
-                }
-            }
-        }
-        
-        Vec4 localPos(-0.5f + 0.5f * xStep, 0.f, -0.5f + 0.5f * zStep, 1.f);
-        for (int z = 0; z < kNumStepsZ; ++z) {
-            localPos._x = -0.5f + 0.5f * xStep;
-            for (int x = 0; x < kNumStepsX; ++x) {
-                Vec4 worldPos = localToWorld * localPos;
-                subdivMat.SetCol(3, worldPos);
-                g._scene->DrawCube(subdivMat, color);
-                localPos._x += xStep;
-            }
-            localPos._z += zStep;
-        }
-    } else {
-        if (_model != nullptr) {
-            g._scene->DrawMesh(_model, _transform.Mat4Scale(), _s._currentColor);
-        }
-    }   
+    FlowPlayerEntity* player = static_cast<FlowPlayerEntity*>(g._neEntityManager->GetFirstEntityOfType(ne::EntityType::FlowPlayer));
+
+    switch (_p._enemyType) {
+        case TypingEnemyType::Pull:
+            DrawPullEnemy(g, *this, player);
+            break;
+        case TypingEnemyType::Push:
+            DrawPushEnemy(g, *this, player);
+            break;
+        case TypingEnemyType::Count:
+            assert(false);
+            break;
+    }    
 }
 
 void TypingEnemyEntity::OnHit(GameManager& g) {

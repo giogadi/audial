@@ -57,7 +57,7 @@ struct TypingEnemyEntity : public ne::Entity {
     
     virtual void InitDerived(GameManager& g) override;
     virtual void UpdateDerived(GameManager& g, float dt) override;
-    virtual void Draw(GameManager& g, float dt) override {};
+    virtual void Draw(GameManager& g, float dt) override;
     /* virtual void Destroy(GameManager& g) {} */
     virtual void OnEditPick(GameManager& g) override;
     /* virtual void DebugPrint(); */
