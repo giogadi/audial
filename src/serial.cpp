@@ -13,6 +13,8 @@ namespace {
     ptree* GetInternal(void* p) {
         return (ptree*)p;
     }
+
+    int const kBinaryVersion = 1;
 }
 
 Ptree Ptree::AddChild(char const* name) {
@@ -246,29 +248,21 @@ void Ptree::DeleteData() {
 
 bool Ptree::WriteToFile(char const* filename) {
     assert(_internal != nullptr);
-    {
-        // Check that we have a version in the tree.
-        // TODO this is gross, but it works
-        int numChildren = 0;
-        NameTreePair* children = GetChildren(&numChildren);
-        if (numChildren != 1) {
-            printf("Ptree::WriteToFile: Expected one root node, but got %d!\n", numChildren);
-            return false;
-        }
-        NameTreePair& root = children[0];
-        int version = 0;
-        if (!root._pt.TryGetInt("version", &version)) {
-            printf("Ptree::WriteToFile: while writing to \"%s\", no version node was found! Add one before calling WriteToFile.\n", filename);
-        }
-        delete[] children;
-    }
+    Ptree versionedPt = MakeNew();
+    Ptree rootPt = versionedPt.AddChild("root");
+    rootPt.PutInt("version", kBinaryVersion);
+    boost::property_tree::ptree* rootInternal = GetInternal(rootPt._internal);
+    // Get single root of content tree
+    auto& contentRoot = GetInternal(_internal)->front();
+    rootInternal->push_back(contentRoot);
     std::ofstream outFile(filename);
     if (!outFile.is_open()) {
         printf("Couldn't open file %s for saving. Not saving.\n", filename);
         return false;
     }
     boost::property_tree::xml_parser::xml_writer_settings<std::string> settings(' ', 4);
-    boost::property_tree::write_xml(outFile, *GetInternal(_internal), settings);
+    boost::property_tree::write_xml(outFile, *GetInternal(versionedPt._internal), settings);
+    versionedPt.DeleteData();
     return true;
 }
 
@@ -279,19 +273,22 @@ bool Ptree::LoadFromFile(char const* filename) {
         printf("Couldn't open file %s for loading.\n", filename);
         return false;
     }
-    boost::property_tree::read_xml(inFile, *GetInternal(_internal));    
-    // Try to read version out of tree
-    // TODO this is gross, but it works
-    int numChildren = 0;
-    NameTreePair* children = GetChildren(&numChildren);
-    if (numChildren != 1) {
-        printf("Ptree::LoadFromFile: Expected one root node, but got %d!\n", numChildren);
-        return false;
-    }
-    NameTreePair& root = children[0];
+    GetInternal(_internal)->clear();
     _version = 0;
-    root._pt.TryGetInt("version", &_version);
-    delete[] children;
+    boost::property_tree::ptree versionedInternal;
+    boost::property_tree::read_xml(inFile, versionedInternal);
+    try {
+        boost::property_tree::ptree& rootInternal = versionedInternal.get_child("root");
+        boost::property_tree::ptree::const_iterator iter = rootInternal.begin();        
+        if (iter->first == "version") {
+            _version = iter->second.get_value<int>();
+            ++iter;
+        }
+        GetInternal(_internal)->push_back(*iter);
+    } catch (std::exception& e) {
+        *GetInternal(_internal) = versionedInternal;
+    }
+    
     return true;
 }
 

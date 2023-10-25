@@ -113,10 +113,9 @@ inline bool TryGetEnum(Ptree pt, char const* name, E& v) {
 }
 
 template <typename T>
-inline bool SaveToFile(int const version, char const* filename, char const* rootName, T const& v) {
+inline bool SaveToFile(char const* filename, char const* rootName, T const& v) {
     serial::Ptree pt = serial::Ptree::MakeNew();
     serial::Ptree root = pt.AddChild(rootName);
-    root.PutInt("version", version);
     v.Save(root);
     bool success = pt.WriteToFile(filename);
     pt.DeleteData();

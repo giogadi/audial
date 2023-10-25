@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
+<root>
+<version>1</version>
 <script>
-    <version>1</version>
     <bpm>100</bpm>
     <ctrl_groups>
         <group0/>
@@ -20695,3 +20696,4 @@
         </FlowWall>
     </new_entities>
 </script>
+</root>

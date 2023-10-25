@@ -16,8 +16,6 @@
 #include "util.h"
 #include "string_util.h"
 
-int gkScriptVersion = 1;
-
 static float gScrollFactorForDebugCameraMove = 1.f;
 
 static std::vector<ne::EntityId> gControlGroups[10];
@@ -476,7 +474,6 @@ void Editor::DrawWindow() {
     if (ImGui::Button("Save")) {
         serial::Ptree pt = serial::Ptree::MakeNew();
         serial::Ptree scriptPt = pt.AddChild("script");
-        scriptPt.PutInt("version", gkScriptVersion);
         scriptPt.PutDouble("bpm", _g->_beatClock->GetBpm());
         Save(scriptPt);
         serial::Ptree entitiesPt = scriptPt.AddChild("new_entities");
