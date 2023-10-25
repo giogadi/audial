@@ -5,47 +5,57 @@
 #include <optional>
 
 #include "new_entity.h"
+#include "enums/TypingEnemyType.h"
 
 struct FlowPlayerEntity : public ne::Entity {
-    // serialized
-    float _defaultLaunchVel = 4.f; // > 0
-    Vec3 _gravity = Vec3(0.f, 0.f, 9.81f);
-    float _maxHorizSpeedAfterDash = 2.f;
-    float _maxVertSpeedAfterDash = 0.f;
-    float _maxOverallSpeedAfterDash = -1.f;
-    float _dashTime = 0.5f;
-    Vec3 _respawnPos;
-    float _maxFallSpeed = 10.f;    
+    struct Props {
+        float _defaultLaunchVel = 4.f; // > 0
+        Vec3 _gravity = Vec3(0.f, 0.f, 9.81f);
+        float _maxHorizSpeedAfterDash = 2.f;
+        float _maxVertSpeedAfterDash = 0.f;
+        float _maxOverallSpeedAfterDash = -1.f;
+        float _dashTime = 0.5f;
+        float _maxFallSpeed = 10.f;
+    };
+    Props _p;
 
-    // non-serialized
-    Vec3 _vel;
-    // TODO: use a ring buffer instead. maybe stack would work too
-    std::deque<Vec3> _posHistory;  // start is most recent
-    int _framesSinceLastSample = 0;
-    int _currentSectionId = -1;
-    ne::EntityId _cameraId;
-    float _dashTimer = -1.f;
-    bool _isPushDash = false;
-    ne::EntityId _dashTargetId;
-    Vec3 _lastKnownDashTarget;
-    bool _useLastKnownDashTarget = false;
-    Vec4 _lastDashTargetColor;
-    Vec4 _currentColor;
-    double _countOffEndTime = 3.0;
-    std::optional<float> _killMaxZ;  // kill/respawn if player goes over this value
-    bool _killIfBelowCameraView = false;
-    bool _killIfLeftOfCameraView = false;
-    bool _applyGravityDuringDash = false;
-    bool _respawnBeforeFirstDash = true;
-    ne::EntityId _toActivateOnRespawn;
-    bool _stopDashOnPassEnemy = true;
+    enum class MoveState {
+        Default, WallBounce, EnemyInteract
+    };
+    struct State {
+        MoveState _moveState = MoveState::Default;
+        TypingEnemyType _enemyInteractType = TypingEnemyType::Pull; // only meaningful if _moveState == EnemyInteract       
+        Vec3 _vel;
+        // TODO: use a ring buffer instead. maybe stack would work too
+        std::deque<Vec3> _posHistory;  // start is most recent
+        int _framesSinceLastSample = 0;
+        int _currentSectionId = -1;
+        ne::EntityId _cameraId;
+        float _dashTimer = -1.f;
+        bool _isPushDash = false;
+        ne::EntityId _dashTargetId;
+        Vec3 _lastKnownDashTarget;
+        bool _useLastKnownDashTarget = false;
+        Vec4 _lastDashTargetColor;
+        Vec4 _currentColor;
+        double _countOffEndTime = 3.0;
+        std::optional<float> _killMaxZ;  // kill/respawn if player goes over this value
+        bool _killIfBelowCameraView = false;
+        bool _killIfLeftOfCameraView = false;
+        bool _applyGravityDuringDash = false;
+        bool _respawnBeforeFirstDash = true;
+        ne::EntityId _toActivateOnRespawn;
+        bool _stopDashOnPassEnemy = true;
+        Vec3 _respawnPos;
+    };
+    State _s;    
 
-    void DrawPlayer(GameManager& g);
     void Respawn(GameManager &g);
     void SetNewSection(GameManager& g, int newSectionId);
     
     virtual void InitDerived(GameManager& g) override;
-    virtual void Update(GameManager& g, float dt) override;
+    virtual void UpdateDerived(GameManager& g, float dt) override;
+    virtual void Draw(GameManager& g, float dt) override;
     /* virtual void Destroy(GameManager& g) {} */
     /* virtual void OnEditPick(GameManager& g) {} */
     /* virtual void DebugPrint(); */

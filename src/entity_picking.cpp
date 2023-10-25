@@ -262,23 +262,52 @@ ne::Entity* PickEntity(
     return closestPickItem;
 }
 
-void PickEntities(ne::EntityManager& entityMgr, double clickX, double clickY, int windowWidth, int windowHeight, renderer::Camera const& camera, std::vector<std::pair<ne::Entity*, float>>& entityDistPairs) {
+void PickEntities(ne::EntityManager& entityMgr, double clickX, double clickY, int windowWidth, int windowHeight, renderer::Camera const& camera, bool ignorePickable, std::vector<std::pair<ne::Entity*, float>>& entityDistPairs) {
     Vec3 rayStart;
     Vec3 rayDir;
     if (!GetPickRay(clickX, clickY, windowWidth, windowHeight, camera, &rayStart, &rayDir)) {
         return;
     }
 
+    std::vector<ne::Entity*> entities;
     for (auto iter = entityMgr.GetAllIterator(); !iter.Finished(); iter.Next()) {
-        ne::Entity& entity = *iter.GetEntity();
-        if (!entity._pickable) {
+        ne::Entity* entity = iter.GetEntity();
+        if (entity == nullptr) {
             continue;
         }
-        std::optional<float> hitDist = EntityRaycast(entity, rayStart, rayDir);
+        if (!ignorePickable && !entity->_pickable) {
+            continue;
+        }
+        entities.push_back(entity);
+    }
+    for (auto iter = entityMgr.GetAllInactiveIterator(); !iter.Finished(); iter.Next()) {
+        ne::Entity* entity = iter.GetEntity();
+        if (entity == nullptr) {
+            continue;
+        }
+        if (!ignorePickable && !entity->_pickable) {
+            continue;
+        }
+        entities.push_back(entity);
+    }
+
+    for (ne::Entity* entity : entities) {
+        std::optional<float> hitDist = EntityRaycast(*entity, rayStart, rayDir);
         if (hitDist.has_value()) {
-            entityDistPairs.push_back(std::make_pair(&entity, *hitDist));            
+            entityDistPairs.push_back(std::make_pair(entity, *hitDist));            
         }
     }
+
+    // for (auto iter = entityMgr.GetAllIterator(); !iter.Finished(); iter.Next()) {
+    //     ne::Entity& entity = *iter.GetEntity();
+    //     if (!ignorePickable && !entity._pickable) {
+    //         continue;
+    //     }
+    //     std::optional<float> hitDist = EntityRaycast(entity, rayStart, rayDir);
+    //     if (hitDist.has_value()) {
+    //         entityDistPairs.push_back(std::make_pair(&entity, *hitDist));            
+    //     }
+    // }
 
     std::sort(entityDistPairs.begin(), entityDistPairs.end(),
               [](std::pair<ne::Entity*, float> const& lhs,

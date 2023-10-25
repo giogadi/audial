@@ -28,4 +28,4 @@ std::optional<float> PickEntity(ne::Entity const& entity, double clickX, double 
 
 // Returns picked entities sorted by increasing dist from camera. does NOT clear
 // entityDistPairs!
-void PickEntities(ne::EntityManager& entityMgr, double clickX, double clickY, int windowWidth, int windowHeight, renderer::Camera const& camera, std::vector<std::pair<ne::Entity*, float>>& entityDistPairs);
+void PickEntities(ne::EntityManager& entityMgr, double clickX, double clickY, int windowWidth, int windowHeight, renderer::Camera const& camera, bool ignorePickable, std::vector<std::pair<ne::Entity*, float>>& entityDistPairs);

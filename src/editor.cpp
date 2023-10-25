@@ -176,7 +176,8 @@ void Editor::HandleEntitySelectAndMove(float deltaTime) {
             inputManager.GetMousePos(mouseX, mouseY);
             static std::vector<std::pair<ne::Entity*, float>> entityDistPairs;
             entityDistPairs.clear();
-            PickEntities(*_g->_neEntityManager, mouseX, mouseY, _g->_windowWidth, _g->_windowHeight, _g->_scene->_camera, entityDistPairs);
+            bool const ignorePickable = inputManager.IsAltPressed();
+            PickEntities(*_g->_neEntityManager, mouseX, mouseY, _g->_windowWidth, _g->_windowHeight, _g->_scene->_camera, ignorePickable, entityDistPairs);
             if (entityDistPairs.empty()) {
                 if (!inputManager.IsShiftPressed()) {
                     _selectedEntityIds.clear();

@@ -534,9 +534,9 @@ bool PlayerSetKillZoneSeqAction::ImGui() {
 
 void PlayerSetKillZoneSeqAction::ExecuteDerived(GameManager& g) {
     FlowPlayerEntity* pPlayer = static_cast<FlowPlayerEntity*>(g._neEntityManager->GetFirstEntityOfType(ne::EntityType::FlowPlayer));
-    pPlayer->_killMaxZ = _maxZ;
-    pPlayer->_killIfBelowCameraView = _killIfBelowCameraView;
-    pPlayer->_killIfLeftOfCameraView = _killIfLeftOfCameraView;
+    pPlayer->_s._killMaxZ = _maxZ;
+    pPlayer->_s._killIfBelowCameraView = _killIfBelowCameraView;
+    pPlayer->_s._killIfLeftOfCameraView = _killIfLeftOfCameraView;
 }
 
 void SetNewFlowSectionSeqAction::LoadDerived(LoadInputs const& loadInputs, std::istream& input) {
@@ -567,7 +567,7 @@ void SetNewFlowSectionSeqAction::ExecuteDerived(GameManager& g) {
     if (_newSectionId < 0) {
         return;
     }
-    int currentSectionId = pPlayer->_currentSectionId;
+    int currentSectionId = pPlayer->_s._currentSectionId;
     if (currentSectionId == _newSectionId) {
         return;
     }
@@ -616,8 +616,8 @@ void PlayerSetSpawnPointSeqAction::InitDerived(GameManager& g) {
 void PlayerSetSpawnPointSeqAction::ExecuteDerived(GameManager& g) {
     if (g._editMode) { return; }
     FlowPlayerEntity* pPlayer = static_cast<FlowPlayerEntity*>(g._neEntityManager->GetFirstEntityOfType(ne::EntityType::FlowPlayer));
-    pPlayer->_respawnPos = _spawnPos;
-    pPlayer->_toActivateOnRespawn = _actionSeq;
+    pPlayer->_s._respawnPos = _spawnPos;
+    pPlayer->_s._toActivateOnRespawn = _actionSeq;
 }
 
 void AddToIntVariableSeqAction::LoadDerived(LoadInputs const& loadInputs, std::istream& input) {
