@@ -5,6 +5,9 @@
 struct SeqAction;
 
 struct FlowPickupEntity : public ne::Entity {
+    virtual ne::EntityType Type() override { return ne::EntityType::FlowPickup; }
+    static ne::EntityType StaticType() { return ne::EntityType::FlowPickup; }
+    
     // serialized
     std::vector<std::unique_ptr<SeqAction>> _actions;
 

@@ -4,6 +4,9 @@
 #include "beat_time_event.h"
 
 struct SequencerEntity : ne::Entity {
+    virtual ne::EntityType Type() override { return ne::EntityType::Sequencer; }
+    static ne::EntityType StaticType() { return ne::EntityType::Sequencer; }
+    
     // Serialized
     bool _loop = false;
     std::vector<BeatTimeEvent> _events;

@@ -8,6 +8,9 @@
 #include "enums/TypingEnemyType.h"
 
 struct FlowPlayerEntity : public ne::Entity {
+    virtual ne::EntityType Type() override { return ne::EntityType::FlowPlayer; }
+    static ne::EntityType StaticType() { return ne::EntityType::FlowPlayer; }
+    
     struct Props {
         float _defaultLaunchVel = 4.f; // > 0
         Vec3 _gravity = Vec3(0.f, 0.f, 9.81f);

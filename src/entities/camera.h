@@ -9,6 +9,9 @@ namespace renderer {
 }
 
 struct CameraEntity : ne::Entity {
+    virtual ne::EntityType Type() override { return ne::EntityType::Camera; }
+    static ne::EntityType StaticType() { return ne::EntityType::Camera; }
+    
     // serialized
     bool _ortho = false;
     std::string _followEntityName;

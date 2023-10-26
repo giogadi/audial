@@ -4,6 +4,9 @@
 #include "version_id.h"
 
 struct LightEntity : public ne::Entity {
+    virtual ne::EntityType Type() override { return ne::EntityType::Light; }
+    static ne::EntityType StaticType() { return ne::EntityType::Light; }
+    
     // serialized
     Vec3 _ambient;
     Vec3 _diffuse;

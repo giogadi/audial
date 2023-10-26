@@ -10,6 +10,9 @@
 struct FlowPlayerEntity;
 
 struct TypingEnemyEntity : public ne::Entity {
+    virtual ne::EntityType Type() override { return ne::EntityType::TypingEnemy; }
+    static ne::EntityType StaticType() { return ne::EntityType::TypingEnemy; }
+    
     enum class HitBehavior { SingleAction, AllActions };
     
     struct Props {

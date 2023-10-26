@@ -33,6 +33,11 @@ inline int Clamp(int x, int low, int high) {
     return x;
 }
 
+template<typename T>
+inline T ClampAbs(T x, T maxAbsValue) {
+    return Clamp(x, -maxAbsValue, maxAbsValue);
+}
+
 inline float SmoothStep(float x) {
     if (x <= 0) { return 0.f; }
     if (x >= 1.f) { return 1.f; }

@@ -22,6 +22,9 @@ EntityType StringToEntityType(char const* s);
 extern std::size_t const gkEntitySizes[];
 
 struct BaseEntity {
+    virtual EntityType Type() { return EntityType::Base; }
+    static EntityType StaticType() { return EntityType::Base; }
+    
     // serialized
     EditorId _editorId;
     Transform _initTransform;
@@ -81,6 +84,10 @@ struct EntityManager {
     }
     Entity* AddEntity(EntityType entityType, bool active);
     Entity* GetEntity(EntityId id);  // only looks for active entities
+    
+    template<typename T>
+    T* GetEntityAs(EntityId id);
+    
     Entity* GetActiveOrInactiveEntity(EntityId id, bool* active = nullptr) {
         return GetEntity(id, true, true, active);
     }

@@ -9,6 +9,9 @@ namespace synth {
 }
 
 struct IntVariableEntity : public ne::Entity {
+    virtual ne::EntityType Type() override { return ne::EntityType::IntVariable; }
+    static ne::EntityType StaticType() { return ne::EntityType::IntVariable; }
+    
     // serialized
     int _initialValue = -1;
 

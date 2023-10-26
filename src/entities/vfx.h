@@ -5,6 +5,8 @@
 #include "properties/VfxEntity.h"
 
 struct VfxEntity : public ne::Entity {
+    virtual ne::EntityType Type() override { return ne::EntityType::Vfx; }
+    static ne::EntityType StaticType() { return ne::EntityType::Vfx; }
 
     VfxEntityProps _p;
 

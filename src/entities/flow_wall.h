@@ -7,6 +7,9 @@
 #include "enums/WaypointFollowerMode.h"
 
 struct FlowWallEntity : public ne::Entity {
+    virtual ne::EntityType Type() override { return ne::EntityType::FlowWall; }
+    static ne::EntityType StaticType() { return ne::EntityType::FlowWall; }
+    
     // serialized
     WaypointFollowerMode _moveMode;
     RandomWander _randomWander;

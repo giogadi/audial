@@ -7,6 +7,9 @@
 #include "beat_time_event.h"
 
 struct StepSequencerEntity : ne::Entity {
+    virtual ne::EntityType Type() override { return ne::EntityType::StepSequencer; }
+    static ne::EntityType StaticType() { return ne::EntityType::StepSequencer; }
+    
     struct SeqStep {
         SeqStep() {}
         static constexpr int kNumNotes = 4;

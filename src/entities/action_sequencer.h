@@ -5,7 +5,10 @@
 #include "new_entity.h"
 #include "seq_action.h"
 
-struct ActionSequencerEntity : ne::Entity {    
+struct ActionSequencerEntity : ne::Entity {
+    virtual ne::EntityType Type() override { return ne::EntityType::ActionSequencer; }
+    static ne::EntityType StaticType() { return ne::EntityType::ActionSequencer; }
+    
     ActionSequencerEntity() {}
     ActionSequencerEntity(ActionSequencerEntity&&) = default;
     ActionSequencerEntity& operator=(ActionSequencerEntity&&) = default;

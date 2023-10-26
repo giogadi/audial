@@ -4,6 +4,9 @@
 #include "seq_action.h"
 
 struct FlowTriggerEntity : public ne::Entity {
+    virtual ne::EntityType Type() override { return ne::EntityType::FlowTrigger; }
+    static ne::EntityType StaticType() { return ne::EntityType::FlowTrigger; }
+    
     // serialized
     struct Props {
         double _triggerDelayBeatTime = -1.0;

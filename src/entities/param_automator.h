@@ -5,6 +5,9 @@
 #include "properties/SpawnAutomatorSeqAction.h"
 
 struct ParamAutomatorEntity : public ne::Entity {
+    virtual ne::EntityType Type() override { return ne::EntityType::ParamAutomator; }
+    static ne::EntityType StaticType() { return ne::EntityType::ParamAutomator; }
+    
     SpawnAutomatorSeqActionProps _props;
 
     // non-serialized
