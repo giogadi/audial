@@ -100,8 +100,8 @@ void FlowPlayerEntity::Draw(GameManager& g, float const dt) {
          model._topLayer = true;
     }
 
-    if (_s._dashTimer >= 0.f && (_s._useLastKnownDashTarget || _s._isPushDash)) {
-        g._scene->DrawLine(_transform.Pos(), _s._lastKnownDashTarget, _s._lastDashTargetColor);
+    if (_s._moveState == MoveState::EnemyInteract) {
+        g._scene->DrawLine(_transform.Pos(), _s._lastKnownDashTarget, _s._lastKnownDashTargetColor);
     }
 }
 
@@ -111,7 +111,7 @@ void FlowPlayerEntity::Respawn(GameManager& g) {
     _s._framesSinceLastSample = 0;
     _s._vel.Set(0.f,0.f,0.f);
     _s._dashTimer = -1.f;
-    _s._respawnBeforeFirstDash = true;
+    _s._respawnBeforeFirstInteract = true;
 
     // Reset everything from the current section
     for (ne::EntityManager::AllIterator iter = g._neEntityManager->GetAllIterator(); !iter.Finished(); iter.Next()) {
@@ -215,32 +215,54 @@ void FlowPlayerEntity::UpdateDerived(GameManager& g, float dt) {
         }
     }
 
+    //
+    // Check if we start a new enemy interaction
+    // 
     if (nearest != nullptr) {
-        _s._respawnBeforeFirstDash = false;
-        nearest->OnHit(g);
-        Vec3 toEnemyDir;
-        if (nearest->_p._pushAngleDeg >= 0.f) {
-            float angleRad = nearest->_p._pushAngleDeg * kDeg2Rad;
-            toEnemyDir._x = -cos(angleRad);
-            toEnemyDir._z = sin(angleRad);
-        } else {
-            toEnemyDir = nearest->_transform.GetPos() - playerPos;
+        _s._respawnBeforeFirstInteract = false;
+        
+        _s._moveState = MoveState::EnemyInteract;
+        _s._enemyInteractType = nearest->_p._enemyType;
+        _s._interactingEnemyId = nearest->_id;        
+        switch (_s._enemyInteractType) {
+            case TypingEnemyType::Pull:
+                _s._stopDashOnPassEnemy = nearest->_p._stopOnPass;
+                _s._dashTimer = 0.f;
+                _s._passedPullTarget = false;
+                // These will get set to the correct direction later on
+                if (nearest->_p._dashVelocity >= 0.f) {
+                    _s._vel.Set(nearest->_p._dashVelocity, 0.f, 0.f);
+                } else {
+                    _s._vel.Set(_p._defaultLaunchVel, 0.f, 0.f);
+                }
+                break;
+            case TypingEnemyType::Push: {
+                _s._dashTimer = 0.f;
+                if (nearest->_p._pushAngleDeg >= 0.f) {
+                    float angleRad = nearest->_p._pushAngleDeg * kDeg2Rad;
+                    _s._vel._x = cos(angleRad);
+                    _s._vel._y = 0.f;
+                    _s._vel._z = -sin(angleRad);
+                } else {
+                    _s._vel = playerPos - nearest->_transform.GetPos();
+                    _s._vel._y = 0.f;
+                    _s._vel.Normalize();
+                }
+                float launchSpeed;
+                if (nearest->_p._dashVelocity >= 0.f) {
+                    launchSpeed = nearest->_p._dashVelocity;
+                } else {
+                    launchSpeed = _p._defaultLaunchVel;
+                }
+                _s._vel *= launchSpeed;
+            }
+                break;
+            case TypingEnemyType::Count:
+                assert(false);
+                break;
         }
-        toEnemyDir._y = 0.f;
-        toEnemyDir.Normalize();
-        _s._isPushDash = nearest->_p._enemyType == TypingEnemyType::Push;
-        float sign = _s._isPushDash ? -1.f : 1.f;
-        float launchVel = (nearest->_p._dashVelocity >= 0.f) ? nearest->_p._dashVelocity : _p._defaultLaunchVel;
-        _s._vel = toEnemyDir * (sign * launchVel);
-        _s._dashTimer = 0.f;
-        _s._useLastKnownDashTarget = sign > 0.f;
-        _s._dashTargetId = nearest->_id;
-        _s._lastKnownDashTarget = nearest->_transform.Pos();
-        _s._lastKnownDashTarget._y = _transform.Pos()._y;
-        _s._lastDashTargetColor = nearest->_modelColor;
-        _s._lastDashTargetColor._w = 1.f;
-        _s._applyGravityDuringDash = false;
-        _s._stopDashOnPassEnemy = nearest->_p._stopOnPass;
+        
+        nearest->OnHit(g);               
 
         ne::EntityId nearestId = nearest->_id;
         for (auto enemyIter = g._neEntityManager->GetIterator(ne::EntityType::TypingEnemy); !enemyIter.Finished(); enemyIter.Next()) {
@@ -251,98 +273,185 @@ void FlowPlayerEntity::UpdateDerived(GameManager& g, float dt) {
         }
     }
 
-    // Check if we're done dashing
-    {
-        bool doneDashing = false;
-        bool passedDashTarget = false;        
-        if (_s._dashTimer >= _p._dashTime) {
-            doneDashing = true;
-        } else if (_s._dashTimer >= 0.f) {
-            Vec3 playerPos = _transform.Pos();
-            TypingEnemyEntity* dashTarget = static_cast<TypingEnemyEntity*>(g._neEntityManager->GetEntity(_s._dashTargetId));
-            if (dashTarget != nullptr) {
-                _s._lastKnownDashTarget = dashTarget->_transform.Pos();
-                _s._lastKnownDashTarget._y = playerPos._y;
-            }
-            if (_s._useLastKnownDashTarget) {
-                Vec3 playerToTargetDir = _s._lastKnownDashTarget - playerPos;
-                float dotP = Vec3::Dot(playerToTargetDir, _s._vel);
-                if (dotP < 0.f) {
-                    // TODO: do we even need this case? We're already "looking
-                    // ahead" for crossings in the dotPAhead case below.
-                    passedDashTarget = true;
-                    _s._useLastKnownDashTarget = false;
-                    _transform.SetPos(_s._lastKnownDashTarget);
-                } else {
-                    float currentSpeed = _s._vel.Length();
-                    Vec3 newVel = playerToTargetDir.GetNormalized() * currentSpeed;
-                    _s._vel = newVel;
-                    Vec3 newPos = playerPos + newVel * dt;
-                    float dotPAgain = Vec3::Dot(newPos - _s._lastKnownDashTarget, playerPos - _s._lastKnownDashTarget);
-                    if (dotPAgain < 0.f) {
-                        passedDashTarget = true;
-                        _s._useLastKnownDashTarget = false;
-                        _transform.SetPos(_s._lastKnownDashTarget);
-                    } else {
-                        _s._vel = newVel;
+    //
+    // Check if we're done with an existing enemy interaction
+    //
+    if (_s._moveState == MoveState::EnemyInteract) {
+        switch (_s._enemyInteractType) {
+            case TypingEnemyType::Pull: {
+                bool finishedPulling = false;
+                if (_s._dashTimer >= _p._dashTime) {
+                    finishedPulling = true;
+                }
+                if (finishedPulling) {
+                    _s._moveState = MoveState::Default;
+                    if (_p._maxHorizSpeedAfterDash >= 0.f) {
+                        _s._vel._x = math_util::ClampAbs(_s._vel._x, _p._maxHorizSpeedAfterDash);
+                    }
+                    if (_p._maxVertSpeedAfterDash >= 0.f) {
+                        _s._vel._z = math_util::ClampAbs(_s._vel._z, _p._maxVertSpeedAfterDash);
+                    }
+                    if (_p._maxOverallSpeedAfterDash >= 0.f) {
+                        float speed = _s._vel.Normalize();
+                        speed = std::min(_p._maxOverallSpeedAfterDash, speed);
+                        _s._vel *= speed;
                     }
                 }
             }
-        }
-
-        if (passedDashTarget && _s._stopDashOnPassEnemy) {
-            // constexpr float kPassTargetSpeed = 1.f;
-            constexpr float kPassTargetSpeed = 0.f;
-            float speed = _s._vel.Normalize();
-            speed = std::min(speed, kPassTargetSpeed);
-            _s._vel *= speed;
-        }
-
-        if (doneDashing) {
-            if (passedDashTarget) {
-                constexpr float kPassTargetSpeed = 0.f;
-                float speed = _s._vel.Normalize();
-                speed = std::min(speed, kPassTargetSpeed);
-                _s._vel *= speed;
-            } else {
-                if (_p._maxHorizSpeedAfterDash >= 0.f) {
-                    // TODO: make "maxSpeedAfterPush" a separate property.
-                    float const maxSpeed = _s._isPushDash ? 2.f : _p._maxHorizSpeedAfterDash;
-                    _s._vel._x = math_util::Clamp(_s._vel._x, -maxSpeed, maxSpeed);
+                break;
+            case TypingEnemyType::Push: {
+                bool finishedPushing = false;
+                if (_s._dashTimer >= _p._dashTime) {
+                    finishedPushing = true;                    
                 }
-                if (_p._maxVertSpeedAfterDash >= 0.f) {
-                    _s._vel._z = math_util::Clamp(_s._vel._z, -_p._maxVertSpeedAfterDash, _p._maxVertSpeedAfterDash);
-                }
-                if (_p._maxOverallSpeedAfterDash >= 0.f) {
-                    float speed = _s._vel.Normalize();
-                    speed = std::min(_p._maxOverallSpeedAfterDash, speed);
-                    _s._vel *= speed;
+                if (finishedPushing) {
+                    _s._moveState = MoveState::Default;
+                    float maxHorizSpeed = std::max(2.f, _p._maxHorizSpeedAfterDash);
+                    if (_p._maxHorizSpeedAfterDash >= 0.f) {
+                        _s._vel._x = math_util::ClampAbs(_s._vel._x, maxHorizSpeed);
+                    }
+                    if (_p._maxVertSpeedAfterDash >= 0.f) {
+                        _s._vel._z = math_util::ClampAbs(_s._vel._z, _p._maxVertSpeedAfterDash);
+                    }
+                    if (_p._maxOverallSpeedAfterDash >= 0.f) {
+                        float speed = _s._vel.Normalize();
+                        speed = std::min(_p._maxOverallSpeedAfterDash, speed);
+                        _s._vel *= speed;
+                    }
                 }
             }
-            _s._dashTimer = -1.f;
-            _s._dashTargetId = ne::EntityId();
-        }
-    }
-    
-    // Update state based on dash status
-    if (_s._dashTimer >= 0.f) {
-        if (_s._applyGravityDuringDash) {
-            _s._vel += _p._gravity * dt;
-        }
-
-        // Still dashing. maintain velocity.
-        _s._dashTimer += dt;
-    } else {
-        // Not dashing. Apply gravity if we've dashed since respawn.
-        if (!_s._respawnBeforeFirstDash) {
-            _s._vel += _p._gravity * dt;
-            if (_p._maxFallSpeed >= 0.f) {
-                _s._vel._z = std::min(_p._maxFallSpeed, _s._vel._z);
-            }            
+                break;
+            case TypingEnemyType::Count:
+                assert(false);
+                break;
         }
     }
 
-    Vec3 p = _transform.GetPos();
+    //
+    // Check if we're done with WallBounce (back to Default)    
+    //
+    if (_s._moveState == MoveState::WallBounce) {
+        // TODO make this a separate property!
+        float const wallBounceTime = 0.5f * _p._dashTime;
+        if (_s._dashTimer >= wallBounceTime) {
+            _s._moveState = MoveState::Default;
+            // TODO: Should bounce transition be the same as pull's?
+            if (_p._maxHorizSpeedAfterDash >= 0.f) {
+                _s._vel._x = math_util::ClampAbs(_s._vel._x, _p._maxHorizSpeedAfterDash);
+            }
+            if (_p._maxVertSpeedAfterDash >= 0.f) {
+                _s._vel._z = math_util::ClampAbs(_s._vel._z, _p._maxVertSpeedAfterDash);
+            }
+            if (_p._maxOverallSpeedAfterDash >= 0.f) {
+                float speed = _s._vel.Normalize();
+                speed = std::min(_p._maxOverallSpeedAfterDash, speed);
+                _s._vel *= speed;
+            }
+        }
+    }
+
+    //
+    // Update position/velocity/etc based on current state
+    //
+    Vec3 const previousPos = _transform.Pos();
+    Vec3 newPos = previousPos;
+    switch (_s._moveState) {
+        case MoveState::Default: {
+            if (!_s._respawnBeforeFirstInteract) {
+                _s._vel += _p._gravity * dt;
+                if (_p._maxFallSpeed >= 0.f) {
+                    _s._vel._z = std::min(_p._maxFallSpeed, _s._vel._z);
+                }
+            }
+            newPos += _s._vel * dt;
+        }
+            break;
+        case MoveState::WallBounce: {
+            _s._dashTimer += dt;
+            newPos += _s._vel * dt;            
+        }
+            break;
+        case MoveState::EnemyInteract: {
+            if (TypingEnemyEntity* dashTarget = g._neEntityManager->GetEntityAs<TypingEnemyEntity>(_s._interactingEnemyId)) {
+                _s._lastKnownDashTarget = dashTarget->_transform.Pos();
+                _s._lastKnownDashTarget._y = playerPos._y;
+                _s._lastKnownDashTargetColor = dashTarget->_s._currentColor;
+                _s._lastKnownDashTargetColor._w = 1.f;
+            }
+            switch (_s._enemyInteractType) {
+                case TypingEnemyType::Pull: {
+                    _s._dashTimer += dt;
+                    if (_s._passedPullTarget) {
+                        newPos += _s._vel * dt;
+                    } else {
+                        Vec3 playerToTargetDir = _s._lastKnownDashTarget - previousPos;
+                        playerToTargetDir.Normalize();
+                        float currentSpeed = _s._vel.Length();
+                        _s._vel = playerToTargetDir * currentSpeed;
+                        newPos += _s._vel * dt;
+                        Vec3 newPlayerToTarget = _s._lastKnownDashTarget - newPos;
+                        float dotP = Vec3::Dot(newPlayerToTarget, _s._vel);
+                        if (dotP < 0.f) {
+                            // we passed the dash target
+                            _s._passedPullTarget = true;
+                            if (_s._stopDashOnPassEnemy) {
+                                _s._vel.Set(0.f, 0.f, 0.f);
+                                newPos = _s._lastKnownDashTarget;
+                            }
+                        }
+                    }
+                }
+                    break;
+                case TypingEnemyType::Push: {
+                    _s._dashTimer += dt;
+                    newPos += _s._vel * dt;                    
+                }
+                    break;
+                case TypingEnemyType::Count:
+                    assert(false);
+                    break;
+            }
+        }
+            break;
+    }
+
+    _transform.SetPos(newPos);
+
+
+    // Check if we've hit a wall
+    //
+    // TODO: Should we run this after respawn logic?
+    {
+        Vec3 penetration;
+        FlowWallEntity* pHitWall = FindOverlapWithWall(g, _transform, &penetration);
+        penetration._y = 0.f;
+        if (pHitWall != nullptr) {
+            // Respawn(g);
+            _s._moveState = MoveState::WallBounce;
+            pHitWall->OnHit(g, -penetration.GetNormalized());
+            newPos += penetration * 1.1f;  // Add some padding to ensure we're outta collision
+            Vec3 collNormal = penetration.GetNormalized();
+            Vec3 newVel = -_s._vel;
+            // reflect across coll normal
+            Vec3 tangentPart = Vec3::Dot(newVel, collNormal) * collNormal;
+            Vec3 normalPart = newVel - tangentPart;
+            newVel -= 2 * normalPart;        
+
+            // after bounce, ensure we have some velocity in the collision normal
+            // float constexpr kMinBounceSpeed = 20.f;
+            // float speedAlongNormal = Vec3::Dot(newVel, collNormal);
+            // if (speedAlongNormal < kMinBounceSpeed) {
+            //     Vec3 correction = (kMinBounceSpeed - speedAlongNormal) * collNormal;
+            //     newVel += correction;
+            // }
+            float constexpr kBounceSpeed = 5.f;
+            newVel = tangentPart.GetNormalized() * kBounceSpeed;
+
+            _transform.SetTranslation(newPos);
+            _s._vel = newVel;
+            _s._dashTimer = 0.f;
+        }
+    }
 
     // Update prev positions
     int constexpr kMaxHistory = 5;
@@ -353,48 +462,9 @@ void FlowPlayerEntity::UpdateDerived(GameManager& g, float dt) {
     ++_s._framesSinceLastSample;
     int constexpr kFramesPerSample = 2;
     if (_s._framesSinceLastSample >= kFramesPerSample) {
-        _s._posHistory.push_front(p);
+        _s._posHistory.push_front(newPos);
         _s._framesSinceLastSample = 0;
-    }
-
-    p += _s._vel * dt;
-    _transform.SetTranslation(p);
-
-    // Check collisions between p and walls    
-    Vec3 penetration;
-    FlowWallEntity* pHitWall = FindOverlapWithWall(g, _transform, &penetration);
-    penetration._y = 0.f;
-    if (pHitWall != nullptr) {
-        // Respawn(g);
-        pHitWall->OnHit(g, -penetration.GetNormalized());
-        p += penetration * 1.1f;  // Add some padding to ensure we're outta collision
-        Vec3 collNormal = penetration.GetNormalized();
-        Vec3 newVel = -_s._vel;
-        // reflect across coll normal
-        Vec3 tangentPart = Vec3::Dot(newVel, collNormal) * collNormal;
-        Vec3 normalPart = newVel - tangentPart;
-        newVel -= 2 * normalPart;        
-
-        // after bounce, ensure we have some velocity in the collision normal
-        // float constexpr kMinBounceSpeed = 20.f;
-        // float speedAlongNormal = Vec3::Dot(newVel, collNormal);
-        // if (speedAlongNormal < kMinBounceSpeed) {
-        //     Vec3 correction = (kMinBounceSpeed - speedAlongNormal) * collNormal;
-        //     newVel += correction;
-        // }
-        float constexpr kBounceSpeed = 5.f;
-        newVel = tangentPart.GetNormalized() * kBounceSpeed;
-
-        _transform.SetTranslation(p);
-        _s._vel = newVel;
-
-        // Pretend it's a new dash with gravity applied
-        _s._dashTimer = 0.25f * _p._dashTime;
-        _s._applyGravityDuringDash = false;
-        _s._dashTargetId = ne::EntityId();
-        _s._useLastKnownDashTarget = false;
-        _s._isPushDash = false;
-    }
+    }    
 
     // Check if we hit any pickups
     ne::EntityManager::Iterator pickupIter = g._neEntityManager->GetIterator(ne::EntityType::FlowPickup);

@@ -160,23 +160,6 @@ Entity* EntityManager::GetEntity(EntityId id) {
     return GetEntityInfo(id, true, false)._e;
 }
 
-template<typename T>
-T* EntityManager::GetEntityAs(EntityId id) {
-    Entity* e = GetEntityInfo(id, true, false)._e;
-    if (e == nullptr) {
-        return nullptr;
-    }
-    EntityType dynType = e->Type();
-    EntityType staticType = T::StaticType();
-    if (staticType != EntityType::Base && dynType != staticType) {
-        char const* const dynTypeName = gkEntityTypeNames[(int)dynType];
-        char const* const staticTypeName = gkEntityTypeNames[(int)staticType];
-        printf("EntityManager::GetEntityAs: ERROR: entity \"%s\" is of type \"%s\" but we tried to get as \"%s\".\n", e->_name.c_str(), dynTypeName, staticTypeName);
-        return nullptr;
-    }
-    return static_cast<T*>(e);
-}
-
 Entity* EntityManager::GetEntity(EntityId id, bool includeActive, bool includeInactive, bool* active) {
     EntityInfo eInfo = GetEntityInfo(id, includeActive, includeInactive);
     if (active != nullptr) {

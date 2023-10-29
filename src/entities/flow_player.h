@@ -26,29 +26,31 @@ struct FlowPlayerEntity : public ne::Entity {
         Default, WallBounce, EnemyInteract
     };
     struct State {
-        MoveState _moveState = MoveState::Default;
-        TypingEnemyType _enemyInteractType = TypingEnemyType::Pull; // only meaningful if _moveState == EnemyInteract       
         Vec3 _vel;
+        
+        MoveState _moveState = MoveState::Default;
+        
+        // only meaningful if _moveState == EnemyInteract
+        TypingEnemyType _enemyInteractType = TypingEnemyType::Pull;
+        ne::EntityId _interactingEnemyId;
+        float _dashTimer = -1.f; // wallBounce/pull/push
+        Vec3 _lastKnownDashTarget; // pull/push
+        Vec4 _lastKnownDashTargetColor; // pull/push
+        bool _stopDashOnPassEnemy = true; // pull
+        bool _passedPullTarget = false; // pull
+        
         // TODO: use a ring buffer instead. maybe stack would work too
         std::deque<Vec3> _posHistory;  // start is most recent
         int _framesSinceLastSample = 0;
         int _currentSectionId = -1;
         ne::EntityId _cameraId;
-        float _dashTimer = -1.f;
-        bool _isPushDash = false;
-        ne::EntityId _dashTargetId;
-        Vec3 _lastKnownDashTarget;
-        bool _useLastKnownDashTarget = false;
-        Vec4 _lastDashTargetColor;
         Vec4 _currentColor;
         double _countOffEndTime = 3.0;
         std::optional<float> _killMaxZ;  // kill/respawn if player goes over this value
         bool _killIfBelowCameraView = false;
         bool _killIfLeftOfCameraView = false;
-        bool _applyGravityDuringDash = false;
-        bool _respawnBeforeFirstDash = true;
+        bool _respawnBeforeFirstInteract = true;
         ne::EntityId _toActivateOnRespawn;
-        bool _stopDashOnPassEnemy = true;
         Vec3 _respawnPos;
     };
     State _s;    
