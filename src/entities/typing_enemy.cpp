@@ -230,7 +230,7 @@ bool PlayerWithinRadius(FlowPlayerEntity const& player, TypingEnemyEntity const&
     return true;
 }
 
-void DrawPullEnemy(GameManager& g, TypingEnemyEntity const& e, FlowPlayerEntity const* player) {
+void DrawPullEnemy(float const dt, GameManager& g, TypingEnemyEntity& e, FlowPlayerEntity const* player) {
     double const beatTime = g._beatClock->GetBeatTimeFromEpoch();
     
     bool playerWithinRadius = true;
@@ -246,6 +246,23 @@ void DrawPullEnemy(GameManager& g, TypingEnemyEntity const& e, FlowPlayerEntity 
         showControllerInputs = g._inputManager->IsUsingController();
     }
 
+    Transform renderTrans = e._transform;
+    // Apply bump logic
+    if (e._s._bumpTimer >= 0.f) {
+        float constexpr kTotalBumpTime = 0.1f;
+        float constexpr kBumpAmount = 0.15f;
+        float factor = math_util::Clamp(e._s._bumpTimer / kTotalBumpTime, 0.f, 1.f);
+        factor = math_util::Triangle(factor);
+        float dist = factor * kBumpAmount;
+        Vec3 p = renderTrans.Pos();
+        p += e._s._bumpDir * dist;
+        renderTrans.SetPos(p);
+        e._s._bumpTimer += dt;
+        if (e._s._bumpTimer > kTotalBumpTime) {
+            e._s._bumpTimer = -1.f;
+        }
+    }
+
     //
     // TEXT DRAWING
     //
@@ -258,10 +275,10 @@ void DrawPullEnemy(GameManager& g, TypingEnemyEntity const& e, FlowPlayerEntity 
         }
         float constexpr kFadeAlpha = 0.2f;
         if (showControllerInputs) {
-            Transform t = e._transform;
+            Transform t = renderTrans;
             float const size = 0.25f;
             t.SetScale(Vec3(size, size, size));
-            t.SetTranslation(e._transform.Pos() + Vec3(-size, 0.f, size));
+            t.SetTranslation(renderTrans.Pos() + Vec3(-size, 0.f, size));
             for (int i = 0; i < e._p._buttons.length(); ++i) {
                 InputManager::ControllerButton b = CharToButton(e._p._buttons[i]);
                 renderer::ModelInstance* m = g._scene->DrawPsButton(b, t.Mat4Scale());
@@ -279,14 +296,14 @@ void DrawPullEnemy(GameManager& g, TypingEnemyEntity const& e, FlowPlayerEntity 
             Vec4 color(1.f, 1.f, 1.f, kFadeAlpha);
             if (!fadedText.empty()) {
                 // AHHHH ALLOCATION
-                g._scene->DrawTextWorld(std::string(fadedText), e._transform.GetPos(), kTextSize, color);
+                g._scene->DrawTextWorld(std::string(fadedText), renderTrans.GetPos(), kTextSize, color);
             }
             color._w = 1.f;
             std::string_view activeText = std::string_view(e._p._keyText).substr(numFadedButtons);
             if (!activeText.empty()) {
                 bool appendToPrevious = numFadedButtons > 0;
                 // AHHHH ALLOCATION
-                g._scene->DrawTextWorld(std::string(activeText), e._transform.GetPos(), kTextSize, color, appendToPrevious);
+                g._scene->DrawTextWorld(std::string(activeText), renderTrans.GetPos(), kTextSize, color, appendToPrevious);
             }
         }
     }
@@ -295,7 +312,7 @@ void DrawPullEnemy(GameManager& g, TypingEnemyEntity const& e, FlowPlayerEntity 
     int constexpr kNumStepsZ = 2;
     float constexpr xStep = 1.f / (float) kNumStepsX;
     float constexpr zStep = 1.f / (float) kNumStepsZ;
-    Mat4 localToWorld = e._transform.Mat4Scale();
+    Mat4 localToWorld = renderTrans.Mat4Scale();
     Mat4 subdivMat = localToWorld;
     // subdivMat.Scale(xStep * 0.8f, 1.f, zStep * 0.8f);
     subdivMat.Scale(xStep * 0.8f, xStep * 0.8f, zStep * 0.8f);
@@ -328,9 +345,9 @@ void DrawPullEnemy(GameManager& g, TypingEnemyEntity const& e, FlowPlayerEntity 
             float const totalBeats = std::ceil(e._p._flowCooldownBeatTime);
             int const numRows = ((static_cast<int>(totalBeats) - 1) / 4) + 1;
             float const vertSize = numRows * kBeatCellSize + (numRows - 1) * kRowSpacing;
-            float const rowStartXPos = e._transform.GetPos()._x - 0.5f * kRowLength;
-            float const rowStartZPos = e._transform.GetPos()._z - 0.5f - vertSize;
-            Vec3 firstBeatPos = e._transform.GetPos() + Vec3(rowStartXPos, 0.f, rowStartZPos);
+            float const rowStartXPos = renderTrans.GetPos()._x - 0.5f * kRowLength;
+            float const rowStartZPos = renderTrans.GetPos()._z - 0.5f - vertSize;
+            Vec3 firstBeatPos = renderTrans.GetPos() + Vec3(rowStartXPos, 0.f, rowStartZPos);
             Mat4 m;
             m.SetTranslation(firstBeatPos);
             m.ScaleUniform(kBeatCellSize);
@@ -358,8 +375,8 @@ void DrawPullEnemy(GameManager& g, TypingEnemyEntity const& e, FlowPlayerEntity 
     }
 }
 
-void DrawPushEnemy(GameManager& g, TypingEnemyEntity const& e, FlowPlayerEntity const* player) {
-    DrawPullEnemy(g, e, player);
+void DrawPushEnemy(float const dt, GameManager& g, TypingEnemyEntity& e, FlowPlayerEntity const* player) {
+    DrawPullEnemy(dt, g, e, player);
 }
 }
 
@@ -393,10 +410,10 @@ void TypingEnemyEntity::Draw(GameManager& g, float dt) {
 
     switch (_p._enemyType) {
         case TypingEnemyType::Pull:
-            DrawPullEnemy(g, *this, player);
+            DrawPullEnemy(dt, g, *this, player);
             break;
         case TypingEnemyType::Push:
-            DrawPushEnemy(g, *this, player);
+            DrawPushEnemy(dt, g, *this, player);
             break;
         case TypingEnemyType::Count:
             assert(false);
@@ -538,4 +555,9 @@ void TypingEnemyEntity::MultiSelectImGui(GameManager& g, std::vector<TypingEnemy
 
 void TypingEnemyEntity::SetHittable(bool hittable) {
     _s._hittable = hittable;
+}
+
+void TypingEnemyEntity::Bump(Vec3 const& bumpDir) {
+    _s._bumpTimer = 0.f;
+    _s._bumpDir = bumpDir;
 }

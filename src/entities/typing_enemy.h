@@ -46,6 +46,8 @@ struct TypingEnemyEntity : public ne::Entity {
         double _flowCooldownStartBeatTime = -1.0;
         bool _hittable = true;
         ne::EntityId _activeRegionId;
+        float _bumpTimer = -1.f;
+        Vec3 _bumpDir;
     };
     State _s;
 
@@ -56,6 +58,7 @@ struct TypingEnemyEntity : public ne::Entity {
     InputManager::ControllerButton GetNextButton() const;
     bool CanHit(FlowPlayerEntity const& player, GameManager& g) const;
     void SetHittable(bool hittable);
+    void Bump(Vec3 const& bumpDir);
 
     
     virtual void InitDerived(GameManager& g) override;
