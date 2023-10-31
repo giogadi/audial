@@ -95,13 +95,76 @@ void FlowPlayerEntity::Draw(GameManager& g, float const dt) {
          model._topLayer = true;
     }
 
-    if (_model != nullptr) {
-        renderer::ModelInstance& model = g._scene->DrawMesh(_model, _transform.Mat4Scale(), _s._currentColor);
-         model._topLayer = true;
-    }
+    Transform renderTrans = _transform;
 
     if (_s._moveState == MoveState::EnemyInteract) {
+
         g._scene->DrawLine(_transform.Pos(), _s._lastKnownDashTarget, _s._lastKnownDashTargetColor);
+
+        if (_s._vel.Length2() > 0.1f) {
+            _s._dashAnimDir = _s._vel.GetNormalized();
+        }
+    }
+
+    float constexpr kMaxSquishInTime = 0.1f;
+    float constexpr kMaxSquishOutTime = 0.1f;    
+    switch (_s._dashAnimState) {
+    case DashAnimState::Accel: {
+        float const kSquishDelta = dt / kMaxSquishInTime;
+        _s._dashSquishFactor += kSquishDelta;
+        if (_s._dashSquishFactor > 1.f) {
+            _s._dashSquishFactor = 1.f;
+            _s._dashAnimState = DashAnimState::Decel;
+        }
+    }
+        break;
+    case DashAnimState::Decel: {
+        float const kSquishDelta = dt / kMaxSquishOutTime;
+        _s._dashSquishFactor -= kSquishDelta;
+        if (_s._dashSquishFactor < 0.f) {
+            _s._dashSquishFactor = 0.f;
+            _s._dashAnimState = DashAnimState::None;
+        }
+    }
+        break;
+    case DashAnimState::None:
+        _s._dashSquishFactor = 0.f;
+        break;
+    }
+
+    if (_s._dashSquishFactor > 0.f) {
+        Vec3 newX = _s._dashAnimDir;
+        Vec3 newY(0.f, 1.f, 0.f);
+        Mat3 rotMat;
+        rotMat.SetCol(0, newX);
+        rotMat.SetCol(1, newY);
+        Vec3 newZ = Vec3::Cross(newX, newY);
+        rotMat.SetCol(2, newZ);
+        Quaternion newQ;
+        newQ.SetFromRotMat(rotMat);
+        renderTrans.SetQuat(newQ);
+
+        float constexpr kTangentSquishAtMaxSpeed = 5.f;
+        float constexpr kOrthoSquishAtMinSpeed = 0.5f;
+        float constexpr kOrthoSquishAtMaxSpeed = 0.5f;
+        float constexpr kSpeedOfMaxSquish = 40.f;
+        float speedFactor = _s._dashLaunchSpeed / kSpeedOfMaxSquish;
+        float const kMaxTangentSquish = 1.f + speedFactor * (kTangentSquishAtMaxSpeed - 1.f);
+        float const kMaxOrthoSquish = kOrthoSquishAtMinSpeed + speedFactor * (kOrthoSquishAtMaxSpeed - kOrthoSquishAtMinSpeed);
+        float squishFactor = math_util::Clamp(_s._dashSquishFactor, 0.f, 1.f);
+        float tangentSquish = 1.f + squishFactor * (kMaxTangentSquish - 1.f);
+        float orthoSquish = 1.f + squishFactor * (kMaxOrthoSquish - 1.f);
+        Vec3 squishScale(tangentSquish, orthoSquish, orthoSquish);
+        renderTrans.ApplyScale(squishScale);
+        float scaleDiffInMotionDir = renderTrans.Scale()._x - _transform.Scale()._x;
+        Vec3 p = renderTrans.Pos();
+        p -= _s._dashAnimDir * (0.5f * scaleDiffInMotionDir);
+        renderTrans.SetPos(p);
+    }
+
+    if (_model != nullptr) {
+        renderer::ModelInstance& model = g._scene->DrawMesh(_model, renderTrans.Mat4Scale(), _s._currentColor);
+        model._topLayer = true;
     }
 }
 
@@ -229,15 +292,19 @@ void FlowPlayerEntity::UpdateDerived(GameManager& g, float dt) {
                 _s._stopDashOnPassEnemy = nearest->_p._stopOnPass;
                 _s._dashTimer = 0.f;
                 _s._passedPullTarget = false;
+                _s._dashAnimState = DashAnimState::Accel;
                 // These will get set to the correct direction later on
                 if (nearest->_p._dashVelocity >= 0.f) {
                     _s._vel.Set(nearest->_p._dashVelocity, 0.f, 0.f);
+                    _s._dashLaunchSpeed = nearest->_p._dashVelocity;
                 } else {
                     _s._vel.Set(_p._defaultLaunchVel, 0.f, 0.f);
+                    _s._dashLaunchSpeed = _p._defaultLaunchVel;
                 }
                 break;
             case TypingEnemyType::Push: {
                 _s._dashTimer = 0.f;
+                _s._dashAnimState = DashAnimState::Accel;
                 if (nearest->_p._pushAngleDeg >= 0.f) {
                     float angleRad = nearest->_p._pushAngleDeg * kDeg2Rad;
                     _s._vel._x = cos(angleRad);
@@ -251,8 +318,10 @@ void FlowPlayerEntity::UpdateDerived(GameManager& g, float dt) {
                 float launchSpeed;
                 if (nearest->_p._dashVelocity >= 0.f) {
                     launchSpeed = nearest->_p._dashVelocity;
+                    _s._dashLaunchSpeed = nearest->_p._dashVelocity;
                 } else {
                     launchSpeed = _p._defaultLaunchVel;
+                    _s._dashLaunchSpeed = _p._defaultLaunchVel;
                 }
                 _s._vel *= launchSpeed;
             }
@@ -450,6 +519,7 @@ void FlowPlayerEntity::UpdateDerived(GameManager& g, float dt) {
             _transform.SetTranslation(newPos);
             _s._vel = newVel;
             _s._dashTimer = 0.f;
+            _s._dashAnimState = DashAnimState::None;
         }
     }
 

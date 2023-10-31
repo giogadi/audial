@@ -25,6 +25,9 @@ struct FlowPlayerEntity : public ne::Entity {
     enum class MoveState {
         Default, WallBounce, EnemyInteract
     };
+    enum class DashAnimState {
+        None, Accel, Decel
+    };
     struct State {
         Vec3 _vel;
         
@@ -38,6 +41,13 @@ struct FlowPlayerEntity : public ne::Entity {
         Vec4 _lastKnownDashTargetColor; // pull/push
         bool _stopDashOnPassEnemy = true; // pull
         bool _passedPullTarget = false; // pull
+        // anim states
+        DashAnimState _dashAnimState = DashAnimState::None;
+        float _dashSquishFactor = 0.f;
+        Vec3 _dashAnimDir;
+        float _dashLaunchSpeed = 0.f;
+
+
         
         // TODO: use a ring buffer instead. maybe stack would work too
         std::deque<Vec3> _posHistory;  // start is most recent
