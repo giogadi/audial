@@ -33,6 +33,7 @@ struct TypingEnemyEntity : public ne::Entity {
         bool _stopOnPass = true;
         float _dashVelocity = -1.f;  // if <0, use player's default dash velocity
         float _pushAngleDeg = -1.f; // if <0, just use angle-to-player
+        float _pushSpeedOnLastHit = -1.f; // if >= 0, last hit is a push of this speed
     };
     Props _p;
     
@@ -51,7 +52,11 @@ struct TypingEnemyEntity : public ne::Entity {
     };
     State _s;
 
-    void OnHit(GameManager& g);
+    struct HitResponse {
+        TypingEnemyType _type = TypingEnemyType::Count;
+        float _dashSpeed = -1.f;
+    };
+    HitResponse OnHit(GameManager& g);
     void DoHitActions(GameManager& g);
     void OnHitOther(GameManager& g);
     InputManager::Key GetNextKey() const;

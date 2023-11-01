@@ -99,6 +99,7 @@ void TypingEnemyEntity::LoadDerived(serial::Ptree pt) {
     pt.TryGetBool("stop_on_pass", &_p._stopOnPass);
     pt.TryGetFloat("dash_vel", &_p._dashVelocity);
     pt.TryGetFloat("push_angle_deg", &_p._pushAngleDeg);
+    pt.TryGetFloat("push_speed_on_last_hit", &_p._pushSpeedOnLastHit);
     serial::LoadFromChildOf(pt, "active_region_editor_id", _p._activeRegionEditorId);
 
     SeqAction::LoadActionsFromChildNode(pt, "hit_actions", _p._hitActions);
@@ -137,6 +138,7 @@ void TypingEnemyEntity::SaveDerived(serial::Ptree pt) const {
     pt.PutBool("stop_on_pass", _p._stopOnPass);
     pt.PutFloat("dash_vel", _p._dashVelocity);
     pt.PutFloat("push_angle_deg", _p._pushAngleDeg);
+    pt.PutFloat("push_speed_on_last_hit", _p._pushSpeedOnLastHit);
     serial::SaveInNewChildOf(pt, "active_region_editor_id", _p._activeRegionEditorId);
     SeqAction::SaveActionsInChildNode(pt, "hit_actions", _p._hitActions);
     SeqAction::SaveActionsInChildNode(pt, "all_hit_actions", _p._allHitActions);
@@ -174,9 +176,10 @@ ne::BaseEntity::ImGuiResult TypingEnemyEntity::ImGuiDerived(GameManager& g) {
     ImGui::Checkbox("Stop on pass", &_p._stopOnPass);
     ImGui::InputFloat("Dash vel", &_p._dashVelocity);
     ImGui::InputFloat("Push angle (deg)", &_p._pushAngleDeg);
+    ImGui::InputFloat("Last hit push speed", &_p._pushSpeedOnLastHit);
     imgui_util::InputEditorId("Active Region", &_p._activeRegionEditorId);
     if (ImGui::Button("Set Region color")) {
-        if (ne::Entity* e = g._neEntityManager->FindEntityByEditorIdAndType(_p._activeRegionEditorId, ne::EntityType::Base)) {
+        if (ne::Entity* e = g._neEntityManager->FindEntityByEditorIdAndType(_p._activeRegionEditorId, ne::EntityType::FlowTrigger)) {
             Vec4 color = _modelColor;
             color._w = 0.2f;
             e->_modelColor = color;
@@ -213,7 +216,7 @@ void TypingEnemyEntity::InitDerived(GameManager& g) {
 
     ForceStringsSameLength(_name, _p._keyText, _p._buttons);
 
-    if (ne::Entity* e = g._neEntityManager->FindEntityByEditorIdAndType(_p._activeRegionEditorId, ne::EntityType::Base)) {
+    if (ne::Entity* e = g._neEntityManager->FindEntityByEditorIdAndType(_p._activeRegionEditorId, ne::EntityType::FlowTrigger)) {
         _s._activeRegionId = e->_id;
     }
 }
@@ -421,7 +424,7 @@ void TypingEnemyEntity::Draw(GameManager& g, float dt) {
     }    
 }
 
-void TypingEnemyEntity::OnHit(GameManager& g) {
+TypingEnemyEntity::HitResponse TypingEnemyEntity::OnHit(GameManager& g) {
     double beatTime = g._beatClock->GetBeatTimeFromEpoch();
     ++_s._numHits;
     if (_s._numHits == _p._keyText.length()) {
@@ -444,6 +447,16 @@ void TypingEnemyEntity::OnHit(GameManager& g) {
     _s._timeOfLastHit = beatTime;
 
     DoHitActions(g);
+
+    HitResponse response;
+    if (_s._numHits >= _p._keyText.length() && _p._pushSpeedOnLastHit >= 0.f) {
+        response._type = TypingEnemyType::Push;
+        response._dashSpeed = _p._pushSpeedOnLastHit;
+    } else {
+        response._type = _p._enemyType;
+        response._dashSpeed = _p._dashVelocity;
+    }
+    return response;
 }
 
 void TypingEnemyEntity::DoHitActions(GameManager& g) {

@@ -283,18 +283,20 @@ void FlowPlayerEntity::UpdateDerived(GameManager& g, float dt) {
     // 
     if (nearest != nullptr) {
         _s._respawnBeforeFirstInteract = false;
+
+        TypingEnemyEntity::HitResponse hitResponse = nearest->OnHit(g);
         
         _s._moveState = MoveState::EnemyInteract;
-        _s._enemyInteractType = nearest->_p._enemyType;
-        _s._interactingEnemyId = nearest->_id;        
+        _s._enemyInteractType = hitResponse._type;
+        _s._interactingEnemyId = nearest->_id;
         switch (_s._enemyInteractType) {
         case TypingEnemyType::Pull: {
             _s._stopDashOnPassEnemy = nearest->_p._stopOnPass;
             _s._dashTimer = 0.f;
             _s._passedPullTarget = false;
             _s._dashAnimState = DashAnimState::Accel;
-            if (nearest->_p._dashVelocity >= 0.f) {
-                _s._dashLaunchSpeed = nearest->_p._dashVelocity;
+            if (hitResponse._dashSpeed >= 0.f) {
+                _s._dashLaunchSpeed = hitResponse._dashSpeed;
             } else {
                 _s._dashLaunchSpeed = _p._defaultLaunchVel;
             }
@@ -321,8 +323,8 @@ void FlowPlayerEntity::UpdateDerived(GameManager& g, float dt) {
                 pushDir._y = 0.f;
                 pushDir.Normalize();
             }
-            if (nearest->_p._dashVelocity >= 0.f) {
-                _s._dashLaunchSpeed = nearest->_p._dashVelocity;
+            if (hitResponse._dashSpeed >= 0.f) {
+                _s._dashLaunchSpeed = hitResponse._dashSpeed;
             } else {
                 _s._dashLaunchSpeed = _p._defaultLaunchVel;
             }
@@ -333,9 +335,7 @@ void FlowPlayerEntity::UpdateDerived(GameManager& g, float dt) {
         case TypingEnemyType::Count:
             assert(false);
             break;
-        }
-        
-        nearest->OnHit(g);               
+        }               
 
         ne::EntityId nearestId = nearest->_id;
         for (auto enemyIter = g._neEntityManager->GetIterator(ne::EntityType::TypingEnemy); !enemyIter.Finished(); enemyIter.Next()) {
