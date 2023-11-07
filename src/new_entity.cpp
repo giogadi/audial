@@ -537,8 +537,10 @@ void EntityManager::DeactivateTaggedEntities(GameManager& g) {
     _toDeactivate.clear();
 }
 
-bool EntityManager::TagForActivate(EntityId idToActivate, bool initOnActivate) {
-    if (Entity* e = GetEntity(idToActivate, false, true)) {
+bool EntityManager::TagForActivate(EntityId idToActivate, bool initOnActivate, bool initIfAlreadyActive) {
+    bool includeInactive = true;
+    bool includeActive = initIfAlreadyActive;
+    if (Entity* e = GetEntity(idToActivate, includeActive, includeInactive)) {
         _toActivate.push_back({idToActivate, initOnActivate});
         return true;
     }
@@ -556,6 +558,35 @@ void EntityManager::ActivateTaggedEntities(GameManager& g) {
         }
     }
     _toActivate.clear();
+}
+
+void EntityManager::GetEntitiesOfType(ne::EntityType entityType, bool includeActive, bool includeInactive, std::vector<Entity*>& entitiesOut) {
+    Iterator activeIter;
+    Iterator inactiveIter;
+    int numEntities = 0;
+    if (includeActive) {
+        int numActive = 0;
+        activeIter = GetIterator(entityType, &numActive);
+        numEntities += numActive;
+    }
+    if (includeInactive) {
+        int numActive = 0;
+        inactiveIter = GetInactiveIterator(entityType, &numActive);
+        numEntities += numActive;
+    }
+    entitiesOut.reserve(entitiesOut.size() + numEntities);
+    if (includeActive) {
+        for (; !activeIter.Finished(); activeIter.Next()) {
+            ne::Entity* e = activeIter.GetEntity();
+            entitiesOut.push_back(e);
+        }
+    }
+    if (includeInactive) {
+        for (; !inactiveIter.Finished(); inactiveIter.Next()) {
+            ne::Entity* e = inactiveIter.GetEntity();
+            entitiesOut.push_back(e);
+        }
+    }
 }
 
 EntityManager::Iterator EntityManager::GetIterator(EntityType type, int* outNumEntities) {

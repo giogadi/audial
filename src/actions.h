@@ -219,6 +219,7 @@ struct SetEntityActiveSeqAction : public SeqAction {
     int _entitiesTag = -1;
     bool _active = true;
     bool _initOnActivate = true;
+    bool _initIfAlreadyActive = false;
 
     ne::EntityId _entityId;
 

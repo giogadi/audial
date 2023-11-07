@@ -7,6 +7,7 @@
 #include "entities/flow_player.h"
 #include "geometry.h"
 #include "rng.h"
+#include "entities/typing_enemy.h"
 
 void FlowTriggerEntity::InitDerived(GameManager& g) {
     for (auto& pAction : _p._actions) {
@@ -71,7 +72,26 @@ FlowTriggerEntity::ImGuiResult FlowTriggerEntity::ImGuiDerived(GameManager& g)  
         ImGui::PushID("trigger_volumes");
         imgui_util::InputVector<EditorId>(_p._triggerVolumeEditorIds);
         ImGui::PopID();
-    }    
+    }
+    if (ImGui::Button("Assign enemies to me")) {
+        std::vector<ne::Entity*> enemies;
+        g._neEntityManager->GetEntitiesOfType(ne::EntityType::TypingEnemy, true, true, enemies);
+        for (ne::Entity* b_e : enemies) {
+            TypingEnemyEntity* e = static_cast<TypingEnemyEntity*>(b_e);
+            if (e == nullptr) {
+                continue;
+            }
+            Vec3 p = e->_transform.Pos();
+            bool inside = geometry::IsPointInBoundingBox2d(p, _transform);
+            if (inside) {
+                e->_p._activeRegionEditorId = _editorId;
+                e->Init(g);
+            } else if (e->_p._activeRegionEditorId == _editorId) {
+                e->_p._activeRegionEditorId = EditorId();
+                e->Init(g);
+            }
+        }
+    }
     return result;
 }
 

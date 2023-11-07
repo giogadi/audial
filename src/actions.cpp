@@ -673,6 +673,8 @@ void SetEntityActiveSeqAction::LoadDerived(serial::Ptree pt) {
     serial::LoadFromChildOf(pt, "entity_editor_id", _entityEditorId);
     _active = pt.GetBool("active");
     _initOnActivate = pt.GetBool("init_on_activate");
+    _initIfAlreadyActive = false;
+    pt.TryGetBool("init_if_already_active", &_initIfAlreadyActive);
 }
 
 void SetEntityActiveSeqAction::SaveDerived(serial::Ptree pt) const {
@@ -680,6 +682,7 @@ void SetEntityActiveSeqAction::SaveDerived(serial::Ptree pt) const {
     serial::SaveInNewChildOf(pt, "entity_editor_id", _entityEditorId);
     pt.PutBool("active", _active);
     pt.PutBool("init_on_activate", _initOnActivate);
+    pt.PutBool("init_if_already_active", _initIfAlreadyActive);
 }
 
 bool SetEntityActiveSeqAction::ImGui() {
@@ -687,6 +690,7 @@ bool SetEntityActiveSeqAction::ImGui() {
     imgui_util::InputEditorId("Entity editor ID", &_entityEditorId);
     ImGui::Checkbox("Active", &_active);
     ImGui::Checkbox("Init on activate", &_initOnActivate);
+    ImGui::Checkbox("Init if already active", &_initIfAlreadyActive);
     return false;
 }
 
@@ -703,7 +707,7 @@ void SetEntityActiveSeqAction::ExecuteDerived(GameManager& g) {
         return;
     }
     std::vector<ne::Entity*> entities;
-    bool const includeActive = !_active;
+    bool const includeActive = !_active || _initIfAlreadyActive;
     bool const includeInactive = _active;
     if (_entitiesTag >= 0) {
         g._neEntityManager->FindEntitiesByTag(_entitiesTag, includeActive, includeInactive, &entities);
@@ -713,7 +717,7 @@ void SetEntityActiveSeqAction::ExecuteDerived(GameManager& g) {
     }
     if (_active) {
         for (ne::Entity* e : entities) {
-            g._neEntityManager->TagForActivate(e->_id, _initOnActivate);
+            g._neEntityManager->TagForActivate(e->_id, _initOnActivate, _initIfAlreadyActive);
         }
     }
     else {

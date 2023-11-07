@@ -507,6 +507,9 @@ void Editor::DrawWindow() {
     static std::string sNameFilter;
     imgui_util::InputText<128>("Name Filter", &sNameFilter);
 
+    static int sTagFilter = -1;
+    ImGui::InputInt("Tag Filter", &sTagFilter);
+
     // Entities  
     if (ImGui::BeginListBox("Entities")) {
         for (auto entityIdIter = _entityIds.begin(); entityIdIter != _entityIds.end(); /*no inc*/) {
@@ -535,6 +538,13 @@ void Editor::DrawWindow() {
 
             if (!sNameFilter.empty()) {
                 if (!string_util::Contains(entity->_name, sNameFilter)) {
+                    ++entityIdIter;
+                    continue;
+                }
+            }
+
+            if (sTagFilter >= 0) {
+                if (entity->_tag != sTagFilter) {
                     ++entityIdIter;
                     continue;
                 }

@@ -114,9 +114,10 @@ struct EntityManager {
     bool TagForDeactivate(EntityId id);
     void DeactivateTaggedEntities(GameManager& g);
 
-    // Only looks for inactive entities.
-    bool TagForActivate(EntityId id, bool initOnActivate);
+    bool TagForActivate(EntityId id, bool initOnActivate, bool initIfAlreadyActive=false);
     void ActivateTaggedEntities(GameManager& g);
+
+    void GetEntitiesOfType(ne::EntityType entityType, bool includeActive, bool includeInactive, std::vector<Entity*>& entitiesOut);
 
     // Iterates over all entities of a given type.
     struct Iterator {
