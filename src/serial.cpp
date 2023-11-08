@@ -238,6 +238,7 @@ Ptree& Ptree::operator=(Ptree const& other) {
 Ptree Ptree::MakeNew() {
     Ptree pt;
     pt._internal = (void*)(new ptree);
+    pt._version = kBinaryVersion;
     return pt;
 }
 
