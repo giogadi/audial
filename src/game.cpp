@@ -515,13 +515,28 @@ int main(int argc, char** argv) {
 
         MaybeToggleMute(fixedTimeStep);
 
-        for (auto iter = gGameManager._neEntityManager->GetAllIterator(); !iter.Finished(); iter.Next()) {
-            ne::Entity* e = iter.GetEntity();
-            if (gGameManager._editMode && editor._enableFlowSectionFilter && e->_flowSectionId >= 0 && editor._flowSectionFilterId != e->_flowSectionId) {
-                continue;
+        if (gGameManager._editMode) {
+            for (auto iter = gGameManager._neEntityManager->GetAllIterator(); !iter.Finished(); iter.Next()) {
+                ne::Entity* e = iter.GetEntity();
+                if (editor._enableFlowSectionFilter && e->_flowSectionId >= 0 && editor._flowSectionFilterId != e->_flowSectionId) {
+                    continue;
+                }
+                e->UpdateEditMode(gGameManager, dt, /*isActive=*/true);
             }
-            e->Update(gGameManager, dt);
-        }
+
+            for (auto iter = gGameManager._neEntityManager->GetAllInactiveIterator(); !iter.Finished(); iter.Next()) {
+                ne::Entity* e = iter.GetEntity();
+                if (editor._enableFlowSectionFilter && e->_flowSectionId >= 0 && editor._flowSectionFilterId != e->_flowSectionId) {
+                    continue;
+                }
+                e->UpdateEditMode(gGameManager, dt, /*isActive=*/false);
+            }
+        } else {
+            for (auto iter = gGameManager._neEntityManager->GetAllIterator(); !iter.Finished(); iter.Next()) {
+                ne::Entity* e = iter.GetEntity();                
+                e->Update(gGameManager, dt);
+            }
+        }        
 
         // Start the Dear ImGui frame
         ImGui_ImplOpenGL3_NewFrame();

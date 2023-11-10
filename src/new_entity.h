@@ -61,6 +61,8 @@ struct BaseEntity {
     virtual void OnEditPick(GameManager& g) {}
     virtual void DebugPrint();
 
+    virtual void UpdateEditMode(GameManager& g, float dt, bool isActive);
+
 protected:
     // Used by derived classes to work with child-specific data.
     virtual void InitDerived(GameManager& g) {}

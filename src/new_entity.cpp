@@ -714,6 +714,13 @@ void BaseEntity::Draw(GameManager& g, float dt) {
         g._scene->DrawBoundingBox(mat, bbColor);
     }
 }
+void BaseEntity::UpdateEditMode(GameManager& g, float dt, bool isActive) {
+    if (isActive) {
+        _wpFollower.Update(g, dt, this, _wpProps);
+        UpdateDerived(g, dt);
+    }
+    Draw(g, dt);
+}
 void BaseEntity::DebugPrint() {
     Vec3 p = _transform.GetPos();
     printf("pos: %f %f %f\n", p._x, p._y, p._z);
