@@ -15,6 +15,8 @@
 #include "entities/typing_enemy.h"
 #include "util.h"
 #include "string_util.h"
+#include "color_presets.h"
+#include "geometry.h"
 
 static float gScrollFactorForDebugCameraMove = 1.f;
 
@@ -171,9 +173,89 @@ void Editor::HandleEntitySelectAndMove(float deltaTime) {
         }
     } else {
         // select mode
+        static float sClickHoldTimer = -1.f;
+        static double sClickX = -1.f;
+        static double sClickY = -1.f;
+        static bool dragMode = false;
         if (inputManager.IsKeyPressedThisFrame(InputManager::MouseButton::Left)) {
+            dragMode = false;
+            sClickHoldTimer = 0.f;
+            inputManager.GetMousePos(sClickX, sClickY);
+        }
+
+        bool wasInDragMode = dragMode;
+        if (dragMode) {
+            Vec3 clickWorldPos;
+            if (ProjectScreenPointToXZPlane((int)sClickX, (int)sClickY, _g->_windowWidth, _g->_windowHeight, _g->_scene->_camera, &clickWorldPos)) {
+                double mouseX, mouseY;
+                inputManager.GetMousePos(mouseX, mouseY);
+                Vec3 mouseWorldPos;
+                if (ProjectScreenPointToXZPlane((int)mouseX, (int)mouseY, _g->_windowWidth, _g->_windowHeight, _g->_scene->_camera, &mouseWorldPos)) {
+                    Vec3 center = (clickWorldPos + mouseWorldPos) * 0.5f;
+                    Vec3 scale = center - clickWorldPos;
+                    scale._x = 2 * std::abs(scale._x);
+                    scale._y = 1.f;
+                    scale._z = 2 * std::abs(scale._z);
+                    Transform t;
+                    t.SetScale(scale);
+                    t.SetPos(center);
+                    _g->_scene->DrawBoundingBox(t.Mat4Scale(), ToColor4(ColorPreset::White));
+
+                    if (!inputManager.IsKeyPressed(InputManager::MouseButton::Left)) {
+                        dragMode = false;
+                        // // LOL
+                        t.SetScale(Vec3(t.Scale()._x, 1000.f, t.Scale()._z));
+                        bool shiftHeld = inputManager.IsShiftPressed();
+                        bool altHeld = inputManager.IsAltPressed();
+                        if (!shiftHeld) {
+                            _selectedEntityIds.clear();
+                        }
+                        std::vector<ne::BaseEntity*> selected;
+                        for (auto iter = _g->_neEntityManager->GetAllIterator(); !iter.Finished(); iter.Next()) {
+                            if (ne::BaseEntity* e = iter.GetEntity()) {
+                                if (!altHeld && !e->_pickable) {
+                                    continue;
+                                }
+                                selected.push_back(e);
+                            }
+                        }
+                        for (auto iter = _g->_neEntityManager->GetAllInactiveIterator(); !iter.Finished(); iter.Next()) {
+                            if (ne::BaseEntity* e = iter.GetEntity()) {
+                                if (!altHeld && !e->_pickable) {
+                                    continue;
+                                }
+                                selected.push_back(e);
+                            }
+                        }
+                        for (ne::BaseEntity* e : selected) {
+                            bool inBox = geometry::IsPointInBoundingBox2d(e->_transform.GetPos(), t);
+                            if (inBox) {
+                                if (shiftHeld) {
+                                    bool alreadyExists = !_selectedEntityIds.emplace(e->_id).second;
+                                    if (alreadyExists) {
+                                        _selectedEntityIds.erase(e->_id);
+                                    }
+                                } else {
+                                    _selectedEntityIds.emplace(e->_id);
+                                }
+                            }
+                        }                        
+                    }
+                }
+            }
+        } else if (inputManager.IsKeyPressed(InputManager::MouseButton::Left)) {
+            float constexpr kTimeToDrag = 0.25f;
+            if (sClickHoldTimer >= kTimeToDrag) {
+                dragMode = true;
+            }
+            sClickHoldTimer += deltaTime;
+        }
+
+        if (!wasInDragMode && inputManager.IsKeyReleasedThisFrame(InputManager::MouseButton::Left)) {
             double mouseX, mouseY;
-            inputManager.GetMousePos(mouseX, mouseY);
+            // inputManager.GetMousePos(mouseX, mouseY);
+            mouseX = sClickX;
+            mouseY = sClickY;
             static std::vector<std::pair<ne::Entity*, float>> entityDistPairs;
             entityDistPairs.clear();
             bool const ignorePickable = inputManager.IsAltPressed();
