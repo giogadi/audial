@@ -23,7 +23,7 @@ struct FlowPlayerEntity : public ne::Entity {
     Props _p;
 
     enum class MoveState {
-        Default, WallBounce, EnemyInteract
+        Default, WallBounce, Pull, Push
     };
     enum class DashAnimState {
         None, Accel, Decel
@@ -33,8 +33,6 @@ struct FlowPlayerEntity : public ne::Entity {
         
         MoveState _moveState = MoveState::Default;
         
-        // only meaningful if _moveState == EnemyInteract
-        TypingEnemyType _enemyInteractType = TypingEnemyType::Pull;
         ne::EntityId _interactingEnemyId;
         float _dashTimer = -1.f; // wallBounce/pull/push
         Vec3 _lastKnownDashTarget; // pull/push
