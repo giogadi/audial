@@ -8,7 +8,7 @@
 
 using audio::SynthParamType;
 
-#define POLYBLEP 0
+#define POLYBLEP 1
 
 namespace synth {
 namespace {
