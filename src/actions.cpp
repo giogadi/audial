@@ -754,6 +754,7 @@ void ChangeStepSeqMaxVoicesSeqAction::ExecuteDerived(GameManager& g) {
 
 void TriggerSeqAction::LoadDerived(serial::Ptree pt) {
     serial::LoadFromChildOf(pt, "entity_editor_id", _entityEditorId);
+    pt.TryGetBool("do_exit_actions", &_triggerExitActions);
 }
 
 void TriggerSeqAction::LoadDerived(LoadInputs const& loadInputs, std::istream& input) {
@@ -762,10 +763,13 @@ void TriggerSeqAction::LoadDerived(LoadInputs const& loadInputs, std::istream& i
 
 void TriggerSeqAction::SaveDerived(serial::Ptree pt) const {
     serial::SaveInNewChildOf(pt, "entity_editor_id", _entityEditorId);
+    pt.PutBool("do_exit_actions", _triggerExitActions);
 }
 
 bool TriggerSeqAction::ImGui() {
-    return imgui_util::InputEditorId("Entity editor ID", &_entityEditorId);
+    bool changed = imgui_util::InputEditorId("Entity editor ID", &_entityEditorId);
+    ImGui::Checkbox("Do exit actions", &_triggerExitActions);
+    return changed;
 }
 
 void TriggerSeqAction::InitDerived(GameManager& g) {
@@ -779,7 +783,13 @@ void TriggerSeqAction::InitDerived(GameManager& g) {
 void TriggerSeqAction::ExecuteDerived(GameManager& g) {
     if (ne::Entity* e = g._neEntityManager->GetEntity(_entityId)) {
         FlowTriggerEntity* t = (FlowTriggerEntity*)e;
-        t->OnTrigger(g);
+        if (_triggerExitActions) {
+            for (auto const& pAction : t->_p._actionsOnExit) {
+                pAction->Execute(g);
+            }
+        } else {
+            t->OnTrigger(g);
+        }        
     }
 }
 

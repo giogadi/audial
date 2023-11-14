@@ -252,6 +252,7 @@ struct ChangeStepSeqMaxVoicesSeqAction : public SeqAction {
 struct TriggerSeqAction : public SeqAction {
     virtual SeqActionType Type() const override { return SeqActionType::Trigger; }
     EditorId _entityEditorId;
+    bool _triggerExitActions = false;
 
     ne::EntityId _entityId;
 

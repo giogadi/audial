@@ -105,6 +105,7 @@ void TypingEnemyEntity::LoadDerived(serial::Ptree pt) {
     SeqAction::LoadActionsFromChildNode(pt, "hit_actions", _p._hitActions);
     SeqAction::LoadActionsFromChildNode(pt, "all_hit_actions", _p._allHitActions);
     SeqAction::LoadActionsFromChildNode(pt, "off_cooldown_actions", _p._offCooldownActions);
+    SeqAction::LoadActionsFromChildNode(pt, "combo_end_actions", _p._comboEndActions);
 
     if (gRandomLetters) {
         if (gCurrentShuffleIx > 25) {
@@ -143,6 +144,7 @@ void TypingEnemyEntity::SaveDerived(serial::Ptree pt) const {
     SeqAction::SaveActionsInChildNode(pt, "hit_actions", _p._hitActions);
     SeqAction::SaveActionsInChildNode(pt, "all_hit_actions", _p._allHitActions);
     SeqAction::SaveActionsInChildNode(pt, "off_cooldown_actions", _p._offCooldownActions);
+    SeqAction::SaveActionsInChildNode(pt, "combo_end_actions", _p._comboEndActions);
 }
 
 ne::BaseEntity::ImGuiResult TypingEnemyEntity::ImGuiDerived(GameManager& g) {
@@ -194,6 +196,9 @@ ne::BaseEntity::ImGuiResult TypingEnemyEntity::ImGuiDerived(GameManager& g) {
     if (SeqAction::ImGui("Off-cooldown actions", _p._offCooldownActions)) {
         result = ImGuiResult::NeedsInit;
     }
+    if (SeqAction::ImGui("Combo end actions", _p._comboEndActions)) {
+        result = ImGuiResult::NeedsInit;
+    }
 
     return result;
 }
@@ -209,8 +214,10 @@ void TypingEnemyEntity::InitDerived(GameManager& g) {
     for (auto const& pAction : _p._allHitActions) {
         pAction->Init(g);
     }
-
     for (auto const& pAction : _p._offCooldownActions) {
+        pAction->Init(g);
+    }
+    for (auto const& pAction : _p._comboEndActions) {
         pAction->Init(g);
     }
 
@@ -477,6 +484,12 @@ void TypingEnemyEntity::DoHitActions(GameManager& g) {
             }
             break;
         }
+    }
+}
+
+void TypingEnemyEntity::DoComboEndActions(GameManager& g) {
+    for (auto const& pAction : _p._comboEndActions) {
+        pAction->Execute(g);
     }
 }
 

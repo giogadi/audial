@@ -22,6 +22,7 @@ struct TypingEnemyEntity : public ne::Entity {
         std::vector<std::unique_ptr<SeqAction>> _hitActions;
         std::vector<std::unique_ptr<SeqAction>> _allHitActions;
         std::vector<std::unique_ptr<SeqAction>> _offCooldownActions;
+        std::vector<std::unique_ptr<SeqAction>> _comboEndActions;
         HitBehavior _hitBehavior = HitBehavior::SingleAction; // TODO
         bool _destroyAfterTyped = true;
         double _flowCooldownBeatTime = -1.0;
@@ -59,6 +60,7 @@ struct TypingEnemyEntity : public ne::Entity {
     HitResponse OnHit(GameManager& g);
     void DoHitActions(GameManager& g);
     void OnHitOther(GameManager& g);
+    void DoComboEndActions(GameManager& g);
     InputManager::Key GetNextKey() const;
     InputManager::ControllerButton GetNextButton() const;
     bool CanHit(FlowPlayerEntity const& player, GameManager& g) const;

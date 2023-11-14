@@ -217,6 +217,7 @@ namespace {
         case FlowPlayerEntity::MoveState::Default: return false;
         case FlowPlayerEntity::MoveState::WallBounce: return false;
         case FlowPlayerEntity::MoveState::Pull: return true;
+        case FlowPlayerEntity::MoveState::PullStop: return true;
         case FlowPlayerEntity::MoveState::Push: return true;
         }
         return false;
@@ -301,11 +302,19 @@ void FlowPlayerEntity::UpdateDerived(GameManager& g, float dt) {
         _s._interactingEnemyId = nearest->_id;
         switch (hitResponse._type) {
         case TypingEnemyType::Pull: {
-            _s._moveState = MoveState::Pull;
             _s._stopDashOnPassEnemy = nearest->_p._stopOnPass;
-            _s._dashTimer = 0.f;
-            _s._passedPullTarget = false;
-            _s._dashAnimState = DashAnimState::Accel;
+            // If we are close enough to the enemy, just stick to them and start in PullStop if applicable.
+            if (_s._stopDashOnPassEnemy && nearestDist2 < 0.001f * 0.001f) {
+                _transform.SetPos(nearest->_transform.Pos());
+                _s._moveState = MoveState::PullStop;
+                _s._passedPullTarget = true;
+                _s._dashAnimState = DashAnimState::None;
+            } else {
+                _s._moveState = MoveState::Pull;
+                _s._passedPullTarget = false;
+                _s._dashAnimState = DashAnimState::Accel;
+            }
+            _s._dashTimer = 0.f;                        
             if (hitResponse._dashSpeed >= 0.f) {
                 _s._dashLaunchSpeed = hitResponse._dashSpeed;
             } else {
@@ -370,6 +379,7 @@ void FlowPlayerEntity::UpdateDerived(GameManager& g, float dt) {
             }
             if (finishedPulling) {
                 _s._moveState = MoveState::Default;
+                _s._interactingEnemyId = ne::EntityId();
                 if (_p._maxHorizSpeedAfterDash >= 0.f) {
                     _s._vel._x = math_util::ClampAbs(_s._vel._x, _p._maxHorizSpeedAfterDash);
                 }
@@ -381,6 +391,18 @@ void FlowPlayerEntity::UpdateDerived(GameManager& g, float dt) {
                     speed = std::min(_p._maxOverallSpeedAfterDash, speed);
                     _s._vel *= speed;
                 }
+            }
+        }
+        break;
+
+        case MoveState::PullStop: {
+            float constexpr kStopTime = 0.5f;
+            if (_s._dashTimer >= kStopTime) {
+                _s._moveState = MoveState::Default;
+                if (TypingEnemyEntity* e = g._neEntityManager->GetEntityAs<TypingEnemyEntity>(_s._interactingEnemyId)) {
+                    e->DoComboEndActions(g);
+                }
+                _s._interactingEnemyId = ne::EntityId();
             }
         }
         break;
@@ -477,9 +499,15 @@ void FlowPlayerEntity::UpdateDerived(GameManager& g, float dt) {
                     if (_s._stopDashOnPassEnemy) {
                         _s._vel.Set(0.f, 0.f, 0.f);
                         newPos = _s._lastKnownDashTarget;
+                        _s._moveState = MoveState::PullStop;
+                        _s._dashTimer = 0.f;
                     }
                 }
             }
+        }
+        break;
+        case MoveState::PullStop: {
+            _s._dashTimer += dt;
         }
         break;
         case MoveState::Push: {
@@ -502,6 +530,7 @@ void FlowPlayerEntity::UpdateDerived(GameManager& g, float dt) {
         if (pHitWall != nullptr) {
             // Respawn(g);
             _s._moveState = MoveState::WallBounce;
+            _s._interactingEnemyId = ne::EntityId();
             pHitWall->OnHit(g, -penetration.GetNormalized());
             newPos += penetration * 1.1f;  // Add some padding to ensure we're outta collision
             Vec3 collNormal = penetration.GetNormalized();

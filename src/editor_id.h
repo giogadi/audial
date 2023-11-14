@@ -7,6 +7,8 @@
 
 struct EditorId {
     int64_t _id = -1;
+    EditorId() {}
+    explicit EditorId(int64_t id) : _id(id) {}
     bool IsValid() const { return _id >= 0; }
     bool operator==(EditorId const& rhs) const { return _id == rhs._id; }
     bool operator<=(EditorId const& rhs) const { return _id <= rhs._id; }

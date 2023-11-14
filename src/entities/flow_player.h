@@ -23,7 +23,7 @@ struct FlowPlayerEntity : public ne::Entity {
     Props _p;
 
     enum class MoveState {
-        Default, WallBounce, Pull, Push
+        Default, WallBounce, Pull, PullStop, Push
     };
     enum class DashAnimState {
         None, Accel, Decel
