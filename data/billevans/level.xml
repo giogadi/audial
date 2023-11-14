@@ -125,6 +125,64 @@
                 <tracking_factor>0.0500000007</tracking_factor>
                 <fovy_deg>60</fovy_deg>
             </Camera>
+            <FlowPlayer>
+                <editor_id>
+                    <id>2</id>
+                </editor_id>
+                <name>player</name>
+                <entity_active>true</entity_active>
+                <pickable>true</pickable>
+                <transform>
+                    <pos>
+                        <x>0.575966835</x>
+                        <y>0</y>
+                        <z>-4.86904001</z>
+                    </pos>
+                    <quat>
+                        <x>0</x>
+                        <y>0</y>
+                        <z>0</z>
+                        <w>1</w>
+                    </quat>
+                    <scale>
+                        <x>0.25</x>
+                        <y>0.25</y>
+                        <z>0.25</z>
+                    </scale>
+                </transform>
+                <model_name>cube</model_name>
+                <model_color_vec4>
+                    <x>1</x>
+                    <y>1</y>
+                    <z>1</z>
+                    <w>1</w>
+                </model_color_vec4>
+                <flow_section_id>-1</flow_section_id>
+                <tag>0</tag>
+                <waypoint_follower>
+                    <mode>Waypoint</mode>
+                    <local_to_entity>false</local_to_entity>
+                    <waypoint_auto_start>false</waypoint_auto_start>
+                    <loop_waypoints>false</loop_waypoints>
+                    <start_time>3</start_time>
+                    <waypoints/>
+                    <follow_entity_name/>
+                    <follow_entity_editor_id>
+                        <id>-1</id>
+                    </follow_entity_editor_id>
+                </waypoint_follower>
+                <launch_vel>5</launch_vel>
+                <max_horiz_speed_after_dash>-1</max_horiz_speed_after_dash>
+                <max_vert_speed_after_dash>-1</max_vert_speed_after_dash>
+                <max_overall_speed_after_dash>-1</max_overall_speed_after_dash>
+                <dash_time>0.150000006</dash_time>
+                <gravity>
+                    <x>0</x>
+                    <y>0</y>
+                    <z>0</z>
+                </gravity>
+                <max_fall_speed>10</max_fall_speed>
+            </FlowPlayer>
             <StepSequencer>
                 <editor_id>
                     <id>3</id>
@@ -708,35 +766,78 @@
                 <execute_on_init>true</execute_on_init>
                 <use_trigger_volumes>false</use_trigger_volumes>
                 <random_action_count>-1</random_action_count>
-                <actions>
-                    <seq_action>
-                        <one_time>true</one_time>
-                        <action_type>CameraControl</action_type>
-                        <setTarget>true</setTarget>
-                        <jumpToTarget>false</jumpToTarget>
-                        <targetEditorId>
-                            <id>2</id>
-                        </targetEditorId>
-                        <targetTrackingFactor>0.0250000004</targetTrackingFactor>
-                        <setOffset>true</setOffset>
-                        <desiredTargetToCameraOffset>
-                            <x>0</x>
-                            <y>10</y>
-                            <z>0</z>
-                        </desiredTargetToCameraOffset>
-                        <hasMinX>true</hasMinX>
-                        <minX>0.532999992</minX>
-                        <hasMinZ>false</hasMinZ>
-                        <minZ>0</minZ>
-                        <hasMaxX>true</hasMaxX>
-                        <maxX>0.532999992</maxX>
-                        <hasMaxZ>true</hasMaxZ>
-                        <maxZ>-7.9000001</maxZ>
-                    </seq_action>
-                </actions>
+                <actions/>
                 <actions_on_exit/>
                 <trigger_volume_entities/>
             </FlowTrigger>
+            <TypingEnemy>
+                <editor_id>
+                    <id>222</id>
+                </editor_id>
+                <name>new_entity</name>
+                <entity_active>true</entity_active>
+                <pickable>true</pickable>
+                <transform>
+                    <pos>
+                        <x>0.539339602</x>
+                        <y>0</y>
+                        <z>-7.900002</z>
+                    </pos>
+                    <quat>
+                        <x>0</x>
+                        <y>0</y>
+                        <z>0</z>
+                        <w>1</w>
+                    </quat>
+                    <scale>
+                        <x>0.5</x>
+                        <y>0.5</y>
+                        <z>0.5</z>
+                    </scale>
+                </transform>
+                <model_name/>
+                <model_color_vec4>
+                    <x>1</x>
+                    <y>0</y>
+                    <z>0</z>
+                    <w>1</w>
+                </model_color_vec4>
+                <flow_section_id>-1</flow_section_id>
+                <tag>0</tag>
+                <waypoint_follower>
+                    <mode>Waypoint</mode>
+                    <local_to_entity>false</local_to_entity>
+                    <waypoint_auto_start>false</waypoint_auto_start>
+                    <loop_waypoints>false</loop_waypoints>
+                    <start_time>3</start_time>
+                    <waypoints/>
+                    <follow_entity_name/>
+                    <follow_entity_editor_id>
+                        <id>-1</id>
+                    </follow_entity_editor_id>
+                </waypoint_follower>
+                <enemy_type>Pull</enemy_type>
+                <text>howdy</text>
+                <buttons>aaaaa</buttons>
+                <type_kill>false</type_kill>
+                <all_actions_on_hit>false</all_actions_on_hit>
+                <flow_cooldown>-1</flow_cooldown>
+                <show_beats_left>false</show_beats_left>
+                <cooldown_quantize_denom>0</cooldown_quantize_denom>
+                <reset_cooldown_on_any_hit>false</reset_cooldown_on_any_hit>
+                <init_hittable>true</init_hittable>
+                <stop_on_pass>true</stop_on_pass>
+                <dash_vel>-1</dash_vel>
+                <push_angle_deg>-1</push_angle_deg>
+                <push_speed_on_last_hit>-1</push_speed_on_last_hit>
+                <active_region_editor_id>
+                    <id>-1</id>
+                </active_region_editor_id>
+                <hit_actions/>
+                <all_hit_actions/>
+                <off_cooldown_actions/>
+                <combo_end_actions/>
+            </TypingEnemy>
         </new_entities>
     </script>
 </root>
