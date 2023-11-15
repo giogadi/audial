@@ -117,6 +117,7 @@ add_executable(game
     src/enums/WaypointFollowerMode.cpp src/enums/WaypointFollowerMode.h
     src/enums/SeqActionType.cpp src/enums/SeqActionType.h
     src/enums/TypingEnemyType.cpp src/enums/TypingEnemyType.h
+    src/enums/HitResponseType.cpp src/enums/HitResponseType.h
 )
 
 ## GLFW ##

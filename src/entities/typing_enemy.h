@@ -5,7 +5,7 @@
 #include "new_entity.h"
 #include "seq_action.h"
 #include "input_manager.h"
-#include "enums/TypingEnemyType.h"
+#include "enums/HitResponseType.h"
 
 struct FlowPlayerEntity;
 
@@ -16,7 +16,15 @@ struct TypingEnemyEntity : public ne::Entity {
     enum class HitBehavior { SingleAction, AllActions };
     
     struct Props {
-        TypingEnemyType _enemyType = TypingEnemyType::Pull;
+        HitResponseType _hitResponseType = HitResponseType::Pull;
+        float _dashVelocity = -1.f;  // if <0, use player's default dash velocity
+        float _pushAngleDeg = -1.f; // if <0, just use angle-to-player
+
+        bool _useLastHitResponse = false;
+        HitResponseType _lastHitResponseType = HitResponseType::None;
+        float _lastHitVelocity = -1.f;
+        float _lastHitPushAngleDeg = -1.f;
+        
         std::string _keyText;
         std::string _buttons;
         std::vector<std::unique_ptr<SeqAction>> _hitActions;
@@ -32,9 +40,6 @@ struct TypingEnemyEntity : public ne::Entity {
         float _cooldownQuantizeDenom = 0.f;
         bool _initHittable = true;
         bool _stopOnPass = true;
-        float _dashVelocity = -1.f;  // if <0, use player's default dash velocity
-        float _pushAngleDeg = -1.f; // if <0, just use angle-to-player
-        float _pushSpeedOnLastHit = -1.f; // if >= 0, last hit is a push of this speed
     };
     Props _p;
     
@@ -54,7 +59,7 @@ struct TypingEnemyEntity : public ne::Entity {
     State _s;
 
     struct HitResponse {
-        TypingEnemyType _type = TypingEnemyType::Count;
+        HitResponseType _type;
         float _dashSpeed = -1.f;
     };
     HitResponse OnHit(GameManager& g);

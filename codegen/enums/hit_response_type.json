@@ -1,0 +1,9 @@
+{
+    "namespaces": [],
+    "enumName": "HitResponseType",
+    "enumItems": [
+        "None",
+        "Pull",
+        "Push"
+    ]
+}

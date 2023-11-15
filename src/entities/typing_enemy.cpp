@@ -70,14 +70,23 @@ void TypingEnemyEntity::LoadDerived(serial::Ptree pt) {
         bool flowPolarity = false;
         pt.TryGetBool("flow_polarity", &flowPolarity);
         if (flowPolarity) {
-            _p._enemyType = TypingEnemyType::Push;
+            _p._hitResponseType = HitResponseType::Push;
         } else {
-            _p._enemyType = TypingEnemyType::Pull;
+            _p._hitResponseType = HitResponseType::Pull;
         }
 
     } else {
-        serial::TryGetEnum(pt, "enemy_type", _p._enemyType);
-    }    
+        if (!serial::TryGetEnum(pt, "hit_response_type", _p._hitResponseType)) {
+            // backward compat
+            serial::TryGetEnum(pt, "enemy_type", _p._hitResponseType);
+        }        
+    }
+
+    pt.TryGetBool("use_last_hit_response", &_p._useLastHitResponse);
+    serial::TryGetEnum(pt, "last_hit_response_type", _p._lastHitResponseType);
+    pt.TryGetFloat("last_hit_vel", &_p._lastHitVelocity);
+    pt.TryGetFloat("last_hit_push_angle_deg", &_p._lastHitPushAngleDeg);
+    
     _p._keyText = pt.GetString("text");
     pt.TryGetString("buttons", &_p._buttons);
     pt.TryGetBool("type_kill", &_p._destroyAfterTyped);
@@ -99,7 +108,6 @@ void TypingEnemyEntity::LoadDerived(serial::Ptree pt) {
     pt.TryGetBool("stop_on_pass", &_p._stopOnPass);
     pt.TryGetFloat("dash_vel", &_p._dashVelocity);
     pt.TryGetFloat("push_angle_deg", &_p._pushAngleDeg);
-    pt.TryGetFloat("push_speed_on_last_hit", &_p._pushSpeedOnLastHit);
     serial::LoadFromChildOf(pt, "active_region_editor_id", _p._activeRegionEditorId);
 
     SeqAction::LoadActionsFromChildNode(pt, "hit_actions", _p._hitActions);
@@ -126,7 +134,15 @@ void TypingEnemyEntity::LoadDerived(serial::Ptree pt) {
 }
 
 void TypingEnemyEntity::SaveDerived(serial::Ptree pt) const {
-    serial::PutEnum(pt, "enemy_type", _p._enemyType);
+    serial::PutEnum(pt, "hit_response_type", _p._hitResponseType);
+    pt.PutFloat("dash_vel", _p._dashVelocity);
+    pt.PutFloat("push_angle_deg", _p._pushAngleDeg);
+
+    pt.PutBool("use_last_hit_response", _p._useLastHitResponse);
+    serial::PutEnum(pt, "last_hit_response_type", _p._lastHitResponseType);
+    pt.PutFloat("last_hit_vel", _p._lastHitVelocity);
+    pt.PutFloat("last_hit_push_angle_deg", _p._lastHitPushAngleDeg);
+    
     pt.PutString("text", _p._keyText.c_str());
     pt.PutString("buttons", _p._buttons.c_str());
     pt.PutBool("type_kill", _p._destroyAfterTyped);
@@ -137,9 +153,7 @@ void TypingEnemyEntity::SaveDerived(serial::Ptree pt) const {
     pt.PutBool("reset_cooldown_on_any_hit", _p._resetCooldownOnAnyHit);
     pt.PutBool("init_hittable", _p._initHittable);
     pt.PutBool("stop_on_pass", _p._stopOnPass);
-    pt.PutFloat("dash_vel", _p._dashVelocity);
-    pt.PutFloat("push_angle_deg", _p._pushAngleDeg);
-    pt.PutFloat("push_speed_on_last_hit", _p._pushSpeedOnLastHit);
+    
     serial::SaveInNewChildOf(pt, "active_region_editor_id", _p._activeRegionEditorId);
     SeqAction::SaveActionsInChildNode(pt, "hit_actions", _p._hitActions);
     SeqAction::SaveActionsInChildNode(pt, "all_hit_actions", _p._allHitActions);
@@ -150,8 +164,15 @@ void TypingEnemyEntity::SaveDerived(serial::Ptree pt) const {
 ne::BaseEntity::ImGuiResult TypingEnemyEntity::ImGuiDerived(GameManager& g) {
     ImGuiResult result = ImGuiResult::Done;
 
-    if (TypingEnemyTypeImGui("Enemy type", &_p._enemyType)) {
+    if (HitResponseTypeImGui("Hit Response", &_p._hitResponseType)) {
         result = ImGuiResult::NeedsInit;
+    }
+
+    ImGui::Checkbox("Has last hit response", &_p._useLastHitResponse);
+    if (_p._useLastHitResponse) {
+        HitResponseTypeImGui("Last hit response", &_p._lastHitResponseType);
+        ImGui::InputFloat("Last vel", &_p._lastHitVelocity);
+        ImGui::InputFloat("Last push deg", &_p._lastHitPushAngleDeg);
     }
 
     if (imgui_util::InputText<32>("Text", &_p._keyText, true)) {
@@ -178,7 +199,6 @@ ne::BaseEntity::ImGuiResult TypingEnemyEntity::ImGuiDerived(GameManager& g) {
     ImGui::Checkbox("Stop on pass", &_p._stopOnPass);
     ImGui::InputFloat("Dash vel", &_p._dashVelocity);
     ImGui::InputFloat("Push angle (deg)", &_p._pushAngleDeg);
-    ImGui::InputFloat("Last hit push speed", &_p._pushSpeedOnLastHit);
     imgui_util::InputEditorId("Active Region", &_p._activeRegionEditorId);
     if (ImGui::Button("Set Region color")) {
         if (ne::Entity* e = g._neEntityManager->FindEntityByEditorIdAndType(_p._activeRegionEditorId, ne::EntityType::FlowTrigger)) {
@@ -418,14 +438,17 @@ void TypingEnemyEntity::Draw(GameManager& g, float dt) {
 
     FlowPlayerEntity* player = static_cast<FlowPlayerEntity*>(g._neEntityManager->GetFirstEntityOfType(ne::EntityType::FlowPlayer));
 
-    switch (_p._enemyType) {
-        case TypingEnemyType::Pull:
+    switch (_p._hitResponseType) {
+        case HitResponseType::None:
             DrawPullEnemy(dt, g, *this, player);
             break;
-        case TypingEnemyType::Push:
+        case HitResponseType::Pull:
+            DrawPullEnemy(dt, g, *this, player);
+            break;
+        case HitResponseType::Push:
             DrawPushEnemy(dt, g, *this, player);
             break;
-        case TypingEnemyType::Count:
+        case HitResponseType::Count:
             assert(false);
             break;
     }    
@@ -456,13 +479,13 @@ TypingEnemyEntity::HitResponse TypingEnemyEntity::OnHit(GameManager& g) {
     DoHitActions(g);
 
     HitResponse response;
-    if (_s._numHits >= _p._keyText.length() && _p._pushSpeedOnLastHit >= 0.f) {
-        response._type = TypingEnemyType::Push;
-        response._dashSpeed = _p._pushSpeedOnLastHit;
+    if (_p._useLastHitResponse && _s._numHits >= _p._keyText.length()) {
+        response._type = _p._lastHitResponseType;
+        response._dashSpeed = _p._lastHitVelocity;
     } else {
-        response._type = _p._enemyType;
-        response._dashSpeed = _p._dashVelocity;
-    }
+        response._type = _p._hitResponseType;
+        response._dashSpeed = _p._dashVelocity;;
+    }  
     return response;
 }
 
