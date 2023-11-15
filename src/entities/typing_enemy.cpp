@@ -66,12 +66,14 @@ void HitResponse::Load(serial::Ptree pt) {
     pt.TryGetFloat("speed", &_speed);
     pt.TryGetFloat("push_angle_deg", &_pushAngleDeg);
     pt.TryGetBool("stop_on_pass", &_stopOnPass);
+    pt.TryGetBool("stop_after_timer", &_stopAfterTimer);
 }
 void HitResponse::Save(serial::Ptree pt) const {
     serial::PutEnum(pt, "type", _type);
     pt.PutFloat("speed", _speed);
     pt.PutFloat("push_angle_deg", _pushAngleDeg);
     pt.PutBool("stop_on_pass", _stopOnPass);
+    pt.PutBool("stop_after_timer", _stopAfterTimer);
 }
 bool HitResponse::ImGui(char const* label) {
     if (ImGui::TreeNode(label)) {
@@ -79,6 +81,7 @@ bool HitResponse::ImGui(char const* label) {
         ImGui::InputFloat("Speed", &_speed);
         ImGui::InputFloat("PushAngleDeg", &_pushAngleDeg);
         ImGui::Checkbox("StopOnPass", &_stopOnPass);
+        ImGui::Checkbox("StopAfterTimer", &_stopAfterTimer);
         ImGui::TreePop();
     }
     return false;
@@ -532,9 +535,9 @@ void TypingEnemyEntity::DoComboEndActions(GameManager& g) {
 void TypingEnemyEntity::OnHitOther(GameManager& g) {
     if (_p._resetCooldownOnAnyHit) {
         _s._flowCooldownStartBeatTime = -1.0;
-        _s._numHits = 0;
-        _s._timeOfLastHit = -1.0;
     }
+    _s._numHits = 0;
+    _s._timeOfLastHit = -1.0;
 }
 
 InputManager::Key TypingEnemyEntity::GetNextKey() const {

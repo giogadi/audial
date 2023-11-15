@@ -14,6 +14,7 @@ struct HitResponse {
     float _speed = -1.f; // if <0, use player's default dash velocity
     float _pushAngleDeg = -1.f; // if <0, just use angle-to-player
     bool _stopOnPass = true;
+    bool _stopAfterTimer = true;
     void Load(serial::Ptree pt);
     void Save(serial::Ptree pt) const;
     bool ImGui(char const* label);

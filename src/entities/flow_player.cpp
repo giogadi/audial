@@ -275,7 +275,19 @@ void FlowPlayerEntity::UpdateDerived(GameManager& g, float dt) {
             if (!g._inputManager->IsKeyPressedThisFrame(nextKey)) {
                 continue;
             }
-        }        
+        }
+
+        if (enemy->_id == _s._lastHitEnemy) {
+            // Check if it's in view of camera
+            float screenX, screenY;
+            geometry::ProjectWorldPointToScreenSpace(enemy->_transform.GetPos(), viewProjTransform, g._windowWidth, g._windowHeight, screenX, screenY);
+            if (screenX < 0 || screenX > g._windowWidth || screenY < 0 || screenY > g._windowHeight) {
+                continue;
+            }
+            nearest = enemy;
+            nearestDist2 = d2;
+            break;
+        }
 
         if (nearest == nullptr || d2 < nearestDist2) {
 
@@ -296,14 +308,16 @@ void FlowPlayerEntity::UpdateDerived(GameManager& g, float dt) {
     // 
     if (nearest != nullptr) {
         _s._respawnBeforeFirstInteract = false;
-
+        
         HitResponse hitResponse = nearest->OnHit(g);
+        _s._lastHitEnemy = nearest->_id;
         
         switch (hitResponse._type) {
             case HitResponseType::None:
                 break;
             case HitResponseType::Pull: {
                 _s._interactingEnemyId = nearest->_id;
+                _s._stopAfterTimer = hitResponse._stopAfterTimer;
                 _s._stopDashOnPassEnemy = hitResponse._stopOnPass;
                 // If we are close enough to the enemy, just stick to them and start in PullStop if applicable.
                 if (_s._stopDashOnPassEnemy && nearestDist2 < 0.001f * 0.001f) {
@@ -334,6 +348,7 @@ void FlowPlayerEntity::UpdateDerived(GameManager& g, float dt) {
             case HitResponseType::Push: {
                 _s._interactingEnemyId = nearest->_id;
                 _s._moveState = MoveState::Push;
+                _s._stopAfterTimer = hitResponse._stopAfterTimer;
                 _s._dashTimer = 0.f;
                 _s._dashAnimState = DashAnimState::Accel;
                 Vec3 pushDir;
@@ -378,7 +393,7 @@ void FlowPlayerEntity::UpdateDerived(GameManager& g, float dt) {
         case MoveState::Default: break;
         case MoveState::Pull: {
             bool finishedPulling = false;
-            if (_s._dashTimer >= _p._dashTime) {
+            if (_s._stopAfterTimer && _s._dashTimer >= _p._dashTime) {
                 finishedPulling = true;
             }
             if (finishedPulling) {
@@ -413,7 +428,7 @@ void FlowPlayerEntity::UpdateDerived(GameManager& g, float dt) {
 
         case MoveState::Push: {
             bool finishedPushing = false;
-            if (_s._dashTimer >= _p._dashTime) {
+            if (_s._stopAfterTimer && _s._dashTimer >= _p._dashTime) {
                 finishedPushing = true;
             }
             if (finishedPushing) {

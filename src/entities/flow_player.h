@@ -32,8 +32,10 @@ struct FlowPlayerEntity : public ne::Entity {
         Vec3 _vel;
         
         MoveState _moveState = MoveState::Default;
-        
+
+        ne::EntityId _lastHitEnemy;
         ne::EntityId _interactingEnemyId;
+        bool _stopAfterTimer = true;
         float _dashTimer = -1.f; // wallBounce/pull/push
         Vec3 _lastKnownDashTarget; // pull/push
         Vec4 _lastKnownDashTargetColor; // pull/push
