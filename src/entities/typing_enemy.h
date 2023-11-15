@@ -9,6 +9,16 @@
 
 struct FlowPlayerEntity;
 
+struct HitResponse {
+    HitResponseType _type = HitResponseType::Pull;
+    float _speed = -1.f; // if <0, use player's default dash velocity
+    float _pushAngleDeg = -1.f; // if <0, just use angle-to-player
+    bool _stopOnPass = true;
+    void Load(serial::Ptree pt);
+    void Save(serial::Ptree pt) const;
+    bool ImGui(char const* label);
+};
+
 struct TypingEnemyEntity : public ne::Entity {
     virtual ne::EntityType Type() override { return ne::EntityType::TypingEnemy; }
     static ne::EntityType StaticType() { return ne::EntityType::TypingEnemy; }
@@ -16,14 +26,10 @@ struct TypingEnemyEntity : public ne::Entity {
     enum class HitBehavior { SingleAction, AllActions };
     
     struct Props {
-        HitResponseType _hitResponseType = HitResponseType::Pull;
-        float _dashVelocity = -1.f;  // if <0, use player's default dash velocity
-        float _pushAngleDeg = -1.f; // if <0, just use angle-to-player
+        HitResponse _hitResponse;
 
         bool _useLastHitResponse = false;
-        HitResponseType _lastHitResponseType = HitResponseType::None;
-        float _lastHitVelocity = -1.f;
-        float _lastHitPushAngleDeg = -1.f;
+        HitResponse _lastHitResponse;
         
         std::string _keyText;
         std::string _buttons;
@@ -39,7 +45,6 @@ struct TypingEnemyEntity : public ne::Entity {
         bool _showBeatsLeft = false;
         float _cooldownQuantizeDenom = 0.f;
         bool _initHittable = true;
-        bool _stopOnPass = true;
     };
     Props _p;
     
@@ -58,10 +63,6 @@ struct TypingEnemyEntity : public ne::Entity {
     };
     State _s;
 
-    struct HitResponse {
-        HitResponseType _type;
-        float _dashSpeed = -1.f;
-    };
     HitResponse OnHit(GameManager& g);
     void DoHitActions(GameManager& g);
     void OnHitOther(GameManager& g);

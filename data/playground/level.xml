@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <root>
-    <version>1</version>
+    <version>2</version>
     <script>
         <bpm>140</bpm>
         <ctrl_groups>
@@ -761,13 +761,19 @@
                         <id>-1</id>
                     </follow_entity_editor_id>
                 </waypoint_follower>
-                <hit_response_type>Pull</hit_response_type>
-                <dash_vel>-1</dash_vel>
-                <push_angle_deg>-1</push_angle_deg>
+                <hit_response>
+                    <type>Pull</type>
+                    <speed>-1</speed>
+                    <push_angle_deg>-1</push_angle_deg>
+                    <stop_on_pass>true</stop_on_pass>
+                </hit_response>
                 <use_last_hit_response>false</use_last_hit_response>
-                <last_hit_response_type>None</last_hit_response_type>
-                <last_hit_vel>-1</last_hit_vel>
-                <last_hit_push_angle_deg>-1</last_hit_push_angle_deg>
+                <last_hit_response>
+                    <type>None</type>
+                    <speed>-1</speed>
+                    <push_angle_deg>-1</push_angle_deg>
+                    <stop_on_pass>true</stop_on_pass>
+                </last_hit_response>
                 <text>c</text>
                 <buttons>a</buttons>
                 <type_kill>true</type_kill>
@@ -777,7 +783,6 @@
                 <cooldown_quantize_denom>0</cooldown_quantize_denom>
                 <reset_cooldown_on_any_hit>true</reset_cooldown_on_any_hit>
                 <init_hittable>true</init_hittable>
-                <stop_on_pass>true</stop_on_pass>
                 <active_region_editor_id>
                     <id>216</id>
                 </active_region_editor_id>
@@ -1004,13 +1009,19 @@
                         <id>-1</id>
                     </follow_entity_editor_id>
                 </waypoint_follower>
-                <hit_response_type>Pull</hit_response_type>
-                <dash_vel>-1</dash_vel>
-                <push_angle_deg>-1</push_angle_deg>
+                <hit_response>
+                    <type>Pull</type>
+                    <speed>-1</speed>
+                    <push_angle_deg>-1</push_angle_deg>
+                    <stop_on_pass>true</stop_on_pass>
+                </hit_response>
                 <use_last_hit_response>false</use_last_hit_response>
-                <last_hit_response_type>None</last_hit_response_type>
-                <last_hit_vel>-1</last_hit_vel>
-                <last_hit_push_angle_deg>-1</last_hit_push_angle_deg>
+                <last_hit_response>
+                    <type>None</type>
+                    <speed>-1</speed>
+                    <push_angle_deg>-1</push_angle_deg>
+                    <stop_on_pass>true</stop_on_pass>
+                </last_hit_response>
                 <text>l</text>
                 <buttons>a</buttons>
                 <type_kill>true</type_kill>
@@ -1020,7 +1031,6 @@
                 <cooldown_quantize_denom>0</cooldown_quantize_denom>
                 <reset_cooldown_on_any_hit>false</reset_cooldown_on_any_hit>
                 <init_hittable>false</init_hittable>
-                <stop_on_pass>true</stop_on_pass>
                 <active_region_editor_id>
                     <id>216</id>
                 </active_region_editor_id>
@@ -1085,13 +1095,19 @@
                         <id>-1</id>
                     </follow_entity_editor_id>
                 </waypoint_follower>
-                <hit_response_type>Pull</hit_response_type>
-                <dash_vel>-1</dash_vel>
-                <push_angle_deg>-1</push_angle_deg>
+                <hit_response>
+                    <type>Pull</type>
+                    <speed>-1</speed>
+                    <push_angle_deg>-1</push_angle_deg>
+                    <stop_on_pass>true</stop_on_pass>
+                </hit_response>
                 <use_last_hit_response>false</use_last_hit_response>
-                <last_hit_response_type>None</last_hit_response_type>
-                <last_hit_vel>-1</last_hit_vel>
-                <last_hit_push_angle_deg>-1</last_hit_push_angle_deg>
+                <last_hit_response>
+                    <type>None</type>
+                    <speed>-1</speed>
+                    <push_angle_deg>-1</push_angle_deg>
+                    <stop_on_pass>true</stop_on_pass>
+                </last_hit_response>
                 <text>e</text>
                 <buttons>a</buttons>
                 <type_kill>true</type_kill>
@@ -1101,7 +1117,6 @@
                 <cooldown_quantize_denom>0</cooldown_quantize_denom>
                 <reset_cooldown_on_any_hit>false</reset_cooldown_on_any_hit>
                 <init_hittable>false</init_hittable>
-                <stop_on_pass>true</stop_on_pass>
                 <active_region_editor_id>
                     <id>216</id>
                 </active_region_editor_id>
@@ -1175,13 +1190,19 @@
                         <id>-1</id>
                     </follow_entity_editor_id>
                 </waypoint_follower>
-                <hit_response_type>Pull</hit_response_type>
-                <dash_vel>-1</dash_vel>
-                <push_angle_deg>-1</push_angle_deg>
+                <hit_response>
+                    <type>Pull</type>
+                    <speed>-1</speed>
+                    <push_angle_deg>-1</push_angle_deg>
+                    <stop_on_pass>true</stop_on_pass>
+                </hit_response>
                 <use_last_hit_response>false</use_last_hit_response>
-                <last_hit_response_type>None</last_hit_response_type>
-                <last_hit_vel>-1</last_hit_vel>
-                <last_hit_push_angle_deg>-1</last_hit_push_angle_deg>
+                <last_hit_response>
+                    <type>None</type>
+                    <speed>-1</speed>
+                    <push_angle_deg>-1</push_angle_deg>
+                    <stop_on_pass>true</stop_on_pass>
+                </last_hit_response>
                 <text>a</text>
                 <buttons>a</buttons>
                 <type_kill>true</type_kill>
@@ -1191,7 +1212,6 @@
                 <cooldown_quantize_denom>0</cooldown_quantize_denom>
                 <reset_cooldown_on_any_hit>false</reset_cooldown_on_any_hit>
                 <init_hittable>false</init_hittable>
-                <stop_on_pass>true</stop_on_pass>
                 <active_region_editor_id>
                     <id>216</id>
                 </active_region_editor_id>
@@ -1256,13 +1276,19 @@
                         <id>-1</id>
                     </follow_entity_editor_id>
                 </waypoint_follower>
-                <hit_response_type>Pull</hit_response_type>
-                <dash_vel>40</dash_vel>
-                <push_angle_deg>-1</push_angle_deg>
+                <hit_response>
+                    <type>Pull</type>
+                    <speed>40</speed>
+                    <push_angle_deg>-1</push_angle_deg>
+                    <stop_on_pass>false</stop_on_pass>
+                </hit_response>
                 <use_last_hit_response>false</use_last_hit_response>
-                <last_hit_response_type>None</last_hit_response_type>
-                <last_hit_vel>-1</last_hit_vel>
-                <last_hit_push_angle_deg>-1</last_hit_push_angle_deg>
+                <last_hit_response>
+                    <type>None</type>
+                    <speed>-1</speed>
+                    <push_angle_deg>-1</push_angle_deg>
+                    <stop_on_pass>false</stop_on_pass>
+                </last_hit_response>
                 <text>r</text>
                 <buttons>a</buttons>
                 <type_kill>true</type_kill>
@@ -1272,7 +1298,6 @@
                 <cooldown_quantize_denom>0</cooldown_quantize_denom>
                 <reset_cooldown_on_any_hit>false</reset_cooldown_on_any_hit>
                 <init_hittable>false</init_hittable>
-                <stop_on_pass>false</stop_on_pass>
                 <active_region_editor_id>
                     <id>216</id>
                 </active_region_editor_id>
@@ -1441,13 +1466,19 @@
                         <id>-1</id>
                     </follow_entity_editor_id>
                 </waypoint_follower>
-                <hit_response_type>Push</hit_response_type>
-                <dash_vel>-1</dash_vel>
-                <push_angle_deg>-1</push_angle_deg>
+                <hit_response>
+                    <type>Push</type>
+                    <speed>-1</speed>
+                    <push_angle_deg>-1</push_angle_deg>
+                    <stop_on_pass>true</stop_on_pass>
+                </hit_response>
                 <use_last_hit_response>false</use_last_hit_response>
-                <last_hit_response_type>None</last_hit_response_type>
-                <last_hit_vel>-1</last_hit_vel>
-                <last_hit_push_angle_deg>-1</last_hit_push_angle_deg>
+                <last_hit_response>
+                    <type>None</type>
+                    <speed>-1</speed>
+                    <push_angle_deg>-1</push_angle_deg>
+                    <stop_on_pass>true</stop_on_pass>
+                </last_hit_response>
                 <text>j</text>
                 <buttons>a</buttons>
                 <type_kill>false</type_kill>
@@ -1457,7 +1488,6 @@
                 <cooldown_quantize_denom>0</cooldown_quantize_denom>
                 <reset_cooldown_on_any_hit>true</reset_cooldown_on_any_hit>
                 <init_hittable>true</init_hittable>
-                <stop_on_pass>true</stop_on_pass>
                 <active_region_editor_id>
                     <id>-1</id>
                 </active_region_editor_id>
@@ -1512,13 +1542,19 @@
                         <id>-1</id>
                     </follow_entity_editor_id>
                 </waypoint_follower>
-                <hit_response_type>Pull</hit_response_type>
-                <dash_vel>-1</dash_vel>
-                <push_angle_deg>-1</push_angle_deg>
+                <hit_response>
+                    <type>Pull</type>
+                    <speed>-1</speed>
+                    <push_angle_deg>-1</push_angle_deg>
+                    <stop_on_pass>true</stop_on_pass>
+                </hit_response>
                 <use_last_hit_response>false</use_last_hit_response>
-                <last_hit_response_type>None</last_hit_response_type>
-                <last_hit_vel>-1</last_hit_vel>
-                <last_hit_push_angle_deg>-1</last_hit_push_angle_deg>
+                <last_hit_response>
+                    <type>None</type>
+                    <speed>-1</speed>
+                    <push_angle_deg>-1</push_angle_deg>
+                    <stop_on_pass>true</stop_on_pass>
+                </last_hit_response>
                 <text>d</text>
                 <buttons>a</buttons>
                 <type_kill>false</type_kill>
@@ -1528,7 +1564,6 @@
                 <cooldown_quantize_denom>0</cooldown_quantize_denom>
                 <reset_cooldown_on_any_hit>true</reset_cooldown_on_any_hit>
                 <init_hittable>true</init_hittable>
-                <stop_on_pass>true</stop_on_pass>
                 <active_region_editor_id>
                     <id>250</id>
                 </active_region_editor_id>
@@ -1583,13 +1618,19 @@
                         <id>-1</id>
                     </follow_entity_editor_id>
                 </waypoint_follower>
-                <hit_response_type>Pull</hit_response_type>
-                <dash_vel>-1</dash_vel>
-                <push_angle_deg>-1</push_angle_deg>
+                <hit_response>
+                    <type>Pull</type>
+                    <speed>-1</speed>
+                    <push_angle_deg>-1</push_angle_deg>
+                    <stop_on_pass>true</stop_on_pass>
+                </hit_response>
                 <use_last_hit_response>false</use_last_hit_response>
-                <last_hit_response_type>None</last_hit_response_type>
-                <last_hit_vel>-1</last_hit_vel>
-                <last_hit_push_angle_deg>-1</last_hit_push_angle_deg>
+                <last_hit_response>
+                    <type>None</type>
+                    <speed>-1</speed>
+                    <push_angle_deg>-1</push_angle_deg>
+                    <stop_on_pass>true</stop_on_pass>
+                </last_hit_response>
                 <text>m</text>
                 <buttons>a</buttons>
                 <type_kill>false</type_kill>
@@ -1599,7 +1640,6 @@
                 <cooldown_quantize_denom>0</cooldown_quantize_denom>
                 <reset_cooldown_on_any_hit>true</reset_cooldown_on_any_hit>
                 <init_hittable>true</init_hittable>
-                <stop_on_pass>true</stop_on_pass>
                 <active_region_editor_id>
                     <id>250</id>
                 </active_region_editor_id>
@@ -1654,13 +1694,19 @@
                         <id>-1</id>
                     </follow_entity_editor_id>
                 </waypoint_follower>
-                <hit_response_type>Pull</hit_response_type>
-                <dash_vel>-1</dash_vel>
-                <push_angle_deg>-1</push_angle_deg>
+                <hit_response>
+                    <type>Pull</type>
+                    <speed>-1</speed>
+                    <push_angle_deg>-1</push_angle_deg>
+                    <stop_on_pass>true</stop_on_pass>
+                </hit_response>
                 <use_last_hit_response>false</use_last_hit_response>
-                <last_hit_response_type>None</last_hit_response_type>
-                <last_hit_vel>-1</last_hit_vel>
-                <last_hit_push_angle_deg>-1</last_hit_push_angle_deg>
+                <last_hit_response>
+                    <type>None</type>
+                    <speed>-1</speed>
+                    <push_angle_deg>-1</push_angle_deg>
+                    <stop_on_pass>true</stop_on_pass>
+                </last_hit_response>
                 <text>l</text>
                 <buttons>a</buttons>
                 <type_kill>false</type_kill>
@@ -1670,7 +1716,6 @@
                 <cooldown_quantize_denom>0</cooldown_quantize_denom>
                 <reset_cooldown_on_any_hit>true</reset_cooldown_on_any_hit>
                 <init_hittable>true</init_hittable>
-                <stop_on_pass>true</stop_on_pass>
                 <active_region_editor_id>
                     <id>250</id>
                 </active_region_editor_id>
@@ -1805,13 +1850,19 @@
                         <id>-1</id>
                     </follow_entity_editor_id>
                 </waypoint_follower>
-                <hit_response_type>Push</hit_response_type>
-                <dash_vel>40</dash_vel>
-                <push_angle_deg>180</push_angle_deg>
+                <hit_response>
+                    <type>Push</type>
+                    <speed>40</speed>
+                    <push_angle_deg>180</push_angle_deg>
+                    <stop_on_pass>true</stop_on_pass>
+                </hit_response>
                 <use_last_hit_response>false</use_last_hit_response>
-                <last_hit_response_type>None</last_hit_response_type>
-                <last_hit_vel>-1</last_hit_vel>
-                <last_hit_push_angle_deg>-1</last_hit_push_angle_deg>
+                <last_hit_response>
+                    <type>None</type>
+                    <speed>-1</speed>
+                    <push_angle_deg>-1</push_angle_deg>
+                    <stop_on_pass>true</stop_on_pass>
+                </last_hit_response>
                 <text>o</text>
                 <buttons>a</buttons>
                 <type_kill>false</type_kill>
@@ -1821,7 +1872,6 @@
                 <cooldown_quantize_denom>0</cooldown_quantize_denom>
                 <reset_cooldown_on_any_hit>true</reset_cooldown_on_any_hit>
                 <init_hittable>true</init_hittable>
-                <stop_on_pass>true</stop_on_pass>
                 <active_region_editor_id>
                     <id>247</id>
                 </active_region_editor_id>
@@ -1876,13 +1926,19 @@
                         <id>-1</id>
                     </follow_entity_editor_id>
                 </waypoint_follower>
-                <hit_response_type>Pull</hit_response_type>
-                <dash_vel>-1</dash_vel>
-                <push_angle_deg>-1</push_angle_deg>
+                <hit_response>
+                    <type>Pull</type>
+                    <speed>-1</speed>
+                    <push_angle_deg>-1</push_angle_deg>
+                    <stop_on_pass>true</stop_on_pass>
+                </hit_response>
                 <use_last_hit_response>false</use_last_hit_response>
-                <last_hit_response_type>None</last_hit_response_type>
-                <last_hit_vel>-1</last_hit_vel>
-                <last_hit_push_angle_deg>-1</last_hit_push_angle_deg>
+                <last_hit_response>
+                    <type>None</type>
+                    <speed>-1</speed>
+                    <push_angle_deg>-1</push_angle_deg>
+                    <stop_on_pass>true</stop_on_pass>
+                </last_hit_response>
                 <text>a</text>
                 <buttons>a</buttons>
                 <type_kill>false</type_kill>
@@ -1892,7 +1948,6 @@
                 <cooldown_quantize_denom>0</cooldown_quantize_denom>
                 <reset_cooldown_on_any_hit>true</reset_cooldown_on_any_hit>
                 <init_hittable>true</init_hittable>
-                <stop_on_pass>true</stop_on_pass>
                 <active_region_editor_id>
                     <id>246</id>
                 </active_region_editor_id>
@@ -1947,13 +2002,19 @@
                         <id>-1</id>
                     </follow_entity_editor_id>
                 </waypoint_follower>
-                <hit_response_type>Pull</hit_response_type>
-                <dash_vel>-1</dash_vel>
-                <push_angle_deg>-1</push_angle_deg>
+                <hit_response>
+                    <type>Pull</type>
+                    <speed>-1</speed>
+                    <push_angle_deg>-1</push_angle_deg>
+                    <stop_on_pass>true</stop_on_pass>
+                </hit_response>
                 <use_last_hit_response>false</use_last_hit_response>
-                <last_hit_response_type>None</last_hit_response_type>
-                <last_hit_vel>-1</last_hit_vel>
-                <last_hit_push_angle_deg>-1</last_hit_push_angle_deg>
+                <last_hit_response>
+                    <type>None</type>
+                    <speed>-1</speed>
+                    <push_angle_deg>-1</push_angle_deg>
+                    <stop_on_pass>true</stop_on_pass>
+                </last_hit_response>
                 <text>s</text>
                 <buttons>a</buttons>
                 <type_kill>false</type_kill>
@@ -1963,7 +2024,6 @@
                 <cooldown_quantize_denom>0</cooldown_quantize_denom>
                 <reset_cooldown_on_any_hit>true</reset_cooldown_on_any_hit>
                 <init_hittable>true</init_hittable>
-                <stop_on_pass>true</stop_on_pass>
                 <active_region_editor_id>
                     <id>246</id>
                 </active_region_editor_id>
@@ -2018,13 +2078,19 @@
                         <id>-1</id>
                     </follow_entity_editor_id>
                 </waypoint_follower>
-                <hit_response_type>Pull</hit_response_type>
-                <dash_vel>-1</dash_vel>
-                <push_angle_deg>-1</push_angle_deg>
+                <hit_response>
+                    <type>Pull</type>
+                    <speed>-1</speed>
+                    <push_angle_deg>-1</push_angle_deg>
+                    <stop_on_pass>true</stop_on_pass>
+                </hit_response>
                 <use_last_hit_response>false</use_last_hit_response>
-                <last_hit_response_type>None</last_hit_response_type>
-                <last_hit_vel>-1</last_hit_vel>
-                <last_hit_push_angle_deg>-1</last_hit_push_angle_deg>
+                <last_hit_response>
+                    <type>None</type>
+                    <speed>-1</speed>
+                    <push_angle_deg>-1</push_angle_deg>
+                    <stop_on_pass>true</stop_on_pass>
+                </last_hit_response>
                 <text>d</text>
                 <buttons>a</buttons>
                 <type_kill>false</type_kill>
@@ -2034,7 +2100,6 @@
                 <cooldown_quantize_denom>0</cooldown_quantize_denom>
                 <reset_cooldown_on_any_hit>true</reset_cooldown_on_any_hit>
                 <init_hittable>true</init_hittable>
-                <stop_on_pass>true</stop_on_pass>
                 <active_region_editor_id>
                     <id>246</id>
                 </active_region_editor_id>
@@ -2089,13 +2154,19 @@
                         <id>-1</id>
                     </follow_entity_editor_id>
                 </waypoint_follower>
-                <hit_response_type>Pull</hit_response_type>
-                <dash_vel>-1</dash_vel>
-                <push_angle_deg>-1</push_angle_deg>
+                <hit_response>
+                    <type>Pull</type>
+                    <speed>-1</speed>
+                    <push_angle_deg>-1</push_angle_deg>
+                    <stop_on_pass>true</stop_on_pass>
+                </hit_response>
                 <use_last_hit_response>false</use_last_hit_response>
-                <last_hit_response_type>None</last_hit_response_type>
-                <last_hit_vel>-1</last_hit_vel>
-                <last_hit_push_angle_deg>-1</last_hit_push_angle_deg>
+                <last_hit_response>
+                    <type>None</type>
+                    <speed>-1</speed>
+                    <push_angle_deg>-1</push_angle_deg>
+                    <stop_on_pass>true</stop_on_pass>
+                </last_hit_response>
                 <text>f</text>
                 <buttons>a</buttons>
                 <type_kill>false</type_kill>
@@ -2105,7 +2176,6 @@
                 <cooldown_quantize_denom>0</cooldown_quantize_denom>
                 <reset_cooldown_on_any_hit>true</reset_cooldown_on_any_hit>
                 <init_hittable>true</init_hittable>
-                <stop_on_pass>true</stop_on_pass>
                 <active_region_editor_id>
                     <id>246</id>
                 </active_region_editor_id>
@@ -2160,13 +2230,19 @@
                         <id>-1</id>
                     </follow_entity_editor_id>
                 </waypoint_follower>
-                <hit_response_type>Pull</hit_response_type>
-                <dash_vel>-1</dash_vel>
-                <push_angle_deg>-1</push_angle_deg>
+                <hit_response>
+                    <type>Pull</type>
+                    <speed>-1</speed>
+                    <push_angle_deg>-1</push_angle_deg>
+                    <stop_on_pass>true</stop_on_pass>
+                </hit_response>
                 <use_last_hit_response>false</use_last_hit_response>
-                <last_hit_response_type>None</last_hit_response_type>
-                <last_hit_vel>-1</last_hit_vel>
-                <last_hit_push_angle_deg>-1</last_hit_push_angle_deg>
+                <last_hit_response>
+                    <type>None</type>
+                    <speed>-1</speed>
+                    <push_angle_deg>-1</push_angle_deg>
+                    <stop_on_pass>true</stop_on_pass>
+                </last_hit_response>
                 <text>j</text>
                 <buttons>a</buttons>
                 <type_kill>false</type_kill>
@@ -2176,7 +2252,6 @@
                 <cooldown_quantize_denom>0</cooldown_quantize_denom>
                 <reset_cooldown_on_any_hit>true</reset_cooldown_on_any_hit>
                 <init_hittable>true</init_hittable>
-                <stop_on_pass>true</stop_on_pass>
                 <active_region_editor_id>
                     <id>246</id>
                 </active_region_editor_id>
@@ -2231,13 +2306,19 @@
                         <id>-1</id>
                     </follow_entity_editor_id>
                 </waypoint_follower>
-                <hit_response_type>Pull</hit_response_type>
-                <dash_vel>-1</dash_vel>
-                <push_angle_deg>-1</push_angle_deg>
+                <hit_response>
+                    <type>Pull</type>
+                    <speed>-1</speed>
+                    <push_angle_deg>-1</push_angle_deg>
+                    <stop_on_pass>true</stop_on_pass>
+                </hit_response>
                 <use_last_hit_response>false</use_last_hit_response>
-                <last_hit_response_type>None</last_hit_response_type>
-                <last_hit_vel>-1</last_hit_vel>
-                <last_hit_push_angle_deg>-1</last_hit_push_angle_deg>
+                <last_hit_response>
+                    <type>None</type>
+                    <speed>-1</speed>
+                    <push_angle_deg>-1</push_angle_deg>
+                    <stop_on_pass>true</stop_on_pass>
+                </last_hit_response>
                 <text>k</text>
                 <buttons>a</buttons>
                 <type_kill>false</type_kill>
@@ -2247,7 +2328,6 @@
                 <cooldown_quantize_denom>0</cooldown_quantize_denom>
                 <reset_cooldown_on_any_hit>true</reset_cooldown_on_any_hit>
                 <init_hittable>true</init_hittable>
-                <stop_on_pass>true</stop_on_pass>
                 <active_region_editor_id>
                     <id>246</id>
                 </active_region_editor_id>
@@ -2302,13 +2382,19 @@
                         <id>-1</id>
                     </follow_entity_editor_id>
                 </waypoint_follower>
-                <hit_response_type>Pull</hit_response_type>
-                <dash_vel>-1</dash_vel>
-                <push_angle_deg>-1</push_angle_deg>
+                <hit_response>
+                    <type>Pull</type>
+                    <speed>-1</speed>
+                    <push_angle_deg>-1</push_angle_deg>
+                    <stop_on_pass>true</stop_on_pass>
+                </hit_response>
                 <use_last_hit_response>false</use_last_hit_response>
-                <last_hit_response_type>None</last_hit_response_type>
-                <last_hit_vel>-1</last_hit_vel>
-                <last_hit_push_angle_deg>-1</last_hit_push_angle_deg>
+                <last_hit_response>
+                    <type>None</type>
+                    <speed>-1</speed>
+                    <push_angle_deg>-1</push_angle_deg>
+                    <stop_on_pass>true</stop_on_pass>
+                </last_hit_response>
                 <text>l</text>
                 <buttons>a</buttons>
                 <type_kill>false</type_kill>
@@ -2318,7 +2404,6 @@
                 <cooldown_quantize_denom>0</cooldown_quantize_denom>
                 <reset_cooldown_on_any_hit>true</reset_cooldown_on_any_hit>
                 <init_hittable>true</init_hittable>
-                <stop_on_pass>true</stop_on_pass>
                 <active_region_editor_id>
                     <id>246</id>
                 </active_region_editor_id>
@@ -2427,13 +2512,19 @@
                         <id>-1</id>
                     </follow_entity_editor_id>
                 </waypoint_follower>
-                <hit_response_type>Pull</hit_response_type>
-                <dash_vel>-1</dash_vel>
-                <push_angle_deg>-1</push_angle_deg>
+                <hit_response>
+                    <type>Pull</type>
+                    <speed>-1</speed>
+                    <push_angle_deg>-1</push_angle_deg>
+                    <stop_on_pass>true</stop_on_pass>
+                </hit_response>
                 <use_last_hit_response>false</use_last_hit_response>
-                <last_hit_response_type>None</last_hit_response_type>
-                <last_hit_vel>-1</last_hit_vel>
-                <last_hit_push_angle_deg>-1</last_hit_push_angle_deg>
+                <last_hit_response>
+                    <type>None</type>
+                    <speed>-1</speed>
+                    <push_angle_deg>-1</push_angle_deg>
+                    <stop_on_pass>true</stop_on_pass>
+                </last_hit_response>
                 <text>s</text>
                 <buttons>a</buttons>
                 <type_kill>true</type_kill>
@@ -2443,7 +2534,6 @@
                 <cooldown_quantize_denom>0</cooldown_quantize_denom>
                 <reset_cooldown_on_any_hit>true</reset_cooldown_on_any_hit>
                 <init_hittable>true</init_hittable>
-                <stop_on_pass>true</stop_on_pass>
                 <active_region_editor_id>
                     <id>242</id>
                 </active_region_editor_id>
@@ -2508,13 +2598,19 @@
                         <id>-1</id>
                     </follow_entity_editor_id>
                 </waypoint_follower>
-                <hit_response_type>Pull</hit_response_type>
-                <dash_vel>-1</dash_vel>
-                <push_angle_deg>-1</push_angle_deg>
+                <hit_response>
+                    <type>Pull</type>
+                    <speed>-1</speed>
+                    <push_angle_deg>-1</push_angle_deg>
+                    <stop_on_pass>true</stop_on_pass>
+                </hit_response>
                 <use_last_hit_response>false</use_last_hit_response>
-                <last_hit_response_type>None</last_hit_response_type>
-                <last_hit_vel>-1</last_hit_vel>
-                <last_hit_push_angle_deg>-1</last_hit_push_angle_deg>
+                <last_hit_response>
+                    <type>None</type>
+                    <speed>-1</speed>
+                    <push_angle_deg>-1</push_angle_deg>
+                    <stop_on_pass>true</stop_on_pass>
+                </last_hit_response>
                 <text>o</text>
                 <buttons>a</buttons>
                 <type_kill>true</type_kill>
@@ -2524,7 +2620,6 @@
                 <cooldown_quantize_denom>0</cooldown_quantize_denom>
                 <reset_cooldown_on_any_hit>true</reset_cooldown_on_any_hit>
                 <init_hittable>false</init_hittable>
-                <stop_on_pass>true</stop_on_pass>
                 <active_region_editor_id>
                     <id>242</id>
                 </active_region_editor_id>
@@ -2589,13 +2684,19 @@
                         <id>-1</id>
                     </follow_entity_editor_id>
                 </waypoint_follower>
-                <hit_response_type>Pull</hit_response_type>
-                <dash_vel>40</dash_vel>
-                <push_angle_deg>-1</push_angle_deg>
+                <hit_response>
+                    <type>Pull</type>
+                    <speed>40</speed>
+                    <push_angle_deg>-1</push_angle_deg>
+                    <stop_on_pass>false</stop_on_pass>
+                </hit_response>
                 <use_last_hit_response>false</use_last_hit_response>
-                <last_hit_response_type>None</last_hit_response_type>
-                <last_hit_vel>-1</last_hit_vel>
-                <last_hit_push_angle_deg>-1</last_hit_push_angle_deg>
+                <last_hit_response>
+                    <type>None</type>
+                    <speed>-1</speed>
+                    <push_angle_deg>-1</push_angle_deg>
+                    <stop_on_pass>false</stop_on_pass>
+                </last_hit_response>
                 <text>l</text>
                 <buttons>a</buttons>
                 <type_kill>true</type_kill>
@@ -2605,7 +2706,6 @@
                 <cooldown_quantize_denom>0</cooldown_quantize_denom>
                 <reset_cooldown_on_any_hit>true</reset_cooldown_on_any_hit>
                 <init_hittable>false</init_hittable>
-                <stop_on_pass>false</stop_on_pass>
                 <active_region_editor_id>
                     <id>242</id>
                 </active_region_editor_id>
@@ -2660,13 +2760,19 @@
                         <id>-1</id>
                     </follow_entity_editor_id>
                 </waypoint_follower>
-                <hit_response_type>Pull</hit_response_type>
-                <dash_vel>40</dash_vel>
-                <push_angle_deg>-1</push_angle_deg>
+                <hit_response>
+                    <type>Pull</type>
+                    <speed>40</speed>
+                    <push_angle_deg>-1</push_angle_deg>
+                    <stop_on_pass>false</stop_on_pass>
+                </hit_response>
                 <use_last_hit_response>false</use_last_hit_response>
-                <last_hit_response_type>None</last_hit_response_type>
-                <last_hit_vel>-1</last_hit_vel>
-                <last_hit_push_angle_deg>-1</last_hit_push_angle_deg>
+                <last_hit_response>
+                    <type>None</type>
+                    <speed>-1</speed>
+                    <push_angle_deg>-1</push_angle_deg>
+                    <stop_on_pass>false</stop_on_pass>
+                </last_hit_response>
                 <text>r</text>
                 <buttons>a</buttons>
                 <type_kill>true</type_kill>
@@ -2676,7 +2782,6 @@
                 <cooldown_quantize_denom>0</cooldown_quantize_denom>
                 <reset_cooldown_on_any_hit>true</reset_cooldown_on_any_hit>
                 <init_hittable>false</init_hittable>
-                <stop_on_pass>false</stop_on_pass>
                 <active_region_editor_id>
                     <id>242</id>
                 </active_region_editor_id>
@@ -2731,13 +2836,19 @@
                         <id>-1</id>
                     </follow_entity_editor_id>
                 </waypoint_follower>
-                <hit_response_type>Pull</hit_response_type>
-                <dash_vel>-1</dash_vel>
-                <push_angle_deg>-1</push_angle_deg>
+                <hit_response>
+                    <type>Pull</type>
+                    <speed>-1</speed>
+                    <push_angle_deg>-1</push_angle_deg>
+                    <stop_on_pass>true</stop_on_pass>
+                </hit_response>
                 <use_last_hit_response>false</use_last_hit_response>
-                <last_hit_response_type>None</last_hit_response_type>
-                <last_hit_vel>-1</last_hit_vel>
-                <last_hit_push_angle_deg>-1</last_hit_push_angle_deg>
+                <last_hit_response>
+                    <type>None</type>
+                    <speed>-1</speed>
+                    <push_angle_deg>-1</push_angle_deg>
+                    <stop_on_pass>true</stop_on_pass>
+                </last_hit_response>
                 <text>u</text>
                 <buttons>a</buttons>
                 <type_kill>true</type_kill>
@@ -2747,7 +2858,6 @@
                 <cooldown_quantize_denom>0</cooldown_quantize_denom>
                 <reset_cooldown_on_any_hit>true</reset_cooldown_on_any_hit>
                 <init_hittable>false</init_hittable>
-                <stop_on_pass>true</stop_on_pass>
                 <active_region_editor_id>
                     <id>242</id>
                 </active_region_editor_id>
@@ -2907,13 +3017,19 @@
                         <id>-1</id>
                     </follow_entity_editor_id>
                 </waypoint_follower>
-                <hit_response_type>Push</hit_response_type>
-                <dash_vel>40</dash_vel>
-                <push_angle_deg>-1</push_angle_deg>
+                <hit_response>
+                    <type>Push</type>
+                    <speed>40</speed>
+                    <push_angle_deg>-1</push_angle_deg>
+                    <stop_on_pass>true</stop_on_pass>
+                </hit_response>
                 <use_last_hit_response>false</use_last_hit_response>
-                <last_hit_response_type>None</last_hit_response_type>
-                <last_hit_vel>-1</last_hit_vel>
-                <last_hit_push_angle_deg>-1</last_hit_push_angle_deg>
+                <last_hit_response>
+                    <type>None</type>
+                    <speed>-1</speed>
+                    <push_angle_deg>-1</push_angle_deg>
+                    <stop_on_pass>true</stop_on_pass>
+                </last_hit_response>
                 <text>n</text>
                 <buttons>a</buttons>
                 <type_kill>false</type_kill>
@@ -2923,7 +3039,6 @@
                 <cooldown_quantize_denom>0</cooldown_quantize_denom>
                 <reset_cooldown_on_any_hit>true</reset_cooldown_on_any_hit>
                 <init_hittable>true</init_hittable>
-                <stop_on_pass>true</stop_on_pass>
                 <active_region_editor_id>
                     <id>-1</id>
                 </active_region_editor_id>
@@ -2978,13 +3093,19 @@
                         <id>-1</id>
                     </follow_entity_editor_id>
                 </waypoint_follower>
-                <hit_response_type>Push</hit_response_type>
-                <dash_vel>-1</dash_vel>
-                <push_angle_deg>180</push_angle_deg>
+                <hit_response>
+                    <type>Push</type>
+                    <speed>-1</speed>
+                    <push_angle_deg>180</push_angle_deg>
+                    <stop_on_pass>true</stop_on_pass>
+                </hit_response>
                 <use_last_hit_response>false</use_last_hit_response>
-                <last_hit_response_type>None</last_hit_response_type>
-                <last_hit_vel>-1</last_hit_vel>
-                <last_hit_push_angle_deg>-1</last_hit_push_angle_deg>
+                <last_hit_response>
+                    <type>None</type>
+                    <speed>-1</speed>
+                    <push_angle_deg>-1</push_angle_deg>
+                    <stop_on_pass>true</stop_on_pass>
+                </last_hit_response>
                 <text>p</text>
                 <buttons>a</buttons>
                 <type_kill>false</type_kill>
@@ -2994,7 +3115,6 @@
                 <cooldown_quantize_denom>0</cooldown_quantize_denom>
                 <reset_cooldown_on_any_hit>true</reset_cooldown_on_any_hit>
                 <init_hittable>true</init_hittable>
-                <stop_on_pass>true</stop_on_pass>
                 <active_region_editor_id>
                     <id>-1</id>
                 </active_region_editor_id>
@@ -3214,13 +3334,19 @@
                         <id>-1</id>
                     </follow_entity_editor_id>
                 </waypoint_follower>
-                <hit_response_type>Pull</hit_response_type>
-                <dash_vel>-1</dash_vel>
-                <push_angle_deg>90</push_angle_deg>
+                <hit_response>
+                    <type>Pull</type>
+                    <speed>-1</speed>
+                    <push_angle_deg>90</push_angle_deg>
+                    <stop_on_pass>true</stop_on_pass>
+                </hit_response>
                 <use_last_hit_response>true</use_last_hit_response>
-                <last_hit_response_type>Push</last_hit_response_type>
-                <last_hit_vel>60</last_hit_vel>
-                <last_hit_push_angle_deg>90</last_hit_push_angle_deg>
+                <last_hit_response>
+                    <type>Push</type>
+                    <speed>60</speed>
+                    <push_angle_deg>90</push_angle_deg>
+                    <stop_on_pass>true</stop_on_pass>
+                </last_hit_response>
                 <text>spring</text>
                 <buttons>aaaaaa</buttons>
                 <type_kill>false</type_kill>
@@ -3230,7 +3356,6 @@
                 <cooldown_quantize_denom>0</cooldown_quantize_denom>
                 <reset_cooldown_on_any_hit>true</reset_cooldown_on_any_hit>
                 <init_hittable>true</init_hittable>
-                <stop_on_pass>true</stop_on_pass>
                 <active_region_editor_id>
                     <id>248</id>
                 </active_region_editor_id>
@@ -3340,13 +3465,19 @@
                         <id>-1</id>
                     </follow_entity_editor_id>
                 </waypoint_follower>
-                <hit_response_type>Pull</hit_response_type>
-                <dash_vel>-1</dash_vel>
-                <push_angle_deg>-1</push_angle_deg>
+                <hit_response>
+                    <type>Pull</type>
+                    <speed>-1</speed>
+                    <push_angle_deg>-1</push_angle_deg>
+                    <stop_on_pass>true</stop_on_pass>
+                </hit_response>
                 <use_last_hit_response>false</use_last_hit_response>
-                <last_hit_response_type>None</last_hit_response_type>
-                <last_hit_vel>-1</last_hit_vel>
-                <last_hit_push_angle_deg>-1</last_hit_push_angle_deg>
+                <last_hit_response>
+                    <type>None</type>
+                    <speed>-1</speed>
+                    <push_angle_deg>-1</push_angle_deg>
+                    <stop_on_pass>true</stop_on_pass>
+                </last_hit_response>
                 <text>i</text>
                 <buttons>a</buttons>
                 <type_kill>false</type_kill>
@@ -3356,7 +3487,6 @@
                 <cooldown_quantize_denom>0</cooldown_quantize_denom>
                 <reset_cooldown_on_any_hit>true</reset_cooldown_on_any_hit>
                 <init_hittable>true</init_hittable>
-                <stop_on_pass>true</stop_on_pass>
                 <active_region_editor_id>
                     <id>250</id>
                 </active_region_editor_id>
@@ -3411,13 +3541,19 @@
                         <id>-1</id>
                     </follow_entity_editor_id>
                 </waypoint_follower>
-                <hit_response_type>Pull</hit_response_type>
-                <dash_vel>-1</dash_vel>
-                <push_angle_deg>-1</push_angle_deg>
+                <hit_response>
+                    <type>Pull</type>
+                    <speed>-1</speed>
+                    <push_angle_deg>-1</push_angle_deg>
+                    <stop_on_pass>true</stop_on_pass>
+                </hit_response>
                 <use_last_hit_response>false</use_last_hit_response>
-                <last_hit_response_type>None</last_hit_response_type>
-                <last_hit_vel>-1</last_hit_vel>
-                <last_hit_push_angle_deg>-1</last_hit_push_angle_deg>
+                <last_hit_response>
+                    <type>None</type>
+                    <speed>-1</speed>
+                    <push_angle_deg>-1</push_angle_deg>
+                    <stop_on_pass>true</stop_on_pass>
+                </last_hit_response>
                 <text>n</text>
                 <buttons>a</buttons>
                 <type_kill>false</type_kill>
@@ -3427,7 +3563,6 @@
                 <cooldown_quantize_denom>0</cooldown_quantize_denom>
                 <reset_cooldown_on_any_hit>true</reset_cooldown_on_any_hit>
                 <init_hittable>true</init_hittable>
-                <stop_on_pass>true</stop_on_pass>
                 <active_region_editor_id>
                     <id>250</id>
                 </active_region_editor_id>
@@ -3482,13 +3617,19 @@
                         <id>-1</id>
                     </follow_entity_editor_id>
                 </waypoint_follower>
-                <hit_response_type>Pull</hit_response_type>
-                <dash_vel>-1</dash_vel>
-                <push_angle_deg>-1</push_angle_deg>
+                <hit_response>
+                    <type>Pull</type>
+                    <speed>-1</speed>
+                    <push_angle_deg>-1</push_angle_deg>
+                    <stop_on_pass>true</stop_on_pass>
+                </hit_response>
                 <use_last_hit_response>false</use_last_hit_response>
-                <last_hit_response_type>None</last_hit_response_type>
-                <last_hit_vel>-1</last_hit_vel>
-                <last_hit_push_angle_deg>-1</last_hit_push_angle_deg>
+                <last_hit_response>
+                    <type>None</type>
+                    <speed>-1</speed>
+                    <push_angle_deg>-1</push_angle_deg>
+                    <stop_on_pass>true</stop_on_pass>
+                </last_hit_response>
                 <text>f</text>
                 <buttons>a</buttons>
                 <type_kill>false</type_kill>
@@ -3498,7 +3639,6 @@
                 <cooldown_quantize_denom>0</cooldown_quantize_denom>
                 <reset_cooldown_on_any_hit>true</reset_cooldown_on_any_hit>
                 <init_hittable>true</init_hittable>
-                <stop_on_pass>true</stop_on_pass>
                 <active_region_editor_id>
                     <id>250</id>
                 </active_region_editor_id>
@@ -3553,13 +3693,19 @@
                         <id>-1</id>
                     </follow_entity_editor_id>
                 </waypoint_follower>
-                <hit_response_type>Pull</hit_response_type>
-                <dash_vel>-1</dash_vel>
-                <push_angle_deg>-1</push_angle_deg>
+                <hit_response>
+                    <type>Pull</type>
+                    <speed>-1</speed>
+                    <push_angle_deg>-1</push_angle_deg>
+                    <stop_on_pass>true</stop_on_pass>
+                </hit_response>
                 <use_last_hit_response>false</use_last_hit_response>
-                <last_hit_response_type>None</last_hit_response_type>
-                <last_hit_vel>-1</last_hit_vel>
-                <last_hit_push_angle_deg>-1</last_hit_push_angle_deg>
+                <last_hit_response>
+                    <type>None</type>
+                    <speed>-1</speed>
+                    <push_angle_deg>-1</push_angle_deg>
+                    <stop_on_pass>true</stop_on_pass>
+                </last_hit_response>
                 <text>u</text>
                 <buttons>a</buttons>
                 <type_kill>false</type_kill>
@@ -3569,7 +3715,6 @@
                 <cooldown_quantize_denom>0</cooldown_quantize_denom>
                 <reset_cooldown_on_any_hit>true</reset_cooldown_on_any_hit>
                 <init_hittable>true</init_hittable>
-                <stop_on_pass>true</stop_on_pass>
                 <active_region_editor_id>
                     <id>250</id>
                 </active_region_editor_id>
@@ -3691,13 +3836,19 @@
                         <id>-1</id>
                     </follow_entity_editor_id>
                 </waypoint_follower>
-                <hit_response_type>Pull</hit_response_type>
-                <dash_vel>-1</dash_vel>
-                <push_angle_deg>-1</push_angle_deg>
+                <hit_response>
+                    <type>Pull</type>
+                    <speed>-1</speed>
+                    <push_angle_deg>-1</push_angle_deg>
+                    <stop_on_pass>true</stop_on_pass>
+                </hit_response>
                 <use_last_hit_response>false</use_last_hit_response>
-                <last_hit_response_type>None</last_hit_response_type>
-                <last_hit_vel>-1</last_hit_vel>
-                <last_hit_push_angle_deg>-1</last_hit_push_angle_deg>
+                <last_hit_response>
+                    <type>None</type>
+                    <speed>-1</speed>
+                    <push_angle_deg>-1</push_angle_deg>
+                    <stop_on_pass>true</stop_on_pass>
+                </last_hit_response>
                 <text>o</text>
                 <buttons>a</buttons>
                 <type_kill>true</type_kill>
@@ -3707,7 +3858,6 @@
                 <cooldown_quantize_denom>0</cooldown_quantize_denom>
                 <reset_cooldown_on_any_hit>true</reset_cooldown_on_any_hit>
                 <init_hittable>true</init_hittable>
-                <stop_on_pass>true</stop_on_pass>
                 <active_region_editor_id>
                     <id>256</id>
                 </active_region_editor_id>
@@ -3772,13 +3922,19 @@
                         <id>-1</id>
                     </follow_entity_editor_id>
                 </waypoint_follower>
-                <hit_response_type>Pull</hit_response_type>
-                <dash_vel>-1</dash_vel>
-                <push_angle_deg>-1</push_angle_deg>
+                <hit_response>
+                    <type>Pull</type>
+                    <speed>-1</speed>
+                    <push_angle_deg>-1</push_angle_deg>
+                    <stop_on_pass>true</stop_on_pass>
+                </hit_response>
                 <use_last_hit_response>false</use_last_hit_response>
-                <last_hit_response_type>None</last_hit_response_type>
-                <last_hit_vel>-1</last_hit_vel>
-                <last_hit_push_angle_deg>-1</last_hit_push_angle_deg>
+                <last_hit_response>
+                    <type>None</type>
+                    <speed>-1</speed>
+                    <push_angle_deg>-1</push_angle_deg>
+                    <stop_on_pass>true</stop_on_pass>
+                </last_hit_response>
                 <text>b</text>
                 <buttons>a</buttons>
                 <type_kill>true</type_kill>
@@ -3788,7 +3944,6 @@
                 <cooldown_quantize_denom>0</cooldown_quantize_denom>
                 <reset_cooldown_on_any_hit>true</reset_cooldown_on_any_hit>
                 <init_hittable>true</init_hittable>
-                <stop_on_pass>true</stop_on_pass>
                 <active_region_editor_id>
                     <id>256</id>
                 </active_region_editor_id>
@@ -3853,13 +4008,19 @@
                         <id>-1</id>
                     </follow_entity_editor_id>
                 </waypoint_follower>
-                <hit_response_type>Pull</hit_response_type>
-                <dash_vel>-1</dash_vel>
-                <push_angle_deg>-1</push_angle_deg>
+                <hit_response>
+                    <type>Pull</type>
+                    <speed>-1</speed>
+                    <push_angle_deg>-1</push_angle_deg>
+                    <stop_on_pass>true</stop_on_pass>
+                </hit_response>
                 <use_last_hit_response>false</use_last_hit_response>
-                <last_hit_response_type>None</last_hit_response_type>
-                <last_hit_vel>-1</last_hit_vel>
-                <last_hit_push_angle_deg>-1</last_hit_push_angle_deg>
+                <last_hit_response>
+                    <type>None</type>
+                    <speed>-1</speed>
+                    <push_angle_deg>-1</push_angle_deg>
+                    <stop_on_pass>true</stop_on_pass>
+                </last_hit_response>
                 <text>d</text>
                 <buttons>a</buttons>
                 <type_kill>true</type_kill>
@@ -3869,7 +4030,6 @@
                 <cooldown_quantize_denom>0</cooldown_quantize_denom>
                 <reset_cooldown_on_any_hit>true</reset_cooldown_on_any_hit>
                 <init_hittable>true</init_hittable>
-                <stop_on_pass>true</stop_on_pass>
                 <active_region_editor_id>
                     <id>256</id>
                 </active_region_editor_id>
@@ -3934,13 +4094,19 @@
                         <id>-1</id>
                     </follow_entity_editor_id>
                 </waypoint_follower>
-                <hit_response_type>Pull</hit_response_type>
-                <dash_vel>-1</dash_vel>
-                <push_angle_deg>-1</push_angle_deg>
+                <hit_response>
+                    <type>Pull</type>
+                    <speed>-1</speed>
+                    <push_angle_deg>-1</push_angle_deg>
+                    <stop_on_pass>true</stop_on_pass>
+                </hit_response>
                 <use_last_hit_response>false</use_last_hit_response>
-                <last_hit_response_type>None</last_hit_response_type>
-                <last_hit_vel>-1</last_hit_vel>
-                <last_hit_push_angle_deg>-1</last_hit_push_angle_deg>
+                <last_hit_response>
+                    <type>None</type>
+                    <speed>-1</speed>
+                    <push_angle_deg>-1</push_angle_deg>
+                    <stop_on_pass>true</stop_on_pass>
+                </last_hit_response>
                 <text>y</text>
                 <buttons>a</buttons>
                 <type_kill>true</type_kill>
@@ -3950,7 +4116,6 @@
                 <cooldown_quantize_denom>0</cooldown_quantize_denom>
                 <reset_cooldown_on_any_hit>true</reset_cooldown_on_any_hit>
                 <init_hittable>false</init_hittable>
-                <stop_on_pass>true</stop_on_pass>
                 <active_region_editor_id>
                     <id>256</id>
                 </active_region_editor_id>
@@ -4033,13 +4198,19 @@
                         <id>-1</id>
                     </follow_entity_editor_id>
                 </waypoint_follower>
-                <hit_response_type>Pull</hit_response_type>
-                <dash_vel>-1</dash_vel>
-                <push_angle_deg>-1</push_angle_deg>
+                <hit_response>
+                    <type>Pull</type>
+                    <speed>-1</speed>
+                    <push_angle_deg>-1</push_angle_deg>
+                    <stop_on_pass>false</stop_on_pass>
+                </hit_response>
                 <use_last_hit_response>false</use_last_hit_response>
-                <last_hit_response_type>None</last_hit_response_type>
-                <last_hit_vel>-1</last_hit_vel>
-                <last_hit_push_angle_deg>-1</last_hit_push_angle_deg>
+                <last_hit_response>
+                    <type>None</type>
+                    <speed>-1</speed>
+                    <push_angle_deg>-1</push_angle_deg>
+                    <stop_on_pass>false</stop_on_pass>
+                </last_hit_response>
                 <text>i</text>
                 <buttons>a</buttons>
                 <type_kill>false</type_kill>
@@ -4049,7 +4220,6 @@
                 <cooldown_quantize_denom>0</cooldown_quantize_denom>
                 <reset_cooldown_on_any_hit>true</reset_cooldown_on_any_hit>
                 <init_hittable>false</init_hittable>
-                <stop_on_pass>false</stop_on_pass>
                 <active_region_editor_id>
                     <id>256</id>
                 </active_region_editor_id>
@@ -4104,13 +4274,19 @@
                         <id>-1</id>
                     </follow_entity_editor_id>
                 </waypoint_follower>
-                <hit_response_type>Pull</hit_response_type>
-                <dash_vel>-1</dash_vel>
-                <push_angle_deg>-1</push_angle_deg>
+                <hit_response>
+                    <type>Pull</type>
+                    <speed>-1</speed>
+                    <push_angle_deg>-1</push_angle_deg>
+                    <stop_on_pass>false</stop_on_pass>
+                </hit_response>
                 <use_last_hit_response>false</use_last_hit_response>
-                <last_hit_response_type>None</last_hit_response_type>
-                <last_hit_vel>-1</last_hit_vel>
-                <last_hit_push_angle_deg>-1</last_hit_push_angle_deg>
+                <last_hit_response>
+                    <type>None</type>
+                    <speed>-1</speed>
+                    <push_angle_deg>-1</push_angle_deg>
+                    <stop_on_pass>false</stop_on_pass>
+                </last_hit_response>
                 <text>d</text>
                 <buttons>a</buttons>
                 <type_kill>false</type_kill>
@@ -4120,7 +4296,6 @@
                 <cooldown_quantize_denom>0</cooldown_quantize_denom>
                 <reset_cooldown_on_any_hit>true</reset_cooldown_on_any_hit>
                 <init_hittable>false</init_hittable>
-                <stop_on_pass>false</stop_on_pass>
                 <active_region_editor_id>
                     <id>256</id>
                 </active_region_editor_id>
@@ -4175,13 +4350,19 @@
                         <id>-1</id>
                     </follow_entity_editor_id>
                 </waypoint_follower>
-                <hit_response_type>Pull</hit_response_type>
-                <dash_vel>40</dash_vel>
-                <push_angle_deg>-1</push_angle_deg>
+                <hit_response>
+                    <type>Pull</type>
+                    <speed>40</speed>
+                    <push_angle_deg>-1</push_angle_deg>
+                    <stop_on_pass>false</stop_on_pass>
+                </hit_response>
                 <use_last_hit_response>false</use_last_hit_response>
-                <last_hit_response_type>None</last_hit_response_type>
-                <last_hit_vel>-1</last_hit_vel>
-                <last_hit_push_angle_deg>-1</last_hit_push_angle_deg>
+                <last_hit_response>
+                    <type>None</type>
+                    <speed>-1</speed>
+                    <push_angle_deg>-1</push_angle_deg>
+                    <stop_on_pass>false</stop_on_pass>
+                </last_hit_response>
                 <text>k</text>
                 <buttons>a</buttons>
                 <type_kill>false</type_kill>
@@ -4191,7 +4372,6 @@
                 <cooldown_quantize_denom>0</cooldown_quantize_denom>
                 <reset_cooldown_on_any_hit>true</reset_cooldown_on_any_hit>
                 <init_hittable>false</init_hittable>
-                <stop_on_pass>false</stop_on_pass>
                 <active_region_editor_id>
                     <id>256</id>
                 </active_region_editor_id>
@@ -4349,13 +4529,19 @@
                         <id>-1</id>
                     </follow_entity_editor_id>
                 </waypoint_follower>
-                <hit_response_type>Push</hit_response_type>
-                <dash_vel>-1</dash_vel>
-                <push_angle_deg>-1</push_angle_deg>
+                <hit_response>
+                    <type>Push</type>
+                    <speed>-1</speed>
+                    <push_angle_deg>-1</push_angle_deg>
+                    <stop_on_pass>true</stop_on_pass>
+                </hit_response>
                 <use_last_hit_response>false</use_last_hit_response>
-                <last_hit_response_type>None</last_hit_response_type>
-                <last_hit_vel>-1</last_hit_vel>
-                <last_hit_push_angle_deg>-1</last_hit_push_angle_deg>
+                <last_hit_response>
+                    <type>None</type>
+                    <speed>-1</speed>
+                    <push_angle_deg>-1</push_angle_deg>
+                    <stop_on_pass>true</stop_on_pass>
+                </last_hit_response>
                 <text>h</text>
                 <buttons>a</buttons>
                 <type_kill>false</type_kill>
@@ -4365,7 +4551,6 @@
                 <cooldown_quantize_denom>0</cooldown_quantize_denom>
                 <reset_cooldown_on_any_hit>true</reset_cooldown_on_any_hit>
                 <init_hittable>true</init_hittable>
-                <stop_on_pass>true</stop_on_pass>
                 <active_region_editor_id>
                     <id>-1</id>
                 </active_region_editor_id>
@@ -4457,13 +4642,19 @@
                         <id>-1</id>
                     </follow_entity_editor_id>
                 </waypoint_follower>
-                <hit_response_type>Push</hit_response_type>
-                <dash_vel>-1</dash_vel>
-                <push_angle_deg>-1</push_angle_deg>
+                <hit_response>
+                    <type>Push</type>
+                    <speed>-1</speed>
+                    <push_angle_deg>-1</push_angle_deg>
+                    <stop_on_pass>true</stop_on_pass>
+                </hit_response>
                 <use_last_hit_response>false</use_last_hit_response>
-                <last_hit_response_type>None</last_hit_response_type>
-                <last_hit_vel>-1</last_hit_vel>
-                <last_hit_push_angle_deg>-1</last_hit_push_angle_deg>
+                <last_hit_response>
+                    <type>None</type>
+                    <speed>-1</speed>
+                    <push_angle_deg>-1</push_angle_deg>
+                    <stop_on_pass>true</stop_on_pass>
+                </last_hit_response>
                 <text>k</text>
                 <buttons>a</buttons>
                 <type_kill>false</type_kill>
@@ -4473,7 +4664,6 @@
                 <cooldown_quantize_denom>0</cooldown_quantize_denom>
                 <reset_cooldown_on_any_hit>true</reset_cooldown_on_any_hit>
                 <init_hittable>true</init_hittable>
-                <stop_on_pass>true</stop_on_pass>
                 <active_region_editor_id>
                     <id>-1</id>
                 </active_region_editor_id>
@@ -4670,13 +4860,19 @@
                         <id>-1</id>
                     </follow_entity_editor_id>
                 </waypoint_follower>
-                <hit_response_type>Pull</hit_response_type>
-                <dash_vel>40</dash_vel>
-                <push_angle_deg>-1</push_angle_deg>
+                <hit_response>
+                    <type>Pull</type>
+                    <speed>40</speed>
+                    <push_angle_deg>-1</push_angle_deg>
+                    <stop_on_pass>false</stop_on_pass>
+                </hit_response>
                 <use_last_hit_response>false</use_last_hit_response>
-                <last_hit_response_type>None</last_hit_response_type>
-                <last_hit_vel>-1</last_hit_vel>
-                <last_hit_push_angle_deg>-1</last_hit_push_angle_deg>
+                <last_hit_response>
+                    <type>None</type>
+                    <speed>-1</speed>
+                    <push_angle_deg>-1</push_angle_deg>
+                    <stop_on_pass>false</stop_on_pass>
+                </last_hit_response>
                 <text>n</text>
                 <buttons>a</buttons>
                 <type_kill>true</type_kill>
@@ -4686,7 +4882,6 @@
                 <cooldown_quantize_denom>0</cooldown_quantize_denom>
                 <reset_cooldown_on_any_hit>false</reset_cooldown_on_any_hit>
                 <init_hittable>false</init_hittable>
-                <stop_on_pass>false</stop_on_pass>
                 <active_region_editor_id>
                     <id>216</id>
                 </active_region_editor_id>

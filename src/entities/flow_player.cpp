@@ -297,14 +297,14 @@ void FlowPlayerEntity::UpdateDerived(GameManager& g, float dt) {
     if (nearest != nullptr) {
         _s._respawnBeforeFirstInteract = false;
 
-        TypingEnemyEntity::HitResponse hitResponse = nearest->OnHit(g);
+        HitResponse hitResponse = nearest->OnHit(g);
         
         switch (hitResponse._type) {
             case HitResponseType::None:
                 break;
             case HitResponseType::Pull: {
                 _s._interactingEnemyId = nearest->_id;
-                _s._stopDashOnPassEnemy = nearest->_p._stopOnPass;
+                _s._stopDashOnPassEnemy = hitResponse._stopOnPass;
                 // If we are close enough to the enemy, just stick to them and start in PullStop if applicable.
                 if (_s._stopDashOnPassEnemy && nearestDist2 < 0.001f * 0.001f) {
                     _transform.SetPos(nearest->_transform.Pos());
@@ -317,8 +317,8 @@ void FlowPlayerEntity::UpdateDerived(GameManager& g, float dt) {
                     _s._dashAnimState = DashAnimState::Accel;
                 }
                 _s._dashTimer = 0.f;                        
-                if (hitResponse._dashSpeed >= 0.f) {
-                    _s._dashLaunchSpeed = hitResponse._dashSpeed;
+                if (hitResponse._speed >= 0.f) {
+                    _s._dashLaunchSpeed = hitResponse._speed;
                 } else {
                     _s._dashLaunchSpeed = _p._defaultLaunchVel;
                 }
@@ -337,8 +337,8 @@ void FlowPlayerEntity::UpdateDerived(GameManager& g, float dt) {
                 _s._dashTimer = 0.f;
                 _s._dashAnimState = DashAnimState::Accel;
                 Vec3 pushDir;
-                if (nearest->_p._pushAngleDeg >= 0.f) {
-                    float angleRad = nearest->_p._pushAngleDeg * kDeg2Rad;
+                if (hitResponse._pushAngleDeg >= 0.f) {
+                    float angleRad = hitResponse._pushAngleDeg * kDeg2Rad;
                     pushDir._x = cos(angleRad);
                     pushDir._y = 0.f;
                     pushDir._z = -sin(angleRad);
@@ -347,8 +347,8 @@ void FlowPlayerEntity::UpdateDerived(GameManager& g, float dt) {
                     pushDir._y = 0.f;
                     pushDir.Normalize();
                 }
-                if (hitResponse._dashSpeed >= 0.f) {
-                    _s._dashLaunchSpeed = hitResponse._dashSpeed;
+                if (hitResponse._speed >= 0.f) {
+                    _s._dashLaunchSpeed = hitResponse._speed;
                 } else {
                     _s._dashLaunchSpeed = _p._defaultLaunchVel;
                 }
