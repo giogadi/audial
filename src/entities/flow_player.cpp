@@ -267,12 +267,12 @@ void FlowPlayerEntity::UpdateDerived(GameManager& g, float dt) {
 
         if (usingController) {
             InputManager::ControllerButton nextButton = enemy->GetNextButton();
-            if (!g._inputManager->IsKeyPressedThisFrame(nextButton)) {
+            if (nextButton == InputManager::ControllerButton::Count || !g._inputManager->IsKeyPressedThisFrame(nextButton)) {
                 continue;
             }
         } else {
             InputManager::Key nextKey = enemy->GetNextKey();
-            if (!g._inputManager->IsKeyPressedThisFrame(nextKey)) {
+            if (nextKey == InputManager::Key::NumKeys || !g._inputManager->IsKeyPressedThisFrame(nextKey)) {
                 continue;
             }
         }

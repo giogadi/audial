@@ -472,14 +472,23 @@ void TypingEnemyEntity::Draw(GameManager& g, float dt) {
     }    
 }
 
-HitResponse TypingEnemyEntity::OnHit(GameManager& g) {
-    double beatTime = g._beatClock->GetBeatTimeFromEpoch();
-    ++_s._numHits;
+HitResponse TypingEnemyEntity::OnHit(GameManager& g) {    
+    ++_s._numHits;    
     if (_s._numHits == _p._keyText.length()) {
         for (auto const& pAction : _p._allHitActions) {
             pAction->Execute(g);
         }
+    }    
+    DoHitActions(g);
+    if (g._editMode && _s._numHits >= _p._keyText.length()) {
+        _s._numHits = 0;
     }
+
+    if (g._editMode) {
+        return HitResponse();
+    }
+
+    double beatTime = g._beatClock->GetBeatTimeFromEpoch();
     if (_s._numHits >= _p._keyText.length()) {
         _s._numHits = _p._keyText.length();
         if (_p._cooldownQuantizeDenom > 0.f) {
@@ -492,9 +501,7 @@ HitResponse TypingEnemyEntity::OnHit(GameManager& g) {
             assert(success);
         }
     }
-    _s._timeOfLastHit = beatTime;
-
-    DoHitActions(g);
+    _s._timeOfLastHit = beatTime;    
 
     HitResponse response;
     if (_p._useLastHitResponse && _s._numHits >= _p._keyText.length()) {
@@ -541,6 +548,9 @@ void TypingEnemyEntity::OnHitOther(GameManager& g) {
 }
 
 InputManager::Key TypingEnemyEntity::GetNextKey() const {
+    if (_p._keyText.empty()) {
+        return InputManager::Key::NumKeys;
+    }
     int textIndex = std::min(_s._numHits, (int) _p._keyText.length() - 1);
     char nextChar = std::tolower(_p._keyText.at(textIndex));
     int charIx = nextChar - 'a';
@@ -553,13 +563,16 @@ InputManager::Key TypingEnemyEntity::GetNextKey() const {
 }
 
 InputManager::ControllerButton TypingEnemyEntity::GetNextButton() const {
+    if (_p._buttons.empty()) {
+        return InputManager::ControllerButton::Count;
+    }
     int textIndex = std::min(_s._numHits, (int)_p._buttons.length() - 1);
     char nextChar = std::tolower(_p._buttons.at(textIndex));
     return CharToButton(nextChar);
 }
 
 void TypingEnemyEntity::OnEditPick(GameManager& g) {
-    DoHitActions(g);
+    OnHit(g);
 }
 
 bool TypingEnemyEntity::CanHit(FlowPlayerEntity const& player, GameManager& g) const {
@@ -575,7 +588,6 @@ bool TypingEnemyEntity::CanHit(FlowPlayerEntity const& player, GameManager& g) c
 static TypingEnemyEntity sMultiEnemy;
 
 void TypingEnemyEntity::MultiSelectImGui(GameManager& g, std::vector<TypingEnemyEntity*>& enemies) {
-
     ImGui::InputInt("Entity tag", &sMultiEnemy._tag);
     imgui_util::ColorEdit4("Model color", &sMultiEnemy._modelColor);
     ImGui::InputInt("Section ID", &sMultiEnemy._flowSectionId);

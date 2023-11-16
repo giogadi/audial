@@ -28,9 +28,10 @@ void FlowTriggerEntity::InitDerived(GameManager& g) {
 
     _isTriggering = false;
 
-    if (_p._executeOnInit) {
+    /*if (_p._executeOnInit) {
         RunActions(g);
-    }
+    }*/
+    _didInitTrigger = false;
 }
 
 void FlowTriggerEntity::SaveDerived(serial::Ptree pt) const {
@@ -132,7 +133,12 @@ void FlowTriggerEntity::RunActions(GameManager& g) {
 void FlowTriggerEntity::UpdateDerived(GameManager& g, float dt) {
     if (g._editMode) {
         return;
-    }    
+    }
+
+    if (_p._executeOnInit && !_didInitTrigger) {
+        RunActions(g);
+        _didInitTrigger = true;
+    }
 
     if (_p._triggerOnPlayerEnter) {
         FlowPlayerEntity const* player = static_cast<FlowPlayerEntity*>(g._neEntityManager->GetFirstEntityOfType(ne::EntityType::FlowPlayer));

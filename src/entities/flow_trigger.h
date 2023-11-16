@@ -25,7 +25,7 @@ struct FlowTriggerEntity : public ne::Entity {
     std::vector<int> _randomDrawList;
     std::vector<ne::EntityId> _triggerVolumeEntities;
     double _triggerTime = -1.0;  // time to trigger, AFTER APPLYING DELAY.
-
+    bool _didInitTrigger = false;
     
     void OnTrigger(GameManager& g);
        
