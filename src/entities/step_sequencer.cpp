@@ -367,7 +367,7 @@ void StepSequencerEntity::PlayStep(GameManager& g, SeqStep const& seqStep) {
     }
 }
 
-void StepSequencerEntity::Update(GameManager& g, float dt) {    
+void StepSequencerEntity::UpdateDerived(GameManager& g, float dt) {    
     if (_permanentSequence.empty()) {
         return;
     }
@@ -414,7 +414,7 @@ void StepSequencerEntity::Update(GameManager& g, float dt) {
     // Play the sound
     if (!_mute && (!g._editMode || !_editorMute)) {
         SeqStep const& seqStep = _tempSequence[_currentIx];
-        PlayStep(g, seqStep);       
+        PlayStep(g, seqStep);
     }
     
     // After the playing the sound, reset that seq element to the initial

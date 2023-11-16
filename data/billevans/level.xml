@@ -641,7 +641,7 @@
                         <id>-1</id>
                     </follow_entity_editor_id>
                 </waypoint_follower>
-                <sequence>mA1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1</sequence>
+                <sequence>-1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1</sequence>
                 <start_mute>false</start_mute>
                 <gain>1</gain>
                 <channels>
@@ -701,7 +701,7 @@
                         <id>-1</id>
                     </follow_entity_editor_id>
                 </waypoint_follower>
-                <sequence>-1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1</sequence>
+                <sequence>-1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1 -1:1</sequence>
                 <start_mute>false</start_mute>
                 <gain>1</gain>
                 <channels>
@@ -713,7 +713,7 @@
                 <is_synth>true</is_synth>
                 <editor_mute>false</editor_mute>
                 <max_voices>-1</max_voices>
-                <quantize_temp_changes>true</quantize_temp_changes>
+                <quantize_temp_changes>false</quantize_temp_changes>
             </StepSequencer>
             <FlowTrigger>
                 <editor_id>
@@ -779,9 +779,9 @@
                 <pickable>true</pickable>
                 <transform>
                     <pos>
-                        <x>0.539339602</x>
+                        <x>0.521978498</x>
                         <y>0</y>
-                        <z>-7.900002</z>
+                        <z>-7.88264084</z>
                     </pos>
                     <quat>
                         <x>0</x>
@@ -831,7 +831,7 @@
                     <stop_on_pass>true</stop_on_pass>
                     <stop_after_timer>false</stop_after_timer>
                 </last_hit_response>
-                <text>howdy</text>
+                <text>shine</text>
                 <buttons>aaaaa</buttons>
                 <type_kill>false</type_kill>
                 <all_actions_on_hit>false</all_actions_on_hit>
@@ -843,7 +843,58 @@
                 <active_region_editor_id>
                     <id>-1</id>
                 </active_region_editor_id>
-                <hit_actions/>
+                <hit_actions>
+                    <seq_action>
+                        <one_time>false</one_time>
+                        <action_type>ChangeStepSequencer</action_type>
+                        <seqEntityEditorId>
+                            <id>10</id>
+                        </seqEntityEditorId>
+                        <velOnly>false</velOnly>
+                        <temporary>true</temporary>
+                        <stepStr>mC4:1</stepStr>
+                    </seq_action>
+                    <seq_action>
+                        <one_time>false</one_time>
+                        <action_type>ChangeStepSequencer</action_type>
+                        <seqEntityEditorId>
+                            <id>10</id>
+                        </seqEntityEditorId>
+                        <velOnly>false</velOnly>
+                        <temporary>true</temporary>
+                        <stepStr>mE4:1</stepStr>
+                    </seq_action>
+                    <seq_action>
+                        <one_time>false</one_time>
+                        <action_type>ChangeStepSequencer</action_type>
+                        <seqEntityEditorId>
+                            <id>10</id>
+                        </seqEntityEditorId>
+                        <velOnly>false</velOnly>
+                        <temporary>true</temporary>
+                        <stepStr>mB4:1</stepStr>
+                    </seq_action>
+                    <seq_action>
+                        <one_time>false</one_time>
+                        <action_type>ChangeStepSequencer</action_type>
+                        <seqEntityEditorId>
+                            <id>10</id>
+                        </seqEntityEditorId>
+                        <velOnly>false</velOnly>
+                        <temporary>true</temporary>
+                        <stepStr>mA4:1</stepStr>
+                    </seq_action>
+                    <seq_action>
+                        <one_time>false</one_time>
+                        <action_type>ChangeStepSequencer</action_type>
+                        <seqEntityEditorId>
+                            <id>10</id>
+                        </seqEntityEditorId>
+                        <velOnly>false</velOnly>
+                        <temporary>true</temporary>
+                        <stepStr>mE4:1</stepStr>
+                    </seq_action>
+                </hit_actions>
                 <all_hit_actions/>
                 <off_cooldown_actions/>
                 <combo_end_actions/>
@@ -909,8 +960,8 @@
                     <stop_on_pass>true</stop_on_pass>
                     <stop_after_timer>false</stop_after_timer>
                 </last_hit_response>
-                <text>pardner</text>
-                <buttons>aaaaaaa</buttons>
+                <text>float</text>
+                <buttons>aaaaa</buttons>
                 <type_kill>false</type_kill>
                 <all_actions_on_hit>false</all_actions_on_hit>
                 <flow_cooldown>4</flow_cooldown>
@@ -921,7 +972,58 @@
                 <active_region_editor_id>
                     <id>-1</id>
                 </active_region_editor_id>
-                <hit_actions/>
+                <hit_actions>
+                    <seq_action>
+                        <one_time>false</one_time>
+                        <action_type>ChangeStepSequencer</action_type>
+                        <seqEntityEditorId>
+                            <id>10</id>
+                        </seqEntityEditorId>
+                        <velOnly>false</velOnly>
+                        <temporary>true</temporary>
+                        <stepStr>mD4:1</stepStr>
+                    </seq_action>
+                    <seq_action>
+                        <one_time>false</one_time>
+                        <action_type>ChangeStepSequencer</action_type>
+                        <seqEntityEditorId>
+                            <id>10</id>
+                        </seqEntityEditorId>
+                        <velOnly>false</velOnly>
+                        <temporary>true</temporary>
+                        <stepStr>mE4:1</stepStr>
+                    </seq_action>
+                    <seq_action>
+                        <one_time>false</one_time>
+                        <action_type>ChangeStepSequencer</action_type>
+                        <seqEntityEditorId>
+                            <id>10</id>
+                        </seqEntityEditorId>
+                        <velOnly>false</velOnly>
+                        <temporary>true</temporary>
+                        <stepStr>mC5:1</stepStr>
+                    </seq_action>
+                    <seq_action>
+                        <one_time>false</one_time>
+                        <action_type>ChangeStepSequencer</action_type>
+                        <seqEntityEditorId>
+                            <id>10</id>
+                        </seqEntityEditorId>
+                        <velOnly>false</velOnly>
+                        <temporary>true</temporary>
+                        <stepStr>mB4:1</stepStr>
+                    </seq_action>
+                    <seq_action>
+                        <one_time>false</one_time>
+                        <action_type>ChangeStepSequencer</action_type>
+                        <seqEntityEditorId>
+                            <id>10</id>
+                        </seqEntityEditorId>
+                        <velOnly>false</velOnly>
+                        <temporary>true</temporary>
+                        <stepStr>mG4:1</stepStr>
+                    </seq_action>
+                </hit_actions>
                 <all_hit_actions/>
                 <off_cooldown_actions/>
                 <combo_end_actions/>
@@ -999,7 +1101,58 @@
                 <active_region_editor_id>
                     <id>-1</id>
                 </active_region_editor_id>
-                <hit_actions/>
+                <hit_actions>
+                    <seq_action>
+                        <one_time>false</one_time>
+                        <action_type>ChangeStepSequencer</action_type>
+                        <seqEntityEditorId>
+                            <id>10</id>
+                        </seqEntityEditorId>
+                        <velOnly>false</velOnly>
+                        <temporary>true</temporary>
+                        <stepStr>mE5:1</stepStr>
+                    </seq_action>
+                    <seq_action>
+                        <one_time>false</one_time>
+                        <action_type>ChangeStepSequencer</action_type>
+                        <seqEntityEditorId>
+                            <id>10</id>
+                        </seqEntityEditorId>
+                        <velOnly>false</velOnly>
+                        <temporary>true</temporary>
+                        <stepStr>mD5:1</stepStr>
+                    </seq_action>
+                    <seq_action>
+                        <one_time>false</one_time>
+                        <action_type>ChangeStepSequencer</action_type>
+                        <seqEntityEditorId>
+                            <id>10</id>
+                        </seqEntityEditorId>
+                        <velOnly>false</velOnly>
+                        <temporary>true</temporary>
+                        <stepStr>mC5:1</stepStr>
+                    </seq_action>
+                    <seq_action>
+                        <one_time>false</one_time>
+                        <action_type>ChangeStepSequencer</action_type>
+                        <seqEntityEditorId>
+                            <id>10</id>
+                        </seqEntityEditorId>
+                        <velOnly>false</velOnly>
+                        <temporary>true</temporary>
+                        <stepStr>mA4:1</stepStr>
+                    </seq_action>
+                    <seq_action>
+                        <one_time>false</one_time>
+                        <action_type>ChangeStepSequencer</action_type>
+                        <seqEntityEditorId>
+                            <id>10</id>
+                        </seqEntityEditorId>
+                        <velOnly>false</velOnly>
+                        <temporary>true</temporary>
+                        <stepStr>mB4:1</stepStr>
+                    </seq_action>
+                </hit_actions>
                 <all_hit_actions/>
                 <off_cooldown_actions/>
                 <combo_end_actions/>
