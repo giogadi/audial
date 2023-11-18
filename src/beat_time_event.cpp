@@ -230,12 +230,15 @@ void WriteBeatEventsToScript(
 audio::Event GetEventAtBeatOffsetFromNextDenom(
     double denom, BeatTimeEvent const& b_e, BeatClock const& beatClock, double slack) {
     double beatTime = beatClock.GetBeatTimeFromEpoch();
-    double startTime = BeatClock::GetNextBeatDenomTime(beatTime, denom);
-    double prevDenom = startTime - denom;
-    double timeSincePrevDenom = beatTime - prevDenom;
-    if (timeSincePrevDenom >= 0.0 && timeSincePrevDenom <= slack) {
-        startTime = beatTime;
-    }
+    double startTime = beatTime;
+    if (denom > 0.0) {
+        startTime = BeatClock::GetNextBeatDenomTime(beatTime, denom);
+        double prevDenom = startTime - denom;
+        double timeSincePrevDenom = beatTime - prevDenom;
+        if (timeSincePrevDenom >= 0.0 && timeSincePrevDenom <= slack) {
+            startTime = beatTime;
+        }
+    }    
 
     double beatTimeDelay = (startTime - beatTime) + b_e._beatTime;
     double secsDelay = beatClock.BeatTimeToSecs(beatTimeDelay);

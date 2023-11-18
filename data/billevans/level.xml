@@ -708,7 +708,7 @@
                     <channel>1</channel>
                 </channels>
                 <step_length>0.66666666666660002</step_length>
-                <note_length>0.5</note_length>
+                <note_length>4</note_length>
                 <start_time>0</start_time>
                 <is_synth>true</is_synth>
                 <editor_mute>false</editor_mute>
@@ -885,7 +885,7 @@
                         </seqEntityEditorId>
                         <velOnly>false</velOnly>
                         <temporary>true</temporary>
-                        <stepStr>mB5:1</stepStr>
+                        <stepStr>mC5:1</stepStr>
                     </seq_action>
                 </hit_actions>
                 <all_hit_actions/>
@@ -1195,9 +1195,9 @@
                 <pickable>true</pickable>
                 <transform>
                     <pos>
-                        <x>-7.11231184</x>
+                        <x>-7.08828783</x>
                         <y>0</y>
-                        <z>-3.05239868</z>
+                        <z>-3.92927551</z>
                     </pos>
                     <quat>
                         <x>0</x>
@@ -1250,9 +1250,9 @@
                 <pickable>true</pickable>
                 <transform>
                     <pos>
-                        <x>-7.20287132</x>
+                        <x>-7.17884731</x>
                         <y>0</y>
-                        <z>-1.33449888</z>
+                        <z>-2.21137571</z>
                     </pos>
                     <quat>
                         <x>0</x>
@@ -1323,7 +1323,7 @@
                         </seqEntityEditorId>
                         <velOnly>false</velOnly>
                         <temporary>true</temporary>
-                        <stepStr>mG5:1</stepStr>
+                        <stepStr>mE5:1</stepStr>
                     </seq_action>
                 </hit_actions>
                 <all_hit_actions/>
@@ -1339,9 +1339,9 @@
                 <pickable>true</pickable>
                 <transform>
                     <pos>
-                        <x>-7.16683388</x>
+                        <x>-7.14280987</x>
                         <y>0</y>
-                        <z>-3.06422853</z>
+                        <z>-3.94110537</z>
                     </pos>
                     <quat>
                         <x>0</x>
@@ -1412,7 +1412,7 @@
                         </seqEntityEditorId>
                         <velOnly>false</velOnly>
                         <temporary>true</temporary>
-                        <stepStr>mE5:1</stepStr>
+                        <stepStr>mG5:1</stepStr>
                     </seq_action>
                 </hit_actions>
                 <all_hit_actions/>
@@ -1428,9 +1428,9 @@
                 <pickable>true</pickable>
                 <transform>
                     <pos>
-                        <x>-7.1548214</x>
+                        <x>-7.13079739</x>
                         <y>0</y>
-                        <z>-4.98615026</z>
+                        <z>-5.8630271</z>
                     </pos>
                     <quat>
                         <x>0</x>
@@ -1501,7 +1501,7 @@
                         </seqEntityEditorId>
                         <velOnly>false</velOnly>
                         <temporary>true</temporary>
-                        <stepStr>mC5:1</stepStr>
+                        <stepStr>mB5:1</stepStr>
                     </seq_action>
                 </hit_actions>
                 <all_hit_actions/>
@@ -1517,9 +1517,9 @@
                 <pickable>true</pickable>
                 <transform>
                     <pos>
-                        <x>-8.56022835</x>
+                        <x>-8.66833591</x>
                         <y>0.5</y>
-                        <z>-4.97413731</z>
+                        <z>-4.93810129</z>
                     </pos>
                     <quat>
                         <x>0</x>
@@ -1556,8 +1556,8 @@
                 </waypoint_follower>
                 <hit_response>
                     <type>Push</type>
-                    <speed>-1</speed>
-                    <push_angle_deg>0</push_angle_deg>
+                    <speed>30</speed>
+                    <push_angle_deg>-1</push_angle_deg>
                     <stop_on_pass>true</stop_on_pass>
                     <stop_after_timer>true</stop_after_timer>
                 </hit_response>
@@ -1590,7 +1590,7 @@
                         </seqEntityEditorId>
                         <velOnly>false</velOnly>
                         <temporary>true</temporary>
-                        <stepStr>mB4:1</stepStr>
+                        <stepStr>mD6:1</stepStr>
                     </seq_action>
                 </hit_actions>
                 <all_hit_actions/>
@@ -1606,9 +1606,9 @@
                 <pickable>true</pickable>
                 <transform>
                     <pos>
-                        <x>-3.06426406</x>
+                        <x>-2.93213201</x>
                         <y>0</y>
-                        <z>-5.10645199</z>
+                        <z>-6.55990553</z>
                     </pos>
                     <quat>
                         <x>0</x>
@@ -1661,9 +1661,9 @@
                 <pickable>true</pickable>
                 <transform>
                     <pos>
-                        <x>-3.13079953</x>
+                        <x>-3.63530421</x>
                         <y>0</y>
-                        <z>-5.65882158</z>
+                        <z>-6.57173491</z>
                     </pos>
                     <quat>
                         <x>0</x>
@@ -1713,14 +1713,14 @@
                     <stop_on_pass>true</stop_on_pass>
                     <stop_after_timer>false</stop_after_timer>
                 </last_hit_response>
-                <text>h</text>
+                <text>g</text>
                 <buttons>a</buttons>
                 <type_kill>false</type_kill>
                 <all_actions_on_hit>true</all_actions_on_hit>
                 <flow_cooldown>1</flow_cooldown>
                 <show_beats_left>false</show_beats_left>
                 <cooldown_quantize_denom>0</cooldown_quantize_denom>
-                <reset_cooldown_on_any_hit>false</reset_cooldown_on_any_hit>
+                <reset_cooldown_on_any_hit>true</reset_cooldown_on_any_hit>
                 <init_hittable>true</init_hittable>
                 <active_region_editor_id>
                     <id>236</id>
@@ -1734,96 +1734,7 @@
                         </seqEntityEditorId>
                         <velOnly>false</velOnly>
                         <temporary>true</temporary>
-                        <stepStr>mF5:1</stepStr>
-                    </seq_action>
-                </hit_actions>
-                <all_hit_actions/>
-                <off_cooldown_actions/>
-                <combo_end_actions/>
-            </TypingEnemy>
-            <TypingEnemy>
-                <editor_id>
-                    <id>238</id>
-                </editor_id>
-                <name>r0_n7</name>
-                <entity_active>true</entity_active>
-                <pickable>true</pickable>
-                <transform>
-                    <pos>
-                        <x>-3.94761634</x>
-                        <y>0</y>
-                        <z>-4.85401678</z>
-                    </pos>
-                    <quat>
-                        <x>0</x>
-                        <y>0</y>
-                        <z>0</z>
-                        <w>1</w>
-                    </quat>
-                    <scale>
-                        <x>0.5</x>
-                        <y>0.5</y>
-                        <z>0.5</z>
-                    </scale>
-                </transform>
-                <model_name/>
-                <model_color_vec4>
-                    <x>1</x>
-                    <y>0</y>
-                    <z>0</z>
-                    <w>1</w>
-                </model_color_vec4>
-                <flow_section_id>0</flow_section_id>
-                <tag>0</tag>
-                <waypoint_follower>
-                    <mode>Waypoint</mode>
-                    <local_to_entity>false</local_to_entity>
-                    <waypoint_auto_start>false</waypoint_auto_start>
-                    <loop_waypoints>false</loop_waypoints>
-                    <start_time>3</start_time>
-                    <waypoints/>
-                    <follow_entity_name/>
-                    <follow_entity_editor_id>
-                        <id>-1</id>
-                    </follow_entity_editor_id>
-                </waypoint_follower>
-                <hit_response>
-                    <type>Pull</type>
-                    <speed>-1</speed>
-                    <push_angle_deg>-1</push_angle_deg>
-                    <stop_on_pass>true</stop_on_pass>
-                    <stop_after_timer>true</stop_after_timer>
-                </hit_response>
-                <use_last_hit_response>false</use_last_hit_response>
-                <last_hit_response>
-                    <type>Pull</type>
-                    <speed>-1</speed>
-                    <push_angle_deg>-1</push_angle_deg>
-                    <stop_on_pass>true</stop_on_pass>
-                    <stop_after_timer>false</stop_after_timer>
-                </last_hit_response>
-                <text>a</text>
-                <buttons>a</buttons>
-                <type_kill>false</type_kill>
-                <all_actions_on_hit>true</all_actions_on_hit>
-                <flow_cooldown>1</flow_cooldown>
-                <show_beats_left>false</show_beats_left>
-                <cooldown_quantize_denom>0</cooldown_quantize_denom>
-                <reset_cooldown_on_any_hit>false</reset_cooldown_on_any_hit>
-                <init_hittable>true</init_hittable>
-                <active_region_editor_id>
-                    <id>236</id>
-                </active_region_editor_id>
-                <hit_actions>
-                    <seq_action>
-                        <one_time>false</one_time>
-                        <action_type>ChangeStepSequencer</action_type>
-                        <seqEntityEditorId>
-                            <id>10</id>
-                        </seqEntityEditorId>
-                        <velOnly>false</velOnly>
-                        <temporary>true</temporary>
-                        <stepStr>mE5:1</stepStr>
+                        <stepStr>mC6:1</stepStr>
                     </seq_action>
                 </hit_actions>
                 <all_hit_actions/>
@@ -1839,9 +1750,9 @@
                 <pickable>true</pickable>
                 <transform>
                     <pos>
-                        <x>-2.33800673</x>
+                        <x>-2.35001874</x>
                         <y>0</y>
-                        <z>-4.85401678</z>
+                        <z>-6.60777044</z>
                     </pos>
                     <quat>
                         <x>0</x>
@@ -1891,14 +1802,14 @@
                     <stop_on_pass>true</stop_on_pass>
                     <stop_after_timer>false</stop_after_timer>
                 </last_hit_response>
-                <text>s</text>
+                <text>o</text>
                 <buttons>a</buttons>
                 <type_kill>false</type_kill>
                 <all_actions_on_hit>true</all_actions_on_hit>
                 <flow_cooldown>1</flow_cooldown>
                 <show_beats_left>false</show_beats_left>
                 <cooldown_quantize_denom>0</cooldown_quantize_denom>
-                <reset_cooldown_on_any_hit>false</reset_cooldown_on_any_hit>
+                <reset_cooldown_on_any_hit>true</reset_cooldown_on_any_hit>
                 <init_hittable>true</init_hittable>
                 <active_region_editor_id>
                     <id>236</id>
@@ -1912,7 +1823,7 @@
                         </seqEntityEditorId>
                         <velOnly>false</velOnly>
                         <temporary>true</temporary>
-                        <stepStr>mC5:1</stepStr>
+                        <stepStr>mD6:1</stepStr>
                     </seq_action>
                 </hit_actions>
                 <all_hit_actions/>
@@ -2001,27 +1912,7 @@
                         </seqEntityEditorId>
                         <velOnly>false</velOnly>
                         <temporary>true</temporary>
-                        <stepStr>mG4:1</stepStr>
-                    </seq_action>
-                    <seq_action>
-                        <one_time>false</one_time>
-                        <action_type>ChangeStepSequencer</action_type>
-                        <seqEntityEditorId>
-                            <id>10</id>
-                        </seqEntityEditorId>
-                        <velOnly>false</velOnly>
-                        <temporary>true</temporary>
-                        <stepStr>mC5:1</stepStr>
-                    </seq_action>
-                    <seq_action>
-                        <one_time>false</one_time>
-                        <action_type>ChangeStepSequencer</action_type>
-                        <seqEntityEditorId>
-                            <id>10</id>
-                        </seqEntityEditorId>
-                        <velOnly>false</velOnly>
-                        <temporary>true</temporary>
-                        <stepStr>mE5:1</stepStr>
+                        <stepStr>mD5:1</stepStr>
                     </seq_action>
                     <seq_action>
                         <one_time>false</one_time>
@@ -2041,10 +1932,60 @@
                         </seqEntityEditorId>
                         <velOnly>false</velOnly>
                         <temporary>true</temporary>
-                        <stepStr>mG5:1</stepStr>
+                        <stepStr>mA5:1</stepStr>
+                    </seq_action>
+                    <seq_action>
+                        <one_time>false</one_time>
+                        <action_type>ChangeStepSequencer</action_type>
+                        <seqEntityEditorId>
+                            <id>10</id>
+                        </seqEntityEditorId>
+                        <velOnly>false</velOnly>
+                        <temporary>true</temporary>
+                        <stepStr>mC6:1</stepStr>
+                    </seq_action>
+                    <seq_action>
+                        <one_time>false</one_time>
+                        <action_type>ChangeStepSequencer</action_type>
+                        <seqEntityEditorId>
+                            <id>10</id>
+                        </seqEntityEditorId>
+                        <velOnly>false</velOnly>
+                        <temporary>true</temporary>
+                        <stepStr>mB5:1</stepStr>
                     </seq_action>
                 </hit_actions>
-                <all_hit_actions/>
+                <all_hit_actions>
+                    <seq_action>
+                        <one_time>false</one_time>
+                        <action_type>NoteOnOff</action_type>
+                        <channel>2</channel>
+                        <midiNoteNames>
+                            <array_item>G2</array_item>
+                            <array_item>B2</array_item>
+                            <array_item>D3</array_item>
+                            <array_item>F3</array_item>
+                        </midiNoteNames>
+                        <noteLength>2</noteLength>
+                        <velocity>1</velocity>
+                        <quantizeDenom>0</quantizeDenom>
+                        <doNoteOff>true</doNoteOff>
+                    </seq_action>
+                    <seq_action>
+                        <one_time>false</one_time>
+                        <action_type>BeatTimeEvent</action_type>
+                        <quantize_denom>0</quantize_denom>
+                        <beat_time_event>
+                            <event_type>PlayPcm</event_type>
+                            <channel>0</channel>
+                            <delay_secs>0</delay_secs>
+                            <sound_ix>28</sound_ix>
+                            <velocity>0.0900000036</velocity>
+                            <loop>false</loop>
+                            <beat_time>0</beat_time>
+                        </beat_time_event>
+                    </seq_action>
+                </all_hit_actions>
                 <off_cooldown_actions/>
                 <combo_end_actions/>
             </TypingEnemy>
@@ -3701,6 +3642,288 @@
                         <velOnly>false</velOnly>
                         <temporary>true</temporary>
                         <stepStr>mG5:1</stepStr>
+                    </seq_action>
+                </hit_actions>
+                <all_hit_actions/>
+                <off_cooldown_actions/>
+                <combo_end_actions/>
+            </TypingEnemy>
+            <FlowTrigger>
+                <editor_id>
+                    <id>262</id>
+                </editor_id>
+                <name>r0_g7_pad_trigger</name>
+                <entity_active>true</entity_active>
+                <pickable>true</pickable>
+                <transform>
+                    <pos>
+                        <x>0.539339602</x>
+                        <y>0</y>
+                        <z>-6.900002</z>
+                    </pos>
+                    <quat>
+                        <x>0</x>
+                        <y>0</y>
+                        <z>0</z>
+                        <w>1</w>
+                    </quat>
+                    <scale>
+                        <x>1</x>
+                        <y>1</y>
+                        <z>1</z>
+                    </scale>
+                </transform>
+                <model_name/>
+                <model_color_vec4>
+                    <x>0.800000012</x>
+                    <y>0.800000012</y>
+                    <z>0.800000012</z>
+                    <w>1</w>
+                </model_color_vec4>
+                <flow_section_id>-1</flow_section_id>
+                <tag>0</tag>
+                <waypoint_follower>
+                    <mode>Waypoint</mode>
+                    <local_to_entity>false</local_to_entity>
+                    <waypoint_auto_start>false</waypoint_auto_start>
+                    <loop_waypoints>false</loop_waypoints>
+                    <start_time>3</start_time>
+                    <waypoints/>
+                    <follow_entity_name/>
+                    <follow_entity_editor_id>
+                        <id>-1</id>
+                    </follow_entity_editor_id>
+                </waypoint_follower>
+                <trigger_delay_beat_time>-1</trigger_delay_beat_time>
+                <on_player_enter>false</on_player_enter>
+                <execute_on_init>false</execute_on_init>
+                <use_trigger_volumes>false</use_trigger_volumes>
+                <random_action_count>-1</random_action_count>
+                <actions>
+                    <seq_action>
+                        <one_time>false</one_time>
+                        <action_type>NoteOnOff</action_type>
+                        <channel>2</channel>
+                        <midiNoteNames>
+                            <array_item>C3</array_item>
+                            <array_item>E3</array_item>
+                            <array_item>G3</array_item>
+                            <array_item>B3</array_item>
+                        </midiNoteNames>
+                        <noteLength>2</noteLength>
+                        <velocity>1</velocity>
+                        <quantizeDenom>1</quantizeDenom>
+                        <doNoteOff>true</doNoteOff>
+                    </seq_action>
+                    <seq_action>
+                        <one_time>false</one_time>
+                        <action_type>BeatTimeEvent</action_type>
+                        <quantize_denom>1</quantize_denom>
+                        <beat_time_event>
+                            <event_type>PlayPcm</event_type>
+                            <channel>0</channel>
+                            <delay_secs>0</delay_secs>
+                            <sound_ix>28</sound_ix>
+                            <velocity>0.0900000036</velocity>
+                            <loop>false</loop>
+                            <beat_time>0</beat_time>
+                        </beat_time_event>
+                    </seq_action>
+                </actions>
+                <actions_on_exit/>
+                <trigger_volume_entities/>
+            </FlowTrigger>
+            <TypingEnemy>
+                <editor_id>
+                    <id>263</id>
+                </editor_id>
+                <name>r0_n25</name>
+                <entity_active>true</entity_active>
+                <pickable>true</pickable>
+                <transform>
+                    <pos>
+                        <x>-3.63486791</x>
+                        <y>0.5</y>
+                        <z>-8.27744102</z>
+                    </pos>
+                    <quat>
+                        <x>0</x>
+                        <y>0</y>
+                        <z>0</z>
+                        <w>1</w>
+                    </quat>
+                    <scale>
+                        <x>0.5</x>
+                        <y>0.5</y>
+                        <z>0.5</z>
+                    </scale>
+                </transform>
+                <model_name/>
+                <model_color_vec4>
+                    <x>0.0622837916</x>
+                    <y>0.705882311</y>
+                    <z>0</z>
+                    <w>1</w>
+                </model_color_vec4>
+                <flow_section_id>0</flow_section_id>
+                <tag>0</tag>
+                <waypoint_follower>
+                    <mode>Waypoint</mode>
+                    <local_to_entity>false</local_to_entity>
+                    <waypoint_auto_start>false</waypoint_auto_start>
+                    <loop_waypoints>false</loop_waypoints>
+                    <start_time>3</start_time>
+                    <waypoints/>
+                    <follow_entity_name/>
+                    <follow_entity_editor_id>
+                        <id>-1</id>
+                    </follow_entity_editor_id>
+                </waypoint_follower>
+                <hit_response>
+                    <type>Push</type>
+                    <speed>-1</speed>
+                    <push_angle_deg>-1</push_angle_deg>
+                    <stop_on_pass>true</stop_on_pass>
+                    <stop_after_timer>true</stop_after_timer>
+                </hit_response>
+                <use_last_hit_response>false</use_last_hit_response>
+                <last_hit_response>
+                    <type>Pull</type>
+                    <speed>-1</speed>
+                    <push_angle_deg>-1</push_angle_deg>
+                    <stop_on_pass>true</stop_on_pass>
+                    <stop_after_timer>false</stop_after_timer>
+                </last_hit_response>
+                <text>h</text>
+                <buttons>a</buttons>
+                <type_kill>false</type_kill>
+                <all_actions_on_hit>true</all_actions_on_hit>
+                <flow_cooldown>4</flow_cooldown>
+                <show_beats_left>false</show_beats_left>
+                <cooldown_quantize_denom>0</cooldown_quantize_denom>
+                <reset_cooldown_on_any_hit>true</reset_cooldown_on_any_hit>
+                <init_hittable>true</init_hittable>
+                <active_region_editor_id>
+                    <id>-1</id>
+                </active_region_editor_id>
+                <hit_actions>
+                    <seq_action>
+                        <one_time>false</one_time>
+                        <action_type>ChangeStepSequencer</action_type>
+                        <seqEntityEditorId>
+                            <id>10</id>
+                        </seqEntityEditorId>
+                        <velOnly>false</velOnly>
+                        <temporary>true</temporary>
+                        <stepStr>mB5:1</stepStr>
+                    </seq_action>
+                </hit_actions>
+                <all_hit_actions/>
+                <off_cooldown_actions/>
+                <combo_end_actions/>
+            </TypingEnemy>
+            <TypingEnemy>
+                <editor_id>
+                    <id>264</id>
+                </editor_id>
+                <name>new_entity0</name>
+                <entity_active>false</entity_active>
+                <pickable>true</pickable>
+                <transform>
+                    <pos>
+                        <x>-8.44564533</x>
+                        <y>0</y>
+                        <z>-7.20330429</z>
+                    </pos>
+                    <quat>
+                        <x>0</x>
+                        <y>0</y>
+                        <z>0</z>
+                        <w>1</w>
+                    </quat>
+                    <scale>
+                        <x>1</x>
+                        <y>1</y>
+                        <z>1</z>
+                    </scale>
+                </transform>
+                <model_name/>
+                <model_color_vec4>
+                    <x>0.800000012</x>
+                    <y>0.800000012</y>
+                    <z>0.800000012</z>
+                    <w>1</w>
+                </model_color_vec4>
+                <flow_section_id>-1</flow_section_id>
+                <tag>0</tag>
+                <waypoint_follower>
+                    <mode>Waypoint</mode>
+                    <local_to_entity>false</local_to_entity>
+                    <waypoint_auto_start>false</waypoint_auto_start>
+                    <loop_waypoints>false</loop_waypoints>
+                    <start_time>3</start_time>
+                    <waypoints/>
+                    <follow_entity_name/>
+                    <follow_entity_editor_id>
+                        <id>-1</id>
+                    </follow_entity_editor_id>
+                </waypoint_follower>
+                <hit_response>
+                    <type>Pull</type>
+                    <speed>-1</speed>
+                    <push_angle_deg>-1</push_angle_deg>
+                    <stop_on_pass>true</stop_on_pass>
+                    <stop_after_timer>true</stop_after_timer>
+                </hit_response>
+                <use_last_hit_response>false</use_last_hit_response>
+                <last_hit_response>
+                    <type>Pull</type>
+                    <speed>-1</speed>
+                    <push_angle_deg>-1</push_angle_deg>
+                    <stop_on_pass>true</stop_on_pass>
+                    <stop_after_timer>true</stop_after_timer>
+                </last_hit_response>
+                <text/>
+                <buttons/>
+                <type_kill>true</type_kill>
+                <all_actions_on_hit>true</all_actions_on_hit>
+                <flow_cooldown>-1</flow_cooldown>
+                <show_beats_left>false</show_beats_left>
+                <cooldown_quantize_denom>0</cooldown_quantize_denom>
+                <reset_cooldown_on_any_hit>false</reset_cooldown_on_any_hit>
+                <init_hittable>true</init_hittable>
+                <active_region_editor_id>
+                    <id>-1</id>
+                </active_region_editor_id>
+                <hit_actions>
+                    <seq_action>
+                        <one_time>false</one_time>
+                        <action_type>NoteOnOff</action_type>
+                        <channel>2</channel>
+                        <midiNoteNames>
+                            <array_item>G2</array_item>
+                            <array_item>B2</array_item>
+                            <array_item>D3</array_item>
+                            <array_item>F3</array_item>
+                        </midiNoteNames>
+                        <noteLength>2</noteLength>
+                        <velocity>1</velocity>
+                        <quantizeDenom>0</quantizeDenom>
+                        <doNoteOff>true</doNoteOff>
+                    </seq_action>
+                    <seq_action>
+                        <one_time>false</one_time>
+                        <action_type>BeatTimeEvent</action_type>
+                        <quantize_denom>0</quantize_denom>
+                        <beat_time_event>
+                            <event_type>PlayPcm</event_type>
+                            <channel>0</channel>
+                            <delay_secs>0</delay_secs>
+                            <sound_ix>28</sound_ix>
+                            <velocity>0.0900000036</velocity>
+                            <loop>false</loop>
+                            <beat_time>0</beat_time>
+                        </beat_time_event>
                     </seq_action>
                 </hit_actions>
                 <all_hit_actions/>
