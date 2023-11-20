@@ -134,9 +134,9 @@
                 <pickable>true</pickable>
                 <transform>
                     <pos>
-                        <x>-8.75736713</x>
+                        <x>-7.17750597</x>
                         <y>0</y>
-                        <z>0.115944147</z>
+                        <z>-0.786833525</z>
                     </pos>
                     <quat>
                         <x>0</x>
@@ -1195,9 +1195,9 @@
                 <pickable>true</pickable>
                 <transform>
                     <pos>
-                        <x>-7.08828783</x>
+                        <x>-7.12300968</x>
                         <y>0</y>
-                        <z>-3.92927551</z>
+                        <z>-2.78344202</z>
                     </pos>
                     <quat>
                         <x>0</x>
@@ -1208,7 +1208,7 @@
                     <scale>
                         <x>2</x>
                         <y>1</y>
-                        <z>5</z>
+                        <z>3</z>
                     </scale>
                 </transform>
                 <model_name>cube</model_name>
@@ -1250,9 +1250,9 @@
                 <pickable>true</pickable>
                 <transform>
                     <pos>
-                        <x>-7.17884731</x>
+                        <x>-7.12676382</x>
                         <y>0</y>
-                        <z>-2.21137571</z>
+                        <z>-1.79470944</z>
                     </pos>
                     <quat>
                         <x>0</x>
@@ -1332,95 +1332,6 @@
             </TypingEnemy>
             <TypingEnemy>
                 <editor_id>
-                    <id>233</id>
-                </editor_id>
-                <name>r0_n3</name>
-                <entity_active>true</entity_active>
-                <pickable>true</pickable>
-                <transform>
-                    <pos>
-                        <x>-7.14280987</x>
-                        <y>0</y>
-                        <z>-3.94110537</z>
-                    </pos>
-                    <quat>
-                        <x>0</x>
-                        <y>0</y>
-                        <z>0</z>
-                        <w>1</w>
-                    </quat>
-                    <scale>
-                        <x>0.5</x>
-                        <y>0.5</y>
-                        <z>0.5</z>
-                    </scale>
-                </transform>
-                <model_name/>
-                <model_color_vec4>
-                    <x>1</x>
-                    <y>0</y>
-                    <z>0</z>
-                    <w>1</w>
-                </model_color_vec4>
-                <flow_section_id>0</flow_section_id>
-                <tag>0</tag>
-                <waypoint_follower>
-                    <mode>Waypoint</mode>
-                    <local_to_entity>false</local_to_entity>
-                    <waypoint_auto_start>false</waypoint_auto_start>
-                    <loop_waypoints>false</loop_waypoints>
-                    <start_time>3</start_time>
-                    <waypoints/>
-                    <follow_entity_name/>
-                    <follow_entity_editor_id>
-                        <id>-1</id>
-                    </follow_entity_editor_id>
-                </waypoint_follower>
-                <hit_response>
-                    <type>Pull</type>
-                    <speed>-1</speed>
-                    <push_angle_deg>-1</push_angle_deg>
-                    <stop_on_pass>true</stop_on_pass>
-                    <stop_after_timer>true</stop_after_timer>
-                </hit_response>
-                <use_last_hit_response>false</use_last_hit_response>
-                <last_hit_response>
-                    <type>Pull</type>
-                    <speed>-1</speed>
-                    <push_angle_deg>-1</push_angle_deg>
-                    <stop_on_pass>true</stop_on_pass>
-                    <stop_after_timer>false</stop_after_timer>
-                </last_hit_response>
-                <text>a</text>
-                <buttons>a</buttons>
-                <type_kill>false</type_kill>
-                <all_actions_on_hit>true</all_actions_on_hit>
-                <flow_cooldown>4</flow_cooldown>
-                <show_beats_left>false</show_beats_left>
-                <cooldown_quantize_denom>0</cooldown_quantize_denom>
-                <reset_cooldown_on_any_hit>true</reset_cooldown_on_any_hit>
-                <init_hittable>true</init_hittable>
-                <active_region_editor_id>
-                    <id>231</id>
-                </active_region_editor_id>
-                <hit_actions>
-                    <seq_action>
-                        <one_time>false</one_time>
-                        <action_type>ChangeStepSequencer</action_type>
-                        <seqEntityEditorId>
-                            <id>10</id>
-                        </seqEntityEditorId>
-                        <velOnly>false</velOnly>
-                        <temporary>true</temporary>
-                        <stepStr>mG5:1</stepStr>
-                    </seq_action>
-                </hit_actions>
-                <all_hit_actions/>
-                <off_cooldown_actions/>
-                <combo_end_actions/>
-            </TypingEnemy>
-            <TypingEnemy>
-                <editor_id>
                     <id>234</id>
                 </editor_id>
                 <name>r0_n4</name>
@@ -1428,9 +1339,9 @@
                 <pickable>true</pickable>
                 <transform>
                     <pos>
-                        <x>-7.13079739</x>
+                        <x>-7.11343622</x>
                         <y>0</y>
-                        <z>-5.8630271</z>
+                        <z>-3.60608268</z>
                     </pos>
                     <quat>
                         <x>0</x>
@@ -1501,7 +1412,7 @@
                         </seqEntityEditorId>
                         <velOnly>false</velOnly>
                         <temporary>true</temporary>
-                        <stepStr>mB5:1</stepStr>
+                        <stepStr>mA5:1</stepStr>
                     </seq_action>
                 </hit_actions>
                 <all_hit_actions/>
@@ -1517,9 +1428,9 @@
                 <pickable>true</pickable>
                 <transform>
                     <pos>
-                        <x>-8.66833591</x>
+                        <x>-8.65097332</x>
                         <y>0.5</y>
-                        <z>-4.93810129</z>
+                        <z>-1.70893455</z>
                     </pos>
                     <quat>
                         <x>0</x>
@@ -1556,7 +1467,7 @@
                 </waypoint_follower>
                 <hit_response>
                     <type>Push</type>
-                    <speed>30</speed>
+                    <speed>35</speed>
                     <push_angle_deg>-1</push_angle_deg>
                     <stop_on_pass>true</stop_on_pass>
                     <stop_after_timer>true</stop_after_timer>
@@ -1590,7 +1501,7 @@
                         </seqEntityEditorId>
                         <velOnly>false</velOnly>
                         <temporary>true</temporary>
-                        <stepStr>mD6:1</stepStr>
+                        <stepStr>mB5:1</stepStr>
                     </seq_action>
                 </hit_actions>
                 <all_hit_actions/>
@@ -1734,7 +1645,7 @@
                         </seqEntityEditorId>
                         <velOnly>false</velOnly>
                         <temporary>true</temporary>
-                        <stepStr>mC6:1</stepStr>
+                        <stepStr>mB5:1</stepStr>
                     </seq_action>
                 </hit_actions>
                 <all_hit_actions/>
@@ -1839,9 +1750,9 @@
                 <pickable>true</pickable>
                 <transform>
                     <pos>
-                        <x>-3.13079953</x>
+                        <x>-3.73843884</x>
                         <y>0</y>
-                        <z>-2.28344679</z>
+                        <z>-2.68275213</z>
                     </pos>
                     <quat>
                         <x>0</x>
@@ -1912,17 +1823,7 @@
                         </seqEntityEditorId>
                         <velOnly>false</velOnly>
                         <temporary>true</temporary>
-                        <stepStr>mD5:1</stepStr>
-                    </seq_action>
-                    <seq_action>
-                        <one_time>false</one_time>
-                        <action_type>ChangeStepSequencer</action_type>
-                        <seqEntityEditorId>
-                            <id>10</id>
-                        </seqEntityEditorId>
-                        <velOnly>false</velOnly>
-                        <temporary>true</temporary>
-                        <stepStr>mF5:1</stepStr>
+                        <stepStr>mG5:1</stepStr>
                     </seq_action>
                     <seq_action>
                         <one_time>false</one_time>
@@ -1942,7 +1843,7 @@
                         </seqEntityEditorId>
                         <velOnly>false</velOnly>
                         <temporary>true</temporary>
-                        <stepStr>mC6:1</stepStr>
+                        <stepStr>mF5:1</stepStr>
                     </seq_action>
                     <seq_action>
                         <one_time>false</one_time>
@@ -1952,40 +1853,20 @@
                         </seqEntityEditorId>
                         <velOnly>false</velOnly>
                         <temporary>true</temporary>
-                        <stepStr>mB5:1</stepStr>
+                        <stepStr>mE5:1</stepStr>
+                    </seq_action>
+                    <seq_action>
+                        <one_time>false</one_time>
+                        <action_type>ChangeStepSequencer</action_type>
+                        <seqEntityEditorId>
+                            <id>10</id>
+                        </seqEntityEditorId>
+                        <velOnly>false</velOnly>
+                        <temporary>true</temporary>
+                        <stepStr>mG5:1</stepStr>
                     </seq_action>
                 </hit_actions>
-                <all_hit_actions>
-                    <seq_action>
-                        <one_time>false</one_time>
-                        <action_type>NoteOnOff</action_type>
-                        <channel>2</channel>
-                        <midiNoteNames>
-                            <array_item>G2</array_item>
-                            <array_item>B2</array_item>
-                            <array_item>D3</array_item>
-                            <array_item>F3</array_item>
-                        </midiNoteNames>
-                        <noteLength>2</noteLength>
-                        <velocity>1</velocity>
-                        <quantizeDenom>0</quantizeDenom>
-                        <doNoteOff>true</doNoteOff>
-                    </seq_action>
-                    <seq_action>
-                        <one_time>false</one_time>
-                        <action_type>BeatTimeEvent</action_type>
-                        <quantize_denom>0</quantize_denom>
-                        <beat_time_event>
-                            <event_type>PlayPcm</event_type>
-                            <channel>0</channel>
-                            <delay_secs>0</delay_secs>
-                            <sound_ix>28</sound_ix>
-                            <velocity>0.0900000036</velocity>
-                            <loop>false</loop>
-                            <beat_time>0</beat_time>
-                        </beat_time_event>
-                    </seq_action>
-                </all_hit_actions>
+                <all_hit_actions/>
                 <off_cooldown_actions/>
                 <combo_end_actions/>
             </TypingEnemy>
@@ -1998,9 +1879,9 @@
                 <pickable>true</pickable>
                 <transform>
                     <pos>
-                        <x>-3.08828807</x>
+                        <x>-3.71328831</x>
                         <y>0</y>
-                        <z>-2.2956419</z>
+                        <z>-2.66022539</z>
                     </pos>
                     <quat>
                         <x>0</x>
@@ -2126,7 +2007,7 @@
                         </seqEntityEditorId>
                         <velOnly>false</velOnly>
                         <temporary>true</temporary>
-                        <stepStr>mD6:1</stepStr>
+                        <stepStr>mG5:1</stepStr>
                     </seq_action>
                 </hit_actions>
                 <all_hit_actions/>
@@ -2215,7 +2096,7 @@
                         </seqEntityEditorId>
                         <velOnly>false</velOnly>
                         <temporary>true</temporary>
-                        <stepStr>mA5:1</stepStr>
+                        <stepStr>mC6:1</stepStr>
                     </seq_action>
                 </hit_actions>
                 <all_hit_actions/>
@@ -2304,7 +2185,7 @@
                         </seqEntityEditorId>
                         <velOnly>false</velOnly>
                         <temporary>true</temporary>
-                        <stepStr>mB5:1</stepStr>
+                        <stepStr>mF6:1</stepStr>
                     </seq_action>
                 </hit_actions>
                 <all_hit_actions/>
@@ -2393,7 +2274,7 @@
                         </seqEntityEditorId>
                         <velOnly>false</velOnly>
                         <temporary>true</temporary>
-                        <stepStr>mC6:1</stepStr>
+                        <stepStr>mB5-:1</stepStr>
                     </seq_action>
                 </hit_actions>
                 <all_hit_actions/>
@@ -2482,7 +2363,7 @@
                         </seqEntityEditorId>
                         <velOnly>false</velOnly>
                         <temporary>true</temporary>
-                        <stepStr>mE5:1</stepStr>
+                        <stepStr>mE6:1</stepStr>
                     </seq_action>
                 </hit_actions>
                 <all_hit_actions/>
@@ -2626,7 +2507,7 @@
                         </seqEntityEditorId>
                         <velOnly>false</velOnly>
                         <temporary>true</temporary>
-                        <stepStr>mF5:1</stepStr>
+                        <stepStr>mA5:1</stepStr>
                     </seq_action>
                 </hit_actions>
                 <all_hit_actions/>
@@ -3815,7 +3696,7 @@
                         </seqEntityEditorId>
                         <velOnly>false</velOnly>
                         <temporary>true</temporary>
-                        <stepStr>mB5:1</stepStr>
+                        <stepStr>mA5:1</stepStr>
                     </seq_action>
                 </hit_actions>
                 <all_hit_actions/>
