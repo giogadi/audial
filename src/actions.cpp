@@ -344,7 +344,25 @@ void NoteOnOffSeqAction::ExecuteDerived(GameManager& g) {
             b_e._beatTime = _props._noteLength;
             e = GetEventAtBeatOffsetFromNextDenom(_props._quantizeDenom, b_e, *g._beatClock, /*slack=*/0.0625);
             g._audioContext->AddEvent(e);
-        }        
+        }
+    }
+}
+
+void NoteOnOffSeqAction::ExecuteRelease(GameManager& g) {
+    if (!_props._holdNotes) {
+        return;
+    }
+    audio::Event e;
+    e.delaySecs = 0.0;
+    e.channel = _props._channel;
+    e.type = audio::EventType::NoteOff;
+    for (std::string const& noteName : _props._midiNoteNames) {
+        int midiNote = GetMidiNote(noteName);
+        if (midiNote < 0) {
+            continue;
+        }
+        e.midiNote = midiNote;        
+        g._audioContext->AddEvent(e);
     }
 }
 

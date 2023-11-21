@@ -472,20 +472,24 @@ void TypingEnemyEntity::Draw(GameManager& g, float dt) {
     }    
 }
 
-HitResponse TypingEnemyEntity::OnHit(GameManager& g) {    
+HitResult TypingEnemyEntity::OnHit(GameManager& g) {
+    HitResult result;
+
     ++_s._numHits;    
     if (_s._numHits == _p._keyText.length()) {
         for (auto const& pAction : _p._allHitActions) {
             pAction->Execute(g);
+            std::unique_ptr<SeqAction> clone = SeqAction::Clone(*pAction);
+            result._heldActions.push_back(std::move(clone));
         }
     }    
-    DoHitActions(g);
+    DoHitActions(g, result._heldActions);
     if (g._editMode && _s._numHits >= _p._keyText.length()) {
         _s._numHits = 0;
     }
 
     if (g._editMode) {
-        return HitResponse();
+        return result;
     }
 
     double beatTime = g._beatClock->GetBeatTimeFromEpoch();
@@ -503,16 +507,15 @@ HitResponse TypingEnemyEntity::OnHit(GameManager& g) {
     }
     _s._timeOfLastHit = beatTime;    
 
-    HitResponse response;
     if (_p._useLastHitResponse && _s._numHits >= _p._keyText.length()) {
-        response = _p._lastHitResponse;
+        result._response = _p._lastHitResponse;
     } else {
-        response = _p._hitResponse;
+        result._response = _p._hitResponse;
     }  
-    return response;
+    return result;
 }
 
-void TypingEnemyEntity::DoHitActions(GameManager& g) {
+void TypingEnemyEntity::DoHitActions(GameManager& g, std::vector<std::unique_ptr<SeqAction>>& clones) {
     if (_p._hitActions.empty()) {
         return;
     }
@@ -522,11 +525,15 @@ void TypingEnemyEntity::DoHitActions(GameManager& g) {
             SeqAction& a = *_p._hitActions[hitActionIx];
 
             a.Execute(g);
+            std::unique_ptr<SeqAction> clone = SeqAction::Clone(a);
+            clones.push_back(std::move(clone));
             break;
         }
         case HitBehavior::AllActions: {
             for (auto const& pAction : _p._hitActions) {
                 pAction->Execute(g);
+                std::unique_ptr<SeqAction> clone = SeqAction::Clone(*pAction);
+                clones.push_back(std::move(clone));
             }
             break;
         }

@@ -6,6 +6,9 @@
 
 #include "new_entity.h"
 #include "enums/TypingEnemyType.h"
+#include "input_manager.h"
+
+struct SeqAction;
 
 struct FlowPlayerEntity : public ne::Entity {
     virtual ne::EntityType Type() override { return ne::EntityType::FlowPlayer; }
@@ -28,7 +31,16 @@ struct FlowPlayerEntity : public ne::Entity {
     enum class DashAnimState {
         None, Accel, Decel
     };
+    struct HeldAction {
+        InputManager::Key _key = InputManager::Key::NumKeys;
+        std::vector<std::unique_ptr<SeqAction>> _actions;
+    };
     struct State {
+        State(State const& rhs) = delete;
+        State(State&&) = default;
+        State& operator=(State&&) = default;
+        State() {}
+
         Vec3 _vel;
         
         MoveState _moveState = MoveState::Default;
@@ -41,13 +53,14 @@ struct FlowPlayerEntity : public ne::Entity {
         Vec4 _lastKnownDashTargetColor; // pull/push
         bool _stopDashOnPassEnemy = true; // pull
         bool _passedPullTarget = false; // pull
+        InputManager::Key _heldKey = InputManager::Key::NumKeys;
+        std::vector<HeldAction> _heldActions;        
+
         // anim states
         DashAnimState _dashAnimState = DashAnimState::None;
         float _dashSquishFactor = 0.f;
         Vec3 _dashAnimDir;
         float _dashLaunchSpeed = 0.f;
-
-
         
         // TODO: use a ring buffer instead. maybe stack would work too
         std::deque<Vec3> _posHistory;  // start is most recent

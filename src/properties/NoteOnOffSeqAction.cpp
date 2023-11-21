@@ -24,6 +24,8 @@ void NoteOnOffSeqActionProps::Load(serial::Ptree pt) {
    
    pt.TryGetBool("doNoteOff", &_doNoteOff);
    
+   pt.TryGetBool("holdNotes", &_holdNotes);
+   
 }
 
 void NoteOnOffSeqActionProps::Save(serial::Ptree pt) const {
@@ -39,6 +41,8 @@ void NoteOnOffSeqActionProps::Save(serial::Ptree pt) const {
     pt.PutDouble("quantizeDenom", _quantizeDenom);
     
     pt.PutBool("doNoteOff", _doNoteOff);
+    
+    pt.PutBool("holdNotes", _holdNotes);
     
 }
 
@@ -72,6 +76,11 @@ bool NoteOnOffSeqActionProps::ImGui() {
     
     {
         bool thisChanged = ImGui::Checkbox("doNoteOff", &_doNoteOff);
+        changed = changed || thisChanged;
+    }
+    
+    {
+        bool thisChanged = ImGui::Checkbox("holdNotes", &_holdNotes);
         changed = changed || thisChanged;
     }
     

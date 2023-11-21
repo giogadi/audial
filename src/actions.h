@@ -45,7 +45,7 @@ struct RemoveEntitySeqAction : public SeqAction {
 };
 
 struct ChangeStepSequencerSeqAction : public SeqAction {
-    virtual SeqActionType Type() const override { return SeqActionType::ChangeStepSequencer; }
+    virtual SeqActionType Type() const override { return SeqActionType::ChangeStepSequencer; }    
     ChangeStepSequencerSeqActionProps _props;
 
     ne::EntityId _seqId;
@@ -120,6 +120,7 @@ struct SetStepSequencerMuteSeqAction : public SeqAction {
 
 struct NoteOnOffSeqAction : public SeqAction {
     virtual SeqActionType Type() const override { return SeqActionType::NoteOnOff; }
+    virtual void ExecuteRelease(GameManager& g) override;
 
     NoteOnOffSeqActionProps _props;
 

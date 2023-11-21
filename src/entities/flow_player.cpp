@@ -8,6 +8,7 @@
 #include "math_util.h"
 #include "beat_clock.h"
 #include "geometry.h"
+#include "seq_action.h"
 
 #include "entities/flow_pickup.h"
 #include "entities/flow_wall.h"
@@ -247,6 +248,7 @@ void FlowPlayerEntity::UpdateDerived(GameManager& g, float dt) {
     Vec3 const& playerPos = _transform.GetPos();    
     Mat4 viewProjTransform = g._scene->GetViewProjTransform();
     bool const usingController = g._inputManager->IsUsingController();
+    InputManager::Key hitKey = InputManager::Key::NumKeys;
     for (ne::EntityManager::Iterator enemyIter = g._neEntityManager->GetIterator(ne::EntityType::TypingEnemy); !enemyIter.Finished(); enemyIter.Next()) {
         // Vec4 constexpr kGreyColor(0.6f, 0.6f, 0.6f, 0.7f);
         TypingEnemyEntity* enemy = (TypingEnemyEntity*) enemyIter.GetEntity();
@@ -275,6 +277,7 @@ void FlowPlayerEntity::UpdateDerived(GameManager& g, float dt) {
             if (nextKey == InputManager::Key::NumKeys || !g._inputManager->IsKeyPressedThisFrame(nextKey)) {
                 continue;
             }
+            hitKey = nextKey;
         }
 
         if (enemy->_id == _s._lastHitEnemy) {
@@ -309,8 +312,11 @@ void FlowPlayerEntity::UpdateDerived(GameManager& g, float dt) {
     if (nearest != nullptr) {
         _s._respawnBeforeFirstInteract = false;
         
-        HitResponse hitResponse = nearest->OnHit(g);
+        HitResult hitResult = nearest->OnHit(g);
+        HitResponse const& hitResponse = hitResult._response;
+
         _s._lastHitEnemy = nearest->_id;
+        _s._heldKey = hitKey;
         
         switch (hitResponse._type) {
             case HitResponseType::None:
@@ -428,7 +434,10 @@ void FlowPlayerEntity::UpdateDerived(GameManager& g, float dt) {
 
         case MoveState::Push: {
             bool finishedPushing = false;
-            if (_s._stopAfterTimer && _s._dashTimer >= _p._dashTime) {
+            if (_s._heldKey != InputManager::Key::NumKeys && g._inputManager->IsKeyReleasedThisFrame(_s._heldKey)) {
+                finishedPushing = true;
+                _s._heldKey = InputManager::Key::NumKeys;
+            } else if (_s._stopAfterTimer && _s._dashTimer >= _p._dashTime) {
                 finishedPushing = true;
             }
             if (finishedPushing) {

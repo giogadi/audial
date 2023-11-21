@@ -20,6 +20,11 @@ struct HitResponse {
     bool ImGui(char const* label);
 };
 
+struct HitResult {
+    HitResponse _response;
+    std::vector<std::unique_ptr<SeqAction>> _heldActions;
+};
+
 struct TypingEnemyEntity : public ne::Entity {
     virtual ne::EntityType Type() override { return ne::EntityType::TypingEnemy; }
     static ne::EntityType StaticType() { return ne::EntityType::TypingEnemy; }
@@ -64,8 +69,8 @@ struct TypingEnemyEntity : public ne::Entity {
     };
     State _s;
 
-    HitResponse OnHit(GameManager& g);
-    void DoHitActions(GameManager& g);
+    HitResult OnHit(GameManager& g);
+    void DoHitActions(GameManager& g, std::vector<std::unique_ptr<SeqAction>>& clones);
     void OnHitOther(GameManager& g);
     void DoComboEndActions(GameManager& g);
     InputManager::Key GetNextKey() const;

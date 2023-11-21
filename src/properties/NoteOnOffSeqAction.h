@@ -20,6 +20,8 @@ struct NoteOnOffSeqActionProps {
     
     bool _doNoteOff = true;
     
+    bool _holdNotes = false;
+    
 
     void Load(serial::Ptree pt);
     void Save(serial::Ptree pt) const;

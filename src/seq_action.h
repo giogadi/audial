@@ -45,6 +45,7 @@ struct SeqAction {
             _hasExecuted = true;
         }
     }
+    virtual void ExecuteRelease(GameManager& g) {}
 
     virtual ~SeqAction() {}
 

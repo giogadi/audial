@@ -854,7 +854,7 @@
                     <speed>-1</speed>
                     <push_angle_deg>90</push_angle_deg>
                     <stop_on_pass>true</stop_on_pass>
-                    <stop_after_timer>true</stop_after_timer>
+                    <stop_after_timer>false</stop_after_timer>
                 </hit_response>
                 <use_last_hit_response>false</use_last_hit_response>
                 <last_hit_response>
@@ -1467,10 +1467,10 @@
                 </waypoint_follower>
                 <hit_response>
                     <type>Push</type>
-                    <speed>35</speed>
+                    <speed>-1</speed>
                     <push_angle_deg>-1</push_angle_deg>
                     <stop_on_pass>true</stop_on_pass>
-                    <stop_after_timer>true</stop_after_timer>
+                    <stop_after_timer>false</stop_after_timer>
                 </hit_response>
                 <use_last_hit_response>false</use_last_hit_response>
                 <last_hit_response>
@@ -1797,10 +1797,10 @@
                 <use_last_hit_response>true</use_last_hit_response>
                 <last_hit_response>
                     <type>Push</type>
-                    <speed>40</speed>
+                    <speed>-1</speed>
                     <push_angle_deg>0</push_angle_deg>
                     <stop_on_pass>true</stop_on_pass>
-                    <stop_after_timer>true</stop_after_timer>
+                    <stop_after_timer>false</stop_after_timer>
                 </last_hit_response>
                 <text>boing</text>
                 <buttons>aaaaa</buttons>
@@ -1976,7 +1976,7 @@
                     <speed>-1</speed>
                     <push_angle_deg>90</push_angle_deg>
                     <stop_on_pass>true</stop_on_pass>
-                    <stop_after_timer>true</stop_after_timer>
+                    <stop_after_timer>false</stop_after_timer>
                 </hit_response>
                 <use_last_hit_response>false</use_last_hit_response>
                 <last_hit_response>
@@ -2476,7 +2476,7 @@
                     <speed>-1</speed>
                     <push_angle_deg>0</push_angle_deg>
                     <stop_on_pass>true</stop_on_pass>
-                    <stop_after_timer>true</stop_after_timer>
+                    <stop_after_timer>false</stop_after_timer>
                 </hit_response>
                 <use_last_hit_response>false</use_last_hit_response>
                 <last_hit_response>
@@ -2565,12 +2565,12 @@
                     <speed>-1</speed>
                     <push_angle_deg>-1</push_angle_deg>
                     <stop_on_pass>true</stop_on_pass>
-                    <stop_after_timer>true</stop_after_timer>
+                    <stop_after_timer>false</stop_after_timer>
                 </hit_response>
                 <use_last_hit_response>true</use_last_hit_response>
                 <last_hit_response>
                     <type>Push</type>
-                    <speed>40</speed>
+                    <speed>-1</speed>
                     <push_angle_deg>90</push_angle_deg>
                     <stop_on_pass>true</stop_on_pass>
                     <stop_after_timer>true</stop_after_timer>
@@ -3665,7 +3665,7 @@
                     <speed>-1</speed>
                     <push_angle_deg>-1</push_angle_deg>
                     <stop_on_pass>true</stop_on_pass>
-                    <stop_after_timer>true</stop_after_timer>
+                    <stop_after_timer>false</stop_after_timer>
                 </hit_response>
                 <use_last_hit_response>false</use_last_hit_response>
                 <last_hit_response>
