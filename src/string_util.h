@@ -5,6 +5,7 @@
 #include <string_view>
 #include <optional>
 #include <cstdint>
+#include <cassert>
 
 #include "rng.h"
 
