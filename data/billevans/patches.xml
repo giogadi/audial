@@ -40,7 +40,7 @@
             <name>lead</name>
             <patch>
                 <Gain>0.451000005</Gain>
-                <Mono>1</Mono>
+                <Mono>0</Mono>
                 <Osc1Waveform>Square</Osc1Waveform>
                 <Osc2Waveform>Saw</Osc2Waveform>
                 <Detune>0</Detune>
@@ -56,7 +56,7 @@
                 <CutoffLFOFreq>3.3900001</CutoffLFOFreq>
                 <AmpEnvAttack>0.00499999989</AmpEnvAttack>
                 <AmpEnvDecay>1.648</AmpEnvDecay>
-                <AmpEnvSustain>0.0450000018</AmpEnvSustain>
+                <AmpEnvSustain>0.407000005</AmpEnvSustain>
                 <AmpEnvRelease>0.720000029</AmpEnvRelease>
                 <CutoffEnvGain>0</CutoffEnvGain>
                 <CutoffEnvAttack>0.023</CutoffEnvAttack>

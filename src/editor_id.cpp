@@ -1,4 +1,4 @@
-#include "editor.h"
+#include "editor_id.h"
 #include "string_util.h"
 
 std::string EditorId::ToString() const {

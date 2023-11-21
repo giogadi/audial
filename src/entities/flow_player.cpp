@@ -243,6 +243,28 @@ void FlowPlayerEntity::UpdateDerived(GameManager& g, float dt) {
         _s._currentColor = _modelColor;
     }
 
+    //
+    // Perform release actions
+    //
+    {
+        int ixOfLastElement = _s._heldActions.size() - 1;
+        for (int ii = 0; ii <= ixOfLastElement; ++ii) {
+            HeldAction& a = _s._heldActions[ii];
+            if (!g._inputManager->IsKeyPressed(a._key)) {
+                for (auto& action : a._actions) {
+                    action->ExecuteRelease(g);
+                }
+                if (ii < ixOfLastElement) {
+                    HeldAction& lastElement = _s._heldActions[ixOfLastElement];
+                    std::swap(a, lastElement);
+                    --ii;  // stay on the same ix on the next loop iteration
+                }
+                --ixOfLastElement;
+            }
+        }
+        _s._heldActions.resize(ixOfLastElement + 1);
+    }
+
     TypingEnemyEntity* nearest = nullptr;
     float nearestDist2 = -1.f;
     Vec3 const& playerPos = _transform.GetPos();    
@@ -314,6 +336,10 @@ void FlowPlayerEntity::UpdateDerived(GameManager& g, float dt) {
         
         HitResult hitResult = nearest->OnHit(g);
         HitResponse const& hitResponse = hitResult._response;
+
+        HeldAction& heldAction = _s._heldActions.emplace_back();
+        heldAction._key = hitKey;
+        heldAction._actions = std::move(hitResult._heldActions);
 
         _s._lastHitEnemy = nearest->_id;
         _s._heldKey = hitKey;

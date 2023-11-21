@@ -708,7 +708,7 @@
                     <channel>1</channel>
                 </channels>
                 <step_length>0.66666666666660002</step_length>
-                <note_length>4</note_length>
+                <note_length>0.25</note_length>
                 <start_time>0</start_time>
                 <is_synth>true</is_synth>
                 <editor_mute>false</editor_mute>
@@ -879,13 +879,16 @@
                 <hit_actions>
                     <seq_action>
                         <one_time>false</one_time>
-                        <action_type>ChangeStepSequencer</action_type>
-                        <seqEntityEditorId>
-                            <id>10</id>
-                        </seqEntityEditorId>
-                        <velOnly>false</velOnly>
-                        <temporary>true</temporary>
-                        <stepStr>mC5:1</stepStr>
+                        <action_type>NoteOnOff</action_type>
+                        <channel>1</channel>
+                        <midiNoteNames>
+                            <array_item>C5</array_item>
+                        </midiNoteNames>
+                        <noteLength>0</noteLength>
+                        <velocity>1</velocity>
+                        <quantizeDenom>0</quantizeDenom>
+                        <doNoteOff>false</doNoteOff>
+                        <holdNotes>true</holdNotes>
                     </seq_action>
                 </hit_actions>
                 <all_hit_actions/>
@@ -980,6 +983,7 @@
                         <velocity>1</velocity>
                         <quantizeDenom>1</quantizeDenom>
                         <doNoteOff>true</doNoteOff>
+                        <holdNotes>false</holdNotes>
                     </seq_action>
                     <seq_action>
                         <one_time>false</one_time>
@@ -1066,6 +1070,7 @@
                         <velocity>1</velocity>
                         <quantizeDenom>1</quantizeDenom>
                         <doNoteOff>true</doNoteOff>
+                        <holdNotes>false</holdNotes>
                     </seq_action>
                     <seq_action>
                         <one_time>false</one_time>
@@ -1317,13 +1322,16 @@
                 <hit_actions>
                     <seq_action>
                         <one_time>false</one_time>
-                        <action_type>ChangeStepSequencer</action_type>
-                        <seqEntityEditorId>
-                            <id>10</id>
-                        </seqEntityEditorId>
-                        <velOnly>false</velOnly>
-                        <temporary>true</temporary>
-                        <stepStr>mE5:1</stepStr>
+                        <action_type>NoteOnOff</action_type>
+                        <channel>1</channel>
+                        <midiNoteNames>
+                            <array_item>E5</array_item>
+                        </midiNoteNames>
+                        <noteLength>0</noteLength>
+                        <velocity>1</velocity>
+                        <quantizeDenom>0</quantizeDenom>
+                        <doNoteOff>false</doNoteOff>
+                        <holdNotes>true</holdNotes>
                     </seq_action>
                 </hit_actions>
                 <all_hit_actions/>
@@ -1406,13 +1414,16 @@
                 <hit_actions>
                     <seq_action>
                         <one_time>false</one_time>
-                        <action_type>ChangeStepSequencer</action_type>
-                        <seqEntityEditorId>
-                            <id>10</id>
-                        </seqEntityEditorId>
-                        <velOnly>false</velOnly>
-                        <temporary>true</temporary>
-                        <stepStr>mA5:1</stepStr>
+                        <action_type>NoteOnOff</action_type>
+                        <channel>1</channel>
+                        <midiNoteNames>
+                            <array_item>A5</array_item>
+                        </midiNoteNames>
+                        <noteLength>0</noteLength>
+                        <velocity>1</velocity>
+                        <quantizeDenom>0</quantizeDenom>
+                        <doNoteOff>false</doNoteOff>
+                        <holdNotes>true</holdNotes>
                     </seq_action>
                 </hit_actions>
                 <all_hit_actions/>
@@ -1495,13 +1506,16 @@
                 <hit_actions>
                     <seq_action>
                         <one_time>false</one_time>
-                        <action_type>ChangeStepSequencer</action_type>
-                        <seqEntityEditorId>
-                            <id>10</id>
-                        </seqEntityEditorId>
-                        <velOnly>false</velOnly>
-                        <temporary>true</temporary>
-                        <stepStr>mB5:1</stepStr>
+                        <action_type>NoteOnOff</action_type>
+                        <channel>1</channel>
+                        <midiNoteNames>
+                            <array_item>B5</array_item>
+                        </midiNoteNames>
+                        <noteLength>0</noteLength>
+                        <velocity>1</velocity>
+                        <quantizeDenom>0</quantizeDenom>
+                        <doNoteOff>false</doNoteOff>
+                        <holdNotes>true</holdNotes>
                     </seq_action>
                 </hit_actions>
                 <all_hit_actions/>
@@ -1639,13 +1653,16 @@
                 <hit_actions>
                     <seq_action>
                         <one_time>false</one_time>
-                        <action_type>ChangeStepSequencer</action_type>
-                        <seqEntityEditorId>
-                            <id>10</id>
-                        </seqEntityEditorId>
-                        <velOnly>false</velOnly>
-                        <temporary>true</temporary>
-                        <stepStr>mB5:1</stepStr>
+                        <action_type>NoteOnOff</action_type>
+                        <channel>1</channel>
+                        <midiNoteNames>
+                            <array_item>B5</array_item>
+                        </midiNoteNames>
+                        <noteLength>0</noteLength>
+                        <velocity>1</velocity>
+                        <quantizeDenom>0</quantizeDenom>
+                        <doNoteOff>false</doNoteOff>
+                        <holdNotes>true</holdNotes>
                     </seq_action>
                 </hit_actions>
                 <all_hit_actions/>
@@ -1728,13 +1745,16 @@
                 <hit_actions>
                     <seq_action>
                         <one_time>false</one_time>
-                        <action_type>ChangeStepSequencer</action_type>
-                        <seqEntityEditorId>
-                            <id>10</id>
-                        </seqEntityEditorId>
-                        <velOnly>false</velOnly>
-                        <temporary>true</temporary>
-                        <stepStr>mD6:1</stepStr>
+                        <action_type>NoteOnOff</action_type>
+                        <channel>1</channel>
+                        <midiNoteNames>
+                            <array_item>D6</array_item>
+                        </midiNoteNames>
+                        <noteLength>0</noteLength>
+                        <velocity>1</velocity>
+                        <quantizeDenom>0</quantizeDenom>
+                        <doNoteOff>false</doNoteOff>
+                        <holdNotes>true</holdNotes>
                     </seq_action>
                 </hit_actions>
                 <all_hit_actions/>
@@ -2001,13 +2021,16 @@
                 <hit_actions>
                     <seq_action>
                         <one_time>false</one_time>
-                        <action_type>ChangeStepSequencer</action_type>
-                        <seqEntityEditorId>
-                            <id>10</id>
-                        </seqEntityEditorId>
-                        <velOnly>false</velOnly>
-                        <temporary>true</temporary>
-                        <stepStr>mG5:1</stepStr>
+                        <action_type>NoteOnOff</action_type>
+                        <channel>1</channel>
+                        <midiNoteNames>
+                            <array_item>G5</array_item>
+                        </midiNoteNames>
+                        <noteLength>0</noteLength>
+                        <velocity>1</velocity>
+                        <quantizeDenom>0</quantizeDenom>
+                        <doNoteOff>false</doNoteOff>
+                        <holdNotes>true</holdNotes>
                     </seq_action>
                 </hit_actions>
                 <all_hit_actions/>
@@ -2501,13 +2524,16 @@
                 <hit_actions>
                     <seq_action>
                         <one_time>false</one_time>
-                        <action_type>ChangeStepSequencer</action_type>
-                        <seqEntityEditorId>
-                            <id>10</id>
-                        </seqEntityEditorId>
-                        <velOnly>false</velOnly>
-                        <temporary>true</temporary>
-                        <stepStr>mA5:1</stepStr>
+                        <action_type>NoteOnOff</action_type>
+                        <channel>1</channel>
+                        <midiNoteNames>
+                            <array_item>A5</array_item>
+                        </midiNoteNames>
+                        <noteLength>0</noteLength>
+                        <velocity>1</velocity>
+                        <quantizeDenom>0</quantizeDenom>
+                        <doNoteOff>false</doNoteOff>
+                        <holdNotes>true</holdNotes>
                     </seq_action>
                 </hit_actions>
                 <all_hit_actions/>
@@ -2893,13 +2919,16 @@
                 <hit_actions>
                     <seq_action>
                         <one_time>false</one_time>
-                        <action_type>ChangeStepSequencer</action_type>
-                        <seqEntityEditorId>
-                            <id>10</id>
-                        </seqEntityEditorId>
-                        <velOnly>false</velOnly>
-                        <temporary>true</temporary>
-                        <stepStr>mA5:1</stepStr>
+                        <action_type>NoteOnOff</action_type>
+                        <channel>1</channel>
+                        <midiNoteNames>
+                            <array_item>A5</array_item>
+                        </midiNoteNames>
+                        <noteLength>0</noteLength>
+                        <velocity>1</velocity>
+                        <quantizeDenom>0</quantizeDenom>
+                        <doNoteOff>false</doNoteOff>
+                        <holdNotes>true</holdNotes>
                     </seq_action>
                 </hit_actions>
                 <all_hit_actions/>
@@ -2982,13 +3011,16 @@
                 <hit_actions>
                     <seq_action>
                         <one_time>false</one_time>
-                        <action_type>ChangeStepSequencer</action_type>
-                        <seqEntityEditorId>
-                            <id>10</id>
-                        </seqEntityEditorId>
-                        <velOnly>false</velOnly>
-                        <temporary>true</temporary>
-                        <stepStr>mB5:1</stepStr>
+                        <action_type>NoteOnOff</action_type>
+                        <channel>1</channel>
+                        <midiNoteNames>
+                            <array_item>B5</array_item>
+                        </midiNoteNames>
+                        <noteLength>0</noteLength>
+                        <velocity>1</velocity>
+                        <quantizeDenom>0</quantizeDenom>
+                        <doNoteOff>false</doNoteOff>
+                        <holdNotes>true</holdNotes>
                     </seq_action>
                 </hit_actions>
                 <all_hit_actions/>
@@ -3071,13 +3103,16 @@
                 <hit_actions>
                     <seq_action>
                         <one_time>false</one_time>
-                        <action_type>ChangeStepSequencer</action_type>
-                        <seqEntityEditorId>
-                            <id>10</id>
-                        </seqEntityEditorId>
-                        <velOnly>false</velOnly>
-                        <temporary>true</temporary>
-                        <stepStr>mG5:1</stepStr>
+                        <action_type>NoteOnOff</action_type>
+                        <channel>1</channel>
+                        <midiNoteNames>
+                            <array_item>G5</array_item>
+                        </midiNoteNames>
+                        <noteLength>0</noteLength>
+                        <velocity>1</velocity>
+                        <quantizeDenom>0</quantizeDenom>
+                        <doNoteOff>false</doNoteOff>
+                        <holdNotes>true</holdNotes>
                     </seq_action>
                 </hit_actions>
                 <all_hit_actions/>
@@ -3160,13 +3195,16 @@
                 <hit_actions>
                     <seq_action>
                         <one_time>false</one_time>
-                        <action_type>ChangeStepSequencer</action_type>
-                        <seqEntityEditorId>
-                            <id>10</id>
-                        </seqEntityEditorId>
-                        <velOnly>false</velOnly>
-                        <temporary>true</temporary>
-                        <stepStr>mE5:1</stepStr>
+                        <action_type>NoteOnOff</action_type>
+                        <channel>1</channel>
+                        <midiNoteNames>
+                            <array_item>E5</array_item>
+                        </midiNoteNames>
+                        <noteLength>0</noteLength>
+                        <velocity>1</velocity>
+                        <quantizeDenom>0</quantizeDenom>
+                        <doNoteOff>false</doNoteOff>
+                        <holdNotes>true</holdNotes>
                     </seq_action>
                 </hit_actions>
                 <all_hit_actions/>
@@ -3249,13 +3287,16 @@
                 <hit_actions>
                     <seq_action>
                         <one_time>false</one_time>
-                        <action_type>ChangeStepSequencer</action_type>
-                        <seqEntityEditorId>
-                            <id>10</id>
-                        </seqEntityEditorId>
-                        <velOnly>false</velOnly>
-                        <temporary>true</temporary>
-                        <stepStr>mC5:1</stepStr>
+                        <action_type>NoteOnOff</action_type>
+                        <channel>1</channel>
+                        <midiNoteNames>
+                            <array_item>C5</array_item>
+                        </midiNoteNames>
+                        <noteLength>0</noteLength>
+                        <velocity>1</velocity>
+                        <quantizeDenom>0</quantizeDenom>
+                        <doNoteOff>false</doNoteOff>
+                        <holdNotes>true</holdNotes>
                     </seq_action>
                 </hit_actions>
                 <all_hit_actions/>
@@ -3338,13 +3379,16 @@
                 <hit_actions>
                     <seq_action>
                         <one_time>false</one_time>
-                        <action_type>ChangeStepSequencer</action_type>
-                        <seqEntityEditorId>
-                            <id>10</id>
-                        </seqEntityEditorId>
-                        <velOnly>false</velOnly>
-                        <temporary>true</temporary>
-                        <stepStr>mB4:1</stepStr>
+                        <action_type>NoteOnOff</action_type>
+                        <channel>1</channel>
+                        <midiNoteNames>
+                            <array_item>B4</array_item>
+                        </midiNoteNames>
+                        <noteLength>0</noteLength>
+                        <velocity>1</velocity>
+                        <quantizeDenom>0</quantizeDenom>
+                        <doNoteOff>false</doNoteOff>
+                        <holdNotes>true</holdNotes>
                     </seq_action>
                 </hit_actions>
                 <all_hit_actions/>
@@ -3427,13 +3471,16 @@
                 <hit_actions>
                     <seq_action>
                         <one_time>false</one_time>
-                        <action_type>ChangeStepSequencer</action_type>
-                        <seqEntityEditorId>
-                            <id>10</id>
-                        </seqEntityEditorId>
-                        <velOnly>false</velOnly>
-                        <temporary>true</temporary>
-                        <stepStr>mD5:1</stepStr>
+                        <action_type>NoteOnOff</action_type>
+                        <channel>1</channel>
+                        <midiNoteNames>
+                            <array_item>D5</array_item>
+                        </midiNoteNames>
+                        <noteLength>0</noteLength>
+                        <velocity>1</velocity>
+                        <quantizeDenom>0</quantizeDenom>
+                        <doNoteOff>false</doNoteOff>
+                        <holdNotes>true</holdNotes>
                     </seq_action>
                 </hit_actions>
                 <all_hit_actions/>
@@ -3516,13 +3563,16 @@
                 <hit_actions>
                     <seq_action>
                         <one_time>false</one_time>
-                        <action_type>ChangeStepSequencer</action_type>
-                        <seqEntityEditorId>
-                            <id>10</id>
-                        </seqEntityEditorId>
-                        <velOnly>false</velOnly>
-                        <temporary>true</temporary>
-                        <stepStr>mG5:1</stepStr>
+                        <action_type>NoteOnOff</action_type>
+                        <channel>1</channel>
+                        <midiNoteNames>
+                            <array_item>G5</array_item>
+                        </midiNoteNames>
+                        <noteLength>0</noteLength>
+                        <velocity>1</velocity>
+                        <quantizeDenom>0</quantizeDenom>
+                        <doNoteOff>false</doNoteOff>
+                        <holdNotes>true</holdNotes>
                     </seq_action>
                 </hit_actions>
                 <all_hit_actions/>
@@ -3595,6 +3645,7 @@
                         <velocity>1</velocity>
                         <quantizeDenom>1</quantizeDenom>
                         <doNoteOff>true</doNoteOff>
+                        <holdNotes>false</holdNotes>
                     </seq_action>
                     <seq_action>
                         <one_time>false</one_time>
@@ -3690,13 +3741,16 @@
                 <hit_actions>
                     <seq_action>
                         <one_time>false</one_time>
-                        <action_type>ChangeStepSequencer</action_type>
-                        <seqEntityEditorId>
-                            <id>10</id>
-                        </seqEntityEditorId>
-                        <velOnly>false</velOnly>
-                        <temporary>true</temporary>
-                        <stepStr>mA5:1</stepStr>
+                        <action_type>NoteOnOff</action_type>
+                        <channel>1</channel>
+                        <midiNoteNames>
+                            <array_item>A5</array_item>
+                        </midiNoteNames>
+                        <noteLength>0</noteLength>
+                        <velocity>1</velocity>
+                        <quantizeDenom>0</quantizeDenom>
+                        <doNoteOff>false</doNoteOff>
+                        <holdNotes>true</holdNotes>
                     </seq_action>
                 </hit_actions>
                 <all_hit_actions/>
@@ -3791,6 +3845,7 @@
                         <velocity>1</velocity>
                         <quantizeDenom>0</quantizeDenom>
                         <doNoteOff>true</doNoteOff>
+                        <holdNotes>false</holdNotes>
                     </seq_action>
                     <seq_action>
                         <one_time>false</one_time>

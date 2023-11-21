@@ -6,10 +6,12 @@
 #include "game_manager.h"
 #include "new_entity.h"
 #include "synth_imgui.h"
+#include "input_manager.h"
+#include "seq_action.h"
 
 class BoundMeshPNU;
 
-struct Editor {
+struct Editor {    
     void Load(serial::Ptree pt);
     void Save(serial::Ptree pt) const;
 
@@ -38,6 +40,9 @@ struct Editor {
     bool _showControllerInputs = false;  // if false, show keyboard inputs
     int64_t _nextEditorId = -1;
 
+    std::vector<std::unique_ptr<SeqAction>> _heldActions;
+
 private:
     ne::EntityId _requestedNewSelection;
+    void PickEntity(ne::BaseEntity* entity);
 };

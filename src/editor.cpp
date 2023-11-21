@@ -17,6 +17,7 @@
 #include "string_util.h"
 #include "color_presets.h"
 #include "geometry.h"
+#include "seq_action.h"
 
 static float gScrollFactorForDebugCameraMove = 1.f;
 
@@ -129,6 +130,16 @@ bool sDemoWindowVisible = false;
 bool sMultiEnemyEditorVisible = false;
 
 } // end namespace
+
+void Editor::PickEntity(ne::BaseEntity* entity) {
+    if (entity->Type() == ne::EntityType::TypingEnemy) {
+        TypingEnemyEntity* enemy = static_cast<TypingEnemyEntity*>(entity);
+        HitResult result = enemy->OnHit(*_g);
+        _heldActions = std::move(result._heldActions);
+    } else {
+        entity->OnEditPick(*_g);
+    }    
+}
 
 void Editor::HandleEntitySelectAndMove(float deltaTime) {
     InputManager const& inputManager = *_g->_inputManager;
@@ -297,14 +308,16 @@ void Editor::HandleEntitySelectAndMove(float deltaTime) {
                     auto selectedIter = _selectedEntityIds.find(pPicked->_id);
                     if (selectedIter == _selectedEntityIds.end()) {
                         _selectedEntityIds.emplace(pPicked->_id);
-                        pPicked->OnEditPick(*_g);
+                        // pPicked->OnEditPick(*_g);
+                        PickEntity(pPicked);
                     } else {
                         _selectedEntityIds.erase(selectedIter);
                     }
                 } else {
                     _selectedEntityIds.clear();
                     _selectedEntityIds.emplace(pPicked->_id);
-                    pPicked->OnEditPick(*_g);
+                    // pPicked->OnEditPick(*_g);
+                    PickEntity(pPicked);
                 }
             }
         }
@@ -405,6 +418,16 @@ void Editor::HandlePianoInput(SynthGuiState& synthGuiState) {
 void Editor::Update(float dt, SynthGuiState& synthGuiState) {
     if (!_g->_editMode) {
         return;
+    }
+
+    //
+    // Handle release actions
+    //
+    if (_g->_inputManager->IsKeyPressedThisFrame(InputManager::Key::Space)) {
+        for (auto& action : _heldActions) {
+            action->ExecuteRelease(*_g);
+        }
+        _heldActions.clear();
     }
 
     if (_requestedNewSelection.IsValid()) {
