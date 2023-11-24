@@ -22,6 +22,7 @@ struct FlowPlayerEntity : public ne::Entity {
         float _maxOverallSpeedAfterDash = -1.f;
         float _dashTime = 0.5f;
         float _maxFallSpeed = 10.f;
+        bool _pullManualHold = false;
     };
     Props _p;
 

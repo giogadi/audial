@@ -135,7 +135,13 @@ void Editor::PickEntity(ne::BaseEntity* entity) {
     if (entity->Type() == ne::EntityType::TypingEnemy) {
         TypingEnemyEntity* enemy = static_cast<TypingEnemyEntity*>(entity);
         HitResult result = enemy->OnHit(*_g);
+        if (!_heldActions.empty()) {
+            for (auto const& a : _heldActions) {
+                a->ExecuteRelease(*_g);
+            }
+        }
         _heldActions = std::move(result._heldActions);
+        _heldActionsTimer = 0.f;
     } else {
         entity->OnEditPick(*_g);
     }    
@@ -423,11 +429,17 @@ void Editor::Update(float dt, SynthGuiState& synthGuiState) {
     //
     // Handle release actions
     //
-    if (_g->_inputManager->IsKeyPressedThisFrame(InputManager::Key::Space)) {
-        for (auto& action : _heldActions) {
-            action->ExecuteRelease(*_g);
+    float constexpr kActionReleaseTime = 0.5f;
+    if (_heldActionsTimer >= 0.f) {
+        if (_heldActionsTimer >= kActionReleaseTime) {
+            for (auto& action : _heldActions) {
+                action->ExecuteRelease(*_g);
+            }
+            _heldActions.clear();
+            _heldActionsTimer = -1.f;
+        } else {
+            _heldActionsTimer += dt;
         }
-        _heldActions.clear();
     }
 
     if (_requestedNewSelection.IsValid()) {

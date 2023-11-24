@@ -41,6 +41,7 @@ struct Editor {
     int64_t _nextEditorId = -1;
 
     std::vector<std::unique_ptr<SeqAction>> _heldActions;
+    float _heldActionsTimer = -1.f;
 
 private:
     ne::EntityId _requestedNewSelection;

@@ -22,6 +22,7 @@ void FlowPlayerEntity::SaveDerived(serial::Ptree pt) const {
     pt.PutFloat("dash_time", _p._dashTime);
     serial::SaveInNewChildOf(pt, "gravity", _p._gravity);
     pt.PutFloat("max_fall_speed", _p._maxFallSpeed);
+    pt.PutBool("pull_manual_hold", _p._pullManualHold);
 }
 
 void FlowPlayerEntity::LoadDerived(serial::Ptree pt) {
@@ -33,6 +34,7 @@ void FlowPlayerEntity::LoadDerived(serial::Ptree pt) {
     pt.TryGetFloat("dash_time", &_p._dashTime);
     serial::LoadFromChildOf(pt, "gravity", _p._gravity);
     pt.TryGetFloat("max_fall_speed", &_p._maxFallSpeed);
+    pt.TryGetBool("pull_manual_hold", &_p._pullManualHold);
 }
 
 void FlowPlayerEntity::InitDerived(GameManager& g) {
@@ -425,7 +427,10 @@ void FlowPlayerEntity::UpdateDerived(GameManager& g, float dt) {
         case MoveState::Default: break;
         case MoveState::Pull: {
             bool finishedPulling = false;
-            if (_s._stopAfterTimer && _s._dashTimer >= _p._dashTime) {
+            if (_p._pullManualHold && _s._heldKey != InputManager::Key::NumKeys && g._inputManager->IsKeyReleasedThisFrame(_s._heldKey)) {
+                finishedPulling = true;
+                _s._heldKey = InputManager::Key::NumKeys;
+            } else if (_s._stopAfterTimer && _s._dashTimer >= _p._dashTime) {
                 finishedPulling = true;
             }
             if (finishedPulling) {
