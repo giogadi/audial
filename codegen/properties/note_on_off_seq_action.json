@@ -7,9 +7,9 @@
             "default": "0"
         },
         {
-            "name": "midiNoteNames",
+            "name": "midiNotes",
             "isArray": true,
-            "type": "string"
+            "type": "MidiNoteAndName"
         },
         {
             "name": "noteLength",

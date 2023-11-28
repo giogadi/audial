@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <root>
-    <version>2</version>
+    <version>3</version>
     <script>
         <bpm>140</bpm>
         <ctrl_groups>
@@ -874,12 +874,20 @@
                         <one_time>false</one_time>
                         <action_type>NoteOnOff</action_type>
                         <channel>2</channel>
-                        <midiNoteNames>
-                            <array_item>C3</array_item>
-                            <array_item>E3</array_item>
-                            <array_item>G3</array_item>
-                            <array_item>B3</array_item>
-                        </midiNoteNames>
+                        <midiNotes>
+                            <array_item>
+                                <note>48</note>
+                            </array_item>
+                            <array_item>
+                                <note>52</note>
+                            </array_item>
+                            <array_item>
+                                <note>55</note>
+                            </array_item>
+                            <array_item>
+                                <note>59</note>
+                            </array_item>
+                        </midiNotes>
                         <noteLength>2</noteLength>
                         <velocity>1</velocity>
                         <quantizeDenom>1</quantizeDenom>
@@ -961,12 +969,20 @@
                         <one_time>false</one_time>
                         <action_type>NoteOnOff</action_type>
                         <channel>2</channel>
-                        <midiNoteNames>
-                            <array_item>C3</array_item>
-                            <array_item>E3</array_item>
-                            <array_item>G3</array_item>
-                            <array_item>B3</array_item>
-                        </midiNoteNames>
+                        <midiNotes>
+                            <array_item>
+                                <note>48</note>
+                            </array_item>
+                            <array_item>
+                                <note>52</note>
+                            </array_item>
+                            <array_item>
+                                <note>55</note>
+                            </array_item>
+                            <array_item>
+                                <note>59</note>
+                            </array_item>
+                        </midiNotes>
                         <noteLength>2</noteLength>
                         <velocity>1</velocity>
                         <quantizeDenom>1</quantizeDenom>
@@ -1170,9 +1186,11 @@
                         <one_time>false</one_time>
                         <action_type>NoteOnOff</action_type>
                         <channel>1</channel>
-                        <midiNoteNames>
-                            <array_item>C5</array_item>
-                        </midiNoteNames>
+                        <midiNotes>
+                            <array_item>
+                                <note>72</note>
+                            </array_item>
+                        </midiNotes>
                         <noteLength>0</noteLength>
                         <velocity>1</velocity>
                         <quantizeDenom>0</quantizeDenom>
@@ -1240,12 +1258,20 @@
                         <one_time>false</one_time>
                         <action_type>NoteOnOff</action_type>
                         <channel>2</channel>
-                        <midiNoteNames>
-                            <array_item>C3</array_item>
-                            <array_item>E3</array_item>
-                            <array_item>G3</array_item>
-                            <array_item>B3</array_item>
-                        </midiNoteNames>
+                        <midiNotes>
+                            <array_item>
+                                <note>48</note>
+                            </array_item>
+                            <array_item>
+                                <note>52</note>
+                            </array_item>
+                            <array_item>
+                                <note>55</note>
+                            </array_item>
+                            <array_item>
+                                <note>59</note>
+                            </array_item>
+                        </midiNotes>
                         <noteLength>2</noteLength>
                         <velocity>1</velocity>
                         <quantizeDenom>1</quantizeDenom>
@@ -1348,12 +1374,20 @@
                         <one_time>false</one_time>
                         <action_type>NoteOnOff</action_type>
                         <channel>2</channel>
-                        <midiNoteNames>
-                            <array_item>G2</array_item>
-                            <array_item>B2</array_item>
-                            <array_item>D3</array_item>
-                            <array_item>F3</array_item>
-                        </midiNoteNames>
+                        <midiNotes>
+                            <array_item>
+                                <note>43</note>
+                            </array_item>
+                            <array_item>
+                                <note>47</note>
+                            </array_item>
+                            <array_item>
+                                <note>50</note>
+                            </array_item>
+                            <array_item>
+                                <note>53</note>
+                            </array_item>
+                        </midiNotes>
                         <noteLength>2</noteLength>
                         <velocity>1</velocity>
                         <quantizeDenom>0</quantizeDenom>
@@ -1457,9 +1491,11 @@
                         <one_time>false</one_time>
                         <action_type>NoteOnOff</action_type>
                         <channel>1</channel>
-                        <midiNoteNames>
-                            <array_item>B4</array_item>
-                        </midiNoteNames>
+                        <midiNotes>
+                            <array_item>
+                                <note>71</note>
+                            </array_item>
+                        </midiNotes>
                         <noteLength>0</noteLength>
                         <velocity>1</velocity>
                         <quantizeDenom>0</quantizeDenom>
@@ -1549,9 +1585,11 @@
                         <one_time>false</one_time>
                         <action_type>NoteOnOff</action_type>
                         <channel>1</channel>
-                        <midiNoteNames>
-                            <array_item>B4-</array_item>
-                        </midiNoteNames>
+                        <midiNotes>
+                            <array_item>
+                                <note>70</note>
+                            </array_item>
+                        </midiNotes>
                         <noteLength>0</noteLength>
                         <velocity>1</velocity>
                         <quantizeDenom>0</quantizeDenom>
@@ -1641,9 +1679,11 @@
                         <one_time>false</one_time>
                         <action_type>NoteOnOff</action_type>
                         <channel>1</channel>
-                        <midiNoteNames>
-                            <array_item>B4</array_item>
-                        </midiNoteNames>
+                        <midiNotes>
+                            <array_item>
+                                <note>71</note>
+                            </array_item>
+                        </midiNotes>
                         <noteLength>0</noteLength>
                         <velocity>1</velocity>
                         <quantizeDenom>0</quantizeDenom>
@@ -1733,9 +1773,11 @@
                         <one_time>false</one_time>
                         <action_type>NoteOnOff</action_type>
                         <channel>1</channel>
-                        <midiNoteNames>
-                            <array_item>C5</array_item>
-                        </midiNoteNames>
+                        <midiNotes>
+                            <array_item>
+                                <note>72</note>
+                            </array_item>
+                        </midiNotes>
                         <noteLength>0</noteLength>
                         <velocity>1</velocity>
                         <quantizeDenom>0</quantizeDenom>
@@ -1825,9 +1867,11 @@
                         <one_time>false</one_time>
                         <action_type>NoteOnOff</action_type>
                         <channel>1</channel>
-                        <midiNoteNames>
-                            <array_item>C5+</array_item>
-                        </midiNoteNames>
+                        <midiNotes>
+                            <array_item>
+                                <note>73</note>
+                            </array_item>
+                        </midiNotes>
                         <noteLength>0</noteLength>
                         <velocity>1</velocity>
                         <quantizeDenom>0</quantizeDenom>
@@ -1917,9 +1961,11 @@
                         <one_time>false</one_time>
                         <action_type>NoteOnOff</action_type>
                         <channel>1</channel>
-                        <midiNoteNames>
-                            <array_item>D5</array_item>
-                        </midiNoteNames>
+                        <midiNotes>
+                            <array_item>
+                                <note>74</note>
+                            </array_item>
+                        </midiNotes>
                         <noteLength>0</noteLength>
                         <velocity>1</velocity>
                         <quantizeDenom>0</quantizeDenom>
@@ -2009,9 +2055,11 @@
                         <one_time>false</one_time>
                         <action_type>NoteOnOff</action_type>
                         <channel>1</channel>
-                        <midiNoteNames>
-                            <array_item>E5-</array_item>
-                        </midiNoteNames>
+                        <midiNotes>
+                            <array_item>
+                                <note>75</note>
+                            </array_item>
+                        </midiNotes>
                         <noteLength>0</noteLength>
                         <velocity>1</velocity>
                         <quantizeDenom>0</quantizeDenom>
@@ -2101,9 +2149,11 @@
                         <one_time>false</one_time>
                         <action_type>NoteOnOff</action_type>
                         <channel>1</channel>
-                        <midiNoteNames>
-                            <array_item>E5</array_item>
-                        </midiNoteNames>
+                        <midiNotes>
+                            <array_item>
+                                <note>76</note>
+                            </array_item>
+                        </midiNotes>
                         <noteLength>0</noteLength>
                         <velocity>1</velocity>
                         <quantizeDenom>0</quantizeDenom>
@@ -2193,9 +2243,11 @@
                         <one_time>false</one_time>
                         <action_type>NoteOnOff</action_type>
                         <channel>1</channel>
-                        <midiNoteNames>
-                            <array_item>F5</array_item>
-                        </midiNoteNames>
+                        <midiNotes>
+                            <array_item>
+                                <note>77</note>
+                            </array_item>
+                        </midiNotes>
                         <noteLength>0</noteLength>
                         <velocity>1</velocity>
                         <quantizeDenom>0</quantizeDenom>
@@ -2285,9 +2337,11 @@
                         <one_time>false</one_time>
                         <action_type>NoteOnOff</action_type>
                         <channel>1</channel>
-                        <midiNoteNames>
-                            <array_item>G5-</array_item>
-                        </midiNoteNames>
+                        <midiNotes>
+                            <array_item>
+                                <note>78</note>
+                            </array_item>
+                        </midiNotes>
                         <noteLength>0</noteLength>
                         <velocity>1</velocity>
                         <quantizeDenom>0</quantizeDenom>
@@ -2377,9 +2431,11 @@
                         <one_time>false</one_time>
                         <action_type>NoteOnOff</action_type>
                         <channel>1</channel>
-                        <midiNoteNames>
-                            <array_item>G5</array_item>
-                        </midiNoteNames>
+                        <midiNotes>
+                            <array_item>
+                                <note>79</note>
+                            </array_item>
+                        </midiNotes>
                         <noteLength>0</noteLength>
                         <velocity>1</velocity>
                         <quantizeDenom>0</quantizeDenom>
@@ -2469,9 +2525,11 @@
                         <one_time>false</one_time>
                         <action_type>NoteOnOff</action_type>
                         <channel>1</channel>
-                        <midiNoteNames>
-                            <array_item>A5-</array_item>
-                        </midiNoteNames>
+                        <midiNotes>
+                            <array_item>
+                                <note>80</note>
+                            </array_item>
+                        </midiNotes>
                         <noteLength>0</noteLength>
                         <velocity>1</velocity>
                         <quantizeDenom>0</quantizeDenom>
@@ -2561,9 +2619,11 @@
                         <one_time>false</one_time>
                         <action_type>NoteOnOff</action_type>
                         <channel>1</channel>
-                        <midiNoteNames>
-                            <array_item>A5</array_item>
-                        </midiNoteNames>
+                        <midiNotes>
+                            <array_item>
+                                <note>81</note>
+                            </array_item>
+                        </midiNotes>
                         <noteLength>0</noteLength>
                         <velocity>1</velocity>
                         <quantizeDenom>0</quantizeDenom>
@@ -2653,9 +2713,11 @@
                         <one_time>false</one_time>
                         <action_type>NoteOnOff</action_type>
                         <channel>1</channel>
-                        <midiNoteNames>
-                            <array_item>B5-</array_item>
-                        </midiNoteNames>
+                        <midiNotes>
+                            <array_item>
+                                <note>82</note>
+                            </array_item>
+                        </midiNotes>
                         <noteLength>0</noteLength>
                         <velocity>1</velocity>
                         <quantizeDenom>0</quantizeDenom>
@@ -2745,9 +2807,11 @@
                         <one_time>false</one_time>
                         <action_type>NoteOnOff</action_type>
                         <channel>1</channel>
-                        <midiNoteNames>
-                            <array_item>B5</array_item>
-                        </midiNoteNames>
+                        <midiNotes>
+                            <array_item>
+                                <note>83</note>
+                            </array_item>
+                        </midiNotes>
                         <noteLength>0</noteLength>
                         <velocity>1</velocity>
                         <quantizeDenom>0</quantizeDenom>

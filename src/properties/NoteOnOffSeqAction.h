@@ -1,6 +1,8 @@
 #pragma once
 
 
+#include "properties/MidiNoteAndName.h"
+
 #include <vector>
 
 
@@ -10,7 +12,7 @@ struct NoteOnOffSeqActionProps {
     
     int _channel = 0;
     
-    std::vector<std::string> _midiNoteNames;
+    std::vector<MidiNoteAndName> _midiNotes;
     
     double _noteLength = 0.0;
     

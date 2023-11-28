@@ -32,7 +32,7 @@ add_executable(game
     src/imgui_util.cpp src/imgui_util.h
     src/imgui_vector_util.h
 
-    src/midi_util.h
+    src/midi_util.h    
 
     src/viewport.cpp src/viewport.h
 
@@ -78,6 +78,7 @@ add_executable(game
     src/random_wander.cpp src/random_wander.h    
 
     src/properties/Test.cpp
+    src/properties/MidiNoteAndName.cpp src/properties/MidiNoteAndName.h
     src/properties/ChangeStepSequencerSeqAction.cpp src/properties/ChangeStepSequencerSeqAction.h
     src/properties/SpawnAutomatorSeqAction.cpp src/properties/SpawnAutomatorSeqAction.h
     src/properties/NoteOnOffSeqAction.cpp src/properties/NoteOnOffSeqAction.h

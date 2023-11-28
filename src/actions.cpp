@@ -13,6 +13,7 @@
 #include "entities/typing_enemy.h"
 #include "sound_bank.h"
 #include "imgui_util.h"
+#include "serial_vector_util.h"
 
 extern GameManager gGameManager;
 
@@ -308,15 +309,21 @@ void SetStepSequenceSeqAction::ExecuteDerived(GameManager& g) {
 
 void NoteOnOffSeqAction::LoadDerived(serial::Ptree pt) {
     _props.Load(pt);
-    int midiNote = -1;
-    if (pt.TryGetInt("midiNote", &midiNote)) {
-        // backward compat
-        if (!_props._midiNoteNames.empty()) {
-            printf("NoteOnOffSeqAction: UNEXPECTED MIDI NOTE NAMES!!!!\n");
+    int constexpr kUseIntsForMidiNotesVersion = 3;
+    if (pt.GetVersion() < kUseIntsForMidiNotesVersion) {
+        if (!_props._midiNotes.empty()) {
+            printf("NoteOnOffSeqAction::LoadDerived:  UNEXPECTED NOTES IN THIS VERSION!\n");
+            _props._midiNotes.clear();
         }
-        _props._midiNoteNames.clear();
-        std::string& noteName = _props._midiNoteNames.emplace_back();
-        GetNoteName(midiNote, noteName);
+        std::vector<std::string> noteNames;
+        serial::LoadVectorFromChildNode<std::string>(pt, "midiNoteNames", noteNames);
+        for (std::string const& noteName : noteNames) {
+            int midiNote = GetMidiNote(noteName);
+            if (midiNote < 0) {
+                continue;
+            }            
+            _props._midiNotes.emplace_back(midiNote);
+        }
     }
 }
 
@@ -326,19 +333,18 @@ void NoteOnOffSeqAction::ExecuteDerived(GameManager& g) {
     b_e._e.velocity = _props._velocity;    
 
     static int sNoteOnId = 1;
-    for (std::string const& noteName : _props._midiNoteNames) {
-        int midiNote = GetMidiNote(noteName);
-        if (midiNote < 0) {
+    for (MidiNoteAndName const& midiNote : _props._midiNotes) {
+        if (midiNote._note < 0) {
             continue;
         }
         b_e._beatTime = 0.0;
-        b_e._e.midiNote = midiNote;
+        b_e._e.midiNote = midiNote._note;
         b_e._e.noteOnId = sNoteOnId++;
         b_e._e.type = audio::EventType::NoteOn;
 
         audio::Event e = GetEventAtBeatOffsetFromNextDenom(_props._quantizeDenom, b_e, *g._beatClock, /*slack=*/0.0625);
         g._audioContext->AddEvent(e);
-
+         
         if (_props._doNoteOff) {
             b_e._e.type = audio::EventType::NoteOff;
             b_e._beatTime = _props._noteLength;
@@ -356,12 +362,11 @@ void NoteOnOffSeqAction::ExecuteRelease(GameManager& g) {
     e.delaySecs = 0.0;
     e.channel = _props._channel;
     e.type = audio::EventType::NoteOff;
-    for (std::string const& noteName : _props._midiNoteNames) {
-        int midiNote = GetMidiNote(noteName);
-        if (midiNote < 0) {
+    for (MidiNoteAndName const& midiNote : _props._midiNotes) {
+        if (midiNote._note < 0) {
             continue;
         }
-        e.midiNote = midiNote;        
+        e.midiNote = midiNote._note;        
         g._audioContext->AddEvent(e);
     }
 }

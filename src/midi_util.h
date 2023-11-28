@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string_view>
+#include <cassert>
 
 inline int GetMidiNote(char noteName, int octaveNum) {
     noteName = tolower(noteName);

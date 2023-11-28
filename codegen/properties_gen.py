@@ -26,8 +26,10 @@ def getCppTypeName(typeName):
 
 # each prop should have name, type, required headers, load code, save code, and
 # imgui code
-def getProp(propName, propType, isArray, enumType, maybeNamespace, maybeDefault):
+def getProp(propName, propType, isArray, enumType, maybeNamespace, maybeDefault, rawProp):
     outProp = {}
+    genImGui = rawProp.get('gen_imgui', True)
+    imGuiStr = ''
     outProp['name'] = propName
     outProp['isArray'] = isArray
     outProp['header_includes'] = []
@@ -39,7 +41,7 @@ def getProp(propName, propType, isArray, enumType, maybeNamespace, maybeDefault)
         outProp['type'] = 'std::vector<{cppTypeName}>'.format(cppTypeName = cppTypeName)        
         outProp['load'] = 'serial::LoadVectorFromChildNode<{cppTypeName}>(pt, \"{name}\", _{name});'.format(cppTypeName = cppTypeName, name = propName)
         outProp['save'] = 'serial::SaveVectorInChildNode<{cppTypeName}>(pt, \"{name}\", \"array_item\", _{name});'.format(cppTypeName = cppTypeName, name = propName)
-        outProp['imgui'] = 'imgui_util::InputVector(_{name});'.format(name = propName)
+        imGuiStr = 'imgui_util::InputVector(_{name});'.format(name = propName)
         outProp['header_includes'].append('<vector>')
         outProp['src_includes'].append('serial_vector_util.h')
         outProp['src_includes'].append('imgui_vector_util.h')        
@@ -51,39 +53,45 @@ def getProp(propName, propType, isArray, enumType, maybeNamespace, maybeDefault)
             outProp['type'] = 'int'
             outProp['load'] = 'pt.TryGetInt(\"{name}\", &_{name});'.format(name = outProp['name'])
             outProp['save'] = 'pt.PutInt(\"{name}\", _{name});'.format(name = outProp['name'])
-            outProp['imgui'] = 'ImGui::InputInt(\"{name}\", &_{name});'.format(name = outProp['name'])
+            imGuiStr = 'ImGui::InputInt(\"{name}\", &_{name});'.format(name = outProp['name'])
         elif propType == 'float':
             outProp['type'] = 'float'
             outProp['load'] = 'pt.TryGetFloat(\"{name}\", &_{name});'.format(name = outProp['name'])
             outProp['save'] = 'pt.PutFloat(\"{name}\", _{name});'.format(name = outProp['name'])
-            outProp['imgui'] = 'ImGui::InputFloat(\"{name}\", &_{name});'.format(name = outProp['name'])
+            imGuiStr = 'ImGui::InputFloat(\"{name}\", &_{name});'.format(name = outProp['name'])
         elif propType == 'double':
             outProp['type'] = 'double'
             outProp['load'] = 'pt.TryGetDouble(\"{name}\", &_{name});'.format(name = outProp['name'])
             outProp['save'] = 'pt.PutDouble(\"{name}\", _{name});'.format(name = outProp['name'])
-            outProp['imgui'] = 'ImGui::InputDouble(\"{name}\", &_{name});'.format(name = outProp['name'])
+            imGuiStr = 'ImGui::InputDouble(\"{name}\", &_{name});'.format(name = outProp['name'])
         elif propType == 'bool':
             outProp['type'] = 'bool'
             outProp['load'] = 'pt.TryGetBool(\"{name}\", &_{name});'.format(name = outProp['name'])
             outProp['save'] = 'pt.PutBool(\"{name}\", _{name});'.format(name = outProp['name'])
-            outProp['imgui'] = 'ImGui::Checkbox(\"{name}\", &_{name});'.format(name = outProp['name'])
+            imGuiStr = 'ImGui::Checkbox(\"{name}\", &_{name});'.format(name = outProp['name'])
         elif propType == 'vec3':
             outProp['type'] = 'Vec3'
             outProp['load'] = 'serial::LoadFromChildOf(pt, \"{name}\", _{name});'.format(name = outProp['name'])
             outProp['save'] = 'serial::SaveInNewChildOf(pt, \"{name}\", _{name});'.format(name = outProp['name'])
-            outProp['imgui'] = 'imgui_util::InputVec3(\"{name}\", &_{name});'.format(name = outProp['name'])
+            imGuiStr = 'imgui_util::InputVec3(\"{name}\", &_{name});'.format(name = outProp['name'])
             outProp['header_includes'].append('\"matrix.h\"')
         elif propType == 'string':
             outProp['type'] = 'std::string'
             outProp['load'] = 'pt.TryGetString(\"{name}\", &_{name});'.format(name = outProp['name'])
             outProp['save'] = 'pt.PutString(\"{name}\", _{name}.c_str());'.format(name = outProp['name'])
-            outProp['imgui'] = 'imgui_util::InputText<128>(\"{name}\", &_{name});'.format(name = outProp['name'])
+            imGuiStr = 'imgui_util::InputText<128>(\"{name}\", &_{name});'.format(name = outProp['name'])
         elif propType == 'editor_id':
             outProp['type'] = 'EditorId'
             outProp['load'] = 'serial::LoadFromChildOf(pt, \"{name}\", _{name});'.format(name = outProp['name'])
             outProp['save'] = 'serial::SaveInNewChildOf(pt, \"{name}\", _{name});'.format(name = outProp['name'])
-            outProp['imgui'] = 'imgui_util::InputEditorId(\"{name}\", &_{name});'.format(name = outProp['name'])
+            imGuiStr = 'imgui_util::InputEditorId(\"{name}\", &_{name});'.format(name = outProp['name'])
             outProp['header_includes'].append('\"editor_id.h\"')
+        elif propType == 'MidiNoteAndName':
+            outProp['type'] = 'MidiNoteAndName'
+            outProp['load'] = 'serial::LoadFromChildOf(pt, \"{name}\", _{name});'.format(name = outProp['name'])
+            outProp['save'] = 'serial::SaveInNewChildOf(pt, \"{name}\", _{name});'.format(name = outProp['name'])
+            imGuiStr = '_{name}.ImGui()'.format(name = outProp['name'])
+            outProp['header_includes'].append('\"midi_note_and_name.h\"')
         elif propType == 'enum':
             if maybeNamespace is None:
                 outProp['type'] = enumType
@@ -91,7 +99,7 @@ def getProp(propName, propType, isArray, enumType, maybeNamespace, maybeDefault)
                 outProp['type'] = f'{maybeNamespace}::{enumType}'
             outProp['load'] = 'serial::TryGetEnum(pt, \"{name}\", _{name});'.format(name = outProp['name'])
             outProp['save'] = 'serial::PutEnum(pt, \"{name}\", _{name});'.format(name = outProp['name'])
-            outProp['imgui'] = '{enumType}ImGui(\"{labelName}\", &_{name});'.format(enumType = outProp['type'], labelName = enumType, name = outProp['name'])
+            imGuiStr = '{enumType}ImGui(\"{labelName}\", &_{name});'.format(enumType = outProp['type'], labelName = enumType, name = outProp['name'])
             if maybeNamespace is None:
                 outProp['header_includes'].append('\"enums/{enumType}.h\"'.format(enumType = enumType))
             else:
@@ -100,9 +108,11 @@ def getProp(propName, propType, isArray, enumType, maybeNamespace, maybeDefault)
             outProp['type'] = propType
             outProp['load'] = 'serial::LoadFromChildOf(pt, \"{name}\", _{name});'.format(name = outProp['name'])
             outProp['save'] = 'serial::SaveInNewChildOf(pt, \"{name}\", _{name});'.format(name = outProp['name'])
-            outProp['imgui'] = '// TODO for user-types'
+            imGuiStr = '// TODO for user-types'
             outProp['header_includes'].append('\"properties/{name}.h\"'.format(name = propType))
-            
+    
+    if genImGui:
+        outProp['imgui'] = imGuiStr
     return outProp
 
 def generatePropsFromJson(dataFilename):
@@ -115,7 +125,7 @@ def generatePropsFromJson(dataFilename):
     # those are user properties to be included.
     # userProps = [prop['type'] for prop in dataDict['props'] if isUserPropType(prop['type'])]
     # print(userProps)
-    props = [getProp(rawProp['name'], rawProp['type'], rawProp.get('isArray', False), rawProp.get('enumType', ''), rawProp.get('namespace', None), rawProp.get('default', None)) for rawProp in dataDict['props']]
+    props = [getProp(rawProp['name'], rawProp['type'], rawProp.get('isArray', False), rawProp.get('enumType', ''), rawProp.get('namespace', None), rawProp.get('default', None), rawProp) for rawProp in dataDict['props']]
     # print(props)
     dataDict['props'] = props;
 

@@ -127,7 +127,7 @@ struct NoteOnOffSeqAction : public SeqAction {
     virtual void ExecuteDerived(GameManager& g) override;
     /*virtual void LoadDerived(
         LoadInputs const& loadInputs, std::istream& input) override;*/
-    virtual void LoadDerived(serial::Ptree pt) override; // { _props.Load(pt); }
+    virtual void LoadDerived(serial::Ptree pt) override;
     virtual void SaveDerived(serial::Ptree pt) const override { _props.Save(pt); }
     virtual bool ImGui() override { return _props.ImGui(); }
 };

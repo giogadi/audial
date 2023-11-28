@@ -22,7 +22,7 @@ void {{propertiesName}}Props::Save(serial::Ptree pt) const {
 
 bool {{propertiesName}}Props::ImGui() {
     bool changed = false;
-    {% for prop in props %}
+    {% for prop in props if prop.imgui%}
     {
         bool thisChanged = {{prop.imgui}}
         changed = changed || thisChanged;
