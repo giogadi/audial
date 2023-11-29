@@ -86,6 +86,7 @@ add_executable(game
     src/properties/ChangeStepSeqMaxVoices.cpp src/properties/ChangeStepSeqMaxVoices.h
     src/properties/VfxEntity.cpp src/properties/VfxEntity.h
     src/properties/VfxPulseSeqAction.cpp src/properties/VfxPulseSeqAction.h
+    src/properties/SetAllStepsSeqAction.cpp src/properties/SetAllStepsSeqAction.h
 
     src/seq_action.cpp src/seq_action.h
     src/actions.cpp src/actions.h

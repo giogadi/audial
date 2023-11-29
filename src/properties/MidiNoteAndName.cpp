@@ -14,7 +14,11 @@ void MidiNoteAndName::Load(serial::Ptree pt) {
 }
 
 bool MidiNoteAndName::ImGui() {
+    float const fontSize = ImGui::GetFontSize();
+    ImGui::PushItemWidth(fontSize * 8);
     bool entered = ImGui::InputInt("MIDI", &_note, 1, 100, ImGuiInputTextFlags_EnterReturnsTrue);
+    ImGui::PopItemWidth();
+    ImGui::PushItemWidth(fontSize * 4);
     ImGui::SameLine();
     if (entered) {
         GetNoteName(_note, _name);
@@ -24,6 +28,7 @@ bool MidiNoteAndName::ImGui() {
         _note = GetMidiNote(_name);
     }
 
+    ImGui::PopItemWidth();
     return entered;
 }
 

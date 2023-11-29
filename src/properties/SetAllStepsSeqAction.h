@@ -10,13 +10,11 @@
 
 #include "serial.h"
 
-struct ChangeStepSequencerSeqActionProps {
+struct SetAllStepsSeqActionProps {
     
     EditorId _seqEntityEditorId;
     
     bool _velOnly;
-    
-    bool _temporary;
     
     std::vector<MidiNoteAndName> _midiNotes;
     

@@ -12,6 +12,7 @@
 #include "properties/ChangeStepSequencerSeqAction.h"
 #include "properties/NoteOnOffSeqAction.h"
 #include "properties/ChangeStepSeqMaxVoices.h"
+#include "properties/SetAllStepsSeqAction.h"
 
 struct SpawnAutomatorSeqAction : public SeqAction {
     virtual SeqActionType Type() const override { return SeqActionType::SpawnAutomator; }
@@ -49,8 +50,6 @@ struct ChangeStepSequencerSeqAction : public SeqAction {
     ChangeStepSequencerSeqActionProps _props;
 
     ne::EntityId _seqId;
-    std::array<int, 4> _midiNotes = { -1, -1, -1, -1 };
-    float _velocity = 0.f;
 
     virtual void ExecuteDerived(GameManager& g) override;
     virtual void LoadDerived(
@@ -64,14 +63,9 @@ struct ChangeStepSequencerSeqAction : public SeqAction {
 // Assumed to be permanent
 struct SetAllStepsSeqAction : public SeqAction {
     virtual SeqActionType Type() const override { return SeqActionType::SetAllSteps; }
-    // serialized
-    EditorId _seqEditorId;
-    std::string _stepStr;
-    bool _velOnly = false;
+    SetAllStepsSeqActionProps _props;
 
     ne::EntityId _seqId;
-    float _velocity = 0.f;
-    std::array<int, 4> _midiNotes = { -1, -1, -1, -1 };
 
     virtual void ExecuteDerived(GameManager& g) override;
     virtual void LoadDerived(

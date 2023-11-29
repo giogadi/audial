@@ -1,5 +1,5 @@
 {
-    "propertiesName": "ChangeStepSequencerSeqAction",
+    "propertiesName": "SetAllStepsSeqAction",
     "props": [
         {
             "name": "seqEntityEditorId",
@@ -7,10 +7,6 @@
         },
         {
             "name": "velOnly",
-            "type": "bool"
-        },
-        {
-            "name": "temporary",
             "type": "bool"
         },
         {

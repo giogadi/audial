@@ -48,7 +48,7 @@ inline bool ImGuiElement<EditorId>(EditorId& v) {
 }
 
 template <typename T>
-inline bool InputVector(std::vector<T>& v) {
+inline bool InputVector(std::vector<T>& v, bool removeOnSameLine = false) {
     bool changed = false;
     if (ImGui::Button("Add")) {
         v.emplace_back();
@@ -59,6 +59,9 @@ inline bool InputVector(std::vector<T>& v) {
         ImGui::PushID(i);
         bool thisChanged = ImGuiElement(v[i]);
         changed = changed || thisChanged;
+        if (removeOnSameLine) {
+            ImGui::SameLine();
+        }
         if (ImGui::Button("Remove")) {
             deleteIx = i;
             changed = true;

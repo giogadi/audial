@@ -14,7 +14,7 @@ namespace {
         return (ptree*)p;
     }
 
-    int const kBinaryVersion = 3;
+    int const kBinaryVersion = 4;
 }
 
 Ptree Ptree::AddChild(char const* name) {

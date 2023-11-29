@@ -1,22 +1,20 @@
-#include "src/properties/ChangeStepSequencerSeqAction.h"
+#include "src/properties/SetAllStepsSeqAction.h"
 
 #include "imgui/imgui.h"
 
 #include "imgui_util.h"
 
 
-#include "imgui_vector_util.h"
-
 #include "serial_vector_util.h"
 
+#include "imgui_vector_util.h"
 
-void ChangeStepSequencerSeqActionProps::Load(serial::Ptree pt) {
+
+void SetAllStepsSeqActionProps::Load(serial::Ptree pt) {
    
    serial::LoadFromChildOf(pt, "seqEntityEditorId", _seqEntityEditorId);
    
    pt.TryGetBool("velOnly", &_velOnly);
-   
-   pt.TryGetBool("temporary", &_temporary);
    
    serial::LoadVectorFromChildNode<MidiNoteAndName>(pt, "midiNotes", _midiNotes);
    
@@ -24,13 +22,11 @@ void ChangeStepSequencerSeqActionProps::Load(serial::Ptree pt) {
    
 }
 
-void ChangeStepSequencerSeqActionProps::Save(serial::Ptree pt) const {
+void SetAllStepsSeqActionProps::Save(serial::Ptree pt) const {
     
     serial::SaveInNewChildOf(pt, "seqEntityEditorId", _seqEntityEditorId);
     
     pt.PutBool("velOnly", _velOnly);
-    
-    pt.PutBool("temporary", _temporary);
     
     serial::SaveVectorInChildNode<MidiNoteAndName>(pt, "midiNotes", "array_item", _midiNotes);
     
@@ -38,7 +34,7 @@ void ChangeStepSequencerSeqActionProps::Save(serial::Ptree pt) const {
     
 }
 
-bool ChangeStepSequencerSeqActionProps::ImGui() {
+bool SetAllStepsSeqActionProps::ImGui() {
     bool changed = false;
     
     {
@@ -48,11 +44,6 @@ bool ChangeStepSequencerSeqActionProps::ImGui() {
     
     {
         bool thisChanged = ImGui::Checkbox("velOnly", &_velOnly);
-        changed = changed || thisChanged;
-    }
-    
-    {
-        bool thisChanged = ImGui::Checkbox("temporary", &_temporary);
         changed = changed || thisChanged;
     }
     
