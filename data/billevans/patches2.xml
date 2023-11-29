@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <root>
-    <version>2</version>
+    <version>4</version>
     <patches>
         <patch>
             <name>bass</name>
@@ -39,13 +39,13 @@
         <patch>
             <name>lead</name>
             <patch>
-                <Gain>0.666999996</Gain>
+                <Gain>0.68900001</Gain>
                 <Mono>0</Mono>
                 <Osc1Waveform>Square</Osc1Waveform>
-                <Osc2Waveform>Saw</Osc2Waveform>
+                <Osc2Waveform>Square</Osc2Waveform>
                 <Detune>0</Detune>
-                <OscFader>0.508000016</OscFader>
-                <Cutoff>1181.81799</Cutoff>
+                <OscFader>0</OscFader>
+                <Cutoff>3272.72705</Cutoff>
                 <Peak>0</Peak>
                 <HpfCutoff>0</HpfCutoff>
                 <HpfPeak>0</HpfPeak>
@@ -56,9 +56,9 @@
                 <CutoffLFOFreq>3.3900001</CutoffLFOFreq>
                 <AmpEnvAttack>0.00499999989</AmpEnvAttack>
                 <AmpEnvDecay>0.720000029</AmpEnvDecay>
-                <AmpEnvSustain>0.208000004</AmpEnvSustain>
+                <AmpEnvSustain>0.0979999974</AmpEnvSustain>
                 <AmpEnvRelease>0.340999991</AmpEnvRelease>
-                <CutoffEnvGain>6180.68213</CutoffEnvGain>
+                <CutoffEnvGain>0</CutoffEnvGain>
                 <CutoffEnvAttack>0.00499999989</CutoffEnvAttack>
                 <CutoffEnvDecay>1.17400002</CutoffEnvDecay>
                 <CutoffEnvSustain>0.0109999999</CutoffEnvSustain>
