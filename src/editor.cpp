@@ -167,9 +167,9 @@ void Editor::HandleEntitySelectAndMove(float deltaTime) {
             }
         }
 
-        if (inputManager.IsKeyPressedThisFrame(InputManager::Key::Enter) ||
-            inputManager.IsKeyPressedThisFrame(InputManager::Key::G) ||
-            inputManager.IsKeyPressedThisFrame(InputManager::MouseButton::Left)) {
+        if (inputManager.IsKeyReleasedThisFrame(InputManager::Key::Enter) ||
+            inputManager.IsKeyReleasedThisFrame(InputManager::Key::G) ||
+            inputManager.IsKeyReleasedThisFrame(InputManager::MouseButton::Left)) {
             // commit transforms
             for (ne::EntityId selectedId : _selectedEntityIds) {
                 if (ne::Entity* selectedEntity = _g->_neEntityManager->GetActiveOrInactiveEntity(selectedId)) {
@@ -179,7 +179,7 @@ void Editor::HandleEntitySelectAndMove(float deltaTime) {
             sGrabMode = false;
         }
 
-        if (inputManager.IsKeyPressedThisFrame(InputManager::Key::Escape)) {
+        if (inputManager.IsKeyReleasedThisFrame(InputManager::Key::Escape)) {
             // revert transforms
             for (ne::EntityId selectedId : _selectedEntityIds) {
                 if (ne::Entity* selectedEntity = _g->_neEntityManager->GetActiveOrInactiveEntity(selectedId)) {
@@ -328,7 +328,7 @@ void Editor::HandleEntitySelectAndMove(float deltaTime) {
             }
         }
 
-        if (sInputMode == InputMode::Default && inputManager.IsKeyPressedThisFrame(InputManager::Key::G) && !_selectedEntityIds.empty()) {
+        if (sInputMode == InputMode::Default && inputManager.IsKeyReleasedThisFrame(InputManager::Key::G) && !_selectedEntityIds.empty()) {
             sGrabMode = true;
             double mouseX, mouseY;
             inputManager.GetMousePos(mouseX, mouseY);
