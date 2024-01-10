@@ -5,6 +5,9 @@ project(Audial)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
+set(CMAKE_C_STANDARD 11)
+set(CMAKE_C_STANDARD_REQUIRED True)
+
 if(MSVC)
   add_compile_options(/W2)
   add_definitions(-D_CRT_SECURE_NO_WARNINGS)
@@ -216,3 +219,7 @@ add_executable(synth_render EXCLUDE_FROM_ALL
     src/enums/audio_SynthParamType.cpp
     src/enums/synth_Waveform.cpp)
 target_include_directories(synth_render PUBLIC src/ ./)
+
+add_executable(synth_simd_test EXCLUDE_FROM_ALL
+    src/synth_simd_test.c)
+target_include_directories(synth_simd_test PUBLIC src/ ./)
