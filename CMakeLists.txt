@@ -223,3 +223,4 @@ target_include_directories(synth_render PUBLIC src/ ./)
 add_executable(synth_simd_test EXCLUDE_FROM_ALL
     src/synth_simd_test.c)
 target_include_directories(synth_simd_test PUBLIC src/ ./)
+target_compile_options(synth_simd_test PRIVATE "-mavx")

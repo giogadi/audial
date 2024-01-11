@@ -299,6 +299,59 @@ void FillWithSquareSimd(int numBuffers, float* outputBuffer) {
     }
 }
 
+void FillWithSquareSimd8(int numBuffers, float* outputBuffer) {
+    alignas(32) float phase[2*NUM_VOICES];
+    alignas(32) float phaseChange[2*NUM_VOICES];
+    alignas(32) float freq[2*NUM_VOICES];
+    alignas(32) float gain[2*NUM_VOICES];
+    alignas(32) float voiceOutput[2*NUM_VOICES];
+    for (int i = 0; i < 2*NUM_VOICES; ++i) {
+        phase[i] = 0.f;
+        gain[i] = 0.1f;
+    }
+    freq[0] = MidiToFreq(60);
+    freq[1] = MidiToFreq(63);
+    freq[2] = MidiToFreq(67);
+    freq[3] = MidiToFreq(70);
+    freq[4] = MidiToFreq(72);
+    freq[5] = MidiToFreq(75);
+    freq[6] = MidiToFreq(79);
+    freq[7] = MidiToFreq(82);
+    for (int i = 0; i < 2*NUM_VOICES; ++i) {
+        phaseChange[i] = 2 * PI * freq[i] / SAMPLE_RATE;
+    }
+
+    __m256 phaseV = _mm256_load_ps(phase);
+    __m256 gainV = _mm256_load_ps(gain);
+    __m256 phaseChangeV = _mm256_load_ps(phaseChange);
+    __m256 doubleV = _mm256_set1_ps(2.f);
+    __m256 piV = _mm256_set1_ps(PI);
+    __m256 minus1V = _mm256_set1_ps(-1.f);
+    __m256 twoPiV = _mm256_set1_ps(2.f * PI);
+
+    float* pOutput = outputBuffer;
+    for (int bufferIx = 0; bufferIx < numBuffers; ++bufferIx) {
+        for (int i = 0; i < SAMPLES_PER_BUFFER; ++i) {
+            __m256 oscV = _mm256_cmp_ps(phaseV, piV, _CMP_LT_OS);
+            oscV = _mm256_and_ps(oscV, doubleV);
+            oscV = _mm256_add_ps(oscV, minus1V);
+            oscV = _mm256_mul_ps(oscV, gainV);
+            _mm256_store_ps(voiceOutput, oscV);
+            phaseV = _mm256_add_ps(phaseV, phaseChangeV);
+            _mm256_store_ps(phase, phaseV);
+            // abusing oscV register here to wrap the phase
+            oscV = _mm256_cmp_ps(phaseV, twoPiV, _CMP_GT_OS);
+            oscV = _mm256_and_ps(oscV, twoPiV);
+            phaseV = _mm256_sub_ps(phaseV, oscV);
+
+            for (int v = 0; v < 2*NUM_VOICES; ++v) {
+                *pOutput += voiceOutput[v];
+            }
+            ++pOutput;
+        }
+    }
+}
+
 void FillWithVA1SquareSimd(int numBuffers, float* outputBuffer) {
     alignas(16) float phase[NUM_VOICES];
     alignas(16) float phaseChange[NUM_VOICES];
@@ -522,6 +575,158 @@ void FillWithMoogSquareSimd(int numBuffers, float* outputBuffer) {
     }
 }
 
+void FillWithMoogSquareSimd2(int numBuffers, float* outputBuffer) {
+    alignas(16) float phase[NUM_VOICES];
+    alignas(16) float phaseChange[NUM_VOICES];
+    alignas(16) float freq[NUM_VOICES];
+    alignas(16) float gain[NUM_VOICES];
+
+    alignas(16) float fltFc[NUM_VOICES];
+    alignas(16) float fltK[NUM_VOICES];
+    alignas(16) float fltAlpha[NUM_VOICES];
+    alignas(16) float fltAlpha0[NUM_VOICES];
+    alignas(16) float fltBassComp[NUM_VOICES];
+    
+    alignas(16) float flt0Sn[NUM_VOICES];
+    alignas(16) float flt1Sn[NUM_VOICES];
+    alignas(16) float flt2Sn[NUM_VOICES];
+    alignas(16) float flt3Sn[NUM_VOICES];
+
+    alignas(16) float flt0Beta[NUM_VOICES];
+    alignas(16) float flt1Beta[NUM_VOICES];
+    alignas(16) float flt2Beta[NUM_VOICES];
+    alignas(16) float flt3Beta[NUM_VOICES];    
+
+    alignas(16) float voiceOutput[NUM_VOICES * SAMPLES_PER_BUFFER];
+    
+    freq[0] = MidiToFreq(60);
+    freq[1] = MidiToFreq(63);
+    freq[2] = MidiToFreq(67);
+    freq[3] = MidiToFreq(70);
+    float const halfSamplePeriod = 1.f / (2.f * SAMPLE_RATE);
+    for (int i = 0; i < NUM_VOICES; ++i) {
+        phase[i] = 0.f;
+        gain[i] = 0.1f;
+        phaseChange[i] = 2 * PI * freq[i] / SAMPLE_RATE;
+
+        fltFc[i] = 1000.f;
+        fltK[i] = 0.8f * 4.f;
+        float g = tanf(PI2 * fltFc[i] * halfSamplePeriod);
+        float kernel = 1.f / (1.f + g);
+        fltAlpha[i] = g * kernel;
+        fltAlpha0[i] = 1.f / (1.f + fltK[i] * fltAlpha[i] * fltAlpha[i] * fltAlpha[i] * fltAlpha[i]);
+        fltBassComp[i] = 1.f;
+        
+        flt0Sn[i] = 0.f;
+        flt1Sn[i] = 0.f;
+        flt2Sn[i] = 0.f;
+        flt3Sn[i] = 0.f;
+
+        // TODO: this is multiplying a^4, which we can reuse for alpha0 above
+        flt3Beta[i] = kernel;
+        flt2Beta[i] = fltAlpha[i] * flt3Beta[i];
+        flt1Beta[i] = fltAlpha[i] * flt2Beta[i];
+        flt0Beta[i] = fltAlpha[i] * flt1Beta[i];
+    }
+
+    __m128 gainV = _mm_load_ps(gain);
+    __m128 phaseChangeV = _mm_load_ps(phaseChange);
+    __m128 doubleV = _mm_set1_ps(2.f);
+    __m128 piV = _mm_set1_ps(PI);
+    __m128 plus1V = _mm_set1_ps(1.f);
+    __m128 twoPiV = _mm_set1_ps(2.f * PI);
+
+    __m128 fltKV = _mm_load_ps(fltK);
+    __m128 fltAlphaV = _mm_load_ps(fltAlpha);
+    __m128 fltAlpha0V = _mm_load_ps(fltAlpha0);
+    __m128 fltBassCompV = _mm_load_ps(fltBassComp);
+    
+    __m128 flt0SnV = _mm_load_ps(flt0Sn);
+    __m128 flt1SnV = _mm_load_ps(flt1Sn);
+    __m128 flt2SnV = _mm_load_ps(flt2Sn);
+    __m128 flt3SnV = _mm_load_ps(flt3Sn);
+    
+    __m128 flt0BetaV = _mm_load_ps(flt0Beta);
+    __m128 flt1BetaV = _mm_load_ps(flt1Beta);
+    __m128 flt2BetaV = _mm_load_ps(flt2Beta);
+    __m128 flt3BetaV = _mm_load_ps(flt3Beta);
+
+    float* pOutput = outputBuffer;
+    for (int bufferIx = 0; bufferIx < numBuffers; ++bufferIx) {
+        __m128 phaseV = _mm_load_ps(phase);
+        for (int i = 0; i < SAMPLES_PER_BUFFER; ++i) {
+            // square wave
+            __m128 oscV = _mm_cmplt_ps(phaseV, piV);
+            oscV = _mm_and_ps(oscV, doubleV);
+            oscV = _mm_sub_ps(oscV, plus1V);
+
+            oscV = _mm_mul_ps(oscV, gainV);
+            
+            _mm_store_ps(&voiceOutput[NUM_VOICES*i], oscV);
+            phaseV = _mm_add_ps(phaseV, phaseChangeV);
+
+            // abusing oscV register here to wrap the phase
+            oscV = _mm_cmpgt_ps(phaseV, twoPiV);
+            oscV = _mm_and_ps(oscV, twoPiV);
+            phaseV = _mm_sub_ps(phaseV, oscV);
+        }
+        _mm_store_ps(phase, phaseV);
+
+        for (int i = 0; i < SAMPLES_PER_BUFFER; ++i) {
+            __m128 oscV = _mm_load_ps(&voiceOutput[NUM_VOICES*i]);
+
+            __m128 sigma = _mm_set1_ps(0.f);
+            __m128 vnV = _mm_mul_ps(flt0BetaV, flt0SnV);
+            sigma = _mm_add_ps(sigma, vnV);
+            vnV = _mm_mul_ps(flt1BetaV, flt1SnV);
+            sigma = _mm_add_ps(sigma, vnV);
+            vnV = _mm_mul_ps(flt2BetaV, flt2SnV);
+            sigma = _mm_add_ps(sigma, vnV);
+            vnV = _mm_mul_ps(flt3BetaV, flt3SnV);
+            sigma = _mm_add_ps(sigma, vnV);
+
+            // prepare filter input
+            vnV = _mm_mul_ps(fltBassCompV, fltKV);
+            vnV = _mm_add_ps(vnV, plus1V);
+            oscV = _mm_mul_ps(oscV, vnV);
+            vnV = _mm_mul_ps(fltKV, sigma);
+            oscV = _mm_sub_ps(oscV, vnV);
+            oscV = _mm_mul_ps(oscV, fltAlpha0V);
+
+            // Filter0
+            vnV = _mm_sub_ps(oscV, flt0SnV);
+            vnV = _mm_mul_ps(vnV, fltAlphaV);
+            oscV = _mm_add_ps(vnV, flt0SnV);
+            flt0SnV = _mm_add_ps(vnV, oscV);
+
+            // Filter1
+            vnV = _mm_sub_ps(oscV, flt1SnV);
+            vnV = _mm_mul_ps(vnV, fltAlphaV);
+            oscV = _mm_add_ps(vnV, flt1SnV);
+            flt1SnV = _mm_add_ps(vnV, oscV);
+
+            // Filter2
+            vnV = _mm_sub_ps(oscV, flt2SnV);
+            vnV = _mm_mul_ps(vnV, fltAlphaV);
+            oscV = _mm_add_ps(vnV, flt2SnV);
+            flt2SnV = _mm_add_ps(vnV, oscV);
+
+            // Filter3
+            vnV = _mm_sub_ps(oscV, flt3SnV);
+            vnV = _mm_mul_ps(vnV, fltAlphaV);
+            oscV = _mm_add_ps(vnV, flt3SnV);
+            flt3SnV = _mm_add_ps(vnV, oscV);
+            
+            _mm_store_ps(&voiceOutput[NUM_VOICES*i], oscV);
+
+            for (int v = 0; v < NUM_VOICES; ++v) {
+                *pOutput += voiceOutput[NUM_VOICES*i + v];
+            }
+            ++pOutput;
+        }
+    }
+}
+
 int main() {
 
     float const totalTimeSecs = 5.f;
@@ -533,13 +738,15 @@ int main() {
     
     // FillWithSineSimple(numBuffers, outputBuffer);
     // FillWithSquareSimple(numBuffers, outputBuffer);
-    // FillWithSquareSimd(numBuffers, outputBuffer);
+    FillWithSquareSimd(numBuffers, outputBuffer);
+    // FillWithSquareSimd8(numBuffers, outputBuffer);
 
     // FillWithVA1SquareSimple(numBuffers, outputBuffer);
     // FillWithVA1SquareSimd(numBuffers, outputBuffer);
 
     // FillWithMoogSquareSimple(numBuffers, outputBuffer);
-    FillWithMoogSquareSimd(numBuffers, outputBuffer);
+    // FillWithMoogSquareSimd(numBuffers, outputBuffer);
+    // FillWithMoogSquareSimd2(numBuffers, outputBuffer);
 
     clock_t t1 = clock();
 
