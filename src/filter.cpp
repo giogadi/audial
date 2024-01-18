@@ -62,7 +62,7 @@ FilterOutput* VA1Filter::process(double xn)
     double vn = (xn - sn)*coeffs.alpha;
 
     // --- form LP output
-    output.filter[LPF1] = ((xn - sn)*coeffs.alpha) + sn;
+    output.filter[LPF1] = vn + sn;
 
     // --- form the HPF = INPUT = LPF
     // output.filter[HPF1] = xn - output.filter[LPF1];
@@ -88,7 +88,7 @@ bool VAMoogFilter::reset(double _sampleRate)
     for (uint32_t i = 0; i < MOOG_SUBFILTERS; i++)
 		{
 			subFilter[i].reset(_sampleRate);
-			subFilterFGN[i].reset(_sampleRate);
+			// subFilterFGN[i].reset(_sampleRate);
 		}
 
     output.clearData();
@@ -128,11 +128,11 @@ bool VAMoogFilter::update()
 		{
 			// --- set alpha - no calculation required
 			subFilter[i].setAlpha(coeffs.alpha);
-			subFilterFGN[i].setAlpha(coeffs.alpha);
+			// subFilterFGN[i].setAlpha(coeffs.alpha);
 
 			// --- set beta - no calculation required
 			subFilter[i].setBeta(coeffs.subFilterBeta[i]);
-			subFilterFGN[i].setBeta(coeffs.subFilterBeta[i]);
+			// subFilterFGN[i].setBeta(coeffs.subFilterBeta[i]);
 		}
 
     return true;

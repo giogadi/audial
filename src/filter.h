@@ -9,8 +9,7 @@ namespace filter {
 
 enum { FLT1, FLT2, FLT3, FLT4 };
 
-enum { LPF1, LPF2, LPF3, LPF4, HPF1, HPF2, HPF3, HPF4, BPF2, BPF4, BSF2, BSF4, 
-		APF1, APF2, ANM_LPF1, ANM_LPF2, ANM_LPF3, ANM_LPF4, NUM_FILTER_OUTPUTS };
+enum { LPF1, LPF4, NUM_FILTER_OUTPUTS };
 
 struct FilterOutput
 {
@@ -98,11 +97,11 @@ public:
 			{
 				// --- set alpha directly
 				subFilter[i].setAlpha(coeffs.alpha);
-				subFilterFGN[i].setAlpha(coeffs.alpha);
+				// subFilterFGN[i].setAlpha(coeffs.alpha);
 
 				// --- set beta directly
 				subFilter[i].setBeta(coeffs.subFilterBeta[i]);
-				subFilterFGN[i].setBeta(coeffs.subFilterBeta[i]);
+				// subFilterFGN[i].setBeta(coeffs.subFilterBeta[i]);
 			}
     }
 
@@ -113,7 +112,7 @@ public:
 protected:
     FilterOutput output;
     VA1Filter subFilter[MOOG_SUBFILTERS];
-    VA1Filter subFilterFGN[MOOG_SUBFILTERS];
+    // VA1Filter subFilterFGN[MOOG_SUBFILTERS];
     double sampleRate = 44100.0;				///< current sample rate
     double halfSamplePeriod = 1.0;
     double fc = 0.0;
