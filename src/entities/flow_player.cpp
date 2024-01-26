@@ -465,7 +465,7 @@ void FlowPlayerEntity::UpdateDerived(GameManager& g, float dt) {
 
         case MoveState::Push: {
             bool finishedPushing = false;
-            if (_s._heldKey != InputManager::Key::NumKeys && g._inputManager->IsKeyReleasedThisFrame(_s._heldKey)) {
+            if (_p._pullManualHold && _s._heldKey != InputManager::Key::NumKeys && g._inputManager->IsKeyReleasedThisFrame(_s._heldKey)) {
                 finishedPushing = true;
                 _s._heldKey = InputManager::Key::NumKeys;
             } else if (_s._stopAfterTimer && _s._dashTimer >= _p._dashTime) {

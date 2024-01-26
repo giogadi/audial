@@ -140,6 +140,7 @@ void TypingEnemyEntity::LoadDerived(serial::Ptree pt) {
     pt.TryGetFloat("cooldown_quantize_denom", &_p._cooldownQuantizeDenom);
     pt.TryGetBool("reset_cooldown_on_any_hit", &_p._resetCooldownOnAnyHit);
     pt.TryGetBool("init_hittable", &_p._initHittable);
+    pt.TryGetDouble("timed_hittable_time", &_p._timedHittableTime);
     serial::LoadFromChildOf(pt, "active_region_editor_id", _p._activeRegionEditorId);
 
     SeqAction::LoadActionsFromChildNode(pt, "hit_actions", _p._hitActions);
@@ -179,6 +180,7 @@ void TypingEnemyEntity::SaveDerived(serial::Ptree pt) const {
     pt.PutFloat("cooldown_quantize_denom", _p._cooldownQuantizeDenom);
     pt.PutBool("reset_cooldown_on_any_hit", _p._resetCooldownOnAnyHit);
     pt.PutBool("init_hittable", _p._initHittable);
+    pt.PutDouble("timed_hittable_time", _p._timedHittableTime);
     
     serial::SaveInNewChildOf(pt, "active_region_editor_id", _p._activeRegionEditorId);
     SeqAction::SaveActionsInChildNode(pt, "hit_actions", _p._hitActions);
@@ -217,6 +219,7 @@ ne::BaseEntity::ImGuiResult TypingEnemyEntity::ImGuiDerived(GameManager& g) {
     ImGui::Checkbox("Show beats left", &_p._showBeatsLeft);
     ImGui::Checkbox("Reset cooldown on any hit", &_p._resetCooldownOnAnyHit);
     ImGui::Checkbox("Init hittable", &_p._initHittable);
+    ImGui::InputDouble("Timed hittable (beat)", &_p._timedHittableTime);
     imgui_util::InputEditorId("Active Region", &_p._activeRegionEditorId);
     if (ImGui::Button("Set Region color")) {
         if (ne::Entity* e = g._neEntityManager->FindEntityByEditorIdAndType(_p._activeRegionEditorId, ne::EntityType::FlowTrigger)) {
@@ -439,6 +442,13 @@ void TypingEnemyEntity::UpdateDerived(GameManager& g, float dt) {
 
     double const beatTime = g._beatClock->GetBeatTimeFromEpoch();
 
+    if (_p._timedHittableTime > 0.0) {
+        double beatTime = g._beatClock->GetBeatTimeFromEpoch();
+        double beatMod = std::fmod(beatTime, _p._timedHittableTime);
+        bool hittable = beatMod < 0.25 || (beatMod > _p._timedHittableTime - 0.5);
+        _s._hittable = hittable;
+    }
+
     if (_s._flowCooldownStartBeatTime > 0.f) {
         double const cooldownFinishBeatTime = _s._flowCooldownStartBeatTime + _p._flowCooldownBeatTime;
         if (beatTime >= cooldownFinishBeatTime) {
@@ -449,7 +459,7 @@ void TypingEnemyEntity::UpdateDerived(GameManager& g, float dt) {
             _s._numHits = 0;
             _s._timeOfLastHit = -1.0;
         }
-    }    
+    }
 }
 
 void TypingEnemyEntity::Draw(GameManager& g, float dt) {
