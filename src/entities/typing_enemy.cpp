@@ -281,6 +281,32 @@ bool PlayerWithinRadius(FlowPlayerEntity const& player, TypingEnemyEntity const&
     return true;
 }
 
+void DrawTicks(int activeCount, int totalCount, float const dt, Transform const& renderTrans, float scale, GameManager& g, TypingEnemyEntity& e) {
+    float constexpr kBeatCellSize = 0.25f;
+    float constexpr kSpacing = 0.1f;
+    float constexpr kRowSpacing = 0.1f;
+    float constexpr kRowLength = 4.f * kBeatCellSize + (3.f) * kSpacing;
+    int const numRows = ((totalCount - 1) / 4) + 1;
+    float const vertSize = numRows * kBeatCellSize + (numRows - 1) * kRowSpacing;
+    float const rowStartXPos = renderTrans.GetPos()._x - 0.5f * kRowLength;
+    float const rowStartZPos = renderTrans.GetPos()._z - 0.5f - vertSize;
+    Vec3 firstBeatPos = renderTrans.GetPos() + Vec3(rowStartXPos, 0.f, rowStartZPos);
+    Mat4 m;
+    m.SetTranslation(firstBeatPos);
+    m.ScaleUniform(kBeatCellSize * scale);
+    Vec4 color(0.f, 1.f, 0.f, 1.f);
+    for (int row = 0, beatIx = 0; row < numRows; ++row) {
+        for (int col = 0; col < 4 && beatIx < totalCount; ++col, ++beatIx) {
+            if (beatIx >= activeCount) {
+                color.Set(0.3f, 0.3f, 0.3f, 1.f);
+            }
+            Vec3 p(rowStartXPos + col * (kSpacing + kBeatCellSize), 0.f, rowStartZPos + row * (kRowSpacing + kBeatCellSize));
+            m.SetTranslation(p);
+            g._scene->DrawCube(m, color);
+        }
+    }
+}
+
 void DrawPullEnemy(float const dt, GameManager& g, TypingEnemyEntity& e, FlowPlayerEntity const* player) {
     double const beatTime = g._beatClock->GetBeatTimeFromEpoch();
     
@@ -389,27 +415,8 @@ void DrawPullEnemy(float const dt, GameManager& g, TypingEnemyEntity& e, FlowPla
         float explodeScale = 1.f + factor * (kExplodeMaxScale - 1.f);
         localToWorld.Scale(explodeScale, 1.f, explodeScale);
         if (e._p._showBeatsLeft) {
-            float constexpr kBeatCellSize = 0.25f;
-            float constexpr kSpacing = 0.1f;
-            float constexpr kRowSpacing = 0.1f;
-            float constexpr kRowLength = 4.f * kBeatCellSize + (3.f) * kSpacing;
-            float const totalBeats = std::ceil(e._p._flowCooldownBeatTime);
-            int const numRows = ((static_cast<int>(totalBeats) - 1) / 4) + 1;
-            float const vertSize = numRows * kBeatCellSize + (numRows - 1) * kRowSpacing;
-            float const rowStartXPos = renderTrans.GetPos()._x - 0.5f * kRowLength;
-            float const rowStartZPos = renderTrans.GetPos()._z - 0.5f - vertSize;
-            Vec3 firstBeatPos = renderTrans.GetPos() + Vec3(rowStartXPos, 0.f, rowStartZPos);
-            Mat4 m;
-            m.SetTranslation(firstBeatPos);
-            m.ScaleUniform(kBeatCellSize);
             int const numLeft = static_cast<int>(std::ceil(e._p._flowCooldownBeatTime - cooldownTimeElapsed));
-            for (int row = 0, beatIx = 0; row < numRows; ++row) {
-                for (int col = 0; col < 4 && beatIx < numLeft; ++col, ++beatIx) {
-                    Vec3 p(rowStartXPos + col * (kSpacing + kBeatCellSize), 0.f, rowStartZPos + row * (kRowSpacing + kBeatCellSize));
-                    m.SetTranslation(p);
-                    g._scene->DrawCube(m, Vec4(0.f, 1.f, 0.f, 1.f));
-                }
-            }
+            DrawTicks(numLeft, (int) std::ceil(e._p._flowCooldownBeatTime), dt, renderTrans, 1.f, g, e);
         }
     }
         
@@ -423,6 +430,21 @@ void DrawPullEnemy(float const dt, GameManager& g, TypingEnemyEntity& e, FlowPla
             localPos._x += xStep;
         }
         localPos._z += zStep;
+    }
+
+    if (e._p._timedHittableTime > 0.0) {
+        double beatTime = g._beatClock->GetBeatTimeFromEpoch();
+        double beatMod = std::fmod(beatTime, e._p._timedHittableTime);
+        int beatProgressCount = (int)std::ceil(beatMod);
+        float scale = 1.f;
+        if (beatMod >= (e._p._timedHittableTime - 1.f)) {
+            // 0 at last beat, 1 at downbeat
+            float beatLeft = beatMod - (e._p._timedHittableTime - 1.f);
+            scale = 1.f - math_util::SmoothStep(beatLeft);
+        }
+        if (scale > 0.1f) {
+            DrawTicks(beatProgressCount, (int)e._p._timedHittableTime, dt, renderTrans, scale, g, e);
+        }
     }
 }
 
@@ -442,6 +464,7 @@ void TypingEnemyEntity::UpdateDerived(GameManager& g, float dt) {
 
     double const beatTime = g._beatClock->GetBeatTimeFromEpoch();
 
+    
     if (_p._timedHittableTime > 0.0) {
         double beatTime = g._beatClock->GetBeatTimeFromEpoch();
         double beatMod = std::fmod(beatTime, _p._timedHittableTime);
