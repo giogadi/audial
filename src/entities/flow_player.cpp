@@ -473,9 +473,8 @@ void FlowPlayerEntity::UpdateDerived(GameManager& g, float dt) {
             }
             if (finishedPushing) {
                 _s._moveState = MoveState::Default;
-                float maxHorizSpeed = std::max(2.f, _p._maxHorizSpeedAfterDash);
                 if (_p._maxHorizSpeedAfterDash >= 0.f) {
-                    _s._vel._x = math_util::ClampAbs(_s._vel._x, maxHorizSpeed);
+                    _s._vel._x = math_util::ClampAbs(_s._vel._x, _p._maxHorizSpeedAfterDash);
                 }
                 if (_p._maxVertSpeedAfterDash >= 0.f) {
                     _s._vel._z = math_util::ClampAbs(_s._vel._z, _p._maxVertSpeedAfterDash);
