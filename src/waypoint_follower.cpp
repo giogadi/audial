@@ -78,10 +78,12 @@ void WaypointFollower::Props::Load(serial::Ptree pt) {
 }
 
 namespace {
-    char const* kModeStrings[] = {
-        "Waypoint",
-        "FollowEntity"
-    };
+char const* kModeStrings[] = {
+    "Waypoint",
+    "FollowEntity"
+};
+
+std::vector<Waypoint> sClipboardWaypoints;
 }
 
 bool WaypointFollower::Props::ImGui() {
@@ -102,6 +104,19 @@ bool WaypointFollower::Props::ImGui() {
             changed = ImGui::InputDouble("Start time", &_initWpStartTime) || changed;
         }
         changed = ImGui::Checkbox("Loop Waypoints", &_loopWaypoints) || changed;
+        if (ImGui::Button("Clear Waypoints")) {
+            _waypoints.clear();
+            changed = true;
+        }
+        ImGui::SameLine();
+        if (ImGui::Button("Copy Waypoints")) {
+            sClipboardWaypoints = _waypoints;
+        }
+        ImGui::SameLine();
+        if (ImGui::Button("Paste Waypoints")) {
+            _waypoints = sClipboardWaypoints;
+            changed = true;
+        }
         changed = imgui_util::InputVector(_waypoints) || changed;
         break;
     }
