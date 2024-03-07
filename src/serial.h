@@ -21,6 +21,7 @@ public:
     Ptree TryGetChild(char const* name);
     
     void PutString(char const* name, char const* v);
+    void PutChar(char const* name, char v);
     void PutInt(char const* name, int v);
     void PutInt64(char const* name, int64_t v);
     void PutBool(char const* name, bool v);
@@ -28,6 +29,7 @@ public:
     void PutDouble(char const* name, double v);
 
     bool TryGetString(char const* name, std::string* v);
+    bool TryGetChar(char const* name, char* v);
     bool TryGetInt(char const* name, int* v);
     bool TryGetInt64(char const* name, int64_t* v);
     bool TryGetBool(char const* name, bool* v);

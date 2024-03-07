@@ -1,6 +1,7 @@
 #include "input_manager.h"
 
 #include <iostream>
+#include <cctype>
 
 #include <GLFW/glfw3.h>
 #include "imgui/backends/imgui_impl_glfw.h"
@@ -14,6 +15,17 @@ void InputManager::ScrollCallback(GLFWwindow* window, double xOffset, double yOf
     _gInputManager->_haveScrollInputThisFrame = true;
     _gInputManager->_mouseScrollX = xOffset;
     _gInputManager->_mouseScrollY = yOffset;
+}
+
+InputManager::Key InputManager::CharToKey(char c) {
+    c = std::tolower(c);
+    int charIx = c - 'a';
+    if (charIx < 0 || charIx > static_cast<int>(InputManager::Key::Z)) {
+        printf("WARNING: char \'%c\' not in InputManager!\n", c);
+        return InputManager::Key::NumKeys;
+    }
+    InputManager::Key key = static_cast<InputManager::Key>(charIx);
+    return key;
 }
 
 InputManager::InputManager(GLFWwindow* window)

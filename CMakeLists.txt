@@ -111,6 +111,8 @@ add_executable(game
     src/entities/flow_trigger.cpp src/entities/flow_trigger.h
     src/entities/int_variable.cpp src/entities/int_variable.h
     src/entities/vfx.cpp src/entities/vfx.h
+    src/entities/mech.cpp src/entities/mech.h
+    src/entities/resource.cpp src/entities/resource.h
     
     src/enums/audio_EventType.cpp src/enums/audio_EventType.h
     src/enums/audio_SynthParamType.cpp src/enums/audio_SynthParamType.h
@@ -123,6 +125,7 @@ add_executable(game
     src/enums/SeqActionType.cpp src/enums/SeqActionType.h
     src/enums/TypingEnemyType.cpp src/enums/TypingEnemyType.h
     src/enums/HitResponseType.cpp src/enums/HitResponseType.h
+    src/enums/MechType.cpp src/enums/MechType.h
 )
 
 ## GLFW ##

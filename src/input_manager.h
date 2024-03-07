@@ -28,6 +28,8 @@ public:
 
     void Update(bool enabled);
 
+    static Key CharToKey(char c);
+
     bool IsKeyPressed(Key k) const {
         return _keyStates[(int)k];
     }

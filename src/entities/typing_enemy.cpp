@@ -592,14 +592,8 @@ InputManager::Key TypingEnemyEntity::GetNextKey() const {
         return InputManager::Key::NumKeys;
     }
     int textIndex = std::min(_s._numHits, (int) _p._keyText.length() - 1);
-    char nextChar = std::tolower(_p._keyText.at(textIndex));
-    int charIx = nextChar - 'a';
-    if (charIx < 0 || charIx > static_cast<int>(InputManager::Key::Z)) {
-        printf("WARNING: char \'%c\' not in InputManager!\n", nextChar);
-        return InputManager::Key::NumKeys;
-    }
-    InputManager::Key nextKey = static_cast<InputManager::Key>(charIx);
-    return nextKey;
+    char nextChar = _p._keyText.at(textIndex);
+    return InputManager::CharToKey(nextChar);
 }
 
 InputManager::ControllerButton TypingEnemyEntity::GetNextButton() const {

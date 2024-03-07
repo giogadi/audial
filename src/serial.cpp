@@ -81,6 +81,20 @@ bool Ptree::TryGetBool(char const* name, bool* v) {
     return false;
 }
 
+void Ptree::PutChar(char const* name, char v) {
+    assert(IsValid());
+    GetInternal(_internal)->add(name, v);
+}
+bool Ptree::TryGetChar(char const* name, char* v) {
+    assert(IsValid());
+    auto const maybe_val = GetInternal(_internal)->get_optional<char>(name);
+    if (maybe_val.has_value()) {
+        *v = maybe_val.value();
+        return true;
+    }
+    return false;
+}
+
 void Ptree::PutInt(char const* name, int v) {
     assert(IsValid());
     GetInternal(_internal)->add(name, v);

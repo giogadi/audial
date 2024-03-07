@@ -24,6 +24,8 @@
 #include "entities/flow_trigger.h"
 #include "entities/int_variable.h"
 #include "entities/vfx.h"
+#include "entities/mech.h"
+#include "entities/resource.h"
 
 extern GameManager gGameManager;
 
