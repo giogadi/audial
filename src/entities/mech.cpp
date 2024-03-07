@@ -6,6 +6,8 @@
 #include "input_manager.h"
 #include "renderer.h"
 #include "entity_manager.h"
+#include "geometry.h"
+#include "entities/resource.h"
 
 void MechEntity::SaveDerived(serial::Ptree pt) const {
     serial::PutEnum(pt, "mech_type", _p.type);
@@ -58,6 +60,25 @@ void MechEntity::UpdateDerived(GameManager& g, float dt) {
                 r->_modelColor.Set(1.f, 1.f, 1.f, 1.f);
 
                 r->Init(g);
+            }
+            break;
+        }
+        case MechType::Pusher: {
+            if (!keyPressed) {
+                break;
+            }
+            // Default behavior: push in local +x direction
+            for (ne::EntityManager::Iterator iter = g._neEntityManager->GetIterator(ne::EntityType::Resource); !iter.Finished(); iter.Next()) {
+                ResourceEntity* r = static_cast<ResourceEntity*>(iter.GetEntity());
+                assert(r);
+                // TODO: could be more efficient if we precompute the quaternion
+                // inverse in this function
+                bool inRange = geometry::IsPointInBoundingBox2d(r->_transform.Pos(), _transform);
+                if (!inRange) {
+                    continue;
+                }
+                float constexpr kPushSpeed = 4.f;
+                r->_s.v = _transform.GetXAxis() * kPushSpeed;
             }
             break;
         }

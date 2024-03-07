@@ -6,6 +6,8 @@ enum class MechType : int {
     
     Spawner,
     
+    Pusher,
+    
     Grabber,
     
     Sink,

@@ -3,6 +3,7 @@
     "enumName": "MechType",
     "enumItems": [
         "Spawner",
+        "Pusher",
         "Grabber",
         "Sink"
     ]

@@ -11,6 +11,7 @@ struct ResourceEntity : public ne::Entity {
     Props _p;
 
     struct State {
+        Vec3 v;
     };
     State _s;
        
