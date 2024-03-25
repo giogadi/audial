@@ -25,3 +25,10 @@ void BeatClock::Update(GameManager& g) {
 double BeatClock::GetBeatTimeFromEpoch() const {
     return GetBeatTime() - _epochBeatTime;
 }
+
+double BeatClock::GetNextBeatDenomTime(double beatTime, double denom) {
+    if (denom <= 0.0) {
+        return beatTime;
+    }
+    return std::floor((beatTime / denom)) * denom + denom;
+}

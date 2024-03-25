@@ -512,6 +512,9 @@ ne::BaseEntity::ImGuiResult StepSequencerEntity::ImGuiDerived(GameManager& g) {
     if (ImGui::InputFloat("Gain", &_initGain)) {
         _gain = _initGain;
     }
+    if (ImGui::InputDouble("Step length", &_stepBeatLength, ImGuiInputTextFlags_EnterReturnsTrue)) {
+        needsInit = true;
+    }
     ImGui::Checkbox("Is synth", &_isSynth);
     ImGui::InputDouble("Note length", &_noteLength, 0.0, 0.0, "%.6f", ImGuiInputTextFlags_EnterReturnsTrue);
     if (ImGui::TreeNode("Channels")) {

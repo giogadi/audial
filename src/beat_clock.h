@@ -40,9 +40,8 @@ public:
     }
     // Denom == 1: next quarter note (beat)
     // Denom == 0.5: next 8th note. etc
-    static double GetNextBeatDenomTime(double beatTime, double denom) {
-        return std::floor((beatTime / denom)) * denom + denom;
-    }
+    static double GetNextBeatDenomTime(double beatTime, double denom);
+    
     double GetAudioTime() const {
         return _currentAudioTime;
     }

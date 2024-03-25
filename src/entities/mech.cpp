@@ -7,22 +7,30 @@
 #include "renderer.h"
 #include "entity_manager.h"
 #include "geometry.h"
+#include "beat_clock.h"
 #include "entities/resource.h"
 
 void MechEntity::SaveDerived(serial::Ptree pt) const {
     serial::PutEnum(pt, "mech_type", _p.type);
     pt.PutChar("key", _p.key);
+    pt.PutDouble("quantize", _p.quantize);
+    SeqAction::SaveActionsInChildNode(pt, "actions", _p.actions);
 }
 
 void MechEntity::LoadDerived(serial::Ptree pt) {
     _p = Props();
     serial::TryGetEnum(pt, "mech_type", _p.type);
     pt.TryGetChar("key", &_p.key);
+    pt.TryGetDouble("quantize", &_p.quantize);
+    SeqAction::LoadActionsFromChildNode(pt, "actions", _p.actions);
 }
 
 void MechEntity::InitDerived(GameManager& g) {
     _s = State();
     sprintf(_s.keyBuf, "%c", _p.key);
+    for (auto const& pAction : _p.actions) {
+        pAction->Init(g);
+    }
 }
 
 ne::Entity::ImGuiResult MechEntity::ImGuiDerived(GameManager& g) {
@@ -38,6 +46,12 @@ ne::Entity::ImGuiResult MechEntity::ImGuiDerived(GameManager& g) {
             sprintf(_s.keyBuf, "%c", _p.key);
         }
     }
+
+    ImGui::InputDouble("Quantize", &_p.quantize);
+
+    if (SeqAction::ImGui("Actions", _p.actions)) {
+        result = ImGuiResult::NeedsInit;
+    }
     
     return result;
 }
@@ -46,13 +60,46 @@ void MechEntity::UpdateDerived(GameManager& g, float dt) {
     if (g._editMode) {
         return;
     }
-    
-    InputManager::Key k = InputManager::CharToKey(_p.key);
-    bool const keyPressed = g._inputManager->IsKeyPressedThisFrame(k);    
+
+    double const beatTime = g._beatClock->GetBeatTimeFromEpoch();
+
+    bool keyJustPressed = false;
+    bool quantizeReached = false;
+    if (_s.actionBeatTime < 0.0) {
+        InputManager::Key k = InputManager::CharToKey(_p.key);
+        keyJustPressed = g._inputManager->IsKeyPressedThisFrame(k);
+        if (keyJustPressed) {
+            _s.actionBeatTime = g._beatClock->GetNextBeatDenomTime(beatTime, _p.quantize);
+        }
+    }
+    if (_s.actionBeatTime >= 0.0 && beatTime >= _s.actionBeatTime) {
+        quantizeReached = true;
+        _s.actionBeatTime = -1.0;
+    }
+
+    if (quantizeReached) {
+        for (auto const& pAction : _p.actions) {
+            pAction->Execute(g);
+        }
+    }
     
     switch (_p.type) {
         case MechType::Spawner: {
-            if (keyPressed) {
+            if (quantizeReached) {
+                // Check if there are any resources already in the spawner
+                bool resourcePresent = false;
+                for (ne::EntityManager::Iterator iter = g._neEntityManager->GetIterator(ne::EntityType::Resource); !iter.Finished(); iter.Next()) {
+                    ResourceEntity* r = static_cast<ResourceEntity*>(iter.GetEntity());
+                    assert(r);
+                    bool inRange = geometry::IsPointInBoundingBox2d(r->_transform.Pos(), _transform);
+                    if (inRange) {
+                        resourcePresent = true;
+                        break;
+                    }
+                }
+                if (resourcePresent) {
+                    break;
+                }
                 ne::Entity* r = g._neEntityManager->AddEntity(ne::EntityType::Resource);
                 r->_initTransform = _transform;
                 r->_initTransform.SetScale(Vec3(0.25f, 0.25f, 0.25f));
@@ -64,7 +111,7 @@ void MechEntity::UpdateDerived(GameManager& g, float dt) {
             break;
         }
         case MechType::Pusher: {
-            if (!keyPressed) {
+            if (!quantizeReached) {
                 break;
             }
             // Default behavior: push in local +x direction
@@ -79,6 +126,22 @@ void MechEntity::UpdateDerived(GameManager& g, float dt) {
                 }
                 float constexpr kPushSpeed = 4.f;
                 r->_s.v = _transform.GetXAxis() * kPushSpeed;
+            }
+            break;
+        }
+        case MechType::Sink: {
+            if (!keyJustPressed) {
+                break;
+            }
+            for (ne::EntityManager::Iterator iter = g._neEntityManager->GetIterator(ne::EntityType::Resource); !iter.Finished(); iter.Next()) {
+                ResourceEntity* r = static_cast<ResourceEntity*>(iter.GetEntity());
+                assert(r);
+                bool inRange = geometry::IsPointInBoundingBox2d(r->_transform.Pos(), _transform);
+                if (!inRange) {
+                    continue;
+                }
+
+                g._neEntityManager->TagForDestroy(r->_id);
             }
             break;
         }
