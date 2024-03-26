@@ -26,6 +26,7 @@ struct MechEntity : public ne::Entity {
         char key = 'a';
         double quantize = 0.0;
         std::vector<std::unique_ptr<SeqAction>> actions;
+        std::vector<std::unique_ptr<SeqAction>> stopActions;
 
         union {
             SpawnerProps spawner;

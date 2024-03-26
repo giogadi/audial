@@ -45,6 +45,7 @@ void MechEntity::SaveDerived(serial::Ptree pt) const {
     pt.PutChar("key", _p.key);
     pt.PutDouble("quantize", _p.quantize);
     SeqAction::SaveActionsInChildNode(pt, "actions", _p.actions);
+    SeqAction::SaveActionsInChildNode(pt, "stop_actions", _p.stopActions);
 
     switch (_p.type) {
     case MechType::Spawner:        
@@ -69,6 +70,7 @@ void MechEntity::LoadDerived(serial::Ptree pt) {
     pt.TryGetChar("key", &_p.key);
     pt.TryGetDouble("quantize", &_p.quantize);
     SeqAction::LoadActionsFromChildNode(pt, "actions", _p.actions);
+    SeqAction::LoadActionsFromChildNode(pt, "stop_actions", _p.stopActions);
 
     switch (_p.type) {
     case MechType::Spawner:        
@@ -90,6 +92,9 @@ void MechEntity::InitDerived(GameManager& g) {
     _s = State();
     sprintf(_s.keyBuf, "%c", _p.key);
     for (auto const& pAction : _p.actions) {
+        pAction->Init(g);
+    }
+    for (auto const& pAction : _p.stopActions) {
         pAction->Init(g);
     }
 
@@ -126,6 +131,9 @@ ne::Entity::ImGuiResult MechEntity::ImGuiDerived(GameManager& g) {
     ImGui::InputDouble("Quantize", &_p.quantize);
 
     if (SeqAction::ImGui("Actions", _p.actions)) {
+        result = ImGuiResult::NeedsInit;
+    }
+    if (SeqAction::ImGui("Stop Actions", _p.stopActions)) {
         result = ImGuiResult::NeedsInit;
     }
 
@@ -288,6 +296,9 @@ void MechEntity::UpdateDerived(GameManager& g, float dt) {
                     if (_s.grabber.angleRad > _s.grabber.stopAngleRad) {
                         _s.grabber.phase = GrabberPhase::Idle;
                         _s.grabber.angleRad = _s.grabber.stopAngleRad;
+                        for (auto const& pAction : _p.stopActions) {
+                            pAction->Execute(g);
+                        }
                     }
                     
                     break;

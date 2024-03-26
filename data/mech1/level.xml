@@ -191,6 +191,7 @@
                         <holdNotes>false</holdNotes>
                     </seq_action>
                 </actions>
+                <stop_actions/>
             </Mech>
             <Mech>
                 <editor_id>
@@ -258,6 +259,7 @@
                         <holdNotes>false</holdNotes>
                     </seq_action>
                 </actions>
+                <stop_actions/>
                 <pusher_angle>0</pusher_angle>
             </Mech>
             <Mech>
@@ -326,6 +328,7 @@
                         <holdNotes>false</holdNotes>
                     </seq_action>
                 </actions>
+                <stop_actions/>
             </Mech>
             <StepSequencer>
                 <editor_id>
@@ -451,6 +454,7 @@
                         <holdNotes>false</holdNotes>
                     </seq_action>
                 </actions>
+                <stop_actions/>
                 <pusher_angle>-90</pusher_angle>
             </Mech>
             <Mech>
@@ -519,6 +523,7 @@
                         <holdNotes>false</holdNotes>
                     </seq_action>
                 </actions>
+                <stop_actions/>
             </Mech>
             <Mech>
                 <editor_id>
@@ -568,8 +573,46 @@
                 </waypoint_follower>
                 <mech_type>Grabber</mech_type>
                 <key>f</key>
-                <quantize>1</quantize>
-                <actions/>
+                <quantize>0.5</quantize>
+                <actions>
+                    <seq_action>
+                        <one_time>false</one_time>
+                        <action_type>NoteOnOff</action_type>
+                        <channel>2</channel>
+                        <midiNotes>
+                            <array_item>
+                                <note>48</note>
+                            </array_item>
+                            <array_item>
+                                <note>52</note>
+                            </array_item>
+                            <array_item>
+                                <note>55</note>
+                            </array_item>
+                            <array_item>
+                                <note>60</note>
+                            </array_item>
+                        </midiNotes>
+                        <noteLength>0</noteLength>
+                        <velocity>1</velocity>
+                        <quantizeDenom>0</quantizeDenom>
+                        <doNoteOff>false</doNoteOff>
+                        <holdNotes>false</holdNotes>
+                    </seq_action>
+                </actions>
+                <stop_actions>
+                    <seq_action>
+                        <one_time>false</one_time>
+                        <action_type>BeatTimeEvent</action_type>
+                        <quantize_denom>0</quantize_denom>
+                        <beat_time_event>
+                            <event_type>AllNotesOff</event_type>
+                            <channel>2</channel>
+                            <delay_secs>0</delay_secs>
+                            <beat_time>0</beat_time>
+                        </beat_time_event>
+                    </seq_action>
+                </stop_actions>
                 <grabber_angle>180</grabber_angle>
                 <grabber_length>2</grabber_length>
             </Mech>
