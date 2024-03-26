@@ -173,7 +173,7 @@
                 </waypoint_follower>
                 <mech_type>Spawner</mech_type>
                 <key>x</key>
-                <quantize>1</quantize>
+                <quantize>0.25</quantize>
                 <actions>
                     <seq_action>
                         <one_time>false</one_time>
@@ -240,7 +240,7 @@
                 </waypoint_follower>
                 <mech_type>Pusher</mech_type>
                 <key>a</key>
-                <quantize>1</quantize>
+                <quantize>0.25</quantize>
                 <actions>
                     <seq_action>
                         <one_time>false</one_time>
@@ -258,6 +258,7 @@
                         <holdNotes>false</holdNotes>
                     </seq_action>
                 </actions>
+                <pusher_angle>0</pusher_angle>
             </Mech>
             <Mech>
                 <editor_id>
@@ -307,8 +308,24 @@
                 </waypoint_follower>
                 <mech_type>Sink</mech_type>
                 <key>k</key>
-                <quantize>0</quantize>
-                <actions/>
+                <quantize>0.25</quantize>
+                <actions>
+                    <seq_action>
+                        <one_time>false</one_time>
+                        <action_type>NoteOnOff</action_type>
+                        <channel>0</channel>
+                        <midiNotes>
+                            <array_item>
+                                <note>55</note>
+                            </array_item>
+                        </midiNotes>
+                        <noteLength>0.5</noteLength>
+                        <velocity>1</velocity>
+                        <quantizeDenom>0</quantizeDenom>
+                        <doNoteOff>true</doNoteOff>
+                        <holdNotes>false</holdNotes>
+                    </seq_action>
+                </actions>
             </Mech>
             <StepSequencer>
                 <editor_id>
@@ -368,6 +385,141 @@
                 <max_voices>-1</max_voices>
                 <quantize_temp_changes>true</quantize_temp_changes>
             </StepSequencer>
+            <Mech>
+                <editor_id>
+                    <id>7</id>
+                </editor_id>
+                <name>pusher0</name>
+                <entity_active>true</entity_active>
+                <pickable>true</pickable>
+                <transform>
+                    <pos>
+                        <x>6.29722309</x>
+                        <y>0</y>
+                        <z>-8.99375153</z>
+                    </pos>
+                    <quat>
+                        <x>0</x>
+                        <y>0</y>
+                        <z>0</z>
+                        <w>1</w>
+                    </quat>
+                    <scale>
+                        <x>1</x>
+                        <y>1</y>
+                        <z>3</z>
+                    </scale>
+                </transform>
+                <model_name/>
+                <model_color_vec4>
+                    <x>0.43921569</x>
+                    <y>0.768627465</y>
+                    <z>0.466666669</z>
+                    <w>0.313725501</w>
+                </model_color_vec4>
+                <flow_section_id>-1</flow_section_id>
+                <tag>0</tag>
+                <waypoint_follower>
+                    <mode>Waypoint</mode>
+                    <local_to_entity>false</local_to_entity>
+                    <waypoint_auto_start>false</waypoint_auto_start>
+                    <loop_waypoints>false</loop_waypoints>
+                    <start_time>3</start_time>
+                    <waypoints/>
+                    <follow_entity_name/>
+                    <follow_entity_editor_id>
+                        <id>-1</id>
+                    </follow_entity_editor_id>
+                </waypoint_follower>
+                <mech_type>Pusher</mech_type>
+                <key>j</key>
+                <quantize>0.25</quantize>
+                <actions>
+                    <seq_action>
+                        <one_time>false</one_time>
+                        <action_type>NoteOnOff</action_type>
+                        <channel>0</channel>
+                        <midiNotes>
+                            <array_item>
+                                <note>59</note>
+                            </array_item>
+                        </midiNotes>
+                        <noteLength>0.5</noteLength>
+                        <velocity>1</velocity>
+                        <quantizeDenom>0</quantizeDenom>
+                        <doNoteOff>true</doNoteOff>
+                        <holdNotes>false</holdNotes>
+                    </seq_action>
+                </actions>
+                <pusher_angle>-90</pusher_angle>
+            </Mech>
+            <Mech>
+                <editor_id>
+                    <id>8</id>
+                </editor_id>
+                <name>sink0</name>
+                <entity_active>true</entity_active>
+                <pickable>true</pickable>
+                <transform>
+                    <pos>
+                        <x>6.36666727</x>
+                        <y>0</y>
+                        <z>-4.32361317</z>
+                    </pos>
+                    <quat>
+                        <x>0</x>
+                        <y>0</y>
+                        <z>0</z>
+                        <w>1</w>
+                    </quat>
+                    <scale>
+                        <x>1</x>
+                        <y>1</y>
+                        <z>1</z>
+                    </scale>
+                </transform>
+                <model_name/>
+                <model_color_vec4>
+                    <x>0.800000012</x>
+                    <y>0.800000012</y>
+                    <z>0.800000012</z>
+                    <w>0.501960814</w>
+                </model_color_vec4>
+                <flow_section_id>-1</flow_section_id>
+                <tag>0</tag>
+                <waypoint_follower>
+                    <mode>Waypoint</mode>
+                    <local_to_entity>false</local_to_entity>
+                    <waypoint_auto_start>false</waypoint_auto_start>
+                    <loop_waypoints>false</loop_waypoints>
+                    <start_time>3</start_time>
+                    <waypoints/>
+                    <follow_entity_name/>
+                    <follow_entity_editor_id>
+                        <id>-1</id>
+                    </follow_entity_editor_id>
+                </waypoint_follower>
+                <mech_type>Sink</mech_type>
+                <key>o</key>
+                <quantize>0.25</quantize>
+                <actions>
+                    <seq_action>
+                        <one_time>false</one_time>
+                        <action_type>NoteOnOff</action_type>
+                        <channel>0</channel>
+                        <midiNotes>
+                            <array_item>
+                                <note>55</note>
+                            </array_item>
+                        </midiNotes>
+                        <noteLength>0.5</noteLength>
+                        <velocity>1</velocity>
+                        <quantizeDenom>0</quantizeDenom>
+                        <doNoteOff>true</doNoteOff>
+                        <holdNotes>false</holdNotes>
+                    </seq_action>
+                </actions>
+            </Mech>
         </new_entities>
     </script>
 </root>

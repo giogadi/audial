@@ -8,13 +8,31 @@ struct MechEntity : public ne::Entity {
     virtual ne::EntityType Type() override { return ne::EntityType::Mech; }
     static ne::EntityType StaticType() { return ne::EntityType::Mech; }
     
+    struct SpawnerProps {
+
+    };
+    struct PusherProps {
+        float angle;
+    };
+    struct SinkProps {
+
+    };
     struct Props {
-        MechType type;
+        MechType type = MechType::Spawner;
         char key = 'a';
         double quantize = 0.0;
         std::vector<std::unique_ptr<SeqAction>> actions;
+
+        union {
+            SpawnerProps spawner;
+            PusherProps pusher;
+            SinkProps sink;
+        };
     };
+
     Props _p;
+
+    void InitTypeSpecificProps();
 
     struct State {
         // For imgui shenanigans
