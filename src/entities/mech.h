@@ -62,6 +62,7 @@ struct MechEntity : public ne::Entity {
         char keyBuf[2];
 
         double actionBeatTime = -1.0;
+        ne::EntityId resource;
 
         union {
             SpawnerState spawner;

@@ -66,7 +66,9 @@ void MechEntity::SaveDerived(serial::Ptree pt) const {
 void MechEntity::LoadDerived(serial::Ptree pt) {
     _p = Props();    
     serial::TryGetEnum(pt, "mech_type", _p.type);
+    
     InitTypeSpecificPropsAndState();
+    
     pt.TryGetChar("key", &_p.key);
     pt.TryGetDouble("quantize", &_p.quantize);
     SeqAction::LoadActionsFromChildNode(pt, "actions", _p.actions);
@@ -267,6 +269,8 @@ void MechEntity::UpdateDerived(GameManager& g, float dt) {
                     _s.grabber.phase = GrabberPhase::Stopping;
                     justStartedStopping = true;
                 }
+
+                _s.resource = ne::EntityId();
             }
             if (_s.grabber.phase == GrabberPhase::Moving && keyJustReleased) {
                 _s.grabber.phase = GrabberPhase::Stopping;
@@ -285,6 +289,40 @@ void MechEntity::UpdateDerived(GameManager& g, float dt) {
             }
             float constexpr kBeatsPerRotation = 8.f;
             float rotVel = 2*kPi * g._beatClock->GetBpm() / (kBeatsPerRotation * 60.f); 
+            if (_s.grabber.phase == GrabberPhase::Moving || _s.grabber.phase == GrabberPhase::Stopping) {
+                _s.grabber.angleRad += rotVel * dt; 
+
+                Transform handTrans;
+                {
+                    float const length = _p.grabber.length;
+
+                    Quaternion q;
+                    q.SetFromAngleAxis(_s.grabber.angleRad, Vec3(0.f, 1.f, 0.f));
+                    
+                    handTrans.SetQuat(q); 
+                    handTrans.SetScale(Vec3(1.f, 1.f, 1.f));
+                    Vec3 dir = handTrans.GetXAxis();
+                    Vec3 handP = _transform.Pos() + length * dir;
+                    handTrans.SetPos(handP);
+                }
+                ResourceEntity* resInHand = g._neEntityManager->GetEntityAs<ResourceEntity>(_s.resource);
+                if (resInHand == nullptr) {
+                    
+                    for (ne::EntityManager::Iterator iter = g._neEntityManager->GetIterator(ne::EntityType::Resource); !iter.Finished(); iter.Next()) {
+                        ResourceEntity* r = static_cast<ResourceEntity*>(iter.GetEntity());
+                        assert(r);
+                        bool inHand = geometry::IsPointInBoundingBox(r->_transform.Pos(), handTrans);
+                        if (inHand) {
+                            resInHand = r;
+                            break;
+                        }
+                    }
+                }
+
+                if (resInHand) {
+                    resInHand->_transform.SetPos(handTrans.Pos());
+                }
+            }
             switch (_s.grabber.phase) {
                 case GrabberPhase::Idle:
                     break;
@@ -296,6 +334,7 @@ void MechEntity::UpdateDerived(GameManager& g, float dt) {
                     if (_s.grabber.angleRad > _s.grabber.stopAngleRad) {
                         _s.grabber.phase = GrabberPhase::Idle;
                         _s.grabber.angleRad = _s.grabber.stopAngleRad;
+                        _s.resource = ne::EntityId();
                         for (auto const& pAction : _p.stopActions) {
                             pAction->Execute(g);
                         }
@@ -319,7 +358,7 @@ void DrawGrabber(MechEntity& e, GameManager& g) {
     
     Transform armTrans;
     armTrans.SetQuat(q);
-    armTrans.SetScale(Vec3(length, 0.5f, 0.5f));
+    armTrans.SetScale(Vec3(length, 0.25f, 0.25f));
     
     Vec3 dir = armTrans.GetXAxis();
     Vec3 p = e._transform.Pos() + (0.5f * length) * dir;
