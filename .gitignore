@@ -18,3 +18,4 @@ __pycache__/
 log.txt
 *.blend1
 cmd_line.txt
+*.swp

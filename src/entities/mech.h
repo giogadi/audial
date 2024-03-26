@@ -12,10 +12,14 @@ struct MechEntity : public ne::Entity {
 
     };
     struct PusherProps {
-        float angle;
+        float angleDeg;
     };
     struct SinkProps {
 
+    };
+    struct GrabberProps {
+        float angleDeg;
+        float length;
     };
     struct Props {
         MechType type = MechType::Spawner;
@@ -27,17 +31,37 @@ struct MechEntity : public ne::Entity {
             SpawnerProps spawner;
             PusherProps pusher;
             SinkProps sink;
+            GrabberProps grabber;
         };
     };
 
     Props _p;
 
-    void InitTypeSpecificProps();
+    void InitTypeSpecificPropsAndState();
+    
+    struct SpawnerState {
+
+    };
+    struct PusherState {
+    };
+    struct SinkState {
+
+    };
+    struct GrabberState {
+        float angleRad;
+    };
 
     struct State {
         // For imgui shenanigans
         char keyBuf[2];
         double actionBeatTime = -1.0;
+
+        union {
+            SpawnerState spawner;
+            PusherState pusher;
+            SinkState sink;
+            GrabberState grabber;
+        };
     };
     State _s;
        

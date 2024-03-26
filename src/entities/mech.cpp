@@ -10,19 +10,27 @@
 #include "beat_clock.h"
 #include "entities/resource.h"
 
-void MechEntity::InitTypeSpecificProps() {
+void MechEntity::InitTypeSpecificPropsAndState() {
     switch (_p.type) {
     case MechType::Spawner:
         _p.spawner = SpawnerProps();
+        _s.spawner = SpawnerState();
         break;
     case MechType::Pusher:
         _p.pusher = PusherProps();
-        _p.pusher.angle = 0.f;
+        _s.pusher = PusherState();
+        _p.pusher.angleDeg = 0.f;
         break;
     case MechType::Sink:
         _p.sink = SinkProps();
+        _s.sink = SinkState();
         break;
     case MechType::Grabber:
+        _p.grabber = GrabberProps();
+        _s.grabber = GrabberState();
+        _p.grabber.angleDeg = 0.f;
+        _p.grabber.length = 1.f;
+        _s.grabber.angleRad = 0.f;
         break;
     case MechType::Count: break;
     }
@@ -38,11 +46,13 @@ void MechEntity::SaveDerived(serial::Ptree pt) const {
     case MechType::Spawner:        
         break;
     case MechType::Pusher:
-        pt.PutFloat("pusher_angle", _p.pusher.angle);
+        pt.PutFloat("pusher_angle", _p.pusher.angleDeg);
         break;
-    case MechType::Sink:        
+    case MechType::Sink: 
         break;
     case MechType::Grabber:
+        pt.PutFloat("grabber_angle", _p.grabber.angleDeg);
+        pt.PutFloat("grabber_length", _p.grabber.length);
         break;
     case MechType::Count: break;
     }
@@ -51,7 +61,7 @@ void MechEntity::SaveDerived(serial::Ptree pt) const {
 void MechEntity::LoadDerived(serial::Ptree pt) {
     _p = Props();    
     serial::TryGetEnum(pt, "mech_type", _p.type);
-    InitTypeSpecificProps();
+    InitTypeSpecificPropsAndState();
     pt.TryGetChar("key", &_p.key);
     pt.TryGetDouble("quantize", &_p.quantize);
     SeqAction::LoadActionsFromChildNode(pt, "actions", _p.actions);
@@ -60,11 +70,13 @@ void MechEntity::LoadDerived(serial::Ptree pt) {
     case MechType::Spawner:        
         break;
     case MechType::Pusher:
-        pt.TryGetFloat("pusher_angle", &_p.pusher.angle);
+        pt.TryGetFloat("pusher_angle", &_p.pusher.angleDeg);
         break;
     case MechType::Sink:        
         break;
     case MechType::Grabber:
+        pt.TryGetFloat("grabber_angle", &_p.grabber.angleDeg);
+        pt.TryGetFloat("grabber_length", &_p.grabber.length);
         break;
     case MechType::Count: break;
     }
@@ -76,13 +88,27 @@ void MechEntity::InitDerived(GameManager& g) {
     for (auto const& pAction : _p.actions) {
         pAction->Init(g);
     }
+
+    switch (_p.type) {
+    case MechType::Spawner:        
+        break;
+    case MechType::Pusher:
+        break;
+    case MechType::Sink:        
+        break;
+    case MechType::Grabber:
+        _s.grabber.angleRad = _p.grabber.angleDeg * kDeg2Rad;
+        break;
+    case MechType::Count: break;
+    }
+
 }
 
 ne::Entity::ImGuiResult MechEntity::ImGuiDerived(GameManager& g) {
     ImGuiResult result = ImGuiResult::Done;
     if (MechTypeImGui("Type##mechType", &_p.type)) {
         result = ImGuiResult::NeedsInit;
-        InitTypeSpecificProps();
+        InitTypeSpecificPropsAndState();
     }
     
     if (ImGui::InputText("Key##MechKey", _s.keyBuf, 2, ImGuiInputTextFlags_EnterReturnsTrue)) {
@@ -103,12 +129,15 @@ ne::Entity::ImGuiResult MechEntity::ImGuiDerived(GameManager& g) {
     case MechType::Spawner:            
             break;
         case MechType::Pusher:
-            // TODO: Since this happens after the type might change above, could this break stuff?
-            ImGui::InputFloat("Angle", &_p.pusher.angle);
+            ImGui::InputFloat("Angle", &_p.pusher.angleDeg);
             break;
         case MechType::Sink:
             break;
         case MechType::Grabber:
+            if (ImGui::SliderFloat("Angle", &_p.grabber.angleDeg, -180.f, 180.f)) {
+                result = ImGuiResult::NeedsInit;
+            }
+            ImGui::SliderFloat("Length", &_p.grabber.length, 0.f, 10.f);
             break;
         case MechType::Count: break;
     }
@@ -186,7 +215,7 @@ void MechEntity::UpdateDerived(GameManager& g, float dt) {
                     continue;
                 }
                 float constexpr kPushSpeed = 4.f;
-                float angleRad = pusher.angle * kDeg2Rad;
+                float angleRad = pusher.angleDeg * kDeg2Rad;
                 Vec3 pushDir(cos(angleRad), 0.f, -sin(angleRad));
                 r->_s.v = pushDir * kPushSpeed;
             }
@@ -214,9 +243,47 @@ void MechEntity::UpdateDerived(GameManager& g, float dt) {
     }
 }
 
-void MechEntity::Draw(GameManager& g, float dt) {
-    g._scene->DrawCube(_transform.Mat4Scale(), _modelColor);
+namespace {
+void DrawGrabber(MechEntity& e, GameManager& g) {
+
+    float const length = e._p.grabber.length;
+
+    Quaternion q;
+    q.SetFromAngleAxis(e._s.grabber.angleRad, Vec3(0.f, 1.f, 0.f));
     
+    Transform armTrans;
+    armTrans.SetQuat(q);
+    armTrans.SetScale(Vec3(length, 0.5f, 0.5f));
+    
+    Vec3 dir = armTrans.GetXAxis();
+    Vec3 p = e._transform.Pos() + (0.5f * length) * dir;
+    armTrans.SetPos(p);
+
+    g._scene->DrawCube(armTrans.Mat4Scale(), e._modelColor);
+    
+    p = e._transform.Pos() + length * dir;
+    Transform handTrans;
+    handTrans.SetQuat(q);
+    handTrans.SetScale(Vec3(1.f, 1.f, 1.f));
+    handTrans.SetPos(p);
+    
+    g._scene->DrawCube(handTrans.Mat4Scale(), e._modelColor);
+}
+}
+
+void MechEntity::Draw(GameManager& g, float dt) { 
+    switch (_p.type) {
+        case MechType::Grabber:
+            DrawGrabber(*this, g);
+            break;
+        case MechType::Spawner:            
+        case MechType::Pusher:
+        case MechType::Sink:
+            g._scene->DrawCube(_transform.Mat4Scale(), _modelColor);
+            break;
+        case MechType::Count: break;
+    }
+ 
     {
         float constexpr kTextSize = 1.5f;
         Vec4 color(1.f, 1.f, 1.f, 1.f);
