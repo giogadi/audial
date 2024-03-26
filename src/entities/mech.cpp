@@ -8,6 +8,7 @@
 #include "entity_manager.h"
 #include "geometry.h"
 #include "beat_clock.h"
+#include "math_util.h"
 #include "entities/resource.h"
 
 void MechEntity::InitTypeSpecificPropsAndState() {
@@ -30,7 +31,10 @@ void MechEntity::InitTypeSpecificPropsAndState() {
         _s.grabber = GrabberState();
         _p.grabber.angleDeg = 0.f;
         _p.grabber.length = 1.f;
+
         _s.grabber.angleRad = 0.f;
+        _s.grabber.phase = GrabberPhase::Idle;
+        _s.grabber.stopAngleRad = 0.f;
         break;
     case MechType::Count: break;
     }
@@ -145,6 +149,12 @@ ne::Entity::ImGuiResult MechEntity::ImGuiDerived(GameManager& g) {
     return result;
 }
 
+namespace {
+float Normalize2Pi(float angleRad) {
+    return angleRad - (2*kPi) * std::floor(angleRad / (2*kPi));
+}
+}
+
 void MechEntity::UpdateDerived(GameManager& g, float dt) {
     if (g._editMode) {
         return;
@@ -153,10 +163,12 @@ void MechEntity::UpdateDerived(GameManager& g, float dt) {
     double const beatTime = g._beatClock->GetBeatTimeFromEpoch();
 
     bool keyJustPressed = false;
+    bool keyJustReleased = false;
     bool quantizeReached = false;
     if (_s.actionBeatTime < 0.0) {
         InputManager::Key k = InputManager::CharToKey(_p.key);
         keyJustPressed = g._inputManager->IsKeyPressedThisFrame(k);
+        keyJustReleased = g._inputManager->IsKeyReleasedThisFrame(k);
         if (keyJustPressed) {
             _s.actionBeatTime = g._beatClock->GetNextBeatDenomTime(beatTime, _p.quantize);
         }
@@ -237,8 +249,39 @@ void MechEntity::UpdateDerived(GameManager& g, float dt) {
             }
             break;
         }
-        case MechType::Grabber:
+        case MechType::Grabber: {
+            if (quantizeReached) {
+                _s.grabber.phase = GrabberPhase::Moving;
+            } else if (keyJustReleased) {
+                // TODO: think about if using complex numbers would make this less shit
+                _s.grabber.phase = GrabberPhase::Stopping;
+                int quantizeCount = 4;
+                // Find the stop angle by finding the next "8th" of a rotation.
+                _s.grabber.angleRad = Normalize2Pi(_s.grabber.angleRad);
+                float angle01 = _s.grabber.angleRad / (2*kPi);
+                int quantized = math_util::Clamp(static_cast<int>(angle01 * quantizeCount), 0, quantizeCount - 1); 
+                _s.grabber.stopAngleRad = ((float) quantized / quantizeCount) * 2 * kPi;
+                _s.grabber.stopAngleRad += (2 * kPi / quantizeCount);
+            }
+            float constexpr kBeatsPerRotation = 8.f;
+            float rotVel = 2*kPi * g._beatClock->GetBpm() / (kBeatsPerRotation * 60.f); 
+            switch (_s.grabber.phase) {
+                case GrabberPhase::Idle:
+                    break;
+                case GrabberPhase::Moving:
+                    _s.grabber.angleRad += rotVel * dt; 
+                    break;
+                case GrabberPhase::Stopping:
+                    _s.grabber.angleRad += rotVel * dt;
+                    if (_s.grabber.angleRad > _s.grabber.stopAngleRad) {
+                        _s.grabber.phase = GrabberPhase::Idle;
+                        _s.grabber.angleRad = _s.grabber.stopAngleRad;
+                    }
+                    
+                    break;
+            }
             break;
+        }
         case MechType::Count: break;
     }
 }

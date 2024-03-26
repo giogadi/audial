@@ -47,13 +47,19 @@ struct MechEntity : public ne::Entity {
     struct SinkState {
 
     };
+    enum class GrabberPhase {
+        Idle, Moving, Stopping
+    };
     struct GrabberState {
         float angleRad;
+        GrabberPhase phase; 
+        float stopAngleRad;
     };
 
     struct State {
         // For imgui shenanigans
         char keyBuf[2];
+
         double actionBeatTime = -1.0;
 
         union {

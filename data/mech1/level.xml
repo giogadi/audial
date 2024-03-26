@@ -568,7 +568,7 @@
                 </waypoint_follower>
                 <mech_type>Grabber</mech_type>
                 <key>f</key>
-                <quantize>0</quantize>
+                <quantize>1</quantize>
                 <actions/>
                 <grabber_angle>180</grabber_angle>
                 <grabber_length>2</grabber_length>
