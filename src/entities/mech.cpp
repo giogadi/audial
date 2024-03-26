@@ -164,15 +164,16 @@ void MechEntity::UpdateDerived(GameManager& g, float dt) {
 
     bool keyJustPressed = false;
     bool keyJustReleased = false;
+    bool keyDown = false;
     bool quantizeReached = false;
-    if (_s.actionBeatTime < 0.0) {
-        InputManager::Key k = InputManager::CharToKey(_p.key);
-        keyJustPressed = g._inputManager->IsKeyPressedThisFrame(k);
-        keyJustReleased = g._inputManager->IsKeyReleasedThisFrame(k);
-        if (keyJustPressed) {
-            _s.actionBeatTime = g._beatClock->GetNextBeatDenomTime(beatTime, _p.quantize);
-        }
+    InputManager::Key k = InputManager::CharToKey(_p.key);
+    keyJustPressed = g._inputManager->IsKeyPressedThisFrame(k);
+    keyJustReleased = g._inputManager->IsKeyReleasedThisFrame(k);
+    keyDown = g._inputManager->IsKeyPressed(k);
+    if (keyJustPressed && _s.actionBeatTime < 0.0) {
+        _s.actionBeatTime = g._beatClock->GetNextBeatDenomTime(beatTime, _p.quantize);
     }
+
     if (_s.actionBeatTime >= 0.0 && beatTime >= _s.actionBeatTime) {
         quantizeReached = true;
         _s.actionBeatTime = -1.0;
@@ -249,10 +250,21 @@ void MechEntity::UpdateDerived(GameManager& g, float dt) {
             }
             break;
         }
-        case MechType::Grabber: {
+        case MechType::Grabber: { 
+            bool justStartedStopping = false;
             if (quantizeReached) {
-                _s.grabber.phase = GrabberPhase::Moving;
-            } else if (keyJustReleased) {
+                if (keyDown) {
+                    _s.grabber.phase = GrabberPhase::Moving;
+                } else {
+                    _s.grabber.phase = GrabberPhase::Stopping;
+                    justStartedStopping = true;
+                }
+            }
+            if (_s.grabber.phase == GrabberPhase::Moving && keyJustReleased) {
+                _s.grabber.phase = GrabberPhase::Stopping;
+                justStartedStopping = true;
+            }
+            if (justStartedStopping) {
                 // TODO: think about if using complex numbers would make this less shit
                 _s.grabber.phase = GrabberPhase::Stopping;
                 int quantizeCount = 4;
