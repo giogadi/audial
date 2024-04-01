@@ -11,30 +11,43 @@
 #include "math_util.h"
 #include "entities/resource.h"
 
-void MechEntity::InitTypeSpecificPropsAndState() {
+void MechEntity::InitTypeSpecificProps() {
     switch (_p.type) {
     case MechType::Spawner:
         _p.spawner = SpawnerProps();
-        _s.spawner = SpawnerState();
         break;
     case MechType::Pusher:
         _p.pusher = PusherProps();
-        _s.pusher = PusherState();
         _p.pusher.angleDeg = 0.f;
         break;
     case MechType::Sink:
         _p.sink = SinkProps();
-        _s.sink = SinkState();
         break;
     case MechType::Grabber:
         _p.grabber = GrabberProps();
-        _s.grabber = GrabberState();
         _p.grabber.angleDeg = 0.f;
         _p.grabber.length = 1.f;
+        break;
+    case MechType::Count: break;
+    }
+}
 
+void MechEntity::InitTypeSpecificState() {
+    switch (_p.type) {
+    case MechType::Spawner:
+        _s.spawner = SpawnerState();
+        break;
+    case MechType::Pusher:
+        _s.pusher = PusherState();
+        break;
+    case MechType::Sink:
+        _s.sink = SinkState();
+        break;
+    case MechType::Grabber:
+        _s.grabber = GrabberState();
         _s.grabber.angleRad = 0.f;
-        _s.grabber.phase = GrabberPhase::Idle;
-        _s.grabber.stopAngleRad = 0.f;
+        _s.grabber.moveStartTime = -1.0;
+        _s.grabber.moveEndTime = -1.0;
         break;
     case MechType::Count: break;
     }
@@ -67,7 +80,7 @@ void MechEntity::LoadDerived(serial::Ptree pt) {
     _p = Props();    
     serial::TryGetEnum(pt, "mech_type", _p.type);
     
-    InitTypeSpecificPropsAndState();
+    InitTypeSpecificProps();
     
     pt.TryGetChar("key", &_p.key);
     pt.TryGetDouble("quantize", &_p.quantize);
@@ -92,6 +105,7 @@ void MechEntity::LoadDerived(serial::Ptree pt) {
 
 void MechEntity::InitDerived(GameManager& g) {    
     _s = State();
+    InitTypeSpecificState();
     sprintf(_s.keyBuf, "%c", _p.key);
     for (auto const& pAction : _p.actions) {
         pAction->Init(g);
@@ -119,7 +133,8 @@ ne::Entity::ImGuiResult MechEntity::ImGuiDerived(GameManager& g) {
     ImGuiResult result = ImGuiResult::Done;
     if (MechTypeImGui("Type##mechType", &_p.type)) {
         result = ImGuiResult::NeedsInit;
-        InitTypeSpecificPropsAndState();
+        InitTypeSpecificProps();
+        InitTypeSpecificState();
     }
     
     if (ImGui::InputText("Key##MechKey", _s.keyBuf, 2, ImGuiInputTextFlags_EnterReturnsTrue)) {
@@ -176,6 +191,7 @@ void MechEntity::UpdateDerived(GameManager& g, float dt) {
     bool keyJustReleased = false;
     bool keyDown = false;
     bool quantizeReached = false;
+    double quantizedBeatTime = -1.0;
     InputManager::Key k = InputManager::CharToKey(_p.key);
     keyJustPressed = g._inputManager->IsKeyPressedThisFrame(k);
     keyJustReleased = g._inputManager->IsKeyReleasedThisFrame(k);
@@ -186,6 +202,7 @@ void MechEntity::UpdateDerived(GameManager& g, float dt) {
 
     if (_s.actionBeatTime >= 0.0 && beatTime >= _s.actionBeatTime) {
         quantizeReached = true;
+        quantizedBeatTime = _s.actionBeatTime;
         _s.actionBeatTime = -1.0;
     }
 
@@ -261,36 +278,22 @@ void MechEntity::UpdateDerived(GameManager& g, float dt) {
             break;
         }
         case MechType::Grabber: { 
-            bool justStartedStopping = false;
-            if (quantizeReached) {
-                if (keyDown) {
-                    _s.grabber.phase = GrabberPhase::Moving;
-                } else {
-                    _s.grabber.phase = GrabberPhase::Stopping;
-                    justStartedStopping = true;
-                }
-
+            if (quantizeReached && _s.grabber.moveStartTime < 0.0) {
+                _s.grabber.moveStartTime = quantizedBeatTime;
+                _s.grabber.moveEndTime = quantizedBeatTime + 0.25;                
+                _s.grabber.angleRad = Normalize2Pi(_s.grabber.angleRad);
+                _s.grabber.moveStartAngleRad = _s.grabber.angleRad;
+                _s.grabber.moveEndAngleRad = _s.grabber.moveStartAngleRad + (2 * kPi / 8);
+    
                 _s.resource = ne::EntityId();
             }
-            if (_s.grabber.phase == GrabberPhase::Moving && keyJustReleased) {
-                _s.grabber.phase = GrabberPhase::Stopping;
-                justStartedStopping = true;
-            }
-            if (justStartedStopping) {
-                // TODO: think about if using complex numbers would make this less shit
-                _s.grabber.phase = GrabberPhase::Stopping;
-                int quantizeCount = 4;
-                // Find the stop angle by finding the next "8th" of a rotation.
-                _s.grabber.angleRad = Normalize2Pi(_s.grabber.angleRad);
-                float angle01 = _s.grabber.angleRad / (2*kPi);
-                int quantized = math_util::Clamp(static_cast<int>(angle01 * quantizeCount), 0, quantizeCount - 1); 
-                _s.grabber.stopAngleRad = ((float) quantized / quantizeCount) * 2 * kPi;
-                _s.grabber.stopAngleRad += (2 * kPi / quantizeCount);
-            }
-            float constexpr kBeatsPerRotation = 8.f;
-            float rotVel = 2*kPi * g._beatClock->GetBpm() / (kBeatsPerRotation * 60.f); 
-            if (_s.grabber.phase == GrabberPhase::Moving || _s.grabber.phase == GrabberPhase::Stopping) {
-                _s.grabber.angleRad += rotVel * dt; 
+            if (_s.grabber.moveStartTime > 0.0) {
+                float factor = (float) math_util::InverseLerp(_s.grabber.moveStartTime, _s.grabber.moveEndTime, beatTime);   
+                _s.grabber.angleRad = math_util::Lerp(_s.grabber.moveStartAngleRad, _s.grabber.moveEndAngleRad, factor);
+                if (beatTime >= _s.grabber.moveEndTime) {
+                    _s.grabber.moveStartTime = -1.0;
+                    _s.grabber.moveEndTime = -1.0;
+                }
 
                 Transform handTrans;
                 {
@@ -322,25 +325,7 @@ void MechEntity::UpdateDerived(GameManager& g, float dt) {
                 if (resInHand) {
                     resInHand->_transform.SetPos(handTrans.Pos());
                 }
-            }
-            switch (_s.grabber.phase) {
-                case GrabberPhase::Idle:
-                    break;
-                case GrabberPhase::Moving:
-                    _s.grabber.angleRad += rotVel * dt; 
-                    break;
-                case GrabberPhase::Stopping:
-                    _s.grabber.angleRad += rotVel * dt;
-                    if (_s.grabber.angleRad > _s.grabber.stopAngleRad) {
-                        _s.grabber.phase = GrabberPhase::Idle;
-                        _s.grabber.angleRad = _s.grabber.stopAngleRad;
-                        _s.resource = ne::EntityId();
-                        for (auto const& pAction : _p.stopActions) {
-                            pAction->Execute(g);
-                        }
-                    }
-                    
-                    break;
+
             }
             break;
         }

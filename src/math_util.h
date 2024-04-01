@@ -64,4 +64,22 @@ inline Vec3 Vec3Lerp(float x, Vec3 const& a, Vec3 const& b) {
     return res;
 }
 
+// returns a value in [0,1]
+inline double InverseLerp(double start, double end, double t) {
+    if (start >= end) {
+        return 0.0;
+    }
+    if (t < start) {
+        return 0.0; 
+    } else if (t > end) {
+        return 1.0;
+    }
+    return (t - start) / (end - start);
+}
+
+// a is in [0,1]
+inline double Lerp(double start, double end, double a) {
+    return start + a * (end - start);
+}
+
 }

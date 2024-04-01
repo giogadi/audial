@@ -79,7 +79,7 @@
                 <Osc2Waveform>Saw</Osc2Waveform>
                 <Detune>0</Detune>
                 <OscFader>0</OscFader>
-                <Cutoff>21661.0156</Cutoff>
+                <Cutoff>9355.93164</Cutoff>
                 <Peak>0</Peak>
                 <HpfCutoff>0</HpfCutoff>
                 <HpfPeak>0</HpfPeak>
@@ -88,7 +88,7 @@
                 <PitchLFOFreq>4.5</PitchLFOFreq>
                 <CutoffLFOGain>0</CutoffLFOGain>
                 <CutoffLFOFreq>3.3900001</CutoffLFOFreq>
-                <AmpEnvAttack>0.101999998</AmpEnvAttack>
+                <AmpEnvAttack>0.00999999978</AmpEnvAttack>
                 <AmpEnvDecay>1.648</AmpEnvDecay>
                 <AmpEnvSustain>1</AmpEnvSustain>
                 <AmpEnvRelease>0.720000029</AmpEnvRelease>

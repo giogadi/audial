@@ -38,7 +38,8 @@ struct MechEntity : public ne::Entity {
 
     Props _p;
 
-    void InitTypeSpecificPropsAndState();
+    void InitTypeSpecificProps();
+    void InitTypeSpecificState();
     
     struct SpawnerState {
 
@@ -53,8 +54,12 @@ struct MechEntity : public ne::Entity {
     };
     struct GrabberState {
         float angleRad;
-        GrabberPhase phase; 
-        float stopAngleRad;
+        // GrabberPhase phase; 
+        // float stopAngleRad;
+        double moveStartTime;
+        double moveEndTime; 
+        double moveStartAngleRad;
+        double moveEndAngleRad;
     };
 
     struct State {

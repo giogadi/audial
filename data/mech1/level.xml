@@ -573,7 +573,7 @@
                 </waypoint_follower>
                 <mech_type>Grabber</mech_type>
                 <key>f</key>
-                <quantize>0.5</quantize>
+                <quantize>0.25</quantize>
                 <actions>
                     <seq_action>
                         <one_time>false</one_time>
@@ -593,26 +593,14 @@
                                 <note>60</note>
                             </array_item>
                         </midiNotes>
-                        <noteLength>0</noteLength>
+                        <noteLength>0.125</noteLength>
                         <velocity>1</velocity>
                         <quantizeDenom>0</quantizeDenom>
-                        <doNoteOff>false</doNoteOff>
+                        <doNoteOff>true</doNoteOff>
                         <holdNotes>false</holdNotes>
                     </seq_action>
                 </actions>
-                <stop_actions>
-                    <seq_action>
-                        <one_time>false</one_time>
-                        <action_type>BeatTimeEvent</action_type>
-                        <quantize_denom>0</quantize_denom>
-                        <beat_time_event>
-                            <event_type>AllNotesOff</event_type>
-                            <channel>2</channel>
-                            <delay_secs>0</delay_secs>
-                            <beat_time>0</beat_time>
-                        </beat_time_event>
-                    </seq_action>
-                </stop_actions>
+                <stop_actions/>
                 <grabber_angle>180</grabber_angle>
                 <grabber_length>2</grabber_length>
             </Mech>
