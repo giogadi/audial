@@ -54,12 +54,11 @@ struct MechEntity : public ne::Entity {
     };
     struct GrabberState {
         float angleRad;
-        // GrabberPhase phase; 
-        // float stopAngleRad;
         double moveStartTime;
         double moveEndTime; 
         double moveStartAngleRad;
         double moveEndAngleRad;
+        float handToResOffset[3];
     };
 
     struct State {

@@ -20,6 +20,10 @@ void Transform::SetPosZ(float v) {
     _mat(2,3) = v;
 }
 
+void Transform::Translate(Vec3 const& t) {
+    _mat.Translate(t); 
+}
+
 void Transform::SetQuat(Quaternion const& q) {
     // debug
     float m = q.Magnitude();

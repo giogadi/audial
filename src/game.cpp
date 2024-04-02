@@ -82,6 +82,7 @@ struct CommandLineInputs {
     std::optional<std::string> _synthPatchesFilename;
     float _gain = 1.f;
     bool _editMode = false;
+    bool _drawTerrain = false;
 };
 
 void ParseCommandLine(CommandLineInputs& inputs, std::vector<std::string> const& argv, bool useDefaultFile);
@@ -164,6 +165,8 @@ void ParseCommandLine(CommandLineInputs& inputs, std::vector<std::string> const&
             } catch (std::exception& e) {
                 std::cout << "-g: Failed to parse \"" << gainValueStr << "\" as a float." << std::endl;
             }
+        } else if (argv[argIx] == "-t") {
+            inputs._drawTerrain = true;
         }
     }
 }
@@ -396,6 +399,7 @@ int main(int argc, char** argv) {
     Editor editor;
 
     renderer::Scene sceneManager;
+    sceneManager.SetDrawTerrain(cmdLineInputs._drawTerrain);
 
     ne::EntityManager neEntityManager;
 

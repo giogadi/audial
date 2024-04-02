@@ -120,6 +120,8 @@ public:
     Camera _camera;
 
     Mat4 GetViewProjTransform() const;
+
+    void SetDrawTerrain(bool enable);
 private:
     std::unique_ptr<SceneInternal> _pInternal;
 };

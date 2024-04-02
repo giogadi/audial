@@ -282,6 +282,8 @@ public:
     std::array<std::unique_ptr<BoundMeshPNU>, (int)InputManager::ControllerButton::Count> _psButtonMeshes;
     unsigned int _psButtonsTextureId;
 
+    bool _drawTerrain = false;
+
     // boring cached things
     std::vector<ModelInstance const*> _topLayerModels;
     std::vector<ModelInstance const*> _transparentModels;
@@ -953,7 +955,7 @@ void Scene::Draw(int windowWidth, int windowHeight, float timeInSecs) {
 
     // TERRAIN
 #if DRAW_TERRAIN   
-    {
+    if (_pInternal->_drawTerrain) {
         Mat4 transMat;
         Vec3 cameraPos = _camera._transform.GetPos();
         Vec3 cameraPosToTerrainPos;
@@ -1189,6 +1191,10 @@ void Scene::Draw(int windowWidth, int windowHeight, float timeInSecs) {
 
 renderer::Light* Scene::DrawLight() {
     return &_pInternal->_lightsToDraw.emplace_back();
+}
+
+void Scene::SetDrawTerrain(bool enable) {
+    _pInternal->_drawTerrain = enable;
 }
 
 } // namespace renderer

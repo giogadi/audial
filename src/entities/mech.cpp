@@ -48,6 +48,7 @@ void MechEntity::InitTypeSpecificState() {
         _s.grabber.angleRad = 0.f;
         _s.grabber.moveStartTime = -1.0;
         _s.grabber.moveEndTime = -1.0;
+        memset(_s.grabber.handToResOffset, 0, sizeof(_s.grabber.handToResOffset));
         break;
     case MechType::Count: break;
     }
@@ -231,6 +232,7 @@ void MechEntity::UpdateDerived(GameManager& g, float dt) {
                 }
                 ne::Entity* r = g._neEntityManager->AddEntity(ne::EntityType::Resource);
                 r->_initTransform = _transform;
+                r->_initTransform.Translate(Vec3(0.f, 1.f, 0.f));
                 r->_initTransform.SetScale(Vec3(0.25f, 0.25f, 0.25f));
                 r->_modelName = "cube";
                 r->_modelColor.Set(1.f, 1.f, 1.f, 1.f);
@@ -289,6 +291,7 @@ void MechEntity::UpdateDerived(GameManager& g, float dt) {
             }
             if (_s.grabber.moveStartTime > 0.0) {
                 float factor = (float) math_util::InverseLerp(_s.grabber.moveStartTime, _s.grabber.moveEndTime, beatTime);   
+                factor = math_util::SmoothStep(factor);
                 _s.grabber.angleRad = math_util::Lerp(_s.grabber.moveStartAngleRad, _s.grabber.moveEndAngleRad, factor);
                 if (beatTime >= _s.grabber.moveEndTime) {
                     _s.grabber.moveStartTime = -1.0;
@@ -314,16 +317,21 @@ void MechEntity::UpdateDerived(GameManager& g, float dt) {
                     for (ne::EntityManager::Iterator iter = g._neEntityManager->GetIterator(ne::EntityType::Resource); !iter.Finished(); iter.Next()) {
                         ResourceEntity* r = static_cast<ResourceEntity*>(iter.GetEntity());
                         assert(r);
-                        bool inHand = geometry::IsPointInBoundingBox(r->_transform.Pos(), handTrans);
+                        bool inHand = geometry::IsPointInBoundingBox2d(r->_transform.Pos(), handTrans);
                         if (inHand) {
+                            _s.resource = r->_id;
                             resInHand = r;
+                            Vec3 offset = r->_transform.Pos() - handTrans.Pos();
+                            offset.CopyToArray(_s.grabber.handToResOffset);
                             break;
                         }
                     }
                 }
 
                 if (resInHand) {
-                    resInHand->_transform.SetPos(handTrans.Pos());
+                    Vec3 offset(_s.grabber.handToResOffset);
+                    Vec3 p = handTrans.Pos() + offset;
+                    resInHand->_transform.SetPos(p);
                 }
 
             }
@@ -354,7 +362,7 @@ void DrawGrabber(MechEntity& e, GameManager& g) {
     p = e._transform.Pos() + length * dir;
     Transform handTrans;
     handTrans.SetQuat(q);
-    handTrans.SetScale(Vec3(1.f, 1.f, 1.f));
+    handTrans.SetScale(Vec3(1.f, 0.1f, 1.f));
     handTrans.SetPos(p);
     
     g._scene->DrawCube(handTrans.Mat4Scale(), e._modelColor);

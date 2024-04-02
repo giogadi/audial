@@ -12,6 +12,8 @@ public:
     void SetPosX(float x);
     void SetPosY(float y);
     void SetPosZ(float z);
+
+    void Translate(Vec3 const& t);
     
     // functions to make refactors easier
     Vec3 GetPos() const { return Pos(); }

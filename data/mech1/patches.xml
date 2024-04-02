@@ -5,12 +5,12 @@
         <patch>
             <name>bass</name>
             <patch>
-                <Gain>0.73299998</Gain>
+                <Gain>0.885999978</Gain>
                 <Mono>1</Mono>
                 <Osc1Waveform>Saw</Osc1Waveform>
                 <Osc2Waveform>Saw</Osc2Waveform>
-                <Detune>0</Detune>
-                <OscFader>0</OscFader>
+                <Detune>1</Detune>
+                <OscFader>0.351999998</OscFader>
                 <Cutoff>2440.67798</Cutoff>
                 <Peak>0</Peak>
                 <HpfCutoff>0</HpfCutoff>
