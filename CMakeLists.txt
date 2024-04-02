@@ -227,3 +227,9 @@ add_executable(synth_simd_test EXCLUDE_FROM_ALL
     src/synth_simd_test.c)
 target_include_directories(synth_simd_test PUBLIC src/ ./)
 target_compile_options(synth_simd_test PRIVATE "-mavx")
+
+add_executable(fft_test EXCLUDE_FROM_ALL
+    src/fft_test.c)
+target_include_directories(fft_test PUBLIC src/ ./ src/fftw/)
+target_link_libraries(fft_test ${CMAKE_SOURCE_DIR}/src/fftw/libfftw3.a)
+
