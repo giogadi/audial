@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <fftw3.h>
 #include <math.h>
+#include <string.h>
 
 int main() {
 
@@ -18,8 +19,8 @@ int main() {
     float phaseChange1 = baseF1 * 2 * M_PI / sampleRate;
 
     for (int i = 0; i < N; ++i) {
-        in[i] = 0.95 * sin(phase0);
-        in[i] += 0.95 * sin(phase1);
+        in[i] = 0.5 * sin(phase0);
+        in[i] += 0.5 * sin(phase1);
         phase0 += phaseChange0;
         phase1 += phaseChange1;
     }
@@ -28,15 +29,63 @@ int main() {
 
     fftw_execute(p);
 
-    for (int i = 0; i < N / 2 + 1; ++i) {
-        float a = (float)i / N;
-        float b = (float)i / (N / sampleRate);
-        float m = sqrt(out[i][0]*out[i][0] + out[i][1]*out[i][1]);
-        float r = out[i][0] / N;
-        float img = out[i][1] / N;
-        float v = r*r + img*img;
-        printf("%f %f (%f,%f,%f,%f,%f)\n", a, b, out[i][0], out[i][1], m, v, sqrt(v));
-    }     
+    // int fftSize = N / 2 + 1;
+    int fftSize = N / 2;
+    double fftAmps[fftSize];
+    double fftFreqs[fftSize];
+    for (int i = 0; i < fftSize; ++i) {
+        // float deltaF = (sampleRate * 0.5f) / fftSize;
+        // float freq = (float) i * deltaF;
+        float freq = (i+1) * sampleRate / N;
+        float r = out[i+1][0];
+        float img = out[i+1][1];
+        float amp = 2 * sqrt(r*r + img*img) / N;
+        fftAmps[i] = amp;
+        fftFreqs[i] = freq;
+        // printf("[%d] %f: %f\n", i, freq, amp);
+    }
+
+    int minBandwidthPerOctave = 200;
+    int bandsPerOctave = 1; 
+
+    int numOctaves = 0;
+    int startDftBin = 0;
+    for (int ii = 1; ii < fftSize; ii = ii << 1) {
+        float f = fftFreqs[ii - 1];
+        if (f >= minBandwidthPerOctave) {
+            startDftBin = ii;
+            int x = ii;
+            int count = 0;
+            while (x <= fftSize) {
+                x = x << 1;
+                ++count;
+            }
+            numOctaves = count;
+            break;
+        }
+    }
+
+    int numLogAvgBins = numOctaves * bandsPerOctave;
+    float logAvgBins[numOctaves * bandsPerOctave];
+    memset(logAvgBins, 0, sizeof(float) * numLogAvgBins);
+    float logAvgBinFreqs[numLogAvgBins];
+    int prevDftIndex = 0;
+    for (int octaveIx = 0; octaveIx < numOctaves; ++octaveIx) {
+        int dftBinIx = (startDftBin << octaveIx) - 1;
+        printf("%d: %d to %d (%f to %f)\n", octaveIx, prevDftIndex, dftBinIx, fftFreqs[prevDftIndex], fftFreqs[dftBinIx]);
+        for (int jj = prevDftIndex; jj <= dftBinIx; ++jj) {
+            logAvgBins[octaveIx] += fftAmps[jj]; 
+        }
+        logAvgBins[octaveIx] /= (dftBinIx - prevDftIndex) + 1;
+        logAvgBinFreqs[octaveIx] = fftFreqs[dftBinIx];
+        prevDftIndex = dftBinIx + 1; 
+    } 
+
+    printf("*********\n");
+    for (int i = 0; i < numLogAvgBins; ++i) {
+        printf("[%d] %f %f\n", i, logAvgBinFreqs[i], logAvgBins[i]);
+    }
+
 
     fftw_destroy_plan(p);
     fftw_free(in);
