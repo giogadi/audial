@@ -26,6 +26,7 @@
 #include "entities/vfx.h"
 #include "entities/mech.h"
 #include "entities/resource.h"
+#include "entities/viz.h"
 
 extern GameManager gGameManager;
 

@@ -2,6 +2,7 @@
 
 #include <iostream>
 #include <vector>
+#include <mutex>
 
 #include <portaudio.h>
 #include "boost/circular_buffer.hpp"
@@ -37,6 +38,10 @@ struct StateData {
     float _finalGain = 1.f;
 
     int64_t _bufferCounter = 0;
+
+    std::mutex _recentBufferMutex;
+    int _bufferFrameCount = 0;
+    float* _recentBuffer = nullptr;
 };
 
 void InitStateData(

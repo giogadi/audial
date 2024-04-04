@@ -20,7 +20,8 @@ namespace ne {
     X(FlowPickup) \
     X(FlowTrigger) \
     X(IntVariable) \
-    X(Vfx)
+    X(Vfx) \
+    X(Viz)
 
     enum class EntityType : int {
 #   define X(a) a,

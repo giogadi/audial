@@ -8,6 +8,7 @@
 #include "portaudio/include/pa_win_wasapi.h"
 #endif
 
+#include "features.h"
 #include "util.h"
 #include "audio_util.h"
 #include "synth.h"
@@ -47,11 +48,16 @@ void InitStateData(
     state.events = eventQueue;
 
     state.pendingEvents.set_capacity(1024);
+
+    state._bufferFrameCount = FRAMES_PER_BUFFER;
+    state._recentBuffer = new float[FRAMES_PER_BUFFER];
 }
 void DestroyStateData(StateData& state) {
     for (synth::StateData& synth : state.synths) {
         synth::DestroyStateData(synth);
     }
+
+    delete[] state._recentBuffer;
 }
 
 /*
@@ -431,6 +437,15 @@ int PortAudioCallback(
             outputBuffer[i] *= state->_finalGain;
         }
     }
+
+#if COMPUTE_FFT
+    if (state->_recentBufferMutex.try_lock()) {
+        for (int i = 0; i < samplesPerFrame; ++i) {
+            state->_recentBuffer[i] = outputBuffer[i];
+        }
+        state->_recentBufferMutex.unlock();
+    }
+#endif
 
     // Clear out events from this frame.
     PopEventsFromThisFrame(&(state->pendingEvents), state->_bufferCounter);

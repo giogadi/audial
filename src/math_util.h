@@ -79,6 +79,8 @@ inline double InverseLerp(double start, double end, double t) {
 
 // a is in [0,1]
 inline double Lerp(double start, double end, double a) {
+    if (a <= 0.0) return start;
+    if (a >= 1.0) return end;
     return start + a * (end - start);
 }
 

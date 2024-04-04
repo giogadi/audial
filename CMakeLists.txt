@@ -19,6 +19,8 @@ endif()
 add_subdirectory(src/stk)
 
 add_executable(game
+    src/features.h
+
     src/stb_image.cpp src/imgui/imgui.cpp src/imgui/imgui_demo.cpp src/imgui/imgui_draw.cpp
     src/imgui/imgui_tables.cpp src/imgui/imgui_widgets.cpp src/imgui/backends/imgui_impl_glfw.cpp
     src/imgui/backends/imgui_impl_opengl3.cpp
@@ -113,6 +115,7 @@ add_executable(game
     src/entities/vfx.cpp src/entities/vfx.h
     src/entities/mech.cpp src/entities/mech.h
     src/entities/resource.cpp src/entities/resource.h
+    src/entities/viz.cpp src/entities/viz.h
     
     src/enums/audio_EventType.cpp src/enums/audio_EventType.h
     src/enums/audio_SynthParamType.cpp src/enums/audio_SynthParamType.h
@@ -143,6 +146,13 @@ target_include_directories(game PUBLIC src/portaudio/include)
 
 target_include_directories(game PUBLIC
     ./ ./src src/glfw/include src/glad/include src/imgui)
+
+if(MSVC)
+else()
+    target_include_directories(game PUBLIC src/fftw/)
+    target_link_libraries(game ${CMAKE_SOURCE_DIR}/src/fftw/libfftw3.a)
+endif()
+
 
 add_executable(font_tool EXCLUDE_FROM_ALL src/font_tool.cpp)
 
@@ -228,8 +238,11 @@ add_executable(synth_simd_test EXCLUDE_FROM_ALL
 target_include_directories(synth_simd_test PUBLIC src/ ./)
 target_compile_options(synth_simd_test PRIVATE "-mavx")
 
-add_executable(fft_test EXCLUDE_FROM_ALL
-    src/fft_test.c)
-target_include_directories(fft_test PUBLIC src/ ./ src/fftw/)
-target_link_libraries(fft_test ${CMAKE_SOURCE_DIR}/src/fftw/libfftw3.a)
+if (MSVC)
+else()
+    add_executable(fft_test EXCLUDE_FROM_ALL
+        src/fft_test.c)
+    target_include_directories(fft_test PUBLIC src/ ./ src/fftw/)
+    target_link_libraries(fft_test ${CMAKE_SOURCE_DIR}/src/fftw/libfftw3.a)
+endif()
 

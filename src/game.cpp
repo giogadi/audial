@@ -23,6 +23,12 @@
 #include "backends/imgui_impl_glfw.h"
 #include "backends/imgui_impl_opengl3.h"
 
+#include "features.h"
+
+#if COMPUTE_FFT
+#include <fftw3.h>
+#endif
+
 #include "constants.h"
 #include "game_manager.h"
 #include "audio.h"
@@ -44,6 +50,14 @@
 #include "logger.h"
 
 GameManager gGameManager;
+
+double* gDft = nullptr;
+int gDftCount = 0;
+
+double* gDftLogAvgs = nullptr;
+double* gDftLogAvgsMaxFreqs = nullptr;
+int gDftLogAvgsCount = 0;
+
 
 void SetViewport(ViewportInfo const& viewport) {
     glViewport(viewport._offsetX, viewport._offsetY, viewport._width, viewport._height);
@@ -394,6 +408,41 @@ int main(int argc, char** argv) {
         }
     }
 
+    int const bufferFrameCount = audioContext._state._bufferFrameCount;
+    gDftCount = bufferFrameCount / 2;
+    gDft = new double[gDftCount]();
+    double* dftFreqs = new double[gDftCount]();
+    float sampleRate = audioContext._sampleRate;
+    for (int i = 0; i < gDftCount; ++i) {
+        dftFreqs[i] = (i+1) * sampleRate / bufferFrameCount;
+    }
+
+    int startDftBin = 0;
+    int numOctaves = 0;
+    int const minBandwidthPerOctave = 200;
+    int const bandsPerOctave = 2; 
+    {
+        for (int ii = 1; ii < gDftCount; ii = ii << 1) {
+            float f = dftFreqs[ii - 1];
+            if (f >= minBandwidthPerOctave) {
+                startDftBin = ii - 1;
+                int x = ii;
+                int count = 0;
+                while (x <= gDftCount) {
+                    x = x << 1;
+                    ++count;
+                }
+                numOctaves = count;
+                break;
+            }
+
+        }  
+    }
+    gDftLogAvgsCount = numOctaves * bandsPerOctave;
+    gDftLogAvgs = new double[gDftLogAvgsCount]();
+    gDftLogAvgsMaxFreqs = new double[gDftLogAvgsCount]();
+
+
     InputManager inputManager(window);
 
     Editor editor;
@@ -485,6 +534,12 @@ int main(int argc, char** argv) {
 
     editor.Init(&gGameManager);
 
+#if COMPUTE_FFT
+    double* fftIn = (double*) fftw_malloc(sizeof(double) * bufferFrameCount);
+    fftw_complex* fftOut = (fftw_complex*) fftw_malloc(sizeof(fftw_complex) * bufferFrameCount);
+    fftw_plan fftwPlan = fftw_plan_dft_r2c_1d(bufferFrameCount, fftIn, fftOut, FFTW_ESTIMATE);
+#endif
+
     float const fixedTimeStep = 1.f / static_cast<float>(refreshRate);
     bool paused = false;
     while(!glfwWindowShouldClose(window)) {
@@ -495,6 +550,65 @@ int main(int argc, char** argv) {
         gGameManager._viewportInfo = CalculateViewport(gGameManager._aspectRatio, gGameManager._fbWidth, gGameManager._fbHeight, gGameManager._windowWidth, gGameManager._windowHeight);
 
         beatClock.Update(gGameManager);
+
+#if COMPUTE_FFT
+        {
+            audioContext._state._recentBufferMutex.lock();
+            for (int i = 0; i < bufferFrameCount; ++i) {
+                fftIn[i] = audioContext._state._recentBuffer[i];
+            }
+            audioContext._state._recentBufferMutex.unlock();
+
+            fftw_execute(fftwPlan);
+
+            for (int i = 0; i < gDftCount; ++i) {
+                float r = fftOut[i+1][0];
+                float img = fftOut[i+1][1];
+                float v = 2 * sqrt(r*r + img*img) / bufferFrameCount;
+                gDft[i] = v;
+            }
+
+            // DFT LOG AVERAGES
+            memset(gDftLogAvgs, 0, sizeof(*gDftLogAvgs) * gDftLogAvgsCount);
+            float octaveMinFreq = 0.f;
+            float octaveMaxFreq = dftFreqs[startDftBin];
+            int dftIx = startDftBin;
+            float const dftBinHalfBw = (1.f / bufferFrameCount) * sampleRate / 2.f;
+            for (int octaveIx = 0; octaveIx < numOctaves; ++octaveIx) {
+                float octaveBw = octaveMaxFreq - octaveMinFreq;
+                float logBinBw = octaveBw / bandsPerOctave;
+                float logBinMinFreq = octaveMinFreq;
+                for (int bandIx = 0; bandIx < bandsPerOctave; ++bandIx) {
+                    float logBinMaxFreq = logBinMinFreq + logBinBw;
+                    
+                    // logAvgBinMinFreqs[octaveIx*bandsPerOctave + bandIx] = logBinMinFreq;
+                    gDftLogAvgsMaxFreqs[octaveIx*bandsPerOctave + bandIx] = logBinMaxFreq;
+
+                    int count = 0;
+                    while (dftIx < gDftCount) {
+                        float dftCenter = dftFreqs[dftIx];
+                        float dftBinMaxFreq = dftCenter + dftBinHalfBw;
+                        gDftLogAvgs[octaveIx * bandsPerOctave + bandIx] += gDft[dftIx];
+                        ++count;
+                        if (dftBinMaxFreq < logBinMaxFreq) {
+                            ++dftIx;
+                        } else {
+                            break;
+                        }
+                    }
+                    if (count > 1) {
+                        gDftLogAvgs[octaveIx*bandsPerOctave + bandIx] /= count;          
+                    }
+
+                    logBinMinFreq = logBinMaxFreq;
+                }
+
+                octaveMinFreq = octaveMaxFreq;
+                octaveMaxFreq *= 2.f; 
+            }
+
+        } 
+#endif // COMPUTE_FFT
 
         {
             ImGuiIO& io = ImGui::GetIO();
@@ -579,6 +693,12 @@ int main(int argc, char** argv) {
         neEntityManager.DeactivateTaggedEntities(gGameManager);
         neEntityManager.ActivateTaggedEntities(gGameManager);
     }
+
+#if COMPUTE_FFT
+    fftw_destroy_plan(fftwPlan);
+    fftw_free(fftIn);
+    fftw_free(fftOut);
+#endif
 
     ShutDown(audioContext, soundBank);
 
