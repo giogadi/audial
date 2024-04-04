@@ -2,6 +2,8 @@
 #include <fftw3.h>
 #include <math.h>
 #include <string.h>
+#include <stdbool.h>
+#include <stdlib.h>
 
 int main() {
 
@@ -46,14 +48,14 @@ int main() {
     }
 
     int minBandwidthPerOctave = 200;
-    int bandsPerOctave = 1; 
+    int bandsPerOctave = 10; 
 
     int numOctaves = 0;
     int startDftBin = 0;
     for (int ii = 1; ii < fftSize; ii = ii << 1) {
         float f = fftFreqs[ii - 1];
         if (f >= minBandwidthPerOctave) {
-            startDftBin = ii;
+            startDftBin = ii - 1;
             int x = ii;
             int count = 0;
             while (x <= fftSize) {
@@ -66,24 +68,56 @@ int main() {
     }
 
     int numLogAvgBins = numOctaves * bandsPerOctave;
-    float logAvgBins[numOctaves * bandsPerOctave];
-    memset(logAvgBins, 0, sizeof(float) * numLogAvgBins);
-    float logAvgBinFreqs[numLogAvgBins];
-    int prevDftIndex = 0;
+    float* logAvgBins = calloc(numLogAvgBins, sizeof(float));
+    float* logAvgBinMinFreqs = calloc(numLogAvgBins, sizeof(float));
+    float* logAvgBinMaxFreqs = calloc(numLogAvgBins, sizeof(float));
+
+    float octaveMinFreq = 0.f;
+    float octaveMaxFreq = fftFreqs[startDftBin];
+    int dftIx = startDftBin;
+    float const dftBinHalfBw = (1.f / N) * sampleRate / 2.f;
     for (int octaveIx = 0; octaveIx < numOctaves; ++octaveIx) {
-        int dftBinIx = (startDftBin << octaveIx) - 1;
-        printf("%d: %d to %d (%f to %f)\n", octaveIx, prevDftIndex, dftBinIx, fftFreqs[prevDftIndex], fftFreqs[dftBinIx]);
-        for (int jj = prevDftIndex; jj <= dftBinIx; ++jj) {
-            logAvgBins[octaveIx] += fftAmps[jj]; 
+        float octaveBw = octaveMaxFreq - octaveMinFreq;
+        float logBinBw = octaveBw / bandsPerOctave;
+        float logBinMinFreq = octaveMinFreq;
+        for (int bandIx = 0; bandIx < bandsPerOctave; ++bandIx) {
+            float logBinMaxFreq = logBinMinFreq + logBinBw;
+            
+            logAvgBinMinFreqs[octaveIx*bandsPerOctave + bandIx] = logBinMinFreq;
+            logAvgBinMaxFreqs[octaveIx*bandsPerOctave + bandIx] = logBinMaxFreq;
+
+            int count = 0;
+            while (dftIx < fftSize) {
+                float dftCenter = fftFreqs[dftIx];
+                // float dftBinMinFreq = dftCenter - dftBinHalfBw;
+                float dftBinMaxFreq = dftCenter + dftBinHalfBw;
+                // bool overlap = !(dftBinMinFreq > logBinMaxFreq || dftBinMaxFreq < logBinMinFreq);
+                // if (overlap) {
+                //     logAvgBins[octaveIx*bandsPerOctave + bandIx] += fftAmps[dftIx];
+                //    ++count;
+                // }
+                logAvgBins[octaveIx * bandsPerOctave + bandIx] += fftAmps[dftIx];
+                ++count;
+                if (dftBinMaxFreq < logBinMaxFreq) {
+                    ++dftIx;
+                } else {
+                    break;
+                }
+            }
+            if (count > 1) {
+                logAvgBins[octaveIx*bandsPerOctave + bandIx] /= count;          
+            }
+
+            logBinMinFreq = logBinMaxFreq;
         }
-        logAvgBins[octaveIx] /= (dftBinIx - prevDftIndex) + 1;
-        logAvgBinFreqs[octaveIx] = fftFreqs[dftBinIx];
-        prevDftIndex = dftBinIx + 1; 
-    } 
+
+        octaveMinFreq = octaveMaxFreq;
+        octaveMaxFreq *= 2.f; 
+    }
 
     printf("*********\n");
     for (int i = 0; i < numLogAvgBins; ++i) {
-        printf("[%d] %f %f\n", i, logAvgBinFreqs[i], logAvgBins[i]);
+        printf("[%d] %f-%f %f\n", i, logAvgBinMinFreqs[i], logAvgBinMaxFreqs[i], logAvgBins[i]);
     }
 
 
