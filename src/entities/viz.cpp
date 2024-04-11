@@ -4,9 +4,9 @@
 #include "renderer.h"
 #include "math_util.h"
 
-// extern double* gDft;
-// extern int gDftCount;
 extern double* gDftLogAvgs;
+extern double* gDftLogAvgsSmooth;
+extern double* gDftLogAvgsScaled;
 extern int gDftLogAvgsCount;
 
 void VizEntity::SaveDerived(serial::Ptree pt) const {
@@ -37,8 +37,11 @@ void VizEntity::UpdateDerived(GameManager& g, float dt) {
 
 void VizEntity::Draw(GameManager& g, float dt) {
     for (int ii = 0; ii < gDftLogAvgsCount; ++ii) {
-        float s = gDftLogAvgs[ii];
-        s = math_util::InverseLerp(0.f, 0.1f, s);
+        float s = gDftLogAvgsScaled[ii];
+
+        // float s = gDftLogAvgsSmooth[ii];
+        // float s = gDftLogAvgs[ii];
+        // s = math_util::InverseLerp(0.f, 0.1f, s);
         s = math_util::Lerp(0.1f, 4.f, s);
 
         Transform offset;

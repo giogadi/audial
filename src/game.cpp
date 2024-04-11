@@ -56,7 +56,10 @@ int gDftCount = 0;
 
 double* gDftLogAvgs = nullptr;
 double* gDftLogAvgsMaxFreqs = nullptr;
+double* gDftLogAvgsSmooth = nullptr;
+double* gDftLogAvgsScaled = nullptr;
 int gDftLogAvgsCount = 0;
+
 
 
 void SetViewport(ViewportInfo const& viewport) {
@@ -419,8 +422,8 @@ int main(int argc, char** argv) {
 
     int startDftBin = 0;
     int numOctaves = 0;
-    int const minBandwidthPerOctave = 200;
-    int const bandsPerOctave = 2; 
+    int const minBandwidthPerOctave = 100;
+    int const bandsPerOctave = 1; 
     {
         for (int ii = 1; ii < gDftCount; ii = ii << 1) {
             float f = dftFreqs[ii - 1];
@@ -441,6 +444,8 @@ int main(int argc, char** argv) {
     gDftLogAvgsCount = numOctaves * bandsPerOctave;
     gDftLogAvgs = new double[gDftLogAvgsCount]();
     gDftLogAvgsMaxFreqs = new double[gDftLogAvgsCount]();
+    gDftLogAvgsSmooth = new double[gDftLogAvgsCount]();
+    gDftLogAvgsScaled = new double[gDftLogAvgsCount]();
 
 
     InputManager inputManager(window);
@@ -606,6 +611,25 @@ int main(int argc, char** argv) {
                 octaveMinFreq = octaveMaxFreq;
                 octaveMaxFreq *= 2.f; 
             }
+
+            float minVal = 999999.f, maxVal = -9999999.f;
+            for (int ii = 0; ii < gDftLogAvgsCount; ++ii) {
+                float curr = gDftLogAvgs[ii];
+                if (curr > 0.f) {
+                    curr = 10.f * log10(curr * curr);
+                }
+                gDftLogAvgsSmooth[ii] += fixedTimeStep * 50.f * (curr - gDftLogAvgsSmooth[ii]);
+                minVal = std::min((float)gDftLogAvgsSmooth[ii], minVal);
+                maxVal = std::max((float)gDftLogAvgsSmooth[ii], maxVal);
+                // gDftLogAvgsSmooth[ii] += fixedTimeStep * 20.f * (gDftLogAvgs[ii] - gDftLogAvgsSmooth[ii]);
+            }
+
+            float range = maxVal - minVal;
+            float scaleFactor = range + 0.00001f;
+            for (int ii = 0; ii < gDftLogAvgsCount; ++ii) {
+                gDftLogAvgsScaled[ii] = (gDftLogAvgsSmooth[ii] - minVal) / scaleFactor;
+            }
+            // printf("(%f, %f)\n", minVal, maxVal);
 
         } 
 #endif // COMPUTE_FFT
