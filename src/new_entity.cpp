@@ -11,6 +11,7 @@
 #include "enums/Direction.h"
 #include "camera_util.h"
 
+#include "entities/test.h"
 #include "entities/light.h"
 #include "entities/camera.h"
 #include "entities/sequencer.h"

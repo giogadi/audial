@@ -6,6 +6,7 @@ namespace ne {
 
 #define M_ENTITY_TYPES \
     X(Base) \
+    X(Test) \
     X(Light) \
     X(Camera) \
     X(Sequencer) \
