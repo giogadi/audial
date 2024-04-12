@@ -179,6 +179,21 @@ namespace {
 float Normalize2Pi(float angleRad) {
     return angleRad - (2*kPi) * std::floor(angleRad / (2*kPi));
 }
+
+Transform GetGrabberHandTrans(Transform grabberTrans, float grabberLength, float grabberAngleRad) {
+    Transform handTrans;
+
+    Quaternion q;
+    q.SetFromAngleAxis(grabberAngleRad, Vec3(0.f, 1.f, 0.f));
+
+    handTrans.SetQuat(q); 
+    handTrans.SetScale(Vec3(1.f, 1.f, 1.f));
+    Vec3 dir = handTrans.GetXAxis();
+    Vec3 handP = grabberTrans.Pos() + grabberLength * dir;
+    handTrans.SetPos(handP);
+
+    return handTrans;
+}
 }
 
 void MechEntity::UpdateDerived(GameManager& g, float dt) {
@@ -282,7 +297,7 @@ void MechEntity::UpdateDerived(GameManager& g, float dt) {
         case MechType::Grabber: { 
             if (quantizeReached && _s.grabber.moveStartTime < 0.0) {
                 _s.grabber.moveStartTime = quantizedBeatTime;
-                _s.grabber.moveEndTime = quantizedBeatTime + 0.25;                
+                _s.grabber.moveEndTime = quantizedBeatTime + 0.125;                
                 _s.grabber.angleRad = Normalize2Pi(_s.grabber.angleRad);
                 _s.grabber.moveStartAngleRad = _s.grabber.angleRad;
                 _s.grabber.moveEndAngleRad = _s.grabber.moveStartAngleRad + (2 * kPi / 8);
@@ -290,27 +305,8 @@ void MechEntity::UpdateDerived(GameManager& g, float dt) {
                 _s.resource = ne::EntityId();
             }
             if (_s.grabber.moveStartTime > 0.0) {
-                float factor = (float) math_util::InverseLerp(_s.grabber.moveStartTime, _s.grabber.moveEndTime, beatTime);   
-                factor = math_util::SmoothStep(factor);
-                _s.grabber.angleRad = math_util::Lerp(_s.grabber.moveStartAngleRad, _s.grabber.moveEndAngleRad, factor);
-                if (beatTime >= _s.grabber.moveEndTime) {
-                    _s.grabber.moveStartTime = -1.0;
-                    _s.grabber.moveEndTime = -1.0;
-                }
+                Transform handTrans = GetGrabberHandTrans(_transform, _p.grabber.length, _s.grabber.angleRad);
 
-                Transform handTrans;
-                {
-                    float const length = _p.grabber.length;
-
-                    Quaternion q;
-                    q.SetFromAngleAxis(_s.grabber.angleRad, Vec3(0.f, 1.f, 0.f));
-                    
-                    handTrans.SetQuat(q); 
-                    handTrans.SetScale(Vec3(1.f, 1.f, 1.f));
-                    Vec3 dir = handTrans.GetXAxis();
-                    Vec3 handP = _transform.Pos() + length * dir;
-                    handTrans.SetPos(handP);
-                }
                 ResourceEntity* resInHand = g._neEntityManager->GetEntityAs<ResourceEntity>(_s.resource);
                 if (resInHand == nullptr) {
                     
@@ -327,6 +323,17 @@ void MechEntity::UpdateDerived(GameManager& g, float dt) {
                         }
                     }
                 }
+
+
+                float factor = (float) math_util::InverseLerp(_s.grabber.moveStartTime, _s.grabber.moveEndTime, beatTime);   
+                factor = math_util::SmoothStep(factor);
+                _s.grabber.angleRad = math_util::Lerp(_s.grabber.moveStartAngleRad, _s.grabber.moveEndAngleRad, factor);
+                if (beatTime >= _s.grabber.moveEndTime) {
+                    _s.grabber.moveStartTime = -1.0;
+                    _s.grabber.moveEndTime = -1.0;
+                }
+
+                handTrans = GetGrabberHandTrans(_transform, _p.grabber.length, _s.grabber.angleRad); 
 
                 if (resInHand) {
                     Vec3 offset(_s.grabber.handToResOffset);

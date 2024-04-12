@@ -528,8 +528,8 @@
                 <editor_id>
                     <id>12</id>
                 </editor_id>
-                <name>new_entity</name>
-                <entity_active>true</entity_active>
+                <name>viz</name>
+                <entity_active>false</entity_active>
                 <pickable>true</pickable>
                 <transform>
                     <pos>
