@@ -20,9 +20,6 @@ void MechEntity::InitTypeSpecificProps() {
         _p.pusher = PusherProps();
         _p.pusher.angleDeg = 0.f;
         break;
-    case MechType::Sink:
-        _p.sink = SinkProps();
-        break;
     case MechType::Count: break;
     }
 }
@@ -34,9 +31,6 @@ void MechEntity::InitTypeSpecificState() {
         break;
     case MechType::Pusher:
         _s.pusher = PusherState();
-        break;
-    case MechType::Sink:
-        _s.sink = SinkState();
         break;
    case MechType::Count: break;
     }
@@ -54,8 +48,6 @@ void MechEntity::SaveDerived(serial::Ptree pt) const {
         break;
     case MechType::Pusher:
         pt.PutFloat("pusher_angle", _p.pusher.angleDeg);
-        break;
-    case MechType::Sink: 
         break;
     case MechType::Count: break;
     }
@@ -78,8 +70,6 @@ void MechEntity::LoadDerived(serial::Ptree pt) {
     case MechType::Pusher:
         pt.TryGetFloat("pusher_angle", &_p.pusher.angleDeg);
         break;
-    case MechType::Sink:        
-        break;
     case MechType::Count: break;
     }
 }
@@ -99,8 +89,6 @@ void MechEntity::InitDerived(GameManager& g) {
     case MechType::Spawner:        
         break;
     case MechType::Pusher:
-        break;
-    case MechType::Sink:        
         break;
     case MechType::Count: break;
     }
@@ -137,8 +125,6 @@ ne::Entity::ImGuiResult MechEntity::ImGuiDerived(GameManager& g) {
             break;
         case MechType::Pusher:
             ImGui::InputFloat("Angle", &_p.pusher.angleDeg);
-            break;
-        case MechType::Sink:
             break;
         case MechType::Count: break;
     }
@@ -228,23 +214,7 @@ void MechEntity::UpdateDerived(GameManager& g, float dt) {
             }
             break;
         }
-        case MechType::Sink: {
-            if (!keyJustPressed) {
-                break;
-            }
-            for (ne::EntityManager::Iterator iter = g._neEntityManager->GetIterator(ne::EntityType::Resource); !iter.Finished(); iter.Next()) {
-                ResourceEntity* r = static_cast<ResourceEntity*>(iter.GetEntity());
-                assert(r);
-                bool inRange = geometry::IsPointInBoundingBox2d(r->_transform.Pos(), _transform);
-                if (!inRange) {
-                    continue;
-                }
-
-                g._neEntityManager->TagForDestroy(r->_id);
-            }
-            break;
-        }
-        case MechType::Count: break;
+       case MechType::Count: break;
     }
 }
 
@@ -252,8 +222,14 @@ void MechEntity::Draw(GameManager& g, float dt) {
     switch (_p.type) {
         case MechType::Spawner:            
         case MechType::Pusher:
-        case MechType::Sink:
-            g._scene->DrawCube(_transform.Mat4Scale(), _modelColor);
+            {
+                Transform t = _transform;
+                Vec3 p = t.Pos();
+                Vec3 const& scale = t.Scale();
+                p._y += 0.5f * scale._y;
+                t.SetPos(p);
+                g._scene->DrawCube(t.Mat4Scale(), _modelColor);
+            }
             break;
         case MechType::Count: break;
     }

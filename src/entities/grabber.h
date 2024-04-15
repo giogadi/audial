@@ -13,6 +13,7 @@ struct GrabberEntity : public ne::BaseEntity {
         double quantize = 0.0;
         float angleDeg = 0.f;
         float length = 1.f;
+        float height = 0.f;
         std::vector<std::unique_ptr<SeqAction>> actions;
     };
     Props _p;

@@ -1,16 +1,23 @@
 #pragma once
 
 #include "new_entity.h"
+#include "seq_action.h"
+#include "imgui_str.h"
 
-struct TestEntity : public ne::BaseEntity {
-    virtual ne::EntityType Type() override { return ne::EntityType::Test; }
-    static ne::EntityType StaticType() { return ne::EntityType::Test; }
+struct SinkEntity : public ne::BaseEntity {
+    virtual ne::EntityType Type() override { return ne::EntityType::Sink; }
+    static ne::EntityType StaticType() { return ne::EntityType::Sink; }
     
     struct Props {
+        imgui_util::Char key;
+        double quantize = 0.0;
+        std::vector<std::unique_ptr<SeqAction>> actions;
+        std::vector<std::unique_ptr<SeqAction>> acceptActions;
     };
     Props _p;
 
     struct State {
+        double actionBeatTime = -1.0;
     };
     State _s;
 
@@ -26,10 +33,10 @@ struct TestEntity : public ne::BaseEntity {
 
     virtual void Draw(GameManager& g, float dt) override;
 
-    TestEntity() = default;
-    TestEntity(TestEntity const&) = delete;
-    TestEntity(TestEntity&&) = default;
-    TestEntity& operator=(TestEntity&&) = default;
+    SinkEntity() = default;
+    SinkEntity(SinkEntity const&) = delete;
+    SinkEntity(SinkEntity&&) = default;
+    SinkEntity& operator=(SinkEntity&&) = default;
 
 };
 

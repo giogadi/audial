@@ -14,9 +14,6 @@ struct MechEntity : public ne::Entity {
     struct PusherProps {
         float angleDeg;
     };
-    struct SinkProps {
-
-    };
     struct Props {
         MechType type = MechType::Spawner;
         char key = 'a';
@@ -27,7 +24,6 @@ struct MechEntity : public ne::Entity {
         union {
             SpawnerProps spawner;
             PusherProps pusher;
-            SinkProps sink;
         };
     };
 
@@ -41,9 +37,6 @@ struct MechEntity : public ne::Entity {
     };
     struct PusherState {
     };
-    struct SinkState {
-
-    };
 
     struct State {
         // For imgui shenanigans
@@ -55,7 +48,6 @@ struct MechEntity : public ne::Entity {
         union {
             SpawnerState spawner;
             PusherState pusher;
-            SinkState sink;
         };
     };
     State _s;

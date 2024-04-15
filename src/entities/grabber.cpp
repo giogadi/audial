@@ -35,6 +35,7 @@ void GrabberEntity::SaveDerived(serial::Ptree pt) const {
     pt.PutDouble("quantize", _p.quantize);
     pt.PutFloat("angle", _p.angleDeg);
     pt.PutFloat("length", _p.length);
+    pt.PutFloat("height", _p.height);
     SeqAction::SaveActionsInChildNode(pt, "actions", _p.actions);
 }
 
@@ -44,6 +45,7 @@ void GrabberEntity::LoadDerived(serial::Ptree pt) {
     pt.TryGetDouble("quantize", &_p.quantize);
     pt.TryGetFloat("angle", &_p.angleDeg);
     pt.TryGetFloat("length", &_p.length);
+    pt.TryGetFloat("height", &_p.height);
     SeqAction::LoadActionsFromChildNode(pt, "actions", _p.actions);
 }
 
@@ -61,6 +63,10 @@ ne::BaseEntity::ImGuiResult GrabberEntity::ImGuiDerived(GameManager& g) {
     if (ImGui::SliderFloat("Length", &_p.length, 1.f, 10.f, "%.3f", ImGuiSliderFlags_AlwaysClamp)) {
         result = ImGuiResult::NeedsInit;
     }
+    if (ImGui::SliderFloat("Height", &_p.height, 0.f, 10.f, "%.3f", ImGuiSliderFlags_AlwaysClamp)) {
+        result = ImGuiResult::NeedsInit;
+    }
+
     if (SeqAction::ImGui("Actions", _p.actions)) {
         result = ImGuiResult::NeedsInit;
     }
@@ -163,18 +169,23 @@ void GrabberEntity::Draw(GameManager& g, float dt) {
     
     Transform armTrans;
     armTrans.SetQuat(q);
-    armTrans.SetScale(Vec3(length, 0.25f, 0.25f));
+    float constexpr kArmScaleY = 0.1f;
+    armTrans.SetScale(Vec3(length, kArmScaleY, 0.25f));
     
     Vec3 dir = armTrans.GetXAxis();
     Vec3 p = _transform.Pos() + (0.5f * length) * dir;
+    p._y += 0.5f * kArmScaleY;
+    p._y += _p.height;
     armTrans.SetPos(p);
 
     g._scene->DrawCube(armTrans.Mat4Scale(), _modelColor);
     
     p = _transform.Pos() + length * dir;
+    p._y += 0.5f * kArmScaleY;
+    p._y += _p.height;
     Transform handTrans;
     handTrans.SetQuat(q);
-    handTrans.SetScale(Vec3(1.f, 0.1f, 1.f));
+    handTrans.SetScale(Vec3(1.f, kArmScaleY, 1.f));
     handTrans.SetPos(p);
     
     g._scene->DrawCube(handTrans.Mat4Scale(), _modelColor);

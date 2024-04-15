@@ -8,8 +8,6 @@ enum class MechType : int {
     
     Pusher,
     
-    Sink,
-    
     Count
 };
 extern char const* gMechTypeStrings[];
