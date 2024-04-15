@@ -114,7 +114,13 @@ void SinkEntity::Draw(GameManager& g, float dt) {
         char textBuf[] = "*";
         textBuf[0] = _p.key.c;
         // AHHHH ALLOCATION
-        g._scene->DrawTextWorld(std::string(textBuf), _transform.Pos(), kTextSize, color);
+        //g._scene->DrawTextWorld(std::string(textBuf), _transform.Pos(), kTextSize, color);
+        Transform textTrans = _transform;
+        Vec3 p = textTrans.Pos();
+        p._y += scale._y;
+        textTrans.SetPos(p);
+        textTrans.SetScale(Vec3(1, 1, 1));
+        g._scene->DrawText3d(std::string(textBuf), textTrans.Mat4Scale(), color);
     }
  
 }

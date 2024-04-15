@@ -108,6 +108,13 @@ struct TextWorldInstance {
     bool _appendToPrevious = false;
 };
 
+struct Text3dInstance {
+    std::string _text;
+    Mat4 _t;
+    Vec4 _colorRgba;
+    //bool _appendToPrevious = false;
+};
+
 struct GlyphInstance {
     Vec4 _colorRgba;
     stbtt_aligned_quad _quad;
@@ -239,6 +246,8 @@ public:
     std::vector<Light> _lightsToDraw;
     std::vector<TextWorldInstance> _textToDraw;
     std::vector<GlyphInstance> _glyphsToDraw;
+    std::vector<Text3dInstance> _text3dToDraw;
+    std::vector<GlyphInstance>_glyph3dsToDraw;
     std::vector<BoundingBoxInstance> _boundingBoxesToDraw;
     std::vector<Polygon2dInstance> _polygonsToDraw;
     std::vector<LineInstance> _linesToDraw;
@@ -267,9 +276,12 @@ public:
 #endif    
     
     Shader _textShader;
+    Shader _text3dShader;
 
     unsigned int _textVao = 0;
     unsigned int _textVbo = 0;
+    unsigned int _text3dVao = 0;
+    unsigned int _text3dVbo = 0;
     std::vector<stbtt_bakedchar> _fontCharInfo;
 
     Shader _wireframeShader;
@@ -473,6 +485,12 @@ bool SceneInternal::Init(GameManager& g) {
         success = _meshMap.emplace("sphere", std::move(mesh)).second;
         assert(success);
 
+        mesh = std::make_unique<BoundMeshPNU>();
+        success = mesh->Init("data/models/quad.obj");
+        assert(success);
+        success = _meshMap.emplace("quad", std::move(mesh)).second;
+        assert(success);
+
         mesh = MakeWaterMesh();
         success = _meshMap.emplace("water", std::move(mesh)).second;
         assert(success);
@@ -516,6 +534,11 @@ bool SceneInternal::Init(GameManager& g) {
     if (!_textShader.Init("shaders/text.vert", "shaders/text.frag")) {
         return false;
     }
+
+    if (!_text3dShader.Init("shaders/text3d.vert", "shaders/text3d.frag")) {
+        return false;
+    }
+
 
     if (!_wireframeShader.Init("shaders/wireframe.vert", "shaders/wireframe.frag", "shaders/wireframe.geom")) {
         return false;
@@ -588,6 +611,18 @@ bool SceneInternal::Init(GameManager& g) {
     glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 4 * sizeof(float), 0);
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     glBindVertexArray(0);
+
+    // 3D Text stuff (2 attributes: pos (3 values) and texcoord (2 values)
+    glGenVertexArrays(1, &_text3dVao);
+    glGenBuffers(1, &_text3dVbo);
+    glBindVertexArray(_text3dVao);
+    glBindBuffer(GL_ARRAY_BUFFER, _text3dVbo);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 5 * 4, NULL, GL_DYNAMIC_DRAW);
+    glEnableVertexAttribArray(0);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), 0);
+
+    glEnableVertexAttribArray(1);
+    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3*sizeof(float))); 
 
     // LINE DRAWING STUFF
     {
@@ -689,6 +724,14 @@ void Scene::DrawTextWorld(std::string text, Vec3 const& pos, float scale, Vec4 c
     t._colorRgba = colorRgba;
     t._appendToPrevious = appendToPrevious;
 }
+
+void Scene::DrawText3d(std::string text, Mat4 const& t, Vec4 const& colorRgba) {
+    Text3dInstance& instance = _pInternal->_text3dToDraw.emplace_back();
+    instance._text = std::move(text);
+    instance._t = t;
+    instance._colorRgba = colorRgba;
+}
+
 
 void Scene::DrawText(std::string_view str, float& screenX, float& screenY, float scale, Vec4 const& colorRgba) {
     // Pretend the "reference" size is with viewport resolution of size 2560/1494 with screen=pixels
@@ -1143,6 +1186,83 @@ void Scene::Draw(int windowWidth, int windowHeight, float timeInSecs) {
         _pInternal->_glyphsToDraw.clear();
     }
 
+    // TEXT 3D
+    {
+        unsigned int fontTextureId = _pInternal->_textureIdMap.at("font");
+        
+        Shader& shader = _pInternal->_text3dShader;
+        shader.Use();
+        glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_2D, fontTextureId);
+        glBindVertexArray(_pInternal->_text3dVao);
+
+
+        for (Text3dInstance const& text : _pInternal->_text3dToDraw) {
+            shader.SetMat4("uMvpTrans", viewProjTransform * text._t);
+            shader.SetVec4("uColor", text._colorRgba);
+            float vertexData[5 * 4];
+            float currentX = 0.f;
+            float currentY = 0.f;
+
+            for (char c : text._text) {
+                char constexpr kFirstChar = 65;  // 'A'
+                int constexpr kNumChars = 58;
+                int constexpr kBmpWidth = 512;
+                int constexpr kBmpHeight = 128;
+                int charIndex = c - kFirstChar;
+                if (charIndex >= kNumChars || charIndex < 0) {
+                    printf("ERROR: character \'%c\' not in font!\n", c);
+                    assert(false); 
+                }
+
+                stbtt_aligned_quad quad;
+                stbtt_GetBakedQuad(_pInternal->_fontCharInfo.data(), kBmpWidth, kBmpHeight, charIndex, &currentX, &currentY, &quad, /*opengl_fillrule=*/1);
+
+                int dataIx = 0;
+                vertexData[dataIx++] = quad.x0;
+                vertexData[dataIx++] = 0.f;
+                vertexData[dataIx++] = quad.y0;
+                vertexData[dataIx++] = quad.s0;
+                vertexData[dataIx++] = quad.t0;
+
+                vertexData[dataIx++] = quad.x0;
+                vertexData[dataIx++] = 0.f;
+                vertexData[dataIx++] = quad.y1;
+                vertexData[dataIx++] = quad.s0;
+                vertexData[dataIx++] = quad.t1;
+
+                vertexData[dataIx++] = quad.x1;
+                vertexData[dataIx++] = 0.f;
+                vertexData[dataIx++] = quad.y0;
+                vertexData[dataIx++] = quad.s1;
+                vertexData[dataIx++] = quad.t0;
+
+                vertexData[dataIx++] = quad.x1;
+                vertexData[dataIx++] = 0.f;
+                vertexData[dataIx++] = quad.y1;
+                vertexData[dataIx++] = quad.s1;
+                vertexData[dataIx++] = quad.t1;
+
+                float scale = 0.01875;
+                for (int ii = 0; ii < 4; ++ii) {
+                    int index = ii*5;
+
+                    for (int jj = 0; jj < 3; ++jj) {
+                        vertexData[index + jj] *= scale;
+                    }
+                }
+
+                glBindBuffer(GL_ARRAY_BUFFER, _pInternal->_text3dVbo);
+                glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertexData), vertexData);
+                glBindBuffer(GL_ARRAY_BUFFER, 0);
+                glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+
+            }
+        }
+
+        _pInternal->_text3dToDraw.clear();
+    }
+    
     // top-layer models
     {
         Shader& shader = _pInternal->_modelShader;

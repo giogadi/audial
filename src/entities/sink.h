@@ -4,6 +4,11 @@
 #include "seq_action.h"
 #include "imgui_str.h"
 
+struct MechKey {
+    imgui_util::Char key;
+    Vec3 offset;
+};
+
 struct SinkEntity : public ne::BaseEntity {
     virtual ne::EntityType Type() override { return ne::EntityType::Sink; }
     static ne::EntityType StaticType() { return ne::EntityType::Sink; }
