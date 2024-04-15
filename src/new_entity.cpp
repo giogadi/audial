@@ -701,6 +701,7 @@ BaseEntity* EntityManager::AllIterator::GetEntity() {
 void BaseEntity::Init(GameManager& g) {
     _transform = _initTransform;
     _model = g._scene->GetMesh(_modelName);
+    _textureId = g._scene->GetTextureId(_textureName);
     _wpFollower.Init(g, *this, _wpProps);
     InitDerived(g);
 }
@@ -712,7 +713,9 @@ void BaseEntity::Update(GameManager& g, float dt) {
 void BaseEntity::Draw(GameManager& g, float dt) {
     if (_model != nullptr) {
         Mat4 const& mat = _transform.Mat4Scale();
-        g._scene->DrawMesh(_model, mat, _modelColor);
+        renderer::ModelInstance* m = g._scene->DrawTexturedMesh(_model, _textureId);
+        m->_transform = mat;
+        m->_color = _modelColor;
     } else if (g._editMode) {
         Mat4 const& mat = _transform.Mat4Scale();
         Vec4 constexpr bbColor(0.5f, 0.5f, 0.5f, 1.f);
@@ -738,6 +741,7 @@ void BaseEntity::Save(serial::Ptree pt) const {
     // NOTE: we always save the current position! maybe do this different
     serial::SaveInNewChildOf(pt, "transform", _initTransform);
     pt.PutString("model_name", _modelName.c_str());
+    pt.PutString("texture_name", _textureName.c_str());
     serial::SaveInNewChildOf(pt, "model_color_vec4", _modelColor);
     pt.PutInt("flow_section_id", _flowSectionId);
     pt.PutInt("tag", _tag);
@@ -761,6 +765,8 @@ void BaseEntity::Load(serial::Ptree pt) {
         }
     }
     pt.TryGetString("model_name", &_modelName);
+    _textureName = "white";
+    pt.TryGetString("texture_name", &_textureName);
     serial::Ptree colorPt = pt.TryGetChild("model_color_vec4");
     if (colorPt.IsValid()) {
         _modelColor.Load(colorPt);
@@ -829,6 +835,7 @@ BaseEntity::ImGuiResult BaseEntity::ImGui(GameManager& g) {
     ImGui::InputInt("Flow section ID##Entity", &_flowSectionId);
     ImGui::InputInt("Tag##Entity", &_tag);
     bool modelChanged = imgui_util::InputText<64>("Model name##Entity", &_modelName, /*trueOnReturnOnly=*/true);
+    bool textureChanged = imgui_util::InputText<64>("Texture name##Entity", &_textureName, /*trueOnReturnOnly=*/true);
     if (imgui_util::ColorEdit4("Model color##Entity", &_modelColor)) {
         result = Entity::ImGuiResult::NeedsInit;
     }
@@ -849,7 +856,7 @@ BaseEntity::ImGuiResult BaseEntity::ImGui(GameManager& g) {
         g._scene->_camera._transform.SetTranslation(cameraWorld);
     }
     bool derivedNeedsInit = ImGuiDerived(g) == ImGuiResult::NeedsInit;
-    if (modelChanged || derivedNeedsInit) {
+    if (modelChanged || textureChanged || derivedNeedsInit) {
         result = Entity::ImGuiResult::NeedsInit;
     }
     return result;

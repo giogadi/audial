@@ -532,7 +532,7 @@ bool SceneInternal::Init(GameManager& g) {
         return false;
     }
     _textureIdMap.emplace("white", _whiteTextureId);
-
+ 
     unsigned int woodboxTextureId = 0;
     if (!CreateTextureFromFile("data/textures/wood_container.jpg", woodboxTextureId)) {
         return false;
@@ -633,6 +633,14 @@ BoundMeshPNU const* Scene::GetMesh(std::string const& meshName) const {
     } else {
         return meshIter->second.get();
     }
+}
+
+unsigned int Scene::GetTextureId(std::string const& textureName) const {
+    auto textureIdIter = _pInternal->_textureIdMap.find(textureName);
+    if (textureIdIter == _pInternal->_textureIdMap.end()) {
+        return _pInternal->_whiteTextureId;
+    }
+    return textureIdIter->second;
 }
 
 renderer::ModelInstance* Scene::DrawTexturedMesh(BoundMeshPNU const* m, unsigned int textureId) {

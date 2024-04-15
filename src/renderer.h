@@ -100,6 +100,8 @@ public:
     void Draw(int windowWidth, int windowHeight, float timeInSecs);
 
     BoundMeshPNU const* GetMesh(std::string const& meshName) const;
+    // Returns white texture if name not found
+    unsigned int GetTextureId(std::string const& textureName) const;
     // TODO: inline or remove some of the call depth here
     ModelInstance& DrawMesh(BoundMeshPNU const* m, Mat4 const& t, Vec4 const& color);
     ModelInstance& DrawCube(Mat4 const& t, Vec4 const& color);
