@@ -17,10 +17,6 @@ struct MechEntity : public ne::Entity {
     struct SinkProps {
 
     };
-    struct GrabberProps {
-        float angleDeg;
-        float length;
-    };
     struct Props {
         MechType type = MechType::Spawner;
         char key = 'a';
@@ -32,7 +28,6 @@ struct MechEntity : public ne::Entity {
             SpawnerProps spawner;
             PusherProps pusher;
             SinkProps sink;
-            GrabberProps grabber;
         };
     };
 
@@ -49,17 +44,6 @@ struct MechEntity : public ne::Entity {
     struct SinkState {
 
     };
-    enum class GrabberPhase {
-        Idle, Moving, Stopping
-    };
-    struct GrabberState {
-        float angleRad;
-        double moveStartTime;
-        double moveEndTime; 
-        double moveStartAngleRad;
-        double moveEndAngleRad;
-        float handToResOffset[3];
-    };
 
     struct State {
         // For imgui shenanigans
@@ -72,7 +56,6 @@ struct MechEntity : public ne::Entity {
             SpawnerState spawner;
             PusherState pusher;
             SinkState sink;
-            GrabberState grabber;
         };
     };
     State _s;

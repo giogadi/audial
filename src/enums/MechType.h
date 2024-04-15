@@ -8,8 +8,6 @@ enum class MechType : int {
     
     Pusher,
     
-    Grabber,
-    
     Sink,
     
     Count

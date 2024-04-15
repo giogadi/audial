@@ -16,8 +16,6 @@ std::unordered_map<std::string, MechType> const gStringToMechType = {
     
     { "Pusher", MechType::Pusher },
     
-    { "Grabber", MechType::Grabber },
-    
     { "Sink", MechType::Sink }
     
 };
@@ -29,8 +27,6 @@ char const* gMechTypeStrings[] = {
     "Spawner",
     
     "Pusher",
-    
-    "Grabber",
     
     "Sink"
     

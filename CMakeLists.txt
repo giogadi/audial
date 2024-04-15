@@ -35,6 +35,7 @@ add_executable(game
     src/logger.h
 
     src/imgui_util.cpp src/imgui_util.h
+    src/imgui_str.cpp src/imgui_str.h
     src/imgui_vector_util.h
 
     src/midi_util.h    
@@ -115,6 +116,7 @@ add_executable(game
     src/entities/int_variable.cpp src/entities/int_variable.h
     src/entities/vfx.cpp src/entities/vfx.h
     src/entities/mech.cpp src/entities/mech.h
+    src/entities/grabber.cpp src/entities/grabber.h
     src/entities/resource.cpp src/entities/resource.h
     src/entities/viz.cpp src/entities/viz.h
     

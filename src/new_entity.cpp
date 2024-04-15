@@ -26,6 +26,7 @@
 #include "entities/int_variable.h"
 #include "entities/vfx.h"
 #include "entities/mech.h"
+#include "entities/grabber.h"
 #include "entities/resource.h"
 #include "entities/viz.h"
 

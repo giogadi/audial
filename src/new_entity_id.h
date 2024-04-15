@@ -12,6 +12,7 @@ namespace ne {
     X(Sequencer) \
     X(ActionSequencer) \
     X(Mech) \
+    X(Grabber) \
     X(Resource) \
     X(TypingEnemy)  \
     X(FlowPlayer) \
