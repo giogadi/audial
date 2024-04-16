@@ -125,30 +125,53 @@ void SinkEntity::UpdateDerived(GameManager& g, float dt) {
 }
 
 void SinkEntity::Draw(GameManager& g, float dt) {
-    Vec3 p = _transform.Pos();
-    Vec3 const& scale = _transform.Scale();
-    p._y += 0.5f * scale._y;
+    Transform cubeCtrToBtm;
+    cubeCtrToBtm.SetPos(Vec3(0.f, 0.5f, 0.f));
+    Mat4 toBtmM = cubeCtrToBtm.Mat4NoScale();
 
-    Transform t = _transform;
-    t.SetPos(p);
-    g._scene->DrawCube(t.Mat4Scale(), _modelColor);
+    renderer::BBox2d textBbox;
+    Transform textTrans;
+    Vec4 textColor(1.f, 1.f, 1.f, 1.f);
+    char textBuf[] = "*";
+    textBuf[0] = _p.key.key.c;
+    size_t const textId = g._scene->DrawText3d(textBuf, 1, textTrans.Mat4Scale(), textColor, &textBbox); 
+    Vec3 textOriginToCenter;
+    textOriginToCenter._x = 0.5f * (textBbox.minX + textBbox.maxX);
+    textOriginToCenter._y = 0.f;
+    textOriginToCenter._z = 0.5f * (textBbox.minY + textBbox.maxY);
+    Vec3 textExtents;
+    textExtents._x = textBbox.maxX - textBbox.minX;
+    textExtents._y = 0.f;
+    textExtents._z = textBbox.maxY - textBbox.minY;
 
-    {
-        // float constexpr kTextSize = 1.5f;
-        Vec4 color(1.f, 1.f, 1.f, 1.f);
-        char textBuf[] = "*";
-        textBuf[0] = _p.key.key.c;
-        // AHHHH ALLOCATION
-        //g._scene->DrawTextWorld(std::string(textBuf), _transform.Pos(), kTextSize, color);
-        Transform textTrans = _transform;
-        Vec3 p = textTrans.Pos();
-        p += _p.key.offset;
-        p._y += scale._y + 0.001f;
-        textTrans.SetPos(p);
-        textTrans.SetScale(Vec3(1, 1, 1));
-        g._scene->DrawText3d(std::string(textBuf), textTrans.Mat4Scale(), color);
-    }
- 
+    float constexpr kSinkHeight = 0.1f;
+    Vec3 sinkRenderScale = _transform.Scale();
+    sinkRenderScale._y = kSinkHeight;
+    Transform sinkRenderT;
+    sinkRenderT = _transform;
+    sinkRenderT.SetScale(sinkRenderScale);
+    Mat4 sinkRenderM = sinkRenderT.Mat4Scale() * toBtmM;
+    g._scene->DrawCube(sinkRenderM, _modelColor);
+
+
+    float constexpr kButtonHeight = 0.3f;
+    Vec4 btnColor(245.f / 255.f, 187.f / 255.f, 49.f / 255.f, 1.f);
+    Transform eToButtonT;
+    Vec3 p = _p.key.offset + Vec3(0.f, kSinkHeight, 0.f);
+    eToButtonT.SetPos(p);
+    Vec3 btnScale = textExtents * 1.5f;
+    btnScale._y = kButtonHeight;
+    eToButtonT.SetScale(btnScale);
+    Mat4 btnRenderM = _transform.Mat4NoScale() * eToButtonT.Mat4Scale() * toBtmM;
+    g._scene->DrawCube(btnRenderM, btnColor);
+    
+    Transform btnToText;
+    Vec3 btnToTextP = -textOriginToCenter + Vec3(0.f, kButtonHeight + 0.001f, 0.f);
+    btnToText.SetPos(btnToTextP);
+    Mat4 textRenderM = _transform.Mat4NoScale() * eToButtonT.Mat4NoScale() * btnToText.Mat4NoScale();
+    renderer::Glyph3dInstance& glyph3d = g._scene->GetText3d(textId);
+    glyph3d._t = textRenderM;
+    
 }
 
 void SinkEntity::OnEditPick(GameManager& g) {

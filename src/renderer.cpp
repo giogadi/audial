@@ -108,13 +108,6 @@ struct TextWorldInstance {
     bool _appendToPrevious = false;
 };
 
-struct Text3dInstance {
-    std::string _text;
-    Mat4 _t;
-    Vec4 _colorRgba;
-    //bool _appendToPrevious = false;
-};
-
 struct GlyphInstance {
     Vec4 _colorRgba;
     stbtt_aligned_quad _quad;
@@ -246,8 +239,7 @@ public:
     std::vector<Light> _lightsToDraw;
     std::vector<TextWorldInstance> _textToDraw;
     std::vector<GlyphInstance> _glyphsToDraw;
-    std::vector<Text3dInstance> _text3dToDraw;
-    std::vector<GlyphInstance>_glyph3dsToDraw;
+    std::vector<Glyph3dInstance> _glyph3dsToDraw;
     std::vector<BoundingBoxInstance> _boundingBoxesToDraw;
     std::vector<Polygon2dInstance> _polygonsToDraw;
     std::vector<LineInstance> _linesToDraw;
@@ -725,11 +717,53 @@ void Scene::DrawTextWorld(std::string text, Vec3 const& pos, float scale, Vec4 c
     t._appendToPrevious = appendToPrevious;
 }
 
-void Scene::DrawText3d(std::string text, Mat4 const& t, Vec4 const& colorRgba) {
-    Text3dInstance& instance = _pInternal->_text3dToDraw.emplace_back();
-    instance._text = std::move(text);
-    instance._t = t;
-    instance._colorRgba = colorRgba;
+size_t Scene::DrawText3d(char const* text, size_t const textLength, Mat4 const& t, Vec4 const& colorRgba, BBox2d* bbox) {
+    size_t const firstCharIndex = _pInternal->_glyph3dsToDraw.size();
+    float currentX = 0.f;
+    float currentY = 0.f;
+    for (int textIx = 0; textIx < textLength; ++textIx) {
+        char c = text[textIx];
+        char constexpr kFirstChar = 65;  // 'A'
+        int constexpr kNumChars = 58;
+        int constexpr kBmpWidth = 512;
+        int constexpr kBmpHeight = 128;
+        int charIndex = c - kFirstChar;
+        if (charIndex >= kNumChars || charIndex < 0) {
+            printf("ERROR: character \'%c\' not in font!\n", c);
+            assert(false); 
+        }
+
+        stbtt_aligned_quad quad;
+        stbtt_GetBakedQuad(_pInternal->_fontCharInfo.data(), kBmpWidth, kBmpHeight, charIndex, &currentX, &currentY, &quad, /*opengl_fillrule=*/1);
+
+        float constexpr kScale = 0.01875f;
+        quad.x0 *= kScale;
+        quad.x1 *= kScale;
+        quad.y0 *= kScale;
+        quad.y1 *= kScale;
+
+        if (bbox) {
+            if (textIx == 0) {
+                bbox->minX = quad.x0;
+                bbox->maxX = quad.x1;
+                bbox->minY = quad.y0;
+                bbox->maxY = quad.y1;
+            } else {
+                bbox->minX = std::min(bbox->minX, quad.x0);
+                bbox->maxX = std::max(bbox->maxX, quad.x1);
+                bbox->minY = std::min(bbox->minY, quad.y0);
+                bbox->maxY = std::max(bbox->maxY, quad.y1);
+            }
+        }
+
+        Glyph3dInstance& instance = _pInternal->_glyph3dsToDraw.emplace_back();
+        instance.x0 = quad.x0; instance.y0 = quad.y0; instance.s0 = quad.s0; instance.t0 = quad.t0;
+        instance.x1 = quad.x1; instance.y1 = quad.y1; instance.s1 = quad.s1; instance.t1 = quad.t1; 
+        instance._t = t;
+        instance._colorRgba = colorRgba; 
+    }
+
+    return firstCharIndex;
 }
 
 
@@ -1088,71 +1122,44 @@ void Scene::Draw(int windowWidth, int windowHeight, float timeInSecs) {
         glBindTexture(GL_TEXTURE_2D, fontTextureId);
         glBindVertexArray(_pInternal->_text3dVao);
 
-
-        for (Text3dInstance const& text : _pInternal->_text3dToDraw) {
-            shader.SetMat4("uMvpTrans", viewProjTransform * text._t);
-            shader.SetVec4("uColor", text._colorRgba);
+        for (Glyph3dInstance const& glyph : _pInternal->_glyph3dsToDraw) {
+            shader.SetMat4("uMvpTrans", viewProjTransform * glyph._t);
+            shader.SetVec4("uColor", glyph._colorRgba);
             float vertexData[5 * 4];
-            float currentX = 0.f;
-            float currentY = 0.f;
 
-            for (char c : text._text) {
-                char constexpr kFirstChar = 65;  // 'A'
-                int constexpr kNumChars = 58;
-                int constexpr kBmpWidth = 512;
-                int constexpr kBmpHeight = 128;
-                int charIndex = c - kFirstChar;
-                if (charIndex >= kNumChars || charIndex < 0) {
-                    printf("ERROR: character \'%c\' not in font!\n", c);
-                    assert(false); 
-                }
+            int dataIx = 0;
+            vertexData[dataIx++] = glyph.x0;
+            vertexData[dataIx++] = 0.f;
+            vertexData[dataIx++] = glyph.y0;
+            vertexData[dataIx++] = glyph.s0;
+            vertexData[dataIx++] = glyph.t0;
 
-                stbtt_aligned_quad quad;
-                stbtt_GetBakedQuad(_pInternal->_fontCharInfo.data(), kBmpWidth, kBmpHeight, charIndex, &currentX, &currentY, &quad, /*opengl_fillrule=*/1);
+            vertexData[dataIx++] = glyph.x0;
+            vertexData[dataIx++] = 0.f;
+            vertexData[dataIx++] = glyph.y1;
+            vertexData[dataIx++] = glyph.s0;
+            vertexData[dataIx++] = glyph.t1;
 
-                int dataIx = 0;
-                vertexData[dataIx++] = quad.x0;
-                vertexData[dataIx++] = 0.f;
-                vertexData[dataIx++] = quad.y0;
-                vertexData[dataIx++] = quad.s0;
-                vertexData[dataIx++] = quad.t0;
+            vertexData[dataIx++] = glyph.x1;
+            vertexData[dataIx++] = 0.f;
+            vertexData[dataIx++] = glyph.y0;
+            vertexData[dataIx++] = glyph.s1;
+            vertexData[dataIx++] = glyph.t0;
 
-                vertexData[dataIx++] = quad.x0;
-                vertexData[dataIx++] = 0.f;
-                vertexData[dataIx++] = quad.y1;
-                vertexData[dataIx++] = quad.s0;
-                vertexData[dataIx++] = quad.t1;
+            vertexData[dataIx++] = glyph.x1;
+            vertexData[dataIx++] = 0.f;
+            vertexData[dataIx++] = glyph.y1;
+            vertexData[dataIx++] = glyph.s1;
+            vertexData[dataIx++] = glyph.t1;
 
-                vertexData[dataIx++] = quad.x1;
-                vertexData[dataIx++] = 0.f;
-                vertexData[dataIx++] = quad.y0;
-                vertexData[dataIx++] = quad.s1;
-                vertexData[dataIx++] = quad.t0;
+            glBindBuffer(GL_ARRAY_BUFFER, _pInternal->_text3dVbo);
+            glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertexData), vertexData);
+            glBindBuffer(GL_ARRAY_BUFFER, 0);
+            glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 
-                vertexData[dataIx++] = quad.x1;
-                vertexData[dataIx++] = 0.f;
-                vertexData[dataIx++] = quad.y1;
-                vertexData[dataIx++] = quad.s1;
-                vertexData[dataIx++] = quad.t1;
-
-                float scale = 0.01875;
-                for (int ii = 0; ii < 4; ++ii) {
-                    int index = ii*5;
-
-                    for (int jj = 0; jj < 3; ++jj) {
-                        vertexData[index + jj] *= scale;
-                    }
-                }
-
-                glBindBuffer(GL_ARRAY_BUFFER, _pInternal->_text3dVbo);
-                glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertexData), vertexData);
-                glBindBuffer(GL_ARRAY_BUFFER, 0);
-                glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
-
-            }
         }
+        _pInternal->_glyph3dsToDraw.clear();
 
-        _pInternal->_text3dToDraw.clear();
     }
 
 
@@ -1325,6 +1332,10 @@ renderer::Light* Scene::DrawLight() {
 
 void Scene::SetDrawTerrain(bool enable) {
     _pInternal->_drawTerrain = enable;
+}
+
+Glyph3dInstance& Scene::GetText3d(size_t id) {
+    return _pInternal->_glyph3dsToDraw.at(id);
 }
 
 } // namespace renderer

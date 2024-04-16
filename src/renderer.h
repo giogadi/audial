@@ -77,6 +77,17 @@ struct LineInstance {
     Vec4 _color;
 };
 
+struct BBox2d {
+    float minX, maxX;
+    float minY, maxY;
+};
+
+struct Glyph3dInstance {
+    float x0,y0,s0,t0;
+    float x1,y1,s1,t1;
+    Mat4 _t;
+    Vec4 _colorRgba; 
+};
 class SceneInternal;
 class Scene {
 public:
@@ -114,7 +125,9 @@ public:
 
     void DrawText(std::string_view str, float& screenX, float& screenY, float scale=1.f, Vec4 const& colorRgba = Vec4(1.f, 1.f, 1.f, 1.f));
     void DrawTextWorld(std::string text, Vec3 const& pos, float scale = 1.f, Vec4 const& colorRgba = Vec4(1.f, 1.f, 1.f, 1.f), bool appendToPrevious = false);
-    void DrawText3d(std::string text, Mat4 const& t, Vec4 const& colorRgba = Vec4(1.f, 1.f, 1.f, 1.f));
+    size_t DrawText3d(char const* text, size_t textLength, Mat4 const& t, Vec4 const& colorRgba = Vec4(1.f, 1.f, 1.f, 1.f), BBox2d* bbox2d = nullptr);
+    Glyph3dInstance& GetText3d(size_t id);
+
 
     void DrawLine(Vec3 const& start, Vec3 const& end, Vec4 const& color);
 
