@@ -12,7 +12,8 @@ void TestEntity::LoadDerived(serial::Ptree pt) {
 }
 
 ne::BaseEntity::ImGuiResult TestEntity::ImGuiDerived(GameManager& g) {
-    return ImGuiResult::Done;
+    ImGuiResult result = ImGuiResult::Done;
+    return result;
 }
 
 void TestEntity::InitDerived(GameManager& g) {

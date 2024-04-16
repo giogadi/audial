@@ -120,6 +120,7 @@ add_executable(game
     src/entities/vfx.cpp src/entities/vfx.h
     src/entities/mech.cpp src/entities/mech.h
     src/entities/grabber.cpp src/entities/grabber.h
+    src/entities/spawner.cpp src/entities/spawner.h
     src/entities/resource.cpp src/entities/resource.h
     src/entities/sink.cpp src/entities/sink.h
     src/entities/viz.cpp src/entities/viz.h

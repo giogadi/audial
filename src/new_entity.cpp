@@ -27,6 +27,7 @@
 #include "entities/vfx.h"
 #include "entities/mech.h"
 #include "entities/grabber.h"
+#include "entities/spawner.h"
 #include "entities/resource.h"
 #include "entities/sink.h"
 #include "entities/viz.h"

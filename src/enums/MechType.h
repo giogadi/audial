@@ -4,8 +4,6 @@
 
 enum class MechType : int {
     
-    Spawner,
-    
     Pusher,
     
     Count

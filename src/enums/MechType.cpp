@@ -12,8 +12,6 @@ namespace {
 
 std::unordered_map<std::string, MechType> const gStringToMechType = {
     
-    { "Spawner", MechType::Spawner },
-    
     { "Pusher", MechType::Pusher }
     
 };
@@ -22,8 +20,6 @@ std::unordered_map<std::string, MechType> const gStringToMechType = {
 
 char const* gMechTypeStrings[] = {
 	
-    "Spawner",
-    
     "Pusher"
     
 };

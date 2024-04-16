@@ -13,9 +13,6 @@
 
 void MechEntity::InitTypeSpecificProps() {
     switch (_p.type) {
-    case MechType::Spawner:
-        _p.spawner = SpawnerProps();
-        break;
     case MechType::Pusher:
         _p.pusher = PusherProps();
         _p.pusher.angleDeg = 0.f;
@@ -26,9 +23,6 @@ void MechEntity::InitTypeSpecificProps() {
 
 void MechEntity::InitTypeSpecificState() {
     switch (_p.type) {
-    case MechType::Spawner:
-        _s.spawner = SpawnerState();
-        break;
     case MechType::Pusher:
         _s.pusher = PusherState();
         break;
@@ -44,8 +38,6 @@ void MechEntity::SaveDerived(serial::Ptree pt) const {
     SeqAction::SaveActionsInChildNode(pt, "stop_actions", _p.stopActions);
 
     switch (_p.type) {
-    case MechType::Spawner:        
-        break;
     case MechType::Pusher:
         pt.PutFloat("pusher_angle", _p.pusher.angleDeg);
         break;
@@ -65,8 +57,6 @@ void MechEntity::LoadDerived(serial::Ptree pt) {
     SeqAction::LoadActionsFromChildNode(pt, "stop_actions", _p.stopActions);
 
     switch (_p.type) {
-    case MechType::Spawner:        
-        break;
     case MechType::Pusher:
         pt.TryGetFloat("pusher_angle", &_p.pusher.angleDeg);
         break;
@@ -86,8 +76,6 @@ void MechEntity::InitDerived(GameManager& g) {
     }
 
     switch (_p.type) {
-    case MechType::Spawner:        
-        break;
     case MechType::Pusher:
         break;
     case MechType::Count: break;
@@ -121,8 +109,6 @@ ne::Entity::ImGuiResult MechEntity::ImGuiDerived(GameManager& g) {
     }
 
     switch (_p.type) {
-    case MechType::Spawner:            
-            break;
         case MechType::Pusher:
             ImGui::InputFloat("Angle", &_p.pusher.angleDeg);
             break;
@@ -165,33 +151,6 @@ void MechEntity::UpdateDerived(GameManager& g, float dt) {
     }
     
     switch (_p.type) {
-        case MechType::Spawner: {
-            if (quantizeReached) {
-                // Check if there are any resources already in the spawner
-                bool resourcePresent = false;
-                for (ne::EntityManager::Iterator iter = g._neEntityManager->GetIterator(ne::EntityType::Resource); !iter.Finished(); iter.Next()) {
-                    ResourceEntity* r = static_cast<ResourceEntity*>(iter.GetEntity());
-                    assert(r);
-                    bool inRange = geometry::IsPointInBoundingBox2d(r->_transform.Pos(), _transform);
-                    if (inRange) {
-                        resourcePresent = true;
-                        break;
-                    }
-                }
-                if (resourcePresent) {
-                    break;
-                }
-                ne::Entity* r = g._neEntityManager->AddEntity(ne::EntityType::Resource);
-                r->_initTransform = _transform;
-                r->_initTransform.Translate(Vec3(0.f, 1.f, 0.f));
-                r->_initTransform.SetScale(Vec3(0.25f, 0.25f, 0.25f));
-                r->_modelName = "cube";
-                r->_modelColor.Set(1.f, 1.f, 1.f, 1.f);
-
-                r->Init(g);
-            }
-            break;
-        }
         case MechType::Pusher: {
             if (!quantizeReached) {
                 break;
@@ -220,7 +179,6 @@ void MechEntity::UpdateDerived(GameManager& g, float dt) {
 
 void MechEntity::Draw(GameManager& g, float dt) { 
     switch (_p.type) {
-        case MechType::Spawner:            
         case MechType::Pusher:
             {
                 Transform t = _transform;

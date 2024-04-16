@@ -2,7 +2,6 @@
     "namespaces": [],
     "enumName": "MechType",
     "enumItems": [
-        "Spawner",
         "Pusher"
     ]
 }

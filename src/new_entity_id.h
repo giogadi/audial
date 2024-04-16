@@ -13,6 +13,7 @@ namespace ne {
     X(ActionSequencer) \
     X(Mech) \
     X(Grabber) \
+    X(Spawner) \
     X(Resource) \
     X(Sink) \
     X(TypingEnemy)  \
