@@ -1078,6 +1078,84 @@ void Scene::Draw(int windowWidth, int windowHeight, float timeInSecs) {
         }
     }
 
+    // 3D TEXT
+    {
+        unsigned int fontTextureId = _pInternal->_textureIdMap.at("font");
+        
+        Shader& shader = _pInternal->_text3dShader;
+        shader.Use();
+        glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_2D, fontTextureId);
+        glBindVertexArray(_pInternal->_text3dVao);
+
+
+        for (Text3dInstance const& text : _pInternal->_text3dToDraw) {
+            shader.SetMat4("uMvpTrans", viewProjTransform * text._t);
+            shader.SetVec4("uColor", text._colorRgba);
+            float vertexData[5 * 4];
+            float currentX = 0.f;
+            float currentY = 0.f;
+
+            for (char c : text._text) {
+                char constexpr kFirstChar = 65;  // 'A'
+                int constexpr kNumChars = 58;
+                int constexpr kBmpWidth = 512;
+                int constexpr kBmpHeight = 128;
+                int charIndex = c - kFirstChar;
+                if (charIndex >= kNumChars || charIndex < 0) {
+                    printf("ERROR: character \'%c\' not in font!\n", c);
+                    assert(false); 
+                }
+
+                stbtt_aligned_quad quad;
+                stbtt_GetBakedQuad(_pInternal->_fontCharInfo.data(), kBmpWidth, kBmpHeight, charIndex, &currentX, &currentY, &quad, /*opengl_fillrule=*/1);
+
+                int dataIx = 0;
+                vertexData[dataIx++] = quad.x0;
+                vertexData[dataIx++] = 0.f;
+                vertexData[dataIx++] = quad.y0;
+                vertexData[dataIx++] = quad.s0;
+                vertexData[dataIx++] = quad.t0;
+
+                vertexData[dataIx++] = quad.x0;
+                vertexData[dataIx++] = 0.f;
+                vertexData[dataIx++] = quad.y1;
+                vertexData[dataIx++] = quad.s0;
+                vertexData[dataIx++] = quad.t1;
+
+                vertexData[dataIx++] = quad.x1;
+                vertexData[dataIx++] = 0.f;
+                vertexData[dataIx++] = quad.y0;
+                vertexData[dataIx++] = quad.s1;
+                vertexData[dataIx++] = quad.t0;
+
+                vertexData[dataIx++] = quad.x1;
+                vertexData[dataIx++] = 0.f;
+                vertexData[dataIx++] = quad.y1;
+                vertexData[dataIx++] = quad.s1;
+                vertexData[dataIx++] = quad.t1;
+
+                float scale = 0.01875;
+                for (int ii = 0; ii < 4; ++ii) {
+                    int index = ii*5;
+
+                    for (int jj = 0; jj < 3; ++jj) {
+                        vertexData[index + jj] *= scale;
+                    }
+                }
+
+                glBindBuffer(GL_ARRAY_BUFFER, _pInternal->_text3dVbo);
+                glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertexData), vertexData);
+                glBindBuffer(GL_ARRAY_BUFFER, 0);
+                glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+
+            }
+        }
+
+        _pInternal->_text3dToDraw.clear();
+    }
+
+
     // WIREFRAME
     {
         // For wireframes, we want to draw backfaces and we want to respect the
@@ -1186,83 +1264,7 @@ void Scene::Draw(int windowWidth, int windowHeight, float timeInSecs) {
         _pInternal->_glyphsToDraw.clear();
     }
 
-    // TEXT 3D
-    {
-        unsigned int fontTextureId = _pInternal->_textureIdMap.at("font");
         
-        Shader& shader = _pInternal->_text3dShader;
-        shader.Use();
-        glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_2D, fontTextureId);
-        glBindVertexArray(_pInternal->_text3dVao);
-
-
-        for (Text3dInstance const& text : _pInternal->_text3dToDraw) {
-            shader.SetMat4("uMvpTrans", viewProjTransform * text._t);
-            shader.SetVec4("uColor", text._colorRgba);
-            float vertexData[5 * 4];
-            float currentX = 0.f;
-            float currentY = 0.f;
-
-            for (char c : text._text) {
-                char constexpr kFirstChar = 65;  // 'A'
-                int constexpr kNumChars = 58;
-                int constexpr kBmpWidth = 512;
-                int constexpr kBmpHeight = 128;
-                int charIndex = c - kFirstChar;
-                if (charIndex >= kNumChars || charIndex < 0) {
-                    printf("ERROR: character \'%c\' not in font!\n", c);
-                    assert(false); 
-                }
-
-                stbtt_aligned_quad quad;
-                stbtt_GetBakedQuad(_pInternal->_fontCharInfo.data(), kBmpWidth, kBmpHeight, charIndex, &currentX, &currentY, &quad, /*opengl_fillrule=*/1);
-
-                int dataIx = 0;
-                vertexData[dataIx++] = quad.x0;
-                vertexData[dataIx++] = 0.f;
-                vertexData[dataIx++] = quad.y0;
-                vertexData[dataIx++] = quad.s0;
-                vertexData[dataIx++] = quad.t0;
-
-                vertexData[dataIx++] = quad.x0;
-                vertexData[dataIx++] = 0.f;
-                vertexData[dataIx++] = quad.y1;
-                vertexData[dataIx++] = quad.s0;
-                vertexData[dataIx++] = quad.t1;
-
-                vertexData[dataIx++] = quad.x1;
-                vertexData[dataIx++] = 0.f;
-                vertexData[dataIx++] = quad.y0;
-                vertexData[dataIx++] = quad.s1;
-                vertexData[dataIx++] = quad.t0;
-
-                vertexData[dataIx++] = quad.x1;
-                vertexData[dataIx++] = 0.f;
-                vertexData[dataIx++] = quad.y1;
-                vertexData[dataIx++] = quad.s1;
-                vertexData[dataIx++] = quad.t1;
-
-                float scale = 0.01875;
-                for (int ii = 0; ii < 4; ++ii) {
-                    int index = ii*5;
-
-                    for (int jj = 0; jj < 3; ++jj) {
-                        vertexData[index + jj] *= scale;
-                    }
-                }
-
-                glBindBuffer(GL_ARRAY_BUFFER, _pInternal->_text3dVbo);
-                glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertexData), vertexData);
-                glBindBuffer(GL_ARRAY_BUFFER, 0);
-                glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
-
-            }
-        }
-
-        _pInternal->_text3dToDraw.clear();
-    }
-    
     // top-layer models
     {
         Shader& shader = _pInternal->_modelShader;

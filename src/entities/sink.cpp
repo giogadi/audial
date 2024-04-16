@@ -8,9 +8,31 @@
 #include "input_manager.h"
 #include "entities/resource.h"
 #include "geometry.h"
+#include "imgui_util.h"
+
+void MechKey::Save(serial::Ptree pt) const {
+    key.Save(pt, "key");
+    serial::SaveInNewChildOf(pt, "offset", offset);
+}
+
+void MechKey::Load(serial::Ptree pt) {
+    key.Load(pt, "key");
+    serial::LoadFromChildOf(pt, "offset", offset);
+}
+
+bool MechKey::ImGui() {
+    bool changed = false;
+    if (key.ImGui("Key")) {
+        changed = true;
+    }
+    if (imgui_util::InputVec3("Key offset", &offset)) {
+        changed = true;
+    }
+    return changed;
+}
 
 void SinkEntity::SaveDerived(serial::Ptree pt) const {
-    _p.key.Save(pt, "key"); 
+    serial::SaveInNewChildOf(pt, "key", _p.key);
     pt.PutDouble("quantize", _p.quantize);
     SeqAction::SaveActionsInChildNode(pt, "actions", _p.actions);
     SeqAction::SaveActionsInChildNode(pt, "accept_actions", _p.acceptActions);
@@ -18,7 +40,7 @@ void SinkEntity::SaveDerived(serial::Ptree pt) const {
 
 void SinkEntity::LoadDerived(serial::Ptree pt) {
     _p = Props();
-    _p.key.Load(pt, "key");
+    serial::LoadFromChildOf(pt, "key", _p.key);
     pt.TryGetDouble("quantize", &_p.quantize);
     SeqAction::LoadActionsFromChildNode(pt, "actions", _p.actions);
     SeqAction::LoadActionsFromChildNode(pt, "accept_actions", _p.acceptActions);
@@ -26,8 +48,11 @@ void SinkEntity::LoadDerived(serial::Ptree pt) {
 
 ne::BaseEntity::ImGuiResult SinkEntity::ImGuiDerived(GameManager& g) {
     ImGuiResult result = ImGuiResult::Done;
-    if (_p.key.ImGui("Key")) {
-        result = ImGuiResult::NeedsInit;
+    if (ImGui::TreeNode("Key")) {
+        if (_p.key.ImGui()) {
+            result = ImGuiResult::NeedsInit;
+        }
+        ImGui::TreePop();
     }
     if (ImGui::InputDouble("Quantize", &_p.quantize)) {
         result = ImGuiResult::NeedsInit;
@@ -64,7 +89,7 @@ void SinkEntity::UpdateDerived(GameManager& g, float dt) {
     bool keyDown = false;
     bool quantizeReached = false;
     double quantizedBeatTime = -1.0;
-    InputManager::Key k = InputManager::CharToKey(_p.key.c);
+    InputManager::Key k = InputManager::CharToKey(_p.key.key.c);
     keyJustPressed = g._inputManager->IsKeyPressedThisFrame(k);
     keyJustReleased = g._inputManager->IsKeyReleasedThisFrame(k);
     keyDown = g._inputManager->IsKeyPressed(k);
@@ -109,15 +134,16 @@ void SinkEntity::Draw(GameManager& g, float dt) {
     g._scene->DrawCube(t.Mat4Scale(), _modelColor);
 
     {
-        float constexpr kTextSize = 1.5f;
+        // float constexpr kTextSize = 1.5f;
         Vec4 color(1.f, 1.f, 1.f, 1.f);
         char textBuf[] = "*";
-        textBuf[0] = _p.key.c;
+        textBuf[0] = _p.key.key.c;
         // AHHHH ALLOCATION
         //g._scene->DrawTextWorld(std::string(textBuf), _transform.Pos(), kTextSize, color);
         Transform textTrans = _transform;
         Vec3 p = textTrans.Pos();
-        p._y += scale._y;
+        p += _p.key.offset;
+        p._y += scale._y + 0.001f;
         textTrans.SetPos(p);
         textTrans.SetScale(Vec3(1, 1, 1));
         g._scene->DrawText3d(std::string(textBuf), textTrans.Mat4Scale(), color);

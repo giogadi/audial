@@ -153,7 +153,8 @@ void GrabberEntity::UpdateDerived(GameManager& g, float dt) {
         handTrans = GetGrabberHandTrans(_transform, _p.length, _s.angleRad); 
 
         if (resInHand) {
-            Vec3 p = handTrans.Pos() + _s.handToResOffset;
+            Vec3 p = handTrans.Pos(); // + _s.handToResOffset;
+            p._y += _s.handToResOffset._y;
             resInHand->_transform.SetPos(p);
         }
 

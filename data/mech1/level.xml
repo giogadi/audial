@@ -85,14 +85,14 @@
                 <transform>
                     <pos>
                         <x>0.5333336</x>
-                        <y>10</y>
+                        <y>13</y>
                         <z>2</z>
                     </pos>
                     <quat>
-                        <x>-0.382683456</x>
+                        <x>-0.57357645</x>
                         <y>0</y>
                         <z>0</z>
-                        <w>0.923879504</w>
+                        <w>0.819152057</w>
                     </quat>
                     <scale>
                         <x>1</x>
@@ -481,7 +481,7 @@
                 <quantize>0.25</quantize>
                 <angle>180</angle>
                 <length>2</length>
-                <height>0</height>
+                <height>1</height>
                 <actions>
                     <seq_action>
                         <one_time>false</one_time>
@@ -529,9 +529,9 @@
                         <w>1</w>
                     </quat>
                     <scale>
-                        <x>1</x>
+                        <x>2.5</x>
                         <y>0.25</y>
-                        <z>1</z>
+                        <z>2.5</z>
                     </scale>
                 </transform>
                 <model_name>cube</model_name>
@@ -556,7 +556,14 @@
                         <id>-1</id>
                     </follow_entity_editor_id>
                 </waypoint_follower>
-                <key>o</key>
+                <key>
+                    <key>o</key>
+                    <offset>
+                        <x>0.75</x>
+                        <y>0</y>
+                        <z>1</z>
+                    </offset>
+                </key>
                 <quantize>0</quantize>
                 <actions>
                     <seq_action>
