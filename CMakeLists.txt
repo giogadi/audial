@@ -82,7 +82,9 @@ add_executable(game
     src/string_ci.cpp src/string_ci.h
 
     src/waypoint_follower.cpp src/waypoint_follower.h
-    src/random_wander.cpp src/random_wander.h    
+    src/random_wander.cpp src/random_wander.h
+
+    src/mech_button.cpp src/mech_button.h  
 
     src/properties/Test.cpp
     src/properties/MidiNoteAndName.cpp src/properties/MidiNoteAndName.h

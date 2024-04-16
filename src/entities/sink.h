@@ -3,21 +3,14 @@
 #include "new_entity.h"
 #include "seq_action.h"
 #include "imgui_str.h"
-
-struct MechKey {
-    imgui_util::Char key;
-    Vec3 offset;
-    void Save(serial::Ptree pt) const;
-    void Load(serial::Ptree pt);
-    bool ImGui();
-};
+#include "mech_button.h"
 
 struct SinkEntity : public ne::BaseEntity {
     virtual ne::EntityType Type() override { return ne::EntityType::Sink; }
     static ne::EntityType StaticType() { return ne::EntityType::Sink; }
     
     struct Props {
-        MechKey key;
+        MechButton key;
         double quantize = 0.0;
         std::vector<std::unique_ptr<SeqAction>> actions;
         std::vector<std::unique_ptr<SeqAction>> acceptActions;
