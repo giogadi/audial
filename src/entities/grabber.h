@@ -25,8 +25,8 @@ struct GrabberEntity : public ne::BaseEntity {
         float angleRad = 0.f;
         double moveStartTime = -1.0;
         double moveEndTime = -1.0;
-        double moveStartAngleRad = 0.0;
-        double moveEndAngleRad = 0.0;
+        float moveStartAngleRad = 0.0f;
+        float moveEndAngleRad = 0.0f;
         Vec3 handToResOffset;
     };
     State _s;

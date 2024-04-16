@@ -9,6 +9,8 @@
 #include "entities/resource.h"
 #include "geometry.h"
 #include "imgui_util.h"
+#include "math_util.h"
+#include "color.h"
 
 void MechKey::Save(serial::Ptree pt) const {
     key.Save(pt, "key");
@@ -86,13 +88,16 @@ void SinkEntity::UpdateDerived(GameManager& g, float dt) {
 
     bool keyJustPressed = false;
     bool keyJustReleased = false;
-    bool keyDown = false;
     bool quantizeReached = false;
     double quantizedBeatTime = -1.0;
     InputManager::Key k = InputManager::CharToKey(_p.key.key.c);
     keyJustPressed = g._inputManager->IsKeyPressedThisFrame(k);
     keyJustReleased = g._inputManager->IsKeyReleasedThisFrame(k);
-    keyDown = g._inputManager->IsKeyPressed(k);
+    _s.keyPressed = g._inputManager->IsKeyPressed(k);
+    {
+        float keyPushFactorTarget = _s.keyPressed ? 1.f : 0.f;
+        _s.keyPushFactor += dt * 32.f * (keyPushFactorTarget - _s.keyPushFactor);
+    }
     if (keyJustPressed && _s.actionBeatTime < 0.0) {
         _s.actionBeatTime = g._beatClock->GetNextBeatDenomTime(beatTime, _p.quantize);
     }
@@ -128,10 +133,29 @@ void SinkEntity::Draw(GameManager& g, float dt) {
     Transform cubeCtrToBtm;
     cubeCtrToBtm.SetPos(Vec3(0.f, 0.5f, 0.f));
     Mat4 toBtmM = cubeCtrToBtm.Mat4NoScale();
+   
+    Vec4 keyNominalColor;
+    float minV, maxV;
+    if (_s.keyPressed) {
+        keyNominalColor.Set(0.0f, 1.f, 1.f, 1.f);
+        minV = 0.8f;
+        maxV = 0.8f;
+    } else {
+        keyNominalColor.Set(1.f, 1.f, 1.f, 1.f);
+        minV = 0.85f;
+        maxV = 1.f;
+    } 
+    double beatTime = g._beatClock->GetBeatTimeFromEpoch();
+    float colorFactor = g._beatClock->GetBeatFraction(beatTime);
+    colorFactor = -math_util::Triangle(colorFactor) + 1.f;
+    colorFactor = math_util::SmoothStep(colorFactor);
+    Vec4 textHsva = RgbaToHsva(keyNominalColor);
+    float v = math_util::Lerp(minV, maxV, colorFactor);
+    textHsva._z = v;
+    Vec4 textColor = HsvaToRgba(textHsva);
 
     renderer::BBox2d textBbox;
     Transform textTrans;
-    Vec4 textColor(1.f, 1.f, 1.f, 1.f);
     char textBuf[] = "*";
     textBuf[0] = _p.key.key.c;
     size_t const textId = g._scene->DrawText3d(textBuf, 1, textTrans.Mat4Scale(), textColor, &textBbox); 
@@ -154,19 +178,22 @@ void SinkEntity::Draw(GameManager& g, float dt) {
     g._scene->DrawCube(sinkRenderM, _modelColor);
 
 
-    float constexpr kButtonHeight = 0.3f;
+    float constexpr kButtonMaxHeight = 0.4f;
+    float constexpr kButtonPushedHeight = 0.1f;
+    float const btnHeight = math_util::Lerp(kButtonMaxHeight, kButtonPushedHeight, _s.keyPushFactor);
+
     Vec4 btnColor(245.f / 255.f, 187.f / 255.f, 49.f / 255.f, 1.f);
     Transform eToButtonT;
     Vec3 p = _p.key.offset + Vec3(0.f, kSinkHeight, 0.f);
     eToButtonT.SetPos(p);
     Vec3 btnScale = textExtents * 1.5f;
-    btnScale._y = kButtonHeight;
+    btnScale._y = btnHeight;
     eToButtonT.SetScale(btnScale);
     Mat4 btnRenderM = _transform.Mat4NoScale() * eToButtonT.Mat4Scale() * toBtmM;
     g._scene->DrawCube(btnRenderM, btnColor);
     
     Transform btnToText;
-    Vec3 btnToTextP = -textOriginToCenter + Vec3(0.f, kButtonHeight + 0.001f, 0.f);
+    Vec3 btnToTextP = -textOriginToCenter + Vec3(0.f, btnHeight + 0.001f, 0.f);
     btnToText.SetPos(btnToTextP);
     Mat4 textRenderM = _transform.Mat4NoScale() * eToButtonT.Mat4NoScale() * btnToText.Mat4NoScale();
     renderer::Glyph3dInstance& glyph3d = g._scene->GetText3d(textId);

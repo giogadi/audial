@@ -33,6 +33,7 @@ add_executable(game
     src/string_util.h
     src/math_util.h
     src/logger.h
+    src/color.h
 
     src/imgui_util.cpp src/imgui_util.h
     src/imgui_str.cpp src/imgui_str.h

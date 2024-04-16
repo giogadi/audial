@@ -17,7 +17,6 @@ struct SinkEntity : public ne::BaseEntity {
     static ne::EntityType StaticType() { return ne::EntityType::Sink; }
     
     struct Props {
-        //imgui_util::Char key;
         MechKey key;
         double quantize = 0.0;
         std::vector<std::unique_ptr<SeqAction>> actions;
@@ -27,6 +26,8 @@ struct SinkEntity : public ne::BaseEntity {
 
     struct State {
         double actionBeatTime = -1.0;
+        float keyPushFactor = 0.f;
+        bool keyPressed = false;
     };
     State _s;
 

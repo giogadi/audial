@@ -84,4 +84,10 @@ inline double Lerp(double start, double end, double a) {
     return start + a * (end - start);
 }
 
+inline float Lerp(float start, float end, float a) {
+    if (a <= 0.f) return start;
+    if (a >= 1.f) return end;
+    return start + a * (end - start);
+}
+
 }
