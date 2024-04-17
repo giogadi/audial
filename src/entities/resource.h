@@ -12,11 +12,13 @@ struct ResourceEntity : public ne::Entity {
 
     struct State {
         Vec3 v;
+        float expandTimeElapsed = -1.f;
+        Transform renderT;
     };
     State _s;
        
     virtual void UpdateDerived(GameManager& g, float dt) override;
-    // virtual void Draw(GameManager& g, float dt) override;
+    virtual void Draw(GameManager& g, float dt) override;
     /* virtual void Destroy(GameManager& g) {} */
     // virtual void OnEditPick(GameManager& g) override;
     /* virtual void DebugPrint(); */

@@ -57,7 +57,7 @@ void MechButton::Draw(GameManager& g, Transform const& t, float const pushFactor
     renderer::BBox2d textBbox;
     Transform textTrans;
     char textBuf[] = "*";
-    textBuf[0] = key.c;
+    textBuf[0] = toupper(key.c);
     size_t const textId = g._scene->DrawText3d(textBuf, 1, textTrans.Mat4Scale(), textColor, &textBbox); 
     Vec3 textOriginToCenter;
     textOriginToCenter._x = 0.5f * (textBbox.minX + textBbox.maxX);
@@ -76,7 +76,8 @@ void MechButton::Draw(GameManager& g, Transform const& t, float const pushFactor
     Transform eToButtonT;
     Vec3 p = offset;
     eToButtonT.SetPos(p);
-    Vec3 btnScale = textExtents * 1.5f;
+    
+    Vec3 btnScale = textExtents + Vec3(0.25f, 0.f, 0.25f);
     btnScale._y = btnHeight;
     eToButtonT.SetScale(btnScale);
     Mat4 btnRenderM = t.Mat4NoScale() * eToButtonT.Mat4Scale() * toBtmM;

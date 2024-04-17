@@ -84,20 +84,20 @@
                 <pickable>false</pickable>
                 <transform>
                     <pos>
-                        <x>0.5333336</x>
+                        <x>4.23333216</x>
                         <y>13</y>
                         <z>2</z>
                     </pos>
                     <quat>
-                        <x>-0.57357645</x>
+                        <x>-0.57357651</x>
                         <y>0</y>
                         <z>0</z>
-                        <w>0.819152057</w>
+                        <w>0.819151998</w>
                     </quat>
                     <scale>
                         <x>1</x>
-                        <y>0.999999881</y>
-                        <z>0.999999881</z>
+                        <y>1</y>
+                        <z>1</z>
                     </scale>
                 </transform>
                 <model_name/>
@@ -291,9 +291,9 @@
                 <pickable>true</pickable>
                 <transform>
                     <pos>
-                        <x>2.54249454</x>
+                        <x>2.57106304</x>
                         <y>0</y>
-                        <z>-7.9000001</z>
+                        <z>-7.50367832</z>
                     </pos>
                     <quat>
                         <x>0</x>
@@ -302,9 +302,9 @@
                         <w>1</w>
                     </quat>
                     <scale>
-                        <x>1</x>
+                        <x>2.5</x>
                         <y>1</y>
-                        <z>1</z>
+                        <z>2.5</z>
                     </scale>
                 </transform>
                 <model_name/>
@@ -329,10 +329,17 @@
                         <id>-1</id>
                     </follow_entity_editor_id>
                 </waypoint_follower>
-                <key>f</key>
+                <key>
+                    <key>f</key>
+                    <offset>
+                        <x>0.75</x>
+                        <y>0</y>
+                        <z>0.75</z>
+                    </offset>
+                </key>
                 <quantize>0.25</quantize>
-                <angle>180</angle>
-                <length>2</length>
+                <angle>90</angle>
+                <length>4</length>
                 <height>0.5</height>
                 <actions>
                     <seq_action>
@@ -370,9 +377,9 @@
                 <pickable>true</pickable>
                 <transform>
                     <pos>
-                        <x>6.57499981</x>
-                        <y>0</y>
-                        <z>-7.9000001</z>
+                        <x>10.4223061</x>
+                        <y>2.86102295e-06</y>
+                        <z>-7.50400019</z>
                     </pos>
                     <quat>
                         <x>0</x>
@@ -381,9 +388,9 @@
                         <w>1</w>
                     </quat>
                     <scale>
-                        <x>1</x>
+                        <x>2.5</x>
                         <y>1</y>
-                        <z>1</z>
+                        <z>2.5</z>
                     </scale>
                 </transform>
                 <model_name/>
@@ -408,10 +415,17 @@
                         <id>-1</id>
                     </follow_entity_editor_id>
                 </waypoint_follower>
-                <key>j</key>
+                <key>
+                    <key>j</key>
+                    <offset>
+                        <x>0.75</x>
+                        <y>0</y>
+                        <z>0.75</z>
+                    </offset>
+                </key>
                 <quantize>0.25</quantize>
-                <angle>180</angle>
-                <length>2</length>
+                <angle>90</angle>
+                <length>4</length>
                 <height>1</height>
                 <actions>
                     <seq_action>
@@ -449,9 +463,9 @@
                 <pickable>true</pickable>
                 <transform>
                     <pos>
-                        <x>6.57499981</x>
+                        <x>10.4219999</x>
                         <y>0</y>
-                        <z>-5.78200006</z>
+                        <z>-3.4513855</z>
                     </pos>
                     <quat>
                         <x>0</x>
@@ -524,9 +538,9 @@
                 <pickable>true</pickable>
                 <transform>
                     <pos>
-                        <x>0.5333336</x>
+                        <x>-1.41957521</x>
                         <y>0</y>
-                        <z>-7.9000001</z>
+                        <z>-7.58635569</z>
                     </pos>
                     <quat>
                         <x>0</x>

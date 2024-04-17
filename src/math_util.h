@@ -77,6 +77,18 @@ inline double InverseLerp(double start, double end, double t) {
     return (t - start) / (end - start);
 }
 
+inline float InverseLerp(float start, float end, float t) {
+    if (start >= end) {
+        return 0.0f;
+    }
+    if (t < start) {
+        return 0.0f; 
+    } else if (t > end) {
+        return 1.0f;
+    }
+    return (t - start) / (end - start);
+}
+
 // a is in [0,1]
 inline double Lerp(double start, double end, double a) {
     if (a <= 0.0) return start;

@@ -31,7 +31,7 @@ Transform GetGrabberHandTrans(Transform const& grabberTrans, float grabberLength
 
 
 void GrabberEntity::SaveDerived(serial::Ptree pt) const {
-    _p.key.Save(pt, "key"); 
+    serial::SaveInNewChildOf(pt, "key", _p.key);
     pt.PutDouble("quantize", _p.quantize);
     pt.PutFloat("angle", _p.angleDeg);
     pt.PutFloat("length", _p.length);
@@ -41,7 +41,7 @@ void GrabberEntity::SaveDerived(serial::Ptree pt) const {
 
 void GrabberEntity::LoadDerived(serial::Ptree pt) {
     _p = Props();
-    _p.key.Load(pt, "key");
+    serial::LoadFromChildOf(pt, "key", _p.key);
     pt.TryGetDouble("quantize", &_p.quantize);
     pt.TryGetFloat("angle", &_p.angleDeg);
     pt.TryGetFloat("length", &_p.length);
@@ -51,9 +51,13 @@ void GrabberEntity::LoadDerived(serial::Ptree pt) {
 
 ne::BaseEntity::ImGuiResult GrabberEntity::ImGuiDerived(GameManager& g) {
     ImGuiResult result = ImGuiResult::Done;
-    if (_p.key.ImGui("Key")) {
-        result = ImGuiResult::NeedsInit;
+    if (ImGui::TreeNode("Key")) {
+        if (_p.key.ImGui()) {
+            result = ImGuiResult::NeedsInit;
+        }
+        ImGui::TreePop();
     }
+
     if (ImGui::InputDouble("Quantize", &_p.quantize)) {
         result = ImGuiResult::NeedsInit;
     }
@@ -90,13 +94,17 @@ void GrabberEntity::UpdateDerived(GameManager& g, float dt) {
 
     bool keyJustPressed = false;
     bool keyJustReleased = false;
-    bool keyDown = false;
     bool quantizeReached = false;
     double quantizedBeatTime = -1.0;
-    InputManager::Key k = InputManager::CharToKey(_p.key.c);
+    InputManager::Key k = InputManager::CharToKey(_p.key.key.c);
     keyJustPressed = g._inputManager->IsKeyPressedThisFrame(k);
     keyJustReleased = g._inputManager->IsKeyReleasedThisFrame(k);
-    keyDown = g._inputManager->IsKeyPressed(k);
+    _s.keyPressed = g._inputManager->IsKeyPressed(k);
+    {
+        float keyPushFactorTarget = _s.keyPressed ? 1.f : 0.f;
+        _s.keyPushFactor += dt * 32.f * (keyPushFactorTarget - _s.keyPushFactor);
+    }
+
     if (keyJustPressed && _s.actionBeatTime < 0.0) {
         _s.actionBeatTime = g._beatClock->GetNextBeatDenomTime(beatTime, _p.quantize);
     }
@@ -163,6 +171,25 @@ void GrabberEntity::UpdateDerived(GameManager& g, float dt) {
 }
 
 void GrabberEntity::Draw(GameManager& g, float dt) {
+    Transform cubeCtrToBtm;
+    cubeCtrToBtm.SetPos(Vec3(0.f, 0.5f, 0.f));
+    Mat4 toBtmM = cubeCtrToBtm.Mat4NoScale();
+
+    float constexpr kPlatHeight = 0.1f;
+    Vec3 platRenderScale = _transform.Scale();
+    platRenderScale._y = kPlatHeight;
+    Transform platRenderT;
+    platRenderT = _transform;
+    platRenderT.SetScale(platRenderScale);
+    Mat4 platRenderM = platRenderT.Mat4Scale() * toBtmM;
+    g._scene->DrawCube(platRenderM, _modelColor);
+
+    Transform btnTrans = _transform;
+    btnTrans.Translate(Vec3(0.f, kPlatHeight, 0.f));
+    _p.key.Draw(g, btnTrans, _s.keyPushFactor, _s.keyPressed);
+
+
+
     float const length = _p.length;
 
     Quaternion q;
@@ -189,18 +216,7 @@ void GrabberEntity::Draw(GameManager& g, float dt) {
     handTrans.SetScale(Vec3(1.f, kArmScaleY, 1.f));
     handTrans.SetPos(p);
     
-    g._scene->DrawCube(handTrans.Mat4Scale(), _modelColor);
-
-
-    {
-        float constexpr kTextSize = 1.5f;
-        Vec4 color(1.f, 1.f, 1.f, 1.f);
-        char textBuf[] = "*";
-        textBuf[0] = _p.key.c;
-        // AHHHH ALLOCATION
-        g._scene->DrawTextWorld(std::string(textBuf), _transform.Pos(), kTextSize, color);
-    }
-
+    g._scene->DrawCube(handTrans.Mat4Scale(), _modelColor); 
 }
 
 void GrabberEntity::OnEditPick(GameManager& g) {

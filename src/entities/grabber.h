@@ -3,13 +3,14 @@
 #include "new_entity.h"
 #include "imgui_str.h"
 #include "seq_action.h"
+#include "mech_button.h"
 
 struct GrabberEntity : public ne::BaseEntity {
     virtual ne::EntityType Type() override { return ne::EntityType::Grabber; }
     static ne::EntityType StaticType() { return ne::EntityType::Grabber; }
     
     struct Props {
-        imgui_util::Char key;
+        MechButton key;
         double quantize = 0.0;
         float angleDeg = 0.f;
         float length = 1.f;
@@ -28,6 +29,9 @@ struct GrabberEntity : public ne::BaseEntity {
         float moveStartAngleRad = 0.0f;
         float moveEndAngleRad = 0.0f;
         Vec3 handToResOffset;
+
+        float keyPushFactor = 0.f;
+        bool keyPressed = false;
     };
     State _s;
 
