@@ -72,7 +72,7 @@ void MechButton::Draw(GameManager& g, Transform const& t, float const pushFactor
     float constexpr kButtonPushedHeight = 0.1f;
     float const btnHeight = math_util::Lerp(kButtonMaxHeight, kButtonPushedHeight, pushFactor);
 
-    Vec4 btnColor(188.f / 255.f, 132.f / 255.f, 0.f / 255.f, 1.f);
+    Vec4 btnColor(199.f / 255.f, 140.f / 255.f, 0.f / 255.f, 1.f);
     Transform eToButtonT;
     Vec3 p = offset;
     eToButtonT.SetPos(p);

@@ -3,6 +3,7 @@
     <version>5</version>
     <script>
         <bpm>110</bpm>
+        <gamma_correction>true</gamma_correction>
         <ctrl_groups>
             <group0/>
             <group1/>
@@ -68,8 +69,8 @@
                     <y>1</y>
                     <z>1</z>
                 </color>
-                <ambient>0.426470608</ambient>
-                <diffuse>0.543637037</diffuse>
+                <ambient>0.140000001</ambient>
+                <diffuse>0.851999998</diffuse>
                 <specular>0</specular>
                 <is_directional>true</is_directional>
             </Light>
@@ -212,9 +213,9 @@
                 <model_name>cube</model_name>
                 <texture_name>white</texture_name>
                 <model_color_vec4>
-                    <x>0.549019575</x>
-                    <y>0.549019575</y>
-                    <z>0.549019575</z>
+                    <x>0.392156839</x>
+                    <y>0.392156839</y>
+                    <z>0.392156839</z>
                     <w>1</w>
                 </model_color_vec4>
                 <flow_section_id>-1</flow_section_id>
@@ -509,9 +510,9 @@
                 <model_name/>
                 <texture_name>white</texture_name>
                 <model_color_vec4>
-                    <x>0.34117648</x>
-                    <y>0.388235301</y>
-                    <z>0.882352948</z>
+                    <x>0.149019614</x>
+                    <y>0.219607845</y>
+                    <z>1</z>
                     <w>1</w>
                 </model_color_vec4>
                 <flow_section_id>-1</flow_section_id>
@@ -586,9 +587,9 @@
                 <model_name>cube</model_name>
                 <texture_name>white</texture_name>
                 <model_color_vec4>
-                    <x>0.294117659</x>
-                    <y>0.80392158</y>
-                    <z>0.400000006</z>
+                    <x>0.0470588244</x>
+                    <y>0.737254918</y>
+                    <z>0.188235298</z>
                     <w>1</w>
                 </model_color_vec4>
                 <flow_section_id>-1</flow_section_id>
@@ -673,9 +674,9 @@
                 <model_name/>
                 <texture_name/>
                 <model_color_vec4>
-                    <x>0.898039222</x>
-                    <y>0.470588237</y>
-                    <z>0.470588237</z>
+                    <x>1</x>
+                    <y>0.0941176489</y>
+                    <z>0.0941176489</z>
                     <w>1</w>
                 </model_color_vec4>
                 <flow_section_id>-1</flow_section_id>
@@ -747,9 +748,9 @@
                 <model_name/>
                 <texture_name>white</texture_name>
                 <model_color_vec4>
-                    <x>0.34117648</x>
-                    <y>0.388235301</y>
-                    <z>0.882352948</z>
+                    <x>0.149019614</x>
+                    <y>0.219607845</y>
+                    <z>1</z>
                     <w>1</w>
                 </model_color_vec4>
                 <flow_section_id>-1</flow_section_id>
@@ -824,9 +825,9 @@
                 <model_name>cube</model_name>
                 <texture_name>white</texture_name>
                 <model_color_vec4>
-                    <x>0.294117659</x>
-                    <y>0.80392158</y>
-                    <z>0.400000006</z>
+                    <x>0.0470588244</x>
+                    <y>0.737254918</y>
+                    <z>0.188235298</z>
                     <w>1</w>
                 </model_color_vec4>
                 <flow_section_id>-1</flow_section_id>
@@ -911,9 +912,9 @@
                 <model_name/>
                 <texture_name/>
                 <model_color_vec4>
-                    <x>0.898039222</x>
-                    <y>0.470588237</y>
-                    <z>0.470588237</z>
+                    <x>1</x>
+                    <y>0.0941176489</y>
+                    <z>0.0941176489</z>
                     <w>1</w>
                 </model_color_vec4>
                 <flow_section_id>-1</flow_section_id>
@@ -985,9 +986,9 @@
                 <model_name/>
                 <texture_name>white</texture_name>
                 <model_color_vec4>
-                    <x>0.34117648</x>
-                    <y>0.388235301</y>
-                    <z>0.882352948</z>
+                    <x>0.149019614</x>
+                    <y>0.219607845</y>
+                    <z>1</z>
                     <w>1</w>
                 </model_color_vec4>
                 <flow_section_id>-1</flow_section_id>
@@ -1062,9 +1063,9 @@
                 <model_name>cube</model_name>
                 <texture_name>white</texture_name>
                 <model_color_vec4>
-                    <x>0.857843161</x>
-                    <y>0.605536342</y>
-                    <z>0</z>
+                    <x>0.0470588244</x>
+                    <y>0.737254918</y>
+                    <z>0.188235298</z>
                     <w>1</w>
                 </model_color_vec4>
                 <flow_section_id>-1</flow_section_id>
@@ -1137,9 +1138,9 @@
                 <model_name/>
                 <texture_name/>
                 <model_color_vec4>
-                    <x>0.898039222</x>
-                    <y>0.470588237</y>
-                    <z>0.470588237</z>
+                    <x>1</x>
+                    <y>0.0941176489</y>
+                    <z>0.0941176489</z>
                     <w>1</w>
                 </model_color_vec4>
                 <flow_section_id>-1</flow_section_id>

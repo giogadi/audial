@@ -30,10 +30,10 @@
                         <z>0</z>
                     </pos>
                     <quat>
-                        <x>0.707106769</x>
-                        <y>0</y>
-                        <z>0</z>
-                        <w>0.707106769</w>
+                        <x>-0.793353319</x>
+                        <y>-2.73001831e-07</y>
+                        <z>2.73001831e-07</z>
+                        <w>-0.60876143</w>
                     </quat>
                     <scale>
                         <x>1</x>
@@ -584,7 +584,7 @@
                         <z>1</z>
                     </offset>
                 </button>
-                <quantize>0</quantize>
+                <quantize>0.25</quantize>
                 <actions>
                     <seq_action>
                         <one_time>false</one_time>

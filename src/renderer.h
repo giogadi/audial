@@ -141,6 +141,8 @@ public:
     Mat4 GetViewProjTransform() const;
 
     void SetDrawTerrain(bool enable);
+    void SetEnableGammaCorrection(bool enable);
+    bool IsGammaCorrectionEnabled() const;
 private:
     std::unique_ptr<SceneInternal> _pInternal;
 };

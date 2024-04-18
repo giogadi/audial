@@ -593,6 +593,7 @@ void Editor::DrawWindow() {
         serial::Ptree pt = serial::Ptree::MakeNew();
         serial::Ptree scriptPt = pt.AddChild("script");
         scriptPt.PutDouble("bpm", _g->_beatClock->GetBpm());
+        scriptPt.PutBool("gamma_correction", _g->_scene->IsGammaCorrectionEnabled());
         Save(scriptPt);
         serial::Ptree entitiesPt = scriptPt.AddChild("new_entities");
         for (ne::EntityId id : _entityIds) {

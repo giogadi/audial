@@ -42,7 +42,7 @@ Mat4 Camera::GetViewMatrix() const {
 }
 
 namespace {
-bool CreateTextureFromFile(char const* filename, unsigned int& textureId, bool flip=true) {
+bool CreateTextureFromFile(char const* filename, unsigned int& textureId, bool gammaCorrection, bool flip=true) {
     stbi_set_flip_vertically_on_load(flip);
     int texWidth, texHeight, texNumChannels;
     unsigned char *texData = stbi_load(filename, &texWidth, &texHeight, &texNumChannels, 0);
@@ -62,8 +62,8 @@ bool CreateTextureFromFile(char const* filename, unsigned int& textureId, bool f
     GLenum format;
     GLenum srcFormat;
     switch (texNumChannels) {
-        case 3: format = GL_SRGB; srcFormat = GL_RGB; break;
-        case 4: format = GL_SRGB_ALPHA; srcFormat = GL_RGBA; break;
+        case 3: format = gammaCorrection ? GL_SRGB : GL_RGB; srcFormat = GL_RGB; break;
+        case 4: format = gammaCorrection ? GL_SRGB_ALPHA : GL_RGBA; srcFormat = GL_RGBA; break;
         default: assert(false); break;
     }
     glTexImage2D(
@@ -302,6 +302,7 @@ public:
     unsigned int _psButtonsTextureId;
 
     bool _drawTerrain = false;
+    bool _enableGammaCorrection = false;
 
     // boring cached things
     std::vector<ModelInstance const*> _topLayerModels;
@@ -386,7 +387,7 @@ std::unique_ptr<BoundMeshPNU> MakeWaterMesh() {
 }
 
 bool SceneInternal::LoadPsButtons() {
-    if (!CreateTextureFromFile("data/textures/ps_buttons.png", _psButtonsTextureId)) {
+    if (!CreateTextureFromFile("data/textures/ps_buttons.png", _psButtonsTextureId, _enableGammaCorrection)) {
         return false;
     }
 
@@ -558,25 +559,25 @@ bool SceneInternal::Init(GameManager& g) {
         return false;
     }
 
-    if (!CreateTextureFromFile("data/textures/white.png", _whiteTextureId)) {
+    if (!CreateTextureFromFile("data/textures/white.png", _whiteTextureId, _enableGammaCorrection)) {
         return false;
     }
     _textureIdMap.emplace("white", _whiteTextureId);
  
     unsigned int woodboxTextureId = 0;
-    if (!CreateTextureFromFile("data/textures/wood_container.jpg", woodboxTextureId)) {
+    if (!CreateTextureFromFile("data/textures/wood_container.jpg", woodboxTextureId, _enableGammaCorrection)) {
         return false;
     }
     _textureIdMap.emplace("wood_box", woodboxTextureId);
 
     unsigned int perlinNoiseTextureId = 0;
-    if (!CreateTextureFromFile("data/textures/perlin_noise.png", perlinNoiseTextureId)) {
+    if (!CreateTextureFromFile("data/textures/perlin_noise.png", perlinNoiseTextureId, /*gammaCorrection=*/false)) {
         return false;
     }
     _textureIdMap.emplace("perlin_noise", perlinNoiseTextureId);
 
     unsigned int perlinNoiseNormalTextureId = 0;
-    if (!CreateTextureFromFile("data/textures/perlin_noise_normal.png", perlinNoiseNormalTextureId)) {
+    if (!CreateTextureFromFile("data/textures/perlin_noise_normal.png", perlinNoiseNormalTextureId, /*gammaCorrect=*/false)) {
         return false;
     }
     _textureIdMap.emplace("perlin_noise_normal", perlinNoiseNormalTextureId);
@@ -1014,7 +1015,9 @@ void DrawModelInstance(SceneInternal& internal, Mat4 const& viewProjTransform, M
 
 void Scene::Draw(int windowWidth, int windowHeight, float timeInSecs) {
 
-    glEnable(GL_FRAMEBUFFER_SRGB);
+    if (_pInternal->_enableGammaCorrection) {
+        glEnable(GL_FRAMEBUFFER_SRGB);
+    }
 
     Lights lights = {};
     int numDir = 0;
@@ -1350,7 +1353,9 @@ void Scene::Draw(int windowWidth, int windowHeight, float timeInSecs) {
 
     _pInternal->_modelsToDraw.clear();
 
-    glDisable(GL_FRAMEBUFFER_SRGB);
+    if (_pInternal->_enableGammaCorrection) {
+        glDisable(GL_FRAMEBUFFER_SRGB);
+    }
 }
 
 renderer::Light* Scene::DrawLight() {
@@ -1363,6 +1368,14 @@ void Scene::SetDrawTerrain(bool enable) {
 
 Glyph3dInstance& Scene::GetText3d(size_t id) {
     return _pInternal->_glyph3dsToDraw.at(id);
+}
+
+void Scene::SetEnableGammaCorrection(bool enable) {
+    _pInternal->_enableGammaCorrection = enable;
+}
+
+bool Scene::IsGammaCorrectionEnabled() const {
+    return _pInternal->_enableGammaCorrection;
 }
 
 } // namespace renderer

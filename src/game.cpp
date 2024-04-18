@@ -469,24 +469,37 @@ int main(int argc, char** argv) {
     gGameManager._synthPatchBank = &synthPatchBank;
     gGameManager._editMode = cmdLineInputs._editMode;
 
-    if (!sceneManager.Init(gGameManager)) {
-        std::cout << "scene failed to init. exiting" << std::endl;
-        ShutDown(audioContext, soundBank);
-        return 1;
-    }
-
-    neEntityManager.Init();
-
-    // SCRIPT LOADING
-    if (cmdLineInputs._scriptFilename.has_value()) {
-        std::cout << "loading " << cmdLineInputs._scriptFilename.value() << std::endl;
+    {
         serial::Ptree pt = serial::Ptree::MakeNew();
-        if (!pt.LoadFromFile(cmdLineInputs._scriptFilename->c_str())) {
+        bool scriptLoadSuccess = false;
+        if (cmdLineInputs._scriptFilename.has_value()) {
+            std::cout << "loading " << cmdLineInputs._scriptFilename.value() << std::endl;
+            if (pt.LoadFromFile(cmdLineInputs._scriptFilename->c_str())) {
+                scriptLoadSuccess = true;
+            }
+        }
+        if (!scriptLoadSuccess) {
             printf("Script ptree load failed. Exiting.\n");
             pt.DeleteData();
             ShutDown(audioContext, soundBank);
             return 1;
         }
+
+        bool gammaCorrection = false;
+        if (pt.GetVersion() >= 5) {
+            // If this is a relatively new script, just enable gamma correction by default.
+            gammaCorrection = true;
+        }
+        pt.TryGetBool("script.gamma_correction", &gammaCorrection);
+        sceneManager.SetEnableGammaCorrection(gammaCorrection);
+        if (!sceneManager.Init(gGameManager)) {
+            std::cout << "scene failed to init. exiting" << std::endl;
+            ShutDown(audioContext, soundBank);
+            return 1;
+        }
+
+        neEntityManager.Init();
+
 
         double bpm = pt.GetDouble("script.bpm");
         beatClock.Init(gGameManager, bpm, audioContext._sampleRate);
@@ -527,14 +540,6 @@ int main(int argc, char** argv) {
         }
 
         pt.DeleteData();
-    } else {
-        printf("ERROR: TODO NEED TO SUPPLY A HARDCODED TEST SCRIPT\n");
-        ShutDown(audioContext, soundBank);
-        return 1;
-        // std::cout << "loading hardcoded script" << std::endl;
-        // beatClock.Init(/*bpm=*/120.0, /*sampleRate=*/SAMPLE_RATE, audioContext._stream);
-        // beatClock.Update();
-        // LoadTestScript(gGameManager);
     }
 
     editor.Init(&gGameManager);
