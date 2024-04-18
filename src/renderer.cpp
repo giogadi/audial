@@ -157,7 +157,7 @@ namespace ModelShaderUniforms {
         "uPointLights[1]._color",
         "uPointLights[1]._ambient",
         "uPointLights[1]._diffuse",
-        "uPointLights[2]._specular"
+        "uPointLights[1]._specular"
     };
 };
 

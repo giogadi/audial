@@ -32,6 +32,7 @@ out vec4 FragColor;
 void main() {
     vec3 normal = normalize(normalNonNorm);
 
+    float shininess = 32.f;
     float attenConstant = 1.0f;
     float attenLinear = 0.045f;
     float attenQuad = 0.0075;
@@ -54,8 +55,8 @@ void main() {
         PointLight light = uPointLights[i];        
         vec3 lightDir = normalize(light._pos - fragPos);
                
-        vec3 reflectDir = reflect(-lightDir, normal);
-        float spec = pow(max(dot(viewDir, reflectDir), 0.0f), 32);
+        vec3 halfwayDir = normalize(lightDir + viewDir);
+        float spec = pow(max(dot(normal, halfwayDir), 0.0f), shininess);
         vec3 specular = spec * light._color * light._specular;
 
         float diff = max(dot(normal, lightDir), 0.0);
