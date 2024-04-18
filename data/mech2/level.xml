@@ -213,9 +213,9 @@
                 <model_name>cube</model_name>
                 <texture_name>white</texture_name>
                 <model_color_vec4>
-                    <x>0.392156839</x>
-                    <y>0.392156839</y>
-                    <z>0.392156839</z>
+                    <x>0.0269607902</x>
+                    <y>0.0602653064</y>
+                    <z>0.107843161</z>
                     <w>1</w>
                 </model_color_vec4>
                 <flow_section_id>-1</flow_section_id>
