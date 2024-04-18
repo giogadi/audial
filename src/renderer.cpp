@@ -60,14 +60,15 @@ bool CreateTextureFromFile(char const* filename, unsigned int& textureId, bool f
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     GLenum format;
+    GLenum srcFormat;
     switch (texNumChannels) {
-        case 3: format = GL_RGB; break;
-        case 4: format = GL_RGBA; break;
+        case 3: format = GL_SRGB; srcFormat = GL_RGB; break;
+        case 4: format = GL_SRGB_ALPHA; srcFormat = GL_RGBA; break;
         default: assert(false); break;
     }
     glTexImage2D(
         GL_TEXTURE_2D, /*mipmapLevel=*/0, /*textureFormat=*/format, texWidth, texHeight, /*legacy=*/0,
-        /*sourceFormat=*/format, /*sourceDataType=*/GL_UNSIGNED_BYTE, texData);
+        /*sourceFormat=*/srcFormat, /*sourceDataType=*/GL_UNSIGNED_BYTE, texData);
     glGenerateMipmap(GL_TEXTURE_2D);
     stbi_image_free(texData);
 
@@ -1013,6 +1014,8 @@ void DrawModelInstance(SceneInternal& internal, Mat4 const& viewProjTransform, M
 
 void Scene::Draw(int windowWidth, int windowHeight, float timeInSecs) {
 
+    glEnable(GL_FRAMEBUFFER_SRGB);
+
     Lights lights = {};
     int numDir = 0;
     int numPoint = 0;
@@ -1346,6 +1349,8 @@ void Scene::Draw(int windowWidth, int windowHeight, float timeInSecs) {
     }
 
     _pInternal->_modelsToDraw.clear();
+
+    glDisable(GL_FRAMEBUFFER_SRGB);
 }
 
 renderer::Light* Scene::DrawLight() {
