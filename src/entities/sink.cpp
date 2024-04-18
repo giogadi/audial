@@ -104,11 +104,42 @@ void SinkEntity::UpdateDerived(GameManager& g, float dt) {
             continue;
         }
 
-        g._neEntityManager->TagForDestroy(r->_id);
+        r->StartDestroy();
+
+        for (auto const& pAction : _p.acceptActions) {
+            pAction->Execute(g);
+        }
+
+        _s.acceptTimeElapsed = 0.f;
     }
 }
 
 void SinkEntity::Draw(GameManager& g, float dt) {
+
+    Vec4 color = _modelColor;
+    if (_s.acceptTimeElapsed >= 0.f) {
+        _s.acceptTimeElapsed += dt;
+
+        float constexpr kFadeInTime = 0.05f;
+        float constexpr kHoldTime = 0.0f;
+        float constexpr kFadeOutTime = 0.25f;
+        Vec4 constexpr kFadeColor(1.f, 1.f, 1.f, 1.f);
+
+        if (_s.acceptTimeElapsed <= kFadeInTime) {
+            float factor = math_util::InverseLerp(0.f, kFadeInTime, _s.acceptTimeElapsed);
+            factor = math_util::SmoothStep(factor);
+            color = math_util::Vec4Lerp(_modelColor, kFadeColor, factor);
+        } else if (_s.acceptTimeElapsed <= kFadeInTime + kHoldTime) {
+            color = kFadeColor; 
+        } else if (_s.acceptTimeElapsed <= kFadeInTime+kHoldTime+kFadeOutTime) {
+            float factor = math_util::InverseLerp(kFadeInTime+kHoldTime, kFadeInTime+kHoldTime+kFadeOutTime, _s.acceptTimeElapsed);
+            factor = math_util::SmoothStep(factor);
+            color = math_util::Vec4Lerp(kFadeColor, _modelColor, factor);
+        } else {
+            _s.acceptTimeElapsed = -1.f;
+        }
+    }
+
     Transform cubeCtrToBtm;
     cubeCtrToBtm.SetPos(Vec3(0.f, 0.5f, 0.f));
     Mat4 toBtmM = cubeCtrToBtm.Mat4NoScale();
@@ -120,7 +151,7 @@ void SinkEntity::Draw(GameManager& g, float dt) {
     sinkRenderT = _transform;
     sinkRenderT.SetScale(sinkRenderScale);
     Mat4 sinkRenderM = sinkRenderT.Mat4Scale() * toBtmM;
-    g._scene->DrawCube(sinkRenderM, _modelColor);
+    g._scene->DrawCube(sinkRenderM, color);
 
     Transform btnTrans = _transform;
     btnTrans.Translate(Vec3(0.f, kSinkHeight, 0.f));

@@ -98,7 +98,7 @@ void SpawnerEntity::UpdateDerived(GameManager& g, float dt) {
             ResourceEntity* r = static_cast<ResourceEntity*>(g._neEntityManager->AddEntity(ne::EntityType::Resource));
             r->_initTransform = _transform;
             r->_initTransform.Translate(Vec3(0.f, 1.f, 0.f));
-            r->_initTransform.SetScale(Vec3(0.25f, 0.25f, 0.25f));
+            r->_initTransform.SetScale(Vec3(0.5f, 0.5f, 0.5f));
             r->_modelName = "cube";
             r->_modelColor.Set(1.f, 1.f, 1.f, 1.f);
 

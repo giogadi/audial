@@ -683,7 +683,35 @@ int main(int argc, char** argv) {
                 ne::Entity* e = iter.GetEntity();                
                 e->Update(gGameManager, dt);
             }
-        }        
+        }
+
+        neEntityManager.DestroyTaggedEntities(gGameManager);
+        neEntityManager.DeactivateTaggedEntities(gGameManager);
+        
+        if (gGameManager._editMode) {
+            for (auto iter = gGameManager._neEntityManager->GetAllIterator(); !iter.Finished(); iter.Next()) {
+                ne::Entity* e = iter.GetEntity();
+                if (editor._enableFlowSectionFilter && e->_flowSectionId >= 0 && editor._flowSectionFilterId != e->_flowSectionId) {
+                    continue;
+                }
+                e->Draw(gGameManager, dt);
+            }
+
+            for (auto iter = gGameManager._neEntityManager->GetAllInactiveIterator(); !iter.Finished(); iter.Next()) {
+                ne::Entity* e = iter.GetEntity();
+                if (editor._enableFlowSectionFilter && e->_flowSectionId >= 0 && editor._flowSectionFilterId != e->_flowSectionId) {
+                    continue;
+                }
+                e->Draw(gGameManager, dt);
+            }
+        } else {
+            for (auto iter = gGameManager._neEntityManager->GetAllIterator(); !iter.Finished(); iter.Next()) {
+                ne::Entity* e = iter.GetEntity();                
+                e->Draw(gGameManager, dt);
+            }
+        }
+
+
 
         // Start the Dear ImGui frame
         ImGui_ImplOpenGL3_NewFrame();
@@ -711,16 +739,9 @@ int main(int argc, char** argv) {
         // Generally you may always pass all inputs to dear imgui, and hide them from your application based on those two flags.
         glfwPollEvents();
 
-        // We're doing this last so that it's not possible for the following to happen:
-        // 1. player hits planet with 1hp
-        // 2. planet gets deleted
-        // 3. player's position is wacky
-        // 4. renderer takes wacky position
-        //
-        // Rule here is: We ALWAYS have at least one frame to deal with a deleted reference before a render happens. Not a bad rule!
-        neEntityManager.DestroyTaggedEntities(gGameManager);
-        neEntityManager.DeactivateTaggedEntities(gGameManager);
+
         neEntityManager.ActivateTaggedEntities(gGameManager);
+
     }
 
 #if COMPUTE_FFT

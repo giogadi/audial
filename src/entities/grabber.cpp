@@ -122,6 +122,8 @@ void GrabberEntity::UpdateDerived(GameManager& g, float dt) {
     }
 
     if (quantizeReached && _s.moveStartTime < 0.0) {
+        // TODO FIGURE THIS OUT
+        assert(quantizedBeatTime > 0.0);
         _s.moveStartTime = quantizedBeatTime;
         _s.moveEndTime = quantizedBeatTime + 0.125;                
         _s.angleRad = Normalize2Pi(_s.angleRad);

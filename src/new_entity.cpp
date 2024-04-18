@@ -710,7 +710,6 @@ void BaseEntity::Init(GameManager& g) {
 void BaseEntity::Update(GameManager& g, float dt) {
     _wpFollower.Update(g, dt, this, _wpProps);
     UpdateDerived(g, dt);
-    Draw(g, dt);
 }
 void BaseEntity::Draw(GameManager& g, float dt) {
     if (_model != nullptr) {

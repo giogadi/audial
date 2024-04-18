@@ -11,11 +11,15 @@ struct ResourceEntity : public ne::Entity {
     Props _p;
 
     struct State {
+        bool destroyed = false;
         Vec3 v;
         float expandTimeElapsed = -1.f;
+        float destroyTimeElapsed = -1.f;
         Transform renderT;
     };
     State _s;
+
+    void StartDestroy();
        
     virtual void UpdateDerived(GameManager& g, float dt) override;
     virtual void Draw(GameManager& g, float dt) override;

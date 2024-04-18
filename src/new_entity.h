@@ -65,6 +65,9 @@ struct BaseEntity {
 
     virtual void UpdateEditMode(GameManager& g, float dt, bool isActive);
 
+    
+    virtual void Draw(GameManager& g, float dt);
+
 protected:
     // Used by derived classes to work with child-specific data.
     virtual void InitDerived(GameManager& g) {}
@@ -73,7 +76,6 @@ protected:
     virtual ImGuiResult ImGuiDerived(GameManager& g) { return ImGuiResult::Done; }
     virtual void UpdateDerived(GameManager& g, float dt) {}
 
-    virtual void Draw(GameManager& g, float dt);
 };
 
 typedef BaseEntity Entity;

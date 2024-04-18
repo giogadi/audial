@@ -21,6 +21,7 @@ struct SinkEntity : public ne::BaseEntity {
         double actionBeatTime = -1.0;
         float keyPushFactor = 0.f;
         bool keyPressed = false;
+        float acceptTimeElapsed = -1.f;
     };
     State _s;
 

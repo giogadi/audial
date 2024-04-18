@@ -64,6 +64,13 @@ inline Vec3 Vec3Lerp(float x, Vec3 const& a, Vec3 const& b) {
     return res;
 }
 
+inline Vec4 Vec4Lerp(Vec4 const& start, Vec4 const& end, float a) {
+    Vec4 res = end - start;
+    res *= a;
+    res = start + res;
+    return res;
+}
+
 // returns a value in [0,1]
 inline double InverseLerp(double start, double end, double t) {
     if (start >= end) {
