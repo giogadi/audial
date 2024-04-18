@@ -11,7 +11,7 @@ uniform vec3 uExplodeVec;
 
 out vec2 texCoord;
 out vec3 fragPos;
-out vec3 normal;
+out vec3 normalNonNorm;
 
 void main() {
     vec3 p = aPos;
@@ -19,5 +19,5 @@ void main() {
     gl_Position = uMvpTrans * vec4(p.x, p.y, p.z, 1.0);
     fragPos = vec3(uModelTrans * vec4(p, 1.0f));
     texCoord = aTexCoord;
-    normal = uModelInvTrans * aNormal;
+    normalNonNorm = uModelInvTrans * aNormal;
 }

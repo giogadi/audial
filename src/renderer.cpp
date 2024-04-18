@@ -122,14 +122,19 @@ namespace ModelShaderUniforms {
         uModelInvTrans,
         uViewPos,
         uDirLightDir,
+        uDirLightColor,
         uDirLightAmb,
         uDirLightDif,
         uPointLight0Pos,
+        uPointLight0Color,
         uPointLight0Amb,
         uPointLight0Dif,
+        uPointLight0Spec,
         uPointLight1Pos,
+        uPointLight1Color,
         uPointLight1Amb,
         uPointLight1Dif,
+        uPointLight1Spec,
         Count
     };
     static char const* NameStrings[] = {
@@ -140,14 +145,19 @@ namespace ModelShaderUniforms {
         "uModelInvTrans",
         "uViewPos",
         "uDirLight._dir",
+        "uDirLight._color",
         "uDirLight._ambient",
         "uDirLight._diffuse",
         "uPointLights[0]._pos",
+        "uPointLights[0]._color",
         "uPointLights[0]._ambient",
         "uPointLights[0]._diffuse",
+        "uPointLights[0]._specular",
         "uPointLights[1]._pos",
+        "uPointLights[1]._color",
         "uPointLights[1]._ambient",
-        "uPointLights[1]._diffuse"
+        "uPointLights[1]._diffuse",
+        "uPointLights[2]._specular"
     };
 };
 
@@ -158,6 +168,7 @@ namespace WaterShaderUniforms {
         uModelTrans,
         uColor,
         uDirLightDir,
+        uDirLightColor,
         uDirLightAmb,
         uDirLightDif,
         uTime,
@@ -168,6 +179,7 @@ namespace WaterShaderUniforms {
         "uModelTrans",
         "uColor",
         "uDirLight._dir",
+        "uDirLight._color",
         "uDirLight._ambient",
         "uDirLight._diffuse",
         "uTime"
@@ -910,21 +922,23 @@ void SetLightUniformsModelShader(Lights const& lights, Vec3 const& viewPos, Scen
     int const* uniforms = sceneInternal._modelShaderUniforms;
     Shader& shader = sceneInternal._modelShader;
     shader.SetVec3(uniforms[ModelShaderUniforms::uDirLightDir], lights._dirLight._p);
-    Vec3 ambVec = lights._dirLight._color * lights._dirLight._ambient;
-    Vec3 difVec = lights._dirLight._color * lights._dirLight._diffuse;
-    shader.SetVec3(uniforms[ModelShaderUniforms::uDirLightAmb], ambVec);
-    shader.SetVec3(uniforms[ModelShaderUniforms::uDirLightDif], difVec);
+    shader.SetVec3(uniforms[ModelShaderUniforms::uDirLightColor], lights._dirLight._color);
+    shader.SetFloat(uniforms[ModelShaderUniforms::uDirLightAmb], lights._dirLight._ambient);
+    shader.SetFloat(uniforms[ModelShaderUniforms::uDirLightDif], lights._dirLight._diffuse);
     shader.SetVec3(uniforms[ModelShaderUniforms::uViewPos], viewPos);
     for (int i = 0; i < kMaxNumPointLights; ++i) {
-        int posLoc = uniforms[ModelShaderUniforms::uPointLight0Pos + 3 * i];
-        int ambLoc = uniforms[ModelShaderUniforms::uPointLight0Amb + 3 * i];
-        int difLoc = uniforms[ModelShaderUniforms::uPointLight0Dif + 3 * i];
+        int constexpr kNumUniforms = 5;
+        int posLoc = uniforms[ModelShaderUniforms::uPointLight0Pos + kNumUniforms * i];
+        int colorLoc = uniforms[ModelShaderUniforms::uPointLight0Color + kNumUniforms * i];
+        int ambLoc = uniforms[ModelShaderUniforms::uPointLight0Amb + kNumUniforms * i];
+        int difLoc = uniforms[ModelShaderUniforms::uPointLight0Dif + kNumUniforms * i];
+        int specLoc = uniforms[ModelShaderUniforms::uPointLight0Spec + kNumUniforms * i];
         Light const& pl = lights._pointLights[i];
         shader.SetVec3(posLoc, pl._p);
-        Vec3 ambVec = pl._color * pl._ambient;
-        Vec3 difVec = pl._color * pl._diffuse;
-        shader.SetVec3(ambLoc, ambVec);
-        shader.SetVec3(difLoc, difVec);
+        shader.SetVec3(colorLoc, pl._color);
+        shader.SetFloat(ambLoc, pl._ambient);
+        shader.SetFloat(difLoc, pl._diffuse);
+        shader.SetFloat(specLoc, pl._specular);
     }
 }
 
@@ -999,7 +1013,7 @@ void DrawModelInstance(SceneInternal& internal, Mat4 const& viewProjTransform, M
 
 void Scene::Draw(int windowWidth, int windowHeight, float timeInSecs) {
 
-    Lights lights;
+    Lights lights = {};
     int numDir = 0;
     int numPoint = 0;
     {

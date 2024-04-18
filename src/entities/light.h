@@ -9,8 +9,9 @@ struct LightEntity : public ne::Entity {
     
     // serialized
     Vec3 _color;
-    float _ambient;
-    float _diffuse;
+    float _ambient = 0.f;
+    float _diffuse = 0.f;
+    float _specular = 0.f;
 
     // If true, light shines along +z. if false, it's a point light.
     bool _isDirectional = false;

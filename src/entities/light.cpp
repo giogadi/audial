@@ -7,20 +7,24 @@
 
 void LightEntity::DebugPrint() {
     ne::Entity::DebugPrint();
-    // printf("ambient: %f %f %f\n", _ambient._x, _ambient._y, _ambient._z);
-    // printf("diffuse: %f %f %f\n", _diffuse._x, _diffuse._y, _diffuse._z);
 }
 void LightEntity::SaveDerived(serial::Ptree pt) const {
     serial::SaveInNewChildOf(pt, "color", _color);
     pt.PutFloat("ambient", _ambient);
     pt.PutFloat("diffuse", _diffuse);
+    pt.PutFloat("specular", _specular);
     pt.PutBool("is_directional", _isDirectional);
 }
 void LightEntity::LoadDerived(serial::Ptree pt) {
+    _color = Vec3();
+    _ambient = 0.f;
+    _diffuse = 0.f;
+    _specular = 0.f;
     if (pt.GetVersion() >= 5) {
         serial::LoadFromChildOf(pt, "color", _color);
         _ambient = pt.GetFloat("ambient");
         _diffuse = pt.GetFloat("diffuse");
+        pt.TryGetFloat("specular", &_specular);
     } else {
         // Assume color is white
         _color.Set(1.f, 1.f, 1.f);
@@ -41,6 +45,7 @@ ne::Entity::ImGuiResult LightEntity::ImGuiDerived(GameManager& g) {
     imgui_util::ColorEdit3("Color", &_color);
     ImGui::SliderFloat("Diffuse", &_diffuse, 0.f, 1.f);
     ImGui::SliderFloat("Ambient", &_ambient, 0.f, 1.f);
+    ImGui::SliderFloat("Specular", &_specular, 0.f, 1.f);
     return ImGuiResult::Done;
 }
 void LightEntity::InitDerived(GameManager& g) {
@@ -57,6 +62,7 @@ void LightEntity::UpdateDerived(GameManager& g, float dt) {
     l->_color = _color;
     l->_ambient = _ambient;
     l->_diffuse = _diffuse;   
+    l->_specular = _specular;
 }
 void LightEntity::Destroy(GameManager& g) {
 }
