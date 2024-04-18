@@ -8,8 +8,9 @@ struct LightEntity : public ne::Entity {
     static ne::EntityType StaticType() { return ne::EntityType::Light; }
     
     // serialized
-    Vec3 _ambient;
-    Vec3 _diffuse;
+    Vec3 _color;
+    float _ambient;
+    float _diffuse;
 
     // If true, light shines along +z. if false, it's a point light.
     bool _isDirectional = false;

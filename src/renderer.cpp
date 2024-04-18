@@ -120,6 +120,7 @@ namespace ModelShaderUniforms {
         uMvpTrans,
         uModelTrans,
         uModelInvTrans,
+        uViewPos,
         uDirLightDir,
         uDirLightAmb,
         uDirLightDif,
@@ -137,6 +138,7 @@ namespace ModelShaderUniforms {
         "uMvpTrans",
         "uModelTrans",
         "uModelInvTrans",
+        "uViewPos",
         "uDirLight._dir",
         "uDirLight._ambient",
         "uDirLight._diffuse",
@@ -904,20 +906,25 @@ Mat4 Scene::GetViewProjTransform() const {
 }
 
 namespace {
-void SetLightUniformsModelShader(Lights const& lights, SceneInternal& sceneInternal) {
+void SetLightUniformsModelShader(Lights const& lights, Vec3 const& viewPos, SceneInternal& sceneInternal) {
     int const* uniforms = sceneInternal._modelShaderUniforms;
     Shader& shader = sceneInternal._modelShader;
     shader.SetVec3(uniforms[ModelShaderUniforms::uDirLightDir], lights._dirLight._p);
-    shader.SetVec3(uniforms[ModelShaderUniforms::uDirLightAmb], lights._dirLight._ambient);
-    shader.SetVec3(uniforms[ModelShaderUniforms::uDirLightDif], lights._dirLight._diffuse);
+    Vec3 ambVec = lights._dirLight._color * lights._dirLight._ambient;
+    Vec3 difVec = lights._dirLight._color * lights._dirLight._diffuse;
+    shader.SetVec3(uniforms[ModelShaderUniforms::uDirLightAmb], ambVec);
+    shader.SetVec3(uniforms[ModelShaderUniforms::uDirLightDif], difVec);
+    shader.SetVec3(uniforms[ModelShaderUniforms::uViewPos], viewPos);
     for (int i = 0; i < kMaxNumPointLights; ++i) {
         int posLoc = uniforms[ModelShaderUniforms::uPointLight0Pos + 3 * i];
         int ambLoc = uniforms[ModelShaderUniforms::uPointLight0Amb + 3 * i];
         int difLoc = uniforms[ModelShaderUniforms::uPointLight0Dif + 3 * i];
         Light const& pl = lights._pointLights[i];
         shader.SetVec3(posLoc, pl._p);
-        shader.SetVec3(ambLoc, pl._ambient);
-        shader.SetVec3(difLoc, pl._diffuse);
+        Vec3 ambVec = pl._color * pl._ambient;
+        Vec3 difVec = pl._color * pl._diffuse;
+        shader.SetVec3(ambLoc, ambVec);
+        shader.SetVec3(difLoc, difVec);
     }
 }
 
@@ -937,7 +944,8 @@ void SetLightUniformsTerrainShader(Lights const& lights, SceneInternal& sceneInt
     Shader& shader = sceneInternal._terrainShader;
     shader.SetVec3(uniforms[TerrainShaderUniforms::uDirLightDir], lights._dirLight._p);
     // shader.SetVec3(uniforms[TerrainShaderUniforms::uDirLightAmb], lights._dirLight._ambient);
-    shader.SetVec3(uniforms[TerrainShaderUniforms::uDirLightDif], lights._dirLight._diffuse);
+    Vec3 difVec = lights._dirLight._color * lights._dirLight._diffuse;
+    shader.SetVec3(uniforms[TerrainShaderUniforms::uDirLightDif], difVec);
 }
 #endif
 
@@ -1081,7 +1089,7 @@ void Scene::Draw(int windowWidth, int windowHeight, float timeInSecs) {
     {
         Shader& shader = _pInternal->_modelShader;
         shader.Use();
-        SetLightUniformsModelShader(lights, *_pInternal);
+        SetLightUniformsModelShader(lights, _camera._transform.GetPos(), *_pInternal);
         for (ModelInstance const& m : _pInternal->_modelsToDraw) {
             if (m._topLayer) {
                 _pInternal->_topLayerModels.push_back(&m);
@@ -1100,7 +1108,7 @@ void Scene::Draw(int windowWidth, int windowHeight, float timeInSecs) {
     {
         Shader& shader = _pInternal->_modelShader;
         shader.Use();
-        SetLightUniformsModelShader(lights, *_pInternal);
+        SetLightUniformsModelShader(lights, _camera._transform.GetPos(), *_pInternal);
         for (Polygon2dInstance const& poly : _pInternal->_polygonsToDraw) {
             _pInternal->_modelShader.SetMat4(_pInternal->_modelShaderUniforms[ModelShaderUniforms::uMvpTrans], viewProjTransform * poly._t);
             _pInternal->_modelShader.SetMat4(_pInternal->_modelShaderUniforms[ModelShaderUniforms::uModelTrans], poly._t);
@@ -1207,7 +1215,7 @@ void Scene::Draw(int windowWidth, int windowHeight, float timeInSecs) {
     {
         Shader& shader = _pInternal->_modelShader;
         shader.Use();
-        SetLightUniformsModelShader(lights, *_pInternal);
+        SetLightUniformsModelShader(lights, _camera._transform.GetPos(), *_pInternal);
         for (ModelInstance const* m : transparentModels) {
             DrawModelInstance(*_pInternal, viewProjTransform, *m, m->_explodeDist);
         }
@@ -1276,7 +1284,7 @@ void Scene::Draw(int windowWidth, int windowHeight, float timeInSecs) {
     {
         Shader& shader = _pInternal->_modelShader;
         shader.Use();
-        SetLightUniformsModelShader(lights, *_pInternal);
+        SetLightUniformsModelShader(lights, _camera._transform.GetPos(), *_pInternal);
         for (ModelInstance const* m : _pInternal->_topLayerModels) {
             DrawModelInstance(*_pInternal, viewProjTransform, *m, m->_explodeDist);
         }        

@@ -16,15 +16,16 @@ class BoundMeshPNU;
 namespace renderer {
 
 struct Light {
-    void Set(Vec3 const& p, Vec3 const& ambient, Vec3 const& diffuse) {
+    void Set(Vec3 const& p, Vec3 const& color, float ambient, float diffuse) {
         _p = p;
         _ambient = ambient;
         _diffuse = diffuse;
     }
     bool _isDirectional = false;
     Vec3 _p;  // if directional, this is the direction; otherwise, it's the position.
-    Vec3 _ambient;
-    Vec3 _diffuse;
+    Vec3 _color;
+    float _ambient;
+    float _diffuse;
 };
 
 class Camera {
