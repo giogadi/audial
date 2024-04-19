@@ -27,14 +27,14 @@
                 <transform>
                     <pos>
                         <x>0</x>
-                        <y>0</y>
+                        <y>10</y>
                         <z>0</z>
                     </pos>
                     <quat>
-                        <x>-0.793353319</x>
-                        <y>-2.73001831e-07</y>
-                        <z>2.73001831e-07</z>
-                        <w>-0.60876143</w>
+                        <x>0.60876143</x>
+                        <y>0</y>
+                        <z>0</z>
+                        <w>0.793353319</w>
                     </quat>
                     <scale>
                         <x>1</x>
@@ -73,6 +73,9 @@
                 <diffuse>0.851999998</diffuse>
                 <specular>0</specular>
                 <is_directional>true</is_directional>
+                <zn>1</zn>
+                <zf>20</zf>
+                <w>100</w>
             </Light>
             <Camera>
                 <editor_id>
@@ -125,6 +128,9 @@
                 <follow_entity_name/>
                 <tracking_factor>0.0500000007</tracking_factor>
                 <fovy_deg>60</fovy_deg>
+                <z_near>0.100000001</z_near>
+                <z_far>100</z_far>
+                <width>20</width>
             </Camera>
             <StepSequencer>
                 <editor_id>
@@ -1240,7 +1246,58 @@
                 <diffuse>1</diffuse>
                 <specular>1</specular>
                 <is_directional>false</is_directional>
+                <zn>1</zn>
+                <zf>20</zf>
+                <w>20</w>
             </Light>
+            <Base>
+                <editor_id>
+                    <id>27</id>
+                </editor_id>
+                <name>justabox</name>
+                <entity_active>true</entity_active>
+                <pickable>true</pickable>
+                <transform>
+                    <pos>
+                        <x>12.364274</x>
+                        <y>5</y>
+                        <z>-4.2399683</z>
+                    </pos>
+                    <quat>
+                        <x>0</x>
+                        <y>0</y>
+                        <z>0</z>
+                        <w>1</w>
+                    </quat>
+                    <scale>
+                        <x>3</x>
+                        <y>1</y>
+                        <z>3</z>
+                    </scale>
+                </transform>
+                <model_name>cube</model_name>
+                <texture_name>white</texture_name>
+                <model_color_vec4>
+                    <x>0.800000012</x>
+                    <y>0.800000012</y>
+                    <z>0.800000012</z>
+                    <w>1</w>
+                </model_color_vec4>
+                <flow_section_id>-1</flow_section_id>
+                <tag>0</tag>
+                <waypoint_follower>
+                    <mode>Waypoint</mode>
+                    <local_to_entity>false</local_to_entity>
+                    <waypoint_auto_start>false</waypoint_auto_start>
+                    <loop_waypoints>false</loop_waypoints>
+                    <start_time>3</start_time>
+                    <waypoints/>
+                    <follow_entity_name/>
+                    <follow_entity_editor_id>
+                        <id>-1</id>
+                    </follow_entity_editor_id>
+                </waypoint_follower>
+            </Base>
         </new_entities>
     </script>
 </root>

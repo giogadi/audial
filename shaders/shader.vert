@@ -8,10 +8,12 @@ uniform mat4 uMvpTrans;
 uniform mat4 uModelTrans;
 uniform mat3 uModelInvTrans;
 uniform vec3 uExplodeVec;
+uniform mat4 uLightViewProjT;
 
 out vec2 texCoord;
 out vec3 fragPos;
 out vec3 normalNonNorm;
+out vec4 fragPosLightSpace;
 
 void main() {
     vec3 p = aPos;
@@ -20,4 +22,5 @@ void main() {
     fragPos = vec3(uModelTrans * vec4(p, 1.0f));
     texCoord = aTexCoord;
     normalNonNorm = uModelInvTrans * aNormal;
+    fragPosLightSpace = uLightViewProjT * vec4(fragPos, 1.0);
 }

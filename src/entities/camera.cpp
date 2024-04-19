@@ -26,6 +26,9 @@ void CameraEntity::InitDerived(GameManager& g) {
 
 void CameraEntity::UpdateDerived(GameManager& g, float dt) {
     _camera->_fovyRad = _fovyDeg * kPi / 180.f;
+    _camera->_zNear = _zNear;
+    _camera->_zFar = _zFar;
+    _camera->_width = _width;
     
     if (g._editMode) {
         // In this case, let Editor control the camera.
@@ -102,6 +105,9 @@ ne::Entity::ImGuiResult CameraEntity::ImGuiDerived(GameManager& g) {
         SetAllTransforms(t);
     }
     ImGui::DragFloat("Fovy (deg)", &_fovyDeg, /*v_speed=*/1.f, /*v_min=*/10.f, /*v_max=*/120.f);
+    ImGui::InputFloat("znear", &_zNear);
+    ImGui::InputFloat("zfar", &_zFar);
+    ImGui::InputFloat("width", &_width);
     return ImGuiResult::Done;
 }
 
@@ -110,6 +116,9 @@ void CameraEntity::SaveDerived(serial::Ptree pt) const {
     pt.PutString("follow_entity_name", _followEntityName.c_str());
     pt.PutFloat("tracking_factor", _initialTrackingFactor);
     pt.PutFloat("fovy_deg", _fovyDeg);
+    pt.PutFloat("z_near", _zNear);
+    pt.PutFloat("z_far", _zFar);
+    pt.PutFloat("width", _width);
 }
 
 void CameraEntity::LoadDerived(serial::Ptree pt) {
@@ -119,6 +128,9 @@ void CameraEntity::LoadDerived(serial::Ptree pt) {
     pt.TryGetFloat("tracking_factor", &_initialTrackingFactor);
     _fovyDeg = 45.f;
     pt.TryGetFloat("fovy_deg", &_fovyDeg);
+    pt.TryGetFloat("z_near", &_zNear);
+    pt.TryGetFloat("z_far", &_zFar);
+    pt.TryGetFloat("width", &_width);
 }
 
 void CameraEntity::JumpToPosition(Vec3 const& p) {

@@ -8,8 +8,8 @@
 #include "constants.h"
 #include "version_id.h"
 #include "input_manager.h"
+#include "game_manager.h"
 
-struct GameManager;
 
 class BoundMeshPNU;
 
@@ -23,11 +23,15 @@ struct Light {
         _specular = specular;
     }
     bool _isDirectional = false;
-    Vec3 _p;  // if directional, this is the direction; otherwise, it's the position.
+    Vec3 _p;  
+    Vec3 _dir; // dirLight only
     Vec3 _color;
     float _ambient;
     float _diffuse;
     float _specular;
+    float _zn = 1.f;
+    float _zf = 20.f;
+    float _width = 20.f;
 };
 
 class Camera {
@@ -143,6 +147,8 @@ public:
     void SetDrawTerrain(bool enable);
     void SetEnableGammaCorrection(bool enable);
     bool IsGammaCorrectionEnabled() const;
+
+    void SetViewport(ViewportInfo const& viewport);
 private:
     std::unique_ptr<SceneInternal> _pInternal;
 };

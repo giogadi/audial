@@ -25,6 +25,19 @@
 namespace {
 constexpr int kMaxLineCount = 10;
 int constexpr kMaxNumPointLights = 2;
+
+constexpr int kShadowWidth = 2 * 1024;
+constexpr int kShadowHeight = 2 * 1024;
+
+float quadVertices[] = {
+       // positions   // texCoords
+       -1.0f,  1.0f,  0.0f, 1.0f,
+       -1.0f, -1.0f,  0.0f, 0.0f,
+        1.0f, -1.0f,  1.0f, 0.0f,
+       -1.0f,  1.0f,  0.0f, 1.0f,
+        1.0f, -1.0f,  1.0f, 0.0f,
+        1.0f,  1.0f,  1.0f, 1.0f
+};
 }
 
 namespace renderer {
@@ -122,6 +135,7 @@ namespace ModelShaderUniforms {
         uModelTrans,
         uModelInvTrans,
         uViewPos,
+        uLightViewProjT,
         uDirLightDir,
         uDirLightColor,
         uDirLightAmb,
@@ -145,6 +159,7 @@ namespace ModelShaderUniforms {
         "uModelTrans",
         "uModelInvTrans",
         "uViewPos",
+        "uLightViewProjT",
         "uDirLight._dir",
         "uDirLight._color",
         "uDirLight._ambient",
@@ -226,6 +241,19 @@ namespace WireframeShaderUniforms {
     };
 }
 
+namespace DepthOnlyShaderUniforms {
+    enum Names {
+        uViewProjT,
+        uModelT,
+        Count
+    };
+    static char const* NameStrings[] = {
+        "uViewProjT", 
+        "uModelT"
+    };
+};
+
+
 struct BoundingBoxInstance {
     Mat4 _t;
     Vec4 _color;
@@ -297,6 +325,16 @@ public:
     Shader _lineShader;
     unsigned int _lineVao = 0;
     unsigned int _lineVbo = 0;
+
+    Shader _texturedQuadShader;
+    unsigned int _texturedQuadVao = 0;
+    unsigned int _texturedQuadVbo = 0;
+
+    Shader _depthOnlyShader;
+    int _depthOnlyShaderUniforms[DepthOnlyShaderUniforms::Count];
+    unsigned int _depthMapFbo = 0;
+    unsigned int _depthMap = 0;
+    
 
     std::array<std::unique_ptr<BoundMeshPNU>, (int)InputManager::ControllerButton::Count> _psButtonMeshes;
     unsigned int _psButtonsTextureId;
@@ -559,6 +597,17 @@ bool SceneInternal::Init(GameManager& g) {
         return false;
     }
 
+    if (!_depthOnlyShader.Init("shaders/simple_depth_shader.vert", "shaders/simple_depth_shader.frag")) {
+        return false;
+    }
+    for (int i = 0; i < DepthOnlyShaderUniforms::Count; ++i) {
+        _depthOnlyShaderUniforms[i] = _depthOnlyShader.GetUniformLocation(DepthOnlyShaderUniforms::NameStrings[i]);
+    }
+
+    if (!_texturedQuadShader.Init("shaders/quad.vert", "shaders/quad.frag")) {
+        return false;
+    }
+
     if (!CreateTextureFromFile("data/textures/white.png", _whiteTextureId, _enableGammaCorrection)) {
         return false;
     }
@@ -653,9 +702,48 @@ bool SceneInternal::Init(GameManager& g) {
 
         _lineVertexData.reserve(kMaxLineCount * 2 * kNumValuesPerVertex);
     }
+
+    // SIMPLE QUAD DRAWING STUFF
+    {
+        glGenVertexArrays(1, &_texturedQuadVao);
+        glBindVertexArray(_texturedQuadVao);
+        constexpr int kNumValuesPerVertex = 2 + 2;
+        glGenBuffers(1, &_texturedQuadVbo);
+        glBindBuffer(GL_ARRAY_BUFFER, _texturedQuadVbo);
+        glBufferData(GL_ARRAY_BUFFER, sizeof(float) * kNumValuesPerVertex * 6, quadVertices, GL_STATIC_DRAW);
+
+        glVertexAttribPointer(0, 2, GL_FLOAT, false, kNumValuesPerVertex*sizeof(float), (void*)0);
+        glEnableVertexAttribArray(0);
+
+        glVertexAttribPointer(1, 2, GL_FLOAT, false, kNumValuesPerVertex*sizeof(float), (void*)(2*sizeof(float)));
+        glEnableVertexAttribArray(1); 
+    }
     
 
     _cubeMesh = _meshMap["cube"].get();
+
+    // SHADOW STUFF
+    // TODO: destroy the framebuffer somewhere
+    glGenFramebuffers(1, &_depthMapFbo);
+    glGenTextures(1, &_depthMap);
+    glBindTexture(GL_TEXTURE_2D, _depthMap);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT, kShadowWidth, kShadowHeight, 0, GL_DEPTH_COMPONENT, GL_FLOAT, NULL);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
+    // float borderColor[] = { 1.f, 1.f, 1.f, 1.f };
+    float borderColor[] = { 0.f, 0.f, 0.f, 1.f };
+    
+    glTexParameterfv(GL_TEXTURE_2D, GL_TEXTURE_BORDER_COLOR, borderColor);
+
+    glBindFramebuffer(GL_FRAMEBUFFER, _depthMapFbo);
+    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, _depthMap, 0);
+    glDrawBuffer(GL_NONE);
+    glReadBuffer(GL_NONE);
+    glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
+
     return true;
 }
 
@@ -920,14 +1008,15 @@ Mat4 Scene::GetViewProjTransform() const {
 }
 
 namespace {
-void SetLightUniformsModelShader(Lights const& lights, Vec3 const& viewPos, SceneInternal& sceneInternal) {
+void SetLightUniformsModelShader(Lights const& lights, Vec3 const& viewPos, Mat4 const& lightViewProjT, SceneInternal& sceneInternal) {
     int const* uniforms = sceneInternal._modelShaderUniforms;
     Shader& shader = sceneInternal._modelShader;
-    shader.SetVec3(uniforms[ModelShaderUniforms::uDirLightDir], lights._dirLight._p);
+    shader.SetVec3(uniforms[ModelShaderUniforms::uDirLightDir], lights._dirLight._dir);
     shader.SetVec3(uniforms[ModelShaderUniforms::uDirLightColor], lights._dirLight._color);
     shader.SetFloat(uniforms[ModelShaderUniforms::uDirLightAmb], lights._dirLight._ambient);
     shader.SetFloat(uniforms[ModelShaderUniforms::uDirLightDif], lights._dirLight._diffuse);
     shader.SetVec3(uniforms[ModelShaderUniforms::uViewPos], viewPos);
+    shader.SetMat4(uniforms[ModelShaderUniforms::uLightViewProjT], lightViewProjT);
     for (int i = 0; i < kMaxNumPointLights; ++i) {
         int constexpr kNumUniforms = 5;
         int posLoc = uniforms[ModelShaderUniforms::uPointLight0Pos + kNumUniforms * i];
@@ -948,7 +1037,7 @@ void SetLightUniformsModelShader(Lights const& lights, Vec3 const& viewPos, Scen
 void SetLightUniformsWaterShader(Lights const& lights, SceneInternal& sceneInternal) {
     int const* uniforms = sceneInternal._waterShaderUniforms;
     Shader& shader = sceneInternal._waterShader;
-    shader.SetVec3(uniforms[WaterShaderUniforms::uDirLightDir], lights._dirLight._p);
+    shader.SetVec3(uniforms[WaterShaderUniforms::uDirLightDir], lights._dirLight._dir);
     shader.SetVec3(uniforms[WaterShaderUniforms::uDirLightAmb], lights._dirLight._ambient);
     shader.SetVec3(uniforms[WaterShaderUniforms::uDirLightDif], lights._dirLight._diffuse);
 }
@@ -958,12 +1047,41 @@ void SetLightUniformsWaterShader(Lights const& lights, SceneInternal& sceneInter
 void SetLightUniformsTerrainShader(Lights const& lights, SceneInternal& sceneInternal) {
     int const* uniforms = sceneInternal._terrainShaderUniforms;
     Shader& shader = sceneInternal._terrainShader;
-    shader.SetVec3(uniforms[TerrainShaderUniforms::uDirLightDir], lights._dirLight._p);
+    shader.SetVec3(uniforms[TerrainShaderUniforms::uDirLightDir], lights._dirLight._dir);
     // shader.SetVec3(uniforms[TerrainShaderUniforms::uDirLightAmb], lights._dirLight._ambient);
     Vec3 difVec = lights._dirLight._color * lights._dirLight._diffuse;
     shader.SetVec3(uniforms[TerrainShaderUniforms::uDirLightDif], difVec);
 }
 #endif
+
+void DrawModelDepthOnly(SceneInternal& internal, ModelInstance const& m) {
+    if (!m._visible) {
+        return;
+    }
+    Mat4 const& transMat = m._transform;
+    internal._depthOnlyShader.SetMat4(internal._depthOnlyShaderUniforms[DepthOnlyShaderUniforms::uModelT], transMat);
+
+    assert(m._mesh != nullptr);
+    glBindVertexArray(m._mesh->_vao);
+    if (m._mesh->_subMeshes.size() == 0) {
+        GLenum mode = GL_TRIANGLES;
+        if (m._mesh->_useTriangleFan) {
+            mode = GL_TRIANGLE_FAN;
+        }
+        glDrawElements(mode, /*count=*/m._mesh->_numIndices, GL_UNSIGNED_INT, /*start_offset=*/0);
+    } else {
+        for (int subMeshIx = 0; subMeshIx < m._mesh->_subMeshes.size(); ++subMeshIx) {
+            BoundMeshPNU::SubMesh const& subMesh = m._mesh->_subMeshes[subMeshIx];
+            // if (explodeDist > 0.f) {
+            //     Vec3 explodeVec = subMesh._centroid.GetNormalized() * explodeDist;
+            //     internal._modelShader.SetVec3(internal._modelShaderUniforms[ModelShaderUniforms::uExplodeVec], explodeVec);
+            // }
+            glBindVertexArray(m._mesh->_vao);
+            glDrawElements(GL_TRIANGLES, /*count=*/subMesh._numIndices, GL_UNSIGNED_INT,
+                /*start_offset=*/(void*)(sizeof(uint32_t) * subMesh._startIndex));
+        }
+    }
+} 
 
 void DrawModelInstance(SceneInternal& internal, Mat4 const& viewProjTransform, ModelInstance const& m, float explodeDist) {
     if (!m._visible) {
@@ -983,6 +1101,9 @@ void DrawModelInstance(SceneInternal& internal, Mat4 const& viewProjTransform, M
     assert(m._mesh != nullptr);
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, m._textureId);
+    // glBindTexture(GL_TEXTURE_2D, internal._depthMap);
+    glActiveTexture(GL_TEXTURE1);
+    glBindTexture(GL_TEXTURE_2D, internal._depthMap);
     glBindVertexArray(m._mesh->_vao);
     if (m._mesh->_subMeshes.size() == 0) {
         internal._modelShader.SetVec4(internal._modelShaderUniforms[ModelShaderUniforms::uColor], m._color);
@@ -1104,12 +1225,60 @@ void Scene::Draw(int windowWidth, int windowHeight, float timeInSecs) {
     }
 #endif
 
+    // SHADOW MAP
+    Mat4 lightViewProj;
+    {
+        glViewport(0, 0, kShadowWidth, kShadowHeight);
+        glBindFramebuffer(GL_FRAMEBUFFER, _pInternal->_depthMapFbo);
+        glClear(GL_DEPTH_BUFFER_BIT);
+        // glCullFace(GL_FRONT);
+        Shader& shader = _pInternal->_depthOnlyShader;
+        shader.Use();
+        Vec3 lightDir = lights._dirLight._dir;
+        // Vec3 lightPos = lightDir * (-10.f);
+        Vec3 lightPos = lights._dirLight._p;
+        Vec3 lightLookAt = lightPos + lightDir;
+        Vec3 lightUp(0.f, 1.f, 0.f);
+        if (std::abs(Vec3::Dot(lightDir, lightUp)) < 0.00001f) {
+            lightUp.Set(0.f, 0.f, 1.f);
+        }
+        // Mat4 lightView = Mat4::LookAt(lightPos, lightLookAt, Vec3(0.f, 1.f, 0.f));  
+        // Mat4 lightView = Mat4::LookAt(lightPos, lightLookAt, Vec3(0.f, 0.f, 1.f));  
+        Mat4 lightView = Mat4::LookAt(lightPos, lightLookAt, lightUp);  
+
+
+        float zn = lights._dirLight._zn;
+        float zf = lights._dirLight._zf;
+        float ar = (float)kShadowWidth / (float)kShadowHeight;
+        float width = lights._dirLight._width;
+        Mat4 lightProj = Mat4::Ortho(width, ar, zn, zf);
+        lightViewProj = lightProj * lightView;
+
+        _pInternal->_depthOnlyShader.SetMat4(_pInternal->_depthOnlyShaderUniforms[DepthOnlyShaderUniforms::uViewProjT], lightViewProj);
+        for (ModelInstance const& m : _pInternal->_modelsToDraw) {
+            if (m._topLayer || m._color._w < 1.f) {
+                continue;
+            }         
+            DrawModelDepthOnly(*_pInternal, m);
+        }
+
+        glBindFramebuffer(GL_FRAMEBUFFER, 0);
+        ViewportInfo const& viewport = _pInternal->_g->_viewportInfo;
+        SetViewport(viewport); 
+        glCullFace(GL_BACK);
+    }
+
     glClear(GL_DEPTH_BUFFER_BIT);
+
+    // MAIN SCENE DRAW
 
     {
         Shader& shader = _pInternal->_modelShader;
-        shader.Use();
-        SetLightUniformsModelShader(lights, _camera._transform.GetPos(), *_pInternal);
+        shader.Use();        
+        // TODO: NEED TO DO THIS BETTER!!!!
+        shader.SetInt("uMyTexture", 0);
+        shader.SetInt("uShadowMap", 1);
+        SetLightUniformsModelShader(lights, _camera._transform.GetPos(), lightViewProj, *_pInternal);
         for (ModelInstance const& m : _pInternal->_modelsToDraw) {
             if (m._topLayer) {
                 _pInternal->_topLayerModels.push_back(&m);
@@ -1122,13 +1291,43 @@ void Scene::Draw(int windowWidth, int windowHeight, float timeInSecs) {
         }
     }
 
+    {
+        // DEBUG RENDERING FOR DEPTH MAP
+
+        static bool sDrawDepthMap = false;
+        InputManager& input = *_pInternal->_g->_inputManager;
+        if (input.IsKeyPressedThisFrame(InputManager::Key::D) && input.IsShiftPressed()) {
+            sDrawDepthMap = !sDrawDepthMap;
+        }
+        if (sDrawDepthMap) {
+        
+            glViewport(0, 0, kShadowWidth, kShadowHeight);
+            Shader& shader = _pInternal->_texturedQuadShader;
+            shader.Use();
+            glActiveTexture(GL_TEXTURE0);
+            glBindTexture(GL_TEXTURE_2D, _pInternal->_depthMap);
+            glDisable(GL_DEPTH_TEST);
+
+            glBindVertexArray(_pInternal->_texturedQuadVao);
+            glDrawArrays(GL_TRIANGLES, 0, 6);
+            glBindVertexArray(0);
+
+            glEnable(GL_DEPTH_TEST);
+
+            ViewportInfo const& viewport = _pInternal->_g->_viewportInfo;
+            SetViewport(viewport);
+
+        }
+        
+    }
+
     // Polygons (immediate API)
     //
     // TODO: not sure this works yet after the great model unification
     {
         Shader& shader = _pInternal->_modelShader;
         shader.Use();
-        SetLightUniformsModelShader(lights, _camera._transform.GetPos(), *_pInternal);
+        SetLightUniformsModelShader(lights, _camera._transform.GetPos(), lightViewProj, *_pInternal);
         for (Polygon2dInstance const& poly : _pInternal->_polygonsToDraw) {
             _pInternal->_modelShader.SetMat4(_pInternal->_modelShaderUniforms[ModelShaderUniforms::uMvpTrans], viewProjTransform * poly._t);
             _pInternal->_modelShader.SetMat4(_pInternal->_modelShaderUniforms[ModelShaderUniforms::uModelTrans], poly._t);
@@ -1235,7 +1434,7 @@ void Scene::Draw(int windowWidth, int windowHeight, float timeInSecs) {
     {
         Shader& shader = _pInternal->_modelShader;
         shader.Use();
-        SetLightUniformsModelShader(lights, _camera._transform.GetPos(), *_pInternal);
+        SetLightUniformsModelShader(lights, _camera._transform.GetPos(), lightViewProj, *_pInternal);
         for (ModelInstance const* m : transparentModels) {
             DrawModelInstance(*_pInternal, viewProjTransform, *m, m->_explodeDist);
         }
@@ -1304,7 +1503,7 @@ void Scene::Draw(int windowWidth, int windowHeight, float timeInSecs) {
     {
         Shader& shader = _pInternal->_modelShader;
         shader.Use();
-        SetLightUniformsModelShader(lights, _camera._transform.GetPos(), *_pInternal);
+        SetLightUniformsModelShader(lights, _camera._transform.GetPos(), lightViewProj, *_pInternal);
         for (ModelInstance const* m : _pInternal->_topLayerModels) {
             DrawModelInstance(*_pInternal, viewProjTransform, *m, m->_explodeDist);
         }        
@@ -1376,6 +1575,11 @@ void Scene::SetEnableGammaCorrection(bool enable) {
 
 bool Scene::IsGammaCorrectionEnabled() const {
     return _pInternal->_enableGammaCorrection;
+}
+
+void Scene::SetViewport(ViewportInfo const& viewport) {
+    glViewport(viewport._offsetX, viewport._offsetY, viewport._width, viewport._height);
+    // glViewport(0, 0, viewport._width, viewport._height);
 }
 
 } // namespace renderer

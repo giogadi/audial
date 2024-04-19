@@ -14,6 +14,9 @@ void LightEntity::SaveDerived(serial::Ptree pt) const {
     pt.PutFloat("diffuse", _diffuse);
     pt.PutFloat("specular", _specular);
     pt.PutBool("is_directional", _isDirectional);
+    pt.PutFloat("zn", _zn);
+    pt.PutFloat("zf", _zf);
+    pt.PutFloat("w", _width);
 }
 void LightEntity::LoadDerived(serial::Ptree pt) {
     _color = Vec3();
@@ -25,6 +28,9 @@ void LightEntity::LoadDerived(serial::Ptree pt) {
         _ambient = pt.GetFloat("ambient");
         _diffuse = pt.GetFloat("diffuse");
         pt.TryGetFloat("specular", &_specular);
+        pt.TryGetFloat("zn", &_zn);
+        pt.TryGetFloat("zf", &_zf);
+        pt.TryGetFloat("w", &_width);
     } else {
         // Assume color is white
         _color.Set(1.f, 1.f, 1.f);
@@ -46,6 +52,9 @@ ne::Entity::ImGuiResult LightEntity::ImGuiDerived(GameManager& g) {
     ImGui::SliderFloat("Diffuse", &_diffuse, 0.f, 1.f);
     ImGui::SliderFloat("Ambient", &_ambient, 0.f, 1.f);
     ImGui::SliderFloat("Specular", &_specular, 0.f, 1.f);
+    ImGui::InputFloat("zn", &_zn);
+    ImGui::InputFloat("zf", &_zf);
+    ImGui::InputFloat("w", &_width);
     return ImGuiResult::Done;
 }
 void LightEntity::InitDerived(GameManager& g) {
@@ -54,15 +63,15 @@ void LightEntity::InitDerived(GameManager& g) {
 void LightEntity::UpdateDerived(GameManager& g, float dt) {
     renderer::Light* l = g._scene->DrawLight();
     l->_isDirectional = _isDirectional;
-    if (_isDirectional) {
-        l->_p = _transform.GetZAxis();
-    } else {
-        l->_p = _transform.Pos();
-    }
+    l->_p = _transform.Pos();
+    l->_dir = _transform.GetZAxis();
     l->_color = _color;
     l->_ambient = _ambient;
     l->_diffuse = _diffuse;   
     l->_specular = _specular;
+    l->_zn = _zn;
+    l->_zf = _zf;
+    l->_width = _width;
 }
 void LightEntity::Destroy(GameManager& g) {
 }

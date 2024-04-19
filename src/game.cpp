@@ -63,7 +63,8 @@ int gDftLogAvgsCount = 0;
 
 
 void SetViewport(ViewportInfo const& viewport) {
-    glViewport(viewport._offsetX, viewport._offsetY, viewport._width, viewport._height);
+    // glViewport(viewport._offsetX, viewport._offsetY, viewport._width, viewport._height);
+    // gGameManager._scene->SetViewport(viewport);
 }
 
 void FramebufferSizeCallback(GLFWwindow* window, int width, int height) {
