@@ -27,7 +27,7 @@
                 <transform>
                     <pos>
                         <x>0</x>
-                        <y>10</y>
+                        <y>20</y>
                         <z>0</z>
                     </pos>
                     <quat>
@@ -74,8 +74,8 @@
                 <specular>0</specular>
                 <is_directional>true</is_directional>
                 <zn>1</zn>
-                <zf>20</zf>
-                <w>100</w>
+                <zf>21</zf>
+                <w>50</w>
             </Light>
             <Camera>
                 <editor_id>
@@ -1259,9 +1259,9 @@
                 <pickable>true</pickable>
                 <transform>
                     <pos>
-                        <x>12.364274</x>
+                        <x>12.5094366</x>
                         <y>5</y>
-                        <z>-4.2399683</z>
+                        <z>-2.91181755</z>
                     </pos>
                     <quat>
                         <x>0</x>

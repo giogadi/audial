@@ -26,8 +26,8 @@ namespace {
 constexpr int kMaxLineCount = 10;
 int constexpr kMaxNumPointLights = 2;
 
-constexpr int kShadowWidth = 2 * 1024;
-constexpr int kShadowHeight = 2 * 1024;
+constexpr int kShadowWidth = 1 * 1024;
+constexpr int kShadowHeight = 1 * 1024;
 
 float quadVertices[] = {
        // positions   // texCoords
