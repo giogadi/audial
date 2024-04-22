@@ -73,6 +73,7 @@
                 <diffuse>0.851999998</diffuse>
                 <specular>0</specular>
                 <is_directional>true</is_directional>
+                <shadows>true</shadows>
                 <zn>1</zn>
                 <zf>21</zf>
                 <w>50</w>
@@ -1246,6 +1247,7 @@
                 <diffuse>1</diffuse>
                 <specular>1</specular>
                 <is_directional>false</is_directional>
+                <shadows>false</shadows>
                 <zn>1</zn>
                 <zf>20</zf>
                 <w>20</w>

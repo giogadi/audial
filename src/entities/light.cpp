@@ -14,6 +14,7 @@ void LightEntity::SaveDerived(serial::Ptree pt) const {
     pt.PutFloat("diffuse", _diffuse);
     pt.PutFloat("specular", _specular);
     pt.PutBool("is_directional", _isDirectional);
+    pt.PutBool("shadows", _shadows);
     pt.PutFloat("zn", _zn);
     pt.PutFloat("zf", _zf);
     pt.PutFloat("w", _width);
@@ -28,9 +29,6 @@ void LightEntity::LoadDerived(serial::Ptree pt) {
         _ambient = pt.GetFloat("ambient");
         _diffuse = pt.GetFloat("diffuse");
         pt.TryGetFloat("specular", &_specular);
-        pt.TryGetFloat("zn", &_zn);
-        pt.TryGetFloat("zf", &_zf);
-        pt.TryGetFloat("w", &_width);
     } else {
         // Assume color is white
         _color.Set(1.f, 1.f, 1.f);
@@ -45,9 +43,16 @@ void LightEntity::LoadDerived(serial::Ptree pt) {
     }
     _isDirectional = false;
     pt.TryGetBool("is_directional", &_isDirectional);
+    _shadows = false;
+    pt.TryGetBool("shadows", &_shadows);
+    pt.TryGetFloat("zn", &_zn);
+    pt.TryGetFloat("zf", &_zf);
+    pt.TryGetFloat("w", &_width);
+
 }
 ne::Entity::ImGuiResult LightEntity::ImGuiDerived(GameManager& g) {
     ImGui::Checkbox("Directional", &_isDirectional);
+    ImGui::Checkbox("Shadows", &_shadows);
     imgui_util::ColorEdit3("Color", &_color);
     ImGui::SliderFloat("Diffuse", &_diffuse, 0.f, 1.f);
     ImGui::SliderFloat("Ambient", &_ambient, 0.f, 1.f);
@@ -69,6 +74,7 @@ void LightEntity::UpdateDerived(GameManager& g, float dt) {
     l->_ambient = _ambient;
     l->_diffuse = _diffuse;   
     l->_specular = _specular;
+    l->_shadows = _shadows;
     l->_zn = _zn;
     l->_zf = _zf;
     l->_width = _width;

@@ -140,6 +140,7 @@ namespace ModelShaderUniforms {
         uDirLightColor,
         uDirLightAmb,
         uDirLightDif,
+        uDirLightShadows,
         uPointLight0Pos,
         uPointLight0Color,
         uPointLight0Amb,
@@ -164,6 +165,7 @@ namespace ModelShaderUniforms {
         "uDirLight._color",
         "uDirLight._ambient",
         "uDirLight._diffuse",
+        "uDirLight._shadows",
         "uPointLights[0]._pos",
         "uPointLights[0]._color",
         "uPointLights[0]._ambient",
@@ -558,7 +560,7 @@ bool SceneInternal::Init(GameManager& g) {
     for (int i = 0; i < ModelShaderUniforms::Count; ++i) {
         _modelShaderUniforms[i] = _modelShader.GetUniformLocation(ModelShaderUniforms::NameStrings[i]);
     }
-
+    
 #if DRAW_WATER    
     if (!_waterShader.Init("shaders/water.vert", "shaders/water.frag")) {
         return false;
@@ -1017,6 +1019,7 @@ void SetLightUniformsModelShader(Lights const& lights, Vec3 const& viewPos, Mat4
     shader.SetFloat(uniforms[ModelShaderUniforms::uDirLightDif], lights._dirLight._diffuse);
     shader.SetVec3(uniforms[ModelShaderUniforms::uViewPos], viewPos);
     shader.SetMat4(uniforms[ModelShaderUniforms::uLightViewProjT], lightViewProjT);
+    shader.SetBool(uniforms[ModelShaderUniforms::uDirLightShadows], lights._dirLight._shadows);
     for (int i = 0; i < kMaxNumPointLights; ++i) {
         int constexpr kNumUniforms = 5;
         int posLoc = uniforms[ModelShaderUniforms::uPointLight0Pos + kNumUniforms * i];
@@ -1101,9 +1104,6 @@ void DrawModelInstance(SceneInternal& internal, Mat4 const& viewProjTransform, M
     assert(m._mesh != nullptr);
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, m._textureId);
-    // glBindTexture(GL_TEXTURE_2D, internal._depthMap);
-    glActiveTexture(GL_TEXTURE1);
-    glBindTexture(GL_TEXTURE_2D, internal._depthMap);
     glBindVertexArray(m._mesh->_vao);
     if (m._mesh->_subMeshes.size() == 0) {
         internal._modelShader.SetVec4(internal._modelShaderUniforms[ModelShaderUniforms::uColor], m._color);
@@ -1231,41 +1231,42 @@ void Scene::Draw(int windowWidth, int windowHeight, float timeInSecs) {
         glViewport(0, 0, kShadowWidth, kShadowHeight);
         glBindFramebuffer(GL_FRAMEBUFFER, _pInternal->_depthMapFbo);
         glClear(GL_DEPTH_BUFFER_BIT);
-        // glCullFace(GL_FRONT);
-        Shader& shader = _pInternal->_depthOnlyShader;
-        shader.Use();
-        Vec3 lightDir = lights._dirLight._dir;
-        // Vec3 lightPos = lightDir * (-10.f);
-        Vec3 lightPos = lights._dirLight._p;
-        Vec3 lightLookAt = lightPos + lightDir;
-        Vec3 lightUp(0.f, 1.f, 0.f);
-        if (std::abs(Vec3::Dot(lightDir, lightUp)) < 0.00001f) {
-            lightUp.Set(0.f, 0.f, 1.f);
-        }
-        // Mat4 lightView = Mat4::LookAt(lightPos, lightLookAt, Vec3(0.f, 1.f, 0.f));  
-        // Mat4 lightView = Mat4::LookAt(lightPos, lightLookAt, Vec3(0.f, 0.f, 1.f));  
-        Mat4 lightView = Mat4::LookAt(lightPos, lightLookAt, lightUp);  
+        if (lights._dirLight._shadows) {
+            // glCullFace(GL_FRONT);
+            Shader& shader = _pInternal->_depthOnlyShader;
+            shader.Use();
+            // TODO: Automatically set up light position and view frustrum to tightly contain scene.
+            Vec3 lightDir = lights._dirLight._dir;
+            // Vec3 lightPos = lightDir * (-10.f);
+            Vec3 lightPos = lights._dirLight._p;
+            Vec3 lightLookAt = lightPos + lightDir;
+            Vec3 lightUp(0.f, 1.f, 0.f);
+            if (std::abs(Vec3::Dot(lightDir, lightUp)) < 0.00001f) {
+                lightUp.Set(0.f, 0.f, 1.f);
+            }
+            Mat4 lightView = Mat4::LookAt(lightPos, lightLookAt, lightUp);  
 
 
-        float zn = lights._dirLight._zn;
-        float zf = lights._dirLight._zf;
-        float ar = (float)kShadowWidth / (float)kShadowHeight;
-        float width = lights._dirLight._width;
-        Mat4 lightProj = Mat4::Ortho(width, ar, zn, zf);
-        lightViewProj = lightProj * lightView;
+            float zn = lights._dirLight._zn;
+            float zf = lights._dirLight._zf;
+            float ar = (float)kShadowWidth / (float)kShadowHeight;
+            float width = lights._dirLight._width;
+            Mat4 lightProj = Mat4::Ortho(width, ar, zn, zf);
+            lightViewProj = lightProj * lightView;
 
-        _pInternal->_depthOnlyShader.SetMat4(_pInternal->_depthOnlyShaderUniforms[DepthOnlyShaderUniforms::uViewProjT], lightViewProj);
-        for (ModelInstance const& m : _pInternal->_modelsToDraw) {
-            if (m._topLayer || m._color._w < 1.f) {
-                continue;
-            }         
-            DrawModelDepthOnly(*_pInternal, m);
+            _pInternal->_depthOnlyShader.SetMat4(_pInternal->_depthOnlyShaderUniforms[DepthOnlyShaderUniforms::uViewProjT], lightViewProj);
+            for (ModelInstance const& m : _pInternal->_modelsToDraw) {
+                if (m._topLayer || m._color._w < 1.f) {
+                    continue;
+                }         
+                DrawModelDepthOnly(*_pInternal, m);
+            }
         }
 
         glBindFramebuffer(GL_FRAMEBUFFER, 0);
         ViewportInfo const& viewport = _pInternal->_g->_viewportInfo;
         SetViewport(viewport); 
-        glCullFace(GL_BACK);
+        // glCullFace(GL_BACK);
     }
 
     glClear(GL_DEPTH_BUFFER_BIT);
@@ -1278,6 +1279,8 @@ void Scene::Draw(int windowWidth, int windowHeight, float timeInSecs) {
         // TODO: NEED TO DO THIS BETTER!!!!
         shader.SetInt("uMyTexture", 0);
         shader.SetInt("uShadowMap", 1);
+        glActiveTexture(GL_TEXTURE1);
+        glBindTexture(GL_TEXTURE_2D, _pInternal->_depthMap);
         SetLightUniformsModelShader(lights, _camera._transform.GetPos(), lightViewProj, *_pInternal);
         for (ModelInstance const& m : _pInternal->_modelsToDraw) {
             if (m._topLayer) {

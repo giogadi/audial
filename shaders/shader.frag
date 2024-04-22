@@ -10,6 +10,7 @@ struct DirLight {
     vec3 _color;
     float _ambient;
     float _diffuse;    
+    bool _shadows;
 };
 uniform DirLight uDirLight;
 
@@ -82,17 +83,16 @@ void main() {
     }
 
     // shadow
-    vec3 result;
-    {
+    float shadow = 0.0f;
+    if (uDirLight._shadows) {
         vec3 projCoords = fragPosLightSpace.xyz / fragPosLightSpace.w;
         projCoords = projCoords * 0.5 + 0.5;  // [-1,1] -> [0,1]
         float closestDepth = texture(uShadowMap, projCoords.xy).r;
         float currentDepth = projCoords.z;
         // TODO: CURRENTLY USING DIR LIGHT! This may not always be true
-        // float bias = max(0.05 * (1.0 - dot(normal, uDirLight._dir)), 0.005);
-        float bias = 0.0025;
+        // float bias = max(0.05 * (1.0 - dot(normal, uDirLight._dir)), 0.0025);
+        float bias = 0.001;
         vec2 texelSize = 1.0 / textureSize(uShadowMap, 0);
-        float shadow = 0.0f;
         for (int x = -1; x <= 1; ++x) {
             for (int y = -1; y <= 1; ++y) {
                 float pcfDepth = texture(uShadowMap, projCoords.xy + vec2(x,y) * texelSize).r;
@@ -103,8 +103,9 @@ void main() {
         if (projCoords.z > 1.f) {
             shadow = 0.0f;
         }
-        result = totalAmbient + (1-shadow)*(totalDiffuse + totalSpecular);
     }
 
-    FragColor = vec4(result, 1.0) * albedo;    
+    vec3 lighting = totalAmbient + (1-shadow)*(totalDiffuse + totalSpecular);
+
+    FragColor = vec4(lighting, 1.0) * albedo;    
 }

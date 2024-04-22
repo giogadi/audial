@@ -12,6 +12,7 @@ struct LightEntity : public ne::Entity {
     float _ambient = 0.f;
     float _diffuse = 0.f;
     float _specular = 0.f;
+    bool _shadows = false;
     float _zn = 1.f;
     float _zf = 20.f;
     float _width = 20.f;
