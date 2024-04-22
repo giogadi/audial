@@ -16,7 +16,8 @@ struct GrabberEntity : public ne::BaseEntity {
         float angleDeg = 0.f;
         float length = 1.f;
         float height = 0.f;
-        std::vector<std::unique_ptr<SeqAction>> actions;
+        std::vector<std::unique_ptr<SeqAction>> plusRotActions;
+        std::vector<std::unique_ptr<SeqAction>> negRotActions;
     };
     Props _p;
 

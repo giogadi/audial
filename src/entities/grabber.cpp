@@ -39,7 +39,8 @@ void GrabberEntity::SaveDerived(serial::Ptree pt) const {
     pt.PutFloat("angle", _p.angleDeg);
     pt.PutFloat("length", _p.length);
     pt.PutFloat("height", _p.height);
-    SeqAction::SaveActionsInChildNode(pt, "actions", _p.actions);
+    SeqAction::SaveActionsInChildNode(pt, "plus_rot_actions", _p.plusRotActions);
+    SeqAction::SaveActionsInChildNode(pt, "neg_rot_actions", _p.negRotActions);
 }
 
 void GrabberEntity::LoadDerived(serial::Ptree pt) {
@@ -52,7 +53,12 @@ void GrabberEntity::LoadDerived(serial::Ptree pt) {
     pt.TryGetFloat("angle", &_p.angleDeg);
     pt.TryGetFloat("length", &_p.length);
     pt.TryGetFloat("height", &_p.height);
-    SeqAction::LoadActionsFromChildNode(pt, "actions", _p.actions);
+    if (pt.GetVersion() < 6) {
+        SeqAction::LoadActionsFromChildNode(pt, "actions", _p.plusRotActions);
+    } else {
+        SeqAction::LoadActionsFromChildNode(pt, "plus_rot_actions", _p.plusRotActions);
+        SeqAction::LoadActionsFromChildNode(pt, "neg_rot_actions", _p.negRotActions);
+    }
 }
 
 ne::BaseEntity::ImGuiResult GrabberEntity::ImGuiDerived(GameManager& g) {
@@ -82,7 +88,10 @@ ne::BaseEntity::ImGuiResult GrabberEntity::ImGuiDerived(GameManager& g) {
         result = ImGuiResult::NeedsInit;
     }
 
-    if (SeqAction::ImGui("Actions", _p.actions)) {
+    if (SeqAction::ImGui("+Rot Actions", _p.plusRotActions)) {
+        result = ImGuiResult::NeedsInit;
+    }
+    if (SeqAction::ImGui("-Rot Actions", _p.negRotActions)) {
         result = ImGuiResult::NeedsInit;
     }
     return result;
@@ -92,7 +101,10 @@ void GrabberEntity::InitDerived(GameManager& g) {
     _s = State();
     _plusRotKey.Init();
     _negRotKey.Init();
-    for (auto const& pAction : _p.actions) {
+    for (auto const& pAction : _p.plusRotActions) {
+        pAction->Init(g);
+    }
+    for (auto const& pAction : _p.negRotActions) {
         pAction->Init(g);
     }
     _s.angleRad = _p.angleDeg * kDeg2Rad;
@@ -136,7 +148,8 @@ void GrabberEntity::UpdateDerived(GameManager& g, float dt) {
     }
 
     if (quantizeReached) {
-        for (auto const& pAction : _p.actions) {
+        auto const& actions = _s.posAction ? _p.plusRotActions : _p.negRotActions;
+        for (auto const& pAction : actions) {
             pAction->Execute(g);
         }
     }
