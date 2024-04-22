@@ -22,6 +22,7 @@ struct GrabberEntity : public ne::BaseEntity {
 
     struct State {
         double actionBeatTime = -1.0;
+        bool posAction = false;
         ne::EntityId resource;
 
         float angleRad = 0.f;

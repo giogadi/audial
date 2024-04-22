@@ -298,11 +298,11 @@
                 </plus_rot_key>
                 <has_neg_rot>false</has_neg_rot>
                 <neg_rot_key>
-                    <key>a</key>
+                    <key>j</key>
                     <offset>
-                        <x>0</x>
+                        <x>-0.75</x>
                         <y>0</y>
-                        <z>0</z>
+                        <z>0.75</z>
                     </offset>
                 </neg_rot_key>
                 <quantize>0.25</quantize>

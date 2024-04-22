@@ -115,10 +115,20 @@ void GrabberEntity::UpdateDerived(GameManager& g, float dt) {
     bool quantizeReached = false;
     double quantizedBeatTime = -1.0; 
 
-    if (_plusRotKey._s.keyJustPressed && _s.actionBeatTime < 0.0) {
-        _s.actionBeatTime = g._beatClock->GetNextBeatDenomTime(beatTime, _p.quantize);
+    if (_s.actionBeatTime < 0.0) {
+        bool actionStarted = false;
+        if (_plusRotKey._s.keyJustPressed) {
+            actionStarted = true;
+            _s.posAction = true;
+        } else if (_negRotKey._s.keyJustPressed) {
+            actionStarted = true;
+            _s.posAction = false;
+        }
+        if (actionStarted) {
+            _s.actionBeatTime = g._beatClock->GetNextBeatDenomTime(beatTime, _p.quantize);
+        }
     }
-
+ 
     if (_s.actionBeatTime >= 0.0 && beatTime >= _s.actionBeatTime) {
         quantizeReached = true;
         quantizedBeatTime = _s.actionBeatTime;
@@ -132,13 +142,12 @@ void GrabberEntity::UpdateDerived(GameManager& g, float dt) {
     }
 
     if (quantizeReached && _s.moveStartTime < 0.0) {
-        // TODO FIGURE THIS OUT
         assert(quantizedBeatTime > 0.0);
         _s.moveStartTime = quantizedBeatTime;
         _s.moveEndTime = quantizedBeatTime + 0.125;                
         _s.angleRad = Normalize2Pi(_s.angleRad);
         _s.moveStartAngleRad = _s.angleRad;
-        _s.moveEndAngleRad = _s.moveStartAngleRad + (2 * kPi / 8);
+        _s.moveEndAngleRad = _s.moveStartAngleRad + (_s.posAction ? 1.f : -1.f) * (2 * kPi / 8);
 
         _s.resource = ne::EntityId();
     }
