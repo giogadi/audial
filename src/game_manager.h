@@ -17,6 +17,7 @@ namespace ne {
 class CollisionManager;
 class BeatClock;
 class SoundBank;
+struct ParticleMgr;
 
 #include "viewport.h"
 
@@ -29,6 +30,7 @@ struct GameManager {
     BeatClock* _beatClock = nullptr;
     SoundBank* _soundBank = nullptr;
     synth::PatchBank* _synthPatchBank = nullptr;
+    ParticleMgr* _particleMgr = nullptr;
 
     bool _editMode = false;
 

@@ -97,7 +97,7 @@ void SinkEntity::UpdateDerived(GameManager& g, float dt) {
             continue;
         }
 
-        r->StartDestroy();
+        r->StartConsume();
 
         for (auto const& pAction : _p.acceptActions) {
             pAction->Execute(g);

@@ -291,7 +291,7 @@
                 <plus_rot_key>
                     <key>f</key>
                     <offset>
-                        <x>0.75</x>
+                        <x>-0.75</x>
                         <y>0</y>
                         <z>0.75</z>
                     </offset>
@@ -300,7 +300,7 @@
                 <neg_rot_key>
                     <key>j</key>
                     <offset>
-                        <x>-0.75</x>
+                        <x>0.75</x>
                         <y>0</y>
                         <z>0.75</z>
                     </offset>
@@ -554,6 +554,70 @@
                 <zf>20</zf>
                 <w>20</w>
             </Light>
+            <Hazard>
+                <editor_id>
+                    <id>27</id>
+                </editor_id>
+                <name>hazard0</name>
+                <entity_active>true</entity_active>
+                <pickable>true</pickable>
+                <transform>
+                    <pos>
+                        <x>2.49321461</x>
+                        <y>0</y>
+                        <z>-2.51563597</z>
+                    </pos>
+                    <quat>
+                        <x>0</x>
+                        <y>0</y>
+                        <z>0</z>
+                        <w>1</w>
+                    </quat>
+                    <scale>
+                        <x>3</x>
+                        <y>1</y>
+                        <z>3</z>
+                    </scale>
+                </transform>
+                <model_name>cube</model_name>
+                <texture_name>white</texture_name>
+                <model_color_vec4>
+                    <x>1</x>
+                    <y>0</y>
+                    <z>0</z>
+                    <w>1</w>
+                </model_color_vec4>
+                <flow_section_id>-1</flow_section_id>
+                <tag>0</tag>
+                <waypoint_follower>
+                    <mode>Waypoint</mode>
+                    <local_to_entity>false</local_to_entity>
+                    <waypoint_auto_start>false</waypoint_auto_start>
+                    <loop_waypoints>false</loop_waypoints>
+                    <start_time>3</start_time>
+                    <waypoints/>
+                    <follow_entity_name/>
+                    <follow_entity_editor_id>
+                        <id>-1</id>
+                    </follow_entity_editor_id>
+                </waypoint_follower>
+                <destroy_actions>
+                    <seq_action>
+                        <one_time>false</one_time>
+                        <action_type>BeatTimeEvent</action_type>
+                        <quantize_denom>0.25</quantize_denom>
+                        <beat_time_event>
+                            <event_type>PlayPcm</event_type>
+                            <channel>0</channel>
+                            <delay_secs>0</delay_secs>
+                            <sound_ix>9</sound_ix>
+                            <velocity>0.300000012</velocity>
+                            <loop>false</loop>
+                            <beat_time>0</beat_time>
+                        </beat_time_event>
+                    </seq_action>
+                </destroy_actions>
+            </Hazard>
         </new_entities>
     </script>
 </root>

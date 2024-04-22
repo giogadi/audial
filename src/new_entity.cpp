@@ -30,6 +30,7 @@
 #include "entities/spawner.h"
 #include "entities/resource.h"
 #include "entities/sink.h"
+#include "entities/hazard.h"
 #include "entities/viz.h"
 
 extern GameManager gGameManager;

@@ -3,6 +3,8 @@
 #include "game_manager.h"
 #include "renderer.h"
 #include "math_util.h"
+#include "particle_mgr.h"
+#include "rng.h"
 
 void ResourceEntity::SaveDerived(serial::Ptree pt) const {
 }
@@ -89,7 +91,42 @@ void ResourceEntity::Draw(GameManager& g, float dt) {
     g._scene->DrawCube(_s.renderT.Mat4Scale(), _modelColor);
 }
 
-void ResourceEntity::StartDestroy() {
+void ResourceEntity::StartConsume() {
     _s.destroyed = true;
     _s.destroyTimeElapsed = 0.f;
+}
+
+void ResourceEntity::StartDestroy(GameManager& g) {
+    g._neEntityManager->TagForDestroy(_id);
+
+    int constexpr kNumParticles = 20;
+    float constexpr kParticleSpeed = 3.f;
+    float constexpr kParticleTime = 0.4f;
+    Quaternion q;
+    float alphaV = -1.f / kParticleTime;
+    for (int ii = 0; ii < kNumParticles; ++ii) {
+        float x = rng::GetFloat(-kPi, kPi);
+        float y = rng::GetFloat(-kPi, kPi);
+        float z = rng::GetFloat(-kPi, kPi);
+        Vec3 r(x, y, z);
+        q.SetFromEulerAngles(r);
+
+        r.Normalize();
+
+        Particle* p = g._particleMgr->SpawnParticle();
+        p->shape = ParticleShape::Cube;
+        Vec3 pos = _transform.Pos();
+        pos += (r * 0.5f);
+        p->t.SetPos(pos);
+        p->t.SetQuat(q);
+        p->t.SetScale(Vec3(0.2f, 0.2f, 0.2f));
+
+        p->v = r * kParticleSpeed;
+        p->rotV = r * 3.f;
+
+        p->color = _modelColor;
+        p->timeLeft = 2.f;
+
+        p->alphaV = alphaV;
+    }
 }

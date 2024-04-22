@@ -78,6 +78,7 @@ add_executable(game
     src/camera_util.h
     src/stb_truetype.cpp src/stb_truetype.h
     src/geometry.cpp src/geometry.h
+    src/particle_mgr.cpp src/particle_mgr.h
 
     src/string_ci.cpp src/string_ci.h
 
@@ -123,6 +124,7 @@ add_executable(game
     src/entities/spawner.cpp src/entities/spawner.h
     src/entities/resource.cpp src/entities/resource.h
     src/entities/sink.cpp src/entities/sink.h
+    src/entities/hazard.cpp src/entities/hazard.h
     src/entities/viz.cpp src/entities/viz.h
     
     src/enums/audio_EventType.cpp src/enums/audio_EventType.h

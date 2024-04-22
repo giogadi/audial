@@ -48,6 +48,7 @@
 #include "sound_bank.h"
 #include "synth_imgui.h"
 #include "logger.h"
+#include "particle_mgr.h"
 
 GameManager gGameManager;
 
@@ -460,6 +461,8 @@ int main(int argc, char** argv) {
 
     BeatClock beatClock;
 
+    ParticleMgr particleMgr;
+
     gGameManager._editor = &editor;
     gGameManager._scene = &sceneManager;
     gGameManager._inputManager = &inputManager;
@@ -468,6 +471,7 @@ int main(int argc, char** argv) {
     gGameManager._beatClock = &beatClock;
     gGameManager._soundBank = &soundBank;
     gGameManager._synthPatchBank = &synthPatchBank;
+    gGameManager._particleMgr = &particleMgr;
     gGameManager._editMode = cmdLineInputs._editMode;
 
     {
@@ -688,6 +692,8 @@ int main(int argc, char** argv) {
 
         neEntityManager.DestroyTaggedEntities(gGameManager);
         neEntityManager.DeactivateTaggedEntities(gGameManager);
+
+        gGameManager._particleMgr->Update(fixedTimeStep);
         
         if (gGameManager._editMode) {
             for (auto iter = gGameManager._neEntityManager->GetAllIterator(); !iter.Finished(); iter.Next()) {
@@ -712,6 +718,7 @@ int main(int argc, char** argv) {
             }
         }
 
+        gGameManager._particleMgr->Draw(gGameManager);
 
 
         // Start the Dear ImGui frame

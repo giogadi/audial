@@ -543,6 +543,12 @@ bool SceneInternal::Init(GameManager& g) {
         success = _meshMap.emplace("water", std::move(mesh)).second;
         assert(success);
 
+        mesh = std::make_unique<BoundMeshPNU>();
+        success = mesh->Init("data/models/triangle.obj");
+        assert(success);
+        success = _meshMap.emplace("triangle", std::move(mesh)).second;
+        assert(success);
+
         success = LoadPsButtons();
         assert(success);
     }
@@ -1256,7 +1262,7 @@ void Scene::Draw(int windowWidth, int windowHeight, float timeInSecs) {
 
             _pInternal->_depthOnlyShader.SetMat4(_pInternal->_depthOnlyShaderUniforms[DepthOnlyShaderUniforms::uViewProjT], lightViewProj);
             for (ModelInstance const& m : _pInternal->_modelsToDraw) {
-                if (m._topLayer || m._color._w < 1.f) {
+                if (m._topLayer || m._color._w < 1.f || !m._castShadows) {
                     continue;
                 }         
                 DrawModelDepthOnly(*_pInternal, m);

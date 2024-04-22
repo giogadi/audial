@@ -77,6 +77,7 @@ public:
     Vec4 _color = Vec4(1.f, 1.f, 1.f, 1.f);  // multiplied with the texture
     bool _useMeshColor = false;
     float _explodeDist = 0.f;
+    bool _castShadows = true;
 };
 
 struct LineInstance {

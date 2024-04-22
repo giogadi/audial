@@ -19,7 +19,8 @@ struct ResourceEntity : public ne::Entity {
     };
     State _s;
 
-    void StartDestroy();
+    void StartConsume();
+    void StartDestroy(GameManager& g);
        
     virtual void UpdateDerived(GameManager& g, float dt) override;
     virtual void Draw(GameManager& g, float dt) override;
