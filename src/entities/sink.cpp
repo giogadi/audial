@@ -13,7 +13,7 @@
 #include "color.h"
 
 void SinkEntity::SaveDerived(serial::Ptree pt) const {
-    serial::SaveInNewChildOf(pt, "key", _p.key);
+    serial::SaveInNewChildOf(pt, "key", _key);
     pt.PutDouble("quantize", _p.quantize);
     SeqAction::SaveActionsInChildNode(pt, "actions", _p.actions);
     SeqAction::SaveActionsInChildNode(pt, "accept_actions", _p.acceptActions);
@@ -21,7 +21,7 @@ void SinkEntity::SaveDerived(serial::Ptree pt) const {
 
 void SinkEntity::LoadDerived(serial::Ptree pt) {
     _p = Props();
-    serial::LoadFromChildOf(pt, "key", _p.key);
+    serial::LoadFromChildOf(pt, "key", _key);
     pt.TryGetDouble("quantize", &_p.quantize);
     SeqAction::LoadActionsFromChildNode(pt, "actions", _p.actions);
     SeqAction::LoadActionsFromChildNode(pt, "accept_actions", _p.acceptActions);
@@ -30,7 +30,7 @@ void SinkEntity::LoadDerived(serial::Ptree pt) {
 ne::BaseEntity::ImGuiResult SinkEntity::ImGuiDerived(GameManager& g) {
     ImGuiResult result = ImGuiResult::Done;
     if (ImGui::TreeNode("Key")) {
-        if (_p.key.ImGui()) {
+        if (_key.ImGui()) {
             result = ImGuiResult::NeedsInit;
         }
         ImGui::TreePop();
@@ -50,6 +50,7 @@ ne::BaseEntity::ImGuiResult SinkEntity::ImGuiDerived(GameManager& g) {
 
 void SinkEntity::InitDerived(GameManager& g) {
     _s = State();
+    _key.Init();
     for (auto const& pAction : _p.actions) {
         pAction->Init(g);
     }
@@ -63,21 +64,13 @@ void SinkEntity::UpdateDerived(GameManager& g, float dt) {
         return;
     }
 
+    _key.Update(g, dt);
+
     double const beatTime = g._beatClock->GetBeatTimeFromEpoch();
 
-    bool keyJustPressed = false;
-    bool keyJustReleased = false;
     bool quantizeReached = false;
     double quantizedBeatTime = -1.0;
-    InputManager::Key k = InputManager::CharToKey(_p.key.key.c);
-    keyJustPressed = g._inputManager->IsKeyPressedThisFrame(k);
-    keyJustReleased = g._inputManager->IsKeyReleasedThisFrame(k);
-    _s.keyPressed = g._inputManager->IsKeyPressed(k);
-    {
-        float keyPushFactorTarget = _s.keyPressed ? 1.f : 0.f;
-        _s.keyPushFactor += dt * 32.f * (keyPushFactorTarget - _s.keyPushFactor);
-    }
-    if (keyJustPressed && _s.actionBeatTime < 0.0) {
+    if (_key._s.keyJustPressed && _s.actionBeatTime < 0.0) {
         _s.actionBeatTime = g._beatClock->GetNextBeatDenomTime(beatTime, _p.quantize);
     }
 
@@ -93,7 +86,7 @@ void SinkEntity::UpdateDerived(GameManager& g, float dt) {
         }
     }
 
-    if (!keyJustPressed) {
+    if (!_key._s.keyJustPressed) {
         return;
     }
     for (ne::EntityManager::Iterator iter = g._neEntityManager->GetIterator(ne::EntityType::Resource); !iter.Finished(); iter.Next()) {
@@ -155,7 +148,7 @@ void SinkEntity::Draw(GameManager& g, float dt) {
 
     Transform btnTrans = _transform;
     btnTrans.Translate(Vec3(0.f, kSinkHeight, 0.f));
-    _p.key.Draw(g, btnTrans, _s.keyPushFactor, _s.keyPressed);
+    _key.Draw(g, btnTrans);
 }
 
 void SinkEntity::OnEditPick(GameManager& g) {

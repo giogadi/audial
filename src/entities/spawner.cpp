@@ -10,14 +10,14 @@
 #include "renderer.h"
 
 void SpawnerEntity::SaveDerived(serial::Ptree pt) const {
-    serial::SaveInNewChildOf(pt, "button", _p.btn);
+    serial::SaveInNewChildOf(pt, "button", _btn);
     pt.PutDouble("quantize", _p.quantize);
     SeqAction::SaveActionsInChildNode(pt, "actions", _p.actions);
 }
 
 void SpawnerEntity::LoadDerived(serial::Ptree pt) {
     _p = Props();
-    serial::LoadFromChildOf(pt, "button", _p.btn);
+    serial::LoadFromChildOf(pt, "button", _btn);
     pt.TryGetDouble("quantize", &_p.quantize);
     SeqAction::LoadActionsFromChildNode(pt, "actions", _p.actions);
 }
@@ -25,7 +25,7 @@ void SpawnerEntity::LoadDerived(serial::Ptree pt) {
 ne::BaseEntity::ImGuiResult SpawnerEntity::ImGuiDerived(GameManager& g) {
     ImGuiResult result = ImGuiResult::Done;
     if (ImGui::TreeNode("Button")) {
-        if (_p.btn.ImGui()) {
+        if (_btn.ImGui()) {
             result = ImGuiResult::NeedsInit;
         }
         ImGui::TreePop();
@@ -42,6 +42,7 @@ ne::BaseEntity::ImGuiResult SpawnerEntity::ImGuiDerived(GameManager& g) {
 
 void SpawnerEntity::InitDerived(GameManager& g) {
     _s = State();
+    _btn.Init();
     for (auto const& pAction : _p.actions) {
         pAction->Init(g);
     }
@@ -55,19 +56,11 @@ void SpawnerEntity::UpdateDerived(GameManager& g, float dt) {
 
     double const beatTime = g._beatClock->GetBeatTimeFromEpoch();
 
-    bool keyJustPressed = false;
-    bool keyJustReleased = false;
+    _btn.Update(g, dt);
+
     bool quantizeReached = false;
     double quantizedBeatTime = -1.0;
-    InputManager::Key k = InputManager::CharToKey(_p.btn.key.c);
-    keyJustPressed = g._inputManager->IsKeyPressedThisFrame(k);
-    keyJustReleased = g._inputManager->IsKeyReleasedThisFrame(k);
-    _s.keyPressed = g._inputManager->IsKeyPressed(k);
-    {
-        float keyPushFactorTarget = _s.keyPressed ? 1.f : 0.f;
-        _s.keyPushFactor += dt * 32.f * (keyPushFactorTarget - _s.keyPushFactor);
-    }
-    if (keyJustPressed && _s.actionBeatTime < 0.0) {
+    if (_btn._s.keyJustPressed && _s.actionBeatTime < 0.0) {
         _s.actionBeatTime = g._beatClock->GetNextBeatDenomTime(beatTime, _p.quantize);
     }
 
@@ -125,7 +118,7 @@ void SpawnerEntity::Draw(GameManager& g, float dt) {
 
     Transform btnTrans = _transform;
     btnTrans.Translate(Vec3(0.f, kSinkHeight, 0.f));
-    _p.btn.Draw(g, btnTrans, _s.keyPushFactor, _s.keyPressed);
+    _btn.Draw(g, btnTrans);
 
 }
 

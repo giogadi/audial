@@ -10,7 +10,8 @@ struct GrabberEntity : public ne::BaseEntity {
     static ne::EntityType StaticType() { return ne::EntityType::Grabber; }
     
     struct Props {
-        MechButton key;
+        bool hasPlusRot = true;
+        bool hasNegRot = true;
         double quantize = 0.0;
         float angleDeg = 0.f;
         float length = 1.f;
@@ -29,11 +30,11 @@ struct GrabberEntity : public ne::BaseEntity {
         float moveStartAngleRad = 0.0f;
         float moveEndAngleRad = 0.0f;
         Vec3 handToResOffset;
-
-        float keyPushFactor = 0.f;
-        bool keyPressed = false;
     };
     State _s;
+
+    MechButton _plusRotKey;
+    MechButton _negRotKey;
 
     // Init() is intended to be called after Load(). Load should not touch anything
     // outside this class. Everything else should happen here.

@@ -10,7 +10,6 @@ struct SinkEntity : public ne::BaseEntity {
     static ne::EntityType StaticType() { return ne::EntityType::Sink; }
     
     struct Props {
-        MechButton key;
         double quantize = 0.0;
         std::vector<std::unique_ptr<SeqAction>> actions;
         std::vector<std::unique_ptr<SeqAction>> acceptActions;
@@ -19,11 +18,11 @@ struct SinkEntity : public ne::BaseEntity {
 
     struct State {
         double actionBeatTime = -1.0;
-        float keyPushFactor = 0.f;
-        bool keyPressed = false;
         float acceptTimeElapsed = -1.f;
     };
     State _s;
+
+    MechButton _key;
 
     // Init() is intended to be called after Load(). Load should not touch anything
     // outside this class. Everything else should happen here.

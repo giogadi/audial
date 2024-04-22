@@ -287,14 +287,24 @@
                         <id>-1</id>
                     </follow_entity_editor_id>
                 </waypoint_follower>
-                <key>
+                <has_plus_rot>true</has_plus_rot>
+                <plus_rot_key>
                     <key>f</key>
                     <offset>
                         <x>0.75</x>
                         <y>0</y>
                         <z>0.75</z>
                     </offset>
-                </key>
+                </plus_rot_key>
+                <has_neg_rot>false</has_neg_rot>
+                <neg_rot_key>
+                    <key>a</key>
+                    <offset>
+                        <x>0</x>
+                        <y>0</y>
+                        <z>0</z>
+                    </offset>
+                </neg_rot_key>
                 <quantize>0.25</quantize>
                 <angle>90</angle>
                 <length>4</length>
@@ -536,14 +546,24 @@
                         <id>-1</id>
                     </follow_entity_editor_id>
                 </waypoint_follower>
-                <key>
+                <has_plus_rot>true</has_plus_rot>
+                <plus_rot_key>
                     <key>f</key>
                     <offset>
                         <x>0.75</x>
                         <y>0</y>
                         <z>0.75</z>
                     </offset>
-                </key>
+                </plus_rot_key>
+                <has_neg_rot>false</has_neg_rot>
+                <neg_rot_key>
+                    <key>a</key>
+                    <offset>
+                        <x>0</x>
+                        <y>0</y>
+                        <z>0</z>
+                    </offset>
+                </neg_rot_key>
                 <quantize>0.25</quantize>
                 <angle>0</angle>
                 <length>4</length>
@@ -774,14 +794,24 @@
                         <id>-1</id>
                     </follow_entity_editor_id>
                 </waypoint_follower>
-                <key>
+                <has_plus_rot>true</has_plus_rot>
+                <plus_rot_key>
                     <key>f</key>
                     <offset>
                         <x>0.75</x>
                         <y>0</y>
                         <z>0.75</z>
                     </offset>
-                </key>
+                </plus_rot_key>
+                <has_neg_rot>false</has_neg_rot>
+                <neg_rot_key>
+                    <key>a</key>
+                    <offset>
+                        <x>0</x>
+                        <y>0</y>
+                        <z>0</z>
+                    </offset>
+                </neg_rot_key>
                 <quantize>0.25</quantize>
                 <angle>0</angle>
                 <length>4</length>
@@ -1012,14 +1042,24 @@
                         <id>-1</id>
                     </follow_entity_editor_id>
                 </waypoint_follower>
-                <key>
+                <has_plus_rot>true</has_plus_rot>
+                <plus_rot_key>
                     <key>f</key>
                     <offset>
                         <x>0.75</x>
                         <y>0</y>
                         <z>0.75</z>
                     </offset>
-                </key>
+                </plus_rot_key>
+                <has_neg_rot>false</has_neg_rot>
+                <neg_rot_key>
+                    <key>a</key>
+                    <offset>
+                        <x>0</x>
+                        <y>0</y>
+                        <z>0</z>
+                    </offset>
+                </neg_rot_key>
                 <quantize>0.25</quantize>
                 <angle>0</angle>
                 <length>4</length>
@@ -1252,54 +1292,6 @@
                 <zf>20</zf>
                 <w>20</w>
             </Light>
-            <Base>
-                <editor_id>
-                    <id>27</id>
-                </editor_id>
-                <name>justabox</name>
-                <entity_active>true</entity_active>
-                <pickable>true</pickable>
-                <transform>
-                    <pos>
-                        <x>12.5094366</x>
-                        <y>5</y>
-                        <z>-2.91181755</z>
-                    </pos>
-                    <quat>
-                        <x>0</x>
-                        <y>0</y>
-                        <z>0</z>
-                        <w>1</w>
-                    </quat>
-                    <scale>
-                        <x>3</x>
-                        <y>1</y>
-                        <z>3</z>
-                    </scale>
-                </transform>
-                <model_name>cube</model_name>
-                <texture_name>white</texture_name>
-                <model_color_vec4>
-                    <x>0.800000012</x>
-                    <y>0.800000012</y>
-                    <z>0.800000012</z>
-                    <w>1</w>
-                </model_color_vec4>
-                <flow_section_id>-1</flow_section_id>
-                <tag>0</tag>
-                <waypoint_follower>
-                    <mode>Waypoint</mode>
-                    <local_to_entity>false</local_to_entity>
-                    <waypoint_auto_start>false</waypoint_auto_start>
-                    <loop_waypoints>false</loop_waypoints>
-                    <start_time>3</start_time>
-                    <waypoints/>
-                    <follow_entity_name/>
-                    <follow_entity_editor_id>
-                        <id>-1</id>
-                    </follow_entity_editor_id>
-                </waypoint_follower>
-            </Base>
         </new_entities>
     </script>
 </root>

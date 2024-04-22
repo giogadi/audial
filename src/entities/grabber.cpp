@@ -31,7 +31,10 @@ Transform GetGrabberHandTrans(Transform const& grabberTrans, float grabberLength
 
 
 void GrabberEntity::SaveDerived(serial::Ptree pt) const {
-    serial::SaveInNewChildOf(pt, "key", _p.key);
+    pt.PutBool("has_plus_rot", _p.hasPlusRot);
+    serial::SaveInNewChildOf(pt, "plus_rot_key", _plusRotKey);
+    pt.PutBool("has_neg_rot", _p.hasNegRot);
+    serial::SaveInNewChildOf(pt, "neg_rot_key", _negRotKey);
     pt.PutDouble("quantize", _p.quantize);
     pt.PutFloat("angle", _p.angleDeg);
     pt.PutFloat("length", _p.length);
@@ -41,7 +44,10 @@ void GrabberEntity::SaveDerived(serial::Ptree pt) const {
 
 void GrabberEntity::LoadDerived(serial::Ptree pt) {
     _p = Props();
-    serial::LoadFromChildOf(pt, "key", _p.key);
+    pt.TryGetBool("has_plus_rot", &_p.hasPlusRot);
+    serial::LoadFromChildOf(pt, "plus_rot_key", _plusRotKey);
+    pt.TryGetBool("has_neg_rot", &_p.hasNegRot);
+    serial::LoadFromChildOf(pt, "neg_rot_key", _negRotKey);
     pt.TryGetDouble("quantize", &_p.quantize);
     pt.TryGetFloat("angle", &_p.angleDeg);
     pt.TryGetFloat("length", &_p.length);
@@ -51,13 +57,18 @@ void GrabberEntity::LoadDerived(serial::Ptree pt) {
 
 ne::BaseEntity::ImGuiResult GrabberEntity::ImGuiDerived(GameManager& g) {
     ImGuiResult result = ImGuiResult::Done;
-    if (ImGui::TreeNode("Key")) {
-        if (_p.key.ImGui()) {
-            result = ImGuiResult::NeedsInit;
-        }
+    if (ImGui::TreeNode("+rot key")) {
+        ImGui::Checkbox("Has key", &_p.hasPlusRot);
+        _plusRotKey.ImGui();
+        ImGui::TreePop();
+    }
+    if (ImGui::TreeNode("-rot key")) {
+        ImGui::Checkbox("Has key", &_p.hasNegRot);
+        _negRotKey.ImGui();
         ImGui::TreePop();
     }
 
+    
     if (ImGui::InputDouble("Quantize", &_p.quantize)) {
         result = ImGuiResult::NeedsInit;
     }
@@ -79,6 +90,8 @@ ne::BaseEntity::ImGuiResult GrabberEntity::ImGuiDerived(GameManager& g) {
 
 void GrabberEntity::InitDerived(GameManager& g) {
     _s = State();
+    _plusRotKey.Init();
+    _negRotKey.Init();
     for (auto const& pAction : _p.actions) {
         pAction->Init(g);
     }
@@ -92,20 +105,17 @@ void GrabberEntity::UpdateDerived(GameManager& g, float dt) {
 
     double const beatTime = g._beatClock->GetBeatTimeFromEpoch();
 
-    bool keyJustPressed = false;
-    bool keyJustReleased = false;
-    bool quantizeReached = false;
-    double quantizedBeatTime = -1.0;
-    InputManager::Key k = InputManager::CharToKey(_p.key.key.c);
-    keyJustPressed = g._inputManager->IsKeyPressedThisFrame(k);
-    keyJustReleased = g._inputManager->IsKeyReleasedThisFrame(k);
-    _s.keyPressed = g._inputManager->IsKeyPressed(k);
-    {
-        float keyPushFactorTarget = _s.keyPressed ? 1.f : 0.f;
-        _s.keyPushFactor += dt * 32.f * (keyPushFactorTarget - _s.keyPushFactor);
+    if (_p.hasPlusRot) {
+        _plusRotKey.Update(g, dt);
     }
+    if (_p.hasNegRot) {
+        _negRotKey.Update(g, dt);
+    }
+    
+    bool quantizeReached = false;
+    double quantizedBeatTime = -1.0; 
 
-    if (keyJustPressed && _s.actionBeatTime < 0.0) {
+    if (_plusRotKey._s.keyJustPressed && _s.actionBeatTime < 0.0) {
         _s.actionBeatTime = g._beatClock->GetNextBeatDenomTime(beatTime, _p.quantize);
     }
 
@@ -188,8 +198,12 @@ void GrabberEntity::Draw(GameManager& g, float dt) {
 
     Transform btnTrans = _transform;
     btnTrans.Translate(Vec3(0.f, kPlatHeight, 0.f));
-    _p.key.Draw(g, btnTrans, _s.keyPushFactor, _s.keyPressed);
-
+    if (_p.hasPlusRot) {
+        _plusRotKey.Draw(g, btnTrans);
+    }
+    if (_p.hasNegRot) {
+        _negRotKey.Draw(g, btnTrans);
+    }
 
 
     float const length = _p.length;

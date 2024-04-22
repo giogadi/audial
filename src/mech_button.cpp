@@ -8,35 +8,62 @@
 #include "math_util.h"
 #include "renderer.h"
 
+void MechButton::ResetProps() {
+    _p.key = imgui_util::Char(); 
+    _p.offset = Vec3();
+}
+
+void MechButton::ResetState() {
+    _s.keyPressed = false;
+    _s.keyJustPressed = false;
+    _s.keyJustReleased = false;
+    _s.keyPushFactor = 0.f;
+}
+
 void MechButton::Save(serial::Ptree pt) const {
-    key.Save(pt, "key");
-    serial::SaveInNewChildOf(pt, "offset", offset);
+    _p.key.Save(pt, "key");
+    serial::SaveInNewChildOf(pt, "offset", _p.offset);
 }
 
 void MechButton::Load(serial::Ptree pt) {
-    key.Load(pt, "key");
-    serial::LoadFromChildOf(pt, "offset", offset);
+    ResetProps();
+    _p.key.Load(pt, "key");
+    serial::LoadFromChildOf(pt, "offset", _p.offset);
 }
 
 bool MechButton::ImGui() {
     bool changed = false;
-    if (key.ImGui("Key")) {
+    if (_p.key.ImGui("Key")) {
         changed = true;
     }
-    if (imgui_util::InputVec3("Key offset", &offset)) {
+    if (imgui_util::InputVec3("Key offset", &_p.offset)) {
         changed = true;
     }
     return changed;
 }
 
-void MechButton::Draw(GameManager& g, Transform const& t, float const pushFactor, bool const keyPressed) {
+void MechButton::Init() {
+    ResetState();
+}
+
+void MechButton::Update(GameManager& g, float const dt) {
+    InputManager::Key k = InputManager::CharToKey(_p.key.c);
+    _s.keyJustPressed = g._inputManager->IsKeyPressedThisFrame(k);
+    _s.keyJustReleased = g._inputManager->IsKeyReleasedThisFrame(k);
+    _s.keyPressed = g._inputManager->IsKeyPressed(k);
+    float keyPushFactorTarget = _s.keyPressed ? 1.f : 0.f;
+    _s.keyPushFactor += dt * 32.f * (keyPushFactorTarget - _s.keyPushFactor);
+
+}
+
+void MechButton::Draw(GameManager& g, Transform const& t) {
     Transform cubeCtrToBtm;
     cubeCtrToBtm.SetPos(Vec3(0.f, 0.5f, 0.f));
     Mat4 toBtmM = cubeCtrToBtm.Mat4NoScale();
    
     Vec4 keyNominalColor;
     float minV, maxV;
-    if (!keyPressed) {
+    if (!_s.keyPressed) {
         keyNominalColor.Set(1.0f, 1.f, 1.f, 1.f);
         minV = 1.f;
         maxV = 1.f;
@@ -57,7 +84,7 @@ void MechButton::Draw(GameManager& g, Transform const& t, float const pushFactor
     renderer::BBox2d textBbox;
     Transform textTrans;
     char textBuf[] = "*";
-    textBuf[0] = toupper(key.c);
+    textBuf[0] = toupper(_p.key.c);
     size_t const textId = g._scene->DrawText3d(textBuf, 1, textTrans.Mat4Scale(), textColor, &textBbox); 
     Vec3 textOriginToCenter;
     textOriginToCenter._x = 0.5f * (textBbox.minX + textBbox.maxX);
@@ -70,11 +97,11 @@ void MechButton::Draw(GameManager& g, Transform const& t, float const pushFactor
 
     float constexpr kButtonMaxHeight = 0.4f;
     float constexpr kButtonPushedHeight = 0.1f;
-    float const btnHeight = math_util::Lerp(kButtonMaxHeight, kButtonPushedHeight, pushFactor);
+    float const btnHeight = math_util::Lerp(kButtonMaxHeight, kButtonPushedHeight, _s.keyPushFactor);
 
     Vec4 btnColor(193.f / 255.f, 108.f / 255.f, 0.f / 255.f, 1.f);
     Transform eToButtonT;
-    Vec3 p = offset;
+    Vec3 p = _p.offset;
     eToButtonT.SetPos(p);
     
     Vec3 btnScale = textExtents + Vec3(0.25f, 0.f, 0.25f);
