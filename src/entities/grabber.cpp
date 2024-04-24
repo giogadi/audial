@@ -138,6 +138,7 @@ void GrabberEntity::UpdateDerived(GameManager& g, float dt) {
         }
         if (actionStarted) {
             _s.actionBeatTime = g._beatClock->GetNextBeatDenomTime(beatTime, _p.quantize);
+            assert(_s.actionBeatTime >= 0.0);
         }
     }
  
@@ -155,7 +156,7 @@ void GrabberEntity::UpdateDerived(GameManager& g, float dt) {
     }
 
     if (quantizeReached && _s.moveStartTime < 0.0) {
-        assert(quantizedBeatTime > 0.0);
+        assert(quantizedBeatTime >= 0.0);
         _s.moveStartTime = quantizedBeatTime;
         _s.moveEndTime = quantizedBeatTime + 0.125;                
         _s.angleRad = Normalize2Pi(_s.angleRad);
@@ -164,7 +165,7 @@ void GrabberEntity::UpdateDerived(GameManager& g, float dt) {
 
         _s.resource = ne::EntityId();
     }
-    if (_s.moveStartTime > 0.0) {
+    if (_s.moveStartTime >= 0.0) {
         Transform handTrans = GetGrabberHandTrans(_transform, _p.length, _s.angleRad);
 
         ResourceEntity* resInHand = g._neEntityManager->GetEntityAs<ResourceEntity>(_s.resource);
@@ -173,6 +174,9 @@ void GrabberEntity::UpdateDerived(GameManager& g, float dt) {
             for (ne::EntityManager::Iterator iter = g._neEntityManager->GetIterator(ne::EntityType::Resource); !iter.Finished(); iter.Next()) {
                 ResourceEntity* r = static_cast<ResourceEntity*>(iter.GetEntity());
                 assert(r);
+                if (r->_s.destroyed) {
+                    continue;
+                }
                 bool inHand = geometry::IsPointInBoundingBox2d(r->_transform.Pos(), handTrans);
                 if (inHand) {
                     _s.resource = r->_id;

@@ -84,14 +84,23 @@ void SinkEntity::UpdateDerived(GameManager& g, float dt) {
         for (auto const& pAction : _p.actions) {
             pAction->Execute(g);
         }
+
+        _s.acceptTimeElapsed = 0.f;
     }
 
-    if (!_key._s.keyJustPressed) {
+    // if (!_key._s.keyJustPressed) {
+    // if (!quantizeReached) {
+    //     return;
+    // }
+    if (_s.acceptTimeElapsed < 0.f) {
         return;
     }
     for (ne::EntityManager::Iterator iter = g._neEntityManager->GetIterator(ne::EntityType::Resource); !iter.Finished(); iter.Next()) {
         ResourceEntity* r = static_cast<ResourceEntity*>(iter.GetEntity());
         assert(r);
+        if (r->_s.destroyed) {
+            continue;
+        }
         bool inRange = geometry::IsPointInBoundingBox2d(r->_transform.Pos(), _transform);
         if (!inRange) {
             continue;
@@ -103,15 +112,23 @@ void SinkEntity::UpdateDerived(GameManager& g, float dt) {
             pAction->Execute(g);
         }
 
-        _s.acceptTimeElapsed = 0.f;
+        // _s.acceptTimeElapsed = 0.f;
     }
+
+    _s.acceptTimeElapsed += dt;
+
+    float constexpr kAcceptTime = 0.5f;
+    if (_s.acceptTimeElapsed >= kAcceptTime) {
+        _s.acceptTimeElapsed = -1.f;
+    }
+
 }
 
 void SinkEntity::Draw(GameManager& g, float dt) {
 
     Vec4 color = _modelColor;
     if (_s.acceptTimeElapsed >= 0.f) {
-        _s.acceptTimeElapsed += dt;
+        // _s.acceptTimeElapsed += dt;
 
         float constexpr kFadeInTime = 0.05f;
         float constexpr kHoldTime = 0.0f;

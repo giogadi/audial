@@ -43,7 +43,8 @@ void WaypointFollower::Props::Save(serial::Ptree pt) const {
         break;
     }
     }
-    pt.PutBool("local_to_entity", _localToEntity);
+    // pt.PutBool("local_to_entity", _localToEntity);
+    pt.PutBool("wp_relative", _wpRelative);
     pt.PutBool("waypoint_auto_start", _autoStartFollowingWaypoints);
     pt.PutBool("loop_waypoints", _loopWaypoints);
     pt.PutDouble("start_time", _initWpStartTime);
@@ -67,7 +68,8 @@ void WaypointFollower::Props::Load(serial::Ptree pt) {
             printf("WaypointFollower::Props::Load: unrecognized enum \"%s\"\n", modeStr.c_str());
         }
     }
-    pt.TryGetBool("local_to_entity", &_localToEntity);
+    // pt.TryGetBool("local_to_entity", &_localToEntity);
+    pt.TryGetBool("wp_relative", &_wpRelative);
     pt.TryGetBool("waypoint_auto_start", &_autoStartFollowingWaypoints);
     pt.TryGetBool("loop_waypoints", &_loopWaypoints);
     pt.TryGetDouble("start_time", &_initWpStartTime);
@@ -98,7 +100,7 @@ bool WaypointFollower::Props::ImGui() {
     }
     switch (_mode) {
     case Props::Mode::Waypoint: {
-        changed = ImGui::Checkbox("Local to Entity", &_localToEntity) || changed;
+        changed = ImGui::Checkbox("Relative", &_wpRelative) || changed;
         changed = ImGui::Checkbox("Waypoint Auto Start", &_autoStartFollowingWaypoints) || changed;
         if (_autoStartFollowingWaypoints) {
             changed = ImGui::InputDouble("Start time", &_initWpStartTime) || changed;
@@ -137,12 +139,13 @@ void WaypointFollower::Init(GameManager& g, ne::BaseEntity const& entity, Props 
         if (p._autoStartFollowingWaypoints) {
             Start(g, entity);
         }
-        if (p._localToEntity) {
-            _ns._prevWaypointPos.Set(0.f, 0.f, 0.f);
-        }
-        else {
-            _ns._prevWaypointPos = entity._transform.Pos();
-        }
+        // if (p._localToEntity) {
+        //     _ns._prevWaypointPos.Set(0.f, 0.f, 0.f);
+        // }
+        // else {
+        //     _ns._prevWaypointPos = entity._transform.Pos();
+        // }
+        _ns._prevWaypointPos = entity._transform.Pos();
         _ns._thisWpStartTime = p._initWpStartTime;
 
         if (g._editMode) {
@@ -195,7 +198,10 @@ bool WaypointFollower::UpdateWaypoint(GameManager& g, float const dt, ne::BaseEn
             trans.Scale(1.f, 10.f, 1.f);
             Vec4 wpColor(0.8f, 0.f, 0.8f, 1.f);
             Vec3 offset;
-            if (p._localToEntity) {
+            if (p._wpRelative) {
+                // offset = _ns._entityPosAtStart;
+                offset = _ns._prevWaypointPos;
+            } else {
                 offset = _ns._entityPosAtStart;
             }
             for (int ii = 0; ii < p._waypoints.size(); ++ii) {
@@ -218,8 +224,14 @@ bool WaypointFollower::UpdateWaypoint(GameManager& g, float const dt, ne::BaseEn
     assert(_ns._currentWaypointIx >= 0 && _ns._currentWaypointIx < p._waypoints.size());
     Waypoint const& wp = p._waypoints[_ns._currentWaypointIx];
     if (beatTime >= _ns._thisWpStartTime + wp._waitTime + wp._moveTime) {
-        newPos = wp._p;
-        _ns._prevWaypointPos = wp._p;
+        if (p._wpRelative) {
+            newPos = wp._p + _ns._prevWaypointPos;
+        } else {
+            newPos = wp._p + _ns._entityPosAtStart;    
+        }
+        // newPos = wp._p;
+        // _ns._prevWaypointPos = wp._p;
+        _ns._prevWaypointPos = newPos;
         ++_ns._currentWaypointIx;
         if (_ns._currentWaypointIx >= p._waypoints.size()) {
             if (p._loopWaypoints) {
@@ -237,16 +249,22 @@ bool WaypointFollower::UpdateWaypoint(GameManager& g, float const dt, ne::BaseEn
         double elapsedMoveTime = beatTime - (_ns._thisWpStartTime + wp._waitTime);
         float factor = (float)(elapsedMoveTime / wp._moveTime);
         factor = math_util::Clamp(factor, 0.f, 1.f);
-        Vec3 wpPos = wp._p;
+        Vec3 wpPos;
+        if (p._wpRelative) {
+            wpPos = wp._p + _ns._prevWaypointPos;
+        } else {
+            wpPos = wp._p + _ns._entityPosAtStart;
+        }
+        // Vec3 wpPos = wp._p;
         newPos = _ns._prevWaypointPos + factor * (wpPos - _ns._prevWaypointPos);
     } else {
         // just wait
         return false;
     }
 
-    if (p._localToEntity) {
-        newPos += _ns._entityPosAtStart;
-    }
+    // if (p._localToEntity) {
+    //     newPos += _ns._entityPosAtStart;
+    // }
     pEntity->_transform.SetPos(newPos);
     return true;
 }

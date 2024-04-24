@@ -9,8 +9,11 @@ struct SpawnerEntity : public ne::BaseEntity {
     static ne::EntityType StaticType() { return ne::EntityType::Spawner; }
     
     struct Props {
+        bool hasButton = true;
         double quantize = 0.0;
         std::vector<std::unique_ptr<SeqAction>> actions;
+        bool autoSpawn = false;
+        Vec3 spawnStep;
     };
     Props _p;
 

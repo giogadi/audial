@@ -94,10 +94,12 @@ void ResourceEntity::Draw(GameManager& g, float dt) {
 void ResourceEntity::StartConsume() {
     _s.destroyed = true;
     _s.destroyTimeElapsed = 0.f;
+    _wpFollower.Stop();
 }
 
 void ResourceEntity::StartDestroy(GameManager& g) {
     g._neEntityManager->TagForDestroy(_id);
+    _wpFollower.Stop();
 
     int constexpr kNumParticles = 20;
     float constexpr kParticleSpeed = 3.f;

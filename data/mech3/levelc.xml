@@ -138,7 +138,7 @@
                     <id>6</id>
                 </editor_id>
                 <name>kick_seq</name>
-                <entity_active>false</entity_active>
+                <entity_active>true</entity_active>
                 <pickable>false</pickable>
                 <transform>
                     <pos>
@@ -249,9 +249,9 @@
                 <pickable>true</pickable>
                 <transform>
                     <pos>
-                        <x>-2.18450212</x>
+                        <x>-6.37521029</x>
                         <y>0</y>
-                        <z>-2.00450659</z>
+                        <z>-11.3106689</z>
                     </pos>
                     <quat>
                         <x>0</x>
@@ -296,7 +296,7 @@
                         <z>0.75</z>
                     </offset>
                 </plus_rot_key>
-                <has_neg_rot>true</has_neg_rot>
+                <has_neg_rot>false</has_neg_rot>
                 <neg_rot_key>
                     <key>d</key>
                     <offset>
@@ -313,10 +313,19 @@
                     <seq_action>
                         <one_time>false</one_time>
                         <action_type>NoteOnOff</action_type>
-                        <channel>1</channel>
+                        <channel>3</channel>
                         <midiNotes>
                             <array_item>
                                 <note>50</note>
+                            </array_item>
+                            <array_item>
+                                <note>52</note>
+                            </array_item>
+                            <array_item>
+                                <note>55</note>
+                            </array_item>
+                            <array_item>
+                                <note>59</note>
                             </array_item>
                         </midiNotes>
                         <noteLength>0.125</noteLength>
@@ -344,92 +353,6 @@
                     </seq_action>
                 </neg_rot_actions>
             </Grabber>
-            <Sink>
-                <editor_id>
-                    <id>15</id>
-                </editor_id>
-                <name>sink0</name>
-                <entity_active>true</entity_active>
-                <pickable>true</pickable>
-                <transform>
-                    <pos>
-                        <x>11.4215479</x>
-                        <y>9.53674316e-07</y>
-                        <z>-10.9580584</z>
-                    </pos>
-                    <quat>
-                        <x>0</x>
-                        <y>0</y>
-                        <z>0</z>
-                        <w>1</w>
-                    </quat>
-                    <scale>
-                        <x>2.5</x>
-                        <y>0.25</y>
-                        <z>2.5</z>
-                    </scale>
-                </transform>
-                <model_name>cube</model_name>
-                <texture_name>white</texture_name>
-                <model_color_vec4>
-                    <x>0.0468569621</x>
-                    <y>0.735294104</y>
-                    <z>0.188593999</z>
-                    <w>1</w>
-                </model_color_vec4>
-                <flow_section_id>-1</flow_section_id>
-                <tag>0</tag>
-                <waypoint_follower>
-                    <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
-                    <waypoint_auto_start>false</waypoint_auto_start>
-                    <loop_waypoints>false</loop_waypoints>
-                    <start_time>3</start_time>
-                    <waypoints/>
-                    <follow_entity_name/>
-                    <follow_entity_editor_id>
-                        <id>-1</id>
-                    </follow_entity_editor_id>
-                </waypoint_follower>
-                <key>
-                    <key>k</key>
-                    <offset>
-                        <x>0.75</x>
-                        <y>0</y>
-                        <z>0.75</z>
-                    </offset>
-                </key>
-                <quantize>0</quantize>
-                <actions/>
-                <accept_actions>
-                    <seq_action>
-                        <one_time>false</one_time>
-                        <action_type>NoteOnOff</action_type>
-                        <channel>0</channel>
-                        <midiNotes>
-                            <array_item>
-                                <note>38</note>
-                            </array_item>
-                        </midiNotes>
-                        <noteLength>1.5</noteLength>
-                        <velocity>1</velocity>
-                        <quantizeDenom>0</quantizeDenom>
-                        <doNoteOff>true</doNoteOff>
-                        <holdNotes>false</holdNotes>
-                    </seq_action>
-                    <seq_action>
-                        <one_time>false</one_time>
-                        <action_type>SetEntityActive</action_type>
-                        <entities_tag>-1</entities_tag>
-                        <entity_editor_id>
-                            <id>32</id>
-                        </entity_editor_id>
-                        <active>true</active>
-                        <init_on_activate>true</init_on_activate>
-                        <init_if_already_active>false</init_if_already_active>
-                    </seq_action>
-                </accept_actions>
-            </Sink>
             <Light>
                 <editor_id>
                     <id>26</id>
@@ -491,161 +414,6 @@
                 <zf>20</zf>
                 <w>20</w>
             </Light>
-            <Hazard>
-                <editor_id>
-                    <id>27</id>
-                </editor_id>
-                <name>hazard0</name>
-                <entity_active>true</entity_active>
-                <pickable>true</pickable>
-                <transform>
-                    <pos>
-                        <x>14.1846876</x>
-                        <y>1.5</y>
-                        <z>-10.9057884</z>
-                    </pos>
-                    <quat>
-                        <x>0</x>
-                        <y>0</y>
-                        <z>0</z>
-                        <w>1</w>
-                    </quat>
-                    <scale>
-                        <x>2</x>
-                        <y>3</y>
-                        <z>4</z>
-                    </scale>
-                </transform>
-                <model_name>cube</model_name>
-                <texture_name>white</texture_name>
-                <model_color_vec4>
-                    <x>1</x>
-                    <y>0</y>
-                    <z>0</z>
-                    <w>1</w>
-                </model_color_vec4>
-                <flow_section_id>-1</flow_section_id>
-                <tag>0</tag>
-                <waypoint_follower>
-                    <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
-                    <waypoint_auto_start>false</waypoint_auto_start>
-                    <loop_waypoints>false</loop_waypoints>
-                    <start_time>3</start_time>
-                    <waypoints/>
-                    <follow_entity_name/>
-                    <follow_entity_editor_id>
-                        <id>-1</id>
-                    </follow_entity_editor_id>
-                </waypoint_follower>
-                <destroy_actions>
-                    <seq_action>
-                        <one_time>false</one_time>
-                        <action_type>BeatTimeEvent</action_type>
-                        <quantize_denom>0.25</quantize_denom>
-                        <beat_time_event>
-                            <event_type>PlayPcm</event_type>
-                            <channel>0</channel>
-                            <delay_secs>0</delay_secs>
-                            <sound_ix>2</sound_ix>
-                            <velocity>0.300000012</velocity>
-                            <loop>false</loop>
-                            <beat_time>0</beat_time>
-                        </beat_time_event>
-                    </seq_action>
-                    <seq_action>
-                        <one_time>false</one_time>
-                        <action_type>SetEntityActive</action_type>
-                        <entities_tag>-1</entities_tag>
-                        <entity_editor_id>
-                            <id>32</id>
-                        </entity_editor_id>
-                        <active>false</active>
-                        <init_on_activate>true</init_on_activate>
-                        <init_if_already_active>false</init_if_already_active>
-                    </seq_action>
-                </destroy_actions>
-            </Hazard>
-            <Spawner>
-                <editor_id>
-                    <id>30</id>
-                </editor_id>
-                <name>spawner1</name>
-                <entity_active>true</entity_active>
-                <pickable>true</pickable>
-                <transform>
-                    <pos>
-                        <x>-6.4368062</x>
-                        <y>0</y>
-                        <z>-10.9453964</z>
-                    </pos>
-                    <quat>
-                        <x>0</x>
-                        <y>0</y>
-                        <z>0</z>
-                        <w>1</w>
-                    </quat>
-                    <scale>
-                        <x>2.5</x>
-                        <y>1</y>
-                        <z>2.5</z>
-                    </scale>
-                </transform>
-                <model_name/>
-                <texture_name/>
-                <model_color_vec4>
-                    <x>1</x>
-                    <y>0.0931372643</y>
-                    <z>0.0931372643</z>
-                    <w>1</w>
-                </model_color_vec4>
-                <flow_section_id>-1</flow_section_id>
-                <tag>0</tag>
-                <waypoint_follower>
-                    <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
-                    <waypoint_auto_start>false</waypoint_auto_start>
-                    <loop_waypoints>false</loop_waypoints>
-                    <start_time>3</start_time>
-                    <waypoints/>
-                    <follow_entity_name/>
-                    <follow_entity_editor_id>
-                        <id>-1</id>
-                    </follow_entity_editor_id>
-                </waypoint_follower>
-                <has_button>false</has_button>
-                <button>
-                    <key>h</key>
-                    <offset>
-                        <x>0.75</x>
-                        <y>0</y>
-                        <z>0.75</z>
-                    </offset>
-                </button>
-                <quantize>2</quantize>
-                <auto_spawn>true</auto_spawn>
-                <spawn_step>
-                    <x>2</x>
-                    <y>0</y>
-                    <z>0</z>
-                </spawn_step>
-                <actions>
-                    <seq_action>
-                        <one_time>false</one_time>
-                        <action_type>BeatTimeEvent</action_type>
-                        <quantize_denom>0.25</quantize_denom>
-                        <beat_time_event>
-                            <event_type>PlayPcm</event_type>
-                            <channel>0</channel>
-                            <delay_secs>0</delay_secs>
-                            <sound_ix>19</sound_ix>
-                            <velocity>0.5</velocity>
-                            <loop>false</loop>
-                            <beat_time>0</beat_time>
-                        </beat_time_event>
-                    </seq_action>
-                </actions>
-            </Spawner>
             <Spawner>
                 <editor_id>
                     <id>31</id>
@@ -655,9 +423,9 @@
                 <pickable>true</pickable>
                 <transform>
                     <pos>
-                        <x>-6.25606108</x>
+                        <x>-10.3465595</x>
                         <y>0</y>
-                        <z>-2.01330614</z>
+                        <z>-11.2854538</z>
                     </pos>
                     <quat>
                         <x>0</x>
@@ -713,7 +481,7 @@
                     <seq_action>
                         <one_time>false</one_time>
                         <action_type>NoteOnOff</action_type>
-                        <channel>1</channel>
+                        <channel>0</channel>
                         <midiNotes>
                             <array_item>
                                 <note>40</note>
@@ -732,13 +500,13 @@
                     <id>32</id>
                 </editor_id>
                 <name>sink1</name>
-                <entity_active>false</entity_active>
+                <entity_active>true</entity_active>
                 <pickable>true</pickable>
                 <transform>
                     <pos>
-                        <x>-2.10441875</x>
+                        <x>13.8077593</x>
                         <y>9.53674316e-07</y>
-                        <z>-5.93930674</z>
+                        <z>-11.3501911</z>
                     </pos>
                     <quat>
                         <x>0</x>
@@ -775,7 +543,7 @@
                     </follow_entity_editor_id>
                 </waypoint_follower>
                 <key>
-                    <key>f</key>
+                    <key>l</key>
                     <offset>
                         <x>0.75</x>
                         <y>0</y>
@@ -788,19 +556,10 @@
                     <seq_action>
                         <one_time>false</one_time>
                         <action_type>NoteOnOff</action_type>
-                        <channel>2</channel>
+                        <channel>0</channel>
                         <midiNotes>
                             <array_item>
-                                <note>52</note>
-                            </array_item>
-                            <array_item>
-                                <note>55</note>
-                            </array_item>
-                            <array_item>
-                                <note>59</note>
-                            </array_item>
-                            <array_item>
-                                <note>50</note>
+                                <note>38</note>
                             </array_item>
                         </midiNotes>
                         <noteLength>0.125</noteLength>
@@ -811,6 +570,519 @@
                     </seq_action>
                 </accept_actions>
             </Sink>
+            <Grabber>
+                <editor_id>
+                    <id>33</id>
+                </editor_id>
+                <name>grabber1</name>
+                <entity_active>true</entity_active>
+                <pickable>true</pickable>
+                <transform>
+                    <pos>
+                        <x>-6.24712706</x>
+                        <y>0</y>
+                        <z>-3.06552219</z>
+                    </pos>
+                    <quat>
+                        <x>0</x>
+                        <y>0</y>
+                        <z>0</z>
+                        <w>1</w>
+                    </quat>
+                    <scale>
+                        <x>2.5</x>
+                        <y>1</y>
+                        <z>2.5</z>
+                    </scale>
+                </transform>
+                <model_name/>
+                <texture_name>white</texture_name>
+                <model_color_vec4>
+                    <x>0.147058845</x>
+                    <y>0.221227825</y>
+                    <z>1</z>
+                    <w>1</w>
+                </model_color_vec4>
+                <flow_section_id>-1</flow_section_id>
+                <tag>0</tag>
+                <waypoint_follower>
+                    <mode>Waypoint</mode>
+                    <wp_relative>false</wp_relative>
+                    <waypoint_auto_start>false</waypoint_auto_start>
+                    <loop_waypoints>false</loop_waypoints>
+                    <start_time>3</start_time>
+                    <waypoints/>
+                    <follow_entity_name/>
+                    <follow_entity_editor_id>
+                        <id>-1</id>
+                    </follow_entity_editor_id>
+                </waypoint_follower>
+                <has_plus_rot>false</has_plus_rot>
+                <plus_rot_key>
+                    <key>s</key>
+                    <offset>
+                        <x>-0.75</x>
+                        <y>0</y>
+                        <z>0.75</z>
+                    </offset>
+                </plus_rot_key>
+                <has_neg_rot>true</has_neg_rot>
+                <neg_rot_key>
+                    <key>d</key>
+                    <offset>
+                        <x>0.75</x>
+                        <y>0</y>
+                        <z>0.75</z>
+                    </offset>
+                </neg_rot_key>
+                <quantize>0.25</quantize>
+                <angle>-0.699999988</angle>
+                <length>4</length>
+                <height>0.5</height>
+                <plus_rot_actions>
+                    <seq_action>
+                        <one_time>false</one_time>
+                        <action_type>NoteOnOff</action_type>
+                        <channel>1</channel>
+                        <midiNotes>
+                            <array_item>
+                                <note>71</note>
+                            </array_item>
+                        </midiNotes>
+                        <noteLength>0.125</noteLength>
+                        <velocity>1</velocity>
+                        <quantizeDenom>0</quantizeDenom>
+                        <doNoteOff>true</doNoteOff>
+                        <holdNotes>false</holdNotes>
+                    </seq_action>
+                </plus_rot_actions>
+                <neg_rot_actions>
+                    <seq_action>
+                        <one_time>false</one_time>
+                        <action_type>NoteOnOff</action_type>
+                        <channel>3</channel>
+                        <midiNotes>
+                            <array_item>
+                                <note>50</note>
+                            </array_item>
+                            <array_item>
+                                <note>53</note>
+                            </array_item>
+                            <array_item>
+                                <note>57</note>
+                            </array_item>
+                            <array_item>
+                                <note>60</note>
+                            </array_item>
+                        </midiNotes>
+                        <noteLength>0.125</noteLength>
+                        <velocity>1</velocity>
+                        <quantizeDenom>0</quantizeDenom>
+                        <doNoteOff>true</doNoteOff>
+                        <holdNotes>false</holdNotes>
+                    </seq_action>
+                </neg_rot_actions>
+            </Grabber>
+            <Grabber>
+                <editor_id>
+                    <id>34</id>
+                </editor_id>
+                <name>grabber2</name>
+                <entity_active>true</entity_active>
+                <pickable>true</pickable>
+                <transform>
+                    <pos>
+                        <x>1.72829533</x>
+                        <y>0</y>
+                        <z>-2.92583609</z>
+                    </pos>
+                    <quat>
+                        <x>0</x>
+                        <y>0</y>
+                        <z>0</z>
+                        <w>1</w>
+                    </quat>
+                    <scale>
+                        <x>2.5</x>
+                        <y>1</y>
+                        <z>2.5</z>
+                    </scale>
+                </transform>
+                <model_name/>
+                <texture_name>white</texture_name>
+                <model_color_vec4>
+                    <x>0.147058845</x>
+                    <y>0.221227825</y>
+                    <z>1</z>
+                    <w>1</w>
+                </model_color_vec4>
+                <flow_section_id>-1</flow_section_id>
+                <tag>0</tag>
+                <waypoint_follower>
+                    <mode>Waypoint</mode>
+                    <wp_relative>false</wp_relative>
+                    <waypoint_auto_start>false</waypoint_auto_start>
+                    <loop_waypoints>false</loop_waypoints>
+                    <start_time>3</start_time>
+                    <waypoints/>
+                    <follow_entity_name/>
+                    <follow_entity_editor_id>
+                        <id>-1</id>
+                    </follow_entity_editor_id>
+                </waypoint_follower>
+                <has_plus_rot>false</has_plus_rot>
+                <plus_rot_key>
+                    <key>f</key>
+                    <offset>
+                        <x>-0.75</x>
+                        <y>0</y>
+                        <z>0.75</z>
+                    </offset>
+                </plus_rot_key>
+                <has_neg_rot>true</has_neg_rot>
+                <neg_rot_key>
+                    <key>f</key>
+                    <offset>
+                        <x>0.75</x>
+                        <y>0</y>
+                        <z>0.75</z>
+                    </offset>
+                </neg_rot_key>
+                <quantize>0.25</quantize>
+                <angle>90</angle>
+                <length>4</length>
+                <height>0.5</height>
+                <plus_rot_actions>
+                    <seq_action>
+                        <one_time>false</one_time>
+                        <action_type>NoteOnOff</action_type>
+                        <channel>1</channel>
+                        <midiNotes>
+                            <array_item>
+                                <note>62</note>
+                            </array_item>
+                        </midiNotes>
+                        <noteLength>0.125</noteLength>
+                        <velocity>1</velocity>
+                        <quantizeDenom>0</quantizeDenom>
+                        <doNoteOff>true</doNoteOff>
+                        <holdNotes>false</holdNotes>
+                    </seq_action>
+                </plus_rot_actions>
+                <neg_rot_actions>
+                    <seq_action>
+                        <one_time>false</one_time>
+                        <action_type>NoteOnOff</action_type>
+                        <channel>3</channel>
+                        <midiNotes>
+                            <array_item>
+                                <note>50</note>
+                            </array_item>
+                            <array_item>
+                                <note>52</note>
+                            </array_item>
+                            <array_item>
+                                <note>55</note>
+                            </array_item>
+                            <array_item>
+                                <note>59</note>
+                            </array_item>
+                        </midiNotes>
+                        <noteLength>0.125</noteLength>
+                        <velocity>1</velocity>
+                        <quantizeDenom>0</quantizeDenom>
+                        <doNoteOff>true</doNoteOff>
+                        <holdNotes>false</holdNotes>
+                    </seq_action>
+                </neg_rot_actions>
+            </Grabber>
+            <Grabber>
+                <editor_id>
+                    <id>35</id>
+                </editor_id>
+                <name>grabber3</name>
+                <entity_active>true</entity_active>
+                <pickable>true</pickable>
+                <transform>
+                    <pos>
+                        <x>9.76685238</x>
+                        <y>0</y>
+                        <z>-2.89086795</z>
+                    </pos>
+                    <quat>
+                        <x>0</x>
+                        <y>0</y>
+                        <z>0</z>
+                        <w>1</w>
+                    </quat>
+                    <scale>
+                        <x>2.5</x>
+                        <y>1</y>
+                        <z>2.5</z>
+                    </scale>
+                </transform>
+                <model_name/>
+                <texture_name>white</texture_name>
+                <model_color_vec4>
+                    <x>0.147058845</x>
+                    <y>0.221227825</y>
+                    <z>1</z>
+                    <w>1</w>
+                </model_color_vec4>
+                <flow_section_id>-1</flow_section_id>
+                <tag>0</tag>
+                <waypoint_follower>
+                    <mode>Waypoint</mode>
+                    <wp_relative>false</wp_relative>
+                    <waypoint_auto_start>false</waypoint_auto_start>
+                    <loop_waypoints>false</loop_waypoints>
+                    <start_time>3</start_time>
+                    <waypoints/>
+                    <follow_entity_name/>
+                    <follow_entity_editor_id>
+                        <id>-1</id>
+                    </follow_entity_editor_id>
+                </waypoint_follower>
+                <has_plus_rot>false</has_plus_rot>
+                <plus_rot_key>
+                    <key>s</key>
+                    <offset>
+                        <x>-0.75</x>
+                        <y>0</y>
+                        <z>0.75</z>
+                    </offset>
+                </plus_rot_key>
+                <has_neg_rot>true</has_neg_rot>
+                <neg_rot_key>
+                    <key>j</key>
+                    <offset>
+                        <x>0.75</x>
+                        <y>0</y>
+                        <z>0.75</z>
+                    </offset>
+                </neg_rot_key>
+                <quantize>0.25</quantize>
+                <angle>90</angle>
+                <length>4</length>
+                <height>0.5</height>
+                <plus_rot_actions>
+                    <seq_action>
+                        <one_time>false</one_time>
+                        <action_type>NoteOnOff</action_type>
+                        <channel>1</channel>
+                        <midiNotes>
+                            <array_item>
+                                <note>69</note>
+                            </array_item>
+                        </midiNotes>
+                        <noteLength>0.125</noteLength>
+                        <velocity>1</velocity>
+                        <quantizeDenom>0</quantizeDenom>
+                        <doNoteOff>true</doNoteOff>
+                        <holdNotes>false</holdNotes>
+                    </seq_action>
+                </plus_rot_actions>
+                <neg_rot_actions>
+                    <seq_action>
+                        <one_time>false</one_time>
+                        <action_type>NoteOnOff</action_type>
+                        <channel>3</channel>
+                        <midiNotes>
+                            <array_item>
+                                <note>50</note>
+                            </array_item>
+                            <array_item>
+                                <note>53</note>
+                            </array_item>
+                            <array_item>
+                                <note>57</note>
+                            </array_item>
+                            <array_item>
+                                <note>60</note>
+                            </array_item>
+                        </midiNotes>
+                        <noteLength>0.125</noteLength>
+                        <velocity>1</velocity>
+                        <quantizeDenom>0</quantizeDenom>
+                        <doNoteOff>true</doNoteOff>
+                        <holdNotes>false</holdNotes>
+                    </seq_action>
+                </neg_rot_actions>
+            </Grabber>
+            <Grabber>
+                <editor_id>
+                    <id>36</id>
+                </editor_id>
+                <name>grabber4</name>
+                <entity_active>true</entity_active>
+                <pickable>true</pickable>
+                <transform>
+                    <pos>
+                        <x>9.78022957</x>
+                        <y>0</y>
+                        <z>-11.3253832</z>
+                    </pos>
+                    <quat>
+                        <x>0</x>
+                        <y>0</y>
+                        <z>0</z>
+                        <w>1</w>
+                    </quat>
+                    <scale>
+                        <x>2.5</x>
+                        <y>1</y>
+                        <z>2.5</z>
+                    </scale>
+                </transform>
+                <model_name/>
+                <texture_name>white</texture_name>
+                <model_color_vec4>
+                    <x>0.147058845</x>
+                    <y>0.221227825</y>
+                    <z>1</z>
+                    <w>1</w>
+                </model_color_vec4>
+                <flow_section_id>-1</flow_section_id>
+                <tag>0</tag>
+                <waypoint_follower>
+                    <mode>Waypoint</mode>
+                    <wp_relative>false</wp_relative>
+                    <waypoint_auto_start>false</waypoint_auto_start>
+                    <loop_waypoints>false</loop_waypoints>
+                    <start_time>3</start_time>
+                    <waypoints/>
+                    <follow_entity_name/>
+                    <follow_entity_editor_id>
+                        <id>-1</id>
+                    </follow_entity_editor_id>
+                </waypoint_follower>
+                <has_plus_rot>false</has_plus_rot>
+                <plus_rot_key>
+                    <key>s</key>
+                    <offset>
+                        <x>-0.75</x>
+                        <y>0</y>
+                        <z>0.75</z>
+                    </offset>
+                </plus_rot_key>
+                <has_neg_rot>true</has_neg_rot>
+                <neg_rot_key>
+                    <key>k</key>
+                    <offset>
+                        <x>0.75</x>
+                        <y>0</y>
+                        <z>0.75</z>
+                    </offset>
+                </neg_rot_key>
+                <quantize>0.25</quantize>
+                <angle>90</angle>
+                <length>4</length>
+                <height>0.5</height>
+                <plus_rot_actions>
+                    <seq_action>
+                        <one_time>false</one_time>
+                        <action_type>NoteOnOff</action_type>
+                        <channel>1</channel>
+                        <midiNotes>
+                            <array_item>
+                                <note>76</note>
+                            </array_item>
+                        </midiNotes>
+                        <noteLength>0.125</noteLength>
+                        <velocity>1</velocity>
+                        <quantizeDenom>0</quantizeDenom>
+                        <doNoteOff>true</doNoteOff>
+                        <holdNotes>false</holdNotes>
+                    </seq_action>
+                </plus_rot_actions>
+                <neg_rot_actions>
+                    <seq_action>
+                        <one_time>false</one_time>
+                        <action_type>NoteOnOff</action_type>
+                        <channel>3</channel>
+                        <midiNotes>
+                            <array_item>
+                                <note>50</note>
+                            </array_item>
+                            <array_item>
+                                <note>52</note>
+                            </array_item>
+                            <array_item>
+                                <note>55</note>
+                            </array_item>
+                            <array_item>
+                                <note>59</note>
+                            </array_item>
+                        </midiNotes>
+                        <noteLength>0.125</noteLength>
+                        <velocity>1</velocity>
+                        <quantizeDenom>0</quantizeDenom>
+                        <doNoteOff>true</doNoteOff>
+                        <holdNotes>false</holdNotes>
+                    </seq_action>
+                </neg_rot_actions>
+            </Grabber>
+            <StepSequencer>
+                <editor_id>
+                    <id>38</id>
+                </editor_id>
+                <name>rhythm_seq</name>
+                <entity_active>false</entity_active>
+                <pickable>false</pickable>
+                <transform>
+                    <pos>
+                        <x>3.03328371</x>
+                        <y>0</y>
+                        <z>-5.42656803</z>
+                    </pos>
+                    <quat>
+                        <x>0</x>
+                        <y>0</y>
+                        <z>0</z>
+                        <w>1</w>
+                    </quat>
+                    <scale>
+                        <x>1</x>
+                        <y>1</y>
+                        <z>1</z>
+                    </scale>
+                </transform>
+                <model_name/>
+                <texture_name/>
+                <model_color_vec4>
+                    <x>0.800000012</x>
+                    <y>0.800000012</y>
+                    <z>0.800000012</z>
+                    <w>1</w>
+                </model_color_vec4>
+                <flow_section_id>-1</flow_section_id>
+                <tag>0</tag>
+                <waypoint_follower>
+                    <mode>Waypoint</mode>
+                    <wp_relative>false</wp_relative>
+                    <waypoint_auto_start>false</waypoint_auto_start>
+                    <loop_waypoints>false</loop_waypoints>
+                    <start_time>3</start_time>
+                    <waypoints/>
+                    <follow_entity_name/>
+                    <follow_entity_editor_id>
+                        <id>-1</id>
+                    </follow_entity_editor_id>
+                </waypoint_follower>
+                <sequence>mD3,mE3,mG3,mB3:1 -1:1 mD3,mE3,mG3,mB3:1 -1:1 -1:1 mD3,mE3,mG3,mB3:1 -1:1 -1:1 mD3,mE3,mG3,mB3:1 -1:1 -1:1 mD3,mE3,mG3,mB3:1 -1:1 -1:1 mD3,mE3,mG3,mB3:1 -1:1 mD3,mF3,mA3,mC4:1 -1:1 mD3,mF3,mA3,mC4:1 -1:1 -1:1 mD3,mF3,mA3,mC4:1 -1:1 -1:1 mD3,mF3,mA3,mC4:1 -1:1 -1:1 mD3,mF3,mA3,mC4:1 -1:1 -1:1 mD3,mF3,mA3,mC4:1 -1:1</sequence>
+                <start_mute>false</start_mute>
+                <gain>1</gain>
+                <channels>
+                    <channel>3</channel>
+                </channels>
+                <step_length>0.25</step_length>
+                <note_length>0.25</note_length>
+                <start_time>4</start_time>
+                <is_synth>true</is_synth>
+                <editor_mute>false</editor_mute>
+                <max_voices>-1</max_voices>
+                <quantize_temp_changes>true</quantize_temp_changes>
+            </StepSequencer>
         </new_entities>
     </script>
 </root>

@@ -138,7 +138,7 @@
                     <id>6</id>
                 </editor_id>
                 <name>kick_seq</name>
-                <entity_active>false</entity_active>
+                <entity_active>true</entity_active>
                 <pickable>false</pickable>
                 <transform>
                     <pos>
@@ -287,7 +287,7 @@
                         <id>-1</id>
                     </follow_entity_editor_id>
                 </waypoint_follower>
-                <has_plus_rot>true</has_plus_rot>
+                <has_plus_rot>false</has_plus_rot>
                 <plus_rot_key>
                     <key>s</key>
                     <offset>
@@ -629,22 +629,7 @@
                     <y>0</y>
                     <z>0</z>
                 </spawn_step>
-                <actions>
-                    <seq_action>
-                        <one_time>false</one_time>
-                        <action_type>BeatTimeEvent</action_type>
-                        <quantize_denom>0.25</quantize_denom>
-                        <beat_time_event>
-                            <event_type>PlayPcm</event_type>
-                            <channel>0</channel>
-                            <delay_secs>0</delay_secs>
-                            <sound_ix>19</sound_ix>
-                            <velocity>0.5</velocity>
-                            <loop>false</loop>
-                            <beat_time>0</beat_time>
-                        </beat_time_event>
-                    </seq_action>
-                </actions>
+                <actions/>
             </Spawner>
             <Spawner>
                 <editor_id>

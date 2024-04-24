@@ -98,6 +98,12 @@ struct Vec3 {
         _z /= a;
         return *this;
     }
+    bool operator==(Vec3 const& rhs) {
+        return this->_x == rhs._x && this->_y == rhs._y && this->_z == rhs._z;
+    }
+    bool operator!=(Vec3 const& rhs) {
+        return !(*this == rhs);
+    }
 
     void CopyToArray(float* v) {
         v[0] = _x;

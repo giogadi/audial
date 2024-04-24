@@ -30,7 +30,7 @@ struct WaypointFollower {
         std::vector<Waypoint> _waypoints;
         bool _autoStartFollowingWaypoints = false;
         bool _loopWaypoints = false;
-        bool _localToEntity = false;
+        bool _wpRelative = false;
         double _initWpStartTime = 3.0;
         // FollowEntity mode
         EditorId _followEditorId;
