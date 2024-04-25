@@ -36,6 +36,8 @@ void SoundBank::LoadSounds(int sampleRate) {
         , "check_it_out.wav"
         , "crash_909.wav"
         , "cymbal_roll.wav"
+        , "wood_block_low.wav"
+        , "rim_808.wav"
     };
     _exclusiveGroups = {
         -1,
@@ -64,6 +66,8 @@ void SoundBank::LoadSounds(int sampleRate) {
         1,
         1,
         1,
+        -1,
+        -1,
         -1,
         -1,
         -1
