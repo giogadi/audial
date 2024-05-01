@@ -82,7 +82,15 @@ void ParamAutomatorEntity::Update(GameManager& g, float dt) {
             if (seq == nullptr) {
                 printf("ParamAutomator (\"%s\"): Sequencer was destroyed!\n", _name.c_str());
             } else {
-                seq->SetAllVelocitiesPermanent(newValue);
+                switch (_props._stepSeqParam) {
+                    case StepSeqParamType::Velocities:
+                        seq->SetAllVelocitiesPermanent(newValue);
+                        break;
+                    case StepSeqParamType::NoteLength:
+                        seq->_noteLength = newValue;
+                        break;
+                    case StepSeqParamType::Count: assert(false);
+                }
             }
         } else if (seqBaseEntity->_id._type == ne::EntityType::Sequencer) {
             SequencerEntity* seq = static_cast<SequencerEntity*>(g._neEntityManager->GetEntity(_seqId));

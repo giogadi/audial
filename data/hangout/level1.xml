@@ -5810,6 +5810,29 @@
                         <init_on_activate>true</init_on_activate>
                         <init_if_already_active>false</init_if_already_active>
                     </seq_action>
+                    <seq_action>
+                        <one_time>true</one_time>
+                        <action_type>SpawnAutomator</action_type>
+                        <relative>false</relative>
+                        <startValue>0.5</startValue>
+                        <endValue>0.25</endValue>
+                        <desiredAutomateTime>0.10000000000000001</desiredAutomateTime>
+                        <synth>false</synth>
+                        <synthParam>Gain</synthParam>
+                        <stepSeqParam>NoteLength</stepSeqParam>
+                        <channel>0</channel>
+                        <seqEditorId>
+                            <id>9</id>
+                        </seqEditorId>
+                    </seq_action>
+                    <seq_action>
+                        <one_time>true</one_time>
+                        <action_type>ChangePatch</action_type>
+                        <channel>0</channel>
+                        <blend_beat_time>0.10000000000000001</blend_beat_time>
+                        <use_patch_bank>true</use_patch_bank>
+                        <patch_name>bass2</patch_name>
+                    </seq_action>
                 </all_hit_actions>
                 <off_cooldown_actions/>
                 <combo_end_actions/>

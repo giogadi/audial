@@ -20,6 +20,8 @@ void SpawnAutomatorSeqActionProps::Load(serial::Ptree pt) {
    
    serial::TryGetEnum(pt, "synthParam", _synthParam);
    
+   serial::TryGetEnum(pt, "stepSeqParam", _stepSeqParam);
+   
    pt.TryGetInt("channel", &_channel);
    
    serial::LoadFromChildOf(pt, "seqEditorId", _seqEditorId);
@@ -39,6 +41,8 @@ void SpawnAutomatorSeqActionProps::Save(serial::Ptree pt) const {
     pt.PutBool("synth", _synth);
     
     serial::PutEnum(pt, "synthParam", _synthParam);
+    
+    serial::PutEnum(pt, "stepSeqParam", _stepSeqParam);
     
     pt.PutInt("channel", _channel);
     
@@ -76,6 +80,11 @@ bool SpawnAutomatorSeqActionProps::ImGui() {
     
     {
         bool thisChanged = audio::SynthParamTypeImGui("SynthParamType", &_synthParam);
+        changed = changed || thisChanged;
+    }
+    
+    {
+        bool thisChanged = StepSeqParamTypeImGui("StepSeqParamType", &_stepSeqParam);
         changed = changed || thisChanged;
     }
     

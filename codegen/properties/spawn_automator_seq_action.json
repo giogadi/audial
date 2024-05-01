@@ -35,6 +35,12 @@
             "default": "audio::SynthParamType::Gain"
         },
         {
+            "name": "stepSeqParam",
+            "type": "enum",
+            "enumType": "StepSeqParamType",
+            "default": "StepSeqParamType::Velocities"
+        },
+        {
             "name": "channel",
             "type": "int",
             "default": "0"

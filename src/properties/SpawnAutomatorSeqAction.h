@@ -1,6 +1,8 @@
 #pragma once
 
 
+#include "enums/StepSeqParamType.h"
+
 #include "enums/audio_SynthParamType.h"
 
 #include "editor_id.h"
@@ -21,6 +23,8 @@ struct SpawnAutomatorSeqActionProps {
     bool _synth = false;
     
     audio::SynthParamType _synthParam = audio::SynthParamType::Gain;
+    
+    StepSeqParamType _stepSeqParam = StepSeqParamType::Velocities;
     
     int _channel = 0;
     

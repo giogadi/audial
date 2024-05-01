@@ -139,6 +139,7 @@ add_executable(game
     src/enums/TypingEnemyType.cpp src/enums/TypingEnemyType.h
     src/enums/HitResponseType.cpp src/enums/HitResponseType.h
     src/enums/MechType.cpp src/enums/MechType.h
+    src/enums/StepSeqParamType.cpp src/enums/StepSeqParamType.h
 )
 
 ## GLFW ##
