@@ -45,6 +45,7 @@ public:
 
     void PutStringValue(char const* value);
     void PutIntValue(int value);
+    void PutInt64Value(int64_t value);
     void PutBoolValue(bool value);
     void PutFloatValue(float value);
     void PutDoubleValue(double value);

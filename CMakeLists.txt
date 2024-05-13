@@ -55,6 +55,7 @@ add_executable(game
     src/serial.cpp src/serial.h
     src/serial_vector_util.h
     src/rng.cpp src/rng.h
+    src/property.cpp src/property.h
     src/game.cpp
     src/audio_util.cpp src/audio_util.h
     src/audio.cpp src/audio.h

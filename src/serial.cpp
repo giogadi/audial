@@ -177,6 +177,11 @@ void Ptree::PutIntValue(int value) {
     GetInternal(_internal)->put_value<int>(value);
 }
 
+void Ptree::PutInt64Value(int64_t value) {
+    assert(IsValid());
+    GetInternal(_internal)->put_value<int64_t>(value);
+}
+
 void Ptree::PutBoolValue(bool value) {
     assert(IsValid());
     GetInternal(_internal)->put_value<bool>(value);
