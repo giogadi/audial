@@ -581,38 +581,47 @@ void FlowPlayerEntity::UpdateDerived(GameManager& g, float dt) {
     // Check if we've hit a wall
     //
     // TODO: Should we run this after respawn logic?
+    bool respawned = false;
     {
         Vec3 penetration;
         FlowWallEntity* pHitWall = FindOverlapWithWall(g, _transform, &penetration);
         penetration._y = 0.f;
         if (pHitWall != nullptr) {
-            // Respawn(g);
-            _s._moveState = MoveState::WallBounce;
-            _s._interactingEnemyId = ne::EntityId();
-            pHitWall->OnHit(g, -penetration.GetNormalized());
-            newPos += penetration * 1.1f;  // Add some padding to ensure we're outta collision
-            Vec3 collNormal = penetration.GetNormalized();
-            Vec3 newVel = -_s._vel;
-            // reflect across coll normal
-            Vec3 tangentPart = Vec3::Dot(newVel, collNormal) * collNormal;
-            Vec3 normalPart = newVel - tangentPart;
-            newVel -= 2 * normalPart;        
+            if (pHitWall->_hurtOnHit) {
+                respawned = true;
+                Respawn(g);
+            } else {
+                _s._moveState = MoveState::WallBounce;
+                _s._interactingEnemyId = ne::EntityId();
+                pHitWall->OnHit(g, -penetration.GetNormalized());
+                newPos += penetration * 1.1f;  // Add some padding to ensure we're outta collision
+                Vec3 collNormal = penetration.GetNormalized();
+                Vec3 newVel = -_s._vel;
+                // reflect across coll normal
+                Vec3 tangentPart = Vec3::Dot(newVel, collNormal) * collNormal;
+                Vec3 normalPart = newVel - tangentPart;
+                newVel -= 2 * normalPart;        
 
-            // after bounce, ensure we have some velocity in the collision normal
-            // float constexpr kMinBounceSpeed = 20.f;
-            // float speedAlongNormal = Vec3::Dot(newVel, collNormal);
-            // if (speedAlongNormal < kMinBounceSpeed) {
-            //     Vec3 correction = (kMinBounceSpeed - speedAlongNormal) * collNormal;
-            //     newVel += correction;
-            // }
-            float constexpr kBounceSpeed = 5.f;
-            newVel = tangentPart.GetNormalized() * kBounceSpeed;
+                // after bounce, ensure we have some velocity in the collision normal
+                // float constexpr kMinBounceSpeed = 20.f;
+                // float speedAlongNormal = Vec3::Dot(newVel, collNormal);
+                // if (speedAlongNormal < kMinBounceSpeed) {
+                //     Vec3 correction = (kMinBounceSpeed - speedAlongNormal) * collNormal;
+                //     newVel += correction;
+                // }
+                float constexpr kBounceSpeed = 5.f;
+                newVel = tangentPart.GetNormalized() * kBounceSpeed;
 
-            _transform.SetTranslation(newPos);
-            _s._vel = newVel;
-            _s._dashTimer = 0.f;
-            _s._dashAnimState = DashAnimState::None;
+                _transform.SetTranslation(newPos);
+                _s._vel = newVel;
+                _s._dashTimer = 0.f;
+                _s._dashAnimState = DashAnimState::None;
+            }
         }
+    }
+
+    if (respawned) {
+        return;
     }
 
     // Update prev positions
@@ -641,7 +650,6 @@ void FlowPlayerEntity::UpdateDerived(GameManager& g, float dt) {
         }
     }
 
-    bool respawned = false;
     if (_s._killMaxZ.has_value()) {
         Vec3 p = _transform.Pos();
         if (p._z > _s._killMaxZ.value()) {

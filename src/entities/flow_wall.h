@@ -18,6 +18,7 @@ struct FlowWallEntity : public ne::Entity {
     float _rotVel = 0.f;
     int _maxHp = -1;
     bool _canHit = true;
+    bool _hurtOnHit = false;
     std::vector<EditorId> _childrenEditorIds;  // for making other things bounce
 
     // non-serialized

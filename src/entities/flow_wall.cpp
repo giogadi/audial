@@ -110,6 +110,7 @@ void FlowWallEntity::Update(GameManager& g, float dt) {
 }
 
 void FlowWallEntity::SaveDerived(serial::Ptree pt) const {
+    pt.PutBool("hurt_on_hit", _hurtOnHit);
     pt.PutBool("can_hit", _canHit);
     pt.PutInt("hp", _maxHp);
     pt.PutString("move_mode", WaypointFollowerModeToString(_moveMode));
@@ -124,6 +125,8 @@ void FlowWallEntity::SaveDerived(serial::Ptree pt) const {
 }
 
 void FlowWallEntity::LoadDerived(serial::Ptree pt) {
+    _hurtOnHit = false;
+    pt.TryGetBool("hurt_on_hit", &_hurtOnHit);
     _canHit = true;
     pt.TryGetBool("can_hit", &_canHit);
     pt.TryGetInt("hp", &_maxHp);
@@ -145,6 +148,7 @@ void FlowWallEntity::LoadDerived(serial::Ptree pt) {
 FlowWallEntity::ImGuiResult FlowWallEntity::ImGuiDerived(GameManager& g)  {
     ImGuiResult result = ImGuiResult::Done;
 
+    ImGui::Checkbox("Hurt on hit", &_hurtOnHit);
     ImGui::Checkbox("Can hit", &_canHit);
 
     ImGui::InputInt("HP", &_maxHp);
