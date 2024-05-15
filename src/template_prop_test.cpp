@@ -1,5 +1,6 @@
 #include "property.h"
 #include "serial.h"
+#include "util.h"
 
 template<typename Serializer, typename ObjectType>
 void Serialize(Serializer s);
@@ -59,19 +60,110 @@ struct PropSerial<Serializer, Baz> {
     }
 };
 
+enum class EntityType { Base, Derived1, Derived2 };
+char const* gEntityTypeStrings[] = {
+    "Base", "Derived1", "Derived2"
+};
+
+struct BaseEntity {
+    virtual EntityType Type() const { return EntityType::Base; }
+    virtual ~BaseEntity() {}
+    Bar bar;
+    float x;
+};
+template<typename Serializer>
+struct PropSerial<Serializer, BaseEntity> {
+    static void Serialize(Serializer s) {
+        s.Node(MakeProperty("bar", &BaseEntity::bar));
+        s.Leaf(MakeProperty("x", &BaseEntity::x));
+    }
+};
+
+struct Derived1Entity : public BaseEntity {
+    virtual EntityType Type() const override { return EntityType::Derived1; }
+    int y;
+};
+template<typename Serializer>
+struct PropSerial<Serializer, Derived1Entity> {
+    static void Serialize(Serializer s) {
+        s.Leaf(MakeProperty("y", &Derived1Entity::y));
+    }
+};
+
+struct Derived2Entity : public BaseEntity {
+    virtual EntityType Type() const override { return EntityType::Derived2; }
+    float z;
+};
+template<typename Serializer>
+struct PropSerial<Serializer, Derived2Entity> {
+    static void Serialize(Serializer s) {
+        s.Leaf(MakeProperty("z", &Derived2Entity::z));
+    }
+};
 
 #include "property_util.h"
 
-int main() {
-    serial::Ptree pt = serial::Ptree::MakeNew();
+void SaveEntity(BaseEntity& e, serial::Ptree pt) {
+    EntityType type = e.Type();
+    serial::Ptree childPt = pt.AddChild(gEntityTypeStrings[static_cast<int>(type)]);
+    PropertySaveFunctor<BaseEntity> baseSaveFn = PropertySaveFunctor_Make(e, childPt);
+    PropSerial<decltype(baseSaveFn), BaseEntity>::Serialize(baseSaveFn);
+    switch (type) {
+        case EntityType::Base: {
+            break;
+        }
+        case EntityType::Derived1: {
+            Derived1Entity& derived = static_cast<Derived1Entity&>(e);
+            PropertySaveFunctor<Derived1Entity> saveFn = PropertySaveFunctor_Make(derived, childPt);
+            PropSerial<decltype(saveFn), Derived1Entity>::Serialize(saveFn);
+            break;
+        }
+        case EntityType::Derived2: {
+            Derived2Entity& derived = static_cast<Derived2Entity&>(e);
+            PropertySaveFunctor<Derived2Entity> saveFn = PropertySaveFunctor_Make(derived, childPt);
+            PropSerial<decltype(saveFn), Derived2Entity>::Serialize(saveFn);
+            break;
+        }
+    }
+}
 
-    Foo foo { 5, 3.f };
+void LoadEntity(BaseEntity& e, serial::Ptree pt) {
+    EntityType type = e.Type();
+    PropertyLoadFunctor<BaseEntity> baseLoadFn = PropertyLoadFunctor_Make(e, pt);
+    PropSerial<decltype(baseLoadFn), BaseEntity>::Serialize(baseLoadFn);
+    switch (type) {
+        case EntityType::Base: {
+            break;
+        }
+        case EntityType::Derived1: {
+            Derived1Entity& derived = static_cast<Derived1Entity&>(e);
+            PropertyLoadFunctor<Derived1Entity> loadFn = PropertyLoadFunctor_Make(derived, pt);
+            PropSerial<decltype(loadFn), Derived1Entity>::Serialize(loadFn);
+            break;
+        }
+        case EntityType::Derived2: {
+            Derived2Entity& derived = static_cast<Derived2Entity&>(e);
+            PropertyLoadFunctor<Derived2Entity> loadFn = PropertyLoadFunctor_Make(derived, pt);
+            PropSerial<decltype(loadFn), Derived2Entity>::Serialize(loadFn);
+            break;
+        }
+    }
+}
+
+
+
+int main() {
+    {
+        serial::Ptree pt = serial::Ptree::MakeNew();
+
+        Foo foo { 5, 3.f };
     
-    PropertySaveFunctor saveFn = PropertySaveFunctor_Make(foo, pt);
-    PropSerial<decltype(saveFn), Foo>::Serialize(saveFn); 
+        PropertySaveFunctor saveFn = PropertySaveFunctor_Make(foo, pt);
+        PropSerial<decltype(saveFn), Foo>::Serialize(saveFn); 
  
     
-    pt.DeleteData();
+        pt.DeleteData();
+    }
 
     {
         serial::Ptree pt = serial::Ptree::MakeNew();
@@ -97,6 +189,70 @@ int main() {
         Baz baz2;
         PropertyLoadFunctor loadFn = PropertyLoadFunctor_Make(baz2, pt);
         PropSerial<decltype(loadFn), Baz>::Serialize(loadFn);
+
+        pt.DeleteData();
+    }
+
+    {
+        BaseEntity* base = new BaseEntity;
+        base->bar.foo.x = 0;
+        base->bar.foo.y = 1.f;
+        base->bar.z = 2;
+        base->x = 2.5f;
+
+        Derived1Entity* derived1 = new Derived1Entity;
+        derived1->bar = base->bar;
+        derived1->x = base->x;
+        derived1->y = 3;
+
+        Derived2Entity* derived2 = new Derived2Entity;
+        derived2->bar = base->bar;
+        derived2->x = base->x;
+        derived2->z = 4.f;
+
+        BaseEntity* entities[] = { base, derived1, derived2 };
+        
+        serial::Ptree pt = serial::Ptree::MakeNew();
+        
+        for (int ii = 0; ii < M_ARRAY_LEN(entities); ++ii) {
+            BaseEntity* e = entities[ii];
+            SaveEntity(*e, pt); 
+        } 
+
+        int numChildren;
+        serial::NameTreePair* children = pt.GetChildren(&numChildren);  
+        assert(numChildren == 3);
+        BaseEntity* entities2[3];
+        for (int ii = 0; ii < 3; ++ii) {
+            int foundEntityTypeIx = -1; 
+            for (int entityTypeIx = 0; entityTypeIx < M_ARRAY_LEN(gEntityTypeStrings); ++entityTypeIx) {
+                if (strcmp(children[ii]._name, gEntityTypeStrings[entityTypeIx]) == 0) {
+                    foundEntityTypeIx = entityTypeIx;
+                    break;
+                }
+            }
+            assert(foundEntityTypeIx >= 0);
+            EntityType type = static_cast<EntityType>(foundEntityTypeIx);
+            BaseEntity* e = nullptr;
+            switch (type) {
+                case EntityType::Base: {
+                    e = new BaseEntity;
+                    break;
+                }
+                case EntityType::Derived1: {
+                    e = new Derived1Entity;
+                    break;
+                }
+                case EntityType::Derived2: {
+                    e = new Derived2Entity;
+                    break;
+                }
+            }
+
+            LoadEntity(*e, children[ii]._pt);
+            entities2[ii] = e;
+        }
+        delete[] children; 
 
         pt.DeleteData();
     }
