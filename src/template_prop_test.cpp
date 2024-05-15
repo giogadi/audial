@@ -68,6 +68,9 @@ char const* gEntityTypeStrings[] = {
 struct BaseEntity {
     virtual EntityType Type() const { return EntityType::Base; }
     virtual ~BaseEntity() {}
+    virtual void Print() const {
+        printf("Base: %f\n", x);
+    }
     Bar bar;
     float x;
 };
@@ -81,6 +84,9 @@ struct PropSerial<Serializer, BaseEntity> {
 
 struct Derived1Entity : public BaseEntity {
     virtual EntityType Type() const override { return EntityType::Derived1; }
+    virtual void Print() const override {
+        printf("Derived1: %d\n", y);
+    }
     int y;
 };
 template<typename Serializer>
@@ -92,6 +98,9 @@ struct PropSerial<Serializer, Derived1Entity> {
 
 struct Derived2Entity : public BaseEntity {
     virtual EntityType Type() const override { return EntityType::Derived2; }
+    virtual void Print() const override {
+        printf("Derived2: %f\n", z);
+    }
     float z;
 };
 template<typename Serializer>
@@ -253,6 +262,10 @@ int main() {
             entities2[ii] = e;
         }
         delete[] children; 
+
+        for (int ii = 0; ii < 3; ++ii) {
+            entities2[ii]->Print();
+        }
 
         pt.DeleteData();
     }
