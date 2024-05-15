@@ -249,6 +249,13 @@ add_executable(synth_simd_test EXCLUDE_FROM_ALL
 target_include_directories(synth_simd_test PUBLIC src/ ./)
 target_compile_options(synth_simd_test PRIVATE "-mavx")
 
+add_executable(template_prop_test EXCLUDE_FROM_ALL
+    src/template_prop_test.cpp
+    src/serial.cpp src/serial.h
+    src/property.h
+    src/property_util.h)
+target_include_directories(template_prop_test PUBLIC src/ ./)
+
 if (MSVC)
 else()
     add_executable(fft_test EXCLUDE_FROM_ALL
