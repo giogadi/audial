@@ -250,11 +250,20 @@ target_include_directories(synth_simd_test PUBLIC src/ ./)
 target_compile_options(synth_simd_test PRIVATE "-mavx")
 
 add_executable(template_prop_test EXCLUDE_FROM_ALL
+    src/glad/src/glad.cpp
+    src/imgui/imgui.cpp src/imgui/imgui_demo.cpp src/imgui/imgui_draw.cpp
+    src/imgui/imgui_tables.cpp src/imgui/imgui_widgets.cpp src/imgui/backends/imgui_impl_glfw.cpp
+    src/imgui/backends/imgui_impl_opengl3.cpp
+
     src/template_prop_test.cpp
     src/serial.cpp src/serial.h
     src/property.h
-    src/property_util.h)
-target_include_directories(template_prop_test PUBLIC src/ ./)
+    src/property_util.cpp src/property_util.h)
+target_include_directories(template_prop_test PUBLIC src/ ./ src/imgui/)
+target_link_libraries(template_prop_test glfw)
+target_include_directories(template_prop_test PUBLIC
+    src/glfw/include src/glad/include)
+
 
 if (MSVC)
 else()

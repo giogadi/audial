@@ -1,6 +1,21 @@
+#include <cstdio>
+#include <memory>
+#include <vector>
+
+#include <glad/glad.h>
+#include <GLFW/glfw3.h>
+
+#include <imgui.h>
+#include <backends/imgui_impl_glfw.h>
+#include <backends/imgui_impl_opengl3.h>
+
 #include "property.h"
 #include "serial.h"
 #include "util.h"
+
+void FramebufferSizeCallback(GLFWwindow* window, int width, int height) {
+    glViewport(0, 0, width, height);
+}
 
 template<typename Serializer, typename ObjectType>
 void Serialize(Serializer s);
@@ -17,6 +32,13 @@ void PropLoad(serial::Ptree pt, char const* name, int& x) {
 void PropLoad(serial::Ptree pt, char const* name, float& x) {
     pt.TryGetFloat(name, &x);
 }
+bool PropImGui(char const* name, int& x) {
+    return ImGui::InputInt(name, &x);
+}
+bool PropImGui(char const* name, float& x) {
+    return ImGui::InputFloat(name, &x);
+}
+
 
 template<typename Serializer, typename ObjectType>
 struct PropSerial {
@@ -159,9 +181,72 @@ void LoadEntity(BaseEntity& e, serial::Ptree pt) {
     }
 }
 
+void EntityImGui(BaseEntity& e) {
+    EntityType type = e.Type();
+    PropertyImGuiFunctor<BaseEntity> baseImGuiFn = PropertyImGuiFunctor_Make(e);
+    PropSerial<decltype(baseImGuiFn), BaseEntity>::Serialize(baseImGuiFn);
+    switch (type) {
+        case EntityType::Base: break;
+        case EntityType::Derived1: {
+            Derived1Entity& derived = static_cast<Derived1Entity&>(e);
+            PropertyImGuiFunctor<Derived1Entity> imguiFn = PropertyImGuiFunctor_Make(derived);
+            PropSerial<decltype(imguiFn), Derived1Entity>::Serialize(imguiFn);
+            break;
+        }
+        case EntityType::Derived2: {
+            Derived2Entity& derived = static_cast<Derived2Entity&>(e);
+            PropertyImGuiFunctor<Derived2Entity> imguiFn = PropertyImGuiFunctor_Make(derived);
+            PropSerial<decltype(imguiFn), Derived2Entity>::Serialize(imguiFn);
+            break;
+        } 
+    }
+}
 
+void MultiEntityImGui(std::vector<std::unique_ptr<BaseEntity>>& entities) {
+    if (entities.empty()) {
+        return;
+    }
+    // common base props first
+    // TODO DISGUSTING
+    BaseEntity** entityPtrs = new BaseEntity*[entities.size()];
+    for (int ii = 0; ii < entities.size(); ++ii) {
+        entityPtrs[ii] = entities[ii].get();
+    }
+    
+    PropertyMultiImGuiFunctor<BaseEntity> baseImGuiFn = PropertyMultiImGuiFunctor_Make(entityPtrs, entities.size());
+    PropSerial<decltype(baseImGuiFn), BaseEntity>::Serialize(baseImGuiFn);
 
-int main() {
+    delete[] entityPtrs;
+}
+
+void MakeEntities(std::vector<std::unique_ptr<BaseEntity>>& entities) {
+    {
+        std::unique_ptr<BaseEntity> base = std::make_unique<BaseEntity>();
+        base->bar.foo.x = 0;
+        base->bar.foo.y = 1.f;
+        base->bar.z = 2;
+        base->x = 2.5f;
+        entities.push_back(std::move(base));
+    }
+
+    {
+        std::unique_ptr<Derived1Entity> derived1 = std::make_unique<Derived1Entity>();
+        derived1->bar = entities[0]->bar;
+        derived1->x = entities[0]->x;
+        derived1->y = 3;
+        entities.push_back(std::move(derived1));
+    }
+
+    {
+        std::unique_ptr<Derived2Entity> derived2 = std::make_unique<Derived2Entity>();
+        derived2->bar = entities[0]->bar;
+        derived2->x = entities[0]->x;
+        derived2->z = 4.f;
+        entities.push_back(std::move(derived2));
+    }
+}
+
+void Tests() {
     {
         serial::Ptree pt = serial::Ptree::MakeNew();
 
@@ -269,6 +354,126 @@ int main() {
 
         pt.DeleteData();
     }
+
+}
+
+// TODO: gotta handle
+// - lists of stuff
+// - multiselect ImGui
+//
+
+// ....do we add a window and shit to test the ImGui stuff?
+
+int main() {
+
+    std::vector<std::unique_ptr<BaseEntity>> entities;
+    MakeEntities(entities);
+    
+    glfwInit();
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+#ifdef __APPLE__
+    glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
+#endif
+
+    GLFWwindow* window;
+    {
+        GLFWmonitor* monitor = glfwGetPrimaryMonitor();
+        GLFWvidmode const* mode = glfwGetVideoMode(monitor);
+
+        glfwWindowHint(GLFW_RED_BITS, mode->redBits);
+        glfwWindowHint(GLFW_GREEN_BITS, mode->greenBits);
+        glfwWindowHint(GLFW_BLUE_BITS, mode->blueBits);
+        glfwWindowHint(GLFW_REFRESH_RATE, mode->refreshRate);
+
+        // Full screen
+        // window = glfwCreateWindow(mode->width, mode->height, "Audial", monitor, NULL);
+
+        window = glfwCreateWindow(mode->width, mode->height, "Audial", NULL, NULL);
+    }
+
+    if (window == nullptr) {
+        printf("Failed to create GLFW window\n");
+        glfwTerminate();
+        return -1;
+    }
+    glfwMakeContextCurrent(window);
+    glfwSwapInterval(1);  // vsync?
+    // glfwSwapInterval(0);  // disable vsync?
+
+    if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
+        printf("Failed to initialize GLAD\n");
+        return -1;
+    }
+
+    glfwSetFramebufferSizeCallback(window, FramebufferSizeCallback);
+    // glfwSetKeyCallback(window, KeyCallback);
+
+    glEnable(GL_DEPTH_TEST);
+
+    // Setup Dear ImGui context
+    IMGUI_CHECKVERSION();
+    ImGui::CreateContext();
+    ImGuiIO& io = ImGui::GetIO(); (void)io;
+    //io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
+    //io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
+
+    // Setup Dear ImGui style
+    ImGui::StyleColorsDark();
+    //ImGui::StyleColorsClassic();
+
+    // Setup Platform/Renderer backends
+    ImGui_ImplGlfw_InitForOpenGL(window, true);
+    // TODO: should I be setting this? imgui_impl_opengl3.h says it's ok to be null.
+    ImGui_ImplOpenGL3_Init(/*glsl_version=*/NULL);  
+
+    bool multiSelect = false;
+    while (!glfwWindowShouldClose(window)) {
+        {
+            // ImGuiIO& io = ImGui::GetIO();
+            // bool inputEnabled = !io.WantCaptureMouse && !io.WantCaptureKeyboard;
+        }
+
+        ImGui_ImplOpenGL3_NewFrame();
+        ImGui_ImplGlfw_NewFrame();
+        ImGui::NewFrame();
+
+        ImGui::Checkbox("Multiselect", &multiSelect);
+
+        if (multiSelect) {
+            MultiEntityImGui(entities);
+        } else {
+            for (int ii = 0; ii < entities.size(); ++ii) {
+                auto& entity = entities[ii];
+                char buf[32];
+                sprintf(buf, "Entity %d", ii);
+                if (ImGui::TreeNode(buf)) {
+                    EntityImGui(*entity);
+
+                    ImGui::TreePop();
+                }
+            }
+        }
+        
+        ImGui::Render();
+
+        glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+        ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+
+        glfwSwapBuffers(window);
+
+        glfwPollEvents();
+
+    }
+
+    ImGui_ImplOpenGL3_Shutdown();
+    ImGui_ImplGlfw_Shutdown();
+    ImGui::DestroyContext();
+
+    glfwTerminate();
 
 
     return 0;
