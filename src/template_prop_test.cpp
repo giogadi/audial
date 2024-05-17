@@ -202,6 +202,11 @@ void EntityImGui(BaseEntity& e) {
     }
 }
 
+// void TypeSpecificMultiEntityImGui(std::vector<std::unique_ptr<BaseEntity>>& entities) {
+    // TODO GROSS
+    // std::vector
+// }
+
 void MultiEntityImGui(std::vector<std::unique_ptr<BaseEntity>>& entities) {
     if (entities.empty()) {
         return;
@@ -213,8 +218,36 @@ void MultiEntityImGui(std::vector<std::unique_ptr<BaseEntity>>& entities) {
         entityPtrs[ii] = entities[ii].get();
     }
     
-    PropertyMultiImGuiFunctor<BaseEntity> baseImGuiFn = PropertyMultiImGuiFunctor_Make(entityPtrs, entities.size());
+    PropertyMultiImGuiFunctor<BaseEntity, BaseEntity> baseImGuiFn = PropertyMultiImGuiFunctor_Make<BaseEntity, BaseEntity>(entityPtrs, entities.size());
     PropSerial<decltype(baseImGuiFn), BaseEntity>::Serialize(baseImGuiFn);
+
+    EntityType type = entities.front()->Type();
+    bool allSameType = true;
+    for (int ii = 1; ii < entities.size(); ++ii) {
+        if (entities[ii]->Type() != type) {
+            allSameType = false;
+            break;
+        } 
+    }
+
+    if (allSameType) {
+        switch (type) {
+            case EntityType::Base: {
+                break;
+            }
+            case EntityType::Derived1: {
+                PropertyMultiImGuiFunctor<Derived1Entity, BaseEntity> imguiFn = PropertyMultiImGuiFunctor_Make<Derived1Entity, BaseEntity>(entityPtrs, entities.size());
+                PropSerial<decltype(imguiFn), Derived1Entity>::Serialize(imguiFn);
+                break;
+            }
+            case EntityType::Derived2: {
+                PropertyMultiImGuiFunctor<Derived2Entity, BaseEntity> imguiFn = PropertyMultiImGuiFunctor_Make<Derived2Entity, BaseEntity>(entityPtrs, entities.size());
+                PropSerial<decltype(imguiFn), Derived2Entity>::Serialize(imguiFn);
+
+                break;
+            }
+        }
+    }
 
     delete[] entityPtrs;
 }
@@ -244,6 +277,36 @@ void MakeEntities(std::vector<std::unique_ptr<BaseEntity>>& entities) {
         derived2->z = 4.f;
         entities.push_back(std::move(derived2));
     }
+}
+
+void MakeEntitiesSame(std::vector<std::unique_ptr<BaseEntity>>& entities) {
+    {
+        std::unique_ptr<Derived1Entity> derived1 = std::make_unique<Derived1Entity>();
+        derived1->bar.foo.x = 0;
+        derived1->bar.foo.y = 1.f;
+        derived1->bar.z = 2;
+
+        derived1->x = 2.5f;
+        derived1->y = 3;
+        entities.push_back(std::move(derived1));
+    }
+
+    {
+        std::unique_ptr<Derived1Entity> derived1 = std::make_unique<Derived1Entity>();
+        derived1->bar = entities[0]->bar;
+        derived1->x = entities[0]->x;
+        derived1->y = 4;
+        entities.push_back(std::move(derived1));
+    }
+
+    {
+        std::unique_ptr<Derived1Entity> derived1 = std::make_unique<Derived1Entity>();
+        derived1->bar = entities[0]->bar;
+        derived1->x = entities[0]->x;
+        derived1->y = 5;
+        entities.push_back(std::move(derived1));
+    }
+
 }
 
 void Tests() {
@@ -367,7 +430,8 @@ void Tests() {
 int main() {
 
     std::vector<std::unique_ptr<BaseEntity>> entities;
-    MakeEntities(entities);
+    // MakeEntities(entities);
+    MakeEntitiesSame(entities);
     
     glfwInit();
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);

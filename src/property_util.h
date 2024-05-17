@@ -91,18 +91,18 @@ PropertyImGuiFunctor<ObjectType> PropertyImGuiFunctor_Make(ObjectType& object) {
     return fn;
 }
 
-template<typename ObjectType>
+template<typename ObjectType, typename BaseObjectType>
 struct PropertyMultiImGuiFunctor {
-    ObjectType** objects;
+    BaseObjectType** objects;
     size_t numObjects;
     template<typename MemberPtrType>
     void Leaf(Property<MemberPtrType> property) {
-        ObjectType& firstObject = *objects[0];
+        ObjectType& firstObject = static_cast<ObjectType&>(*objects[0]);
         auto& value = firstObject.*(property.pMember);
         bool changed = PropImGui(property.name, value);
         if (changed) {
             for (int objectIx = 0; objectIx < numObjects; ++objectIx) {
-                ObjectType& o = *objects[objectIx];
+                ObjectType& o = static_cast<ObjectType&>(*objects[objectIx]);
                 o.*(property.pMember) = value;
             }
         }        
@@ -113,9 +113,10 @@ struct PropertyMultiImGuiFunctor {
             // THIS IS HORRIBLE
             auto childObjects = new decltype(GetPointerType(property.pMember))*[numObjects];
             for (int ii = 0; ii < numObjects; ++ii) {
-                childObjects[ii] = &(objects[ii]->*(property.pMember));
+                ObjectType& object = static_cast<ObjectType&>(*objects[ii]);
+                childObjects[ii] = &(object.*(property.pMember));
             }
-            PropertyMultiImGuiFunctor<decltype(GetPointerType(property.pMember))> fn;
+            PropertyMultiImGuiFunctor<decltype(GetPointerType(property.pMember)), decltype(GetPointerType(property.pMember))> fn;
             fn.objects = childObjects;
             fn.numObjects = numObjects;
             PropSerial<decltype(fn), decltype(GetPointerType(property.pMember))>::Serialize(fn);
@@ -125,9 +126,9 @@ struct PropertyMultiImGuiFunctor {
         } 
     }
 };
-template<typename ObjectType>
-PropertyMultiImGuiFunctor<ObjectType> PropertyMultiImGuiFunctor_Make(ObjectType** objects, size_t numObjects) {
-    PropertyMultiImGuiFunctor<ObjectType> fn;
+template<typename ObjectType, typename BaseObjectType>
+PropertyMultiImGuiFunctor<ObjectType, BaseObjectType> PropertyMultiImGuiFunctor_Make(BaseObjectType** objects, size_t numObjects) {
+    PropertyMultiImGuiFunctor<ObjectType, BaseObjectType> fn;
     fn.objects = objects;
     fn.numObjects = numObjects;
     return fn;
