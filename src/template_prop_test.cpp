@@ -429,6 +429,8 @@ void Tests() {
 
 int main() {
 
+    BumpAllocatorInternal::Init();
+
     std::vector<std::unique_ptr<BaseEntity>> entities;
     // MakeEntities(entities);
     MakeEntitiesSame(entities);
@@ -539,6 +541,7 @@ int main() {
 
     glfwTerminate();
 
+    BumpAllocatorInternal::Cleanup();
 
     return 0;
 }

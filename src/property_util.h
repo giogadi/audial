@@ -1,10 +1,84 @@
 #pragma once
 
+#include <memory>
+
 #include "property.h"
 #include "serial.h"
 
 bool ImGuiNodeStart(char const* label);
 void ImGuiNodePop();
+
+// https://godbolt.org/z/K3sG8fz63
+class BumpAllocatorInternal {
+public:
+
+    static inline void* _buffer = nullptr;
+    static inline size_t _bufferSize = 0;
+    static inline size_t _spaceLeft = 0;
+    static inline void* _front = nullptr;
+
+    static void Init() {
+        if (_buffer != nullptr) {
+            free(_buffer);
+        }
+        _bufferSize = 1024 * 1024; 
+        _spaceLeft = _bufferSize;
+        _buffer = malloc(_bufferSize);
+        _front = _buffer;
+    }
+    static void Cleanup() {
+        if (_buffer != nullptr) {
+            free(_buffer);
+            _buffer = nullptr;
+            _bufferSize = 0;
+            _spaceLeft = 0;
+            _front = nullptr;
+        }
+    }
+    static void* allocate(size_t alignment, size_t size) {
+        void* prev = _front;
+        void* result = std::align(alignment, size, _front, _spaceLeft);
+        if (result) {            
+            _front = (char*)_front + size;
+            _spaceLeft -= size;
+
+            // printf("Allocation! %p to %p\n", prev, _front);
+            return result;
+        }
+        return nullptr;        
+    }
+
+    static size_t GetOffset() {
+        return (size_t)_front - (size_t)_buffer;
+    }
+    static void ReturnToOffset(size_t offset) {
+        size_t currentOffset = GetOffset();
+        if (offset == currentOffset) {
+            return;
+        }
+        // printf("Returning: %p to %p\n", currentOffset, offset);
+        if (offset >= currentOffset) {
+            printf("HOWDY! current: %zu, requested: %zu\n", currentOffset, offset);
+        }
+        assert(offset < currentOffset);
+        size_t change = currentOffset - offset;
+        _spaceLeft += change;
+        _front = (char*)_front - change;
+    }
+};
+
+template<typename T>
+class BumpAllocator {
+public:
+    typedef T value_type;
+    BumpAllocator() noexcept {}
+
+    template <class U> BumpAllocator (const BumpAllocator<U>&) noexcept {}
+    T* allocate (size_t n) { 
+        return reinterpret_cast<T*>(BumpAllocatorInternal::allocate(alignof(T), n * sizeof(T)));
+    }
+    void deallocate (T* p, std::size_t n) {}
+};
 
 template<typename Serializer, typename ObjectType>
 struct PropSerial;
@@ -110,8 +184,10 @@ struct PropertyMultiImGuiFunctor {
     template<typename MemberPtrType>
     void Node(Property<MemberPtrType> property) {
         if (ImGuiNodeStart(property.name)) {
-            // THIS IS HORRIBLE
-            auto childObjects = new decltype(GetPointerType(property.pMember))*[numObjects];
+            size_t bumpOffset = BumpAllocatorInternal::GetOffset();
+
+            BumpAllocator<decltype(GetPointerType(property.pMember))*> alloc;
+            auto* childObjects = alloc.allocate(numObjects);
             for (int ii = 0; ii < numObjects; ++ii) {
                 ObjectType& object = static_cast<ObjectType&>(*objects[ii]);
                 childObjects[ii] = &(object.*(property.pMember));
@@ -121,7 +197,7 @@ struct PropertyMultiImGuiFunctor {
             fn.numObjects = numObjects;
             PropSerial<decltype(fn), decltype(GetPointerType(property.pMember))>::Serialize(fn);
     
-            delete[] childObjects;
+            BumpAllocatorInternal::ReturnToOffset(bumpOffset);
             ImGuiNodePop();
         } 
     }
