@@ -9,6 +9,7 @@
 #include "beat_clock.h"
 #include "geometry.h"
 #include "seq_action.h"
+#include "imgui_util.h"
 
 #include "entities/flow_pickup.h"
 #include "entities/flow_wall.h"
@@ -23,6 +24,7 @@ void FlowPlayerEntity::SaveDerived(serial::Ptree pt) const {
     serial::SaveInNewChildOf(pt, "gravity", _p._gravity);
     pt.PutFloat("max_fall_speed", _p._maxFallSpeed);
     pt.PutBool("pull_manual_hold", _p._pullManualHold);
+    pt.PutFloat("pull_stop_time", _p._pullStopTime);
 }
 
 void FlowPlayerEntity::LoadDerived(serial::Ptree pt) {
@@ -35,6 +37,23 @@ void FlowPlayerEntity::LoadDerived(serial::Ptree pt) {
     serial::LoadFromChildOf(pt, "gravity", _p._gravity);
     pt.TryGetFloat("max_fall_speed", &_p._maxFallSpeed);
     pt.TryGetBool("pull_manual_hold", &_p._pullManualHold);
+    pt.TryGetFloat("pull_stop_time", &_p._pullStopTime);
+}
+
+ne::BaseEntity::ImGuiResult FlowPlayerEntity::ImGuiDerived(GameManager& g) {
+    ImGuiResult result = ImGuiResult::Done;
+
+    ImGui::InputFloat("Launch vel", &_p._defaultLaunchVel);
+    ImGui::InputFloat("Max vx after dash", &_p._maxHorizSpeedAfterDash);
+    ImGui::InputFloat("Max vy after dash", &_p._maxVertSpeedAfterDash);
+    ImGui::InputFloat("Max v after dash", &_p._maxOverallSpeedAfterDash);
+    ImGui::InputFloat("Dash time", &_p._dashTime);
+    imgui_util::InputVec3("gravity", &_p._gravity);
+    ImGui::InputFloat("Max fall speed", &_p._maxFallSpeed);
+    ImGui::Checkbox("Pull manual hold", &_p._pullManualHold);
+    ImGui::InputFloat("Pull stop time", &_p._pullStopTime);
+
+    return result;
 }
 
 void FlowPlayerEntity::InitDerived(GameManager& g) {
@@ -86,9 +105,44 @@ FlowWallEntity* FindOverlapWithWall(GameManager& g, Transform const& playerTrans
     return nullptr;
 }
 
+void DrawTicks(int activeCount, int totalCount, Transform const& renderTrans, float scale, GameManager& g) {
+    float constexpr kBeatCellSize = 0.25f;
+    float constexpr kSpacing = 0.1f;
+    float constexpr kRowSpacing = 0.1f;
+    float constexpr kRowLength = 4.f * kBeatCellSize + (3.f) * kSpacing;
+    int const numRows = ((totalCount - 1) / 4) + 1;
+    float const vertSize = numRows * kBeatCellSize + (numRows - 1) * kRowSpacing;
+    float const rowStartXPos = renderTrans.GetPos()._x - 0.5f * kRowLength;
+    float const rowStartZPos = renderTrans.GetPos()._z - 0.5f - vertSize;
+    Vec3 firstBeatPos = renderTrans.GetPos() + Vec3(rowStartXPos, 0.f, rowStartZPos);
+    Mat4 m;
+    m.SetTranslation(firstBeatPos);
+    m.ScaleUniform(kBeatCellSize * scale);
+    Vec4 color(0.f, 1.f, 0.f, 1.f);
+    for (int row = 0, beatIx = 0; row < numRows; ++row) {
+        for (int col = 0; col < 4 && beatIx < totalCount; ++col, ++beatIx) {
+            if (beatIx >= activeCount) {
+                color.Set(0.3f, 0.3f, 0.3f, 1.f);
+            }
+            Vec3 p(rowStartXPos + col * (kSpacing + kBeatCellSize), 0.f, rowStartZPos + row * (kRowSpacing + kBeatCellSize));
+            m.SetTranslation(p);
+            g._scene->DrawCube(m, color);
+        }
+    }
+}
+
 }  // namespace
 
 void FlowPlayerEntity::Draw(GameManager& g, float const dt) {
+    
+    double const beatTime = g._beatClock->GetBeatTimeFromEpoch();
+    if (_s._countOffEndTime >= 0.0 && beatTime < _s._countOffEndTime) {
+        double timeLeft = _s._countOffEndTime - beatTime;
+        int numActive = (int)std::ceil(4 - timeLeft);
+        numActive = std::max(0, numActive);
+        DrawTicks(numActive, 4, _transform, 1.f, g); 
+    }
+
     // Draw history positions
     Mat4 historyTrans;
     historyTrans.Scale(0.1f, 0.1f, 0.1f);
@@ -208,6 +262,13 @@ void FlowPlayerEntity::Respawn(GameManager& g) {
     else if (ne::Entity* e = g._neEntityManager->GetEntity(_s._toActivateOnRespawn)) {
         e->Init(g);
     }
+
+    double beatTime = g._beatClock->GetBeatTimeFromEpoch();
+    _s._countOffEndTime = BeatClock::GetNextBeatDenomTime(beatTime, _s._respawnLoopLength);
+    int minCountOffTime = 3;
+    if (_s._countOffEndTime - beatTime < minCountOffTime) {
+        _s._countOffEndTime += _s._respawnLoopLength;
+    }
 }
 
 void FlowPlayerEntity::SetNewSection(GameManager& g, int newSectionId) {
@@ -225,6 +286,8 @@ namespace {
         }
         return false;
     }
+
+
 }
 
 void FlowPlayerEntity::UpdateDerived(GameManager& g, float dt) {
@@ -240,7 +303,11 @@ void FlowPlayerEntity::UpdateDerived(GameManager& g, float dt) {
         float factor = math_util::SmoothStep(beatTimeFrac);
         Vec4 constexpr kFlashColor(0.f, 0.f, 0.f, 1.f);
         _s._currentColor = _modelColor + factor * (kFlashColor - _modelColor);
-        return;
+
+        double timeLeft = _s._countOffEndTime - beatTime;
+        if (timeLeft > 0.24) {
+            return;
+        } 
     } else {
         _s._currentColor = _modelColor;
     }
@@ -452,8 +519,7 @@ void FlowPlayerEntity::UpdateDerived(GameManager& g, float dt) {
         break;
 
         case MoveState::PullStop: {
-            float constexpr kStopTime = 0.5f;
-            if (_s._dashTimer >= kStopTime) {
+            if (_s._dashTimer >= _p._pullStopTime) {
                 _s._moveState = MoveState::Default;
                 if (TypingEnemyEntity* e = g._neEntityManager->GetEntityAs<TypingEnemyEntity>(_s._interactingEnemyId)) {
                     e->DoComboEndActions(g);

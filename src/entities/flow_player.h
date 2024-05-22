@@ -23,6 +23,7 @@ struct FlowPlayerEntity : public ne::Entity {
         float _dashTime = 0.5f;
         float _maxFallSpeed = 10.f;
         bool _pullManualHold = false;
+        float _pullStopTime = 0.5f;
     };
     Props _p;
 
@@ -69,13 +70,15 @@ struct FlowPlayerEntity : public ne::Entity {
         int _currentSectionId = -1;
         ne::EntityId _cameraId;
         Vec4 _currentColor;
-        double _countOffEndTime = 3.0;
+        double _countOffEndTime = 4.0;
         std::optional<float> _killMaxZ;  // kill/respawn if player goes over this value
         bool _killIfBelowCameraView = false;
         bool _killIfLeftOfCameraView = false;
         bool _respawnBeforeFirstInteract = true;
         ne::EntityId _toActivateOnRespawn;
         Vec3 _respawnPos;
+
+        int _respawnLoopLength = 4;
     };
     State _s;    
 
@@ -91,5 +94,5 @@ struct FlowPlayerEntity : public ne::Entity {
 
     virtual void SaveDerived(serial::Ptree pt) const override;
     virtual void LoadDerived(serial::Ptree pt) override;
-    /* virtual ImGuiResult ImGuiDerived(GameManager& g) { return ImGuiResult::Done; } */
+    virtual ImGuiResult ImGuiDerived(GameManager& g) override;
 };
