@@ -264,6 +264,21 @@ target_link_libraries(template_prop_test glfw)
 target_include_directories(template_prop_test PUBLIC
     src/glfw/include src/glad/include)
 
+add_executable(c_property_test EXCLUDE_FROM_ALL
+    src/glad/src/glad.cpp
+    src/imgui/imgui.cpp src/imgui/imgui_demo.cpp src/imgui/imgui_draw.cpp
+    src/imgui/imgui_tables.cpp src/imgui/imgui_widgets.cpp src/imgui/backends/imgui_impl_glfw.cpp
+    src/imgui/backends/imgui_impl_opengl3.cpp
+
+    src/c_property_test.cpp
+    src/serial.cpp src/serial.h
+) 
+target_include_directories(c_property_test PUBLIC src/ ./ src/imgui/)
+target_link_libraries(c_property_test glfw)
+target_include_directories(c_property_test PUBLIC
+    src/glfw/include src/glad/include)
+
+
 
 if (MSVC)
 else()
