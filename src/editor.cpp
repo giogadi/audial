@@ -807,14 +807,61 @@ void Editor::DrawWindow() {
         if (_selectedEntityIds.empty()) {
             ImGui::Text("(No selected entities)");
         } else {
-            static int sMultiSelectFlowSectionId = -1;
-            ImGui::InputInt("##SectionId", &sMultiSelectFlowSectionId);
-            ImGui::SameLine();
-            if (ImGui::Button("Set Section ID")) {
+            auto GetEntity = [this](ne::EntityId eId) {
+                return this->_g->_neEntityManager->GetActiveOrInactiveEntity(eId);    
+            };
+
+            // TODO: move this into new_entity.cpp
+            ne::EntityId exampleId = *_selectedEntityIds.begin();
+            ne::Entity* example = GetEntity(exampleId);
+            bool needsInit = false;
+            if (ImGui::Button("Force Init")) {
+                needsInit = true;
+            }
+            if (ImGui::InputInt("Section Id", &example->_flowSectionId)) {
                 for (ne::EntityId eId : _selectedEntityIds) {
-                    if (ne::Entity* entity = _g->_neEntityManager->GetActiveOrInactiveEntity(eId)) {
-                        entity->_flowSectionId = sMultiSelectFlowSectionId;
+                    ne::Entity* e = GetEntity(eId);
+                    e->_flowSectionId = example->_flowSectionId;
+                }
+            }
+            if (ImGui::Checkbox("Init active", &example->_initActive)) {
+                for (ne::EntityId eId : _selectedEntityIds) {
+                    if (example->_initActive) {
+                        _g->_neEntityManager->TagForActivate(eId, /*initOnActivate=*/true);
+                    } else {
+                        _g->_neEntityManager->TagForDeactivate(eId);
                     }
+                } 
+            }
+            if (imgui_util::ColorEdit4("Model color", &example->_modelColor)) {
+                needsInit = true;
+                for (ne::EntityId eId : _selectedEntityIds) {
+                    ne::Entity* e = GetEntity(eId);
+                    e->_modelColor = example->_modelColor;
+                }
+            }
+
+            bool allSameType = true;
+            _sameEntities.clear(); 
+            _sameEntities.reserve(_selectedEntityIds.size());
+            for (ne::EntityId eId : _selectedEntityIds) {
+                if (eId._type != exampleId._type) {
+                    allSameType = false;
+                    break;
+                }
+                ne::Entity* e = GetEntity(eId);
+                _sameEntities.push_back(e);
+            }
+            if (allSameType) {
+                if (example->MultiImGui(*_g, _sameEntities.data(), _sameEntities.size()) == ne::Entity::ImGuiResult::NeedsInit) {
+                    needsInit = true;
+                }
+            }
+
+            if (needsInit) {
+                for (ne::EntityId eId : _selectedEntityIds) {
+                    ne::Entity* e = GetEntity(eId);
+                    e->Init(*_g);
                 }
             }
         }

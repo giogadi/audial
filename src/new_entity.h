@@ -24,6 +24,9 @@ extern std::size_t const gkEntitySizes[];
 struct BaseEntity {
     virtual EntityType Type() { return EntityType::Base; }
     static EntityType StaticType() { return EntityType::Base; }
+
+    template<typename EntityT>
+    EntityT* As();
     
     // serialized
     EditorId _editorId;
@@ -67,6 +70,9 @@ struct BaseEntity {
 
     
     virtual void Draw(GameManager& g, float dt);
+
+
+    virtual ImGuiResult MultiImGui(GameManager& g, BaseEntity** entities, size_t entityCount) { return ImGuiResult::Done; }
 
 protected:
     // Used by derived classes to work with child-specific data.
@@ -191,6 +197,15 @@ private:
 
     bool ActivateEntity(EntityId idToActivate);
 };
+
+template<typename EntityT>
+EntityT* BaseEntity::As() {
+    if (_id._type != EntityT::StaticType()) {
+        return nullptr;
+    }
+    return static_cast<EntityT*>(this);
+}
+
 
 template<typename T>
 T* EntityManager::GetEntityAs(EntityId id) {

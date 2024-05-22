@@ -22,6 +22,8 @@ struct TestEntity : public ne::BaseEntity {
     virtual void SaveDerived(serial::Ptree pt) const override;
     virtual void LoadDerived(serial::Ptree pt) override; 
     virtual ImGuiResult ImGuiDerived(GameManager& g) override;
+    virtual ImGuiResult MultiImGui(GameManager& g, BaseEntity** entities, size_t entityCount) override;
+
     virtual void UpdateDerived(GameManager& g, float dt) override; 
 
     virtual void Draw(GameManager& g, float dt) override;

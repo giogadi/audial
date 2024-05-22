@@ -16,6 +16,12 @@ ne::BaseEntity::ImGuiResult TestEntity::ImGuiDerived(GameManager& g) {
     return result;
 }
 
+ne::BaseEntity::ImGuiResult TestEntity::MultiImGui(GameManager& g, BaseEntity** entities, size_t entityCount) {
+    ImGuiResult result = ImGuiResult::Done;
+    return result;
+}
+
+
 void TestEntity::InitDerived(GameManager& g) {
     _s = State();
 }

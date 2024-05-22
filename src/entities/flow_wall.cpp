@@ -180,6 +180,33 @@ FlowWallEntity::ImGuiResult FlowWallEntity::ImGuiDerived(GameManager& g)  {
     return result;
 }
 
+ne::BaseEntity::ImGuiResult FlowWallEntity::MultiImGui(GameManager& g, BaseEntity** entities, size_t entityCount) {
+    ImGuiResult result = ImGuiResult::Done;
+
+    if (ImGui::Checkbox("Hurt on hit", &_hurtOnHit)) {
+        for (size_t ii = 0; ii < entityCount; ++ii) {
+            FlowWallEntity* e = entities[ii]->As<FlowWallEntity>();
+            e->_hurtOnHit = _hurtOnHit;
+        }
+    } 
+
+    if (ImGui::Checkbox("Can hit", &_canHit)) {
+        for (size_t ii = 0; ii < entityCount; ++ii) {
+            FlowWallEntity* e = entities[ii]->As<FlowWallEntity>();
+            e->_canHit = _canHit;
+        }
+    }
+
+    if (ImGui::InputInt("HP", &_maxHp)) {
+        for (size_t ii = 0; ii < entityCount; ++ii) {
+            FlowWallEntity* e = entities[ii]->As<FlowWallEntity>();
+            e->_maxHp = _maxHp;
+        }
+    }
+
+    return result;
+}
+
 void FlowWallEntity::OnHit(GameManager& g, Vec3 const& hitDirection) {
     if (!g._editMode) {
         if (_maxHp > 0) {

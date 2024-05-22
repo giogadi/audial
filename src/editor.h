@@ -46,4 +46,5 @@ struct Editor {
 private:
     ne::EntityId _requestedNewSelection;
     void PickEntity(ne::BaseEntity* entity);
+    std::vector<ne::Entity*> _sameEntities;  // only to avoid reallocating
 };
