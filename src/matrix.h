@@ -46,6 +46,9 @@ struct Vec3 {
         return _x == 0.f && _y == 0.f && _z == 0.f;
     }
 
+    static Vec3 ElemWiseMult(Vec3 const& a, Vec3 const& b) {
+        return Vec3(a._x * b._x, a._y * b._y, a._z * b._z);
+    }
     void ElemWiseMult(Vec3 const& v) {
         _x *= v._x;
         _y *= v._y;
@@ -257,6 +260,7 @@ struct Vec4 {
     static float Dot(Vec4 const& a, Vec4 const& b) {
         return a._x*b._x + a._y*b._y + a._z*b._z + a._w*b._w;
     }
+
     void ElemWiseMult(Vec4 const& v) {
         _x *= v._x;
         _y *= v._y;

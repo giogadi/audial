@@ -75,12 +75,14 @@ void Editor::Init(GameManager* g) {
     std::unordered_set<int64_t> editorIds;
     for (ne::EntityManager::AllIterator iter = g->_neEntityManager->GetAllIterator(); !iter.Finished(); iter.Next()) {
         if (ne::Entity* e = iter.GetEntity()) {
-            // no init necessary
-            _entityIds.push_back(e->_id);
-            if (e->_editorId._id >= 0) {
-                _nextEditorId = std::max(_nextEditorId, e->_editorId._id + 1);
-                auto result = editorIds.insert(e->_editorId._id);
-                assert(result.second);
+            if (e->_editorId.IsValid()) { // Filter out "runtime" generated objects
+                // no init necessary
+                _entityIds.push_back(e->_id);
+                if (e->_editorId._id >= 0) {
+                    _nextEditorId = std::max(_nextEditorId, e->_editorId._id + 1);
+                    auto result = editorIds.insert(e->_editorId._id);
+                    assert(result.second);
+                }
             }
         }
     }
@@ -793,6 +795,7 @@ void Editor::DrawWindow() {
                 printf("WEIRD: Remove Entity couldn't find the entity!\n");
             }
         }
+        _selectedEntityIds.clear();
     }
 
     if (_selectedEntityIds.size() == 1) {

@@ -82,6 +82,14 @@ struct PropSerial<Serializer, Baz> {
     }
 };
 
+template<typename T>
+void PropSave(serial::Ptree pt, char const* name, std::vector<T> const& x) {
+    for (int ii = 0; ii < x.size(); ++ii) {
+        PropertySaveFunctor<T> itemSaveFn = PropertySaveFunctor_Make(x, pt);
+        PropSerial<decltype(itemSaveFn), T>::Serialize(itemSaveFn);  
+    }
+}
+
 enum class EntityType { Base, Derived1, Derived2 };
 char const* gEntityTypeStrings[] = {
     "Base", "Derived1", "Derived2"
@@ -280,31 +288,33 @@ void MakeEntities(std::vector<std::unique_ptr<BaseEntity>>& entities) {
 }
 
 void MakeEntitiesSame(std::vector<std::unique_ptr<BaseEntity>>& entities) {
-    {
-        std::unique_ptr<Derived1Entity> derived1 = std::make_unique<Derived1Entity>();
-        derived1->bar.foo.x = 0;
-        derived1->bar.foo.y = 1.f;
-        derived1->bar.z = 2;
+    for (int ii = 0; ii < 1000; ++ii) {
+        {
+            std::unique_ptr<Derived1Entity> derived1 = std::make_unique<Derived1Entity>();
+            derived1->bar.foo.x = 0;
+            derived1->bar.foo.y = 1.f;
+            derived1->bar.z = 2;
 
-        derived1->x = 2.5f;
-        derived1->y = 3;
-        entities.push_back(std::move(derived1));
-    }
+            derived1->x = 2.5f;
+            derived1->y = 3;
+            entities.push_back(std::move(derived1));
+        }
 
-    {
-        std::unique_ptr<Derived1Entity> derived1 = std::make_unique<Derived1Entity>();
-        derived1->bar = entities[0]->bar;
-        derived1->x = entities[0]->x;
-        derived1->y = 4;
-        entities.push_back(std::move(derived1));
-    }
+        {
+            std::unique_ptr<Derived1Entity> derived1 = std::make_unique<Derived1Entity>();
+            derived1->bar = entities[0]->bar;
+            derived1->x = entities[0]->x;
+            derived1->y = 4;
+            entities.push_back(std::move(derived1));
+        }
 
-    {
-        std::unique_ptr<Derived1Entity> derived1 = std::make_unique<Derived1Entity>();
-        derived1->bar = entities[0]->bar;
-        derived1->x = entities[0]->x;
-        derived1->y = 5;
-        entities.push_back(std::move(derived1));
+        {
+            std::unique_ptr<Derived1Entity> derived1 = std::make_unique<Derived1Entity>();
+            derived1->bar = entities[0]->bar;
+            derived1->x = entities[0]->x;
+            derived1->y = 5;
+            entities.push_back(std::move(derived1));
+        }
     }
 
 }
@@ -419,13 +429,6 @@ void Tests() {
     }
 
 }
-
-// TODO: gotta handle
-// - lists of stuff
-// - multiselect ImGui
-//
-
-// ....do we add a window and shit to test the ImGui stuff?
 
 int main() {
 

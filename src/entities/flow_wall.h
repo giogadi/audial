@@ -17,11 +17,13 @@ struct FlowWallEntity : public ne::Entity {
     std::vector<Vec3> _polygon;
     float _rotVel = 0.f;
     int _maxHp = -1;
-    bool _canHit = true;
+    bool _initCanHit = true;
     bool _hurtOnHit = false;
     std::vector<EditorId> _childrenEditorIds;  // for making other things bounce
 
     // non-serialized
+    bool _canHit = true;
+    bool _visible = true;
     double _timeOfLastHit = -1.0;
     Vec3 _lastHitDirection;
     Vec4 _currentColor;
@@ -41,6 +43,8 @@ struct FlowWallEntity : public ne::Entity {
     virtual void LoadDerived(serial::Ptree pt) override;
     virtual ImGuiResult ImGuiDerived(GameManager& g) override;
     virtual ImGuiResult MultiImGui(GameManager& g, BaseEntity** entities, size_t entityCount) override;
+
+    virtual void Draw(GameManager& g, float dt) override;
 
     FlowWallEntity() = default;
     FlowWallEntity(FlowWallEntity const&) = delete;

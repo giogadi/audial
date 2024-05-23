@@ -114,6 +114,7 @@ add_executable(game
     src/entities/action_sequencer.cpp src/entities/action_sequencer.h
     src/entities/param_automator.cpp src/entities/param_automator.h
     src/entities/flow_player.cpp src/entities/flow_player.h
+    src/entities/beat_wall.cpp src/entities/beat_wall.h
     src/entities/flow_wall.cpp src/entities/flow_wall.h
     src/entities/flow_pickup.cpp src/entities/flow_pickup.h
     src/entities/flow_trigger.cpp src/entities/flow_trigger.h

@@ -18,6 +18,7 @@ void FlowWallEntity::InitDerived(GameManager& g) {
     _currentColor = _modelColor;
     _hp = _maxHp;
     _meshId = g._scene->LoadPolygon2d(_polygon);
+    _canHit = _initCanHit;
 
     _children.clear();
     _children.reserve(_childrenEditorIds.size());
@@ -62,6 +63,29 @@ void FlowWallEntity::Update(GameManager& g, float dt) {
         colorAfterHp = kDyingColor + fracOfMaxHp * (_modelColor - kDyingColor);
     }
 
+    // Maybe update color from getting hit
+    // turn to FadeColor on hit, then fade back to regular color
+    if (_timeOfLastHit >= 0.0) {
+        double const beatTime = g._beatClock->GetBeatTimeFromEpoch();
+        double constexpr kFadeTime = 0.25;
+        double fadeFactor = (beatTime - _timeOfLastHit) / kFadeTime;
+        fadeFactor = math_util::Clamp(fadeFactor, 0.0, 1.0);
+        // Use same alpha as the model color on the entity
+        
+        Vec4 kFadeColor(0.f, 0.f, 0.f, _modelColor._w);
+        if (fadeFactor == 1.0) {
+            _timeOfLastHit = -1.0;
+        }
+        _currentColor = kFadeColor + fadeFactor * (colorAfterHp - kFadeColor);
+    }
+}
+
+void FlowWallEntity::Draw(GameManager& g, float dt) 
+{
+    if (!_visible) {
+        return;
+    }
+
     Transform drawTransform = _transform;
     if (_timeOfLastHit >= 0.0) {
         double const beatTime = g._beatClock->GetBeatTimeFromEpoch();
@@ -82,23 +106,6 @@ void FlowWallEntity::Update(GameManager& g, float dt) {
             }
         }
     }
-    
-
-    // Maybe update color from getting hit
-    // turn to FadeColor on hit, then fade back to regular color
-    if (_timeOfLastHit >= 0.0) {
-        double const beatTime = g._beatClock->GetBeatTimeFromEpoch();
-        double constexpr kFadeTime = 0.25;
-        double fadeFactor = (beatTime - _timeOfLastHit) / kFadeTime;
-        fadeFactor = math_util::Clamp(fadeFactor, 0.0, 1.0);
-        // Use same alpha as the model color on the entity
-        
-        Vec4 kFadeColor(0.f, 0.f, 0.f, _modelColor._w);
-        if (fadeFactor == 1.0) {
-            _timeOfLastHit = -1.0;
-        }
-        _currentColor = kFadeColor + fadeFactor * (colorAfterHp - kFadeColor);
-    }
 
     if (renderer::ModelInstance* model = g._scene->DrawMesh(_meshId)) {
         model->_transform = drawTransform.Mat4Scale();
@@ -106,12 +113,12 @@ void FlowWallEntity::Update(GameManager& g, float dt) {
     } else if (_model != nullptr) {
         g._scene->DrawMesh(_model, drawTransform.Mat4Scale(), _currentColor);
     }
-
 }
+
 
 void FlowWallEntity::SaveDerived(serial::Ptree pt) const {
     pt.PutBool("hurt_on_hit", _hurtOnHit);
-    pt.PutBool("can_hit", _canHit);
+    pt.PutBool("can_hit", _initCanHit);
     pt.PutInt("hp", _maxHp);
     pt.PutString("move_mode", WaypointFollowerModeToString(_moveMode));
     if (_moveMode == WaypointFollowerMode::Waypoints) {
@@ -127,8 +134,8 @@ void FlowWallEntity::SaveDerived(serial::Ptree pt) const {
 void FlowWallEntity::LoadDerived(serial::Ptree pt) {
     _hurtOnHit = false;
     pt.TryGetBool("hurt_on_hit", &_hurtOnHit);
-    _canHit = true;
-    pt.TryGetBool("can_hit", &_canHit);
+    _initCanHit = true;
+    pt.TryGetBool("can_hit", &_initCanHit);
     pt.TryGetInt("hp", &_maxHp);
     std::string moveModeStr;
     bool changed = pt.TryGetString("move_mode", &moveModeStr);
@@ -149,7 +156,9 @@ FlowWallEntity::ImGuiResult FlowWallEntity::ImGuiDerived(GameManager& g)  {
     ImGuiResult result = ImGuiResult::Done;
 
     ImGui::Checkbox("Hurt on hit", &_hurtOnHit);
-    ImGui::Checkbox("Can hit", &_canHit);
+    if (ImGui::Checkbox("Can hit", &_initCanHit)) {
+        result = ImGuiResult::NeedsInit;
+    }
 
     ImGui::InputInt("HP", &_maxHp);
 
@@ -190,10 +199,10 @@ ne::BaseEntity::ImGuiResult FlowWallEntity::MultiImGui(GameManager& g, BaseEntit
         }
     } 
 
-    if (ImGui::Checkbox("Can hit", &_canHit)) {
+    if (ImGui::Checkbox("Can hit", &_initCanHit)) {
         for (size_t ii = 0; ii < entityCount; ++ii) {
             FlowWallEntity* e = entities[ii]->As<FlowWallEntity>();
-            e->_canHit = _canHit;
+            e->_initCanHit = _initCanHit;
         }
     }
 

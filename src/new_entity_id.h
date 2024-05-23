@@ -21,6 +21,7 @@ namespace ne {
     X(FlowPlayer) \
     X(StepSequencer) \
     X(ParamAutomator) \
+    X(BeatWall) \
     X(FlowWall) \
     X(FlowPickup) \
     X(FlowTrigger) \
