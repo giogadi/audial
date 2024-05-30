@@ -36,6 +36,7 @@ void FlowTriggerEntity::InitDerived(GameManager& g) {
 
 void FlowTriggerEntity::SaveDerived(serial::Ptree pt) const {
     pt.PutDouble("trigger_delay_beat_time", _p._triggerDelayBeatTime);
+    pt.PutDouble("quantize", _p._quantize);
     pt.PutBool("on_player_enter", _p._triggerOnPlayerEnter);
     pt.PutBool("execute_on_init", _p._executeOnInit);
     pt.PutBool("use_trigger_volumes", _p._useTriggerVolumes);
@@ -48,6 +49,7 @@ void FlowTriggerEntity::SaveDerived(serial::Ptree pt) const {
 void FlowTriggerEntity::LoadDerived(serial::Ptree pt) {
     _p = Props();
     pt.TryGetDouble("trigger_delay_beat_time", &_p._triggerDelayBeatTime);
+    pt.TryGetDouble("quantize", &_p._quantize);
     pt.TryGetBool("on_player_enter", &_p._triggerOnPlayerEnter);
     pt.TryGetBool("execute_on_init", &_p._executeOnInit);
     pt.TryGetBool("use_trigger_volumes", &_p._useTriggerVolumes);
@@ -55,11 +57,18 @@ void FlowTriggerEntity::LoadDerived(serial::Ptree pt) {
     SeqAction::LoadActionsFromChildNode(pt, "actions", _p._actions);
     SeqAction::LoadActionsFromChildNode(pt, "actions_on_exit", _p._actionsOnExit);
     serial::LoadVectorFromChildNode(pt, "trigger_volume_entities", _p._triggerVolumeEditorIds);
+    if (pt.GetVersion() < 7) {
+        // Backward compatibility. Before, we assumed that if there was a non-negative delay we would quantize to 1.
+        if (_p._triggerDelayBeatTime >= 0.0 && _p._quantize <= 0.0) {
+            _p._quantize = 1.0;
+        }
+    }
 }
 
 FlowTriggerEntity::ImGuiResult FlowTriggerEntity::ImGuiDerived(GameManager& g)  {
     ImGuiResult result = ImGuiResult::Done;
     ImGui::InputDouble("Trigger delay (beats)", &_p._triggerDelayBeatTime);
+    ImGui::InputDouble("Quantize", &_p._quantize);
     ImGui::Checkbox("On player enter", &_p._triggerOnPlayerEnter);
     ImGui::Checkbox("Execute on Init", &_p._executeOnInit);
     ImGui::Checkbox("Use trigger volumes", &_p._useTriggerVolumes);
@@ -97,14 +106,16 @@ FlowTriggerEntity::ImGuiResult FlowTriggerEntity::ImGuiDerived(GameManager& g)  
 }
 
 void FlowTriggerEntity::OnTrigger(GameManager& g) {    
-    if (_p._triggerDelayBeatTime >= 0.0) {
-        double currentBeatTime = g._beatClock->GetBeatTimeFromEpoch();
-        // TODO make denom an editable property
-        double quantized = g._beatClock->GetNextBeatDenomTime(currentBeatTime, 1.0);
-        _triggerTime = quantized + _p._triggerDelayBeatTime;
-    } else {
+    if (_p._quantize <= 0.0 && _p._triggerDelayBeatTime < 0.0) {
         RunActions(g);
+        return;
     }
+
+    double currentBeatTime = g._beatClock->GetBeatTimeFromEpoch();
+    _triggerTime = g._beatClock->GetNextBeatDenomTime(currentBeatTime, _p._quantize);
+    if (_p._triggerDelayBeatTime > 0.0) {
+        _triggerTime += _p._triggerDelayBeatTime;
+    }  
 }
 
 void FlowTriggerEntity::RunActions(GameManager& g) {

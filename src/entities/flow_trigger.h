@@ -10,6 +10,7 @@ struct FlowTriggerEntity : public ne::Entity {
     // serialized
     struct Props {
         double _triggerDelayBeatTime = -1.0;
+        double _quantize = 0.0; // quantize happens before applying delay
         std::vector<std::unique_ptr<SeqAction>> _actions;
         std::vector<std::unique_ptr<SeqAction>> _actionsOnExit;
         std::vector<EditorId> _triggerVolumeEditorIds;

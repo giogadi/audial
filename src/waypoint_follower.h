@@ -32,6 +32,8 @@ struct WaypointFollower {
         bool _loopWaypoints = false;
         bool _wpRelative = false;
         double _initWpStartTime = 3.0;
+        double _startQuantize = 1.0;
+        double _quantizeBufferTime = 0.0;
         // FollowEntity mode
         EditorId _followEditorId;
         std::string _followEntityName;

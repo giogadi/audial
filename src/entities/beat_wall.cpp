@@ -53,7 +53,6 @@ void BeatWallEntity::InitDerived(GameManager& g) {
 
     _s = State();
     
-    // TODO: WE'RE STILL SEEING THESE TEMP ENTITIES IN THE EDITOR!!!!
     _s.walls.resize(_p.numSteps);
     for (int ii = 0; ii < _p.numSteps; ++ii) {
         FlowWallEntity* e = (FlowWallEntity*) g._neEntityManager->AddEntity(ne::EntityType::FlowWall);

@@ -283,6 +283,7 @@ namespace {
         case FlowPlayerEntity::MoveState::Pull: return true;
         case FlowPlayerEntity::MoveState::PullStop: return true;
         case FlowPlayerEntity::MoveState::Push: return true;
+        case FlowPlayerEntity::MoveState::Carried: return true;
         }
         return false;
     }
@@ -334,15 +335,44 @@ void FlowPlayerEntity::UpdateDerived(GameManager& g, float dt) {
         _s._heldActions.resize(ixOfLastElement + 1);
     }
 
+    // update carried status
+    if (_s._moveState != MoveState::Carried) { 
+        for (ne::EntityManager::Iterator enemyIter = g._neEntityManager->GetIterator(ne::EntityType::TypingEnemy); !enemyIter.Finished(); enemyIter.Next()) {
+            TypingEnemyEntity* enemy = (TypingEnemyEntity*) enemyIter.GetEntity();
+            if (!enemy->_p._lockPlayerOnEnterRegion) {
+                continue;
+            }
+            
+            // Assume if CanHit, we're in their active region.
+            if (enemy->CanHit(*this, g)) {
+                _s._moveState = MoveState::Carried;
+                _s._interactingEnemyId = enemy->_id;
+                _s._dashTimer = -1.f;
+                _s._dashAnimState = DashAnimState::None;
+                _s._vel.Set(0.f, 0.f, 0.f);
+                break;
+            } 
+        }
+    }
+ 
     TypingEnemyEntity* nearest = nullptr;
     float nearestDist2 = -1.f;
     Vec3 const& playerPos = _transform.GetPos();    
     Mat4 viewProjTransform = g._scene->GetViewProjTransform();
     bool const usingController = g._inputManager->IsUsingController();
     InputManager::Key hitKey = InputManager::Key::NumKeys;
+    TypingEnemyEntity* carrier = nullptr;
+    if (_s._moveState == MoveState::Carried) {
+        carrier = g._neEntityManager->GetEntityAs<TypingEnemyEntity>(_s._interactingEnemyId);
+    }
     for (ne::EntityManager::Iterator enemyIter = g._neEntityManager->GetIterator(ne::EntityType::TypingEnemy); !enemyIter.Finished(); enemyIter.Next()) {
         // Vec4 constexpr kGreyColor(0.6f, 0.6f, 0.6f, 0.7f);
         TypingEnemyEntity* enemy = (TypingEnemyEntity*) enemyIter.GetEntity();
+        // TODO this is inefficient I know, shutup
+        if (carrier != nullptr && carrier->_id != enemy->_id) {
+            continue;
+        }
+
         Vec3 dp = playerPos - enemy->_transform.GetPos();
         dp._y = 0.f;
         float d2 = dp.Length2();
@@ -395,6 +425,10 @@ void FlowPlayerEntity::UpdateDerived(GameManager& g, float dt) {
             nearest = enemy;
             nearestDist2 = d2;
         }
+
+        if (carrier != nullptr) {
+            break;
+        }
     }
 
     //
@@ -412,71 +446,76 @@ void FlowPlayerEntity::UpdateDerived(GameManager& g, float dt) {
 
         _s._lastHitEnemy = nearest->_id;
         _s._heldKey = hitKey;
-        
-        switch (hitResponse._type) {
-            case HitResponseType::None:
-                break;
-            case HitResponseType::Pull: {
-                _s._interactingEnemyId = nearest->_id;
-                _s._stopAfterTimer = hitResponse._stopAfterTimer;
-                _s._stopDashOnPassEnemy = hitResponse._stopOnPass;
-                // If we are close enough to the enemy, just stick to them and start in PullStop if applicable.
-                if (_s._stopDashOnPassEnemy && nearestDist2 < 0.001f * 0.001f) {
-                    _transform.SetPos(nearest->_transform.Pos());
-                    _s._moveState = MoveState::PullStop;
-                    _s._passedPullTarget = true;
-                    _s._dashAnimState = DashAnimState::None;
-                } else {
-                    _s._moveState = MoveState::Pull;
-                    _s._passedPullTarget = false;
+
+        //if (_s._moveState == MoveState::Carried) {
+        //    nearest->Bump(Vec3(0.f, 0.f, 1.f));
+        //} else {
+            
+            switch (hitResponse._type) {
+                case HitResponseType::None:
+                    break;
+                case HitResponseType::Pull: {
+                    _s._interactingEnemyId = nearest->_id;
+                    _s._stopAfterTimer = hitResponse._stopAfterTimer;
+                    _s._stopDashOnPassEnemy = hitResponse._stopOnPass;
+                    // If we are close enough to the enemy, just stick to them and start in PullStop if applicable.
+                    if (_s._stopDashOnPassEnemy && nearestDist2 < 0.001f * 0.001f) {
+                        _transform.SetPos(nearest->_transform.Pos());
+                        _s._moveState = MoveState::PullStop;
+                        _s._passedPullTarget = true;
+                        _s._dashAnimState = DashAnimState::None;
+                    } else {
+                        _s._moveState = MoveState::Pull;
+                        _s._passedPullTarget = false;
+                        _s._dashAnimState = DashAnimState::Accel;
+                    }
+                    _s._dashTimer = 0.f;                        
+                    if (hitResponse._speed >= 0.f) {
+                        _s._dashLaunchSpeed = hitResponse._speed;
+                    } else {
+                        _s._dashLaunchSpeed = _p._defaultLaunchVel;
+                    }
+                    Vec3 playerToTargetDir = nearest->_transform.Pos() - playerPos;
+                    float dist = playerToTargetDir.Normalize();
+                    _s._vel = playerToTargetDir * _s._dashLaunchSpeed;
+                    if (dist < 0.001f) {
+                        playerToTargetDir.Set(1.f, 0.f, 0.f);
+                    }
+                    nearest->Bump(playerToTargetDir);
+                }
+                    break;
+                case HitResponseType::Push: {
+                    _s._interactingEnemyId = nearest->_id;
+                    _s._moveState = MoveState::Push;
+                    _s._stopAfterTimer = hitResponse._stopAfterTimer;
+                    _s._dashTimer = 0.f;
                     _s._dashAnimState = DashAnimState::Accel;
+                    Vec3 pushDir;
+                    if (hitResponse._pushAngleDeg >= 0.f) {
+                        float angleRad = hitResponse._pushAngleDeg * kDeg2Rad;
+                        pushDir._x = cos(angleRad);
+                        pushDir._y = 0.f;
+                        pushDir._z = -sin(angleRad);
+                    } else {
+                        pushDir = playerPos - nearest->_transform.GetPos();
+                        pushDir._y = 0.f;
+                        pushDir.Normalize();
+                    }
+                    if (hitResponse._speed >= 0.f) {
+                        _s._dashLaunchSpeed = hitResponse._speed;
+                    } else {
+                        _s._dashLaunchSpeed = _p._defaultLaunchVel;
+                    }
+                    _s._vel = pushDir * _s._dashLaunchSpeed;
+                    nearest->Bump(pushDir);
                 }
-                _s._dashTimer = 0.f;                        
-                if (hitResponse._speed >= 0.f) {
-                    _s._dashLaunchSpeed = hitResponse._speed;
-                } else {
-                    _s._dashLaunchSpeed = _p._defaultLaunchVel;
+                    break;
+                case HitResponseType::Count: {
+                    assert(false);
+                    break;
                 }
-                Vec3 playerToTargetDir = nearest->_transform.Pos() - playerPos;
-                float dist = playerToTargetDir.Normalize();
-                _s._vel = playerToTargetDir * _s._dashLaunchSpeed;
-                if (dist < 0.001f) {
-                    playerToTargetDir.Set(1.f, 0.f, 0.f);
-                }
-                nearest->Bump(playerToTargetDir);
             }
-                break;
-            case HitResponseType::Push: {
-                _s._interactingEnemyId = nearest->_id;
-                _s._moveState = MoveState::Push;
-                _s._stopAfterTimer = hitResponse._stopAfterTimer;
-                _s._dashTimer = 0.f;
-                _s._dashAnimState = DashAnimState::Accel;
-                Vec3 pushDir;
-                if (hitResponse._pushAngleDeg >= 0.f) {
-                    float angleRad = hitResponse._pushAngleDeg * kDeg2Rad;
-                    pushDir._x = cos(angleRad);
-                    pushDir._y = 0.f;
-                    pushDir._z = -sin(angleRad);
-                } else {
-                    pushDir = playerPos - nearest->_transform.GetPos();
-                    pushDir._y = 0.f;
-                    pushDir.Normalize();
-                }
-                if (hitResponse._speed >= 0.f) {
-                    _s._dashLaunchSpeed = hitResponse._speed;
-                } else {
-                    _s._dashLaunchSpeed = _p._defaultLaunchVel;
-                }
-                _s._vel = pushDir * _s._dashLaunchSpeed;
-                nearest->Bump(pushDir);
-            }
-                break;
-            case HitResponseType::Count: {
-                assert(false);
-                break;
-            }
-        }
+        //}
 
         ne::EntityId nearestId = nearest->_id;
         for (auto enemyIter = g._neEntityManager->GetIterator(ne::EntityType::TypingEnemy); !enemyIter.Finished(); enemyIter.Next()) {
@@ -573,6 +612,14 @@ void FlowPlayerEntity::UpdateDerived(GameManager& g, float dt) {
                 }
             }
         }
+
+        case MoveState::Carried: {
+            if (carrier == nullptr) {
+                _s._moveState = MoveState::Default;
+            }
+
+            break;
+        }
         break;
     }
 
@@ -637,6 +684,11 @@ void FlowPlayerEntity::UpdateDerived(GameManager& g, float dt) {
         case MoveState::Push: {
             _s._dashTimer += dt;
             newPos += _s._vel * dt;
+        }
+        break;
+        case MoveState::Carried: {
+            assert(carrier != nullptr);
+            newPos = carrier->_transform.Pos();
         }
         break;        
     }

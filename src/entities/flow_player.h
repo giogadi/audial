@@ -28,7 +28,7 @@ struct FlowPlayerEntity : public ne::Entity {
     Props _p;
 
     enum class MoveState {
-        Default, WallBounce, Pull, PullStop, Push
+        Default, WallBounce, Pull, PullStop, Push, Carried
     };
     enum class DashAnimState {
         None, Accel, Decel

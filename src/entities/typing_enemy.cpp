@@ -142,6 +142,7 @@ void TypingEnemyEntity::LoadDerived(serial::Ptree pt) {
     pt.TryGetBool("init_hittable", &_p._initHittable);
     pt.TryGetDouble("timed_hittable_time", &_p._timedHittableTime);
     serial::LoadFromChildOf(pt, "active_region_editor_id", _p._activeRegionEditorId);
+    pt.TryGetBool("lock_player_in_region", &_p._lockPlayerOnEnterRegion);
 
     SeqAction::LoadActionsFromChildNode(pt, "hit_actions", _p._hitActions);
     SeqAction::LoadActionsFromChildNode(pt, "all_hit_actions", _p._allHitActions);
@@ -183,6 +184,7 @@ void TypingEnemyEntity::SaveDerived(serial::Ptree pt) const {
     pt.PutDouble("timed_hittable_time", _p._timedHittableTime);
     
     serial::SaveInNewChildOf(pt, "active_region_editor_id", _p._activeRegionEditorId);
+    pt.PutBool("lock_player_in_region", _p._lockPlayerOnEnterRegion);
     SeqAction::SaveActionsInChildNode(pt, "hit_actions", _p._hitActions);
     SeqAction::SaveActionsInChildNode(pt, "all_hit_actions", _p._allHitActions);
     SeqAction::SaveActionsInChildNode(pt, "off_cooldown_actions", _p._offCooldownActions);
@@ -221,6 +223,7 @@ ne::BaseEntity::ImGuiResult TypingEnemyEntity::ImGuiDerived(GameManager& g) {
     ImGui::Checkbox("Init hittable", &_p._initHittable);
     ImGui::InputDouble("Timed hittable (beat)", &_p._timedHittableTime);
     imgui_util::InputEditorId("Active Region", &_p._activeRegionEditorId);
+    ImGui::Checkbox("Lock player in region", &_p._lockPlayerOnEnterRegion);
     if (ImGui::Button("Set Region color")) {
         if (ne::Entity* e = g._neEntityManager->FindEntityByEditorIdAndType(_p._activeRegionEditorId, ne::EntityType::FlowTrigger)) {
             Vec4 color = _modelColor;

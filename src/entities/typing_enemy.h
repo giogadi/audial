@@ -48,6 +48,7 @@ struct TypingEnemyEntity : public ne::Entity {
         double _flowCooldownBeatTime = -1.0;
         bool _resetCooldownOnAnyHit = false;
         EditorId _activeRegionEditorId;
+        bool _lockPlayerOnEnterRegion = false;
         bool _showBeatsLeft = false;
         float _cooldownQuantizeDenom = 0.f;
         bool _initHittable = true;

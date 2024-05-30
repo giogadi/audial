@@ -48,6 +48,8 @@ void WaypointFollower::Props::Save(serial::Ptree pt) const {
     pt.PutBool("waypoint_auto_start", _autoStartFollowingWaypoints);
     pt.PutBool("loop_waypoints", _loopWaypoints);
     pt.PutDouble("start_time", _initWpStartTime);
+    pt.PutDouble("quantize", _startQuantize);
+    pt.PutDouble("quantize_buffer", _quantizeBufferTime);
     serial::SaveVectorInChildNode(pt, "waypoints", "waypoint", _waypoints);
 
     pt.PutString("follow_entity_name", _followEntityName.c_str());
@@ -73,6 +75,8 @@ void WaypointFollower::Props::Load(serial::Ptree pt) {
     pt.TryGetBool("waypoint_auto_start", &_autoStartFollowingWaypoints);
     pt.TryGetBool("loop_waypoints", &_loopWaypoints);
     pt.TryGetDouble("start_time", &_initWpStartTime);
+    pt.TryGetDouble("quantize", &_startQuantize);
+    pt.TryGetDouble("quantize_buffer", &_quantizeBufferTime);
     serial::LoadVectorFromChildNode(pt, "waypoints", _waypoints);
 
     pt.TryGetString("follow_entity_name", &_followEntityName);
@@ -105,6 +109,8 @@ bool WaypointFollower::Props::ImGui() {
         if (_autoStartFollowingWaypoints) {
             changed = ImGui::InputDouble("Start time", &_initWpStartTime) || changed;
         }
+        changed = ImGui::InputDouble("Quantize", &_startQuantize) || changed;
+        changed = ImGui::InputDouble("Quantize buffer", &_quantizeBufferTime) || changed;
         changed = ImGui::Checkbox("Loop Waypoints", &_loopWaypoints) || changed;
         if (ImGui::Button("Clear Waypoints")) {
             _waypoints.clear();
@@ -166,7 +172,15 @@ void WaypointFollower::Init(GameManager& g, ne::BaseEntity const& entity, Props 
 
 void WaypointFollower::Start(GameManager& g, ne::BaseEntity const& entity) {
     _ns._followingWaypoints = true;
-    _ns._thisWpStartTime = BeatClock::GetNextBeatDenomTime(g._beatClock->GetBeatTimeFromEpoch(), 1.0);
+    double beatTime = g._beatClock->GetBeatTimeFromEpoch();
+    double denom = entity._wpProps._startQuantize;
+    double nextQuantize = BeatClock::GetNextBeatDenomTime(beatTime, denom);
+    double prevQuantize = nextQuantize - denom;
+    if (beatTime - prevQuantize <= entity._wpProps._quantizeBufferTime) {
+        _ns._thisWpStartTime = prevQuantize;
+    } else {
+        _ns._thisWpStartTime = nextQuantize;
+    }
     _ns._entityPosAtStart = entity._transform.Pos();
 }
 
