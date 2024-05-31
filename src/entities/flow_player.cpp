@@ -144,12 +144,14 @@ void FlowPlayerEntity::Draw(GameManager& g, float const dt) {
     }
 
     // Draw history positions
-    Mat4 historyTrans;
-    historyTrans.Scale(0.1f, 0.1f, 0.1f);
-    for (Vec3 const& prevPos : _s._posHistory) {
-        historyTrans.SetTranslation(prevPos);
-        renderer::ModelInstance& model = g._scene->DrawCube(historyTrans, _s._currentColor);
-         model._topLayer = true;
+    if (_s._moveState != MoveState::Carried) {
+        Mat4 historyTrans;
+        historyTrans.Scale(0.1f, 0.1f, 0.1f);
+        for (Vec3 const& prevPos : _s._posHistory) {
+            historyTrans.SetTranslation(prevPos);
+            renderer::ModelInstance& model = g._scene->DrawCube(historyTrans, _s._currentColor);
+             model._topLayer = true;
+        }
     }
 
     Transform renderTrans = _transform;
@@ -453,6 +455,7 @@ void FlowPlayerEntity::UpdateDerived(GameManager& g, float dt) {
             
             switch (hitResponse._type) {
                 case HitResponseType::None:
+                    nearest->Bump(Vec3(0.f, 0.f, 1.f));
                     break;
                 case HitResponseType::Pull: {
                     _s._interactingEnemyId = nearest->_id;

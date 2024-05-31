@@ -450,10 +450,10 @@
                 </editor_id>
                 <name>crash_seq</name>
                 <entity_active>true</entity_active>
-                <pickable>true</pickable>
+                <pickable>false</pickable>
                 <transform>
                     <pos>
-                        <x>0</x>
+                        <x>0.32986021</x>
                         <y>0</y>
                         <z>0</z>
                     </pos>
@@ -1666,7 +1666,7 @@
                     </follow_entity_editor_id>
                 </waypoint_follower>
                 <hit_response>
-                    <type>Pull</type>
+                    <type>None</type>
                     <speed>-1</speed>
                     <push_angle_deg>-1</push_angle_deg>
                     <stop_on_pass>true</stop_on_pass>
@@ -1889,7 +1889,7 @@
                     </follow_entity_editor_id>
                 </waypoint_follower>
                 <hit_response>
-                    <type>Push</type>
+                    <type>None</type>
                     <speed>-1</speed>
                     <push_angle_deg>270</push_angle_deg>
                     <stop_on_pass>true</stop_on_pass>
@@ -2082,7 +2082,7 @@
                 <pickable>true</pickable>
                 <transform>
                     <pos>
-                        <x>-0.103489399</x>
+                        <x>0.261093616</x>
                         <y>0.5</y>
                         <z>-4.41154671</z>
                     </pos>
@@ -2123,7 +2123,7 @@
                     </follow_entity_editor_id>
                 </waypoint_follower>
                 <hit_response>
-                    <type>Pull</type>
+                    <type>None</type>
                     <speed>-1</speed>
                     <push_angle_deg>-1</push_angle_deg>
                     <stop_on_pass>true</stop_on_pass>
@@ -2513,9 +2513,9 @@
                 <pickable>true</pickable>
                 <transform>
                     <pos>
-                        <x>-6.11597109</x>
+                        <x>-5.80347109</x>
                         <y>0</y>
-                        <z>-5.48680782</z>
+                        <z>-5.46944666</z>
                     </pos>
                     <quat>
                         <x>0</x>
@@ -2617,9 +2617,9 @@
                 <pickable>true</pickable>
                 <transform>
                     <pos>
-                        <x>5.79166698</x>
+                        <x>6.34722233</x>
                         <y>0</y>
-                        <z>-5.48263836</z>
+                        <z>-5.46527719</z>
                     </pos>
                     <quat>
                         <x>0</x>
@@ -2721,7 +2721,7 @@
                 <pickable>true</pickable>
                 <transform>
                     <pos>
-                        <x>1.73125076</x>
+                        <x>1.29722309</x>
                         <y>0</y>
                         <z>-3.00416994</z>
                     </pos>
@@ -2825,7 +2825,7 @@
                 <pickable>true</pickable>
                 <transform>
                     <pos>
-                        <x>13.3611107</x>
+                        <x>13.708333</x>
                         <y>0</y>
                         <z>-2.99999952</z>
                     </pos>
@@ -2929,7 +2929,7 @@
                 <pickable>true</pickable>
                 <transform>
                     <pos>
-                        <x>-5.97708321</x>
+                        <x>-5.89027786</x>
                         <y>0</y>
                         <z>-0.816669226</z>
                     </pos>
@@ -3033,7 +3033,7 @@
                 <pickable>true</pickable>
                 <transform>
                     <pos>
-                        <x>5.72222185</x>
+                        <x>6.39930534</x>
                         <y>0</y>
                         <z>-0.829859972</z>
                     </pos>
@@ -3137,7 +3137,7 @@
                 <pickable>true</pickable>
                 <transform>
                     <pos>
-                        <x>-0.155573368</x>
+                        <x>0.174286842</x>
                         <y>0.5</y>
                         <z>0.241230488</z>
                     </pos>
@@ -3178,7 +3178,7 @@
                     </follow_entity_editor_id>
                 </waypoint_follower>
                 <hit_response>
-                    <type>Pull</type>
+                    <type>None</type>
                     <speed>-1</speed>
                     <push_angle_deg>-1</push_angle_deg>
                     <stop_on_pass>true</stop_on_pass>
@@ -3419,7 +3419,7 @@
                 <pickable>true</pickable>
                 <transform>
                     <pos>
-                        <x>-0.12638855</x>
+                        <x>0.203471661</x>
                         <y>0</y>
                         <z>0.207636356</z>
                     </pos>
@@ -3829,7 +3829,7 @@
                     </follow_entity_editor_id>
                 </waypoint_follower>
                 <hit_response>
-                    <type>Pull</type>
+                    <type>None</type>
                     <speed>-1</speed>
                     <push_angle_deg>-1</push_angle_deg>
                     <stop_on_pass>true</stop_on_pass>
@@ -4251,7 +4251,7 @@
                     </follow_entity_editor_id>
                 </waypoint_follower>
                 <hit_response>
-                    <type>Pull</type>
+                    <type>None</type>
                     <speed>-1</speed>
                     <push_angle_deg>-1</push_angle_deg>
                     <stop_on_pass>true</stop_on_pass>
@@ -10195,7 +10195,7 @@
                     <waypoints>
                         <waypoint>
                             <wait_time>0</wait_time>
-                            <move_time>7</move_time>
+                            <move_time>7.25</move_time>
                             <p>
                                 <x>14</x>
                                 <y>0</y>
@@ -10422,7 +10422,7 @@
                 <pickable>true</pickable>
                 <transform>
                     <pos>
-                        <x>-0.0833239555</x>
+                        <x>0.28125906</x>
                         <y>0</y>
                         <z>-4.45555353</z>
                     </pos>
@@ -10550,7 +10550,7 @@
                     </follow_entity_editor_id>
                 </waypoint_follower>
                 <hit_response>
-                    <type>Pull</type>
+                    <type>None</type>
                     <speed>-1</speed>
                     <push_angle_deg>-1</push_angle_deg>
                     <stop_on_pass>true</stop_on_pass>
