@@ -772,10 +772,30 @@ void FlowPlayerEntity::UpdateDerived(GameManager& g, float dt) {
 
     // Update tail
     Vec3 desiredPos = _transform.Pos();
+    float halfLife = 0.025f;
+    if (_s._moveState == MoveState::Carried) {
+        static float wigglePhase = 0.f;
+        static Vec3 lastDesiredPos;
+        float constexpr kWiggleFreq = 1.f;
+        float constexpr kWiggleAmp = 0.1f;
+         
+        wigglePhase += kWiggleFreq * 2 * kPi * dt;
+        if (wigglePhase >= 2 * kPi) {
+            wigglePhase -= 2 * kPi;
+        }
+        Vec3 motionDir = desiredPos - lastDesiredPos;
+        motionDir.Normalize();
+        Vec3 offsetDir = Vec3::Cross(motionDir, Vec3(0.f, 1.f, 0.f));
+        float verticalOffset = kWiggleAmp * sin(wigglePhase);
+        desiredPos += offsetDir * verticalOffset;
+        halfLife *= 2.f;
+
+        lastDesiredPos = _transform.Pos();
+    }
     for (int ii = 0; ii < _s._tail.size(); ++ii) {
         TailState& tailPoint = _s._tail[ii];
         for (int jj = 0; jj < 3; ++jj) {
-            simple_spring_damper_exact(tailPoint.p(jj), tailPoint.v(jj), desiredPos(jj), 0.025f, dt);
+            simple_spring_damper_exact(tailPoint.p(jj), tailPoint.v(jj), desiredPos(jj), halfLife, dt);
         } 
         desiredPos = tailPoint.p;
     } 
