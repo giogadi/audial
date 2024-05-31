@@ -37,6 +37,10 @@ struct FlowPlayerEntity : public ne::Entity {
         InputManager::Key _key = InputManager::Key::NumKeys;
         std::vector<std::unique_ptr<SeqAction>> _actions;
     };
+    struct TailState {
+            Vec3 p;
+            Vec3 v;
+    };
     struct State {
         State(State const& rhs) = delete;
         State(State&&) = default;
@@ -63,10 +67,8 @@ struct FlowPlayerEntity : public ne::Entity {
         float _dashSquishFactor = 0.f;
         Vec3 _dashAnimDir;
         float _dashLaunchSpeed = 0.f;
-        
-        // TODO: use a ring buffer instead. maybe stack would work too
-        std::deque<Vec3> _posHistory;  // start is most recent
-        int _framesSinceLastSample = 0;
+                
+        std::vector<TailState> _tail;
         int _currentSectionId = -1;
         ne::EntityId _cameraId;
         Vec4 _currentColor;

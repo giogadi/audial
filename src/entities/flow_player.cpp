@@ -69,6 +69,10 @@ void FlowPlayerEntity::InitDerived(GameManager& g) {
     _s._currentColor = _modelColor;
     _s._respawnPos = _initTransform.Pos();
     _transform.SetPos(_s._respawnPos);
+    int constexpr kTailLength = 4;
+    for (int ii = 0; ii < kTailLength; ++ii) {
+        _s._tail.push_back({_transform.Pos(), Vec3()});
+    }
 }
 
 namespace {
@@ -143,15 +147,13 @@ void FlowPlayerEntity::Draw(GameManager& g, float const dt) {
         DrawTicks(numActive, 4, _transform, 1.f, g); 
     }
 
-    // Draw history positions
-    if (_s._moveState != MoveState::Carried) {
-        Mat4 historyTrans;
-        historyTrans.Scale(0.1f, 0.1f, 0.1f);
-        for (Vec3 const& prevPos : _s._posHistory) {
-            historyTrans.SetTranslation(prevPos);
-            renderer::ModelInstance& model = g._scene->DrawCube(historyTrans, _s._currentColor);
-             model._topLayer = true;
-        }
+    // Draw tail
+    Mat4 tailTrans;
+    tailTrans.Scale(0.08f, 0.08f, 0.08f);
+    for (TailState const& t : _s._tail) {
+        tailTrans.SetTranslation(t.p);
+        renderer::ModelInstance& model = g._scene->DrawCube(tailTrans, _s._currentColor);
+        model._topLayer = true;
     }
 
     Transform renderTrans = _transform;
@@ -229,8 +231,10 @@ void FlowPlayerEntity::Draw(GameManager& g, float const dt) {
 
 void FlowPlayerEntity::Respawn(GameManager& g) {
     _transform.SetTranslation(_s._respawnPos);
-    _s._posHistory.clear();
-    _s._framesSinceLastSample = 0;
+    for (TailState& t : _s._tail) {
+        t.p = _transform.Pos();
+        t.v = Vec3();
+    }
     _s._vel.Set(0.f,0.f,0.f);
     _s._dashTimer = -1.f;
     _s._respawnBeforeFirstInteract = true;
@@ -290,7 +294,28 @@ namespace {
         return false;
     }
 
+float fast_negexp(float x)
+{
+    return 1.0f / (1.0f + x + 0.48f*x*x + 0.235f*x*x*x);
+}
+float halflife_to_damping(float halflife, float eps = 1e-5f)
+{
+    return (4.0f * 0.69314718056f) / (halflife + eps);
+}
+void simple_spring_damper_exact(
+    float& x, 
+    float& v, 
+    float x_goal, 
+    float halflife, 
+    float dt) {
+    float y = halflife_to_damping(halflife) / 2.0f;	
+    float j0 = x - x_goal;
+    float j1 = v + j0*y;
+    float eydt = fast_negexp(y*dt);
 
+    x = eydt*(j0 + j1*dt) + x_goal;
+    v = eydt*(v - j1*y*dt);
+}
 }
 
 void FlowPlayerEntity::UpdateDerived(GameManager& g, float dt) {
@@ -745,18 +770,15 @@ void FlowPlayerEntity::UpdateDerived(GameManager& g, float dt) {
         return;
     }
 
-    // Update prev positions
-    int constexpr kMaxHistory = 5;
-    if (_s._posHistory.size() == kMaxHistory) {
-        _s._posHistory.pop_back();
-    }
-
-    ++_s._framesSinceLastSample;
-    int constexpr kFramesPerSample = 2;
-    if (_s._framesSinceLastSample >= kFramesPerSample) {
-        _s._posHistory.push_front(newPos);
-        _s._framesSinceLastSample = 0;
-    }    
+    // Update tail
+    Vec3 desiredPos = _transform.Pos();
+    for (int ii = 0; ii < _s._tail.size(); ++ii) {
+        TailState& tailPoint = _s._tail[ii];
+        for (int jj = 0; jj < 3; ++jj) {
+            simple_spring_damper_exact(tailPoint.p(jj), tailPoint.v(jj), desiredPos(jj), 0.025f, dt);
+        } 
+        desiredPos = tailPoint.p;
+    } 
 
     // Check if we hit any pickups
     ne::EntityManager::Iterator pickupIter = g._neEntityManager->GetIterator(ne::EntityType::FlowPickup);
