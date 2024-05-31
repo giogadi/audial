@@ -774,19 +774,14 @@ void FlowPlayerEntity::UpdateDerived(GameManager& g, float dt) {
     Vec3 desiredPos = _transform.Pos();
     float halfLife = 0.025f;
     if (_s._moveState == MoveState::Carried) {
-        static float wigglePhase = 0.f;
         static Vec3 lastDesiredPos;
-        float constexpr kWiggleFreq = 1.f;
         float constexpr kWiggleAmp = 0.1f;
-         
-        wigglePhase += kWiggleFreq * 2 * kPi * dt;
-        if (wigglePhase >= 2 * kPi) {
-            wigglePhase -= 2 * kPi;
-        }
         Vec3 motionDir = desiredPos - lastDesiredPos;
         motionDir.Normalize();
         Vec3 offsetDir = Vec3::Cross(motionDir, Vec3(0.f, 1.f, 0.f));
-        float verticalOffset = kWiggleAmp * sin(wigglePhase);
+        double beatTime = g._beatClock->GetBeatTimeFromEpoch();
+        double beatFrac = BeatClock::GetBeatFraction(beatTime);
+        float verticalOffset = kWiggleAmp * sin(2*kPi*beatFrac);
         desiredPos += offsetDir * verticalOffset;
         halfLife *= 2.f;
 
