@@ -7,7 +7,8 @@ void BeatClock::Init(GameManager& g, double bpm, double sampleRate) {
     _sampleRate = sampleRate;
     double audioTimeNow = Pa_GetStreamTime(g._audioContext->_stream);
     double beatTimeNow = audioTimeNow * (_bpm / 60.0);
-    _epochBeatTime = GetNextDownBeatTime(beatTimeNow);
+    //_epochBeatTime = GetNextDownBeatTime(beatTimeNow);
+    _epochBeatTime = beatTimeNow + 1;
 }
 
 void BeatClock::Update(GameManager& g) {

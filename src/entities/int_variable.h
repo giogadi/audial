@@ -23,6 +23,7 @@ struct IntVariableEntity : public ne::Entity {
     int _synthPatchChannel = -1;
     std::string _startPatchName;
     std::string _endPatchName;
+    double _blendTime = 0.0;
 
     // non-serialized
     int _currentValue = -1;

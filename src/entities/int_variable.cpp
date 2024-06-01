@@ -41,6 +41,7 @@ void IntVariableEntity::SaveDerived(serial::Ptree pt) const {
     pt.PutInt("synth_patch_channel", _synthPatchChannel);
     pt.PutString("start_patch", _startPatchName.c_str());
     pt.PutString("end_patch", _endPatchName.c_str());
+    pt.PutDouble("blend_time", _blendTime);
 
     SeqAction::SaveActionsInChildNode(pt, "actions", _actions);
 }
@@ -60,9 +61,11 @@ void IntVariableEntity::LoadDerived(serial::Ptree pt) {
     _synthPatchChannel = -1;
     _startPatchName.clear();
     _endPatchName.clear();
+    _blendTime = 0.0;
     pt.TryGetInt("synth_patch_channel", &_synthPatchChannel);    
     pt.TryGetString("start_patch", &_startPatchName);    
     pt.TryGetString("end_patch", &_endPatchName);
+    pt.TryGetDouble("blend_time", &_blendTime); 
 
     SeqAction::LoadActionsFromChildNode(pt, "actions", _actions);
 }
@@ -80,6 +83,7 @@ ne::Entity::ImGuiResult IntVariableEntity::ImGuiDerived(GameManager& g) {
     ImGui::InputInt("Synth patch channel", &_synthPatchChannel);
     imgui_util::InputText<64>("Start patch", &_startPatchName);
     imgui_util::InputText<64>("End patch", &_endPatchName);
+    ImGui::InputDouble("Blend time", &_blendTime);
 
     if (changed) {
         return ne::Entity::ImGuiResult::NeedsInit;
@@ -101,8 +105,7 @@ void IntVariableEntity::AddToVariable(int amount) {
 
     if (_startPatch != nullptr && _endPatch != nullptr && _synthPatchChannel >= 0) {
         float const blendFactor = 1.f - math_util::Clamp((static_cast<float>(_currentValue) / static_cast<float>(_initialValue)), 0.f, 1.f);
-        double constexpr kBlendBeatTime = 0.0;
-        double blendSecs = _g->_beatClock->BeatTimeToSecs(kBlendBeatTime);
+        double blendSecs = _g->_beatClock->BeatTimeToSecs(_blendTime);
         audio::Event e;
         e.type = audio::EventType::SynthParam;
         e.channel = _synthPatchChannel;

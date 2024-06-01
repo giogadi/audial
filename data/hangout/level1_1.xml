@@ -1819,15 +1819,6 @@
                 <all_hit_actions>
                     <seq_action>
                         <one_time>true</one_time>
-                        <action_type>AddToIntVariable</action_type>
-                        <var_editor_id>
-                            <id>275</id>
-                        </var_editor_id>
-                        <add_amount>-1</add_amount>
-                        <reset>false</reset>
-                    </seq_action>
-                    <seq_action>
-                        <one_time>true</one_time>
                         <action_type>SetEnemyHittable</action_type>
                         <entity_tag>-1</entity_tag>
                         <editor_id>
@@ -2052,15 +2043,6 @@
                         <init_if_already_active>false</init_if_already_active>
                     </seq_action>
                     <seq_action>
-                        <one_time>true</one_time>
-                        <action_type>AddToIntVariable</action_type>
-                        <var_editor_id>
-                            <id>275</id>
-                        </var_editor_id>
-                        <add_amount>-1</add_amount>
-                        <reset>false</reset>
-                    </seq_action>
-                    <seq_action>
                         <one_time>false</one_time>
                         <action_type>SetEnemyHittable</action_type>
                         <entity_tag>-1</entity_tag>
@@ -2276,15 +2258,6 @@
                 <all_hit_actions>
                     <seq_action>
                         <one_time>true</one_time>
-                        <action_type>AddToIntVariable</action_type>
-                        <var_editor_id>
-                            <id>275</id>
-                        </var_editor_id>
-                        <add_amount>-1</add_amount>
-                        <reset>false</reset>
-                    </seq_action>
-                    <seq_action>
-                        <one_time>true</one_time>
                         <action_type>SetEnemyHittable</action_type>
                         <entity_tag>-1</entity_tag>
                         <editor_id>
@@ -2305,7 +2278,7 @@
                 <pickable>true</pickable>
                 <transform>
                     <pos>
-                        <x>1.38402891</x>
+                        <x>1.67916775</x>
                         <y>0</y>
                         <z>-8.17778206</z>
                     </pos>
@@ -2409,9 +2382,9 @@
                 <pickable>true</pickable>
                 <transform>
                     <pos>
-                        <x>13.5645828</x>
+                        <x>13.1826382</x>
                         <y>0</y>
-                        <z>-8.19097137</z>
+                        <z>-8.17361069</z>
                     </pos>
                     <quat>
                         <x>0</x>
@@ -2513,9 +2486,9 @@
                 <pickable>true</pickable>
                 <transform>
                     <pos>
-                        <x>-5.80347109</x>
+                        <x>-5.49097109</x>
                         <y>0</y>
-                        <z>-5.46944666</z>
+                        <z>-5.43472481</z>
                     </pos>
                     <quat>
                         <x>0</x>
@@ -2617,9 +2590,9 @@
                 <pickable>true</pickable>
                 <transform>
                     <pos>
-                        <x>6.34722233</x>
+                        <x>6.06944418</x>
                         <y>0</y>
-                        <z>-5.46527719</z>
+                        <z>-5.43055487</z>
                     </pos>
                     <quat>
                         <x>0</x>
@@ -2721,9 +2694,9 @@
                 <pickable>true</pickable>
                 <transform>
                     <pos>
-                        <x>1.29722309</x>
+                        <x>1.80069542</x>
                         <y>0</y>
-                        <z>-3.00416994</z>
+                        <z>-3.03889227</z>
                     </pos>
                     <quat>
                         <x>0</x>
@@ -2825,9 +2798,9 @@
                 <pickable>true</pickable>
                 <transform>
                     <pos>
-                        <x>13.708333</x>
+                        <x>13.2569437</x>
                         <y>0</y>
-                        <z>-2.99999952</z>
+                        <z>-3.03472185</z>
                     </pos>
                     <quat>
                         <x>0</x>
@@ -2929,9 +2902,9 @@
                 <pickable>true</pickable>
                 <transform>
                     <pos>
-                        <x>-5.89027786</x>
+                        <x>-5.50833416</x>
                         <y>0</y>
-                        <z>-0.816669226</z>
+                        <z>-0.834030628</z>
                     </pos>
                     <quat>
                         <x>0</x>
@@ -3033,9 +3006,9 @@
                 <pickable>true</pickable>
                 <transform>
                     <pos>
-                        <x>6.39930534</x>
+                        <x>5.89583302</x>
                         <y>0</y>
-                        <z>-0.829859972</z>
+                        <z>-0.812498808</z>
                     </pos>
                     <quat>
                         <x>0</x>
@@ -3331,15 +3304,6 @@
                 <all_hit_actions>
                     <seq_action>
                         <one_time>true</one_time>
-                        <action_type>AddToIntVariable</action_type>
-                        <var_editor_id>
-                            <id>275</id>
-                        </var_editor_id>
-                        <add_amount>-1</add_amount>
-                        <reset>false</reset>
-                    </seq_action>
-                    <seq_action>
-                        <one_time>true</one_time>
                         <action_type>SetEnemyHittable</action_type>
                         <entity_tag>-1</entity_tag>
                         <editor_id>
@@ -3408,6 +3372,7 @@
                 <synth_patch_channel>0</synth_patch_channel>
                 <start_patch>bass0</start_patch>
                 <end_patch>bass1</end_patch>
+                <blend_time>0.5</blend_time>
                 <actions/>
             </IntVariable>
             <FlowTrigger>
@@ -3452,7 +3417,7 @@
                     <loop_waypoints>false</loop_waypoints>
                     <start_time>3</start_time>
                     <quantize>1</quantize>
-                    <quantize_buffer>0.25</quantize_buffer>
+                    <quantize_buffer>0.5</quantize_buffer>
                     <waypoints>
                         <waypoint>
                             <wait_time>0</wait_time>
@@ -3516,6 +3481,15 @@
                         <entity_editor_id>
                             <id>276</id>
                         </entity_editor_id>
+                    </seq_action>
+                    <seq_action>
+                        <one_time>true</one_time>
+                        <action_type>AddToIntVariable</action_type>
+                        <var_editor_id>
+                            <id>275</id>
+                        </var_editor_id>
+                        <add_amount>-1</add_amount>
+                        <reset>false</reset>
                     </seq_action>
                 </actions>
                 <actions_on_exit/>
@@ -4002,9 +3976,9 @@
                 <pickable>true</pickable>
                 <transform>
                     <pos>
-                        <x>9.24861145</x>
+                        <x>9.56111145</x>
                         <y>0</y>
-                        <z>4.21805239</z>
+                        <z>4.23541355</z>
                     </pos>
                     <quat>
                         <x>0</x>
@@ -4106,9 +4080,9 @@
                 <pickable>true</pickable>
                 <transform>
                     <pos>
-                        <x>21.2777767</x>
+                        <x>20.947916</x>
                         <y>0</y>
-                        <z>4.17013931</z>
+                        <z>4.22222281</z>
                     </pos>
                     <quat>
                         <x>0</x>
@@ -4457,7 +4431,7 @@
                     <loop_waypoints>false</loop_waypoints>
                     <start_time>3</start_time>
                     <quantize>1</quantize>
-                    <quantize_buffer>0.25</quantize_buffer>
+                    <quantize_buffer>0.5</quantize_buffer>
                     <waypoints>
                         <waypoint>
                             <wait_time>0</wait_time>
@@ -4541,7 +4515,7 @@
                 <pickable>true</pickable>
                 <transform>
                     <pos>
-                        <x>1.60972261</x>
+                        <x>1.9395833</x>
                         <y>0</y>
                         <z>6.70069075</z>
                     </pos>
@@ -4645,7 +4619,7 @@
                 <pickable>true</pickable>
                 <transform>
                     <pos>
-                        <x>13.65625</x>
+                        <x>13.3263893</x>
                         <y>0</y>
                         <z>6.72222233</z>
                     </pos>
@@ -4749,9 +4723,9 @@
                 <pickable>true</pickable>
                 <transform>
                     <pos>
-                        <x>-6.01180553</x>
+                        <x>-5.61250019</x>
                         <y>0</y>
-                        <z>9.2354126</z>
+                        <z>9.25277328</z>
                     </pos>
                     <quat>
                         <x>0</x>
@@ -4853,7 +4827,7 @@
                 <pickable>true</pickable>
                 <transform>
                     <pos>
-                        <x>6.0868063</x>
+                        <x>5.67013979</x>
                         <y>0</y>
                         <z>9.23958206</z>
                     </pos>
@@ -5723,7 +5697,7 @@
                     <loop_waypoints>false</loop_waypoints>
                     <start_time>3</start_time>
                     <quantize>1</quantize>
-                    <quantize_buffer>0.25</quantize_buffer>
+                    <quantize_buffer>0.5</quantize_buffer>
                     <waypoints>
                         <waypoint>
                             <wait_time>0</wait_time>
@@ -10109,7 +10083,7 @@
                     <loop_waypoints>false</loop_waypoints>
                     <start_time>3</start_time>
                     <quantize>1</quantize>
-                    <quantize_buffer>0.25</quantize_buffer>
+                    <quantize_buffer>0.5</quantize_buffer>
                     <waypoints>
                         <waypoint>
                             <wait_time>0</wait_time>
@@ -10149,6 +10123,15 @@
                         <entity_editor_id>
                             <id>342</id>
                         </entity_editor_id>
+                    </seq_action>
+                    <seq_action>
+                        <one_time>true</one_time>
+                        <action_type>AddToIntVariable</action_type>
+                        <var_editor_id>
+                            <id>275</id>
+                        </var_editor_id>
+                        <add_amount>-1</add_amount>
+                        <reset>false</reset>
                     </seq_action>
                 </actions>
                 <actions_on_exit/>
@@ -10295,7 +10278,7 @@
                     <loop_waypoints>false</loop_waypoints>
                     <start_time>3</start_time>
                     <quantize>1</quantize>
-                    <quantize_buffer>0.25</quantize_buffer>
+                    <quantize_buffer>0.5</quantize_buffer>
                     <waypoints>
                         <waypoint>
                             <wait_time>0</wait_time>
@@ -10335,6 +10318,15 @@
                         <entity_editor_id>
                             <id>344</id>
                         </entity_editor_id>
+                    </seq_action>
+                    <seq_action>
+                        <one_time>true</one_time>
+                        <action_type>AddToIntVariable</action_type>
+                        <var_editor_id>
+                            <id>275</id>
+                        </var_editor_id>
+                        <add_amount>-1</add_amount>
+                        <reset>false</reset>
                     </seq_action>
                 </actions>
                 <actions_on_exit/>
@@ -10543,15 +10535,6 @@
                 <all_hit_actions>
                     <seq_action>
                         <one_time>true</one_time>
-                        <action_type>AddToIntVariable</action_type>
-                        <var_editor_id>
-                            <id>275</id>
-                        </var_editor_id>
-                        <add_amount>-1</add_amount>
-                        <reset>false</reset>
-                    </seq_action>
-                    <seq_action>
-                        <one_time>true</one_time>
                         <action_type>SetEnemyHittable</action_type>
                         <entity_tag>-1</entity_tag>
                         <editor_id>
@@ -10605,7 +10588,7 @@
                     <loop_waypoints>false</loop_waypoints>
                     <start_time>3</start_time>
                     <quantize>1</quantize>
-                    <quantize_buffer>0.25</quantize_buffer>
+                    <quantize_buffer>0.5</quantize_buffer>
                     <waypoints>
                         <waypoint>
                             <wait_time>0</wait_time>
@@ -10645,6 +10628,15 @@
                         <entity_editor_id>
                             <id>346</id>
                         </entity_editor_id>
+                    </seq_action>
+                    <seq_action>
+                        <one_time>true</one_time>
+                        <action_type>AddToIntVariable</action_type>
+                        <var_editor_id>
+                            <id>275</id>
+                        </var_editor_id>
+                        <add_amount>-1</add_amount>
+                        <reset>false</reset>
                     </seq_action>
                 </actions>
                 <actions_on_exit/>
@@ -10692,7 +10684,7 @@
                     <loop_waypoints>false</loop_waypoints>
                     <start_time>3</start_time>
                     <quantize>1</quantize>
-                    <quantize_buffer>0.25</quantize_buffer>
+                    <quantize_buffer>0.5</quantize_buffer>
                     <waypoints>
                         <waypoint>
                             <wait_time>0</wait_time>
@@ -10732,6 +10724,15 @@
                         <entity_editor_id>
                             <id>347</id>
                         </entity_editor_id>
+                    </seq_action>
+                    <seq_action>
+                        <one_time>true</one_time>
+                        <action_type>AddToIntVariable</action_type>
+                        <var_editor_id>
+                            <id>275</id>
+                        </var_editor_id>
+                        <add_amount>-1</add_amount>
+                        <reset>false</reset>
                     </seq_action>
                 </actions>
                 <actions_on_exit/>
@@ -10993,7 +10994,7 @@
                     <loop_waypoints>false</loop_waypoints>
                     <start_time>3</start_time>
                     <quantize>1</quantize>
-                    <quantize_buffer>0.25</quantize_buffer>
+                    <quantize_buffer>0.5</quantize_buffer>
                     <waypoints>
                         <waypoint>
                             <wait_time>0</wait_time>
