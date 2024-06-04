@@ -858,6 +858,6 @@ void TriggerSeqAction::ExecuteDerived(GameManager& g) {
 void RespawnSeqAction::ExecuteDerived(GameManager& g) {
     if (ne::Entity* e = g._neEntityManager->GetFirstEntityOfType(ne::EntityType::FlowPlayer)) {
         FlowPlayerEntity* player = (FlowPlayerEntity*) e;
-        player->Respawn(g);
+        player->RespawnInstant(g);
     }
 }

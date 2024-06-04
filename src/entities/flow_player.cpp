@@ -15,6 +15,10 @@
 #include "entities/flow_wall.h"
 #include "entities/vfx.h"
 
+void FlowPlayerEntity::StartRespawn(GameManager& g) {
+    _s._respawnStartBeatTime = g._beatClock->GetBeatTimeFromEpoch(); 
+}
+
 void FlowPlayerEntity::SaveDerived(serial::Ptree pt) const {
     pt.PutFloat("launch_vel", _p._defaultLaunchVel);
     pt.PutFloat("max_horiz_speed_after_dash", _p._maxHorizSpeedAfterDash);
@@ -135,9 +139,54 @@ void DrawTicks(int activeCount, int totalCount, Transform const& renderTrans, fl
     }
 }
 
+void RespawnDraw(FlowPlayerEntity& e, GameManager& g) {
+    double beatTime = g._beatClock->GetBeatTimeFromEpoch();
+    double respawnTimeElapsed = beatTime - e._s._respawnStartBeatTime;
+    double explodeTime = 0.25;
+    float explodeFactor = (float)(respawnTimeElapsed / explodeTime);
+
+    float constexpr kOffsets[] = { -1.f, 1.f };
+    Quaternion explodeQ;
+    explodeQ.SetFromEulerAngles(Vec3(35.f, 0.f, 35.f) * kDeg2Rad);
+    
+    float kRotRadPerBeat = 2 * kPi / 8.f;
+    Quaternion dQ;
+    dQ.SetFromAngleAxis(kRotRadPerBeat * respawnTimeElapsed, Vec3(0.f, 0.f, 1.f));
+    explodeQ = dQ * explodeQ;
+
+    Mat3 R;
+    explodeQ.GetRotMat(R); 
+    float explodeInitialDist = e._transform.Scale()(0) * 0.25f;
+    float explodeMaxDist = explodeInitialDist * 4.f;
+    float explodeDist = math_util::Lerp(explodeInitialDist, explodeMaxDist, explodeFactor);
+    
+    Quaternion dQ2;
+    dQ2.SetFromAngleAxis(kRotRadPerBeat * 2.f * respawnTimeElapsed, Vec3(1.f, 0.f, 0.f));
+    for (int ii = 0; ii < 2; ++ii) {
+        for (int jj = 0; jj < 2; ++jj) {
+            for (int kk = 0; kk < 2; ++kk) {
+                Vec3 offset(kOffsets[ii], kOffsets[jj], kOffsets[kk]);
+                offset = R * offset;
+                offset *= explodeDist;
+                Transform t;
+                t.SetScale(e._transform.Scale() * 0.5f);
+                t.SetQuat(dQ2 * explodeQ);
+                t.SetPos(e._transform.Pos() + offset);
+                renderer::ModelInstance& model = g._scene->DrawCube(t.Mat4Scale(), e._s._currentColor);
+                model._topLayer = true;
+            }
+        }
+    }
+}
+
 }  // namespace
 
 void FlowPlayerEntity::Draw(GameManager& g, float const dt) {
+
+    if (_s._respawnStartBeatTime > 0.0) {
+        RespawnDraw(*this, g);
+        return;
+    }
     
     double const beatTime = g._beatClock->GetBeatTimeFromEpoch();
     if (_s._countOffEndTime >= 0.0 && beatTime < _s._countOffEndTime) {
@@ -145,7 +194,7 @@ void FlowPlayerEntity::Draw(GameManager& g, float const dt) {
         int numActive = (int)std::ceil(4 - timeLeft);
         numActive = std::max(0, numActive);
         DrawTicks(numActive, 4, _transform, 1.f, g); 
-    }
+    }    
 
     // Draw tail
     Mat4 tailTrans;
@@ -229,7 +278,7 @@ void FlowPlayerEntity::Draw(GameManager& g, float const dt) {
     }
 }
 
-void FlowPlayerEntity::Respawn(GameManager& g) {
+void FlowPlayerEntity::RespawnInstant(GameManager& g) {
     _transform.SetTranslation(_s._respawnPos);
     for (TailState& t : _s._tail) {
         t.p = _transform.Pos();
@@ -238,6 +287,7 @@ void FlowPlayerEntity::Respawn(GameManager& g) {
     _s._vel.Set(0.f,0.f,0.f);
     _s._dashTimer = -1.f;
     _s._respawnBeforeFirstInteract = true;
+    _s._respawnStartBeatTime = -1.0;
 
     // Reset everything from the current section
     for (ne::EntityManager::AllIterator iter = g._neEntityManager->GetAllIterator(); !iter.Finished(); iter.Next()) {
@@ -324,6 +374,18 @@ void FlowPlayerEntity::UpdateDerived(GameManager& g, float dt) {
     }
 
     double const beatTime = g._beatClock->GetBeatTimeFromEpoch();
+    if (_s._respawnStartBeatTime > 0.0) {
+        double respawnEndTime = g._beatClock->GetNextDownBeatTime(_s._respawnStartBeatTime + 2.0);
+        if (beatTime >= respawnEndTime) {
+            RespawnInstant(g);
+            return;
+        }
+
+        
+
+        return;
+    }
+
     if (_s._countOffEndTime >= 0.0 && beatTime < _s._countOffEndTime) {
         double unusedBeatNum;
         float beatTimeFrac = (float) (modf(beatTime, &unusedBeatNum));
@@ -727,15 +789,13 @@ void FlowPlayerEntity::UpdateDerived(GameManager& g, float dt) {
     // Check if we've hit a wall
     //
     // TODO: Should we run this after respawn logic?
-    bool respawned = false;
     {
         Vec3 penetration;
         FlowWallEntity* pHitWall = FindOverlapWithWall(g, _transform, &penetration);
         penetration._y = 0.f;
         if (pHitWall != nullptr) {
             if (pHitWall->_hurtOnHit) {
-                respawned = true;
-                Respawn(g);
+                StartRespawn(g);
             } else {
                 _s._moveState = MoveState::WallBounce;
                 _s._interactingEnemyId = ne::EntityId();
@@ -765,10 +825,7 @@ void FlowPlayerEntity::UpdateDerived(GameManager& g, float dt) {
             }
         }
     }
-
-    if (respawned) {
-        return;
-    }
+    
 
     // Update tail
     Vec3 desiredPos = _transform.Pos();
@@ -811,21 +868,19 @@ void FlowPlayerEntity::UpdateDerived(GameManager& g, float dt) {
     if (_s._killMaxZ.has_value()) {
         Vec3 p = _transform.Pos();
         if (p._z > _s._killMaxZ.value()) {
-            Respawn(g);
-            respawned = true;
+            StartRespawn(g);
+            return;
         }
     }
-    if (!respawned && (_s._killIfBelowCameraView || _s._killIfLeftOfCameraView)) {
+    if (_s._killIfBelowCameraView || _s._killIfLeftOfCameraView) {
         Vec3 p = _transform.Pos();
         float playerSize = _transform.Scale()._x;
         float screenX, screenY;
         geometry::ProjectWorldPointToScreenSpace(p, viewProjTransform, g._windowWidth, g._windowHeight, screenX, screenY);
         if (_s._killIfBelowCameraView && screenY > g._windowHeight + 4 * playerSize) {
-            Respawn(g);
-            respawned = true;
+            StartRespawn(g);
         } else if (_s._killIfLeftOfCameraView && screenX < -4 * playerSize) {
-            Respawn(g);
-            respawned = true;
+            StartRespawn(g);
         }
     }
 }

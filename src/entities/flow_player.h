@@ -81,10 +81,12 @@ struct FlowPlayerEntity : public ne::Entity {
         Vec3 _respawnPos;
 
         int _respawnLoopLength = 4;
+        double _respawnStartBeatTime = -1.0;
     };
     State _s;    
 
-    void Respawn(GameManager &g);
+    void RespawnInstant(GameManager &g);
+    void StartRespawn(GameManager& g);
     void SetNewSection(GameManager& g, int newSectionId);
     
     virtual void InitDerived(GameManager& g) override;
