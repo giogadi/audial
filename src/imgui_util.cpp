@@ -19,7 +19,11 @@ bool InputEditorId(char const* label, EditorId* v) {
 	} else {
 		ImGui::Text("<Entity not found>");
 	}
-    ne::Entity* newSelection = gGameManager._editor->ImGuiEntitySelector("Browse", "EntityPopup");
+    char buttonLabelBuffer[256];
+    char popupLabelBuffer[256];
+    snprintf(buttonLabelBuffer, 256, "Browse##%s", label);
+    snprintf(popupLabelBuffer, 256, "EntityPopup##%s", label);
+    ne::Entity* newSelection = gGameManager._editor->ImGuiEntitySelector(buttonLabelBuffer, popupLabelBuffer);
     ImGui::SameLine();
     if (e == nullptr) {
         ImGui::BeginDisabled(true);

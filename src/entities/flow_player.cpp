@@ -13,10 +13,14 @@
 
 #include "entities/flow_pickup.h"
 #include "entities/flow_wall.h"
+#include "entities/flow_trigger.h"
 #include "entities/vfx.h"
 
 void FlowPlayerEntity::StartRespawn(GameManager& g) {
     _s._respawnStartBeatTime = g._beatClock->GetBeatTimeFromEpoch(); 
+    if (FlowTriggerEntity* e = g._neEntityManager->GetEntityAs<FlowTriggerEntity>(_s._deathStartTrigger)) {
+        e->OnTrigger(g);
+    }
 }
 
 void FlowPlayerEntity::SaveDerived(serial::Ptree pt) const {
@@ -29,6 +33,9 @@ void FlowPlayerEntity::SaveDerived(serial::Ptree pt) const {
     pt.PutFloat("max_fall_speed", _p._maxFallSpeed);
     pt.PutBool("pull_manual_hold", _p._pullManualHold);
     pt.PutFloat("pull_stop_time", _p._pullStopTime);
+    serial::SaveInNewChildOf(pt, "death_start_trigger", _p._deathStartTriggerEditorId); 
+    serial::SaveInNewChildOf(pt, "death_end_trigger", _p._deathEndTriggerEditorId); 
+
 }
 
 void FlowPlayerEntity::LoadDerived(serial::Ptree pt) {
@@ -42,6 +49,8 @@ void FlowPlayerEntity::LoadDerived(serial::Ptree pt) {
     pt.TryGetFloat("max_fall_speed", &_p._maxFallSpeed);
     pt.TryGetBool("pull_manual_hold", &_p._pullManualHold);
     pt.TryGetFloat("pull_stop_time", &_p._pullStopTime);
+    serial::LoadFromChildOf(pt, "death_start_trigger", _p._deathStartTriggerEditorId);
+    serial::LoadFromChildOf(pt, "death_end_trigger", _p._deathEndTriggerEditorId);
 }
 
 ne::BaseEntity::ImGuiResult FlowPlayerEntity::ImGuiDerived(GameManager& g) {
@@ -56,6 +65,8 @@ ne::BaseEntity::ImGuiResult FlowPlayerEntity::ImGuiDerived(GameManager& g) {
     ImGui::InputFloat("Max fall speed", &_p._maxFallSpeed);
     ImGui::Checkbox("Pull manual hold", &_p._pullManualHold);
     ImGui::InputFloat("Pull stop time", &_p._pullStopTime);
+    imgui_util::InputEditorId("Death Start trigger", &_p._deathStartTriggerEditorId);
+    imgui_util::InputEditorId("Death end trigger", &_p._deathEndTriggerEditorId); 
 
     return result;
 }
@@ -76,6 +87,13 @@ void FlowPlayerEntity::InitDerived(GameManager& g) {
     int constexpr kTailLength = 4;
     for (int ii = 0; ii < kTailLength; ++ii) {
         _s._tail.push_back({_transform.Pos(), Vec3()});
+    }
+
+    if (ne::Entity* e = g._neEntityManager->FindEntityByEditorIdAndType(_p._deathStartTriggerEditorId, ne::EntityType::FlowTrigger)) {
+        _s._deathStartTrigger = e->_id;
+    }
+    if (ne::Entity* e = g._neEntityManager->FindEntityByEditorIdAndType(_p._deathEndTriggerEditorId, ne::EntityType::FlowTrigger)) {
+        _s._deathEndTrigger = e->_id;
     }
 }
 
@@ -142,26 +160,37 @@ void DrawTicks(int activeCount, int totalCount, Transform const& renderTrans, fl
 void RespawnDraw(FlowPlayerEntity& e, GameManager& g) {
     double beatTime = g._beatClock->GetBeatTimeFromEpoch();
     double respawnTimeElapsed = beatTime - e._s._respawnStartBeatTime;
-    double explodeTime = 0.25;
-    float explodeFactor = (float)(respawnTimeElapsed / explodeTime);
+    double explodeStart = 0.5;
+    double explodeTime = 2.5;
+    float explodeFactor = (float)((respawnTimeElapsed - explodeStart) / explodeTime);
+    Vec3 center = e._transform.Pos();
+    if (explodeFactor > 0.5f) {
+        // [0.5,1] --> [0,1]
+        float moveFactor = explodeFactor * 2.f - 1.f;
+        moveFactor = math_util::SmoothStep(moveFactor);
+        center = math_util::Vec3Lerp(moveFactor, center, e._s._respawnPos);
+    }
+    explodeFactor = math_util::SmoothUpAndDown(explodeFactor);
 
     float constexpr kOffsets[] = { -1.f, 1.f };
     Quaternion explodeQ;
     explodeQ.SetFromEulerAngles(Vec3(35.f, 0.f, 35.f) * kDeg2Rad);
     
-    float kRotRadPerBeat = 2 * kPi / 8.f;
+    float constexpr kInitRadPerBeat = 2 * kPi / 8.f;
+    float constexpr kRotAccel = 4.f;
+    float rot = 0.f + kInitRadPerBeat*respawnTimeElapsed + 0.5f*kRotAccel*respawnTimeElapsed*respawnTimeElapsed;
     Quaternion dQ;
-    dQ.SetFromAngleAxis(kRotRadPerBeat * respawnTimeElapsed, Vec3(0.f, 0.f, 1.f));
+    dQ.SetFromAngleAxis(rot, Vec3(0.f, 0.f, 1.f));
     explodeQ = dQ * explodeQ;
 
     Mat3 R;
     explodeQ.GetRotMat(R); 
     float explodeInitialDist = e._transform.Scale()(0) * 0.25f;
-    float explodeMaxDist = explodeInitialDist * 4.f;
+    float explodeMaxDist = 2.f;
     float explodeDist = math_util::Lerp(explodeInitialDist, explodeMaxDist, explodeFactor);
     
     Quaternion dQ2;
-    dQ2.SetFromAngleAxis(kRotRadPerBeat * 2.f * respawnTimeElapsed, Vec3(1.f, 0.f, 0.f));
+    //dQ2.SetFromAngleAxis(kRotRadPerBeat * 2.f * respawnTimeElapsed, Vec3(1.f, 0.f, 0.f));
     for (int ii = 0; ii < 2; ++ii) {
         for (int jj = 0; jj < 2; ++jj) {
             for (int kk = 0; kk < 2; ++kk) {
@@ -171,7 +200,7 @@ void RespawnDraw(FlowPlayerEntity& e, GameManager& g) {
                 Transform t;
                 t.SetScale(e._transform.Scale() * 0.5f);
                 t.SetQuat(dQ2 * explodeQ);
-                t.SetPos(e._transform.Pos() + offset);
+                t.SetPos(center + offset);
                 renderer::ModelInstance& model = g._scene->DrawCube(t.Mat4Scale(), e._s._currentColor);
                 model._topLayer = true;
             }
@@ -320,11 +349,14 @@ void FlowPlayerEntity::RespawnInstant(GameManager& g) {
     }
 
     double beatTime = g._beatClock->GetBeatTimeFromEpoch();
+#if 0
     _s._countOffEndTime = BeatClock::GetNextBeatDenomTime(beatTime, _s._respawnLoopLength);
     int minCountOffTime = 3;
     if (_s._countOffEndTime - beatTime < minCountOffTime) {
         _s._countOffEndTime += _s._respawnLoopLength;
     }
+#endif
+    _s._countOffEndTime = BeatClock::GetNextBeatDenomTime(beatTime + 4.0, 1.0);
 }
 
 void FlowPlayerEntity::SetNewSection(GameManager& g, int newSectionId) {
@@ -375,8 +407,12 @@ void FlowPlayerEntity::UpdateDerived(GameManager& g, float dt) {
 
     double const beatTime = g._beatClock->GetBeatTimeFromEpoch();
     if (_s._respawnStartBeatTime > 0.0) {
-        double respawnEndTime = g._beatClock->GetNextDownBeatTime(_s._respawnStartBeatTime + 2.0);
+        //double respawnEndTime = g._beatClock->GetNextDownBeatTime(_s._respawnStartBeatTime + 4.0);
+        double respawnEndTime = _s._respawnStartBeatTime + 3.5;
         if (beatTime >= respawnEndTime) {
+            if (FlowTriggerEntity* e = g._neEntityManager->GetEntityAs<FlowTriggerEntity>(_s._deathEndTrigger)) {
+                e->OnTrigger(g);
+            }
             RespawnInstant(g);
             return;
         }

@@ -24,6 +24,8 @@ struct FlowPlayerEntity : public ne::Entity {
         float _maxFallSpeed = 10.f;
         bool _pullManualHold = false;
         float _pullStopTime = 0.5f;
+        EditorId _deathStartTriggerEditorId;
+        EditorId _deathEndTriggerEditorId;
     };
     Props _p;
 
@@ -80,8 +82,11 @@ struct FlowPlayerEntity : public ne::Entity {
         ne::EntityId _toActivateOnRespawn;
         Vec3 _respawnPos;
 
-        int _respawnLoopLength = 4;
+        int _respawnLoopLength = 1;
         double _respawnStartBeatTime = -1.0;
+
+        ne::EntityId _deathStartTrigger;
+        ne::EntityId _deathEndTrigger;
     };
     State _s;    
 
