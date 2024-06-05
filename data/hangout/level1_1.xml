@@ -3497,6 +3497,25 @@
                         <add_amount>-1</add_amount>
                         <reset>false</reset>
                     </seq_action>
+                    <seq_action>
+                        <one_time>true</one_time>
+                        <action_type>ChangePatch</action_type>
+                        <channel>0</channel>
+                        <blend_beat_time>6</blend_beat_time>
+                        <use_patch_bank>true</use_patch_bank>
+                        <patch_name>bass_little_more</patch_name>
+                    </seq_action>
+                    <seq_action>
+                        <one_time>true</one_time>
+                        <action_type>SetEntityActive</action_type>
+                        <entities_tag>-1</entities_tag>
+                        <entity_editor_id>
+                            <id>3</id>
+                        </entity_editor_id>
+                        <active>false</active>
+                        <init_on_activate>true</init_on_activate>
+                        <init_if_already_active>false</init_if_already_active>
+                    </seq_action>
                 </actions>
                 <actions_on_exit/>
                 <trigger_volume_entities/>
@@ -4470,14 +4489,6 @@
                 <use_trigger_volumes>false</use_trigger_volumes>
                 <random_action_count>-1</random_action_count>
                 <actions>
-                    <seq_action>
-                        <one_time>true</one_time>
-                        <action_type>ChangePatch</action_type>
-                        <channel>0</channel>
-                        <blend_beat_time>0.5</blend_beat_time>
-                        <use_patch_bank>true</use_patch_bank>
-                        <patch_name>bass0</patch_name>
-                    </seq_action>
                     <seq_action>
                         <one_time>true</one_time>
                         <action_type>SetEntityActive</action_type>
@@ -10730,15 +10741,6 @@
                         <entity_editor_id>
                             <id>347</id>
                         </entity_editor_id>
-                    </seq_action>
-                    <seq_action>
-                        <one_time>true</one_time>
-                        <action_type>AddToIntVariable</action_type>
-                        <var_editor_id>
-                            <id>275</id>
-                        </var_editor_id>
-                        <add_amount>-1</add_amount>
-                        <reset>false</reset>
                     </seq_action>
                 </actions>
                 <actions_on_exit/>
