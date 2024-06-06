@@ -217,13 +217,15 @@ void FlowPlayerEntity::Draw(GameManager& g, float const dt) {
         return;
     }
     
-    double const beatTime = g._beatClock->GetBeatTimeFromEpoch();
-    if (_s._countOffEndTime >= 0.0 && beatTime < _s._countOffEndTime) {
-        double timeLeft = _s._countOffEndTime - beatTime;
-        int numActive = (int)std::ceil(4 - timeLeft);
-        numActive = std::max(0, numActive);
-        DrawTicks(numActive, 4, _transform, 1.f, g); 
-    }    
+    if (_s._moveState == MoveState::Default) {
+        double const beatTime = g._beatClock->GetBeatTimeFromEpoch();
+        if (_s._countOffEndTime >= 0.0 && beatTime < _s._countOffEndTime) {
+            double timeLeft = _s._countOffEndTime - beatTime;
+            int numActive = (int)std::ceil(4 - timeLeft);
+            numActive = std::max(0, numActive);
+            DrawTicks(numActive, 4, _transform, 1.f, g); 
+        }
+    } 
 
     // Draw tail
     Mat4 tailTrans;
@@ -313,6 +315,7 @@ void FlowPlayerEntity::RespawnInstant(GameManager& g) {
         t.p = _transform.Pos();
         t.v = Vec3();
     }
+    _s._moveState = MoveState::Default;
     _s._vel.Set(0.f,0.f,0.f);
     _s._dashTimer = -1.f;
     _s._respawnBeforeFirstInteract = true;
@@ -830,12 +833,12 @@ void FlowPlayerEntity::UpdateDerived(GameManager& g, float dt) {
         FlowWallEntity* pHitWall = FindOverlapWithWall(g, _transform, &penetration);
         penetration._y = 0.f;
         if (pHitWall != nullptr) {
+            pHitWall->OnHit(g, -penetration.GetNormalized());
             if (pHitWall->_hurtOnHit) {
                 StartRespawn(g);
             } else {
                 _s._moveState = MoveState::WallBounce;
                 _s._interactingEnemyId = ne::EntityId();
-                pHitWall->OnHit(g, -penetration.GetNormalized());
                 newPos += penetration * 1.1f;  // Add some padding to ensure we're outta collision
                 Vec3 collNormal = penetration.GetNormalized();
                 Vec3 newVel = -_s._vel;

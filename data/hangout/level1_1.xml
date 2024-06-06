@@ -4740,7 +4740,7 @@
                 <pickable>true</pickable>
                 <transform>
                     <pos>
-                        <x>-5.61250019</x>
+                        <x>-5.66458368</x>
                         <y>0</y>
                         <z>9.25277328</z>
                     </pos>
@@ -4844,7 +4844,7 @@
                 <pickable>true</pickable>
                 <transform>
                     <pos>
-                        <x>5.67013979</x>
+                        <x>5.9305563</x>
                         <y>0</y>
                         <z>9.23958206</z>
                     </pos>
@@ -4948,7 +4948,7 @@
                 <pickable>true</pickable>
                 <transform>
                     <pos>
-                        <x>0.000676631927</x>
+                        <x>0.174287796</x>
                         <y>0.5</y>
                         <z>10.6058121</z>
                     </pos>
@@ -5234,9 +5234,9 @@
                 <pickable>true</pickable>
                 <transform>
                     <pos>
-                        <x>-5.89027691</x>
+                        <x>1.76597309</x>
                         <y>0</y>
-                        <z>11.8916616</z>
+                        <z>11.978467</z>
                     </pos>
                     <quat>
                         <x>0</x>
@@ -5338,9 +5338,9 @@
                 <pickable>true</pickable>
                 <transform>
                     <pos>
-                        <x>5.73958302</x>
+                        <x>13.291666</x>
                         <y>0</y>
-                        <z>11.8958321</z>
+                        <z>11.9826374</z>
                     </pos>
                     <quat>
                         <x>0</x>
@@ -5442,7 +5442,7 @@
                 <pickable>true</pickable>
                 <transform>
                     <pos>
-                        <x>7.8305378</x>
+                        <x>7.57012129</x>
                         <y>0.5</y>
                         <z>13.3662291</z>
                     </pos>
