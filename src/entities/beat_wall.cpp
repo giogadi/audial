@@ -6,6 +6,7 @@
 #include "beat_clock.h"
 #include "flow_wall.h"
 #include "math_util.h"
+#include "serial_enum.h"
 
 void BeatWallEntity::SaveDerived(serial::Ptree pt) const {
     pt.PutFloat("spacing", _p.spacing);

@@ -4,6 +4,8 @@
 
 #include "imgui_util.h"
 
+#include "serial_enum.h"
+
 
 
 void CameraControlSeqActionProps::Load(serial::Ptree pt) {

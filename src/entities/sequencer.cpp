@@ -4,6 +4,7 @@
 
 #include "game_manager.h"
 #include "audio.h"
+#include "imgui_vector_util.h"
 
 namespace {
 
@@ -115,6 +116,7 @@ void SequencerEntity::LoadDerived(serial::Ptree pt) {
 }
 
 ne::Entity::ImGuiResult SequencerEntity::ImGuiDerived(GameManager& g) {
+    ImGuiResult result = ImGuiResult::Done;
     ImGui::Checkbox("Loop", &_loop);
     ImGui::InputDouble("Start beat time", &_startBeatTime);
     ImGui::InputDouble("Start quantize", &_startTimeQuantize);
@@ -129,6 +131,7 @@ ne::Entity::ImGuiResult SequencerEntity::ImGuiDerived(GameManager& g) {
             _playing = true;
         }
     }
+#if 0
     ImGui::InputTextMultiline("Audio events", gAudioEventScriptBuf.data(), gAudioEventScriptBuf.size());
     if (ImGui::Button("Apply Script to Entity")) {
         ReadBeatEventsFromScript(_events, *g._soundBank, gAudioEventScriptBuf.data(), gAudioEventScriptBuf.size());
@@ -136,5 +139,15 @@ ne::Entity::ImGuiResult SequencerEntity::ImGuiDerived(GameManager& g) {
     if (ImGui::Button("Apply Entity to Script")) {
         WriteBeatEventsToScript(_events, *g._soundBank, gAudioEventScriptBuf.data(), gAudioEventScriptBuf.size());
     }
+#endif
+
+    imgui_util::InputVectorOptions options {
+        .treePerItem = true,
+        .removeOnSameLine = false
+    };
+    if (imgui_util::InputVector(_events, options)) {
+        result = ImGuiResult::NeedsInit; 
+    }
+
     return ImGuiResult::Done;
 }

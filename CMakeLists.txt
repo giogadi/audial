@@ -52,7 +52,7 @@ add_executable(game
 
     src/filter.cpp
 
-    src/serial.cpp src/serial.h
+    src/serial.cpp src/serial.h src/serial_enum.h
     src/serial_vector_util.h
     src/rng.cpp src/rng.h
     src/game.cpp

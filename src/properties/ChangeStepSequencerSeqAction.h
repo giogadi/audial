@@ -1,9 +1,9 @@
 #pragma once
 
 
-#include <vector>
-
 #include "properties/MidiNoteAndName.h"
+
+#include <vector>
 
 #include "editor_id.h"
 

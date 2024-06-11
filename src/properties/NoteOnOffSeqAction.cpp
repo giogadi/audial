@@ -4,6 +4,8 @@
 
 #include "imgui_util.h"
 
+#include "serial_enum.h"
+
 
 #include "imgui_vector_util.h"
 
@@ -55,7 +57,7 @@ bool NoteOnOffSeqActionProps::ImGui() {
     }
     
     {
-        bool thisChanged = imgui_util::InputVector(_midiNotes, true);
+        bool thisChanged = imgui_util::InputVector(_midiNotes, imgui_util::InputVectorOptions { .removeOnSameLine = true });
         changed = changed || thisChanged;
     }
     

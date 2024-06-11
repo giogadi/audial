@@ -1,11 +1,11 @@
 #pragma once
 
 
+#include "enums/SeqActionType.h"
+
 #include <vector>
 
 #include "matrix.h"
-
-#include "enums/SeqActionType.h"
 
 
 #include "serial.h"

@@ -98,23 +98,6 @@ inline bool LoadFromChildOf(Ptree pt, char const* childName, T& v) {
     }
 }
 
-template <typename E>
-inline void PutEnum(Ptree pt, char const* name, E const v) {
-    char const* vStr = EnumToString(v);
-    pt.PutString(name, vStr);
-}
-
-template <typename E>
-inline bool TryGetEnum(Ptree pt, char const* name, E& v) {
-    std::string vStr;
-    bool found = pt.TryGetString(name, &vStr);
-    if (!found) {
-        return false;
-    }
-    StringToEnum(vStr.c_str(), v);
-    return true;
-}
-
 template <typename T>
 inline bool SaveToFile(char const* filename, char const* rootName, T const& v) {
     serial::Ptree pt = serial::Ptree::MakeNew();

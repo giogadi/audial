@@ -4,6 +4,8 @@
 
 #include "imgui_util.h"
 
+#include "serial_enum.h"
+
 
 
 void VfxEntityProps::Load(serial::Ptree pt) {

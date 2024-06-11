@@ -4,10 +4,12 @@
 
 #include "imgui_util.h"
 
+#include "serial_enum.h"
 
-#include "serial_vector_util.h"
 
 #include "imgui_vector_util.h"
+
+#include "serial_vector_util.h"
 
 
 void SetAllStepsSeqActionProps::Load(serial::Ptree pt) {
@@ -48,7 +50,7 @@ bool SetAllStepsSeqActionProps::ImGui() {
     }
     
     {
-        bool thisChanged = imgui_util::InputVector(_midiNotes, true);
+        bool thisChanged = imgui_util::InputVector(_midiNotes, imgui_util::InputVectorOptions { .removeOnSameLine = true });
         changed = changed || thisChanged;
     }
     

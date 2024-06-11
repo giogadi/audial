@@ -125,7 +125,7 @@ bool WaypointFollower::Props::ImGui() {
             _waypoints = sClipboardWaypoints;
             changed = true;
         }
-        changed = imgui_util::InputVector(_waypoints) || changed;
+        changed = imgui_util::InputVector(_waypoints, imgui_util::InputVectorOptions()) || changed;
         break;
     }
     case Props::Mode::FollowEntity: {

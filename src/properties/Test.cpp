@@ -4,10 +4,12 @@
 
 #include "imgui_util.h"
 
+#include "serial_enum.h"
 
-#include "serial_vector_util.h"
 
 #include "imgui_vector_util.h"
+
+#include "serial_vector_util.h"
 
 
 void TestProps::Load(serial::Ptree pt) {

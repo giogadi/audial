@@ -47,26 +47,46 @@ inline bool ImGuiElement<EditorId>(EditorId& v) {
     return imgui_util::InputEditorId("", &v);
 }
 
+struct InputVectorOptions {
+    bool treePerItem = false;
+    bool removeOnSameLine = false;
+};
+
 template <typename T>
-inline bool InputVector(std::vector<T>& v, bool removeOnSameLine = false) {
+inline bool InputVector(std::vector<T>& v, InputVectorOptions options = InputVectorOptions()) {
     bool changed = false;
     if (ImGui::Button("Add")) {
         v.emplace_back();
         changed = true;
     }
     int deleteIx = -1;
+    char labelBuf[32];
     for (int i = 0, n = v.size(); i < n; ++i) {
-        ImGui::PushID(i);
-        bool thisChanged = ImGuiElement(v[i]);
-        changed = changed || thisChanged;
-        if (removeOnSameLine) {
-            ImGui::SameLine();
+        sprintf(labelBuf, "Item %d", i);
+        bool treePushed = false;
+        if (options.treePerItem) {
+            treePushed = ImGui::TreeNode(labelBuf);
+        } else {
+            ImGui::PushID(labelBuf);
         }
-        if (ImGui::Button("Remove")) {
-            deleteIx = i;
-            changed = true;
+        if (!options.treePerItem || treePushed) {
+            bool thisChanged = ImGuiElement(v[i]);
+            changed = changed || thisChanged;
+            if (options.removeOnSameLine) {
+                ImGui::SameLine();
+            }
+            if (ImGui::Button("Remove")) {
+                deleteIx = i;
+                changed = true;
+            }
         }
-        ImGui::PopID();
+        if (options.treePerItem) {
+            if (treePushed) {
+                ImGui::TreePop();
+            }
+        } else {
+            ImGui::PopID();
+        } 
     }
 
     if (deleteIx >= 0) {

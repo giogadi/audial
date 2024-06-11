@@ -11,6 +11,7 @@
 #include "seq_actions/vfx_pulse.h"
 #include "seq_actions/set_enemy_hittable.h"
 #include "imgui_util.h"
+#include "serial_enum.h"
 
 void SeqAction::Save(serial::Ptree pt) const {
     pt.PutBool("one_time", _oneTime);

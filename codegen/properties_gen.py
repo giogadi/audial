@@ -42,7 +42,7 @@ def getProp(propName, propType, isArray, enumType, maybeNamespace, maybeDefault,
         outProp['load'] = 'serial::LoadVectorFromChildNode<{cppTypeName}>(pt, \"{name}\", _{name});'.format(cppTypeName = cppTypeName, name = propName)
         outProp['save'] = 'serial::SaveVectorInChildNode<{cppTypeName}>(pt, \"{name}\", \"array_item\", _{name});'.format(cppTypeName = cppTypeName, name = propName)
         if propType == 'MidiNoteAndName':
-            imGuiStr = 'imgui_util::InputVector(_{name}, true);'.format(name = propName)
+            imGuiStr = 'imgui_util::InputVector(_{name}, imgui_util::InputVectorOptions {{ .removeOnSameLine = true }});'.format(name = propName)
         else:
             imGuiStr = 'imgui_util::InputVector(_{name});'.format(name = propName)
         outProp['header_includes'].append('<vector>')

@@ -4,6 +4,8 @@
 
 #include "imgui_util.h"
 
+#include "serial_enum.h"
+
 
 
 void VfxPulseSeqActionProps::Load(serial::Ptree pt) {
