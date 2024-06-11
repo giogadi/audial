@@ -227,17 +227,18 @@ void StepSequencerEntity::EnqueueChange(SeqStepChange const& change) {
 
 
 void StepSequencerEntity::SetNextSeqStep(GameManager& g, SeqStep step, StepSaveType saveType) {
-    // BeatClock const& beatClock = *g._beatClock;
-    // double const beatTime = beatClock.GetBeatTimeFromEpoch();
-    // double nextStepBeatTime = _loopStartBeatTime + _currentIx * _stepBeatLength;
-    // if (nextStepBeatTime - beatTime > 0.75 * _stepBeatLength) {
-    //     // If this happens, just cancel the other note being played.
-    //     if (_currentIx > 0) {
-    //         // Shut off other sound now!!
-    //         --_currentIx;            
-    //     }
-    // }
-    // _midiSequence[_currentIx] = midiNote;
+#if 0
+    if (_changeQueueCount == 0 && saveType == StepSaveType::Temporary && _quantizeTempStepChanges) {
+        double nextStepBeatTime = _loopStartBeatTime + _currentIx * _stepBeatLength;
+        double beatTime = gGameManager._beatClock->GetBeatTimeFromEpoch();
+        double timeSinceLastNote = beatTime - _lastPlayedNoteTime;
+        if (timeSinceLastNote > 0.75*_stepBeatLength && (nextStepBeatTime > beatTime && nextStepBeatTime - beatTime > (0.75 * _stepBeatLength))) {
+            PlayStep(gGameManager, step);
+            return;
+        }
+    }
+#endif
+
     SeqStepChange change;
     change._step = step;
     switch (saveType) {
@@ -321,6 +322,7 @@ void StepSequencerEntity::InitDerived(GameManager& g) {
 }
 
 void StepSequencerEntity::PlayStep(GameManager& g, SeqStep const& seqStep) {
+    _lastPlayedNoteTime = g._beatClock->GetBeatTimeFromEpoch();
     int numVoices = seqStep._midiNote.size();
     if (_maxNumVoices >= 0) {
         numVoices = std::min(numVoices, _maxNumVoices);
@@ -377,6 +379,7 @@ void StepSequencerEntity::UpdateDerived(GameManager& g, float dt) {
     double const beatTime = beatClock.GetBeatTimeFromEpoch();
 
     if (_seqNeedsReset) {
+        _lastPlayedNoteTime = 0.0;
         _loopStartBeatTime = g._beatClock->GetNextDownBeatTime(beatTime);
         _changeQueueHeadIx = 0;
         _changeQueueTailIx = 0;
@@ -447,8 +450,12 @@ void StepSequencerEntity::SaveDerived(serial::Ptree pt) const {
             if (noteIx > 0) {
                 seqSs << ",";
             }
-            GetNoteName(s._midiNote[noteIx], noteName);
-            seqSs << "m" << noteName;
+            if (_isSynth) {
+                GetNoteName(s._midiNote[noteIx], noteName);
+                seqSs << "m" << noteName;
+            } else {
+                seqSs << s._midiNote[noteIx];
+            }
         }
         seqSs << ":" << s._velocity;
     }

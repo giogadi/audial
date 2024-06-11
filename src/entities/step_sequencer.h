@@ -38,7 +38,7 @@ struct StepSequencerEntity : ne::Entity {
     float _initGain = 1.f;
     bool _quantizeTempStepChanges = true;
 
-    static int constexpr kChangeQueueSize = 2;
+    static int constexpr kChangeQueueSize = 3;
 
     // non-serialized
     bool _mute = false;
@@ -53,6 +53,7 @@ struct StepSequencerEntity : ne::Entity {
     int _maxNumVoices = -1;
     float _gain = 1.f;
     bool _seqNeedsReset = true;
+    double _lastPlayedNoteTime = 0.0;
 
     enum StepSaveType { Temporary, Permanent };
     void SetNextSeqStep(GameManager& g, SeqStep step, StepSaveType saveType);
