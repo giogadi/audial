@@ -5,15 +5,15 @@
         <patch>
             <name>bass0</name>
             <patch>
-                <Gain>0.970000029</Gain>
+                <Gain>1</Gain>
                 <Mono>1</Mono>
                 <Osc1Waveform>Square</Osc1Waveform>
                 <Osc2Waveform>Saw</Osc2Waveform>
-                <Detune>0.991999984</Detune>
+                <Detune>0.0130000003</Detune>
                 <OscFader>0</OscFader>
                 <Cutoff>610.169006</Cutoff>
                 <Peak>0</Peak>
-                <HpfCutoff>0</HpfCutoff>
+                <HpfCutoff>560.593018</HpfCutoff>
                 <HpfPeak>0</HpfPeak>
                 <Portamento>0</Portamento>
                 <PitchLFOGain>0</PitchLFOGain>
@@ -209,15 +209,15 @@
         <patch>
             <name>bass1</name>
             <patch>
-                <Gain>0.736999989</Gain>
+                <Gain>0.66900003</Gain>
                 <Mono>1</Mono>
                 <Osc1Waveform>Square</Osc1Waveform>
                 <Osc2Waveform>Saw</Osc2Waveform>
-                <Detune>0.991999984</Detune>
+                <Detune>0.0130000003</Detune>
                 <OscFader>0.504000008</OscFader>
                 <Cutoff>610.169006</Cutoff>
-                <Peak>2.45799994</Peak>
-                <HpfCutoff>0</HpfCutoff>
+                <Peak>2.92400002</Peak>
+                <HpfCutoff>560.593018</HpfCutoff>
                 <HpfPeak>0</HpfPeak>
                 <Portamento>0</Portamento>
                 <PitchLFOGain>0</PitchLFOGain>
@@ -230,8 +230,8 @@
                 <AmpEnvRelease>2.2249999</AmpEnvRelease>
                 <CutoffEnvGain>8782.62695</CutoffEnvGain>
                 <CutoffEnvAttack>0</CutoffEnvAttack>
-                <CutoffEnvDecay>0.572000027</CutoffEnvDecay>
-                <CutoffEnvSustain>0.148000002</CutoffEnvSustain>
+                <CutoffEnvDecay>0.232999995</CutoffEnvDecay>
+                <CutoffEnvSustain>1</CutoffEnvSustain>
                 <CutoffEnvRelease>0.492000014</CutoffEnvRelease>
                 <PitchEnvGain>0</PitchEnvGain>
                 <PitchEnvAttack>0</PitchEnvAttack>
@@ -383,11 +383,11 @@
                 <Mono>1</Mono>
                 <Osc1Waveform>Square</Osc1Waveform>
                 <Osc2Waveform>Saw</Osc2Waveform>
-                <Detune>0.991999984</Detune>
+                <Detune>0.0130000003</Detune>
                 <OscFader>0</OscFader>
                 <Cutoff>610.169006</Cutoff>
                 <Peak>0</Peak>
-                <HpfCutoff>0</HpfCutoff>
+                <HpfCutoff>560.593018</HpfCutoff>
                 <HpfPeak>0</HpfPeak>
                 <Portamento>0</Portamento>
                 <PitchLFOGain>0</PitchLFOGain>

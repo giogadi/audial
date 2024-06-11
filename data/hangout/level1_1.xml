@@ -255,7 +255,7 @@
                         <id>-1</id>
                     </follow_entity_editor_id>
                 </waypoint_follower>
-                <sequence>19:1 -1:1 -1:1 -1:1 19:1 -1:1 -1:1 -1:1 19:1 -1:1 -1:1 -1:1 19:1 -1:1 -1:1 -1:1</sequence>
+                <sequence>19:1 -1:1 -1:1 -1:1</sequence>
                 <start_mute>false</start_mute>
                 <gain>0.75</gain>
                 <channels/>
@@ -3370,7 +3370,7 @@
                         <id>-1</id>
                     </follow_entity_editor_id>
                 </waypoint_follower>
-                <initial_value>4</initial_value>
+                <initial_value>3</initial_value>
                 <draw_counter>false</draw_counter>
                 <draw_horizontal>false</draw_horizontal>
                 <cell_width>0.25</cell_width>
@@ -3378,7 +3378,7 @@
                 <synth_patch_channel>0</synth_patch_channel>
                 <start_patch>bass0</start_patch>
                 <end_patch>bass1</end_patch>
-                <blend_time>0.5</blend_time>
+                <blend_time>1</blend_time>
                 <actions/>
             </IntVariable>
             <FlowTrigger>
@@ -3490,31 +3490,11 @@
                     </seq_action>
                     <seq_action>
                         <one_time>true</one_time>
-                        <action_type>AddToIntVariable</action_type>
-                        <var_editor_id>
-                            <id>275</id>
-                        </var_editor_id>
-                        <add_amount>-1</add_amount>
-                        <reset>false</reset>
-                    </seq_action>
-                    <seq_action>
-                        <one_time>true</one_time>
                         <action_type>ChangePatch</action_type>
                         <channel>0</channel>
                         <blend_beat_time>6</blend_beat_time>
                         <use_patch_bank>true</use_patch_bank>
                         <patch_name>bass_little_more</patch_name>
-                    </seq_action>
-                    <seq_action>
-                        <one_time>true</one_time>
-                        <action_type>SetEntityActive</action_type>
-                        <entities_tag>-1</entities_tag>
-                        <entity_editor_id>
-                            <id>3</id>
-                        </entity_editor_id>
-                        <active>false</active>
-                        <init_on_activate>true</init_on_activate>
-                        <init_if_already_active>false</init_if_already_active>
                     </seq_action>
                 </actions>
                 <actions_on_exit/>
@@ -5169,7 +5149,7 @@
                     <id>291</id>
                 </editor_id>
                 <name>perc_seq</name>
-                <entity_active>false</entity_active>
+                <entity_active>true</entity_active>
                 <pickable>false</pickable>
                 <transform>
                     <pos>
@@ -5213,7 +5193,7 @@
                         <id>-1</id>
                     </follow_entity_editor_id>
                 </waypoint_follower>
-                <sequence>-1:1 -1:1 30:1 30:1 30:1 30:1 -1:1 30:1 -1:1 30:1 -1:1 30:1 30:1 -1:1 30:1 -1:1</sequence>
+                <sequence>-1:0.4 -1:0.4 30:0.4 30:0.4 30:0.4 30:0.4 -1:0.4 30:0.4 -1:0.4 30:0.4 -1:0.4 30:0.4 30:0.4 -1:0.4 30:0.4 -1:0.4</sequence>
                 <start_mute>false</start_mute>
                 <gain>0.349999994</gain>
                 <channels/>
@@ -5221,7 +5201,7 @@
                 <note_length>0.25</note_length>
                 <start_time>4</start_time>
                 <is_synth>false</is_synth>
-                <editor_mute>false</editor_mute>
+                <editor_mute>true</editor_mute>
                 <max_voices>-1</max_voices>
                 <quantize_temp_changes>true</quantize_temp_changes>
             </StepSequencer>
@@ -10654,6 +10634,17 @@
                         </var_editor_id>
                         <add_amount>-1</add_amount>
                         <reset>false</reset>
+                    </seq_action>
+                    <seq_action>
+                        <one_time>true</one_time>
+                        <action_type>SetEntityActive</action_type>
+                        <entities_tag>-1</entities_tag>
+                        <entity_editor_id>
+                            <id>3</id>
+                        </entity_editor_id>
+                        <active>false</active>
+                        <init_on_activate>true</init_on_activate>
+                        <init_if_already_active>false</init_if_already_active>
                     </seq_action>
                 </actions>
                 <actions_on_exit/>
