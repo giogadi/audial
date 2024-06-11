@@ -18,6 +18,7 @@
 
 void FlowPlayerEntity::StartRespawn(GameManager& g) {
     _s._respawnStartBeatTime = g._beatClock->GetBeatTimeFromEpoch(); 
+    _s._respawnHasResetScene = false;
     if (FlowTriggerEntity* e = g._neEntityManager->GetEntityAs<FlowTriggerEntity>(_s._deathStartTrigger)) {
         e->OnTrigger(g);
     }
@@ -208,6 +209,62 @@ void RespawnDraw(FlowPlayerEntity& e, GameManager& g) {
     }
 }
 
+void ResetFlowSection(GameManager& g, int currentSectionId) {
+    // Reset everything from the current section
+    for (ne::EntityManager::AllIterator iter = g._neEntityManager->GetAllIterator(); !iter.Finished(); iter.Next()) {
+        ne::Entity* e = iter.GetEntity();
+        if (e->_flowSectionId >= 0 && e->_flowSectionId == currentSectionId) {
+            e->Init(g);
+        }
+    }
+    // Reactivate all inactive entities that were initially active    
+    for (ne::EntityManager::AllIterator iter = g._neEntityManager->GetAllInactiveIterator(); !iter.Finished(); iter.Next()) {
+        ne::Entity* e = iter.GetEntity();
+        if (e->_initActive && e->_flowSectionId >= 0 && e->_flowSectionId == currentSectionId) {
+            g._neEntityManager->TagForActivate(e->_id, /*initOnActivate=*/true);
+        }
+    }
+    // deactivate all initially-inactive things
+    /*for (ne::EntityManager::AllIterator iter = g._neEntityManager->GetAllIterator(); !iter.Finished(); iter.Next()) {
+        ne::Entity* e = iter.GetEntity();
+        if (!e->_initActive && e->_flowSectionId >= 0 && e->_flowSectionId == _currentSectionId) {
+            g._neEntityManager->TagForDeactivate(e->_id);
+        }
+    }*/
+}
+
+void RespawnPlayer(FlowPlayerEntity& p, GameManager& g) {
+    p._transform.SetTranslation(p._s._respawnPos);
+    for (FlowPlayerEntity::TailState& t : p._s._tail) {
+        t.p = p._transform.Pos();
+        t.v = Vec3();
+    }
+    p._s._moveState = FlowPlayerEntity::MoveState::Default;
+    p._s._vel.Set(0.f,0.f,0.f);
+    p._s._dashTimer = -1.f;
+    p._s._respawnBeforeFirstInteract = true;
+    p._s._respawnStartBeatTime = -1.0;
+
+    // Activate the on-respawn entity
+    if (ne::Entity* e = g._neEntityManager->GetEntity(p._s._toActivateOnRespawn, /*includeActive=*/false, /*includeInactive=*/true)) {
+        g._neEntityManager->TagForActivate(e->_id, /*initOnActivate=*/true);
+    }
+    else if (ne::Entity* e = g._neEntityManager->GetEntity(p._s._toActivateOnRespawn)) {
+        e->Init(g);
+    }
+
+    double beatTime = g._beatClock->GetBeatTimeFromEpoch();
+#if 0
+    _s._countOffEndTime = BeatClock::GetNextBeatDenomTime(beatTime, _s._respawnLoopLength);
+    int minCountOffTime = 3;
+    if (_s._countOffEndTime - beatTime < minCountOffTime) {
+        _s._countOffEndTime += _s._respawnLoopLength;
+    }
+#endif
+    p._s._countOffEndTime = BeatClock::GetNextBeatDenomTime(beatTime + 4.0, 1.0);
+
+}
+
 }  // namespace
 
 void FlowPlayerEntity::Draw(GameManager& g, float const dt) {
@@ -310,56 +367,8 @@ void FlowPlayerEntity::Draw(GameManager& g, float const dt) {
 }
 
 void FlowPlayerEntity::RespawnInstant(GameManager& g) {
-    _transform.SetTranslation(_s._respawnPos);
-    for (TailState& t : _s._tail) {
-        t.p = _transform.Pos();
-        t.v = Vec3();
-    }
-    _s._moveState = MoveState::Default;
-    _s._vel.Set(0.f,0.f,0.f);
-    _s._dashTimer = -1.f;
-    _s._respawnBeforeFirstInteract = true;
-    _s._respawnStartBeatTime = -1.0;
-
-    // Reset everything from the current section
-    for (ne::EntityManager::AllIterator iter = g._neEntityManager->GetAllIterator(); !iter.Finished(); iter.Next()) {
-        ne::Entity* e = iter.GetEntity();
-        if (e->_flowSectionId >= 0 && e->_flowSectionId == _s._currentSectionId) {
-            e->Init(g);
-        }
-    }
-    // Reactivate all inactive entities that were initially active    
-    for (ne::EntityManager::AllIterator iter = g._neEntityManager->GetAllInactiveIterator(); !iter.Finished(); iter.Next()) {
-        ne::Entity* e = iter.GetEntity();
-        if (e->_initActive && e->_flowSectionId >= 0 && e->_flowSectionId == _s._currentSectionId) {
-            g._neEntityManager->TagForActivate(e->_id, /*initOnActivate=*/true);
-        }
-    }
-    // deactivate all initially-inactive things
-    /*for (ne::EntityManager::AllIterator iter = g._neEntityManager->GetAllIterator(); !iter.Finished(); iter.Next()) {
-        ne::Entity* e = iter.GetEntity();
-        if (!e->_initActive && e->_flowSectionId >= 0 && e->_flowSectionId == _currentSectionId) {
-            g._neEntityManager->TagForDeactivate(e->_id);
-        }
-    }*/
-
-    // Activate the on-respawn entity
-    if (ne::Entity* e = g._neEntityManager->GetEntity(_s._toActivateOnRespawn, /*includeActive=*/false, /*includeInactive=*/true)) {
-        g._neEntityManager->TagForActivate(e->_id, /*initOnActivate=*/true);
-    }
-    else if (ne::Entity* e = g._neEntityManager->GetEntity(_s._toActivateOnRespawn)) {
-        e->Init(g);
-    }
-
-    double beatTime = g._beatClock->GetBeatTimeFromEpoch();
-#if 0
-    _s._countOffEndTime = BeatClock::GetNextBeatDenomTime(beatTime, _s._respawnLoopLength);
-    int minCountOffTime = 3;
-    if (_s._countOffEndTime - beatTime < minCountOffTime) {
-        _s._countOffEndTime += _s._respawnLoopLength;
-    }
-#endif
-    _s._countOffEndTime = BeatClock::GetNextBeatDenomTime(beatTime + 4.0, 1.0);
+    ResetFlowSection(g, _s._currentSectionId);
+    RespawnPlayer(*this, g);
 }
 
 void FlowPlayerEntity::SetNewSection(GameManager& g, int newSectionId) {
@@ -411,12 +420,19 @@ void FlowPlayerEntity::UpdateDerived(GameManager& g, float dt) {
     double const beatTime = g._beatClock->GetBeatTimeFromEpoch();
     if (_s._respawnStartBeatTime > 0.0) {
         //double respawnEndTime = g._beatClock->GetNextDownBeatTime(_s._respawnStartBeatTime + 4.0);
+        if (!_s._respawnHasResetScene) {
+            double resetSceneTime = _s._respawnStartBeatTime + 1.25;
+            if (beatTime >= resetSceneTime) {
+                ResetFlowSection(g, _s._currentSectionId);
+                _s._respawnHasResetScene = true;
+            }
+        }
         double respawnEndTime = _s._respawnStartBeatTime + 3.5;
         if (beatTime >= respawnEndTime) {
             if (FlowTriggerEntity* e = g._neEntityManager->GetEntityAs<FlowTriggerEntity>(_s._deathEndTrigger)) {
                 e->OnTrigger(g);
             }
-            RespawnInstant(g);
+            RespawnPlayer(*this, g);
             return;
         }
 

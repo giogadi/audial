@@ -84,6 +84,7 @@ struct FlowPlayerEntity : public ne::Entity {
 
         int _respawnLoopLength = 1;
         double _respawnStartBeatTime = -1.0;
+        bool _respawnHasResetScene = false;
 
         ne::EntityId _deathStartTrigger;
         ne::EntityId _deathEndTrigger;
