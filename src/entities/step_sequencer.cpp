@@ -227,17 +227,32 @@ void StepSequencerEntity::EnqueueChange(SeqStepChange const& change) {
 
 
 void StepSequencerEntity::SetNextSeqStep(GameManager& g, SeqStep step, StepSaveType saveType) {
-#if 0
     if (_changeQueueCount == 0 && saveType == StepSaveType::Temporary && _quantizeTempStepChanges) {
         double nextStepBeatTime = _loopStartBeatTime + _currentIx * _stepBeatLength;
         double beatTime = gGameManager._beatClock->GetBeatTimeFromEpoch();
         double timeSinceLastNote = beatTime - _lastPlayedNoteTime;
-        if (timeSinceLastNote > 0.75*_stepBeatLength && (nextStepBeatTime > beatTime && nextStepBeatTime - beatTime > (0.75 * _stepBeatLength))) {
+        bool longEnoughSinceLast = timeSinceLastNote > 0.75*_stepBeatLength;
+        double stepLengthSlackFactor = 0.25;
+        bool check1 = (beatTime < nextStepBeatTime) && (nextStepBeatTime - beatTime > (1-stepLengthSlackFactor)*_stepBeatLength);
+        bool check2 = (beatTime > nextStepBeatTime) && beatTime - nextStepBeatTime < stepLengthSlackFactor*_stepBeatLength;
+        if (longEnoughSinceLast && (check1 || check2)) { 
+#if 0
+            printf("HOWDY! ");
+            printf("%f %f %f %f\n", beatTime, nextStepBeatTime, nextStepBeatTime - beatTime, _lastPlayedNoteTime);
+#endif
+
             PlayStep(gGameManager, step);
             return;
+        } else {
+#if 0
+            double frac = gGameManager._beatClock->GetBeatFraction(nextStepBeatTime);
+            if (std::abs(frac - 0.25) < 0.00001 || std::abs(frac - 0.75) < 0.00001) {
+                printf("***** ");
+            } 
+            printf("%f %f %f %f\n", beatTime, nextStepBeatTime, nextStepBeatTime - beatTime, _lastPlayedNoteTime);
+#endif
         }
     }
-#endif
 
     SeqStepChange change;
     change._step = step;
@@ -322,7 +337,10 @@ void StepSequencerEntity::InitDerived(GameManager& g) {
 }
 
 void StepSequencerEntity::PlayStep(GameManager& g, SeqStep const& seqStep) {
-    _lastPlayedNoteTime = g._beatClock->GetBeatTimeFromEpoch();
+    if (seqStep._midiNote[0] > -1) {
+        // TODO: this isn't _quite_ it, but almost
+        _lastPlayedNoteTime = g._beatClock->GetBeatTimeFromEpoch();
+    }
     int numVoices = seqStep._midiNote.size();
     if (_maxNumVoices >= 0) {
         numVoices = std::min(numVoices, _maxNumVoices);
