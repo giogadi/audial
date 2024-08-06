@@ -3378,7 +3378,7 @@
                 <synth_patch_channel>0</synth_patch_channel>
                 <start_patch>bass0</start_patch>
                 <end_patch>bass1</end_patch>
-                <blend_time>1</blend_time>
+                <blend_time>0</blend_time>
                 <actions/>
             </IntVariable>
             <FlowTrigger>
@@ -3494,7 +3494,7 @@
                         <channel>0</channel>
                         <blend_beat_time>6</blend_beat_time>
                         <use_patch_bank>true</use_patch_bank>
-                        <patch_name>bass_little_more</patch_name>
+                        <patch_name>bass_little_more_pre</patch_name>
                     </seq_action>
                 </actions>
                 <actions_on_exit/>

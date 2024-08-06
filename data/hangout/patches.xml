@@ -5,15 +5,16 @@
         <patch>
             <name>bass0</name>
             <patch>
-                <Gain>1</Gain>
+                <Gain>0.90200001</Gain>
                 <Mono>1</Mono>
+                <FM>0</FM>
                 <Osc1Waveform>Square</Osc1Waveform>
                 <Osc2Waveform>Saw</Osc2Waveform>
                 <Detune>0.0130000003</Detune>
                 <OscFader>0</OscFader>
                 <Cutoff>610.169006</Cutoff>
                 <Peak>0</Peak>
-                <HpfCutoff>560.593018</HpfCutoff>
+                <HpfCutoff>0</HpfCutoff>
                 <HpfPeak>0</HpfPeak>
                 <Portamento>0</Portamento>
                 <PitchLFOGain>0</PitchLFOGain>
@@ -34,6 +35,8 @@
                 <PitchEnvDecay>0</PitchEnvDecay>
                 <PitchEnvSustain>1</PitchEnvSustain>
                 <PitchEnvRelease>0</PitchEnvRelease>
+                <FMOsc2Level>0</FMOsc2Level>
+                <FMOsc2Ratio>0</FMOsc2Ratio>
             </patch>
         </patch>
         <patch>
@@ -41,6 +44,7 @@
             <patch>
                 <Gain>0.796999991</Gain>
                 <Mono>0</Mono>
+                <FM>0</FM>
                 <Osc1Waveform>Saw</Osc1Waveform>
                 <Osc2Waveform>Square</Osc2Waveform>
                 <Detune>0.0299999993</Detune>
@@ -68,6 +72,8 @@
                 <PitchEnvDecay>0.229000002</PitchEnvDecay>
                 <PitchEnvSustain>0.386000007</PitchEnvSustain>
                 <PitchEnvRelease>0.305000007</PitchEnvRelease>
+                <FMOsc2Level>0</FMOsc2Level>
+                <FMOsc2Ratio>0</FMOsc2Ratio>
             </patch>
         </patch>
         <patch>
@@ -75,6 +81,7 @@
             <patch>
                 <Gain>0.902999997</Gain>
                 <Mono>0</Mono>
+                <FM>0</FM>
                 <Osc1Waveform>Saw</Osc1Waveform>
                 <Osc2Waveform>Saw</Osc2Waveform>
                 <Detune>0</Detune>
@@ -102,6 +109,8 @@
                 <PitchEnvDecay>0</PitchEnvDecay>
                 <PitchEnvSustain>1</PitchEnvSustain>
                 <PitchEnvRelease>0</PitchEnvRelease>
+                <FMOsc2Level>0</FMOsc2Level>
+                <FMOsc2Ratio>0</FMOsc2Ratio>
             </patch>
         </patch>
         <patch>
@@ -109,6 +118,7 @@
             <patch>
                 <Gain>0.970000029</Gain>
                 <Mono>0</Mono>
+                <FM>0</FM>
                 <Osc1Waveform>Saw</Osc1Waveform>
                 <Osc2Waveform>Saw</Osc2Waveform>
                 <Detune>1</Detune>
@@ -136,6 +146,8 @@
                 <PitchEnvDecay>0</PitchEnvDecay>
                 <PitchEnvSustain>1</PitchEnvSustain>
                 <PitchEnvRelease>0</PitchEnvRelease>
+                <FMOsc2Level>0</FMOsc2Level>
+                <FMOsc2Ratio>0</FMOsc2Ratio>
             </patch>
         </patch>
         <patch>
@@ -143,6 +155,7 @@
             <patch>
                 <Gain>0.623000026</Gain>
                 <Mono>0</Mono>
+                <FM>0</FM>
                 <Osc1Waveform>Saw</Osc1Waveform>
                 <Osc2Waveform>Saw</Osc2Waveform>
                 <Detune>0.586000025</Detune>
@@ -170,6 +183,8 @@
                 <PitchEnvDecay>0</PitchEnvDecay>
                 <PitchEnvSustain>1</PitchEnvSustain>
                 <PitchEnvRelease>0</PitchEnvRelease>
+                <FMOsc2Level>0</FMOsc2Level>
+                <FMOsc2Ratio>0</FMOsc2Ratio>
             </patch>
         </patch>
         <patch>
@@ -177,6 +192,7 @@
             <patch>
                 <Gain>0.834999979</Gain>
                 <Mono>1</Mono>
+                <FM>0</FM>
                 <Osc1Waveform>Saw</Osc1Waveform>
                 <Osc2Waveform>Square</Osc2Waveform>
                 <Detune>1</Detune>
@@ -204,20 +220,23 @@
                 <PitchEnvDecay>0</PitchEnvDecay>
                 <PitchEnvSustain>1</PitchEnvSustain>
                 <PitchEnvRelease>0</PitchEnvRelease>
+                <FMOsc2Level>0</FMOsc2Level>
+                <FMOsc2Ratio>0</FMOsc2Ratio>
             </patch>
         </patch>
         <patch>
             <name>bass1</name>
             <patch>
-                <Gain>0.66900003</Gain>
+                <Gain>0.754000008</Gain>
                 <Mono>1</Mono>
+                <FM>0</FM>
                 <Osc1Waveform>Square</Osc1Waveform>
                 <Osc2Waveform>Saw</Osc2Waveform>
                 <Detune>0.0130000003</Detune>
                 <OscFader>0.504000008</OscFader>
                 <Cutoff>610.169006</Cutoff>
                 <Peak>2.92400002</Peak>
-                <HpfCutoff>560.593018</HpfCutoff>
+                <HpfCutoff>0</HpfCutoff>
                 <HpfPeak>0</HpfPeak>
                 <Portamento>0</Portamento>
                 <PitchLFOGain>0</PitchLFOGain>
@@ -238,6 +257,8 @@
                 <PitchEnvDecay>0</PitchEnvDecay>
                 <PitchEnvSustain>1</PitchEnvSustain>
                 <PitchEnvRelease>0</PitchEnvRelease>
+                <FMOsc2Level>0</FMOsc2Level>
+                <FMOsc2Ratio>0</FMOsc2Ratio>
             </patch>
         </patch>
         <patch>
@@ -245,6 +266,7 @@
             <patch>
                 <Gain>0.796999991</Gain>
                 <Mono>1</Mono>
+                <FM>0</FM>
                 <Osc1Waveform>Saw</Osc1Waveform>
                 <Osc2Waveform>Saw</Osc2Waveform>
                 <Detune>0.98299998</Detune>
@@ -272,6 +294,8 @@
                 <PitchEnvDecay>0</PitchEnvDecay>
                 <PitchEnvSustain>1</PitchEnvSustain>
                 <PitchEnvRelease>0</PitchEnvRelease>
+                <FMOsc2Level>0</FMOsc2Level>
+                <FMOsc2Ratio>0</FMOsc2Ratio>
             </patch>
         </patch>
         <patch>
@@ -279,6 +303,7 @@
             <patch>
                 <Gain>0.684000015</Gain>
                 <Mono>0</Mono>
+                <FM>0</FM>
                 <Osc1Waveform>Saw</Osc1Waveform>
                 <Osc2Waveform>Saw</Osc2Waveform>
                 <Detune>0.989000022</Detune>
@@ -306,6 +331,8 @@
                 <PitchEnvDecay>0</PitchEnvDecay>
                 <PitchEnvSustain>1</PitchEnvSustain>
                 <PitchEnvRelease>0</PitchEnvRelease>
+                <FMOsc2Level>0</FMOsc2Level>
+                <FMOsc2Ratio>0</FMOsc2Ratio>
             </patch>
         </patch>
         <patch>
@@ -313,6 +340,7 @@
             <patch>
                 <Gain>0.796999991</Gain>
                 <Mono>1</Mono>
+                <FM>0</FM>
                 <Osc1Waveform>Saw</Osc1Waveform>
                 <Osc2Waveform>Square</Osc2Waveform>
                 <Detune>0.99000001</Detune>
@@ -340,6 +368,8 @@
                 <PitchEnvDecay>0</PitchEnvDecay>
                 <PitchEnvSustain>1</PitchEnvSustain>
                 <PitchEnvRelease>0</PitchEnvRelease>
+                <FMOsc2Level>0</FMOsc2Level>
+                <FMOsc2Ratio>0</FMOsc2Ratio>
             </patch>
         </patch>
         <patch>
@@ -347,6 +377,7 @@
             <patch>
                 <Gain>1</Gain>
                 <Mono>1</Mono>
+                <FM>0</FM>
                 <Osc1Waveform>Square</Osc1Waveform>
                 <Osc2Waveform>Square</Osc2Waveform>
                 <Detune>0.58099997</Detune>
@@ -374,20 +405,23 @@
                 <PitchEnvDecay>0</PitchEnvDecay>
                 <PitchEnvSustain>1</PitchEnvSustain>
                 <PitchEnvRelease>0</PitchEnvRelease>
+                <FMOsc2Level>0</FMOsc2Level>
+                <FMOsc2Ratio>0</FMOsc2Ratio>
             </patch>
         </patch>
         <patch>
             <name>bass_little_more</name>
             <patch>
-                <Gain>0.970000029</Gain>
+                <Gain>0.841000021</Gain>
                 <Mono>1</Mono>
+                <FM>0</FM>
                 <Osc1Waveform>Square</Osc1Waveform>
-                <Osc2Waveform>Saw</Osc2Waveform>
-                <Detune>0.0130000003</Detune>
-                <OscFader>0</OscFader>
-                <Cutoff>610.169006</Cutoff>
-                <Peak>0</Peak>
-                <HpfCutoff>560.593018</HpfCutoff>
+                <Osc2Waveform>Square</Osc2Waveform>
+                <Detune>1</Detune>
+                <OscFader>0.419999987</OscFader>
+                <Cutoff>363.635986</Cutoff>
+                <Peak>1.09800005</Peak>
+                <HpfCutoff>0</HpfCutoff>
                 <HpfPeak>0</HpfPeak>
                 <Portamento>0</Portamento>
                 <PitchLFOGain>0</PitchLFOGain>
@@ -396,18 +430,57 @@
                 <CutoffLFOFreq>8.05099964</CutoffLFOFreq>
                 <AmpEnvAttack>0.00499999989</AmpEnvAttack>
                 <AmpEnvDecay>0.232999995</AmpEnvDecay>
-                <AmpEnvSustain>0.745999992</AmpEnvSustain>
+                <AmpEnvSustain>0.287999988</AmpEnvSustain>
                 <AmpEnvRelease>0.572000027</AmpEnvRelease>
-                <CutoffEnvGain>2989.83105</CutoffEnvGain>
-                <CutoffEnvAttack>0.0130000003</CutoffEnvAttack>
-                <CutoffEnvDecay>0.296999991</CutoffEnvDecay>
+                <CutoffEnvGain>2500</CutoffEnvGain>
+                <CutoffEnvAttack>0.0109999999</CutoffEnvAttack>
+                <CutoffEnvDecay>0.114</CutoffEnvDecay>
                 <CutoffEnvSustain>0.148000002</CutoffEnvSustain>
-                <CutoffEnvRelease>0.219999999</CutoffEnvRelease>
+                <CutoffEnvRelease>0.0909999982</CutoffEnvRelease>
                 <PitchEnvGain>0</PitchEnvGain>
                 <PitchEnvAttack>0</PitchEnvAttack>
                 <PitchEnvDecay>0</PitchEnvDecay>
                 <PitchEnvSustain>1</PitchEnvSustain>
                 <PitchEnvRelease>0</PitchEnvRelease>
+                <FMOsc2Level>0</FMOsc2Level>
+                <FMOsc2Ratio>0</FMOsc2Ratio>
+            </patch>
+        </patch>
+        <patch>
+            <name>bass_little_more_pre</name>
+            <patch>
+                <Gain>0.870999992</Gain>
+                <Mono>1</Mono>
+                <FM>0</FM>
+                <Osc1Waveform>Square</Osc1Waveform>
+                <Osc2Waveform>Square</Osc2Waveform>
+                <Detune>0.0130000003</Detune>
+                <OscFader>0.363999993</OscFader>
+                <Cutoff>363.635986</Cutoff>
+                <Peak>2.2349999</Peak>
+                <HpfCutoff>0</HpfCutoff>
+                <HpfPeak>0</HpfPeak>
+                <Portamento>0.0379999988</Portamento>
+                <PitchLFOGain>0</PitchLFOGain>
+                <PitchLFOFreq>1</PitchLFOFreq>
+                <CutoffLFOGain>0</CutoffLFOGain>
+                <CutoffLFOFreq>8.05099964</CutoffLFOFreq>
+                <AmpEnvAttack>0.00499999989</AmpEnvAttack>
+                <AmpEnvDecay>0.321999997</AmpEnvDecay>
+                <AmpEnvSustain>0.133000001</AmpEnvSustain>
+                <AmpEnvRelease>0.572000027</AmpEnvRelease>
+                <CutoffEnvGain>4343.18213</CutoffEnvGain>
+                <CutoffEnvAttack>0.00499999989</CutoffEnvAttack>
+                <CutoffEnvDecay>0.133000001</CutoffEnvDecay>
+                <CutoffEnvSustain>0.148000002</CutoffEnvSustain>
+                <CutoffEnvRelease>0.0909999982</CutoffEnvRelease>
+                <PitchEnvGain>0</PitchEnvGain>
+                <PitchEnvAttack>0</PitchEnvAttack>
+                <PitchEnvDecay>0</PitchEnvDecay>
+                <PitchEnvSustain>1</PitchEnvSustain>
+                <PitchEnvRelease>0</PitchEnvRelease>
+                <FMOsc2Level>0</FMOsc2Level>
+                <FMOsc2Ratio>0</FMOsc2Ratio>
             </patch>
         </patch>
     </patches>
