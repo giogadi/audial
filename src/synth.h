@@ -53,7 +53,8 @@ struct ADSRStateNew {
     float releaseTCO = 0.f;
 };
 
-int constexpr kNumOscillators = 2;
+int constexpr kMaxNumOscillators = 6;
+int constexpr kNumAnalogOscillators = 2;
 
 struct Oscillator {
     float f = 440.f;
@@ -67,7 +68,8 @@ struct FilterState {
 
 struct Voice {
     // We assign the voice's "center" frequency using oscillators[0]. I know, this is gross.
-    std::array<Oscillator, kNumOscillators> oscillators;
+    // If this is an analog voice, only the first kNumAnalogOscillators are used.
+    std::array<Oscillator, kMaxNumOscillators> oscillators;
 
     ADSRStateNew ampEnvState;
     ADSRStateNew cutoffEnvState;
@@ -77,7 +79,6 @@ struct Voice {
     int noteOnId = 0;
     float postPortamentoF = 0.f;  // latest output of applying porta to center freq.
 
-    FilterState lpfState;
     FilterState hpfState;
 
     filter::VAMoogFilter moogLpfState;

@@ -7,9 +7,9 @@
 #include "serial_enum.h"
 
 
-#include "imgui_vector_util.h"
-
 #include "serial_vector_util.h"
+
+#include "imgui_vector_util.h"
 
 
 void NoteOnOffSeqActionProps::Load(serial::Ptree pt) {
@@ -52,36 +52,47 @@ bool NoteOnOffSeqActionProps::ImGui() {
     bool changed = false;
     
     {
+        
         bool thisChanged = ImGui::InputInt("channel", &_channel);
         changed = changed || thisChanged;
     }
     
     {
-        bool thisChanged = imgui_util::InputVector(_midiNotes, imgui_util::InputVectorOptions { .removeOnSameLine = true });
+        
+        imgui_util::InputVectorOptions options;
+        
+        options.removeOnSameLine = true;
+        
+        bool thisChanged = imgui_util::InputVector(_midiNotes, options);
         changed = changed || thisChanged;
     }
     
     {
+        
         bool thisChanged = ImGui::InputDouble("noteLength", &_noteLength);
         changed = changed || thisChanged;
     }
     
     {
+        
         bool thisChanged = ImGui::InputFloat("velocity", &_velocity);
         changed = changed || thisChanged;
     }
     
     {
+        
         bool thisChanged = ImGui::InputDouble("quantizeDenom", &_quantizeDenom);
         changed = changed || thisChanged;
     }
     
     {
+        
         bool thisChanged = ImGui::Checkbox("doNoteOff", &_doNoteOff);
         changed = changed || thisChanged;
     }
     
     {
+        
         bool thisChanged = ImGui::Checkbox("holdNotes", &_holdNotes);
         changed = changed || thisChanged;
     }

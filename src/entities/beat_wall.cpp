@@ -78,6 +78,7 @@ namespace {
             case Direction::Right: return Vec3(1.f, 0, 0.0f);
             case Direction::Count: assert(false); return Vec3();
         }
+        return Vec3();
     } 
 }
 

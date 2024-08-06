@@ -26,6 +26,7 @@ struct Patch {
     }
     synth::Waveform GetOsc1Waveform() const;
     synth::Waveform GetOsc2Waveform() const;
+    bool GetIsFm() const;
 
     ADSREnvSpec GetAmpEnvSpec() const;
     ADSREnvSpec GetCutoffEnvSpec() const;

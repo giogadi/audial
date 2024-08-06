@@ -10,6 +10,7 @@ set(CMAKE_C_STANDARD_REQUIRED True)
 
 if(MSVC)
   add_compile_options(/W2)
+  add_compile_options(/w24062) # for missing cases in switch statements
   add_definitions(-D_CRT_SECURE_NO_WARNINGS)
 else()
   add_compile_options(-Wall)

@@ -26,6 +26,9 @@ bool {{propertiesName}}Props::ImGui() {
     bool changed = false;
     {% for prop in props if prop.imgui%}
     {
+        {% for preimgui in prop.preImgui %}
+        {{preimgui}}
+        {% endfor %}
         bool thisChanged = {{prop.imgui}}
         changed = changed || thisChanged;
     }

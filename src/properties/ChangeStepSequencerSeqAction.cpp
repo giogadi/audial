@@ -7,9 +7,9 @@
 #include "serial_enum.h"
 
 
-#include "imgui_vector_util.h"
-
 #include "serial_vector_util.h"
+
+#include "imgui_vector_util.h"
 
 
 void ChangeStepSequencerSeqActionProps::Load(serial::Ptree pt) {
@@ -44,26 +44,35 @@ bool ChangeStepSequencerSeqActionProps::ImGui() {
     bool changed = false;
     
     {
+        
         bool thisChanged = imgui_util::InputEditorId("seqEntityEditorId", &_seqEntityEditorId);
         changed = changed || thisChanged;
     }
     
     {
+        
         bool thisChanged = ImGui::Checkbox("velOnly", &_velOnly);
         changed = changed || thisChanged;
     }
     
     {
+        
         bool thisChanged = ImGui::Checkbox("temporary", &_temporary);
         changed = changed || thisChanged;
     }
     
     {
-        bool thisChanged = imgui_util::InputVector(_midiNotes, imgui_util::InputVectorOptions { .removeOnSameLine = true });
+        
+        imgui_util::InputVectorOptions options;
+        
+        options.removeOnSameLine = true;
+        
+        bool thisChanged = imgui_util::InputVector(_midiNotes, options);
         changed = changed || thisChanged;
     }
     
     {
+        
         bool thisChanged = ImGui::InputFloat("velocity", &_velocity);
         changed = changed || thisChanged;
     }

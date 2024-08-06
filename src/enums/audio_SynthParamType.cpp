@@ -18,6 +18,8 @@ std::unordered_map<std::string, SynthParamType> const gStringToSynthParamType = 
     
     { "Mono", SynthParamType::Mono },
     
+    { "FM", SynthParamType::FM },
+    
     { "Osc1Waveform", SynthParamType::Osc1Waveform },
     
     { "Osc2Waveform", SynthParamType::Osc2Waveform },
@@ -70,7 +72,11 @@ std::unordered_map<std::string, SynthParamType> const gStringToSynthParamType = 
     
     { "PitchEnvSustain", SynthParamType::PitchEnvSustain },
     
-    { "PitchEnvRelease", SynthParamType::PitchEnvRelease }
+    { "PitchEnvRelease", SynthParamType::PitchEnvRelease },
+    
+    { "FMOsc2Level", SynthParamType::FMOsc2Level },
+    
+    { "FMOsc2Ratio", SynthParamType::FMOsc2Ratio }
     
 };
 
@@ -81,6 +87,8 @@ char const* gSynthParamTypeStrings[] = {
     "Gain",
     
     "Mono",
+    
+    "FM",
     
     "Osc1Waveform",
     
@@ -134,7 +142,11 @@ char const* gSynthParamTypeStrings[] = {
     
     "PitchEnvSustain",
     
-    "PitchEnvRelease"
+    "PitchEnvRelease",
+    
+    "FMOsc2Level",
+    
+    "FMOsc2Ratio"
     
 };
 

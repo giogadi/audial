@@ -10,6 +10,8 @@ enum class SynthParamType : int {
     
     Mono,
     
+    FM,
+    
     Osc1Waveform,
     
     Osc2Waveform,
@@ -63,6 +65,10 @@ enum class SynthParamType : int {
     PitchEnvSustain,
     
     PitchEnvRelease,
+    
+    FMOsc2Level,
+    
+    FMOsc2Ratio,
     
     Count
 };

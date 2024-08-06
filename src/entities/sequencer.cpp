@@ -141,10 +141,9 @@ ne::Entity::ImGuiResult SequencerEntity::ImGuiDerived(GameManager& g) {
     }
 #endif
 
-    imgui_util::InputVectorOptions options {
-        .treePerItem = true,
-        .removeOnSameLine = false
-    };
+    imgui_util::InputVectorOptions options;
+    options.treePerItem = true;
+    options.removeOnSameLine = false;
     if (imgui_util::InputVector(_events, options)) {
         result = ImGuiResult::NeedsInit; 
     }

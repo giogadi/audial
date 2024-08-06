@@ -1,11 +1,11 @@
 #pragma once
 
 
+#include "editor_id.h"
+
 #include "properties/MidiNoteAndName.h"
 
 #include <vector>
-
-#include "editor_id.h"
 
 
 #include "serial.h"

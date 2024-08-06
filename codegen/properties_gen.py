@@ -29,6 +29,7 @@ def getCppTypeName(typeName):
 def getProp(propName, propType, isArray, enumType, maybeNamespace, maybeDefault, rawProp):
     outProp = {}
     genImGui = rawProp.get('gen_imgui', True)
+    preImGuiStrs = []
     imGuiStr = ''
     outProp['name'] = propName
     outProp['isArray'] = isArray
@@ -42,7 +43,9 @@ def getProp(propName, propType, isArray, enumType, maybeNamespace, maybeDefault,
         outProp['load'] = 'serial::LoadVectorFromChildNode<{cppTypeName}>(pt, \"{name}\", _{name});'.format(cppTypeName = cppTypeName, name = propName)
         outProp['save'] = 'serial::SaveVectorInChildNode<{cppTypeName}>(pt, \"{name}\", \"array_item\", _{name});'.format(cppTypeName = cppTypeName, name = propName)
         if propType == 'MidiNoteAndName':
-            imGuiStr = 'imgui_util::InputVector(_{name}, imgui_util::InputVectorOptions {{ .removeOnSameLine = true }});'.format(name = propName)
+            preImGuiStrs.append('imgui_util::InputVectorOptions options;')
+            preImGuiStrs.append('options.removeOnSameLine = true;')
+            imGuiStr = 'imgui_util::InputVector(_{name}, options);'.format(name = propName)
         else:
             imGuiStr = 'imgui_util::InputVector(_{name});'.format(name = propName)
         outProp['header_includes'].append('<vector>')
@@ -115,6 +118,7 @@ def getProp(propName, propType, isArray, enumType, maybeNamespace, maybeDefault,
             outProp['header_includes'].append('\"properties/{name}.h\"'.format(name = propType))
     
     if genImGui:
+        outProp['preImgui'] = preImGuiStrs
         outProp['imgui'] = imGuiStr
     return outProp
 

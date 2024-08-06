@@ -417,7 +417,7 @@ int main(int argc, char** argv) {
     gDftCount = bufferFrameCount / 2;
     gDft = new double[gDftCount]();
     double* dftFreqs = new double[gDftCount]();
-    float sampleRate = audioContext._sampleRate;
+    float sampleRate = (float) audioContext._sampleRate;
     for (int i = 0; i < gDftCount; ++i) {
         dftFreqs[i] = (i+1) * sampleRate / bufferFrameCount;
     }

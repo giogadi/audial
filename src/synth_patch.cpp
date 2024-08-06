@@ -26,6 +26,59 @@ float WaveformToFloat(synth::Waveform w) {
     return 0.f;
 }
 
+bool FloatToIsFm(float f) {
+    return f >= 0.5f;
+}
+
+float IsFmToFloat(bool isFm) {
+    if (isFm) {
+        return 1.f;
+    } else {
+        return 0.f;
+    }
+}
+
+bool IsFmParam(audio::SynthParamType const paramType) {
+    switch (paramType) {
+        case audio::SynthParamType::FM:
+        case audio::SynthParamType::FMOsc2Level:
+        case audio::SynthParamType::FMOsc2Ratio:
+            return true;
+        case audio::SynthParamType::Mono:        
+        case audio::SynthParamType::Osc1Waveform:
+        case audio::SynthParamType::Osc2Waveform:
+        case audio::SynthParamType::Cutoff:
+        case audio::SynthParamType::Peak:
+        case audio::SynthParamType::HpfCutoff:
+        case audio::SynthParamType::HpfPeak:
+        case audio::SynthParamType::Portamento:
+        case audio::SynthParamType::PitchLFOFreq:
+        case audio::SynthParamType::CutoffLFOFreq:
+        case audio::SynthParamType::AmpEnvAttack:
+        case audio::SynthParamType::AmpEnvDecay:
+        case audio::SynthParamType::AmpEnvRelease:
+        case audio::SynthParamType::CutoffEnvGain:
+        case audio::SynthParamType::CutoffEnvAttack:
+        case audio::SynthParamType::CutoffEnvDecay:
+        case audio::SynthParamType::Gain:
+        case audio::SynthParamType::Detune:
+        case audio::SynthParamType::OscFader:
+        case audio::SynthParamType::PitchLFOGain:
+        case audio::SynthParamType::CutoffLFOGain:
+        case audio::SynthParamType::AmpEnvSustain:
+        case audio::SynthParamType::CutoffEnvSustain:
+        case audio::SynthParamType::CutoffEnvRelease:
+        case audio::SynthParamType::PitchEnvGain:
+        case audio::SynthParamType::PitchEnvAttack:
+        case audio::SynthParamType::PitchEnvDecay:
+        case audio::SynthParamType::PitchEnvSustain:
+        case audio::SynthParamType::PitchEnvRelease:            
+        case audio::SynthParamType::Count:
+            return false;
+    }
+    return false;
+}
+
 }
 
 void ADSREnvSpec::Save(serial::Ptree pt) const {
@@ -51,6 +104,11 @@ Waveform Patch::GetOsc1Waveform() const {
 Waveform Patch::GetOsc2Waveform() const {
     float osc2AsFloat = Get(audio::SynthParamType::Osc2Waveform);
     return FloatToWaveform(osc2AsFloat);
+}
+
+bool Patch::GetIsFm() const {
+    float isFmAsFloat = Get(audio::SynthParamType::FM);
+    return FloatToIsFm(isFmAsFloat);
 }
 
 ADSREnvSpec Patch::GetAmpEnvSpec() const {
@@ -151,6 +209,7 @@ void Patch::Load(serial::Ptree pt) {
         }
     } else {
         for (int i = 0, n = (int) audio::SynthParamType::Count; i < n; ++i) {
+            _data[i] = 0.f;
             audio::SynthParamType paramType = (audio::SynthParamType) i;
             char const* paramName = SynthParamTypeToString(paramType);
             switch (paramType) {
@@ -161,11 +220,14 @@ void Patch::Load(serial::Ptree pt) {
                         printf("Patch::Load: unrecognized waveform\n");
                     }
                     float f = WaveformToFloat(w);
-                    _data[i] = f;
+                    _data[i] = f; 
                     break;
                 }
                 default:
                     if (!pt.TryGetFloat(paramName, &_data[i])) {
+                        if (IsFmParam(paramType) && !GetIsFm()) {
+                            break;
+                        }
                         printf("Note: patch had no param \"%s\"\n", paramName);
                     }
                     break;
@@ -200,6 +262,14 @@ Patch::ImGuiResult Patch::ImGui() {
                 changed = ImGui::Checkbox(paramName, &isMono);
                 if (changed) {
                     _data[i] = isMono ? 1.f : 0.f;
+                }
+                break;
+            }
+            case audio::SynthParamType::FM: {
+                bool isFm = _data[i] > 0.f;
+                changed = ImGui::Checkbox(paramName, &isFm);
+                if (changed) {
+                    _data[i] = isFm ? 1.f : 0.f;
                 }
                 break;
             }
@@ -278,6 +348,14 @@ Patch::ImGuiResult Patch::ImGui() {
             case audio::SynthParamType::PitchEnvSustain:
             case audio::SynthParamType::PitchEnvRelease: {
                 changed = ImGui::SliderFloat(paramName, &_data[i], 0.f, 1.f);
+                break;
+            }
+            case audio::SynthParamType::FMOsc2Level: {
+                changed = ImGui::InputFloat(paramName, &_data[i]);
+                break;
+            }
+            case audio::SynthParamType::FMOsc2Ratio: {
+                changed = ImGui::InputFloat(paramName, &_data[i]);
                 break;
             }
             case audio::SynthParamType::Count:

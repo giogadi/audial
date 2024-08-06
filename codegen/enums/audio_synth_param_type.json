@@ -4,6 +4,7 @@
     "enumItems": [
         "Gain",
         "Mono",
+        "FM",
         "Osc1Waveform",
         "Osc2Waveform",
         "Detune",
@@ -30,6 +31,8 @@
         "PitchEnvAttack",
         "PitchEnvDecay",
         "PitchEnvSustain",
-        "PitchEnvRelease"
+        "PitchEnvRelease",
+        "FMOsc2Level",
+        "FMOsc2Ratio"
     ]
 }

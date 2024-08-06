@@ -3,9 +3,9 @@
 
 #include "properties/MidiNoteAndName.h"
 
-#include <vector>
-
 #include "editor_id.h"
+
+#include <vector>
 
 
 #include "serial.h"

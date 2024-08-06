@@ -1,9 +1,9 @@
 #pragma once
 
 
-#include "properties/MidiNoteAndName.h"
-
 #include <vector>
+
+#include "properties/MidiNoteAndName.h"
 
 
 #include "serial.h"
