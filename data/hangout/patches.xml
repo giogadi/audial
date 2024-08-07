@@ -14,7 +14,7 @@
                 <OscFader>0</OscFader>
                 <Cutoff>610.169006</Cutoff>
                 <Peak>0</Peak>
-                <HpfCutoff>0</HpfCutoff>
+                <HpfCutoff>100</HpfCutoff>
                 <HpfPeak>0</HpfPeak>
                 <Portamento>0</Portamento>
                 <PitchLFOGain>0</PitchLFOGain>
@@ -236,7 +236,7 @@
                 <OscFader>0.504000008</OscFader>
                 <Cutoff>610.169006</Cutoff>
                 <Peak>2.92400002</Peak>
-                <HpfCutoff>0</HpfCutoff>
+                <HpfCutoff>100</HpfCutoff>
                 <HpfPeak>0</HpfPeak>
                 <Portamento>0</Portamento>
                 <PitchLFOGain>0</PitchLFOGain>
@@ -458,7 +458,7 @@
                 <OscFader>0.363999993</OscFader>
                 <Cutoff>363.635986</Cutoff>
                 <Peak>2.2349999</Peak>
-                <HpfCutoff>0</HpfCutoff>
+                <HpfCutoff>100</HpfCutoff>
                 <HpfPeak>0</HpfPeak>
                 <Portamento>0.0379999988</Portamento>
                 <PitchLFOGain>0</PitchLFOGain>
