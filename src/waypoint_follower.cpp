@@ -253,6 +253,7 @@ bool WaypointFollower::UpdateWaypoint(GameManager& g, float const dt, ne::BaseEn
                 _ns._currentWaypointIx = 0;
             }
             else {
+                _ns._currentWaypointIx = p._waypoints.size() - 1;
                 _ns._followingWaypoints = false;
             }
         }
