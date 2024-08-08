@@ -249,11 +249,13 @@ float UpdateFilter(float const a1, float const a2, float const a3, float const k
     return 0.f;
 }
 
+// NOTE: This assumes oscFaderGains's size is the same as kNumAnalogOscillators.
 void ProcessVoice(Voice& voice, int const sampleRate, float pitchLFOValue,
     float modulatedCutoff, ADSREnvSpecInternal const& ampEnvSpec,
     ADSREnvSpecInternal const& cutoffEnvSpec,
     ADSREnvSpecInTicks const& pitchEnvSpec,
-    Patch const& patch, float* outputBuffer, int const numChannels, int const samplesPerFrame, int const samplesPerMoogCutoffUpdate) {
+    Patch const& patch, float* outputBuffer, int const numChannels, int const samplesPerFrame, int const samplesPerMoogCutoffUpdate,
+    float const* oscFaderGains) {
     float const dt = 1.f / sampleRate;
 
     // portamento
@@ -316,7 +318,7 @@ void ProcessVoice(Voice& voice, int const sampleRate, float pitchLFOValue,
         hpfA2 = g * hpfA1;
         hpfA3 = g * hpfA2;
     }    
-
+    
     for (int oscIx = 0; oscIx < kNumAnalogOscillators; ++oscIx) {
         Oscillator& osc = voice.oscillators[oscIx];
         float oscF = modulatedF;
@@ -324,13 +326,7 @@ void ProcessVoice(Voice& voice, int const sampleRate, float pitchLFOValue,
             oscF = modulatedF * powf(2.f, patch.Get(SynthParamType::Detune));
         }
         float phaseChange = 2 * kPi * oscF / sampleRate;
-        float oscGain;
-        if (oscIx == 0) {
-            oscGain = 1.f - patch.Get(SynthParamType::OscFader);
-        }
-        else {
-            oscGain = patch.Get(SynthParamType::OscFader);
-        }
+        float oscGain = oscFaderGains[oscIx];
         Waveform const waveform = (oscIx == 0) ? patch.GetOsc1Waveform() : patch.GetOsc2Waveform();
         int outputIx = 0;
         for (int sampleIx = 0; sampleIx < samplesPerFrame; ++sampleIx) {
@@ -951,10 +947,14 @@ void Process(StateData* state, boost::circular_buffer<audio::PendingEvent> const
             }
         }
     } else {
+        float oscFaderGains[kNumAnalogOscillators];
+        static_assert(kNumAnalogOscillators == 2);
+        oscFaderGains[0] = sqrt(1.f - patch.Get(SynthParamType::OscFader));
+        oscFaderGains[1] = sqrt(patch.Get(SynthParamType::OscFader));
         for (Voice& voice : state->voices) {
             // zero out the voice scratch buffer.
             memset(state->voiceScratchBuffer, 0, numChannels * samplesPerFrame * sizeof(float));
-            ProcessVoice(voice, sampleRate, pitchLFOValue, modulatedCutoff, state->ampEnvSpecInternal, state->cutoffEnvSpecInternal, pitchEnvSpec, patch, state->voiceScratchBuffer, numChannels, samplesPerFrame, state->samplesPerMoogCutoffUpdate);
+            ProcessVoice(voice, sampleRate, pitchLFOValue, modulatedCutoff, state->ampEnvSpecInternal, state->cutoffEnvSpecInternal, pitchEnvSpec, patch, state->voiceScratchBuffer, numChannels, samplesPerFrame, state->samplesPerMoogCutoffUpdate, oscFaderGains);
             for (int outputIx = 0; outputIx < numChannels * samplesPerFrame; ++outputIx) {
                 outputBuffer[outputIx] += state->voiceScratchBuffer[outputIx];
             }

@@ -3377,8 +3377,8 @@
                 <cell_spacing>0.25</cell_spacing>
                 <synth_patch_channel>0</synth_patch_channel>
                 <start_patch>bass0</start_patch>
-                <end_patch>bass1</end_patch>
-                <blend_time>0</blend_time>
+                <end_patch>bass1_again</end_patch>
+                <blend_time>3</blend_time>
                 <actions/>
             </IntVariable>
             <FlowTrigger>
