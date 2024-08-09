@@ -55,6 +55,7 @@ struct FlowPlayerEntity : public ne::Entity {
 
         ne::EntityId _lastHitEnemy;
         ne::EntityId _interactingEnemyId;
+        ne::EntityId _carrierId;
         bool _stopAfterTimer = true;
         float _dashTimer = -1.f; // wallBounce/pull/push
         Vec3 _lastKnownDashTarget; // pull/push

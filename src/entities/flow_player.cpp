@@ -490,7 +490,7 @@ void FlowPlayerEntity::UpdateDerived(GameManager& g, float dt) {
             // Assume if CanHit, we're in their active region.
             if (enemy->CanHit(*this, g)) {
                 _s._moveState = MoveState::Carried;
-                _s._interactingEnemyId = enemy->_id;
+                _s._carrierId = enemy->_id;
                 _s._dashTimer = -1.f;
                 _s._dashAnimState = DashAnimState::None;
                 _s._vel.Set(0.f, 0.f, 0.f);
@@ -507,7 +507,7 @@ void FlowPlayerEntity::UpdateDerived(GameManager& g, float dt) {
     InputManager::Key hitKey = InputManager::Key::NumKeys;
     TypingEnemyEntity* carrier = nullptr;
     if (_s._moveState == MoveState::Carried) {
-        carrier = g._neEntityManager->GetEntityAs<TypingEnemyEntity>(_s._interactingEnemyId);
+        carrier = g._neEntityManager->GetEntityAs<TypingEnemyEntity>(_s._carrierId);
     }
     for (ne::EntityManager::Iterator enemyIter = g._neEntityManager->GetIterator(ne::EntityType::TypingEnemy); !enemyIter.Finished(); enemyIter.Next()) {
         // Vec4 constexpr kGreyColor(0.6f, 0.6f, 0.6f, 0.7f);
@@ -756,6 +756,7 @@ void FlowPlayerEntity::UpdateDerived(GameManager& g, float dt) {
                     _s._vel *= speed;
                 }
             }
+            break;
         }
 
         case MoveState::Carried: {
@@ -838,6 +839,7 @@ void FlowPlayerEntity::UpdateDerived(GameManager& g, float dt) {
         break;        
     }
 
+    Vec3 dPos = newPos - _transform.Pos();
     _transform.SetPos(newPos);
 
 
