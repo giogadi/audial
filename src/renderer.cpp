@@ -1300,6 +1300,7 @@ void Scene::Draw(int windowWidth, int windowHeight, float timeInSecs) {
         }
     }
 
+#if 0
     {
         // DEBUG RENDERING FOR DEPTH MAP
 
@@ -1329,6 +1330,7 @@ void Scene::Draw(int windowWidth, int windowHeight, float timeInSecs) {
         }
         
     }
+#endif
 
     // Polygons (immediate API)
     //
