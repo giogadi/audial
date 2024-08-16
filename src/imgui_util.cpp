@@ -28,7 +28,8 @@ bool InputEditorId(char const* label, EditorId* v) {
     if (e == nullptr) {
         ImGui::BeginDisabled(true);
     }
-    if (ImGui::Button("Go to")) {
+	snprintf(buttonLabelBuffer, 256, "Go to##%s", label);
+    if (ImGui::Button(buttonLabelBuffer)) {
         assert(e);
         gGameManager._editor->SelectEntity(*e);
     }
@@ -40,7 +41,8 @@ bool InputEditorId(char const* label, EditorId* v) {
         result = true;
 	}
 	ImGui::SameLine();
-	if (ImGui::Button("Clear")) {
+	snprintf(buttonLabelBuffer, 256, "Clear##%s", label);
+	if (ImGui::Button(buttonLabelBuffer)) {
 		*v = EditorId();
 		result = true;
 	}
