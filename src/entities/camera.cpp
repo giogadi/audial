@@ -34,30 +34,30 @@ void CameraEntity::UpdateDerived(GameManager& g, float dt) {
         // In this case, let Editor control the camera.
         return;
     }
-
-    Vec3 targetPos = _transform.GetPos();   
+    
+    Vec3 newPos = _transform.GetPos();
     if (_followEntityId.IsValid()) {
         if (ne::BaseEntity* followEntity = g._neEntityManager->GetEntity(_followEntityId)) {
-            targetPos = followEntity->_transform.GetPos();
+            Vec3 targetPos = followEntity->_transform.GetPos();
+
+            Vec3 const& cameraPos = _transform.GetPos();
+            Vec3 targetToCameraOffset = cameraPos - targetPos;
+            float k = _trackingFactor * 60.f;  // TOD0: 60 is the expected fps right???
+            Vec3 diff = _desiredTargetToCameraOffset - targetToCameraOffset;
+            Vec3 diffDir = diff;
+            float diffLength = diffDir.Normalize();
+            diff += diffDir * 0.2f;  // overshoot
+            Vec3 newOffset = targetToCameraOffset + k * dt * diff;
+            Vec3 newDiff = _desiredTargetToCameraOffset - newOffset;
+            if (Vec3::Dot(newDiff, diff) < 0.f) {
+                // We've crossed the desired offset
+                newOffset = _desiredTargetToCameraOffset;
+            }
+            newPos = targetPos + newOffset;
         } else {
             _followEntityId = ne::EntityId();
         }
-    }
-
-    Vec3 const& cameraPos = _transform.GetPos();
-    Vec3 targetToCameraOffset = cameraPos - targetPos;
-    float k = _trackingFactor * 60.f;  // TOD0: 60 is the expected fps right???
-    Vec3 diff = _desiredTargetToCameraOffset - targetToCameraOffset;
-    Vec3 diffDir = diff;
-    float diffLength = diffDir.Normalize();
-    diff += diffDir * 0.2f;  // overshoot
-    Vec3 newOffset = targetToCameraOffset + k * dt * diff;
-    Vec3 newDiff = _desiredTargetToCameraOffset - newOffset;
-    if (Vec3::Dot(newDiff, diff) < 0.f) {
-        // We've crossed the desired offset
-        newOffset = _desiredTargetToCameraOffset;
-    }
-    Vec3 newPos = targetPos + newOffset;
+    }    
 
     // Fade in the constraints
     if (_constraintBlend == 0.f) {
