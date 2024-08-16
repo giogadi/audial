@@ -102,6 +102,7 @@ struct CommandLineInputs {
     float _gain = 1.f;
     bool _editMode = false;
     bool _drawTerrain = false;
+    std::vector<int> _activateEditorIds;
 };
 
 void ParseCommandLine(CommandLineInputs& inputs, std::vector<std::string> const& argv, bool useDefaultFile);
@@ -186,6 +187,16 @@ void ParseCommandLine(CommandLineInputs& inputs, std::vector<std::string> const&
             }
         } else if (argv[argIx] == "-t") {
             inputs._drawTerrain = true;
+        } else if (argv[argIx] == "-a") {
+            ++argIx;
+            std::string editorIdStr = argv[argIx];
+            try {
+                int editorId = std::stoi(editorIdStr);
+                inputs._activateEditorIds.push_back(editorId);
+            }
+            catch (std::exception& e) {
+                std::cout << "-a: Failed to parse \"" << editorIdStr << "\" as an int." << std::endl;
+            }
         }
     }
 }
@@ -520,8 +531,18 @@ int main(int argc, char** argv) {
             int64_t nextEditorId = 0;
             for (int i = 0; i < numEntities; ++i) {
                 ne::EntityType entityType = ne::StringToEntityType(children[i]._name);
+                EditorId entityEditorId;
+                serial::LoadFromChildOf(children[i]._pt, "editor_id", entityEditorId);
                 bool active = true;
-                children[i]._pt.TryGetBool("entity_active", &active);
+                bool forceActive = false;
+                for (int activateEditorId : cmdLineInputs._activateEditorIds) {
+                    if (EditorId(activateEditorId) == entityEditorId) {
+                        forceActive = true;
+                    }
+                }
+                if (!forceActive) {
+                    children[i]._pt.TryGetBool("entity_active", &active);
+                }
                 ne::Entity* entity = gGameManager._neEntityManager->AddEntity(entityType, active);
                 entity->Load(children[i]._pt);
                 // TODO: THIS SHOULD NOT BE NECESSARY NOW THAT LEVELS ARE UPDATED.
