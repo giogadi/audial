@@ -10567,7 +10567,7 @@
                     <z>0.800000012</z>
                     <w>1</w>
                 </model_color_vec4>
-                <flow_section_id>2</flow_section_id>
+                <flow_section_id>-1</flow_section_id>
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
@@ -10865,7 +10865,7 @@
                     <z>0.800000012</z>
                     <w>1</w>
                 </model_color_vec4>
-                <flow_section_id>2</flow_section_id>
+                <flow_section_id>-1</flow_section_id>
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
@@ -10933,7 +10933,7 @@
                     <z>0.800000012</z>
                     <w>1</w>
                 </model_color_vec4>
-                <flow_section_id>2</flow_section_id>
+                <flow_section_id>-1</flow_section_id>
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
