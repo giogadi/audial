@@ -1,6 +1,7 @@
 #include <particle_mgr.h>
 
 #include <renderer.h>
+#include <math_util.h>
 
 namespace {
 // returns true if swapped something else in
@@ -46,6 +47,7 @@ void ParticleMgr::Update(float dt) {
         p->t.SetQuat(q);
 
         p->color._w += p->alphaV * dt;
+        p->color._w = math_util::Clamp(p->color._w, 0.f, 1.f);
     }
 }
 
