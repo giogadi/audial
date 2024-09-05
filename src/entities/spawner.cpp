@@ -113,7 +113,6 @@ void SpawnerEntity::UpdateDerived(GameManager& g, float dt) {
         
             if (_p.spawnStep != Vec3(0.f, 0.f, 0.f)) {
                 r->_wpProps._autoStartFollowingWaypoints = true;
-                r->_wpProps._wpRelative = true;
                 r->_wpProps._loopWaypoints = true;
                 double nextQuant = BeatClock::GetNextBeatDenomTime(beatTime, _p.quantize); 
                 double prevQuant = nextQuant - _p.quantize;

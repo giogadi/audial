@@ -43,8 +43,6 @@ void WaypointFollower::Props::Save(serial::Ptree pt) const {
         break;
     }
     }
-    // pt.PutBool("local_to_entity", _localToEntity);
-    pt.PutBool("wp_relative", _wpRelative);
     pt.PutBool("waypoint_auto_start", _autoStartFollowingWaypoints);
     pt.PutBool("loop_waypoints", _loopWaypoints);
     pt.PutDouble("start_time", _initWpStartTime);
@@ -70,14 +68,31 @@ void WaypointFollower::Props::Load(serial::Ptree pt) {
             printf("WaypointFollower::Props::Load: unrecognized enum \"%s\"\n", modeStr.c_str());
         }
     }
-    // pt.TryGetBool("local_to_entity", &_localToEntity);
-    pt.TryGetBool("wp_relative", &_wpRelative);
+    int const kRelativeDefaultVersion = 8;
+    bool relative = true;
+    if (pt.GetVersion() < kRelativeDefaultVersion) {
+        // Relative used to not be the default (was kinda absolute before sorta)
+        relative = false;
+        pt.TryGetBool("wp_relative", &relative);
+    }
     pt.TryGetBool("waypoint_auto_start", &_autoStartFollowingWaypoints);
     pt.TryGetBool("loop_waypoints", &_loopWaypoints);
     pt.TryGetDouble("start_time", &_initWpStartTime);
     pt.TryGetDouble("quantize", &_startQuantize);
     pt.TryGetDouble("quantize_buffer", &_quantizeBufferTime);
     serial::LoadVectorFromChildNode(pt, "waypoints", _waypoints);
+
+    if (!relative && !_waypoints.empty()) {
+        // If loading an old script that had "absolute" wp positions, change the positions so that they are relative.
+        std::vector<Vec3> relativePos(_waypoints.size());
+        relativePos[0] = _waypoints[0]._p;
+        for (int ii = 0; ii < _waypoints.size() - 1; ++ii) {
+            relativePos[ii + 1] = _waypoints[ii + 1]._p - _waypoints[ii]._p;
+        }
+        for (int ii = 0; ii < _waypoints.size(); ++ii) {
+            _waypoints[ii]._p = relativePos[ii];
+        }
+    }
 
     pt.TryGetString("follow_entity_name", &_followEntityName);
     serial::LoadFromChildOf(pt, "follow_entity_editor_id", _followEditorId);
@@ -104,7 +119,6 @@ bool WaypointFollower::Props::ImGui() {
     }
     switch (_mode) {
     case Props::Mode::Waypoint: {
-        changed = ImGui::Checkbox("Relative", &_wpRelative) || changed;
         changed = ImGui::Checkbox("Waypoint Auto Start", &_autoStartFollowingWaypoints) || changed;
         if (_autoStartFollowingWaypoints) {
             changed = ImGui::InputDouble("Start time", &_initWpStartTime) || changed;
@@ -145,18 +159,8 @@ void WaypointFollower::Init(GameManager& g, ne::BaseEntity const& entity, Props 
         if (p._autoStartFollowingWaypoints) {
             Start(g, entity);
         }
-        // if (p._localToEntity) {
-        //     _ns._prevWaypointPos.Set(0.f, 0.f, 0.f);
-        // }
-        // else {
-        //     _ns._prevWaypointPos = entity._transform.Pos();
-        // }
-        _ns._prevWaypointPos = entity._transform.Pos();
-        _ns._thisWpStartTime = p._initWpStartTime;
+        _ns._nextWpStartTime = p._initWpStartTime;
 
-        if (g._editMode) {
-            _ns._entityPosAtStart = entity._transform.Pos();
-        }
         break;
     }
     case Props::Mode::FollowEntity: {
@@ -177,11 +181,10 @@ void WaypointFollower::Start(GameManager& g, ne::BaseEntity const& entity) {
     double nextQuantize = BeatClock::GetNextBeatDenomTime(beatTime, denom);
     double prevQuantize = nextQuantize - denom;
     if (beatTime - prevQuantize <= entity._wpProps._quantizeBufferTime) {
-        _ns._thisWpStartTime = prevQuantize;
+        _ns._nextWpStartTime = prevQuantize;
     } else {
-        _ns._thisWpStartTime = nextQuantize;
+        _ns._nextWpStartTime = nextQuantize;
     }
-    _ns._entityPosAtStart = entity._transform.Pos();
 }
 
 void WaypointFollower::Stop() {
@@ -211,17 +214,11 @@ bool WaypointFollower::UpdateWaypoint(GameManager& g, float const dt, ne::BaseEn
             trans.ScaleUniform(0.5f);
             trans.Scale(1.f, 10.f, 1.f);
             Vec4 wpColor(0.8f, 0.f, 0.8f, 1.f);
-            Vec3 offset;
-            if (p._wpRelative) {
-                // offset = _ns._entityPosAtStart;
-                offset = _ns._prevWaypointPos;
-            } else {
-                offset = _ns._entityPosAtStart;
-            }
+            Vec3 wpPos = pEntity->_initTransform.Pos();
             for (int ii = 0; ii < p._waypoints.size(); ++ii) {
                 Waypoint const& wp = p._waypoints[ii];
-                Vec3 worldPos = wp._p + offset;
-                trans.SetTranslation(worldPos);
+                wpPos += wp._p;
+                trans.SetTranslation(wpPos);
                 g._scene->DrawBoundingBox(trans, wpColor);                
             }
         }
@@ -230,57 +227,69 @@ bool WaypointFollower::UpdateWaypoint(GameManager& g, float const dt, ne::BaseEn
     
     if (!_ns._followingWaypoints || p._waypoints.empty()) {
         return false;
-    }
-
-    Vec3 newPos;
+    }    
 
     double const beatTime = g._beatClock->GetBeatTimeFromEpoch();
-    assert(_ns._currentWaypointIx >= 0 && _ns._currentWaypointIx < p._waypoints.size());
-    Waypoint const& wp = p._waypoints[_ns._currentWaypointIx];
-    if (beatTime >= _ns._thisWpStartTime + wp._waitTime + wp._moveTime) {
-        if (p._wpRelative) {
-            newPos = wp._p + _ns._prevWaypointPos;
+
+    Vec3 dp;
+
+    if (beatTime >= _ns._nextWpStartTime) {
+        if (_ns._currentWaypointIx < 0) {
+            _ns._currentWaypointIx = 0;
         } else {
-            newPos = wp._p + _ns._entityPosAtStart;    
+            // Finish the motion.
+            Vec3 prevLocalPos = _ns._lastMotionFactor * _ns._currentMotion;
+            Vec3 localPos = _ns._currentMotion;
+            dp = localPos - prevLocalPos;
+
+            ++_ns._currentWaypointIx;
+            if (_ns._currentWaypointIx >= p._waypoints.size()) {
+                if (p._loopWaypoints) {
+                    _ns._currentWaypointIx = 0;
+                } else {
+                    _ns._currentWaypointIx = p._waypoints.size() - 1;
+                    _ns._followingWaypoints = false;
+                }
+            }            
         }
-        // newPos = wp._p;
-        // _ns._prevWaypointPos = wp._p;
-        _ns._prevWaypointPos = newPos;
-        ++_ns._currentWaypointIx;
-        if (_ns._currentWaypointIx >= p._waypoints.size()) {
-            if (p._loopWaypoints) {
-                // TODO I don't think this works lol
-                _ns._currentWaypointIx = 0;
-            }
-            else {
-                _ns._currentWaypointIx = p._waypoints.size() - 1;
-                _ns._followingWaypoints = false;
-            }
+
+        if (!_ns._followingWaypoints) {
+            return false;
         }
-        _ns._thisWpStartTime += wp._waitTime + wp._moveTime;
-    } else if (beatTime > _ns._thisWpStartTime + wp._waitTime) {
+
+        Waypoint const& wp = p._waypoints[_ns._currentWaypointIx];
+        _ns._thisWpStartTime = _ns._nextWpStartTime;
+        _ns._nextWpStartTime = _ns._thisWpStartTime + wp._waitTime + wp._moveTime;
+        if (beatTime >= _ns._nextWpStartTime) {
+            printf("WaypointFollower: next waypoint was too short!!!\n");
+        }
+        _ns._lastMotionFactor = 0.0;
+        _ns._currentMotion = wp._p;
+    }
+
+    if (_ns._currentWaypointIx < 0) {
+        return false;
+    }
+
+    Waypoint const& wp = p._waypoints[_ns._currentWaypointIx];
+    if (beatTime >= _ns._thisWpStartTime + wp._waitTime) {
         // Moving toward the next waypoint!
         // Need to go from [0,moveTime] -> [0,1]
         double elapsedMoveTime = beatTime - (_ns._thisWpStartTime + wp._waitTime);
         float factor = (float)(elapsedMoveTime / wp._moveTime);
         factor = math_util::Clamp(factor, 0.f, 1.f);
-        Vec3 wpPos;
-        if (p._wpRelative) {
-            wpPos = wp._p + _ns._prevWaypointPos;
-        } else {
-            wpPos = wp._p + _ns._entityPosAtStart;
-        }
-        // Vec3 wpPos = wp._p;
-        newPos = _ns._prevWaypointPos + factor * (wpPos - _ns._prevWaypointPos);
-    } else {
-        // just wait
-        return false;
-    }
 
-    // if (p._localToEntity) {
-    //     newPos += _ns._entityPosAtStart;
-    // }
-    pEntity->_transform.SetPos(newPos);
+        Vec3 prevLocalPos = _ns._lastMotionFactor * _ns._currentMotion;
+        Vec3 localPos = factor * _ns._currentMotion;
+        dp += localPos - prevLocalPos;
+
+        _ns._lastMotionFactor = factor;
+    } else {
+        // Just wait
+    }
+    
+    pEntity->_transform.Translate(dp);
+    
     return true;
 }
 

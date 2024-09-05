@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <root>
-    <version>7</version>
+    <version>8</version>
     <script>
         <bpm>100</bpm>
         <gamma_correction>false</gamma_correction>
@@ -54,7 +54,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>false</loop_waypoints>
                     <start_time>3</start_time>
@@ -117,7 +116,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>false</loop_waypoints>
                     <start_time>3</start_time>
@@ -174,7 +172,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>false</loop_waypoints>
                     <start_time>3</start_time>
@@ -271,7 +268,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>false</loop_waypoints>
                     <start_time>3</start_time>
@@ -340,7 +336,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>false</loop_waypoints>
                     <start_time>4</start_time>
@@ -401,7 +396,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>false</loop_waypoints>
                     <start_time>4</start_time>
@@ -462,7 +456,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>false</loop_waypoints>
                     <start_time>4</start_time>
@@ -523,7 +516,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>false</loop_waypoints>
                     <start_time>0</start_time>
@@ -584,7 +576,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>false</loop_waypoints>
                     <start_time>0</start_time>
@@ -647,7 +638,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>false</loop_waypoints>
                     <start_time>0</start_time>
@@ -710,7 +700,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>false</loop_waypoints>
                     <start_time>0</start_time>
@@ -773,7 +762,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>false</loop_waypoints>
                     <start_time>0</start_time>
@@ -836,7 +824,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>false</loop_waypoints>
                     <start_time>3</start_time>
@@ -887,7 +874,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>false</loop_waypoints>
                     <start_time>3</start_time>
@@ -938,7 +924,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>false</loop_waypoints>
                     <start_time>3</start_time>
@@ -1015,7 +1000,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>false</loop_waypoints>
                     <start_time>3</start_time>
@@ -1065,7 +1049,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>false</loop_waypoints>
                     <start_time>3</start_time>
@@ -1154,7 +1137,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>false</loop_waypoints>
                     <start_time>3</start_time>
@@ -1262,7 +1244,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>false</loop_waypoints>
                     <start_time>3</start_time>
@@ -1370,7 +1351,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>true</waypoint_auto_start>
                     <loop_waypoints>true</loop_waypoints>
                     <start_time>4</start_time>
@@ -1392,7 +1372,7 @@
                             <p>
                                 <x>0</x>
                                 <y>0</y>
-                                <z>0</z>
+                                <z>-4.5</z>
                             </p>
                         </waypoint>
                     </waypoints>
@@ -1462,7 +1442,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>false</loop_waypoints>
                     <start_time>3</start_time>
@@ -1570,7 +1549,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>false</loop_waypoints>
                     <start_time>3</start_time>
@@ -1678,7 +1656,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>true</waypoint_auto_start>
                     <loop_waypoints>true</loop_waypoints>
                     <start_time>4</start_time>
@@ -1700,7 +1677,7 @@
                             <p>
                                 <x>0</x>
                                 <y>0</y>
-                                <z>0</z>
+                                <z>-4.5</z>
                             </p>
                         </waypoint>
                     </waypoints>
@@ -1770,7 +1747,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>true</waypoint_auto_start>
                     <loop_waypoints>true</loop_waypoints>
                     <start_time>4</start_time>
@@ -1792,7 +1768,7 @@
                             <p>
                                 <x>0</x>
                                 <y>0</y>
-                                <z>0</z>
+                                <z>4.5</z>
                             </p>
                         </waypoint>
                     </waypoints>
@@ -1862,7 +1838,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>true</waypoint_auto_start>
                     <loop_waypoints>true</loop_waypoints>
                     <start_time>4</start_time>
@@ -1884,7 +1859,7 @@
                             <p>
                                 <x>0</x>
                                 <y>0</y>
-                                <z>0</z>
+                                <z>4.5</z>
                             </p>
                         </waypoint>
                     </waypoints>
@@ -1954,7 +1929,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>false</loop_waypoints>
                     <start_time>3</start_time>
@@ -2062,7 +2036,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>false</loop_waypoints>
                     <start_time>3</start_time>
@@ -2170,7 +2143,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>true</waypoint_auto_start>
                     <loop_waypoints>true</loop_waypoints>
                     <start_time>4</start_time>
@@ -2192,7 +2164,7 @@
                             <p>
                                 <x>0</x>
                                 <y>0</y>
-                                <z>0</z>
+                                <z>-4.5</z>
                             </p>
                         </waypoint>
                     </waypoints>
@@ -2262,7 +2234,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>true</waypoint_auto_start>
                     <loop_waypoints>true</loop_waypoints>
                     <start_time>4</start_time>
@@ -2284,7 +2255,7 @@
                             <p>
                                 <x>0</x>
                                 <y>0</y>
-                                <z>0</z>
+                                <z>-4.5</z>
                             </p>
                         </waypoint>
                     </waypoints>
@@ -2354,7 +2325,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>false</loop_waypoints>
                     <start_time>3</start_time>
@@ -2462,7 +2432,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>false</loop_waypoints>
                     <start_time>3</start_time>
@@ -2570,7 +2539,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>false</loop_waypoints>
                     <start_time>3</start_time>
@@ -2678,7 +2646,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>false</loop_waypoints>
                     <start_time>3</start_time>
@@ -2786,7 +2753,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>true</waypoint_auto_start>
                     <loop_waypoints>true</loop_waypoints>
                     <start_time>4</start_time>
@@ -2808,7 +2774,7 @@
                             <p>
                                 <x>0</x>
                                 <y>0</y>
-                                <z>0</z>
+                                <z>-4.5</z>
                             </p>
                         </waypoint>
                     </waypoints>
@@ -2878,7 +2844,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>false</loop_waypoints>
                     <start_time>3</start_time>
@@ -2986,7 +2951,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>false</loop_waypoints>
                     <start_time>3</start_time>
@@ -3094,7 +3058,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>true</waypoint_auto_start>
                     <loop_waypoints>true</loop_waypoints>
                     <start_time>4</start_time>
@@ -3116,7 +3079,7 @@
                             <p>
                                 <x>0</x>
                                 <y>0</y>
-                                <z>0</z>
+                                <z>-4.5</z>
                             </p>
                         </waypoint>
                     </waypoints>
@@ -3194,7 +3157,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>true</waypoint_auto_start>
                     <loop_waypoints>true</loop_waypoints>
                     <start_time>4</start_time>
@@ -3216,7 +3178,7 @@
                             <p>
                                 <x>0</x>
                                 <y>0</y>
-                                <z>0</z>
+                                <z>3.5</z>
                             </p>
                         </waypoint>
                     </waypoints>
@@ -3286,7 +3248,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>false</loop_waypoints>
                     <start_time>3</start_time>
@@ -3394,7 +3355,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>false</loop_waypoints>
                     <start_time>3</start_time>
@@ -3502,7 +3462,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>true</waypoint_auto_start>
                     <loop_waypoints>true</loop_waypoints>
                     <start_time>4</start_time>
@@ -3524,7 +3483,7 @@
                             <p>
                                 <x>0</x>
                                 <y>0</y>
-                                <z>0</z>
+                                <z>-4.5</z>
                             </p>
                         </waypoint>
                     </waypoints>
@@ -3594,7 +3553,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>true</waypoint_auto_start>
                     <loop_waypoints>true</loop_waypoints>
                     <start_time>4</start_time>
@@ -3675,7 +3633,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>false</loop_waypoints>
                     <start_time>3</start_time>
@@ -3783,7 +3740,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>false</loop_waypoints>
                     <start_time>3</start_time>
@@ -3891,7 +3847,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>true</waypoint_auto_start>
                     <loop_waypoints>true</loop_waypoints>
                     <start_time>4</start_time>
@@ -3913,7 +3868,7 @@
                             <p>
                                 <x>0</x>
                                 <y>0</y>
-                                <z>0</z>
+                                <z>4.5</z>
                             </p>
                         </waypoint>
                     </waypoints>
@@ -3983,7 +3938,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>true</waypoint_auto_start>
                     <loop_waypoints>true</loop_waypoints>
                     <start_time>4</start_time>
@@ -4005,7 +3959,7 @@
                             <p>
                                 <x>0</x>
                                 <y>0</y>
-                                <z>0</z>
+                                <z>4.5</z>
                             </p>
                         </waypoint>
                     </waypoints>
@@ -4075,7 +4029,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>false</loop_waypoints>
                     <start_time>3</start_time>
@@ -4210,7 +4163,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>false</loop_waypoints>
                     <start_time>3</start_time>
@@ -4318,7 +4270,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>false</loop_waypoints>
                     <start_time>3</start_time>
@@ -4426,7 +4377,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>true</waypoint_auto_start>
                     <loop_waypoints>true</loop_waypoints>
                     <start_time>4</start_time>
@@ -4448,7 +4398,7 @@
                             <p>
                                 <x>0</x>
                                 <y>0</y>
-                                <z>0</z>
+                                <z>4.5</z>
                             </p>
                         </waypoint>
                     </waypoints>
@@ -4518,7 +4468,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>false</loop_waypoints>
                     <start_time>3</start_time>
@@ -4626,7 +4575,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>false</loop_waypoints>
                     <start_time>3</start_time>
@@ -4734,7 +4682,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>true</waypoint_auto_start>
                     <loop_waypoints>true</loop_waypoints>
                     <start_time>4</start_time>
@@ -4756,7 +4703,7 @@
                             <p>
                                 <x>0</x>
                                 <y>0</y>
-                                <z>0</z>
+                                <z>-4.5</z>
                             </p>
                         </waypoint>
                     </waypoints>
@@ -4826,7 +4773,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>true</waypoint_auto_start>
                     <loop_waypoints>true</loop_waypoints>
                     <start_time>8</start_time>
@@ -4848,7 +4794,7 @@
                             <p>
                                 <x>0</x>
                                 <y>0</y>
-                                <z>0</z>
+                                <z>-4.5</z>
                             </p>
                         </waypoint>
                     </waypoints>
@@ -4918,7 +4864,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>false</loop_waypoints>
                     <start_time>3</start_time>
@@ -5026,7 +4971,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>false</loop_waypoints>
                     <start_time>3</start_time>
@@ -5134,7 +5078,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>true</waypoint_auto_start>
                     <loop_waypoints>true</loop_waypoints>
                     <start_time>4</start_time>
@@ -5156,7 +5099,7 @@
                             <p>
                                 <x>0</x>
                                 <y>0</y>
-                                <z>0</z>
+                                <z>-4.5</z>
                             </p>
                         </waypoint>
                     </waypoints>
@@ -5226,7 +5169,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>false</loop_waypoints>
                     <start_time>3</start_time>
@@ -5334,7 +5276,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>false</loop_waypoints>
                     <start_time>3</start_time>
@@ -5442,7 +5383,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>true</waypoint_auto_start>
                     <loop_waypoints>true</loop_waypoints>
                     <start_time>4</start_time>
@@ -5464,7 +5404,7 @@
                             <p>
                                 <x>0</x>
                                 <y>0</y>
-                                <z>0</z>
+                                <z>4.5</z>
                             </p>
                         </waypoint>
                     </waypoints>
@@ -5534,7 +5474,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>true</waypoint_auto_start>
                     <loop_waypoints>true</loop_waypoints>
                     <start_time>4</start_time>
@@ -5556,7 +5495,7 @@
                             <p>
                                 <x>0</x>
                                 <y>0</y>
-                                <z>0</z>
+                                <z>4.5</z>
                             </p>
                         </waypoint>
                     </waypoints>
@@ -5626,7 +5565,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>false</loop_waypoints>
                     <start_time>3</start_time>
@@ -5748,7 +5686,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>false</loop_waypoints>
                     <start_time>3</start_time>
@@ -5927,7 +5864,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>false</loop_waypoints>
                     <start_time>3</start_time>
@@ -5978,7 +5914,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>false</loop_waypoints>
                     <start_time>3</start_time>
@@ -6028,7 +5963,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>false</loop_waypoints>
                     <start_time>3</start_time>
@@ -6112,7 +6046,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>false</loop_waypoints>
                     <start_time>3</start_time>
@@ -6171,7 +6104,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>false</loop_waypoints>
                     <start_time>3</start_time>
@@ -6244,7 +6176,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>false</loop_waypoints>
                     <start_time>3</start_time>
@@ -6317,7 +6248,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>false</loop_waypoints>
                     <start_time>3</start_time>
@@ -6390,7 +6320,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>false</loop_waypoints>
                     <start_time>3</start_time>
@@ -6440,7 +6369,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>false</loop_waypoints>
                     <start_time>3</start_time>
@@ -6490,7 +6418,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>false</loop_waypoints>
                     <start_time>3</start_time>
@@ -6563,7 +6490,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>false</loop_waypoints>
                     <start_time>3</start_time>
@@ -6613,7 +6539,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>false</loop_waypoints>
                     <start_time>3</start_time>
@@ -6728,7 +6653,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>FollowEntity</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>false</loop_waypoints>
                     <start_time>3</start_time>
@@ -6845,7 +6769,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>false</loop_waypoints>
                     <start_time>3</start_time>
@@ -6895,7 +6818,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>false</loop_waypoints>
                     <start_time>3</start_time>
@@ -6945,7 +6867,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>true</loop_waypoints>
                     <start_time>4</start_time>
@@ -7028,7 +6949,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>true</loop_waypoints>
                     <start_time>4</start_time>
@@ -7111,7 +7031,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>false</loop_waypoints>
                     <start_time>3</start_time>
@@ -7161,7 +7080,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>false</loop_waypoints>
                     <start_time>3</start_time>
@@ -7211,7 +7129,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>false</loop_waypoints>
                     <start_time>3</start_time>
@@ -7319,7 +7236,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>false</loop_waypoints>
                     <start_time>3</start_time>
@@ -7427,7 +7343,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>false</loop_waypoints>
                     <start_time>3</start_time>
@@ -7535,7 +7450,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>false</loop_waypoints>
                     <start_time>3</start_time>
@@ -7643,7 +7557,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>FollowEntity</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>false</loop_waypoints>
                     <start_time>3</start_time>
@@ -7720,7 +7633,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>false</loop_waypoints>
                     <start_time>3</start_time>
@@ -7805,7 +7717,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>false</loop_waypoints>
                     <start_time>3</start_time>
@@ -7890,7 +7801,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>false</loop_waypoints>
                     <start_time>3</start_time>
@@ -7975,7 +7885,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>true</loop_waypoints>
                     <start_time>4</start_time>
@@ -8048,7 +7957,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>false</loop_waypoints>
                     <start_time>3</start_time>
@@ -8156,7 +8064,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>false</loop_waypoints>
                     <start_time>3</start_time>
@@ -8264,7 +8171,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>false</loop_waypoints>
                     <start_time>3</start_time>
@@ -8372,7 +8278,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>false</loop_waypoints>
                     <start_time>3</start_time>
@@ -8480,7 +8385,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>false</loop_waypoints>
                     <start_time>3</start_time>
@@ -8588,7 +8492,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>false</loop_waypoints>
                     <start_time>3</start_time>
@@ -8700,7 +8603,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>false</loop_waypoints>
                     <start_time>3</start_time>
@@ -8750,7 +8652,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>false</loop_waypoints>
                     <start_time>3</start_time>
@@ -8800,7 +8701,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>false</loop_waypoints>
                     <start_time>3</start_time>
@@ -8851,7 +8751,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>false</loop_waypoints>
                     <start_time>3</start_time>
@@ -8966,7 +8865,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>false</loop_waypoints>
                     <start_time>3</start_time>
@@ -9065,7 +8963,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>false</loop_waypoints>
                     <start_time>3</start_time>
@@ -9243,7 +9140,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>false</loop_waypoints>
                     <start_time>3</start_time>
@@ -9342,7 +9238,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>false</loop_waypoints>
                     <start_time>3</start_time>
@@ -9449,7 +9344,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>false</loop_waypoints>
                     <start_time>3</start_time>
@@ -9499,7 +9393,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>false</loop_waypoints>
                     <start_time>3</start_time>
@@ -9550,7 +9443,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>false</loop_waypoints>
                     <start_time>3</start_time>
@@ -9731,7 +9623,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>false</loop_waypoints>
                     <start_time>3</start_time>
@@ -9838,7 +9729,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>false</loop_waypoints>
                     <start_time>3</start_time>
@@ -9945,7 +9835,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>false</loop_waypoints>
                     <start_time>3</start_time>
@@ -10052,7 +9941,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>false</loop_waypoints>
                     <start_time>3</start_time>
@@ -10159,7 +10047,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>false</loop_waypoints>
                     <start_time>3</start_time>
@@ -10257,7 +10144,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>false</loop_waypoints>
                     <start_time>3</start_time>
@@ -10365,7 +10251,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>false</loop_waypoints>
                     <start_time>3</start_time>
@@ -10473,7 +10358,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>false</loop_waypoints>
                     <start_time>3</start_time>
@@ -10581,7 +10465,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>true</waypoint_auto_start>
                     <loop_waypoints>true</loop_waypoints>
                     <start_time>4</start_time>
@@ -10603,7 +10486,7 @@
                             <p>
                                 <x>0</x>
                                 <y>0</y>
-                                <z>0</z>
+                                <z>4.5</z>
                             </p>
                         </waypoint>
                     </waypoints>
@@ -10673,7 +10556,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>false</loop_waypoints>
                     <start_time>3</start_time>
@@ -10781,7 +10663,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>true</loop_waypoints>
                     <start_time>4</start_time>
@@ -10803,7 +10684,7 @@
                             <p>
                                 <x>0</x>
                                 <y>0</y>
-                                <z>0</z>
+                                <z>4.5</z>
                             </p>
                         </waypoint>
                     </waypoints>
@@ -10873,7 +10754,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>true</loop_waypoints>
                     <start_time>4</start_time>
@@ -10946,7 +10826,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>true</loop_waypoints>
                     <start_time>4</start_time>
@@ -10968,7 +10847,7 @@
                             <p>
                                 <x>0</x>
                                 <y>0</y>
-                                <z>0</z>
+                                <z>4.5</z>
                             </p>
                         </waypoint>
                     </waypoints>
@@ -11038,7 +10917,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>false</loop_waypoints>
                     <start_time>3</start_time>
@@ -11145,7 +11023,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>false</loop_waypoints>
                     <start_time>3</start_time>
@@ -11252,7 +11129,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>true</loop_waypoints>
                     <start_time>4</start_time>
@@ -11274,7 +11150,7 @@
                             <p>
                                 <x>0</x>
                                 <y>0</y>
-                                <z>0</z>
+                                <z>4.5</z>
                             </p>
                         </waypoint>
                     </waypoints>
@@ -11352,7 +11228,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>true</loop_waypoints>
                     <start_time>4</start_time>
@@ -11374,7 +11249,7 @@
                             <p>
                                 <x>0</x>
                                 <y>0</y>
-                                <z>0</z>
+                                <z>4.5</z>
                             </p>
                         </waypoint>
                     </waypoints>
@@ -11452,7 +11327,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>true</loop_waypoints>
                     <start_time>4</start_time>
@@ -11474,7 +11348,7 @@
                             <p>
                                 <x>0</x>
                                 <y>0</y>
-                                <z>0</z>
+                                <z>4.5</z>
                             </p>
                         </waypoint>
                     </waypoints>
@@ -11552,7 +11426,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>true</loop_waypoints>
                     <start_time>4</start_time>
@@ -11574,7 +11447,7 @@
                             <p>
                                 <x>0</x>
                                 <y>0</y>
-                                <z>0</z>
+                                <z>4.5</z>
                             </p>
                         </waypoint>
                     </waypoints>
@@ -11652,7 +11525,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>false</loop_waypoints>
                     <start_time>3</start_time>
@@ -11833,7 +11705,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>false</loop_waypoints>
                     <start_time>3</start_time>
@@ -11885,7 +11756,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>false</loop_waypoints>
                     <start_time>3</start_time>
@@ -11937,7 +11807,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>false</loop_waypoints>
                     <start_time>3</start_time>
@@ -11989,7 +11858,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>false</loop_waypoints>
                     <start_time>3</start_time>
@@ -12041,7 +11909,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>false</loop_waypoints>
                     <start_time>3</start_time>
@@ -12093,7 +11960,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>false</loop_waypoints>
                     <start_time>3</start_time>
@@ -12145,7 +12011,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>false</loop_waypoints>
                     <start_time>3</start_time>
@@ -12197,7 +12062,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>false</loop_waypoints>
                     <start_time>3</start_time>
@@ -12249,7 +12113,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>false</loop_waypoints>
                     <start_time>3</start_time>
@@ -12301,7 +12164,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>false</loop_waypoints>
                     <start_time>3</start_time>
@@ -12353,7 +12215,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>false</loop_waypoints>
                     <start_time>3</start_time>
@@ -12405,7 +12266,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>false</loop_waypoints>
                     <start_time>3</start_time>
@@ -12457,7 +12317,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>false</loop_waypoints>
                     <start_time>3</start_time>
@@ -12509,7 +12368,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>false</loop_waypoints>
                     <start_time>3</start_time>
@@ -12660,7 +12518,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>false</loop_waypoints>
                     <start_time>3</start_time>
@@ -12767,7 +12624,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>false</loop_waypoints>
                     <start_time>3</start_time>
@@ -12875,7 +12731,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>false</loop_waypoints>
                     <start_time>3</start_time>
@@ -12983,7 +12838,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>false</loop_waypoints>
                     <start_time>3</start_time>
@@ -13091,7 +12945,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>false</loop_waypoints>
                     <start_time>3</start_time>
@@ -13199,7 +13052,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>false</loop_waypoints>
                     <start_time>3</start_time>
@@ -13272,7 +13124,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>false</loop_waypoints>
                     <start_time>3</start_time>
@@ -13345,7 +13196,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>FollowEntity</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>false</loop_waypoints>
                     <start_time>3</start_time>
@@ -13462,7 +13312,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>false</loop_waypoints>
                     <start_time>3</start_time>
@@ -13512,7 +13361,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>FollowEntity</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>false</loop_waypoints>
                     <start_time>3</start_time>
@@ -13580,7 +13428,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>false</loop_waypoints>
                     <start_time>3</start_time>
@@ -13630,7 +13477,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>false</loop_waypoints>
                     <start_time>3</start_time>
@@ -13727,7 +13573,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>false</loop_waypoints>
                     <start_time>3</start_time>
@@ -13777,7 +13622,6 @@
                 <tag>2</tag>
                 <waypoint_follower>
                     <mode>FollowEntity</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>false</loop_waypoints>
                     <start_time>3</start_time>
@@ -13894,7 +13738,6 @@
                 <tag>2</tag>
                 <waypoint_follower>
                     <mode>FollowEntity</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>false</loop_waypoints>
                     <start_time>3</start_time>
@@ -14011,7 +13854,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>FollowEntity</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>false</loop_waypoints>
                     <start_time>3</start_time>
@@ -14079,7 +13921,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>false</loop_waypoints>
                     <start_time>3</start_time>
@@ -14187,7 +14028,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>false</loop_waypoints>
                     <start_time>3</start_time>
@@ -14245,7 +14085,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>false</loop_waypoints>
                     <start_time>3</start_time>
@@ -14344,7 +14183,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>false</loop_waypoints>
                     <start_time>3</start_time>
@@ -14443,7 +14281,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>false</loop_waypoints>
                     <start_time>3</start_time>
@@ -14542,7 +14379,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>false</loop_waypoints>
                     <start_time>3</start_time>
@@ -14650,7 +14486,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>FollowEntity</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>false</loop_waypoints>
                     <start_time>3</start_time>
@@ -14759,7 +14594,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>FollowEntity</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>false</loop_waypoints>
                     <start_time>3</start_time>
@@ -14868,7 +14702,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>false</loop_waypoints>
                     <start_time>3</start_time>
@@ -14926,7 +14759,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>false</loop_waypoints>
                     <start_time>3</start_time>
@@ -14977,7 +14809,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>false</loop_waypoints>
                     <start_time>3</start_time>
@@ -15076,7 +14907,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>false</loop_waypoints>
                     <start_time>3</start_time>
@@ -15175,7 +15005,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>false</loop_waypoints>
                     <start_time>3</start_time>
@@ -15274,7 +15103,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>FollowEntity</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>false</loop_waypoints>
                     <start_time>3</start_time>
@@ -15342,7 +15170,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>FollowEntity</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>false</loop_waypoints>
                     <start_time>3</start_time>
@@ -15451,7 +15278,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>FollowEntity</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>false</loop_waypoints>
                     <start_time>3</start_time>
@@ -15560,7 +15386,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>false</loop_waypoints>
                     <start_time>3</start_time>
@@ -15652,7 +15477,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>FollowEntity</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>false</loop_waypoints>
                     <start_time>3</start_time>
@@ -15720,7 +15544,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>false</loop_waypoints>
                     <start_time>3</start_time>
@@ -15788,7 +15611,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>false</loop_waypoints>
                     <start_time>3</start_time>
@@ -15887,7 +15709,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>false</loop_waypoints>
                     <start_time>3</start_time>
@@ -15986,7 +15807,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>false</loop_waypoints>
                     <start_time>3</start_time>
@@ -16085,7 +15905,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>FollowEntity</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>false</loop_waypoints>
                     <start_time>3</start_time>
@@ -16194,7 +16013,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>FollowEntity</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>false</loop_waypoints>
                     <start_time>3</start_time>
@@ -16303,7 +16121,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>false</loop_waypoints>
                     <start_time>3</start_time>
@@ -16451,7 +16268,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>false</loop_waypoints>
                     <start_time>3</start_time>
@@ -16587,7 +16403,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>false</loop_waypoints>
                     <start_time>3</start_time>
@@ -16655,7 +16470,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>false</loop_waypoints>
                     <start_time>3</start_time>
@@ -16754,7 +16568,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>false</loop_waypoints>
                     <start_time>3</start_time>
@@ -16853,7 +16666,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>false</loop_waypoints>
                     <start_time>3</start_time>
@@ -16952,7 +16764,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>FollowEntity</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>false</loop_waypoints>
                     <start_time>3</start_time>
@@ -17051,7 +16862,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>FollowEntity</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>false</loop_waypoints>
                     <start_time>3</start_time>
@@ -17150,7 +16960,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>false</loop_waypoints>
                     <start_time>3</start_time>
@@ -17291,7 +17100,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>false</loop_waypoints>
                     <start_time>0</start_time>
@@ -17354,7 +17162,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>false</loop_waypoints>
                     <start_time>3</start_time>
@@ -17453,7 +17260,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>false</loop_waypoints>
                     <start_time>3</start_time>
@@ -17552,7 +17358,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>false</loop_waypoints>
                     <start_time>3</start_time>
@@ -17651,7 +17456,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>FollowEntity</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>false</loop_waypoints>
                     <start_time>3</start_time>
@@ -17750,7 +17554,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>FollowEntity</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>false</loop_waypoints>
                     <start_time>3</start_time>
@@ -17849,7 +17652,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>false</loop_waypoints>
                     <start_time>3</start_time>
@@ -17909,7 +17711,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>false</loop_waypoints>
                     <start_time>3</start_time>
@@ -17969,7 +17770,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>false</loop_waypoints>
                     <start_time>3</start_time>
@@ -18029,7 +17829,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>false</loop_waypoints>
                     <start_time>3</start_time>
@@ -18089,7 +17888,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>false</loop_waypoints>
                     <start_time>3</start_time>
@@ -18149,7 +17947,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>false</loop_waypoints>
                     <start_time>3</start_time>
@@ -18340,7 +18137,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>false</loop_waypoints>
                     <start_time>3</start_time>
@@ -18390,7 +18186,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>false</loop_waypoints>
                     <start_time>3</start_time>
@@ -18450,7 +18245,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>false</loop_waypoints>
                     <start_time>3</start_time>
@@ -18625,7 +18419,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>false</loop_waypoints>
                     <start_time>3</start_time>
@@ -18675,7 +18468,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>false</loop_waypoints>
                     <start_time>3</start_time>
@@ -18735,7 +18527,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>false</loop_waypoints>
                     <start_time>3</start_time>
@@ -18910,7 +18701,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>false</loop_waypoints>
                     <start_time>3</start_time>
@@ -18960,7 +18750,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>false</loop_waypoints>
                     <start_time>3</start_time>
@@ -19018,7 +18807,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>false</loop_waypoints>
                     <start_time>3</start_time>
@@ -19076,7 +18864,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>false</loop_waypoints>
                     <start_time>3</start_time>
@@ -19134,7 +18921,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>false</loop_waypoints>
                     <start_time>3</start_time>
@@ -19192,7 +18978,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>false</loop_waypoints>
                     <start_time>3</start_time>
@@ -19250,7 +19035,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>false</loop_waypoints>
                     <start_time>3</start_time>
@@ -19308,7 +19092,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>false</loop_waypoints>
                     <start_time>3</start_time>
@@ -19407,7 +19190,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>false</loop_waypoints>
                     <start_time>3</start_time>
@@ -19506,7 +19288,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>false</loop_waypoints>
                     <start_time>3</start_time>
@@ -19605,7 +19386,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>false</loop_waypoints>
                     <start_time>3</start_time>
@@ -19665,7 +19445,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>FollowEntity</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>false</loop_waypoints>
                     <start_time>3</start_time>
@@ -19764,7 +19543,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>FollowEntity</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>false</loop_waypoints>
                     <start_time>3</start_time>
@@ -19863,7 +19641,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>false</loop_waypoints>
                     <start_time>3</start_time>
@@ -20038,7 +19815,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>false</loop_waypoints>
                     <start_time>3</start_time>
@@ -20088,7 +19864,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>false</loop_waypoints>
                     <start_time>3</start_time>
@@ -20187,7 +19962,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>false</loop_waypoints>
                     <start_time>3</start_time>
@@ -20286,7 +20060,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>false</loop_waypoints>
                     <start_time>3</start_time>
@@ -20385,7 +20158,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>false</loop_waypoints>
                     <start_time>3</start_time>
@@ -20436,7 +20208,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>false</loop_waypoints>
                     <start_time>3</start_time>
@@ -20535,7 +20306,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>false</loop_waypoints>
                     <start_time>3</start_time>
@@ -20634,7 +20404,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>false</loop_waypoints>
                     <start_time>3</start_time>
@@ -20733,7 +20502,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>false</loop_waypoints>
                     <start_time>3</start_time>
@@ -20832,7 +20600,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>false</loop_waypoints>
                     <start_time>3</start_time>
@@ -20931,7 +20698,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>false</loop_waypoints>
                     <start_time>3</start_time>
@@ -21030,7 +20796,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>false</loop_waypoints>
                     <start_time>3</start_time>
@@ -21129,7 +20894,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>false</loop_waypoints>
                     <start_time>3</start_time>
@@ -21228,7 +20992,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>true</loop_waypoints>
                     <start_time>4</start_time>
@@ -21301,7 +21064,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>true</loop_waypoints>
                     <start_time>4</start_time>
@@ -21374,7 +21136,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>true</loop_waypoints>
                     <start_time>4</start_time>
@@ -21447,7 +21208,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>true</loop_waypoints>
                     <start_time>4</start_time>
@@ -21520,7 +21280,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>true</loop_waypoints>
                     <start_time>4</start_time>
@@ -21593,7 +21352,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>true</loop_waypoints>
                     <start_time>4</start_time>
@@ -21666,7 +21424,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>true</loop_waypoints>
                     <start_time>4</start_time>
@@ -21739,7 +21496,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>true</loop_waypoints>
                     <start_time>4</start_time>
@@ -21812,7 +21568,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>true</loop_waypoints>
                     <start_time>4</start_time>
@@ -21885,7 +21640,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>true</loop_waypoints>
                     <start_time>4</start_time>
@@ -21958,7 +21712,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>true</loop_waypoints>
                     <start_time>4</start_time>
@@ -22031,7 +21784,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>true</loop_waypoints>
                     <start_time>4</start_time>
@@ -22104,7 +21856,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>true</loop_waypoints>
                     <start_time>4</start_time>
@@ -22177,7 +21928,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>false</loop_waypoints>
                     <start_time>3</start_time>
@@ -22285,7 +22035,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>false</loop_waypoints>
                     <start_time>3</start_time>
@@ -22404,7 +22153,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>false</loop_waypoints>
                     <start_time>3</start_time>
@@ -22481,7 +22229,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>false</loop_waypoints>
                     <start_time>3</start_time>
@@ -22550,7 +22297,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>false</loop_waypoints>
                     <start_time>3</start_time>
@@ -22656,7 +22402,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>false</loop_waypoints>
                     <start_time>3</start_time>
@@ -22762,7 +22507,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>false</loop_waypoints>
                     <start_time>3</start_time>
@@ -22868,7 +22612,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>false</loop_waypoints>
                     <start_time>3</start_time>
@@ -22974,7 +22717,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>false</loop_waypoints>
                     <start_time>3</start_time>
@@ -23106,7 +22848,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>false</loop_waypoints>
                     <start_time>3</start_time>
@@ -23238,7 +22979,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>false</loop_waypoints>
                     <start_time>3</start_time>
@@ -23370,7 +23110,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>false</loop_waypoints>
                     <start_time>3</start_time>
@@ -23502,7 +23241,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>false</loop_waypoints>
                     <start_time>0</start_time>
@@ -23565,7 +23303,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>false</loop_waypoints>
                     <start_time>3</start_time>
@@ -23664,7 +23401,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>false</loop_waypoints>
                     <start_time>3</start_time>
@@ -23763,7 +23499,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>false</loop_waypoints>
                     <start_time>3</start_time>
@@ -23813,7 +23548,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>false</loop_waypoints>
                     <start_time>3</start_time>
@@ -23899,7 +23633,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>false</loop_waypoints>
                     <start_time>3</start_time>
@@ -23969,7 +23702,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>false</loop_waypoints>
                     <start_time>3</start_time>
@@ -24068,7 +23800,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>false</loop_waypoints>
                     <start_time>3</start_time>
@@ -24167,7 +23898,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>false</loop_waypoints>
                     <start_time>3</start_time>
@@ -24225,7 +23955,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>false</loop_waypoints>
                     <start_time>3</start_time>
@@ -24283,7 +24012,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>false</loop_waypoints>
                     <start_time>3</start_time>
@@ -24341,7 +24069,6 @@
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
-                    <wp_relative>false</wp_relative>
                     <waypoint_auto_start>false</waypoint_auto_start>
                     <loop_waypoints>false</loop_waypoints>
                     <start_time>3</start_time>

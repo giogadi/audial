@@ -30,7 +30,6 @@ struct WaypointFollower {
         std::vector<Waypoint> _waypoints;
         bool _autoStartFollowingWaypoints = false;
         bool _loopWaypoints = false;
-        bool _wpRelative = false;
         double _initWpStartTime = 3.0;
         double _startQuantize = 1.0;
         double _quantizeBufferTime = 0.0;
@@ -54,10 +53,11 @@ struct WaypointFollower {
 
     struct State {
         bool _followingWaypoints = false;
-        int _currentWaypointIx = 0;
-        Vec3 _prevWaypointPos;
-        Vec3 _entityPosAtStart;
-        double _thisWpStartTime = 3.0;
+        int _currentWaypointIx = -1;
+        double _nextWpStartTime = 3.0;
+        double _thisWpStartTime = -1.0;
+        Vec3 _currentMotion;
+        float _lastMotionFactor = 0.f;
 
         ne::EntityId _followEntityId;
         Vec3 _offsetFromFollowEntity;
