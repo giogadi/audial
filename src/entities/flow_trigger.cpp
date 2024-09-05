@@ -8,6 +8,7 @@
 #include "geometry.h"
 #include "rng.h"
 #include "entities/typing_enemy.h"
+#include "particle_mgr.h"
 
 void FlowTriggerEntity::InitDerived(GameManager& g) {
     for (auto& pAction : _p._actions) {
@@ -41,6 +42,7 @@ void FlowTriggerEntity::SaveDerived(serial::Ptree pt) const {
     pt.PutBool("execute_on_init", _p._executeOnInit);
     pt.PutBool("use_trigger_volumes", _p._useTriggerVolumes);
     pt.PutInt("random_action_count", _p._randomActionCount);
+    pt.PutBool("shatter_on_trigger", _p._shatterOnTrigger);
     SeqAction::SaveActionsInChildNode(pt, "actions", _p._actions);
     SeqAction::SaveActionsInChildNode(pt, "actions_on_exit", _p._actionsOnExit);
     serial::SaveVectorInChildNode(pt, "trigger_volume_entities", "editor_id", _p._triggerVolumeEditorIds);
@@ -54,6 +56,7 @@ void FlowTriggerEntity::LoadDerived(serial::Ptree pt) {
     pt.TryGetBool("execute_on_init", &_p._executeOnInit);
     pt.TryGetBool("use_trigger_volumes", &_p._useTriggerVolumes);
     pt.TryGetInt("random_action_count", &_p._randomActionCount);
+    pt.TryGetBool("shatter_on_trigger", &_p._shatterOnTrigger);
     SeqAction::LoadActionsFromChildNode(pt, "actions", _p._actions);
     SeqAction::LoadActionsFromChildNode(pt, "actions_on_exit", _p._actionsOnExit);
     serial::LoadVectorFromChildNode(pt, "trigger_volume_entities", _p._triggerVolumeEditorIds);
@@ -71,6 +74,7 @@ FlowTriggerEntity::ImGuiResult FlowTriggerEntity::ImGuiDerived(GameManager& g)  
     ImGui::InputDouble("Quantize", &_p._quantize);
     ImGui::Checkbox("On player enter", &_p._triggerOnPlayerEnter);
     ImGui::Checkbox("Execute on Init", &_p._executeOnInit);
+    ImGui::Checkbox("Shatter on trigger", &_p._shatterOnTrigger);
     ImGui::Checkbox("Use trigger volumes", &_p._useTriggerVolumes);
     ImGui::InputInt("Rand action count", &_p._randomActionCount);
     bool needsInit = SeqAction::ImGui("Actions", _p._actions);
@@ -137,6 +141,34 @@ void FlowTriggerEntity::RunActions(GameManager& g) {
     } else {
         for (auto const& pAction : _p._actions) {
             pAction->Execute(g);
+        }
+    }
+
+    if (_p._shatterOnTrigger) {
+        g._neEntityManager->TagForDeactivate(_id);
+
+        // TODO: put this in a new kind of SeqAction
+        Vec3 boxP = _transform.Pos();
+        // TODO: Assumes AABB
+        Vec3 minP = boxP - _transform.Scale()*0.5f;
+        Vec3 maxP = boxP + _transform.Scale()*0.5f;
+        for (int ii = 0; ii < 20; ++ii) {
+            Vec3 p;
+            p._x = rng::GetFloat(minP._x, maxP._x);
+            p._y = rng::GetFloat(minP._y, maxP._y);
+            p._z = rng::GetFloat(minP._z, maxP._z);
+            Vec3 dir = p - boxP;
+            dir.Normalize(); 
+            
+            Particle* particle = g._particleMgr->SpawnParticle(); 
+            particle->t.SetPos(p);
+            particle->t.SetScale(Vec3(0.15f, 0.15f, 0.15f));
+            particle->v = 2.f * dir;
+            particle->rotV = 4.f * dir;
+            particle->color = _modelColor;
+            particle->alphaV = -0.5f;
+            particle->timeLeft = 0.5f;
+            particle->shape = ParticleShape::Triangle;
         }
     }
 }
