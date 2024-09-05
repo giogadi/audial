@@ -46,6 +46,8 @@ enum class SeqActionType : int {
     
     Respawn,
     
+    AddMotion,
+    
     Count
 };
 extern char const* gSeqActionTypeStrings[];

@@ -10,6 +10,7 @@
 #include "seq_actions/change_patch.h"
 #include "seq_actions/vfx_pulse.h"
 #include "seq_actions/set_enemy_hittable.h"
+#include "seq_actions/add_motion.h"
 #include "imgui_util.h"
 #include "serial_enum.h"
 
@@ -50,6 +51,7 @@ std::unique_ptr<SeqAction> SeqAction::New(SeqActionType actionType) {
         case SeqActionType::Trigger: return std::make_unique<TriggerSeqAction>();
         case SeqActionType::SetEnemyHittable: return std::make_unique<SetEnemyHittableSeqAction>();
         case SeqActionType::Respawn: return std::make_unique<RespawnSeqAction>();
+        case SeqActionType::AddMotion: return std::make_unique<AddMotionSeqAction>();
         case SeqActionType::Count: break;
     }
     assert(false);

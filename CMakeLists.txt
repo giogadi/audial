@@ -80,6 +80,7 @@ add_executable(game
     src/stb_truetype.cpp src/stb_truetype.h
     src/geometry.cpp src/geometry.h
     src/particle_mgr.cpp src/particle_mgr.h
+    src/motion_manager.cpp src/motion_manager.h
 
     src/string_ci.cpp src/string_ci.h
 
@@ -105,6 +106,7 @@ add_executable(game
     src/seq_actions/change_patch.cpp src/seq_actions/change_patch.h
     src/seq_actions/vfx_pulse.cpp src/seq_actions/vfx_pulse.h
     src/seq_actions/set_enemy_hittable.cpp src/seq_actions/set_enemy_hittable.h
+    src/seq_actions/add_motion.cpp src/seq_actions/add_motion.h
    
     src/entities/test.cpp src/entities/test.h 
     src/entities/light.cpp src/entities/light.h

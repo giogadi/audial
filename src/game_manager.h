@@ -18,6 +18,7 @@ class CollisionManager;
 class BeatClock;
 class SoundBank;
 struct ParticleMgr;
+struct MotionManager;
 
 #include "viewport.h"
 
@@ -31,6 +32,7 @@ struct GameManager {
     SoundBank* _soundBank = nullptr;
     synth::PatchBank* _synthPatchBank = nullptr;
     ParticleMgr* _particleMgr = nullptr;
+    MotionManager* _motionManager = nullptr;
 
     bool _editMode = false;
 

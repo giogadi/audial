@@ -49,6 +49,7 @@
 #include "synth_imgui.h"
 #include "logger.h"
 #include "particle_mgr.h"
+#include "motion_manager.h"
 
 GameManager gGameManager;
 
@@ -474,6 +475,8 @@ int main(int argc, char** argv) {
 
     ParticleMgr particleMgr;
 
+    MotionManager motionManager;
+
     gGameManager._editor = &editor;
     gGameManager._scene = &sceneManager;
     gGameManager._inputManager = &inputManager;
@@ -483,6 +486,7 @@ int main(int argc, char** argv) {
     gGameManager._soundBank = &soundBank;
     gGameManager._synthPatchBank = &synthPatchBank;
     gGameManager._particleMgr = &particleMgr;
+    gGameManager._motionManager = &motionManager;
     gGameManager._editMode = cmdLineInputs._editMode;
 
     {
@@ -687,6 +691,8 @@ int main(int argc, char** argv) {
         }
 
         MaybeToggleMute(fixedTimeStep);
+
+        gGameManager._motionManager->Update(dt, gGameManager);
 
         if (gGameManager._editMode) {
             for (auto iter = gGameManager._neEntityManager->GetAllIterator(); !iter.Finished(); iter.Next()) {
