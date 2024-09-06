@@ -410,6 +410,15 @@ void simple_spring_damper_exact(
     x = eydt*(j0 + j1*dt) + x_goal;
     v = eydt*(v - j1*y*dt);
 }
+
+bool IsActionOnly(TypingEnemyEntity const& e) {
+    if (e._p._hitResponse._type == HitResponseType::None) {
+        if (!e._p._useLastHitResponse || e._p._lastHitResponse._type == HitResponseType::None) {
+            return true;
+        }
+    }
+    return false;
+}
 }
 
 void FlowPlayerEntity::UpdateDerived(GameManager& g, float dt) {
@@ -513,7 +522,7 @@ void FlowPlayerEntity::UpdateDerived(GameManager& g, float dt) {
         // Vec4 constexpr kGreyColor(0.6f, 0.6f, 0.6f, 0.7f);
         TypingEnemyEntity* enemy = (TypingEnemyEntity*) enemyIter.GetEntity();
         // TODO this is inefficient I know, shutup
-        if (carrier != nullptr && carrier->_id != enemy->_id) {
+        if (carrier != nullptr && carrier->_id != enemy->_id && !IsActionOnly(*enemy)) {
             continue;
         }
 
@@ -577,8 +586,15 @@ void FlowPlayerEntity::UpdateDerived(GameManager& g, float dt) {
 
     //
     // Check if we start a new enemy interaction
-    // 
+    //
+    bool actionOnly = false;
     if (nearest != nullptr) {
+        actionOnly = IsActionOnly(*nearest);
+        if (actionOnly) {
+            nearest->OnHit(g);
+        }
+    }
+    if (nearest != nullptr && !actionOnly) {
         _s._respawnBeforeFirstInteract = false;
         
         HitResult hitResult = nearest->OnHit(g);
