@@ -521,11 +521,12 @@ void FlowPlayerEntity::UpdateDerived(GameManager& g, float dt) {
     for (ne::EntityManager::Iterator enemyIter = g._neEntityManager->GetIterator(ne::EntityType::TypingEnemy); !enemyIter.Finished(); enemyIter.Next()) {
         // Vec4 constexpr kGreyColor(0.6f, 0.6f, 0.6f, 0.7f);
         TypingEnemyEntity* enemy = (TypingEnemyEntity*) enemyIter.GetEntity();
+
         // TODO this is inefficient I know, shutup
         if (carrier != nullptr && carrier->_id != enemy->_id && !IsActionOnly(*enemy)) {
             continue;
         }
-
+        
         Vec3 dp = playerPos - enemy->_transform.GetPos();
         dp._y = 0.f;
         float d2 = dp.Length2();
@@ -539,7 +540,7 @@ void FlowPlayerEntity::UpdateDerived(GameManager& g, float dt) {
         //     enemy->_textColor = kGreyColor;
         //     continue;
         // }
-        // enemy->_s._currentColor = enemy->_modelColor;
+        // enemy->_s._currentColor = enemy->_modelColor;        
 
         if (usingController) {
             InputManager::ControllerButton nextButton = enemy->GetNextButton();
@@ -552,7 +553,7 @@ void FlowPlayerEntity::UpdateDerived(GameManager& g, float dt) {
                 continue;
             }
             hitKey = nextKey;
-        }
+        }        
 
         if (enemy->_id == _s._lastHitEnemy) {
             // Check if it's in view of camera
@@ -577,10 +578,6 @@ void FlowPlayerEntity::UpdateDerived(GameManager& g, float dt) {
             
             nearest = enemy;
             nearestDist2 = d2;
-        }
-
-        if (carrier != nullptr) {
-            break;
         }
     }
 

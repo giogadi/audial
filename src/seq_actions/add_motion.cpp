@@ -29,6 +29,9 @@ void AddMotionSeqAction::InitDerived(GameManager& g) {
 }
 
 void AddMotionSeqAction::ExecuteDerived(GameManager& g) {
+	if (g._editMode) {
+		return;
+	}
 	Motion* motion = g._motionManager->AddMotion(_s.entityId);
 	if (_p.time <= 0.f) {
 		motion->v = Vec3();
