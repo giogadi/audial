@@ -704,6 +704,14 @@ void AddToIntVariableSeqAction::SaveDerived(serial::Ptree pt) const {
     pt.PutBool("reset", _reset);
 }
 
+void AddToIntVariableSeqAction::InitDerived(GameManager& g) {
+    _entityId = ne::EntityId();
+    ne::Entity* e = g._neEntityManager->FindEntityByEditorIdAndType(_varEditorId, ne::EntityType::IntVariable, nullptr, "AddToIntVariableSeqAction");
+    if (e) {
+        _entityId = e->_id;
+    }
+}
+
 bool AddToIntVariableSeqAction::ImGui() {
     imgui_util::InputEditorId("Var editor id", &_varEditorId);
     ImGui::InputInt("Add amount", &_addAmount);
@@ -715,7 +723,7 @@ void AddToIntVariableSeqAction::ExecuteDerived(GameManager& g) {
     if (g._editMode) {
         return;
     }
-    IntVariableEntity* e = static_cast<IntVariableEntity*>(g._neEntityManager->FindEntityByEditorIdAndType(_varEditorId, ne::EntityType::IntVariable, nullptr, "AddToIntVariableSeqAction"));
+    IntVariableEntity* e = g._neEntityManager->GetEntityAs<IntVariableEntity>(_entityId);
     if (e) {
         if (_reset) {
             e->Reset();

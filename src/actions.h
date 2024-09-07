@@ -201,10 +201,13 @@ struct AddToIntVariableSeqAction : public SeqAction {
     int _addAmount = 0;
     bool _reset = false; // if true, _addAmount is ignored
 
+    ne::EntityId _entityId;
+
     virtual void ExecuteDerived(GameManager& g) override;
     virtual void LoadDerived(LoadInputs const& loadInputs, std::istream& input) override;
     virtual void LoadDerived(serial::Ptree pt) override;
     virtual void SaveDerived(serial::Ptree pt) const override;
+    virtual void InitDerived(GameManager& g) override;
     virtual bool ImGui() override;
 };
 

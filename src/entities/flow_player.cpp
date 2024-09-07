@@ -225,12 +225,12 @@ void ResetFlowSection(GameManager& g, int currentSectionId) {
         }
     }
     // deactivate all initially-inactive things
-    /*for (ne::EntityManager::AllIterator iter = g._neEntityManager->GetAllIterator(); !iter.Finished(); iter.Next()) {
+    for (ne::EntityManager::AllIterator iter = g._neEntityManager->GetAllIterator(); !iter.Finished(); iter.Next()) {
         ne::Entity* e = iter.GetEntity();
-        if (!e->_initActive && e->_flowSectionId >= 0 && e->_flowSectionId == _currentSectionId) {
+        if (!e->_initActive && e->_flowSectionId >= 0 && e->_flowSectionId == currentSectionId) {
             g._neEntityManager->TagForDeactivate(e->_id);
         }
-    }*/
+    }
 }
 
 void RespawnPlayer(FlowPlayerEntity& p, GameManager& g) {
