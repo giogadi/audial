@@ -89,6 +89,7 @@ bool SeqAction::LoadActionsFromChildNode(serial::Ptree pt, char const* childName
 
 namespace {
     std::vector<std::unique_ptr<SeqAction>> sClipboardActions;
+    std::unique_ptr<SeqAction> sClipboardAction;
 }
 
 bool SeqAction::ImGui(char const* label, std::vector<std::unique_ptr<SeqAction>>& actions) {
@@ -144,6 +145,28 @@ bool SeqAction::ImGui(char const* label, std::vector<std::unique_ptr<SeqAction>>
             }
 
             if (selected) {
+                if (ImGui::Button("Copy")) {
+                    auto clone = SeqAction::Clone(*actions[i]);
+                    sClipboardAction = std::move(clone);
+                }
+                ImGui::SameLine();
+                bool pasteable = false;
+                if (sClipboardAction != nullptr) {
+                    if (sClipboardAction->Type() == actions[i]->Type()) {
+                        pasteable = true;
+                    }
+                }
+                if (!pasteable) {
+                    ImGui::BeginDisabled();
+                }
+                if (ImGui::Button("Paste")) {
+                    auto clone = SeqAction::Clone(*sClipboardAction);
+                    actions[i] = std::move(clone);
+                    changed = true;
+                }
+                if (!pasteable) {
+                    ImGui::EndDisabled();
+                }
                 bool thisChanged = ImGui::Checkbox("One time", &actions[i]->_oneTime);
                 changed = thisChanged || changed;
 
