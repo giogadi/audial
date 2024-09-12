@@ -4365,7 +4365,7 @@
                 </waypoint_follower>
                 <sequence>-1:0.4 -1:0.4 8:0.5 -1:0.4 -1:0.4 -1:0.4 8:0.5 -1:0.4 -1:0.4 -1:0.4 8:0.5 -1:0.4 -1:0.4 -1:0.4 8:0.5 -1:0.4</sequence>
                 <start_mute>false</start_mute>
-                <gain>0.899999976</gain>
+                <gain>0.5</gain>
                 <channels/>
                 <step_length>0.25</step_length>
                 <note_length>0.25</note_length>
@@ -7718,7 +7718,7 @@
                 </waypoint_follower>
                 <sequence>8:0.5 -1:0.5 -1:0.5 -1:0.5 8:0.5 -1:0.5 -1:0.5 -1:0.5 8:0.5 -1:0.5 -1:0.5 -1:0.5 8:0.5 -1:0.5 -1:0.5 -1:0.5</sequence>
                 <start_mute>false</start_mute>
-                <gain>1</gain>
+                <gain>0.5</gain>
                 <channels/>
                 <step_length>0.25</step_length>
                 <note_length>0.25</note_length>
