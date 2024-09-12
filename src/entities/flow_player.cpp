@@ -22,6 +22,10 @@ void FlowPlayerEntity::StartRespawn(GameManager& g) {
     if (FlowTriggerEntity* e = g._neEntityManager->GetEntityAs<FlowTriggerEntity>(_s._deathStartTrigger)) {
         e->OnTrigger(g);
     }
+    for (int ii = 0; ii < static_cast<size_t>(InputManager::Key::NumKeys); ++ii) {
+        _s._haveSeenKeyUpSinceLastHit[ii] = true;
+        _s._keyBufferTimeLeft[ii] = 0;
+    }
 }
 
 void FlowPlayerEntity::SaveDerived(serial::Ptree pt) const {
@@ -95,6 +99,10 @@ void FlowPlayerEntity::InitDerived(GameManager& g) {
     }
     if (ne::Entity* e = g._neEntityManager->FindEntityByEditorIdAndType(_p._deathEndTriggerEditorId, ne::EntityType::FlowTrigger)) {
         _s._deathEndTrigger = e->_id;
+    }
+    for (int ii = 0; ii < static_cast<size_t>(InputManager::Key::NumKeys); ++ii) {
+        _s._haveSeenKeyUpSinceLastHit[ii] = true;
+        _s._keyBufferTimeLeft[ii] = 0;
     }
 }
 
@@ -426,6 +434,23 @@ void FlowPlayerEntity::UpdateDerived(GameManager& g, float dt) {
         return;
     }
 
+    for (int ii = 0; ii < static_cast<size_t>(InputManager::Key::NumKeys); ++ii) {
+        if (g._inputManager->IsKeyPressedThisFrame(static_cast<InputManager::Key>(ii))) {
+            _s._keyBufferTimeLeft[ii] = 2;  // frames
+        } else if (_s._keyBufferTimeLeft[ii] > 0) {
+            --_s._keyBufferTimeLeft[ii];
+        }
+
+        if (!g._inputManager->IsKeyPressed(static_cast<InputManager::Key>(ii))) {
+            _s._haveSeenKeyUpSinceLastHit[ii] = true;
+        }
+    }
+
+    // Update keyup status of enemies
+    for (ne::EntityManager::Iterator enemyIter = g._neEntityManager->GetIterator(ne::EntityType::TypingEnemy); !enemyIter.Finished(); enemyIter.Next()) {
+        TypingEnemyEntity* enemy = (TypingEnemyEntity*)enemyIter.GetEntity();
+        
+    }
     double const beatTime = g._beatClock->GetBeatTimeFromEpoch();
     if (_s._respawnStartBeatTime > 0.0) {
         //double respawnEndTime = g._beatClock->GetNextDownBeatTime(_s._respawnStartBeatTime + 4.0);
@@ -544,16 +569,16 @@ void FlowPlayerEntity::UpdateDerived(GameManager& g, float dt) {
 
         if (usingController) {
             InputManager::ControllerButton nextButton = enemy->GetNextButton();
+            // TODO: plug in haveSeenKeyUp whatever
             if (nextButton == InputManager::ControllerButton::Count || !g._inputManager->IsKeyPressedThisFrame(nextButton)) {
                 continue;
             }
         } else {
             InputManager::Key nextKey = enemy->GetNextKey();
-            if (nextKey == InputManager::Key::NumKeys || !g._inputManager->IsKeyPressedThisFrame(nextKey)) {
-                continue;
-            }
+            bool hit = g._inputManager->IsKeyPressed(nextKey) && _s._haveSeenKeyUpSinceLastHit[static_cast<size_t>(nextKey)] && _s._keyBufferTimeLeft[static_cast<size_t>(nextKey)] > 0;
+            if (!hit) continue;
             hitKey = nextKey;
-        }        
+        }
 
         if (enemy->_id == _s._lastHitEnemy) {
             // Check if it's in view of camera
@@ -579,6 +604,10 @@ void FlowPlayerEntity::UpdateDerived(GameManager& g, float dt) {
             nearest = enemy;
             nearestDist2 = d2;
         }
+    }
+
+    if (nearest) {
+        _s._haveSeenKeyUpSinceLastHit[static_cast<size_t>(hitKey)] = false;
     }
 
     //

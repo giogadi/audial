@@ -64,6 +64,8 @@ struct FlowPlayerEntity : public ne::Entity {
         bool _passedPullTarget = false; // pull
         InputManager::Key _heldKey = InputManager::Key::NumKeys;
         std::vector<HeldAction> _heldActions;        
+        bool _haveSeenKeyUpSinceLastHit[static_cast<size_t>(InputManager::Key::NumKeys)];
+        int _keyBufferTimeLeft[static_cast<size_t>(InputManager::Key::NumKeys)];
 
         // anim states
         DashAnimState _dashAnimState = DashAnimState::None;
