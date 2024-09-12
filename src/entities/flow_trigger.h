@@ -17,7 +17,7 @@ struct FlowTriggerEntity : public ne::Entity {
         bool _triggerOnPlayerEnter = true;
         int _randomActionCount = -1;
         bool _useTriggerVolumes = false;
-        bool _executeOnInit = false;
+        bool _executeOnInit = false; // Only happens if in the same flow section
         bool _shatterOnTrigger = false;
     };
     Props _p;

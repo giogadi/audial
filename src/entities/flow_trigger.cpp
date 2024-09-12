@@ -29,9 +29,6 @@ void FlowTriggerEntity::InitDerived(GameManager& g) {
 
     _isTriggering = false;
 
-    /*if (_p._executeOnInit) {
-        RunActions(g);
-    }*/
     _didInitTrigger = false;
 }
 
@@ -178,13 +175,16 @@ void FlowTriggerEntity::UpdateDerived(GameManager& g, float dt) {
         return;
     }
 
+    FlowPlayerEntity const* player = static_cast<FlowPlayerEntity*>(g._neEntityManager->GetFirstEntityOfType(ne::EntityType::FlowPlayer));
+
     if (_p._executeOnInit && !_didInitTrigger) {
-        RunActions(g);
-        _didInitTrigger = true;
+        if (_flowSectionId < 0 || player->_s._currentSectionId == _flowSectionId) {
+            RunActions(g);
+            _didInitTrigger = true;
+        }        
     }
 
     if (_p._triggerOnPlayerEnter) {
-        FlowPlayerEntity const* player = static_cast<FlowPlayerEntity*>(g._neEntityManager->GetFirstEntityOfType(ne::EntityType::FlowPlayer));
         if (player == nullptr) {
             return;
         }
