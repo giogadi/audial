@@ -218,20 +218,6 @@ void RespawnDraw(FlowPlayerEntity& e, GameManager& g) {
 }
 
 void ResetFlowSection(GameManager& g, int currentSectionId) {
-    // Reset everything from the current section
-    for (ne::EntityManager::AllIterator iter = g._neEntityManager->GetAllIterator(); !iter.Finished(); iter.Next()) {
-        ne::Entity* e = iter.GetEntity();
-        if (e->_flowSectionId >= 0 && e->_flowSectionId == currentSectionId) {
-            e->Init(g);
-        }
-    }
-    // Reactivate all inactive entities that were initially active    
-    for (ne::EntityManager::AllIterator iter = g._neEntityManager->GetAllInactiveIterator(); !iter.Finished(); iter.Next()) {
-        ne::Entity* e = iter.GetEntity();
-        if (e->_initActive && e->_flowSectionId >= 0 && e->_flowSectionId == currentSectionId) {
-            g._neEntityManager->TagForActivate(e->_id, /*initOnActivate=*/true);
-        }
-    }
     // deactivate all initially-inactive things
     for (ne::EntityManager::AllIterator iter = g._neEntityManager->GetAllIterator(); !iter.Finished(); iter.Next()) {
         ne::Entity* e = iter.GetEntity();
@@ -239,6 +225,22 @@ void ResetFlowSection(GameManager& g, int currentSectionId) {
             g._neEntityManager->TagForDeactivate(e->_id);
         }
     }
+
+    // Reset everything from the current section
+    for (ne::EntityManager::AllIterator iter = g._neEntityManager->GetAllIterator(); !iter.Finished(); iter.Next()) {
+        ne::Entity* e = iter.GetEntity();
+        if (e->_flowSectionId >= 0 && e->_flowSectionId == currentSectionId) {
+            e->Init(g);
+        }
+    }
+
+    // Reactivate all inactive entities that were initially active    
+    for (ne::EntityManager::AllIterator iter = g._neEntityManager->GetAllInactiveIterator(); !iter.Finished(); iter.Next()) {
+        ne::Entity* e = iter.GetEntity();
+        if (e->_initActive && e->_flowSectionId >= 0 && e->_flowSectionId == currentSectionId) {
+            g._neEntityManager->TagForActivate(e->_id, /*initOnActivate=*/true);
+        }
+    }    
 }
 
 void RespawnPlayer(FlowPlayerEntity& p, GameManager& g) {

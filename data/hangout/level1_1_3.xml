@@ -6994,8 +6994,8 @@
                 <editor_id>
                     <id>352</id>
                 </editor_id>
-                <name>r0_init_trigger</name>
-                <entity_active>false</entity_active>
+                <name>r0_reset_trigger</name>
+                <entity_active>true</entity_active>
                 <pickable>false</pickable>
                 <transform>
                     <pos>
@@ -7071,6 +7071,17 @@
                         <entities_tag>-1</entities_tag>
                         <entity_editor_id>
                             <id>291</id>
+                        </entity_editor_id>
+                        <active>false</active>
+                        <init_on_activate>true</init_on_activate>
+                        <init_if_already_active>false</init_if_already_active>
+                    </seq_action>
+                    <seq_action>
+                        <one_time>false</one_time>
+                        <action_type>SetEntityActive</action_type>
+                        <entities_tag>-1</entities_tag>
+                        <entity_editor_id>
+                            <id>359</id>
                         </entity_editor_id>
                         <active>false</active>
                         <init_on_activate>true</init_on_activate>
@@ -8781,6 +8792,10 @@
                         <action_seq_editor_id>
                             <id>-1</id>
                         </action_seq_editor_id>
+                        <trigger_editor_id>
+                            <id>-1</id>
+                        </trigger_editor_id>
+                        <set_new_spawn_point>true</set_new_spawn_point>
                     </seq_action>
                     <seq_action>
                         <one_time>true</one_time>

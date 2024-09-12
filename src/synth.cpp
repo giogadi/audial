@@ -842,14 +842,15 @@ void Process(StateData* state, boost::circular_buffer<audio::PendingEvent> const
                 break;
             }
             case audio::EventType::SynthParam: {
-                if (e.paramChangeTimeSecs > 0.0) {
-                    // Find a free automation. Also, ensure that there's no
-                    // existing automation on this param.
-                    for (Automation& a : state->automations) {
-                        if (a._active && a._synthParamType == e.param) {
-                            a._active = false;
-                        }
+                // Ensure that there's no existing automation on this param.
+                // TODO: maybe have a "clear all automations" event that gets triggered by ChangePatch to avoid doing this for every param?
+                for (Automation& a : state->automations) {
+                    if (a._active && a._synthParamType == e.param) {
+                        a._active = false;
                     }
+                }
+                if (e.paramChangeTimeSecs > 0.0) {
+                    // Find a free automation.                    
                     Automation* pA = nullptr;
                     for (Automation& a : state->automations) {
                         if (!a._active) {
@@ -875,7 +876,6 @@ void Process(StateData* state, boost::circular_buffer<audio::PendingEvent> const
                     break;
                 }
                 patch.Get(e.param) = e.newParamValue;
-
                 for (Voice& v : state->voices) {
                     OnParamChange(*state, e.param, e.newParamValue, &v);
                 }
