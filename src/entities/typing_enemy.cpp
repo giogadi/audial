@@ -154,7 +154,7 @@ void TypingEnemyEntity::LoadDerived(serial::Ptree pt) {
         if (gCurrentShuffleIx > 25) {
             // reshuffle
             for (int i = 0; i < 26; ++i) {
-                int swapIx = rng::GetInt(i, 25);
+                int swapIx = rng::GetIntGlobal(i, 25);
                 if (swapIx != i) {
                     std::swap(gShuffledLetterIndices[i], gShuffledLetterIndices[swapIx]);
                 }
@@ -661,7 +661,7 @@ void TypingEnemyEntity::MultiSelectImGui(GameManager& g, std::vector<TypingEnemy
 
     if (ImGui::Button("Randomize text")) {
         for (TypingEnemyEntity* e : enemies) {
-            int letterIx = rng::GetInt(0, 25);
+            int letterIx = rng::GetIntGlobal(0, 25);
             char letter = 'a' + letterIx;
             e->_p._keyText = std::string(1, letter);
         }

@@ -3,6 +3,7 @@
     "enumName": "Waveform",
     "enumItems": [
         "Square",
-        "Saw"
+        "Saw",
+        "Noise"
     ]
 }

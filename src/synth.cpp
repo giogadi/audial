@@ -5,6 +5,7 @@
 #include "audio_util.h"
 #include "constants.h"
 #include "math_util.h"
+#include "rng.h"
 
 using audio::SynthParamType;
 
@@ -57,6 +58,10 @@ float GenerateSaw(float const phase, float const phaseChange) {
 #endif
     return v;
 }
+
+float GenerateNoise(rng::State& rng) {
+    return rng::GetFloat(rng, -1.f, 1.f);
+}
 }  // namespace
 
 void InitStateData(StateData& state, int channel, int const sampleRate, int const samplesPerFrame, int const numBufferChannels) {
@@ -69,6 +74,9 @@ void InitStateData(StateData& state, int channel, int const sampleRate, int cons
     state.samplesPerMoogCutoffUpdate = std::min(samplesPerFrame, kSamplesPerCutoffEnvModulate);
 
     for (Voice& v : state.voices) {
+        for (uint64_t ii = 0; ii < v.oscillators.size(); ++ii) {
+            rng::Seed(v.oscillators[ii].rng, 1234871 + ii);
+        }
         v.moogLpfState.reset(sampleRate);
     }
 }
@@ -341,6 +349,10 @@ void ProcessVoice(Voice& voice, int const sampleRate, float pitchLFOValue,
                 }
                 case Waveform::Square: {
                     oscV = GenerateSquare(osc.phase, phaseChange);
+                    break;
+                }
+                case Waveform::Noise: {
+                    oscV = GenerateNoise(osc.rng);
                     break;
                 }
                 case Waveform::Count: {

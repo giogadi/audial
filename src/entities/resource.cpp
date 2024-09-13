@@ -107,9 +107,9 @@ void ResourceEntity::StartDestroy(GameManager& g) {
     Quaternion q;
     float alphaV = -1.f / kParticleTime;
     for (int ii = 0; ii < kNumParticles; ++ii) {
-        float x = rng::GetFloat(-kPi, kPi);
-        float y = rng::GetFloat(-kPi, kPi);
-        float z = rng::GetFloat(-kPi, kPi);
+        float x = rng::GetFloatGlobal(-kPi, kPi);
+        float y = rng::GetFloatGlobal(-kPi, kPi);
+        float z = rng::GetFloatGlobal(-kPi, kPi);
         Vec3 r(x, y, z);
         q.SetFromEulerAngles(r);
 

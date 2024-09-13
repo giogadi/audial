@@ -7,6 +7,7 @@
 
 #include "boost/circular_buffer.hpp"
 
+#include "rng.h"
 #include "audio_util.h"
 #include "serial.h"
 #include "enums/synth_Waveform.h"
@@ -59,6 +60,7 @@ int constexpr kNumAnalogOscillators = 2;
 struct Oscillator {
     float f = 440.f;
     float phase = 0.f;
+    rng::State rng;
 };
 
 struct FilterState {

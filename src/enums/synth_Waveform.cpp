@@ -16,7 +16,9 @@ std::unordered_map<std::string, Waveform> const gStringToWaveform = {
     
     { "Square", Waveform::Square },
     
-    { "Saw", Waveform::Saw }
+    { "Saw", Waveform::Saw },
+    
+    { "Noise", Waveform::Noise }
     
 };
 
@@ -26,7 +28,9 @@ char const* gWaveformStrings[] = {
 	
     "Square",
     
-    "Saw"
+    "Saw",
+    
+    "Noise"
     
 };
 

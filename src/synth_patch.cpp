@@ -11,8 +11,10 @@ namespace {
 synth::Waveform FloatToWaveform(float f) {
     if (f < 0.5f) {
         return Waveform::Square;
-    } else {
+    } else if (f < 1.5f) {
         return Waveform::Saw;
+    } else {
+        return Waveform::Noise;
     }
 }
 
@@ -20,6 +22,7 @@ float WaveformToFloat(synth::Waveform w) {
     switch (w) {
         case Waveform::Square: return 0.f;
         case Waveform::Saw: return 1.f;
+        case Waveform::Noise: return 2.f;
         default:
             assert(false);
     }

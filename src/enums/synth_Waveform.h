@@ -10,6 +10,8 @@ enum class Waveform : int {
     
     Saw,
     
+    Noise,
+    
     Count
 };
 extern char const* gWaveformStrings[];

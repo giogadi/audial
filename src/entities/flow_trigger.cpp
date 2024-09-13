@@ -128,7 +128,7 @@ void FlowTriggerEntity::RunActions(GameManager& g) {
         }
         int const numActionsToExecute = std::min(_p._randomActionCount, actionCount);
         for (int i = 0; i < numActionsToExecute; ++i) {
-            int randNum = rng::GetInt(i, actionCount - 1);
+            int randNum = rng::GetIntGlobal(i, actionCount - 1);
             int actionIx = _randomDrawList[randNum];
             _p._actions[actionIx]->Execute(g);
             if (i != actionIx) {
@@ -151,9 +151,9 @@ void FlowTriggerEntity::RunActions(GameManager& g) {
         Vec3 maxP = boxP + _transform.Scale()*0.5f;
         for (int ii = 0; ii < 20; ++ii) {
             Vec3 p;
-            p._x = rng::GetFloat(minP._x, maxP._x);
-            p._y = rng::GetFloat(minP._y, maxP._y);
-            p._z = rng::GetFloat(minP._z, maxP._z);
+            p._x = rng::GetFloatGlobal(minP._x, maxP._x);
+            p._y = rng::GetFloatGlobal(minP._y, maxP._y);
+            p._z = rng::GetFloatGlobal(minP._z, maxP._z);
             Vec3 dir = p - boxP;
             dir.Normalize(); 
             

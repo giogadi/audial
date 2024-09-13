@@ -1,8 +1,16 @@
 #pragma once
 
-namespace rng {
-    void Seed(unsigned int seed);
+#include <random>
 
-    int GetInt(int minVal, int maxVal);
-    float GetFloat(float minVal, float maxVal);
+namespace rng {
+    struct State {
+        std::mt19937 s;
+    };
+    void Seed(State& rng, unsigned int seed);
+    int GetInt(State& rng, int minVal, int maxVal);
+    float GetFloat(State& rng, float minVal, float maxVal);
+
+    void SeedGlobal(unsigned int seed);
+    int GetIntGlobal(int minVal, int maxVal);
+    float GetFloatGlobal(float minVal, float maxVal);
 }
