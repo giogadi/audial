@@ -88,7 +88,9 @@ void DestroyStateData(StateData& state) {
 
 float calcMultiplier(float startLevel, float endLevel, int64_t numSamples) {
     assert(numSamples > 0l);
-    assert(startLevel > 0.f);
+    if (startLevel <= 0.f) {
+        startLevel = 0.001f;
+    }
     assert(startLevel <= 1.f);
     assert(endLevel <= 1.f);
     double recip = 1.0 / numSamples;

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <root>
-    <version>8</version>
+    <version>9</version>
     <script>
         <bpm>110</bpm>
         <gamma_correction>false</gamma_correction>
@@ -2558,10 +2558,14 @@
                 <draw_horizontal>false</draw_horizontal>
                 <cell_width>0.25</cell_width>
                 <cell_spacing>0.25</cell_spacing>
-                <synth_patch_channel>0</synth_patch_channel>
-                <start_patch>bass0</start_patch>
-                <end_patch>bass1_again</end_patch>
-                <blend_time>3</blend_time>
+                <automations>
+                    <automation>
+                        <synth_patch_channel>0</synth_patch_channel>
+                        <start_patch>bass0</start_patch>
+                        <end_patch>bass1_again</end_patch>
+                        <blend_time>3</blend_time>
+                    </automation>
+                </automations>
                 <actions/>
             </IntVariable>
             <FlowTrigger>
@@ -8719,10 +8723,14 @@
                 <draw_horizontal>false</draw_horizontal>
                 <cell_width>0.25</cell_width>
                 <cell_spacing>0.25</cell_spacing>
-                <synth_patch_channel>2</synth_patch_channel>
-                <start_patch>pad0</start_patch>
-                <end_patch>pad0_after</end_patch>
-                <blend_time>1</blend_time>
+                <automations>
+                    <automation>
+                        <synth_patch_channel>2</synth_patch_channel>
+                        <start_patch>pad0</start_patch>
+                        <end_patch>pad0_after</end_patch>
+                        <blend_time>1</blend_time>
+                    </automation>
+                </automations>
                 <actions/>
             </IntVariable>
             <FlowTrigger>
@@ -14369,6 +14377,21 @@
                         <init_on_activate>true</init_on_activate>
                         <init_if_already_active>false</init_if_already_active>
                     </seq_action>
+                    <seq_action>
+                        <one_time>false</one_time>
+                        <action_type>NoteOnOff</action_type>
+                        <channel>1</channel>
+                        <midiNotes>
+                            <array_item>
+                                <note>60</note>
+                            </array_item>
+                        </midiNotes>
+                        <noteLength>1</noteLength>
+                        <velocity>1</velocity>
+                        <quantizeDenom>0.25</quantizeDenom>
+                        <doNoteOff>false</doNoteOff>
+                        <holdNotes>false</holdNotes>
+                    </seq_action>
                 </actions>
                 <actions_on_exit/>
                 <trigger_volume_entities/>
@@ -14879,11 +14902,33 @@
                 <draw_horizontal>true</draw_horizontal>
                 <cell_width>0.150000006</cell_width>
                 <cell_spacing>0.125</cell_spacing>
-                <synth_patch_channel>2</synth_patch_channel>
-                <start_patch>pad0</start_patch>
-                <end_patch>pad0_after</end_patch>
-                <blend_time>0.5</blend_time>
-                <actions/>
+                <automations>
+                    <automation>
+                        <synth_patch_channel>2</synth_patch_channel>
+                        <start_patch>pad0</start_patch>
+                        <end_patch>pad0_after</end_patch>
+                        <blend_time>0.5</blend_time>
+                    </automation>
+                    <automation>
+                        <synth_patch_channel>1</synth_patch_channel>
+                        <start_patch>noise0</start_patch>
+                        <end_patch>noise1</end_patch>
+                        <blend_time>0.25</blend_time>
+                    </automation>
+                </automations>
+                <actions>
+                    <seq_action>
+                        <one_time>false</one_time>
+                        <action_type>BeatTimeEvent</action_type>
+                        <quantize_denom>0.25</quantize_denom>
+                        <beat_time_event>
+                            <event_type>AllNotesOff</event_type>
+                            <channel>1</channel>
+                            <delay_secs>0</delay_secs>
+                            <beat_time>0</beat_time>
+                        </beat_time_event>
+                    </seq_action>
+                </actions>
             </IntVariable>
             <Base>
                 <editor_id>
