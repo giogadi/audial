@@ -130,6 +130,7 @@ add_executable(game
     src/entities/sink.cpp src/entities/sink.h
     src/entities/hazard.cpp src/entities/hazard.h
     src/entities/viz.cpp src/entities/viz.h
+    src/entities/enemy_spawner.cpp src/entities/enemy_spawner.h
     
     src/enums/audio_EventType.cpp src/enums/audio_EventType.h
     src/enums/audio_SynthParamType.cpp src/enums/audio_SynthParamType.h

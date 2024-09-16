@@ -16,6 +16,7 @@
 #include "entities/camera.h"
 #include "entities/sequencer.h"
 #include "entities/typing_enemy.h"
+#include "entities/enemy_spawner.h"
 #include "entities/step_sequencer.h"
 #include "entities/action_sequencer.h"
 #include "entities/param_automator.h"

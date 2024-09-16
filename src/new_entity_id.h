@@ -17,6 +17,7 @@ namespace ne {
     X(Resource) \
     X(Sink) \
     X(Hazard) \
+    X(EnemySpawner) \
     X(TypingEnemy)  \
     X(FlowPlayer) \
     X(StepSequencer) \
