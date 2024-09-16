@@ -57,6 +57,7 @@ void IntVariableEntity::SaveDerived(serial::Ptree pt) const {
     pt.PutBool("draw_horizontal", _drawHorizontal);
     pt.PutFloat("cell_width", _cellWidth);
     pt.PutFloat("cell_spacing", _cellSpacing);
+    pt.PutInt("max_per_row", _maxPerRow);
 
     serial::SaveVectorInChildNode(pt, "automations", "automation", _automations);
 
@@ -70,10 +71,12 @@ void IntVariableEntity::LoadDerived(serial::Ptree pt) {
     _drawHorizontal = false;
     _cellWidth = 0.25f;
     _cellSpacing = 0.25f;
+    _maxPerRow = -1;
     pt.TryGetBool("draw_counter", &_drawCounter);    
     pt.TryGetBool("draw_horizontal", &_drawHorizontal);
     pt.TryGetFloat("cell_width", &_cellWidth);
     pt.TryGetFloat("cell_spacing", &_cellSpacing);
+    pt.TryGetInt("max_per_row", &_maxPerRow);
 
     if (pt.GetVersion() <= 8) {
         // Before we always had exactly one automation
@@ -94,6 +97,7 @@ ne::Entity::ImGuiResult IntVariableEntity::ImGuiDerived(GameManager& g) {
     ImGui::Checkbox("Draw horiz", &_drawHorizontal);
     ImGui::InputFloat("Cell width", &_cellWidth, 0.f, 0.f, "%.3f", ImGuiInputTextFlags_EnterReturnsTrue);
     ImGui::InputFloat("Cell spacing", &_cellSpacing, 0.f, 0.f, "%.3f", ImGuiInputTextFlags_EnterReturnsTrue);
+    ImGui::InputInt("Max per row", &_maxPerRow);
 
     if (ImGui::TreeNode("Automations")) {
         imgui_util::InputVectorOptions options;
@@ -172,12 +176,16 @@ void IntVariableEntity::Reset() {
 
 void IntVariableEntity::DrawCounter(GameManager& g) {
     int numSteps = _initialValue;
-    float totalWidth = numSteps * _cellWidth + (_cellSpacing * (numSteps - 1));
+    int widthSteps = (_maxPerRow > 0) ? _maxPerRow : numSteps;
+    float totalWidth = widthSteps * _cellWidth + (_cellSpacing * (widthSteps - 1));
     Vec3 direction;
+    Vec3 minorDirection;
     if (_drawHorizontal) {
         direction.Set(1.f, 0.f, 0.f);
+        minorDirection.Set(0.f, 0.f, 1.f);
     } else {
         direction.Set(0.f, 0.f, 1.f);
+        minorDirection.Set(1.f, 0.f, 0.f);
     }
     Transform t;
     t.SetScale(Vec3(_cellWidth, _cellWidth, _cellWidth));
@@ -212,7 +220,19 @@ void IntVariableEntity::DrawCounter(GameManager& g) {
             _beatTimeOfLastAdd = -1.0;
         }
     }
+
+    int countInCurrentRow = 0;
+    int currentRow = 0;
     for (int i = 0; i < numSteps; ++i) {
+        if (_maxPerRow > 0 && countInCurrentRow >= _maxPerRow) {
+            // start a new row
+            ++currentRow;
+            countInCurrentRow = 0;
+            pos = _transform.Pos();
+            pos -= 0.5f * totalWidth * direction;
+            pos += 0.5f * _cellWidth * direction;
+            pos += currentRow * (_cellWidth + _rowSpacing) * minorDirection;
+        }
         Vec4 color;
         if (i < numOn) {
             color = kHitColor;
@@ -226,5 +246,7 @@ void IntVariableEntity::DrawCounter(GameManager& g) {
         t.SetTranslation(pos);
         g._scene->DrawCube(t.Mat4Scale(), color);
         pos += (_cellWidth + _cellSpacing) * direction;
+
+        ++countInCurrentRow;
     }
 }

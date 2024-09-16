@@ -19,6 +19,8 @@ struct IntVariableEntity : public ne::Entity {
     bool _drawHorizontal = false;
     float _cellWidth = 0.25f;
     float _cellSpacing = 0.25f;
+    float _rowSpacing = 0.25f;
+    int _maxPerRow = -1;
 
     struct Automation {
         int _synthPatchChannel = -1;

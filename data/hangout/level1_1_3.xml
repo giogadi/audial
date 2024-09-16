@@ -2558,6 +2558,7 @@
                 <draw_horizontal>false</draw_horizontal>
                 <cell_width>0.25</cell_width>
                 <cell_spacing>0.25</cell_spacing>
+                <max_per_row>-1</max_per_row>
                 <automations>
                     <automation>
                         <synth_patch_channel>0</synth_patch_channel>
@@ -8723,6 +8724,7 @@
                 <draw_horizontal>false</draw_horizontal>
                 <cell_width>0.25</cell_width>
                 <cell_spacing>0.25</cell_spacing>
+                <max_per_row>-1</max_per_row>
                 <automations>
                     <automation>
                         <synth_patch_channel>2</synth_patch_channel>
@@ -14897,11 +14899,12 @@
                         <id>-1</id>
                     </follow_entity_editor_id>
                 </waypoint_follower>
-                <initial_value>20</initial_value>
+                <initial_value>32</initial_value>
                 <draw_counter>true</draw_counter>
                 <draw_horizontal>true</draw_horizontal>
                 <cell_width>0.150000006</cell_width>
                 <cell_spacing>0.125</cell_spacing>
+                <max_per_row>16</max_per_row>
                 <automations>
                     <automation>
                         <synth_patch_channel>2</synth_patch_channel>
