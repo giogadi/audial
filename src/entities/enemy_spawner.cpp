@@ -8,6 +8,7 @@
 #include "imgui_vector_util.h"
 #include "serial_vector_util.h"
 #include "entities/typing_enemy.h"
+#include "motion_manager.h"
 
 extern GameManager gGameManager;
 
@@ -60,12 +61,46 @@ void EnemySpawnerEntity::UpdateDerived(GameManager& g, float dt) {
 			enemyPt.DeleteData();
 
 			// Sample a point from within spawner's aabb
-			Aabb aabb;
-			aabb._min = _transform.Pos() - _transform.Scale() * 0.5f;
-			aabb._max = _transform.Pos() + _transform.Scale() * 0.5f;
-			aabb._min._y = 0.f;
-			aabb._max._y = 0.f;
-			Vec3 enemyPos = aabb.SampleRandom();
+			// Aabb aabb;
+			// aabb._min = _transform.Pos() - _transform.Scale() * 0.5f;
+			// aabb._max = _transform.Pos() + _transform.Scale() * 0.5f;
+			// aabb._min._y = 0.f;
+			// aabb._max._y = 0.f;
+			// Vec3 enemyPos = aabb.SampleRandom();
+
+            // Sample from edges of spawner's aabb
+            Vec3 enemyPos; 
+            {
+                int edge = rng::GetIntGlobal(0, 3);
+                switch (edge) {
+                    case 0: {
+                        // TOP
+                        enemyPos._z = -1.f;
+                        enemyPos._x = rng::GetFloatGlobal(-1.f, 1.f);
+                        break;
+                    }
+                    case 1: {
+                        // BOTTOM
+                        enemyPos._z = 1.f;
+                        enemyPos._x = rng::GetFloatGlobal(-1.f, 1.f); 
+                        break;
+                    }
+                    case 2: {
+                        // LEFT
+                        enemyPos._x = -1.f;
+                        enemyPos._z = rng::GetFloatGlobal(-1.f, 1.f); 
+                        break;
+                    }
+                    case 3: {
+                        // RIGHT
+                        enemyPos._x = 1.f;
+                        enemyPos._z = rng::GetFloatGlobal(-1.f, 1.f); 
+                        break;
+                    }
+                }
+                enemyPos.ElemWiseMult(_transform.Scale() * 0.5f);
+                enemyPos += _transform.Pos();
+            }
 
 			e->_initTransform.SetPos(enemyPos);
 
@@ -75,6 +110,17 @@ void EnemySpawnerEntity::UpdateDerived(GameManager& g, float dt) {
 				char letter = 'a' + letterIx;
 				e->_p._keyText = std::string(1, letter);
 			}
+
+            // Generate motion
+            {
+                Motion* m = g._motionManager->AddMotion(e->_id);
+                Vec3 dir = _transform.Pos() - enemyPos;
+                dir.Normalize();
+                m->v = dir * 0.f;
+                m->a = dir * 4.f;
+                m->maxSpeed = 20.f;
+                m->timeLeft = 10;
+            }
 
 			e->Init(g);
 

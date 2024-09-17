@@ -8,6 +8,8 @@ struct Motion {
 	ne::EntityId entityId;
 
 	Vec3 v;
+    Vec3 a;
+    float maxSpeed = -1.f;
 	float timeLeft = 0.f;
 };
 

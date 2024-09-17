@@ -9,7 +9,7 @@ struct EnemySpawnerEntity : public ne::BaseEntity {
 
     struct Props {
         std::vector<EditorId> enemyTemplates;
-        float spawnCooldown = 0.5f;
+        float spawnCooldown = 0.35f;
     };
     Props _p;
 

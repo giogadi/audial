@@ -49,6 +49,15 @@ void MotionManager::Update(float dt, GameManager& g) {
 			}
 			continue;
 		}
+        Vec3 dv = motion->a * dt;
+        motion->v += dv;
+        if (motion->maxSpeed >= 0.f) {
+            Vec3 dir = motion->v;
+            float speed = dir.Normalize();
+            if (speed > motion->maxSpeed) {
+                motion->v = dir * motion->maxSpeed;
+            } 
+        }
 		Vec3 dp = motion->v * dt;
 		entity->_transform.Translate(dp);
 	}

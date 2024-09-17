@@ -758,7 +758,7 @@
                     <id>207</id>
                 </editor_id>
                 <name>spawner</name>
-                <entity_active>true</entity_active>
+                <entity_active>false</entity_active>
                 <pickable>true</pickable>
                 <transform>
                     <pos>
@@ -773,9 +773,9 @@
                         <w>1</w>
                     </quat>
                     <scale>
-                        <x>10</x>
+                        <x>19</x>
                         <y>1</y>
-                        <z>10</z>
+                        <z>11</z>
                     </scale>
                 </transform>
                 <model_name/>
@@ -1512,7 +1512,7 @@
                         <id>-1</id>
                     </follow_entity_editor_id>
                 </waypoint_follower>
-                <trigger_delay_beat_time>-1</trigger_delay_beat_time>
+                <trigger_delay_beat_time>4</trigger_delay_beat_time>
                 <quantize>0</quantize>
                 <on_player_enter>false</on_player_enter>
                 <execute_on_init>true</execute_on_init>
@@ -1527,6 +1527,17 @@
                         <blend_beat_time>0</blend_beat_time>
                         <use_patch_bank>true</use_patch_bank>
                         <patch_name>pad0_after</patch_name>
+                    </seq_action>
+                    <seq_action>
+                        <one_time>false</one_time>
+                        <action_type>SetEntityActive</action_type>
+                        <entities_tag>-1</entities_tag>
+                        <entity_editor_id>
+                            <id>207</id>
+                        </entity_editor_id>
+                        <active>true</active>
+                        <init_on_activate>true</init_on_activate>
+                        <init_if_already_active>false</init_if_already_active>
                     </seq_action>
                 </actions>
                 <actions_on_exit/>

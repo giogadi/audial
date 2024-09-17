@@ -175,6 +175,11 @@ void FlowTriggerEntity::UpdateDerived(GameManager& g, float dt) {
         return;
     }
 
+    if (g._beatClock->GetBeatTimeFromEpoch() < _p._triggerDelayBeatTime) {
+        return;
+    }
+
+
     FlowPlayerEntity const* player = static_cast<FlowPlayerEntity*>(g._neEntityManager->GetFirstEntityOfType(ne::EntityType::FlowPlayer));
 
     if (_p._executeOnInit && !_didInitTrigger) {
