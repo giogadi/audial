@@ -62,16 +62,23 @@ float GenerateSaw(float const phase, float const phaseChange) {
 float GenerateNoise(rng::State& rng) {
     return rng::GetFloat(rng, -1.f, 1.f);
 }
+
+int constexpr kDelayBufferCount = 2 * 65536;
 }  // namespace
 
 void InitStateData(StateData& state, int channel, int const sampleRate, int const samplesPerFrame, int const numBufferChannels) {
     state = StateData();
     state.channel = channel;
     state.voiceScratchBuffer = new float[samplesPerFrame * numBufferChannels];
+    state.synthScratchBuffer = new float[samplesPerFrame * numBufferChannels];
     state.sampleRate = sampleRate;
     state.framesPerBuffer = samplesPerFrame;
     
     state.samplesPerMoogCutoffUpdate = std::min(samplesPerFrame, kSamplesPerCutoffEnvModulate);
+
+    state.delayBuffer = new float[kDelayBufferCount];
+    memset(state.delayBuffer, 0, kDelayBufferCount * sizeof(float));
+    state.delayBufferWriteIx = 0;
 
     for (Voice& v : state.voices) {
         for (uint64_t ii = 0; ii < v.oscillators.size(); ++ii) {
@@ -83,7 +90,11 @@ void InitStateData(StateData& state, int channel, int const sampleRate, int cons
 
 void DestroyStateData(StateData& state) {
     delete[] state.voiceScratchBuffer;
+    delete[] state.synthScratchBuffer;
+    delete[] state.delayBuffer;
     state.voiceScratchBuffer = nullptr;
+    state.synthScratchBuffer = nullptr;
+    state.delayBuffer = nullptr;
 }
 
 float calcMultiplier(float startLevel, float endLevel, int64_t numSamples) {
@@ -951,29 +962,81 @@ void Process(StateData* state, boost::circular_buffer<audio::PendingEvent> const
     ADSREnvSpecInTicks pitchEnvSpec;
     ConvertADSREnvSpec(patch.GetPitchEnvSpec(), pitchEnvSpec, sampleRate);
 
+    // zero out the synth scratch buffer
+    memset(state->synthScratchBuffer, 0, numChannels* samplesPerFrame * sizeof(float));
+
     if (patch.GetIsFm()) {
         for (Voice& voice : state->voices) {
             // zero out the voice scratch buffer.
             memset(state->voiceScratchBuffer, 0, numChannels * samplesPerFrame * sizeof(float));
             ProcessFmVoice(voice, sampleRate, pitchLFOValue, modulatedCutoff, state->ampEnvSpecInternal, state->cutoffEnvSpecInternal, pitchEnvSpec, patch, state->voiceScratchBuffer, numChannels, samplesPerFrame, state->samplesPerMoogCutoffUpdate);
             for (int outputIx = 0; outputIx < numChannels * samplesPerFrame; ++outputIx) {
-                outputBuffer[outputIx] += state->voiceScratchBuffer[outputIx];
+                state->synthScratchBuffer[outputIx] += state->voiceScratchBuffer[outputIx];
             }
         }
     } else {
         float oscFaderGains[kNumAnalogOscillators];
         static_assert(kNumAnalogOscillators == 2);
         oscFaderGains[0] = sqrt(1.f - patch.Get(SynthParamType::OscFader));
-        oscFaderGains[1] = sqrt(patch.Get(SynthParamType::OscFader));
+        oscFaderGains[1] = sqrt(patch.Get(SynthParamType::OscFader));               
+
         for (Voice& voice : state->voices) {
             // zero out the voice scratch buffer.
             memset(state->voiceScratchBuffer, 0, numChannels * samplesPerFrame * sizeof(float));
             ProcessVoice(voice, sampleRate, pitchLFOValue, modulatedCutoff, state->ampEnvSpecInternal, state->cutoffEnvSpecInternal, pitchEnvSpec, patch, state->voiceScratchBuffer, numChannels, samplesPerFrame, state->samplesPerMoogCutoffUpdate, oscFaderGains);
             for (int outputIx = 0; outputIx < numChannels * samplesPerFrame; ++outputIx) {
-                outputBuffer[outputIx] += state->voiceScratchBuffer[outputIx];
+                state->synthScratchBuffer[outputIx] += state->voiceScratchBuffer[outputIx];
+            }     
+        }        
+    }
+
+    // DELAY
+    float const delayTime = math_util::Clamp(patch.Get(SynthParamType::DelayTime), 0.001f, 0.5f);
+    float const delayGain = math_util::Clamp(patch.Get(SynthParamType::DelayGain), 0.f, 1.f);
+    float const delayFeedback = std::min(0.9f, patch.Get(SynthParamType::DelayFeedback));
+    int const delaySamples = static_cast<int>(delayTime * sampleRate);
+    int delayBufferReadIx = state->delayBufferWriteIx - (numChannels * delaySamples);
+    if (delayBufferReadIx < 0) {
+        delayBufferReadIx = kDelayBufferCount + delayBufferReadIx;
+    }
+    assert(delayBufferReadIx >= 0);
+    assert(delayBufferReadIx < kDelayBufferCount);
+    {
+        int writeIx = state->delayBufferWriteIx;
+        for (int outputIx = 0; outputIx < numChannels * samplesPerFrame; ++outputIx) {
+            if (writeIx >= kDelayBufferCount) {
+                writeIx = 0;
             }
+            state->delayBuffer[writeIx] = 0.f;
+            ++writeIx;
         }
     }
+    if (delayGain == 0.f) {
+        for (int outputIx = 0; outputIx < numChannels * samplesPerFrame; ++outputIx) {
+            outputBuffer[outputIx] += state->synthScratchBuffer[outputIx];
+        }
+    } else {
+        int writeIx = state->delayBufferWriteIx;
+        int readIx = delayBufferReadIx;
+        for (int outputIx = 0; outputIx < numChannels * samplesPerFrame; ++outputIx) {
+            if (writeIx >= kDelayBufferCount) {
+                writeIx = 0;
+            }
+            if (readIx >= kDelayBufferCount) {
+                readIx = 0;
+            }
+            state->delayBuffer[writeIx] += state->synthScratchBuffer[outputIx] + delayFeedback * state->delayBuffer[readIx];
+            outputBuffer[outputIx] += state->synthScratchBuffer[outputIx] + delayGain * state->delayBuffer[readIx];
+            ++writeIx;
+            ++readIx;
+        }
+    }
+
+    state->delayBufferWriteIx += numChannels * samplesPerFrame;
+    if (state->delayBufferWriteIx >= kDelayBufferCount) {
+        state->delayBufferWriteIx = 0;
+    }
+
 }
 
 }

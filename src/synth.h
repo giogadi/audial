@@ -128,6 +128,7 @@ struct StateData {
     float cutoffLFOPhase = 0.0f;
 
     float* voiceScratchBuffer = nullptr;
+    float* synthScratchBuffer = nullptr;
 
     int sampleRate;
     int framesPerBuffer;
@@ -135,6 +136,10 @@ struct StateData {
     ADSREnvSpecInternal ampEnvSpecInternal;
     ADSREnvSpecInternal cutoffEnvSpecInternal;
     int samplesPerMoogCutoffUpdate = 1;
+
+    // includes all channels, interleaved
+    float* delayBuffer = nullptr;
+    int delayBufferWriteIx = 0;
 };
 
 void InitStateData(StateData& state, int channel, int const sampleRate, int const samplesPerFrame, int const numBufferChannels);

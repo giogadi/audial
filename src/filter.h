@@ -32,10 +32,10 @@ class VA1Filter
 {
 public:
     // --- these match SynthModule names
-    virtual bool reset(double _sampleRate);
-    virtual bool update();
-    virtual FilterOutput* process(double xn); 
-    virtual void setFilterParams(double _fc, double _Q);
+    bool reset(double _sampleRate);
+    bool update();
+    FilterOutput* process(double xn); 
+    void setFilterParams(double _fc, double _Q);
 
     // --- set coeffs directly, bypassing coeff calculation
     void setAlpha(double _alpha) { coeffs.alpha = _alpha; }
@@ -83,10 +83,10 @@ class VAMoogFilter
 public:
 
     // --- these match SynthModule names
-    virtual bool reset(double _sampleRate);
-    virtual bool update();
-    virtual FilterOutput* process(double xn); 
-    virtual void setFilterParams(double _fc, double _Q);
+    bool reset(double _sampleRate);
+    bool update();
+    FilterOutput* process(double xn); 
+    void setFilterParams(double _fc, double _Q);
 
     // --- set coeffs directly, bypassing coeff calculation
     void setCoeffs(const VAMoogCoeffs& _coeffs) {

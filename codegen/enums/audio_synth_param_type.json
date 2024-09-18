@@ -33,6 +33,9 @@
         "PitchEnvSustain",
         "PitchEnvRelease",
         "FMOsc2Level",
-        "FMOsc2Ratio"
+        "FMOsc2Ratio",
+        "DelayGain",
+        "DelayTime",
+        "DelayFeedback"
     ]
 }

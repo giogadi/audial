@@ -76,7 +76,13 @@ std::unordered_map<std::string, SynthParamType> const gStringToSynthParamType = 
     
     { "FMOsc2Level", SynthParamType::FMOsc2Level },
     
-    { "FMOsc2Ratio", SynthParamType::FMOsc2Ratio }
+    { "FMOsc2Ratio", SynthParamType::FMOsc2Ratio },
+    
+    { "DelayGain", SynthParamType::DelayGain },
+    
+    { "DelayTime", SynthParamType::DelayTime },
+    
+    { "DelayFeedback", SynthParamType::DelayFeedback }
     
 };
 
@@ -146,7 +152,13 @@ char const* gSynthParamTypeStrings[] = {
     
     "FMOsc2Level",
     
-    "FMOsc2Ratio"
+    "FMOsc2Ratio",
+    
+    "DelayGain",
+    
+    "DelayTime",
+    
+    "DelayFeedback"
     
 };
 

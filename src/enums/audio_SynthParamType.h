@@ -70,6 +70,12 @@ enum class SynthParamType : int {
     
     FMOsc2Ratio,
     
+    DelayGain,
+    
+    DelayTime,
+    
+    DelayFeedback,
+    
     Count
 };
 extern char const* gSynthParamTypeStrings[];

@@ -75,7 +75,10 @@ bool IsFmParam(audio::SynthParamType const paramType) {
         case audio::SynthParamType::PitchEnvAttack:
         case audio::SynthParamType::PitchEnvDecay:
         case audio::SynthParamType::PitchEnvSustain:
-        case audio::SynthParamType::PitchEnvRelease:            
+        case audio::SynthParamType::PitchEnvRelease:
+        case audio::SynthParamType::DelayGain:
+        case audio::SynthParamType::DelayTime:
+        case audio::SynthParamType::DelayFeedback:
         case audio::SynthParamType::Count:
             return false;
     }
@@ -359,6 +362,18 @@ Patch::ImGuiResult Patch::ImGui() {
             }
             case audio::SynthParamType::FMOsc2Ratio: {
                 changed = ImGui::InputFloat(paramName, &_data[i]);
+                break;
+            }
+            case audio::SynthParamType::DelayGain: {
+                changed = ImGui::SliderFloat(paramName, &_data[i], 0.f, 1.f);
+                break;
+            }
+            case audio::SynthParamType::DelayTime: {
+                changed = ImGui::SliderFloat(paramName, &_data[i], 0.f, 0.5f);
+                break;
+            }
+            case audio::SynthParamType::DelayFeedback: {
+                changed = ImGui::SliderFloat(paramName, &_data[i], 0.f, 0.9f);
                 break;
             }
             case audio::SynthParamType::Count:
