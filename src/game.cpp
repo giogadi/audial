@@ -139,8 +139,6 @@ void ParseCommandLineFile(CommandLineInputs& inputs, std::string fileName) {
 bool gRandomLetters = false;
 
 void ParseCommandLine(CommandLineInputs& inputs, std::vector<std::string> const& argv, bool useDefaultFile = true) {
-    inputs._editMode = false;
-
     // Start off args from a default cmd line file
     if (useDefaultFile) {
         ParseCommandLineFile(inputs, "cmd_line.txt");
