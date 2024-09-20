@@ -9,28 +9,94 @@
 #include "math_util.h"
 #include "synth_patch_bank.h"
 #include "audio.h"
+#include "math_util.h"
+#include "serial_enum.h"
+#include "entities/step_sequencer.h"
 
 void IntVariableEntity::Automation::Save(serial::Ptree pt) const {
-    pt.PutInt("synth_patch_channel", _synthPatchChannel);
-    pt.PutString("start_patch", _startPatchName.c_str());
-    pt.PutString("end_patch", _endPatchName.c_str());
-    pt.PutDouble("blend_time", _blendTime);
+    serial::PutEnum(pt, "type", _type);
+    pt.PutFloat("factor", _factor);
+    switch (_type) {
+        case AutomationType::SynthPatch: {
+            pt.PutInt("synth_patch_channel", _synthPatchChannel);
+            pt.PutString("start_patch", _startPatchName.c_str());
+            pt.PutString("end_patch", _endPatchName.c_str());
+            pt.PutDouble("blend_time", _blendTime);
+            break;
+        }
+        case AutomationType::Bpm: {
+            pt.PutDouble("start_bpm", _startBpm);
+            pt.PutDouble("end_bpm", _endBpm);
+            break;
+        }
+        case AutomationType::StepSeqGain: {
+            pt.PutFloat("start_step_seq_gain", _startStepSeqGain);
+            pt.PutFloat("end_step_seq_gain", _endStepSeqGain);
+            serial::SaveInNewChildOf(pt, "step_seq", _stepSeqEditorId);
+            break;
+        }
+        case AutomationType::Count: break;
+    }
+    
 }
 void IntVariableEntity::Automation::Load(serial::Ptree pt) {
+    _type = AutomationType::SynthPatch;
+    _factor = 1.f;
     _synthPatchChannel = -1;
     _startPatchName.clear();
     _endPatchName.clear();
     _blendTime = 0.0;
-    pt.TryGetInt("synth_patch_channel", &_synthPatchChannel);
-    pt.TryGetString("start_patch", &_startPatchName);
-    pt.TryGetString("end_patch", &_endPatchName);
-    pt.TryGetDouble("blend_time", &_blendTime);
+   
+    serial::TryGetEnum(pt, "type", _type);
+    pt.TryGetFloat("factor", &_factor);
+    switch (_type) {
+        case AutomationType::SynthPatch: {
+            pt.TryGetInt("synth_patch_channel", &_synthPatchChannel);
+            pt.TryGetString("start_patch", &_startPatchName);
+            pt.TryGetString("end_patch", &_endPatchName);
+            pt.TryGetDouble("blend_time", &_blendTime);
+            break;
+        }
+        case AutomationType::Bpm: {
+            pt.TryGetDouble("start_bpm", &_startBpm);
+            pt.TryGetDouble("end_bpm", &_endBpm);
+            break;
+        }
+        case AutomationType::StepSeqGain: {
+            pt.TryGetFloat("start_step_seq_gain", &_startStepSeqGain);
+            pt.TryGetFloat("end_step_seq_gain", &_endStepSeqGain);
+            serial::LoadFromChildOf(pt, "step_seq", _stepSeqEditorId);
+            break;
+        }
+        case AutomationType::Count: break;
+    }
+    
 }
 bool IntVariableEntity::Automation::ImGui() {
-    ImGui::InputInt("Synth patch channel", &_synthPatchChannel);
-    imgui_util::InputText<64>("Start patch", &_startPatchName);
-    imgui_util::InputText<64>("End patch", &_endPatchName);
-    ImGui::InputDouble("Blend time", &_blendTime);
+    AutomationTypeImGui("Type", &_type);
+    ImGui::InputFloat("Factor", &_factor);
+    switch (_type) {
+        case AutomationType::SynthPatch: {
+            ImGui::InputInt("Synth patch channel", &_synthPatchChannel);
+            imgui_util::InputText<64>("Start patch", &_startPatchName);
+            imgui_util::InputText<64>("End patch", &_endPatchName);
+            ImGui::InputDouble("Blend time", &_blendTime);
+            break;
+        }
+        case AutomationType::Bpm: {
+            ImGui::InputDouble("Start", &_startBpm);
+            ImGui::InputDouble("End", &_endBpm);
+            break;
+        }
+        case AutomationType::StepSeqGain: {
+            imgui_util::InputEditorId("Step seq", &_stepSeqEditorId);
+            ImGui::InputFloat("Start", &_startStepSeqGain);
+            ImGui::InputFloat("End", &_endStepSeqGain);
+            break;
+        }
+        case AutomationType::Count: break;
+    }
+    
     return false;
 }
 
@@ -41,6 +107,10 @@ void IntVariableEntity::InitDerived(GameManager& g) {
     for (Automation& a : _automations) {
         a._startPatch = g._synthPatchBank->GetPatch(a._startPatchName);
         a._endPatch = g._synthPatchBank->GetPatch(a._endPatchName);
+
+        if (ne::BaseEntity* e = g._neEntityManager->FindEntityByEditorIdAndType(a._stepSeqEditorId, ne::EntityType::StepSequencer)) {
+            a._stepSeqId = e->_id;
+        }
     }
 
     for (auto const& pAction : _actions) {
@@ -122,28 +192,57 @@ void IntVariableEntity::Draw(GameManager& g, float dt) {
     }
 }
 
+float IntVariableEntity::GetFactor() const {
+    if (_initialValue == 0.f) {
+        return 0.f;
+    }
+    float const blendFactor = 1.f - math_util::Clamp((static_cast<float>(_currentValue) / static_cast<float>(_initialValue)), 0.f, 1.f);
+    return blendFactor;
+}
+
 void IntVariableEntity::AddToVariable(int amount) {
     bool wasZero = _currentValue == 0;
     _currentValue += amount;
     _beatTimeOfLastAdd = _g->_beatClock->GetBeatTimeFromEpoch();
     for (Automation const& a : _automations) {
-        if (a._startPatch != nullptr && a._endPatch != nullptr && a._synthPatchChannel >= 0) {
-            float const blendFactor = 1.f - math_util::Clamp((static_cast<float>(_currentValue) / static_cast<float>(_initialValue)), 0.f, 1.f);
-            double blendSecs = _g->_beatClock->BeatTimeToSecs(a._blendTime);
-            audio::Event e;
-            e.type = audio::EventType::SynthParam;
-            e.channel = a._synthPatchChannel;
-            e.paramChangeTimeSecs = blendSecs;
-            for (int paramIx = 0, n = (int)audio::SynthParamType::Count; paramIx < n; ++paramIx) {
-                audio::SynthParamType paramType = (audio::SynthParamType)paramIx;
-                float startV = a._startPatch->Get(paramType);
-                float endV = a._endPatch->Get(paramType);
-                float v = startV + blendFactor * (endV - startV);
-                e.param = paramType;
-                e.newParamValue = v;
-                _g->_audioContext->AddEvent(e);
+        switch (a._type) {
+            case AutomationType::SynthPatch: {
+                if (a._startPatch != nullptr && a._endPatch != nullptr && a._synthPatchChannel >= 0) {
+                    float const blendFactor = math_util::Clamp(a._factor * GetFactor(), 0.f, 1.f);
+                    double blendSecs = _g->_beatClock->BeatTimeToSecs(a._blendTime);
+                    audio::Event e;
+                    e.type = audio::EventType::SynthParam;
+                    e.channel = a._synthPatchChannel;
+                    e.paramChangeTimeSecs = blendSecs;
+                    for (int paramIx = 0, n = (int)audio::SynthParamType::Count; paramIx < n; ++paramIx) {
+                        audio::SynthParamType paramType = (audio::SynthParamType)paramIx;
+                        float startV = a._startPatch->Get(paramType);
+                        float endV = a._endPatch->Get(paramType);
+                        float v = startV + blendFactor * (endV - startV);
+                        e.param = paramType;
+                        e.newParamValue = v;
+                        _g->_audioContext->AddEvent(e);
+                    }
+                }
+                break;
             }
+            case AutomationType::Bpm: {
+                float const blendFactor = math_util::Clamp(a._factor * GetFactor(), 0.f, 1.f);
+                double newBpm = math_util::Lerp(a._startBpm, a._endBpm, static_cast<double>(blendFactor));
+                _g->_beatClock->_bpm = newBpm;
+                break;
+            }
+            case AutomationType::StepSeqGain: {
+                if (StepSequencerEntity* e = _g->_neEntityManager->GetEntityAs<StepSequencerEntity>(a._stepSeqId)) {
+                    float const blendFactor = math_util::Clamp(a._factor * GetFactor(), 0.f, 1.f);
+                    float newGain = math_util::Lerp(a._startStepSeqGain, a._endStepSeqGain, blendFactor);
+                    e->_gain = newGain;
+                }               
+                break;
+            }
+            case AutomationType::Count: break;
         }
+        
     }
     
 
@@ -160,17 +259,34 @@ void IntVariableEntity::Reset() {
     double constexpr kBlendBeatTime = 0.0;
     auto blendTimeSecs = _g->_beatClock->BeatTimeToSecs(kBlendBeatTime);
     for (Automation const& a : _automations) {
-        audio::Event e;
-        e.type = audio::EventType::SynthParam;
-        e.channel = a._synthPatchChannel;
-        e.paramChangeTimeSecs = blendTimeSecs;
-        for (int paramIx = 0, n = (int)audio::SynthParamType::Count; paramIx < n; ++paramIx) {
-            audio::SynthParamType paramType = (audio::SynthParamType)paramIx;
-            float v = a._startPatch->Get(paramType);
-            e.param = paramType;
-            e.newParamValue = v;
-            _g->_audioContext->AddEvent(e);
+        switch (a._type) {
+            case AutomationType::SynthPatch: {
+                audio::Event e;
+                e.type = audio::EventType::SynthParam;
+                e.channel = a._synthPatchChannel;
+                e.paramChangeTimeSecs = blendTimeSecs;
+                for (int paramIx = 0, n = (int)audio::SynthParamType::Count; paramIx < n; ++paramIx) {
+                    audio::SynthParamType paramType = (audio::SynthParamType)paramIx;
+                    float v = a._startPatch->Get(paramType);
+                    e.param = paramType;
+                    e.newParamValue = v;
+                    _g->_audioContext->AddEvent(e);
+                }
+                break;
+            }
+            case AutomationType::Bpm: {
+                _g->_beatClock->_bpm = a._startBpm;
+                break;
+            }
+            case AutomationType::StepSeqGain: {
+                if (StepSequencerEntity* e = _g->_neEntityManager->GetEntityAs<StepSequencerEntity>(a._stepSeqId)) {
+                    e->_gain = a._startStepSeqGain;
+                }
+                break;
+            }
+            case AutomationType::Count: break;
         }
+        
     }    
 }
 

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <root>
-    <version>8</version>
+    <version>9</version>
     <patches>
         <patch>
             <name>bass0</name>
@@ -37,6 +37,9 @@
                 <PitchEnvRelease>0</PitchEnvRelease>
                 <FMOsc2Level>0</FMOsc2Level>
                 <FMOsc2Ratio>0</FMOsc2Ratio>
+                <DelayGain>0</DelayGain>
+                <DelayTime>0</DelayTime>
+                <DelayFeedback>0</DelayFeedback>
             </patch>
         </patch>
         <patch>
@@ -74,6 +77,9 @@
                 <PitchEnvRelease>0</PitchEnvRelease>
                 <FMOsc2Level>0</FMOsc2Level>
                 <FMOsc2Ratio>0</FMOsc2Ratio>
+                <DelayGain>0</DelayGain>
+                <DelayTime>0</DelayTime>
+                <DelayFeedback>0</DelayFeedback>
             </patch>
         </patch>
         <patch>
@@ -111,6 +117,9 @@
                 <PitchEnvRelease>0</PitchEnvRelease>
                 <FMOsc2Level>0</FMOsc2Level>
                 <FMOsc2Ratio>0</FMOsc2Ratio>
+                <DelayGain>0</DelayGain>
+                <DelayTime>0</DelayTime>
+                <DelayFeedback>0</DelayFeedback>
             </patch>
         </patch>
         <patch>
@@ -148,6 +157,9 @@
                 <PitchEnvRelease>0</PitchEnvRelease>
                 <FMOsc2Level>0</FMOsc2Level>
                 <FMOsc2Ratio>0</FMOsc2Ratio>
+                <DelayGain>0</DelayGain>
+                <DelayTime>0</DelayTime>
+                <DelayFeedback>0</DelayFeedback>
             </patch>
         </patch>
         <patch>
@@ -185,6 +197,9 @@
                 <PitchEnvRelease>0</PitchEnvRelease>
                 <FMOsc2Level>0</FMOsc2Level>
                 <FMOsc2Ratio>0</FMOsc2Ratio>
+                <DelayGain>0</DelayGain>
+                <DelayTime>0</DelayTime>
+                <DelayFeedback>0</DelayFeedback>
             </patch>
         </patch>
         <patch>
@@ -222,6 +237,9 @@
                 <PitchEnvRelease>0</PitchEnvRelease>
                 <FMOsc2Level>0</FMOsc2Level>
                 <FMOsc2Ratio>0</FMOsc2Ratio>
+                <DelayGain>0</DelayGain>
+                <DelayTime>0</DelayTime>
+                <DelayFeedback>0</DelayFeedback>
             </patch>
         </patch>
         <patch>
@@ -259,6 +277,9 @@
                 <PitchEnvRelease>0</PitchEnvRelease>
                 <FMOsc2Level>0</FMOsc2Level>
                 <FMOsc2Ratio>0</FMOsc2Ratio>
+                <DelayGain>0</DelayGain>
+                <DelayTime>0</DelayTime>
+                <DelayFeedback>0</DelayFeedback>
             </patch>
         </patch>
         <patch>
@@ -296,6 +317,9 @@
                 <PitchEnvRelease>0</PitchEnvRelease>
                 <FMOsc2Level>0</FMOsc2Level>
                 <FMOsc2Ratio>0</FMOsc2Ratio>
+                <DelayGain>0</DelayGain>
+                <DelayTime>0</DelayTime>
+                <DelayFeedback>0</DelayFeedback>
             </patch>
         </patch>
         <patch>
@@ -333,6 +357,9 @@
                 <PitchEnvRelease>0</PitchEnvRelease>
                 <FMOsc2Level>0</FMOsc2Level>
                 <FMOsc2Ratio>0</FMOsc2Ratio>
+                <DelayGain>0</DelayGain>
+                <DelayTime>0</DelayTime>
+                <DelayFeedback>0</DelayFeedback>
             </patch>
         </patch>
         <patch>
@@ -370,6 +397,9 @@
                 <PitchEnvRelease>0</PitchEnvRelease>
                 <FMOsc2Level>0</FMOsc2Level>
                 <FMOsc2Ratio>0</FMOsc2Ratio>
+                <DelayGain>0</DelayGain>
+                <DelayTime>0</DelayTime>
+                <DelayFeedback>0</DelayFeedback>
             </patch>
         </patch>
         <patch>
@@ -407,6 +437,9 @@
                 <PitchEnvRelease>0</PitchEnvRelease>
                 <FMOsc2Level>0</FMOsc2Level>
                 <FMOsc2Ratio>0</FMOsc2Ratio>
+                <DelayGain>0</DelayGain>
+                <DelayTime>0</DelayTime>
+                <DelayFeedback>0</DelayFeedback>
             </patch>
         </patch>
         <patch>
@@ -444,6 +477,9 @@
                 <PitchEnvRelease>0</PitchEnvRelease>
                 <FMOsc2Level>0</FMOsc2Level>
                 <FMOsc2Ratio>0</FMOsc2Ratio>
+                <DelayGain>0</DelayGain>
+                <DelayTime>0</DelayTime>
+                <DelayFeedback>0</DelayFeedback>
             </patch>
         </patch>
         <patch>
@@ -481,6 +517,9 @@
                 <PitchEnvRelease>0</PitchEnvRelease>
                 <FMOsc2Level>0</FMOsc2Level>
                 <FMOsc2Ratio>0</FMOsc2Ratio>
+                <DelayGain>0</DelayGain>
+                <DelayTime>0</DelayTime>
+                <DelayFeedback>0</DelayFeedback>
             </patch>
         </patch>
         <patch>
@@ -518,6 +557,9 @@
                 <PitchEnvRelease>0</PitchEnvRelease>
                 <FMOsc2Level>0</FMOsc2Level>
                 <FMOsc2Ratio>0</FMOsc2Ratio>
+                <DelayGain>0</DelayGain>
+                <DelayTime>0</DelayTime>
+                <DelayFeedback>0</DelayFeedback>
             </patch>
         </patch>
         <patch>
@@ -555,6 +597,9 @@
                 <PitchEnvRelease>0</PitchEnvRelease>
                 <FMOsc2Level>0</FMOsc2Level>
                 <FMOsc2Ratio>0</FMOsc2Ratio>
+                <DelayGain>0</DelayGain>
+                <DelayTime>0</DelayTime>
+                <DelayFeedback>0</DelayFeedback>
             </patch>
         </patch>
         <patch>
@@ -592,12 +637,15 @@
                 <PitchEnvRelease>0</PitchEnvRelease>
                 <FMOsc2Level>0</FMOsc2Level>
                 <FMOsc2Ratio>0</FMOsc2Ratio>
+                <DelayGain>0</DelayGain>
+                <DelayTime>0</DelayTime>
+                <DelayFeedback>0</DelayFeedback>
             </patch>
         </patch>
         <patch>
             <name>noise1</name>
             <patch>
-                <Gain>0.81099999</Gain>
+                <Gain>0.856000006</Gain>
                 <Mono>1</Mono>
                 <FM>0</FM>
                 <Osc1Waveform>Noise</Osc1Waveform>
@@ -629,6 +677,9 @@
                 <PitchEnvRelease>0</PitchEnvRelease>
                 <FMOsc2Level>0</FMOsc2Level>
                 <FMOsc2Ratio>0</FMOsc2Ratio>
+                <DelayGain>0</DelayGain>
+                <DelayTime>0</DelayTime>
+                <DelayFeedback>0</DelayFeedback>
             </patch>
         </patch>
     </patches>

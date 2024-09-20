@@ -145,6 +145,7 @@ add_executable(game
     src/enums/HitResponseType.cpp src/enums/HitResponseType.h
     src/enums/MechType.cpp src/enums/MechType.h
     src/enums/StepSeqParamType.cpp src/enums/StepSeqParamType.h
+    src/enums/AutomationType.cpp src/enums/AutomationType.h
 )
 
 ## GLFW ##

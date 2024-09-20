@@ -6,14 +6,15 @@ void BeatClock::Init(GameManager& g, double bpm, double sampleRate) {
     _bpm = bpm;
     _sampleRate = sampleRate;
     double audioTimeNow = Pa_GetStreamTime(g._audioContext->_stream);
-    double beatTimeNow = audioTimeNow * (_bpm / 60.0);
-    //_epochBeatTime = GetNextDownBeatTime(beatTimeNow);
-    _epochBeatTime = beatTimeNow + 1;
+    _currentAudioTime = audioTimeNow;
+    _currentBeatTime = -1.0;
 }
 
 void BeatClock::Update(GameManager& g) {
     double audioTime = Pa_GetStreamTime(g._audioContext->_stream);
-    double beatTime = audioTime * (_bpm / 60.0);
+    double dtAudio = audioTime - _currentAudioTime;
+    double dtBeat = dtAudio * (_bpm / 60.0);
+    double beatTime = _currentBeatTime + dtBeat;
     double downBeat = std::floor(beatTime);
     _newBeat = false;
     if (downBeat != std::floor(_currentBeatTime)) {
@@ -24,7 +25,7 @@ void BeatClock::Update(GameManager& g) {
 }
 
 double BeatClock::GetBeatTimeFromEpoch() const {
-    return GetBeatTime() - _epochBeatTime;
+    return _currentBeatTime;
 }
 
 double BeatClock::GetNextBeatDenomTime(double beatTime, double denom) {

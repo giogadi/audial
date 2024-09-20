@@ -2561,6 +2561,8 @@
                 <max_per_row>-1</max_per_row>
                 <automations>
                     <automation>
+                        <type>SynthPatch</type>
+                        <factor>1</factor>
                         <synth_patch_channel>0</synth_patch_channel>
                         <start_patch>bass0</start_patch>
                         <end_patch>bass1_again</end_patch>
@@ -8727,6 +8729,8 @@
                 <max_per_row>-1</max_per_row>
                 <automations>
                     <automation>
+                        <type>SynthPatch</type>
+                        <factor>1</factor>
                         <synth_patch_channel>2</synth_patch_channel>
                         <start_patch>pad0</start_patch>
                         <end_patch>pad0_after</end_patch>
@@ -14693,12 +14697,16 @@
                 <max_per_row>16</max_per_row>
                 <automations>
                     <automation>
+                        <type>SynthPatch</type>
+                        <factor>1</factor>
                         <synth_patch_channel>2</synth_patch_channel>
                         <start_patch>pad0</start_patch>
                         <end_patch>pad0_after</end_patch>
                         <blend_time>0.5</blend_time>
                     </automation>
                     <automation>
+                        <type>SynthPatch</type>
+                        <factor>1</factor>
                         <synth_patch_channel>1</synth_patch_channel>
                         <start_patch>noise0</start_patch>
                         <end_patch>noise1</end_patch>
@@ -15798,7 +15806,17 @@
                         <velocity>1</velocity>
                     </seq_action>
                 </hit_actions>
-                <all_hit_actions/>
+                <all_hit_actions>
+                    <seq_action>
+                        <one_time>false</one_time>
+                        <action_type>AddToIntVariable</action_type>
+                        <var_editor_id>
+                            <id>492</id>
+                        </var_editor_id>
+                        <add_amount>-1</add_amount>
+                        <reset>false</reset>
+                    </seq_action>
+                </all_hit_actions>
                 <off_cooldown_actions/>
                 <combo_end_actions/>
             </TypingEnemy>
@@ -16239,7 +16257,17 @@
                         <velocity>1</velocity>
                     </seq_action>
                 </hit_actions>
-                <all_hit_actions/>
+                <all_hit_actions>
+                    <seq_action>
+                        <one_time>false</one_time>
+                        <action_type>AddToIntVariable</action_type>
+                        <var_editor_id>
+                            <id>492</id>
+                        </var_editor_id>
+                        <add_amount>-1</add_amount>
+                        <reset>false</reset>
+                    </seq_action>
+                </all_hit_actions>
                 <off_cooldown_actions/>
                 <combo_end_actions/>
             </TypingEnemy>
@@ -16623,23 +16651,21 @@
                         <section_id>3</section_id>
                     </seq_action>
                     <seq_action>
-                        <one_time>false</one_time>
-                        <action_type>SetEntityActive</action_type>
-                        <entities_tag>-1</entities_tag>
-                        <entity_editor_id>
-                            <id>3</id>
-                        </entity_editor_id>
-                        <active>false</active>
-                        <init_on_activate>true</init_on_activate>
-                        <init_if_already_active>false</init_if_already_active>
-                    </seq_action>
-                    <seq_action>
                         <one_time>true</one_time>
                         <action_type>ChangePatch</action_type>
                         <channel>2</channel>
                         <blend_beat_time>0</blend_beat_time>
                         <use_patch_bank>true</use_patch_bank>
                         <patch_name>pad0</patch_name>
+                    </seq_action>
+                    <seq_action>
+                        <one_time>true</one_time>
+                        <action_type>AddToIntVariable</action_type>
+                        <var_editor_id>
+                            <id>492</id>
+                        </var_editor_id>
+                        <add_amount>0</add_amount>
+                        <reset>true</reset>
                     </seq_action>
                 </actions>
                 <actions_on_exit/>
@@ -16752,6 +16778,95 @@
                 <off_cooldown_actions/>
                 <combo_end_actions/>
             </TypingEnemy>
+            <IntVariable>
+                <editor_id>
+                    <id>492</id>
+                </editor_id>
+                <name>buildup_variable</name>
+                <entity_active>true</entity_active>
+                <pickable>true</pickable>
+                <transform>
+                    <pos>
+                        <x>34.1841278</x>
+                        <y>0</y>
+                        <z>28.3828297</z>
+                    </pos>
+                    <quat>
+                        <x>0</x>
+                        <y>0</y>
+                        <z>0</z>
+                        <w>1</w>
+                    </quat>
+                    <scale>
+                        <x>1</x>
+                        <y>1</y>
+                        <z>1</z>
+                    </scale>
+                </transform>
+                <model_name/>
+                <texture_name/>
+                <model_color_vec4>
+                    <x>0.800000012</x>
+                    <y>0.800000012</y>
+                    <z>0.800000012</z>
+                    <w>1</w>
+                </model_color_vec4>
+                <flow_section_id>-1</flow_section_id>
+                <tag>0</tag>
+                <waypoint_follower>
+                    <mode>Waypoint</mode>
+                    <waypoint_auto_start>false</waypoint_auto_start>
+                    <loop_waypoints>false</loop_waypoints>
+                    <start_time>3</start_time>
+                    <quantize>1</quantize>
+                    <quantize_buffer>0</quantize_buffer>
+                    <waypoints/>
+                    <follow_entity_name/>
+                    <follow_entity_editor_id>
+                        <id>-1</id>
+                    </follow_entity_editor_id>
+                </waypoint_follower>
+                <initial_value>20</initial_value>
+                <draw_counter>false</draw_counter>
+                <draw_horizontal>false</draw_horizontal>
+                <cell_width>0.25</cell_width>
+                <cell_spacing>0.25</cell_spacing>
+                <max_per_row>-1</max_per_row>
+                <automations>
+                    <automation>
+                        <type>Bpm</type>
+                        <factor>1</factor>
+                        <start_bpm>110</start_bpm>
+                        <end_bpm>440</end_bpm>
+                    </automation>
+                    <automation>
+                        <type>SynthPatch</type>
+                        <factor>2</factor>
+                        <synth_patch_channel>2</synth_patch_channel>
+                        <start_patch>pad0</start_patch>
+                        <end_patch>pad0_after</end_patch>
+                        <blend_time>0.5</blend_time>
+                    </automation>
+                    <automation>
+                        <type>StepSeqGain</type>
+                        <factor>2</factor>
+                        <start_step_seq_gain>0</start_step_seq_gain>
+                        <end_step_seq_gain>0.75</end_step_seq_gain>
+                        <step_seq>
+                            <id>3</id>
+                        </step_seq>
+                    </automation>
+                    <automation>
+                        <type>SynthPatch</type>
+                        <factor>2</factor>
+                        <synth_patch_channel>1</synth_patch_channel>
+                        <start_patch>noise0</start_patch>
+                        <end_patch>noise1</end_patch>
+                        <blend_time>0.25</blend_time>
+                    </automation>
+                </automations>
+                <actions/>
+            </IntVariable>
         </new_entities>
     </script>
 </root>

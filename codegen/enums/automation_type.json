@@ -1,0 +1,9 @@
+{
+    "namespaces": [],
+    "enumName": "AutomationType",
+    "enumItems": [
+        "SynthPatch",
+        "Bpm",
+        "StepSeqGain"
+    ]
+}

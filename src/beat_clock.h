@@ -21,9 +21,6 @@ public:
 
     // These all return the values computed when Update() was called on the
     // clock. So they remain constant throughout the game frame.
-    double GetBeatTime() const {
-        return _currentBeatTime;
-    }
     double GetBeatTimeFromEpoch() const;
     double GetDownBeatTime() const {
         return GetLastDownBeatTime(_currentBeatTime);
@@ -49,9 +46,9 @@ public:
         return _bpm;
     }
 
-private:
-    double _epochBeatTime = -1.0;
     double _bpm = 120.0;
+
+private:
     double _currentBeatTime = -1.0;
     double _currentAudioTime = -1.0;
     bool _newBeat = false;
