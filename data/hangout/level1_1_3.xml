@@ -12800,17 +12800,6 @@
                     </seq_action>
                     <seq_action>
                         <one_time>true</one_time>
-                        <action_type>SetEntityActive</action_type>
-                        <entities_tag>-1</entities_tag>
-                        <entity_editor_id>
-                            <id>3</id>
-                        </entity_editor_id>
-                        <active>false</active>
-                        <init_on_activate>true</init_on_activate>
-                        <init_if_already_active>false</init_if_already_active>
-                    </seq_action>
-                    <seq_action>
-                        <one_time>true</one_time>
                         <action_type>SpawnAutomator</action_type>
                         <relative>false</relative>
                         <startValue>0</startValue>
@@ -12823,6 +12812,18 @@
                         <seqEditorId>
                             <id>4</id>
                         </seqEditorId>
+                    </seq_action>
+                    <seq_action>
+                        <one_time>true</one_time>
+                        <action_type>ChangeStepSequencer</action_type>
+                        <seqEntityEditorId>
+                            <id>3</id>
+                        </seqEntityEditorId>
+                        <velOnly>false</velOnly>
+                        <temporary>false</temporary>
+                        <midiNotes/>
+                        <velocity>0</velocity>
+                        <gain>0.75</gain>
                     </seq_action>
                 </actions>
                 <actions_on_exit/>
@@ -16866,6 +16867,17 @@
                         </var_editor_id>
                         <add_amount>0</add_amount>
                         <reset>true</reset>
+                    </seq_action>
+                    <seq_action>
+                        <one_time>true</one_time>
+                        <action_type>SetEntityActive</action_type>
+                        <entities_tag>-1</entities_tag>
+                        <entity_editor_id>
+                            <id>3</id>
+                        </entity_editor_id>
+                        <active>true</active>
+                        <init_on_activate>true</init_on_activate>
+                        <init_if_already_active>false</init_if_already_active>
                     </seq_action>
                 </actions>
                 <actions_on_exit/>
