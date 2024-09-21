@@ -21,6 +21,11 @@
         {
             "name": "velocity",
             "type": "float"
+        },
+        {
+            "name": "gain",
+            "type": "float",
+            "default": "-1.f"
         }
     ]
 }

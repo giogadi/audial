@@ -61,6 +61,8 @@ struct BaseEntity {
 
     // Init() is intended to be called after Load(). Load should not touch anything
     // outside this class. Everything else should happen here.
+    //
+    // TODO: try to remove virtual from here!!!
     virtual void Update(GameManager& g, float dt);
     virtual void Destroy(GameManager& g) {}
     virtual void OnEditPick(GameManager& g) {}

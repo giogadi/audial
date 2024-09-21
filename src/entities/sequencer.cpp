@@ -31,7 +31,7 @@ void SequencerEntity::Reset(GameManager& g) {
     _currentLoopStartBeatTime = std::max(_currentLoopStartBeatTime, _startBeatTime);
 }
 
-void SequencerEntity::Update(GameManager& g, float dt) {
+void SequencerEntity::UpdateDerived(GameManager& g, float dt) {
     if (_events.empty()) {
         return;
     }

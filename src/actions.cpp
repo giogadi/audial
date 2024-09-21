@@ -94,6 +94,10 @@ void ChangeStepSequencerSeqAction::ExecuteDerived(GameManager& g) {
             step._velocity = _props._velocity;
             seq->SetNextSeqStep(g, std::move(step), saveType);
         }
+
+        if (_props._gain >= 0.f && !g._editMode) {
+            seq->_gain = _props._gain;
+        }
     }
     else {
         printf("ChangeStepSequencerSeqAction: no seq entity!!\n");

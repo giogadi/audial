@@ -910,6 +910,7 @@
                             </array_item>
                         </midiNotes>
                         <velocity>1</velocity>
+                        <gain>-1</gain>
                     </seq_action>
                     <seq_action>
                         <one_time>false</one_time>
@@ -925,6 +926,7 @@
                             </array_item>
                         </midiNotes>
                         <velocity>1</velocity>
+                        <gain>-1</gain>
                     </seq_action>
                     <seq_action>
                         <one_time>false</one_time>
@@ -940,6 +942,7 @@
                             </array_item>
                         </midiNotes>
                         <velocity>1</velocity>
+                        <gain>-1</gain>
                     </seq_action>
                     <seq_action>
                         <one_time>false</one_time>
@@ -955,6 +958,7 @@
                             </array_item>
                         </midiNotes>
                         <velocity>1</velocity>
+                        <gain>-1</gain>
                     </seq_action>
                     <seq_action>
                         <one_time>false</one_time>
@@ -970,6 +974,7 @@
                             </array_item>
                         </midiNotes>
                         <velocity>1</velocity>
+                        <gain>-1</gain>
                     </seq_action>
                     <seq_action>
                         <one_time>false</one_time>
@@ -985,6 +990,7 @@
                             </array_item>
                         </midiNotes>
                         <velocity>1</velocity>
+                        <gain>-1</gain>
                     </seq_action>
                     <seq_action>
                         <one_time>false</one_time>
@@ -1000,6 +1006,7 @@
                             </array_item>
                         </midiNotes>
                         <velocity>1</velocity>
+                        <gain>-1</gain>
                     </seq_action>
                     <seq_action>
                         <one_time>false</one_time>
@@ -1015,6 +1022,7 @@
                             </array_item>
                         </midiNotes>
                         <velocity>1</velocity>
+                        <gain>-1</gain>
                     </seq_action>
                 </hit_actions>
                 <all_hit_actions>
@@ -1123,6 +1131,7 @@
                             </array_item>
                         </midiNotes>
                         <velocity>1</velocity>
+                        <gain>-1</gain>
                     </seq_action>
                     <seq_action>
                         <one_time>false</one_time>
@@ -1138,6 +1147,7 @@
                             </array_item>
                         </midiNotes>
                         <velocity>1</velocity>
+                        <gain>-1</gain>
                     </seq_action>
                     <seq_action>
                         <one_time>false</one_time>
@@ -1153,6 +1163,7 @@
                             </array_item>
                         </midiNotes>
                         <velocity>1</velocity>
+                        <gain>-1</gain>
                     </seq_action>
                     <seq_action>
                         <one_time>false</one_time>
@@ -1168,6 +1179,7 @@
                             </array_item>
                         </midiNotes>
                         <velocity>1</velocity>
+                        <gain>-1</gain>
                     </seq_action>
                     <seq_action>
                         <one_time>false</one_time>
@@ -1183,6 +1195,7 @@
                             </array_item>
                         </midiNotes>
                         <velocity>1</velocity>
+                        <gain>-1</gain>
                     </seq_action>
                     <seq_action>
                         <one_time>false</one_time>
@@ -1198,6 +1211,7 @@
                             </array_item>
                         </midiNotes>
                         <velocity>1</velocity>
+                        <gain>-1</gain>
                     </seq_action>
                     <seq_action>
                         <one_time>false</one_time>
@@ -1213,6 +1227,7 @@
                             </array_item>
                         </midiNotes>
                         <velocity>1</velocity>
+                        <gain>-1</gain>
                     </seq_action>
                     <seq_action>
                         <one_time>false</one_time>
@@ -1228,6 +1243,7 @@
                             </array_item>
                         </midiNotes>
                         <velocity>1</velocity>
+                        <gain>-1</gain>
                     </seq_action>
                 </hit_actions>
                 <all_hit_actions>
@@ -1347,6 +1363,7 @@
                             </array_item>
                         </midiNotes>
                         <velocity>1</velocity>
+                        <gain>-1</gain>
                     </seq_action>
                     <seq_action>
                         <one_time>false</one_time>
@@ -1362,6 +1379,7 @@
                             </array_item>
                         </midiNotes>
                         <velocity>1</velocity>
+                        <gain>-1</gain>
                     </seq_action>
                     <seq_action>
                         <one_time>false</one_time>
@@ -1377,6 +1395,7 @@
                             </array_item>
                         </midiNotes>
                         <velocity>1</velocity>
+                        <gain>-1</gain>
                     </seq_action>
                     <seq_action>
                         <one_time>false</one_time>
@@ -1392,6 +1411,7 @@
                             </array_item>
                         </midiNotes>
                         <velocity>1</velocity>
+                        <gain>-1</gain>
                     </seq_action>
                     <seq_action>
                         <one_time>false</one_time>
@@ -1407,6 +1427,7 @@
                             </array_item>
                         </midiNotes>
                         <velocity>1</velocity>
+                        <gain>-1</gain>
                     </seq_action>
                     <seq_action>
                         <one_time>false</one_time>
@@ -1422,6 +1443,7 @@
                             </array_item>
                         </midiNotes>
                         <velocity>1</velocity>
+                        <gain>-1</gain>
                     </seq_action>
                     <seq_action>
                         <one_time>false</one_time>
@@ -1437,6 +1459,7 @@
                             </array_item>
                         </midiNotes>
                         <velocity>1</velocity>
+                        <gain>-1</gain>
                     </seq_action>
                     <seq_action>
                         <one_time>false</one_time>
@@ -1452,6 +1475,7 @@
                             </array_item>
                         </midiNotes>
                         <velocity>1</velocity>
+                        <gain>-1</gain>
                     </seq_action>
                 </hit_actions>
                 <all_hit_actions>
@@ -2384,6 +2408,7 @@
                             </array_item>
                         </midiNotes>
                         <velocity>1</velocity>
+                        <gain>-1</gain>
                     </seq_action>
                     <seq_action>
                         <one_time>false</one_time>
@@ -2399,6 +2424,7 @@
                             </array_item>
                         </midiNotes>
                         <velocity>1</velocity>
+                        <gain>-1</gain>
                     </seq_action>
                     <seq_action>
                         <one_time>false</one_time>
@@ -2414,6 +2440,7 @@
                             </array_item>
                         </midiNotes>
                         <velocity>1</velocity>
+                        <gain>-1</gain>
                     </seq_action>
                     <seq_action>
                         <one_time>false</one_time>
@@ -2429,6 +2456,7 @@
                             </array_item>
                         </midiNotes>
                         <velocity>1</velocity>
+                        <gain>-1</gain>
                     </seq_action>
                     <seq_action>
                         <one_time>false</one_time>
@@ -2444,6 +2472,7 @@
                             </array_item>
                         </midiNotes>
                         <velocity>1</velocity>
+                        <gain>-1</gain>
                     </seq_action>
                     <seq_action>
                         <one_time>false</one_time>
@@ -2459,6 +2488,7 @@
                             </array_item>
                         </midiNotes>
                         <velocity>1</velocity>
+                        <gain>-1</gain>
                     </seq_action>
                     <seq_action>
                         <one_time>false</one_time>
@@ -2474,6 +2504,7 @@
                             </array_item>
                         </midiNotes>
                         <velocity>1</velocity>
+                        <gain>-1</gain>
                     </seq_action>
                     <seq_action>
                         <one_time>false</one_time>
@@ -2489,6 +2520,7 @@
                             </array_item>
                         </midiNotes>
                         <velocity>1</velocity>
+                        <gain>-1</gain>
                     </seq_action>
                 </hit_actions>
                 <all_hit_actions>
@@ -3037,6 +3069,7 @@
                             </array_item>
                         </midiNotes>
                         <velocity>1</velocity>
+                        <gain>-1</gain>
                     </seq_action>
                     <seq_action>
                         <one_time>false</one_time>
@@ -3052,6 +3085,7 @@
                             </array_item>
                         </midiNotes>
                         <velocity>1</velocity>
+                        <gain>-1</gain>
                     </seq_action>
                     <seq_action>
                         <one_time>false</one_time>
@@ -3067,6 +3101,7 @@
                             </array_item>
                         </midiNotes>
                         <velocity>1</velocity>
+                        <gain>-1</gain>
                     </seq_action>
                     <seq_action>
                         <one_time>false</one_time>
@@ -3082,6 +3117,7 @@
                             </array_item>
                         </midiNotes>
                         <velocity>1</velocity>
+                        <gain>-1</gain>
                     </seq_action>
                     <seq_action>
                         <one_time>false</one_time>
@@ -3097,6 +3133,7 @@
                             </array_item>
                         </midiNotes>
                         <velocity>1</velocity>
+                        <gain>-1</gain>
                     </seq_action>
                     <seq_action>
                         <one_time>false</one_time>
@@ -3112,6 +3149,7 @@
                             </array_item>
                         </midiNotes>
                         <velocity>1</velocity>
+                        <gain>-1</gain>
                     </seq_action>
                     <seq_action>
                         <one_time>false</one_time>
@@ -3127,6 +3165,7 @@
                             </array_item>
                         </midiNotes>
                         <velocity>1</velocity>
+                        <gain>-1</gain>
                     </seq_action>
                     <seq_action>
                         <one_time>false</one_time>
@@ -3142,6 +3181,7 @@
                             </array_item>
                         </midiNotes>
                         <velocity>1</velocity>
+                        <gain>-1</gain>
                     </seq_action>
                 </hit_actions>
                 <all_hit_actions>
@@ -3456,6 +3496,7 @@
                             </array_item>
                         </midiNotes>
                         <velocity>1</velocity>
+                        <gain>-1</gain>
                     </seq_action>
                     <seq_action>
                         <one_time>false</one_time>
@@ -3471,6 +3512,7 @@
                             </array_item>
                         </midiNotes>
                         <velocity>1</velocity>
+                        <gain>-1</gain>
                     </seq_action>
                     <seq_action>
                         <one_time>false</one_time>
@@ -3486,6 +3528,7 @@
                             </array_item>
                         </midiNotes>
                         <velocity>1</velocity>
+                        <gain>-1</gain>
                     </seq_action>
                     <seq_action>
                         <one_time>false</one_time>
@@ -3501,6 +3544,7 @@
                             </array_item>
                         </midiNotes>
                         <velocity>1</velocity>
+                        <gain>-1</gain>
                     </seq_action>
                     <seq_action>
                         <one_time>false</one_time>
@@ -3516,6 +3560,7 @@
                             </array_item>
                         </midiNotes>
                         <velocity>1</velocity>
+                        <gain>-1</gain>
                     </seq_action>
                     <seq_action>
                         <one_time>false</one_time>
@@ -3531,6 +3576,7 @@
                             </array_item>
                         </midiNotes>
                         <velocity>1</velocity>
+                        <gain>-1</gain>
                     </seq_action>
                     <seq_action>
                         <one_time>false</one_time>
@@ -3546,6 +3592,7 @@
                             </array_item>
                         </midiNotes>
                         <velocity>1</velocity>
+                        <gain>-1</gain>
                     </seq_action>
                     <seq_action>
                         <one_time>false</one_time>
@@ -3561,6 +3608,7 @@
                             </array_item>
                         </midiNotes>
                         <velocity>1</velocity>
+                        <gain>-1</gain>
                     </seq_action>
                 </hit_actions>
                 <all_hit_actions>
@@ -4190,6 +4238,7 @@
                             </array_item>
                         </midiNotes>
                         <velocity>1</velocity>
+                        <gain>-1</gain>
                     </seq_action>
                     <seq_action>
                         <one_time>false</one_time>
@@ -4205,6 +4254,7 @@
                             </array_item>
                         </midiNotes>
                         <velocity>1</velocity>
+                        <gain>-1</gain>
                     </seq_action>
                     <seq_action>
                         <one_time>false</one_time>
@@ -4220,6 +4270,7 @@
                             </array_item>
                         </midiNotes>
                         <velocity>1</velocity>
+                        <gain>-1</gain>
                     </seq_action>
                     <seq_action>
                         <one_time>false</one_time>
@@ -4235,6 +4286,7 @@
                             </array_item>
                         </midiNotes>
                         <velocity>1</velocity>
+                        <gain>-1</gain>
                     </seq_action>
                     <seq_action>
                         <one_time>false</one_time>
@@ -4250,6 +4302,7 @@
                             </array_item>
                         </midiNotes>
                         <velocity>1</velocity>
+                        <gain>-1</gain>
                     </seq_action>
                     <seq_action>
                         <one_time>false</one_time>
@@ -4265,6 +4318,7 @@
                             </array_item>
                         </midiNotes>
                         <velocity>1</velocity>
+                        <gain>-1</gain>
                     </seq_action>
                     <seq_action>
                         <one_time>false</one_time>
@@ -4280,6 +4334,7 @@
                             </array_item>
                         </midiNotes>
                         <velocity>1</velocity>
+                        <gain>-1</gain>
                     </seq_action>
                     <seq_action>
                         <one_time>false</one_time>
@@ -4295,6 +4350,7 @@
                             </array_item>
                         </midiNotes>
                         <velocity>1</velocity>
+                        <gain>-1</gain>
                     </seq_action>
                 </hit_actions>
                 <all_hit_actions>
@@ -4680,6 +4736,7 @@
                             </array_item>
                         </midiNotes>
                         <velocity>1</velocity>
+                        <gain>-1</gain>
                     </seq_action>
                     <seq_action>
                         <one_time>false</one_time>
@@ -4695,6 +4752,7 @@
                             </array_item>
                         </midiNotes>
                         <velocity>1</velocity>
+                        <gain>-1</gain>
                     </seq_action>
                     <seq_action>
                         <one_time>false</one_time>
@@ -4710,6 +4768,7 @@
                             </array_item>
                         </midiNotes>
                         <velocity>1</velocity>
+                        <gain>-1</gain>
                     </seq_action>
                     <seq_action>
                         <one_time>false</one_time>
@@ -4725,6 +4784,7 @@
                             </array_item>
                         </midiNotes>
                         <velocity>1</velocity>
+                        <gain>-1</gain>
                     </seq_action>
                     <seq_action>
                         <one_time>false</one_time>
@@ -4740,6 +4800,7 @@
                             </array_item>
                         </midiNotes>
                         <velocity>1</velocity>
+                        <gain>-1</gain>
                     </seq_action>
                     <seq_action>
                         <one_time>false</one_time>
@@ -4755,6 +4816,7 @@
                             </array_item>
                         </midiNotes>
                         <velocity>1</velocity>
+                        <gain>-1</gain>
                     </seq_action>
                     <seq_action>
                         <one_time>false</one_time>
@@ -4770,6 +4832,7 @@
                             </array_item>
                         </midiNotes>
                         <velocity>1</velocity>
+                        <gain>-1</gain>
                     </seq_action>
                     <seq_action>
                         <one_time>false</one_time>
@@ -4785,6 +4848,7 @@
                             </array_item>
                         </midiNotes>
                         <velocity>1</velocity>
+                        <gain>-1</gain>
                     </seq_action>
                 </hit_actions>
                 <all_hit_actions/>
@@ -5043,6 +5107,7 @@
                             </array_item>
                         </midiNotes>
                         <velocity>1</velocity>
+                        <gain>-1</gain>
                     </seq_action>
                     <seq_action>
                         <one_time>false</one_time>
@@ -5058,6 +5123,7 @@
                             </array_item>
                         </midiNotes>
                         <velocity>1</velocity>
+                        <gain>-1</gain>
                     </seq_action>
                     <seq_action>
                         <one_time>false</one_time>
@@ -5073,6 +5139,7 @@
                             </array_item>
                         </midiNotes>
                         <velocity>1</velocity>
+                        <gain>-1</gain>
                     </seq_action>
                     <seq_action>
                         <one_time>false</one_time>
@@ -5088,6 +5155,7 @@
                             </array_item>
                         </midiNotes>
                         <velocity>1</velocity>
+                        <gain>-1</gain>
                     </seq_action>
                     <seq_action>
                         <one_time>false</one_time>
@@ -5103,6 +5171,7 @@
                             </array_item>
                         </midiNotes>
                         <velocity>1</velocity>
+                        <gain>-1</gain>
                     </seq_action>
                     <seq_action>
                         <one_time>false</one_time>
@@ -5118,6 +5187,7 @@
                             </array_item>
                         </midiNotes>
                         <velocity>1</velocity>
+                        <gain>-1</gain>
                     </seq_action>
                     <seq_action>
                         <one_time>false</one_time>
@@ -5133,6 +5203,7 @@
                             </array_item>
                         </midiNotes>
                         <velocity>1</velocity>
+                        <gain>-1</gain>
                     </seq_action>
                     <seq_action>
                         <one_time>false</one_time>
@@ -5148,6 +5219,7 @@
                             </array_item>
                         </midiNotes>
                         <velocity>1</velocity>
+                        <gain>-1</gain>
                     </seq_action>
                 </hit_actions>
                 <all_hit_actions/>
@@ -6025,6 +6097,7 @@
                             </array_item>
                         </midiNotes>
                         <velocity>1</velocity>
+                        <gain>-1</gain>
                     </seq_action>
                 </hit_actions>
                 <all_hit_actions/>
@@ -6219,6 +6292,7 @@
                             </array_item>
                         </midiNotes>
                         <velocity>1</velocity>
+                        <gain>-1</gain>
                     </seq_action>
                     <seq_action>
                         <one_time>false</one_time>
@@ -6234,6 +6308,7 @@
                             </array_item>
                         </midiNotes>
                         <velocity>1</velocity>
+                        <gain>-1</gain>
                     </seq_action>
                     <seq_action>
                         <one_time>false</one_time>
@@ -6249,6 +6324,7 @@
                             </array_item>
                         </midiNotes>
                         <velocity>1</velocity>
+                        <gain>-1</gain>
                     </seq_action>
                     <seq_action>
                         <one_time>false</one_time>
@@ -6264,6 +6340,7 @@
                             </array_item>
                         </midiNotes>
                         <velocity>1</velocity>
+                        <gain>-1</gain>
                     </seq_action>
                     <seq_action>
                         <one_time>false</one_time>
@@ -6279,6 +6356,7 @@
                             </array_item>
                         </midiNotes>
                         <velocity>1</velocity>
+                        <gain>-1</gain>
                     </seq_action>
                     <seq_action>
                         <one_time>false</one_time>
@@ -6294,6 +6372,7 @@
                             </array_item>
                         </midiNotes>
                         <velocity>1</velocity>
+                        <gain>-1</gain>
                     </seq_action>
                     <seq_action>
                         <one_time>false</one_time>
@@ -6309,6 +6388,7 @@
                             </array_item>
                         </midiNotes>
                         <velocity>1</velocity>
+                        <gain>-1</gain>
                     </seq_action>
                     <seq_action>
                         <one_time>false</one_time>
@@ -6324,6 +6404,7 @@
                             </array_item>
                         </midiNotes>
                         <velocity>1</velocity>
+                        <gain>-1</gain>
                     </seq_action>
                 </hit_actions>
                 <all_hit_actions>
@@ -6626,6 +6707,7 @@
                             </array_item>
                         </midiNotes>
                         <velocity>1</velocity>
+                        <gain>-1</gain>
                     </seq_action>
                     <seq_action>
                         <one_time>false</one_time>
@@ -6641,6 +6723,7 @@
                             </array_item>
                         </midiNotes>
                         <velocity>1</velocity>
+                        <gain>-1</gain>
                     </seq_action>
                     <seq_action>
                         <one_time>false</one_time>
@@ -6656,6 +6739,7 @@
                             </array_item>
                         </midiNotes>
                         <velocity>1</velocity>
+                        <gain>-1</gain>
                     </seq_action>
                     <seq_action>
                         <one_time>false</one_time>
@@ -6671,6 +6755,7 @@
                             </array_item>
                         </midiNotes>
                         <velocity>1</velocity>
+                        <gain>-1</gain>
                     </seq_action>
                     <seq_action>
                         <one_time>false</one_time>
@@ -6686,6 +6771,7 @@
                             </array_item>
                         </midiNotes>
                         <velocity>1</velocity>
+                        <gain>-1</gain>
                     </seq_action>
                     <seq_action>
                         <one_time>false</one_time>
@@ -6701,6 +6787,7 @@
                             </array_item>
                         </midiNotes>
                         <velocity>1</velocity>
+                        <gain>-1</gain>
                     </seq_action>
                     <seq_action>
                         <one_time>false</one_time>
@@ -6716,6 +6803,7 @@
                             </array_item>
                         </midiNotes>
                         <velocity>1</velocity>
+                        <gain>-1</gain>
                     </seq_action>
                     <seq_action>
                         <one_time>false</one_time>
@@ -6731,6 +6819,7 @@
                             </array_item>
                         </midiNotes>
                         <velocity>1</velocity>
+                        <gain>-1</gain>
                     </seq_action>
                 </hit_actions>
                 <all_hit_actions>
@@ -8004,6 +8093,7 @@
                             </array_item>
                         </midiNotes>
                         <velocity>1</velocity>
+                        <gain>-1</gain>
                     </seq_action>
                     <seq_action>
                         <one_time>false</one_time>
@@ -8019,6 +8109,7 @@
                             </array_item>
                         </midiNotes>
                         <velocity>1</velocity>
+                        <gain>-1</gain>
                     </seq_action>
                     <seq_action>
                         <one_time>false</one_time>
@@ -8034,6 +8125,7 @@
                             </array_item>
                         </midiNotes>
                         <velocity>1</velocity>
+                        <gain>-1</gain>
                     </seq_action>
                     <seq_action>
                         <one_time>false</one_time>
@@ -8049,6 +8141,7 @@
                             </array_item>
                         </midiNotes>
                         <velocity>1</velocity>
+                        <gain>-1</gain>
                     </seq_action>
                     <seq_action>
                         <one_time>false</one_time>
@@ -8064,6 +8157,7 @@
                             </array_item>
                         </midiNotes>
                         <velocity>1</velocity>
+                        <gain>-1</gain>
                     </seq_action>
                     <seq_action>
                         <one_time>false</one_time>
@@ -8079,6 +8173,7 @@
                             </array_item>
                         </midiNotes>
                         <velocity>1</velocity>
+                        <gain>-1</gain>
                     </seq_action>
                     <seq_action>
                         <one_time>false</one_time>
@@ -8094,6 +8189,7 @@
                             </array_item>
                         </midiNotes>
                         <velocity>1</velocity>
+                        <gain>-1</gain>
                     </seq_action>
                     <seq_action>
                         <one_time>false</one_time>
@@ -8109,6 +8205,7 @@
                             </array_item>
                         </midiNotes>
                         <velocity>1</velocity>
+                        <gain>-1</gain>
                     </seq_action>
                 </hit_actions>
                 <all_hit_actions/>
@@ -8956,6 +9053,7 @@
                             </array_item>
                         </midiNotes>
                         <velocity>1</velocity>
+                        <gain>-1</gain>
                     </seq_action>
                 </hit_actions>
                 <all_hit_actions/>
@@ -9626,6 +9724,7 @@
                             </array_item>
                         </midiNotes>
                         <velocity>1</velocity>
+                        <gain>-1</gain>
                     </seq_action>
                     <seq_action>
                         <one_time>false</one_time>
@@ -9641,6 +9740,7 @@
                             </array_item>
                         </midiNotes>
                         <velocity>1</velocity>
+                        <gain>-1</gain>
                     </seq_action>
                     <seq_action>
                         <one_time>false</one_time>
@@ -9656,6 +9756,7 @@
                             </array_item>
                         </midiNotes>
                         <velocity>1</velocity>
+                        <gain>-1</gain>
                     </seq_action>
                     <seq_action>
                         <one_time>false</one_time>
@@ -9671,6 +9772,7 @@
                             </array_item>
                         </midiNotes>
                         <velocity>1</velocity>
+                        <gain>-1</gain>
                     </seq_action>
                     <seq_action>
                         <one_time>false</one_time>
@@ -9686,6 +9788,7 @@
                             </array_item>
                         </midiNotes>
                         <velocity>1</velocity>
+                        <gain>-1</gain>
                     </seq_action>
                     <seq_action>
                         <one_time>false</one_time>
@@ -9701,6 +9804,7 @@
                             </array_item>
                         </midiNotes>
                         <velocity>1</velocity>
+                        <gain>-1</gain>
                     </seq_action>
                     <seq_action>
                         <one_time>false</one_time>
@@ -9716,6 +9820,7 @@
                             </array_item>
                         </midiNotes>
                         <velocity>1</velocity>
+                        <gain>-1</gain>
                     </seq_action>
                     <seq_action>
                         <one_time>false</one_time>
@@ -9731,6 +9836,7 @@
                             </array_item>
                         </midiNotes>
                         <velocity>1</velocity>
+                        <gain>-1</gain>
                     </seq_action>
                 </hit_actions>
                 <all_hit_actions/>
@@ -10330,6 +10436,7 @@
                             </array_item>
                         </midiNotes>
                         <velocity>1</velocity>
+                        <gain>-1</gain>
                     </seq_action>
                     <seq_action>
                         <one_time>false</one_time>
@@ -10345,6 +10452,7 @@
                             </array_item>
                         </midiNotes>
                         <velocity>1</velocity>
+                        <gain>-1</gain>
                     </seq_action>
                     <seq_action>
                         <one_time>false</one_time>
@@ -10360,6 +10468,7 @@
                             </array_item>
                         </midiNotes>
                         <velocity>1</velocity>
+                        <gain>-1</gain>
                     </seq_action>
                     <seq_action>
                         <one_time>false</one_time>
@@ -10375,6 +10484,7 @@
                             </array_item>
                         </midiNotes>
                         <velocity>1</velocity>
+                        <gain>-1</gain>
                     </seq_action>
                     <seq_action>
                         <one_time>false</one_time>
@@ -10390,6 +10500,7 @@
                             </array_item>
                         </midiNotes>
                         <velocity>1</velocity>
+                        <gain>-1</gain>
                     </seq_action>
                     <seq_action>
                         <one_time>false</one_time>
@@ -10405,6 +10516,7 @@
                             </array_item>
                         </midiNotes>
                         <velocity>1</velocity>
+                        <gain>-1</gain>
                     </seq_action>
                     <seq_action>
                         <one_time>false</one_time>
@@ -10420,6 +10532,7 @@
                             </array_item>
                         </midiNotes>
                         <velocity>1</velocity>
+                        <gain>-1</gain>
                     </seq_action>
                     <seq_action>
                         <one_time>false</one_time>
@@ -10435,6 +10548,7 @@
                             </array_item>
                         </midiNotes>
                         <velocity>1</velocity>
+                        <gain>-1</gain>
                     </seq_action>
                 </hit_actions>
                 <all_hit_actions/>
@@ -11172,6 +11286,7 @@
                             </array_item>
                         </midiNotes>
                         <velocity>1</velocity>
+                        <gain>-1</gain>
                     </seq_action>
                     <seq_action>
                         <one_time>false</one_time>
@@ -11187,6 +11302,7 @@
                             </array_item>
                         </midiNotes>
                         <velocity>1</velocity>
+                        <gain>-1</gain>
                     </seq_action>
                     <seq_action>
                         <one_time>false</one_time>
@@ -11202,6 +11318,7 @@
                             </array_item>
                         </midiNotes>
                         <velocity>1</velocity>
+                        <gain>-1</gain>
                     </seq_action>
                     <seq_action>
                         <one_time>false</one_time>
@@ -11217,6 +11334,7 @@
                             </array_item>
                         </midiNotes>
                         <velocity>1</velocity>
+                        <gain>-1</gain>
                     </seq_action>
                     <seq_action>
                         <one_time>false</one_time>
@@ -11232,6 +11350,7 @@
                             </array_item>
                         </midiNotes>
                         <velocity>1</velocity>
+                        <gain>-1</gain>
                     </seq_action>
                     <seq_action>
                         <one_time>false</one_time>
@@ -11247,6 +11366,7 @@
                             </array_item>
                         </midiNotes>
                         <velocity>1</velocity>
+                        <gain>-1</gain>
                     </seq_action>
                     <seq_action>
                         <one_time>false</one_time>
@@ -11262,6 +11382,7 @@
                             </array_item>
                         </midiNotes>
                         <velocity>1</velocity>
+                        <gain>-1</gain>
                     </seq_action>
                     <seq_action>
                         <one_time>false</one_time>
@@ -11277,6 +11398,7 @@
                             </array_item>
                         </midiNotes>
                         <velocity>1</velocity>
+                        <gain>-1</gain>
                     </seq_action>
                 </hit_actions>
                 <all_hit_actions/>
@@ -11867,6 +11989,7 @@
                             </array_item>
                         </midiNotes>
                         <velocity>1</velocity>
+                        <gain>-1</gain>
                     </seq_action>
                     <seq_action>
                         <one_time>false</one_time>
@@ -11882,6 +12005,7 @@
                             </array_item>
                         </midiNotes>
                         <velocity>1</velocity>
+                        <gain>-1</gain>
                     </seq_action>
                     <seq_action>
                         <one_time>false</one_time>
@@ -11897,6 +12021,7 @@
                             </array_item>
                         </midiNotes>
                         <velocity>1</velocity>
+                        <gain>-1</gain>
                     </seq_action>
                     <seq_action>
                         <one_time>false</one_time>
@@ -11912,6 +12037,7 @@
                             </array_item>
                         </midiNotes>
                         <velocity>1</velocity>
+                        <gain>-1</gain>
                     </seq_action>
                     <seq_action>
                         <one_time>false</one_time>
@@ -11927,6 +12053,7 @@
                             </array_item>
                         </midiNotes>
                         <velocity>1</velocity>
+                        <gain>-1</gain>
                     </seq_action>
                     <seq_action>
                         <one_time>false</one_time>
@@ -11942,6 +12069,7 @@
                             </array_item>
                         </midiNotes>
                         <velocity>1</velocity>
+                        <gain>-1</gain>
                     </seq_action>
                     <seq_action>
                         <one_time>false</one_time>
@@ -11957,6 +12085,7 @@
                             </array_item>
                         </midiNotes>
                         <velocity>1</velocity>
+                        <gain>-1</gain>
                     </seq_action>
                     <seq_action>
                         <one_time>false</one_time>
@@ -11972,6 +12101,7 @@
                             </array_item>
                         </midiNotes>
                         <velocity>1</velocity>
+                        <gain>-1</gain>
                     </seq_action>
                 </hit_actions>
                 <all_hit_actions/>
@@ -12457,6 +12587,7 @@
                             </array_item>
                         </midiNotes>
                         <velocity>1</velocity>
+                        <gain>-1</gain>
                     </seq_action>
                     <seq_action>
                         <one_time>false</one_time>
@@ -12472,6 +12603,7 @@
                             </array_item>
                         </midiNotes>
                         <velocity>1</velocity>
+                        <gain>-1</gain>
                     </seq_action>
                     <seq_action>
                         <one_time>false</one_time>
@@ -12487,6 +12619,7 @@
                             </array_item>
                         </midiNotes>
                         <velocity>1</velocity>
+                        <gain>-1</gain>
                     </seq_action>
                     <seq_action>
                         <one_time>false</one_time>
@@ -12502,6 +12635,7 @@
                             </array_item>
                         </midiNotes>
                         <velocity>1</velocity>
+                        <gain>-1</gain>
                     </seq_action>
                     <seq_action>
                         <one_time>false</one_time>
@@ -12517,6 +12651,7 @@
                             </array_item>
                         </midiNotes>
                         <velocity>1</velocity>
+                        <gain>-1</gain>
                     </seq_action>
                     <seq_action>
                         <one_time>false</one_time>
@@ -12532,6 +12667,7 @@
                             </array_item>
                         </midiNotes>
                         <velocity>1</velocity>
+                        <gain>-1</gain>
                     </seq_action>
                     <seq_action>
                         <one_time>false</one_time>
@@ -12547,6 +12683,7 @@
                             </array_item>
                         </midiNotes>
                         <velocity>1</velocity>
+                        <gain>-1</gain>
                     </seq_action>
                     <seq_action>
                         <one_time>false</one_time>
@@ -12562,6 +12699,7 @@
                             </array_item>
                         </midiNotes>
                         <velocity>1</velocity>
+                        <gain>-1</gain>
                     </seq_action>
                 </hit_actions>
                 <all_hit_actions/>
@@ -13187,6 +13325,7 @@
                             </array_item>
                         </midiNotes>
                         <velocity>1</velocity>
+                        <gain>-1</gain>
                     </seq_action>
                     <seq_action>
                         <one_time>false</one_time>
@@ -13202,6 +13341,7 @@
                             </array_item>
                         </midiNotes>
                         <velocity>1</velocity>
+                        <gain>-1</gain>
                     </seq_action>
                     <seq_action>
                         <one_time>false</one_time>
@@ -13217,6 +13357,7 @@
                             </array_item>
                         </midiNotes>
                         <velocity>1</velocity>
+                        <gain>-1</gain>
                     </seq_action>
                     <seq_action>
                         <one_time>false</one_time>
@@ -13232,6 +13373,7 @@
                             </array_item>
                         </midiNotes>
                         <velocity>1</velocity>
+                        <gain>-1</gain>
                     </seq_action>
                     <seq_action>
                         <one_time>false</one_time>
@@ -13247,6 +13389,7 @@
                             </array_item>
                         </midiNotes>
                         <velocity>1</velocity>
+                        <gain>-1</gain>
                     </seq_action>
                     <seq_action>
                         <one_time>false</one_time>
@@ -13262,6 +13405,7 @@
                             </array_item>
                         </midiNotes>
                         <velocity>1</velocity>
+                        <gain>-1</gain>
                     </seq_action>
                     <seq_action>
                         <one_time>false</one_time>
@@ -13277,6 +13421,7 @@
                             </array_item>
                         </midiNotes>
                         <velocity>1</velocity>
+                        <gain>-1</gain>
                     </seq_action>
                     <seq_action>
                         <one_time>false</one_time>
@@ -13292,6 +13437,7 @@
                             </array_item>
                         </midiNotes>
                         <velocity>1</velocity>
+                        <gain>-1</gain>
                     </seq_action>
                 </hit_actions>
                 <all_hit_actions/>
@@ -15048,6 +15194,7 @@
                             </array_item>
                         </midiNotes>
                         <velocity>1</velocity>
+                        <gain>-1</gain>
                     </seq_action>
                     <seq_action>
                         <one_time>false</one_time>
@@ -15072,6 +15219,7 @@
                             </array_item>
                         </midiNotes>
                         <velocity>1</velocity>
+                        <gain>-1</gain>
                     </seq_action>
                     <seq_action>
                         <one_time>false</one_time>
@@ -15096,6 +15244,7 @@
                             </array_item>
                         </midiNotes>
                         <velocity>1</velocity>
+                        <gain>-1</gain>
                     </seq_action>
                     <seq_action>
                         <one_time>false</one_time>
@@ -15120,6 +15269,7 @@
                             </array_item>
                         </midiNotes>
                         <velocity>1</velocity>
+                        <gain>-1</gain>
                     </seq_action>
                     <seq_action>
                         <one_time>false</one_time>
@@ -15144,6 +15294,7 @@
                             </array_item>
                         </midiNotes>
                         <velocity>1</velocity>
+                        <gain>-1</gain>
                     </seq_action>
                     <seq_action>
                         <one_time>false</one_time>
@@ -15168,6 +15319,7 @@
                             </array_item>
                         </midiNotes>
                         <velocity>1</velocity>
+                        <gain>-1</gain>
                     </seq_action>
                 </hit_actions>
                 <all_hit_actions/>
@@ -15684,6 +15836,7 @@
                             </array_item>
                         </midiNotes>
                         <velocity>1</velocity>
+                        <gain>-1</gain>
                     </seq_action>
                     <seq_action>
                         <one_time>false</one_time>
@@ -15708,6 +15861,7 @@
                             </array_item>
                         </midiNotes>
                         <velocity>1</velocity>
+                        <gain>-1</gain>
                     </seq_action>
                     <seq_action>
                         <one_time>false</one_time>
@@ -15732,6 +15886,7 @@
                             </array_item>
                         </midiNotes>
                         <velocity>1</velocity>
+                        <gain>-1</gain>
                     </seq_action>
                     <seq_action>
                         <one_time>false</one_time>
@@ -15756,6 +15911,7 @@
                             </array_item>
                         </midiNotes>
                         <velocity>1</velocity>
+                        <gain>-1</gain>
                     </seq_action>
                     <seq_action>
                         <one_time>false</one_time>
@@ -15780,6 +15936,7 @@
                             </array_item>
                         </midiNotes>
                         <velocity>1</velocity>
+                        <gain>-1</gain>
                     </seq_action>
                     <seq_action>
                         <one_time>false</one_time>
@@ -15804,6 +15961,7 @@
                             </array_item>
                         </midiNotes>
                         <velocity>1</velocity>
+                        <gain>-1</gain>
                     </seq_action>
                 </hit_actions>
                 <all_hit_actions>
@@ -15868,13 +16026,22 @@
                         <id>-1</id>
                     </follow_entity_editor_id>
                 </waypoint_follower>
-                <hurt_on_hit>true</hurt_on_hit>
+                <hurt_on_hit>false</hurt_on_hit>
                 <can_hit>true</can_hit>
                 <hp>-1</hp>
                 <move_mode>Waypoints</move_mode>
                 <rot_vel>0</rot_vel>
                 <polygon/>
-                <hit_actions/>
+                <hit_actions>
+                    <seq_action>
+                        <one_time>true</one_time>
+                        <action_type>Trigger</action_type>
+                        <entity_editor_id>
+                            <id>493</id>
+                        </entity_editor_id>
+                        <do_exit_actions>false</do_exit_actions>
+                    </seq_action>
+                </hit_actions>
                 <children_editor_ids/>
             </FlowWall>
             <FlowWall>
@@ -15925,13 +16092,22 @@
                         <id>-1</id>
                     </follow_entity_editor_id>
                 </waypoint_follower>
-                <hurt_on_hit>true</hurt_on_hit>
+                <hurt_on_hit>false</hurt_on_hit>
                 <can_hit>true</can_hit>
                 <hp>-1</hp>
                 <move_mode>Waypoints</move_mode>
                 <rot_vel>0</rot_vel>
                 <polygon/>
-                <hit_actions/>
+                <hit_actions>
+                    <seq_action>
+                        <one_time>true</one_time>
+                        <action_type>Trigger</action_type>
+                        <entity_editor_id>
+                            <id>493</id>
+                        </entity_editor_id>
+                        <do_exit_actions>false</do_exit_actions>
+                    </seq_action>
+                </hit_actions>
                 <children_editor_ids/>
             </FlowWall>
             <FlowTrigger>
@@ -16135,6 +16311,7 @@
                             </array_item>
                         </midiNotes>
                         <velocity>1</velocity>
+                        <gain>-1</gain>
                     </seq_action>
                     <seq_action>
                         <one_time>false</one_time>
@@ -16159,6 +16336,7 @@
                             </array_item>
                         </midiNotes>
                         <velocity>1</velocity>
+                        <gain>-1</gain>
                     </seq_action>
                     <seq_action>
                         <one_time>false</one_time>
@@ -16183,6 +16361,7 @@
                             </array_item>
                         </midiNotes>
                         <velocity>1</velocity>
+                        <gain>-1</gain>
                     </seq_action>
                     <seq_action>
                         <one_time>false</one_time>
@@ -16207,6 +16386,7 @@
                             </array_item>
                         </midiNotes>
                         <velocity>1</velocity>
+                        <gain>-1</gain>
                     </seq_action>
                     <seq_action>
                         <one_time>false</one_time>
@@ -16231,6 +16411,7 @@
                             </array_item>
                         </midiNotes>
                         <velocity>1</velocity>
+                        <gain>-1</gain>
                     </seq_action>
                     <seq_action>
                         <one_time>false</one_time>
@@ -16255,6 +16436,7 @@
                             </array_item>
                         </midiNotes>
                         <velocity>1</velocity>
+                        <gain>-1</gain>
                     </seq_action>
                 </hit_actions>
                 <all_hit_actions>
@@ -16319,13 +16501,22 @@
                         <id>-1</id>
                     </follow_entity_editor_id>
                 </waypoint_follower>
-                <hurt_on_hit>true</hurt_on_hit>
+                <hurt_on_hit>false</hurt_on_hit>
                 <can_hit>true</can_hit>
                 <hp>-1</hp>
                 <move_mode>Waypoints</move_mode>
                 <rot_vel>0</rot_vel>
                 <polygon/>
-                <hit_actions/>
+                <hit_actions>
+                    <seq_action>
+                        <one_time>true</one_time>
+                        <action_type>Trigger</action_type>
+                        <entity_editor_id>
+                            <id>493</id>
+                        </entity_editor_id>
+                        <do_exit_actions>false</do_exit_actions>
+                    </seq_action>
+                </hit_actions>
                 <children_editor_ids/>
             </FlowWall>
             <FlowWall>
@@ -16376,13 +16567,22 @@
                         <id>-1</id>
                     </follow_entity_editor_id>
                 </waypoint_follower>
-                <hurt_on_hit>true</hurt_on_hit>
+                <hurt_on_hit>false</hurt_on_hit>
                 <can_hit>true</can_hit>
                 <hp>-1</hp>
                 <move_mode>Waypoints</move_mode>
                 <rot_vel>0</rot_vel>
                 <polygon/>
-                <hit_actions/>
+                <hit_actions>
+                    <seq_action>
+                        <one_time>true</one_time>
+                        <action_type>Trigger</action_type>
+                        <entity_editor_id>
+                            <id>493</id>
+                        </entity_editor_id>
+                        <do_exit_actions>false</do_exit_actions>
+                    </seq_action>
+                </hit_actions>
                 <children_editor_ids/>
             </FlowWall>
             <FlowTrigger>
@@ -16772,6 +16972,7 @@
                             </array_item>
                         </midiNotes>
                         <velocity>1</velocity>
+                        <gain>-1</gain>
                     </seq_action>
                 </hit_actions>
                 <all_hit_actions/>
@@ -16867,6 +17068,248 @@
                 </automations>
                 <actions/>
             </IntVariable>
+            <FlowTrigger>
+                <editor_id>
+                    <id>493</id>
+                </editor_id>
+                <name>buildup_end_trigger</name>
+                <entity_active>true</entity_active>
+                <pickable>true</pickable>
+                <transform>
+                    <pos>
+                        <x>35.2089119</x>
+                        <y>0</y>
+                        <z>29.8077545</z>
+                    </pos>
+                    <quat>
+                        <x>0</x>
+                        <y>0</y>
+                        <z>0</z>
+                        <w>1</w>
+                    </quat>
+                    <scale>
+                        <x>1</x>
+                        <y>1</y>
+                        <z>1</z>
+                    </scale>
+                </transform>
+                <model_name/>
+                <texture_name/>
+                <model_color_vec4>
+                    <x>0.800000012</x>
+                    <y>0.800000012</y>
+                    <z>0.800000012</z>
+                    <w>1</w>
+                </model_color_vec4>
+                <flow_section_id>-1</flow_section_id>
+                <tag>0</tag>
+                <waypoint_follower>
+                    <mode>Waypoint</mode>
+                    <waypoint_auto_start>false</waypoint_auto_start>
+                    <loop_waypoints>false</loop_waypoints>
+                    <start_time>3</start_time>
+                    <quantize>1</quantize>
+                    <quantize_buffer>0</quantize_buffer>
+                    <waypoints/>
+                    <follow_entity_name/>
+                    <follow_entity_editor_id>
+                        <id>-1</id>
+                    </follow_entity_editor_id>
+                </waypoint_follower>
+                <trigger_delay_beat_time>-1</trigger_delay_beat_time>
+                <quantize>0</quantize>
+                <on_player_enter>false</on_player_enter>
+                <execute_on_init>false</execute_on_init>
+                <use_trigger_volumes>false</use_trigger_volumes>
+                <random_action_count>-1</random_action_count>
+                <shatter_on_trigger>false</shatter_on_trigger>
+                <actions>
+                    <seq_action>
+                        <one_time>true</one_time>
+                        <action_type>AddToIntVariable</action_type>
+                        <var_editor_id>
+                            <id>492</id>
+                        </var_editor_id>
+                        <add_amount>0</add_amount>
+                        <reset>true</reset>
+                    </seq_action>
+                    <seq_action>
+                        <one_time>true</one_time>
+                        <action_type>ChangePatch</action_type>
+                        <channel>0</channel>
+                        <blend_beat_time>0</blend_beat_time>
+                        <use_patch_bank>true</use_patch_bank>
+                        <patch_name>bigg_bass</patch_name>
+                    </seq_action>
+                    <seq_action>
+                        <one_time>true</one_time>
+                        <action_type>SetEntityActive</action_type>
+                        <entities_tag>-1</entities_tag>
+                        <entity_editor_id>
+                            <id>494</id>
+                        </entity_editor_id>
+                        <active>true</active>
+                        <init_on_activate>true</init_on_activate>
+                        <init_if_already_active>false</init_if_already_active>
+                    </seq_action>
+                    <seq_action>
+                        <one_time>true</one_time>
+                        <action_type>BeatTimeEvent</action_type>
+                        <quantize_denom>0</quantize_denom>
+                        <beat_time_event>
+                            <event_type>AllNotesOff</event_type>
+                            <channel>1</channel>
+                            <delay_secs>0</delay_secs>
+                            <beat_time>0</beat_time>
+                        </beat_time_event>
+                    </seq_action>
+                    <seq_action>
+                        <one_time>true</one_time>
+                        <action_type>SetEntityActive</action_type>
+                        <entities_tag>-1</entities_tag>
+                        <entity_editor_id>
+                            <id>492</id>
+                        </entity_editor_id>
+                        <active>false</active>
+                        <init_on_activate>true</init_on_activate>
+                        <init_if_already_active>false</init_if_already_active>
+                    </seq_action>
+                    <seq_action>
+                        <one_time>true</one_time>
+                        <action_type>ChangeStepSequencer</action_type>
+                        <seqEntityEditorId>
+                            <id>3</id>
+                        </seqEntityEditorId>
+                        <velOnly>false</velOnly>
+                        <temporary>false</temporary>
+                        <midiNotes/>
+                        <velocity>0</velocity>
+                        <gain>0.800000012</gain>
+                    </seq_action>
+                </actions>
+                <actions_on_exit/>
+                <trigger_volume_entities/>
+            </FlowTrigger>
+            <Sequencer>
+                <editor_id>
+                    <id>494</id>
+                </editor_id>
+                <name>section4_bass_seq</name>
+                <entity_active>false</entity_active>
+                <pickable>true</pickable>
+                <transform>
+                    <pos>
+                        <x>36.0497513</x>
+                        <y>0</y>
+                        <z>32.4263725</z>
+                    </pos>
+                    <quat>
+                        <x>0</x>
+                        <y>0</y>
+                        <z>0</z>
+                        <w>1</w>
+                    </quat>
+                    <scale>
+                        <x>1</x>
+                        <y>1</y>
+                        <z>1</z>
+                    </scale>
+                </transform>
+                <model_name/>
+                <texture_name/>
+                <model_color_vec4>
+                    <x>0.800000012</x>
+                    <y>0.800000012</y>
+                    <z>0.800000012</z>
+                    <w>1</w>
+                </model_color_vec4>
+                <flow_section_id>-1</flow_section_id>
+                <tag>0</tag>
+                <waypoint_follower>
+                    <mode>Waypoint</mode>
+                    <waypoint_auto_start>false</waypoint_auto_start>
+                    <loop_waypoints>false</loop_waypoints>
+                    <start_time>3</start_time>
+                    <quantize>1</quantize>
+                    <quantize_buffer>0</quantize_buffer>
+                    <waypoints/>
+                    <follow_entity_name/>
+                    <follow_entity_editor_id>
+                        <id>-1</id>
+                    </follow_entity_editor_id>
+                </waypoint_follower>
+                <loop>true</loop>
+                <start_beat_time>0</start_beat_time>
+                <start_quantize>1</start_quantize>
+                <events>
+                    <beat_event>
+                        <event_type>NoteOn</event_type>
+                        <channel>0</channel>
+                        <delay_secs>0</delay_secs>
+                        <midi_note>27</midi_note>
+                        <velocity>1</velocity>
+                        <beat_time>0</beat_time>
+                    </beat_event>
+                    <beat_event>
+                        <event_type>NoteOff</event_type>
+                        <channel>0</channel>
+                        <delay_secs>0</delay_secs>
+                        <midi_note>27</midi_note>
+                        <beat_time>1.3</beat_time>
+                    </beat_event>
+                    <beat_event>
+                        <event_type>NoteOn</event_type>
+                        <channel>0</channel>
+                        <delay_secs>0</delay_secs>
+                        <midi_note>39</midi_note>
+                        <velocity>1</velocity>
+                        <beat_time>1.5</beat_time>
+                    </beat_event>
+                    <beat_event>
+                        <event_type>NoteOff</event_type>
+                        <channel>0</channel>
+                        <delay_secs>0</delay_secs>
+                        <midi_note>39</midi_note>
+                        <beat_time>2.25</beat_time>
+                    </beat_event>
+                    <beat_event>
+                        <event_type>NoteOn</event_type>
+                        <channel>0</channel>
+                        <delay_secs>0</delay_secs>
+                        <midi_note>39</midi_note>
+                        <velocity>1</velocity>
+                        <beat_time>2.5</beat_time>
+                    </beat_event>
+                    <beat_event>
+                        <event_type>NoteOff</event_type>
+                        <channel>0</channel>
+                        <delay_secs>0</delay_secs>
+                        <midi_note>39</midi_note>
+                        <beat_time>2.8999999999999999</beat_time>
+                    </beat_event>
+                    <beat_event>
+                        <event_type>NoteOn</event_type>
+                        <channel>0</channel>
+                        <delay_secs>0</delay_secs>
+                        <midi_note>30</midi_note>
+                        <velocity>1</velocity>
+                        <beat_time>3</beat_time>
+                    </beat_event>
+                    <beat_event>
+                        <event_type>NoteOff</event_type>
+                        <channel>0</channel>
+                        <delay_secs>0</delay_secs>
+                        <midi_note>30</midi_note>
+                        <beat_time>3.7999999999999998</beat_time>
+                    </beat_event>
+                    <beat_event>
+                        <event_type>None</event_type>
+                        <channel>0</channel>
+                        <delay_secs>0</delay_secs>
+                        <beat_time>4</beat_time>
+                    </beat_event>
+                </events>
+            </Sequencer>
         </new_entities>
     </script>
 </root>

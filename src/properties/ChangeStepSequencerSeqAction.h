@@ -1,9 +1,9 @@
 #pragma once
 
 
-#include "editor_id.h"
-
 #include "properties/MidiNoteAndName.h"
+
+#include "editor_id.h"
 
 #include <vector>
 
@@ -21,6 +21,8 @@ struct ChangeStepSequencerSeqActionProps {
     std::vector<MidiNoteAndName> _midiNotes;
     
     float _velocity;
+    
+    float _gain = -1.f;
     
 
     void Load(serial::Ptree pt);
