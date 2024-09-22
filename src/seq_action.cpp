@@ -52,6 +52,8 @@ std::unique_ptr<SeqAction> SeqAction::New(SeqActionType actionType) {
         case SeqActionType::SetEnemyHittable: return std::make_unique<SetEnemyHittableSeqAction>();
         case SeqActionType::Respawn: return std::make_unique<RespawnSeqAction>();
         case SeqActionType::AddMotion: return std::make_unique<AddMotionSeqAction>();
+        case SeqActionType::RandomizeText: return std::make_unique<RandomizeTextSeqAction>();
+        case SeqActionType::SetBpm: return std::make_unique<SetBpmSeqAction>();
         case SeqActionType::Count: break;
     }
     assert(false);

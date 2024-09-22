@@ -676,3 +676,9 @@ void TypingEnemyEntity::Bump(Vec3 const& bumpDir) {
     _s._bumpTimer = 0.f;
     _s._bumpDir = bumpDir;
 }
+
+void TypingEnemyEntity::RandomizeText() {
+    for (int ii = 0; ii < _p._keyText.length(); ++ii) {
+        _p._keyText[ii] = (char)(rng::GetIntGlobal((int)'a', (int)'z'));
+    }
+}

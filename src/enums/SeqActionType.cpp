@@ -54,7 +54,11 @@ std::unordered_map<std::string, SeqActionType> const gStringToSeqActionType = {
     
     { "Respawn", SeqActionType::Respawn },
     
-    { "AddMotion", SeqActionType::AddMotion }
+    { "AddMotion", SeqActionType::AddMotion },
+    
+    { "RandomizeText", SeqActionType::RandomizeText },
+    
+    { "SetBpm", SeqActionType::SetBpm }
     
 };
 
@@ -104,7 +108,11 @@ char const* gSeqActionTypeStrings[] = {
     
     "Respawn",
     
-    "AddMotion"
+    "AddMotion",
+    
+    "RandomizeText",
+    
+    "SetBpm"
     
 };
 

@@ -48,6 +48,10 @@ enum class SeqActionType : int {
     
     AddMotion,
     
+    RandomizeText,
+    
+    SetBpm,
+    
     Count
 };
 extern char const* gSeqActionTypeStrings[];

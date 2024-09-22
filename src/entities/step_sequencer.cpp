@@ -337,6 +337,10 @@ void StepSequencerEntity::InitDerived(GameManager& g) {
 }
 
 void StepSequencerEntity::PlayStep(GameManager& g, SeqStep const& seqStep) {
+    if (_mute || (g._editMode && _editorMute)) {
+        return;
+    }
+
     if (seqStep._midiNote[0] > -1) {
         // TODO: this isn't _quite_ it, but almost
         _lastPlayedNoteTime = g._beatClock->GetBeatTimeFromEpoch();
@@ -433,7 +437,7 @@ void StepSequencerEntity::UpdateDerived(GameManager& g, float dt) {
     }   
 
     // Play the sound
-    if (!_mute && (!g._editMode || !_editorMute)) {
+    {
         SeqStep const& seqStep = _tempSequence[_currentIx];
         PlayStep(g, seqStep);
     }

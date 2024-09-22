@@ -23,6 +23,8 @@
         "Trigger",
         "SetEnemyHittable",
         "Respawn",
-        "AddMotion"
+        "AddMotion",
+        "RandomizeText",
+        "SetBpm"
     ]
 }

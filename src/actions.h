@@ -272,3 +272,32 @@ struct RespawnSeqAction : public SeqAction {
     virtual void InitDerived(GameManager& g) override {}
     virtual void ExecuteDerived(GameManager& g) override;
 };
+
+struct RandomizeTextSeqAction : public SeqAction {
+    virtual SeqActionType Type() const override { return SeqActionType::RandomizeText; }
+
+    struct Props {
+        EditorId enemy;
+    };
+    Props _p;
+
+    struct State {
+        ne::EntityId enemy;
+    };
+    State _s;
+
+    virtual void LoadDerived(serial::Ptree pt) override;
+    virtual void SaveDerived(serial::Ptree pt) const override;
+    virtual bool ImGui() override;
+    virtual void InitDerived(GameManager& g) override;
+    virtual void ExecuteDerived(GameManager& g) override;
+};
+
+struct SetBpmSeqAction : public SeqAction {
+    virtual SeqActionType Type() const override { return SeqActionType::SetBpm; }
+    double _bpm;
+    virtual void LoadDerived(serial::Ptree pt) override;
+    virtual void SaveDerived(serial::Ptree pt) const override;
+    virtual bool ImGui() override;
+    virtual void ExecuteDerived(GameManager& g) override;
+};

@@ -80,6 +80,7 @@ struct TypingEnemyEntity : public ne::Entity {
     bool CanHit(FlowPlayerEntity const& player, GameManager& g) const;
     void SetHittable(bool hittable);
     void Bump(Vec3 const& bumpDir);
+    void RandomizeText();
 
     
     virtual void InitDerived(GameManager& g) override;

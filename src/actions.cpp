@@ -873,3 +873,48 @@ void RespawnSeqAction::ExecuteDerived(GameManager& g) {
         player->RespawnInstant(g);
     }
 }
+
+void RandomizeTextSeqAction::LoadDerived(serial::Ptree pt) {
+    serial::LoadFromChildOf(pt, "enemy_editor_id", _p.enemy);
+}
+
+void RandomizeTextSeqAction::SaveDerived(serial::Ptree pt) const {
+    serial::SaveInNewChildOf(pt, "enemy_editor_id", _p.enemy);
+}
+
+bool RandomizeTextSeqAction::ImGui() {
+    bool changed = imgui_util::InputEditorId("Enemy editor ID", &_p.enemy);
+    return changed;
+}
+
+void RandomizeTextSeqAction::InitDerived(GameManager& g) {
+    ne::Entity* e = nullptr;
+    e = g._neEntityManager->FindEntityByEditorIdAndType(_p.enemy, ne::EntityType::TypingEnemy, nullptr, "RandomizeTextSeqAction");
+    if (e) {
+        _s.enemy = e->_id;
+    }
+}
+
+void RandomizeTextSeqAction::ExecuteDerived(GameManager& g) {
+    if (TypingEnemyEntity* e = g._neEntityManager->GetEntityAs<TypingEnemyEntity>(_s.enemy)) {
+        e->RandomizeText();
+    }
+}
+
+void SetBpmSeqAction::LoadDerived(serial::Ptree pt) {
+    pt.TryGetDouble("bpm", &_bpm);
+}
+
+void SetBpmSeqAction::SaveDerived(serial::Ptree pt) const {
+    pt.PutDouble("bpm", _bpm);
+}
+
+bool SetBpmSeqAction::ImGui() {
+    ImGui::InputDouble("bpm", &_bpm);
+    return false;
+}
+
+void SetBpmSeqAction::ExecuteDerived(GameManager& g) {
+    if (g._editMode) { return; }
+    g._beatClock->_bpm = _bpm;
+}
