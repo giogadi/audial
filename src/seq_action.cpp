@@ -14,6 +14,38 @@
 #include "imgui_util.h"
 #include "serial_enum.h"
 
+BeatTimeAction::BeatTimeAction() {
+    _beatTime = 0.0;
+    _pAction = SeqAction::New(SeqActionType::SpawnAutomator);
+}
+
+void BeatTimeAction::Save(serial::Ptree pt) const {
+    pt.PutDouble("beat_time", _beatTime);
+    serial::SaveInNewChildOf(pt, "action", *_pAction); 
+}
+
+void BeatTimeAction::Load(serial::Ptree pt) {
+    _beatTime = 0.0;
+    pt.TryGetDouble("beat_time", &_beatTime);
+    serial::Ptree actionPt = pt.TryGetChild("action");
+    _pAction = SeqAction::Load(actionPt);
+}
+
+bool BeatTimeAction::ImGui() {
+    ImGui::InputDouble("Beat time", &_beatTime);
+    assert(_pAction);
+    SeqActionType type = _pAction->Type();
+    SeqActionTypeImGui("Type", &type);
+    if (type != _pAction->Type()) {
+        _pAction = SeqAction::New(type);
+    }
+    if (ImGui::TreeNode("Action")) {
+        _pAction->ImGui(); 
+        ImGui::TreePop();
+    }
+    return false;
+}
+
 void SeqAction::Save(serial::Ptree pt) const {
     pt.PutBool("one_time", _oneTime);
     pt.PutString("action_type", SeqActionTypeToString(Type()));
