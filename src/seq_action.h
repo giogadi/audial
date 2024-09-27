@@ -15,9 +15,13 @@ struct BeatTimeAction {
     BeatTimeAction(BeatTimeAction const& rhs) = delete;
     BeatTimeAction(BeatTimeAction&&) = default;
     BeatTimeAction& operator=(BeatTimeAction&&) = default;
-    BeatTimeAction() {}
+    BeatTimeAction();
     std::unique_ptr<SeqAction> _pAction;
     double _beatTime = 0.0;
+
+    void Save(serial::Ptree pt) const;
+    void Load(serial::Ptree pt);
+    bool ImGui();
 };
 
 struct SeqAction {
