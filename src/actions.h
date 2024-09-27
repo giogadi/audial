@@ -100,6 +100,7 @@ struct SetStepSequencerMuteSeqAction : public SeqAction {
     // serialized
     EditorId _seqEditorId;
     bool _mute;
+    float _gain = -1.f;
 
     ne::EntityId _seqId;
 

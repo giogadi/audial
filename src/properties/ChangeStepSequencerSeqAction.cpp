@@ -24,8 +24,6 @@ void ChangeStepSequencerSeqActionProps::Load(serial::Ptree pt) {
    
    pt.TryGetFloat("velocity", &_velocity);
    
-   pt.TryGetFloat("gain", &_gain);
-   
 }
 
 void ChangeStepSequencerSeqActionProps::Save(serial::Ptree pt) const {
@@ -39,8 +37,6 @@ void ChangeStepSequencerSeqActionProps::Save(serial::Ptree pt) const {
     serial::SaveVectorInChildNode<MidiNoteAndName>(pt, "midiNotes", "array_item", _midiNotes);
     
     pt.PutFloat("velocity", _velocity);
-    
-    pt.PutFloat("gain", _gain);
     
 }
 
@@ -78,12 +74,6 @@ bool ChangeStepSequencerSeqActionProps::ImGui() {
     {
         
         bool thisChanged = ImGui::InputFloat("velocity", &_velocity);
-        changed = changed || thisChanged;
-    }
-    
-    {
-        
-        bool thisChanged = ImGui::InputFloat("gain", &_gain);
         changed = changed || thisChanged;
     }
     

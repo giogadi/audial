@@ -94,10 +94,6 @@ void ChangeStepSequencerSeqAction::ExecuteDerived(GameManager& g) {
             step._velocity = _props._velocity;
             seq->SetNextSeqStep(g, std::move(step), saveType);
         }
-
-        if (_props._gain >= 0.f && !g._editMode) {
-            seq->_gain = _props._gain;
-        }
     }
     else {
         printf("ChangeStepSequencerSeqAction: no seq entity!!\n");
@@ -422,16 +418,19 @@ void SetStepSequencerMuteSeqAction::LoadDerived(LoadInputs const& loadInputs, st
 void SetStepSequencerMuteSeqAction::LoadDerived(serial::Ptree pt) {
     serial::LoadFromChildOf(pt, "seq_editor_id", _seqEditorId);
     _mute = pt.GetBool("mute");
+    pt.TryGetFloat("gain", &_gain);
 }
 
 void SetStepSequencerMuteSeqAction::SaveDerived(serial::Ptree pt) const {
     serial::SaveInNewChildOf(pt, "seq_editor_id", _seqEditorId);
     pt.PutBool("mute", _mute);
+    pt.PutFloat("gain", _gain);
 }
 
 bool SetStepSequencerMuteSeqAction::ImGui() {
     imgui_util::InputEditorId("Seq editor ID", &_seqEditorId);
     ImGui::Checkbox("Mute", &_mute);
+    ImGui::InputFloat("Gain", &_gain);
     return false;
 }
 
@@ -446,6 +445,9 @@ void SetStepSequencerMuteSeqAction::ExecuteDerived(GameManager& g) {
     StepSequencerEntity* seq = static_cast<StepSequencerEntity*>(g._neEntityManager->GetEntity(_seqId));
     if (seq) {
         seq->_mute = _mute;
+        if (_gain >= 0.f) {
+            seq->_gain = _gain;
+        }
     }
     else {
         printf("SetStepSequenceMuteSeqAction: no seq entity!!\n");
