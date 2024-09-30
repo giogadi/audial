@@ -805,7 +805,7 @@
         <patch>
             <name>noise_drop1</name>
             <patch>
-                <Gain>0.856000006</Gain>
+                <Gain>0</Gain>
                 <Mono>1</Mono>
                 <FM>0</FM>
                 <Osc1Waveform>Noise</Osc1Waveform>
