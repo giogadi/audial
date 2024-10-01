@@ -373,7 +373,7 @@ Patch::ImGuiResult Patch::ImGui() {
                 break;
             }
             case audio::SynthParamType::DelayFeedback: {
-                changed = ImGui::SliderFloat(paramName, &_data[i], 0.f, 0.9f);
+                changed = ImGui::SliderFloat(paramName, &_data[i], 0.f, 1.f);
                 break;
             }
             case audio::SynthParamType::Count:

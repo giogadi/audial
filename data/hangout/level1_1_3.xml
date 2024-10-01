@@ -17031,7 +17031,7 @@
                         <one_time>true</one_time>
                         <action_type>SpawnAutomator</action_type>
                         <relative>false</relative>
-                        <startValue>0.00100000005</startValue>
+                        <startValue>0</startValue>
                         <endValue>1</endValue>
                         <desiredAutomateTime>0</desiredAutomateTime>
                         <synth>true</synth>
@@ -17088,22 +17088,14 @@
                         <channel>1</channel>
                         <blend_beat_time>0</blend_beat_time>
                         <use_patch_bank>true</use_patch_bank>
-                        <patch_name>noise_drop0</patch_name>
-                    </seq_action>
-                    <seq_action>
-                        <one_time>true</one_time>
-                        <action_type>ChangePatch</action_type>
-                        <channel>1</channel>
-                        <blend_beat_time>8</blend_beat_time>
-                        <use_patch_bank>true</use_patch_bank>
-                        <patch_name>noise_drop1</patch_name>
+                        <patch_name>noise_open_to_close_env</patch_name>
                     </seq_action>
                     <seq_action>
                         <one_time>true</one_time>
                         <action_type>SpawnAutomator</action_type>
                         <relative>false</relative>
                         <startValue>1</startValue>
-                        <endValue>0.600000024</endValue>
+                        <endValue>1</endValue>
                         <desiredAutomateTime>8</desiredAutomateTime>
                         <synth>true</synth>
                         <synthParam>DelayGain</synthParam>
@@ -17112,6 +17104,21 @@
                         <seqEditorId>
                             <id>-1</id>
                         </seqEditorId>
+                    </seq_action>
+                    <seq_action>
+                        <one_time>true</one_time>
+                        <action_type>NoteOnOff</action_type>
+                        <channel>1</channel>
+                        <midiNotes>
+                            <array_item>
+                                <note>48</note>
+                            </array_item>
+                        </midiNotes>
+                        <noteLength>1</noteLength>
+                        <velocity>1</velocity>
+                        <quantizeDenom>0.25</quantizeDenom>
+                        <doNoteOff>false</doNoteOff>
+                        <holdNotes>false</holdNotes>
                     </seq_action>
                 </actions>
                 <actions_on_exit/>
@@ -17546,6 +17553,14 @@
                             <beat_time>0</beat_time>
                         </beat_time_event>
                     </seq_action>
+                    <seq_action>
+                        <one_time>false</one_time>
+                        <action_type>ChangePatch</action_type>
+                        <channel>2</channel>
+                        <blend_beat_time>0</blend_beat_time>
+                        <use_patch_bank>true</use_patch_bank>
+                        <patch_name>pad0_after</patch_name>
+                    </seq_action>
                 </actions>
                 <actions_on_exit/>
                 <trigger_volume_entities/>
@@ -17638,7 +17653,7 @@
                         <temporary>true</temporary>
                         <midiNotes>
                             <array_item>
-                                <note>2</note>
+                                <note>20</note>
                             </array_item>
                         </midiNotes>
                         <velocity>1</velocity>

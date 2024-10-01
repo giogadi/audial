@@ -993,7 +993,7 @@ void Process(StateData* state, boost::circular_buffer<audio::PendingEvent> const
     // DELAY
     float const delayTime = math_util::Clamp(patch.Get(SynthParamType::DelayTime), 0.001f, 0.5f);
     float const delayGain = math_util::Clamp(patch.Get(SynthParamType::DelayGain), 0.f, 1.f);
-    float const delayFeedback = std::min(0.9f, patch.Get(SynthParamType::DelayFeedback));
+    float const delayFeedback = std::min(1.f, patch.Get(SynthParamType::DelayFeedback));
     int const delaySamples = static_cast<int>(delayTime * sampleRate);
     int delayBufferReadIx = state->delayBufferWriteIx - (numChannels * delaySamples);
     if (delayBufferReadIx < 0) {
