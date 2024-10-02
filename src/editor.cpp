@@ -4,6 +4,7 @@
 #include <cctype>
 #include <sstream>
 #include <unordered_set>
+#include <ctime>
 
 #include "imgui/imgui.h"
 #include "imgui_util.h"
@@ -587,6 +588,13 @@ namespace {
     }
 }
 
+namespace {
+    float TimeElapsed(clock_t t0, clock_t t1) {
+        clock_t ticksElapsed = t1 - t0;
+        return ((float)ticksElapsed) / CLOCKS_PER_SEC;
+    }
+}
+
 void Editor::DrawWindow() {
     ImGui::Begin("Editor");
 
@@ -596,7 +604,10 @@ void Editor::DrawWindow() {
         serial::Ptree scriptPt = pt.AddChild("script");
         scriptPt.PutDouble("bpm", _g->_beatClock->GetBpm());
         scriptPt.PutBool("gamma_correction", _g->_scene->IsGammaCorrectionEnabled());
+        clock_t t0 = clock();
         Save(scriptPt);
+        clock_t t1 = clock();
+        float treeBuildTime = TimeElapsed(t0, t1);
         serial::Ptree entitiesPt = scriptPt.AddChild("new_entities");
         for (ne::EntityId id : _entityIds) {
             bool active = false;
@@ -608,11 +619,14 @@ void Editor::DrawWindow() {
             serial::Ptree entityPt = entitiesPt.AddChild(ne::gkEntityTypeNames[(int)id._type]);
             entity->Save(entityPt);
         }
+        t0 = clock();
         if (pt.WriteToFile(_saveFilename.c_str())) {
-            printf("Saved script to \"%s\".\n", _saveFilename.c_str());
+            t1 = clock();
+            float fileWriteTime = TimeElapsed(t0, t1);
+            printf("Saved script to \"%s\". (build time: %f) (write time: %f)\n", _saveFilename.c_str(), treeBuildTime, fileWriteTime);
         } else {
             printf("FAILED to save script to \"%s\".\n", _saveFilename.c_str());
-        }
+        }        
         pt.DeleteData();
     }
 

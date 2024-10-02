@@ -13,8 +13,81 @@
 #include "math_util.h"
 #include "sound_bank.h"
 #include "imgui_vector_util.h"
+#include "serial_enum.h"
+#include "serial_vector_util.h"
 
 extern GameManager gGameManager;
+
+void StepSequencerEntity::SynthParamValue::Save(serial::Ptree pt) const {
+    serial::PutEnum(pt, "type", _type);
+    pt.PutFloat("v", _value);
+}
+
+void StepSequencerEntity::SynthParamValue::Load(serial::Ptree pt) {
+    serial::TryGetEnum(pt, "type", _type);
+    _value = pt.GetFloat("v");
+}
+
+void StepSequencerEntity::SeqStep::Save(serial::Ptree pt) const {
+    {
+        serial::Ptree notesPt = pt.AddChild("notes");
+        for (int ii = 0; ii < SeqStep::kNumNotes; ++ii) {
+            serial::Ptree notePt = notesPt.AddChild("n");
+            notePt.PutIntValue(_midiNote[ii]);
+        }
+    }
+    {
+        serial::Ptree paramsPt = pt.AddChild("params");
+        for (int ii = 0; ii < kNumParams; ++ii) {
+            if (!_params[ii]._active) {
+                continue;
+            }
+            serial::SaveInNewChildOf(paramsPt, "p", _params[ii]);
+        }
+    }
+
+    pt.PutFloat("v", _velocity);
+}
+
+void StepSequencerEntity::SeqStep::Load(serial::Ptree pt) {
+    {
+        serial::Ptree notesPt = pt.GetChild("notes");
+        int numNotes = 0;
+        serial::NameTreePair* children = notesPt.GetChildren(&numNotes);
+        if (numNotes > SeqStep::kNumNotes) {
+            printf("StepSequencerEntity::SeqStep::Load: HEY PROBLEM: TOO MANY NOTES (%d)\n", numNotes);
+            numNotes = SeqStep::kNumNotes;
+        }
+        for (int ii = 0; ii < numNotes; ++ii) {
+            serial::NameTreePair* child = &children[ii];
+            _midiNote[ii] = child->_pt.GetIntValue();
+        }
+        delete[] children;
+    }
+
+    {
+        for (int ii = 0; ii < kNumParams; ++ii) {
+            _params[ii] = SynthParamValue();
+        }
+        serial::Ptree paramsPt = pt.GetChild("params");
+        int numParams = 0;
+        serial::NameTreePair* children = paramsPt.GetChildren(&numParams);
+        if (numParams > SeqStep::kNumParams) {
+            printf("StepSequencerEntity::SeqStep::Load: HEY PROBLEM: TOO MANY PARAMS (%d)\n", numParams);
+            numParams = SeqStep::kNumParams;
+        }
+        for (int ii = 0; ii < numParams; ++ii) {
+            serial::NameTreePair* child = &children[ii];
+            _params[ii].Load(child->_pt);
+            if (_params[ii]._type != audio::SynthParamType::Count) {
+                _params[ii]._active = true;
+            }
+        }
+        delete[] children;
+    }
+
+    _velocity = pt.GetFloat("v");
+}
 
 void StepSequencerEntity::WriteSeqStep(SeqStep const& step, bool writeNoteName, std::ostream& output) {
     std::string noteName;
@@ -122,13 +195,14 @@ bool StepSequencerEntity::SeqImGui(char const* label, bool drumKit, std::vector<
     }
     
     float const textBaseHeight = ImGui::GetTextLineHeightWithSpacing();
-    static ImGuiTableFlags flags = ImGuiTableFlags_ScrollY | ImGuiTableFlags_RowBg | ImGuiTableFlags_BordersOuter | ImGuiTableFlags_BordersV | ImGuiTableFlags_Resizable | ImGuiTableFlags_Reorderable | ImGuiTableFlags_Hideable;
+    static ImGuiTableFlags flags = ImGuiTableFlags_ScrollY | ImGuiTableFlags_RowBg | ImGuiTableFlags_BordersOuter | ImGuiTableFlags_BordersV | ImGuiTableFlags_Resizable | ImGuiTableFlags_Reorderable | ImGuiTableFlags_Hideable | ImGuiTableFlags_ScrollX;
     ImVec2 outerSize = ImVec2(0.f, textBaseHeight * 8);
     int constexpr kStepColIx = 0;
     int constexpr kFirstNoteColIx = 1;
     int constexpr kNumNotes = StepSequencerEntity::SeqStep::kNumNotes;
     int constexpr kVelColIx = kFirstNoteColIx + kNumNotes;
-    int constexpr kNumColumns = kVelColIx + 1;
+    int constexpr kParam0ColIx = kVelColIx + 1;
+    int constexpr kNumColumns = kParam0ColIx + SeqStep::kNumParams;
     if (ImGui::BeginTable(label, kNumColumns, flags, outerSize)) {
         ImGui::TableSetupScrollFreeze(0, 1);
         ImGui::TableSetupColumn("Step", ImGuiTableColumnFlags_None);
@@ -139,6 +213,11 @@ bool StepSequencerEntity::SeqImGui(char const* label, bool drumKit, std::vector<
             ImGui::TableSetupColumn(noteStr, ImGuiTableColumnFlags_None);
         }
         ImGui::TableSetupColumn("Vel", ImGuiTableColumnFlags_None);
+        char paramStr[] = "ParamX";
+        for (int ii = 0; ii < SeqStep::kNumParams; ++ii) {
+            sprintf(paramStr, "Param%d", ii);
+            ImGui::TableSetupColumn(paramStr, ImGuiTableColumnFlags_None);
+        }
         ImGui::TableHeadersRow();
 
         ImGuiListClipper clipper;
@@ -147,7 +226,7 @@ bool StepSequencerEntity::SeqImGui(char const* label, bool drumKit, std::vector<
         int constexpr kStringSize = 4;
         static char sNoteStrings[kMaxRows][kNumNotes][kStringSize] = {};        
         
-        
+        float const kTextBaseWidth = ImGui::CalcTextSize("A").x;
         while (clipper.Step()) {
             // assert(clipper.DisplayStart < sequence.size());
             assert(clipper.DisplayEnd <= sequence.size());
@@ -206,6 +285,33 @@ bool StepSequencerEntity::SeqImGui(char const* label, bool drumKit, std::vector<
                 float v = sequence[row]._velocity;
                 ImGui::InputFloat("##vel", &v);
                 sequence[row]._velocity = v;
+
+                
+                for (int paramIx = 0; paramIx < SeqStep::kNumParams; ++paramIx) {
+                    int const columnIx = kParam0ColIx + paramIx;
+                    ImGui::TableSetColumnIndex(columnIx);
+                    ImGui::PushID(columnIx);
+                    SynthParamValue* param = &sequence[row]._params[paramIx];
+                    if (ImGui::Checkbox("##active", &param->_active)) {
+                        changed = true;
+                    }
+                    ImGui::SameLine();
+                    if (param->_active) {
+                        
+                        ImGui::PushItemWidth(kTextBaseWidth * 8);
+                        if (audio::SynthParamTypeImGui("##type", &param->_type)) {
+                            changed = true;
+                        }
+                        ImGui::PopItemWidth();
+                        ImGui::SameLine();
+                        if (ImGui::InputFloat("##v", &param->_value)) {
+                            changed = true;
+                        }
+                    }
+
+                    ImGui::PopID();
+                }
+
                 ImGui::PopID();
             }
         }
@@ -341,6 +447,23 @@ void StepSequencerEntity::PlayStep(GameManager& g, SeqStep const& seqStep) {
         return;
     }
 
+    for (int ii = 0; ii < SeqStep::kNumParams; ++ii) {
+        SynthParamValue const* param = &seqStep._params[ii];
+        if (!param->_active) {
+            continue;
+        }
+        audio::Event e;
+        e.delaySecs = 0.0;
+        e.type = audio::EventType::SynthParam;
+        e.param = param->_type;
+        e.paramChangeTimeSecs = 0.0;
+        e.newParamValue = param->_value;
+        for (int channel : _channels) {
+            e.channel = channel;
+            g._audioContext->AddEvent(e);
+        }
+    }
+
     if (seqStep._midiNote[0] > -1) {
         // TODO: this isn't _quite_ it, but almost
         _lastPlayedNoteTime = g._beatClock->GetBeatTimeFromEpoch();
@@ -455,7 +578,7 @@ void StepSequencerEntity::UpdateDerived(GameManager& g, float dt) {
 }
 
 void StepSequencerEntity::SaveDerived(serial::Ptree pt) const {
-    std::stringstream seqSs;
+    /*std::stringstream seqSs;
     std::string noteName;
     for (int ix = 0; ix < _initialMidiSequenceDoNotChange.size(); ++ix) {
         if (ix > 0) {
@@ -481,7 +604,8 @@ void StepSequencerEntity::SaveDerived(serial::Ptree pt) const {
         }
         seqSs << ":" << s._velocity;
     }
-    pt.PutString("sequence", seqSs.str().c_str());
+    pt.PutString("sequence", seqSs.str().c_str());*/
+    serial::SaveVectorInChildNode(pt, "sequence", "s", _initialMidiSequenceDoNotChange);    
 
     pt.PutBool("start_mute", _startMute);
     pt.PutFloat("gain", _initGain);
@@ -500,9 +624,14 @@ void StepSequencerEntity::SaveDerived(serial::Ptree pt) const {
 }
 
 void StepSequencerEntity::LoadDerived(serial::Ptree pt) {
-    std::string seq = pt.GetString("sequence");    
-    std::stringstream seqSs(seq);
-    LoadSequenceFromInput(seqSs, _initialMidiSequenceDoNotChange);
+    int constexpr kLastStringSequenceVersion = 9;
+    if (pt.GetVersion() <= kLastStringSequenceVersion) {
+        std::string seq = pt.GetString("sequence");
+        std::stringstream seqSs(seq);
+        LoadSequenceFromInput(seqSs, _initialMidiSequenceDoNotChange);
+    } else {
+        serial::LoadVectorFromChildNode(pt, "sequence", _initialMidiSequenceDoNotChange);
+    }
 
     pt.TryGetBool("start_mute", &_startMute);
     _initGain = 1.f;

@@ -10,11 +10,24 @@ struct StepSequencerEntity : ne::Entity {
     virtual ne::EntityType Type() override { return ne::EntityType::StepSequencer; }
     static ne::EntityType StaticType() { return ne::EntityType::StepSequencer; }
     
+    struct SynthParamValue {        
+        float _value = 0.f;
+        audio::SynthParamType _type = audio::SynthParamType::Cutoff;
+        bool _active = false;
+        void Save(serial::Ptree pt) const;
+        void Load(serial::Ptree pt);
+    };
     struct SeqStep {
         SeqStep() {}
         static constexpr int kNumNotes = 4;
         std::array<int,kNumNotes> _midiNote = {-1, -1, -1, -1};
         float _velocity = 1.f;
+        // params set the new value just for this step, and then it reverts to the patch value.
+        static constexpr int kNumParams = 4;
+        std::array<SynthParamValue, kNumParams> _params;
+        
+        void Save(serial::Ptree pt) const;
+        void Load(serial::Ptree pt);
     };
     struct SeqStepChange {
         SeqStep _step;
