@@ -882,5 +882,45 @@
                 <DelayFeedback>0</DelayFeedback>
             </patch>
         </patch>
+        <patch>
+            <name>acid_bass</name>
+            <patch>
+                <Gain>0.623000026</Gain>
+                <Mono>1</Mono>
+                <FM>0</FM>
+                <Osc1Waveform>Saw</Osc1Waveform>
+                <Osc2Waveform>Saw</Osc2Waveform>
+                <Detune>0</Detune>
+                <OscFader>0</OscFader>
+                <Cutoff>529.411987</Cutoff>
+                <Peak>5.18400002</Peak>
+                <HpfCutoff>0</HpfCutoff>
+                <HpfPeak>0</HpfPeak>
+                <Portamento>0.0700000003</Portamento>
+                <PitchLFOGain>0</PitchLFOGain>
+                <PitchLFOFreq>4.23699999</PitchLFOFreq>
+                <CutoffLFOGain>0</CutoffLFOGain>
+                <CutoffLFOFreq>6.78000021</CutoffLFOFreq>
+                <AmpEnvAttack>0.0329999998</AmpEnvAttack>
+                <AmpEnvDecay>0.0920000002</AmpEnvDecay>
+                <AmpEnvSustain>0.305000007</AmpEnvSustain>
+                <AmpEnvRelease>0.460000008</AmpEnvRelease>
+                <CutoffEnvGain>2269.85303</CutoffEnvGain>
+                <CutoffEnvAttack>0.0109999999</CutoffEnvAttack>
+                <CutoffEnvDecay>0.109999999</CutoffEnvDecay>
+                <CutoffEnvSustain>0.107000001</CutoffEnvSustain>
+                <CutoffEnvRelease>0.335000008</CutoffEnvRelease>
+                <PitchEnvGain>0</PitchEnvGain>
+                <PitchEnvAttack>0</PitchEnvAttack>
+                <PitchEnvDecay>0</PitchEnvDecay>
+                <PitchEnvSustain>1</PitchEnvSustain>
+                <PitchEnvRelease>0</PitchEnvRelease>
+                <FMOsc2Level>0</FMOsc2Level>
+                <FMOsc2Ratio>0</FMOsc2Ratio>
+                <DelayGain>0</DelayGain>
+                <DelayTime>0</DelayTime>
+                <DelayFeedback>0</DelayFeedback>
+            </patch>
+        </patch>
     </patches>
 </root>

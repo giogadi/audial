@@ -17896,6 +17896,68 @@
                 </hit_actions>
                 <children_editor_ids/>
             </FlowWall>
+            <StepSequencer>
+                <editor_id>
+                    <id>514</id>
+                </editor_id>
+                <name>acid_seq</name>
+                <entity_active>false</entity_active>
+                <pickable>true</pickable>
+                <transform>
+                    <pos>
+                        <x>7.46642351</x>
+                        <y>0</y>
+                        <z>-4.74028015</z>
+                    </pos>
+                    <quat>
+                        <x>0</x>
+                        <y>0</y>
+                        <z>0</z>
+                        <w>1</w>
+                    </quat>
+                    <scale>
+                        <x>1</x>
+                        <y>1</y>
+                        <z>1</z>
+                    </scale>
+                </transform>
+                <model_name/>
+                <texture_name/>
+                <model_color_vec4>
+                    <x>0.800000012</x>
+                    <y>0.800000012</y>
+                    <z>0.800000012</z>
+                    <w>1</w>
+                </model_color_vec4>
+                <flow_section_id>-1</flow_section_id>
+                <tag>0</tag>
+                <waypoint_follower>
+                    <mode>Waypoint</mode>
+                    <waypoint_auto_start>false</waypoint_auto_start>
+                    <loop_waypoints>false</loop_waypoints>
+                    <start_time>3</start_time>
+                    <quantize>1</quantize>
+                    <quantize_buffer>0</quantize_buffer>
+                    <waypoints/>
+                    <follow_entity_name/>
+                    <follow_entity_editor_id>
+                        <id>-1</id>
+                    </follow_entity_editor_id>
+                </waypoint_follower>
+                <sequence>mC2:1 mC2:1 mC2:1 mC2:1 mC3:1 mC2:1 mC2:1 mD3-:1 mC2:1 mC2:1 mC2:1 mC2:1 mC2:1 mC2:1 mC2:1 mC2:1</sequence>
+                <start_mute>false</start_mute>
+                <gain>1</gain>
+                <channels>
+                    <channel>4</channel>
+                </channels>
+                <step_length>0.25</step_length>
+                <note_length>0.25</note_length>
+                <start_time>4</start_time>
+                <is_synth>true</is_synth>
+                <editor_mute>true</editor_mute>
+                <max_voices>-1</max_voices>
+                <quantize_temp_changes>true</quantize_temp_changes>
+            </StepSequencer>
         </new_entities>
     </script>
 </root>
