@@ -2,8 +2,6 @@
 
 #include "imgui/imgui.h"
 
-#include "serial_enum.h"
-
 namespace synth {
 
 namespace {

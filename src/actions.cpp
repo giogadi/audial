@@ -14,6 +14,7 @@
 #include "sound_bank.h"
 #include "imgui_util.h"
 #include "serial_vector_util.h"
+#include "imgui_vector_util.h"
 
 extern GameManager gGameManager;
 
@@ -83,17 +84,15 @@ void ChangeStepSequencerSeqAction::ExecuteDerived(GameManager& g) {
             saveType = _props._temporary ? StepSequencerEntity::StepSaveType::Temporary : StepSequencerEntity::StepSaveType::Permanent;
         }
 
-        if (_props._velOnly) {
-            seq->SetNextSeqStepVelocity(g, _props._velocity, saveType);
+        StepSequencerEntity::SeqStep step;
+        for (int i = 0; i < StepSequencerEntity::SeqStep::kNumNotes && i < _props._midiNotes.size(); ++i) {
+            step._midiNote[i] = _props._midiNotes[i]._note;
         }
-        else {
-            StepSequencerEntity::SeqStep step;
-            for (int i = 0; i < StepSequencerEntity::SeqStep::kNumNotes && i < _props._midiNotes.size(); ++i) {
-                step._midiNote[i] = _props._midiNotes[i]._note;
-            }
-            step._velocity = _props._velocity;
-            seq->SetNextSeqStep(g, std::move(step), saveType);
+        for (int i = 0; i < StepSequencerEntity::kNumParamTracks && i < _props._params.size(); ++i) {
+            step._params[i] = _props._params[i];
         }
+        step._velocity = _props._velocity;
+        seq->SetNextSeqStep(g, std::move(step), saveType, _props._changeNote, _props._changeVel);
     }
     else {
         printf("ChangeStepSequencerSeqAction: no seq entity!!\n");
@@ -112,7 +111,21 @@ void ChangeStepSequencerSeqAction::LoadDerived(LoadInputs const& loadInputs, std
 }
 
 void ChangeStepSequencerSeqAction::LoadDerived(serial::Ptree pt) {
-    _props.Load(pt);
+    {
+        serial::LoadFromChildOf(pt, "seqEntityEditorId", _props._seqEntityEditorId);
+
+        pt.TryGetBool("changeVel", &_props._changeVel);
+
+        pt.TryGetBool("changeNote", &_props._changeNote);
+
+        pt.TryGetBool("temporary", &_props._temporary);
+
+        serial::LoadVectorFromChildNode<MidiNoteAndName>(pt, "midiNotes", _props._midiNotes);
+
+        pt.TryGetFloat("velocity", &_props._velocity);
+
+        serial::LoadVectorFromChildNode<StepSequencerEntity::SynthParamValue>(pt, "params", _props._params);
+    }
     int constexpr kUseIntsForMidiNotesVersion = 4;
     if (pt.GetVersion() < kUseIntsForMidiNotesVersion) {
         if (!_props._midiNotes.empty()) {
@@ -138,14 +151,72 @@ void ChangeStepSequencerSeqAction::LoadDerived(serial::Ptree pt) {
     if (_props._midiNotes.size() > StepSequencerEntity::SeqStep::kNumNotes) {
         printf("ChangeStepSequencerSeqAction::LoadDerived: too many notes (%zu)!\n", _props._midiNotes.size());
     }
+
+    int constexpr kLastWithVelOnlyVersion = 10;
+    if (pt.GetVersion() <= kLastWithVelOnlyVersion) {
+        bool velOnly = false;
+        pt.TryGetBool("velOnly", &velOnly);
+        if (velOnly) {
+            _props._changeVel = true;
+            _props._changeNote = false;
+        } else {
+            _props._changeVel = true;
+            _props._changeNote = true;
+        }
+    }
 }
 
 void ChangeStepSequencerSeqAction::SaveDerived(serial::Ptree pt) const {
-    _props.Save(pt);    
+    {
+        serial::SaveInNewChildOf(pt, "seqEntityEditorId", _props._seqEntityEditorId);
+
+        pt.PutBool("changeVel", _props._changeVel);
+
+        pt.PutBool("changeNote", _props._changeNote);
+
+        pt.PutBool("temporary", _props._temporary);
+
+        serial::SaveVectorInChildNode<MidiNoteAndName>(pt, "midiNotes", "array_item", _props._midiNotes);
+
+        pt.PutFloat("velocity", _props._velocity);
+
+        serial::SaveVectorInChildNode<StepSequencerEntity::SynthParamValue>(pt, "params", "array_item", _props._params);
+    }
 }
 
 bool ChangeStepSequencerSeqAction::ImGui() {
-    return _props.ImGui();
+    bool changed = false;
+
+    changed = imgui_util::InputEditorId("seqEntityEditorId", &_props._seqEntityEditorId) || changed;
+
+    changed = ImGui::Checkbox("changeVel", &_props._changeVel) || changed;
+
+    changed = ImGui::Checkbox("changeNote", &_props._changeNote) || changed;
+
+    changed = ImGui::Checkbox("temporary", &_props._temporary) || changed;
+
+    {
+        imgui_util::InputVectorOptions options;
+        options.removeOnSameLine = true;
+        if (ImGui::TreeNode("midiNotes")) {
+
+            changed = imgui_util::InputVector(_props._midiNotes, options) || changed;
+            ImGui::TreePop();
+
+        }
+    }
+
+    changed = ImGui::InputFloat("velocity", &_props._velocity) || changed;
+
+    {
+        imgui_util::InputVectorOptions options;
+        if (ImGui::TreeNode("params")) {
+            changed = imgui_util::InputVector(_props._params, options) || changed;
+            ImGui::TreePop();
+        }
+    }
+
+    return changed;
 }
 
 void ChangeStepSequencerSeqAction::InitDerived(GameManager& g) {

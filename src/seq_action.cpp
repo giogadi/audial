@@ -12,7 +12,6 @@
 #include "seq_actions/set_enemy_hittable.h"
 #include "seq_actions/add_motion.h"
 #include "imgui_util.h"
-#include "serial_enum.h"
 
 BeatTimeAction::BeatTimeAction() {
     _beatTime = 0.0;

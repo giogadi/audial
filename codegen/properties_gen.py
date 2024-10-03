@@ -31,6 +31,7 @@ def getProp(propName, propType, isArray, enumType, maybeNamespace, maybeDefault,
     genImGui = rawProp.get('gen_imgui', True)
     preImGuiStrs = []
     imGuiStr = ''
+    postImGuiStrs = []
     outProp['name'] = propName
     outProp['isArray'] = isArray
     outProp['header_includes'] = []
@@ -42,12 +43,15 @@ def getProp(propName, propType, isArray, enumType, maybeNamespace, maybeDefault,
         outProp['type'] = 'std::vector<{cppTypeName}>'.format(cppTypeName = cppTypeName)        
         outProp['load'] = 'serial::LoadVectorFromChildNode<{cppTypeName}>(pt, \"{name}\", _{name});'.format(cppTypeName = cppTypeName, name = propName)
         outProp['save'] = 'serial::SaveVectorInChildNode<{cppTypeName}>(pt, \"{name}\", \"array_item\", _{name});'.format(cppTypeName = cppTypeName, name = propName)
+        
+        preImGuiStrs.append('imgui_util::InputVectorOptions options;')
+        
         if propType == 'MidiNoteAndName':
-            preImGuiStrs.append('imgui_util::InputVectorOptions options;')
             preImGuiStrs.append('options.removeOnSameLine = true;')
-            imGuiStr = 'imgui_util::InputVector(_{name}, options);'.format(name = propName)
-        else:
-            imGuiStr = 'imgui_util::InputVector(_{name});'.format(name = propName)
+        preImGuiStrs.append('if (ImGui::TreeNode(\"{name}\")) {{'.format(name = propName))
+        imGuiStr = 'imgui_util::InputVector(_{name}, options);'.format(name = propName)
+        postImGuiStrs.append('ImGui::TreePop();')
+        postImGuiStrs.append('}')
         outProp['header_includes'].append('<vector>')
         outProp['src_includes'].append('serial_vector_util.h')
         outProp['src_includes'].append('imgui_vector_util.h')        
@@ -120,6 +124,7 @@ def getProp(propName, propType, isArray, enumType, maybeNamespace, maybeDefault,
     if genImGui:
         outProp['preImgui'] = preImGuiStrs
         outProp['imgui'] = imGuiStr
+        outProp['postImgui'] = postImGuiStrs
     return outProp
 
 def generatePropsFromJson(dataFilename):

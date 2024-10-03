@@ -16,7 +16,6 @@
 #include "geometry.h"
 #include "entities/flow_player.h"
 #include "string_util.h"
-#include "serial_enum.h"
 
 extern GameManager gGameManager;
 

@@ -9,22 +9,24 @@
 struct StepSequencerEntity : ne::Entity {
     virtual ne::EntityType Type() override { return ne::EntityType::StepSequencer; }
     static ne::EntityType StaticType() { return ne::EntityType::StepSequencer; }
-    
-    struct SynthParamValue {        
+
+    static constexpr int kNumParamTracks = 4;
+
+    struct SynthParamValue {
         float _value = 0.f;
-        audio::SynthParamType _type = audio::SynthParamType::Cutoff;
         bool _active = false;
         void Save(serial::Ptree pt) const;
         void Load(serial::Ptree pt);
+        bool ImGui();
     };
+        
     struct SeqStep {
         SeqStep() {}
         static constexpr int kNumNotes = 4;
         std::array<int,kNumNotes> _midiNote = {-1, -1, -1, -1};
         float _velocity = 1.f;
-        // params set the new value just for this step, and then it reverts to the patch value.
-        static constexpr int kNumParams = 4;
-        std::array<SynthParamValue, kNumParams> _params;
+        // params set the new value just for this step, and then it reverts to the patch value.        
+        std::array<SynthParamValue, kNumParamTracks> _params;
         
         void Save(serial::Ptree pt) const;
         void Load(serial::Ptree pt);
@@ -39,6 +41,11 @@ struct StepSequencerEntity : ne::Entity {
     static bool SeqImGui(char const* label, bool drumKit, std::vector<SeqStep>& sequence);
     
     // Serialized
+    struct ParamTrackType {
+        bool _active = false;
+        audio::SynthParamType _type;
+    };
+    std::array<ParamTrackType, kNumParamTracks> _paramTrackTypes;
     std::vector<SeqStep> _initialMidiSequenceDoNotChange;
     double _stepBeatLength = 0.25;
     std::vector<int> _channels;
@@ -69,7 +76,7 @@ struct StepSequencerEntity : ne::Entity {
     double _lastPlayedNoteTime = 0.0;
 
     enum StepSaveType { Temporary, Permanent };
-    void SetNextSeqStep(GameManager& g, SeqStep step, StepSaveType saveType);
+    void SetNextSeqStep(GameManager& g, SeqStep step, StepSaveType saveType, bool changeNote, bool changeVelocity);
     void SetNextSeqStepVelocity(GameManager& g, float v, StepSaveType saveType);
     void SetAllVelocitiesPermanent(float newVelocity);
     void SetAllStepsPermanent(SeqStep const& newStep);

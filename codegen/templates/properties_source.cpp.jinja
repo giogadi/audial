@@ -4,8 +4,6 @@
 
 #include "imgui_util.h"
 
-#include "serial_enum.h"
-
 {% for header in src_includes %}
 #include "{{header}}"
 {% endfor %}
@@ -31,6 +29,9 @@ bool {{propertiesName}}Props::ImGui() {
         {% endfor %}
         bool thisChanged = {{prop.imgui}}
         changed = changed || thisChanged;
+        {% for postimgui in prop.postImgui %}
+        {{postimgui}}
+        {% endfor %}
     }
     {% endfor %}
     return changed;

@@ -4,8 +4,6 @@
 
 #include "imgui_util.h"
 
-#include "serial_enum.h"
-
 
 #include "imgui_vector_util.h"
 

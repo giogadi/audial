@@ -10,7 +10,6 @@
 #include "beat_clock.h"
 #include "math_util.h"
 #include "entities/resource.h"
-#include "serial_enum.h"
 
 void MechEntity::InitTypeSpecificProps() {
     switch (_p.type) {

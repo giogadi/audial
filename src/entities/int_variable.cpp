@@ -10,7 +10,6 @@
 #include "synth_patch_bank.h"
 #include "audio.h"
 #include "math_util.h"
-#include "serial_enum.h"
 #include "entities/step_sequencer.h"
 
 void IntVariableEntity::Automation::Save(serial::Ptree pt) const {

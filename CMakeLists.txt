@@ -53,7 +53,7 @@ add_executable(game
 
     src/filter.cpp
 
-    src/serial.cpp src/serial.h src/serial_enum.h
+    src/serial.cpp src/serial.h
     src/serial_vector_util.h
     src/rng.cpp src/rng.h
     src/game.cpp
@@ -91,7 +91,6 @@ add_executable(game
 
     src/properties/Test.cpp
     src/properties/MidiNoteAndName.cpp src/properties/MidiNoteAndName.h
-    src/properties/ChangeStepSequencerSeqAction.cpp src/properties/ChangeStepSequencerSeqAction.h
     src/properties/SpawnAutomatorSeqAction.cpp src/properties/SpawnAutomatorSeqAction.h
     src/properties/NoteOnOffSeqAction.cpp src/properties/NoteOnOffSeqAction.h
     src/properties/CameraControlSeqAction.cpp src/properties/CameraControlSeqAction.h

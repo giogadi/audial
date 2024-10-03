@@ -4,8 +4,6 @@
 
 #include "imgui_util.h"
 
-#include "serial_enum.h"
-
 
 
 void ChangeStepSeqMaxVoicesProps::Load(serial::Ptree pt) {

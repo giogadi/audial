@@ -9,7 +9,6 @@
 #include "entities/step_sequencer.h"
 
 #include "properties/SpawnAutomatorSeqAction.h"
-#include "properties/ChangeStepSequencerSeqAction.h"
 #include "properties/NoteOnOffSeqAction.h"
 #include "properties/ChangeStepSeqMaxVoices.h"
 #include "properties/SetAllStepsSeqAction.h"
@@ -46,8 +45,23 @@ struct RemoveEntitySeqAction : public SeqAction {
 };
 
 struct ChangeStepSequencerSeqAction : public SeqAction {
-    virtual SeqActionType Type() const override { return SeqActionType::ChangeStepSequencer; }    
-    ChangeStepSequencerSeqActionProps _props;
+    virtual SeqActionType Type() const override { return SeqActionType::ChangeStepSequencer; }
+    struct Props {
+        EditorId _seqEntityEditorId;
+
+        bool _changeVel;
+
+        bool _changeNote;
+
+        bool _temporary;
+
+        std::vector<MidiNoteAndName> _midiNotes;
+
+        float _velocity;
+
+        std::vector<StepSequencerEntity::SynthParamValue> _params;
+    };
+    Props _props;
 
     ne::EntityId _seqId;
 
