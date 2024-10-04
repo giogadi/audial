@@ -40,8 +40,8 @@ float GenerateSquare(float const phase, float const phaseChange) {
     }
 #if POLYBLEP
     // polyblep
-     float dt = phaseChange / (2*kPi);
-     float t = phase / (2*kPi);
+     float dt = phaseChange * k1_2Pi;
+     float t = phase * k1_2Pi;
      v += Polyblep(t, dt);
      v -= Polyblep(fmod(t + 0.5f, 1.0f), dt);
 #endif
@@ -49,11 +49,11 @@ float GenerateSquare(float const phase, float const phaseChange) {
 }
 
 float GenerateSaw(float const phase, float const phaseChange) {
-    float v = (phase / kPi) - 1.0f;
+    float v = (phase * k1_Pi) - 1.0f;
 #if POLYBLEP
     // polyblep
-     float dt = phaseChange / (2*kPi);
-     float t = phase / (2*kPi);
+     float dt = phaseChange * k1_2Pi;
+     float t = phase * k1_2Pi;
      v -= Polyblep(t, dt);
 #endif
     return v;
@@ -346,13 +346,13 @@ void ProcessVoice(Voice& voice, int const sampleRate, float pitchLFOValue,
         if (oscIx > 0) {
             oscF = modulatedF * powf(2.f, patch.Get(SynthParamType::Detune));
         }
-        float phaseChange = 2 * kPi * oscF / sampleRate;
+        float phaseChange = k2Pi * oscF / sampleRate;
         float oscGain = oscFaderGains[oscIx];
         Waveform const waveform = (oscIx == 0) ? patch.GetOsc1Waveform() : patch.GetOsc2Waveform();
         int outputIx = 0;
         for (int sampleIx = 0; sampleIx < samplesPerFrame; ++sampleIx) {
-            if (osc.phase >= 2 * kPi) {
-                osc.phase -= 2 * kPi;
+            if (osc.phase >= k2Pi) {
+                osc.phase -= k2Pi;
             }
             float oscV = 0.f;
             switch (waveform) {
@@ -583,8 +583,8 @@ void ProcessFmVoice(Voice& voice, int const sampleRate, float pitchLFOValue,
         int outputIx = 0;
         for (int sampleIx = 0; sampleIx < samplesPerFrame; ++sampleIx) {
             // modulator outputs values that will then be interpreted as phase offsets in the next pass
-            if (osc.phase >= 2 * kPi) {
-                osc.phase -= 2 * kPi;
+            if (osc.phase >= k2Pi) {
+                osc.phase -= k2Pi;
             }
             float oscV = sin(osc.phase);
             oscV *= level;
@@ -942,16 +942,16 @@ void Process(StateData* state, boost::circular_buffer<audio::PendingEvent> const
     }
 
     // Get pitch LFO value
-    if (state->pitchLFOPhase >= 2 * kPi) {
-        state->pitchLFOPhase -= 2 * kPi;
+    if (state->pitchLFOPhase >= k2Pi) {
+        state->pitchLFOPhase -= k2Pi;
     }
     // Make LFO a sine wave.
     float const pitchLFOValue = patch.Get(SynthParamType::PitchLFOGain) * sinf(state->pitchLFOPhase);
     state->pitchLFOPhase += (patch.Get(SynthParamType::PitchLFOFreq) * 2 * kPi * samplesPerFrame / sampleRate);
 
     // Get cutoff LFO value
-    if (state->cutoffLFOPhase >= 2 * kPi) {
-        state->cutoffLFOPhase -= 2 * kPi;
+    if (state->cutoffLFOPhase >= k2Pi) {
+        state->cutoffLFOPhase -= k2Pi;
     }
     // Make LFO a sine wave for now.
     float const cutoffLFOValue = patch.Get(SynthParamType::CutoffLFOGain) * sinf(state->cutoffLFOPhase);
