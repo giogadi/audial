@@ -20,6 +20,10 @@ enum class SynthParamType : int {
     
     OscFader,
     
+    Unison,
+    
+    UnisonDetune,
+    
     Cutoff,
     
     Peak,

@@ -9,6 +9,8 @@
         "Osc2Waveform",
         "Detune",
         "OscFader",
+        "Unison",
+        "UnisonDetune",
         "Cutoff",
         "Peak",
         "HpfCutoff",

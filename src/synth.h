@@ -56,10 +56,11 @@ struct ADSRStateNew {
 
 int constexpr kMaxNumOscillators = 6;
 int constexpr kNumAnalogOscillators = 2;
+int constexpr kMaxUnison = 5;
 
 struct Oscillator {
     float f = 440.f;
-    float phase = 0.f;
+    float phases[kMaxUnison];
     rng::State rng;
 };
 

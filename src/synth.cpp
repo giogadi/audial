@@ -82,6 +82,9 @@ void InitStateData(StateData& state, int channel, int const sampleRate, int cons
 
     for (Voice& v : state.voices) {
         for (uint64_t ii = 0; ii < v.oscillators.size(); ++ii) {
+            for (int jj = 0; jj < kMaxUnison; ++jj) {
+                v.oscillators[jj].phases[jj] = 0.f;
+            }
             rng::Seed(v.oscillators[ii].rng, 1234871 + ii);
         }
         v.moogLpfState.reset(sampleRate);
@@ -340,46 +343,96 @@ void ProcessVoice(Voice& voice, int const sampleRate, float pitchLFOValue,
         hpfA3 = g * hpfA2;
     }    
     
+    int unisonLevels = static_cast<int>(patch.Get(audio::SynthParamType::Unison));
+    unisonLevels = std::min(unisonLevels, (kMaxUnison - 1) / 2);
+    int const unison = 2 * unisonLevels + 1;
+    float detuneCents = patch.Get(audio::SynthParamType::UnisonDetune);
     for (int oscIx = 0; oscIx < kNumAnalogOscillators; ++oscIx) {
         Oscillator& osc = voice.oscillators[oscIx];
         float oscF = modulatedF;
         if (oscIx > 0) {
             oscF = modulatedF * powf(2.f, patch.Get(SynthParamType::Detune));
         }
-        float phaseChange = k2Pi * oscF / sampleRate;
+
+        float freqs[kMaxUnison];
+        freqs[0] = oscF;
+        float unisonGain = 1.f;
+        if (unisonLevels > 0) {
+            unisonGain = sqrt(1.f / unison);
+            float dCents = detuneCents / unisonLevels;
+            float detuneLevelCents = 0.f;
+            int detuneIx = 1;
+            for (int ii = 0; ii < unisonLevels; ++ii) {
+                detuneLevelCents += dCents;
+                float ratio = std::powf(2.f, detuneLevelCents / 1200.f);
+                freqs[detuneIx] = oscF * ratio;
+                freqs[detuneIx + 1] = oscF / ratio;
+                detuneIx += 2;
+            }
+        }
+        
         float oscGain = oscFaderGains[oscIx];
+        float phaseChanges[kMaxUnison];
+        for (int ii = 0; ii < unison; ++ii) {
+            phaseChanges[ii] = k2Pi * freqs[ii] / sampleRate;
+        }
         Waveform const waveform = (oscIx == 0) ? patch.GetOsc1Waveform() : patch.GetOsc2Waveform();
-        int outputIx = 0;
-        for (int sampleIx = 0; sampleIx < samplesPerFrame; ++sampleIx) {
-            if (osc.phase >= k2Pi) {
-                osc.phase -= k2Pi;
-            }
-            float oscV = 0.f;
-            switch (waveform) {
-                case Waveform::Saw: {
-                    oscV = GenerateSaw(osc.phase, phaseChange);
-                    break;
-                }
-                case Waveform::Square: {
-                    oscV = GenerateSquare(osc.phase, phaseChange);
-                    break;
-                }
-                case Waveform::Noise: {
-                    oscV = GenerateNoise(osc.rng);
-                    break;
-                }
-                case Waveform::Count: {
-                    std::cout << "Invalid waveform" << std::endl;
-                    assert(false);
-                }
-            }            
+        switch (waveform) {
+            case Waveform::Saw: {
+                int outputIx = 0;                
+                for (int sampleIx = 0; sampleIx < samplesPerFrame; ++sampleIx) {
+                    float oscV = 0.f;
+                    for (int ii = 0; ii < unison; ++ii) {
+                        if (osc.phases[ii] >= k2Pi) {
+                            osc.phases[ii] -= k2Pi;
+                        }
+                        float v = GenerateSaw(osc.phases[ii], phaseChanges[ii]);
+                        oscV += unisonGain * v;                        
 
-            float oscWithGain = oscV * oscGain;
-            for (int channelIx = 0; channelIx < numChannels; ++channelIx) {
-                outputBuffer[outputIx++] += oscWithGain;
+                        osc.phases[ii] += phaseChanges[ii];
+                    }
+                    float oscWithGain = oscV * oscGain;
+                    for (int channelIx = 0; channelIx < numChannels; ++channelIx) {
+                        outputBuffer[outputIx++] += oscWithGain;
+                    }
+                }
+                break;
             }
+            case Waveform::Square: {
+                int outputIx = 0;
+                for (int sampleIx = 0; sampleIx < samplesPerFrame; ++sampleIx) {
+                    float oscV = 0.f;
+                    for (int ii = 0; ii < unison; ++ii) {
+                        if (osc.phases[ii] >= k2Pi) {
+                            osc.phases[ii] -= k2Pi;
+                        }
+                        float v = GenerateSquare(osc.phases[ii], phaseChanges[ii]);
+                        oscV += unisonGain * v;
 
-            osc.phase += phaseChange;
+                        osc.phases[ii] += phaseChanges[ii];
+                    }
+                    float oscWithGain = oscV * oscGain;
+                    for (int channelIx = 0; channelIx < numChannels; ++channelIx) {
+                        outputBuffer[outputIx++] += oscWithGain;
+                    }
+                }
+                break;
+            }
+            case Waveform::Noise: {
+                int outputIx = 0;
+                for (int sampleIx = 0; sampleIx < samplesPerFrame; ++sampleIx) {
+                    float oscV = GenerateNoise(osc.rng);
+                    oscV *= oscGain;
+                    for (int channelIx = 0; channelIx < numChannels; ++channelIx) {
+                        outputBuffer[outputIx++] += oscV;
+                    }
+                }
+                break;
+            }
+            case Waveform::Count: {
+                assert(false);
+                break;
+            }
         }
     }
 
@@ -583,15 +636,15 @@ void ProcessFmVoice(Voice& voice, int const sampleRate, float pitchLFOValue,
         int outputIx = 0;
         for (int sampleIx = 0; sampleIx < samplesPerFrame; ++sampleIx) {
             // modulator outputs values that will then be interpreted as phase offsets in the next pass
-            if (osc.phase >= k2Pi) {
-                osc.phase -= k2Pi;
+            if (osc.phases[0] >= k2Pi) {
+                osc.phases[0] -= k2Pi;
             }
-            float oscV = sin(osc.phase);
+            float oscV = sin(osc.phases[0]);
             oscV *= level;
             outputBuffer[outputIx] = oscV;
             outputIx += numChannels;
 
-            osc.phase += phaseChange;
+            osc.phases[0] += phaseChange;
         }
     }    
 
@@ -600,8 +653,8 @@ void ProcessFmVoice(Voice& voice, int const sampleRate, float pitchLFOValue,
     float phaseChange = 2 * kPi * oscF / sampleRate;
     int outputIx = 0;
     for (int sampleIx = 0; sampleIx < samplesPerFrame; ++sampleIx) {
-        if (osc.phase >= 2 * kPi) {
-            osc.phase -= 2 * kPi;
+        if (osc.phases[0] >= 2 * kPi) {
+            osc.phases[0] -= 2 * kPi;
         }
 
         AdsrTick(ampEnvSpec, &voice.ampEnvState);
@@ -610,7 +663,7 @@ void ProcessFmVoice(Voice& voice, int const sampleRate, float pitchLFOValue,
         }
 
         float phaseOffset = outputBuffer[outputIx];
-        float phase = osc.phase + phaseOffset;
+        float phase = osc.phases[0] + phaseOffset;
 
         float oscV = sin(phase);
         oscV *= gain;
@@ -620,7 +673,7 @@ void ProcessFmVoice(Voice& voice, int const sampleRate, float pitchLFOValue,
             outputBuffer[outputIx++] = oscV;
         }
 
-        osc.phase += phaseChange;
+        osc.phases[0] += phaseChange;
     }
     
 }

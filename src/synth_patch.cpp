@@ -48,6 +48,8 @@ bool IsFmParam(audio::SynthParamType const paramType) {
         case audio::SynthParamType::Mono:        
         case audio::SynthParamType::Osc1Waveform:
         case audio::SynthParamType::Osc2Waveform:
+        case audio::SynthParamType::Unison:
+        case audio::SynthParamType::UnisonDetune:
         case audio::SynthParamType::Cutoff:
         case audio::SynthParamType::Peak:
         case audio::SynthParamType::HpfCutoff:
@@ -284,6 +286,16 @@ Patch::ImGuiResult Patch::ImGui() {
                 if (changed) {
                     _data[i] = WaveformToFloat(w);
                 }
+                break;
+            }
+            case audio::SynthParamType::Unison: {
+                int x = static_cast<int>(_data[i]);
+                changed = ImGui::SliderInt("Unison", &x, 0, 2);
+                _data[i] = static_cast<float>(x);
+                break;
+            }
+            case audio::SynthParamType::UnisonDetune: {
+                changed = ImGui::SliderFloat("Unison Detune", &_data[i], 0.f, 100.f);
                 break;
             }
             case audio::SynthParamType::Cutoff: {
