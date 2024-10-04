@@ -25,6 +25,9 @@ void EventDrawImGuiNoTime(Event& event, SoundBank const& soundBank) {
             ImGui::InputScalar(
                 "Note##", ImGuiDataType_S32, &event.midiNote, /*step=*/nullptr, /*???*/nullptr, "%d");
             ImGui::InputScalar("Vel##", ImGuiDataType_Float, &event.velocity);
+            ImGui::InputScalar(
+                "Note##", ImGuiDataType_S32, &event.primePortaMidiNote, /*step=*/nullptr, /*???*/nullptr, "%d");
+
             break;
         }
         case audio::EventType::AllNotesOff: {

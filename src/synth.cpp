@@ -773,7 +773,7 @@ void ADSRNoteOn(ADSREnvSpecInternal const& spec, ADSRStateNew& adsrState) {
     adsrState.phase = synth::ADSRPhase::Attack;
 }
 
-void NoteOn(StateData& state, int midiNote, float velocity, int noteOnId) {
+void NoteOn(StateData& state, int midiNote, float velocity, int noteOnId, int primePortaMidiNote) {
     Voice* v = FindVoiceForNoteOn(state, midiNote);
     if (v != nullptr) {
         v->oscillators[0].f = synth::MidiToFreq(midiNote);
@@ -784,6 +784,11 @@ void NoteOn(StateData& state, int midiNote, float velocity, int noteOnId) {
         v->currentMidiNote = midiNote;
         v->velocity = velocity;
         v->noteOnId = noteOnId;
+
+        if (primePortaMidiNote >= 0) {
+            float f = MidiToFreq(primePortaMidiNote);
+            v->postPortamentoF = f;
+        }
         
         ADSRNoteOn(state.ampEnvSpecInternal, v->ampEnvState);
         ADSRNoteOn(state.cutoffEnvSpecInternal, v->cutoffEnvState);
@@ -908,7 +913,7 @@ void Process(StateData* state, boost::circular_buffer<audio::PendingEvent> const
         ++currentEventIx;
         switch (e.type) {
             case audio::EventType::NoteOn: {
-                NoteOn(*state, e.midiNote, e.velocity, e.noteOnId);
+                NoteOn(*state, e.midiNote, e.velocity, e.noteOnId, e.primePortaMidiNote);
                 break;
             }
             case audio::EventType::NoteOff: {

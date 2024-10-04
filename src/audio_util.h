@@ -16,6 +16,7 @@ struct Event {
         channel = 0;
         delaySecs = 0;
         midiNote = 0;
+        primePortaMidiNote = -1;
         velocity = 1.f;
         noteOnId = 0;
     }
@@ -26,6 +27,8 @@ struct Event {
         struct {
             int midiNote;
             float velocity;
+            // if >= 0, resets portamento to this note (NoteOn only)
+            int primePortaMidiNote;
             // If non-zero, then note-ons will be tagged with this number. Then,
             // this note will only get turned off from note-offs with this same
             // ID (or note-offs with a zero ID).

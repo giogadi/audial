@@ -76,6 +76,7 @@ struct StepSequencerEntity : ne::Entity {
     float _gain = 1.f;
     bool _seqNeedsReset = true;
     double _lastPlayedNoteTime = 0.0;
+    bool _primePorta = false;
 
     enum StepSaveType { Temporary, Permanent };
     void SetNextSeqStep(GameManager& g, SeqStep step, StepSaveType saveType, bool changeNote, bool changeVelocity);

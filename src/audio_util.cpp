@@ -23,6 +23,7 @@ void audio::Event::Save(serial::Ptree pt) const {
         case EventType::NoteOn:
             pt.PutInt("midi_note", midiNote);
             pt.PutFloat("velocity", velocity);
+            pt.PutInt("prime_porta", primePortaMidiNote);
             break;
         case EventType::NoteOff:
             pt.PutInt("midi_note", midiNote);
@@ -75,6 +76,8 @@ void audio::Event::Load(serial::Ptree pt) {
         case EventType::NoteOn:
             midiNote = pt.GetInt("midi_note");
             velocity = pt.GetFloat("velocity");
+            primePortaMidiNote = -1;
+            pt.TryGetInt("prime_porta", &primePortaMidiNote);
             break;
         case EventType::NoteOff:
             midiNote = pt.GetInt("midi_note");

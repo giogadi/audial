@@ -501,11 +501,14 @@ void StepSequencerEntity::PlayStep(GameManager& g, SeqStep const& seqStep) {
         audio::Event e;
         e.delaySecs = 0.0;
         e.velocity = seqStep._velocity * _gain;
-        e.type = audio::EventType::NoteOn;
+        e.type = audio::EventType::NoteOn; 
         static int sNoteOnId = 1;
         e.noteOnId = sNoteOnId++;
         for (int i = 0; i < numVoices; ++i) {
             e.midiNote = seqStep._midiNote[i];
+            if (_primePorta) {
+                e.primePortaMidiNote = e.midiNote;
+            }
             for (int channel : _channels) {
                 e.channel = channel;
                 g._audioContext->AddEvent(e);
@@ -519,6 +522,10 @@ void StepSequencerEntity::PlayStep(GameManager& g, SeqStep const& seqStep) {
                 e.channel = channel;
                 g._audioContext->AddEvent(e);
             }
+        }
+
+        if (_primePorta) {
+            _primePorta = false;
         }
     } else {
         audio::Event e;
@@ -552,6 +559,7 @@ void StepSequencerEntity::UpdateDerived(GameManager& g, float dt) {
         _changeQueueHeadIx = 0;
         _changeQueueTailIx = 0;
         _changeQueueCount = 0;
+        _primePorta = true;
         _seqNeedsReset = false;
     }
 
