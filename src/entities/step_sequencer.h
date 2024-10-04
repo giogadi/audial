@@ -3,6 +3,7 @@
 #include <queue>
 #include <optional>
 
+#include "enums/audio_SynthParamType.h"
 #include "new_entity.h"
 #include "beat_time_event.h"
 
@@ -47,6 +48,7 @@ struct StepSequencerEntity : ne::Entity {
     };
     std::array<ParamTrackType, kNumParamTracks> _paramTrackTypes;
     std::vector<SeqStep> _initialMidiSequenceDoNotChange;
+    bool _enableLateChanges = true;
     double _stepBeatLength = 0.25;
     std::vector<int> _channels;
     bool _isSynth = true;  // false is drumkit

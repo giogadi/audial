@@ -333,7 +333,7 @@ void StepSequencerEntity::EnqueueChange(SeqStepChange const& change) {
 
 
 void StepSequencerEntity::SetNextSeqStep(GameManager& g, SeqStep step, StepSaveType saveType, bool changeNote, bool changeVelocity) {
-    if (_changeQueueCount == 0 && saveType == StepSaveType::Temporary && _quantizeTempStepChanges) {
+    if (_enableLateChanges && _changeQueueCount == 0 && saveType == StepSaveType::Temporary && _quantizeTempStepChanges) {
         double nextStepBeatTime = _loopStartBeatTime + _currentIx * _stepBeatLength;
         double beatTime = gGameManager._beatClock->GetBeatTimeFromEpoch();
         double timeSinceLastNote = beatTime - _lastPlayedNoteTime;
@@ -603,34 +603,6 @@ void StepSequencerEntity::UpdateDerived(GameManager& g, float dt) {
 }
 
 void StepSequencerEntity::SaveDerived(serial::Ptree pt) const {
-    /*std::stringstream seqSs;
-    std::string noteName;
-    for (int ix = 0; ix < _initialMidiSequenceDoNotChange.size(); ++ix) {
-        if (ix > 0) {
-            seqSs << " ";
-        }
-        SeqStep const& s = _initialMidiSequenceDoNotChange[ix];
-        for (int noteIx = 0; noteIx < s._midiNote.size(); ++noteIx) {
-            if (s._midiNote[noteIx] < 0) {
-                if (noteIx == 0) {
-                    seqSs << "-1";
-                }
-                break;
-            }
-            if (noteIx > 0) {
-                seqSs << ",";
-            }
-            if (_isSynth) {
-                GetNoteName(s._midiNote[noteIx], noteName);
-                seqSs << "m" << noteName;
-            } else {
-                seqSs << s._midiNote[noteIx];
-            }
-        }
-        seqSs << ":" << s._velocity;
-    }
-    pt.PutString("sequence", seqSs.str().c_str());*/
-
     {
         serial::Ptree paramTrackTypePt = pt.AddChild("param_track_types");
         for (int ii = 0; ii < kNumParamTracks; ++ii) {
@@ -642,6 +614,7 @@ void StepSequencerEntity::SaveDerived(serial::Ptree pt) const {
 
     serial::SaveVectorInChildNode(pt, "sequence", "s", _initialMidiSequenceDoNotChange);    
 
+    pt.PutBool("late_changes", _enableLateChanges);
     pt.PutBool("start_mute", _startMute);
     pt.PutFloat("gain", _initGain);
     
@@ -684,6 +657,9 @@ void StepSequencerEntity::LoadDerived(serial::Ptree pt) {
     } else {
         serial::LoadVectorFromChildNode(pt, "sequence", _initialMidiSequenceDoNotChange);
     }
+
+    _enableLateChanges = true;
+    pt.TryGetBool("late_changes", &_enableLateChanges);
 
     pt.TryGetBool("start_mute", &_startMute);
     _initGain = 1.f;
@@ -742,6 +718,7 @@ ne::BaseEntity::ImGuiResult StepSequencerEntity::ImGuiDerived(GameManager& g) {
         needsInit = true;
     }
     ImGui::Checkbox("Quantize temp changes", &_quantizeTempStepChanges);
+    ImGui::Checkbox("Late changes", &_enableLateChanges);
     ImGui::InputInt("Init max voices", &_initMaxNumVoices, ImGuiInputTextFlags_EnterReturnsTrue);
     ImGui::InputInt("Max voices (not saved)", &_maxNumVoices, ImGuiInputTextFlags_EnterReturnsTrue);
     if (ImGui::TreeNode("Param track types")) {
