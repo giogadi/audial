@@ -311,6 +311,7 @@
                         <v>1</v>
                     </s>
                 </sequence>
+                <late_changes>true</late_changes>
                 <start_mute>false</start_mute>
                 <gain>0.75</gain>
                 <channels/>
@@ -550,6 +551,7 @@
                         <v>0</v>
                     </s>
                 </sequence>
+                <late_changes>true</late_changes>
                 <start_mute>false</start_mute>
                 <gain>0.400000006</gain>
                 <channels/>
@@ -669,6 +671,7 @@
                         <v>1</v>
                     </s>
                 </sequence>
+                <late_changes>true</late_changes>
                 <start_mute>true</start_mute>
                 <gain>1</gain>
                 <channels/>
@@ -908,6 +911,7 @@
                         <v>1</v>
                     </s>
                 </sequence>
+                <late_changes>true</late_changes>
                 <start_mute>false</start_mute>
                 <gain>0.5</gain>
                 <channels/>
@@ -1107,6 +1111,7 @@
                         <v>0</v>
                     </s>
                 </sequence>
+                <late_changes>true</late_changes>
                 <start_mute>false</start_mute>
                 <gain>1</gain>
                 <channels>
@@ -1348,6 +1353,7 @@
                         <v>1</v>
                     </s>
                 </sequence>
+                <late_changes>true</late_changes>
                 <start_mute>false</start_mute>
                 <gain>1</gain>
                 <channels>
@@ -1549,6 +1555,7 @@
                         <v>1</v>
                     </s>
                 </sequence>
+                <late_changes>true</late_changes>
                 <start_mute>false</start_mute>
                 <gain>1</gain>
                 <channels>
@@ -1790,6 +1797,7 @@
                         <v>1</v>
                     </s>
                 </sequence>
+                <late_changes>true</late_changes>
                 <start_mute>false</start_mute>
                 <gain>1</gain>
                 <channels>
@@ -2031,6 +2039,7 @@
                         <v>1</v>
                     </s>
                 </sequence>
+                <late_changes>true</late_changes>
                 <start_mute>false</start_mute>
                 <gain>1</gain>
                 <channels>
@@ -5953,6 +5962,7 @@
                         <v>0.400000006</v>
                     </s>
                 </sequence>
+                <late_changes>true</late_changes>
                 <start_mute>false</start_mute>
                 <gain>0.5</gain>
                 <channels/>
@@ -9562,6 +9572,7 @@
                         <v>0.5</v>
                     </s>
                 </sequence>
+                <late_changes>true</late_changes>
                 <start_mute>false</start_mute>
                 <gain>0.5</gain>
                 <channels/>
@@ -19442,7 +19453,7 @@
                     <id>499</id>
                 </editor_id>
                 <name>drop_start</name>
-                <entity_active>true</entity_active>
+                <entity_active>false</entity_active>
                 <pickable>true</pickable>
                 <transform>
                     <pos>
@@ -19645,7 +19656,7 @@
                         <one_time>true</one_time>
                         <action_type>Trigger</action_type>
                         <entity_editor_id>
-                            <id>499</id>
+                            <id>516</id>
                         </entity_editor_id>
                         <do_exit_actions>false</do_exit_actions>
                     </seq_action>
@@ -19979,6 +19990,7 @@
                         <v>1</v>
                     </s>
                 </sequence>
+                <late_changes>true</late_changes>
                 <start_mute>false</start_mute>
                 <gain>0.800000012</gain>
                 <channels/>
@@ -20133,25 +20145,6 @@
                         <params>
                             <p>
                                 <active>true</active>
-                                <v>2000</v>
-                            </p>
-                            <p>
-                                <active>true</active>
-                                <v>500</v>
-                            </p>
-                        </params>
-                        <v>0.600000024</v>
-                    </s>
-                    <s>
-                        <notes>
-                            <n>36</n>
-                            <n>-1</n>
-                            <n>-1</n>
-                            <n>-1</n>
-                        </notes>
-                        <params>
-                            <p>
-                                <active>true</active>
                                 <v>500</v>
                             </p>
                             <p>
@@ -20171,7 +20164,26 @@
                         <params>
                             <p>
                                 <active>true</active>
-                                <v>2000</v>
+                                <v>500</v>
+                            </p>
+                            <p>
+                                <active>true</active>
+                                <v>500</v>
+                            </p>
+                        </params>
+                        <v>0.600000024</v>
+                    </s>
+                    <s>
+                        <notes>
+                            <n>36</n>
+                            <n>-1</n>
+                            <n>-1</n>
+                            <n>-1</n>
+                        </notes>
+                        <params>
+                            <p>
+                                <active>true</active>
+                                <v>500</v>
                             </p>
                             <p>
                                 <active>true</active>
@@ -20428,6 +20440,7 @@
                         <v>0.600000024</v>
                     </s>
                 </sequence>
+                <late_changes>true</late_changes>
                 <start_mute>false</start_mute>
                 <gain>1</gain>
                 <channels>
@@ -20474,8 +20487,8 @@
                     <z>1</z>
                     <w>1</w>
                 </model_color_vec4>
-                <flow_section_id>4</flow_section_id>
-                <tag>5</tag>
+                <flow_section_id>-1</flow_section_id>
+                <tag>-1</tag>
                 <waypoint_follower>
                     <mode>FollowEntity</mode>
                     <waypoint_auto_start>false</waypoint_auto_start>
@@ -20546,6 +20559,128 @@
                 <off_cooldown_actions/>
                 <combo_end_actions/>
             </TypingEnemy>
+            <FlowTrigger>
+                <editor_id>
+                    <id>516</id>
+                </editor_id>
+                <name>drop_start0</name>
+                <entity_active>true</entity_active>
+                <pickable>true</pickable>
+                <transform>
+                    <pos>
+                        <x>37.7998047</x>
+                        <y>0</y>
+                        <z>30.0097065</z>
+                    </pos>
+                    <quat>
+                        <x>0</x>
+                        <y>0</y>
+                        <z>0</z>
+                        <w>1</w>
+                    </quat>
+                    <scale>
+                        <x>1</x>
+                        <y>1</y>
+                        <z>1</z>
+                    </scale>
+                </transform>
+                <model_name/>
+                <texture_name/>
+                <model_color_vec4>
+                    <x>0.800000012</x>
+                    <y>0.800000012</y>
+                    <z>0.800000012</z>
+                    <w>1</w>
+                </model_color_vec4>
+                <flow_section_id>-1</flow_section_id>
+                <tag>0</tag>
+                <waypoint_follower>
+                    <mode>Waypoint</mode>
+                    <waypoint_auto_start>false</waypoint_auto_start>
+                    <loop_waypoints>false</loop_waypoints>
+                    <start_time>3</start_time>
+                    <quantize>1</quantize>
+                    <quantize_buffer>0</quantize_buffer>
+                    <waypoints/>
+                    <follow_entity_name/>
+                    <follow_entity_editor_id>
+                        <id>-1</id>
+                    </follow_entity_editor_id>
+                </waypoint_follower>
+                <trigger_delay_beat_time>0</trigger_delay_beat_time>
+                <quantize>0</quantize>
+                <on_player_enter>false</on_player_enter>
+                <execute_on_init>false</execute_on_init>
+                <use_trigger_volumes>false</use_trigger_volumes>
+                <random_action_count>-1</random_action_count>
+                <shatter_on_trigger>false</shatter_on_trigger>
+                <actions>
+                    <seq_action>
+                        <one_time>true</one_time>
+                        <action_type>ChangePatch</action_type>
+                        <channel>0</channel>
+                        <blend_beat_time>0</blend_beat_time>
+                        <use_patch_bank>true</use_patch_bank>
+                        <patch_name>bigg_bass</patch_name>
+                    </seq_action>
+                    <seq_action>
+                        <one_time>true</one_time>
+                        <action_type>NoteOnOff</action_type>
+                        <channel>0</channel>
+                        <midiNotes>
+                            <array_item>
+                                <note>36</note>
+                            </array_item>
+                        </midiNotes>
+                        <noteLength>4</noteLength>
+                        <velocity>1</velocity>
+                        <quantizeDenom>0.25</quantizeDenom>
+                        <doNoteOff>true</doNoteOff>
+                        <holdNotes>false</holdNotes>
+                    </seq_action>
+                    <seq_action>
+                        <one_time>true</one_time>
+                        <action_type>SetEntityActive</action_type>
+                        <entities_tag>-1</entities_tag>
+                        <entity_editor_id>
+                            <id>514</id>
+                        </entity_editor_id>
+                        <active>true</active>
+                        <init_on_activate>true</init_on_activate>
+                        <init_if_already_active>false</init_if_already_active>
+                    </seq_action>
+                    <seq_action>
+                        <one_time>true</one_time>
+                        <action_type>SetStepSequencerMute</action_type>
+                        <seq_editor_id>
+                            <id>3</id>
+                        </seq_editor_id>
+                        <mute>false</mute>
+                        <gain>0.75</gain>
+                    </seq_action>
+                    <seq_action>
+                        <one_time>true</one_time>
+                        <action_type>BeatTimeEvent</action_type>
+                        <quantize_denom>0</quantize_denom>
+                        <beat_time_event>
+                            <event_type>AllNotesOff</event_type>
+                            <channel>1</channel>
+                            <delay_secs>0</delay_secs>
+                            <beat_time>0</beat_time>
+                        </beat_time_event>
+                    </seq_action>
+                    <seq_action>
+                        <one_time>false</one_time>
+                        <action_type>ChangePatch</action_type>
+                        <channel>2</channel>
+                        <blend_beat_time>0</blend_beat_time>
+                        <use_patch_bank>true</use_patch_bank>
+                        <patch_name>pad0_after</patch_name>
+                    </seq_action>
+                </actions>
+                <actions_on_exit/>
+                <trigger_volume_entities/>
+            </FlowTrigger>
         </new_entities>
     </script>
 </root>
