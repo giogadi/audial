@@ -89,6 +89,9 @@ void ParamAutomatorEntity::Update(GameManager& g, float dt) {
                     case StepSeqParamType::NoteLength:
                         seq->_noteLength = newValue;
                         break;
+                    case StepSeqParamType::Gain:
+                        seq->_gain = newValue;
+                        break;
                     case StepSeqParamType::Count: assert(false);
                 }
             }

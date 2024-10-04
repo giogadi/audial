@@ -14,7 +14,9 @@ std::unordered_map<std::string, StepSeqParamType> const gStringToStepSeqParamTyp
     
     { "Velocities", StepSeqParamType::Velocities },
     
-    { "NoteLength", StepSeqParamType::NoteLength }
+    { "NoteLength", StepSeqParamType::NoteLength },
+    
+    { "Gain", StepSeqParamType::Gain }
     
 };
 
@@ -24,7 +26,9 @@ char const* gStepSeqParamTypeStrings[] = {
 	
     "Velocities",
     
-    "NoteLength"
+    "NoteLength",
+    
+    "Gain"
     
 };
 

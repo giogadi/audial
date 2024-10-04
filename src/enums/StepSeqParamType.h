@@ -8,6 +8,8 @@ enum class StepSeqParamType : int {
     
     NoteLength,
     
+    Gain,
+    
     Count
 };
 extern char const* gStepSeqParamTypeStrings[];

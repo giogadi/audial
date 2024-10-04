@@ -3,6 +3,7 @@
     "enumName": "StepSeqParamType",
     "enumItems": [
         "Velocities",
-        "NoteLength"
+        "NoteLength",
+        "Gain"
     ]
 }
