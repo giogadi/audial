@@ -316,3 +316,14 @@ struct SetBpmSeqAction : public SeqAction {
     virtual bool ImGui() override;
     virtual void ExecuteDerived(GameManager& g) override;
 };
+
+struct SetMissTriggerSeqAction : public SeqAction {
+    virtual SeqActionType Type() const override { return SeqActionType::SetMissTrigger; }
+    EditorId _triggerEditorId;
+    ne::EntityId _trigger;
+    virtual void LoadDerived(serial::Ptree pt) override;
+    virtual void SaveDerived(serial::Ptree pt) const override;
+    virtual bool ImGui() override;
+    virtual void InitDerived(GameManager& g) override;
+    virtual void ExecuteDerived(GameManager& g) override;
+};

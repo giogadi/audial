@@ -1,0 +1,37 @@
+Spiky bits:
+- Player MUST have their volume setup correctly. This means either:
+  - narrow the dynamic range; or
+  - do a sound check at the beginning based on the loudest sound in the level
+- the starting push node, ugh
+- If you miss timing, do you just go whenever or do you die?
+- Section2 is too hard, maybe need to ramp up to that
+- Need something when player hits wrong key!
+- make things explode when used up, or something
+- Maybe start thinking about multiple paths in the first section?
+- !!!!!!different symbols for each node behavior!!!!!!
+- maybe disable controller inputs for now
+
+Ideas
+- Everytime you die, change the patch a bit to keep things interesting
+- let player sing into the mic to get vocoder shit
+- Unlock levels and things by finding the right patch
+- Make something work at any tempo the player wants
+- Use Merry Christmas Mr Lawrence music in ryuichi's memory of what he initially imagined film music would be like
+- push nodes that work like springs: pull into the node, and then it pushes back
+- do vocals that say the letters being typed, just for shits and giggles.
+  - could be luci saying the letters
+
+Near-term ideas:
+- add fun and weird shader effects (mirror, upside down, whatever) with every loop in the hangout buildup
+
+BUGS:
+- Player can't seem to interact with two letters at the same time still?
+
+TOOLS:
+- Support SynthParams in BeatTimeEvents
+- Enable setting a new global beat time epoch
+- Save to file in a separate thread
+
+Optimizations/improvements/etc:
+- Use an arena when loading so we don't have all this allocations for GetChildren().
+- Enable "late changes" for filled sequences

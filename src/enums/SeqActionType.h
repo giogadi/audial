@@ -52,6 +52,8 @@ enum class SeqActionType : int {
     
     SetBpm,
     
+    SetMissTrigger,
+    
     Count
 };
 extern char const* gSeqActionTypeStrings[];

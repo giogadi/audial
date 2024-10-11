@@ -91,6 +91,7 @@ struct FlowPlayerEntity : public ne::Entity {
 
         ne::EntityId _deathStartTrigger;
         ne::EntityId _deathEndTrigger;
+        ne::EntityId _missTrigger;
     };
     State _s;    
 

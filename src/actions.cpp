@@ -991,3 +991,31 @@ void SetBpmSeqAction::ExecuteDerived(GameManager& g) {
     if (g._editMode) { return; }
     g._beatClock->_bpm = _bpm;
 }
+
+void SetMissTriggerSeqAction::LoadDerived(serial::Ptree pt) {
+    serial::LoadFromChildOf(pt, "trigger", _triggerEditorId);
+}
+
+void SetMissTriggerSeqAction::SaveDerived(serial::Ptree pt) const {
+    serial::SaveInNewChildOf(pt, "trigger", _triggerEditorId);
+}
+
+bool SetMissTriggerSeqAction::ImGui() {
+    imgui_util::InputEditorId("Trigger", &_triggerEditorId);
+    return false;
+}
+
+void SetMissTriggerSeqAction::InitDerived(GameManager& g) {
+    ne::Entity* e = g._neEntityManager->FindEntityByEditorIdAndType(_triggerEditorId, ne::EntityType::FlowTrigger);
+    if (e) {
+        _trigger = e->_id;
+    } else {
+        printf("SetMissTriggerSeqAction::InitDerived: no entity found with editor ID %lld\n", _triggerEditorId._id);
+    }
+}
+
+void SetMissTriggerSeqAction::ExecuteDerived(GameManager& g) {
+    if (g._editMode) { return; }
+    FlowPlayerEntity* player = static_cast<FlowPlayerEntity*>(g._neEntityManager->GetFirstEntityOfType(ne::EntityType::FlowPlayer));
+    player->_s._missTrigger = _trigger;
+}

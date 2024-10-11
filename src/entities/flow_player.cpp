@@ -39,7 +39,7 @@ void FlowPlayerEntity::SaveDerived(serial::Ptree pt) const {
     pt.PutBool("pull_manual_hold", _p._pullManualHold);
     pt.PutFloat("pull_stop_time", _p._pullStopTime);
     serial::SaveInNewChildOf(pt, "death_start_trigger", _p._deathStartTriggerEditorId); 
-    serial::SaveInNewChildOf(pt, "death_end_trigger", _p._deathEndTriggerEditorId); 
+    serial::SaveInNewChildOf(pt, "death_end_trigger", _p._deathEndTriggerEditorId);
 
 }
 
@@ -534,6 +534,16 @@ void FlowPlayerEntity::UpdateDerived(GameManager& g, float dt) {
             } 
         }
     }
+
+    // Check if player has pressed any key
+    bool playerPressedKey = false;
+    for (int ii = (int)InputManager::Key::A; ii <= (int)InputManager::Key::Z; ++ii) {
+        InputManager::Key k = static_cast<InputManager::Key>(ii);
+        if (g._inputManager->IsKeyPressedThisFrame(k)) {
+            playerPressedKey = true;
+            break;
+        }
+    }
  
     TypingEnemyEntity* nearest = nullptr;
     float nearestDist2 = -1.f;
@@ -610,6 +620,14 @@ void FlowPlayerEntity::UpdateDerived(GameManager& g, float dt) {
 
     if (nearest) {
         _s._haveSeenKeyUpSinceLastHit[static_cast<size_t>(hitKey)] = false;
+    }
+
+    if (playerPressedKey && nearest == nullptr) {
+        // Trigger miss actions
+        FlowTriggerEntity* e = g._neEntityManager->GetEntityAs<FlowTriggerEntity>(_s._missTrigger);
+        if (e) {
+            e->OnTrigger(g);
+        }
     }
 
     //
