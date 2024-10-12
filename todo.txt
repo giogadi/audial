@@ -20,12 +20,15 @@ Ideas
 - push nodes that work like springs: pull into the node, and then it pushes back
 - do vocals that say the letters being typed, just for shits and giggles.
   - could be luci saying the letters
+- longer "enemies" that can act like sliders: the current position in the word is the setting of the slider, and you can type to go forward or back
+  - maybe can use them as platforms or walls that change length? 
 
 Near-term ideas:
 - add fun and weird shader effects (mirror, upside down, whatever) with every loop in the hangout buildup
 
 BUGS:
 - Player can't seem to interact with two letters at the same time still?
+- Our controller support is SUPER BUSTED, DUDE!!!!! But that's a later problem.
 
 TOOLS:
 - Support SynthParams in BeatTimeEvents
@@ -35,3 +38,5 @@ TOOLS:
 Optimizations/improvements/etc:
 - Use an arena when loading so we don't have all this allocations for GetChildren().
 - Enable "late changes" for filled sequences
+
+SOOOOO would this new thing be a mech or would it be an enemy? Maybe an enemy, ughhhh. So stupid.

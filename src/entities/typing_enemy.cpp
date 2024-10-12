@@ -143,6 +143,7 @@ void TypingEnemyEntity::LoadDerived(serial::Ptree pt) {
     pt.TryGetDouble("timed_hittable_time", &_p._timedHittableTime);
     serial::LoadFromChildOf(pt, "active_region_editor_id", _p._activeRegionEditorId);
     pt.TryGetBool("lock_player_in_region", &_p._lockPlayerOnEnterRegion);
+    pt.TryGetBool("allow_backward", &_p._allowTypeBackward);
 
     SeqAction::LoadActionsFromChildNode(pt, "hit_actions", _p._hitActions);
     SeqAction::LoadActionsFromChildNode(pt, "all_hit_actions", _p._allHitActions);
@@ -182,6 +183,7 @@ void TypingEnemyEntity::SaveDerived(serial::Ptree pt) const {
     pt.PutBool("reset_cooldown_on_any_hit", _p._resetCooldownOnAnyHit);
     pt.PutBool("init_hittable", _p._initHittable);
     pt.PutDouble("timed_hittable_time", _p._timedHittableTime);
+    pt.PutBool("allow_backward", _p._allowTypeBackward);
     
     serial::SaveInNewChildOf(pt, "active_region_editor_id", _p._activeRegionEditorId);
     pt.PutBool("lock_player_in_region", _p._lockPlayerOnEnterRegion);
@@ -222,6 +224,7 @@ ne::BaseEntity::ImGuiResult TypingEnemyEntity::ImGuiDerived(GameManager& g) {
     ImGui::Checkbox("Reset cooldown on any hit", &_p._resetCooldownOnAnyHit);
     ImGui::Checkbox("Init hittable", &_p._initHittable);
     ImGui::InputDouble("Timed hittable (beat)", &_p._timedHittableTime);
+    ImGui::Checkbox("Allow backward", &_p._allowTypeBackward);
     imgui_util::InputEditorId("Active Region", &_p._activeRegionEditorId);
     ImGui::Checkbox("Lock player in region", &_p._lockPlayerOnEnterRegion);
     if (ImGui::Button("Set Region color")) {
@@ -508,18 +511,33 @@ void TypingEnemyEntity::Draw(GameManager& g, float dt) {
     }    
 }
 
-HitResult TypingEnemyEntity::OnHit(GameManager& g) {
+HitResult TypingEnemyEntity::OnHit(GameManager& g, int hitKeyIndex) {
     HitResult result;
 
-    ++_s._numHits;    
-    if (_s._numHits == _p._keyText.length()) {
-        for (auto const& pAction : _p._allHitActions) {
-            pAction->Execute(g);
-            std::unique_ptr<SeqAction> clone = SeqAction::Clone(*pAction);
-            result._heldActions.push_back(std::move(clone));
+    int hitActionIx = -1;
+    if (hitKeyIndex == 0) {
+        // FORWARD
+        hitActionIx = _s._numHits;
+        ++_s._numHits;
+        if (_s._numHits == _p._keyText.length()) {
+            for (auto const& pAction : _p._allHitActions) {
+                pAction->Execute(g);
+                std::unique_ptr<SeqAction> clone = SeqAction::Clone(*pAction);
+                result._heldActions.push_back(std::move(clone));
+            }
         }
-    }    
-    DoHitActions(g, result._heldActions);
+    } else if (hitKeyIndex == 1) {
+        // BACKWARD
+        --_s._numHits;
+        hitActionIx = _s._numHits;
+        _s._numHits = std::max(0, _s._numHits); 
+    } else {
+        printf("TypingEnemyEntity::OnHit: Unhandled hitKeyIndex %d\n", hitKeyIndex);
+        return result;
+    }
+    hitActionIx = math_util::Clamp(hitActionIx, 0, _p._hitActions.size() - 1);
+     
+    DoHitActions(g, hitActionIx, result._heldActions);
     if (g._editMode && _s._numHits >= _p._keyText.length()) {
         _s._numHits = 0;
     }
@@ -551,14 +569,13 @@ HitResult TypingEnemyEntity::OnHit(GameManager& g) {
     return result;
 }
 
-void TypingEnemyEntity::DoHitActions(GameManager& g, std::vector<std::unique_ptr<SeqAction>>& clones) {
+void TypingEnemyEntity::DoHitActions(GameManager& g, int actionIx, std::vector<std::unique_ptr<SeqAction>>& clones) {
     if (_p._hitActions.empty()) {
         return;
     }
     switch (_p._hitBehavior) {
         case HitBehavior::SingleAction: {
-            int hitActionIx = (_s._numHits - 1) % _p._hitActions.size();
-            SeqAction& a = *_p._hitActions[hitActionIx];
+            SeqAction& a = *_p._hitActions[actionIx];
 
             a.Execute(g);
             std::unique_ptr<SeqAction> clone = SeqAction::Clone(a);
@@ -590,13 +607,23 @@ void TypingEnemyEntity::OnHitOther(GameManager& g) {
     _s._timeOfLastHit = -1.0;
 }
 
-InputManager::Key TypingEnemyEntity::GetNextKey() const {
+TypingEnemyEntity::NextKeys TypingEnemyEntity::GetNextKeys() const {
+    TypingEnemyEntity::NextKeys nextKeys;
+    nextKeys.fill(InputManager::Key::NumKeys);
     if (_p._keyText.empty()) {
-        return InputManager::Key::NumKeys;
+        return nextKeys;
     }
+    int keyIx = 0;
     int textIndex = std::min(_s._numHits, (int) _p._keyText.length() - 1);
     char nextChar = _p._keyText.at(textIndex);
-    return InputManager::CharToKey(nextChar);
+    nextKeys[keyIx++] = InputManager::CharToKey(nextChar);
+    if (_p._allowTypeBackward) {
+        if (textIndex > 0) {
+            char prevChar = _p._keyText.at(textIndex - 1);
+            nextKeys[keyIx++] = InputManager::CharToKey(prevChar);
+        }
+    }
+    return nextKeys;
 }
 
 InputManager::ControllerButton TypingEnemyEntity::GetNextButton() const {
@@ -609,7 +636,7 @@ InputManager::ControllerButton TypingEnemyEntity::GetNextButton() const {
 }
 
 void TypingEnemyEntity::OnEditPick(GameManager& g) {
-    OnHit(g);
+    OnHit(g, 0);
 }
 
 bool TypingEnemyEntity::CanHit(FlowPlayerEntity const& player, GameManager& g) const {

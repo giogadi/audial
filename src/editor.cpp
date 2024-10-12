@@ -137,7 +137,7 @@ bool sMultiEnemyEditorVisible = false;
 void Editor::PickEntity(ne::BaseEntity* entity) {
     if (entity->Type() == ne::EntityType::TypingEnemy) {
         TypingEnemyEntity* enemy = static_cast<TypingEnemyEntity*>(entity);
-        HitResult result = enemy->OnHit(*_g);
+        HitResult result = enemy->OnHit(*_g, 0);
         if (!_heldActions.empty()) {
             for (auto const& a : _heldActions) {
                 a->ExecuteRelease(*_g);

@@ -1,6 +1,7 @@
 #pragma once
 
 #include <vector>
+#include <array>
 
 #include "new_entity.h"
 #include "seq_action.h"
@@ -53,6 +54,7 @@ struct TypingEnemyEntity : public ne::Entity {
         float _cooldownQuantizeDenom = 0.f;
         bool _initHittable = true;
         double _timedHittableTime = -1.0;
+        bool _allowTypeBackward = false;
     };
     Props _p;
     
@@ -71,11 +73,12 @@ struct TypingEnemyEntity : public ne::Entity {
     };
     State _s;
 
-    HitResult OnHit(GameManager& g);
-    void DoHitActions(GameManager& g, std::vector<std::unique_ptr<SeqAction>>& clones);
+    HitResult OnHit(GameManager& g, int hitKeyIndex);
+    void DoHitActions(GameManager& g, int hitActionIx, std::vector<std::unique_ptr<SeqAction>>& clones);
     void OnHitOther(GameManager& g);
     void DoComboEndActions(GameManager& g);
-    InputManager::Key GetNextKey() const;
+    typedef std::array<InputManager::Key, 4> NextKeys;
+    NextKeys GetNextKeys() const;
     InputManager::ControllerButton GetNextButton() const;
     bool CanHit(FlowPlayerEntity const& player, GameManager& g) const;
     void SetHittable(bool hittable);

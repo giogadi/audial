@@ -447,12 +447,7 @@ void FlowPlayerEntity::UpdateDerived(GameManager& g, float dt) {
             _s._haveSeenKeyUpSinceLastHit[ii] = true;
         }
     }
-
-    // Update keyup status of enemies
-    for (ne::EntityManager::Iterator enemyIter = g._neEntityManager->GetIterator(ne::EntityType::TypingEnemy); !enemyIter.Finished(); enemyIter.Next()) {
-        TypingEnemyEntity* enemy = (TypingEnemyEntity*)enemyIter.GetEntity();
-        
-    }
+ 
     double const beatTime = g._beatClock->GetBeatTimeFromEpoch();
     if (_s._respawnStartBeatTime > 0.0) {
         //double respawnEndTime = g._beatClock->GetNextDownBeatTime(_s._respawnStartBeatTime + 4.0);
@@ -551,6 +546,7 @@ void FlowPlayerEntity::UpdateDerived(GameManager& g, float dt) {
     Mat4 viewProjTransform = g._scene->GetViewProjTransform();
     bool const usingController = g._inputManager->IsUsingController();
     InputManager::Key hitKey = InputManager::Key::NumKeys;
+    int hitKeyIndex = -1;
     TypingEnemyEntity* carrier = nullptr;
     if (_s._moveState == MoveState::Carried) {
         carrier = g._neEntityManager->GetEntityAs<TypingEnemyEntity>(_s._carrierId);
@@ -579,6 +575,7 @@ void FlowPlayerEntity::UpdateDerived(GameManager& g, float dt) {
         // }
         // enemy->_s._currentColor = enemy->_modelColor;        
 
+        bool hasHit = false;
         if (usingController) {
             InputManager::ControllerButton nextButton = enemy->GetNextButton();
             // TODO: plug in haveSeenKeyUp whatever
@@ -586,10 +583,24 @@ void FlowPlayerEntity::UpdateDerived(GameManager& g, float dt) {
                 continue;
             }
         } else {
-            InputManager::Key nextKey = enemy->GetNextKey();
-            bool hit = g._inputManager->IsKeyPressed(nextKey) && _s._haveSeenKeyUpSinceLastHit[static_cast<size_t>(nextKey)] && _s._keyBufferTimeLeft[static_cast<size_t>(nextKey)] > 0;
-            if (!hit) continue;
-            hitKey = nextKey;
+            TypingEnemyEntity::NextKeys nextKeys = enemy->GetNextKeys();
+            for (int kIx = 0; kIx < nextKeys.size(); ++kIx) {
+                InputManager::Key key = nextKeys[kIx];
+                if (key == InputManager::Key::NumKeys) {
+                    break;
+                } 
+                bool hit = g._inputManager->IsKeyPressed(key) && _s._haveSeenKeyUpSinceLastHit[static_cast<size_t>(key)] && _s._keyBufferTimeLeft[static_cast<size_t>(key)] > 0;
+                if (hit) {
+                    hasHit = true;
+                    hitKey = key;
+                    hitKeyIndex = kIx;
+                    break;
+                }
+            } 
+        }
+
+        if (!hasHit) {
+            continue;
         }
 
         if (enemy->_id == _s._lastHitEnemy) {
@@ -620,6 +631,9 @@ void FlowPlayerEntity::UpdateDerived(GameManager& g, float dt) {
 
     if (nearest) {
         _s._haveSeenKeyUpSinceLastHit[static_cast<size_t>(hitKey)] = false;
+        if (hitKeyIndex < 0) {
+            printf("FlowPlayer: WTF nearest without hitKeyIndex?\n");
+        }
     }
 
     if (playerPressedKey && nearest == nullptr) {
@@ -637,13 +651,13 @@ void FlowPlayerEntity::UpdateDerived(GameManager& g, float dt) {
     if (nearest != nullptr) {
         actionOnly = IsActionOnly(*nearest);
         if (actionOnly) {
-            nearest->OnHit(g);
+            nearest->OnHit(g, hitKeyIndex);
         }
     }
     if (nearest != nullptr && !actionOnly) {
         _s._respawnBeforeFirstInteract = false;
         
-        HitResult hitResult = nearest->OnHit(g);
+        HitResult hitResult = nearest->OnHit(g, hitKeyIndex);
         HitResponse const& hitResponse = hitResult._response;
 
         HeldAction& heldAction = _s._heldActions.emplace_back();
@@ -901,7 +915,6 @@ void FlowPlayerEntity::UpdateDerived(GameManager& g, float dt) {
         break;        
     }
 
-    Vec3 dPos = newPos - _transform.Pos();
     _transform.SetPos(newPos);
 
 

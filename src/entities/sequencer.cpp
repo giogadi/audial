@@ -6,12 +6,6 @@
 #include "audio.h"
 #include "imgui_vector_util.h"
 
-namespace {
-
-std::array<char,1024> gAudioEventScriptBuf;
-
-} // end namespace
-
 void SequencerEntity::InitDerived(GameManager& g) {
     if (g._editMode) {
         _playing = false;
