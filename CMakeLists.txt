@@ -112,6 +112,7 @@ add_executable(game
     src/entities/camera.cpp src/entities/camera.h    
     src/entities/sequencer.cpp src/entities/sequencer.h
     src/entities/typing_enemy.cpp src/entities/typing_enemy.h
+    src/entities/typing_slider.cpp src/entities/typing_slider.h
     src/entities/step_sequencer.cpp src/entities/step_sequencer.h
     src/entities/action_sequencer.cpp src/entities/action_sequencer.h
     src/entities/param_automator.cpp src/entities/param_automator.h

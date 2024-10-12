@@ -19,6 +19,7 @@ namespace ne {
     X(Hazard) \
     X(EnemySpawner) \
     X(TypingEnemy)  \
+    X(TypingSlider) \
     X(FlowPlayer) \
     X(StepSequencer) \
     X(ParamAutomator) \
