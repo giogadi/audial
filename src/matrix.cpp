@@ -57,7 +57,7 @@ bool Mat3::TransposeInverse(Mat3& out) const {
     float C = m(1,0)*m(2,1) - m(1,1)*m(2,0);
     
     float det = m(0,0)*A + m(0,1)*B + m(0,2)*C;
-    if (det < 0.00001) {
+    if (std::abs(det) < 0.00001) {
         return false;
     }
     float invDet = 1.f / det;
