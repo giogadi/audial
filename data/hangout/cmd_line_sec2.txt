@@ -2,12 +2,5 @@
 //-s data/hangout/level1_1.xml -y data/hangout/patches.xml
 -s data/hangout/level1_1_3.xml -y data/hangout/patches.xml
 
-//Hangout
-// Section 1
-//-a 352
-
 // Section 2
-//-a 395
-
-// Section 3
--a 488
+-a 395
