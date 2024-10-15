@@ -104,6 +104,8 @@ void FlowPlayerEntity::InitDerived(GameManager& g) {
         _s._haveSeenKeyUpSinceLastHit[ii] = true;
         _s._keyBufferTimeLeft[ii] = 0;
     }
+
+    _s._misses.Clear();
 }
 
 namespace {
@@ -283,9 +285,10 @@ void FlowPlayerEntity::Draw(GameManager& g, float const dt) {
         RespawnDraw(*this, g);
         return;
     }
+
+    double const beatTime = g._beatClock->GetBeatTimeFromEpoch();
     
-    if (_s._moveState == MoveState::Default) {
-        double const beatTime = g._beatClock->GetBeatTimeFromEpoch();
+    if (_s._moveState == MoveState::Default) {        
         if (_s._countOffEndTime >= 0.0 && beatTime < _s._countOffEndTime) {
             double timeLeft = _s._countOffEndTime - beatTime;
             int numActive = (int)std::ceil(4 - timeLeft);
@@ -373,6 +376,28 @@ void FlowPlayerEntity::Draw(GameManager& g, float const dt) {
     if (_model != nullptr) {
         renderer::ModelInstance& model = g._scene->DrawMesh(_model, renderTrans.Mat4Scale(), _s._currentColor);
         model._topLayer = true;
+    }
+
+    // Draw misses (assumes ringbuffer is ordered by t)
+    bool append = false;
+    Transform textTrans = _transform;
+    textTrans.Translate(Vec3(0.f, 0.f, -0.5f));
+    for (int ii = 0; ii < _s._misses._count; ++ii) {
+        double constexpr kMissFadeTime = 0.5;
+        Miss const& m = *_s._misses[ii];
+        double const t = beatTime - m.t;
+        if (t >= kMissFadeTime) {
+            _s._misses.Pop();
+            --ii;
+            continue;
+        }
+        float constexpr kTextSize = 1.5f;
+        float factor = (float)(math_util::InverseLerp(0.0, kMissFadeTime, t));
+        float alpha = math_util::Lerp(1.f, 0.f, factor);
+        Vec4 color(1.f, 0.f, 0.f, alpha);
+        std::string text(1, m.c);
+        g._scene->DrawTextWorld(std::move(text), textTrans.Pos(), 1.f, color, append);
+        append = true;
     }
 }
 
@@ -466,9 +491,6 @@ void FlowPlayerEntity::UpdateDerived(GameManager& g, float dt) {
             RespawnPlayer(*this, g);
             return;
         }
-
-        
-
         return;
     }
 
@@ -532,10 +554,12 @@ void FlowPlayerEntity::UpdateDerived(GameManager& g, float dt) {
 
     // Check if player has pressed any key
     bool playerPressedKey = false;
+    char pressedKey = 'a';
     for (int ii = (int)InputManager::Key::A; ii <= (int)InputManager::Key::Z; ++ii) {
         InputManager::Key k = static_cast<InputManager::Key>(ii);
         if (g._inputManager->IsKeyPressedThisFrame(k)) {
             playerPressedKey = true;
+            pressedKey = 'a' + (ii - (int)InputManager::Key::A);
             break;
         }
     }
@@ -641,6 +665,13 @@ void FlowPlayerEntity::UpdateDerived(GameManager& g, float dt) {
         FlowTriggerEntity* e = g._neEntityManager->GetEntityAs<FlowTriggerEntity>(_s._missTrigger);
         if (e) {
             e->OnTrigger(g);
+        }
+        
+
+        Miss* m = _s._misses.Push();
+        if (m != nullptr) {
+            m->c = pressedKey;
+            m->t = beatTime;
         }
     }
 

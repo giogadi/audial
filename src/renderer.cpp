@@ -1455,6 +1455,18 @@ void Scene::Draw(int windowWidth, int windowHeight, float timeInSecs) {
     // game.cpp from including any GL code?
     glClear(GL_DEPTH_BUFFER_BIT);
 
+    // top-layer models
+    {
+        Shader& shader = _pInternal->_modelShader;
+        shader.Use();
+        SetLightUniformsModelShader(lights, _camera._transform.GetPos(), lightViewProj, *_pInternal);
+        for (ModelInstance const* m : _pInternal->_topLayerModels) {
+            DrawModelInstance(*_pInternal, viewProjTransform, *m, m->_explodeDist);
+        }
+    }
+
+    glClear(GL_DEPTH_BUFFER_BIT);
+
     //
     // TEXT RENDERING
     //
@@ -1507,18 +1519,7 @@ void Scene::Draw(int windowWidth, int windowHeight, float timeInSecs) {
         }
 
         _pInternal->_glyphsToDraw.clear();
-    }
-
-        
-    // top-layer models
-    {
-        Shader& shader = _pInternal->_modelShader;
-        shader.Use();
-        SetLightUniformsModelShader(lights, _camera._transform.GetPos(), lightViewProj, *_pInternal);
-        for (ModelInstance const* m : _pInternal->_topLayerModels) {
-            DrawModelInstance(*_pInternal, viewProjTransform, *m, m->_explodeDist);
-        }        
-    }
+    }           
 
     // Lines
     if (!_pInternal->_linesToDraw.empty()) {

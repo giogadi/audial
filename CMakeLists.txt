@@ -31,6 +31,7 @@ add_executable(game
 
     src/editor_id.cpp src/editor_id.h
     src/util.h
+    src/ring_buffer.h
     src/string_util.h
     src/math_util.h
     src/logger.h

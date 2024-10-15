@@ -7,6 +7,7 @@
 #include "new_entity.h"
 #include "enums/TypingEnemyType.h"
 #include "input_manager.h"
+#include "ring_buffer.h"
 
 struct SeqAction;
 
@@ -42,6 +43,10 @@ struct FlowPlayerEntity : public ne::Entity {
     struct TailState {
             Vec3 p;
             Vec3 v;
+    };
+    struct Miss {
+        char c;
+        double t;
     };
     struct State {
         State(State const& rhs) = delete;
@@ -92,6 +97,8 @@ struct FlowPlayerEntity : public ne::Entity {
         ne::EntityId _deathStartTrigger;
         ne::EntityId _deathEndTrigger;
         ne::EntityId _missTrigger;
+
+        RingBuffer<Miss, 8> _misses;
     };
     State _s;    
 
