@@ -23,7 +23,7 @@
 #define DRAW_TERRAIN 1
 
 namespace {
-constexpr int kMaxLineCount = 10;
+constexpr int kMaxLineCount = 512;
 int constexpr kMaxNumPointLights = 2;
 
 constexpr int kShadowWidth = 1 * 1024;

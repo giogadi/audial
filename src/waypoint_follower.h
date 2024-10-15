@@ -39,6 +39,7 @@ struct WaypointFollower {
         void Save(serial::Ptree pt) const;
         void Load(serial::Ptree pt);
         bool ImGui();
+        void DrawLines(GameManager& g, Vec3 p, Vec4 const& color) const;
     };
 
     void Init(GameManager& g, ne::BaseEntity const& entity, Props const& p);
@@ -49,7 +50,7 @@ struct WaypointFollower {
     bool UpdateFollowEntity(GameManager& g, float const dt, ne::BaseEntity* pEntity, Props const& p);
 
     void Start(GameManager& g, ne::BaseEntity const& e);
-    void Stop();
+    void Stop();    
 
     struct State {
         bool _followingWaypoints = false;

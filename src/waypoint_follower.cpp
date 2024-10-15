@@ -32,6 +32,31 @@ bool Waypoint::ImGui() {
     return false;
 }
 
+void WaypointFollower::Props::DrawLines(GameManager& g, Vec3 p, Vec4 const& color) const {
+    constexpr float kSize = 0.05f;
+    for (int wpIx = 0; wpIx < _waypoints.size(); ++wpIx) {
+        Vec3 p0 = p;
+        Vec3 p1 = p0 + _waypoints[wpIx]._p;
+        Vec3 x = p1 - p0;
+        float dist = x.Normalize();
+        Vec3 y(0.f, 1.f, 0.f);
+        Vec3 z = Vec3::Cross(x, y);
+        Mat3 rot;
+        rot.SetCol(0, x);
+        rot.SetCol(1, y);
+        rot.SetCol(2, z);
+        Quaternion q;
+        q.SetFromRotMat(rot);
+        Transform trans;
+        trans.SetQuat(q);
+        trans.SetScale(Vec3(dist, kSize, kSize));
+        trans.SetPos((p0 + p1) * 0.5f);
+        g._scene->DrawCube(trans.Mat4Scale(), color);
+
+        p = p1;
+    }
+}
+
 void WaypointFollower::Props::Save(serial::Ptree pt) const {
     switch (_mode) {
     case Props::Mode::Waypoint: {

@@ -227,3 +227,8 @@ void FlowTriggerEntity::UpdateDerived(GameManager& g, float dt) {
         _triggerTime = -1.0;
     }
 }
+
+void FlowTriggerEntity::Draw(GameManager& g, float dt) {
+    //_wpProps.DrawLines(g, _initTransform.Pos(), Vec4(0.7f, 0.7f, 0.7f, 1.f));
+    ne::Entity::Draw(g, dt);
+}

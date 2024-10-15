@@ -16,6 +16,7 @@
 #include "geometry.h"
 #include "entities/flow_player.h"
 #include "string_util.h"
+#include "particle_mgr.h"
 
 extern GameManager gGameManager;
 
@@ -374,19 +375,21 @@ void DrawPullEnemy(float const dt, GameManager& g, TypingEnemyEntity& e, FlowPla
                 t.SetTranslation(p);
             }
         } else {
+            Transform textTrans = renderTrans;
+            textTrans.Translate(Vec3(0.25f, 0.f, 0.25f));
             float constexpr kTextSize = 1.5f;
             std::string_view fadedText = std::string_view(e._p._keyText).substr(0, numFadedButtons);
             Vec4 color(1.f, 1.f, 1.f, kFadeAlpha);
             if (!fadedText.empty()) {
                 // AHHHH ALLOCATION
-                g._scene->DrawTextWorld(std::string(fadedText), renderTrans.GetPos(), kTextSize, color);
+                g._scene->DrawTextWorld(std::string(fadedText), textTrans.GetPos(), kTextSize, color);
             }
             color._w = 1.f;
             std::string_view activeText = std::string_view(e._p._keyText).substr(numFadedButtons);
             if (!activeText.empty()) {
                 bool appendToPrevious = numFadedButtons > 0;
                 // AHHHH ALLOCATION
-                g._scene->DrawTextWorld(std::string(activeText), renderTrans.GetPos(), kTextSize, color, appendToPrevious);
+                g._scene->DrawTextWorld(std::string(activeText), textTrans.GetPos(), kTextSize, color, appendToPrevious);
             }
         }
     }
@@ -556,6 +559,29 @@ HitResult TypingEnemyEntity::OnHit(GameManager& g, int hitKeyIndex) {
         }
         if (_p._destroyAfterTyped) {
             bool success = g._neEntityManager->TagForDeactivate(_id);
+
+            Vec3 boxP = _transform.Pos();
+            // TODO: Assumes AABB
+            Vec3 minP = boxP - _transform.Scale() * 0.5f;
+            Vec3 maxP = boxP + _transform.Scale() * 0.5f;
+            for (int ii = 0; ii < 20; ++ii) {
+                Vec3 p;
+                p._x = rng::GetFloatGlobal(minP._x, maxP._x);
+                p._y = rng::GetFloatGlobal(minP._y, maxP._y);
+                p._z = rng::GetFloatGlobal(minP._z, maxP._z);
+                Vec3 dir = p - boxP;
+                dir.Normalize();
+
+                Particle* particle = g._particleMgr->SpawnParticle();
+                particle->t.SetPos(p);
+                particle->t.SetScale(Vec3(0.15f, 0.15f, 0.15f));
+                particle->v = 2.f * dir;
+                particle->rotV = 4.f * dir;
+                particle->color = _modelColor;
+                particle->alphaV = -2.f;
+                particle->timeLeft = 1.f;
+                particle->shape = ParticleShape::Cube;
+            }
             assert(success);
         }
     }

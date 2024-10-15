@@ -37,6 +37,7 @@ struct FlowTriggerEntity : public ne::Entity {
     virtual void SaveDerived(serial::Ptree pt) const override;
     virtual void LoadDerived(serial::Ptree pt) override;
     virtual ImGuiResult ImGuiDerived(GameManager& g) override;
+    virtual void Draw(GameManager& g, float dt) override;
 
     FlowTriggerEntity() = default;
     FlowTriggerEntity(FlowTriggerEntity const&) = delete;

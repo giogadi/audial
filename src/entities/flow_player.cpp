@@ -374,7 +374,14 @@ void FlowPlayerEntity::Draw(GameManager& g, float const dt) {
     }
 
     if (_model != nullptr) {
-        renderer::ModelInstance& model = g._scene->DrawMesh(_model, renderTrans.Mat4Scale(), _s._currentColor);
+        Vec4 color = _s._currentColor;
+        if (_s._misses._count > 0) {
+            double const t = beatTime - _s._misses[_s._misses._count - 1]->t;
+            double constexpr kMissFadeTime = 0.5;
+            float factor = (float)(math_util::InverseLerp(0.0, kMissFadeTime, t));
+            color = math_util::Vec4Lerp(Vec4(1.f, 0.f, 0.f, 1.f), _s._currentColor, factor);
+        }
+        renderer::ModelInstance& model = g._scene->DrawMesh(_model, renderTrans.Mat4Scale(), color);
         model._topLayer = true;
     }
 
@@ -396,7 +403,7 @@ void FlowPlayerEntity::Draw(GameManager& g, float const dt) {
         float alpha = math_util::Lerp(1.f, 0.f, factor);
         Vec4 color(1.f, 0.f, 0.f, alpha);
         std::string text(1, m.c);
-        g._scene->DrawTextWorld(std::move(text), textTrans.Pos(), 1.f, color, append);
+        g._scene->DrawTextWorld(std::move(text), textTrans.Pos(), kTextSize, color, append);
         append = true;
     }
 }
