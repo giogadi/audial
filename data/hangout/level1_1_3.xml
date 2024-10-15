@@ -90,7 +90,7 @@
                     <pos>
                         <x>7.46041727</x>
                         <y>10</y>
-                        <z>-4.74027491</z>
+                        <z>-4.53999996</z>
                     </pos>
                     <quat>
                         <x>-0.70710659</x>
@@ -2198,6 +2198,7 @@
                 <reset_cooldown_on_any_hit>false</reset_cooldown_on_any_hit>
                 <init_hittable>true</init_hittable>
                 <timed_hittable_time>-1</timed_hittable_time>
+                <allow_backward>false</allow_backward>
                 <active_region_editor_id>
                     <id>341</id>
                 </active_region_editor_id>
@@ -2427,6 +2428,7 @@
                 <reset_cooldown_on_any_hit>false</reset_cooldown_on_any_hit>
                 <init_hittable>false</init_hittable>
                 <timed_hittable_time>-1</timed_hittable_time>
+                <allow_backward>false</allow_backward>
                 <active_region_editor_id>
                     <id>342</id>
                 </active_region_editor_id>
@@ -2667,6 +2669,7 @@
                 <reset_cooldown_on_any_hit>false</reset_cooldown_on_any_hit>
                 <init_hittable>false</init_hittable>
                 <timed_hittable_time>-1</timed_hittable_time>
+                <allow_backward>false</allow_backward>
                 <active_region_editor_id>
                     <id>344</id>
                 </active_region_editor_id>
@@ -2832,7 +2835,7 @@
                 <pickable>true</pickable>
                 <transform>
                     <pos>
-                        <x>1.67916775</x>
+                        <x>2.33382249</x>
                         <y>0</y>
                         <z>-8.17778206</z>
                     </pos>
@@ -2843,7 +2846,7 @@
                         <w>1</w>
                     </quat>
                     <scale>
-                        <x>10</x>
+                        <x>8.69069099</x>
                         <y>1</y>
                         <z>1</z>
                     </scale>
@@ -2898,212 +2901,6 @@
                             <move_time>0.25</move_time>
                             <p>
                                 <x>-4</x>
-                                <y>0</y>
-                                <z>0</z>
-                            </p>
-                        </waypoint>
-                        <waypoint>
-                            <wait_time>0.5</wait_time>
-                            <move_time>0</move_time>
-                            <p>
-                                <x>0</x>
-                                <y>0</y>
-                                <z>0</z>
-                            </p>
-                        </waypoint>
-                    </waypoints>
-                    <follow_entity_name/>
-                    <follow_entity_editor_id>
-                        <id>-1</id>
-                    </follow_entity_editor_id>
-                </waypoint_follower>
-                <hurt_on_hit>true</hurt_on_hit>
-                <can_hit>true</can_hit>
-                <hp>-1</hp>
-                <move_mode>Waypoints</move_mode>
-                <rot_vel>0</rot_vel>
-                <polygon/>
-                <hit_actions/>
-                <children_editor_ids/>
-            </FlowWall>
-            <FlowWall>
-                <editor_id>
-                    <id>267</id>
-                </editor_id>
-                <name>wall1</name>
-                <entity_active>true</entity_active>
-                <pickable>true</pickable>
-                <transform>
-                    <pos>
-                        <x>13.1826382</x>
-                        <y>0</y>
-                        <z>-8.17361069</z>
-                    </pos>
-                    <quat>
-                        <x>0</x>
-                        <y>0</y>
-                        <z>0</z>
-                        <w>1</w>
-                    </quat>
-                    <scale>
-                        <x>10</x>
-                        <y>1</y>
-                        <z>1</z>
-                    </scale>
-                </transform>
-                <model_name>cube</model_name>
-                <texture_name>white</texture_name>
-                <model_color_vec4>
-                    <x>0.911764681</x>
-                    <y>0.238457501</y>
-                    <z>0.0312860534</z>
-                    <w>1</w>
-                </model_color_vec4>
-                <flow_section_id>-1</flow_section_id>
-                <tag>0</tag>
-                <waypoint_follower>
-                    <mode>Waypoint</mode>
-                    <waypoint_auto_start>false</waypoint_auto_start>
-                    <loop_waypoints>true</loop_waypoints>
-                    <start_time>4</start_time>
-                    <quantize>1</quantize>
-                    <quantize_buffer>0</quantize_buffer>
-                    <waypoints>
-                        <waypoint>
-                            <wait_time>1.25</wait_time>
-                            <move_time>0.25</move_time>
-                            <p>
-                                <x>4</x>
-                                <y>0</y>
-                                <z>0</z>
-                            </p>
-                        </waypoint>
-                        <waypoint>
-                            <wait_time>1.75</wait_time>
-                            <move_time>0.25</move_time>
-                            <p>
-                                <x>4</x>
-                                <y>0</y>
-                                <z>0</z>
-                            </p>
-                        </waypoint>
-                        <waypoint>
-                            <wait_time>1.75</wait_time>
-                            <move_time>0.25</move_time>
-                            <p>
-                                <x>-4</x>
-                                <y>0</y>
-                                <z>0</z>
-                            </p>
-                        </waypoint>
-                        <waypoint>
-                            <wait_time>1.75</wait_time>
-                            <move_time>0.25</move_time>
-                            <p>
-                                <x>-4</x>
-                                <y>0</y>
-                                <z>0</z>
-                            </p>
-                        </waypoint>
-                        <waypoint>
-                            <wait_time>0.5</wait_time>
-                            <move_time>0</move_time>
-                            <p>
-                                <x>0</x>
-                                <y>0</y>
-                                <z>0</z>
-                            </p>
-                        </waypoint>
-                    </waypoints>
-                    <follow_entity_name/>
-                    <follow_entity_editor_id>
-                        <id>-1</id>
-                    </follow_entity_editor_id>
-                </waypoint_follower>
-                <hurt_on_hit>true</hurt_on_hit>
-                <can_hit>true</can_hit>
-                <hp>-1</hp>
-                <move_mode>Waypoints</move_mode>
-                <rot_vel>0</rot_vel>
-                <polygon/>
-                <hit_actions/>
-                <children_editor_ids/>
-            </FlowWall>
-            <FlowWall>
-                <editor_id>
-                    <id>268</id>
-                </editor_id>
-                <name>wall2</name>
-                <entity_active>true</entity_active>
-                <pickable>true</pickable>
-                <transform>
-                    <pos>
-                        <x>-5.49097109</x>
-                        <y>0</y>
-                        <z>-5.43472481</z>
-                    </pos>
-                    <quat>
-                        <x>0</x>
-                        <y>0</y>
-                        <z>0</z>
-                        <w>1</w>
-                    </quat>
-                    <scale>
-                        <x>10</x>
-                        <y>1</y>
-                        <z>1</z>
-                    </scale>
-                </transform>
-                <model_name>cube</model_name>
-                <texture_name>white</texture_name>
-                <model_color_vec4>
-                    <x>0.911764681</x>
-                    <y>0.238457501</y>
-                    <z>0.0312860534</z>
-                    <w>1</w>
-                </model_color_vec4>
-                <flow_section_id>-1</flow_section_id>
-                <tag>0</tag>
-                <waypoint_follower>
-                    <mode>Waypoint</mode>
-                    <waypoint_auto_start>false</waypoint_auto_start>
-                    <loop_waypoints>true</loop_waypoints>
-                    <start_time>4</start_time>
-                    <quantize>1</quantize>
-                    <quantize_buffer>0</quantize_buffer>
-                    <waypoints>
-                        <waypoint>
-                            <wait_time>1.25</wait_time>
-                            <move_time>0.25</move_time>
-                            <p>
-                                <x>-4</x>
-                                <y>0</y>
-                                <z>0</z>
-                            </p>
-                        </waypoint>
-                        <waypoint>
-                            <wait_time>1.75</wait_time>
-                            <move_time>0.25</move_time>
-                            <p>
-                                <x>-4</x>
-                                <y>0</y>
-                                <z>0</z>
-                            </p>
-                        </waypoint>
-                        <waypoint>
-                            <wait_time>1.75</wait_time>
-                            <move_time>0.25</move_time>
-                            <p>
-                                <x>4</x>
-                                <y>0</y>
-                                <z>0</z>
-                            </p>
-                        </waypoint>
-                        <waypoint>
-                            <wait_time>1.75</wait_time>
-                            <move_time>0.25</move_time>
-                            <p>
-                                <x>4</x>
                                 <y>0</y>
                                 <z>0</z>
                             </p>
@@ -3141,9 +2938,9 @@
                 <pickable>true</pickable>
                 <transform>
                     <pos>
-                        <x>6.06944418</x>
+                        <x>5.0844593</x>
                         <y>0</y>
-                        <z>-5.43055487</z>
+                        <z>-5.64677095</z>
                     </pos>
                     <quat>
                         <x>0</x>
@@ -3152,7 +2949,7 @@
                         <w>1</w>
                     </quat>
                     <scale>
-                        <x>10</x>
+                        <x>8</x>
                         <y>1</y>
                         <z>1</z>
                     </scale>
@@ -3244,7 +3041,7 @@
                 <pickable>true</pickable>
                 <transform>
                     <pos>
-                        <x>1.80069542</x>
+                        <x>2.39529014</x>
                         <y>0</y>
                         <z>-3.03889227</z>
                     </pos>
@@ -3255,7 +3052,7 @@
                         <w>1</w>
                     </quat>
                     <scale>
-                        <x>10</x>
+                        <x>8.81081104</x>
                         <y>1</y>
                         <z>1</z>
                     </scale>
@@ -3310,212 +3107,6 @@
                             <move_time>0.25</move_time>
                             <p>
                                 <x>-4</x>
-                                <y>0</y>
-                                <z>0</z>
-                            </p>
-                        </waypoint>
-                        <waypoint>
-                            <wait_time>0.5</wait_time>
-                            <move_time>0</move_time>
-                            <p>
-                                <x>0</x>
-                                <y>0</y>
-                                <z>0</z>
-                            </p>
-                        </waypoint>
-                    </waypoints>
-                    <follow_entity_name/>
-                    <follow_entity_editor_id>
-                        <id>-1</id>
-                    </follow_entity_editor_id>
-                </waypoint_follower>
-                <hurt_on_hit>true</hurt_on_hit>
-                <can_hit>true</can_hit>
-                <hp>-1</hp>
-                <move_mode>Waypoints</move_mode>
-                <rot_vel>0</rot_vel>
-                <polygon/>
-                <hit_actions/>
-                <children_editor_ids/>
-            </FlowWall>
-            <FlowWall>
-                <editor_id>
-                    <id>271</id>
-                </editor_id>
-                <name>wall5</name>
-                <entity_active>true</entity_active>
-                <pickable>true</pickable>
-                <transform>
-                    <pos>
-                        <x>13.2569437</x>
-                        <y>0</y>
-                        <z>-3.03472185</z>
-                    </pos>
-                    <quat>
-                        <x>0</x>
-                        <y>0</y>
-                        <z>0</z>
-                        <w>1</w>
-                    </quat>
-                    <scale>
-                        <x>10</x>
-                        <y>1</y>
-                        <z>1</z>
-                    </scale>
-                </transform>
-                <model_name>cube</model_name>
-                <texture_name>white</texture_name>
-                <model_color_vec4>
-                    <x>0.911764681</x>
-                    <y>0.238457501</y>
-                    <z>0.0312860534</z>
-                    <w>1</w>
-                </model_color_vec4>
-                <flow_section_id>-1</flow_section_id>
-                <tag>0</tag>
-                <waypoint_follower>
-                    <mode>Waypoint</mode>
-                    <waypoint_auto_start>false</waypoint_auto_start>
-                    <loop_waypoints>true</loop_waypoints>
-                    <start_time>4</start_time>
-                    <quantize>1</quantize>
-                    <quantize_buffer>0</quantize_buffer>
-                    <waypoints>
-                        <waypoint>
-                            <wait_time>1.25</wait_time>
-                            <move_time>0.25</move_time>
-                            <p>
-                                <x>4</x>
-                                <y>0</y>
-                                <z>0</z>
-                            </p>
-                        </waypoint>
-                        <waypoint>
-                            <wait_time>1.75</wait_time>
-                            <move_time>0.25</move_time>
-                            <p>
-                                <x>4</x>
-                                <y>0</y>
-                                <z>0</z>
-                            </p>
-                        </waypoint>
-                        <waypoint>
-                            <wait_time>1.75</wait_time>
-                            <move_time>0.25</move_time>
-                            <p>
-                                <x>-4</x>
-                                <y>0</y>
-                                <z>0</z>
-                            </p>
-                        </waypoint>
-                        <waypoint>
-                            <wait_time>1.75</wait_time>
-                            <move_time>0.25</move_time>
-                            <p>
-                                <x>-4</x>
-                                <y>0</y>
-                                <z>0</z>
-                            </p>
-                        </waypoint>
-                        <waypoint>
-                            <wait_time>0.5</wait_time>
-                            <move_time>0</move_time>
-                            <p>
-                                <x>0</x>
-                                <y>0</y>
-                                <z>0</z>
-                            </p>
-                        </waypoint>
-                    </waypoints>
-                    <follow_entity_name/>
-                    <follow_entity_editor_id>
-                        <id>-1</id>
-                    </follow_entity_editor_id>
-                </waypoint_follower>
-                <hurt_on_hit>true</hurt_on_hit>
-                <can_hit>true</can_hit>
-                <hp>-1</hp>
-                <move_mode>Waypoints</move_mode>
-                <rot_vel>0</rot_vel>
-                <polygon/>
-                <hit_actions/>
-                <children_editor_ids/>
-            </FlowWall>
-            <FlowWall>
-                <editor_id>
-                    <id>272</id>
-                </editor_id>
-                <name>wall6</name>
-                <entity_active>true</entity_active>
-                <pickable>true</pickable>
-                <transform>
-                    <pos>
-                        <x>-5.50833416</x>
-                        <y>0</y>
-                        <z>-0.834030628</z>
-                    </pos>
-                    <quat>
-                        <x>0</x>
-                        <y>0</y>
-                        <z>0</z>
-                        <w>1</w>
-                    </quat>
-                    <scale>
-                        <x>10</x>
-                        <y>1</y>
-                        <z>1</z>
-                    </scale>
-                </transform>
-                <model_name>cube</model_name>
-                <texture_name>white</texture_name>
-                <model_color_vec4>
-                    <x>0.911764681</x>
-                    <y>0.238457501</y>
-                    <z>0.0312860534</z>
-                    <w>1</w>
-                </model_color_vec4>
-                <flow_section_id>-1</flow_section_id>
-                <tag>0</tag>
-                <waypoint_follower>
-                    <mode>Waypoint</mode>
-                    <waypoint_auto_start>false</waypoint_auto_start>
-                    <loop_waypoints>true</loop_waypoints>
-                    <start_time>4</start_time>
-                    <quantize>1</quantize>
-                    <quantize_buffer>0</quantize_buffer>
-                    <waypoints>
-                        <waypoint>
-                            <wait_time>1.25</wait_time>
-                            <move_time>0.25</move_time>
-                            <p>
-                                <x>-4</x>
-                                <y>0</y>
-                                <z>0</z>
-                            </p>
-                        </waypoint>
-                        <waypoint>
-                            <wait_time>1.75</wait_time>
-                            <move_time>0.25</move_time>
-                            <p>
-                                <x>-4</x>
-                                <y>0</y>
-                                <z>0</z>
-                            </p>
-                        </waypoint>
-                        <waypoint>
-                            <wait_time>1.75</wait_time>
-                            <move_time>0.25</move_time>
-                            <p>
-                                <x>4</x>
-                                <y>0</y>
-                                <z>0</z>
-                            </p>
-                        </waypoint>
-                        <waypoint>
-                            <wait_time>1.75</wait_time>
-                            <move_time>0.25</move_time>
-                            <p>
-                                <x>4</x>
                                 <y>0</y>
                                 <z>0</z>
                             </p>
@@ -3553,9 +3144,9 @@
                 <pickable>true</pickable>
                 <transform>
                     <pos>
-                        <x>5.89583302</x>
+                        <x>5.1150527</x>
                         <y>0</y>
-                        <z>-0.812498808</z>
+                        <z>-0.836522818</z>
                     </pos>
                     <quat>
                         <x>0</x>
@@ -3564,7 +3155,7 @@
                         <w>1</w>
                     </quat>
                     <scale>
-                        <x>10</x>
+                        <x>8.5</x>
                         <y>1</y>
                         <z>1</z>
                     </scale>
@@ -3720,6 +3311,7 @@
                 <reset_cooldown_on_any_hit>false</reset_cooldown_on_any_hit>
                 <init_hittable>false</init_hittable>
                 <timed_hittable_time>-1</timed_hittable_time>
+                <allow_backward>false</allow_backward>
                 <active_region_editor_id>
                     <id>276</id>
                 </active_region_editor_id>
@@ -3998,7 +3590,7 @@
                             <wait_time>0</wait_time>
                             <move_time>4</move_time>
                             <p>
-                                <x>-7.5999999</x>
+                                <x>7.5999999</x>
                                 <y>0</y>
                                 <z>0</z>
                             </p>
@@ -4119,7 +3711,7 @@
                 <pickable>true</pickable>
                 <transform>
                     <pos>
-                        <x>1.83541679</x>
+                        <x>2.4119935</x>
                         <y>0</y>
                         <z>1.63124621</z>
                     </pos>
@@ -4130,7 +3722,7 @@
                         <w>1</w>
                     </quat>
                     <scale>
-                        <x>10</x>
+                        <x>8.84684658</x>
                         <y>1</y>
                         <z>1</z>
                     </scale>
@@ -4222,7 +3814,7 @@
                 <pickable>true</pickable>
                 <transform>
                     <pos>
-                        <x>13.4652767</x>
+                        <x>12.7085199</x>
                         <y>0</y>
                         <z>1.63541663</z>
                     </pos>
@@ -4233,7 +3825,7 @@
                         <w>1</w>
                     </quat>
                     <scale>
-                        <x>10</x>
+                        <x>8.48648643</x>
                         <y>1</y>
                         <z>1</z>
                     </scale>
@@ -4389,6 +3981,7 @@
                 <reset_cooldown_on_any_hit>false</reset_cooldown_on_any_hit>
                 <init_hittable>false</init_hittable>
                 <timed_hittable_time>-1</timed_hittable_time>
+                <allow_backward>false</allow_backward>
                 <active_region_editor_id>
                     <id>347</id>
                 </active_region_editor_id>
@@ -4554,9 +4147,9 @@
                 <pickable>true</pickable>
                 <transform>
                     <pos>
-                        <x>9.56111145</x>
+                        <x>10.5100603</x>
                         <y>0</y>
-                        <z>4.23541355</z>
+                        <z>4.22340155</z>
                     </pos>
                     <quat>
                         <x>0</x>
@@ -4565,110 +4158,7 @@
                         <w>1</w>
                     </quat>
                     <scale>
-                        <x>10</x>
-                        <y>1</y>
-                        <z>1</z>
-                    </scale>
-                </transform>
-                <model_name>cube</model_name>
-                <texture_name>white</texture_name>
-                <model_color_vec4>
-                    <x>0.911764681</x>
-                    <y>0.238457501</y>
-                    <z>0.0312860534</z>
-                    <w>1</w>
-                </model_color_vec4>
-                <flow_section_id>-1</flow_section_id>
-                <tag>0</tag>
-                <waypoint_follower>
-                    <mode>Waypoint</mode>
-                    <waypoint_auto_start>false</waypoint_auto_start>
-                    <loop_waypoints>true</loop_waypoints>
-                    <start_time>4</start_time>
-                    <quantize>1</quantize>
-                    <quantize_buffer>0</quantize_buffer>
-                    <waypoints>
-                        <waypoint>
-                            <wait_time>1.25</wait_time>
-                            <move_time>0.25</move_time>
-                            <p>
-                                <x>-4</x>
-                                <y>0</y>
-                                <z>0</z>
-                            </p>
-                        </waypoint>
-                        <waypoint>
-                            <wait_time>1.75</wait_time>
-                            <move_time>0.25</move_time>
-                            <p>
-                                <x>-4</x>
-                                <y>0</y>
-                                <z>0</z>
-                            </p>
-                        </waypoint>
-                        <waypoint>
-                            <wait_time>1.75</wait_time>
-                            <move_time>0.25</move_time>
-                            <p>
-                                <x>4</x>
-                                <y>0</y>
-                                <z>0</z>
-                            </p>
-                        </waypoint>
-                        <waypoint>
-                            <wait_time>1.75</wait_time>
-                            <move_time>0.25</move_time>
-                            <p>
-                                <x>4</x>
-                                <y>0</y>
-                                <z>0</z>
-                            </p>
-                        </waypoint>
-                        <waypoint>
-                            <wait_time>0.5</wait_time>
-                            <move_time>0</move_time>
-                            <p>
-                                <x>0</x>
-                                <y>0</y>
-                                <z>0</z>
-                            </p>
-                        </waypoint>
-                    </waypoints>
-                    <follow_entity_name/>
-                    <follow_entity_editor_id>
-                        <id>-1</id>
-                    </follow_entity_editor_id>
-                </waypoint_follower>
-                <hurt_on_hit>true</hurt_on_hit>
-                <can_hit>true</can_hit>
-                <hp>-1</hp>
-                <move_mode>Waypoints</move_mode>
-                <rot_vel>0</rot_vel>
-                <polygon/>
-                <hit_actions/>
-                <children_editor_ids/>
-            </FlowWall>
-            <FlowWall>
-                <editor_id>
-                    <id>282</id>
-                </editor_id>
-                <name>wall11</name>
-                <entity_active>true</entity_active>
-                <pickable>true</pickable>
-                <transform>
-                    <pos>
-                        <x>20.947916</x>
-                        <y>0</y>
-                        <z>4.22222281</z>
-                    </pos>
-                    <quat>
-                        <x>0</x>
-                        <y>0</y>
-                        <z>0</z>
-                        <w>1</w>
-                    </quat>
-                    <scale>
-                        <x>10</x>
+                        <x>8</x>
                         <y>1</y>
                         <z>1</z>
                     </scale>
@@ -4824,6 +4314,7 @@
                 <reset_cooldown_on_any_hit>false</reset_cooldown_on_any_hit>
                 <init_hittable>false</init_hittable>
                 <timed_hittable_time>-1</timed_hittable_time>
+                <allow_backward>false</allow_backward>
                 <active_region_editor_id>
                     <id>284</id>
                 </active_region_editor_id>
@@ -5036,7 +4527,7 @@
                             <wait_time>0</wait_time>
                             <move_time>4</move_time>
                             <p>
-                                <x>7.5999999</x>
+                                <x>-7.5999999</x>
                                 <y>0</y>
                                 <z>0</z>
                             </p>
@@ -5098,7 +4589,7 @@
                 <pickable>true</pickable>
                 <transform>
                     <pos>
-                        <x>1.9395833</x>
+                        <x>2.58823133</x>
                         <y>0</y>
                         <z>6.70069075</z>
                     </pos>
@@ -5109,7 +4600,7 @@
                         <w>1</w>
                     </quat>
                     <scale>
-                        <x>10</x>
+                        <x>8.51051044</x>
                         <y>1</y>
                         <z>1</z>
                     </scale>
@@ -5201,7 +4692,7 @@
                 <pickable>true</pickable>
                 <transform>
                     <pos>
-                        <x>13.3263893</x>
+                        <x>12.6417046</x>
                         <y>0</y>
                         <z>6.72222233</z>
                     </pos>
@@ -5212,7 +4703,7 @@
                         <w>1</w>
                     </quat>
                     <scale>
-                        <x>10</x>
+                        <x>8.63063049</x>
                         <y>1</y>
                         <z>1</z>
                     </scale>
@@ -5267,109 +4758,6 @@
                             <move_time>0.25</move_time>
                             <p>
                                 <x>-4</x>
-                                <y>0</y>
-                                <z>0</z>
-                            </p>
-                        </waypoint>
-                        <waypoint>
-                            <wait_time>0.5</wait_time>
-                            <move_time>0</move_time>
-                            <p>
-                                <x>0</x>
-                                <y>0</y>
-                                <z>0</z>
-                            </p>
-                        </waypoint>
-                    </waypoints>
-                    <follow_entity_name/>
-                    <follow_entity_editor_id>
-                        <id>-1</id>
-                    </follow_entity_editor_id>
-                </waypoint_follower>
-                <hurt_on_hit>true</hurt_on_hit>
-                <can_hit>true</can_hit>
-                <hp>-1</hp>
-                <move_mode>Waypoints</move_mode>
-                <rot_vel>0</rot_vel>
-                <polygon/>
-                <hit_actions/>
-                <children_editor_ids/>
-            </FlowWall>
-            <FlowWall>
-                <editor_id>
-                    <id>288</id>
-                </editor_id>
-                <name>wall14</name>
-                <entity_active>true</entity_active>
-                <pickable>true</pickable>
-                <transform>
-                    <pos>
-                        <x>-5.66458368</x>
-                        <y>0</y>
-                        <z>9.25277328</z>
-                    </pos>
-                    <quat>
-                        <x>0</x>
-                        <y>0</y>
-                        <z>0</z>
-                        <w>1</w>
-                    </quat>
-                    <scale>
-                        <x>10</x>
-                        <y>1</y>
-                        <z>1</z>
-                    </scale>
-                </transform>
-                <model_name>cube</model_name>
-                <texture_name>white</texture_name>
-                <model_color_vec4>
-                    <x>0.911764681</x>
-                    <y>0.238457501</y>
-                    <z>0.0312860534</z>
-                    <w>1</w>
-                </model_color_vec4>
-                <flow_section_id>-1</flow_section_id>
-                <tag>0</tag>
-                <waypoint_follower>
-                    <mode>Waypoint</mode>
-                    <waypoint_auto_start>false</waypoint_auto_start>
-                    <loop_waypoints>true</loop_waypoints>
-                    <start_time>4</start_time>
-                    <quantize>1</quantize>
-                    <quantize_buffer>0</quantize_buffer>
-                    <waypoints>
-                        <waypoint>
-                            <wait_time>1.25</wait_time>
-                            <move_time>0.25</move_time>
-                            <p>
-                                <x>-4</x>
-                                <y>0</y>
-                                <z>0</z>
-                            </p>
-                        </waypoint>
-                        <waypoint>
-                            <wait_time>1.75</wait_time>
-                            <move_time>0.25</move_time>
-                            <p>
-                                <x>-4</x>
-                                <y>0</y>
-                                <z>0</z>
-                            </p>
-                        </waypoint>
-                        <waypoint>
-                            <wait_time>1.75</wait_time>
-                            <move_time>0.25</move_time>
-                            <p>
-                                <x>4</x>
-                                <y>0</y>
-                                <z>0</z>
-                            </p>
-                        </waypoint>
-                        <waypoint>
-                            <wait_time>1.75</wait_time>
-                            <move_time>0.25</move_time>
-                            <p>
-                                <x>4</x>
                                 <y>0</y>
                                 <z>0</z>
                             </p>
@@ -5407,7 +4795,7 @@
                 <pickable>true</pickable>
                 <transform>
                     <pos>
-                        <x>5.9305563</x>
+                        <x>5.14977551</x>
                         <y>0</y>
                         <z>9.23958206</z>
                     </pos>
@@ -5418,7 +4806,7 @@
                         <w>1</w>
                     </quat>
                     <scale>
-                        <x>10</x>
+                        <x>8.43843842</x>
                         <y>1</y>
                         <z>1</z>
                     </scale>
@@ -5574,6 +4962,7 @@
                 <reset_cooldown_on_any_hit>false</reset_cooldown_on_any_hit>
                 <init_hittable>false</init_hittable>
                 <timed_hittable_time>-1</timed_hittable_time>
+                <allow_backward>false</allow_backward>
                 <active_region_editor_id>
                     <id>295</id>
                 </active_region_editor_id>
@@ -5990,7 +5379,7 @@
                 <pickable>true</pickable>
                 <transform>
                     <pos>
-                        <x>1.76597309</x>
+                        <x>2.51672363</x>
                         <y>0</y>
                         <z>11.978467</z>
                     </pos>
@@ -6001,7 +5390,7 @@
                         <w>1</w>
                     </quat>
                     <scale>
-                        <x>10</x>
+                        <x>8.37837791</x>
                         <y>1</y>
                         <z>1</z>
                     </scale>
@@ -6093,9 +5482,9 @@
                 <pickable>true</pickable>
                 <transform>
                     <pos>
-                        <x>13.291666</x>
+                        <x>13.3637381</x>
                         <y>0</y>
-                        <z>11.9826374</z>
+                        <z>11.9105654</z>
                     </pos>
                     <quat>
                         <x>0</x>
@@ -6260,6 +5649,7 @@
                 <reset_cooldown_on_any_hit>false</reset_cooldown_on_any_hit>
                 <init_hittable>false</init_hittable>
                 <timed_hittable_time>-1</timed_hittable_time>
+                <allow_backward>false</allow_backward>
                 <active_region_editor_id>
                     <id>355</id>
                 </active_region_editor_id>
@@ -6462,7 +5852,7 @@
                             <wait_time>0</wait_time>
                             <move_time>4</move_time>
                             <p>
-                                <x>-7.5999999</x>
+                                <x>7.5999999</x>
                                 <y>0</y>
                                 <z>0</z>
                             </p>
@@ -6639,6 +6029,7 @@
                 <reset_cooldown_on_any_hit>false</reset_cooldown_on_any_hit>
                 <init_hittable>true</init_hittable>
                 <timed_hittable_time>-1</timed_hittable_time>
+                <allow_backward>false</allow_backward>
                 <active_region_editor_id>
                     <id>360</id>
                 </active_region_editor_id>
@@ -6915,6 +6306,7 @@
                 <reset_cooldown_on_any_hit>false</reset_cooldown_on_any_hit>
                 <init_hittable>true</init_hittable>
                 <timed_hittable_time>-1</timed_hittable_time>
+                <allow_backward>false</allow_backward>
                 <active_region_editor_id>
                     <id>-1</id>
                 </active_region_editor_id>
@@ -7022,6 +6414,7 @@
                 <reset_cooldown_on_any_hit>false</reset_cooldown_on_any_hit>
                 <init_hittable>true</init_hittable>
                 <timed_hittable_time>-1</timed_hittable_time>
+                <allow_backward>false</allow_backward>
                 <active_region_editor_id>
                     <id>-1</id>
                 </active_region_editor_id>
@@ -7142,6 +6535,7 @@
                 <reset_cooldown_on_any_hit>false</reset_cooldown_on_any_hit>
                 <init_hittable>true</init_hittable>
                 <timed_hittable_time>-1</timed_hittable_time>
+                <allow_backward>false</allow_backward>
                 <active_region_editor_id>
                     <id>-1</id>
                 </active_region_editor_id>
@@ -7249,6 +6643,7 @@
                 <reset_cooldown_on_any_hit>false</reset_cooldown_on_any_hit>
                 <init_hittable>true</init_hittable>
                 <timed_hittable_time>-1</timed_hittable_time>
+                <allow_backward>false</allow_backward>
                 <active_region_editor_id>
                     <id>-1</id>
                 </active_region_editor_id>
@@ -7356,6 +6751,7 @@
                 <reset_cooldown_on_any_hit>false</reset_cooldown_on_any_hit>
                 <init_hittable>true</init_hittable>
                 <timed_hittable_time>-1</timed_hittable_time>
+                <allow_backward>false</allow_backward>
                 <active_region_editor_id>
                     <id>-1</id>
                 </active_region_editor_id>
@@ -7524,7 +6920,7 @@
                             <wait_time>0</wait_time>
                             <move_time>4</move_time>
                             <p>
-                                <x>7.5999999</x>
+                                <x>-7.5999999</x>
                                 <y>0</y>
                                 <z>0</z>
                             </p>
@@ -7637,6 +7033,7 @@
                 <reset_cooldown_on_any_hit>false</reset_cooldown_on_any_hit>
                 <init_hittable>true</init_hittable>
                 <timed_hittable_time>-1</timed_hittable_time>
+                <allow_backward>false</allow_backward>
                 <active_region_editor_id>
                     <id>-1</id>
                 </active_region_editor_id>
@@ -7720,7 +7117,7 @@
                             <wait_time>0</wait_time>
                             <move_time>4</move_time>
                             <p>
-                                <x>-7.5999999</x>
+                                <x>7.5999999</x>
                                 <y>0</y>
                                 <z>0</z>
                             </p>
@@ -7833,6 +7230,7 @@
                 <reset_cooldown_on_any_hit>false</reset_cooldown_on_any_hit>
                 <init_hittable>false</init_hittable>
                 <timed_hittable_time>-1</timed_hittable_time>
+                <allow_backward>false</allow_backward>
                 <active_region_editor_id>
                     <id>346</id>
                 </active_region_editor_id>
@@ -8009,9 +7407,9 @@
                         <w>1</w>
                     </quat>
                     <scale>
-                        <x>2.20000005</x>
+                        <x>1.86366391</x>
                         <y>1</y>
-                        <z>1.25</z>
+                        <z>1.08183193</z>
                     </scale>
                 </transform>
                 <model_name/>
@@ -8045,7 +7443,7 @@
                             <wait_time>0</wait_time>
                             <move_time>4</move_time>
                             <p>
-                                <x>7.5999999</x>
+                                <x>-7.5999999</x>
                                 <y>0</y>
                                 <z>0</z>
                             </p>
@@ -8152,7 +7550,7 @@
                             <wait_time>0</wait_time>
                             <move_time>4</move_time>
                             <p>
-                                <x>-7.5999999</x>
+                                <x>7.5999999</x>
                                 <y>0</y>
                                 <z>0</z>
                             </p>
@@ -8256,6 +7654,7 @@
                 <reset_cooldown_on_any_hit>false</reset_cooldown_on_any_hit>
                 <init_hittable>false</init_hittable>
                 <timed_hittable_time>-1</timed_hittable_time>
+                <allow_backward>false</allow_backward>
                 <active_region_editor_id>
                     <id>349</id>
                 </active_region_editor_id>
@@ -8468,7 +7867,7 @@
                             <wait_time>0</wait_time>
                             <move_time>4</move_time>
                             <p>
-                                <x>7.5999999</x>
+                                <x>-7.5999999</x>
                                 <y>0</y>
                                 <z>0</z>
                             </p>
@@ -8798,7 +8197,7 @@
                     <pos>
                         <x>7.46041727</x>
                         <y>0</y>
-                        <z>-4.74028015</z>
+                        <z>-4.53999996</z>
                     </pos>
                     <quat>
                         <x>0</x>
@@ -8972,7 +8371,7 @@
                             <p>
                                 <x>0</x>
                                 <y>0</y>
-                                <z>-6</z>
+                                <z>6</z>
                             </p>
                         </waypoint>
                     </waypoints>
@@ -9053,7 +8452,7 @@
                     <pos>
                         <x>6.21041679</x>
                         <y>0</y>
-                        <z>16.5310211</z>
+                        <z>16.1706619</z>
                     </pos>
                     <quat>
                         <x>0</x>
@@ -9064,7 +8463,7 @@
                     <scale>
                         <x>1</x>
                         <y>1</y>
-                        <z>10</z>
+                        <z>9.27927971</z>
                     </scale>
                 </transform>
                 <model_name>cube</model_name>
@@ -9154,7 +8553,7 @@
                 <pickable>true</pickable>
                 <transform>
                     <pos>
-                        <x>8.80501175</x>
+                        <x>10.3485546</x>
                         <y>0</y>
                         <z>15.2217121</z>
                     </pos>
@@ -9165,7 +8564,7 @@
                         <w>1</w>
                     </quat>
                     <scale>
-                        <x>1</x>
+                        <x>3.99099064</x>
                         <y>1</y>
                         <z>6</z>
                     </scale>
@@ -9257,7 +8656,7 @@
                 <pickable>true</pickable>
                 <transform>
                     <pos>
-                        <x>11.6758823</x>
+                        <x>10.8890953</x>
                         <y>0</y>
                         <z>20.314806</z>
                     </pos>
@@ -9268,7 +8667,7 @@
                         <w>1</w>
                     </quat>
                     <scale>
-                        <x>10</x>
+                        <x>8.42642689</x>
                         <y>1</y>
                         <z>1</z>
                     </scale>
@@ -9711,7 +9110,7 @@
                     <pos>
                         <x>14.2128572</x>
                         <y>0</y>
-                        <z>14.9116497</z>
+                        <z>14.9476852</z>
                     </pos>
                     <quat>
                         <x>0</x>
@@ -9830,6 +9229,7 @@
                 <reset_cooldown_on_any_hit>false</reset_cooldown_on_any_hit>
                 <init_hittable>true</init_hittable>
                 <timed_hittable_time>-1</timed_hittable_time>
+                <allow_backward>false</allow_backward>
                 <active_region_editor_id>
                     <id>365</id>
                 </active_region_editor_id>
@@ -9996,9 +9396,9 @@
                         <w>1</w>
                     </quat>
                     <scale>
-                        <x>2</x>
+                        <x>2.06706667</x>
                         <y>1</y>
-                        <z>1</z>
+                        <z>0.903902054</z>
                     </scale>
                 </transform>
                 <model_name/>
@@ -10032,7 +9432,7 @@
                             <wait_time>0</wait_time>
                             <move_time>4</move_time>
                             <p>
-                                <x>-7.5999999</x>
+                                <x>7.5999999</x>
                                 <y>0</y>
                                 <z>0</z>
                             </p>
@@ -10195,7 +9595,7 @@
                 <pickable>true</pickable>
                 <transform>
                     <pos>
-                        <x>18.1047554</x>
+                        <x>20.8855362</x>
                         <y>0</y>
                         <z>17.6984367</z>
                     </pos>
@@ -10206,7 +9606,7 @@
                         <w>1</w>
                     </quat>
                     <scale>
-                        <x>8</x>
+                        <x>13.5615616</x>
                         <y>1</y>
                         <z>1</z>
                     </scale>
@@ -10487,6 +9887,7 @@
                 <reset_cooldown_on_any_hit>false</reset_cooldown_on_any_hit>
                 <init_hittable>true</init_hittable>
                 <timed_hittable_time>-1</timed_hittable_time>
+                <allow_backward>false</allow_backward>
                 <active_region_editor_id>
                     <id>-1</id>
                 </active_region_editor_id>
@@ -10798,6 +10199,7 @@
                 <reset_cooldown_on_any_hit>false</reset_cooldown_on_any_hit>
                 <init_hittable>true</init_hittable>
                 <timed_hittable_time>-1</timed_hittable_time>
+                <allow_backward>false</allow_backward>
                 <active_region_editor_id>
                     <id>-1</id>
                 </active_region_editor_id>
@@ -11179,6 +10581,7 @@
                 <reset_cooldown_on_any_hit>false</reset_cooldown_on_any_hit>
                 <init_hittable>true</init_hittable>
                 <timed_hittable_time>-1</timed_hittable_time>
+                <allow_backward>false</allow_backward>
                 <active_region_editor_id>
                     <id>-1</id>
                 </active_region_editor_id>
@@ -11247,120 +10650,6 @@
                     </quat>
                     <scale>
                         <x>6.5</x>
-                        <y>1</y>
-                        <z>1</z>
-                    </scale>
-                </transform>
-                <model_name>cube</model_name>
-                <texture_name>white</texture_name>
-                <model_color_vec4>
-                    <x>0.911764681</x>
-                    <y>0.238457501</y>
-                    <z>0.0312860534</z>
-                    <w>1</w>
-                </model_color_vec4>
-                <flow_section_id>-1</flow_section_id>
-                <tag>0</tag>
-                <waypoint_follower>
-                    <mode>Waypoint</mode>
-                    <waypoint_auto_start>true</waypoint_auto_start>
-                    <loop_waypoints>true</loop_waypoints>
-                    <start_time>4</start_time>
-                    <quantize>1</quantize>
-                    <quantize_buffer>0</quantize_buffer>
-                    <waypoints/>
-                    <follow_entity_name/>
-                    <follow_entity_editor_id>
-                        <id>-1</id>
-                    </follow_entity_editor_id>
-                </waypoint_follower>
-                <hurt_on_hit>true</hurt_on_hit>
-                <can_hit>true</can_hit>
-                <hp>-1</hp>
-                <move_mode>Waypoints</move_mode>
-                <rot_vel>0</rot_vel>
-                <polygon/>
-                <hit_actions/>
-                <children_editor_ids/>
-            </FlowWall>
-            <FlowWall>
-                <editor_id>
-                    <id>399</id>
-                </editor_id>
-                <name>wall41</name>
-                <entity_active>true</entity_active>
-                <pickable>true</pickable>
-                <transform>
-                    <pos>
-                        <x>24.7473946</x>
-                        <y>0</y>
-                        <z>17.6023426</z>
-                    </pos>
-                    <quat>
-                        <x>0</x>
-                        <y>0</y>
-                        <z>0</z>
-                        <w>1</w>
-                    </quat>
-                    <scale>
-                        <x>4</x>
-                        <y>1</y>
-                        <z>1</z>
-                    </scale>
-                </transform>
-                <model_name>cube</model_name>
-                <texture_name>white</texture_name>
-                <model_color_vec4>
-                    <x>0.911764681</x>
-                    <y>0.238457501</y>
-                    <z>0.0312860534</z>
-                    <w>1</w>
-                </model_color_vec4>
-                <flow_section_id>-1</flow_section_id>
-                <tag>0</tag>
-                <waypoint_follower>
-                    <mode>Waypoint</mode>
-                    <waypoint_auto_start>true</waypoint_auto_start>
-                    <loop_waypoints>true</loop_waypoints>
-                    <start_time>4</start_time>
-                    <quantize>1</quantize>
-                    <quantize_buffer>0</quantize_buffer>
-                    <waypoints/>
-                    <follow_entity_name/>
-                    <follow_entity_editor_id>
-                        <id>-1</id>
-                    </follow_entity_editor_id>
-                </waypoint_follower>
-                <hurt_on_hit>true</hurt_on_hit>
-                <can_hit>true</can_hit>
-                <hp>-1</hp>
-                <move_mode>Waypoints</move_mode>
-                <rot_vel>0</rot_vel>
-                <polygon/>
-                <hit_actions/>
-                <children_editor_ids/>
-            </FlowWall>
-            <FlowWall>
-                <editor_id>
-                    <id>401</id>
-                </editor_id>
-                <name>wall42</name>
-                <entity_active>true</entity_active>
-                <pickable>true</pickable>
-                <transform>
-                    <pos>
-                        <x>21.8525066</x>
-                        <y>0</y>
-                        <z>17.6383781</z>
-                    </pos>
-                    <quat>
-                        <x>0</x>
-                        <y>0</y>
-                        <z>0</z>
-                        <w>1</w>
-                    </quat>
-                    <scale>
-                        <x>4</x>
                         <y>1</y>
                         <z>1</z>
                     </scale>
@@ -11470,6 +10759,7 @@
                 <reset_cooldown_on_any_hit>false</reset_cooldown_on_any_hit>
                 <init_hittable>true</init_hittable>
                 <timed_hittable_time>-1</timed_hittable_time>
+                <allow_backward>false</allow_backward>
                 <active_region_editor_id>
                     <id>403</id>
                 </active_region_editor_id>
@@ -11778,9 +11068,9 @@
                 <pickable>true</pickable>
                 <transform>
                     <pos>
-                        <x>29.7443943</x>
+                        <x>29.8525028</x>
                         <y>0</y>
-                        <z>13.6023397</z>
+                        <z>13.6503878</z>
                     </pos>
                     <quat>
                         <x>0</x>
@@ -11789,7 +11079,7 @@
                         <w>1</w>
                     </quat>
                     <scale>
-                        <x>1</x>
+                        <x>1.120121</x>
                         <y>1</y>
                         <z>2</z>
                     </scale>
@@ -11835,7 +11125,7 @@
                 <pickable>true</pickable>
                 <transform>
                     <pos>
-                        <x>23.5822392</x>
+                        <x>22.6933498</x>
                         <y>0</y>
                         <z>13.7705107</z>
                     </pos>
@@ -11846,7 +11136,7 @@
                         <w>1</w>
                     </quat>
                     <scale>
-                        <x>1</x>
+                        <x>2.77777863</x>
                         <y>1</y>
                         <z>3</z>
                     </scale>
@@ -11956,6 +11246,7 @@
                 <reset_cooldown_on_any_hit>false</reset_cooldown_on_any_hit>
                 <init_hittable>true</init_hittable>
                 <timed_hittable_time>-1</timed_hittable_time>
+                <allow_backward>false</allow_backward>
                 <active_region_editor_id>
                     <id>-1</id>
                 </active_region_editor_id>
@@ -12003,120 +11294,6 @@
                 <off_cooldown_actions/>
                 <combo_end_actions/>
             </TypingEnemy>
-            <FlowWall>
-                <editor_id>
-                    <id>411</id>
-                </editor_id>
-                <name>wall46</name>
-                <entity_active>true</entity_active>
-                <pickable>true</pickable>
-                <transform>
-                    <pos>
-                        <x>30.4410896</x>
-                        <y>0</y>
-                        <z>13.0978365</z>
-                    </pos>
-                    <quat>
-                        <x>0</x>
-                        <y>0</y>
-                        <z>0</z>
-                        <w>1</w>
-                    </quat>
-                    <scale>
-                        <x>2</x>
-                        <y>1</y>
-                        <z>1</z>
-                    </scale>
-                </transform>
-                <model_name>cube</model_name>
-                <texture_name>white</texture_name>
-                <model_color_vec4>
-                    <x>0.911764681</x>
-                    <y>0.238457501</y>
-                    <z>0.0312860534</z>
-                    <w>1</w>
-                </model_color_vec4>
-                <flow_section_id>-1</flow_section_id>
-                <tag>0</tag>
-                <waypoint_follower>
-                    <mode>Waypoint</mode>
-                    <waypoint_auto_start>true</waypoint_auto_start>
-                    <loop_waypoints>true</loop_waypoints>
-                    <start_time>4</start_time>
-                    <quantize>1</quantize>
-                    <quantize_buffer>0</quantize_buffer>
-                    <waypoints/>
-                    <follow_entity_name/>
-                    <follow_entity_editor_id>
-                        <id>-1</id>
-                    </follow_entity_editor_id>
-                </waypoint_follower>
-                <hurt_on_hit>true</hurt_on_hit>
-                <can_hit>true</can_hit>
-                <hp>-1</hp>
-                <move_mode>Waypoints</move_mode>
-                <rot_vel>0</rot_vel>
-                <polygon/>
-                <hit_actions/>
-                <children_editor_ids/>
-            </FlowWall>
-            <FlowWall>
-                <editor_id>
-                    <id>412</id>
-                </editor_id>
-                <name>wall47</name>
-                <entity_active>true</entity_active>
-                <pickable>true</pickable>
-                <transform>
-                    <pos>
-                        <x>34.3329811</x>
-                        <y>0</y>
-                        <z>13.085824</z>
-                    </pos>
-                    <quat>
-                        <x>0</x>
-                        <y>0</y>
-                        <z>0</z>
-                        <w>1</w>
-                    </quat>
-                    <scale>
-                        <x>2</x>
-                        <y>1</y>
-                        <z>1</z>
-                    </scale>
-                </transform>
-                <model_name>cube</model_name>
-                <texture_name>white</texture_name>
-                <model_color_vec4>
-                    <x>0.911764681</x>
-                    <y>0.238457501</y>
-                    <z>0.0312860534</z>
-                    <w>1</w>
-                </model_color_vec4>
-                <flow_section_id>-1</flow_section_id>
-                <tag>0</tag>
-                <waypoint_follower>
-                    <mode>Waypoint</mode>
-                    <waypoint_auto_start>true</waypoint_auto_start>
-                    <loop_waypoints>true</loop_waypoints>
-                    <start_time>4</start_time>
-                    <quantize>1</quantize>
-                    <quantize_buffer>0</quantize_buffer>
-                    <waypoints/>
-                    <follow_entity_name/>
-                    <follow_entity_editor_id>
-                        <id>-1</id>
-                    </follow_entity_editor_id>
-                </waypoint_follower>
-                <hurt_on_hit>true</hurt_on_hit>
-                <can_hit>true</can_hit>
-                <hp>-1</hp>
-                <move_mode>Waypoints</move_mode>
-                <rot_vel>0</rot_vel>
-                <polygon/>
-                <hit_actions/>
-                <children_editor_ids/>
-            </FlowWall>
             <TypingEnemy>
                 <editor_id>
                     <id>413</id>
@@ -12190,6 +11367,7 @@
                 <reset_cooldown_on_any_hit>false</reset_cooldown_on_any_hit>
                 <init_hittable>true</init_hittable>
                 <timed_hittable_time>-1</timed_hittable_time>
+                <allow_backward>false</allow_backward>
                 <active_region_editor_id>
                     <id>414</id>
                 </active_region_editor_id>
@@ -12394,7 +11572,7 @@
                             <p>
                                 <x>0</x>
                                 <y>0</y>
-                                <z>-7.5999999</z>
+                                <z>7.5999999</z>
                             </p>
                         </waypoint>
                     </waypoints>
@@ -12522,9 +11700,9 @@
                 <pickable>true</pickable>
                 <transform>
                     <pos>
-                        <x>28.0747242</x>
+                        <x>27.2939415</x>
                         <y>0</y>
-                        <z>16.5813217</z>
+                        <z>16.3951359</z>
                     </pos>
                     <quat>
                         <x>0</x>
@@ -12533,9 +11711,9 @@
                         <w>1</w>
                     </quat>
                     <scale>
-                        <x>1</x>
+                        <x>2.48949146</x>
                         <y>1</y>
-                        <z>4</z>
+                        <z>3.62762833</z>
                     </scale>
                 </transform>
                 <model_name>cube</model_name>
@@ -12643,6 +11821,7 @@
                 <reset_cooldown_on_any_hit>false</reset_cooldown_on_any_hit>
                 <init_hittable>true</init_hittable>
                 <timed_hittable_time>-1</timed_hittable_time>
+                <allow_backward>false</allow_backward>
                 <active_region_editor_id>
                     <id>-1</id>
                 </active_region_editor_id>
@@ -12815,7 +11994,7 @@
                     <pos>
                         <x>25.0717182</x>
                         <y>0</y>
-                        <z>18.8876305</z>
+                        <z>18.9176598</z>
                     </pos>
                     <quat>
                         <x>0</x>
@@ -12826,7 +12005,7 @@
                     <scale>
                         <x>1</x>
                         <y>1</y>
-                        <z>3.5</z>
+                        <z>3.4399395</z>
                     </scale>
                 </transform>
                 <model_name>cube</model_name>
@@ -12872,7 +12051,7 @@
                     <pos>
                         <x>25.071722</x>
                         <y>0</y>
-                        <z>25.2179604</z>
+                        <z>25.0618038</z>
                     </pos>
                     <quat>
                         <x>0</x>
@@ -12883,7 +12062,7 @@
                     <scale>
                         <x>1</x>
                         <y>1</y>
-                        <z>5</z>
+                        <z>4.68768692</z>
                     </scale>
                 </transform>
                 <model_name>cube</model_name>
@@ -12927,7 +12106,7 @@
                 <pickable>true</pickable>
                 <transform>
                     <pos>
-                        <x>27.1257763</x>
+                        <x>26.6032543</x>
                         <y>0</y>
                         <z>25.3500881</z>
                     </pos>
@@ -12938,7 +12117,7 @@
                         <w>1</w>
                     </quat>
                     <scale>
-                        <x>5</x>
+                        <x>3.95495319</x>
                         <y>1</y>
                         <z>1</z>
                     </scale>
@@ -13048,6 +12227,7 @@
                 <reset_cooldown_on_any_hit>false</reset_cooldown_on_any_hit>
                 <init_hittable>true</init_hittable>
                 <timed_hittable_time>-1</timed_hittable_time>
+                <allow_backward>false</allow_backward>
                 <active_region_editor_id>
                     <id>424</id>
                 </active_region_editor_id>
@@ -13252,7 +12432,7 @@
                             <p>
                                 <x>0</x>
                                 <y>0</y>
-                                <z>-7.5999999</z>
+                                <z>7.5999999</z>
                             </p>
                         </waypoint>
                     </waypoints>
@@ -13290,7 +12470,7 @@
                 <pickable>true</pickable>
                 <transform>
                     <pos>
-                        <x>21.7444</x>
+                        <x>20.7594147</x>
                         <y>0</y>
                         <z>20.4972363</z>
                     </pos>
@@ -13301,7 +12481,7 @@
                         <w>1</w>
                     </quat>
                     <scale>
-                        <x>1</x>
+                        <x>2.9699707</x>
                         <y>1</y>
                         <z>6</z>
                     </scale>
@@ -13349,7 +12529,7 @@
                     <pos>
                         <x>21.8044624</x>
                         <y>0</y>
-                        <z>28.7374744</z>
+                        <z>28.725462</z>
                     </pos>
                     <quat>
                         <x>0</x>
@@ -13360,7 +12540,7 @@
                     <scale>
                         <x>1</x>
                         <y>1</y>
-                        <z>4.5</z>
+                        <z>4.4759779</z>
                     </scale>
                 </transform>
                 <model_name>cube</model_name>
@@ -13468,6 +12648,7 @@
                 <reset_cooldown_on_any_hit>false</reset_cooldown_on_any_hit>
                 <init_hittable>true</init_hittable>
                 <timed_hittable_time>-1</timed_hittable_time>
+                <allow_backward>false</allow_backward>
                 <active_region_editor_id>
                     <id>-1</id>
                 </active_region_editor_id>
@@ -13524,7 +12705,7 @@
                 <pickable>true</pickable>
                 <transform>
                     <pos>
-                        <x>23.7744236</x>
+                        <x>23.4380875</x>
                         <y>0</y>
                         <z>26.9116497</z>
                     </pos>
@@ -13535,7 +12716,7 @@
                         <w>1</w>
                     </quat>
                     <scale>
-                        <x>5</x>
+                        <x>4.27927971</x>
                         <y>1</y>
                         <z>1</z>
                     </scale>
@@ -13759,6 +12940,7 @@
                 <reset_cooldown_on_any_hit>false</reset_cooldown_on_any_hit>
                 <init_hittable>true</init_hittable>
                 <timed_hittable_time>-1</timed_hittable_time>
+                <allow_backward>false</allow_backward>
                 <active_region_editor_id>
                     <id>435</id>
                 </active_region_editor_id>
@@ -13961,7 +13143,7 @@
                             <wait_time>0</wait_time>
                             <move_time>4</move_time>
                             <p>
-                                <x>7.5999999</x>
+                                <x>-7.5999999</x>
                                 <y>0</y>
                                 <z>0</z>
                             </p>
@@ -14131,6 +13313,7 @@
                 <reset_cooldown_on_any_hit>false</reset_cooldown_on_any_hit>
                 <init_hittable>true</init_hittable>
                 <timed_hittable_time>-1</timed_hittable_time>
+                <allow_backward>false</allow_backward>
                 <active_region_editor_id>
                     <id>-1</id>
                 </active_region_editor_id>
@@ -14189,7 +13372,7 @@
                     <pos>
                         <x>11.05371</x>
                         <y>0</y>
-                        <z>29.2059402</z>
+                        <z>29.2179508</z>
                     </pos>
                     <quat>
                         <x>0</x>
@@ -14246,7 +13429,7 @@
                     <pos>
                         <x>8.18283844</x>
                         <y>0</y>
-                        <z>27.4281654</z>
+                        <z>29.2599983</z>
                     </pos>
                     <quat>
                         <x>0</x>
@@ -14257,7 +13440,7 @@
                     <scale>
                         <x>1</x>
                         <y>1</y>
-                        <z>7</z>
+                        <z>10.6636658</z>
                     </scale>
                 </transform>
                 <model_name>cube</model_name>
@@ -14365,6 +13548,7 @@
                 <reset_cooldown_on_any_hit>false</reset_cooldown_on_any_hit>
                 <init_hittable>true</init_hittable>
                 <timed_hittable_time>-1</timed_hittable_time>
+                <allow_backward>false</allow_backward>
                 <active_region_editor_id>
                     <id>442</id>
                 </active_region_editor_id>
@@ -14569,7 +13753,7 @@
                             <p>
                                 <x>0</x>
                                 <y>0</y>
-                                <z>-7.5999999</z>
+                                <z>7.5999999</z>
                             </p>
                         </waypoint>
                     </waypoints>
@@ -14631,63 +13815,6 @@
                 <actions_on_exit/>
                 <trigger_volume_entities/>
             </FlowTrigger>
-            <FlowWall>
-                <editor_id>
-                    <id>443</id>
-                </editor_id>
-                <name>wall65</name>
-                <entity_active>true</entity_active>
-                <pickable>true</pickable>
-                <transform>
-                    <pos>
-                        <x>8.17082596</x>
-                        <y>0</y>
-                        <z>32.9657059</z>
-                    </pos>
-                    <quat>
-                        <x>0</x>
-                        <y>0</y>
-                        <z>0</z>
-                        <w>1</w>
-                    </quat>
-                    <scale>
-                        <x>1</x>
-                        <y>1</y>
-                        <z>7</z>
-                    </scale>
-                </transform>
-                <model_name>cube</model_name>
-                <texture_name>white</texture_name>
-                <model_color_vec4>
-                    <x>0.911764681</x>
-                    <y>0.238457501</y>
-                    <z>0.0312860534</z>
-                    <w>1</w>
-                </model_color_vec4>
-                <flow_section_id>-1</flow_section_id>
-                <tag>0</tag>
-                <waypoint_follower>
-                    <mode>Waypoint</mode>
-                    <waypoint_auto_start>true</waypoint_auto_start>
-                    <loop_waypoints>true</loop_waypoints>
-                    <start_time>4</start_time>
-                    <quantize>1</quantize>
-                    <quantize_buffer>0</quantize_buffer>
-                    <waypoints/>
-                    <follow_entity_name/>
-                    <follow_entity_editor_id>
-                        <id>-1</id>
-                    </follow_entity_editor_id>
-                </waypoint_follower>
-                <hurt_on_hit>true</hurt_on_hit>
-                <can_hit>true</can_hit>
-                <hp>-1</hp>
-                <move_mode>Waypoints</move_mode>
-                <rot_vel>0</rot_vel>
-                <polygon/>
-                <hit_actions/>
-                <children_editor_ids/>
-            </FlowWall>
             <TypingEnemy>
                 <editor_id>
                     <id>444</id>
@@ -14761,6 +13888,7 @@
                 <reset_cooldown_on_any_hit>false</reset_cooldown_on_any_hit>
                 <init_hittable>true</init_hittable>
                 <timed_hittable_time>-1</timed_hittable_time>
+                <allow_backward>false</allow_backward>
                 <active_region_editor_id>
                     <id>-1</id>
                 </active_region_editor_id>
@@ -14817,7 +13945,7 @@
                 <pickable>true</pickable>
                 <transform>
                     <pos>
-                        <x>9.31196308</x>
+                        <x>9.33598709</x>
                         <y>0</y>
                         <z>34.0948334</z>
                     </pos>
@@ -14828,7 +13956,7 @@
                         <w>1</w>
                     </quat>
                     <scale>
-                        <x>3</x>
+                        <x>3.04804802</x>
                         <y>1</y>
                         <z>1</z>
                     </scale>
@@ -14876,7 +14004,7 @@
                     <pos>
                         <x>10.3690243</x>
                         <y>0</y>
-                        <z>38.0828171</z>
+                        <z>36.8155556</z>
                     </pos>
                     <quat>
                         <x>0</x>
@@ -14887,7 +14015,7 @@
                     <scale>
                         <x>1</x>
                         <y>1</y>
-                        <z>7</z>
+                        <z>4.46547127</z>
                     </scale>
                 </transform>
                 <model_name>cube</model_name>
@@ -14931,7 +14059,7 @@
                 <pickable>true</pickable>
                 <transform>
                     <pos>
-                        <x>13.8044596</x>
+                        <x>16.9516068</x>
                         <y>0</y>
                         <z>33.0978355</z>
                     </pos>
@@ -14942,7 +14070,7 @@
                         <w>1</w>
                     </quat>
                     <scale>
-                        <x>1</x>
+                        <x>7.29429531</x>
                         <y>1</y>
                         <z>6</z>
                     </scale>
@@ -15109,6 +14237,7 @@
                 <reset_cooldown_on_any_hit>false</reset_cooldown_on_any_hit>
                 <init_hittable>true</init_hittable>
                 <timed_hittable_time>-1</timed_hittable_time>
+                <allow_backward>false</allow_backward>
                 <active_region_editor_id>
                     <id>450</id>
                 </active_region_editor_id>
@@ -15311,7 +14440,7 @@
                             <wait_time>0</wait_time>
                             <move_time>4</move_time>
                             <p>
-                                <x>-7.5999999</x>
+                                <x>7.5999999</x>
                                 <y>0</y>
                                 <z>0</z>
                             </p>
@@ -15495,6 +14624,7 @@
                 <reset_cooldown_on_any_hit>false</reset_cooldown_on_any_hit>
                 <init_hittable>true</init_hittable>
                 <timed_hittable_time>-1</timed_hittable_time>
+                <allow_backward>false</allow_backward>
                 <active_region_editor_id>
                     <id>-1</id>
                 </active_region_editor_id>
@@ -15672,6 +14802,7 @@
                 <reset_cooldown_on_any_hit>false</reset_cooldown_on_any_hit>
                 <init_hittable>true</init_hittable>
                 <timed_hittable_time>-1</timed_hittable_time>
+                <allow_backward>false</allow_backward>
                 <active_region_editor_id>
                     <id>-1</id>
                 </active_region_editor_id>
@@ -15792,6 +14923,7 @@
                 <reset_cooldown_on_any_hit>false</reset_cooldown_on_any_hit>
                 <init_hittable>true</init_hittable>
                 <timed_hittable_time>-1</timed_hittable_time>
+                <allow_backward>false</allow_backward>
                 <active_region_editor_id>
                     <id>-1</id>
                 </active_region_editor_id>
@@ -15908,6 +15040,7 @@
                 <reset_cooldown_on_any_hit>false</reset_cooldown_on_any_hit>
                 <init_hittable>true</init_hittable>
                 <timed_hittable_time>-1</timed_hittable_time>
+                <allow_backward>false</allow_backward>
                 <active_region_editor_id>
                     <id>-1</id>
                 </active_region_editor_id>
@@ -16024,6 +15157,7 @@
                 <reset_cooldown_on_any_hit>false</reset_cooldown_on_any_hit>
                 <init_hittable>true</init_hittable>
                 <timed_hittable_time>-1</timed_hittable_time>
+                <allow_backward>false</allow_backward>
                 <active_region_editor_id>
                     <id>-1</id>
                 </active_region_editor_id>
@@ -16323,6 +15457,7 @@
                 <reset_cooldown_on_any_hit>false</reset_cooldown_on_any_hit>
                 <init_hittable>true</init_hittable>
                 <timed_hittable_time>-1</timed_hittable_time>
+                <allow_backward>false</allow_backward>
                 <active_region_editor_id>
                     <id>-1</id>
                 </active_region_editor_id>
@@ -16439,6 +15574,7 @@
                 <reset_cooldown_on_any_hit>false</reset_cooldown_on_any_hit>
                 <init_hittable>true</init_hittable>
                 <timed_hittable_time>-1</timed_hittable_time>
+                <allow_backward>false</allow_backward>
                 <active_region_editor_id>
                     <id>-1</id>
                 </active_region_editor_id>
@@ -16555,6 +15691,7 @@
                 <reset_cooldown_on_any_hit>false</reset_cooldown_on_any_hit>
                 <init_hittable>true</init_hittable>
                 <timed_hittable_time>-1</timed_hittable_time>
+                <allow_backward>false</allow_backward>
                 <active_region_editor_id>
                     <id>-1</id>
                 </active_region_editor_id>
@@ -16744,7 +15881,7 @@
                     <pos>
                         <x>15.5341892</x>
                         <y>0</y>
-                        <z>40.0287628</z>
+                        <z>40.0047379</z>
                     </pos>
                     <quat>
                         <x>0</x>
@@ -16755,7 +15892,7 @@
                     <scale>
                         <x>1</x>
                         <y>1</y>
-                        <z>4</z>
+                        <z>3.90390015</z>
                     </scale>
                 </transform>
                 <model_name>cube</model_name>
@@ -16858,7 +15995,7 @@
                     <pos>
                         <x>21.773737</x>
                         <y>0</y>
-                        <z>41.6867447</z>
+                        <z>40.5696259</z>
                     </pos>
                     <quat>
                         <x>0</x>
@@ -16869,7 +16006,7 @@
                     <scale>
                         <x>1</x>
                         <y>1</y>
-                        <z>5</z>
+                        <z>2.76576614</z>
                     </scale>
                 </transform>
                 <model_name>cube</model_name>
@@ -16977,6 +16114,7 @@
                 <reset_cooldown_on_any_hit>false</reset_cooldown_on_any_hit>
                 <init_hittable>true</init_hittable>
                 <timed_hittable_time>-1</timed_hittable_time>
+                <allow_backward>false</allow_backward>
                 <active_region_editor_id>
                     <id>461</id>
                 </active_region_editor_id>
@@ -17152,7 +16290,7 @@
                 <pickable>true</pickable>
                 <transform>
                     <pos>
-                        <x>22.7707291</x>
+                        <x>22.7767353</x>
                         <y>0</y>
                         <z>38.6957512</z>
                     </pos>
@@ -17163,7 +16301,7 @@
                         <w>1</w>
                     </quat>
                     <scale>
-                        <x>3</x>
+                        <x>2.98798752</x>
                         <y>1</y>
                         <z>1</z>
                     </scale>
@@ -17266,7 +16404,7 @@
                 <pickable>true</pickable>
                 <transform>
                     <pos>
-                        <x>23.7196827</x>
+                        <x>23.7677326</x>
                         <y>0</y>
                         <z>37.0981598</z>
                     </pos>
@@ -17323,9 +16461,9 @@
                 <pickable>true</pickable>
                 <transform>
                     <pos>
-                        <x>19.8945541</x>
+                        <x>19.9065647</x>
                         <y>0</y>
-                        <z>30.4551926</z>
+                        <z>30.4672031</z>
                     </pos>
                     <quat>
                         <x>0</x>
@@ -17337,63 +16475,6 @@
                         <x>3</x>
                         <y>1</y>
                         <z>1</z>
-                    </scale>
-                </transform>
-                <model_name>cube</model_name>
-                <texture_name>white</texture_name>
-                <model_color_vec4>
-                    <x>0.911764681</x>
-                    <y>0.238457501</y>
-                    <z>0.0312860534</z>
-                    <w>1</w>
-                </model_color_vec4>
-                <flow_section_id>-1</flow_section_id>
-                <tag>0</tag>
-                <waypoint_follower>
-                    <mode>Waypoint</mode>
-                    <waypoint_auto_start>true</waypoint_auto_start>
-                    <loop_waypoints>true</loop_waypoints>
-                    <start_time>4</start_time>
-                    <quantize>1</quantize>
-                    <quantize_buffer>0</quantize_buffer>
-                    <waypoints/>
-                    <follow_entity_name/>
-                    <follow_entity_editor_id>
-                        <id>-1</id>
-                    </follow_entity_editor_id>
-                </waypoint_follower>
-                <hurt_on_hit>true</hurt_on_hit>
-                <can_hit>true</can_hit>
-                <hp>-1</hp>
-                <move_mode>Waypoints</move_mode>
-                <rot_vel>0</rot_vel>
-                <polygon/>
-                <hit_actions/>
-                <children_editor_ids/>
-            </FlowWall>
-            <FlowWall>
-                <editor_id>
-                    <id>479</id>
-                </editor_id>
-                <name>wall80</name>
-                <entity_active>true</entity_active>
-                <pickable>true</pickable>
-                <transform>
-                    <pos>
-                        <x>20.0800438</x>
-                        <y>0</y>
-                        <z>33.4825439</z>
-                    </pos>
-                    <quat>
-                        <x>0</x>
-                        <y>0</y>
-                        <z>0</z>
-                        <w>1</w>
-                    </quat>
-                    <scale>
-                        <x>1</x>
-                        <y>1</y>
-                        <z>5</z>
                     </scale>
                 </transform>
                 <model_name>cube</model_name>
@@ -17625,6 +16706,7 @@
                 <reset_cooldown_on_any_hit>false</reset_cooldown_on_any_hit>
                 <init_hittable>true</init_hittable>
                 <timed_hittable_time>-1</timed_hittable_time>
+                <allow_backward>false</allow_backward>
                 <active_region_editor_id>
                     <id>480</id>
                 </active_region_editor_id>
@@ -18123,6 +17205,7 @@
                 <reset_cooldown_on_any_hit>false</reset_cooldown_on_any_hit>
                 <init_hittable>true</init_hittable>
                 <timed_hittable_time>-1</timed_hittable_time>
+                <allow_backward>false</allow_backward>
                 <active_region_editor_id>
                     <id>484</id>
                 </active_region_editor_id>
@@ -18818,6 +17901,7 @@
                 <reset_cooldown_on_any_hit>false</reset_cooldown_on_any_hit>
                 <init_hittable>true</init_hittable>
                 <timed_hittable_time>-1</timed_hittable_time>
+                <allow_backward>false</allow_backward>
                 <active_region_editor_id>
                     <id>-1</id>
                 </active_region_editor_id>
@@ -19632,6 +18716,7 @@
                 <reset_cooldown_on_any_hit>false</reset_cooldown_on_any_hit>
                 <init_hittable>true</init_hittable>
                 <timed_hittable_time>-1</timed_hittable_time>
+                <allow_backward>false</allow_backward>
                 <active_region_editor_id>
                     <id>-1</id>
                 </active_region_editor_id>
@@ -19741,6 +18826,7 @@
                 <reset_cooldown_on_any_hit>false</reset_cooldown_on_any_hit>
                 <init_hittable>true</init_hittable>
                 <timed_hittable_time>-1</timed_hittable_time>
+                <allow_backward>false</allow_backward>
                 <active_region_editor_id>
                     <id>-1</id>
                 </active_region_editor_id>
@@ -20531,6 +19617,7 @@
                 <reset_cooldown_on_any_hit>false</reset_cooldown_on_any_hit>
                 <init_hittable>true</init_hittable>
                 <timed_hittable_time>-1</timed_hittable_time>
+                <allow_backward>false</allow_backward>
                 <active_region_editor_id>
                     <id>-1</id>
                 </active_region_editor_id>
@@ -20769,6 +19856,7 @@
                 <reset_cooldown_on_any_hit>false</reset_cooldown_on_any_hit>
                 <init_hittable>true</init_hittable>
                 <timed_hittable_time>-1</timed_hittable_time>
+                <allow_backward>false</allow_backward>
                 <active_region_editor_id>
                     <id>-1</id>
                 </active_region_editor_id>
@@ -20942,6 +20030,7 @@
                 <reset_cooldown_on_any_hit>true</reset_cooldown_on_any_hit>
                 <init_hittable>true</init_hittable>
                 <timed_hittable_time>-1</timed_hittable_time>
+                <allow_backward>false</allow_backward>
                 <active_region_editor_id>
                     <id>-1</id>
                 </active_region_editor_id>
@@ -21051,6 +20140,7 @@
                 <reset_cooldown_on_any_hit>true</reset_cooldown_on_any_hit>
                 <init_hittable>true</init_hittable>
                 <timed_hittable_time>-1</timed_hittable_time>
+                <allow_backward>false</allow_backward>
                 <active_region_editor_id>
                     <id>-1</id>
                 </active_region_editor_id>
@@ -21156,6 +20246,7 @@
                 <reset_cooldown_on_any_hit>true</reset_cooldown_on_any_hit>
                 <init_hittable>true</init_hittable>
                 <timed_hittable_time>-1</timed_hittable_time>
+                <allow_backward>false</allow_backward>
                 <active_region_editor_id>
                     <id>-1</id>
                 </active_region_editor_id>
@@ -21265,6 +20356,7 @@
                 <reset_cooldown_on_any_hit>true</reset_cooldown_on_any_hit>
                 <init_hittable>true</init_hittable>
                 <timed_hittable_time>-1</timed_hittable_time>
+                <allow_backward>false</allow_backward>
                 <active_region_editor_id>
                     <id>-1</id>
                 </active_region_editor_id>
@@ -21370,6 +20462,7 @@
                 <reset_cooldown_on_any_hit>false</reset_cooldown_on_any_hit>
                 <init_hittable>true</init_hittable>
                 <timed_hittable_time>-1</timed_hittable_time>
+                <allow_backward>false</allow_backward>
                 <active_region_editor_id>
                     <id>-1</id>
                 </active_region_editor_id>
@@ -22062,6 +21155,909 @@
                 <actions_on_exit/>
                 <trigger_volume_entities/>
             </FlowTrigger>
+            <FlowWall>
+                <editor_id>
+                    <id>529</id>
+                </editor_id>
+                <name>wall86</name>
+                <entity_active>true</entity_active>
+                <pickable>true</pickable>
+                <transform>
+                    <pos>
+                        <x>-1.50805044</x>
+                        <y>0</y>
+                        <z>-3.3567934</z>
+                    </pos>
+                    <quat>
+                        <x>0</x>
+                        <y>0</y>
+                        <z>0</z>
+                        <w>1</w>
+                    </quat>
+                    <scale>
+                        <x>1</x>
+                        <y>1</y>
+                        <z>9</z>
+                    </scale>
+                </transform>
+                <model_name>cube</model_name>
+                <texture_name>white</texture_name>
+                <model_color_vec4>
+                    <x>0.911764681</x>
+                    <y>0.238457501</y>
+                    <z>0.0312860534</z>
+                    <w>1</w>
+                </model_color_vec4>
+                <flow_section_id>-1</flow_section_id>
+                <tag>0</tag>
+                <waypoint_follower>
+                    <mode>Waypoint</mode>
+                    <waypoint_auto_start>false</waypoint_auto_start>
+                    <loop_waypoints>true</loop_waypoints>
+                    <start_time>4</start_time>
+                    <quantize>1</quantize>
+                    <quantize_buffer>0</quantize_buffer>
+                    <waypoints>
+                        <waypoint>
+                            <wait_time>1.25</wait_time>
+                            <move_time>0.25</move_time>
+                            <p>
+                                <x>4</x>
+                                <y>0</y>
+                                <z>0</z>
+                            </p>
+                        </waypoint>
+                        <waypoint>
+                            <wait_time>1.75</wait_time>
+                            <move_time>0.25</move_time>
+                            <p>
+                                <x>4</x>
+                                <y>0</y>
+                                <z>0</z>
+                            </p>
+                        </waypoint>
+                        <waypoint>
+                            <wait_time>1.75</wait_time>
+                            <move_time>0.25</move_time>
+                            <p>
+                                <x>-4</x>
+                                <y>0</y>
+                                <z>0</z>
+                            </p>
+                        </waypoint>
+                        <waypoint>
+                            <wait_time>1.75</wait_time>
+                            <move_time>0.25</move_time>
+                            <p>
+                                <x>-4</x>
+                                <y>0</y>
+                                <z>0</z>
+                            </p>
+                        </waypoint>
+                        <waypoint>
+                            <wait_time>0.5</wait_time>
+                            <move_time>0</move_time>
+                            <p>
+                                <x>0</x>
+                                <y>0</y>
+                                <z>0</z>
+                            </p>
+                        </waypoint>
+                    </waypoints>
+                    <follow_entity_name/>
+                    <follow_entity_editor_id>
+                        <id>-1</id>
+                    </follow_entity_editor_id>
+                </waypoint_follower>
+                <hurt_on_hit>true</hurt_on_hit>
+                <can_hit>true</can_hit>
+                <hp>-1</hp>
+                <move_mode>Waypoints</move_mode>
+                <rot_vel>0</rot_vel>
+                <polygon/>
+                <hit_actions/>
+                <children_editor_ids/>
+            </FlowWall>
+            <FlowWall>
+                <editor_id>
+                    <id>530</id>
+                </editor_id>
+                <name>wall87</name>
+                <entity_active>true</entity_active>
+                <pickable>true</pickable>
+                <transform>
+                    <pos>
+                        <x>8.96642494</x>
+                        <y>0</y>
+                        <z>-4.75619221</z>
+                    </pos>
+                    <quat>
+                        <x>0</x>
+                        <y>0</y>
+                        <z>0</z>
+                        <w>1</w>
+                    </quat>
+                    <scale>
+                        <x>1</x>
+                        <y>1</y>
+                        <z>11.7957954</z>
+                    </scale>
+                </transform>
+                <model_name>cube</model_name>
+                <texture_name>white</texture_name>
+                <model_color_vec4>
+                    <x>0.911764681</x>
+                    <y>0.238457501</y>
+                    <z>0.0312860534</z>
+                    <w>1</w>
+                </model_color_vec4>
+                <flow_section_id>-1</flow_section_id>
+                <tag>0</tag>
+                <waypoint_follower>
+                    <mode>Waypoint</mode>
+                    <waypoint_auto_start>false</waypoint_auto_start>
+                    <loop_waypoints>true</loop_waypoints>
+                    <start_time>4</start_time>
+                    <quantize>1</quantize>
+                    <quantize_buffer>0</quantize_buffer>
+                    <waypoints>
+                        <waypoint>
+                            <wait_time>1.25</wait_time>
+                            <move_time>0.25</move_time>
+                            <p>
+                                <x>4</x>
+                                <y>0</y>
+                                <z>0</z>
+                            </p>
+                        </waypoint>
+                        <waypoint>
+                            <wait_time>1.75</wait_time>
+                            <move_time>0.25</move_time>
+                            <p>
+                                <x>4</x>
+                                <y>0</y>
+                                <z>0</z>
+                            </p>
+                        </waypoint>
+                        <waypoint>
+                            <wait_time>1.75</wait_time>
+                            <move_time>0.25</move_time>
+                            <p>
+                                <x>-4</x>
+                                <y>0</y>
+                                <z>0</z>
+                            </p>
+                        </waypoint>
+                        <waypoint>
+                            <wait_time>1.75</wait_time>
+                            <move_time>0.25</move_time>
+                            <p>
+                                <x>-4</x>
+                                <y>0</y>
+                                <z>0</z>
+                            </p>
+                        </waypoint>
+                        <waypoint>
+                            <wait_time>0.5</wait_time>
+                            <move_time>0</move_time>
+                            <p>
+                                <x>0</x>
+                                <y>0</y>
+                                <z>0</z>
+                            </p>
+                        </waypoint>
+                    </waypoints>
+                    <follow_entity_name/>
+                    <follow_entity_editor_id>
+                        <id>-1</id>
+                    </follow_entity_editor_id>
+                </waypoint_follower>
+                <hurt_on_hit>true</hurt_on_hit>
+                <can_hit>true</can_hit>
+                <hp>-1</hp>
+                <move_mode>Waypoints</move_mode>
+                <rot_vel>0</rot_vel>
+                <polygon/>
+                <hit_actions/>
+                <children_editor_ids/>
+            </FlowWall>
+            <FlowWall>
+                <editor_id>
+                    <id>531</id>
+                </editor_id>
+                <name>wall88</name>
+                <entity_active>true</entity_active>
+                <pickable>true</pickable>
+                <transform>
+                    <pos>
+                        <x>6.33579397</x>
+                        <y>0</y>
+                        <z>3.99455762</z>
+                    </pos>
+                    <quat>
+                        <x>0</x>
+                        <y>0</y>
+                        <z>0</z>
+                        <w>1</w>
+                    </quat>
+                    <scale>
+                        <x>1</x>
+                        <y>1</y>
+                        <z>5</z>
+                    </scale>
+                </transform>
+                <model_name>cube</model_name>
+                <texture_name>white</texture_name>
+                <model_color_vec4>
+                    <x>0.911764681</x>
+                    <y>0.238457501</y>
+                    <z>0.0312860534</z>
+                    <w>1</w>
+                </model_color_vec4>
+                <flow_section_id>-1</flow_section_id>
+                <tag>0</tag>
+                <waypoint_follower>
+                    <mode>Waypoint</mode>
+                    <waypoint_auto_start>false</waypoint_auto_start>
+                    <loop_waypoints>true</loop_waypoints>
+                    <start_time>4</start_time>
+                    <quantize>1</quantize>
+                    <quantize_buffer>0</quantize_buffer>
+                    <waypoints>
+                        <waypoint>
+                            <wait_time>1.25</wait_time>
+                            <move_time>0.25</move_time>
+                            <p>
+                                <x>4</x>
+                                <y>0</y>
+                                <z>0</z>
+                            </p>
+                        </waypoint>
+                        <waypoint>
+                            <wait_time>1.75</wait_time>
+                            <move_time>0.25</move_time>
+                            <p>
+                                <x>4</x>
+                                <y>0</y>
+                                <z>0</z>
+                            </p>
+                        </waypoint>
+                        <waypoint>
+                            <wait_time>1.75</wait_time>
+                            <move_time>0.25</move_time>
+                            <p>
+                                <x>-4</x>
+                                <y>0</y>
+                                <z>0</z>
+                            </p>
+                        </waypoint>
+                        <waypoint>
+                            <wait_time>1.75</wait_time>
+                            <move_time>0.25</move_time>
+                            <p>
+                                <x>-4</x>
+                                <y>0</y>
+                                <z>0</z>
+                            </p>
+                        </waypoint>
+                        <waypoint>
+                            <wait_time>0.5</wait_time>
+                            <move_time>0</move_time>
+                            <p>
+                                <x>0</x>
+                                <y>0</y>
+                                <z>0</z>
+                            </p>
+                        </waypoint>
+                    </waypoints>
+                    <follow_entity_name/>
+                    <follow_entity_editor_id>
+                        <id>-1</id>
+                    </follow_entity_editor_id>
+                </waypoint_follower>
+                <hurt_on_hit>true</hurt_on_hit>
+                <can_hit>true</can_hit>
+                <hp>-1</hp>
+                <move_mode>Waypoints</move_mode>
+                <rot_vel>0</rot_vel>
+                <polygon/>
+                <hit_actions/>
+                <children_editor_ids/>
+            </FlowWall>
+            <FlowWall>
+                <editor_id>
+                    <id>532</id>
+                </editor_id>
+                <name>wall89</name>
+                <entity_active>true</entity_active>
+                <pickable>true</pickable>
+                <transform>
+                    <pos>
+                        <x>16.4499092</x>
+                        <y>0</y>
+                        <z>4.15071392</z>
+                    </pos>
+                    <quat>
+                        <x>0</x>
+                        <y>0</y>
+                        <z>0</z>
+                        <w>1</w>
+                    </quat>
+                    <scale>
+                        <x>1</x>
+                        <y>1</y>
+                        <z>5</z>
+                    </scale>
+                </transform>
+                <model_name>cube</model_name>
+                <texture_name>white</texture_name>
+                <model_color_vec4>
+                    <x>0.911764681</x>
+                    <y>0.238457501</y>
+                    <z>0.0312860534</z>
+                    <w>1</w>
+                </model_color_vec4>
+                <flow_section_id>-1</flow_section_id>
+                <tag>0</tag>
+                <waypoint_follower>
+                    <mode>Waypoint</mode>
+                    <waypoint_auto_start>false</waypoint_auto_start>
+                    <loop_waypoints>true</loop_waypoints>
+                    <start_time>4</start_time>
+                    <quantize>1</quantize>
+                    <quantize_buffer>0</quantize_buffer>
+                    <waypoints>
+                        <waypoint>
+                            <wait_time>1.25</wait_time>
+                            <move_time>0.25</move_time>
+                            <p>
+                                <x>4</x>
+                                <y>0</y>
+                                <z>0</z>
+                            </p>
+                        </waypoint>
+                        <waypoint>
+                            <wait_time>1.75</wait_time>
+                            <move_time>0.25</move_time>
+                            <p>
+                                <x>4</x>
+                                <y>0</y>
+                                <z>0</z>
+                            </p>
+                        </waypoint>
+                        <waypoint>
+                            <wait_time>1.75</wait_time>
+                            <move_time>0.25</move_time>
+                            <p>
+                                <x>-4</x>
+                                <y>0</y>
+                                <z>0</z>
+                            </p>
+                        </waypoint>
+                        <waypoint>
+                            <wait_time>1.75</wait_time>
+                            <move_time>0.25</move_time>
+                            <p>
+                                <x>-4</x>
+                                <y>0</y>
+                                <z>0</z>
+                            </p>
+                        </waypoint>
+                        <waypoint>
+                            <wait_time>0.5</wait_time>
+                            <move_time>0</move_time>
+                            <p>
+                                <x>0</x>
+                                <y>0</y>
+                                <z>0</z>
+                            </p>
+                        </waypoint>
+                    </waypoints>
+                    <follow_entity_name/>
+                    <follow_entity_editor_id>
+                        <id>-1</id>
+                    </follow_entity_editor_id>
+                </waypoint_follower>
+                <hurt_on_hit>true</hurt_on_hit>
+                <can_hit>true</can_hit>
+                <hp>-1</hp>
+                <move_mode>Waypoints</move_mode>
+                <rot_vel>0</rot_vel>
+                <polygon/>
+                <hit_actions/>
+                <children_editor_ids/>
+            </FlowWall>
+            <FlowWall>
+                <editor_id>
+                    <id>533</id>
+                </editor_id>
+                <name>wall90</name>
+                <entity_active>true</entity_active>
+                <pickable>true</pickable>
+                <transform>
+                    <pos>
+                        <x>8.8703289</x>
+                        <y>0</y>
+                        <z>8.85942173</z>
+                    </pos>
+                    <quat>
+                        <x>0</x>
+                        <y>0</y>
+                        <z>0</z>
+                        <w>1</w>
+                    </quat>
+                    <scale>
+                        <x>1</x>
+                        <y>1</y>
+                        <z>5.26426506</z>
+                    </scale>
+                </transform>
+                <model_name>cube</model_name>
+                <texture_name>white</texture_name>
+                <model_color_vec4>
+                    <x>0.911764681</x>
+                    <y>0.238457501</y>
+                    <z>0.0312860534</z>
+                    <w>1</w>
+                </model_color_vec4>
+                <flow_section_id>-1</flow_section_id>
+                <tag>0</tag>
+                <waypoint_follower>
+                    <mode>Waypoint</mode>
+                    <waypoint_auto_start>false</waypoint_auto_start>
+                    <loop_waypoints>true</loop_waypoints>
+                    <start_time>4</start_time>
+                    <quantize>1</quantize>
+                    <quantize_buffer>0</quantize_buffer>
+                    <waypoints>
+                        <waypoint>
+                            <wait_time>1.25</wait_time>
+                            <move_time>0.25</move_time>
+                            <p>
+                                <x>4</x>
+                                <y>0</y>
+                                <z>0</z>
+                            </p>
+                        </waypoint>
+                        <waypoint>
+                            <wait_time>1.75</wait_time>
+                            <move_time>0.25</move_time>
+                            <p>
+                                <x>4</x>
+                                <y>0</y>
+                                <z>0</z>
+                            </p>
+                        </waypoint>
+                        <waypoint>
+                            <wait_time>1.75</wait_time>
+                            <move_time>0.25</move_time>
+                            <p>
+                                <x>-4</x>
+                                <y>0</y>
+                                <z>0</z>
+                            </p>
+                        </waypoint>
+                        <waypoint>
+                            <wait_time>1.75</wait_time>
+                            <move_time>0.25</move_time>
+                            <p>
+                                <x>-4</x>
+                                <y>0</y>
+                                <z>0</z>
+                            </p>
+                        </waypoint>
+                        <waypoint>
+                            <wait_time>0.5</wait_time>
+                            <move_time>0</move_time>
+                            <p>
+                                <x>0</x>
+                                <y>0</y>
+                                <z>0</z>
+                            </p>
+                        </waypoint>
+                    </waypoints>
+                    <follow_entity_name/>
+                    <follow_entity_editor_id>
+                        <id>-1</id>
+                    </follow_entity_editor_id>
+                </waypoint_follower>
+                <hurt_on_hit>true</hurt_on_hit>
+                <can_hit>true</can_hit>
+                <hp>-1</hp>
+                <move_mode>Waypoints</move_mode>
+                <rot_vel>0</rot_vel>
+                <polygon/>
+                <hit_actions/>
+                <children_editor_ids/>
+            </FlowWall>
+            <FlowWall>
+                <editor_id>
+                    <id>534</id>
+                </editor_id>
+                <name>wall91</name>
+                <entity_active>true</entity_active>
+                <pickable>true</pickable>
+                <transform>
+                    <pos>
+                        <x>-1.17171335</x>
+                        <y>0</y>
+                        <z>8.84740925</z>
+                    </pos>
+                    <quat>
+                        <x>0</x>
+                        <y>0</y>
+                        <z>0</z>
+                        <w>1</w>
+                    </quat>
+                    <scale>
+                        <x>1</x>
+                        <y>1</y>
+                        <z>5.28828812</z>
+                    </scale>
+                </transform>
+                <model_name>cube</model_name>
+                <texture_name>white</texture_name>
+                <model_color_vec4>
+                    <x>0.911764681</x>
+                    <y>0.238457501</y>
+                    <z>0.0312860534</z>
+                    <w>1</w>
+                </model_color_vec4>
+                <flow_section_id>-1</flow_section_id>
+                <tag>0</tag>
+                <waypoint_follower>
+                    <mode>Waypoint</mode>
+                    <waypoint_auto_start>false</waypoint_auto_start>
+                    <loop_waypoints>true</loop_waypoints>
+                    <start_time>4</start_time>
+                    <quantize>1</quantize>
+                    <quantize_buffer>0</quantize_buffer>
+                    <waypoints>
+                        <waypoint>
+                            <wait_time>1.25</wait_time>
+                            <move_time>0.25</move_time>
+                            <p>
+                                <x>4</x>
+                                <y>0</y>
+                                <z>0</z>
+                            </p>
+                        </waypoint>
+                        <waypoint>
+                            <wait_time>1.75</wait_time>
+                            <move_time>0.25</move_time>
+                            <p>
+                                <x>4</x>
+                                <y>0</y>
+                                <z>0</z>
+                            </p>
+                        </waypoint>
+                        <waypoint>
+                            <wait_time>1.75</wait_time>
+                            <move_time>0.25</move_time>
+                            <p>
+                                <x>-4</x>
+                                <y>0</y>
+                                <z>0</z>
+                            </p>
+                        </waypoint>
+                        <waypoint>
+                            <wait_time>1.75</wait_time>
+                            <move_time>0.25</move_time>
+                            <p>
+                                <x>-4</x>
+                                <y>0</y>
+                                <z>0</z>
+                            </p>
+                        </waypoint>
+                        <waypoint>
+                            <wait_time>0.5</wait_time>
+                            <move_time>0</move_time>
+                            <p>
+                                <x>0</x>
+                                <y>0</y>
+                                <z>0</z>
+                            </p>
+                        </waypoint>
+                    </waypoints>
+                    <follow_entity_name/>
+                    <follow_entity_editor_id>
+                        <id>-1</id>
+                    </follow_entity_editor_id>
+                </waypoint_follower>
+                <hurt_on_hit>true</hurt_on_hit>
+                <can_hit>true</can_hit>
+                <hp>-1</hp>
+                <move_mode>Waypoints</move_mode>
+                <rot_vel>0</rot_vel>
+                <polygon/>
+                <hit_actions/>
+                <children_editor_ids/>
+            </FlowWall>
+            <FlowWall>
+                <editor_id>
+                    <id>535</id>
+                </editor_id>
+                <name>wall92</name>
+                <entity_active>true</entity_active>
+                <pickable>true</pickable>
+                <transform>
+                    <pos>
+                        <x>14.6092663</x>
+                        <y>0</y>
+                        <z>18.9236641</z>
+                    </pos>
+                    <quat>
+                        <x>0</x>
+                        <y>0</y>
+                        <z>0</z>
+                        <w>1</w>
+                    </quat>
+                    <scale>
+                        <x>1</x>
+                        <y>1</y>
+                        <z>3</z>
+                    </scale>
+                </transform>
+                <model_name>cube</model_name>
+                <texture_name>white</texture_name>
+                <model_color_vec4>
+                    <x>0.911764681</x>
+                    <y>0.238457501</y>
+                    <z>0.0312860534</z>
+                    <w>1</w>
+                </model_color_vec4>
+                <flow_section_id>-1</flow_section_id>
+                <tag>0</tag>
+                <waypoint_follower>
+                    <mode>Waypoint</mode>
+                    <waypoint_auto_start>true</waypoint_auto_start>
+                    <loop_waypoints>true</loop_waypoints>
+                    <start_time>4</start_time>
+                    <quantize>1</quantize>
+                    <quantize_buffer>0</quantize_buffer>
+                    <waypoints/>
+                    <follow_entity_name/>
+                    <follow_entity_editor_id>
+                        <id>-1</id>
+                    </follow_entity_editor_id>
+                </waypoint_follower>
+                <hurt_on_hit>true</hurt_on_hit>
+                <can_hit>true</can_hit>
+                <hp>-1</hp>
+                <move_mode>Waypoints</move_mode>
+                <rot_vel>0</rot_vel>
+                <polygon/>
+                <hit_actions/>
+                <children_editor_ids/>
+            </FlowWall>
+            <FlowWall>
+                <editor_id>
+                    <id>536</id>
+                </editor_id>
+                <name>wall93</name>
+                <entity_active>true</entity_active>
+                <pickable>true</pickable>
+                <transform>
+                    <pos>
+                        <x>14.2669239</x>
+                        <y>0</y>
+                        <z>13.8065462</z>
+                    </pos>
+                    <quat>
+                        <x>0</x>
+                        <y>0</y>
+                        <z>0</z>
+                        <w>1</w>
+                    </quat>
+                    <scale>
+                        <x>3.8948946</x>
+                        <y>1</y>
+                        <z>3</z>
+                    </scale>
+                </transform>
+                <model_name>cube</model_name>
+                <texture_name>white</texture_name>
+                <model_color_vec4>
+                    <x>0.911764681</x>
+                    <y>0.238457501</y>
+                    <z>0.0312860534</z>
+                    <w>1</w>
+                </model_color_vec4>
+                <flow_section_id>-1</flow_section_id>
+                <tag>0</tag>
+                <waypoint_follower>
+                    <mode>Waypoint</mode>
+                    <waypoint_auto_start>true</waypoint_auto_start>
+                    <loop_waypoints>true</loop_waypoints>
+                    <start_time>4</start_time>
+                    <quantize>1</quantize>
+                    <quantize_buffer>0</quantize_buffer>
+                    <waypoints/>
+                    <follow_entity_name/>
+                    <follow_entity_editor_id>
+                        <id>-1</id>
+                    </follow_entity_editor_id>
+                </waypoint_follower>
+                <hurt_on_hit>true</hurt_on_hit>
+                <can_hit>true</can_hit>
+                <hp>-1</hp>
+                <move_mode>Waypoints</move_mode>
+                <rot_vel>0</rot_vel>
+                <polygon/>
+                <hit_actions/>
+                <children_editor_ids/>
+            </FlowWall>
+            <FlowWall>
+                <editor_id>
+                    <id>537</id>
+                </editor_id>
+                <name>wall94</name>
+                <entity_active>true</entity_active>
+                <pickable>true</pickable>
+                <transform>
+                    <pos>
+                        <x>27.1257763</x>
+                        <y>0</y>
+                        <z>10.6594</z>
+                    </pos>
+                    <quat>
+                        <x>0</x>
+                        <y>0</y>
+                        <z>0</z>
+                        <w>1</w>
+                    </quat>
+                    <scale>
+                        <x>1</x>
+                        <y>1</y>
+                        <z>3.56756783</z>
+                    </scale>
+                </transform>
+                <model_name>cube</model_name>
+                <texture_name>white</texture_name>
+                <model_color_vec4>
+                    <x>0.911764681</x>
+                    <y>0.238457501</y>
+                    <z>0.0312860534</z>
+                    <w>1</w>
+                </model_color_vec4>
+                <flow_section_id>-1</flow_section_id>
+                <tag>0</tag>
+                <waypoint_follower>
+                    <mode>Waypoint</mode>
+                    <waypoint_auto_start>true</waypoint_auto_start>
+                    <loop_waypoints>true</loop_waypoints>
+                    <start_time>4</start_time>
+                    <quantize>1</quantize>
+                    <quantize_buffer>0</quantize_buffer>
+                    <waypoints/>
+                    <follow_entity_name/>
+                    <follow_entity_editor_id>
+                        <id>-1</id>
+                    </follow_entity_editor_id>
+                </waypoint_follower>
+                <hurt_on_hit>true</hurt_on_hit>
+                <can_hit>true</can_hit>
+                <hp>-1</hp>
+                <move_mode>Waypoints</move_mode>
+                <rot_vel>0</rot_vel>
+                <polygon/>
+                <hit_actions/>
+                <children_editor_ids/>
+            </FlowWall>
+            <FlowWall>
+                <editor_id>
+                    <id>538</id>
+                </editor_id>
+                <name>wall95</name>
+                <entity_active>true</entity_active>
+                <pickable>true</pickable>
+                <transform>
+                    <pos>
+                        <x>29.4741249</x>
+                        <y>0</y>
+                        <z>15.6443825</z>
+                    </pos>
+                    <quat>
+                        <x>0</x>
+                        <y>0</y>
+                        <z>0</z>
+                        <w>1</w>
+                    </quat>
+                    <scale>
+                        <x>1.87687874</x>
+                        <y>1</y>
+                        <z>1</z>
+                    </scale>
+                </transform>
+                <model_name>cube</model_name>
+                <texture_name>white</texture_name>
+                <model_color_vec4>
+                    <x>0.911764681</x>
+                    <y>0.238457501</y>
+                    <z>0.0312860534</z>
+                    <w>1</w>
+                </model_color_vec4>
+                <flow_section_id>-1</flow_section_id>
+                <tag>0</tag>
+                <waypoint_follower>
+                    <mode>Waypoint</mode>
+                    <waypoint_auto_start>true</waypoint_auto_start>
+                    <loop_waypoints>true</loop_waypoints>
+                    <start_time>4</start_time>
+                    <quantize>1</quantize>
+                    <quantize_buffer>0</quantize_buffer>
+                    <waypoints/>
+                    <follow_entity_name/>
+                    <follow_entity_editor_id>
+                        <id>-1</id>
+                    </follow_entity_editor_id>
+                </waypoint_follower>
+                <hurt_on_hit>true</hurt_on_hit>
+                <can_hit>true</can_hit>
+                <hp>-1</hp>
+                <move_mode>Waypoints</move_mode>
+                <rot_vel>0</rot_vel>
+                <polygon/>
+                <hit_actions/>
+                <children_editor_ids/>
+            </FlowWall>
+            <FlowWall>
+                <editor_id>
+                    <id>539</id>
+                </editor_id>
+                <name>wall96</name>
+                <entity_active>true</entity_active>
+                <pickable>true</pickable>
+                <transform>
+                    <pos>
+                        <x>33.8524971</x>
+                        <y>0</y>
+                        <z>10.7374792</z>
+                    </pos>
+                    <quat>
+                        <x>0</x>
+                        <y>0</y>
+                        <z>0</z>
+                        <w>1</w>
+                    </quat>
+                    <scale>
+                        <x>1</x>
+                        <y>1</y>
+                        <z>3.72822762</z>
+                    </scale>
+                </transform>
+                <model_name>cube</model_name>
+                <texture_name>white</texture_name>
+                <model_color_vec4>
+                    <x>0.911764681</x>
+                    <y>0.238457501</y>
+                    <z>0.0312860534</z>
+                    <w>1</w>
+                </model_color_vec4>
+                <flow_section_id>-1</flow_section_id>
+                <tag>0</tag>
+                <waypoint_follower>
+                    <mode>Waypoint</mode>
+                    <waypoint_auto_start>true</waypoint_auto_start>
+                    <loop_waypoints>true</loop_waypoints>
+                    <start_time>4</start_time>
+                    <quantize>1</quantize>
+                    <quantize_buffer>0</quantize_buffer>
+                    <waypoints/>
+                    <follow_entity_name/>
+                    <follow_entity_editor_id>
+                        <id>-1</id>
+                    </follow_entity_editor_id>
+                </waypoint_follower>
+                <hurt_on_hit>true</hurt_on_hit>
+                <can_hit>true</can_hit>
+                <hp>-1</hp>
+                <move_mode>Waypoints</move_mode>
+                <rot_vel>0</rot_vel>
+                <polygon/>
+                <hit_actions/>
+                <children_editor_ids/>
+            </FlowWall>
         </new_entities>
     </script>
 </root>
