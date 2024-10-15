@@ -143,14 +143,31 @@ bool SeqAction::ImGui(char const* label, std::vector<std::unique_ptr<SeqAction>>
             }
         }
         ImGui::SameLine();
+        if (sClipboardActions.empty()) {
+            ImGui::BeginDisabled();
+        }
         if (ImGui::Button("Paste actions")) {
-            actions.reserve(sClipboardActions.size());
+            actions.reserve(actions.size() + sClipboardActions.size());
             for (auto const& pAction : sClipboardActions) {
                 auto clone = SeqAction::Clone(*pAction);
                 actions.push_back(std::move(clone));
             }
             changed = true;
         }
+        if (sClipboardActions.empty()) {
+            ImGui::EndDisabled();
+        }
+        ImGui::SameLine();
+        if (sClipboardAction == nullptr) {
+            ImGui::BeginDisabled();
+        }        
+        if (ImGui::Button("Paste 1 action")) {
+            auto clone = SeqAction::Clone(*sClipboardAction);
+            actions.push_back(std::move(clone));
+        }
+        if (sClipboardAction == nullptr) {
+            ImGui::EndDisabled();
+        }        
         
         static SeqActionType actionType = SeqActionType::SpawnAutomator;
         SeqActionTypeImGui("Action type", &actionType);
@@ -184,22 +201,10 @@ bool SeqAction::ImGui(char const* label, std::vector<std::unique_ptr<SeqAction>>
                     sClipboardAction = std::move(clone);
                 }
                 ImGui::SameLine();
-                bool pasteable = false;
-                if (sClipboardAction != nullptr) {
-                    if (sClipboardAction->Type() == actions[i]->Type()) {
-                        pasteable = true;
-                    }
-                }
-                if (!pasteable) {
-                    ImGui::BeginDisabled();
-                }
                 if (ImGui::Button("Paste")) {
                     auto clone = SeqAction::Clone(*sClipboardAction);
                     actions[i] = std::move(clone);
                     changed = true;
-                }
-                if (!pasteable) {
-                    ImGui::EndDisabled();
                 }
                 bool thisChanged = ImGui::Checkbox("One time", &actions[i]->_oneTime);
                 changed = thisChanged || changed;
