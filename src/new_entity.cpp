@@ -35,6 +35,7 @@
 #include "entities/sink.h"
 #include "entities/hazard.h"
 #include "entities/viz.h"
+#include "entities/particle_emitter.h"
 
 extern GameManager gGameManager;
 

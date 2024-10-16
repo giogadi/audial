@@ -10,9 +10,13 @@ enum class ParticleShape {
 };
 struct Particle {
     Transform t;
+    Vec3 a;
     Vec3 v;
+    float minSpeed = 0.f;
+    Vec3 minSpeedDir;
     Vec3 rotV;
     Vec4 color;
+    Vec3 extraScaleFromSpeed;
     float alphaV = 0.f;
     float timeLeft = 0.f;
     ParticleShape shape = ParticleShape::Triangle;

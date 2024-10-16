@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <root>
-    <version>11</version>
+    <version>12</version>
     <script>
         <bpm>110</bpm>
         <gamma_correction>false</gamma_correction>
@@ -6445,17 +6445,33 @@
                         <holdNotes>false</holdNotes>
                     </seq_action>
                     <seq_action>
-                        <one_time>true</one_time>
+                        <one_time>false</one_time>
                         <action_type>AddMotion</action_type>
                         <editor_id>
                             <id>360</id>
                         </editor_id>
-                        <offset>
+                        <v0>
                             <x>0</x>
                             <y>0</y>
-                            <z>-2.6500001</z>
-                        </offset>
-                        <time>0.100000001</time>
+                            <z>-26</z>
+                        </v0>
+                        <a>
+                            <x>0</x>
+                            <y>0</y>
+                            <z>100</z>
+                        </a>
+                        <time>0.360000014</time>
+                    </seq_action>
+                    <seq_action>
+                        <one_time>false</one_time>
+                        <action_type>SetEntityActive</action_type>
+                        <entities_tag>-1</entities_tag>
+                        <entity_editor_id>
+                            <id>540</id>
+                        </entity_editor_id>
+                        <active>true</active>
+                        <init_on_activate>true</init_on_activate>
+                        <init_if_already_active>false</init_if_already_active>
                     </seq_action>
                 </hit_actions>
                 <all_hit_actions/>
@@ -9918,17 +9934,33 @@
                         <holdNotes>false</holdNotes>
                     </seq_action>
                     <seq_action>
-                        <one_time>true</one_time>
+                        <one_time>false</one_time>
                         <action_type>AddMotion</action_type>
                         <editor_id>
                             <id>414</id>
                         </editor_id>
-                        <offset>
-                            <x>-3</x>
+                        <v0>
+                            <x>-26.5</x>
                             <y>0</y>
                             <z>0</z>
-                        </offset>
-                        <time>0.100000001</time>
+                        </v0>
+                        <a>
+                            <x>100</x>
+                            <y>0</y>
+                            <z>0</z>
+                        </a>
+                        <time>0.360000014</time>
+                    </seq_action>
+                    <seq_action>
+                        <one_time>false</one_time>
+                        <action_type>SetEntityActive</action_type>
+                        <entities_tag>-1</entities_tag>
+                        <entity_editor_id>
+                            <id>543</id>
+                        </entity_editor_id>
+                        <active>true</active>
+                        <init_on_activate>true</init_on_activate>
+                        <init_if_already_active>false</init_if_already_active>
                     </seq_action>
                 </hit_actions>
                 <all_hit_actions/>
@@ -10612,17 +10644,33 @@
                         <holdNotes>false</holdNotes>
                     </seq_action>
                     <seq_action>
-                        <one_time>true</one_time>
+                        <one_time>false</one_time>
                         <action_type>AddMotion</action_type>
                         <editor_id>
                             <id>365</id>
                         </editor_id>
-                        <offset>
+                        <v0>
                             <x>0</x>
                             <y>0</y>
-                            <z>2.6500001</z>
-                        </offset>
-                        <time>0.100000001</time>
+                            <z>24.5</z>
+                        </v0>
+                        <a>
+                            <x>0</x>
+                            <y>0</y>
+                            <z>-100</z>
+                        </a>
+                        <time>0.360000014</time>
+                    </seq_action>
+                    <seq_action>
+                        <one_time>false</one_time>
+                        <action_type>SetEntityActive</action_type>
+                        <entities_tag>-1</entities_tag>
+                        <entity_editor_id>
+                            <id>541</id>
+                        </entity_editor_id>
+                        <active>true</active>
+                        <init_on_activate>true</init_on_activate>
+                        <init_if_already_active>false</init_if_already_active>
                     </seq_action>
                 </hit_actions>
                 <all_hit_actions/>
@@ -11277,17 +11325,33 @@
                         <holdNotes>false</holdNotes>
                     </seq_action>
                     <seq_action>
-                        <one_time>true</one_time>
+                        <one_time>false</one_time>
                         <action_type>AddMotion</action_type>
                         <editor_id>
                             <id>403</id>
                         </editor_id>
-                        <offset>
+                        <v0>
                             <x>0</x>
                             <y>0</y>
-                            <z>-2.6500001</z>
-                        </offset>
-                        <time>0.100000001</time>
+                            <z>-25.5</z>
+                        </v0>
+                        <a>
+                            <x>0</x>
+                            <y>0</y>
+                            <z>100</z>
+                        </a>
+                        <time>0.360000014</time>
+                    </seq_action>
+                    <seq_action>
+                        <one_time>false</one_time>
+                        <action_type>SetEntityActive</action_type>
+                        <entities_tag>-1</entities_tag>
+                        <entity_editor_id>
+                            <id>542</id>
+                        </entity_editor_id>
+                        <active>true</active>
+                        <init_on_activate>true</init_on_activate>
+                        <init_if_already_active>false</init_if_already_active>
                     </seq_action>
                 </hit_actions>
                 <all_hit_actions/>
@@ -11852,17 +11916,33 @@
                         <holdNotes>false</holdNotes>
                     </seq_action>
                     <seq_action>
-                        <one_time>true</one_time>
+                        <one_time>false</one_time>
                         <action_type>AddMotion</action_type>
                         <editor_id>
                             <id>414</id>
                         </editor_id>
-                        <offset>
-                            <x>-3</x>
+                        <v0>
+                            <x>-26.5</x>
                             <y>0</y>
                             <z>0</z>
-                        </offset>
-                        <time>0.100000001</time>
+                        </v0>
+                        <a>
+                            <x>100</x>
+                            <y>0</y>
+                            <z>0</z>
+                        </a>
+                        <time>0.360000014</time>
+                    </seq_action>
+                    <seq_action>
+                        <one_time>false</one_time>
+                        <action_type>SetEntityActive</action_type>
+                        <entities_tag>-1</entities_tag>
+                        <entity_editor_id>
+                            <id>544</id>
+                        </entity_editor_id>
+                        <active>true</active>
+                        <init_on_activate>true</init_on_activate>
+                        <init_if_already_active>false</init_if_already_active>
                     </seq_action>
                 </hit_actions>
                 <all_hit_actions/>
@@ -12679,17 +12759,33 @@
                         <holdNotes>false</holdNotes>
                     </seq_action>
                     <seq_action>
-                        <one_time>true</one_time>
+                        <one_time>false</one_time>
                         <action_type>AddMotion</action_type>
                         <editor_id>
                             <id>424</id>
                         </editor_id>
-                        <offset>
-                            <x>-3</x>
+                        <v0>
+                            <x>-28</x>
                             <y>0</y>
                             <z>0</z>
-                        </offset>
-                        <time>0.100000001</time>
+                        </v0>
+                        <a>
+                            <x>100</x>
+                            <y>0</y>
+                            <z>0</z>
+                        </a>
+                        <time>0.360000014</time>
+                    </seq_action>
+                    <seq_action>
+                        <one_time>false</one_time>
+                        <action_type>SetEntityActive</action_type>
+                        <entities_tag>-1</entities_tag>
+                        <entity_editor_id>
+                            <id>545</id>
+                        </entity_editor_id>
+                        <active>true</active>
+                        <init_on_activate>true</init_on_activate>
+                        <init_if_already_active>false</init_if_already_active>
                     </seq_action>
                 </hit_actions>
                 <all_hit_actions/>
@@ -13344,17 +13440,33 @@
                         <holdNotes>false</holdNotes>
                     </seq_action>
                     <seq_action>
-                        <one_time>true</one_time>
+                        <one_time>false</one_time>
                         <action_type>AddMotion</action_type>
                         <editor_id>
                             <id>435</id>
                         </editor_id>
-                        <offset>
+                        <v0>
                             <x>0</x>
                             <y>0</y>
-                            <z>-2.5999999</z>
-                        </offset>
-                        <time>0.100000001</time>
+                            <z>-25.5</z>
+                        </v0>
+                        <a>
+                            <x>0</x>
+                            <y>0</y>
+                            <z>100</z>
+                        </a>
+                        <time>0.360000014</time>
+                    </seq_action>
+                    <seq_action>
+                        <one_time>false</one_time>
+                        <action_type>SetEntityActive</action_type>
+                        <entities_tag>-1</entities_tag>
+                        <entity_editor_id>
+                            <id>546</id>
+                        </entity_editor_id>
+                        <active>true</active>
+                        <init_on_activate>true</init_on_activate>
+                        <init_if_already_active>false</init_if_already_active>
                     </seq_action>
                 </hit_actions>
                 <all_hit_actions/>
@@ -13919,17 +14031,33 @@
                         <holdNotes>false</holdNotes>
                     </seq_action>
                     <seq_action>
-                        <one_time>true</one_time>
+                        <one_time>false</one_time>
                         <action_type>AddMotion</action_type>
                         <editor_id>
                             <id>442</id>
                         </editor_id>
-                        <offset>
-                            <x>2.5</x>
+                        <v0>
+                            <x>26</x>
                             <y>0</y>
                             <z>0</z>
-                        </offset>
-                        <time>0.100000001</time>
+                        </v0>
+                        <a>
+                            <x>-100</x>
+                            <y>0</y>
+                            <z>0</z>
+                        </a>
+                        <time>0.360000014</time>
+                    </seq_action>
+                    <seq_action>
+                        <one_time>false</one_time>
+                        <action_type>SetEntityActive</action_type>
+                        <entities_tag>-1</entities_tag>
+                        <entity_editor_id>
+                            <id>547</id>
+                        </entity_editor_id>
+                        <active>true</active>
+                        <init_on_activate>true</init_on_activate>
+                        <init_if_already_active>false</init_if_already_active>
                     </seq_action>
                 </hit_actions>
                 <all_hit_actions/>
@@ -14655,17 +14783,33 @@
                         <holdNotes>false</holdNotes>
                     </seq_action>
                     <seq_action>
-                        <one_time>true</one_time>
+                        <one_time>false</one_time>
                         <action_type>AddMotion</action_type>
                         <editor_id>
                             <id>450</id>
                         </editor_id>
-                        <offset>
+                        <v0>
                             <x>0</x>
                             <y>0</y>
-                            <z>2.5999999</z>
-                        </offset>
-                        <time>0.100000001</time>
+                            <z>26</z>
+                        </v0>
+                        <a>
+                            <x>0</x>
+                            <y>0</y>
+                            <z>-100</z>
+                        </a>
+                        <time>0.360000014</time>
+                    </seq_action>
+                    <seq_action>
+                        <one_time>false</one_time>
+                        <action_type>SetEntityActive</action_type>
+                        <entities_tag>-1</entities_tag>
+                        <entity_editor_id>
+                            <id>548</id>
+                        </entity_editor_id>
+                        <active>true</active>
+                        <init_on_activate>true</init_on_activate>
+                        <init_if_already_active>false</init_if_already_active>
                     </seq_action>
                 </hit_actions>
                 <all_hit_actions/>
@@ -14833,17 +14977,33 @@
                         <holdNotes>false</holdNotes>
                     </seq_action>
                     <seq_action>
-                        <one_time>true</one_time>
+                        <one_time>false</one_time>
                         <action_type>AddMotion</action_type>
                         <editor_id>
                             <id>450</id>
                         </editor_id>
-                        <offset>
+                        <v0>
                             <x>0</x>
                             <y>0</y>
-                            <z>-2.5999999</z>
-                        </offset>
-                        <time>0.100000001</time>
+                            <z>-26</z>
+                        </v0>
+                        <a>
+                            <x>0</x>
+                            <y>0</y>
+                            <z>100</z>
+                        </a>
+                        <time>0.360000014</time>
+                    </seq_action>
+                    <seq_action>
+                        <one_time>false</one_time>
+                        <action_type>SetEntityActive</action_type>
+                        <entities_tag>-1</entities_tag>
+                        <entity_editor_id>
+                            <id>549</id>
+                        </entity_editor_id>
+                        <active>true</active>
+                        <init_on_activate>true</init_on_activate>
+                        <init_if_already_active>false</init_if_already_active>
                     </seq_action>
                 </hit_actions>
                 <all_hit_actions/>
@@ -22058,6 +22218,496 @@
                 <hit_actions/>
                 <children_editor_ids/>
             </FlowWall>
+            <ParticleEmitter>
+                <editor_id>
+                    <id>540</id>
+                </editor_id>
+                <name>gust_emitter0</name>
+                <entity_active>false</entity_active>
+                <pickable>true</pickable>
+                <transform>
+                    <pos>
+                        <x>13.2411995</x>
+                        <y>0</y>
+                        <z>20.3316154</z>
+                    </pos>
+                    <quat>
+                        <x>0</x>
+                        <y>1</y>
+                        <z>0</z>
+                        <w>-4.37113883e-08</w>
+                    </quat>
+                    <scale>
+                        <x>1.67267227</x>
+                        <y>1</y>
+                        <z>0.951953888</z>
+                    </scale>
+                </transform>
+                <model_name/>
+                <texture_name/>
+                <model_color_vec4>
+                    <x>0</x>
+                    <y>0.482352942</y>
+                    <z>0.68235296</z>
+                    <w>1</w>
+                </model_color_vec4>
+                <flow_section_id>-1</flow_section_id>
+                <tag>0</tag>
+                <waypoint_follower>
+                    <mode>Waypoint</mode>
+                    <waypoint_auto_start>false</waypoint_auto_start>
+                    <loop_waypoints>false</loop_waypoints>
+                    <start_time>3</start_time>
+                    <quantize>1</quantize>
+                    <quantize_buffer>0</quantize_buffer>
+                    <waypoints/>
+                    <follow_entity_name/>
+                    <follow_entity_editor_id>
+                        <id>-1</id>
+                    </follow_entity_editor_id>
+                </waypoint_follower>
+            </ParticleEmitter>
+            <ParticleEmitter>
+                <editor_id>
+                    <id>541</id>
+                </editor_id>
+                <name>gust_emitter1</name>
+                <entity_active>false</entity_active>
+                <pickable>true</pickable>
+                <transform>
+                    <pos>
+                        <x>20.3883476</x>
+                        <y>0</y>
+                        <z>11.8991842</z>
+                    </pos>
+                    <quat>
+                        <x>0</x>
+                        <y>0</y>
+                        <z>0</z>
+                        <w>1</w>
+                    </quat>
+                    <scale>
+                        <x>1.67267227</x>
+                        <y>1</y>
+                        <z>0.951953888</z>
+                    </scale>
+                </transform>
+                <model_name/>
+                <texture_name/>
+                <model_color_vec4>
+                    <x>0</x>
+                    <y>0.482352942</y>
+                    <z>0.68235296</z>
+                    <w>1</w>
+                </model_color_vec4>
+                <flow_section_id>-1</flow_section_id>
+                <tag>0</tag>
+                <waypoint_follower>
+                    <mode>Waypoint</mode>
+                    <waypoint_auto_start>false</waypoint_auto_start>
+                    <loop_waypoints>false</loop_waypoints>
+                    <start_time>3</start_time>
+                    <quantize>1</quantize>
+                    <quantize_buffer>0</quantize_buffer>
+                    <waypoints/>
+                    <follow_entity_name/>
+                    <follow_entity_editor_id>
+                        <id>-1</id>
+                    </follow_entity_editor_id>
+                </waypoint_follower>
+            </ParticleEmitter>
+            <ParticleEmitter>
+                <editor_id>
+                    <id>542</id>
+                </editor_id>
+                <name>gust_emitter2</name>
+                <entity_active>false</entity_active>
+                <pickable>true</pickable>
+                <transform>
+                    <pos>
+                        <x>27.7877464</x>
+                        <y>0</y>
+                        <z>14.8781633</z>
+                    </pos>
+                    <quat>
+                        <x>0</x>
+                        <y>1</y>
+                        <z>0</z>
+                        <w>-4.37113883e-08</w>
+                    </quat>
+                    <scale>
+                        <x>2.87387466</x>
+                        <y>1</y>
+                        <z>0.927928925</z>
+                    </scale>
+                </transform>
+                <model_name/>
+                <texture_name/>
+                <model_color_vec4>
+                    <x>0</x>
+                    <y>0.482352942</y>
+                    <z>0.68235296</z>
+                    <w>1</w>
+                </model_color_vec4>
+                <flow_section_id>-1</flow_section_id>
+                <tag>0</tag>
+                <waypoint_follower>
+                    <mode>Waypoint</mode>
+                    <waypoint_auto_start>false</waypoint_auto_start>
+                    <loop_waypoints>false</loop_waypoints>
+                    <start_time>3</start_time>
+                    <quantize>1</quantize>
+                    <quantize_buffer>0</quantize_buffer>
+                    <waypoints/>
+                    <follow_entity_name/>
+                    <follow_entity_editor_id>
+                        <id>-1</id>
+                    </follow_entity_editor_id>
+                </waypoint_follower>
+            </ParticleEmitter>
+            <ParticleEmitter>
+                <editor_id>
+                    <id>543</id>
+                </editor_id>
+                <name>gust_emitter3</name>
+                <entity_active>false</entity_active>
+                <pickable>true</pickable>
+                <transform>
+                    <pos>
+                        <x>33.8658257</x>
+                        <y>0</y>
+                        <z>17.2445297</z>
+                    </pos>
+                    <quat>
+                        <x>0</x>
+                        <y>-0.707106769</y>
+                        <z>0</z>
+                        <w>0.707106769</w>
+                    </quat>
+                    <scale>
+                        <x>1.69669724</x>
+                        <y>1</y>
+                        <z>0.8898893</z>
+                    </scale>
+                </transform>
+                <model_name/>
+                <texture_name/>
+                <model_color_vec4>
+                    <x>0</x>
+                    <y>0.482352942</y>
+                    <z>0.68235296</z>
+                    <w>1</w>
+                </model_color_vec4>
+                <flow_section_id>-1</flow_section_id>
+                <tag>0</tag>
+                <waypoint_follower>
+                    <mode>Waypoint</mode>
+                    <waypoint_auto_start>false</waypoint_auto_start>
+                    <loop_waypoints>false</loop_waypoints>
+                    <start_time>3</start_time>
+                    <quantize>1</quantize>
+                    <quantize_buffer>0</quantize_buffer>
+                    <waypoints/>
+                    <follow_entity_name/>
+                    <follow_entity_editor_id>
+                        <id>-1</id>
+                    </follow_entity_editor_id>
+                </waypoint_follower>
+            </ParticleEmitter>
+            <ParticleEmitter>
+                <editor_id>
+                    <id>544</id>
+                </editor_id>
+                <name>gust_emitter4</name>
+                <entity_active>false</entity_active>
+                <pickable>true</pickable>
+                <transform>
+                    <pos>
+                        <x>30.9348965</x>
+                        <y>0</y>
+                        <z>19.346632</z>
+                    </pos>
+                    <quat>
+                        <x>0</x>
+                        <y>-0.707106769</y>
+                        <z>0</z>
+                        <w>0.707106769</w>
+                    </quat>
+                    <scale>
+                        <x>1.81681442</x>
+                        <y>1</y>
+                        <z>0.879878998</z>
+                    </scale>
+                </transform>
+                <model_name/>
+                <texture_name/>
+                <model_color_vec4>
+                    <x>0</x>
+                    <y>0.482352942</y>
+                    <z>0.68235296</z>
+                    <w>1</w>
+                </model_color_vec4>
+                <flow_section_id>-1</flow_section_id>
+                <tag>0</tag>
+                <waypoint_follower>
+                    <mode>Waypoint</mode>
+                    <waypoint_auto_start>false</waypoint_auto_start>
+                    <loop_waypoints>false</loop_waypoints>
+                    <start_time>3</start_time>
+                    <quantize>1</quantize>
+                    <quantize_buffer>0</quantize_buffer>
+                    <waypoints/>
+                    <follow_entity_name/>
+                    <follow_entity_editor_id>
+                        <id>-1</id>
+                    </follow_entity_editor_id>
+                </waypoint_follower>
+            </ParticleEmitter>
+            <ParticleEmitter>
+                <editor_id>
+                    <id>545</id>
+                </editor_id>
+                <name>gust_emitter5</name>
+                <entity_active>false</entity_active>
+                <pickable>true</pickable>
+                <transform>
+                    <pos>
+                        <x>25.0730343</x>
+                        <y>0</y>
+                        <z>24.6439285</z>
+                    </pos>
+                    <quat>
+                        <x>0</x>
+                        <y>-0.707106769</y>
+                        <z>0</z>
+                        <w>0.707106769</w>
+                    </quat>
+                    <scale>
+                        <x>1.81681442</x>
+                        <y>1</y>
+                        <z>0.879878998</z>
+                    </scale>
+                </transform>
+                <model_name/>
+                <texture_name/>
+                <model_color_vec4>
+                    <x>0</x>
+                    <y>0.482352942</y>
+                    <z>0.68235296</z>
+                    <w>1</w>
+                </model_color_vec4>
+                <flow_section_id>-1</flow_section_id>
+                <tag>0</tag>
+                <waypoint_follower>
+                    <mode>Waypoint</mode>
+                    <waypoint_auto_start>false</waypoint_auto_start>
+                    <loop_waypoints>false</loop_waypoints>
+                    <start_time>3</start_time>
+                    <quantize>1</quantize>
+                    <quantize_buffer>0</quantize_buffer>
+                    <waypoints/>
+                    <follow_entity_name/>
+                    <follow_entity_editor_id>
+                        <id>-1</id>
+                    </follow_entity_editor_id>
+                </waypoint_follower>
+            </ParticleEmitter>
+            <ParticleEmitter>
+                <editor_id>
+                    <id>546</id>
+                </editor_id>
+                <name>gust_emitter6</name>
+                <entity_active>false</entity_active>
+                <pickable>true</pickable>
+                <transform>
+                    <pos>
+                        <x>14.0820408</x>
+                        <y>0</y>
+                        <z>30.4217033</z>
+                    </pos>
+                    <quat>
+                        <x>0</x>
+                        <y>1</y>
+                        <z>0</z>
+                        <w>-4.37113883e-08</w>
+                    </quat>
+                    <scale>
+                        <x>3.18618774</x>
+                        <y>1</y>
+                        <z>0.855857849</z>
+                    </scale>
+                </transform>
+                <model_name/>
+                <texture_name/>
+                <model_color_vec4>
+                    <x>0</x>
+                    <y>0.482352942</y>
+                    <z>0.68235296</z>
+                    <w>1</w>
+                </model_color_vec4>
+                <flow_section_id>-1</flow_section_id>
+                <tag>0</tag>
+                <waypoint_follower>
+                    <mode>Waypoint</mode>
+                    <waypoint_auto_start>false</waypoint_auto_start>
+                    <loop_waypoints>false</loop_waypoints>
+                    <start_time>3</start_time>
+                    <quantize>1</quantize>
+                    <quantize_buffer>0</quantize_buffer>
+                    <waypoints/>
+                    <follow_entity_name/>
+                    <follow_entity_editor_id>
+                        <id>-1</id>
+                    </follow_entity_editor_id>
+                </waypoint_follower>
+            </ParticleEmitter>
+            <ParticleEmitter>
+                <editor_id>
+                    <id>547</id>
+                </editor_id>
+                <name>gust_emitter7</name>
+                <entity_active>false</entity_active>
+                <pickable>true</pickable>
+                <transform>
+                    <pos>
+                        <x>8.17213249</x>
+                        <y>0</y>
+                        <z>32.4877739</z>
+                    </pos>
+                    <quat>
+                        <x>0</x>
+                        <y>0.707106769</y>
+                        <z>0</z>
+                        <w>0.707106769</w>
+                    </quat>
+                    <scale>
+                        <x>1.81681442</x>
+                        <y>1</y>
+                        <z>0.879878998</z>
+                    </scale>
+                </transform>
+                <model_name/>
+                <texture_name/>
+                <model_color_vec4>
+                    <x>0</x>
+                    <y>0.482352942</y>
+                    <z>0.68235296</z>
+                    <w>1</w>
+                </model_color_vec4>
+                <flow_section_id>-1</flow_section_id>
+                <tag>0</tag>
+                <waypoint_follower>
+                    <mode>Waypoint</mode>
+                    <waypoint_auto_start>false</waypoint_auto_start>
+                    <loop_waypoints>false</loop_waypoints>
+                    <start_time>3</start_time>
+                    <quantize>1</quantize>
+                    <quantize_buffer>0</quantize_buffer>
+                    <waypoints/>
+                    <follow_entity_name/>
+                    <follow_entity_editor_id>
+                        <id>-1</id>
+                    </follow_entity_editor_id>
+                </waypoint_follower>
+            </ParticleEmitter>
+            <ParticleEmitter>
+                <editor_id>
+                    <id>548</id>
+                </editor_id>
+                <name>gust_emitter8</name>
+                <entity_active>false</entity_active>
+                <pickable>true</pickable>
+                <transform>
+                    <pos>
+                        <x>17.2892494</x>
+                        <y>0</y>
+                        <z>35.6229057</z>
+                    </pos>
+                    <quat>
+                        <x>0</x>
+                        <y>0</y>
+                        <z>0</z>
+                        <w>1</w>
+                    </quat>
+                    <scale>
+                        <x>1.81681442</x>
+                        <y>1</y>
+                        <z>0.879878998</z>
+                    </scale>
+                </transform>
+                <model_name/>
+                <texture_name/>
+                <model_color_vec4>
+                    <x>0</x>
+                    <y>0.482352942</y>
+                    <z>0.68235296</z>
+                    <w>1</w>
+                </model_color_vec4>
+                <flow_section_id>-1</flow_section_id>
+                <tag>0</tag>
+                <waypoint_follower>
+                    <mode>Waypoint</mode>
+                    <waypoint_auto_start>false</waypoint_auto_start>
+                    <loop_waypoints>false</loop_waypoints>
+                    <start_time>3</start_time>
+                    <quantize>1</quantize>
+                    <quantize_buffer>0</quantize_buffer>
+                    <waypoints/>
+                    <follow_entity_name/>
+                    <follow_entity_editor_id>
+                        <id>-1</id>
+                    </follow_entity_editor_id>
+                </waypoint_follower>
+            </ParticleEmitter>
+            <ParticleEmitter>
+                <editor_id>
+                    <id>549</id>
+                </editor_id>
+                <name>gust_emitter9</name>
+                <entity_active>false</entity_active>
+                <pickable>true</pickable>
+                <transform>
+                    <pos>
+                        <x>20.0520134</x>
+                        <y>0</y>
+                        <z>41.4367218</z>
+                    </pos>
+                    <quat>
+                        <x>0</x>
+                        <y>1</y>
+                        <z>0</z>
+                        <w>-4.37113883e-08</w>
+                    </quat>
+                    <scale>
+                        <x>1.81681442</x>
+                        <y>1</y>
+                        <z>0.879878998</z>
+                    </scale>
+                </transform>
+                <model_name/>
+                <texture_name/>
+                <model_color_vec4>
+                    <x>0</x>
+                    <y>0.482352942</y>
+                    <z>0.68235296</z>
+                    <w>1</w>
+                </model_color_vec4>
+                <flow_section_id>-1</flow_section_id>
+                <tag>0</tag>
+                <waypoint_follower>
+                    <mode>Waypoint</mode>
+                    <waypoint_auto_start>false</waypoint_auto_start>
+                    <loop_waypoints>false</loop_waypoints>
+                    <start_time>3</start_time>
+                    <quantize>1</quantize>
+                    <quantize_buffer>0</quantize_buffer>
+                    <waypoints/>
+                    <follow_entity_name/>
+                    <follow_entity_editor_id>
+                        <id>-1</id>
+                    </follow_entity_editor_id>
+                </waypoint_follower>
+            </ParticleEmitter>
         </new_entities>
     </script>
 </root>

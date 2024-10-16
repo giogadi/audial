@@ -1445,6 +1445,11 @@ void Scene::Draw(int windowWidth, int windowHeight, float timeInSecs) {
     {
         Shader& shader = _pInternal->_modelShader;
         shader.Use();
+        // TODO: Do we need these SetInts and Texture binds? Just copied them over from the main scene render.
+        shader.SetInt("uMyTexture", 0);
+        shader.SetInt("uShadowMap", 1);
+        glActiveTexture(GL_TEXTURE1);
+        glBindTexture(GL_TEXTURE_2D, _pInternal->_depthMap);
         SetLightUniformsModelShader(lights, _camera._transform.GetPos(), lightViewProj, *_pInternal);
         for (ModelInstance const* m : transparentModels) {
             DrawModelInstance(*_pInternal, viewProjTransform, *m, m->_explodeDist);

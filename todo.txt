@@ -29,6 +29,8 @@ Near-term ideas:
 BUGS:
 - Player can't seem to interact with two letters at the same time still?
 - Our controller support is SUPER BUSTED, DUDE!!!!! But that's a later problem.
+- WHY does AddMotion SeqAction update "preview" every time it's expanded when InputVec3 has ReturnTrueOnEnter?
+  - AHA!!!! InputTextFlags or w/e don't actually help with ImGui::InputFloat3 - WTF!!!
 
 TOOLS:
 - Support SynthParams in BeatTimeEvents

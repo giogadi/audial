@@ -164,6 +164,7 @@ bool SeqAction::ImGui(char const* label, std::vector<std::unique_ptr<SeqAction>>
         if (ImGui::Button("Paste 1 action")) {
             auto clone = SeqAction::Clone(*sClipboardAction);
             actions.push_back(std::move(clone));
+            changed = true;
         }
         if (sClipboardAction == nullptr) {
             ImGui::EndDisabled();

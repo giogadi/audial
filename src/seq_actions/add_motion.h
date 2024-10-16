@@ -8,7 +8,8 @@ struct AddMotionSeqAction : public SeqAction {
 
     struct Props {
         EditorId editorId;
-        Vec3 offset;
+        Vec3 v0;
+        Vec3 a;
         float time = 0.f;
     };
     Props _p;

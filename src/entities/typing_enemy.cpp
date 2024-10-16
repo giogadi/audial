@@ -559,7 +559,9 @@ HitResult TypingEnemyEntity::OnHit(GameManager& g, int hitKeyIndex) {
         }
         if (_p._destroyAfterTyped) {
             bool success = g._neEntityManager->TagForDeactivate(_id);
+            assert(success);
 
+#if 1
             Vec3 boxP = _transform.Pos();
             // TODO: Assumes AABB
             Vec3 minP = boxP - _transform.Scale() * 0.5f;
@@ -582,7 +584,7 @@ HitResult TypingEnemyEntity::OnHit(GameManager& g, int hitKeyIndex) {
                 particle->timeLeft = 1.f;
                 particle->shape = ParticleShape::Cube;
             }
-            assert(success);
+#endif
         }
     }
     _s._timeOfLastHit = beatTime;    

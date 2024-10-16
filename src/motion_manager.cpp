@@ -24,6 +24,7 @@ Motion* MotionManager::AddMotion(ne::EntityId entityId) {
 		return nullptr;
 	}
 	Motion* motion = &_motions[_motionCount++];
+	*motion = Motion();
 	motion->entityId = entityId;
 	return motion;
 }
@@ -34,7 +35,19 @@ void MotionManager::Update(float dt, GameManager& g) {
 		bool needRemove = false;
 		motion->timeLeft -= dt;
 		if (motion->timeLeft <= 0.f) {
-			needRemove = true;
+			if (g._editMode) {
+				if (motion->timeLeft < -1.f) {
+					ne::BaseEntity* e = g._neEntityManager->GetEntity(motion->entityId);
+					if (e) {
+						e->_transform = e->_initTransform;
+					}
+					needRemove = true;
+				} else {
+					continue;
+				}
+			} else {
+				needRemove = true;
+			}
 		}
 		ne::BaseEntity* entity = nullptr;
 		if (!needRemove) {

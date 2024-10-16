@@ -29,7 +29,8 @@ namespace ne {
     X(FlowTrigger) \
     X(IntVariable) \
     X(Vfx) \
-    X(Viz)
+    X(Viz) \
+    X(ParticleEmitter)
 
     enum class EntityType : int {
 #   define X(a) a,
