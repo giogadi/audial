@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <root>
-    <version>12</version>
+    <version>13</version>
     <patches>
         <patch>
             <name>bass0</name>
@@ -1092,6 +1092,48 @@
                 <DelayGain>0.720000029</DelayGain>
                 <DelayTime>0.142000005</DelayTime>
                 <DelayFeedback>0.372999996</DelayFeedback>
+            </patch>
+        </patch>
+        <patch>
+            <name>r0_bass</name>
+            <patch>
+                <Gain>0.950999975</Gain>
+                <Mono>1</Mono>
+                <FM>0</FM>
+                <Osc1Waveform>Saw</Osc1Waveform>
+                <Osc2Waveform>Square</Osc2Waveform>
+                <Detune>0</Detune>
+                <OscFader>0.474000007</OscFader>
+                <Unison>1</Unison>
+                <UnisonDetune>8.82400036</UnisonDetune>
+                <Cutoff>3882.35303</Cutoff>
+                <Peak>2.16899991</Peak>
+                <HpfCutoff>100</HpfCutoff>
+                <HpfPeak>0</HpfPeak>
+                <Portamento>0</Portamento>
+                <PitchLFOGain>0</PitchLFOGain>
+                <PitchLFOFreq>1</PitchLFOFreq>
+                <CutoffLFOGain>0</CutoffLFOGain>
+                <CutoffLFOFreq>8.05099964</CutoffLFOFreq>
+                <AmpEnvAttack>0.00499999989</AmpEnvAttack>
+                <AmpEnvDecay>0.114</AmpEnvDecay>
+                <AmpEnvSustain>1</AmpEnvSustain>
+                <AmpEnvRelease>0.846000016</AmpEnvRelease>
+                <CutoffEnvGain>0</CutoffEnvGain>
+                <CutoffEnvAttack>0</CutoffEnvAttack>
+                <CutoffEnvDecay>2.15100002</CutoffEnvDecay>
+                <CutoffEnvSustain>0.148000002</CutoffEnvSustain>
+                <CutoffEnvRelease>0.219999999</CutoffEnvRelease>
+                <PitchEnvGain>0</PitchEnvGain>
+                <PitchEnvAttack>0</PitchEnvAttack>
+                <PitchEnvDecay>0</PitchEnvDecay>
+                <PitchEnvSustain>1</PitchEnvSustain>
+                <PitchEnvRelease>4</PitchEnvRelease>
+                <FMOsc2Level>0</FMOsc2Level>
+                <FMOsc2Ratio>0</FMOsc2Ratio>
+                <DelayGain>0</DelayGain>
+                <DelayTime>0</DelayTime>
+                <DelayFeedback>0</DelayFeedback>
             </patch>
         </patch>
     </patches>
