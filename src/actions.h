@@ -82,8 +82,7 @@ struct SetAllStepsSeqAction : public SeqAction {
     ne::EntityId _seqId;
 
     virtual void ExecuteDerived(GameManager& g) override;
-    virtual void LoadDerived(
-        LoadInputs const& loadInputs, std::istream& input) override;
+    // virtual void LoadDerived(LoadInputs const& loadInputs, std::istream& input) override;
     virtual void LoadDerived(serial::Ptree pt) override;
     virtual void SaveDerived(serial::Ptree pt) const override;
     virtual bool ImGui() override;

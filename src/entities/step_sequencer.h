@@ -20,12 +20,18 @@ struct StepSequencerEntity : ne::Entity {
         void Load(serial::Ptree pt);
         bool ImGui();
     };
+
+    struct MidiNoteAndVelocity {
+        int _note = -1;
+        float _v = 1.f;
+        void Save(serial::Ptree pt) const;
+        void Load(serial::Ptree pt);
+    };
         
     struct SeqStep {
         SeqStep() {}
         static constexpr int kNumNotes = 4;
-        std::array<int,kNumNotes> _midiNote = {-1, -1, -1, -1};
-        float _velocity = 1.f;
+        std::array<MidiNoteAndVelocity,kNumNotes> _notes;
         // params set the new value just for this step, and then it reverts to the patch value.        
         std::array<SynthParamValue, kNumParamTracks> _params;
         
@@ -93,7 +99,7 @@ struct StepSequencerEntity : ne::Entity {
     virtual void LoadDerived(serial::Ptree pt) override;
     virtual ImGuiResult ImGuiDerived(GameManager& g) override;
 
-    static void WriteSeqStep(SeqStep const& step, bool writeNoteName, std::ostream& output);
+    //static void WriteSeqStep(SeqStep const& step, bool writeNoteName, std::ostream& output);
     static bool TryReadSeqStep(std::istream& input, SeqStep& step);
 
     // Assumes input contains _only_ the sequence, nothing else.

@@ -36,12 +36,21 @@ bool StepSequencerEntity::SynthParamValue::ImGui() {
     return changed;
 }
 
+void StepSequencerEntity::MidiNoteAndVelocity::Save(serial::Ptree pt) const {
+    pt.PutInt("note", _note);
+    pt.PutFloat("v", _v);
+}
+
+void StepSequencerEntity::MidiNoteAndVelocity::Load(serial::Ptree pt) {
+    pt.TryGetInt("note", &_note);
+    pt.TryGetFloat("v", &_v);
+}
+
 void StepSequencerEntity::SeqStep::Save(serial::Ptree pt) const {
     {
         serial::Ptree notesPt = pt.AddChild("notes");
         for (int ii = 0; ii < SeqStep::kNumNotes; ++ii) {
-            serial::Ptree notePt = notesPt.AddChild("n");
-            notePt.PutIntValue(_midiNote[ii]);
+            serial::SaveInNewChildOf(notesPt, "n", _notes[ii]);
         }
     }
     {
@@ -53,11 +62,15 @@ void StepSequencerEntity::SeqStep::Save(serial::Ptree pt) const {
             serial::SaveInNewChildOf(paramsPt, "p", _params[ii]);
         }
     }
-
-    pt.PutFloat("v", _velocity);
 }
 
 void StepSequencerEntity::SeqStep::Load(serial::Ptree pt) {
+    int constexpr kFirstMultiVelocityVersion = 13;
+    float oldVelocity = 1.f;
+    if (pt.GetVersion() < kFirstMultiVelocityVersion) {
+        oldVelocity = pt.GetFloat("v"); 
+    }
+
     {
         serial::Ptree notesPt = pt.GetChild("notes");
         int numNotes = 0;
@@ -66,9 +79,17 @@ void StepSequencerEntity::SeqStep::Load(serial::Ptree pt) {
             printf("StepSequencerEntity::SeqStep::Load: HEY PROBLEM: TOO MANY NOTES (%d)\n", numNotes);
             numNotes = SeqStep::kNumNotes;
         }
-        for (int ii = 0; ii < numNotes; ++ii) {
-            serial::NameTreePair* child = &children[ii];
-            _midiNote[ii] = child->_pt.GetIntValue();
+        if (pt.GetVersion() < kFirstMultiVelocityVersion) {
+            for (int ii = 0; ii < numNotes; ++ii) {
+                serial::NameTreePair* child = &children[ii];
+                _notes[ii]._note = child->_pt.GetIntValue();
+                _notes[ii]._v = oldVelocity; 
+            }
+        } else {
+            for (int ii = 0; ii < numNotes; ++ii) {
+                serial::NameTreePair* child = &children[ii];
+                _notes[ii].Load(child->_pt); 
+            }
         }
         delete[] children;
     }
@@ -90,33 +111,6 @@ void StepSequencerEntity::SeqStep::Load(serial::Ptree pt) {
         }
         delete[] children;
     }
-
-    _velocity = pt.GetFloat("v");
-}
-
-// OBSOLETE: doesn't handle new midiNotes (where -1 can be anywhere)
-void StepSequencerEntity::WriteSeqStep(SeqStep const& step, bool writeNoteName, std::ostream& output) {
-    std::string noteName;
-    for (int i = 0, n = step._midiNote.size(); i < n; ++i) {
-        int midiNote = step._midiNote[i];
-        if (midiNote < 0 && i > 0) {
-            break;
-        }
-        if (i > 0) {
-            output << ",";
-        }
-        if (midiNote < 0) {
-            output << "-1";
-        } else {
-            if (writeNoteName) {
-                GetNoteName(midiNote, noteName);
-                output << "m" << noteName;
-            } else {
-                output << midiNote;
-            }
-        }
-    }
-    output << ":" << step._velocity;
 }
 
 bool StepSequencerEntity::TryReadSeqStep(std::istream& input, SeqStep& step) {
@@ -154,20 +148,25 @@ bool StepSequencerEntity::TryReadSeqStep(std::istream& input, SeqStep& step) {
                 return false;
             }
         }
-        if (currentNoteIx >= step._midiNote.size()) {
+        if (currentNoteIx >= step._notes.size()) {
             printf("StepSequencer::Load: Too many notes!\n");
             break;
         }
-        step._midiNote[currentNoteIx] = midiNote;
+        step._notes[currentNoteIx]._note = midiNote;
         ++currentNoteIx;
     }
     std::size_t velDelimIx = stepStr.find_first_of(':');
     if (velDelimIx != std::string::npos) {
         std::string_view velStr = std::string_view(stepStr).substr(velDelimIx+1);
-        bool success = string_util::MaybeStof(velStr, step._velocity);
-        if (!success) {
+        float oldVelocity;
+        bool success = string_util::MaybeStof(velStr, oldVelocity);
+        if (success) {
+            for (int ii = 0; ii < SeqStep::kNumNotes; ++ii) {
+                step._notes[ii]._v = oldVelocity;
+            }
+        } else {
             return false;
-        }
+        } 
     }
 
     // Returns false if we never read a note
@@ -206,8 +205,7 @@ bool StepSequencerEntity::SeqImGui(char const* label, bool drumKit, std::vector<
     int constexpr kStepColIx = 0;
     int constexpr kFirstNoteColIx = 1;
     int constexpr kNumNotes = StepSequencerEntity::SeqStep::kNumNotes;
-    int constexpr kVelColIx = kFirstNoteColIx + kNumNotes;
-    int constexpr kParam0ColIx = kVelColIx + 1;
+    int constexpr kParam0ColIx = kFirstNoteColIx + kNumNotes;
     int constexpr kNumColumns = kParam0ColIx + kNumParamTracks;
     if (ImGui::BeginTable(label, kNumColumns, flags, outerSize)) {
         ImGui::TableSetupScrollFreeze(0, 1);
@@ -218,7 +216,6 @@ bool StepSequencerEntity::SeqImGui(char const* label, bool drumKit, std::vector<
             sprintf(noteStr, "Note%d", i);
             ImGui::TableSetupColumn(noteStr, ImGuiTableColumnFlags_None);
         }
-        ImGui::TableSetupColumn("Vel", ImGuiTableColumnFlags_None);
         char paramStr[] = "ParamX";
         for (int ii = 0; ii < kNumParamTracks; ++ii) {
             sprintf(paramStr, "Param%d", ii);
@@ -232,7 +229,7 @@ bool StepSequencerEntity::SeqImGui(char const* label, bool drumKit, std::vector<
         int constexpr kStringSize = 4;
         static char sNoteStrings[kMaxRows][kNumNotes][kStringSize] = {};        
         
-        float const kTextBaseWidth = ImGui::CalcTextSize("A").x;
+        //float const kTextBaseWidth = ImGui::CalcTextSize("A").x;
         while (clipper.Step()) {
             // assert(clipper.DisplayStart < sequence.size());
             assert(clipper.DisplayEnd <= sequence.size());
@@ -245,7 +242,7 @@ bool StepSequencerEntity::SeqImGui(char const* label, bool drumKit, std::vector<
                     int columnIx = kFirstNoteColIx + noteIx;
                     ImGui::TableSetColumnIndex(columnIx);
                     ImGui::PushID(columnIx);
-                    int midiNote = sequence[row]._midiNote[noteIx];
+                    int midiNote = sequence[row]._notes[noteIx]._note;
                     if (drumKit) {
                         char const* preview = nullptr;
                         char const* kNoneStr = "None";
@@ -258,7 +255,7 @@ bool StepSequencerEntity::SeqImGui(char const* label, bool drumKit, std::vector<
                             bool selected = ImGui::Selectable(kNoneStr, midiNote < 0);
                             if (selected) {                                
                                 midiNote = -1;
-                                sequence[row]._midiNote[noteIx] = midiNote;
+                                sequence[row]._notes[noteIx]._note = midiNote;
                                 changed = true;
                             }
                             for (int soundIx = 0; soundIx < numSounds; ++soundIx) {
@@ -266,7 +263,7 @@ bool StepSequencerEntity::SeqImGui(char const* label, bool drumKit, std::vector<
                                 bool selected = ImGui::Selectable(soundName, midiNote == soundIx);
                                 if (selected) {
                                     midiNote = soundIx;
-                                    sequence[row]._midiNote[noteIx] = midiNote;
+                                    sequence[row]._notes[noteIx]._note = midiNote;
                                     changed = true;
                                 }
                             }
@@ -280,19 +277,16 @@ bool StepSequencerEntity::SeqImGui(char const* label, bool drumKit, std::vector<
                             int len = strlen(noteStr);
                             std::string_view noteStrView(noteStr, len);
                             midiNote = GetMidiNote(noteStrView);
-                            sequence[row]._midiNote[noteIx] = midiNote;
+                            sequence[row]._notes[noteIx]._note = midiNote;
                             changed = true;
                             // GetNoteName(midiNote, noteStr);
                         }
                     }
+                    ImGui::SameLine();
+                    ImGui::InputFloat("##vel", &sequence[row]._notes[noteIx]._v);
                     ImGui::PopID();
                 }
-                ImGui::TableSetColumnIndex(kVelColIx);  // velocity
-                float v = sequence[row]._velocity;
-                ImGui::InputFloat("##vel", &v);
-                sequence[row]._velocity = v;
-
-                
+                                
                 for (int paramIx = 0; paramIx < kNumParamTracks; ++paramIx) {
                     int const columnIx = kParam0ColIx + paramIx;
                     ImGui::TableSetColumnIndex(columnIx);
@@ -349,10 +343,14 @@ void StepSequencerEntity::SetNextSeqStep(GameManager& g, SeqStep step, StepSaveT
 #endif
             SeqStep toPlay = _tempSequence[_currentIx];
             if (changeNote) {
-                toPlay._midiNote = step._midiNote;
+                for (int ii = 0; ii < toPlay._notes.size(); ++ii) {
+                    toPlay._notes[ii]._note = step._notes[ii]._note;
+                }
             }
             if (changeVelocity) {
-                toPlay._velocity = step._velocity;
+                for (int ii = 0; ii < toPlay._notes.size(); ++ii) {
+                    toPlay._notes[ii]._v = step._notes[ii]._v;
+                }
             }
             toPlay._params = step._params;
             PlayStep(gGameManager, toPlay);
@@ -384,10 +382,14 @@ void StepSequencerEntity::SetNextSeqStep(GameManager& g, SeqStep step, StepSaveT
     if (change._temporary && !_quantizeTempStepChanges) {
         SeqStep toPlay = _tempSequence[_currentIx];
         if (changeNote) {
-            toPlay._midiNote = step._midiNote;
+            for (int ii = 0; ii < toPlay._notes.size(); ++ii) {
+                toPlay._notes[ii]._note = step._notes[ii]._note;
+            }
         }
         if (changeVelocity) {
-            toPlay._velocity = step._velocity;
+            for (int ii = 0; ii < toPlay._notes.size(); ++ii) {
+                toPlay._notes[ii]._v = step._notes[ii]._v;
+            }
         }
         toPlay._params = step._params;
         PlayStep(gGameManager, toPlay);
@@ -398,7 +400,9 @@ void StepSequencerEntity::SetNextSeqStep(GameManager& g, SeqStep step, StepSaveT
 
 void StepSequencerEntity::SetNextSeqStepVelocity(GameManager& g, float v, StepSaveType saveType) {
     SeqStepChange change;
-    change._step._velocity = v;
+    for (int ii = 0; ii < change._step._notes.size(); ++ii) {
+        change._step._notes[ii]._v = v;
+    }
     switch (saveType) {
         case StepSaveType::Temporary:
             change._temporary = true;
@@ -415,7 +419,9 @@ void StepSequencerEntity::SetNextSeqStepVelocity(GameManager& g, float v, StepSa
 void StepSequencerEntity::SetAllVelocitiesPermanent(float newValue) {
     assert(_permanentSequence.size() == _tempSequence.size());
     for (int i = 0, n = _permanentSequence.size(); i < n; ++i) {
-        _tempSequence[i]._velocity = _permanentSequence[i]._velocity = newValue;
+        for (int jj = 0; jj < _permanentSequence[i]._notes.size(); ++jj) {
+            _tempSequence[i]._notes[jj]._v = _permanentSequence[i]._notes[jj]._v = newValue;
+        }
     }
 }
 
@@ -484,20 +490,19 @@ void StepSequencerEntity::PlayStep(GameManager& g, SeqStep const& seqStep) {
         }
     }
 
-    std::array<int, SeqStep::kNumNotes> midiNotes;  // packed in
-    midiNotes.fill(-1);
+    std::array<MidiNoteAndVelocity, SeqStep::kNumNotes> midiNotes;  // packed in
     int numPlayedNotes = 0;
-    for (int ii = 0; ii < seqStep._midiNote.size(); ++ii) {
+    for (int ii = 0; ii < seqStep._notes.size(); ++ii) {
         if (_maxNumVoices > -1 && numPlayedNotes >= _maxNumVoices) {
             break;
         }
-        if (seqStep._midiNote[ii] >= 0) {
+        if (seqStep._notes[ii]._note >= 0) {
             // TODO: do we need to check for velocity == 0 here too?
-            midiNotes[numPlayedNotes++] = seqStep._midiNote[ii];
+            midiNotes[numPlayedNotes++] = seqStep._notes[ii];
         }
     }
 
-    if (midiNotes[0] > -1) {
+    if (midiNotes[0]._note > -1) {
         // TODO: this isn't _quite_ it, but almost
         _lastPlayedNoteTime = g._beatClock->GetBeatTimeFromEpoch();
     }
@@ -505,12 +510,12 @@ void StepSequencerEntity::PlayStep(GameManager& g, SeqStep const& seqStep) {
     if (_isSynth) {
         audio::Event e;
         e.delaySecs = 0.0;
-        e.velocity = seqStep._velocity * _gain;
         e.type = audio::EventType::NoteOn; 
         static int sNoteOnId = 1;
         e.noteOnId = sNoteOnId++;
         for (int i = 0; i < numPlayedNotes; ++i) {
-            e.midiNote = midiNotes[i];
+            e.midiNote = midiNotes[i]._note;
+            e.velocity = midiNotes[i]._v * _gain;
             if (_primePorta) {
                 e.primePortaMidiNote = e.midiNote;
             }
@@ -522,7 +527,7 @@ void StepSequencerEntity::PlayStep(GameManager& g, SeqStep const& seqStep) {
         e.type = audio::EventType::NoteOff;
         e.delaySecs = g._beatClock->BeatTimeToSecs(_noteLength);
         for (int i = 0; i < numPlayedNotes; ++i) {
-            e.midiNote = midiNotes[i];
+            e.midiNote = midiNotes[i]._note;
             for (int channel : _channels) {
                 e.channel = channel;
                 g._audioContext->AddEvent(e);
@@ -535,11 +540,11 @@ void StepSequencerEntity::PlayStep(GameManager& g, SeqStep const& seqStep) {
     } else {
         audio::Event e;
         e.delaySecs = 0.0;
-        e.pcmVelocity = seqStep._velocity * _gain;
         e.type = audio::EventType::PlayPcm;
         e.loop = false;
         for (int i = 0; i < numPlayedNotes; ++i) {
-            e.pcmSoundIx = midiNotes[i];
+            e.pcmSoundIx = midiNotes[i]._note;
+            e.pcmVelocity = midiNotes[i]._v * _gain;
             g._audioContext->AddEvent(e);
         }
     }
@@ -579,10 +584,14 @@ void StepSequencerEntity::UpdateDerived(GameManager& g, float dt) {
         SeqStepChange const& change = _changeQueue[_changeQueueHeadIx];
         SeqStep& tempStep = _tempSequence[_currentIx];        
         if (change._changeNote) {
-            tempStep._midiNote = change._step._midiNote;
+            for (int ii = 0; ii < tempStep._notes.size(); ++ii) {
+                tempStep._notes[ii]._note = change._step._notes[ii]._note;
+            }
         }
         if (change._changeVelocity) {
-            tempStep._velocity = change._step._velocity;
+            for (int ii = 0; ii < tempStep._notes.size(); ++ii) {
+                tempStep._notes[ii]._v = change._step._notes[ii]._v;
+            }
         }
         for (int paramIx = 0; paramIx < kNumParamTracks; ++paramIx) {
             if (!change._step._params[paramIx]._active) {
@@ -726,7 +735,9 @@ ne::BaseEntity::ImGuiResult StepSequencerEntity::ImGuiDerived(GameManager& g) {
     if (ImGui::Button("Apply")) {
         // SetAllVelocitiesPermanent(allVelocity);
         for (int i = 0, n = _initialMidiSequenceDoNotChange.size(); i < n; ++i) {
-            _initialMidiSequenceDoNotChange[i]._velocity = allVelocity;
+            for (int jj = 0; jj < _initialMidiSequenceDoNotChange[i]._notes.size(); ++jj) {
+                _initialMidiSequenceDoNotChange[i]._notes[jj]._v = allVelocity;
+            }
         }
         needsInit = true;
     }

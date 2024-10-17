@@ -86,12 +86,13 @@ void ChangeStepSequencerSeqAction::ExecuteDerived(GameManager& g) {
 
         StepSequencerEntity::SeqStep step;
         for (int i = 0; i < StepSequencerEntity::SeqStep::kNumNotes && i < _props._midiNotes.size(); ++i) {
-            step._midiNote[i] = _props._midiNotes[i]._note;
+            step._notes[i]._note = _props._midiNotes[i]._note;
+            // TODOOOOOOO
+            step._notes[i]._v = _props._velocity;
         }
         for (int i = 0; i < StepSequencerEntity::kNumParamTracks && i < _props._params.size(); ++i) {
             step._params[i] = _props._params[i];
         }
-        step._velocity = _props._velocity;
         seq->SetNextSeqStep(g, std::move(step), saveType, _props._changeNote, _props._changeVel);
     }
     else {
@@ -140,12 +141,13 @@ void ChangeStepSequencerSeqAction::LoadDerived(serial::Ptree pt) {
             printf("ChangeStepSequencerSeqAction: failed to parse step \"%s\"\n", stepStr.c_str());
         }
         for (int i = 0; i < StepSequencerEntity::SeqStep::kNumNotes; ++i) {
-            if (step._midiNote[i] < 0) {
+            if (step._notes[i]._note < 0) {
                 continue;
             }
-            _props._midiNotes.emplace_back(step._midiNote[i]);
+            _props._midiNotes.emplace_back(step._notes[i]._note);
         }
-        _props._velocity = step._velocity;
+        // LOL TODO HOWDY
+        _props._velocity = step._notes[0]._v;
     }
 
     if (_props._midiNotes.size() > StepSequencerEntity::SeqStep::kNumNotes) {
@@ -226,24 +228,24 @@ void ChangeStepSequencerSeqAction::InitDerived(GameManager& g) {
     }
 }
 
-void SetAllStepsSeqAction::LoadDerived(LoadInputs const& loadInputs, std::istream& input) {
-    input >> _props._seqEntityEditorId._id;
-    input >> _props._velOnly;
-    std::string stepStr;
-    std::getline(input, stepStr);
-    std::stringstream ss(stepStr);
-    StepSequencerEntity::SeqStep step;
-    if (!StepSequencerEntity::TryReadSeqStep(ss, step)) {
-        printf("SetAllStepsSeqAction: failed to parse step \"%s\"\n", stepStr.c_str());
-    }
-    for (int i = 0; i < StepSequencerEntity::SeqStep::kNumNotes; ++i) {
-        if (step._midiNote[i] < 0) {
-            continue;
-        }
-        _props._midiNotes.emplace_back(step._midiNote[i]);
-    }
-    _props._velocity = step._velocity;
-}
+//void SetAllStepsSeqAction::LoadDerived(LoadInputs const& loadInputs, std::istream& input) {
+//    input >> _props._seqEntityEditorId._id;
+//    input >> _props._velOnly;
+//    std::string stepStr;
+//    std::getline(input, stepStr);
+//    std::stringstream ss(stepStr);
+//    StepSequencerEntity::SeqStep step;
+//    if (!StepSequencerEntity::TryReadSeqStep(ss, step)) {
+//        printf("SetAllStepsSeqAction: failed to parse step \"%s\"\n", stepStr.c_str());
+//    }
+//    for (int i = 0; i < StepSequencerEntity::SeqStep::kNumNotes; ++i) {
+//        if (step._midiNote[i] < 0) {
+//            continue;
+//        }
+//        _props._midiNotes.emplace_back(step._midiNote[i]);
+//    }
+//    _props._velocity = step._velocity;
+//}
 void SetAllStepsSeqAction::LoadDerived(serial::Ptree pt) {
     _props.Load(pt);
     int constexpr kUseIntsForMidiNotesVersion = 4;
@@ -262,12 +264,12 @@ void SetAllStepsSeqAction::LoadDerived(serial::Ptree pt) {
             printf("SetAllStepsSeqAction: failed to parse step \"%s\"\n", stepStr.c_str());
         }
         for (int i = 0; i < StepSequencerEntity::SeqStep::kNumNotes; ++i) {
-            if (step._midiNote[i] < 0) {
+            if (step._notes[i]._note < 0) {
                 continue;
             }
-            _props._midiNotes.emplace_back(step._midiNote[i]);
+            _props._midiNotes.emplace_back(step._notes[i]._note);
         }
-        _props._velocity = step._velocity;
+        _props._velocity = step._notes[0]._v;
     }
 
     if (_props._midiNotes.size() > StepSequencerEntity::SeqStep::kNumNotes) {
@@ -300,9 +302,9 @@ void SetAllStepsSeqAction::ExecuteDerived(GameManager& g) {
         else {
             StepSequencerEntity::SeqStep step;
             for (int i = 0; i < StepSequencerEntity::SeqStep::kNumNotes && i < _props._midiNotes.size(); ++i) {
-                step._midiNote[i] = _props._midiNotes[i]._note;
+                step._notes[i]._note = _props._midiNotes[i]._note;
+                step._notes[i]._v = _props._velocity;
             }
-            step._velocity = _props._velocity;
             seq->SetAllStepsPermanent(step);
         }
     }
@@ -325,9 +327,13 @@ void SetStepSequenceSeqAction::LoadDerived(serial::Ptree pt) {
     serial::LoadFromChildOf(pt, "seq_editor_id", _seqEditorId);
     _isSynth = false;
     pt.TryGetBool("is_synth", &_isSynth);
-    std::string seqStr = pt.GetString("seq_str");
-    std::stringstream ss(seqStr);
-    StepSequencerEntity::LoadSequenceFromInput(ss, _sequence);
+    if (pt.GetVersion() < 13) {
+        std::string seqStr = pt.GetString("seq_str");
+        std::stringstream ss(seqStr);
+        StepSequencerEntity::LoadSequenceFromInput(ss, _sequence);
+    } else {
+        serial::LoadVectorFromChildNode(pt, "sequence", _sequence);
+    }
     _offsetStart = false;
     pt.TryGetBool("offset_start", &_offsetStart);
 }
@@ -335,13 +341,7 @@ void SetStepSequenceSeqAction::LoadDerived(serial::Ptree pt) {
 void SetStepSequenceSeqAction::SaveDerived(serial::Ptree pt) const {
     serial::SaveInNewChildOf(pt, "seq_editor_id", _seqEditorId);
     pt.PutBool("is_synth", _isSynth);
-    std::stringstream ss;
-    for (StepSequencerEntity::SeqStep const& step : _sequence) {
-        StepSequencerEntity::WriteSeqStep(step, _isSynth, ss);
-        ss << " ";
-    }
-    std::string seqStr = ss.str();
-    pt.PutString("seq_str", seqStr.c_str());
+    serial::SaveVectorInChildNode(pt, "sequence", "s", _sequence); 
     pt.PutBool("offset_start", _offsetStart);
 }
 

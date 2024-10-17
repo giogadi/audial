@@ -21,6 +21,7 @@ Ideas
   - maybe can use them as platforms or walls that change length? 
 
 Near-term ideas:
+- New section at beginning of hangout: moving platforms, but with shorter words/sequences. kinda build up to the main "riff".
 - add fun and weird shader effects (mirror, upside down, whatever) with every loop in the hangout buildup
 
 BUGS:
@@ -34,5 +35,6 @@ TOOLS:
 Optimizations/improvements/etc:
 - Use an arena when loading so we don't have all this allocations for GetChildren().
 - Enable "late changes" for filled sequences
+- DELAY ON PCM PLAYBACK!!!!
 
 SOOOOO would this new thing be a mech or would it be an enemy? Maybe an enemy, ughhhh. So stupid.
