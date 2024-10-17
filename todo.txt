@@ -31,10 +31,8 @@ TOOLS:
 - Support SynthParams in BeatTimeEvents
 - Enable setting a new global beat time epoch
 - Save to file in a separate thread
+- VST of my synth
 
 Optimizations/improvements/etc:
 - Use an arena when loading so we don't have all this allocations for GetChildren().
-- Enable "late changes" for filled sequences
 - DELAY ON PCM PLAYBACK!!!!
-
-SOOOOO would this new thing be a mech or would it be an enemy? Maybe an enemy, ughhhh. So stupid.
