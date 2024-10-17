@@ -20,7 +20,8 @@ inline bool InputText(char const* label, std::string* value, bool trueOnReturnOn
 inline bool InputVec3(char const* label, Vec3* v, bool trueOnReturnOnly = false) {
     float posData[3];
     v->CopyToArray(posData);
-    bool changed = ImGui::InputFloat3(label, posData, "%.3f", trueOnReturnOnly ? ImGuiInputTextFlags_EnterReturnsTrue : 0);
+    bool typingChange = ImGui::InputFloat3(label, posData, "%.3f");
+    bool changed = trueOnReturnOnly ? ImGui::IsItemDeactivatedAfterEdit() : typingChange;
     if (changed) {
         *v = Vec3(posData);
     }

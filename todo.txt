@@ -3,10 +3,7 @@ Spiky bits:
   - narrow the dynamic range; or
   - do a sound check at the beginning based on the loudest sound in the level
 - the starting push node, ugh
-- If you miss timing, do you just go whenever or do you die?
 - Section2 is too hard, maybe need to ramp up to that
-- Need something when player hits wrong key!
-- make things explode when used up, or something
 - Maybe start thinking about multiple paths in the first section?
 - !!!!!!different symbols for each node behavior!!!!!!
 - maybe disable controller inputs for now
@@ -27,10 +24,7 @@ Near-term ideas:
 - add fun and weird shader effects (mirror, upside down, whatever) with every loop in the hangout buildup
 
 BUGS:
-- Player can't seem to interact with two letters at the same time still?
 - Our controller support is SUPER BUSTED, DUDE!!!!! But that's a later problem.
-- WHY does AddMotion SeqAction update "preview" every time it's expanded when InputVec3 has ReturnTrueOnEnter?
-  - AHA!!!! InputTextFlags or w/e don't actually help with ImGui::InputFloat3 - WTF!!!
 
 TOOLS:
 - Support SynthParams in BeatTimeEvents

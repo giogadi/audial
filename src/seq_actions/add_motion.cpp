@@ -30,10 +30,10 @@ bool AddMotionSeqAction::ImGui() {
 	bool needsInit = false;
 	needsInit = imgui_util::InputEditorId("Editor id", &_p.editorId) || needsInit;
 	bool needPreview = false;
-	if (imgui_util::InputVec3("v0", &_p.v0)) {
+	if (imgui_util::InputVec3("v0", &_p.v0, true)) {
 		needPreview = true;
 	}
-	if (imgui_util::InputVec3("a", &_p.a)) {
+	if (imgui_util::InputVec3("a", &_p.a, true)) {
 		needPreview = true;
 	}
 	if (ImGui::InputFloat("Time", &_p.time, 0.f, 0.f, "%.3f", ImGuiInputTextFlags_EnterReturnsTrue)) {
