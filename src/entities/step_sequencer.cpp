@@ -94,6 +94,7 @@ void StepSequencerEntity::SeqStep::Load(serial::Ptree pt) {
     _velocity = pt.GetFloat("v");
 }
 
+// OBSOLETE: doesn't handle new midiNotes (where -1 can be anywhere)
 void StepSequencerEntity::WriteSeqStep(SeqStep const& step, bool writeNoteName, std::ostream& output) {
     std::string noteName;
     for (int i = 0, n = step._midiNote.size(); i < n; ++i) {
@@ -483,20 +484,24 @@ void StepSequencerEntity::PlayStep(GameManager& g, SeqStep const& seqStep) {
         }
     }
 
-    if (seqStep._midiNote[0] > -1) {
+    std::array<int, SeqStep::kNumNotes> midiNotes;  // packed in
+    midiNotes.fill(-1);
+    int numPlayedNotes = 0;
+    for (int ii = 0; ii < seqStep._midiNote.size(); ++ii) {
+        if (_maxNumVoices > -1 && numPlayedNotes >= _maxNumVoices) {
+            break;
+        }
+        if (seqStep._midiNote[ii] >= 0) {
+            // TODO: do we need to check for velocity == 0 here too?
+            midiNotes[numPlayedNotes++] = seqStep._midiNote[ii];
+        }
+    }
+
+    if (midiNotes[0] > -1) {
         // TODO: this isn't _quite_ it, but almost
         _lastPlayedNoteTime = g._beatClock->GetBeatTimeFromEpoch();
     }
-    int numVoices = seqStep._midiNote.size();
-    if (_maxNumVoices >= 0) {
-        numVoices = std::min(numVoices, _maxNumVoices);
-    }
-    for (int i = 0; i < numVoices; ++i) {
-        if (seqStep._midiNote[i] < 0 || seqStep._velocity <= 0.f) {
-            numVoices = i;
-            break;
-        }
-    }
+
     if (_isSynth) {
         audio::Event e;
         e.delaySecs = 0.0;
@@ -504,8 +509,8 @@ void StepSequencerEntity::PlayStep(GameManager& g, SeqStep const& seqStep) {
         e.type = audio::EventType::NoteOn; 
         static int sNoteOnId = 1;
         e.noteOnId = sNoteOnId++;
-        for (int i = 0; i < numVoices; ++i) {
-            e.midiNote = seqStep._midiNote[i];
+        for (int i = 0; i < numPlayedNotes; ++i) {
+            e.midiNote = midiNotes[i];
             if (_primePorta) {
                 e.primePortaMidiNote = e.midiNote;
             }
@@ -516,8 +521,8 @@ void StepSequencerEntity::PlayStep(GameManager& g, SeqStep const& seqStep) {
         }
         e.type = audio::EventType::NoteOff;
         e.delaySecs = g._beatClock->BeatTimeToSecs(_noteLength);
-        for (int i = 0; i < numVoices; ++i) {
-            e.midiNote = seqStep._midiNote[i];
+        for (int i = 0; i < numPlayedNotes; ++i) {
+            e.midiNote = midiNotes[i];
             for (int channel : _channels) {
                 e.channel = channel;
                 g._audioContext->AddEvent(e);
@@ -533,8 +538,8 @@ void StepSequencerEntity::PlayStep(GameManager& g, SeqStep const& seqStep) {
         e.pcmVelocity = seqStep._velocity * _gain;
         e.type = audio::EventType::PlayPcm;
         e.loop = false;
-        for (int i = 0; i < numVoices; ++i) {
-            e.pcmSoundIx = seqStep._midiNote[i];
+        for (int i = 0; i < numPlayedNotes; ++i) {
+            e.pcmSoundIx = midiNotes[i];
             g._audioContext->AddEvent(e);
         }
     }
