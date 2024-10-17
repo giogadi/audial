@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <root>
-    <version>11</version>
+    <version>12</version>
     <patches>
         <patch>
             <name>bass0</name>
@@ -96,23 +96,23 @@
                 <Osc2Waveform>Saw</Osc2Waveform>
                 <Detune>0</Detune>
                 <OscFader>0</OscFader>
-                <Unison>0</Unison>
-                <UnisonDetune>0</UnisonDetune>
-                <Cutoff>1932.203</Cutoff>
-                <Peak>4.66099977</Peak>
-                <HpfCutoff>373.729004</HpfCutoff>
+                <Unison>1</Unison>
+                <UnisonDetune>3.30900002</UnisonDetune>
+                <Cutoff>3088.23511</Cutoff>
+                <Peak>4.85300016</Peak>
+                <HpfCutoff>100</HpfCutoff>
                 <HpfPeak>0</HpfPeak>
                 <Portamento>0</Portamento>
-                <PitchLFOGain>0</PitchLFOGain>
+                <PitchLFOGain>0.0149999997</PitchLFOGain>
                 <PitchLFOFreq>4.23699999</PitchLFOFreq>
-                <CutoffLFOGain>0.140000001</CutoffLFOGain>
+                <CutoffLFOGain>0.114</CutoffLFOGain>
                 <CutoffLFOFreq>0.400000006</CutoffLFOFreq>
                 <AmpEnvAttack>0.00499999989</AmpEnvAttack>
                 <AmpEnvDecay>0.169</AmpEnvDecay>
                 <AmpEnvSustain>0.264999986</AmpEnvSustain>
                 <AmpEnvRelease>0.77700001</AmpEnvRelease>
                 <CutoffEnvGain>1681.78003</CutoffEnvGain>
-                <CutoffEnvAttack>0.204999998</CutoffEnvAttack>
+                <CutoffEnvAttack>0</CutoffEnvAttack>
                 <CutoffEnvDecay>0.191</CutoffEnvDecay>
                 <CutoffEnvSustain>0.152999997</CutoffEnvSustain>
                 <CutoffEnvRelease>1</CutoffEnvRelease>
@@ -123,9 +123,9 @@
                 <PitchEnvRelease>0</PitchEnvRelease>
                 <FMOsc2Level>0</FMOsc2Level>
                 <FMOsc2Ratio>0</FMOsc2Ratio>
-                <DelayGain>0</DelayGain>
-                <DelayTime>0</DelayTime>
-                <DelayFeedback>0</DelayFeedback>
+                <DelayGain>0.287</DelayGain>
+                <DelayTime>0.150999993</DelayTime>
+                <DelayFeedback>0.437999994</DelayFeedback>
             </patch>
         </patch>
         <patch>

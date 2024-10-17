@@ -17,6 +17,7 @@
 #include "entities/flow_player.h"
 #include "string_util.h"
 #include "particle_mgr.h"
+#include "entities/particle_emitter.h"
 
 extern GameManager gGameManager;
 
@@ -550,6 +551,14 @@ HitResult TypingEnemyEntity::OnHit(GameManager& g, int hitKeyIndex) {
     }
 
     double beatTime = g._beatClock->GetBeatTimeFromEpoch();
+    _s._timeOfLastHit = beatTime;
+
+    if (_p._useLastHitResponse && _s._numHits >= _p._keyText.length()) {
+        result._response = _p._lastHitResponse;
+    } else {
+        result._response = _p._hitResponse;
+    }
+    
     if (_s._numHits >= _p._keyText.length()) {
         _s._numHits = _p._keyText.length();
         if (_p._cooldownQuantizeDenom > 0.f) {
@@ -561,7 +570,26 @@ HitResult TypingEnemyEntity::OnHit(GameManager& g, int hitKeyIndex) {
             bool success = g._neEntityManager->TagForDeactivate(_id);
             assert(success);
 
-#if 1
+#if 0
+            ParticleEmitterEntity* e = static_cast<ParticleEmitterEntity*>(g._neEntityManager->AddEntity(ne::EntityType::ParticleEmitter));
+            e->_initTransform = _transform;
+            if (result._response._type == HitResponseType::Push) {
+                float angleRad = result._response._pushAngleDeg * kDeg2Rad;
+                Vec3 z(cos(angleRad), 0.f, -sin(angleRad));
+                z = -z;
+                Vec3 y(0.f, 1.f, 0.f);
+                Vec3 x = Vec3::Cross(y, z);
+                Mat3 rot;
+                rot.SetCol(0, x);
+                rot.SetCol(1, y);
+                rot.SetCol(2, z);
+                Quaternion q;
+                q.SetFromRotMat(rot);
+                e->_initTransform.SetQuat(q);
+            }
+            e->_modelColor = _modelColor;
+            e->Init(g);
+#else
             Vec3 boxP = _transform.Pos();
             // TODO: Assumes AABB
             Vec3 minP = boxP - _transform.Scale() * 0.5f;
@@ -587,13 +615,7 @@ HitResult TypingEnemyEntity::OnHit(GameManager& g, int hitKeyIndex) {
 #endif
         }
     }
-    _s._timeOfLastHit = beatTime;    
-
-    if (_p._useLastHitResponse && _s._numHits >= _p._keyText.length()) {
-        result._response = _p._lastHitResponse;
-    } else {
-        result._response = _p._hitResponse;
-    }  
+      
     return result;
 }
 
