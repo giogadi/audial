@@ -13213,6 +13213,17 @@
                         <init_on_activate>true</init_on_activate>
                         <init_if_already_active>false</init_if_already_active>
                     </seq_action>
+                    <seq_action>
+                        <one_time>false</one_time>
+                        <action_type>SetEntityActive</action_type>
+                        <entities_tag>-1</entities_tag>
+                        <entity_editor_id>
+                            <id>560</id>
+                        </entity_editor_id>
+                        <active>true</active>
+                        <init_on_activate>true</init_on_activate>
+                        <init_if_already_active>false</init_if_already_active>
+                    </seq_action>
                 </actions>
                 <actions_on_exit/>
                 <trigger_volume_entities/>
@@ -15432,15 +15443,6 @@
                         <seqEditorId>
                             <id>4</id>
                         </seqEditorId>
-                    </seq_action>
-                    <seq_action>
-                        <one_time>false</one_time>
-                        <action_type>SetStepSequencerMute</action_type>
-                        <seq_editor_id>
-                            <id>3</id>
-                        </seq_editor_id>
-                        <mute>false</mute>
-                        <gain>0.75</gain>
                     </seq_action>
                 </actions>
                 <actions_on_exit/>
@@ -24918,7 +24920,7 @@
                             </n>
                             <n>
                                 <note>-1</note>
-                                <v>1</v>
+                                <v>0.100000001</v>
                             </n>
                             <n>
                                 <note>-1</note>
@@ -24934,12 +24936,12 @@
                     <s>
                         <notes>
                             <n>
-                                <note>21</note>
+                                <note>-1</note>
                                 <v>1</v>
                             </n>
                             <n>
-                                <note>-1</note>
-                                <v>1</v>
+                                <note>21</note>
+                                <v>0.100000001</v>
                             </n>
                             <n>
                                 <note>-1</note>
@@ -24955,12 +24957,12 @@
                     <s>
                         <notes>
                             <n>
-                                <note>21</note>
+                                <note>-1</note>
                                 <v>1</v>
                             </n>
                             <n>
-                                <note>-1</note>
-                                <v>1</v>
+                                <note>21</note>
+                                <v>0.100000001</v>
                             </n>
                             <n>
                                 <note>-1</note>
@@ -24976,12 +24978,12 @@
                     <s>
                         <notes>
                             <n>
-                                <note>21</note>
+                                <note>-1</note>
                                 <v>1</v>
                             </n>
                             <n>
-                                <note>-1</note>
-                                <v>1</v>
+                                <note>21</note>
+                                <v>0.100000001</v>
                             </n>
                             <n>
                                 <note>-1</note>
@@ -25002,7 +25004,7 @@
                             </n>
                             <n>
                                 <note>-1</note>
-                                <v>1</v>
+                                <v>0.100000001</v>
                             </n>
                             <n>
                                 <note>-1</note>
@@ -25018,12 +25020,12 @@
                     <s>
                         <notes>
                             <n>
-                                <note>21</note>
+                                <note>-1</note>
                                 <v>1</v>
                             </n>
                             <n>
-                                <note>-1</note>
-                                <v>1</v>
+                                <note>21</note>
+                                <v>0.100000001</v>
                             </n>
                             <n>
                                 <note>-1</note>
@@ -25039,12 +25041,12 @@
                     <s>
                         <notes>
                             <n>
-                                <note>21</note>
+                                <note>-1</note>
                                 <v>1</v>
                             </n>
                             <n>
-                                <note>-1</note>
-                                <v>1</v>
+                                <note>21</note>
+                                <v>0.100000001</v>
                             </n>
                             <n>
                                 <note>-1</note>
@@ -25060,12 +25062,12 @@
                     <s>
                         <notes>
                             <n>
-                                <note>21</note>
+                                <note>-1</note>
                                 <v>1</v>
                             </n>
                             <n>
-                                <note>-1</note>
-                                <v>1</v>
+                                <note>21</note>
+                                <v>0.100000001</v>
                             </n>
                             <n>
                                 <note>-1</note>
@@ -25086,7 +25088,7 @@
                             </n>
                             <n>
                                 <note>-1</note>
-                                <v>1</v>
+                                <v>0.100000001</v>
                             </n>
                             <n>
                                 <note>-1</note>
@@ -25102,12 +25104,12 @@
                     <s>
                         <notes>
                             <n>
-                                <note>21</note>
+                                <note>-1</note>
                                 <v>1</v>
                             </n>
                             <n>
-                                <note>-1</note>
-                                <v>1</v>
+                                <note>21</note>
+                                <v>0.100000001</v>
                             </n>
                             <n>
                                 <note>-1</note>
@@ -25123,12 +25125,12 @@
                     <s>
                         <notes>
                             <n>
-                                <note>21</note>
+                                <note>-1</note>
                                 <v>1</v>
                             </n>
                             <n>
-                                <note>-1</note>
-                                <v>1</v>
+                                <note>21</note>
+                                <v>0.100000001</v>
                             </n>
                             <n>
                                 <note>-1</note>
@@ -25144,12 +25146,12 @@
                     <s>
                         <notes>
                             <n>
-                                <note>21</note>
+                                <note>-1</note>
                                 <v>1</v>
                             </n>
                             <n>
-                                <note>-1</note>
-                                <v>1</v>
+                                <note>21</note>
+                                <v>0.100000001</v>
                             </n>
                             <n>
                                 <note>-1</note>
@@ -25170,7 +25172,7 @@
                             </n>
                             <n>
                                 <note>-1</note>
-                                <v>1</v>
+                                <v>0.100000001</v>
                             </n>
                             <n>
                                 <note>-1</note>
@@ -25186,12 +25188,12 @@
                     <s>
                         <notes>
                             <n>
-                                <note>21</note>
+                                <note>-1</note>
                                 <v>1</v>
                             </n>
                             <n>
-                                <note>-1</note>
-                                <v>1</v>
+                                <note>21</note>
+                                <v>0.100000001</v>
                             </n>
                             <n>
                                 <note>-1</note>
@@ -25207,12 +25209,12 @@
                     <s>
                         <notes>
                             <n>
-                                <note>21</note>
+                                <note>-1</note>
                                 <v>1</v>
                             </n>
                             <n>
-                                <note>-1</note>
-                                <v>1</v>
+                                <note>21</note>
+                                <v>0.100000001</v>
                             </n>
                             <n>
                                 <note>-1</note>
@@ -25228,12 +25230,12 @@
                     <s>
                         <notes>
                             <n>
-                                <note>21</note>
+                                <note>-1</note>
                                 <v>1</v>
                             </n>
                             <n>
-                                <note>-1</note>
-                                <v>1</v>
+                                <note>21</note>
+                                <v>0.100000001</v>
                             </n>
                             <n>
                                 <note>-1</note>
@@ -25334,7 +25336,7 @@
                             </n>
                             <n>
                                 <note>-1</note>
-                                <v>1</v>
+                                <v>0.100000001</v>
                             </n>
                             <n>
                                 <note>-1</note>
@@ -25350,12 +25352,12 @@
                     <s>
                         <notes>
                             <n>
-                                <note>21</note>
+                                <note>-1</note>
                                 <v>1</v>
                             </n>
                             <n>
-                                <note>-1</note>
-                                <v>1</v>
+                                <note>21</note>
+                                <v>0.100000001</v>
                             </n>
                             <n>
                                 <note>-1</note>
@@ -25371,12 +25373,12 @@
                     <s>
                         <notes>
                             <n>
-                                <note>21</note>
+                                <note>-1</note>
                                 <v>1</v>
                             </n>
                             <n>
-                                <note>-1</note>
-                                <v>1</v>
+                                <note>21</note>
+                                <v>0.100000001</v>
                             </n>
                             <n>
                                 <note>-1</note>
@@ -25392,12 +25394,12 @@
                     <s>
                         <notes>
                             <n>
-                                <note>21</note>
+                                <note>-1</note>
                                 <v>1</v>
                             </n>
                             <n>
-                                <note>-1</note>
-                                <v>1</v>
+                                <note>21</note>
+                                <v>0.100000001</v>
                             </n>
                             <n>
                                 <note>-1</note>
@@ -25415,18 +25417,18 @@
                             <n>
                                 <note>19</note>
                                 <v>1</v>
+                            </n>
+                            <n>
+                                <note>-1</note>
+                                <v>0.100000001</v>
                             </n>
                             <n>
                                 <note>9</note>
-                                <v>1</v>
+                                <v>0.5</v>
                             </n>
                             <n>
                                 <note>20</note>
-                                <v>1</v>
-                            </n>
-                            <n>
-                                <note>-1</note>
-                                <v>1</v>
+                                <v>0.5</v>
                             </n>
                         </notes>
                         <params/>
@@ -25434,33 +25436,12 @@
                     <s>
                         <notes>
                             <n>
-                                <note>21</note>
-                                <v>1</v>
-                            </n>
-                            <n>
                                 <note>-1</note>
                                 <v>1</v>
                             </n>
-                            <n>
-                                <note>-1</note>
-                                <v>1</v>
-                            </n>
-                            <n>
-                                <note>-1</note>
-                                <v>1</v>
-                            </n>
-                        </notes>
-                        <params/>
-                    </s>
-                    <s>
-                        <notes>
                             <n>
                                 <note>21</note>
-                                <v>1</v>
-                            </n>
-                            <n>
-                                <note>-1</note>
-                                <v>1</v>
+                                <v>0.100000001</v>
                             </n>
                             <n>
                                 <note>-1</note>
@@ -25476,12 +25457,33 @@
                     <s>
                         <notes>
                             <n>
+                                <note>-1</note>
+                                <v>1</v>
+                            </n>
+                            <n>
                                 <note>21</note>
+                                <v>0.100000001</v>
+                            </n>
+                            <n>
+                                <note>-1</note>
                                 <v>1</v>
                             </n>
                             <n>
                                 <note>-1</note>
                                 <v>1</v>
+                            </n>
+                        </notes>
+                        <params/>
+                    </s>
+                    <s>
+                        <notes>
+                            <n>
+                                <note>-1</note>
+                                <v>1</v>
+                            </n>
+                            <n>
+                                <note>21</note>
+                                <v>0.100000001</v>
                             </n>
                             <n>
                                 <note>-1</note>
@@ -25502,7 +25504,28 @@
                             </n>
                             <n>
                                 <note>-1</note>
+                                <v>0.100000001</v>
+                            </n>
+                            <n>
+                                <note>-1</note>
+                                <v>0.25</v>
+                            </n>
+                            <n>
+                                <note>-1</note>
+                                <v>0.25</v>
+                            </n>
+                        </notes>
+                        <params/>
+                    </s>
+                    <s>
+                        <notes>
+                            <n>
+                                <note>-1</note>
                                 <v>1</v>
+                            </n>
+                            <n>
+                                <note>21</note>
+                                <v>0.100000001</v>
                             </n>
                             <n>
                                 <note>-1</note>
@@ -25518,12 +25541,12 @@
                     <s>
                         <notes>
                             <n>
-                                <note>21</note>
+                                <note>-1</note>
                                 <v>1</v>
                             </n>
                             <n>
-                                <note>-1</note>
-                                <v>1</v>
+                                <note>21</note>
+                                <v>0.100000001</v>
                             </n>
                             <n>
                                 <note>-1</note>
@@ -25539,33 +25562,12 @@
                     <s>
                         <notes>
                             <n>
-                                <note>21</note>
-                                <v>1</v>
-                            </n>
-                            <n>
                                 <note>-1</note>
                                 <v>1</v>
                             </n>
-                            <n>
-                                <note>-1</note>
-                                <v>1</v>
-                            </n>
-                            <n>
-                                <note>-1</note>
-                                <v>1</v>
-                            </n>
-                        </notes>
-                        <params/>
-                    </s>
-                    <s>
-                        <notes>
                             <n>
                                 <note>21</note>
-                                <v>1</v>
-                            </n>
-                            <n>
-                                <note>-1</note>
-                                <v>1</v>
+                                <v>0.100000001</v>
                             </n>
                             <n>
                                 <note>-1</note>
@@ -25583,18 +25585,18 @@
                             <n>
                                 <note>19</note>
                                 <v>1</v>
+                            </n>
+                            <n>
+                                <note>-1</note>
+                                <v>0.100000001</v>
                             </n>
                             <n>
                                 <note>9</note>
-                                <v>1</v>
+                                <v>0.5</v>
                             </n>
                             <n>
                                 <note>20</note>
-                                <v>1</v>
-                            </n>
-                            <n>
-                                <note>-1</note>
-                                <v>1</v>
+                                <v>0.5</v>
                             </n>
                         </notes>
                         <params/>
@@ -25602,33 +25604,12 @@
                     <s>
                         <notes>
                             <n>
-                                <note>21</note>
-                                <v>1</v>
-                            </n>
-                            <n>
                                 <note>-1</note>
                                 <v>1</v>
                             </n>
-                            <n>
-                                <note>-1</note>
-                                <v>1</v>
-                            </n>
-                            <n>
-                                <note>-1</note>
-                                <v>1</v>
-                            </n>
-                        </notes>
-                        <params/>
-                    </s>
-                    <s>
-                        <notes>
                             <n>
                                 <note>21</note>
-                                <v>1</v>
-                            </n>
-                            <n>
-                                <note>-1</note>
-                                <v>1</v>
+                                <v>0.100000001</v>
                             </n>
                             <n>
                                 <note>-1</note>
@@ -25644,12 +25625,33 @@
                     <s>
                         <notes>
                             <n>
+                                <note>-1</note>
+                                <v>1</v>
+                            </n>
+                            <n>
                                 <note>21</note>
+                                <v>0.100000001</v>
+                            </n>
+                            <n>
+                                <note>-1</note>
                                 <v>1</v>
                             </n>
                             <n>
                                 <note>-1</note>
                                 <v>1</v>
+                            </n>
+                        </notes>
+                        <params/>
+                    </s>
+                    <s>
+                        <notes>
+                            <n>
+                                <note>-1</note>
+                                <v>1</v>
+                            </n>
+                            <n>
+                                <note>21</note>
+                                <v>0.100000001</v>
                             </n>
                             <n>
                                 <note>-1</note>
@@ -25731,6 +25733,17 @@
                 <random_action_count>-1</random_action_count>
                 <shatter_on_trigger>false</shatter_on_trigger>
                 <actions>
+                    <seq_action>
+                        <one_time>false</one_time>
+                        <action_type>SetEntityActive</action_type>
+                        <entities_tag>-1</entities_tag>
+                        <entity_editor_id>
+                            <id>560</id>
+                        </entity_editor_id>
+                        <active>true</active>
+                        <init_on_activate>true</init_on_activate>
+                        <init_if_already_active>false</init_if_already_active>
+                    </seq_action>
                     <seq_action>
                         <one_time>true</one_time>
                         <action_type>SetEntityActive</action_type>
@@ -26458,6 +26471,422 @@
                             <n>
                                 <note>-1</note>
                                 <v>1</v>
+                            </n>
+                            <n>
+                                <note>-1</note>
+                                <v>1</v>
+                            </n>
+                            <n>
+                                <note>-1</note>
+                                <v>1</v>
+                            </n>
+                        </notes>
+                        <params/>
+                    </s>
+                </sequence>
+                <late_changes>true</late_changes>
+                <start_mute>false</start_mute>
+                <gain>0.75</gain>
+                <channels/>
+                <step_length>0.25</step_length>
+                <note_length>0.25</note_length>
+                <start_time>4</start_time>
+                <is_synth>false</is_synth>
+                <editor_mute>false</editor_mute>
+                <max_voices>-1</max_voices>
+                <quantize_temp_changes>true</quantize_temp_changes>
+            </StepSequencer>
+            <StepSequencer>
+                <editor_id>
+                    <id>560</id>
+                </editor_id>
+                <name>sec2_1.5_seq</name>
+                <entity_active>false</entity_active>
+                <pickable>false</pickable>
+                <transform>
+                    <pos>
+                        <x>31.3830109</x>
+                        <y>0</y>
+                        <z>16.126667</z>
+                    </pos>
+                    <quat>
+                        <x>0</x>
+                        <y>0</y>
+                        <z>0</z>
+                        <w>1</w>
+                    </quat>
+                    <scale>
+                        <x>1</x>
+                        <y>1</y>
+                        <z>1</z>
+                    </scale>
+                </transform>
+                <model_name/>
+                <texture_name/>
+                <model_color_vec4>
+                    <x>0.800000012</x>
+                    <y>0.800000012</y>
+                    <z>0.800000012</z>
+                    <w>1</w>
+                </model_color_vec4>
+                <flow_section_id>-1</flow_section_id>
+                <tag>0</tag>
+                <waypoint_follower>
+                    <mode>Waypoint</mode>
+                    <waypoint_auto_start>false</waypoint_auto_start>
+                    <loop_waypoints>false</loop_waypoints>
+                    <start_time>3</start_time>
+                    <quantize>1</quantize>
+                    <quantize_buffer>0</quantize_buffer>
+                    <waypoints/>
+                    <follow_entity_name/>
+                    <follow_entity_editor_id>
+                        <id>-1</id>
+                    </follow_entity_editor_id>
+                </waypoint_follower>
+                <param_track_types>
+                    <c>
+                        <active>false</active>
+                        <type>Gain</type>
+                    </c>
+                    <c>
+                        <active>false</active>
+                        <type>Gain</type>
+                    </c>
+                    <c>
+                        <active>false</active>
+                        <type>Gain</type>
+                    </c>
+                    <c>
+                        <active>false</active>
+                        <type>Gain</type>
+                    </c>
+                </param_track_types>
+                <sequence>
+                    <s>
+                        <notes>
+                            <n>
+                                <note>-1</note>
+                                <v>1</v>
+                            </n>
+                            <n>
+                                <note>-1</note>
+                                <v>0.100000001</v>
+                            </n>
+                            <n>
+                                <note>-1</note>
+                                <v>1</v>
+                            </n>
+                            <n>
+                                <note>-1</note>
+                                <v>1</v>
+                            </n>
+                        </notes>
+                        <params/>
+                    </s>
+                    <s>
+                        <notes>
+                            <n>
+                                <note>-1</note>
+                                <v>1</v>
+                            </n>
+                            <n>
+                                <note>21</note>
+                                <v>0.100000001</v>
+                            </n>
+                            <n>
+                                <note>-1</note>
+                                <v>1</v>
+                            </n>
+                            <n>
+                                <note>-1</note>
+                                <v>1</v>
+                            </n>
+                        </notes>
+                        <params/>
+                    </s>
+                    <s>
+                        <notes>
+                            <n>
+                                <note>-1</note>
+                                <v>1</v>
+                            </n>
+                            <n>
+                                <note>21</note>
+                                <v>0.100000001</v>
+                            </n>
+                            <n>
+                                <note>-1</note>
+                                <v>1</v>
+                            </n>
+                            <n>
+                                <note>-1</note>
+                                <v>1</v>
+                            </n>
+                        </notes>
+                        <params/>
+                    </s>
+                    <s>
+                        <notes>
+                            <n>
+                                <note>-1</note>
+                                <v>1</v>
+                            </n>
+                            <n>
+                                <note>21</note>
+                                <v>0.100000001</v>
+                            </n>
+                            <n>
+                                <note>-1</note>
+                                <v>1</v>
+                            </n>
+                            <n>
+                                <note>-1</note>
+                                <v>1</v>
+                            </n>
+                        </notes>
+                        <params/>
+                    </s>
+                    <s>
+                        <notes>
+                            <n>
+                                <note>-1</note>
+                                <v>1</v>
+                            </n>
+                            <n>
+                                <note>-1</note>
+                                <v>0.100000001</v>
+                            </n>
+                            <n>
+                                <note>-1</note>
+                                <v>1</v>
+                            </n>
+                            <n>
+                                <note>-1</note>
+                                <v>1</v>
+                            </n>
+                        </notes>
+                        <params/>
+                    </s>
+                    <s>
+                        <notes>
+                            <n>
+                                <note>-1</note>
+                                <v>1</v>
+                            </n>
+                            <n>
+                                <note>21</note>
+                                <v>0.100000001</v>
+                            </n>
+                            <n>
+                                <note>-1</note>
+                                <v>1</v>
+                            </n>
+                            <n>
+                                <note>-1</note>
+                                <v>1</v>
+                            </n>
+                        </notes>
+                        <params/>
+                    </s>
+                    <s>
+                        <notes>
+                            <n>
+                                <note>-1</note>
+                                <v>1</v>
+                            </n>
+                            <n>
+                                <note>21</note>
+                                <v>0.100000001</v>
+                            </n>
+                            <n>
+                                <note>-1</note>
+                                <v>1</v>
+                            </n>
+                            <n>
+                                <note>-1</note>
+                                <v>1</v>
+                            </n>
+                        </notes>
+                        <params/>
+                    </s>
+                    <s>
+                        <notes>
+                            <n>
+                                <note>-1</note>
+                                <v>1</v>
+                            </n>
+                            <n>
+                                <note>21</note>
+                                <v>0.100000001</v>
+                            </n>
+                            <n>
+                                <note>-1</note>
+                                <v>1</v>
+                            </n>
+                            <n>
+                                <note>-1</note>
+                                <v>1</v>
+                            </n>
+                        </notes>
+                        <params/>
+                    </s>
+                    <s>
+                        <notes>
+                            <n>
+                                <note>-1</note>
+                                <v>1</v>
+                            </n>
+                            <n>
+                                <note>-1</note>
+                                <v>0.100000001</v>
+                            </n>
+                            <n>
+                                <note>-1</note>
+                                <v>1</v>
+                            </n>
+                            <n>
+                                <note>-1</note>
+                                <v>1</v>
+                            </n>
+                        </notes>
+                        <params/>
+                    </s>
+                    <s>
+                        <notes>
+                            <n>
+                                <note>-1</note>
+                                <v>1</v>
+                            </n>
+                            <n>
+                                <note>21</note>
+                                <v>0.100000001</v>
+                            </n>
+                            <n>
+                                <note>-1</note>
+                                <v>1</v>
+                            </n>
+                            <n>
+                                <note>-1</note>
+                                <v>1</v>
+                            </n>
+                        </notes>
+                        <params/>
+                    </s>
+                    <s>
+                        <notes>
+                            <n>
+                                <note>-1</note>
+                                <v>1</v>
+                            </n>
+                            <n>
+                                <note>21</note>
+                                <v>0.100000001</v>
+                            </n>
+                            <n>
+                                <note>-1</note>
+                                <v>1</v>
+                            </n>
+                            <n>
+                                <note>-1</note>
+                                <v>1</v>
+                            </n>
+                        </notes>
+                        <params/>
+                    </s>
+                    <s>
+                        <notes>
+                            <n>
+                                <note>-1</note>
+                                <v>1</v>
+                            </n>
+                            <n>
+                                <note>21</note>
+                                <v>0.100000001</v>
+                            </n>
+                            <n>
+                                <note>-1</note>
+                                <v>1</v>
+                            </n>
+                            <n>
+                                <note>-1</note>
+                                <v>1</v>
+                            </n>
+                        </notes>
+                        <params/>
+                    </s>
+                    <s>
+                        <notes>
+                            <n>
+                                <note>-1</note>
+                                <v>1</v>
+                            </n>
+                            <n>
+                                <note>-1</note>
+                                <v>0.100000001</v>
+                            </n>
+                            <n>
+                                <note>-1</note>
+                                <v>1</v>
+                            </n>
+                            <n>
+                                <note>-1</note>
+                                <v>1</v>
+                            </n>
+                        </notes>
+                        <params/>
+                    </s>
+                    <s>
+                        <notes>
+                            <n>
+                                <note>-1</note>
+                                <v>1</v>
+                            </n>
+                            <n>
+                                <note>21</note>
+                                <v>0.100000001</v>
+                            </n>
+                            <n>
+                                <note>-1</note>
+                                <v>1</v>
+                            </n>
+                            <n>
+                                <note>-1</note>
+                                <v>1</v>
+                            </n>
+                        </notes>
+                        <params/>
+                    </s>
+                    <s>
+                        <notes>
+                            <n>
+                                <note>-1</note>
+                                <v>1</v>
+                            </n>
+                            <n>
+                                <note>21</note>
+                                <v>0.100000001</v>
+                            </n>
+                            <n>
+                                <note>-1</note>
+                                <v>1</v>
+                            </n>
+                            <n>
+                                <note>-1</note>
+                                <v>1</v>
+                            </n>
+                        </notes>
+                        <params/>
+                    </s>
+                    <s>
+                        <notes>
+                            <n>
+                                <note>-1</note>
+                                <v>1</v>
+                            </n>
+                            <n>
+                                <note>21</note>
+                                <v>0.100000001</v>
                             </n>
                             <n>
                                 <note>-1</note>

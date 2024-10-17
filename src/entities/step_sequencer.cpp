@@ -191,13 +191,41 @@ bool StepSequencerEntity::SeqImGui(char const* label, bool drumKit, std::vector<
     int const numSounds = static_cast<int>(soundNames.size());
 
     bool changed = false;
+
+    static std::vector<SeqStep> sClipboardSequence;
+    if (ImGui::Button("Copy")) {
+        sClipboardSequence = sequence;
+    }
+    ImGui::SameLine();
+    if (ImGui::Button("Paste")) {
+        sequence = sClipboardSequence;
+        changed = true;
+    }
     
     int numSteps = sequence.size();
     if (ImGui::InputInt("# steps", &numSteps, 1, 1, ImGuiInputTextFlags_EnterReturnsTrue)) {
         numSteps = math_util::Clamp(numSteps, 0, kMaxRows);
         sequence.resize(numSteps);
         changed = true;
-    }    
+    }
+
+    static float allVelocity = 1.f;
+    static int allVelocityNoteIx = 0;
+    float const kTextBaseWidth = ImGui::CalcTextSize("A").x;
+    ImGui::PushItemWidth(kTextBaseWidth * 8);
+    ImGui::InputFloat("V##allV", &allVelocity);
+    ImGui::SameLine();
+    ImGui::InputInt("Note ix", &allVelocityNoteIx);
+    ImGui::PopItemWidth();
+    ImGui::SameLine();
+    if (ImGui::Button("Set all velocities")) {
+        if (allVelocityNoteIx >= 0 && allVelocityNoteIx < SeqStep::kNumNotes) {
+            for (int i = 0, n = sequence.size(); i < n; ++i) {
+                sequence[i]._notes[allVelocityNoteIx]._v = allVelocity;
+            }
+        }
+        changed = true;
+    }
 
     float const textBaseHeight = ImGui::GetTextLineHeightWithSpacing();
     static ImGuiTableFlags flags = ImGuiTableFlags_ScrollY | ImGuiTableFlags_RowBg | ImGuiTableFlags_BordersOuter | ImGuiTableFlags_BordersV | ImGuiTableFlags_Resizable | ImGuiTableFlags_Reorderable | ImGuiTableFlags_Hideable | ImGuiTableFlags_ScrollX;
@@ -229,7 +257,6 @@ bool StepSequencerEntity::SeqImGui(char const* label, bool drumKit, std::vector<
         int constexpr kStringSize = 4;
         static char sNoteStrings[kMaxRows][kNumNotes][kStringSize] = {};        
         
-        //float const kTextBaseWidth = ImGui::CalcTextSize("A").x;
         while (clipper.Step()) {
             // assert(clipper.DisplayStart < sequence.size());
             assert(clipper.DisplayEnd <= sequence.size());
@@ -729,18 +756,7 @@ ne::BaseEntity::ImGuiResult StepSequencerEntity::ImGuiDerived(GameManager& g) {
         imgui_util::InputVector(_channels);
         ImGui::TreePop();
     }
-    static float allVelocity = 1.f;
-    ImGui::InputFloat("Set all velocities", &allVelocity);
-    ImGui::SameLine();
-    if (ImGui::Button("Apply")) {
-        // SetAllVelocitiesPermanent(allVelocity);
-        for (int i = 0, n = _initialMidiSequenceDoNotChange.size(); i < n; ++i) {
-            for (int jj = 0; jj < _initialMidiSequenceDoNotChange[i]._notes.size(); ++jj) {
-                _initialMidiSequenceDoNotChange[i]._notes[jj]._v = allVelocity;
-            }
-        }
-        needsInit = true;
-    }
+    
     ImGui::Checkbox("Quantize temp changes", &_quantizeTempStepChanges);
     ImGui::Checkbox("Late changes", &_enableLateChanges);
     ImGui::InputInt("Init max voices", &_initMaxNumVoices, ImGuiInputTextFlags_EnterReturnsTrue);
