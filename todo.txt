@@ -21,6 +21,7 @@ Ideas
   - maybe can use them as platforms or walls that change length? 
 
 Near-term ideas:
+- During buildup, make the gaps narrower and narrower
 - New section at beginning of hangout: moving platforms, but with shorter words/sequences. kinda build up to the main "riff".
 - add fun and weird shader effects (mirror, upside down, whatever) with every loop in the hangout buildup
 

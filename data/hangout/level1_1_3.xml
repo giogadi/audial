@@ -7584,63 +7584,6 @@
                 <off_cooldown_actions/>
                 <combo_end_actions/>
             </TypingEnemy>
-            <FlowWall>
-                <editor_id>
-                    <id>305</id>
-                </editor_id>
-                <name>wall22</name>
-                <entity_active>true</entity_active>
-                <pickable>true</pickable>
-                <transform>
-                    <pos>
-                        <x>10.3449888</x>
-                        <y>0</y>
-                        <z>17.6984367</z>
-                    </pos>
-                    <quat>
-                        <x>0</x>
-                        <y>0</y>
-                        <z>0</z>
-                        <w>1</w>
-                    </quat>
-                    <scale>
-                        <x>4</x>
-                        <y>1</y>
-                        <z>1</z>
-                    </scale>
-                </transform>
-                <model_name>cube</model_name>
-                <texture_name>white</texture_name>
-                <model_color_vec4>
-                    <x>0.911764681</x>
-                    <y>0.238457501</y>
-                    <z>0.0312860534</z>
-                    <w>1</w>
-                </model_color_vec4>
-                <flow_section_id>-1</flow_section_id>
-                <tag>0</tag>
-                <waypoint_follower>
-                    <mode>Waypoint</mode>
-                    <waypoint_auto_start>true</waypoint_auto_start>
-                    <loop_waypoints>true</loop_waypoints>
-                    <start_time>4</start_time>
-                    <quantize>1</quantize>
-                    <quantize_buffer>0</quantize_buffer>
-                    <waypoints/>
-                    <follow_entity_name/>
-                    <follow_entity_editor_id>
-                        <id>-1</id>
-                    </follow_entity_editor_id>
-                </waypoint_follower>
-                <hurt_on_hit>true</hurt_on_hit>
-                <can_hit>true</can_hit>
-                <hp>-1</hp>
-                <move_mode>Waypoints</move_mode>
-                <rot_vel>0</rot_vel>
-                <polygon/>
-                <hit_actions/>
-                <children_editor_ids/>
-            </FlowWall>
             <TypingEnemy>
                 <editor_id>
                     <id>318</id>
@@ -10004,7 +9947,7 @@
                 <pickable>true</pickable>
                 <transform>
                     <pos>
-                        <x>10.3485546</x>
+                        <x>10.1623678</x>
                         <y>0</y>
                         <z>15.2217121</z>
                     </pos>
@@ -10015,7 +9958,7 @@
                         <w>1</w>
                     </quat>
                     <scale>
-                        <x>3.99099064</x>
+                        <x>3.6186173</x>
                         <y>1</y>
                         <z>6</z>
                     </scale>
@@ -11268,7 +11211,7 @@
                 <pickable>true</pickable>
                 <transform>
                     <pos>
-                        <x>18.8014584</x>
+                        <x>18.6693268</x>
                         <y>0</y>
                         <z>17.9266644</z>
                     </pos>
@@ -11279,7 +11222,7 @@
                         <w>1</w>
                     </quat>
                     <scale>
-                        <x>1</x>
+                        <x>0.663664818</x>
                         <y>1</y>
                         <z>7</z>
                     </scale>
@@ -12194,7 +12137,7 @@
                 <pickable>true</pickable>
                 <transform>
                     <pos>
-                        <x>30.8494987</x>
+                        <x>30.1888371</x>
                         <y>0</y>
                         <z>9.37411022</z>
                     </pos>
@@ -12251,9 +12194,9 @@
                 <pickable>true</pickable>
                 <transform>
                     <pos>
-                        <x>25.0293674</x>
+                        <x>24.8612003</x>
                         <y>0.5</y>
-                        <z>13.690691</z>
+                        <z>13.7027035</z>
                     </pos>
                     <quat>
                         <x>0</x>
@@ -12471,9 +12414,9 @@
                 <pickable>true</pickable>
                 <transform>
                     <pos>
-                        <x>25.0322094</x>
+                        <x>24.8640423</x>
                         <y>0</y>
-                        <z>13.8439856</z>
+                        <z>13.855998</z>
                     </pos>
                     <quat>
                         <x>0</x>
@@ -12482,7 +12425,7 @@
                         <w>1</w>
                     </quat>
                     <scale>
-                        <x>2</x>
+                        <x>2.28828812</x>
                         <y>1</y>
                         <z>1.25225258</z>
                     </scale>
@@ -12681,7 +12624,7 @@
                 <pickable>true</pickable>
                 <transform>
                     <pos>
-                        <x>22.6933498</x>
+                        <x>22.4891472</x>
                         <y>0</y>
                         <z>13.7705107</z>
                     </pos>
@@ -12692,7 +12635,7 @@
                         <w>1</w>
                     </quat>
                     <scale>
-                        <x>2.77777863</x>
+                        <x>2.36937141</x>
                         <y>1</y>
                         <z>3</z>
                     </scale>
@@ -24136,7 +24079,7 @@
                 <pickable>true</pickable>
                 <transform>
                     <pos>
-                        <x>14.2549114</x>
+                        <x>14.0687256</x>
                         <y>0</y>
                         <z>13.4221621</z>
                     </pos>
@@ -24147,7 +24090,7 @@
                         <w>1</w>
                     </quat>
                     <scale>
-                        <x>3.8948946</x>
+                        <x>4.26726675</x>
                         <y>1</y>
                         <z>3</z>
                     </scale>
@@ -24193,9 +24136,9 @@
                 <pickable>true</pickable>
                 <transform>
                     <pos>
-                        <x>27.1257763</x>
+                        <x>26.4410915</x>
                         <y>0</y>
-                        <z>10.6594</z>
+                        <z>10.6473875</z>
                     </pos>
                     <quat>
                         <x>0</x>
@@ -24206,7 +24149,7 @@
                     <scale>
                         <x>1</x>
                         <y>1</y>
-                        <z>3.56756783</z>
+                        <z>3.54354358</z>
                     </scale>
                 </transform>
                 <model_name>cube</model_name>
