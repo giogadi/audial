@@ -283,7 +283,8 @@ bool PlayerWithinRadius(FlowPlayerEntity const& player, TypingEnemyEntity const&
         return true;
     }
     if (ne::Entity* region = g._neEntityManager->GetEntity(enemy._s._activeRegionId)) {
-        bool inside = geometry::IsPointInBoundingBox(player._transform.Pos(), region->_transform);
+        //bool inside = geometry::IsPointInBoundingBox(player._transform.Pos(), region->_transform);
+        bool inside = geometry::DoAABBsOverlap(player._transform, region->_transform, nullptr);
         return inside;
     }
     return true;
