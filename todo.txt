@@ -1,4 +1,6 @@
 Spiky bits:
+- Should consider unifying all platform velocities so players can get muscle memory
+	- OR maybe visualize in some other way how many beats it'll take to cross a section. That could even be showing little "beat waypoints" for a platform's path?!?!?!
 - Player MUST have their volume setup correctly. This means either:
   - narrow the dynamic range; or
   - do a sound check at the beginning based on the loudest sound in the level

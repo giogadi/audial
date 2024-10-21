@@ -327,7 +327,15 @@ Patch::ImGuiResult Patch::ImGui() {
                 break;
             }
             case audio::SynthParamType::AmpEnvAttack: {
-                changed = ImGui::SliderFloat(paramName, &_data[i], 0.f, 3.f);
+                if (ImGui::Button("Paste env to Cutoff")) {
+                    int srcIx = (int)audio::SynthParamType::AmpEnvAttack;
+                    int dstIx = (int)audio::SynthParamType::CutoffEnvAttack;
+                    for (int ii = 0; ii < 4; ++ii) {
+                        _data[dstIx+ii] = _data[srcIx+ii];
+                    }
+                    changed = true;
+                }
+                changed = ImGui::SliderFloat(paramName, &_data[i], 0.f, 3.f) || changed;
                 break;
             }
             case audio::SynthParamType::AmpEnvDecay: {
@@ -343,10 +351,22 @@ Patch::ImGuiResult Patch::ImGui() {
                 break;
             }
             case audio::SynthParamType::CutoffEnvAttack: {
-                changed = ImGui::SliderFloat(paramName, &_data[i], 0.f, 3.f);
+                if (ImGui::Button("Paste env to Amp")) {
+                    int srcIx = (int)audio::SynthParamType::CutoffEnvAttack;
+                    int dstIx = (int)audio::SynthParamType::AmpEnvAttack;
+                    for (int ii = 0; ii < 4; ++ii) {
+                        _data[dstIx+ii] = _data[srcIx+ii];
+                    }
+                    changed = true;
+                }
+                changed = ImGui::SliderFloat(paramName, &_data[i], 0.f, 3.f) || changed;
                 break;
             }
             case audio::SynthParamType::CutoffEnvDecay: {
+                changed = ImGui::SliderFloat(paramName, &_data[i], 0.f, 5.f);
+                break;
+            }
+            case audio::SynthParamType::CutoffEnvRelease: {
                 changed = ImGui::SliderFloat(paramName, &_data[i], 0.f, 5.f);
                 break;
             }
@@ -356,8 +376,7 @@ Patch::ImGuiResult Patch::ImGui() {
             case audio::SynthParamType::PitchLFOGain:
             case audio::SynthParamType::CutoffLFOGain:
             case audio::SynthParamType::AmpEnvSustain:
-            case audio::SynthParamType::CutoffEnvSustain:
-            case audio::SynthParamType::CutoffEnvRelease:
+            case audio::SynthParamType::CutoffEnvSustain:            
             case audio::SynthParamType::PitchEnvGain:
             case audio::SynthParamType::PitchEnvAttack:
             case audio::SynthParamType::PitchEnvDecay:
