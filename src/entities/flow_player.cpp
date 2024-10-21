@@ -547,8 +547,7 @@ void FlowPlayerEntity::UpdateDerived(GameManager& g, float dt) {
                 continue;
             }
             
-            // Assume if CanHit, we're in their active region.
-            if (enemy->CanHit(*this, g)) {
+            if (g._neEntityManager->GetEntity(enemy->_s._activeRegionId) && enemy->CanHit(*this, g)) {
                 _s._moveState = MoveState::Carried;
                 _s._carrierId = enemy->_id;
                 _s._dashTimer = -1.f;
