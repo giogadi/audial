@@ -974,6 +974,39 @@ void RandomizeTextSeqAction::ExecuteDerived(GameManager& g) {
     }
 }
 
+void ChangeTextSeqAction::LoadDerived(serial::Ptree pt) {
+    serial::LoadFromChildOf(pt, "enemy_editor_id", _p.enemy);
+    pt.TryGetString("text", &_p.text);
+}
+
+void ChangeTextSeqAction::SaveDerived(serial::Ptree pt) const {
+    serial::SaveInNewChildOf(pt, "enemy_editor_id", _p.enemy);
+    pt.PutString("text", _p.text.c_str());
+}
+
+bool ChangeTextSeqAction::ImGui() {
+    bool changed = imgui_util::InputEditorId("Enemy editor ID", &_p.enemy);
+    changed = imgui_util::InputText<32>("New text", &_p.text) || changed;
+    return changed;
+}
+
+void ChangeTextSeqAction::InitDerived(GameManager& g) {
+    ne::Entity* e = nullptr;
+    e = g._neEntityManager->FindEntityByEditorIdAndType(_p.enemy, ne::EntityType::TypingEnemy, nullptr, "ChangeTextSeqAction");
+    if (e) {
+        _s.enemy = e->_id;
+    }
+}
+
+void ChangeTextSeqAction::ExecuteDerived(GameManager& g) {
+    if (g._editMode) {
+        return;
+    }
+    if (TypingEnemyEntity* e = (TypingEnemyEntity*)g._neEntityManager->GetEntity(_s.enemy, /*includeActive=*/true, /*includeInactive=*/true, nullptr)) {
+        e->_p._keyText = _p.text;
+    }
+}
+
 void SetBpmSeqAction::LoadDerived(serial::Ptree pt) {
     pt.TryGetDouble("bpm", &_bpm);
 }

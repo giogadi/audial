@@ -307,6 +307,27 @@ struct RandomizeTextSeqAction : public SeqAction {
     virtual void ExecuteDerived(GameManager& g) override;
 };
 
+struct ChangeTextSeqAction : public SeqAction {
+    virtual SeqActionType Type() const override { return SeqActionType::ChangeText; }
+
+    struct Props {
+        EditorId enemy;
+        std::string text;
+    };
+    Props _p;
+
+    struct State {
+        ne::EntityId enemy;
+    };
+    State _s;
+
+    virtual void LoadDerived(serial::Ptree pt) override;
+    virtual void SaveDerived(serial::Ptree pt) const override;
+    virtual bool ImGui() override;
+    virtual void InitDerived(GameManager& g) override;
+    virtual void ExecuteDerived(GameManager& g) override;
+};
+
 struct SetBpmSeqAction : public SeqAction {
     virtual SeqActionType Type() const override { return SeqActionType::SetBpm; }
     double _bpm;

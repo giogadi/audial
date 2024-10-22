@@ -25,6 +25,7 @@
         "Respawn",
         "AddMotion",
         "RandomizeText",
+        "ChangeText",
         "SetBpm",
         "SetMissTrigger"
     ]

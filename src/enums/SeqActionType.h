@@ -50,6 +50,8 @@ enum class SeqActionType : int {
     
     RandomizeText,
     
+    ChangeText,
+    
     SetBpm,
     
     SetMissTrigger,
