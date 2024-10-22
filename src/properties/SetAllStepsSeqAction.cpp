@@ -20,6 +20,8 @@ void SetAllStepsSeqActionProps::Load(serial::Ptree pt) {
    
    pt.TryGetFloat("velocity", &_velocity);
    
+   pt.TryGetInt("trackIx", &_trackIx);
+   
 }
 
 void SetAllStepsSeqActionProps::Save(serial::Ptree pt) const {
@@ -32,6 +34,8 @@ void SetAllStepsSeqActionProps::Save(serial::Ptree pt) const {
     
     pt.PutFloat("velocity", _velocity);
     
+    pt.PutInt("trackIx", _trackIx);
+    
 }
 
 bool SetAllStepsSeqActionProps::ImGui() {
@@ -41,12 +45,14 @@ bool SetAllStepsSeqActionProps::ImGui() {
         
         bool thisChanged = imgui_util::InputEditorId("seqEntityEditorId", &_seqEntityEditorId);
         changed = changed || thisChanged;
+        
     }
     
     {
         
         bool thisChanged = ImGui::Checkbox("velOnly", &_velOnly);
         changed = changed || thisChanged;
+        
     }
     
     {
@@ -55,14 +61,29 @@ bool SetAllStepsSeqActionProps::ImGui() {
         
         options.removeOnSameLine = true;
         
+        if (ImGui::TreeNode("midiNotes")) {
+        
         bool thisChanged = imgui_util::InputVector(_midiNotes, options);
         changed = changed || thisChanged;
+        
+        ImGui::TreePop();
+        
+        }
+        
     }
     
     {
         
         bool thisChanged = ImGui::InputFloat("velocity", &_velocity);
         changed = changed || thisChanged;
+        
+    }
+    
+    {
+        
+        bool thisChanged = ImGui::InputInt("trackIx", &_trackIx);
+        changed = changed || thisChanged;
+        
     }
     
     return changed;

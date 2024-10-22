@@ -3,9 +3,9 @@
 
 #include "properties/MidiNoteAndName.h"
 
-#include "editor_id.h"
-
 #include <vector>
+
+#include "editor_id.h"
 
 
 #include "serial.h"
@@ -19,6 +19,8 @@ struct SetAllStepsSeqActionProps {
     std::vector<MidiNoteAndName> _midiNotes;
     
     float _velocity;
+    
+    int _trackIx = -1;
     
 
     void Load(serial::Ptree pt);

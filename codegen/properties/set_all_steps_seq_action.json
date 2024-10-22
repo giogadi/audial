@@ -17,6 +17,11 @@
         {
             "name": "velocity",
             "type": "float"
+        },
+        {
+            "name": "trackIx",
+            "type": "int",
+            "default": -1
         }
     ]
 }

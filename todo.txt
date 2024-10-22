@@ -37,5 +37,7 @@ TOOLS:
 - VST of my synth
 
 Optimizations/improvements/etc:
+- Allow Solo/Mute/Gain on seq tracks.
 - Use an arena when loading so we don't have all this allocations for GetChildren().
 - DELAY ON PCM PLAYBACK!!!!
+ 

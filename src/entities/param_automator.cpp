@@ -76,8 +76,7 @@ void ParamAutomatorEntity::Update(GameManager& g, float dt) {
         e.paramChangeTimeSecs = 0.0;
         g._audioContext->AddEvent(e);
     } else {
-        ne::Entity* seqBaseEntity = g._neEntityManager->GetEntity(_seqId);
-        if (seqBaseEntity->_id._type == ne::EntityType::StepSequencer) {
+        if (_seqId._type == ne::EntityType::StepSequencer) {
             StepSequencerEntity* seq = static_cast<StepSequencerEntity*>(g._neEntityManager->GetEntity(_seqId));
             if (seq == nullptr) {
                 printf("ParamAutomator (\"%s\"): Sequencer was destroyed!\n", _name.c_str());
@@ -95,7 +94,7 @@ void ParamAutomatorEntity::Update(GameManager& g, float dt) {
                     case StepSeqParamType::Count: assert(false);
                 }
             }
-        } else if (seqBaseEntity->_id._type == ne::EntityType::Sequencer) {
+        } else if (_seqId._type == ne::EntityType::Sequencer) {
             SequencerEntity* seq = static_cast<SequencerEntity*>(g._neEntityManager->GetEntity(_seqId));
             if (seq == nullptr) {
                 printf("ParamAutomator (\"%s\"): Sequencer was destroyed!\n", _name.c_str());

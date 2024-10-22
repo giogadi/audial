@@ -297,7 +297,7 @@ void SetAllStepsSeqAction::ExecuteDerived(GameManager& g) {
     StepSequencerEntity* seq = static_cast<StepSequencerEntity*>(g._neEntityManager->GetEntity(_seqId));
     if (seq) {
         if (_props._velOnly) {
-            seq->SetAllVelocitiesPermanent(_props._velocity);
+            seq->SetAllVelocitiesPermanent(_props._velocity, _props._trackIx);
         }
         else {
             StepSequencerEntity::SeqStep step;
@@ -870,6 +870,9 @@ void SetEntityActiveSeqAction::ExecuteDerived(GameManager& g) {
     else {
         for (ne::Entity* e : entities) {
             g._neEntityManager->TagForDeactivate(e->_id);
+            if (e->_name == "r-1_dink_seq") {
+                printf("HOWDY: %s\n", e->_name.c_str());
+            }
         }
     }
 }

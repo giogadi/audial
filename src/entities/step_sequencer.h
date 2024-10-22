@@ -87,7 +87,7 @@ struct StepSequencerEntity : ne::Entity {
     enum StepSaveType { Temporary, Permanent };
     void SetNextSeqStep(GameManager& g, SeqStep step, StepSaveType saveType, bool changeNote, bool changeVelocity);
     void SetNextSeqStepVelocity(GameManager& g, float v, StepSaveType saveType);
-    void SetAllVelocitiesPermanent(float newVelocity);
+    void SetAllVelocitiesPermanent(float newVelocity, int trackIx = -1);
     void SetAllStepsPermanent(SeqStep const& newStep);
     // TODO can we do this with a move instead of copying sequence?
     void SetSequencePermanent(std::vector<SeqStep> const& newSequence);

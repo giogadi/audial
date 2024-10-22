@@ -443,11 +443,15 @@ void StepSequencerEntity::SetNextSeqStepVelocity(GameManager& g, float v, StepSa
     EnqueueChange(change);
 }
 
-void StepSequencerEntity::SetAllVelocitiesPermanent(float newValue) {
+void StepSequencerEntity::SetAllVelocitiesPermanent(float newValue, int trackIx) {
     assert(_permanentSequence.size() == _tempSequence.size());
     for (int i = 0, n = _permanentSequence.size(); i < n; ++i) {
-        for (int jj = 0; jj < _permanentSequence[i]._notes.size(); ++jj) {
-            _tempSequence[i]._notes[jj]._v = _permanentSequence[i]._notes[jj]._v = newValue;
+        if (trackIx < 0 || trackIx >= SeqStep::kNumNotes) {
+            for (int jj = 0; jj < _permanentSequence[i]._notes.size(); ++jj) {
+                _tempSequence[i]._notes[jj]._v = _permanentSequence[i]._notes[jj]._v = newValue;
+            }
+        } else {
+            _tempSequence[i]._notes[trackIx]._v = _permanentSequence[i]._notes[trackIx]._v = newValue;
         }
     }
 }
