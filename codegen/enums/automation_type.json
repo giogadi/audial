@@ -4,6 +4,7 @@
     "enumItems": [
         "SynthPatch",
         "Bpm",
-        "StepSeqGain"
+        "StepSeqGain",
+        "StepSeqVelocities"
     ]
 }

@@ -16,7 +16,9 @@ std::unordered_map<std::string, AutomationType> const gStringToAutomationType = 
     
     { "Bpm", AutomationType::Bpm },
     
-    { "StepSeqGain", AutomationType::StepSeqGain }
+    { "StepSeqGain", AutomationType::StepSeqGain },
+    
+    { "StepSeqVelocities", AutomationType::StepSeqVelocities }
     
 };
 
@@ -28,7 +30,9 @@ char const* gAutomationTypeStrings[] = {
     
     "Bpm",
     
-    "StepSeqGain"
+    "StepSeqGain",
+    
+    "StepSeqVelocities"
     
 };
 

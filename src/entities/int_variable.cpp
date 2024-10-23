@@ -34,6 +34,13 @@ void IntVariableEntity::Automation::Save(serial::Ptree pt) const {
             serial::SaveInNewChildOf(pt, "step_seq", _stepSeqEditorId);
             break;
         }
+        case AutomationType::StepSeqVelocities: {
+            pt.PutFloat("start_step_seq_v", _startStepSeqV);
+            pt.PutFloat("end_step_seq_v", _endStepSeqV);
+            pt.PutInt("step_seq_track_ix", _stepSeqTrackIx);
+            serial::SaveInNewChildOf(pt, "step_seq", _stepSeqEditorId);
+            break;
+        }
         case AutomationType::Count: break;
     }
     
@@ -67,6 +74,13 @@ void IntVariableEntity::Automation::Load(serial::Ptree pt) {
             serial::LoadFromChildOf(pt, "step_seq", _stepSeqEditorId);
             break;
         }
+        case AutomationType::StepSeqVelocities: {
+            pt.TryGetFloat("start_step_seq_v", &_startStepSeqV);
+            pt.TryGetFloat("end_step_seq_v", &_endStepSeqV);
+            pt.TryGetInt("step_seq_track_ix", &_stepSeqTrackIx);
+            serial::LoadFromChildOf(pt, "step_seq", _stepSeqEditorId);
+            break;
+        }
         case AutomationType::Count: break;
     }
     
@@ -91,6 +105,13 @@ bool IntVariableEntity::Automation::ImGui() {
             imgui_util::InputEditorId("Step seq", &_stepSeqEditorId);
             ImGui::InputFloat("Start", &_startStepSeqGain);
             ImGui::InputFloat("End", &_endStepSeqGain);
+            break;
+        }
+        case AutomationType::StepSeqVelocities: {
+            imgui_util::InputEditorId("Step seq", &_stepSeqEditorId);
+            ImGui::InputInt("Track ix", &_stepSeqTrackIx);
+            ImGui::InputFloat("Start", &_startStepSeqV);
+            ImGui::InputFloat("End", &_endStepSeqV);
             break;
         }
         case AutomationType::Count: break;
@@ -239,6 +260,15 @@ void IntVariableEntity::AddToVariable(int amount) {
                 }               
                 break;
             }
+            case AutomationType::StepSeqVelocities: {
+                if (StepSequencerEntity* e = _g->_neEntityManager->GetEntityAs<StepSequencerEntity>(a._stepSeqId)) {
+                    float const blendFactor = math_util::Clamp(a._factor * GetFactor(), 0.f, 1.f);
+                    float newV = math_util::Lerp(a._startStepSeqV, a._endStepSeqV, blendFactor);
+                    printf("auto: %f %d\n", newV, a._stepSeqTrackIx);
+                    e->SetAllVelocitiesPermanent(newV, a._stepSeqTrackIx);
+                }
+                break;
+            }
             case AutomationType::Count: break;
         }
         
@@ -280,6 +310,12 @@ void IntVariableEntity::Reset() {
             case AutomationType::StepSeqGain: {
                 if (StepSequencerEntity* e = _g->_neEntityManager->GetEntityAs<StepSequencerEntity>(a._stepSeqId)) {
                     e->_gain = a._startStepSeqGain;
+                }
+                break;
+            }
+            case AutomationType::StepSeqVelocities: {
+                if (StepSequencerEntity* e = _g->_neEntityManager->GetEntityAs<StepSequencerEntity>(a._stepSeqId)) {
+                    e->SetAllVelocitiesPermanent(a._startStepSeqV, a._stepSeqTrackIx);
                 }
                 break;
             }

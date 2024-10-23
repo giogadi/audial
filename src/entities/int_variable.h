@@ -40,6 +40,10 @@ struct IntVariableEntity : public ne::Entity {
 
         float _startStepSeqGain = 0.0;
         float _endStepSeqGain = 0.0;
+
+        float _startStepSeqV = 0.f;
+        float _endStepSeqV = 0.f;
+        int _stepSeqTrackIx = 0;
         EditorId _stepSeqEditorId;
         ne::EntityId _stepSeqId;
         

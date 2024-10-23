@@ -10,6 +10,8 @@ enum class AutomationType : int {
     
     StepSeqGain,
     
+    StepSeqVelocities,
+    
     Count
 };
 extern char const* gAutomationTypeStrings[];
