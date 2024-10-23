@@ -27247,7 +27247,19 @@
                         </entity_editor_id>
                     </seq_action>
                 </actions>
-                <actions_on_exit/>
+                <actions_on_exit>
+                    <seq_action>
+                        <one_time>false</one_time>
+                        <action_type>SetEntityActive</action_type>
+                        <entities_tag>-1</entities_tag>
+                        <entity_editor_id>
+                            <id>564</id>
+                        </entity_editor_id>
+                        <active>false</active>
+                        <init_on_activate>true</init_on_activate>
+                        <init_if_already_active>false</init_if_already_active>
+                    </seq_action>
+                </actions_on_exit>
                 <trigger_volume_entities/>
             </FlowTrigger>
             <FlowWall>
@@ -27627,7 +27639,19 @@
                         <maxZ>0</maxZ>
                     </seq_action>
                 </actions>
-                <actions_on_exit/>
+                <actions_on_exit>
+                    <seq_action>
+                        <one_time>false</one_time>
+                        <action_type>SetEntityActive</action_type>
+                        <entities_tag>-1</entities_tag>
+                        <entity_editor_id>
+                            <id>568</id>
+                        </entity_editor_id>
+                        <active>false</active>
+                        <init_on_activate>true</init_on_activate>
+                        <init_if_already_active>false</init_if_already_active>
+                    </seq_action>
+                </actions_on_exit>
                 <trigger_volume_entities/>
             </FlowTrigger>
             <FlowWall>
@@ -28093,7 +28117,19 @@
                         </entity_editor_id>
                     </seq_action>
                 </actions>
-                <actions_on_exit/>
+                <actions_on_exit>
+                    <seq_action>
+                        <one_time>false</one_time>
+                        <action_type>SetEntityActive</action_type>
+                        <entities_tag>-1</entities_tag>
+                        <entity_editor_id>
+                            <id>577</id>
+                        </entity_editor_id>
+                        <active>false</active>
+                        <init_on_activate>true</init_on_activate>
+                        <init_if_already_active>false</init_if_already_active>
+                    </seq_action>
+                </actions_on_exit>
                 <trigger_volume_entities/>
             </FlowTrigger>
             <FlowWall>
@@ -28659,7 +28695,19 @@
                         </seqEditorId>
                     </seq_action>
                 </actions>
-                <actions_on_exit/>
+                <actions_on_exit>
+                    <seq_action>
+                        <one_time>false</one_time>
+                        <action_type>SetEntityActive</action_type>
+                        <entities_tag>-1</entities_tag>
+                        <entity_editor_id>
+                            <id>583</id>
+                        </entity_editor_id>
+                        <active>false</active>
+                        <init_on_activate>true</init_on_activate>
+                        <init_if_already_active>false</init_if_already_active>
+                    </seq_action>
+                </actions_on_exit>
                 <trigger_volume_entities/>
             </FlowTrigger>
             <FlowTrigger>
@@ -28997,7 +29045,19 @@
                         <maxZ>0</maxZ>
                     </seq_action>
                 </actions>
-                <actions_on_exit/>
+                <actions_on_exit>
+                    <seq_action>
+                        <one_time>false</one_time>
+                        <action_type>SetEntityActive</action_type>
+                        <entities_tag>-1</entities_tag>
+                        <entity_editor_id>
+                            <id>587</id>
+                        </entity_editor_id>
+                        <active>false</active>
+                        <init_on_activate>true</init_on_activate>
+                        <init_if_already_active>false</init_if_already_active>
+                    </seq_action>
+                </actions_on_exit>
                 <trigger_volume_entities/>
             </FlowTrigger>
             <FlowWall>
@@ -29426,7 +29486,7 @@
                         <relative>false</relative>
                         <startValue>0</startValue>
                         <endValue>1</endValue>
-                        <desiredAutomateTime>4</desiredAutomateTime>
+                        <desiredAutomateTime>1</desiredAutomateTime>
                         <synth>false</synth>
                         <synthParam>Gain</synthParam>
                         <stepSeqParam>Gain</stepSeqParam>
@@ -29920,7 +29980,19 @@
                         </entity_editor_id>
                     </seq_action>
                 </actions>
-                <actions_on_exit/>
+                <actions_on_exit>
+                    <seq_action>
+                        <one_time>false</one_time>
+                        <action_type>SetEntityActive</action_type>
+                        <entities_tag>-1</entities_tag>
+                        <entity_editor_id>
+                            <id>597</id>
+                        </entity_editor_id>
+                        <active>false</active>
+                        <init_on_activate>true</init_on_activate>
+                        <init_if_already_active>false</init_if_already_active>
+                    </seq_action>
+                </actions_on_exit>
                 <trigger_volume_entities/>
             </FlowTrigger>
             <FlowWall>
@@ -30366,7 +30438,19 @@
                         <reset>false</reset>
                     </seq_action>
                 </actions>
-                <actions_on_exit/>
+                <actions_on_exit>
+                    <seq_action>
+                        <one_time>false</one_time>
+                        <action_type>SetEntityActive</action_type>
+                        <entities_tag>-1</entities_tag>
+                        <entity_editor_id>
+                            <id>601</id>
+                        </entity_editor_id>
+                        <active>false</active>
+                        <init_on_activate>true</init_on_activate>
+                        <init_if_already_active>false</init_if_already_active>
+                    </seq_action>
+                </actions_on_exit>
                 <trigger_volume_entities/>
             </FlowTrigger>
             <Base>
@@ -30804,7 +30888,19 @@
                         <reset>false</reset>
                     </seq_action>
                 </actions>
-                <actions_on_exit/>
+                <actions_on_exit>
+                    <seq_action>
+                        <one_time>false</one_time>
+                        <action_type>SetEntityActive</action_type>
+                        <entities_tag>-1</entities_tag>
+                        <entity_editor_id>
+                            <id>606</id>
+                        </entity_editor_id>
+                        <active>false</active>
+                        <init_on_activate>true</init_on_activate>
+                        <init_if_already_active>false</init_if_already_active>
+                    </seq_action>
+                </actions_on_exit>
                 <trigger_volume_entities/>
             </FlowTrigger>
             <Base>
