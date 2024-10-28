@@ -31,6 +31,7 @@ BUGS:
 - Our controller support is SUPER BUSTED, DUDE!!!!! But that's a later problem.
 
 TOOLS:
+- Find a way to set lengths based on musical timings more easily.
 - Support SynthParams in BeatTimeEvents
 - Enable setting a new global beat time epoch
 - Save to file in a separate thread

@@ -2,8 +2,11 @@
 
 #include <cstdint>
 #include <istream>
+#include <unordered_map>
 
 #include "serial.h"
+
+typedef std::unordered_map<int64_t, int64_t> EditorIdMap;
 
 struct EditorId {
     int64_t _id = -1;
@@ -13,7 +16,7 @@ struct EditorId {
     bool operator==(EditorId const& rhs) const { return _id == rhs._id; }
     bool operator<=(EditorId const& rhs) const { return _id <= rhs._id; }
     inline void Save(serial::Ptree pt) const { pt.PutInt64("id", _id); }
-    inline void Load(serial::Ptree pt) { _id = pt.GetInt64("id"); }
+    void Load(serial::Ptree pt);
     bool SetFromString(std::string const& s);
     std::string ToString() const;
 };
@@ -21,3 +24,5 @@ struct EditorId {
 inline std::istream& operator>>(std::istream& in, EditorId& id) {
     return in >> id._id;
 }
+
+

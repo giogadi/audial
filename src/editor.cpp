@@ -20,6 +20,8 @@
 #include "geometry.h"
 #include "seq_action.h"
 
+extern EditorIdMap *gEditorIdMap;
+
 static float gScrollFactorForDebugCameraMove = 1.f;
 
 static std::vector<ne::EntityId> gControlGroups[10];
@@ -873,7 +875,10 @@ void Editor::DrawWindow() {
     // Duplicate entities
     if (ImGui::Button("Duplicate Entity")) {
         std::vector<ne::EntityId> newIds;
-        newIds.reserve(_selectedEntityIds.size());
+        newIds.reserve(_selectedEntityIds.size()); 
+        EditorIdMap editorIdMap;
+
+        std::vector<std::pair<ne::EntityId, ne::EntityId>> prevNewPairs;
         for (ne::EntityId selectedId : _selectedEntityIds) {
             bool selectedEntityActive = true;
             if (!_g->_neEntityManager->GetActiveOrInactiveEntity(selectedId, &selectedEntityActive)) {
@@ -882,7 +887,6 @@ void Editor::DrawWindow() {
                 // manager. pointers are NOT STABLE after addition.
                 continue;
             }
-
             ne::Entity* newEntity = _g->_neEntityManager->AddEntity(selectedId._type, selectedEntityActive);
             assert(newEntity != nullptr);
 
@@ -890,6 +894,17 @@ void Editor::DrawWindow() {
             ne::Entity* selectedEntity = _g->_neEntityManager->GetActiveOrInactiveEntity(selectedId);
             assert(selectedEntity != nullptr);
 
+            editorIdMap.emplace(selectedEntity->_editorId._id, newEntity->_editorId._id);
+
+            prevNewPairs.emplace_back(selectedId, newEntity->_id);
+        }
+
+        gEditorIdMap = &editorIdMap;
+        for (auto prevNewPair : prevNewPairs) {
+            ne::EntityId prevId = prevNewPair.first;
+            ne::EntityId newId = prevNewPair.second;
+            ne::Entity* selectedEntity = _g->_neEntityManager->GetActiveOrInactiveEntity(prevId);
+            ne::Entity* newEntity = _g->_neEntityManager->GetActiveOrInactiveEntity(newId);
             {
                 serial::Ptree pt = serial::Ptree::MakeNew();
                 selectedEntity->Save(pt);
@@ -931,6 +946,7 @@ void Editor::DrawWindow() {
 
             newIds.push_back(newEntity->_id);
         }
+        gEditorIdMap = nullptr;
         _selectedEntityIds.clear();
         for (ne::EntityId const& id : newIds) {
             _selectedEntityIds.insert(id);
