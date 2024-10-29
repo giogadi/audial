@@ -119,16 +119,19 @@ inline bool LoadFromFile(char const* filename, T& v) {
         printf("Failed to load pt from file \"%s\"\n", filename);
         return false;
     }
+   
+    serial::Ptree rootPt = pt.GetChild("root");
+
     // Assume a single root node. Inside that is what we load from.
     int numChildren = 0;
-    serial::NameTreePair* children = pt.GetChildren(&numChildren);
-    if (numChildren != 1) {
-        printf("serial::LoadFromFile: expected exactly one root, but found %d\n", numChildren);
+    serial::NameTreePair* children = rootPt.GetChildren(&numChildren);
+    if (numChildren != 2) {
+        printf("serial::LoadFromFile: expected exactly two nodes, but found %d\n", numChildren);
         delete[] children;
         pt.DeleteData();
         return false;
     }
-    v.Load(children->_pt);
+    v.Load(children[1]._pt);
     delete[] children;
     pt.DeleteData();
     return true;

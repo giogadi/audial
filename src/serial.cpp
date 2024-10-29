@@ -2,16 +2,18 @@
 
 #include <fstream>
 
-#include "boost/property_tree/ptree.hpp"
-#include "boost/property_tree/xml_parser.hpp"
+#include "tinyxml2/tinyxml2.h"
 
-using boost::property_tree::ptree;
+using namespace tinyxml2;
 
 namespace serial {
 
 namespace {
-    ptree* GetInternal(void* p) {
-        return (ptree*)p;
+    XMLElement* GetInternal(void* p) {
+        return (XMLElement*)p;
+    }
+    XMLDocument* GetDoc(void* p) {
+        return (XMLDocument*)p;
     }
 
     int const kBinaryVersion = 13;
@@ -19,113 +21,110 @@ namespace {
 
 Ptree Ptree::AddChild(char const* name) {
     assert(IsValid());
-    ptree& internalChildPt = GetInternal(_internal)->add_child(name, ptree());
+    XMLElement *internalChildPt = GetInternal(_internal)->InsertNewChildElement(name);
     Ptree childPt;
-    childPt._internal = (void*)(&internalChildPt);
+    childPt._internal = (void*)(internalChildPt);
     childPt._version = _version;
     return childPt;
 }
 
 Ptree Ptree::GetChild(char const* name) {
     assert(IsValid());
-    ptree& internalChildPt = GetInternal(_internal)->get_child(name);
+    XMLElement *internalChildPt = GetInternal(_internal)->FirstChildElement(name);
     Ptree childPt;
-    childPt._internal = (void*)(&internalChildPt);
+    childPt._internal = (void*)(internalChildPt);
     childPt._version = _version;
     return childPt;
 }
 
 Ptree Ptree::TryGetChild(char const* name) {
-    assert(IsValid());
-    boost::optional<ptree&> maybeChildPtInternal = GetInternal(_internal)->get_child_optional(name);
-    Ptree childPt;
-    if (maybeChildPtInternal.has_value()) {
-        childPt._internal = (void*)(&maybeChildPtInternal.value());
-        childPt._version = _version;
-    }
-    return childPt;
+    return GetChild(name);
 }
 
 void Ptree::PutString(char const* name, char const* v) {
     assert(IsValid());
-    GetInternal(_internal)->add<std::string>(name, v);
+    GetInternal(_internal)->InsertNewChildElement(name)->SetText(v);
 }
 std::string Ptree::GetString(char const* name) {
-    return GetInternal(_internal)->get<std::string>(name);
+    return std::string(GetInternal(_internal)->FirstChildElement(name)->GetText());
 }
 bool Ptree::TryGetString(char const* name, std::string* v) {
     assert(IsValid());
-    auto const maybe_string = GetInternal(_internal)->get_optional<std::string>(name);
-    if (maybe_string.has_value()) {
-        *v = maybe_string.value();
+    XMLElement *e = GetInternal(_internal)->FirstChildElement(name);
+    if (e) {
+        if (e->GetText()) {
+            *v = std::string(e->GetText());
+        } else {
+            *v = std::string();
+        }
         return true;
     }
-    return false;
+    return false; 
 }
 
 void Ptree::PutBool(char const* name, bool b) {
     assert(IsValid());
-    GetInternal(_internal)->add(name, b);
+    GetInternal(_internal)->InsertNewChildElement(name)->SetText(b);
 }
 bool Ptree::GetBool(char const* name) {
     assert(IsValid());
-    return GetInternal(_internal)->get<bool>(name);
+    return GetInternal(_internal)->FirstChildElement(name)->BoolText();
 }
 bool Ptree::TryGetBool(char const* name, bool* v) {
     assert(IsValid());
-    auto const maybe_val = GetInternal(_internal)->get_optional<bool>(name);
-    if (maybe_val.has_value()) {
-        *v = maybe_val.value();
+    XMLElement *e = GetInternal(_internal)->FirstChildElement(name);
+    if (e) {
+        *v = e->BoolText();
         return true;
     }
-    return false;
+    return false; 
 }
 
 void Ptree::PutChar(char const* name, char v) {
     assert(IsValid());
-    GetInternal(_internal)->add(name, v);
+    char buf[2] = { v, '\0' };
+    GetInternal(_internal)->InsertNewChildElement(name)->SetText(buf);
 }
 bool Ptree::TryGetChar(char const* name, char* v) {
     assert(IsValid());
-    auto const maybe_val = GetInternal(_internal)->get_optional<char>(name);
-    if (maybe_val.has_value()) {
-        *v = maybe_val.value();
+    XMLElement *e = GetInternal(_internal)->FirstChildElement(name);
+    if (e) {
+        char const* text = e->GetText();
+        *v = text[0];
         return true;
-    }
+    } 
     return false;
 }
 
 void Ptree::PutInt(char const* name, int v) {
     assert(IsValid());
-    GetInternal(_internal)->add(name, v);
+    GetInternal(_internal)->InsertNewChildElement(name)->SetText(v);;
 }
 int Ptree::GetInt(char const* name) {
     assert(IsValid());
-    return GetInternal(_internal)->get<int>(name);
+    return GetInternal(_internal)->FirstChildElement(name)->IntText();
 }
 bool Ptree::TryGetInt(char const* name, int* v) {
     assert(IsValid());
-    auto const maybe_val = GetInternal(_internal)->get_optional<int>(name);
-    if (maybe_val.has_value()) {
-        *v = maybe_val.value();
+    if (XMLElement *e = GetInternal(_internal)->FirstChildElement(name)) {
+        *v = e->IntText();
         return true;
     }
-    return false;
+    return false; 
 }
 
 void Ptree::PutInt64(char const* name, int64_t v) {
     assert(IsValid());
-    GetInternal(_internal)->add(name, v);
+    GetInternal(_internal)->InsertNewChildElement(name)->SetText(v);
 }
 int64_t Ptree::GetInt64(char const* name) {
     assert(IsValid());
-    return GetInternal(_internal)->get<int64_t>(name);
+    return GetInternal(_internal)->FirstChildElement(name)->Int64Text();
 }
 bool Ptree::TryGetInt64(char const* name, int64_t* v) {
     assert(IsValid());
-    auto const maybe_val = GetInternal(_internal)->get_optional<int64_t>(name);
-    if (maybe_val.has_value()) {
-        *v = maybe_val.value();
+    if (XMLElement *e = GetInternal(_internal)->FirstChildElement(name)) {
+        *v = e->Int64Text();
         return true;
     }
     return false;
@@ -133,113 +132,113 @@ bool Ptree::TryGetInt64(char const* name, int64_t* v) {
 
 void Ptree::PutFloat(char const* name, float v) {
     assert(IsValid());
-    GetInternal(_internal)->add(name, v);
+    GetInternal(_internal)->InsertNewChildElement(name)->SetText(v);
 }
 float Ptree::GetFloat(char const* name) {
     assert(IsValid());
-    return GetInternal(_internal)->get<float>(name);
+    return GetInternal(_internal)->FirstChildElement(name)->FloatText();
 }
 bool Ptree::TryGetFloat(char const* name, float* v) {
     assert(IsValid());
-    auto const maybe_val = GetInternal(_internal)->get_optional<float>(name);
-    if (maybe_val.has_value()) {
-        *v = maybe_val.value();
+    if (XMLElement *e = GetInternal(_internal)->FirstChildElement(name)) {
+        *v = e->FloatText();
         return true;
     }
-    return false;
+    return false; 
 }
 
 void Ptree::PutDouble(char const* name, double v) {
     assert(IsValid());
-    GetInternal(_internal)->add(name, v);
+    GetInternal(_internal)->InsertNewChildElement(name)->SetText(v);
 }
 double Ptree::GetDouble(char const* name) {
     assert(IsValid());
-    return GetInternal(_internal)->get<double>(name);
+    return GetInternal(_internal)->FirstChildElement(name)->DoubleText();
 }
 bool Ptree::TryGetDouble(char const* name, double* v) {
     assert(IsValid());
-    auto const maybe_val = GetInternal(_internal)->get_optional<double>(name);
-    if (maybe_val.has_value()) {
-        *v = maybe_val.value();
+    if (XMLElement *e = GetInternal(_internal)->FirstChildElement(name)) {
+        *v = e->DoubleText();
         return true;
     }
-    return false;
+    return false; 
 }
 
 void Ptree::PutStringValue(char const* value) {
     assert(IsValid());
-    GetInternal(_internal)->put_value<std::string>(value);
+    GetInternal(_internal)->SetText(value);
 }
 
 void Ptree::PutIntValue(int value) {
     assert(IsValid());
-    GetInternal(_internal)->put_value<int>(value);
+    GetInternal(_internal)->SetText(value);
 }
 
 void Ptree::PutInt64Value(int64_t value) {
     assert(IsValid());
-    GetInternal(_internal)->put_value<int64_t>(value);
+    GetInternal(_internal)->SetText(value);
 }
 
 void Ptree::PutBoolValue(bool value) {
     assert(IsValid());
-    GetInternal(_internal)->put_value<bool>(value);
+    GetInternal(_internal)->SetText(value);
 }
 
 void Ptree::PutFloatValue(float value) {
     assert(IsValid());
-    GetInternal(_internal)->put_value<float>(value);
+    GetInternal(_internal)->SetText(value);
 }
 
 void Ptree::PutDoubleValue(double value) {
     assert(IsValid());
-    GetInternal(_internal)->put_value<double>(value);
+    GetInternal(_internal)->SetText(value);
 }
 
 std::string Ptree::GetStringValue() {
     assert(IsValid());
-    return GetInternal(_internal)->get_value<std::string>();
+    return GetInternal(_internal)->GetText();
 }
 
 int Ptree::GetIntValue() {
     assert(IsValid());
-    return GetInternal(_internal)->get_value<int>();
+    return GetInternal(_internal)->IntText();
 }
 
 int64_t Ptree::GetInt64Value() {
     assert(IsValid());
-    return GetInternal(_internal)->get_value<int64_t>();
+    return GetInternal(_internal)->Int64Text();
 }
 
 bool Ptree::GetBoolValue() {
     assert(IsValid());
-    return GetInternal(_internal)->get_value<bool>();
+    return GetInternal(_internal)->BoolText();
 }
 
 float Ptree::GetFloatValue() {
     assert(IsValid());
-    return GetInternal(_internal)->get_value<float>();
+    return GetInternal(_internal)->FloatText();
 }
 
 double Ptree::GetDoubleValue() {
     assert(IsValid());
-    return GetInternal(_internal)->get_value<double>();
+    return GetInternal(_internal)->DoubleText();
 }
 
 NameTreePair* Ptree::GetChildren(int* numChildren) {
     assert(IsValid());
-    NameTreePair* children = new NameTreePair[GetInternal(_internal)->size()];
+    *numChildren = GetInternal(_internal)->ChildElementCount();
+    NameTreePair* children = new NameTreePair[*numChildren];
     int index = 0;
-    ptree* internal = GetInternal(_internal);
-    for (auto& item : *internal) {
-        NameTreePair& c = children[index];
-        c._name = item.first.c_str();
-        c._pt._internal = (void*)(&item.second);
+    XMLElement *child = GetInternal(_internal)->FirstChildElement();
+    while (child != nullptr) {
+        NameTreePair &c = children[index];
+        c._name = child->Name();
+        c._pt._internal = (void*)(child);
         c._pt._version = _version;
+        child = child->NextSiblingElement();
         ++index;
     }
-    *numChildren = index;
+    assert(index == *numChildren);
     return children;
 }
 
@@ -256,59 +255,31 @@ Ptree& Ptree::operator=(Ptree const& other) {
 
 Ptree Ptree::MakeNew() {
     Ptree pt;
-    pt._internal = (void*)(new ptree);
+    pt._internal = (void*)(new XMLDocument);
     pt._version = kBinaryVersion;
     return pt;
 }
 
 void Ptree::DeleteData() {
-    delete GetInternal(_internal);
+    delete GetDoc(_internal);
     _internal = nullptr;
 }
 
 bool Ptree::WriteToFile(char const* filename) {
-    assert(_internal != nullptr);
-    Ptree versionedPt = MakeNew();
-    Ptree rootPt = versionedPt.AddChild("root");
-    rootPt.PutInt("version", kBinaryVersion);
-    boost::property_tree::ptree* rootInternal = GetInternal(rootPt._internal);
-    // Get single root of content tree
-    auto& contentRoot = GetInternal(_internal)->front();
-    rootInternal->push_back(contentRoot);
-    std::ofstream outFile(filename);
-    if (!outFile.is_open()) {
-        printf("Couldn't open file %s for saving. Not saving.\n", filename);
-        return false;
-    }
-    boost::property_tree::xml_parser::xml_writer_settings<std::string> settings(' ', 4);
-    boost::property_tree::write_xml(outFile, *GetInternal(versionedPt._internal), settings);
-    versionedPt.DeleteData();
+    XMLDocument versionedDoc;
+    versionedDoc.InsertEndChild(versionedDoc.NewElement("root"));
+    versionedDoc.RootElement()->InsertNewChildElement("version")->SetText(_version);
+    XMLNode *treeCopy = GetDoc(_internal)->RootElement()->DeepClone(&versionedDoc);
+    versionedDoc.RootElement()->InsertEndChild(treeCopy);
+
+    versionedDoc.SaveFile(filename);
     return true;
 }
 
 bool Ptree::LoadFromFile(char const* filename) {
     assert(_internal != nullptr);
-    std::ifstream inFile(filename);
-    if (!inFile.is_open()) {
-        printf("Couldn't open file %s for loading.\n", filename);
-        return false;
-    }
-    GetInternal(_internal)->clear();
-    _version = 0;
-    boost::property_tree::ptree versionedInternal;
-    boost::property_tree::read_xml(inFile, versionedInternal);
-    try {
-        boost::property_tree::ptree& rootInternal = versionedInternal.get_child("root");
-        boost::property_tree::ptree::const_iterator iter = rootInternal.begin();        
-        if (iter->first == "version") {
-            _version = iter->second.get_value<int>();
-            ++iter;
-        }
-        GetInternal(_internal)->push_back(*iter);
-    } catch (std::exception& e) {
-        *GetInternal(_internal) = versionedInternal;
-    }
-    
+    GetDoc(_internal)->LoadFile(filename);
+    _version = GetDoc(_internal)->FirstChildElement()->FirstChildElement("version")->IntText();
     return true;
 }
 

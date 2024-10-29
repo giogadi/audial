@@ -510,7 +510,7 @@ int main(int argc, char** argv) {
             // If this is a relatively new script, just enable gamma correction by default.
             gammaCorrection = true;
         }
-        pt.TryGetBool("script.gamma_correction", &gammaCorrection);
+        pt.GetChild("root").GetChild("script").TryGetBool("gamma_correction", &gammaCorrection);
         sceneManager.SetEnableGammaCorrection(gammaCorrection);
         if (!sceneManager.Init(gGameManager)) {
             std::cout << "scene failed to init. exiting" << std::endl;
@@ -520,8 +520,7 @@ int main(int argc, char** argv) {
 
         neEntityManager.Init();
 
-
-        double bpm = pt.GetDouble("script.bpm");
+        double bpm = pt.GetChild("root").GetChild("script").GetDouble("bpm");
         beatClock.Init(gGameManager, bpm, audioContext._sampleRate);
         beatClock.Update(gGameManager);        
 
@@ -529,7 +528,7 @@ int main(int argc, char** argv) {
             // New entity loading. Manually add them in this order to the editor to keep ordering consistent.
             // TODO: make this less shit
             editor._saveFilename = *cmdLineInputs._scriptFilename;
-            serial::Ptree entitiesPt = pt.GetChild("script.new_entities");
+            serial::Ptree entitiesPt = pt.GetChild("root").GetChild("script").GetChild("new_entities");
             int numEntities = 0;
             serial::NameTreePair* children = entitiesPt.GetChildren(&numEntities);
             int64_t nextEditorId = 0;
@@ -565,7 +564,7 @@ int main(int argc, char** argv) {
         {
             // Editor config loading
             editor._g = &gGameManager;
-            serial::Ptree scriptPt = pt.GetChild("script");
+            serial::Ptree scriptPt = pt.GetChild("root").GetChild("script");
             editor.Load(scriptPt);
         }
 
