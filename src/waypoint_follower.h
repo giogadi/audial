@@ -35,7 +35,6 @@ struct WaypointFollower {
         double _quantizeBufferTime = 0.0;
         // FollowEntity mode
         EditorId _followEditorId;
-        std::string _followEntityName;
         void Save(serial::Ptree pt) const;
         void Load(serial::Ptree pt);
         bool ImGui();

@@ -75,7 +75,6 @@ void WaypointFollower::Props::Save(serial::Ptree pt) const {
     pt.PutDouble("quantize_buffer", _quantizeBufferTime);
     serial::SaveVectorInChildNode(pt, "waypoints", "waypoint", _waypoints);
 
-    pt.PutString("follow_entity_name", _followEntityName.c_str());
     serial::SaveInNewChildOf(pt, "follow_entity_editor_id", _followEditorId);    
 }
 
@@ -119,7 +118,6 @@ void WaypointFollower::Props::Load(serial::Ptree pt) {
         }
     }
 
-    pt.TryGetString("follow_entity_name", &_followEntityName);
     serial::LoadFromChildOf(pt, "follow_entity_editor_id", _followEditorId);
 }
 

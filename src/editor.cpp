@@ -878,7 +878,12 @@ void Editor::DrawWindow() {
         newIds.reserve(_selectedEntityIds.size()); 
         EditorIdMap editorIdMap;
 
-        std::vector<std::pair<ne::EntityId, ne::EntityId>> prevNewPairs;
+        struct Duplicate {
+            ne::EntityId src;
+            ne::EntityId dst;
+            EditorId dstEditorId;
+        };
+        std::vector<Duplicate> prevNewPairs;
         for (ne::EntityId selectedId : _selectedEntityIds) {
             bool selectedEntityActive = true;
             if (!_g->_neEntityManager->GetActiveOrInactiveEntity(selectedId, &selectedEntityActive)) {
@@ -894,15 +899,18 @@ void Editor::DrawWindow() {
             ne::Entity* selectedEntity = _g->_neEntityManager->GetActiveOrInactiveEntity(selectedId);
             assert(selectedEntity != nullptr);
 
-            editorIdMap.emplace(selectedEntity->_editorId._id, newEntity->_editorId._id);
+            Duplicate& dup = prevNewPairs.emplace_back();
+            dup.src = selectedId;
+            dup.dst = newEntity->_id;
+            dup.dstEditorId = EditorId(_nextEditorId++);
 
-            prevNewPairs.emplace_back(selectedId, newEntity->_id);
+            editorIdMap.emplace(selectedEntity->_editorId._id, dup.dstEditorId._id);
         }
 
         gEditorIdMap = &editorIdMap;
-        for (auto prevNewPair : prevNewPairs) {
-            ne::EntityId prevId = prevNewPair.first;
-            ne::EntityId newId = prevNewPair.second;
+        for (auto &prevNewPair : prevNewPairs) {
+            ne::EntityId prevId = prevNewPair.src;
+            ne::EntityId newId = prevNewPair.dst;
             ne::Entity* selectedEntity = _g->_neEntityManager->GetActiveOrInactiveEntity(prevId);
             ne::Entity* newEntity = _g->_neEntityManager->GetActiveOrInactiveEntity(newId);
             {
@@ -912,7 +920,7 @@ void Editor::DrawWindow() {
                 pt.DeleteData();
             }
 
-            newEntity->_editorId._id = _nextEditorId++;
+            newEntity->_editorId = prevNewPair.dstEditorId;
 
             // Pick new name for duplicate
             {
