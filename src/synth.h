@@ -151,7 +151,7 @@ void NoteOff(StateData& state, int midiNote, int noteOffId = 0);
 void AllNotesOff(StateData& state);
 
 void Process(
-    StateData* state, boost::circular_buffer<audio::PendingEvent> const& pendingEvents,
+    StateData* state, audio::PendingEvent *eventsThisFrame, int eventsThisFrameCount,
     float* outputBuffer, int numChannels, int framesPerBuffer,
     int sampleRate, int64_t currentBufferCounter);
 }

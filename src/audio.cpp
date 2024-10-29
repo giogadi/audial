@@ -30,6 +30,88 @@ void OnPortAudioError(PaError const& err) {
     std::cout << "Error message: " << Pa_GetErrorText(err) << std::endl;
 }
 
+bool HeapLess(HeapEntry const &lhs, HeapEntry const &rhs) {
+    if (lhs.key == rhs.key) {
+        return lhs.counter < rhs.counter;
+    }
+    return lhs.key < rhs.key;
+}
+
+int HeapParent(int ix) {
+    return (ix - 1) / 2;
+}
+
+int HeapLeftChild(int ix) {
+    return 2*ix + 1;
+}
+
+void HeapInsert(PendingEventHeap *heap, int key, PendingEvent const& event) {
+    if (heap->size >= heap->maxSize) {
+        return;
+    }
+    int currentIx = heap->size;
+    ++(heap->size);
+    heap->entries[currentIx].e = event;
+    heap->entries[currentIx].key = key;
+    heap->entries[currentIx].counter = heap->counter++;
+
+    while (currentIx > 0) {
+        int parentIx = HeapParent(currentIx);
+        HeapEntry& parent = heap->entries[parentIx];
+        if (HeapLess(heap->entries[currentIx], parent)) {
+            HeapEntry e = heap->entries[currentIx];
+            heap->entries[currentIx] = heap->entries[parentIx];
+            heap->entries[parentIx] = e;
+            currentIx = parentIx;
+        } else {
+            break;
+        }
+    }    
+}
+
+PendingEvent HeapPop(PendingEventHeap *heap) {
+    PendingEvent output;
+    if (heap->size <= 0) {
+        printf("AUDIO ERROR: tried to pop off empty heap!\n");
+        return output;
+    }
+
+    output = heap->entries[0].e;
+    heap->entries[0] = heap->entries[heap->size - 1];
+    --(heap->size);
+
+    int currentIx = 0;
+    int leftChildIx = 1;
+    while (leftChildIx < heap->size) {
+        int minChildIx = leftChildIx;
+        if (leftChildIx + 1 < heap->size) {
+            int rightChildIx = leftChildIx + 1;
+            if (HeapLess(heap->entries[rightChildIx], heap->entries[leftChildIx])) {
+                minChildIx = rightChildIx;
+            }            
+        }
+        if (HeapLess(heap->entries[minChildIx], heap->entries[currentIx])) {
+            HeapEntry e = heap->entries[currentIx];
+            heap->entries[currentIx] = heap->entries[minChildIx];
+            heap->entries[minChildIx] = e;            
+            currentIx = minChildIx;
+            leftChildIx = HeapLeftChild(minChildIx);
+        } else {
+            break;
+        }
+    }
+
+    return output;
+} 
+
+PendingEvent *HeapPeek(PendingEventHeap *heap) {
+    if (heap->size <= 0) {
+        printf("AUDIO ERROR: tried to peek empty heap!\n");
+        return nullptr;
+    }
+    return &heap->entries[0].e;
+}
+
 } // namespace
 
 void InitStateData(
@@ -47,7 +129,11 @@ void InitStateData(
 
     state.events = eventQueue;
 
-    state.pendingEvents.set_capacity(1024);
+    int constexpr kMaxSize = 1024;
+    delete[] state.pendingEvents.entries;
+    state.pendingEvents = PendingEventHeap();
+    state.pendingEvents.entries = new HeapEntry[kMaxSize];
+    state.pendingEvents.maxSize = kMaxSize;
 
     state._bufferFrameCount = FRAMES_PER_BUFFER;
     state._recentBuffer = new float[FRAMES_PER_BUFFER];
@@ -58,6 +144,8 @@ void DestroyStateData(StateData& state) {
     }
 
     delete[] state._recentBuffer;
+    delete[] state.pendingEvents.entries;
+    state.pendingEvents = PendingEventHeap();
 }
 
 /*
@@ -197,9 +285,9 @@ PaError ShutDown(Context& context) {
     return paNoError;
 }
 
-void ProcessEventQueue(EventQueue* eventQueue, int64_t currentBufferCounter, double sampleRate, int bufferSize, boost::circular_buffer<PendingEvent>* pendingEvents) {
+void ProcessEventQueue(EventQueue* eventQueue, int64_t currentBufferCounter, double sampleRate, int bufferSize, PendingEventHeap* pendingEvents) {
     double const secsToBuffers = sampleRate / static_cast<double>(bufferSize);
-    while (!pendingEvents->full()) {
+    while (pendingEvents->size < pendingEvents->maxSize) {
         Event *e = eventQueue->front();
         if (e == nullptr) {
             break;
@@ -208,33 +296,11 @@ void ProcessEventQueue(EventQueue* eventQueue, int64_t currentBufferCounter, dou
         p_e._e = *e;
         int64_t delayInBuffers = static_cast<int64_t>(e->delaySecs * secsToBuffers);
         p_e._runBufferCounter = currentBufferCounter + delayInBuffers;
-        pendingEvents->push_back(p_e);
+        HeapInsert(pendingEvents, p_e._runBufferCounter, p_e);
         eventQueue->pop();
     }
-    if (pendingEvents->full()) {
+    if (pendingEvents->size >= pendingEvents->maxSize) {
         std::cout << "WARNING: WE FILLED THE PENDING EVENT LIST" << std::endl;
-    }
-
-    std::stable_sort(pendingEvents->begin(), pendingEvents->end(),
-        [](audio::PendingEvent const& a, audio::PendingEvent const& b) {
-            return a._runBufferCounter < b._runBufferCounter;
-        });
-}
-
-void PopEventsFromThisFrame(
-    boost::circular_buffer<PendingEvent>* pendingEvents, int64_t currentBufferCounter) {
-    int lastProcessedEventIx = -1;
-    for (int pendingEventIx = 0, n = pendingEvents->size(); pendingEventIx < n; ++pendingEventIx) {
-        PendingEvent const& p_e = (*pendingEvents)[pendingEventIx];
-        if (p_e._runBufferCounter <= currentBufferCounter) {
-            lastProcessedEventIx = pendingEventIx;
-        } else {
-            break;
-        }
-    }
-
-    if (lastProcessedEventIx >= 0) {
-        pendingEvents->erase_begin(lastProcessedEventIx + 1);
     }
 }
 
@@ -304,21 +370,29 @@ int PortAudioCallback(
     // Figure out which events apply to this invocation of the callback, and which effects should handle them.
     ProcessEventQueue(state->events, state->_bufferCounter, state->sampleRate, samplesPerFrame, &state->pendingEvents);
 
+    int constexpr kMaxSize = 1024;
+    PendingEvent eventsThisFrame[kMaxSize]; // TODO UGH
+    int eventsThisFrameCount = 0;
+    while (state->pendingEvents.size > 0) {
+        PendingEvent e = *HeapPeek(&state->pendingEvents);
+        if (state->_bufferCounter < e._runBufferCounter) {
+            break;
+        }
+        if (eventsThisFrameCount >= kMaxSize) {
+            printf("AUDIO PROBLEM: EventsThisFrame not big enough!\n");
+            break;
+        }
+        eventsThisFrame[eventsThisFrameCount++] = HeapPop(&state->pendingEvents);
+    }
+
     float* outputBuffer = (float*) outputBufferUntyped;
 
     // PCM playback first
     int currentEventIx = 0;
     for (int i = 0; i < samplesPerFrame; ++i) {
         // Handle events
-        while (true) {
-            if (currentEventIx >= state->pendingEvents.size()) {
-                break;
-            }
-            PendingEvent const& p_e = state->pendingEvents[currentEventIx];
-            if (state->_bufferCounter < p_e._runBufferCounter) {
-                break;
-            }
-            Event const& e = p_e._e;
+        for (int eventIx = 0; eventIx < eventsThisFrameCount; ++eventIx) {
+            Event const& e = eventsThisFrame[eventIx]._e; 
             switch (e.type) {
                 case EventType::PlayPcm: {
                     if (e.pcmSoundIx >= state->soundBank->_sounds.size() || e.pcmSoundIx < 0) {
@@ -428,7 +502,7 @@ int PortAudioCallback(
 
     for (synth::StateData& s : state->synths) {
         synth::Process(
-            &s, state->pendingEvents, outputBuffer,
+            &s, eventsThisFrame, eventsThisFrameCount, outputBuffer,
             NUM_OUTPUT_CHANNELS, samplesPerFrame, state->sampleRate, state->_bufferCounter);
     }
 
@@ -446,10 +520,7 @@ int PortAudioCallback(
         state->_recentBufferMutex.unlock();
     }
 #endif
-
-    // Clear out events from this frame.
-    PopEventsFromThisFrame(&(state->pendingEvents), state->_bufferCounter);
-
+ 
     high_resolution_clock::time_point t2 = high_resolution_clock::now();
 
     const double kSecsPerCallback = static_cast<double>(samplesPerFrame) / state->sampleRate;

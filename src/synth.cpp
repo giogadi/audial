@@ -887,7 +887,7 @@ void OnParamChange(StateData& state, audio::SynthParamType paramType, float newV
     }
 }
 
-void Process(StateData* state, boost::circular_buffer<audio::PendingEvent> const& pendingEvents,
+void Process(StateData* state, audio::PendingEvent *eventsThisFrame, int eventsThisFrameCount,
     float* outputBuffer, int const numChannels, int const samplesPerFrame,
     int const sampleRate, int64_t currentBufferCounter) {
     
@@ -895,22 +895,12 @@ void Process(StateData* state, boost::circular_buffer<audio::PendingEvent> const
 
     // Handle all the events that will happen in this buffer frame.
     int64_t frameStartTickTime = currentBufferCounter * samplesPerFrame;
-    int currentEventIx = 0;
-    while (true) {
-        if (currentEventIx >= pendingEvents.size()) {
-            break;
-        }
-        audio::PendingEvent const& p_e = pendingEvents[currentEventIx];
-        if (currentBufferCounter < p_e._runBufferCounter) {
-            break;
-        }
-        audio::Event const& e = p_e._e;
+    for (int eventIx = 0; eventIx < eventsThisFrameCount; ++eventIx) {
+        audio::Event const& e = eventsThisFrame[eventIx]._e; 
         if (e.channel != state->channel) {
             // Not meant for this channel. Skip this message.
-            ++currentEventIx;
             continue;
         }
-        ++currentEventIx;
         switch (e.type) {
             case audio::EventType::NoteOn: {
                 NoteOn(*state, e.midiNote, e.velocity, e.noteOnId, e.primePortaMidiNote);

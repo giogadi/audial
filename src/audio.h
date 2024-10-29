@@ -5,7 +5,6 @@
 #include <mutex>
 
 #include <portaudio.h>
-#include "boost/circular_buffer.hpp"
 
 #include "audio_util.h"
 #include "synth.h"
@@ -24,6 +23,19 @@ struct PcmVoice {
     bool _loop = false;
 };
 
+struct HeapEntry {
+    PendingEvent e;
+    int key;
+    int counter;
+};
+
+struct PendingEventHeap {
+    HeapEntry *entries = nullptr;
+    int size = 0;
+    int counter = 0;
+    int maxSize = 0;
+};
+
 struct StateData {
     int sampleRate = -1;
 
@@ -33,7 +45,7 @@ struct StateData {
     std::array<PcmVoice,kNumPcmVoices> pcmVoices;
 
     EventQueue* events = nullptr;
-    boost::circular_buffer<PendingEvent> pendingEvents;
+    PendingEventHeap pendingEvents;
 
     float _finalGain = 1.f;
 

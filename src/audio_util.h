@@ -59,13 +59,6 @@ struct Event {
 static inline int const kEventQueueLength = 1024;
 typedef rigtorp::SPSCQueue<Event> EventQueue;
 
-struct FrameEvent {
-    Event _e;
-    int _sampleIx;
-};
-
-typedef std::array<FrameEvent, 256> EventsThisFrame;
-
 struct PcmSound {
     float* _buffer = nullptr;
     uint64_t _bufferLength = 0;
