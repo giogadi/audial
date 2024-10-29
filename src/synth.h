@@ -5,8 +5,6 @@
 #include <cstring>
 #include <string>
 
-#include "boost/circular_buffer.hpp"
-
 #include "rng.h"
 #include "audio_util.h"
 #include "serial.h"
