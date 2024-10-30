@@ -1,6 +1,7 @@
 #include "serial.h"
 
 #include <fstream>
+#include <cassert>
 
 #include "tinyxml2/tinyxml2.h"
 

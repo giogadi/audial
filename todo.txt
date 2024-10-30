@@ -24,7 +24,6 @@ Ideas
 
 Near-term ideas:
 - During buildup, make the gaps narrower and narrower
-- New section at beginning of hangout: moving platforms, but with shorter words/sequences. kinda build up to the main "riff".
 - add fun and weird shader effects (mirror, upside down, whatever) with every loop in the hangout buildup
 
 BUGS:
@@ -36,9 +35,12 @@ TOOLS:
 - Enable setting a new global beat time epoch
 - Save to file in a separate thread
 - VST of my synth
+- support arbitrary sample rates by converting sound files
+- make platform its own entity
 
 Optimizations/improvements/etc:
 - Allow Solo/Mute/Gain on seq tracks.
+- velocity should use exponential curve
 - Use an arena when loading so we don't have all this allocations for GetChildren().
 - DELAY ON PCM PLAYBACK!!!!
  

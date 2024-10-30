@@ -5,6 +5,7 @@
 #include <sstream>
 #include <unordered_set>
 #include <ctime>
+#include <algorithm>
 
 #include "imgui/imgui.h"
 #include "imgui_util.h"
@@ -356,7 +357,7 @@ void Editor::HandleEntitySelectAndMove(float deltaTime) {
                 double mouseX, mouseY;
                 inputManager.GetMousePos(mouseX, mouseY);
                 ProjectScreenPointToXZPlane((int)mouseX, (int)mouseY, _g->_windowWidth, _g->_windowHeight, _g->_scene->_camera, &sGrabPos);
-            } else if (sInputMode == InputMode::Default && inputManager.IsKeyReleasedThisFrame(InputManager::Key::S) && !_selectedEntityIds.empty() && !inputManager.IsKeyPressed(InputManager::MouseButton::Right)) {
+            } else if (sInputMode == InputMode::Default && inputManager.IsKeyPressedThisFrame(InputManager::Key::S) && !_selectedEntityIds.empty() && !inputManager.IsKeyPressed(InputManager::MouseButton::Right)) {
                 sInteractMode = InteractionMode::Scale;
                 sNewState = true;
                 double mouseX, mouseY;
@@ -449,7 +450,7 @@ void Editor::HandleEntitySelectAndMove(float deltaTime) {
             }
 
             if (inputManager.IsKeyReleasedThisFrame(InputManager::Key::Enter) ||
-                inputManager.IsKeyReleasedThisFrame(InputManager::Key::S) ||
+                inputManager.IsKeyPressedThisFrame(InputManager::Key::S) ||
                 inputManager.IsKeyReleasedThisFrame(InputManager::MouseButton::Left)) {
                 // commit transforms
                 for (ne::EntityId selectedId : _selectedEntityIds) {
