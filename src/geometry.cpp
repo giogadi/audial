@@ -235,4 +235,16 @@ bool IsPointInBoundingBox2d(Vec3 const& p, Transform const& transform) {
     return !outside;
 }
 
+// https://www.eecs.umich.edu/courses/eecs380/HANDOUTS/PROJ2/InsidePoly.html
+bool PointInPolygon2D(Vec3 const& queryP, Vec3 const* polyPoints, int polyPointCount) {
+    bool c = false;
+    for (int i = 0, j = polyPointCount-1; i < polyPointCount; j = i++) {
+        if ((((polyPoints[i]._z <= queryP._z) && (queryP._z < polyPoints[j]._z)) ||
+            ((polyPoints[j]._z <= queryP._z) && (queryP._z < polyPoints[i]._z))) &&
+            (queryP._x < (polyPoints[j]._x - polyPoints[i]._x) * (queryP._z - polyPoints[i]._z) / (polyPoints[j]._z - polyPoints[i]._z) + polyPoints[i]._x))
+            c = !c;
+    }
+    return c;
+}
+
 }  // namespace geometry

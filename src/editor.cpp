@@ -156,7 +156,8 @@ void Editor::PickEntity(ne::BaseEntity* entity) {
 enum class InteractionMode {
     Select,
     Grab,
-    Scale
+    Scale,
+    DrawSelectPoly
 };
 
 void Editor::HandleEntitySelectAndMove(float deltaTime) {
@@ -363,6 +364,9 @@ void Editor::HandleEntitySelectAndMove(float deltaTime) {
                 double mouseX, mouseY;
                 inputManager.GetMousePos(mouseX, mouseY);
                 ProjectScreenPointToXZPlane((int)mouseX, (int)mouseY, _g->_windowWidth, _g->_windowHeight, _g->_scene->_camera, &sGrabPos);
+            } else if (sInputMode == InputMode::Default && inputManager.IsKeyPressedThisFrame(InputManager::Key::S) && inputManager.IsAltPressed() && !inputManager.IsKeyPressed(InputManager::MouseButton::Right)) {
+                sInteractMode = InteractionMode::DrawSelectPoly;
+                sNewState = true;
             }
             break;
         }
@@ -471,6 +475,68 @@ void Editor::HandleEntitySelectAndMove(float deltaTime) {
                 }
                 sInteractMode = InteractionMode::Select;
                 sNewState = true;
+            }
+            break;
+        }
+        case InteractionMode::DrawSelectPoly: {
+            int constexpr kMaxPoints = 64;
+            static Vec3 sSelectPolyPoints[kMaxPoints];
+            static int sSelectPolyPointsCount = 0;
+            if (sNewState) {
+                sNewState = false;
+                sSelectPolyPointsCount = 0;
+            }
+            if (inputManager.IsKeyReleasedThisFrame(InputManager::MouseButton::Left)) {
+                double mouseX, mouseY;
+                inputManager.GetMousePos(mouseX, mouseY);
+                Vec3 p;
+                ProjectScreenPointToXZPlane((int)mouseX, (int)mouseY, _g->_windowWidth, _g->_windowHeight, _g->_scene->_camera, &p);
+                if (sSelectPolyPointsCount < kMaxPoints) {
+                    sSelectPolyPoints[sSelectPolyPointsCount++] = p;
+                }
+            }
+            for (int ii = 0; ii < sSelectPolyPointsCount - 1; ++ii) {
+                _g->_scene->DrawLine(sSelectPolyPoints[ii], sSelectPolyPoints[ii+1], Vec4(1.f, 1.f, 1.f, 1.f));
+            }
+            
+            _selectedEntityIds.clear();
+            Vec4 localBbox[4];
+            localBbox[0].Set(0.5f, 0.f, 0.5f, 1.f);
+            localBbox[1].Set(0.5, 0.f, -0.5f, 1.f);
+            localBbox[2].Set(-0.5f, 0.f, -0.5f, 1.f);
+            localBbox[3].Set(-0.5f, 0.f, 0.5f, 1.f);
+            Vec4 worldBbox[4];
+            auto maybeSelectEntity = [&](ne::Entity* e) {
+                Mat4 localToWorld = e->_transform.Mat4Scale();
+                for (int ii = 0; ii < 4; ++ii) {
+                    worldBbox[ii] = localToWorld * localBbox[ii];
+                    Vec3 queryP = worldBbox[ii].GetXYZ();
+                    bool inside = geometry::PointInPolygon2D(queryP, sSelectPolyPoints, sSelectPolyPointsCount);
+                    if (inside) {
+                        _selectedEntityIds.insert(e->_id);
+                        break;
+                    }
+                }
+            };
+
+            if (inputManager.IsKeyPressedThisFrame(InputManager::Key::S) && inputManager.IsAltPressed() && !inputManager.IsKeyPressed(InputManager::MouseButton::Right)) {
+                for (auto iter = _g->_neEntityManager->GetAllIterator(); !iter.Finished(); iter.Next()) {
+                    ne::Entity* entity = iter.GetEntity();
+                    if (entity == nullptr) {
+                        continue;
+                    }
+                    maybeSelectEntity(entity);
+                }
+                for (auto iter = _g->_neEntityManager->GetAllInactiveIterator(); !iter.Finished(); iter.Next()) {
+                    ne::Entity* entity = iter.GetEntity();
+                    if (entity == nullptr) {
+                        continue;
+                    }
+                    maybeSelectEntity(entity);
+                }
+
+                sNewState = true;
+                sInteractMode = InteractionMode::Select;
             }
             break;
         }
