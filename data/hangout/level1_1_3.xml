@@ -9644,6 +9644,17 @@
                         <one_time>false</one_time>
                         <action_type>Respawn</action_type>
                     </seq_action>
+                    <seq_action>
+                        <one_time>true</one_time>
+                        <action_type>SetEntityActive</action_type>
+                        <entities_tag>-1</entities_tag>
+                        <entity_editor_id>
+                            <id>613</id>
+                        </entity_editor_id>
+                        <active>false</active>
+                        <init_on_activate>true</init_on_activate>
+                        <init_if_already_active>false</init_if_already_active>
+                    </seq_action>
                 </actions>
                 <actions_on_exit/>
                 <trigger_volume_entities/>
@@ -30658,7 +30669,7 @@
                     <pos>
                         <x>-21.878</x>
                         <y>0</y>
-                        <z>-10.321925</z>
+                        <z>-10.586189</z>
                     </pos>
                     <quat>
                         <x>0</x>
@@ -30669,7 +30680,7 @@
                     <scale>
                         <x>0.63963842</x>
                         <y>1</y>
-                        <z>7.4655604</z>
+                        <z>6.9370327</z>
                     </scale>
                 </transform>
                 <model_name>cube</model_name>
@@ -31097,7 +31108,7 @@
                     <pos>
                         <x>-17.372704</x>
                         <y>0</y>
-                        <z>-13.539786</z>
+                        <z>-14.320567</z>
                     </pos>
                     <quat>
                         <x>0</x>
@@ -31379,9 +31390,9 @@
                 <pickable>true</pickable>
                 <transform>
                     <pos>
-                        <x>-18.441441</x>
+                        <x>-18.225224</x>
                         <y>0.5</y>
-                        <z>-11.84192</z>
+                        <z>-12.646725</z>
                     </pos>
                     <quat>
                         <x>0</x>
@@ -31552,9 +31563,9 @@
                 <pickable>true</pickable>
                 <transform>
                     <pos>
-                        <x>-18.483486</x>
+                        <x>-18.267269</x>
                         <y>0</y>
-                        <z>-11.833842</z>
+                        <z>-12.638647</z>
                     </pos>
                     <quat>
                         <x>0</x>
@@ -31764,7 +31775,7 @@
                     <pos>
                         <x>-17.073193</x>
                         <y>0</y>
-                        <z>-9.7513561</z>
+                        <z>-10.057663</z>
                     </pos>
                     <quat>
                         <x>0</x>
@@ -31775,7 +31786,7 @@
                     <scale>
                         <x>0.63963842</x>
                         <y>1</y>
-                        <z>7.0451398</z>
+                        <z>6.4325266</z>
                     </scale>
                 </transform>
                 <model_name>cube</model_name>
@@ -32145,9 +32156,9 @@
                 <pickable>true</pickable>
                 <transform>
                     <pos>
-                        <x>-13.312313</x>
+                        <x>-13.420421</x>
                         <y>0.5</y>
-                        <z>-11.877956</z>
+                        <z>-12.598677</z>
                     </pos>
                     <quat>
                         <x>0</x>
@@ -32318,9 +32329,9 @@
                 <pickable>true</pickable>
                 <transform>
                     <pos>
-                        <x>-13.354359</x>
+                        <x>-13.462466</x>
                         <y>0</y>
-                        <z>-11.869879</z>
+                        <z>-12.590599</z>
                     </pos>
                     <quat>
                         <x>0</x>
