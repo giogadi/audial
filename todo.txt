@@ -23,7 +23,6 @@ Ideas
   - maybe can use them as platforms or walls that change length? 
 
 Near-term ideas:
-- During buildup, make the gaps narrower and narrower
 - add fun and weird shader effects (mirror, upside down, whatever) with every loop in the hangout buildup
 
 BUGS:
