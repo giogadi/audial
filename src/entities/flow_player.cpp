@@ -71,7 +71,7 @@ ne::BaseEntity::ImGuiResult FlowPlayerEntity::ImGuiDerived(GameManager& g) {
     ImGui::Checkbox("Pull manual hold", &_p._pullManualHold);
     ImGui::InputFloat("Pull stop time", &_p._pullStopTime);
     imgui_util::InputEditorId("Death Start trigger", &_p._deathStartTriggerEditorId);
-    imgui_util::InputEditorId("Death end trigger", &_p._deathEndTriggerEditorId); 
+    imgui_util::InputEditorId("Death end trigger", &_p._deathEndTriggerEditorId);
 
     return result;
 }
@@ -219,7 +219,7 @@ void RespawnDraw(FlowPlayerEntity& e, GameManager& g) {
     }
 }
 
-void ResetFlowSection(GameManager& g, int currentSectionId) {
+void ResetFlowSection(GameManager& g, int currentSectionId, ne::EntityId resetTrigger) {
     // deactivate all initially-inactive things
     for (ne::EntityManager::AllIterator iter = g._neEntityManager->GetAllIterator(); !iter.Finished(); iter.Next()) {
         ne::Entity* e = iter.GetEntity();
@@ -242,7 +242,11 @@ void ResetFlowSection(GameManager& g, int currentSectionId) {
         if (e->_initActive && e->_flowSectionId >= 0 && e->_flowSectionId == currentSectionId) {
             g._neEntityManager->TagForActivate(e->_id, /*initOnActivate=*/true);
         }
-    }    
+    }
+
+    if (FlowTriggerEntity *e = g._neEntityManager->GetEntityAs<FlowTriggerEntity>(resetTrigger)) {
+        e->OnTrigger(g);
+    }
 }
 
 void RespawnPlayer(FlowPlayerEntity& p, GameManager& g) {
@@ -409,7 +413,7 @@ void FlowPlayerEntity::Draw(GameManager& g, float const dt) {
 }
 
 void FlowPlayerEntity::RespawnInstant(GameManager& g) {
-    ResetFlowSection(g, _s._currentSectionId);
+    ResetFlowSection(g, _s._currentSectionId, _s._resetTrigger);
     RespawnPlayer(*this, g);
 }
 
@@ -486,7 +490,7 @@ void FlowPlayerEntity::UpdateDerived(GameManager& g, float dt) {
         if (!_s._respawnHasResetScene) {
             double resetSceneTime = _s._respawnStartBeatTime + 1.25;
             if (beatTime >= resetSceneTime) {
-                ResetFlowSection(g, _s._currentSectionId);
+                ResetFlowSection(g, _s._currentSectionId, _s._resetTrigger);
                 _s._respawnHasResetScene = true;
             }
         }

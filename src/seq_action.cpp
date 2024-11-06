@@ -87,6 +87,7 @@ std::unique_ptr<SeqAction> SeqAction::New(SeqActionType actionType) {
         case SeqActionType::ChangeText: return std::make_unique<ChangeTextSeqAction>();
         case SeqActionType::SetBpm: return std::make_unique<SetBpmSeqAction>();
         case SeqActionType::SetMissTrigger: return std::make_unique<SetMissTriggerSeqAction>();
+        case SeqActionType::SetPlayerResetTrigger: return std::make_unique<SetPlayerResetTriggerSeqAction>();
         case SeqActionType::Count: break;
     }
     assert(false);

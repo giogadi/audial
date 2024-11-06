@@ -1055,3 +1055,31 @@ void SetMissTriggerSeqAction::ExecuteDerived(GameManager& g) {
     FlowPlayerEntity* player = static_cast<FlowPlayerEntity*>(g._neEntityManager->GetFirstEntityOfType(ne::EntityType::FlowPlayer));
     player->_s._missTrigger = _trigger;
 }
+
+void SetPlayerResetTriggerSeqAction::LoadDerived(serial::Ptree pt) {
+    serial::LoadFromChildOf(pt, "trigger", _triggerEditorId);
+}
+
+void SetPlayerResetTriggerSeqAction::SaveDerived(serial::Ptree pt) const {
+    serial::SaveInNewChildOf(pt, "trigger", _triggerEditorId);
+}
+
+bool SetPlayerResetTriggerSeqAction::ImGui() {
+    imgui_util::InputEditorId("Trigger", &_triggerEditorId);
+    return false;
+}
+
+void SetPlayerResetTriggerSeqAction::InitDerived(GameManager& g) {
+    ne::Entity* e = g._neEntityManager->FindEntityByEditorIdAndType(_triggerEditorId, ne::EntityType::FlowTrigger);
+    if (e) {
+        _trigger = e->_id;
+    } else {
+        printf("SetPlayerResetTriggerSeqAction::InitDerived: no entity found with editor ID %lld\n", _triggerEditorId._id);
+    }
+}
+
+void SetPlayerResetTriggerSeqAction::ExecuteDerived(GameManager& g) {
+    if (g._editMode) { return; }
+    FlowPlayerEntity* player = static_cast<FlowPlayerEntity*>(g._neEntityManager->GetFirstEntityOfType(ne::EntityType::FlowPlayer));
+    player->_s._resetTrigger = _trigger;
+}

@@ -56,6 +56,8 @@ enum class SeqActionType : int {
     
     SetMissTrigger,
     
+    SetPlayerResetTrigger,
+    
     Count
 };
 extern char const* gSeqActionTypeStrings[];

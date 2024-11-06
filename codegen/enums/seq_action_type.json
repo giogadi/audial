@@ -27,6 +27,7 @@
         "RandomizeText",
         "ChangeText",
         "SetBpm",
-        "SetMissTrigger"
+        "SetMissTrigger",
+        "SetPlayerResetTrigger"
     ]
 }
