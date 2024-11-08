@@ -1,0 +1,9 @@
+{
+    "namespaces": [],
+    "enumName": "EnemyRegionType",
+    "enumItems": [
+        "None",
+        "TriggerEntity",
+        "BoundedXAxis"
+    ]
+}

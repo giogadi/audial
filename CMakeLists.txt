@@ -150,6 +150,7 @@ add_executable(game
     src/enums/MechType.cpp src/enums/MechType.h
     src/enums/StepSeqParamType.cpp src/enums/StepSeqParamType.h
     src/enums/AutomationType.cpp src/enums/AutomationType.h
+    src/enums/EnemyRegionType.cpp src/enums/EnemyRegionType.h
 )
 
 ## GLFW ##

@@ -7,6 +7,7 @@
 #include "seq_action.h"
 #include "input_manager.h"
 #include "enums/HitResponseType.h"
+#include "enums/EnemyRegionType.h"
 
 struct FlowPlayerEntity;
 
@@ -48,6 +49,7 @@ struct TypingEnemyEntity : public ne::Entity {
         bool _destroyAfterTyped = true;
         double _flowCooldownBeatTime = -1.0;
         bool _resetCooldownOnAnyHit = false;
+        EnemyRegionType _regionType = EnemyRegionType::TriggerEntity;
         EditorId _activeRegionEditorId;
         bool _lockPlayerOnEnterRegion = false;
         bool _showBeatsLeft = false;
@@ -55,6 +57,7 @@ struct TypingEnemyEntity : public ne::Entity {
         bool _initHittable = true;
         double _timedHittableTime = -1.0;
         bool _allowTypeBackward = false;
+        bool _justDrawModel = false;
     };
     Props _p;
     

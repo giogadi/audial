@@ -3503,6 +3503,8 @@
                 <init_hittable>true</init_hittable>
                 <timed_hittable_time>-1</timed_hittable_time>
                 <allow_backward>false</allow_backward>
+                <just_draw_model>false</just_draw_model>
+                <region_type>TriggerEntity</region_type>
                 <active_region_editor_id>
                     <id>341</id>
                 </active_region_editor_id>
@@ -3732,6 +3734,8 @@
                 <init_hittable>false</init_hittable>
                 <timed_hittable_time>-1</timed_hittable_time>
                 <allow_backward>false</allow_backward>
+                <just_draw_model>false</just_draw_model>
+                <region_type>TriggerEntity</region_type>
                 <active_region_editor_id>
                     <id>342</id>
                 </active_region_editor_id>
@@ -3972,6 +3976,8 @@
                 <init_hittable>false</init_hittable>
                 <timed_hittable_time>-1</timed_hittable_time>
                 <allow_backward>false</allow_backward>
+                <just_draw_model>false</just_draw_model>
+                <region_type>TriggerEntity</region_type>
                 <active_region_editor_id>
                     <id>344</id>
                 </active_region_editor_id>
@@ -4609,6 +4615,8 @@
                 <init_hittable>false</init_hittable>
                 <timed_hittable_time>-1</timed_hittable_time>
                 <allow_backward>false</allow_backward>
+                <just_draw_model>false</just_draw_model>
+                <region_type>TriggerEntity</region_type>
                 <active_region_editor_id>
                     <id>276</id>
                 </active_region_editor_id>
@@ -5265,6 +5273,8 @@
                 <init_hittable>false</init_hittable>
                 <timed_hittable_time>-1</timed_hittable_time>
                 <allow_backward>false</allow_backward>
+                <just_draw_model>false</just_draw_model>
+                <region_type>TriggerEntity</region_type>
                 <active_region_editor_id>
                     <id>347</id>
                 </active_region_editor_id>
@@ -5596,6 +5606,8 @@
                 <init_hittable>false</init_hittable>
                 <timed_hittable_time>-1</timed_hittable_time>
                 <allow_backward>false</allow_backward>
+                <just_draw_model>false</just_draw_model>
+                <region_type>TriggerEntity</region_type>
                 <active_region_editor_id>
                     <id>284</id>
                 </active_region_editor_id>
@@ -6239,6 +6251,8 @@
                 <init_hittable>false</init_hittable>
                 <timed_hittable_time>-1</timed_hittable_time>
                 <allow_backward>false</allow_backward>
+                <just_draw_model>false</just_draw_model>
+                <region_type>TriggerEntity</region_type>
                 <active_region_editor_id>
                     <id>295</id>
                 </active_region_editor_id>
@@ -7098,6 +7112,8 @@
                 <init_hittable>false</init_hittable>
                 <timed_hittable_time>-1</timed_hittable_time>
                 <allow_backward>false</allow_backward>
+                <just_draw_model>false</just_draw_model>
+                <region_type>TriggerEntity</region_type>
                 <active_region_editor_id>
                     <id>355</id>
                 </active_region_editor_id>
@@ -7475,6 +7491,8 @@
                 <init_hittable>true</init_hittable>
                 <timed_hittable_time>-1</timed_hittable_time>
                 <allow_backward>false</allow_backward>
+                <just_draw_model>false</just_draw_model>
+                <region_type>TriggerEntity</region_type>
                 <active_region_editor_id>
                     <id>360</id>
                 </active_region_editor_id>
@@ -7694,6 +7712,8 @@
                 <init_hittable>true</init_hittable>
                 <timed_hittable_time>-1</timed_hittable_time>
                 <allow_backward>false</allow_backward>
+                <just_draw_model>false</just_draw_model>
+                <region_type>TriggerEntity</region_type>
                 <active_region_editor_id>
                     <id>-1</id>
                 </active_region_editor_id>
@@ -7737,23 +7757,23 @@
                 <pickable>true</pickable>
                 <transform>
                     <pos>
-                        <x>13.216301</x>
+                        <x>13.090176</x>
                         <y>0.5</y>
                         <z>20.337486</z>
                     </pos>
                     <quat>
                         <x>0</x>
-                        <y>0</y>
+                        <y>0.70710677</y>
                         <z>0</z>
-                        <w>1</w>
+                        <w>0.70710677</w>
                     </quat>
                     <scale>
                         <x>0.5</x>
                         <y>0.5</y>
-                        <z>0.5</z>
+                        <z>1.8888855</z>
                     </scale>
                 </transform>
-                <model_name></model_name>
+                <model_name>cube</model_name>
                 <texture_name>white</texture_name>
                 <model_color_vec4>
                     <x>0</x>
@@ -7801,6 +7821,8 @@
                 <init_hittable>true</init_hittable>
                 <timed_hittable_time>-1</timed_hittable_time>
                 <allow_backward>false</allow_backward>
+                <just_draw_model>true</just_draw_model>
+                <region_type>BoundedXAxis</region_type>
                 <active_region_editor_id>
                     <id>-1</id>
                 </active_region_editor_id>
@@ -7937,6 +7959,8 @@
                 <init_hittable>true</init_hittable>
                 <timed_hittable_time>-1</timed_hittable_time>
                 <allow_backward>false</allow_backward>
+                <just_draw_model>false</just_draw_model>
+                <region_type>TriggerEntity</region_type>
                 <active_region_editor_id>
                     <id>-1</id>
                 </active_region_editor_id>
@@ -8044,6 +8068,8 @@
                 <init_hittable>true</init_hittable>
                 <timed_hittable_time>-1</timed_hittable_time>
                 <allow_backward>false</allow_backward>
+                <just_draw_model>false</just_draw_model>
+                <region_type>TriggerEntity</region_type>
                 <active_region_editor_id>
                     <id>-1</id>
                 </active_region_editor_id>
@@ -8151,6 +8177,8 @@
                 <init_hittable>true</init_hittable>
                 <timed_hittable_time>-1</timed_hittable_time>
                 <allow_backward>false</allow_backward>
+                <just_draw_model>false</just_draw_model>
+                <region_type>TriggerEntity</region_type>
                 <active_region_editor_id>
                     <id>-1</id>
                 </active_region_editor_id>
@@ -8518,6 +8546,8 @@
                 <init_hittable>false</init_hittable>
                 <timed_hittable_time>-1</timed_hittable_time>
                 <allow_backward>false</allow_backward>
+                <just_draw_model>false</just_draw_model>
+                <region_type>TriggerEntity</region_type>
                 <active_region_editor_id>
                     <id>346</id>
                 </active_region_editor_id>
@@ -8919,6 +8949,8 @@
                 <init_hittable>false</init_hittable>
                 <timed_hittable_time>-1</timed_hittable_time>
                 <allow_backward>false</allow_backward>
+                <just_draw_model>false</just_draw_model>
+                <region_type>TriggerEntity</region_type>
                 <active_region_editor_id>
                     <id>349</id>
                 </active_region_editor_id>
@@ -10600,6 +10632,8 @@
                 <init_hittable>true</init_hittable>
                 <timed_hittable_time>-1</timed_hittable_time>
                 <allow_backward>false</allow_backward>
+                <just_draw_model>false</just_draw_model>
+                <region_type>TriggerEntity</region_type>
                 <active_region_editor_id>
                     <id>365</id>
                 </active_region_editor_id>
@@ -11186,23 +11220,23 @@
                 <pickable>true</pickable>
                 <transform>
                     <pos>
-                        <x>33.828915</x>
+                        <x>33.864948</x>
                         <y>0.5</y>
-                        <z>17.231001</z>
+                        <z>18.426197</z>
                     </pos>
                     <quat>
                         <x>0</x>
-                        <y>0</y>
+                        <y>1</y>
                         <z>0</z>
-                        <w>1</w>
+                        <w>-4.3711388e-08</w>
                     </quat>
                     <scale>
                         <x>0.5</x>
                         <y>0.5</y>
-                        <z>0.5</z>
+                        <z>4.4520001</z>
                     </scale>
                 </transform>
-                <model_name></model_name>
+                <model_name>cube</model_name>
                 <texture_name>white</texture_name>
                 <model_color_vec4>
                     <x>0</x>
@@ -11250,6 +11284,8 @@
                 <init_hittable>true</init_hittable>
                 <timed_hittable_time>-1</timed_hittable_time>
                 <allow_backward>false</allow_backward>
+                <just_draw_model>true</just_draw_model>
+                <region_type>BoundedXAxis</region_type>
                 <active_region_editor_id>
                     <id>-1</id>
                 </active_region_editor_id>
@@ -11594,6 +11630,8 @@
                 <init_hittable>true</init_hittable>
                 <timed_hittable_time>-1</timed_hittable_time>
                 <allow_backward>false</allow_backward>
+                <just_draw_model>false</just_draw_model>
+                <region_type>TriggerEntity</region_type>
                 <active_region_editor_id>
                     <id>-1</id>
                 </active_region_editor_id>
@@ -11802,23 +11840,23 @@
                 <pickable>true</pickable>
                 <transform>
                     <pos>
-                        <x>20.233999</x>
+                        <x>18.840607</x>
                         <y>0.5</y>
                         <z>12.073223</z>
                     </pos>
                     <quat>
                         <x>0</x>
-                        <y>0</y>
+                        <y>-0.70710677</y>
                         <z>0</z>
-                        <w>1</w>
+                        <w>0.70710677</w>
                     </quat>
                     <scale>
-                        <x>5</x>
+                        <x>0.5</x>
                         <y>0.5</y>
-                        <z>0.5</z>
+                        <z>4.8559999</z>
                     </scale>
                 </transform>
-                <model_name></model_name>
+                <model_name>cube</model_name>
                 <texture_name>white</texture_name>
                 <model_color_vec4>
                     <x>0</x>
@@ -11866,6 +11904,8 @@
                 <init_hittable>true</init_hittable>
                 <timed_hittable_time>-1</timed_hittable_time>
                 <allow_backward>false</allow_backward>
+                <just_draw_model>true</just_draw_model>
+                <region_type>BoundedXAxis</region_type>
                 <active_region_editor_id>
                     <id>-1</id>
                 </active_region_editor_id>
@@ -12058,6 +12098,8 @@
                 <init_hittable>true</init_hittable>
                 <timed_hittable_time>-1</timed_hittable_time>
                 <allow_backward>false</allow_backward>
+                <just_draw_model>false</just_draw_model>
+                <region_type>TriggerEntity</region_type>
                 <active_region_editor_id>
                     <id>403</id>
                 </active_region_editor_id>
@@ -12476,23 +12518,23 @@
                 <pickable>true</pickable>
                 <transform>
                     <pos>
-                        <x>28.016987</x>
+                        <x>27.698669</x>
                         <y>0.5</y>
                         <z>14.835984</z>
                     </pos>
                     <quat>
                         <x>0</x>
-                        <y>0</y>
+                        <y>0.70710677</y>
                         <z>0</z>
-                        <w>1</w>
+                        <w>0.70710677</w>
                     </quat>
                     <scale>
-                        <x>4</x>
+                        <x>0.5</x>
                         <y>0.5</y>
-                        <z>0.5</z>
+                        <z>3.1229999</z>
                     </scale>
                 </transform>
-                <model_name></model_name>
+                <model_name>cube</model_name>
                 <texture_name>white</texture_name>
                 <model_color_vec4>
                     <x>0</x>
@@ -12540,6 +12582,8 @@
                 <init_hittable>true</init_hittable>
                 <timed_hittable_time>-1</timed_hittable_time>
                 <allow_backward>false</allow_backward>
+                <just_draw_model>true</just_draw_model>
+                <region_type>BoundedXAxis</region_type>
                 <active_region_editor_id>
                     <id>-1</id>
                 </active_region_editor_id>
@@ -12676,6 +12720,8 @@
                 <init_hittable>true</init_hittable>
                 <timed_hittable_time>-1</timed_hittable_time>
                 <allow_backward>false</allow_backward>
+                <just_draw_model>false</just_draw_model>
+                <region_type>TriggerEntity</region_type>
                 <active_region_editor_id>
                     <id>414</id>
                 </active_region_editor_id>
@@ -13090,17 +13136,17 @@
                     </pos>
                     <quat>
                         <x>0</x>
-                        <y>0</y>
+                        <y>1</y>
                         <z>0</z>
-                        <w>1</w>
+                        <w>-4.3711388e-08</w>
                     </quat>
                     <scale>
-                        <x>0.5</x>
+                        <x>0.59609604</x>
                         <y>0.5</y>
-                        <z>0.5</z>
+                        <z>2.0615616</z>
                     </scale>
                 </transform>
-                <model_name></model_name>
+                <model_name>cube</model_name>
                 <texture_name>white</texture_name>
                 <model_color_vec4>
                     <x>0</x>
@@ -13148,6 +13194,8 @@
                 <init_hittable>true</init_hittable>
                 <timed_hittable_time>-1</timed_hittable_time>
                 <allow_backward>false</allow_backward>
+                <just_draw_model>true</just_draw_model>
+                <region_type>BoundedXAxis</region_type>
                 <active_region_editor_id>
                     <id>-1</id>
                 </active_region_editor_id>
@@ -13564,6 +13612,8 @@
                 <init_hittable>true</init_hittable>
                 <timed_hittable_time>-1</timed_hittable_time>
                 <allow_backward>false</allow_backward>
+                <just_draw_model>false</just_draw_model>
+                <region_type>TriggerEntity</region_type>
                 <active_region_editor_id>
                     <id>424</id>
                 </active_region_editor_id>
@@ -13917,23 +13967,23 @@
                 <pickable>true</pickable>
                 <transform>
                     <pos>
-                        <x>25.09618</x>
+                        <x>25.072155</x>
                         <y>0.5</y>
-                        <z>24.637787</z>
+                        <z>24.619766</z>
                     </pos>
                     <quat>
                         <x>0</x>
-                        <y>0</y>
+                        <y>1</y>
                         <z>0</z>
-                        <w>1</w>
+                        <w>-4.3711388e-08</w>
                     </quat>
                     <scale>
-                        <x>0.5</x>
+                        <x>0.54804993</x>
                         <y>0.5</y>
-                        <z>0.5</z>
+                        <z>3.4429455</z>
                     </scale>
                 </transform>
-                <model_name></model_name>
+                <model_name>cube</model_name>
                 <texture_name>white</texture_name>
                 <model_color_vec4>
                     <x>0</x>
@@ -13981,6 +14031,8 @@
                 <init_hittable>true</init_hittable>
                 <timed_hittable_time>-1</timed_hittable_time>
                 <allow_backward>false</allow_backward>
+                <just_draw_model>true</just_draw_model>
+                <region_type>BoundedXAxis</region_type>
                 <active_region_editor_id>
                     <id>-1</id>
                 </active_region_editor_id>
@@ -14285,6 +14337,8 @@
                 <init_hittable>true</init_hittable>
                 <timed_hittable_time>-1</timed_hittable_time>
                 <allow_backward>false</allow_backward>
+                <just_draw_model>false</just_draw_model>
+                <region_type>TriggerEntity</region_type>
                 <active_region_editor_id>
                     <id>435</id>
                 </active_region_editor_id>
@@ -14591,23 +14645,23 @@
                 <pickable>true</pickable>
                 <transform>
                     <pos>
-                        <x>14.066</x>
+                        <x>14.954888</x>
                         <y>0.5</y>
-                        <z>30.427576</z>
+                        <z>30.355503</z>
                     </pos>
                     <quat>
                         <x>0</x>
-                        <y>0</y>
+                        <y>0.70710677</y>
                         <z>0</z>
-                        <w>1</w>
+                        <w>0.70710677</w>
                     </quat>
                     <scale>
                         <x>0.5</x>
                         <y>0.5</y>
-                        <z>0.5</z>
+                        <z>6.6500001</z>
                     </scale>
                 </transform>
-                <model_name></model_name>
+                <model_name>cube</model_name>
                 <texture_name>white</texture_name>
                 <model_color_vec4>
                     <x>0</x>
@@ -14655,6 +14709,8 @@
                 <init_hittable>true</init_hittable>
                 <timed_hittable_time>-1</timed_hittable_time>
                 <allow_backward>false</allow_backward>
+                <just_draw_model>true</just_draw_model>
+                <region_type>BoundedXAxis</region_type>
                 <active_region_editor_id>
                     <id>-1</id>
                 </active_region_editor_id>
@@ -14903,6 +14959,8 @@
                 <init_hittable>true</init_hittable>
                 <timed_hittable_time>-1</timed_hittable_time>
                 <allow_backward>false</allow_backward>
+                <just_draw_model>false</just_draw_model>
+                <region_type>TriggerEntity</region_type>
                 <active_region_editor_id>
                     <id>442</id>
                 </active_region_editor_id>
@@ -15170,7 +15228,7 @@
                     <pos>
                         <x>8.1560898</x>
                         <y>0.5</y>
-                        <z>32.509998</z>
+                        <z>31.284773</z>
                     </pos>
                     <quat>
                         <x>0</x>
@@ -15179,12 +15237,12 @@
                         <w>1</w>
                     </quat>
                     <scale>
-                        <x>0.5</x>
+                        <x>0.69219208</x>
                         <y>0.5</y>
-                        <z>0.5</z>
+                        <z>4.4399376</z>
                     </scale>
                 </transform>
-                <model_name></model_name>
+                <model_name>cube</model_name>
                 <texture_name>white</texture_name>
                 <model_color_vec4>
                     <x>0</x>
@@ -15232,6 +15290,8 @@
                 <init_hittable>true</init_hittable>
                 <timed_hittable_time>-1</timed_hittable_time>
                 <allow_backward>false</allow_backward>
+                <just_draw_model>true</just_draw_model>
+                <region_type>BoundedXAxis</region_type>
                 <active_region_editor_id>
                     <id>-1</id>
                 </active_region_editor_id>
@@ -15592,6 +15652,8 @@
                 <init_hittable>true</init_hittable>
                 <timed_hittable_time>-1</timed_hittable_time>
                 <allow_backward>false</allow_backward>
+                <just_draw_model>false</just_draw_model>
+                <region_type>TriggerEntity</region_type>
                 <active_region_editor_id>
                     <id>450</id>
                 </active_region_editor_id>
@@ -15912,23 +15974,23 @@
                 <pickable>true</pickable>
                 <transform>
                     <pos>
-                        <x>17.291</x>
+                        <x>16.618328</x>
                         <y>0.5</y>
                         <z>35.604755</z>
                     </pos>
                     <quat>
                         <x>0</x>
-                        <y>0</y>
+                        <y>-0.70710677</y>
                         <z>0</z>
-                        <w>1</w>
+                        <w>0.70710677</w>
                     </quat>
                     <scale>
                         <x>0.5</x>
                         <y>0.5</y>
-                        <z>0.5</z>
+                        <z>3.431</z>
                     </scale>
                 </transform>
-                <model_name></model_name>
+                <model_name>cube</model_name>
                 <texture_name>white</texture_name>
                 <model_color_vec4>
                     <x>0</x>
@@ -15976,6 +16038,8 @@
                 <init_hittable>true</init_hittable>
                 <timed_hittable_time>-1</timed_hittable_time>
                 <allow_backward>false</allow_backward>
+                <just_draw_model>true</just_draw_model>
+                <region_type>BoundedXAxis</region_type>
                 <active_region_editor_id>
                     <id>-1</id>
                 </active_region_editor_id>
@@ -16104,23 +16168,23 @@
                 <pickable>true</pickable>
                 <transform>
                     <pos>
-                        <x>19.671</x>
+                        <x>20.025356</x>
                         <y>0.5</y>
                         <z>41.5</z>
                     </pos>
                     <quat>
                         <x>0</x>
-                        <y>0</y>
+                        <y>0.70710677</y>
                         <z>0</z>
-                        <w>1</w>
+                        <w>0.70710677</w>
                     </quat>
                     <scale>
                         <x>0.5</x>
                         <y>0.5</y>
-                        <z>0.5</z>
+                        <z>2.4579999</z>
                     </scale>
                 </transform>
-                <model_name></model_name>
+                <model_name>cube</model_name>
                 <texture_name>white</texture_name>
                 <model_color_vec4>
                     <x>0</x>
@@ -16168,6 +16232,8 @@
                 <init_hittable>true</init_hittable>
                 <timed_hittable_time>-1</timed_hittable_time>
                 <allow_backward>false</allow_backward>
+                <just_draw_model>true</just_draw_model>
+                <region_type>BoundedXAxis</region_type>
                 <active_region_editor_id>
                     <id>-1</id>
                 </active_region_editor_id>
@@ -16304,6 +16370,8 @@
                 <init_hittable>true</init_hittable>
                 <timed_hittable_time>-1</timed_hittable_time>
                 <allow_backward>false</allow_backward>
+                <just_draw_model>false</just_draw_model>
+                <region_type>TriggerEntity</region_type>
                 <active_region_editor_id>
                     <id>-1</id>
                 </active_region_editor_id>
@@ -16420,6 +16488,8 @@
                 <init_hittable>true</init_hittable>
                 <timed_hittable_time>-1</timed_hittable_time>
                 <allow_backward>false</allow_backward>
+                <just_draw_model>false</just_draw_model>
+                <region_type>TriggerEntity</region_type>
                 <active_region_editor_id>
                     <id>-1</id>
                 </active_region_editor_id>
@@ -16536,6 +16606,8 @@
                 <init_hittable>true</init_hittable>
                 <timed_hittable_time>-1</timed_hittable_time>
                 <allow_backward>false</allow_backward>
+                <just_draw_model>false</just_draw_model>
+                <region_type>TriggerEntity</region_type>
                 <active_region_editor_id>
                     <id>-1</id>
                 </active_region_editor_id>
@@ -16829,6 +16901,8 @@
                 <init_hittable>true</init_hittable>
                 <timed_hittable_time>-1</timed_hittable_time>
                 <allow_backward>false</allow_backward>
+                <just_draw_model>false</just_draw_model>
+                <region_type>TriggerEntity</region_type>
                 <active_region_editor_id>
                     <id>-1</id>
                 </active_region_editor_id>
@@ -16945,6 +17019,8 @@
                 <init_hittable>true</init_hittable>
                 <timed_hittable_time>-1</timed_hittable_time>
                 <allow_backward>false</allow_backward>
+                <just_draw_model>false</just_draw_model>
+                <region_type>TriggerEntity</region_type>
                 <active_region_editor_id>
                     <id>-1</id>
                 </active_region_editor_id>
@@ -17061,6 +17137,8 @@
                 <init_hittable>true</init_hittable>
                 <timed_hittable_time>-1</timed_hittable_time>
                 <allow_backward>false</allow_backward>
+                <just_draw_model>false</just_draw_model>
+                <region_type>TriggerEntity</region_type>
                 <active_region_editor_id>
                     <id>-1</id>
                 </active_region_editor_id>
@@ -17478,6 +17556,8 @@
                 <init_hittable>true</init_hittable>
                 <timed_hittable_time>-1</timed_hittable_time>
                 <allow_backward>false</allow_backward>
+                <just_draw_model>false</just_draw_model>
+                <region_type>TriggerEntity</region_type>
                 <active_region_editor_id>
                     <id>461</id>
                 </active_region_editor_id>
@@ -18064,6 +18144,8 @@
                 <init_hittable>true</init_hittable>
                 <timed_hittable_time>-1</timed_hittable_time>
                 <allow_backward>false</allow_backward>
+                <just_draw_model>false</just_draw_model>
+                <region_type>TriggerEntity</region_type>
                 <active_region_editor_id>
                     <id>480</id>
                 </active_region_editor_id>
@@ -18559,6 +18641,8 @@
                 <init_hittable>true</init_hittable>
                 <timed_hittable_time>-1</timed_hittable_time>
                 <allow_backward>false</allow_backward>
+                <just_draw_model>false</just_draw_model>
+                <region_type>TriggerEntity</region_type>
                 <active_region_editor_id>
                     <id>484</id>
                 </active_region_editor_id>
@@ -19249,6 +19333,8 @@
                 <init_hittable>true</init_hittable>
                 <timed_hittable_time>-1</timed_hittable_time>
                 <allow_backward>false</allow_backward>
+                <just_draw_model>false</just_draw_model>
+                <region_type>TriggerEntity</region_type>
                 <active_region_editor_id>
                     <id>-1</id>
                 </active_region_editor_id>
@@ -20056,6 +20142,8 @@
                 <init_hittable>true</init_hittable>
                 <timed_hittable_time>-1</timed_hittable_time>
                 <allow_backward>false</allow_backward>
+                <just_draw_model>false</just_draw_model>
+                <region_type>TriggerEntity</region_type>
                 <active_region_editor_id>
                     <id>-1</id>
                 </active_region_editor_id>
@@ -20165,6 +20253,8 @@
                 <init_hittable>true</init_hittable>
                 <timed_hittable_time>-1</timed_hittable_time>
                 <allow_backward>false</allow_backward>
+                <just_draw_model>false</just_draw_model>
+                <region_type>TriggerEntity</region_type>
                 <active_region_editor_id>
                     <id>-1</id>
                 </active_region_editor_id>
@@ -21304,6 +21394,8 @@
                 <init_hittable>true</init_hittable>
                 <timed_hittable_time>-1</timed_hittable_time>
                 <allow_backward>false</allow_backward>
+                <just_draw_model>false</just_draw_model>
+                <region_type>TriggerEntity</region_type>
                 <active_region_editor_id>
                     <id>-1</id>
                 </active_region_editor_id>
@@ -21541,6 +21633,8 @@
                 <init_hittable>true</init_hittable>
                 <timed_hittable_time>-1</timed_hittable_time>
                 <allow_backward>false</allow_backward>
+                <just_draw_model>false</just_draw_model>
+                <region_type>TriggerEntity</region_type>
                 <active_region_editor_id>
                     <id>-1</id>
                 </active_region_editor_id>
@@ -21713,6 +21807,8 @@
                 <init_hittable>true</init_hittable>
                 <timed_hittable_time>-1</timed_hittable_time>
                 <allow_backward>false</allow_backward>
+                <just_draw_model>false</just_draw_model>
+                <region_type>TriggerEntity</region_type>
                 <active_region_editor_id>
                     <id>-1</id>
                 </active_region_editor_id>
@@ -21822,6 +21918,8 @@
                 <init_hittable>true</init_hittable>
                 <timed_hittable_time>-1</timed_hittable_time>
                 <allow_backward>false</allow_backward>
+                <just_draw_model>false</just_draw_model>
+                <region_type>TriggerEntity</region_type>
                 <active_region_editor_id>
                     <id>-1</id>
                 </active_region_editor_id>
@@ -21927,6 +22025,8 @@
                 <init_hittable>true</init_hittable>
                 <timed_hittable_time>-1</timed_hittable_time>
                 <allow_backward>false</allow_backward>
+                <just_draw_model>false</just_draw_model>
+                <region_type>TriggerEntity</region_type>
                 <active_region_editor_id>
                     <id>-1</id>
                 </active_region_editor_id>
@@ -22036,6 +22136,8 @@
                 <init_hittable>true</init_hittable>
                 <timed_hittable_time>-1</timed_hittable_time>
                 <allow_backward>false</allow_backward>
+                <just_draw_model>false</just_draw_model>
+                <region_type>TriggerEntity</region_type>
                 <active_region_editor_id>
                     <id>-1</id>
                 </active_region_editor_id>
@@ -22141,6 +22243,8 @@
                 <init_hittable>true</init_hittable>
                 <timed_hittable_time>-1</timed_hittable_time>
                 <allow_backward>false</allow_backward>
+                <just_draw_model>false</just_draw_model>
+                <region_type>TriggerEntity</region_type>
                 <active_region_editor_id>
                     <id>-1</id>
                 </active_region_editor_id>
@@ -28012,6 +28116,8 @@
                 <init_hittable>true</init_hittable>
                 <timed_hittable_time>-1</timed_hittable_time>
                 <allow_backward>false</allow_backward>
+                <just_draw_model>false</just_draw_model>
+                <region_type>TriggerEntity</region_type>
                 <active_region_editor_id>
                     <id>654</id>
                 </active_region_editor_id>
@@ -28163,6 +28269,8 @@
                 <init_hittable>true</init_hittable>
                 <timed_hittable_time>-1</timed_hittable_time>
                 <allow_backward>false</allow_backward>
+                <just_draw_model>false</just_draw_model>
+                <region_type>TriggerEntity</region_type>
                 <active_region_editor_id>
                     <id>655</id>
                 </active_region_editor_id>
@@ -28740,6 +28848,8 @@
                 <init_hittable>true</init_hittable>
                 <timed_hittable_time>-1</timed_hittable_time>
                 <allow_backward>false</allow_backward>
+                <just_draw_model>false</just_draw_model>
+                <region_type>TriggerEntity</region_type>
                 <active_region_editor_id>
                     <id>661</id>
                 </active_region_editor_id>
@@ -28857,6 +28967,8 @@
                 <init_hittable>true</init_hittable>
                 <timed_hittable_time>-1</timed_hittable_time>
                 <allow_backward>false</allow_backward>
+                <just_draw_model>false</just_draw_model>
+                <region_type>TriggerEntity</region_type>
                 <active_region_editor_id>
                     <id>662</id>
                 </active_region_editor_id>
@@ -29367,6 +29479,8 @@
                 <init_hittable>true</init_hittable>
                 <timed_hittable_time>-1</timed_hittable_time>
                 <allow_backward>false</allow_backward>
+                <just_draw_model>false</just_draw_model>
+                <region_type>TriggerEntity</region_type>
                 <active_region_editor_id>
                     <id>-1</id>
                 </active_region_editor_id>
@@ -29467,6 +29581,8 @@
                 <init_hittable>true</init_hittable>
                 <timed_hittable_time>-1</timed_hittable_time>
                 <allow_backward>false</allow_backward>
+                <just_draw_model>false</just_draw_model>
+                <region_type>TriggerEntity</region_type>
                 <active_region_editor_id>
                     <id>668</id>
                 </active_region_editor_id>
@@ -29652,6 +29768,8 @@
                 <init_hittable>true</init_hittable>
                 <timed_hittable_time>-1</timed_hittable_time>
                 <allow_backward>false</allow_backward>
+                <just_draw_model>false</just_draw_model>
+                <region_type>TriggerEntity</region_type>
                 <active_region_editor_id>
                     <id>669</id>
                 </active_region_editor_id>
@@ -30556,6 +30674,8 @@
                 <init_hittable>true</init_hittable>
                 <timed_hittable_time>-1</timed_hittable_time>
                 <allow_backward>false</allow_backward>
+                <just_draw_model>false</just_draw_model>
+                <region_type>TriggerEntity</region_type>
                 <active_region_editor_id>
                     <id>-1</id>
                 </active_region_editor_id>

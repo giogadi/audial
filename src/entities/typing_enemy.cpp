@@ -143,9 +143,11 @@ void TypingEnemyEntity::LoadDerived(serial::Ptree pt) {
     pt.TryGetBool("reset_cooldown_on_any_hit", &_p._resetCooldownOnAnyHit);
     pt.TryGetBool("init_hittable", &_p._initHittable);
     pt.TryGetDouble("timed_hittable_time", &_p._timedHittableTime);
+    serial::TryGetEnum(pt, "region_type", _p._regionType);
     serial::LoadFromChildOf(pt, "active_region_editor_id", _p._activeRegionEditorId);
     pt.TryGetBool("lock_player_in_region", &_p._lockPlayerOnEnterRegion);
     pt.TryGetBool("allow_backward", &_p._allowTypeBackward);
+    pt.TryGetBool("just_draw_model", &_p._justDrawModel);
 
     SeqAction::LoadActionsFromChildNode(pt, "hit_actions", _p._hitActions);
     SeqAction::LoadActionsFromChildNode(pt, "all_hit_actions", _p._allHitActions);
@@ -186,7 +188,9 @@ void TypingEnemyEntity::SaveDerived(serial::Ptree pt) const {
     pt.PutBool("init_hittable", _p._initHittable);
     pt.PutDouble("timed_hittable_time", _p._timedHittableTime);
     pt.PutBool("allow_backward", _p._allowTypeBackward);
+    pt.PutBool("just_draw_model", _p._justDrawModel);
     
+    serial::PutEnum(pt, "region_type", _p._regionType);
     serial::SaveInNewChildOf(pt, "active_region_editor_id", _p._activeRegionEditorId);
     pt.PutBool("lock_player_in_region", _p._lockPlayerOnEnterRegion);
     SeqAction::SaveActionsInChildNode(pt, "hit_actions", _p._hitActions);
@@ -220,6 +224,7 @@ ne::BaseEntity::ImGuiResult TypingEnemyEntity::ImGuiDerived(GameManager& g) {
     else {
         _p._hitBehavior = HitBehavior::SingleAction;
     }
+    ImGui::Checkbox("Just draw model", &_p._justDrawModel);
     ImGui::InputDouble("Flow cooldown (beat)", &_p._flowCooldownBeatTime);
     ImGui::InputFloat("Cooldown quantize denom", &_p._cooldownQuantizeDenom);
     ImGui::Checkbox("Show beats left", &_p._showBeatsLeft);
@@ -227,7 +232,18 @@ ne::BaseEntity::ImGuiResult TypingEnemyEntity::ImGuiDerived(GameManager& g) {
     ImGui::Checkbox("Init hittable", &_p._initHittable);
     ImGui::InputDouble("Timed hittable (beat)", &_p._timedHittableTime);
     ImGui::Checkbox("Allow backward", &_p._allowTypeBackward);
-    imgui_util::InputEditorId("Active Region", &_p._activeRegionEditorId);
+    EnemyRegionTypeImGui("Region type", &_p._regionType);
+    switch (_p._regionType) {
+        case EnemyRegionType::None: break;
+        case EnemyRegionType::TriggerEntity: {
+            imgui_util::InputEditorId("Active Region", &_p._activeRegionEditorId);
+            break;
+        }
+        case EnemyRegionType::BoundedXAxis: {
+            break;
+        }
+        case EnemyRegionType::Count: assert(false); break;
+    }
     ImGui::Checkbox("Lock player in region", &_p._lockPlayerOnEnterRegion);
     if (ImGui::Button("Set Region color")) {
         if (ne::Entity* e = g._neEntityManager->FindEntityByEditorIdAndType(_p._activeRegionEditorId, ne::EntityType::FlowTrigger)) {
@@ -279,15 +295,30 @@ void TypingEnemyEntity::InitDerived(GameManager& g) {
 
 namespace {
 bool PlayerWithinRadius(FlowPlayerEntity const& player, TypingEnemyEntity const& enemy, GameManager& g) {
-    if (!enemy._s._activeRegionId.IsValid()) {
-        return true;
+    switch (enemy._p._regionType) {
+        case EnemyRegionType::None: {
+            return true;
+        }
+        case EnemyRegionType::TriggerEntity: {
+            if (ne::Entity* region = g._neEntityManager->GetEntity(enemy._s._activeRegionId)) {
+                //bool inside = geometry::IsPointInBoundingBox(player._transform.Pos(), region->_transform);
+                bool inside = geometry::DoAABBsOverlap(player._transform, region->_transform, nullptr);
+                return inside;
+            }
+            return true;
+        }
+        case EnemyRegionType::BoundedXAxis: {
+            Vec3 enemyToPlayer = player._transform.Pos() - enemy._transform.Pos();
+            Vec3 xAxis = enemy._transform.GetXAxis();
+            float xcomp = Vec3::Dot(enemyToPlayer, xAxis);
+            Vec3 xProj = xcomp * xAxis;
+            Vec3 orthog = enemyToPlayer - xProj;
+            float orthogLen2 = orthog.Length2();
+            float halfZScale = 0.5f * enemy._transform.Scale()._z;
+            bool inside = orthogLen2 < halfZScale*halfZScale;
+            return inside;
+        }
     }
-    if (ne::Entity* region = g._neEntityManager->GetEntity(enemy._s._activeRegionId)) {
-        //bool inside = geometry::IsPointInBoundingBox(player._transform.Pos(), region->_transform);
-        bool inside = geometry::DoAABBsOverlap(player._transform, region->_transform, nullptr);
-        return inside;
-    }
-    return true;
 }
 
 void DrawTicks(int activeCount, int totalCount, float const dt, Transform const& renderTrans, float scale, GameManager& g, TypingEnemyEntity& e) {
@@ -316,48 +347,13 @@ void DrawTicks(int activeCount, int totalCount, float const dt, Transform const&
     }
 }
 
-void DrawPullEnemy(float const dt, GameManager& g, TypingEnemyEntity& e, FlowPlayerEntity const* player) {
-    double const beatTime = g._beatClock->GetBeatTimeFromEpoch();
-    
-    bool playerWithinRadius = true;
-    // TODO: we're computing twice per frame whether enemies are within this radius. BORING    
-    if (player) {            
-        playerWithinRadius = PlayerWithinRadius(*player, e, g);
-    }
-
-    bool showControllerInputs;
-    if (g._editMode) {
-        showControllerInputs = g._editor->_showControllerInputs;
-    } else {
-        showControllerInputs = g._inputManager->IsUsingController();
-    }
-
-    Transform renderTrans = e._transform;
-    // Apply bump logic
-    if (e._s._bumpTimer >= 0.f) {
-        float constexpr kTotalBumpTime = 0.1f;
-        float constexpr kBumpAmount = 0.15f;
-        float factor = math_util::Clamp(e._s._bumpTimer / kTotalBumpTime, 0.f, 1.f);
-        factor = math_util::Triangle(factor);
-        float dist = factor * kBumpAmount;
-        Vec3 p = renderTrans.Pos();
-        p += e._s._bumpDir * dist;
-        renderTrans.SetPos(p);
-        e._s._bumpTimer += dt;
-        if (e._s._bumpTimer > kTotalBumpTime) {
-            e._s._bumpTimer = -1.f;
-        }
-    }
-
-    //
-    // TEXT DRAWING
-    //
-    {
+namespace {
+    void DrawText(GameManager &g, TypingEnemyEntity &e, Transform const &renderTrans, bool hittable, bool showControllerInputs) {
         int numFadedButtons = 0;
-        if (e._s._flowCooldownStartBeatTime > 0.f || !e._s._hittable || !playerWithinRadius) {
-            numFadedButtons = e._p._keyText.length();
+        if (hittable) {
+            numFadedButtons = e._s._numHits;            
         } else {
-            numFadedButtons = e._s._numHits;
+            numFadedButtons = e._p._keyText.length();
         }
         float constexpr kFadeAlpha = 0.2f;
         if (showControllerInputs) {
@@ -395,6 +391,12 @@ void DrawPullEnemy(float const dt, GameManager& g, TypingEnemyEntity& e, FlowPla
             }
         }
     }
+}
+
+void DrawPullEnemy(float const dt, GameManager& g, TypingEnemyEntity& e, Transform const &renderTrans, bool hittable, bool showControllerInputs) {
+    double const beatTime = g._beatClock->GetBeatTimeFromEpoch();
+
+    DrawText(g, e, renderTrans, hittable, showControllerInputs);
     
     int constexpr kNumStepsX = 2;
     int constexpr kNumStepsZ = 2;
@@ -408,7 +410,7 @@ void DrawPullEnemy(float const dt, GameManager& g, TypingEnemyEntity& e, FlowPla
     // We adjust the scale of localToWorld AFTER setting subdivMat so that
     // changing the scale of localToWorld doesn't make the subdiv dudes
     // bigger
-    if (e._s._flowCooldownStartBeatTime > 0.f || !e._s._hittable || !playerWithinRadius) {
+    if (!hittable) {
         color._x *= 0.5f;
         color._y *= 0.5f;
         color._z *= 0.5f;
@@ -459,8 +461,8 @@ void DrawPullEnemy(float const dt, GameManager& g, TypingEnemyEntity& e, FlowPla
     }
 }
 
-void DrawPushEnemy(float const dt, GameManager& g, TypingEnemyEntity& e, FlowPlayerEntity const* player) {
-    DrawPullEnemy(dt, g, e, player);
+void DrawPushEnemy(float const dt, GameManager& g, TypingEnemyEntity& e, Transform const &renderTrans, bool hittable, bool showControllerInputs) {
+    DrawPullEnemy(dt, g, e, renderTrans, hittable, showControllerInputs);
 }
 }
 
@@ -497,18 +499,56 @@ void TypingEnemyEntity::UpdateDerived(GameManager& g, float dt) {
 }
 
 void TypingEnemyEntity::Draw(GameManager& g, float dt) {
+    bool showControllerInputs;
+    if (g._editMode) {
+        showControllerInputs = g._editor->_showControllerInputs;
+    } else {
+        showControllerInputs = g._inputManager->IsUsingController();
+    }
+
+    Transform renderTrans = _transform;
+    // Apply bump logic
+    if (_s._bumpTimer >= 0.f) {
+        float constexpr kTotalBumpTime = 0.1f;
+        float constexpr kBumpAmount = 0.15f;
+        float factor = math_util::Clamp(_s._bumpTimer / kTotalBumpTime, 0.f, 1.f);
+        factor = math_util::Triangle(factor);
+        float dist = factor * kBumpAmount;
+        Vec3 p = renderTrans.Pos();
+        p += _s._bumpDir * dist;
+        renderTrans.SetPos(p);
+        _s._bumpTimer += dt;
+        if (_s._bumpTimer > kTotalBumpTime) {
+            _s._bumpTimer = -1.f;
+        }
+    }
 
     FlowPlayerEntity* player = static_cast<FlowPlayerEntity*>(g._neEntityManager->GetFirstEntityOfType(ne::EntityType::FlowPlayer));
 
+    bool playerWithinRadius = true;
+    // TODO: we're computing twice per frame whether enemies are within this radius. BORING    
+    if (player) {
+        playerWithinRadius = PlayerWithinRadius(*player, *this, g);
+    }
+
+    bool hittable = _s._flowCooldownStartBeatTime <= 0.f && _s._hittable && playerWithinRadius;
+
+    if (_p._justDrawModel) {
+        BaseEntity::Draw(g, dt);
+        DrawText(g, *this, renderTrans, hittable, showControllerInputs);
+        return;
+    }    
+
+    // TODO: pass the above data into DrawPullEnemy too
     switch (_p._hitResponse._type) {
         case HitResponseType::None:
-            DrawPullEnemy(dt, g, *this, player);
+            DrawPullEnemy(dt, g, *this, renderTrans, hittable, showControllerInputs);
             break;
         case HitResponseType::Pull:
-            DrawPullEnemy(dt, g, *this, player);
+            DrawPullEnemy(dt, g, *this, renderTrans, hittable, showControllerInputs);
             break;
         case HitResponseType::Push:
-            DrawPushEnemy(dt, g, *this, player);
+            DrawPushEnemy(dt, g, *this, renderTrans, hittable, showControllerInputs);
             break;
         case HitResponseType::Count:
             assert(false);

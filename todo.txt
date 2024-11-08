@@ -29,6 +29,9 @@ BUGS:
 - Our controller support is SUPER BUSTED, DUDE!!!!! But that's a later problem.
 
 TOOLS:
+- axis widget should have X be RED
+- imgui EditorId selector that can constrain to a specific type
+- "musical savestates" that will change patches, launch sequencers, etc for editing
 - Find a way to set lengths based on musical timings more easily.
 - Support SynthParams in BeatTimeEvents
 - Enable setting a new global beat time epoch
@@ -36,10 +39,16 @@ TOOLS:
 - VST of my synth
 - support arbitrary sample rates by converting sound files
 - make platform its own entity
+- switch between edit/play without closing program
+- dropdown for model select
+- dropdown for patch select for intvariable (and others?)
+- figure out stable euler angles. use that code you saw once
 
 Optimizations/improvements/etc:
 - Allow Solo/Mute/Gain on seq tracks.
 - velocity should use exponential curve
 - Use an arena when loading so we don't have all this allocations for GetChildren().
 - DELAY ON PCM PLAYBACK!!!!
+- better font handling
+- avoid allocations when drawing enemy text
  
