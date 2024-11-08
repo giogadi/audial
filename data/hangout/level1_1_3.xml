@@ -4858,7 +4858,7 @@
                         <w>1</w>
                     </quat>
                     <scale>
-                        <x>2</x>
+                        <x>2.2402403</x>
                         <y>1</y>
                         <z>1</z>
                     </scale>
@@ -7810,7 +7810,7 @@
                     <stop_on_pass>true</stop_on_pass>
                     <stop_after_timer>false</stop_after_timer>
                 </last_hit_response>
-                <text>j</text>
+                <text>k</text>
                 <buttons>a</buttons>
                 <type_kill>true</type_kill>
                 <all_actions_on_hit>true</all_actions_on_hit>
@@ -8222,9 +8222,9 @@
                 <pickable>true</pickable>
                 <transform>
                     <pos>
-                        <x>0.21181488</x>
+                        <x>0.31992292</x>
                         <y>0</y>
-                        <z>-9.351387</z>
+                        <z>-9.375411</z>
                     </pos>
                     <quat>
                         <x>0</x>
@@ -8233,9 +8233,9 @@
                         <w>1</w>
                     </quat>
                     <scale>
-                        <x>1</x>
+                        <x>1.8168159</x>
                         <y>1</y>
-                        <z>1</z>
+                        <z>1.1681671</z>
                     </scale>
                 </transform>
                 <model_name></model_name>
@@ -8396,9 +8396,9 @@
                         <w>1</w>
                     </quat>
                     <scale>
-                        <x>2.2</x>
+                        <x>2.4162164</x>
                         <y>1</y>
-                        <z>1.25</z>
+                        <z>1.274024</z>
                     </scale>
                 </transform>
                 <model_name></model_name>
@@ -11273,7 +11273,7 @@
                     <stop_on_pass>true</stop_on_pass>
                     <stop_after_timer>false</stop_after_timer>
                 </last_hit_response>
-                <text>j</text>
+                <text>k</text>
                 <buttons>a</buttons>
                 <type_kill>true</type_kill>
                 <all_actions_on_hit>true</all_actions_on_hit>
@@ -11893,7 +11893,7 @@
                     <stop_on_pass>true</stop_on_pass>
                     <stop_after_timer>false</stop_after_timer>
                 </last_hit_response>
-                <text>j</text>
+                <text>k</text>
                 <buttons>a</buttons>
                 <type_kill>true</type_kill>
                 <all_actions_on_hit>true</all_actions_on_hit>
@@ -12302,7 +12302,7 @@
                             <wait_time>0</wait_time>
                             <move_time>4</move_time>
                             <p>
-                                <x>-7.5999999</x>
+                                <x>7.5999999</x>
                                 <y>0</y>
                                 <z>0</z>
                             </p>
@@ -12571,7 +12571,7 @@
                     <stop_on_pass>true</stop_on_pass>
                     <stop_after_timer>false</stop_after_timer>
                 </last_hit_response>
-                <text>j</text>
+                <text>k</text>
                 <buttons>a</buttons>
                 <type_kill>true</type_kill>
                 <all_actions_on_hit>true</all_actions_on_hit>
@@ -13183,7 +13183,7 @@
                     <stop_on_pass>true</stop_on_pass>
                     <stop_after_timer>false</stop_after_timer>
                 </last_hit_response>
-                <text>j</text>
+                <text>k</text>
                 <buttons>a</buttons>
                 <type_kill>true</type_kill>
                 <all_actions_on_hit>true</all_actions_on_hit>
@@ -13855,7 +13855,7 @@
                 <pickable>true</pickable>
                 <transform>
                     <pos>
-                        <x>20.759415</x>
+                        <x>20.585241</x>
                         <y>0</y>
                         <z>20.497236</z>
                     </pos>
@@ -13866,7 +13866,7 @@
                         <w>1</w>
                     </quat>
                     <scale>
-                        <x>2.9699707</x>
+                        <x>3.3183174</x>
                         <y>1</y>
                         <z>6</z>
                     </scale>
@@ -14020,7 +14020,7 @@
                     <stop_on_pass>true</stop_on_pass>
                     <stop_after_timer>false</stop_after_timer>
                 </last_hit_response>
-                <text>j</text>
+                <text>k</text>
                 <buttons>a</buttons>
                 <type_kill>true</type_kill>
                 <all_actions_on_hit>true</all_actions_on_hit>
@@ -14698,7 +14698,7 @@
                     <stop_on_pass>true</stop_on_pass>
                     <stop_after_timer>false</stop_after_timer>
                 </last_hit_response>
-                <text>j</text>
+                <text>k</text>
                 <buttons>a</buttons>
                 <type_kill>true</type_kill>
                 <all_actions_on_hit>true</all_actions_on_hit>
@@ -15279,7 +15279,7 @@
                     <stop_on_pass>true</stop_on_pass>
                     <stop_after_timer>false</stop_after_timer>
                 </last_hit_response>
-                <text>j</text>
+                <text>k</text>
                 <buttons>a</buttons>
                 <type_kill>true</type_kill>
                 <all_actions_on_hit>true</all_actions_on_hit>
@@ -16027,7 +16027,7 @@
                     <stop_on_pass>true</stop_on_pass>
                     <stop_after_timer>false</stop_after_timer>
                 </last_hit_response>
-                <text>j</text>
+                <text>k</text>
                 <buttons>a</buttons>
                 <type_kill>true</type_kill>
                 <all_actions_on_hit>true</all_actions_on_hit>
@@ -16221,7 +16221,7 @@
                     <stop_on_pass>true</stop_on_pass>
                     <stop_after_timer>false</stop_after_timer>
                 </last_hit_response>
-                <text>j</text>
+                <text>k</text>
                 <buttons>a</buttons>
                 <type_kill>true</type_kill>
                 <all_actions_on_hit>true</all_actions_on_hit>
@@ -28590,9 +28590,9 @@
                         <w>1</w>
                     </quat>
                     <scale>
-                        <x>1</x>
+                        <x>2.201201</x>
                         <y>1</y>
-                        <z>1</z>
+                        <z>1.120121</z>
                     </scale>
                 </transform>
                 <model_name></model_name>
@@ -30834,9 +30834,9 @@
                 <pickable>true</pickable>
                 <transform>
                     <pos>
-                        <x>9.7952528</x>
+                        <x>9.3868446</x>
                         <y>0</y>
-                        <z>-17.290728</z>
+                        <z>-18.714151</z>
                     </pos>
                     <quat>
                         <x>0</x>
@@ -30847,7 +30847,7 @@
                     <scale>
                         <x>0.95195198</x>
                         <y>1</y>
-                        <z>13.612613</z>
+                        <z>16.459461</z>
                     </scale>
                 </transform>
                 <model_name>cube</model_name>
