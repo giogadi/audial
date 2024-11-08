@@ -859,7 +859,7 @@ void SetEntityActiveSeqAction::ExecuteDerived(GameManager& g) {
     if (_entitiesTag >= 0) {
         g._neEntityManager->FindEntitiesByTag(_entitiesTag, includeActive, includeInactive, &entities);
     }
-    if (ne::Entity* e = g._neEntityManager->GetActiveOrInactiveEntity(_entityId)) {
+    if (ne::Entity* e = g._neEntityManager->GetEntity(_entityId, includeActive, includeInactive)) {
         entities.push_back(e);
     }
     if (_active) {
@@ -870,9 +870,6 @@ void SetEntityActiveSeqAction::ExecuteDerived(GameManager& g) {
     else {
         for (ne::Entity* e : entities) {
             g._neEntityManager->TagForDeactivate(e->_id);
-            if (e->_name == "r-1_dink_seq") {
-                printf("HOWDY: %s\n", e->_name.c_str());
-            }
         }
     }
 }
