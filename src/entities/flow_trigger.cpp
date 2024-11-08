@@ -30,9 +30,6 @@ void FlowTriggerEntity::InitDerived(GameManager& g) {
     _isTriggering = false;
 
     _didInitTrigger = false;
-    if (_name == "r0_reset_trigger") {
-        printf("HOWDY!\n");
-    }
 }
 
 void FlowTriggerEntity::SaveDerived(serial::Ptree pt) const {
