@@ -19265,7 +19265,7 @@
                     <id>491</id>
                 </editor_id>
                 <name>r0_n67</name>
-                <entity_active>true</entity_active>
+                <entity_active>false</entity_active>
                 <pickable>true</pickable>
                 <transform>
                     <pos>
@@ -26422,6 +26422,30 @@
                         <use_patch_bank>true</use_patch_bank>
                         <patch_name>bass0</patch_name>
                     </seq_action>
+                    <seq_action>
+                        <one_time>false</one_time>
+                        <action_type>CameraControl</action_type>
+                        <setTarget>true</setTarget>
+                        <jumpToTarget>false</jumpToTarget>
+                        <targetEditorId>
+                            <id>682</id>
+                        </targetEditorId>
+                        <targetTrackingFactor>0.050000001</targetTrackingFactor>
+                        <setOffset>true</setOffset>
+                        <desiredTargetToCameraOffset>
+                            <x>0</x>
+                            <y>10</y>
+                            <z>0</z>
+                        </desiredTargetToCameraOffset>
+                        <hasMinX>false</hasMinX>
+                        <minX>0</minX>
+                        <hasMinZ>false</hasMinZ>
+                        <minZ>0</minZ>
+                        <hasMaxX>false</hasMaxX>
+                        <maxX>0</maxX>
+                        <hasMaxZ>false</hasMaxZ>
+                        <maxZ>0</maxZ>
+                    </seq_action>
                 </actions>
                 <actions_on_exit/>
                 <trigger_volume_entities/>
@@ -28076,7 +28100,7 @@
                     <z>0</z>
                     <w>1</w>
                 </model_color_vec4>
-                <flow_section_id>1</flow_section_id>
+                <flow_section_id>0</flow_section_id>
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>FollowEntity</mode>
@@ -28229,7 +28253,7 @@
                     <z>0</z>
                     <w>1</w>
                 </model_color_vec4>
-                <flow_section_id>1</flow_section_id>
+                <flow_section_id>0</flow_section_id>
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>FollowEntity</mode>
@@ -28603,7 +28627,7 @@
                     <z>0.80000001</z>
                     <w>1</w>
                 </model_color_vec4>
-                <flow_section_id>1</flow_section_id>
+                <flow_section_id>0</flow_section_id>
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
@@ -28713,7 +28737,7 @@
                     <z>0.80000001</z>
                     <w>1</w>
                 </model_color_vec4>
-                <flow_section_id>1</flow_section_id>
+                <flow_section_id>0</flow_section_id>
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
@@ -29541,7 +29565,7 @@
                     <z>0</z>
                     <w>1</w>
                 </model_color_vec4>
-                <flow_section_id>1</flow_section_id>
+                <flow_section_id>0</flow_section_id>
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>FollowEntity</mode>
@@ -29728,7 +29752,7 @@
                     <z>0</z>
                     <w>1</w>
                 </model_color_vec4>
-                <flow_section_id>1</flow_section_id>
+                <flow_section_id>0</flow_section_id>
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>FollowEntity</mode>
@@ -30123,9 +30147,9 @@
                         <w>1</w>
                     </quat>
                     <scale>
-                        <x>1</x>
+                        <x>2.1805553</x>
                         <y>1</y>
-                        <z>1</z>
+                        <z>1.1388874</z>
                     </scale>
                 </transform>
                 <model_name></model_name>
@@ -30136,7 +30160,7 @@
                     <z>0.80000001</z>
                     <w>1</w>
                 </model_color_vec4>
-                <flow_section_id>1</flow_section_id>
+                <flow_section_id>0</flow_section_id>
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
@@ -30222,7 +30246,7 @@
                     <z>0.80000001</z>
                     <w>1</w>
                 </model_color_vec4>
-                <flow_section_id>1</flow_section_id>
+                <flow_section_id>0</flow_section_id>
                 <tag>0</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
@@ -30881,6 +30905,54 @@
                 <hit_actions/>
                 <children_editor_ids/>
             </FlowWall>
+            <Base>
+                <editor_id>
+                    <id>682</id>
+                </editor_id>
+                <name>r-1_camera_target_-1</name>
+                <entity_active>true</entity_active>
+                <pickable>true</pickable>
+                <transform>
+                    <pos>
+                        <x>6.9990001</x>
+                        <y>0</y>
+                        <z>-21.104</z>
+                    </pos>
+                    <quat>
+                        <x>0</x>
+                        <y>0</y>
+                        <z>0</z>
+                        <w>1</w>
+                    </quat>
+                    <scale>
+                        <x>1</x>
+                        <y>1</y>
+                        <z>1</z>
+                    </scale>
+                </transform>
+                <model_name></model_name>
+                <texture_name></texture_name>
+                <model_color_vec4>
+                    <x>0.80000001</x>
+                    <y>0.80000001</y>
+                    <z>0.80000001</z>
+                    <w>1</w>
+                </model_color_vec4>
+                <flow_section_id>-1</flow_section_id>
+                <tag>0</tag>
+                <waypoint_follower>
+                    <mode>Waypoint</mode>
+                    <waypoint_auto_start>false</waypoint_auto_start>
+                    <loop_waypoints>false</loop_waypoints>
+                    <start_time>3</start_time>
+                    <quantize>1</quantize>
+                    <quantize_buffer>0</quantize_buffer>
+                    <waypoints/>
+                    <follow_entity_editor_id>
+                        <id>-1</id>
+                    </follow_entity_editor_id>
+                </waypoint_follower>
+            </Base>
         </new_entities>
     </script>
 </root>
