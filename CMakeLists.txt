@@ -169,11 +169,17 @@ target_include_directories(game PUBLIC src/portaudio/include)
 target_include_directories(game PUBLIC
     ./ ./src src/glfw/include src/glad/include src/imgui)
 
+#fftw
 if(MSVC)
 else()
     target_include_directories(game PUBLIC src/fftw/)
     target_link_libraries(game ${CMAKE_SOURCE_DIR}/src/fftw/libfftw3.a)
 endif()
+
+# libsamplerate
+add_subdirectory(src/libsamplerate EXCLUDE_FROM_ALL)
+target_link_libraries(game samplerate)
+target_include_directories(game PUBLIC src/libsamplerate/src/include)
 
 
 add_executable(font_tool EXCLUDE_FROM_ALL src/font_tool.cpp)
@@ -289,7 +295,11 @@ target_link_libraries(c_property_test glfw)
 target_include_directories(c_property_test PUBLIC
     src/glfw/include src/glad/include)
 
-
+add_executable(resample_test EXCLUDE_FROM_ALL
+    src/resample_test.c)
+target_link_libraries(resample_test samplerate)
+target_link_libraries(resample_test PortAudio)
+target_include_directories(resample_test PUBLIC src/libsamplerate/src/include)
 
 if (MSVC)
 else()
