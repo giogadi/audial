@@ -4,6 +4,7 @@
 
 #include "imgui/imgui.h"
 #include "imgui_util.h"
+#include "new_entity.h"
 
 namespace imgui_util {
 
@@ -94,6 +95,33 @@ inline bool InputVector(std::vector<T>& v, InputVectorOptions options = InputVec
     }
 
     return changed;
+}
+
+template <typename MemberType, typename StructType>
+void SetMemberOfStructs(MemberType newValue, MemberType(StructType::*memberPtr), StructType *elements, std::size_t elementCount) {
+    for (int ii = 0; ii < elementCount; ++ii) {
+        StructType &e = elements[ii];
+        (e.*memberPtr) = newValue;
+    }
+}
+
+template <typename TMemberType, typename TEntityType>
+void SetMemberOfEntities(TMemberType(TEntityType::*memberPtr), TEntityType const &example, ne::BaseEntity **entities, std::size_t entityCount) {
+    for (int ii = 0; ii < entityCount; ++ii) {
+        ne::BaseEntity *base = entities[ii];
+        TEntityType *e = base->As<TEntityType>();
+        (e->*memberPtr) = (example.*memberPtr);
+    }
+}
+
+template <typename TMemberType, typename TEntityType>
+void SetMemberOfEntities(TMemberType(TEntityType::Props::*memberPtr), TEntityType const &example, ne::BaseEntity **entities, std::size_t entityCount) {
+    for (int ii = 0; ii < entityCount; ++ii) {
+        ne::BaseEntity *base = entities[ii];
+        TEntityType *e = base->As<TEntityType>();
+        assert(e);
+        e->_p.*memberPtr = example._p.*memberPtr;
+    }
 }
 
 }

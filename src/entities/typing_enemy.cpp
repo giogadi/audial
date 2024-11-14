@@ -18,6 +18,7 @@
 #include "string_util.h"
 #include "particle_mgr.h"
 #include "entities/particle_emitter.h"
+#include "imgui_vector_util.h"
 
 extern GameManager gGameManager;
 
@@ -272,10 +273,11 @@ ne::BaseEntity::ImGuiResult TypingEnemyEntity::MultiImGui(GameManager& g, BaseEn
     bool needsInit = false;
 
     if (ImGui::Checkbox("Kill on type", &_p._destroyAfterTyped)) {
-        for (size_t ii = 0; ii < entityCount; ++ii) {
+        /*for (size_t ii = 0; ii < entityCount; ++ii) {
             TypingEnemyEntity* e = entities[ii]->As<TypingEnemyEntity>();
             e->_p._destroyAfterTyped = _p._destroyAfterTyped;
-        }
+        }*/
+        imgui_util::SetMemberOfEntities(&Props::_destroyAfterTyped, *this, entities, entityCount);
     }
 
     return needsInit ? ne::BaseEntity::ImGuiResult::NeedsInit : ne::BaseEntity::ImGuiResult::Done;
