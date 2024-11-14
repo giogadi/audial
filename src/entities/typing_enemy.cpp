@@ -323,6 +323,8 @@ bool PlayerWithinRadius(FlowPlayerEntity const& player, TypingEnemyEntity const&
             return true;
         }
     }
+    assert(false);
+    return true;
 }
 
 void DrawTicks(int activeCount, int totalCount, float const dt, Transform const& renderTrans, float scale, GameManager& g, TypingEnemyEntity& e) {

@@ -202,6 +202,8 @@ PaError Init(
         return err;
     }
 
+    context._outputParameters = {0};
+
     context._outputSampleRate = kPreferredSampleRate;
     std::vector<PaError> errors;
 #ifdef _WIN32
@@ -230,11 +232,13 @@ PaError Init(
     double sampleRate = kPreferredSampleRate;
     err = Pa_IsFormatSupported(0, &params, sampleRate);
     if (err) {
-        // TODO: show previous error        
+        // TODO: show previous error
         sampleRate = pDeviceInfo->defaultSampleRate;
         err = Pa_IsFormatSupported(0, &params, sampleRate);
         if (err) {
             printf("Default device does not support required audio formats.\n");
+        } else {
+            printf("Your audio device is set to an audio rate of %d. This will work, but you may experience better performance if you use this game's preferred audio rate of %d.\n", (int)sampleRate, kPreferredSampleRate);
         }
     }
     context._outputSampleRate = (int)sampleRate;
@@ -522,13 +526,12 @@ void FillBufferAndResample(StateData *state, float *outputBuffer, unsigned long 
 
 #if 1    
     // RESAMPLE using numInputFramesGenerated from gInternalBuffer!
-    SRC_DATA resampleData = {
-        .data_in = gInternalBuffer,
-        .data_out = outputBuffer,
-        .input_frames = numInputFramesGenerated,
-        .output_frames = (long)framesPerBuffer,
-        .src_ratio = (double)state->outputSampleRate / (double) INTERNAL_SR
-    }; 
+    SRC_DATA resampleData = {0};
+    resampleData.data_in = gInternalBuffer;
+    resampleData.data_out = outputBuffer;
+    resampleData.input_frames = numInputFramesGenerated;
+    resampleData.output_frames = (long)framesPerBuffer;
+    resampleData.src_ratio = (double)state->outputSampleRate / (double)INTERNAL_SR;
     int srcErr = src_process(gSrcState, &resampleData);
     if (srcErr) {
         printf("Audio error: src_process error: %s\n", src_strerror(srcErr));
