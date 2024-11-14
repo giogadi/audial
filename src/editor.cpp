@@ -850,6 +850,7 @@ void Editor::DrawWindow() {
     // Entities  
     if (ImGui::BeginListBox("Entities")) {
         for (auto entityIdIter = _entityIds.begin(); entityIdIter != _entityIds.end(); /*no inc*/) {
+            int const entityIx = std::distance(_entityIds.begin(), entityIdIter);
             ne::EntityId& entityId = *entityIdIter;
             ne::Entity* entity = _g->_neEntityManager->GetActiveOrInactiveEntity(entityId);
 
@@ -891,10 +892,39 @@ void Editor::DrawWindow() {
             bool selected = _selectedEntityIds.find(entityId) != _selectedEntityIds.end();
             bool clicked = ImGui::Selectable(entity->_name.c_str(), selected);
             if (clicked) {
-                if (ImGui::IsKeyDown(ImGuiKey_LeftShift) ||
-                    ImGui::IsKeyDown(ImGuiKey_RightShift)) {
+                if (ImGui::IsKeyDown(ImGuiKey_LeftCtrl) ||
+                    ImGui::IsKeyDown(ImGuiKey_RightCtrl)) {
                     int numErased = _selectedEntityIds.erase(entityId);
                     if (numErased == 0) {
+                        _selectedEntityIds.insert(entityId);
+                    }
+                } else if (ImGui::IsKeyDown(ImGuiKey_LeftShift) ||
+                    ImGui::IsKeyDown(ImGuiKey_RightShift)) {
+                    if (!_selectedEntityIds.empty()) {
+                        ne::EntityId prevSelected = *_selectedEntityIds.begin();
+                        // Find index of this dude
+                        int prevEntityIx = -1;
+                        for (int ii = 0; ii < _entityIds.size(); ++ii) {
+                            if (_entityIds[ii] == prevSelected) {
+                                prevEntityIx = ii;
+                                break;
+                            }
+                        }
+                        if (prevEntityIx < 0) {
+                            printf("Editor: Uh, selected entity ID not in _entityIds?\n");
+                            prevEntityIx = 0;
+                        }
+                        int thisEntityIx = entityIx;
+                        if (prevEntityIx > thisEntityIx) {
+                            // swap
+                            int temp = prevEntityIx;
+                            prevEntityIx = thisEntityIx;
+                            thisEntityIx = temp;
+                        }
+                        for (int ii = prevEntityIx; ii <= thisEntityIx; ++ii) {
+                            _selectedEntityIds.insert(_entityIds[ii]);
+                        }
+                    } else {
                         _selectedEntityIds.insert(entityId);
                     }
                 } else {

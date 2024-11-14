@@ -23,12 +23,14 @@ Ideas
   - maybe can use them as platforms or walls that change length? 
 
 Near-term ideas:
+- What if we prime the player with an example rhythm and then let them go at it themselves?
 - add fun and weird shader effects (mirror, upside down, whatever) with every loop in the hangout buildup
 
 BUGS:
 - Our controller support is SUPER BUSTED, DUDE!!!!! But that's a later problem.
 
 TOOLS:
+- make soundbank not shit
 - DICTIONARY
 - imgui EditorId selector that can constrain to a specific type
 - "musical savestates" that will change patches, launch sequencers, etc for editing
