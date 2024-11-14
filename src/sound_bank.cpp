@@ -74,14 +74,7 @@ void SoundBank::LoadSounds(int sampleRate) {
     };
     assert(_soundNames.size() == _exclusiveGroups.size());
     char filename[1024];
-    if (sampleRate == 44100) {
-        strcpy(filename, "data/sounds/sr44100/");
-    } else {
-        if (sampleRate != 48000) {
-            printf("SoundBank: WARNING unhandled sample rate: %d\n", sampleRate);
-        }
-        strcpy(filename, "data/sounds/");
-    }
+    strcpy(filename, "data/sounds/");
     int nameStartIx = strlen(filename);
     char* nameStart = &(filename[nameStartIx]);
     for (int i = 0, n = _soundNames.size(); i < n; ++i) {        
@@ -95,9 +88,9 @@ void SoundBank::LoadSounds(int sampleRate) {
             printf("SoundBank: error loading sample \"%s\"\n", _soundNames[i]);
         }
         assert(numChannels == 1);
-        // if (thisSampleRate != sampleRate) {
-        //     printf("SoundBank: WARNING expected sample rate of %d, but sample \"%s\" is %u\n", sampleRate, _soundNames[i], thisSampleRate);
-        // }
+        if (thisSampleRate != sampleRate) {
+            printf("SoundBank: WARNING expected sample rate of %d, but sample \"%s\" is %u\n", sampleRate, _soundNames[i], thisSampleRate);
+        }
         assert(sound._buffer != nullptr);
         _sounds.push_back(std::move(sound));
     }
