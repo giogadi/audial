@@ -37,7 +37,7 @@ struct PendingEventHeap {
 };
 
 struct StateData {
-    int sampleRate = -1;
+    int outputSampleRate = -1;
 
     std::array<synth::StateData,kNumSynths> synths;
 
@@ -59,7 +59,7 @@ struct StateData {
 void InitStateData(
     StateData& state,
     SoundBank const& soundBank,
-    EventQueue* eventQueue, int sampleRate);
+    EventQueue* eventQueue, int outputSampleRate);
 void DestroyStateData(StateData& state);
 
 int PortAudioCallback(
@@ -70,7 +70,7 @@ int PortAudioCallback(
     void *userData);
 
 struct Context {
-    int _sampleRate = -1;
+    int _outputSampleRate = -1;
     PaStreamParameters _outputParameters;
     PaStream* _stream = nullptr;
     StateData _state;
@@ -86,6 +86,7 @@ struct Context {
         }
         return success;
     }
+    int InternalSampleRate() const;
 };
 
 PaError Init(

@@ -304,10 +304,8 @@ void SeqAction::LoadAndInitActions(GameManager& g, std::istream& input, std::vec
     double startBeatTime = 0.0;
     SeqAction::LoadInputs loadInputs;
     loadInputs._beatTimeOffset = 0.0;
-    loadInputs._sampleRate = g._audioContext->_sampleRate;
     std::string line;
     std::string token;
-    int nextSectionId = 0;    
     while (!input.eof()) {
         std::getline(input, line);
         // If it's empty, skip.

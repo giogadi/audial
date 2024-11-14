@@ -318,6 +318,10 @@ bool PlayerWithinRadius(FlowPlayerEntity const& player, TypingEnemyEntity const&
             bool inside = orthogLen2 < halfZScale*halfZScale;
             return inside;
         }
+        case EnemyRegionType::Count: {
+            assert(false);
+            return true;
+        }
     }
 }
 

@@ -84,8 +84,8 @@ void TypingSliderEntity::Draw(GameManager& g, float dt) {
     Transform renderTrans = _transform;
 
     float constexpr kTextSize = 1.5f;
-    float constexpr kFadeAlpha = 0.2f;
 #if 0
+    float constexpr kFadeAlpha = 0.2f;
     Vec4 constexpr kFadeColor(1.f, 1.f, 1.f, kFadeAlpha);
     Vec4 constexpr kActiveColor(1.f, 1.f, 0.f, 1.f);
     Vec4 constexpr kReadyColor(1.f, 1.f, 1.f, 1.f);

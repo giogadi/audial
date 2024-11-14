@@ -404,7 +404,7 @@ int main(int argc, char** argv) {
         }
     }    
 
-    soundBank.LoadSounds(audioContext._sampleRate);
+    soundBank.LoadSounds(audioContext.InternalSampleRate());
 
     // Initialize synth to starting patches.
     {
@@ -425,11 +425,12 @@ int main(int argc, char** argv) {
         }
     }
 
+    // TODO: figure out how FFT works with internal/output sample rates
     int const bufferFrameCount = audioContext._state._bufferFrameCount;
     gDftCount = bufferFrameCount / 2;
     gDft = new double[gDftCount]();
     double* dftFreqs = new double[gDftCount]();
-    float sampleRate = (float) audioContext._sampleRate;
+    float sampleRate = (float) audioContext._outputSampleRate;
     for (int i = 0; i < gDftCount; ++i) {
         dftFreqs[i] = (i+1) * sampleRate / bufferFrameCount;
     }
@@ -521,7 +522,7 @@ int main(int argc, char** argv) {
         neEntityManager.Init();
 
         double bpm = pt.GetChild("root").GetChild("script").GetDouble("bpm");
-        beatClock.Init(gGameManager, bpm, audioContext._sampleRate);
+        beatClock.Init(gGameManager, bpm);
         beatClock.Update(gGameManager);        
 
         {

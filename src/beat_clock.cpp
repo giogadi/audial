@@ -2,9 +2,8 @@
 
 #include "audio.h"
 
-void BeatClock::Init(GameManager& g, double bpm, double sampleRate) {
+void BeatClock::Init(GameManager& g, double bpm) {
     _bpm = bpm;
-    _sampleRate = sampleRate;
     double audioTimeNow = Pa_GetStreamTime(g._audioContext->_stream);
     _currentAudioTime = audioTimeNow;
     _currentBeatTime = -1.0;

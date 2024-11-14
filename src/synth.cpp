@@ -66,15 +66,15 @@ float GenerateNoise(rng::State& rng) {
 int constexpr kDelayBufferCount = 2 * 65536;
 }  // namespace
 
-void InitStateData(StateData& state, int channel, int const sampleRate, int const samplesPerFrame, int const numBufferChannels) {
+void InitStateData(StateData& state, int channel, int const sampleRate, int const framesPerBuffer, int const numBufferChannels) {
     state = StateData();
     state.channel = channel;
-    state.voiceScratchBuffer = new float[samplesPerFrame * numBufferChannels];
-    state.synthScratchBuffer = new float[samplesPerFrame * numBufferChannels];
+    state.voiceScratchBuffer = new float[framesPerBuffer * numBufferChannels];
+    state.synthScratchBuffer = new float[framesPerBuffer * numBufferChannels];
     state.sampleRate = sampleRate;
-    state.framesPerBuffer = samplesPerFrame;
+    state.framesPerBuffer = framesPerBuffer;
     
-    state.samplesPerMoogCutoffUpdate = std::min(samplesPerFrame, kSamplesPerCutoffEnvModulate);
+    state.samplesPerMoogCutoffUpdate = std::min(framesPerBuffer, kSamplesPerCutoffEnvModulate);
 
     state.delayBuffer = new float[kDelayBufferCount];
     memset(state.delayBuffer, 0, kDelayBufferCount * sizeof(float));
@@ -165,7 +165,7 @@ struct ADSREnvSpecInTicks {
     float minValue = 0.01f;
 };
 
-void adsrEnvelope(ADSREnvSpecInTicks const& spec, int const samplesPerFrame, ADSREnvState& state) {
+void adsrEnvelope(ADSREnvSpecInTicks const& spec, int const framesPerBuffer, ADSREnvState& state) {
     switch (state.phase) {
         case ADSRPhase::Closed:
             state.currentValue = 0.f;
@@ -196,7 +196,7 @@ void adsrEnvelope(ADSREnvSpecInTicks const& spec, int const samplesPerFrame, ADS
             } else {
                 state.currentValue = (float)state.ticksSincePhaseStart / (float)spec.attackTime;
             }
-            state.ticksSincePhaseStart += samplesPerFrame;
+            state.ticksSincePhaseStart += framesPerBuffer;
             if (state.ticksSincePhaseStart >= spec.attackTime) {
                 state.phase = ADSRPhase::Decay;
                 state.ticksSincePhaseStart = 0;
@@ -209,11 +209,11 @@ void adsrEnvelope(ADSREnvSpecInTicks const& spec, int const samplesPerFrame, ADS
                     state.multiplier = 1.f;
                 } else {
                     state.currentValue = 1.f;
-                    state.multiplier = calcMultiplier(1.f, spec.sustainLevel, spec.decayTime / samplesPerFrame);
+                    state.multiplier = calcMultiplier(1.f, spec.sustainLevel, spec.decayTime / framesPerBuffer);
                 }
             }
             state.currentValue *= state.multiplier;
-            state.ticksSincePhaseStart += samplesPerFrame;
+            state.ticksSincePhaseStart += framesPerBuffer;
             if (state.ticksSincePhaseStart >= spec.decayTime) {
                 state.phase = ADSRPhase::Sustain;
                 state.ticksSincePhaseStart = 0;
@@ -232,11 +232,11 @@ void adsrEnvelope(ADSREnvSpecInTicks const& spec, int const samplesPerFrame, ADS
                     //
                     // TODO: calculate release from sustain to 0, or from
                     // current level to 0? I like sustain better.
-                    state.multiplier = calcMultiplier(spec.sustainLevel, spec.minValue, spec.releaseTime / samplesPerFrame);
+                    state.multiplier = calcMultiplier(spec.sustainLevel, spec.minValue, spec.releaseTime / framesPerBuffer);
                 }
             }
             state.currentValue *= state.multiplier;
-            state.ticksSincePhaseStart += samplesPerFrame;
+            state.ticksSincePhaseStart += framesPerBuffer;
             if (state.ticksSincePhaseStart >= spec.releaseTime) {
                 state.phase = ADSRPhase::Closed;
                 state.ticksSincePhaseStart = -1;
@@ -278,7 +278,7 @@ void ProcessVoice(Voice& voice, int const sampleRate, float pitchLFOValue,
     float modulatedCutoff, ADSREnvSpecInternal const& ampEnvSpec,
     ADSREnvSpecInternal const& cutoffEnvSpec,
     ADSREnvSpecInTicks const& pitchEnvSpec,
-    Patch const& patch, float* outputBuffer, int const numChannels, int const samplesPerFrame, int const samplesPerMoogCutoffUpdate,
+    Patch const& patch, float* outputBuffer, int const numChannels, int const framesPerBuffer, int const samplesPerMoogCutoffUpdate,
     float const* oscFaderGains) {
     float const dt = 1.f / sampleRate;
 
@@ -287,7 +287,7 @@ void ProcessVoice(Voice& voice, int const sampleRate, float pitchLFOValue,
         voice.postPortamentoF = voice.oscillators[0].f;
     }
 
-    float const framesPerOctave = patch.Get(SynthParamType::Portamento) * sampleRate / static_cast<float>(samplesPerFrame);
+    float const framesPerOctave = patch.Get(SynthParamType::Portamento) * sampleRate / static_cast<float>(framesPerBuffer);
     if (framesPerOctave <= 0.f) {
         voice.postPortamentoF = voice.oscillators[0].f;
     }
@@ -307,7 +307,7 @@ void ProcessVoice(Voice& voice, int const sampleRate, float pitchLFOValue,
     float modulatedF = voice.postPortamentoF * powf(2.0f, pitchLFOValue);
 
     // Modulate by pitch envelope.
-    adsrEnvelope(pitchEnvSpec, samplesPerFrame, voice.pitchEnvState);
+    adsrEnvelope(pitchEnvSpec, framesPerBuffer, voice.pitchEnvState);
     modulatedF *= powf(2.f, patch.Get(audio::SynthParamType::PitchEnvGain) * voice.pitchEnvState.currentValue);
     // TODO: clamp F?
 
@@ -380,7 +380,7 @@ void ProcessVoice(Voice& voice, int const sampleRate, float pitchLFOValue,
         switch (waveform) {
             case Waveform::Saw: {
                 int outputIx = 0;                
-                for (int sampleIx = 0; sampleIx < samplesPerFrame; ++sampleIx) {
+                for (int sampleIx = 0; sampleIx < framesPerBuffer; ++sampleIx) {
                     float oscV = 0.f;
                     for (int ii = 0; ii < unison; ++ii) {
                         if (osc.phases[ii] >= k2Pi) {
@@ -400,7 +400,7 @@ void ProcessVoice(Voice& voice, int const sampleRate, float pitchLFOValue,
             }
             case Waveform::Square: {
                 int outputIx = 0;
-                for (int sampleIx = 0; sampleIx < samplesPerFrame; ++sampleIx) {
+                for (int sampleIx = 0; sampleIx < framesPerBuffer; ++sampleIx) {
                     float oscV = 0.f;
                     for (int ii = 0; ii < unison; ++ii) {
                         if (osc.phases[ii] >= k2Pi) {
@@ -420,7 +420,7 @@ void ProcessVoice(Voice& voice, int const sampleRate, float pitchLFOValue,
             }
             case Waveform::Noise: {
                 int outputIx = 0;
-                for (int sampleIx = 0; sampleIx < samplesPerFrame; ++sampleIx) {
+                for (int sampleIx = 0; sampleIx < framesPerBuffer; ++sampleIx) {
                     float oscV = GenerateNoise(osc.rng);
                     oscV *= oscGain;
                     for (int channelIx = 0; channelIx < numChannels; ++channelIx) {
@@ -441,7 +441,7 @@ void ProcessVoice(Voice& voice, int const sampleRate, float pitchLFOValue,
         int outputIx = 0;
         int cutoffModulateCounter = 0;
         float gainFactor = voice.velocity * gain;
-        for (int sampleIx = 0; sampleIx < samplesPerFrame; ++sampleIx) {
+        for (int sampleIx = 0; sampleIx < framesPerBuffer; ++sampleIx) {
             float v = outputBuffer[outputIx];
 
             // Cutoff envelope
@@ -478,11 +478,12 @@ void ProcessFmVoice(Voice& voice, int const sampleRate, float pitchLFOValue,
     float modulatedCutoff, ADSREnvSpecInternal const& ampEnvSpec,
     ADSREnvSpecInternal const& cutoffEnvSpec,
     ADSREnvSpecInTicks const& pitchEnvSpec,
-    Patch const& patch, float* outputBuffer, int const numChannels, int const samplesPerFrame, int const samplesPerMoogCutoffUpdate) {
+    Patch const& patch, float* outputBuffer, int const numChannels, int const framesPerBuffer, int const samplesPerMoogCutoffUpdate) {
+    /*
     float const dt = 1.f / sampleRate;
 
     // portamento
-    /*
+    
     if (voice.postPortamentoF <= 0.f) {
         voice.postPortamentoF = voice.oscillators[0].f;
     }
@@ -634,7 +635,7 @@ void ProcessFmVoice(Voice& voice, int const sampleRate, float pitchLFOValue,
         float oscF = voice.oscillators[0].f * ratio;
         float phaseChange = 2 * kPi * oscF / sampleRate;
         int outputIx = 0;
-        for (int sampleIx = 0; sampleIx < samplesPerFrame; ++sampleIx) {
+        for (int sampleIx = 0; sampleIx < framesPerBuffer; ++sampleIx) {
             // modulator outputs values that will then be interpreted as phase offsets in the next pass
             if (osc.phases[0] >= k2Pi) {
                 osc.phases[0] -= k2Pi;
@@ -652,7 +653,7 @@ void ProcessFmVoice(Voice& voice, int const sampleRate, float pitchLFOValue,
     float oscF = osc.f;
     float phaseChange = 2 * kPi * oscF / sampleRate;
     int outputIx = 0;
-    for (int sampleIx = 0; sampleIx < samplesPerFrame; ++sampleIx) {
+    for (int sampleIx = 0; sampleIx < framesPerBuffer; ++sampleIx) {
         if (osc.phases[0] >= 2 * kPi) {
             osc.phases[0] -= 2 * kPi;
         }
@@ -888,13 +889,13 @@ void OnParamChange(StateData& state, audio::SynthParamType paramType, float newV
 }
 
 void Process(StateData* state, audio::PendingEvent *eventsThisFrame, int eventsThisFrameCount,
-    float* outputBuffer, int const numChannels, int const samplesPerFrame,
+    float* outputBuffer, int const numChannels, int const framesPerBuffer,
     int const sampleRate, int64_t currentBufferCounter) {
     
     Patch& patch = state->patch;
 
     // Handle all the events that will happen in this buffer frame.
-    int64_t frameStartTickTime = currentBufferCounter * samplesPerFrame;
+    int64_t bufferStartTickTime = currentBufferCounter * framesPerBuffer;
     for (int eventIx = 0; eventIx < eventsThisFrameCount; ++eventIx) {
         audio::Event const& e = eventsThisFrame[eventIx]._e; 
         if (e.channel != state->channel) {
@@ -940,7 +941,7 @@ void Process(StateData* state, audio::PendingEvent *eventsThisFrame, int eventsT
                     pA->_synthParamType = e.param;
                     pA->_startValue = patch.Get(e.param);
                     pA->_desiredValue = e.newParamValue;
-                    pA->_startTickTime = frameStartTickTime;
+                    pA->_startTickTime = bufferStartTickTime;
                     int64_t changeTimeInTicks = (int64_t) (e.paramChangeTimeSecs * sampleRate);
                     pA->_endTickTime = pA->_startTickTime + changeTimeInTicks;
                     for (Voice& v : state->voices) {
@@ -965,14 +966,14 @@ void Process(StateData* state, audio::PendingEvent *eventsThisFrame, int eventsT
         if (!a._active) {
             continue;
         }
-        if (frameStartTickTime > a._endTickTime) {
+        if (bufferStartTickTime > a._endTickTime) {
             patch.Get(a._synthParamType) = a._desiredValue;
             a._active = false;
             continue;
         }
         double totalTime = (double) (a._endTickTime - a._startTickTime);
         assert(totalTime != 0.0);
-        double timeSoFar = (double) (frameStartTickTime - a._startTickTime);
+        double timeSoFar = (double) (bufferStartTickTime - a._startTickTime);
         double factor = std::min(timeSoFar / totalTime, 1.0);
         float& currentValue = patch.Get(a._synthParamType);
         float newValue = -1.f;
@@ -995,7 +996,7 @@ void Process(StateData* state, audio::PendingEvent *eventsThisFrame, int eventsT
     }
     // Make LFO a sine wave.
     float const pitchLFOValue = patch.Get(SynthParamType::PitchLFOGain) * sinf(state->pitchLFOPhase);
-    state->pitchLFOPhase += (patch.Get(SynthParamType::PitchLFOFreq) * 2 * kPi * samplesPerFrame / sampleRate);
+    state->pitchLFOPhase += (patch.Get(SynthParamType::PitchLFOFreq) * 2 * kPi * framesPerBuffer / sampleRate);
 
     // Get cutoff LFO value
     if (state->cutoffLFOPhase >= k2Pi) {
@@ -1003,7 +1004,7 @@ void Process(StateData* state, audio::PendingEvent *eventsThisFrame, int eventsT
     }
     // Make LFO a sine wave for now.
     float const cutoffLFOValue = patch.Get(SynthParamType::CutoffLFOGain) * sinf(state->cutoffLFOPhase);
-    state->cutoffLFOPhase += (patch.Get(SynthParamType::CutoffLFOFreq) * 2 * kPi * samplesPerFrame / sampleRate);
+    state->cutoffLFOPhase += (patch.Get(SynthParamType::CutoffLFOFreq) * 2 * kPi * framesPerBuffer / sampleRate);
     // float const modulatedCutoff = patch.cutoffFreq * powf(2.0f, cutoffLFOValue);
     float const modulatedCutoff = math_util::Clamp(patch.Get(SynthParamType::Cutoff) + 10000 * cutoffLFOValue, 0.f, 20000.f);
 
@@ -1011,14 +1012,14 @@ void Process(StateData* state, audio::PendingEvent *eventsThisFrame, int eventsT
     ConvertADSREnvSpec(patch.GetPitchEnvSpec(), pitchEnvSpec, sampleRate);
 
     // zero out the synth scratch buffer
-    memset(state->synthScratchBuffer, 0, numChannels* samplesPerFrame * sizeof(float));
+    memset(state->synthScratchBuffer, 0, numChannels * framesPerBuffer * sizeof(float));
 
     if (patch.GetIsFm()) {
         for (Voice& voice : state->voices) {
             // zero out the voice scratch buffer.
-            memset(state->voiceScratchBuffer, 0, numChannels * samplesPerFrame * sizeof(float));
-            ProcessFmVoice(voice, sampleRate, pitchLFOValue, modulatedCutoff, state->ampEnvSpecInternal, state->cutoffEnvSpecInternal, pitchEnvSpec, patch, state->voiceScratchBuffer, numChannels, samplesPerFrame, state->samplesPerMoogCutoffUpdate);
-            for (int outputIx = 0; outputIx < numChannels * samplesPerFrame; ++outputIx) {
+            memset(state->voiceScratchBuffer, 0, numChannels * framesPerBuffer * sizeof(float));
+            ProcessFmVoice(voice, sampleRate, pitchLFOValue, modulatedCutoff, state->ampEnvSpecInternal, state->cutoffEnvSpecInternal, pitchEnvSpec, patch, state->voiceScratchBuffer, numChannels, framesPerBuffer, state->samplesPerMoogCutoffUpdate);
+            for (int outputIx = 0; outputIx < numChannels * framesPerBuffer; ++outputIx) {
                 state->synthScratchBuffer[outputIx] += state->voiceScratchBuffer[outputIx];
             }
         }
@@ -1030,9 +1031,9 @@ void Process(StateData* state, audio::PendingEvent *eventsThisFrame, int eventsT
 
         for (Voice& voice : state->voices) {
             // zero out the voice scratch buffer.
-            memset(state->voiceScratchBuffer, 0, numChannels * samplesPerFrame * sizeof(float));
-            ProcessVoice(voice, sampleRate, pitchLFOValue, modulatedCutoff, state->ampEnvSpecInternal, state->cutoffEnvSpecInternal, pitchEnvSpec, patch, state->voiceScratchBuffer, numChannels, samplesPerFrame, state->samplesPerMoogCutoffUpdate, oscFaderGains);
-            for (int outputIx = 0; outputIx < numChannels * samplesPerFrame; ++outputIx) {
+            memset(state->voiceScratchBuffer, 0, numChannels * framesPerBuffer * sizeof(float));
+            ProcessVoice(voice, sampleRate, pitchLFOValue, modulatedCutoff, state->ampEnvSpecInternal, state->cutoffEnvSpecInternal, pitchEnvSpec, patch, state->voiceScratchBuffer, numChannels, framesPerBuffer, state->samplesPerMoogCutoffUpdate, oscFaderGains);
+            for (int outputIx = 0; outputIx < numChannels * framesPerBuffer; ++outputIx) {
                 state->synthScratchBuffer[outputIx] += state->voiceScratchBuffer[outputIx];
             }     
         }        
@@ -1051,7 +1052,7 @@ void Process(StateData* state, audio::PendingEvent *eventsThisFrame, int eventsT
     assert(delayBufferReadIx < kDelayBufferCount);
     {
         int writeIx = state->delayBufferWriteIx;
-        for (int outputIx = 0; outputIx < numChannels * samplesPerFrame; ++outputIx) {
+        for (int outputIx = 0; outputIx < numChannels * framesPerBuffer; ++outputIx) {
             if (writeIx >= kDelayBufferCount) {
                 writeIx = 0;
             }
@@ -1060,13 +1061,13 @@ void Process(StateData* state, audio::PendingEvent *eventsThisFrame, int eventsT
         }
     }
     if (delayGain == 0.f) {
-        for (int outputIx = 0; outputIx < numChannels * samplesPerFrame; ++outputIx) {
+        for (int outputIx = 0; outputIx < numChannels * framesPerBuffer; ++outputIx) {
             outputBuffer[outputIx] += state->synthScratchBuffer[outputIx];
         }
     } else {
         int writeIx = state->delayBufferWriteIx;
         int readIx = delayBufferReadIx;
-        for (int outputIx = 0; outputIx < numChannels * samplesPerFrame; ++outputIx) {
+        for (int outputIx = 0; outputIx < numChannels * framesPerBuffer; ++outputIx) {
             if (writeIx >= kDelayBufferCount) {
                 writeIx = 0;
             }
@@ -1080,7 +1081,7 @@ void Process(StateData* state, audio::PendingEvent *eventsThisFrame, int eventsT
         }
     }
 
-    state->delayBufferWriteIx += numChannels * samplesPerFrame;
+    state->delayBufferWriteIx += numChannels * framesPerBuffer;
     if (state->delayBufferWriteIx >= kDelayBufferCount) {
         state->delayBufferWriteIx = 0;
     }

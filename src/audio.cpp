@@ -8,6 +8,8 @@
 #include "portaudio/include/pa_win_wasapi.h"
 #endif
 
+#include "samplerate.h"
+
 #include "features.h"
 #include "util.h"
 #include "audio_util.h"
@@ -18,6 +20,7 @@ using std::chrono::high_resolution_clock;
 
 #define NUM_OUTPUT_CHANNELS (1)
 #define FRAMES_PER_BUFFER  (512)
+#define INTERNAL_SR (48000)
 
 namespace audio {
 
@@ -112,17 +115,33 @@ PendingEvent *HeapPeek(PendingEventHeap *heap) {
     return &heap->entries[0].e;
 }
 
+float *gInternalBuffer = nullptr;
+std::size_t gInternalBufferSize = 0;
+int gLeftoverInputFrames = 0;
+int gLeftoverInputFramesStartIx = -1;
+
+SRC_STATE *gSrcState = nullptr;
+
 } // namespace
 
 void InitStateData(
     StateData& state, SoundBank const& soundBank,
-    EventQueue* eventQueue, int sampleRate) {
+    EventQueue* eventQueue, int outputSampleRate) {
 
-    state.sampleRate = sampleRate;
+    if (!gInternalBuffer) {
+        // TODO: can we reduce this size safely?
+        gInternalBufferSize = 3 * FRAMES_PER_BUFFER * NUM_OUTPUT_CHANNELS * sizeof(float);
+        gInternalBuffer = new float[gInternalBufferSize];
+    }
+    gLeftoverInputFrames = 0;
+    gLeftoverInputFramesStartIx = -1;
+
+    
+    state.outputSampleRate = outputSampleRate;
 
     for (int i = 0; i < state.synths.size(); ++i) {
         synth::StateData& s = state.synths[i];
-        synth::InitStateData(s, /*channel=*/i, sampleRate, FRAMES_PER_BUFFER, NUM_OUTPUT_CHANNELS);
+        synth::InitStateData(s, /*channel=*/i, INTERNAL_SR, FRAMES_PER_BUFFER, NUM_OUTPUT_CHANNELS);
     }
 
     state.soundBank = &soundBank;
@@ -137,6 +156,13 @@ void InitStateData(
 
     state._bufferFrameCount = FRAMES_PER_BUFFER;
     state._recentBuffer = new float[FRAMES_PER_BUFFER];
+
+    int srcErr = 0;
+    // TODO: experiment with FASTEST
+    gSrcState = src_new(SRC_SINC_FASTEST, NUM_OUTPUT_CHANNELS, &srcErr);
+    if (srcErr) {
+        printf("Audio error in creating SRC state: %s\n", src_strerror(srcErr));
+    }
 }
 void DestroyStateData(StateData& state) {
     for (synth::StateData& synth : state.synths) {
@@ -145,7 +171,13 @@ void DestroyStateData(StateData& state) {
 
     delete[] state._recentBuffer;
     delete[] state.pendingEvents.entries;
+    if (gInternalBuffer) {
+        delete[] gInternalBuffer;
+    }
     state.pendingEvents = PendingEventHeap();
+
+    src_delete(gSrcState);
+    gSrcState = nullptr;
 }
 
 /*
@@ -158,6 +190,9 @@ static void StreamFinished( void* userData )
 PaError Init(
     Context& context, SoundBank const& soundBank) {
     int const kPreferredSampleRate = 48000;
+    //int const kPreferredSampleRate = 44100;
+    //int const kPreferredSampleRate = 96000;
+
 
     PaError err;
 
@@ -167,7 +202,7 @@ PaError Init(
         return err;
     }
 
-    context._sampleRate = kPreferredSampleRate;
+    context._outputSampleRate = kPreferredSampleRate;
     std::vector<PaError> errors;
 #ifdef _WIN32
     PaHostApiIndex const hostApiCount = Pa_GetHostApiCount();
@@ -202,7 +237,7 @@ PaError Init(
             printf("Default device does not support required audio formats.\n");
         }
     }
-    context._sampleRate = (int)sampleRate;
+    context._outputSampleRate = (int)sampleRate;
     context._outputParameters.device = deviceIx;
     printf("Selected audio device: %s\n", pDeviceInfo->name);
     printf("Device sample rate: %d\n", (int)sampleRate);
@@ -222,7 +257,7 @@ PaError Init(
         return err;
     }
     
-    InitStateData(context._state, soundBank, &context._eventQueue, context._sampleRate);
+    InitStateData(context._state, soundBank, &context._eventQueue, context._outputSampleRate);
     
     context._outputParameters.channelCount = NUM_OUTPUT_CHANNELS;
     context._outputParameters.sampleFormat = paFloat32; /* 32 bit floating point output */
@@ -232,7 +267,7 @@ PaError Init(
               &context._stream,
               NULL, /* no input */
               &context._outputParameters,
-              context._sampleRate,
+              context._outputSampleRate,
               FRAMES_PER_BUFFER,
               paNoFlag,  // no flags (clipping is on)
               PortAudioCallback,
@@ -295,71 +330,14 @@ void ProcessEventQueue(EventQueue* eventQueue, int64_t currentBufferCounter, dou
     }
 }
 
-namespace {
-double gLastCallbackTime = 0.0;
-int gNumDesyncs = 0;
-int gDevSum = 0;
-int gTotalCallbacks = 0;
-
-double gTimeSinceLastCallback = 0.0;
-double gTotalTime = 0.0;
-unsigned long gLastFrameSize = 0;
-
-double gAvgCallbackTime = 0.0;
-double gMaxCallbackTime = 0.0;
-}
-
-int GetNumDesyncs() {
-    return gNumDesyncs;
-}
-
-int GetAvgDesyncTickTime() {
-    return gDevSum / gTotalCallbacks;
-}
-
-double GetAvgTimeBetweenCallbacks() {
-    return gTotalTime / gTotalCallbacks;
-}
-
-double GetLastDt() {
-    return gTimeSinceLastCallback;
-}
-
-unsigned long GetLastFrameSize() {
-    return gLastFrameSize;
-}
-
-int PortAudioCallback(
-    const void *inputBuffer, void *const outputBufferUntyped,
-    unsigned long samplesPerFrame,
-    const PaStreamCallbackTimeInfo* timeInfo,
-    PaStreamCallbackFlags statusFlags,
-    void *userData) {
-
-    high_resolution_clock::time_point t1 = high_resolution_clock::now();
-
-    gLastFrameSize = samplesPerFrame;
-
-    StateData* state = (StateData*)userData;
-    double const timeSecs = timeInfo->currentTime;
-
-    // DEBUG
-    gTimeSinceLastCallback = timeSecs - gLastCallbackTime;
-    gTotalTime += gTimeSinceLastCallback;
-    long ticksSinceLastCallback = (long)(gTimeSinceLastCallback * state->sampleRate);
-    if (ticksSinceLastCallback != samplesPerFrame) {
-        ++gNumDesyncs;
-    }
-    gDevSum += (int)(std::abs(ticksSinceLastCallback - (long)samplesPerFrame));
-    ++gTotalCallbacks;
-    gLastCallbackTime = timeSecs;
-    // DEBUG
-
+void FillBuffer(
+    StateData *state, float *const outputBufferIn, int framesPerBuffer, int sampleRate) {
+     
     // zero out the output buffer first.
-    memset(outputBufferUntyped, 0, NUM_OUTPUT_CHANNELS * samplesPerFrame * sizeof(float));
+    memset(outputBufferIn, 0, NUM_OUTPUT_CHANNELS * framesPerBuffer * sizeof(float));
 
     // Figure out which events apply to this invocation of the callback, and which effects should handle them.
-    ProcessEventQueue(state->events, state->_bufferCounter, state->sampleRate, samplesPerFrame, &state->pendingEvents);
+    ProcessEventQueue(state->events, state->_bufferCounter, sampleRate, framesPerBuffer, &state->pendingEvents);
 
     int constexpr kMaxSize = 1024;
     PendingEvent eventsThisFrame[kMaxSize]; // TODO UGH
@@ -376,11 +354,10 @@ int PortAudioCallback(
         eventsThisFrame[eventsThisFrameCount++] = HeapPop(&state->pendingEvents);
     }
 
-    float* outputBuffer = (float*) outputBufferUntyped;
-
     // PCM playback first
+    float *outputBuffer = outputBufferIn;
     int currentEventIx = 0;
-    for (int i = 0; i < samplesPerFrame; ++i) {
+    for (int i = 0; i < framesPerBuffer; ++i) {
         // Handle events
         for (int eventIx = 0; eventIx < eventsThisFrameCount; ++eventIx) {
             Event const& e = eventsThisFrame[eventIx]._e; 
@@ -489,23 +466,110 @@ int PortAudioCallback(
         }
     }
 
-    outputBuffer = (float*) outputBufferUntyped;
 
     for (synth::StateData& s : state->synths) {
         synth::Process(
-            &s, eventsThisFrame, eventsThisFrameCount, outputBuffer,
-            NUM_OUTPUT_CHANNELS, samplesPerFrame, state->sampleRate, state->_bufferCounter);
+            &s, eventsThisFrame, eventsThisFrameCount, outputBufferIn,
+            NUM_OUTPUT_CHANNELS, framesPerBuffer, sampleRate, state->_bufferCounter);
     }
 
     if (state->_finalGain != 1.f) {
-        for (int i = 0, n = samplesPerFrame * NUM_OUTPUT_CHANNELS; i < n; ++i) {
-            outputBuffer[i] *= state->_finalGain;
+        for (int i = 0, n = framesPerBuffer * NUM_OUTPUT_CHANNELS; i < n; ++i) {
+            outputBufferIn[i] *= state->_finalGain;
+        }
+    }
+ 
+    ++state->_bufferCounter;
+}
+
+void FillBufferAndResample(StateData *state, float *outputBuffer, unsigned long framesPerBuffer) {
+    // TODO this should only be computed once way at the beginning, right?
+    float numInputFramesExactFrac = (float)framesPerBuffer * (float) INTERNAL_SR / (float) state->outputSampleRate;
+    int numInputFramesNeededExact = (int) ceilf(numInputFramesExactFrac);
+    int minNumInputFrames = numInputFramesNeededExact; 
+    if (minNumInputFrames > framesPerBuffer) {
+        minNumInputFrames = framesPerBuffer * 2;
+        if (minNumInputFrames < numInputFramesNeededExact) {
+            printf("ERROR not generating enough input frames: %d < %d\n", minNumInputFrames, numInputFramesNeededExact);
         }
     }
 
+    int numInputFramesGenerated = 0; 
+    if (gLeftoverInputFrames > 0) { 
+        float *leftoversStart = &gInternalBuffer[gLeftoverInputFramesStartIx * NUM_OUTPUT_CHANNELS];
+        size_t leftoversSize = gLeftoverInputFrames * sizeof(float) * NUM_OUTPUT_CHANNELS;
+        assert((char*)leftoversStart + leftoversSize <= (char*)gInternalBuffer + gInternalBufferSize);
+        memmove(gInternalBuffer, leftoversStart, leftoversSize);
+        numInputFramesGenerated += gLeftoverInputFrames;
+    }
+
+    if (numInputFramesGenerated < minNumInputFrames) {
+        float *out = gInternalBuffer;
+        out += gLeftoverInputFrames * NUM_OUTPUT_CHANNELS;
+        assert((char*)out + framesPerBuffer * NUM_OUTPUT_CHANNELS * sizeof(float) <= (char*)gInternalBuffer + gInternalBufferSize);
+        FillBuffer(state, out, framesPerBuffer, INTERNAL_SR);
+        numInputFramesGenerated += framesPerBuffer;
+        if (numInputFramesGenerated < minNumInputFrames) {
+            out += framesPerBuffer * NUM_OUTPUT_CHANNELS;
+            assert((char*)out + framesPerBuffer * NUM_OUTPUT_CHANNELS * sizeof(float) <= (char*)gInternalBuffer + gInternalBufferSize);
+            FillBuffer(state, out, framesPerBuffer, INTERNAL_SR);
+            numInputFramesGenerated += framesPerBuffer;
+            if (numInputFramesGenerated < minNumInputFrames) {
+                printf("audio.cpp: okay wtf is this? left:%d, fpb:%lu nif:%d\n", gLeftoverInputFrames, framesPerBuffer, minNumInputFrames);
+            }
+        }
+    } 
+
+#if 1    
+    // RESAMPLE using numInputFramesGenerated from gInternalBuffer!
+    SRC_DATA resampleData = {
+        .data_in = gInternalBuffer,
+        .data_out = outputBuffer,
+        .input_frames = numInputFramesGenerated,
+        .output_frames = (long)framesPerBuffer,
+        .src_ratio = (double)state->outputSampleRate / (double) INTERNAL_SR
+    }; 
+    int srcErr = src_process(gSrcState, &resampleData);
+    if (srcErr) {
+        printf("Audio error: src_process error: %s\n", src_strerror(srcErr));
+    }
+    gLeftoverInputFrames = resampleData.input_frames - resampleData.input_frames_used;
+    gLeftoverInputFramesStartIx = resampleData.input_frames_used;
+    if (gLeftoverInputFrames < 0) {
+        printf("negative input frames?!?!?! input: %ld used: %ld\n", resampleData.input_frames, resampleData.input_frames_used);
+    }
+    if (resampleData.output_frames_gen != framesPerBuffer) {
+        printf("undergen: %ld %ld\n", resampleData.input_frames_used, resampleData.output_frames_gen);
+        memset(outputBuffer, 0, sizeof(float) * NUM_OUTPUT_CHANNELS * framesPerBuffer);
+    }
+#else
+    memcpy(outputBuffer, gInternalBuffer, sizeof(float) * NUM_OUTPUT_CHANNELS * framesPerBuffer);
+    gLeftoverInputFrames = numInputFramesGenerated - framesPerBuffer;
+    gLeftoverInputFramesStartIx = framesPerBuffer;
+#endif
+}
+
+int PortAudioCallback(
+    const void *inputBuffer, void *const outputBufferUntyped,
+    unsigned long framesPerBuffer,
+    const PaStreamCallbackTimeInfo* timeInfo,
+    PaStreamCallbackFlags statusFlags,
+    void *userData) {
+
+    high_resolution_clock::time_point t1 = high_resolution_clock::now();
+
+    StateData* state = (StateData*)userData;
+
+    float *outputBuffer = (float*)outputBufferUntyped;
+    if (state->outputSampleRate == INTERNAL_SR) {
+        FillBuffer(state, outputBuffer, framesPerBuffer, INTERNAL_SR);
+    } else {
+        FillBufferAndResample(state, outputBuffer, framesPerBuffer);
+    } 
+     
 #if COMPUTE_FFT
     if (state->_recentBufferMutex.try_lock()) {
-        for (int i = 0; i < samplesPerFrame; ++i) {
+        for (int i = 0; i < framesPerBuffer; ++i) {
             state->_recentBuffer[i] = outputBuffer[i];
         }
         state->_recentBufferMutex.unlock();
@@ -514,25 +578,17 @@ int PortAudioCallback(
  
     high_resolution_clock::time_point t2 = high_resolution_clock::now();
 
-    const double kSecsPerCallback = static_cast<double>(samplesPerFrame) / state->sampleRate;
+    const double kSecsPerCallback = static_cast<double>(framesPerBuffer) / state->outputSampleRate;
     double callbackTimeSecs = std::chrono::duration_cast<std::chrono::duration<double>>(t2 - t1).count();
     if (callbackTimeSecs / kSecsPerCallback > 0.9) {
         printf("Frame close to deadline: %f / %f\n", callbackTimeSecs, kSecsPerCallback);
     }
-
-    //const int kCallbacksPerSec = (int) (1.0 / kSecsPerCallback);
-    //if (gTotalCallbacks % kCallbacksPerSec == 0) {
-    //    printf("(avg,max): %f, %f\n", gAvgCallbackTime / kSecsPerCallback, gMaxCallbackTime / kSecsPerCallback);
-    //    gAvgCallbackTime = 0.0;
-    //    gMaxCallbackTime = 0.0;
-    //} else {
-    //    gAvgCallbackTime += callbackTimeSecs / kCallbacksPerSec;
-    //    gMaxCallbackTime = std::max(callbackTimeSecs, gMaxCallbackTime);
-    //}
-
-    ++state->_bufferCounter;
-
+ 
     return paContinue;
+}
+
+int Context::InternalSampleRate() const {
+    return INTERNAL_SR;
 }
 
 }  // namespace audio

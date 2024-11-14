@@ -6,7 +6,7 @@
 
 class BeatClock {
 public:
-    void Init(GameManager& g, double bpm, double sampleRate);
+    void Init(GameManager& g, double bpm);
 
     void Update(GameManager& g);
 
@@ -52,5 +52,4 @@ private:
     double _currentBeatTime = -1.0;
     double _currentAudioTime = -1.0;
     bool _newBeat = false;
-    double _sampleRate = 44100.0;
 };
