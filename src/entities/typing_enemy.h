@@ -99,6 +99,7 @@ struct TypingEnemyEntity : public ne::Entity {
     virtual void SaveDerived(serial::Ptree pt) const override;
     virtual void LoadDerived(serial::Ptree pt) override;
     virtual ImGuiResult ImGuiDerived(GameManager& g) override;
+    virtual ImGuiResult MultiImGui(GameManager& g, BaseEntity** entities, size_t entityCount) override;
 
     TypingEnemyEntity() = default;
     TypingEnemyEntity(TypingEnemyEntity const&) = delete;

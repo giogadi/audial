@@ -727,16 +727,19 @@ void PlayerSetSpawnPointSeqAction::LoadDerived(LoadInputs const& loadInputs, std
 
 void PlayerSetSpawnPointSeqAction::LoadDerived(serial::Ptree pt) {
     serial::LoadFromChildOf(pt, "spawn_pos", _spawnPos);
+    serial::LoadFromChildOf(pt, "pos_eid", _positionEditorId);
     serial::LoadFromChildOf(pt, "action_seq_editor_id", _actionSeqEditorId);
 }
 
 void PlayerSetSpawnPointSeqAction::SaveDerived(serial::Ptree pt) const {
     serial::SaveInNewChildOf(pt, "spawn_pos", _spawnPos);
+    serial::SaveInNewChildOf(pt, "pos_eid", _positionEditorId);
     serial::SaveInNewChildOf(pt, "action_seq_editor_id", _actionSeqEditorId);
 }
 
 bool PlayerSetSpawnPointSeqAction::ImGui() {
     imgui_util::InputVec3("Spawn pos", &_spawnPos);
+    imgui_util::InputEditorId("Pos EditorId (overrides above)", &_positionEditorId);
     imgui_util::InputEditorId("ActionSeq to Activate", &_actionSeqEditorId);
     return false;
 }
@@ -750,12 +753,19 @@ void PlayerSetSpawnPointSeqAction::InitDerived(GameManager& g) {
             _actionSeq = ne::EntityId();
         }
     }
+    if (ne::Entity *e = g._neEntityManager->FindEntityByEditorId(_positionEditorId)) {
+        _posEntity = e->_id;
+    }
 }
 
 void PlayerSetSpawnPointSeqAction::ExecuteDerived(GameManager& g) {
     if (g._editMode) { return; }
     FlowPlayerEntity* pPlayer = static_cast<FlowPlayerEntity*>(g._neEntityManager->GetFirstEntityOfType(ne::EntityType::FlowPlayer));
-    pPlayer->_s._respawnPos = _spawnPos;
+    if (ne::Entity *e = g._neEntityManager->GetActiveOrInactiveEntity(_posEntity)) {
+        pPlayer->_s._respawnPos = e->_transform.Pos();
+    } else {
+        pPlayer->_s._respawnPos = _spawnPos;
+    }    
     pPlayer->_s._toActivateOnRespawn = _actionSeq;
 }
 

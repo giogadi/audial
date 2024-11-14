@@ -268,6 +268,19 @@ ne::BaseEntity::ImGuiResult TypingEnemyEntity::ImGuiDerived(GameManager& g) {
     return result;
 }
 
+ne::BaseEntity::ImGuiResult TypingEnemyEntity::MultiImGui(GameManager& g, BaseEntity** entities, size_t entityCount) {
+    bool needsInit = false;
+
+    if (ImGui::Checkbox("Kill on type", &_p._destroyAfterTyped)) {
+        for (size_t ii = 0; ii < entityCount; ++ii) {
+            TypingEnemyEntity* e = entities[ii]->As<TypingEnemyEntity>();
+            e->_p._destroyAfterTyped = _p._destroyAfterTyped;
+        }
+    }
+
+    return needsInit ? ne::BaseEntity::ImGuiResult::NeedsInit : ne::BaseEntity::ImGuiResult::Done;
+}
+
 void TypingEnemyEntity::InitDerived(GameManager& g) {
     _s = State();
     _s._hittable = _p._initHittable;

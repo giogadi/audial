@@ -49,14 +49,14 @@
                 <Gain>0.68400002</Gain>
                 <Mono>0</Mono>
                 <FM>0</FM>
-                <Osc1Waveform>Saw</Osc1Waveform>
+                <Osc1Waveform>Square</Osc1Waveform>
                 <Osc2Waveform>Saw</Osc2Waveform>
-                <Detune>1</Detune>
-                <OscFader>0.44499999</OscFader>
+                <Detune>0</Detune>
+                <OscFader>0</OscFader>
                 <Unison>0</Unison>
                 <UnisonDetune>1.471</UnisonDetune>
-                <Cutoff>1852.941</Cutoff>
-                <Peak>1.2130001</Peak>
+                <Cutoff>264.70599</Cutoff>
+                <Peak>5.0370002</Peak>
                 <HpfCutoff>100</HpfCutoff>
                 <HpfPeak>0</HpfPeak>
                 <Portamento>0</Portamento>
@@ -65,14 +65,14 @@
                 <CutoffLFOGain>0</CutoffLFOGain>
                 <CutoffLFOFreq>0</CutoffLFOFreq>
                 <AmpEnvAttack>0.0049999999</AmpEnvAttack>
-                <AmpEnvDecay>0.114</AmpEnvDecay>
-                <AmpEnvSustain>1</AmpEnvSustain>
+                <AmpEnvDecay>0.77200001</AmpEnvDecay>
+                <AmpEnvSustain>0.63200003</AmpEnvSustain>
                 <AmpEnvRelease>0.57200003</AmpEnvRelease>
-                <CutoffEnvGain>7620.2212</CutoffEnvGain>
-                <CutoffEnvAttack>0.0049999999</CutoffEnvAttack>
-                <CutoffEnvDecay>0.191</CutoffEnvDecay>
-                <CutoffEnvSustain>0.184</CutoffEnvSustain>
-                <CutoffEnvRelease>0.22</CutoffEnvRelease>
+                <CutoffEnvGain>9890.0742</CutoffEnvGain>
+                <CutoffEnvAttack>0.375</CutoffEnvAttack>
+                <CutoffEnvDecay>0</CutoffEnvDecay>
+                <CutoffEnvSustain>1</CutoffEnvSustain>
+                <CutoffEnvRelease>0.11</CutoffEnvRelease>
                 <PitchEnvGain>0</PitchEnvGain>
                 <PitchEnvAttack>0</PitchEnvAttack>
                 <PitchEnvDecay>0</PitchEnvDecay>

@@ -185,9 +185,11 @@ struct PlayerSetSpawnPointSeqAction : public SeqAction {
     virtual SeqActionType Type() const override { return SeqActionType::PlayerSetSpawnPoint; }
     
     Vec3 _spawnPos;
+    EditorId _positionEditorId;
     EditorId _actionSeqEditorId;
 
     ne::EntityId _actionSeq;
+    ne::EntityId _posEntity;
 
     virtual void LoadDerived(
         LoadInputs const& loadInputs, std::istream& input) override;

@@ -3492,7 +3492,7 @@
                     <stop_on_pass>true</stop_on_pass>
                     <stop_after_timer>false</stop_after_timer>
                 </last_hit_response>
-                <text>dropping</text>
+                <text>whydoyou</text>
                 <buttons>aaaaaaaa</buttons>
                 <type_kill>true</type_kill>
                 <all_actions_on_hit>false</all_actions_on_hit>
@@ -3723,7 +3723,7 @@
                     <stop_on_pass>true</stop_on_pass>
                     <stop_after_timer>false</stop_after_timer>
                 </last_hit_response>
-                <text>illusion</text>
+                <text>maintain</text>
                 <buttons>aaaaaaaa</buttons>
                 <type_kill>true</type_kill>
                 <all_actions_on_hit>false</all_actions_on_hit>
@@ -5005,7 +5005,7 @@
                 <pickable>true</pickable>
                 <transform>
                     <pos>
-                        <x>2.4119935</x>
+                        <x>2.2077894</x>
                         <y>0</y>
                         <z>1.6312462</z>
                     </pos>
@@ -5016,7 +5016,7 @@
                         <w>1</w>
                     </quat>
                     <scale>
-                        <x>8.8468466</x>
+                        <x>8.4384384</x>
                         <y>1</y>
                         <z>1</z>
                     </scale>
@@ -5107,7 +5107,7 @@
                 <pickable>true</pickable>
                 <transform>
                     <pos>
-                        <x>12.70852</x>
+                        <x>12.906718</x>
                         <y>0</y>
                         <z>1.6354166</z>
                     </pos>
@@ -5118,7 +5118,7 @@
                         <w>1</w>
                     </quat>
                     <scale>
-                        <x>8.4864864</x>
+                        <x>8.8828831</x>
                         <y>1</y>
                         <z>1</z>
                     </scale>
@@ -5440,7 +5440,7 @@
                 <pickable>true</pickable>
                 <transform>
                     <pos>
-                        <x>10.51006</x>
+                        <x>10.197747</x>
                         <y>0</y>
                         <z>4.2234015</z>
                     </pos>
@@ -5451,7 +5451,7 @@
                         <w>1</w>
                     </quat>
                     <scale>
-                        <x>8</x>
+                        <x>7.7117124</x>
                         <y>1</y>
                         <z>1</z>
                     </scale>
@@ -5881,7 +5881,7 @@
                 <pickable>true</pickable>
                 <transform>
                     <pos>
-                        <x>2.5882313</x>
+                        <x>2.372015</x>
                         <y>0</y>
                         <z>6.7006907</z>
                     </pos>
@@ -5892,7 +5892,7 @@
                         <w>1</w>
                     </quat>
                     <scale>
-                        <x>8.5105104</x>
+                        <x>8.0780783</x>
                         <y>1</y>
                         <z>1</z>
                     </scale>
@@ -5983,7 +5983,7 @@
                 <pickable>true</pickable>
                 <transform>
                     <pos>
-                        <x>12.641705</x>
+                        <x>12.94801</x>
                         <y>0</y>
                         <z>6.7222223</z>
                     </pos>
@@ -5994,7 +5994,7 @@
                         <w>1</w>
                     </quat>
                     <scale>
-                        <x>8.6306305</x>
+                        <x>8.7627621</x>
                         <y>1</y>
                         <z>1</z>
                     </scale>
@@ -6085,7 +6085,7 @@
                 <pickable>true</pickable>
                 <transform>
                     <pos>
-                        <x>5.1497755</x>
+                        <x>5.2098355</x>
                         <y>0</y>
                         <z>9.2395821</z>
                     </pos>
@@ -6096,7 +6096,7 @@
                         <w>1</w>
                     </quat>
                     <scale>
-                        <x>8.4384384</x>
+                        <x>8.3183184</x>
                         <y>1</y>
                         <z>1</z>
                     </scale>
@@ -6844,7 +6844,7 @@
                 <pickable>true</pickable>
                 <transform>
                     <pos>
-                        <x>2.5167236</x>
+                        <x>2.4386458</x>
                         <y>0</y>
                         <z>11.978467</z>
                     </pos>
@@ -6855,7 +6855,7 @@
                         <w>1</w>
                     </quat>
                     <scale>
-                        <x>8.3783779</x>
+                        <x>8.5345345</x>
                         <y>1</y>
                         <z>1</z>
                     </scale>
@@ -6946,9 +6946,9 @@
                 <pickable>true</pickable>
                 <transform>
                     <pos>
-                        <x>13.363738</x>
+                        <x>13.543919</x>
                         <y>0</y>
-                        <z>11.910565</z>
+                        <z>11.898553</z>
                     </pos>
                     <quat>
                         <x>0</x>
@@ -9852,7 +9852,7 @@
                 <pickable>true</pickable>
                 <transform>
                     <pos>
-                        <x>10.162368</x>
+                        <x>10.342548</x>
                         <y>0</y>
                         <z>15.221712</z>
                     </pos>
@@ -13601,7 +13601,7 @@
                     <stop_on_pass>true</stop_on_pass>
                     <stop_after_timer>false</stop_after_timer>
                 </last_hit_response>
-                <text>averages</text>
+                <text>joinhill</text>
                 <buttons>aaaaaaaa</buttons>
                 <type_kill>true</type_kill>
                 <all_actions_on_hit>false</all_actions_on_hit>
@@ -14020,7 +14020,7 @@
                     <stop_on_pass>true</stop_on_pass>
                     <stop_after_timer>false</stop_after_timer>
                 </last_hit_response>
-                <text>k</text>
+                <text>d</text>
                 <buttons>a</buttons>
                 <type_kill>true</type_kill>
                 <all_actions_on_hit>true</all_actions_on_hit>
@@ -14326,7 +14326,7 @@
                     <stop_on_pass>true</stop_on_pass>
                     <stop_after_timer>false</stop_after_timer>
                 </last_hit_response>
-                <text>averages</text>
+                <text>joinhill</text>
                 <buttons>aaaaaaaa</buttons>
                 <type_kill>true</type_kill>
                 <all_actions_on_hit>false</all_actions_on_hit>
@@ -14698,7 +14698,7 @@
                     <stop_on_pass>true</stop_on_pass>
                     <stop_after_timer>false</stop_after_timer>
                 </last_hit_response>
-                <text>k</text>
+                <text>d</text>
                 <buttons>a</buttons>
                 <type_kill>true</type_kill>
                 <all_actions_on_hit>true</all_actions_on_hit>
@@ -14948,7 +14948,7 @@
                     <stop_on_pass>true</stop_on_pass>
                     <stop_after_timer>false</stop_after_timer>
                 </last_hit_response>
-                <text>averages</text>
+                <text>joinhill</text>
                 <buttons>aaaaaaaa</buttons>
                 <type_kill>true</type_kill>
                 <all_actions_on_hit>false</all_actions_on_hit>
@@ -15279,7 +15279,7 @@
                     <stop_on_pass>true</stop_on_pass>
                     <stop_after_timer>false</stop_after_timer>
                 </last_hit_response>
-                <text>k</text>
+                <text>d</text>
                 <buttons>a</buttons>
                 <type_kill>true</type_kill>
                 <all_actions_on_hit>true</all_actions_on_hit>
@@ -15641,7 +15641,7 @@
                     <stop_on_pass>true</stop_on_pass>
                     <stop_after_timer>true</stop_after_timer>
                 </last_hit_response>
-                <text>averages</text>
+                <text>joinhill</text>
                 <buttons>aaaaaaaa</buttons>
                 <type_kill>true</type_kill>
                 <all_actions_on_hit>false</all_actions_on_hit>
@@ -16027,7 +16027,7 @@
                     <stop_on_pass>true</stop_on_pass>
                     <stop_after_timer>false</stop_after_timer>
                 </last_hit_response>
-                <text>k</text>
+                <text>d</text>
                 <buttons>a</buttons>
                 <type_kill>true</type_kill>
                 <all_actions_on_hit>true</all_actions_on_hit>
@@ -16221,7 +16221,7 @@
                     <stop_on_pass>true</stop_on_pass>
                     <stop_after_timer>false</stop_after_timer>
                 </last_hit_response>
-                <text>k</text>
+                <text>d</text>
                 <buttons>a</buttons>
                 <type_kill>true</type_kill>
                 <all_actions_on_hit>true</all_actions_on_hit>
@@ -23411,9 +23411,9 @@
                 <pickable>true</pickable>
                 <transform>
                     <pos>
-                        <x>6.335794</x>
+                        <x>5.9273858</x>
                         <y>0</y>
-                        <z>3.9945576</z>
+                        <z>4.0065699</z>
                     </pos>
                     <quat>
                         <x>0</x>
@@ -23513,9 +23513,9 @@
                 <pickable>true</pickable>
                 <transform>
                     <pos>
-                        <x>16.449909</x>
+                        <x>16.822283</x>
                         <y>0</y>
-                        <z>4.1507139</z>
+                        <z>4.2227859</z>
                     </pos>
                     <quat>
                         <x>0</x>
@@ -23615,7 +23615,7 @@
                 <pickable>true</pickable>
                 <transform>
                     <pos>
-                        <x>8.8703289</x>
+                        <x>9.038497</x>
                         <y>0</y>
                         <z>8.8594217</z>
                     </pos>
@@ -23717,7 +23717,7 @@
                 <pickable>true</pickable>
                 <transform>
                     <pos>
-                        <x>-1.1717134</x>
+                        <x>-1.3278694</x>
                         <y>0</y>
                         <z>8.8474092</z>
                     </pos>
@@ -28129,7 +28129,7 @@
                     <stop_on_pass>true</stop_on_pass>
                     <stop_after_timer>false</stop_after_timer>
                 </last_hit_response>
-                <text>drog</text>
+                <text>your</text>
                 <buttons>aaaa</buttons>
                 <type_kill>true</type_kill>
                 <all_actions_on_hit>false</all_actions_on_hit>
@@ -28282,7 +28282,7 @@
                     <stop_on_pass>true</stop_on_pass>
                     <stop_after_timer>false</stop_after_timer>
                 </last_hit_response>
-                <text>dropg</text>
+                <text>their</text>
                 <buttons>aaaaa</buttons>
                 <type_kill>true</type_kill>
                 <all_actions_on_hit>false</all_actions_on_hit>
@@ -28861,7 +28861,7 @@
                     <stop_on_pass>true</stop_on_pass>
                     <stop_after_timer>false</stop_after_timer>
                 </last_hit_response>
-                <text>dg</text>
+                <text>am</text>
                 <buttons>aa</buttons>
                 <type_kill>true</type_kill>
                 <all_actions_on_hit>false</all_actions_on_hit>
@@ -28980,7 +28980,7 @@
                     <stop_on_pass>true</stop_on_pass>
                     <stop_after_timer>false</stop_after_timer>
                 </last_hit_response>
-                <text>drg</text>
+                <text>not</text>
                 <buttons>aaa</buttons>
                 <type_kill>true</type_kill>
                 <all_actions_on_hit>false</all_actions_on_hit>
@@ -29492,7 +29492,7 @@
                     <stop_on_pass>true</stop_on_pass>
                     <stop_after_timer>true</stop_after_timer>
                 </last_hit_response>
-                <text>g</text>
+                <text>i</text>
                 <buttons>a</buttons>
                 <type_kill>true</type_kill>
                 <all_actions_on_hit>false</all_actions_on_hit>
@@ -29594,7 +29594,7 @@
                     <stop_on_pass>true</stop_on_pass>
                     <stop_after_timer>false</stop_after_timer>
                 </last_hit_response>
-                <text>droppg</text>
+                <text>ideaof</text>
                 <buttons>aaaaaa</buttons>
                 <type_kill>true</type_kill>
                 <all_actions_on_hit>false</all_actions_on_hit>
@@ -29781,7 +29781,7 @@
                     <stop_on_pass>true</stop_on_pass>
                     <stop_after_timer>false</stop_after_timer>
                 </last_hit_response>
-                <text>droppig</text>
+                <text>working</text>
                 <buttons>aaaaaaa</buttons>
                 <type_kill>true</type_kill>
                 <all_actions_on_hit>false</all_actions_on_hit>
