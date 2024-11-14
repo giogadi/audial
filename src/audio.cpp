@@ -157,9 +157,7 @@ static void StreamFinished( void* userData )
 
 PaError Init(
     Context& context, SoundBank const& soundBank) {
-    int const kSupportedSampleRates[] = {
-        48000, 44100, 96000
-    };
+    int const kPreferredSampleRate = 48000;
 
     PaError err;
 
@@ -169,50 +167,45 @@ PaError Init(
         return err;
     }
 
-    void* streamInfo = nullptr;
-    context._sampleRate = kSupportedSampleRates[0];
+    context._sampleRate = kPreferredSampleRate;
     std::vector<PaError> errors;
 #ifdef _WIN32
-    PaWasapiStreamInfo wasapiStreamInfo{};
-    wasapiStreamInfo.size = sizeof(PaWasapiStreamInfo);
-    wasapiStreamInfo.hostApiType = paWASAPI;
-    wasapiStreamInfo.version = 1;
-    // sWasapiStreamInfo.flags = paWinWasapiExclusive|paWinWasapiThreadPriority;
-    // sWasapiStreamInfo.flags = paWinWasapiThreadPriority;
-    wasapiStreamInfo.threadPriority = eThreadPriorityProAudio;
-    streamInfo = &wasapiStreamInfo;
-
-    context._outputParameters.device = paNoDevice;
-    PaDeviceIndex numDevices = Pa_GetDeviceCount();   
-    for (PaDeviceIndex deviceIx = 0; deviceIx < numDevices; ++deviceIx) {
-        PaDeviceInfo const* pDeviceInfo = Pa_GetDeviceInfo(deviceIx);
-        PaHostApiInfo const* pHostApiInfo = Pa_GetHostApiInfo(pDeviceInfo->hostApi);
-        if (pHostApiInfo->type != paWASAPI) {
-            err = paInvalidHostApi;
-            continue;
-        }
-        if (deviceIx == pHostApiInfo->defaultOutputDevice) {
-            printf("Default device sample rate: %f\n", pDeviceInfo->defaultSampleRate);
-            printf("Default device max output channels: %d\n", pDeviceInfo->maxOutputChannels);
-            context._outputParameters.device = deviceIx;
-
-            PaStreamParameters testOutputParams{};
-            testOutputParams.device = deviceIx;
-            testOutputParams.channelCount = NUM_OUTPUT_CHANNELS;
-            testOutputParams.sampleFormat = paFloat32;
-            testOutputParams.hostApiSpecificStreamInfo = streamInfo;
-            for (int sampleRateIx = 0, n = M_ARRAY_LEN(kSupportedSampleRates); sampleRateIx < n; ++sampleRateIx) {
-                context._sampleRate = kSupportedSampleRates[sampleRateIx];
-                err = Pa_IsFormatSupported(NULL, &testOutputParams, context._sampleRate);
-                if (err == paNoError) {
-                    break;
-                } else {
-                    errors.push_back(err);
-                }
-            }
+    PaHostApiIndex const hostApiCount = Pa_GetHostApiCount();
+    PaHostApiInfo const* hostApiInfo = 0;
+    for (PaHostApiIndex hostApiIx = 0; hostApiIx < hostApiCount; ++hostApiIx) {
+        PaHostApiInfo const *thisHost = Pa_GetHostApiInfo(hostApiIx);
+        if (thisHost->type == paWASAPI) {
+            hostApiInfo = thisHost;
             break;
         }
     }
+    if (!hostApiInfo) {
+        printf("WARNING: could not find a WASAPI audio host. You may have degraded/delayed audio performance.\n");        
+        hostApiInfo = Pa_GetHostApiInfo(Pa_GetDefaultHostApi());
+        printf("Using audio host API \"%s\"\n", hostApiInfo->name);
+    }
+    PaDeviceIndex deviceIx = hostApiInfo->defaultOutputDevice;
+    context._outputParameters.device = deviceIx;
+    PaDeviceInfo const* pDeviceInfo = Pa_GetDeviceInfo(deviceIx);
+    // Check if our preferred sample rate is supported. If not, just use the device's default sample rate.
+    PaStreamParameters params = {0};
+    params.device = context._outputParameters.device;
+    params.channelCount = NUM_OUTPUT_CHANNELS;
+    params.sampleFormat = paFloat32;
+    double sampleRate = kPreferredSampleRate;
+    err = Pa_IsFormatSupported(0, &params, sampleRate);
+    if (err) {
+        // TODO: show previous error        
+        sampleRate = pDeviceInfo->defaultSampleRate;
+        err = Pa_IsFormatSupported(0, &params, sampleRate);
+        if (err) {
+            printf("Default device does not support required audio formats.\n");
+        }
+    }
+    context._sampleRate = (int)sampleRate;
+    context._outputParameters.device = deviceIx;
+    printf("Selected audio device: %s\n", pDeviceInfo->name);
+    printf("Device sample rate: %d\n", (int)sampleRate);
 #else
     context._outputParameters.device = Pa_GetDefaultOutputDevice();
 #endif     
@@ -230,8 +223,6 @@ PaError Init(
     }
     
     InitStateData(context._state, soundBank, &context._eventQueue, context._sampleRate);
-
-    context._outputParameters.hostApiSpecificStreamInfo = streamInfo;
     
     context._outputParameters.channelCount = NUM_OUTPUT_CHANNELS;
     context._outputParameters.sampleFormat = paFloat32; /* 32 bit floating point output */

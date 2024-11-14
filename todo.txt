@@ -29,7 +29,7 @@ BUGS:
 - Our controller support is SUPER BUSTED, DUDE!!!!! But that's a later problem.
 
 TOOLS:
-- axis widget should have X be RED
+- DICTIONARY
 - imgui EditorId selector that can constrain to a specific type
 - "musical savestates" that will change patches, launch sequencers, etc for editing
 - Find a way to set lengths based on musical timings more easily.
