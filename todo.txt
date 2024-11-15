@@ -23,6 +23,8 @@ Ideas
   - maybe can use them as platforms or walls that change length? 
 
 Near-term ideas:
+- bigger enemy that you dash toward, but more slowly.
+- Change color of letterbox
 - What if we prime the player with an example rhythm and then let them go at it themselves?
 - add fun and weird shader effects (mirror, upside down, whatever) with every loop in the hangout buildup
 
@@ -30,6 +32,10 @@ BUGS:
 - Our controller support is SUPER BUSTED, DUDE!!!!! But that's a later problem.
 
 TOOLS:
+- type in to search for entity type and seqAction type
+- input midi note from keyboard piano
+- up/down by octave for midi note input
+- select step sequencer in entity window from sequence window
 - group all the room-transition-related things into one entity that's easy to set up.
 - multiediting FOR REAL DUDE WTF
 - make soundbank not shit

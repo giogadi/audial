@@ -273,11 +273,15 @@ ne::BaseEntity::ImGuiResult TypingEnemyEntity::MultiImGui(GameManager& g, BaseEn
     bool needsInit = false;
 
     if (ImGui::Checkbox("Kill on type", &_p._destroyAfterTyped)) {
-        /*for (size_t ii = 0; ii < entityCount; ++ii) {
-            TypingEnemyEntity* e = entities[ii]->As<TypingEnemyEntity>();
-            e->_p._destroyAfterTyped = _p._destroyAfterTyped;
-        }*/
         imgui_util::SetMemberOfEntities(&Props::_destroyAfterTyped, *this, entities, entityCount);
+    }
+
+    if (ImGui::Checkbox("Reset cooldown on any hit", &_p._resetCooldownOnAnyHit)) {
+        imgui_util::SetMemberOfEntities(&Props::_resetCooldownOnAnyHit, *this, entities, entityCount);
+    }
+
+    if (ImGui::InputDouble("Flow cooldown (beat)", &_p._flowCooldownBeatTime)) {
+        imgui_util::SetMemberOfEntities(&Props::_flowCooldownBeatTime, *this, entities, entityCount);
     }
 
     return needsInit ? ne::BaseEntity::ImGuiResult::NeedsInit : ne::BaseEntity::ImGuiResult::Done;
