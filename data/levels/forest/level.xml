@@ -366,7 +366,7 @@
                 <editor_id>
                     <id>4</id>
                 </editor_id>
-                <name>snare_seq</name>
+                <name>perc_seq</name>
                 <entity_active>true</entity_active>
                 <pickable>false</pickable>
                 <transform>
@@ -431,28 +431,7 @@
                     <s>
                         <notes>
                             <n>
-                                <note>20</note>
-                                <v>0</v>
-                            </n>
-                            <n>
                                 <note>-1</note>
-                                <v>0</v>
-                            </n>
-                            <n>
-                                <note>-1</note>
-                                <v>0</v>
-                            </n>
-                            <n>
-                                <note>-1</note>
-                                <v>0</v>
-                            </n>
-                        </notes>
-                        <params/>
-                    </s>
-                    <s>
-                        <notes>
-                            <n>
-                                <note>20</note>
                                 <v>0</v>
                             </n>
                             <n>
@@ -473,28 +452,7 @@
                     <s>
                         <notes>
                             <n>
-                                <note>20</note>
-                                <v>0</v>
-                            </n>
-                            <n>
                                 <note>-1</note>
-                                <v>0</v>
-                            </n>
-                            <n>
-                                <note>-1</note>
-                                <v>0</v>
-                            </n>
-                            <n>
-                                <note>-1</note>
-                                <v>0</v>
-                            </n>
-                        </notes>
-                        <params/>
-                    </s>
-                    <s>
-                        <notes>
-                            <n>
-                                <note>20</note>
                                 <v>0</v>
                             </n>
                             <n>
@@ -515,28 +473,7 @@
                     <s>
                         <notes>
                             <n>
-                                <note>20</note>
-                                <v>0</v>
-                            </n>
-                            <n>
                                 <note>-1</note>
-                                <v>0</v>
-                            </n>
-                            <n>
-                                <note>-1</note>
-                                <v>0</v>
-                            </n>
-                            <n>
-                                <note>-1</note>
-                                <v>0</v>
-                            </n>
-                        </notes>
-                        <params/>
-                    </s>
-                    <s>
-                        <notes>
-                            <n>
-                                <note>20</note>
                                 <v>0</v>
                             </n>
                             <n>
@@ -557,28 +494,7 @@
                     <s>
                         <notes>
                             <n>
-                                <note>20</note>
-                                <v>0</v>
-                            </n>
-                            <n>
                                 <note>-1</note>
-                                <v>0</v>
-                            </n>
-                            <n>
-                                <note>-1</note>
-                                <v>0</v>
-                            </n>
-                            <n>
-                                <note>-1</note>
-                                <v>0</v>
-                            </n>
-                        </notes>
-                        <params/>
-                    </s>
-                    <s>
-                        <notes>
-                            <n>
-                                <note>20</note>
                                 <v>0</v>
                             </n>
                             <n>
@@ -599,28 +515,7 @@
                     <s>
                         <notes>
                             <n>
-                                <note>20</note>
-                                <v>0</v>
-                            </n>
-                            <n>
                                 <note>-1</note>
-                                <v>0</v>
-                            </n>
-                            <n>
-                                <note>-1</note>
-                                <v>0</v>
-                            </n>
-                            <n>
-                                <note>-1</note>
-                                <v>0</v>
-                            </n>
-                        </notes>
-                        <params/>
-                    </s>
-                    <s>
-                        <notes>
-                            <n>
-                                <note>20</note>
                                 <v>0</v>
                             </n>
                             <n>
@@ -641,28 +536,7 @@
                     <s>
                         <notes>
                             <n>
-                                <note>20</note>
-                                <v>0</v>
-                            </n>
-                            <n>
                                 <note>-1</note>
-                                <v>0</v>
-                            </n>
-                            <n>
-                                <note>-1</note>
-                                <v>0</v>
-                            </n>
-                            <n>
-                                <note>-1</note>
-                                <v>0</v>
-                            </n>
-                        </notes>
-                        <params/>
-                    </s>
-                    <s>
-                        <notes>
-                            <n>
-                                <note>20</note>
                                 <v>0</v>
                             </n>
                             <n>
@@ -683,28 +557,7 @@
                     <s>
                         <notes>
                             <n>
-                                <note>20</note>
-                                <v>0</v>
-                            </n>
-                            <n>
                                 <note>-1</note>
-                                <v>0</v>
-                            </n>
-                            <n>
-                                <note>-1</note>
-                                <v>0</v>
-                            </n>
-                            <n>
-                                <note>-1</note>
-                                <v>0</v>
-                            </n>
-                        </notes>
-                        <params/>
-                    </s>
-                    <s>
-                        <notes>
-                            <n>
-                                <note>20</note>
                                 <v>0</v>
                             </n>
                             <n>
@@ -725,7 +578,7 @@
                     <s>
                         <notes>
                             <n>
-                                <note>20</note>
+                                <note>-1</note>
                                 <v>0</v>
                             </n>
                             <n>
@@ -746,7 +599,154 @@
                     <s>
                         <notes>
                             <n>
-                                <note>20</note>
+                                <note>-1</note>
+                                <v>0</v>
+                            </n>
+                            <n>
+                                <note>-1</note>
+                                <v>0</v>
+                            </n>
+                            <n>
+                                <note>-1</note>
+                                <v>0</v>
+                            </n>
+                            <n>
+                                <note>-1</note>
+                                <v>0</v>
+                            </n>
+                        </notes>
+                        <params/>
+                    </s>
+                    <s>
+                        <notes>
+                            <n>
+                                <note>-1</note>
+                                <v>0</v>
+                            </n>
+                            <n>
+                                <note>-1</note>
+                                <v>0</v>
+                            </n>
+                            <n>
+                                <note>-1</note>
+                                <v>0</v>
+                            </n>
+                            <n>
+                                <note>-1</note>
+                                <v>0</v>
+                            </n>
+                        </notes>
+                        <params/>
+                    </s>
+                    <s>
+                        <notes>
+                            <n>
+                                <note>-1</note>
+                                <v>0</v>
+                            </n>
+                            <n>
+                                <note>-1</note>
+                                <v>0</v>
+                            </n>
+                            <n>
+                                <note>-1</note>
+                                <v>0</v>
+                            </n>
+                            <n>
+                                <note>-1</note>
+                                <v>0</v>
+                            </n>
+                        </notes>
+                        <params/>
+                    </s>
+                    <s>
+                        <notes>
+                            <n>
+                                <note>-1</note>
+                                <v>0</v>
+                            </n>
+                            <n>
+                                <note>-1</note>
+                                <v>0</v>
+                            </n>
+                            <n>
+                                <note>-1</note>
+                                <v>0</v>
+                            </n>
+                            <n>
+                                <note>-1</note>
+                                <v>0</v>
+                            </n>
+                        </notes>
+                        <params/>
+                    </s>
+                    <s>
+                        <notes>
+                            <n>
+                                <note>-1</note>
+                                <v>0</v>
+                            </n>
+                            <n>
+                                <note>-1</note>
+                                <v>0</v>
+                            </n>
+                            <n>
+                                <note>-1</note>
+                                <v>0</v>
+                            </n>
+                            <n>
+                                <note>-1</note>
+                                <v>0</v>
+                            </n>
+                        </notes>
+                        <params/>
+                    </s>
+                    <s>
+                        <notes>
+                            <n>
+                                <note>-1</note>
+                                <v>0</v>
+                            </n>
+                            <n>
+                                <note>-1</note>
+                                <v>0</v>
+                            </n>
+                            <n>
+                                <note>-1</note>
+                                <v>0</v>
+                            </n>
+                            <n>
+                                <note>-1</note>
+                                <v>0</v>
+                            </n>
+                        </notes>
+                        <params/>
+                    </s>
+                    <s>
+                        <notes>
+                            <n>
+                                <note>-1</note>
+                                <v>0</v>
+                            </n>
+                            <n>
+                                <note>-1</note>
+                                <v>0</v>
+                            </n>
+                            <n>
+                                <note>-1</note>
+                                <v>0</v>
+                            </n>
+                            <n>
+                                <note>-1</note>
+                                <v>0</v>
+                            </n>
+                        </notes>
+                        <params/>
+                    </s>
+                    <s>
+                        <notes>
+                            <n>
+                                <note>-1</note>
                                 <v>0</v>
                             </n>
                             <n>
@@ -3216,7 +3216,7 @@
                 <pickable>true</pickable>
                 <transform>
                     <pos>
-                        <x>3.1728802</x>
+                        <x>3.5692766</x>
                         <y>0</y>
                         <z>-18.893635</z>
                     </pos>
@@ -3782,6 +3782,357 @@
                 <actions_on_exit/>
                 <trigger_volume_entities/>
             </FlowTrigger>
+            <FlowWall>
+                <editor_id>
+                    <id>229</id>
+                </editor_id>
+                <name>r0_wall0</name>
+                <entity_active>true</entity_active>
+                <pickable>true</pickable>
+                <transform>
+                    <pos>
+                        <x>-0.022315025</x>
+                        <y>0</y>
+                        <z>-20.989727</z>
+                    </pos>
+                    <quat>
+                        <x>0</x>
+                        <y>0</y>
+                        <z>0</z>
+                        <w>1</w>
+                    </quat>
+                    <scale>
+                        <x>0.87987995</x>
+                        <y>1</y>
+                        <z>8.2432404</z>
+                    </scale>
+                </transform>
+                <model_name>cube</model_name>
+                <texture_name></texture_name>
+                <model_color_vec4>
+                    <x>0.80000001</x>
+                    <y>0.80000001</y>
+                    <z>0.80000001</z>
+                    <w>1</w>
+                </model_color_vec4>
+                <flow_section_id>0</flow_section_id>
+                <tag>0</tag>
+                <waypoint_follower>
+                    <mode>Waypoint</mode>
+                    <waypoint_auto_start>false</waypoint_auto_start>
+                    <loop_waypoints>false</loop_waypoints>
+                    <start_time>3</start_time>
+                    <quantize>1</quantize>
+                    <quantize_buffer>0</quantize_buffer>
+                    <waypoints/>
+                    <follow_entity_editor_id>
+                        <id>-1</id>
+                    </follow_entity_editor_id>
+                </waypoint_follower>
+                <hurt_on_hit>false</hurt_on_hit>
+                <can_hit>true</can_hit>
+                <hp>-1</hp>
+                <move_mode>Waypoints</move_mode>
+                <rot_vel>0</rot_vel>
+                <polygon/>
+                <hit_actions/>
+                <children_editor_ids/>
+            </FlowWall>
+            <FlowWall>
+                <editor_id>
+                    <id>230</id>
+                </editor_id>
+                <name>r0_wall1</name>
+                <entity_active>true</entity_active>
+                <pickable>true</pickable>
+                <transform>
+                    <pos>
+                        <x>1.5032105</x>
+                        <y>0</y>
+                        <z>-17.320059</z>
+                    </pos>
+                    <quat>
+                        <x>0</x>
+                        <y>0</y>
+                        <z>0</z>
+                        <w>1</w>
+                    </quat>
+                    <scale>
+                        <x>2.177177</x>
+                        <y>1</y>
+                        <z>0.85585785</z>
+                    </scale>
+                </transform>
+                <model_name>cube</model_name>
+                <texture_name></texture_name>
+                <model_color_vec4>
+                    <x>0.80000001</x>
+                    <y>0.80000001</y>
+                    <z>0.80000001</z>
+                    <w>1</w>
+                </model_color_vec4>
+                <flow_section_id>0</flow_section_id>
+                <tag>0</tag>
+                <waypoint_follower>
+                    <mode>Waypoint</mode>
+                    <waypoint_auto_start>false</waypoint_auto_start>
+                    <loop_waypoints>false</loop_waypoints>
+                    <start_time>3</start_time>
+                    <quantize>1</quantize>
+                    <quantize_buffer>0</quantize_buffer>
+                    <waypoints/>
+                    <follow_entity_editor_id>
+                        <id>-1</id>
+                    </follow_entity_editor_id>
+                </waypoint_follower>
+                <hurt_on_hit>false</hurt_on_hit>
+                <can_hit>true</can_hit>
+                <hp>-1</hp>
+                <move_mode>Waypoints</move_mode>
+                <rot_vel>0</rot_vel>
+                <polygon/>
+                <hit_actions/>
+                <children_editor_ids/>
+            </FlowWall>
+            <FlowWall>
+                <editor_id>
+                    <id>231</id>
+                </editor_id>
+                <name>r0_wall2</name>
+                <entity_active>true</entity_active>
+                <pickable>true</pickable>
+                <transform>
+                    <pos>
+                        <x>8.3200274</x>
+                        <y>0</y>
+                        <z>-17.308046</z>
+                    </pos>
+                    <quat>
+                        <x>0</x>
+                        <y>0</y>
+                        <z>0</z>
+                        <w>1</w>
+                    </quat>
+                    <scale>
+                        <x>6.8978977</x>
+                        <y>1</y>
+                        <z>0.8318367</z>
+                    </scale>
+                </transform>
+                <model_name>cube</model_name>
+                <texture_name></texture_name>
+                <model_color_vec4>
+                    <x>0.80000001</x>
+                    <y>0.80000001</y>
+                    <z>0.80000001</z>
+                    <w>1</w>
+                </model_color_vec4>
+                <flow_section_id>0</flow_section_id>
+                <tag>0</tag>
+                <waypoint_follower>
+                    <mode>Waypoint</mode>
+                    <waypoint_auto_start>false</waypoint_auto_start>
+                    <loop_waypoints>false</loop_waypoints>
+                    <start_time>3</start_time>
+                    <quantize>1</quantize>
+                    <quantize_buffer>0</quantize_buffer>
+                    <waypoints/>
+                    <follow_entity_editor_id>
+                        <id>-1</id>
+                    </follow_entity_editor_id>
+                </waypoint_follower>
+                <hurt_on_hit>false</hurt_on_hit>
+                <can_hit>true</can_hit>
+                <hp>-1</hp>
+                <move_mode>Waypoints</move_mode>
+                <rot_vel>0</rot_vel>
+                <polygon/>
+                <hit_actions>
+                    <seq_action>
+                        <one_time>false</one_time>
+                        <action_type>BeatTimeEvent</action_type>
+                        <quantize_denom>0.25</quantize_denom>
+                        <beat_time_event>
+                            <event_type>PlayPcm</event_type>
+                            <channel>0</channel>
+                            <delay_secs>0</delay_secs>
+                            <sound_ix>29</sound_ix>
+                            <velocity>1</velocity>
+                            <loop>false</loop>
+                            <beat_time>0</beat_time>
+                        </beat_time_event>
+                    </seq_action>
+                </hit_actions>
+                <children_editor_ids/>
+            </FlowWall>
+            <FlowWall>
+                <editor_id>
+                    <id>232</id>
+                </editor_id>
+                <name>r0_wall3</name>
+                <entity_active>true</entity_active>
+                <pickable>true</pickable>
+                <transform>
+                    <pos>
+                        <x>11.335042</x>
+                        <y>0</y>
+                        <z>-20.311049</z>
+                    </pos>
+                    <quat>
+                        <x>0</x>
+                        <y>0</y>
+                        <z>0</z>
+                        <w>1</w>
+                    </quat>
+                    <scale>
+                        <x>0.78378296</x>
+                        <y>1</y>
+                        <z>5.3964005</z>
+                    </scale>
+                </transform>
+                <model_name>cube</model_name>
+                <texture_name></texture_name>
+                <model_color_vec4>
+                    <x>0.80000001</x>
+                    <y>0.80000001</y>
+                    <z>0.80000001</z>
+                    <w>1</w>
+                </model_color_vec4>
+                <flow_section_id>0</flow_section_id>
+                <tag>0</tag>
+                <waypoint_follower>
+                    <mode>Waypoint</mode>
+                    <waypoint_auto_start>false</waypoint_auto_start>
+                    <loop_waypoints>false</loop_waypoints>
+                    <start_time>3</start_time>
+                    <quantize>1</quantize>
+                    <quantize_buffer>0</quantize_buffer>
+                    <waypoints/>
+                    <follow_entity_editor_id>
+                        <id>-1</id>
+                    </follow_entity_editor_id>
+                </waypoint_follower>
+                <hurt_on_hit>false</hurt_on_hit>
+                <can_hit>true</can_hit>
+                <hp>-1</hp>
+                <move_mode>Waypoints</move_mode>
+                <rot_vel>0</rot_vel>
+                <polygon/>
+                <hit_actions/>
+                <children_editor_ids/>
+            </FlowWall>
+            <FlowWall>
+                <editor_id>
+                    <id>233</id>
+                </editor_id>
+                <name>r0_wall4</name>
+                <entity_active>true</entity_active>
+                <pickable>true</pickable>
+                <transform>
+                    <pos>
+                        <x>2.9746823</x>
+                        <y>0</y>
+                        <z>-25.39213</z>
+                    </pos>
+                    <quat>
+                        <x>0</x>
+                        <y>0</y>
+                        <z>0</z>
+                        <w>1</w>
+                    </quat>
+                    <scale>
+                        <x>6.8978977</x>
+                        <y>1</y>
+                        <z>0.8318367</z>
+                    </scale>
+                </transform>
+                <model_name>cube</model_name>
+                <texture_name></texture_name>
+                <model_color_vec4>
+                    <x>0.80000001</x>
+                    <y>0.80000001</y>
+                    <z>0.80000001</z>
+                    <w>1</w>
+                </model_color_vec4>
+                <flow_section_id>0</flow_section_id>
+                <tag>0</tag>
+                <waypoint_follower>
+                    <mode>Waypoint</mode>
+                    <waypoint_auto_start>false</waypoint_auto_start>
+                    <loop_waypoints>false</loop_waypoints>
+                    <start_time>3</start_time>
+                    <quantize>1</quantize>
+                    <quantize_buffer>0</quantize_buffer>
+                    <waypoints/>
+                    <follow_entity_editor_id>
+                        <id>-1</id>
+                    </follow_entity_editor_id>
+                </waypoint_follower>
+                <hurt_on_hit>false</hurt_on_hit>
+                <can_hit>true</can_hit>
+                <hp>-1</hp>
+                <move_mode>Waypoints</move_mode>
+                <rot_vel>0</rot_vel>
+                <polygon/>
+                <hit_actions/>
+                <children_editor_ids/>
+            </FlowWall>
+            <FlowWall>
+                <editor_id>
+                    <id>234</id>
+                </editor_id>
+                <name>r0_wall5</name>
+                <entity_active>true</entity_active>
+                <pickable>true</pickable>
+                <transform>
+                    <pos>
+                        <x>10.12183</x>
+                        <y>0</y>
+                        <z>-25.452188</z>
+                    </pos>
+                    <quat>
+                        <x>0</x>
+                        <y>0</y>
+                        <z>0</z>
+                        <w>1</w>
+                    </quat>
+                    <scale>
+                        <x>3.0300303</x>
+                        <y>1</y>
+                        <z>0.8318367</z>
+                    </scale>
+                </transform>
+                <model_name>cube</model_name>
+                <texture_name></texture_name>
+                <model_color_vec4>
+                    <x>0.80000001</x>
+                    <y>0.80000001</y>
+                    <z>0.80000001</z>
+                    <w>1</w>
+                </model_color_vec4>
+                <flow_section_id>0</flow_section_id>
+                <tag>0</tag>
+                <waypoint_follower>
+                    <mode>Waypoint</mode>
+                    <waypoint_auto_start>false</waypoint_auto_start>
+                    <loop_waypoints>false</loop_waypoints>
+                    <start_time>3</start_time>
+                    <quantize>1</quantize>
+                    <quantize_buffer>0</quantize_buffer>
+                    <waypoints/>
+                    <follow_entity_editor_id>
+                        <id>-1</id>
+                    </follow_entity_editor_id>
+                </waypoint_follower>
+                <hurt_on_hit>false</hurt_on_hit>
+                <can_hit>true</can_hit>
+                <hp>-1</hp>
+                <move_mode>Waypoints</move_mode>
+                <rot_vel>0</rot_vel>
+                <polygon/>
+                <hit_actions/>
+                <children_editor_ids/>
+            </FlowWall>
         </new_entities>
     </script>
 </root>

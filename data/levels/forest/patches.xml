@@ -54,7 +54,7 @@
                 <Detune>0</Detune>
                 <OscFader>0</OscFader>
                 <Unison>0</Unison>
-                <UnisonDetune>1.471</UnisonDetune>
+                <UnisonDetune>11.765</UnisonDetune>
                 <Cutoff>264.70599</Cutoff>
                 <Peak>5.0370002</Peak>
                 <HpfCutoff>100</HpfCutoff>
@@ -80,9 +80,9 @@
                 <PitchEnvRelease>0</PitchEnvRelease>
                 <FMOsc2Level>0</FMOsc2Level>
                 <FMOsc2Ratio>0</FMOsc2Ratio>
-                <DelayGain>0</DelayGain>
-                <DelayTime>0</DelayTime>
-                <DelayFeedback>0</DelayFeedback>
+                <DelayGain>0.426</DelayGain>
+                <DelayTime>0.17299999</DelayTime>
+                <DelayFeedback>0.176</DelayFeedback>
             </patch>
         </patch>
         <patch>

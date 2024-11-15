@@ -100,7 +100,7 @@ struct EntityManager {
     Entity* GetEntity(EntityId id);  // only looks for active entities
     
     template<typename T>
-    T* GetEntityAs(EntityId id);
+    T* GetEntityAs(EntityId id, bool includeActive=true, bool includeInactive=false);
     
     Entity* GetActiveOrInactiveEntity(EntityId id, bool* active = nullptr) {
         return GetEntity(id, true, true, active);
@@ -210,8 +210,8 @@ EntityT* BaseEntity::As() {
 
 
 template<typename T>
-T* EntityManager::GetEntityAs(EntityId id) {
-    Entity* e = GetEntityInfo(id, true, false)._e;
+T* EntityManager::GetEntityAs(EntityId id, bool includeActive, bool includeInactive) {
+    Entity* e = GetEntityInfo(id, includeActive, includeInactive)._e;
     if (e == nullptr) {
         return nullptr;
     }

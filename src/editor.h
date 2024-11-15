@@ -19,6 +19,7 @@ struct Editor {
     void Update(float dt, SynthGuiState& synthGuiState);
     void DrawWindow();
     void DrawMultiEnemyWindow();
+    void DrawSeqWindow();
     void HandleEntitySelectAndMove(float dt);
     void HandlePianoInput(SynthGuiState& synthGuiState);
 

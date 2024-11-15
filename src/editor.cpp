@@ -20,12 +20,15 @@
 #include "color_presets.h"
 #include "geometry.h"
 #include "seq_action.h"
+#include "entities/step_sequencer.h"
 
 extern EditorIdMap *gEditorIdMap;
 
 static float gScrollFactorForDebugCameraMove = 1.f;
 
 static std::vector<ne::EntityId> gControlGroups[10];
+
+static bool sSeqWindowVisible = false;
 
 void Editor::Save(serial::Ptree pt) const {
     serial::Ptree groupsPt = pt.AddChild("ctrl_groups");
@@ -544,6 +547,36 @@ void Editor::HandleEntitySelectAndMove(float deltaTime) {
     
 }
 
+
+void Editor::DrawSeqWindow() {
+    ImGui::Begin("Step sequencers");
+    for (int entityIx = 0; entityIx < _entityIds.size(); ++entityIx) {
+        ne::EntityId const eId = _entityIds[entityIx];
+        if (eId._type != ne::EntityType::StepSequencer) {
+            continue;
+        }
+        StepSequencerEntity *e = _g->_neEntityManager->GetEntityAs<StepSequencerEntity>(eId, true, true);
+        if (!e) {
+            continue;
+        }
+        ImGui::PushID(entityIx);
+        ImGui::Text("%s",e->_name.c_str());
+        ImGui::SameLine();
+        bool activeChanged = ImGui::Checkbox("Active", &e->_initActive);
+        if (activeChanged) {
+            if (e->_initActive) {
+                _g->_neEntityManager->TagForActivate(eId, /*initOnActivate=*/true);
+            } else {
+                _g->_neEntityManager->TagForDeactivate(eId);
+            }
+        }
+        ImGui::SameLine();
+        ImGui::Checkbox("Editor mute", &e->_editorMute);
+        ImGui::PopID();
+    }
+    ImGui::End();
+}
+
 namespace {
 int GetNoteIndexFromKey(InputManager::Key key) {
     switch (key) {
@@ -660,6 +693,10 @@ void Editor::Update(float dt, SynthGuiState& synthGuiState) {
         sInputMode = (InputMode) ((((int) sInputMode) + 1) % ((int) InputMode::Count));
     }
 
+    if (inputManager.IsKeyPressedThisFrame(InputManager::Key::Q)) {
+        sSeqWindowVisible = true;
+    }
+
     if (sInputMode == InputMode::Default) {
         // Control groups
         if (inputManager.IsCtrlPressed()) {
@@ -763,6 +800,10 @@ void Editor::Update(float dt, SynthGuiState& synthGuiState) {
 
     if (sDemoWindowVisible) {
         ImGui::ShowDemoWindow(&sDemoWindowVisible);
+    }
+
+    if (sSeqWindowVisible) {
+        DrawSeqWindow();
     }
 }
 
