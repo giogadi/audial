@@ -731,7 +731,17 @@ void FlowPlayerEntity::UpdateDerived(GameManager& g, float dt) {
                         _s._passedPullTarget = false;
                         _s._dashAnimState = DashAnimState::Accel;
                     }
-                    _s._dashTimer = 0.f;                        
+                    _s._dashTimer = 0.f;
+                    if (hitResponse._time >= 0.f) {
+                        _s._currentDashEndTime = hitResponse._time;
+                    } else {
+                        _s._currentDashEndTime = _p._dashTime;
+                    }
+                    if (hitResponse._pullStopTime >= 0.f) {
+                        _s._currentPullStopEndTime = hitResponse._pullStopTime;
+                    } else {
+                        _s._currentPullStopEndTime = _p._pullStopTime;
+                    }
                     if (hitResponse._speed >= 0.f) {
                         _s._dashLaunchSpeed = hitResponse._speed;
                     } else {
@@ -751,6 +761,16 @@ void FlowPlayerEntity::UpdateDerived(GameManager& g, float dt) {
                     _s._moveState = MoveState::Push;
                     _s._stopAfterTimer = hitResponse._stopAfterTimer;
                     _s._dashTimer = 0.f;
+                    if (hitResponse._time >= 0.f) {
+                        _s._currentDashEndTime = hitResponse._time;
+                    } else {
+                        _s._currentDashEndTime = _p._dashTime;
+                    }
+                    if (hitResponse._pullStopTime >= 0.f) {
+                        _s._currentPullStopEndTime = hitResponse._pullStopTime;
+                    } else {
+                        _s._currentPullStopEndTime = _p._pullStopTime;
+                    }
                     _s._dashAnimState = DashAnimState::Accel;
                     Vec3 pushDir;
                     if (hitResponse._pushAngleDeg >= 0.f) {
@@ -798,7 +818,7 @@ void FlowPlayerEntity::UpdateDerived(GameManager& g, float dt) {
             if (_p._pullManualHold && _s._heldKey != InputManager::Key::NumKeys && g._inputManager->IsKeyReleasedThisFrame(_s._heldKey)) {
                 finishedPulling = true;
                 _s._heldKey = InputManager::Key::NumKeys;
-            } else if (_s._stopAfterTimer && _s._dashTimer >= _p._dashTime) {
+            } else if (_s._stopAfterTimer && _s._dashTimer >= _s._currentDashEndTime) {
                 finishedPulling = true;
             }
             if (finishedPulling) {
@@ -820,7 +840,7 @@ void FlowPlayerEntity::UpdateDerived(GameManager& g, float dt) {
         break;
 
         case MoveState::PullStop: {
-            if (_s._dashTimer >= _p._pullStopTime) {
+            if (_s._dashTimer >= _s._currentPullStopEndTime) {
                 _s._moveState = MoveState::Default;
                 if (TypingEnemyEntity* e = g._neEntityManager->GetEntityAs<TypingEnemyEntity>(_s._interactingEnemyId)) {
                     e->DoComboEndActions(g);
@@ -835,7 +855,7 @@ void FlowPlayerEntity::UpdateDerived(GameManager& g, float dt) {
             if (_p._pullManualHold && _s._heldKey != InputManager::Key::NumKeys && g._inputManager->IsKeyReleasedThisFrame(_s._heldKey)) {
                 finishedPushing = true;
                 _s._heldKey = InputManager::Key::NumKeys;
-            } else if (_s._stopAfterTimer && _s._dashTimer >= _p._dashTime) {
+            } else if (_s._stopAfterTimer && _s._dashTimer >= _s._currentDashEndTime) {
                 finishedPushing = true;
             }
             if (finishedPushing) {

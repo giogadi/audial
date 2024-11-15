@@ -69,6 +69,8 @@ void HitResponse::Load(serial::Ptree pt) {
     serial::TryGetEnum(pt, "type", _type);
     pt.TryGetFloat("speed", &_speed);
     pt.TryGetFloat("push_angle_deg", &_pushAngleDeg);
+    pt.TryGetFloat("time", &_time);
+    pt.TryGetFloat("ps_time", &_pullStopTime);
     pt.TryGetBool("stop_on_pass", &_stopOnPass);
     pt.TryGetBool("stop_after_timer", &_stopAfterTimer);
 }
@@ -76,19 +78,24 @@ void HitResponse::Save(serial::Ptree pt) const {
     serial::PutEnum(pt, "type", _type);
     pt.PutFloat("speed", _speed);
     pt.PutFloat("push_angle_deg", _pushAngleDeg);
+    pt.PutFloat("time", _time);
+    pt.PutFloat("ps_time", _pullStopTime);
     pt.PutBool("stop_on_pass", _stopOnPass);
     pt.PutBool("stop_after_timer", _stopAfterTimer);
 }
 bool HitResponse::ImGui(char const* label) {
+    bool changed = false;
     if (ImGui::TreeNode(label)) {
-        HitResponseTypeImGui("Type", &_type);
-        ImGui::InputFloat("Speed", &_speed);
-        ImGui::InputFloat("PushAngleDeg", &_pushAngleDeg);
-        ImGui::Checkbox("StopOnPass", &_stopOnPass);
-        ImGui::Checkbox("StopAfterTimer", &_stopAfterTimer);
+        changed = HitResponseTypeImGui("Type", &_type) || changed;
+        changed = ImGui::InputFloat("Speed", &_speed) || changed;
+        changed = ImGui::InputFloat("PushAngleDeg", &_pushAngleDeg) || changed;
+        changed = ImGui::InputFloat("Time", &_time) || changed;
+        changed = ImGui::InputFloat("Pullstop time", &_pullStopTime) || changed;
+        changed = ImGui::Checkbox("StopOnPass", &_stopOnPass) || changed;
+        changed = ImGui::Checkbox("StopAfterTimer", &_stopAfterTimer) || changed;
         ImGui::TreePop();
     }
-    return false;
+    return changed;
 }
 
 void TypingEnemyEntity::LoadDerived(serial::Ptree pt) {

@@ -15,6 +15,8 @@ struct HitResponse {
     HitResponseType _type = HitResponseType::Pull;
     float _speed = -1.f; // if <0, use player's default dash velocity
     float _pushAngleDeg = -1.f; // if <0, just use angle-to-player
+    float _time = -1.f; // if <0, use player's default dash time
+    float _pullStopTime = -1.f; // if <0, use player's default pull-stop time
     bool _stopOnPass = true;
     bool _stopAfterTimer = true;
     void Load(serial::Ptree pt);

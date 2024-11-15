@@ -63,6 +63,8 @@ struct FlowPlayerEntity : public ne::Entity {
         ne::EntityId _carrierId;
         bool _stopAfterTimer = true;
         float _dashTimer = -1.f; // wallBounce/pull/push
+        float _currentDashEndTime = -1.f; // pull/push
+        float _currentPullStopEndTime = -1.f; // pull/push
         Vec3 _lastKnownDashTarget; // pull/push
         Vec4 _lastKnownDashTargetColor; // pull/push
         bool _stopDashOnPassEnemy = true; // pull

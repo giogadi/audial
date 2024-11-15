@@ -47,7 +47,7 @@
             <name>dink</name>
             <patch>
                 <Gain>0.68400002</Gain>
-                <Mono>0</Mono>
+                <Mono>1</Mono>
                 <FM>0</FM>
                 <Osc1Waveform>Square</Osc1Waveform>
                 <Osc2Waveform>Saw</Osc2Waveform>
