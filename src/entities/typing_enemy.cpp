@@ -19,6 +19,7 @@
 #include "particle_mgr.h"
 #include "entities/particle_emitter.h"
 #include "imgui_vector_util.h"
+#include "typing_enemy_mgr.h"
 
 extern GameManager gGameManager;
 
@@ -149,6 +150,7 @@ void TypingEnemyEntity::LoadDerived(serial::Ptree pt) {
     pt.TryGetBool("lock_player_in_region", &_p._lockPlayerOnEnterRegion);
     pt.TryGetBool("allow_backward", &_p._allowTypeBackward);
     pt.TryGetBool("just_draw_model", &_p._justDrawModel);
+    pt.TryGetInt("group_id", &_p._groupId);
 
     SeqAction::LoadActionsFromChildNode(pt, "hit_actions", _p._hitActions);
     SeqAction::LoadActionsFromChildNode(pt, "all_hit_actions", _p._allHitActions);
@@ -190,6 +192,7 @@ void TypingEnemyEntity::SaveDerived(serial::Ptree pt) const {
     pt.PutDouble("timed_hittable_time", _p._timedHittableTime);
     pt.PutBool("allow_backward", _p._allowTypeBackward);
     pt.PutBool("just_draw_model", _p._justDrawModel);
+    pt.PutInt("group_id", _p._groupId);
     
     serial::PutEnum(pt, "region_type", _p._regionType);
     serial::SaveInNewChildOf(pt, "active_region_editor_id", _p._activeRegionEditorId);
@@ -224,6 +227,9 @@ ne::BaseEntity::ImGuiResult TypingEnemyEntity::ImGuiDerived(GameManager& g) {
     }
     else {
         _p._hitBehavior = HitBehavior::SingleAction;
+    }
+    if (ImGui::InputInt("Group ID", &_p._groupId)) {
+        result = ImGuiResult::NeedsInit;
     }
     ImGui::Checkbox("Just draw model", &_p._justDrawModel);
     ImGui::InputDouble("Flow cooldown (beat)", &_p._flowCooldownBeatTime);
@@ -284,6 +290,10 @@ ne::BaseEntity::ImGuiResult TypingEnemyEntity::MultiImGui(GameManager& g, BaseEn
         imgui_util::SetMemberOfEntities(&Props::_flowCooldownBeatTime, *this, entities, entityCount);
     }
 
+    if (ImGui::InputInt("Group ID", &_p._groupId)) {
+        imgui_util::SetMemberOfEntities(&Props::_groupId, *this, entities, entityCount);
+    }
+
     return needsInit ? ne::BaseEntity::ImGuiResult::NeedsInit : ne::BaseEntity::ImGuiResult::Done;
 }
 
@@ -309,6 +319,10 @@ void TypingEnemyEntity::InitDerived(GameManager& g) {
 
     if (ne::Entity* e = g._neEntityManager->FindEntityByEditorIdAndType(_p._activeRegionEditorId, ne::EntityType::FlowTrigger)) {
         _s._activeRegionId = e->_id;
+    }
+
+    if (_p._groupId >= 0) {
+        TypingEnemyMgr_AddEnemy(*g._typingEnemyMgr, g, *this);
     }
 }
 
@@ -715,12 +729,19 @@ void TypingEnemyEntity::DoComboEndActions(GameManager& g) {
     }
 }
 
-void TypingEnemyEntity::OnHitOther(GameManager& g) {
-    if (_p._resetCooldownOnAnyHit) {
-        _s._flowCooldownStartBeatTime = -1.0;
-    }
+void TypingEnemyEntity::ResetCooldown() {
+    _s._flowCooldownStartBeatTime = -1.0;
     _s._numHits = 0;
     _s._timeOfLastHit = -1.0;
+}
+
+void TypingEnemyEntity::OnHitOther(GameManager& g) {
+    if (_p._resetCooldownOnAnyHit) {
+        //_s._flowCooldownStartBeatTime = -1.0;
+        ResetCooldown();
+    }
+    /*_s._numHits = 0;
+    _s._timeOfLastHit = -1.0;*/
 }
 
 TypingEnemyEntity::NextKeys TypingEnemyEntity::GetNextKeys() const {

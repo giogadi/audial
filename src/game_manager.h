@@ -19,6 +19,7 @@ class BeatClock;
 class SoundBank;
 struct ParticleMgr;
 struct MotionManager;
+struct TypingEnemyMgr;
 
 #include "viewport.h"
 
@@ -33,6 +34,7 @@ struct GameManager {
     synth::PatchBank* _synthPatchBank = nullptr;
     ParticleMgr* _particleMgr = nullptr;
     MotionManager* _motionManager = nullptr;
+    TypingEnemyMgr *_typingEnemyMgr = nullptr;
 
     bool _editMode = false;
 

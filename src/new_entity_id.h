@@ -56,6 +56,5 @@ namespace ne {
         bool operator<(EntityId const& rhs) const {
             return _id < rhs._id;
         }
-    };
-
+    };    
 }

@@ -101,6 +101,8 @@ struct EntityManager {
     
     template<typename T>
     T* GetEntityAs(EntityId id, bool includeActive=true, bool includeInactive=false);
+    template<typename T>
+    T* GetEntityAs(EntityId id, bool *outActive);
     
     Entity* GetActiveOrInactiveEntity(EntityId id, bool* active = nullptr) {
         return GetEntity(id, true, true, active);
@@ -208,10 +210,10 @@ EntityT* BaseEntity::As() {
     return static_cast<EntityT*>(this);
 }
 
-
 template<typename T>
-T* EntityManager::GetEntityAs(EntityId id, bool includeActive, bool includeInactive) {
-    Entity* e = GetEntityInfo(id, includeActive, includeInactive)._e;
+T* EntityManager::GetEntityAs(EntityId id, bool *outActive) {
+    EntityInfo info = GetEntityInfo(id, true, true);
+    Entity* e = info._e;
     if (e == nullptr) {
         return nullptr;
     }
@@ -223,7 +225,21 @@ T* EntityManager::GetEntityAs(EntityId id, bool includeActive, bool includeInact
         printf("EntityManager::GetEntityAs: ERROR: entity \"%s\" is of type \"%s\" but we tried to get as \"%s\".\n", e->_name.c_str(), dynTypeName, staticTypeName);
         return nullptr;
     }
+    if (outActive) {
+        *outActive = info._active;
+    }
     return static_cast<T*>(e);
+}
+
+
+template<typename T>
+T* EntityManager::GetEntityAs(EntityId id, bool includeActive, bool includeInactive) {
+    bool active = true;
+    T *e = GetEntityAs<T>(id, &active);
+    if ((includeActive && active) || (includeInactive && !active)) {
+        return e;
+    }
+    return nullptr;
 }
 
 }  // namespace ne

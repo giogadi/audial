@@ -58,6 +58,7 @@ struct TypingEnemyEntity : public ne::Entity {
         double _timedHittableTime = -1.0;
         bool _allowTypeBackward = false;
         bool _justDrawModel = false;
+        int _groupId = -1;
     };
     Props _p;
     
@@ -88,6 +89,7 @@ struct TypingEnemyEntity : public ne::Entity {
     void Bump(Vec3 const& bumpDir);
     void RandomizeText();
 
+    void ResetCooldown();
     
     virtual void InitDerived(GameManager& g) override;
     virtual void UpdateDerived(GameManager& g, float dt) override;

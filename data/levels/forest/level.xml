@@ -3273,7 +3273,7 @@
                 <buttons>a</buttons>
                 <type_kill>false</type_kill>
                 <all_actions_on_hit>false</all_actions_on_hit>
-                <flow_cooldown>1</flow_cooldown>
+                <flow_cooldown>500</flow_cooldown>
                 <show_beats_left>false</show_beats_left>
                 <cooldown_quantize_denom>0</cooldown_quantize_denom>
                 <reset_cooldown_on_any_hit>false</reset_cooldown_on_any_hit>
@@ -3281,6 +3281,7 @@
                 <timed_hittable_time>-1</timed_hittable_time>
                 <allow_backward>false</allow_backward>
                 <just_draw_model>false</just_draw_model>
+                <group_id>0</group_id>
                 <region_type>TriggerEntity</region_type>
                 <active_region_editor_id>
                     <id>-1</id>
@@ -3375,7 +3376,7 @@
                 <buttons>a</buttons>
                 <type_kill>false</type_kill>
                 <all_actions_on_hit>false</all_actions_on_hit>
-                <flow_cooldown>1</flow_cooldown>
+                <flow_cooldown>500</flow_cooldown>
                 <show_beats_left>false</show_beats_left>
                 <cooldown_quantize_denom>0</cooldown_quantize_denom>
                 <reset_cooldown_on_any_hit>false</reset_cooldown_on_any_hit>
@@ -3383,6 +3384,7 @@
                 <timed_hittable_time>-1</timed_hittable_time>
                 <allow_backward>false</allow_backward>
                 <just_draw_model>false</just_draw_model>
+                <group_id>0</group_id>
                 <region_type>TriggerEntity</region_type>
                 <active_region_editor_id>
                     <id>-1</id>
@@ -3477,7 +3479,7 @@
                 <buttons>a</buttons>
                 <type_kill>false</type_kill>
                 <all_actions_on_hit>false</all_actions_on_hit>
-                <flow_cooldown>1</flow_cooldown>
+                <flow_cooldown>500</flow_cooldown>
                 <show_beats_left>false</show_beats_left>
                 <cooldown_quantize_denom>0</cooldown_quantize_denom>
                 <reset_cooldown_on_any_hit>false</reset_cooldown_on_any_hit>
@@ -3485,6 +3487,7 @@
                 <timed_hittable_time>-1</timed_hittable_time>
                 <allow_backward>false</allow_backward>
                 <just_draw_model>false</just_draw_model>
+                <group_id>0</group_id>
                 <region_type>TriggerEntity</region_type>
                 <active_region_editor_id>
                     <id>-1</id>
@@ -3579,7 +3582,7 @@
                 <buttons>a</buttons>
                 <type_kill>false</type_kill>
                 <all_actions_on_hit>false</all_actions_on_hit>
-                <flow_cooldown>1</flow_cooldown>
+                <flow_cooldown>500</flow_cooldown>
                 <show_beats_left>false</show_beats_left>
                 <cooldown_quantize_denom>0</cooldown_quantize_denom>
                 <reset_cooldown_on_any_hit>false</reset_cooldown_on_any_hit>
@@ -3587,6 +3590,7 @@
                 <timed_hittable_time>-1</timed_hittable_time>
                 <allow_backward>false</allow_backward>
                 <just_draw_model>false</just_draw_model>
+                <group_id>0</group_id>
                 <region_type>TriggerEntity</region_type>
                 <active_region_editor_id>
                     <id>-1</id>
@@ -4420,6 +4424,7 @@
                 <timed_hittable_time>-1</timed_hittable_time>
                 <allow_backward>false</allow_backward>
                 <just_draw_model>false</just_draw_model>
+                <group_id>-1</group_id>
                 <region_type>TriggerEntity</region_type>
                 <active_region_editor_id>
                     <id>-1</id>
@@ -4518,7 +4523,7 @@
                 <buttons>a</buttons>
                 <type_kill>false</type_kill>
                 <all_actions_on_hit>false</all_actions_on_hit>
-                <flow_cooldown>1</flow_cooldown>
+                <flow_cooldown>500</flow_cooldown>
                 <show_beats_left>false</show_beats_left>
                 <cooldown_quantize_denom>0</cooldown_quantize_denom>
                 <reset_cooldown_on_any_hit>false</reset_cooldown_on_any_hit>
@@ -4526,6 +4531,7 @@
                 <timed_hittable_time>-1</timed_hittable_time>
                 <allow_backward>false</allow_backward>
                 <just_draw_model>false</just_draw_model>
+                <group_id>0</group_id>
                 <region_type>TriggerEntity</region_type>
                 <active_region_editor_id>
                     <id>-1</id>
@@ -4620,7 +4626,7 @@
                 <buttons>a</buttons>
                 <type_kill>false</type_kill>
                 <all_actions_on_hit>false</all_actions_on_hit>
-                <flow_cooldown>1</flow_cooldown>
+                <flow_cooldown>500</flow_cooldown>
                 <show_beats_left>false</show_beats_left>
                 <cooldown_quantize_denom>0</cooldown_quantize_denom>
                 <reset_cooldown_on_any_hit>false</reset_cooldown_on_any_hit>
@@ -4628,6 +4634,7 @@
                 <timed_hittable_time>-1</timed_hittable_time>
                 <allow_backward>false</allow_backward>
                 <just_draw_model>false</just_draw_model>
+                <group_id>0</group_id>
                 <region_type>TriggerEntity</region_type>
                 <active_region_editor_id>
                     <id>-1</id>

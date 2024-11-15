@@ -34,22 +34,15 @@
 #include "audio.h"
 #include "beat_clock.h"
 #include "input_manager.h"
-// #include "collisions.h"
-// #include "component.h"
 #include "mesh.h"
 #include "renderer.h"
-// #include "components/player_controller.h"
-// #include "components/beep_on_hit.h"
-// #include "components/sequencer.h"
-// #include "components/rigid_body.h"
-// #include "components/hit_counter.h"
-// #include "entity_editing_context.h"
 #include "editor.h"
 #include "sound_bank.h"
 #include "synth_imgui.h"
 #include "logger.h"
 #include "particle_mgr.h"
 #include "motion_manager.h"
+#include "typing_enemy_mgr.h"
 
 GameManager gGameManager;
 
@@ -477,6 +470,7 @@ int main(int argc, char** argv) {
     ParticleMgr particleMgr;
 
     MotionManager motionManager;
+    TypingEnemyMgr typingEnemyMgr;
 
     gGameManager._editor = &editor;
     gGameManager._scene = &sceneManager;
@@ -488,7 +482,9 @@ int main(int argc, char** argv) {
     gGameManager._synthPatchBank = &synthPatchBank;
     gGameManager._particleMgr = &particleMgr;
     gGameManager._motionManager = &motionManager;
-    gGameManager._editMode = cmdLineInputs._editMode;
+    gGameManager._typingEnemyMgr = &typingEnemyMgr;
+
+    gGameManager._editMode = cmdLineInputs._editMode;    
 
     {
         serial::Ptree pt = serial::Ptree::MakeNew();
@@ -693,6 +689,7 @@ int main(int argc, char** argv) {
         MaybeToggleMute(fixedTimeStep);
 
         gGameManager._motionManager->Update(dt, gGameManager);
+        TypingEnemyMgr_Update(*gGameManager._typingEnemyMgr, gGameManager);
 
         if (gGameManager._editMode) {
             for (auto iter = gGameManager._neEntityManager->GetAllIterator(); !iter.Finished(); iter.Next()) {

@@ -77,6 +77,7 @@ add_executable(game
     src/beat_time_event.cpp src/beat_time_event.h
     src/synth_imgui.cpp src/synth_imgui.h
     src/new_entity_id.h
+    src/new_entity_id_hash.h
     src/new_entity.cpp src/new_entity.h
     src/renderer.cpp src/renderer.h
     src/camera_util.h
@@ -84,6 +85,7 @@ add_executable(game
     src/geometry.cpp src/geometry.h
     src/particle_mgr.cpp src/particle_mgr.h
     src/motion_manager.cpp src/motion_manager.h
+    src/typing_enemy_mgr.cpp src/typing_enemy_mgr.h
 
     src/string_ci.cpp src/string_ci.h
 
