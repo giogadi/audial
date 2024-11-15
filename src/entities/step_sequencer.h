@@ -83,6 +83,7 @@ struct StepSequencerEntity : ne::Entity {
     bool _seqNeedsReset = true;
     double _lastPlayedNoteTime = 0.0;
     bool _primePorta = false;
+    bool _hasInitEditMode = false;
 
     enum StepSaveType { Temporary, Permanent };
     void SetNextSeqStep(GameManager& g, SeqStep step, StepSaveType saveType, bool changeNote, bool changeVelocity);
@@ -95,6 +96,7 @@ struct StepSequencerEntity : ne::Entity {
 
     virtual void InitDerived(GameManager& g) override;
     virtual void UpdateDerived(GameManager& g, float dt) override;
+    virtual void UpdateEditMode(GameManager& g, float dt, bool isActive) override;
     virtual void SaveDerived(serial::Ptree pt) const override;
     virtual void LoadDerived(serial::Ptree pt) override;
     virtual ImGuiResult ImGuiDerived(GameManager& g) override;

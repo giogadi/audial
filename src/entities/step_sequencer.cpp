@@ -655,6 +655,14 @@ void StepSequencerEntity::UpdateDerived(GameManager& g, float dt) {
     }
 }
 
+void StepSequencerEntity::UpdateEditMode(GameManager& g, float dt, bool isActive) {
+    if (!_hasInitEditMode) {
+        BaseEntity::Init(g);
+        _hasInitEditMode = true;
+    }
+    UpdateDerived(g, dt);
+}
+
 void StepSequencerEntity::SaveDerived(serial::Ptree pt) const {
     {
         serial::Ptree paramTrackTypePt = pt.AddChild("param_track_types");
