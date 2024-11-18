@@ -562,6 +562,10 @@ void Editor::DrawSeqWindow() {
         ImGui::PushID(entityIx);
         ImGui::Text("%s",e->_name.c_str());
         ImGui::SameLine();
+        if (ImGui::Button("Go to")) {
+            SelectEntity(*e);
+        }
+        ImGui::SameLine();
         bool activeChanged = ImGui::Checkbox("Active", &e->_initActive);
         if (activeChanged) {
             if (e->_initActive) {

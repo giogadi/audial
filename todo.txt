@@ -35,7 +35,6 @@ TOOLS:
 - type in to search for entity type and seqAction type
 - input midi note from keyboard piano
 - up/down by octave for midi note input
-- select step sequencer in entity window from sequence window
 - group all the room-transition-related things into one entity that's easy to set up.
 - multiediting FOR REAL DUDE WTF
 - make soundbank not shit
