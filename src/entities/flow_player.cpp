@@ -406,8 +406,9 @@ void FlowPlayerEntity::Draw(GameManager& g, float const dt) {
         float factor = (float)(math_util::InverseLerp(0.0, kMissFadeTime, t));
         float alpha = math_util::Lerp(1.f, 0.f, factor);
         Vec4 color(1.f, 0.f, 0.f, alpha);
-        std::string text(1, m.c);
-        g._scene->DrawTextWorld(std::move(text), textTrans.Pos(), kTextSize, color, append);
+        char text[] = "a";
+        text[0] = m.c;
+        g._scene->DrawTextWorld(std::string_view(text, 1), textTrans.Pos(), kTextSize, color, append);
         append = true;
     }
 }

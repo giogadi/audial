@@ -197,8 +197,7 @@ void MechEntity::Draw(GameManager& g, float dt) {
         Vec4 color(1.f, 1.f, 1.f, 1.f);
         char textBuf[] = "*";
         textBuf[0] = _p.key;
-        // AHHHH ALLOCATION
-        g._scene->DrawTextWorld(std::string(textBuf), _transform.Pos(), kTextSize, color);
+        g._scene->DrawTextWorld(std::string_view(textBuf, 1), _transform.Pos(), kTextSize, color);
     }
 }
 

@@ -30,6 +30,7 @@ Near-term ideas:
 
 BUGS:
 - Our controller support is SUPER BUSTED, DUDE!!!!! But that's a later problem.
+- weird floaty text when camera moves. everything looks floaty actually
 
 TOOLS:
 - type in to search for entity type and seqAction type
@@ -58,5 +59,4 @@ Optimizations/improvements/etc:
 - Use an arena when loading so we don't have all this allocations for GetChildren().
 - DELAY ON PCM PLAYBACK!!!!
 - better font handling
-- avoid allocations when drawing enemy text
  

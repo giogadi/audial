@@ -98,36 +98,38 @@ void TypingSliderEntity::Draw(GameManager& g, float dt) {
     if (_s._index > 1) {
         std::string_view fadedText = std::string_view(_p._text).substr(0, _s._index - 1);
         if (fadedText.length() > 0) {
-            // AHHHH ALLOCATION
-            g._scene->DrawTextWorld(std::string(fadedText), renderTrans.GetPos(), kTextSize, kFadeColor); 
+            g._scene->DrawTextWorld(fadedText, renderTrans.GetPos(), kTextSize, kFadeColor); 
             needToAppend = true;
         }
     }
 
     if (_s._index > 0) {
         if (_s._index - 1 < _p._text.size()) {
-            std::string readyLetter(1, _p._text[_s._index - 1]);
-            g._scene->DrawTextWorld(std::move(readyLetter), renderTrans.GetPos(), kTextSize, kReadyColor, /*appendToPrevious=*/needToAppend);
+            char readyLetter[] = "a";
+            readyLetter[0] = _p._text[_s._index - 1];
+            g._scene->DrawTextWorld(std::string_view(readyLetter, 1), renderTrans.GetPos(), kTextSize, kReadyColor, /*appendToPrevious=*/needToAppend);
             needToAppend = true;
         }
     }
 
     if (_s._index >= 0 && _s._index < _p._text.length()) {
-        std::string activeLetter(1, _p._text[_s._index]);
-        g._scene->DrawTextWorld(std::move(activeLetter), renderTrans.GetPos(), kTextSize, kActiveColor, needToAppend);
+        char activeLetter[] = "a";
+        activeLetter[0] = _p._text[_s._index];
+        g._scene->DrawTextWorld(std::string_view(activeLetter, 1), renderTrans.GetPos(), kTextSize, kActiveColor, needToAppend);
         needToAppend = true;
     }
 
     if (_s._index + 1 < _p._text.size() && _s._index >= 0) {
-        std::string readyLetter(1, _p._text[_s._index + 1]);
-        g._scene->DrawTextWorld(std::move(readyLetter), renderTrans.GetPos(), kTextSize, kReadyColor, /*appendToPrevious=*/needToAppend);
+        char readyLetter[] = "a";
+        readyLetter[0] = _p._text[_s._index + 1];
+        g._scene->DrawTextWorld(std::string_view(readyLetter, 1), renderTrans.GetPos(), kTextSize, kReadyColor, /*appendToPrevious=*/needToAppend);
         needToAppend = true;
     }
 
     if (_s._index + 2 < _p._text.length()) {
         std::string_view fadedText = std::string_view(_p._text).substr(_s._index + 2);
         if (fadedText.length() > 0) {
-            g._scene->DrawTextWorld(std::string(fadedText), renderTrans.GetPos(), kTextSize, kFadeColor, needToAppend);
+            g._scene->DrawTextWorld(fadedText, renderTrans.GetPos(), kTextSize, kFadeColor, needToAppend);
             needToAppend = true;
         }
     }

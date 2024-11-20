@@ -425,15 +425,13 @@ namespace {
             std::string_view fadedText = std::string_view(e._p._keyText).substr(0, numFadedButtons);
             Vec4 color(1.f, 1.f, 1.f, kFadeAlpha);
             if (!fadedText.empty()) {
-                // AHHHH ALLOCATION
-                g._scene->DrawTextWorld(std::string(fadedText), textTrans.GetPos(), kTextSize, color);
+                g._scene->DrawTextWorld(fadedText, textTrans.GetPos(), kTextSize, color);
             }
             color._w = 1.f;
             std::string_view activeText = std::string_view(e._p._keyText).substr(numFadedButtons);
             if (!activeText.empty()) {
                 bool appendToPrevious = numFadedButtons > 0;
-                // AHHHH ALLOCATION
-                g._scene->DrawTextWorld(std::string(activeText), textTrans.GetPos(), kTextSize, color, appendToPrevious);
+                g._scene->DrawTextWorld(activeText, textTrans.GetPos(), kTextSize, color, appendToPrevious);
             }
         }
     }

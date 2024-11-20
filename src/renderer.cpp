@@ -38,6 +38,10 @@ float quadVertices[] = {
         1.0f, -1.0f,  1.0f, 0.0f,
         1.0f,  1.0f,  1.0f, 1.0f
 };
+
+std::size_t constexpr kTextBufferCapacity = 1024;
+char sTextBuffer[kTextBufferCapacity];
+int sTextBufferIx = 0;
 }
 
 namespace renderer {
@@ -118,7 +122,7 @@ struct TextWorldInstance {
     Vec4 _colorRgba;
     Vec3 _pos;
     float _scale = 1.f;
-    std::string _text;
+    std::string_view _text;
     bool _appendToPrevious = false;
 };
 
@@ -820,9 +824,18 @@ void Scene::DrawBoundingBox(Mat4 const& t, Vec4 const& color) {
     bb._color = color;
 }
 
-void Scene::DrawTextWorld(std::string text, Vec3 const& pos, float scale, Vec4 const& colorRgba, bool appendToPrevious) {
+void Scene::DrawTextWorld(std::string_view text, Vec3 const& pos, float scale, Vec4 const& colorRgba, bool appendToPrevious) {
     TextWorldInstance& t = _pInternal->_textToDraw.emplace_back();
-    t._text = std::move(text);
+    if (sTextBufferIx + text.size() >= kTextBufferCapacity) {
+        printf("Scene::DrawTextWorld: Text buffer out of capacity!!\n");
+        return;
+    }
+    char *textStart = &sTextBuffer[sTextBufferIx];
+    text.copy(textStart, text.size());
+    char *terminator = textStart + text.size();
+    *terminator = '\0';
+    t._text = std::string_view(textStart, text.size());
+    sTextBufferIx += text.size() + 1;
     t._pos = pos;
     t._scale = scale;
     t._colorRgba = colorRgba;
@@ -1572,6 +1585,8 @@ void Scene::Draw(int windowWidth, int windowHeight, float timeInSecs) {
     if (_pInternal->_enableGammaCorrection) {
         glDisable(GL_FRAMEBUFFER_SRGB);
     }
+
+    sTextBufferIx = 0;
 }
 
 renderer::Light* Scene::DrawLight() {
