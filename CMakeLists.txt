@@ -303,6 +303,9 @@ target_link_libraries(resample_test samplerate)
 target_link_libraries(resample_test PortAudio)
 target_include_directories(resample_test PUBLIC src/libsamplerate/src/include)
 
+add_executable(dict_test EXCLUDE_FROM_ALL
+    src/dict_test.cpp)
+
 if (MSVC)
 else()
     add_executable(fft_test EXCLUDE_FROM_ALL
