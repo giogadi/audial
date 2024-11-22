@@ -976,7 +976,7 @@
                 <note_length>0.125</note_length>
                 <start_time>4</start_time>
                 <is_synth>false</is_synth>
-                <editor_mute>false</editor_mute>
+                <editor_mute>true</editor_mute>
                 <max_voices>-1</max_voices>
                 <quantize_temp_changes>true</quantize_temp_changes>
             </StepSequencer>
@@ -1391,7 +1391,7 @@
                 <note_length>0.125</note_length>
                 <start_time>0</start_time>
                 <is_synth>false</is_synth>
-                <editor_mute>false</editor_mute>
+                <editor_mute>true</editor_mute>
                 <max_voices>-1</max_voices>
                 <quantize_temp_changes>true</quantize_temp_changes>
             </StepSequencer>
@@ -1724,7 +1724,7 @@
                 <note_length>0.25</note_length>
                 <start_time>0</start_time>
                 <is_synth>false</is_synth>
-                <editor_mute>false</editor_mute>
+                <editor_mute>true</editor_mute>
                 <max_voices>-1</max_voices>
                 <quantize_temp_changes>true</quantize_temp_changes>
             </StepSequencer>
@@ -2141,7 +2141,7 @@
                 <note_length>0.125</note_length>
                 <start_time>0</start_time>
                 <is_synth>true</is_synth>
-                <editor_mute>false</editor_mute>
+                <editor_mute>true</editor_mute>
                 <max_voices>4</max_voices>
                 <quantize_temp_changes>true</quantize_temp_changes>
             </StepSequencer>
@@ -2474,7 +2474,7 @@
                 <note_length>0.125</note_length>
                 <start_time>0</start_time>
                 <is_synth>true</is_synth>
-                <editor_mute>false</editor_mute>
+                <editor_mute>true</editor_mute>
                 <max_voices>-1</max_voices>
                 <quantize_temp_changes>true</quantize_temp_changes>
             </StepSequencer>
@@ -3380,6 +3380,9 @@
                             <y>0</y>
                             <z>-9.3400002</z>
                         </spawn_pos>
+                        <pos_eid>
+                            <id>-1</id>
+                        </pos_eid>
                         <action_seq_editor_id>
                             <id>-1</id>
                         </action_seq_editor_id>
@@ -3481,6 +3484,8 @@
                     <type>None</type>
                     <speed>-1</speed>
                     <push_angle_deg>-1</push_angle_deg>
+                    <time>-1</time>
+                    <ps_time>-1</ps_time>
                     <stop_on_pass>true</stop_on_pass>
                     <stop_after_timer>true</stop_after_timer>
                 </hit_response>
@@ -3489,6 +3494,8 @@
                     <type>Push</type>
                     <speed>-1</speed>
                     <push_angle_deg>270</push_angle_deg>
+                    <time>-1</time>
+                    <ps_time>-1</ps_time>
                     <stop_on_pass>true</stop_on_pass>
                     <stop_after_timer>false</stop_after_timer>
                 </last_hit_response>
@@ -3504,6 +3511,7 @@
                 <timed_hittable_time>-1</timed_hittable_time>
                 <allow_backward>false</allow_backward>
                 <just_draw_model>false</just_draw_model>
+                <group_id>-1</group_id>
                 <region_type>TriggerEntity</region_type>
                 <active_region_editor_id>
                     <id>341</id>
@@ -3712,6 +3720,8 @@
                     <type>None</type>
                     <speed>-1</speed>
                     <push_angle_deg>270</push_angle_deg>
+                    <time>-1</time>
+                    <ps_time>-1</ps_time>
                     <stop_on_pass>true</stop_on_pass>
                     <stop_after_timer>true</stop_after_timer>
                 </hit_response>
@@ -3720,6 +3730,8 @@
                     <type>Push</type>
                     <speed>-1</speed>
                     <push_angle_deg>270</push_angle_deg>
+                    <time>-1</time>
+                    <ps_time>-1</ps_time>
                     <stop_on_pass>true</stop_on_pass>
                     <stop_after_timer>false</stop_after_timer>
                 </last_hit_response>
@@ -3735,6 +3747,7 @@
                 <timed_hittable_time>-1</timed_hittable_time>
                 <allow_backward>false</allow_backward>
                 <just_draw_model>false</just_draw_model>
+                <group_id>-1</group_id>
                 <region_type>TriggerEntity</region_type>
                 <active_region_editor_id>
                     <id>342</id>
@@ -3954,6 +3967,8 @@
                     <type>None</type>
                     <speed>-1</speed>
                     <push_angle_deg>-1</push_angle_deg>
+                    <time>-1</time>
+                    <ps_time>-1</ps_time>
                     <stop_on_pass>true</stop_on_pass>
                     <stop_after_timer>true</stop_after_timer>
                 </hit_response>
@@ -3962,6 +3977,8 @@
                     <type>Push</type>
                     <speed>-1</speed>
                     <push_angle_deg>270</push_angle_deg>
+                    <time>-1</time>
+                    <ps_time>-1</ps_time>
                     <stop_on_pass>true</stop_on_pass>
                     <stop_after_timer>false</stop_after_timer>
                 </last_hit_response>
@@ -3977,6 +3994,7 @@
                 <timed_hittable_time>-1</timed_hittable_time>
                 <allow_backward>false</allow_backward>
                 <just_draw_model>false</just_draw_model>
+                <group_id>-1</group_id>
                 <region_type>TriggerEntity</region_type>
                 <active_region_editor_id>
                     <id>344</id>
@@ -4593,6 +4611,8 @@
                     <type>None</type>
                     <speed>-1</speed>
                     <push_angle_deg>-1</push_angle_deg>
+                    <time>-1</time>
+                    <ps_time>-1</ps_time>
                     <stop_on_pass>true</stop_on_pass>
                     <stop_after_timer>true</stop_after_timer>
                 </hit_response>
@@ -4601,6 +4621,8 @@
                     <type>Push</type>
                     <speed>-1</speed>
                     <push_angle_deg>270</push_angle_deg>
+                    <time>-1</time>
+                    <ps_time>-1</ps_time>
                     <stop_on_pass>true</stop_on_pass>
                     <stop_after_timer>false</stop_after_timer>
                 </last_hit_response>
@@ -4616,6 +4638,7 @@
                 <timed_hittable_time>-1</timed_hittable_time>
                 <allow_backward>false</allow_backward>
                 <just_draw_model>false</just_draw_model>
+                <group_id>-1</group_id>
                 <region_type>TriggerEntity</region_type>
                 <active_region_editor_id>
                     <id>276</id>
@@ -5251,6 +5274,8 @@
                     <type>None</type>
                     <speed>-1</speed>
                     <push_angle_deg>-1</push_angle_deg>
+                    <time>-1</time>
+                    <ps_time>-1</ps_time>
                     <stop_on_pass>true</stop_on_pass>
                     <stop_after_timer>true</stop_after_timer>
                 </hit_response>
@@ -5259,6 +5284,8 @@
                     <type>Push</type>
                     <speed>-1</speed>
                     <push_angle_deg>270</push_angle_deg>
+                    <time>-1</time>
+                    <ps_time>-1</ps_time>
                     <stop_on_pass>true</stop_on_pass>
                     <stop_after_timer>false</stop_after_timer>
                 </last_hit_response>
@@ -5274,6 +5301,7 @@
                 <timed_hittable_time>-1</timed_hittable_time>
                 <allow_backward>false</allow_backward>
                 <just_draw_model>false</just_draw_model>
+                <group_id>-1</group_id>
                 <region_type>TriggerEntity</region_type>
                 <active_region_editor_id>
                     <id>347</id>
@@ -5584,6 +5612,8 @@
                     <type>None</type>
                     <speed>-1</speed>
                     <push_angle_deg>-1</push_angle_deg>
+                    <time>-1</time>
+                    <ps_time>-1</ps_time>
                     <stop_on_pass>true</stop_on_pass>
                     <stop_after_timer>true</stop_after_timer>
                 </hit_response>
@@ -5592,6 +5622,8 @@
                     <type>Push</type>
                     <speed>-1</speed>
                     <push_angle_deg>270</push_angle_deg>
+                    <time>-1</time>
+                    <ps_time>-1</ps_time>
                     <stop_on_pass>true</stop_on_pass>
                     <stop_after_timer>false</stop_after_timer>
                 </last_hit_response>
@@ -5607,6 +5639,7 @@
                 <timed_hittable_time>-1</timed_hittable_time>
                 <allow_backward>false</allow_backward>
                 <just_draw_model>false</just_draw_model>
+                <group_id>-1</group_id>
                 <region_type>TriggerEntity</region_type>
                 <active_region_editor_id>
                     <id>284</id>
@@ -6229,6 +6262,8 @@
                     <type>None</type>
                     <speed>-1</speed>
                     <push_angle_deg>-1</push_angle_deg>
+                    <time>-1</time>
+                    <ps_time>-1</ps_time>
                     <stop_on_pass>true</stop_on_pass>
                     <stop_after_timer>true</stop_after_timer>
                 </hit_response>
@@ -6237,6 +6272,8 @@
                     <type>Push</type>
                     <speed>-1</speed>
                     <push_angle_deg>270</push_angle_deg>
+                    <time>-1</time>
+                    <ps_time>-1</ps_time>
                     <stop_on_pass>true</stop_on_pass>
                     <stop_after_timer>false</stop_after_timer>
                 </last_hit_response>
@@ -6252,6 +6289,7 @@
                 <timed_hittable_time>-1</timed_hittable_time>
                 <allow_backward>false</allow_backward>
                 <just_draw_model>false</just_draw_model>
+                <group_id>-1</group_id>
                 <region_type>TriggerEntity</region_type>
                 <active_region_editor_id>
                     <id>295</id>
@@ -7090,6 +7128,8 @@
                     <type>Pull</type>
                     <speed>-1</speed>
                     <push_angle_deg>-1</push_angle_deg>
+                    <time>-1</time>
+                    <ps_time>-1</ps_time>
                     <stop_on_pass>true</stop_on_pass>
                     <stop_after_timer>true</stop_after_timer>
                 </hit_response>
@@ -7098,6 +7138,8 @@
                     <type>Push</type>
                     <speed>-1</speed>
                     <push_angle_deg>0</push_angle_deg>
+                    <time>-1</time>
+                    <ps_time>-1</ps_time>
                     <stop_on_pass>true</stop_on_pass>
                     <stop_after_timer>false</stop_after_timer>
                 </last_hit_response>
@@ -7113,6 +7155,7 @@
                 <timed_hittable_time>-1</timed_hittable_time>
                 <allow_backward>false</allow_backward>
                 <just_draw_model>false</just_draw_model>
+                <group_id>-1</group_id>
                 <region_type>TriggerEntity</region_type>
                 <active_region_editor_id>
                     <id>355</id>
@@ -7469,6 +7512,8 @@
                     <type>Push</type>
                     <speed>-1</speed>
                     <push_angle_deg>90</push_angle_deg>
+                    <time>-1</time>
+                    <ps_time>-1</ps_time>
                     <stop_on_pass>true</stop_on_pass>
                     <stop_after_timer>true</stop_after_timer>
                 </hit_response>
@@ -7477,6 +7522,8 @@
                     <type>Push</type>
                     <speed>-1</speed>
                     <push_angle_deg>0</push_angle_deg>
+                    <time>-1</time>
+                    <ps_time>-1</ps_time>
                     <stop_on_pass>true</stop_on_pass>
                     <stop_after_timer>false</stop_after_timer>
                 </last_hit_response>
@@ -7492,6 +7539,7 @@
                 <timed_hittable_time>-1</timed_hittable_time>
                 <allow_backward>false</allow_backward>
                 <just_draw_model>false</just_draw_model>
+                <group_id>-1</group_id>
                 <region_type>TriggerEntity</region_type>
                 <active_region_editor_id>
                     <id>360</id>
@@ -7690,6 +7738,8 @@
                     <type>Pull</type>
                     <speed>-1</speed>
                     <push_angle_deg>-1</push_angle_deg>
+                    <time>-1</time>
+                    <ps_time>-1</ps_time>
                     <stop_on_pass>true</stop_on_pass>
                     <stop_after_timer>true</stop_after_timer>
                 </hit_response>
@@ -7698,6 +7748,8 @@
                     <type>Pull</type>
                     <speed>-1</speed>
                     <push_angle_deg>-1</push_angle_deg>
+                    <time>-1</time>
+                    <ps_time>-1</ps_time>
                     <stop_on_pass>true</stop_on_pass>
                     <stop_after_timer>false</stop_after_timer>
                 </last_hit_response>
@@ -7713,6 +7765,7 @@
                 <timed_hittable_time>-1</timed_hittable_time>
                 <allow_backward>false</allow_backward>
                 <just_draw_model>false</just_draw_model>
+                <group_id>-1</group_id>
                 <region_type>TriggerEntity</region_type>
                 <active_region_editor_id>
                     <id>-1</id>
@@ -7799,6 +7852,8 @@
                     <type>None</type>
                     <speed>-1</speed>
                     <push_angle_deg>90</push_angle_deg>
+                    <time>-1</time>
+                    <ps_time>-1</ps_time>
                     <stop_on_pass>true</stop_on_pass>
                     <stop_after_timer>true</stop_after_timer>
                 </hit_response>
@@ -7807,6 +7862,8 @@
                     <type>Pull</type>
                     <speed>-1</speed>
                     <push_angle_deg>-1</push_angle_deg>
+                    <time>-1</time>
+                    <ps_time>-1</ps_time>
                     <stop_on_pass>true</stop_on_pass>
                     <stop_after_timer>false</stop_after_timer>
                 </last_hit_response>
@@ -7822,6 +7879,7 @@
                 <timed_hittable_time>-1</timed_hittable_time>
                 <allow_backward>false</allow_backward>
                 <just_draw_model>true</just_draw_model>
+                <group_id>-1</group_id>
                 <region_type>BoundedXAxis</region_type>
                 <active_region_editor_id>
                     <id>-1</id>
@@ -7937,6 +7995,8 @@
                     <type>Pull</type>
                     <speed>-1</speed>
                     <push_angle_deg>-1</push_angle_deg>
+                    <time>-1</time>
+                    <ps_time>-1</ps_time>
                     <stop_on_pass>true</stop_on_pass>
                     <stop_after_timer>true</stop_after_timer>
                 </hit_response>
@@ -7945,6 +8005,8 @@
                     <type>Pull</type>
                     <speed>-1</speed>
                     <push_angle_deg>-1</push_angle_deg>
+                    <time>-1</time>
+                    <ps_time>-1</ps_time>
                     <stop_on_pass>true</stop_on_pass>
                     <stop_after_timer>false</stop_after_timer>
                 </last_hit_response>
@@ -7960,6 +8022,7 @@
                 <timed_hittable_time>-1</timed_hittable_time>
                 <allow_backward>false</allow_backward>
                 <just_draw_model>false</just_draw_model>
+                <group_id>-1</group_id>
                 <region_type>TriggerEntity</region_type>
                 <active_region_editor_id>
                     <id>-1</id>
@@ -8046,6 +8109,8 @@
                     <type>Pull</type>
                     <speed>-1</speed>
                     <push_angle_deg>-1</push_angle_deg>
+                    <time>-1</time>
+                    <ps_time>-1</ps_time>
                     <stop_on_pass>true</stop_on_pass>
                     <stop_after_timer>true</stop_after_timer>
                 </hit_response>
@@ -8054,6 +8119,8 @@
                     <type>Pull</type>
                     <speed>-1</speed>
                     <push_angle_deg>-1</push_angle_deg>
+                    <time>-1</time>
+                    <ps_time>-1</ps_time>
                     <stop_on_pass>true</stop_on_pass>
                     <stop_after_timer>false</stop_after_timer>
                 </last_hit_response>
@@ -8069,6 +8136,7 @@
                 <timed_hittable_time>-1</timed_hittable_time>
                 <allow_backward>false</allow_backward>
                 <just_draw_model>false</just_draw_model>
+                <group_id>-1</group_id>
                 <region_type>TriggerEntity</region_type>
                 <active_region_editor_id>
                     <id>-1</id>
@@ -8155,6 +8223,8 @@
                     <type>Pull</type>
                     <speed>-1</speed>
                     <push_angle_deg>-1</push_angle_deg>
+                    <time>-1</time>
+                    <ps_time>-1</ps_time>
                     <stop_on_pass>true</stop_on_pass>
                     <stop_after_timer>true</stop_after_timer>
                 </hit_response>
@@ -8163,6 +8233,8 @@
                     <type>Pull</type>
                     <speed>-1</speed>
                     <push_angle_deg>-1</push_angle_deg>
+                    <time>-1</time>
+                    <ps_time>-1</ps_time>
                     <stop_on_pass>true</stop_on_pass>
                     <stop_after_timer>false</stop_after_timer>
                 </last_hit_response>
@@ -8178,6 +8250,7 @@
                 <timed_hittable_time>-1</timed_hittable_time>
                 <allow_backward>false</allow_backward>
                 <just_draw_model>false</just_draw_model>
+                <group_id>-1</group_id>
                 <region_type>TriggerEntity</region_type>
                 <active_region_editor_id>
                     <id>-1</id>
@@ -8524,6 +8597,8 @@
                     <type>None</type>
                     <speed>-1</speed>
                     <push_angle_deg>-1</push_angle_deg>
+                    <time>-1</time>
+                    <ps_time>-1</ps_time>
                     <stop_on_pass>true</stop_on_pass>
                     <stop_after_timer>true</stop_after_timer>
                 </hit_response>
@@ -8532,6 +8607,8 @@
                     <type>Push</type>
                     <speed>-1</speed>
                     <push_angle_deg>270</push_angle_deg>
+                    <time>-1</time>
+                    <ps_time>-1</ps_time>
                     <stop_on_pass>true</stop_on_pass>
                     <stop_after_timer>false</stop_after_timer>
                 </last_hit_response>
@@ -8547,6 +8624,7 @@
                 <timed_hittable_time>-1</timed_hittable_time>
                 <allow_backward>false</allow_backward>
                 <just_draw_model>false</just_draw_model>
+                <group_id>-1</group_id>
                 <region_type>TriggerEntity</region_type>
                 <active_region_editor_id>
                     <id>346</id>
@@ -8927,6 +9005,8 @@
                     <type>None</type>
                     <speed>-1</speed>
                     <push_angle_deg>-1</push_angle_deg>
+                    <time>-1</time>
+                    <ps_time>-1</ps_time>
                     <stop_on_pass>true</stop_on_pass>
                     <stop_after_timer>true</stop_after_timer>
                 </hit_response>
@@ -8935,6 +9015,8 @@
                     <type>Push</type>
                     <speed>-1</speed>
                     <push_angle_deg>270</push_angle_deg>
+                    <time>-1</time>
+                    <ps_time>-1</ps_time>
                     <stop_on_pass>true</stop_on_pass>
                     <stop_after_timer>false</stop_after_timer>
                 </last_hit_response>
@@ -8950,6 +9032,7 @@
                 <timed_hittable_time>-1</timed_hittable_time>
                 <allow_backward>false</allow_backward>
                 <just_draw_model>false</just_draw_model>
+                <group_id>-1</group_id>
                 <region_type>TriggerEntity</region_type>
                 <active_region_editor_id>
                     <id>349</id>
@@ -10610,6 +10693,8 @@
                     <type>Pull</type>
                     <speed>-1</speed>
                     <push_angle_deg>-1</push_angle_deg>
+                    <time>-1</time>
+                    <ps_time>-1</ps_time>
                     <stop_on_pass>true</stop_on_pass>
                     <stop_after_timer>true</stop_after_timer>
                 </hit_response>
@@ -10618,6 +10703,8 @@
                     <type>Push</type>
                     <speed>-1</speed>
                     <push_angle_deg>90</push_angle_deg>
+                    <time>-1</time>
+                    <ps_time>-1</ps_time>
                     <stop_on_pass>true</stop_on_pass>
                     <stop_after_timer>false</stop_after_timer>
                 </last_hit_response>
@@ -10633,6 +10720,7 @@
                 <timed_hittable_time>-1</timed_hittable_time>
                 <allow_backward>false</allow_backward>
                 <just_draw_model>false</just_draw_model>
+                <group_id>-1</group_id>
                 <region_type>TriggerEntity</region_type>
                 <active_region_editor_id>
                     <id>365</id>
@@ -11262,6 +11350,8 @@
                     <type>None</type>
                     <speed>-1</speed>
                     <push_angle_deg>90</push_angle_deg>
+                    <time>-1</time>
+                    <ps_time>-1</ps_time>
                     <stop_on_pass>true</stop_on_pass>
                     <stop_after_timer>true</stop_after_timer>
                 </hit_response>
@@ -11270,6 +11360,8 @@
                     <type>Pull</type>
                     <speed>-1</speed>
                     <push_angle_deg>-1</push_angle_deg>
+                    <time>-1</time>
+                    <ps_time>-1</ps_time>
                     <stop_on_pass>true</stop_on_pass>
                     <stop_after_timer>false</stop_after_timer>
                 </last_hit_response>
@@ -11285,6 +11377,7 @@
                 <timed_hittable_time>-1</timed_hittable_time>
                 <allow_backward>false</allow_backward>
                 <just_draw_model>true</just_draw_model>
+                <group_id>-1</group_id>
                 <region_type>BoundedXAxis</region_type>
                 <active_region_editor_id>
                     <id>-1</id>
@@ -11477,6 +11570,9 @@
                             <y>0</y>
                             <z>19.045</z>
                         </spawn_pos>
+                        <pos_eid>
+                            <id>-1</id>
+                        </pos_eid>
                         <action_seq_editor_id>
                             <id>-1</id>
                         </action_seq_editor_id>
@@ -11608,6 +11704,8 @@
                     <type>Push</type>
                     <speed>-1</speed>
                     <push_angle_deg>-1</push_angle_deg>
+                    <time>-1</time>
+                    <ps_time>-1</ps_time>
                     <stop_on_pass>true</stop_on_pass>
                     <stop_after_timer>true</stop_after_timer>
                 </hit_response>
@@ -11616,6 +11714,8 @@
                     <type>Pull</type>
                     <speed>-1</speed>
                     <push_angle_deg>-1</push_angle_deg>
+                    <time>-1</time>
+                    <ps_time>-1</ps_time>
                     <stop_on_pass>true</stop_on_pass>
                     <stop_after_timer>true</stop_after_timer>
                 </last_hit_response>
@@ -11631,6 +11731,7 @@
                 <timed_hittable_time>-1</timed_hittable_time>
                 <allow_backward>false</allow_backward>
                 <just_draw_model>false</just_draw_model>
+                <group_id>-1</group_id>
                 <region_type>TriggerEntity</region_type>
                 <active_region_editor_id>
                     <id>-1</id>
@@ -11882,6 +11983,8 @@
                     <type>None</type>
                     <speed>-1</speed>
                     <push_angle_deg>90</push_angle_deg>
+                    <time>-1</time>
+                    <ps_time>-1</ps_time>
                     <stop_on_pass>true</stop_on_pass>
                     <stop_after_timer>true</stop_after_timer>
                 </hit_response>
@@ -11890,6 +11993,8 @@
                     <type>Pull</type>
                     <speed>-1</speed>
                     <push_angle_deg>-1</push_angle_deg>
+                    <time>-1</time>
+                    <ps_time>-1</ps_time>
                     <stop_on_pass>true</stop_on_pass>
                     <stop_after_timer>false</stop_after_timer>
                 </last_hit_response>
@@ -11905,6 +12010,7 @@
                 <timed_hittable_time>-1</timed_hittable_time>
                 <allow_backward>false</allow_backward>
                 <just_draw_model>true</just_draw_model>
+                <group_id>-1</group_id>
                 <region_type>BoundedXAxis</region_type>
                 <active_region_editor_id>
                     <id>-1</id>
@@ -12076,6 +12182,8 @@
                     <type>Pull</type>
                     <speed>-1</speed>
                     <push_angle_deg>-1</push_angle_deg>
+                    <time>-1</time>
+                    <ps_time>-1</ps_time>
                     <stop_on_pass>true</stop_on_pass>
                     <stop_after_timer>true</stop_after_timer>
                 </hit_response>
@@ -12084,6 +12192,8 @@
                     <type>Push</type>
                     <speed>-1</speed>
                     <push_angle_deg>270</push_angle_deg>
+                    <time>-1</time>
+                    <ps_time>-1</ps_time>
                     <stop_on_pass>true</stop_on_pass>
                     <stop_after_timer>false</stop_after_timer>
                 </last_hit_response>
@@ -12099,6 +12209,7 @@
                 <timed_hittable_time>-1</timed_hittable_time>
                 <allow_backward>false</allow_backward>
                 <just_draw_model>false</just_draw_model>
+                <group_id>-1</group_id>
                 <region_type>TriggerEntity</region_type>
                 <active_region_editor_id>
                     <id>403</id>
@@ -12560,6 +12671,8 @@
                     <type>None</type>
                     <speed>-1</speed>
                     <push_angle_deg>90</push_angle_deg>
+                    <time>-1</time>
+                    <ps_time>-1</ps_time>
                     <stop_on_pass>true</stop_on_pass>
                     <stop_after_timer>true</stop_after_timer>
                 </hit_response>
@@ -12568,6 +12681,8 @@
                     <type>Pull</type>
                     <speed>-1</speed>
                     <push_angle_deg>-1</push_angle_deg>
+                    <time>-1</time>
+                    <ps_time>-1</ps_time>
                     <stop_on_pass>true</stop_on_pass>
                     <stop_after_timer>false</stop_after_timer>
                 </last_hit_response>
@@ -12583,6 +12698,7 @@
                 <timed_hittable_time>-1</timed_hittable_time>
                 <allow_backward>false</allow_backward>
                 <just_draw_model>true</just_draw_model>
+                <group_id>-1</group_id>
                 <region_type>BoundedXAxis</region_type>
                 <active_region_editor_id>
                     <id>-1</id>
@@ -12698,6 +12814,8 @@
                     <type>Pull</type>
                     <speed>-1</speed>
                     <push_angle_deg>-1</push_angle_deg>
+                    <time>-1</time>
+                    <ps_time>-1</ps_time>
                     <stop_on_pass>true</stop_on_pass>
                     <stop_after_timer>true</stop_after_timer>
                 </hit_response>
@@ -12706,6 +12824,8 @@
                     <type>Push</type>
                     <speed>-1</speed>
                     <push_angle_deg>180</push_angle_deg>
+                    <time>-1</time>
+                    <ps_time>-1</ps_time>
                     <stop_on_pass>true</stop_on_pass>
                     <stop_after_timer>false</stop_after_timer>
                 </last_hit_response>
@@ -12721,6 +12841,7 @@
                 <timed_hittable_time>-1</timed_hittable_time>
                 <allow_backward>false</allow_backward>
                 <just_draw_model>false</just_draw_model>
+                <group_id>-1</group_id>
                 <region_type>TriggerEntity</region_type>
                 <active_region_editor_id>
                     <id>414</id>
@@ -13172,6 +13293,8 @@
                     <type>None</type>
                     <speed>-1</speed>
                     <push_angle_deg>90</push_angle_deg>
+                    <time>-1</time>
+                    <ps_time>-1</ps_time>
                     <stop_on_pass>true</stop_on_pass>
                     <stop_after_timer>true</stop_after_timer>
                 </hit_response>
@@ -13180,6 +13303,8 @@
                     <type>Pull</type>
                     <speed>-1</speed>
                     <push_angle_deg>-1</push_angle_deg>
+                    <time>-1</time>
+                    <ps_time>-1</ps_time>
                     <stop_on_pass>true</stop_on_pass>
                     <stop_after_timer>false</stop_after_timer>
                 </last_hit_response>
@@ -13195,6 +13320,7 @@
                 <timed_hittable_time>-1</timed_hittable_time>
                 <allow_backward>false</allow_backward>
                 <just_draw_model>true</just_draw_model>
+                <group_id>-1</group_id>
                 <region_type>BoundedXAxis</region_type>
                 <active_region_editor_id>
                     <id>-1</id>
@@ -13590,6 +13716,8 @@
                     <type>Pull</type>
                     <speed>-1</speed>
                     <push_angle_deg>-1</push_angle_deg>
+                    <time>-1</time>
+                    <ps_time>-1</ps_time>
                     <stop_on_pass>true</stop_on_pass>
                     <stop_after_timer>true</stop_after_timer>
                 </hit_response>
@@ -13598,6 +13726,8 @@
                     <type>Push</type>
                     <speed>-1</speed>
                     <push_angle_deg>180</push_angle_deg>
+                    <time>-1</time>
+                    <ps_time>-1</ps_time>
                     <stop_on_pass>true</stop_on_pass>
                     <stop_after_timer>false</stop_after_timer>
                 </last_hit_response>
@@ -13613,6 +13743,7 @@
                 <timed_hittable_time>-1</timed_hittable_time>
                 <allow_backward>false</allow_backward>
                 <just_draw_model>false</just_draw_model>
+                <group_id>-1</group_id>
                 <region_type>TriggerEntity</region_type>
                 <active_region_editor_id>
                     <id>424</id>
@@ -14009,6 +14140,8 @@
                     <type>None</type>
                     <speed>-1</speed>
                     <push_angle_deg>90</push_angle_deg>
+                    <time>-1</time>
+                    <ps_time>-1</ps_time>
                     <stop_on_pass>true</stop_on_pass>
                     <stop_after_timer>true</stop_after_timer>
                 </hit_response>
@@ -14017,6 +14150,8 @@
                     <type>Pull</type>
                     <speed>-1</speed>
                     <push_angle_deg>-1</push_angle_deg>
+                    <time>-1</time>
+                    <ps_time>-1</ps_time>
                     <stop_on_pass>true</stop_on_pass>
                     <stop_after_timer>false</stop_after_timer>
                 </last_hit_response>
@@ -14032,6 +14167,7 @@
                 <timed_hittable_time>-1</timed_hittable_time>
                 <allow_backward>false</allow_backward>
                 <just_draw_model>true</just_draw_model>
+                <group_id>-1</group_id>
                 <region_type>BoundedXAxis</region_type>
                 <active_region_editor_id>
                     <id>-1</id>
@@ -14315,6 +14451,8 @@
                     <type>Pull</type>
                     <speed>-1</speed>
                     <push_angle_deg>-1</push_angle_deg>
+                    <time>-1</time>
+                    <ps_time>-1</ps_time>
                     <stop_on_pass>true</stop_on_pass>
                     <stop_after_timer>true</stop_after_timer>
                 </hit_response>
@@ -14323,6 +14461,8 @@
                     <type>Push</type>
                     <speed>-1</speed>
                     <push_angle_deg>270</push_angle_deg>
+                    <time>-1</time>
+                    <ps_time>-1</ps_time>
                     <stop_on_pass>true</stop_on_pass>
                     <stop_after_timer>false</stop_after_timer>
                 </last_hit_response>
@@ -14338,6 +14478,7 @@
                 <timed_hittable_time>-1</timed_hittable_time>
                 <allow_backward>false</allow_backward>
                 <just_draw_model>false</just_draw_model>
+                <group_id>-1</group_id>
                 <region_type>TriggerEntity</region_type>
                 <active_region_editor_id>
                     <id>435</id>
@@ -14687,6 +14828,8 @@
                     <type>None</type>
                     <speed>-1</speed>
                     <push_angle_deg>90</push_angle_deg>
+                    <time>-1</time>
+                    <ps_time>-1</ps_time>
                     <stop_on_pass>true</stop_on_pass>
                     <stop_after_timer>true</stop_after_timer>
                 </hit_response>
@@ -14695,6 +14838,8 @@
                     <type>Pull</type>
                     <speed>-1</speed>
                     <push_angle_deg>-1</push_angle_deg>
+                    <time>-1</time>
+                    <ps_time>-1</ps_time>
                     <stop_on_pass>true</stop_on_pass>
                     <stop_after_timer>false</stop_after_timer>
                 </last_hit_response>
@@ -14710,6 +14855,7 @@
                 <timed_hittable_time>-1</timed_hittable_time>
                 <allow_backward>false</allow_backward>
                 <just_draw_model>true</just_draw_model>
+                <group_id>-1</group_id>
                 <region_type>BoundedXAxis</region_type>
                 <active_region_editor_id>
                     <id>-1</id>
@@ -14937,6 +15083,8 @@
                     <type>Pull</type>
                     <speed>-1</speed>
                     <push_angle_deg>-1</push_angle_deg>
+                    <time>-1</time>
+                    <ps_time>-1</ps_time>
                     <stop_on_pass>true</stop_on_pass>
                     <stop_after_timer>true</stop_after_timer>
                 </hit_response>
@@ -14945,6 +15093,8 @@
                     <type>Push</type>
                     <speed>-1</speed>
                     <push_angle_deg>0</push_angle_deg>
+                    <time>-1</time>
+                    <ps_time>-1</ps_time>
                     <stop_on_pass>true</stop_on_pass>
                     <stop_after_timer>false</stop_after_timer>
                 </last_hit_response>
@@ -14960,6 +15110,7 @@
                 <timed_hittable_time>-1</timed_hittable_time>
                 <allow_backward>false</allow_backward>
                 <just_draw_model>false</just_draw_model>
+                <group_id>-1</group_id>
                 <region_type>TriggerEntity</region_type>
                 <active_region_editor_id>
                     <id>442</id>
@@ -15268,6 +15419,8 @@
                     <type>None</type>
                     <speed>-1</speed>
                     <push_angle_deg>90</push_angle_deg>
+                    <time>-1</time>
+                    <ps_time>-1</ps_time>
                     <stop_on_pass>true</stop_on_pass>
                     <stop_after_timer>true</stop_after_timer>
                 </hit_response>
@@ -15276,6 +15429,8 @@
                     <type>Pull</type>
                     <speed>-1</speed>
                     <push_angle_deg>-1</push_angle_deg>
+                    <time>-1</time>
+                    <ps_time>-1</ps_time>
                     <stop_on_pass>true</stop_on_pass>
                     <stop_after_timer>false</stop_after_timer>
                 </last_hit_response>
@@ -15291,6 +15446,7 @@
                 <timed_hittable_time>-1</timed_hittable_time>
                 <allow_backward>false</allow_backward>
                 <just_draw_model>true</just_draw_model>
+                <group_id>-1</group_id>
                 <region_type>BoundedXAxis</region_type>
                 <active_region_editor_id>
                     <id>-1</id>
@@ -15630,6 +15786,8 @@
                     <type>None</type>
                     <speed>-1</speed>
                     <push_angle_deg>-1</push_angle_deg>
+                    <time>-1</time>
+                    <ps_time>-1</ps_time>
                     <stop_on_pass>true</stop_on_pass>
                     <stop_after_timer>true</stop_after_timer>
                 </hit_response>
@@ -15638,6 +15796,8 @@
                     <type>Push</type>
                     <speed>-1</speed>
                     <push_angle_deg>90</push_angle_deg>
+                    <time>-1</time>
+                    <ps_time>-1</ps_time>
                     <stop_on_pass>true</stop_on_pass>
                     <stop_after_timer>true</stop_after_timer>
                 </last_hit_response>
@@ -15653,6 +15813,7 @@
                 <timed_hittable_time>-1</timed_hittable_time>
                 <allow_backward>false</allow_backward>
                 <just_draw_model>false</just_draw_model>
+                <group_id>-1</group_id>
                 <region_type>TriggerEntity</region_type>
                 <active_region_editor_id>
                     <id>450</id>
@@ -16016,6 +16177,8 @@
                     <type>None</type>
                     <speed>-1</speed>
                     <push_angle_deg>90</push_angle_deg>
+                    <time>-1</time>
+                    <ps_time>-1</ps_time>
                     <stop_on_pass>true</stop_on_pass>
                     <stop_after_timer>true</stop_after_timer>
                 </hit_response>
@@ -16024,6 +16187,8 @@
                     <type>Pull</type>
                     <speed>-1</speed>
                     <push_angle_deg>-1</push_angle_deg>
+                    <time>-1</time>
+                    <ps_time>-1</ps_time>
                     <stop_on_pass>true</stop_on_pass>
                     <stop_after_timer>false</stop_after_timer>
                 </last_hit_response>
@@ -16039,6 +16204,7 @@
                 <timed_hittable_time>-1</timed_hittable_time>
                 <allow_backward>false</allow_backward>
                 <just_draw_model>true</just_draw_model>
+                <group_id>-1</group_id>
                 <region_type>BoundedXAxis</region_type>
                 <active_region_editor_id>
                     <id>-1</id>
@@ -16210,6 +16376,8 @@
                     <type>None</type>
                     <speed>-1</speed>
                     <push_angle_deg>90</push_angle_deg>
+                    <time>-1</time>
+                    <ps_time>-1</ps_time>
                     <stop_on_pass>true</stop_on_pass>
                     <stop_after_timer>true</stop_after_timer>
                 </hit_response>
@@ -16218,6 +16386,8 @@
                     <type>Pull</type>
                     <speed>-1</speed>
                     <push_angle_deg>-1</push_angle_deg>
+                    <time>-1</time>
+                    <ps_time>-1</ps_time>
                     <stop_on_pass>true</stop_on_pass>
                     <stop_after_timer>false</stop_after_timer>
                 </last_hit_response>
@@ -16233,6 +16403,7 @@
                 <timed_hittable_time>-1</timed_hittable_time>
                 <allow_backward>false</allow_backward>
                 <just_draw_model>true</just_draw_model>
+                <group_id>-1</group_id>
                 <region_type>BoundedXAxis</region_type>
                 <active_region_editor_id>
                     <id>-1</id>
@@ -16348,6 +16519,8 @@
                     <type>Pull</type>
                     <speed>-1</speed>
                     <push_angle_deg>-1</push_angle_deg>
+                    <time>-1</time>
+                    <ps_time>-1</ps_time>
                     <stop_on_pass>true</stop_on_pass>
                     <stop_after_timer>true</stop_after_timer>
                 </hit_response>
@@ -16356,6 +16529,8 @@
                     <type>Pull</type>
                     <speed>-1</speed>
                     <push_angle_deg>-1</push_angle_deg>
+                    <time>-1</time>
+                    <ps_time>-1</ps_time>
                     <stop_on_pass>true</stop_on_pass>
                     <stop_after_timer>false</stop_after_timer>
                 </last_hit_response>
@@ -16371,6 +16546,7 @@
                 <timed_hittable_time>-1</timed_hittable_time>
                 <allow_backward>false</allow_backward>
                 <just_draw_model>false</just_draw_model>
+                <group_id>-1</group_id>
                 <region_type>TriggerEntity</region_type>
                 <active_region_editor_id>
                     <id>-1</id>
@@ -16466,6 +16642,8 @@
                     <type>Pull</type>
                     <speed>-1</speed>
                     <push_angle_deg>-1</push_angle_deg>
+                    <time>-1</time>
+                    <ps_time>-1</ps_time>
                     <stop_on_pass>true</stop_on_pass>
                     <stop_after_timer>true</stop_after_timer>
                 </hit_response>
@@ -16474,6 +16652,8 @@
                     <type>Pull</type>
                     <speed>-1</speed>
                     <push_angle_deg>-1</push_angle_deg>
+                    <time>-1</time>
+                    <ps_time>-1</ps_time>
                     <stop_on_pass>true</stop_on_pass>
                     <stop_after_timer>false</stop_after_timer>
                 </last_hit_response>
@@ -16489,6 +16669,7 @@
                 <timed_hittable_time>-1</timed_hittable_time>
                 <allow_backward>false</allow_backward>
                 <just_draw_model>false</just_draw_model>
+                <group_id>-1</group_id>
                 <region_type>TriggerEntity</region_type>
                 <active_region_editor_id>
                     <id>-1</id>
@@ -16584,6 +16765,8 @@
                     <type>Pull</type>
                     <speed>-1</speed>
                     <push_angle_deg>-1</push_angle_deg>
+                    <time>-1</time>
+                    <ps_time>-1</ps_time>
                     <stop_on_pass>true</stop_on_pass>
                     <stop_after_timer>true</stop_after_timer>
                 </hit_response>
@@ -16592,6 +16775,8 @@
                     <type>Pull</type>
                     <speed>-1</speed>
                     <push_angle_deg>-1</push_angle_deg>
+                    <time>-1</time>
+                    <ps_time>-1</ps_time>
                     <stop_on_pass>true</stop_on_pass>
                     <stop_after_timer>false</stop_after_timer>
                 </last_hit_response>
@@ -16607,6 +16792,7 @@
                 <timed_hittable_time>-1</timed_hittable_time>
                 <allow_backward>false</allow_backward>
                 <just_draw_model>false</just_draw_model>
+                <group_id>-1</group_id>
                 <region_type>TriggerEntity</region_type>
                 <active_region_editor_id>
                     <id>-1</id>
@@ -16879,6 +17065,8 @@
                     <type>Pull</type>
                     <speed>-1</speed>
                     <push_angle_deg>-1</push_angle_deg>
+                    <time>-1</time>
+                    <ps_time>-1</ps_time>
                     <stop_on_pass>true</stop_on_pass>
                     <stop_after_timer>true</stop_after_timer>
                 </hit_response>
@@ -16887,6 +17075,8 @@
                     <type>Pull</type>
                     <speed>-1</speed>
                     <push_angle_deg>-1</push_angle_deg>
+                    <time>-1</time>
+                    <ps_time>-1</ps_time>
                     <stop_on_pass>true</stop_on_pass>
                     <stop_after_timer>false</stop_after_timer>
                 </last_hit_response>
@@ -16902,6 +17092,7 @@
                 <timed_hittable_time>-1</timed_hittable_time>
                 <allow_backward>false</allow_backward>
                 <just_draw_model>false</just_draw_model>
+                <group_id>-1</group_id>
                 <region_type>TriggerEntity</region_type>
                 <active_region_editor_id>
                     <id>-1</id>
@@ -16997,6 +17188,8 @@
                     <type>Pull</type>
                     <speed>-1</speed>
                     <push_angle_deg>-1</push_angle_deg>
+                    <time>-1</time>
+                    <ps_time>-1</ps_time>
                     <stop_on_pass>true</stop_on_pass>
                     <stop_after_timer>true</stop_after_timer>
                 </hit_response>
@@ -17005,6 +17198,8 @@
                     <type>Pull</type>
                     <speed>-1</speed>
                     <push_angle_deg>-1</push_angle_deg>
+                    <time>-1</time>
+                    <ps_time>-1</ps_time>
                     <stop_on_pass>true</stop_on_pass>
                     <stop_after_timer>false</stop_after_timer>
                 </last_hit_response>
@@ -17020,6 +17215,7 @@
                 <timed_hittable_time>-1</timed_hittable_time>
                 <allow_backward>false</allow_backward>
                 <just_draw_model>false</just_draw_model>
+                <group_id>-1</group_id>
                 <region_type>TriggerEntity</region_type>
                 <active_region_editor_id>
                     <id>-1</id>
@@ -17115,6 +17311,8 @@
                     <type>Pull</type>
                     <speed>-1</speed>
                     <push_angle_deg>-1</push_angle_deg>
+                    <time>-1</time>
+                    <ps_time>-1</ps_time>
                     <stop_on_pass>true</stop_on_pass>
                     <stop_after_timer>true</stop_after_timer>
                 </hit_response>
@@ -17123,6 +17321,8 @@
                     <type>Pull</type>
                     <speed>-1</speed>
                     <push_angle_deg>-1</push_angle_deg>
+                    <time>-1</time>
+                    <ps_time>-1</ps_time>
                     <stop_on_pass>true</stop_on_pass>
                     <stop_after_timer>false</stop_after_timer>
                 </last_hit_response>
@@ -17138,6 +17338,7 @@
                 <timed_hittable_time>-1</timed_hittable_time>
                 <allow_backward>false</allow_backward>
                 <just_draw_model>false</just_draw_model>
+                <group_id>-1</group_id>
                 <region_type>TriggerEntity</region_type>
                 <active_region_editor_id>
                     <id>-1</id>
@@ -17534,6 +17735,8 @@
                     <type>None</type>
                     <speed>-1</speed>
                     <push_angle_deg>90</push_angle_deg>
+                    <time>-1</time>
+                    <ps_time>-1</ps_time>
                     <stop_on_pass>true</stop_on_pass>
                     <stop_after_timer>true</stop_after_timer>
                 </hit_response>
@@ -17542,6 +17745,8 @@
                     <type>Push</type>
                     <speed>-1</speed>
                     <push_angle_deg>0</push_angle_deg>
+                    <time>-1</time>
+                    <ps_time>-1</ps_time>
                     <stop_on_pass>true</stop_on_pass>
                     <stop_after_timer>false</stop_after_timer>
                 </last_hit_response>
@@ -17557,6 +17762,7 @@
                 <timed_hittable_time>-1</timed_hittable_time>
                 <allow_backward>false</allow_backward>
                 <just_draw_model>false</just_draw_model>
+                <group_id>-1</group_id>
                 <region_type>TriggerEntity</region_type>
                 <active_region_editor_id>
                     <id>461</id>
@@ -18122,6 +18328,8 @@
                     <type>None</type>
                     <speed>-1</speed>
                     <push_angle_deg>90</push_angle_deg>
+                    <time>-1</time>
+                    <ps_time>-1</ps_time>
                     <stop_on_pass>true</stop_on_pass>
                     <stop_after_timer>true</stop_after_timer>
                 </hit_response>
@@ -18130,6 +18338,8 @@
                     <type>Push</type>
                     <speed>-1</speed>
                     <push_angle_deg>270</push_angle_deg>
+                    <time>-1</time>
+                    <ps_time>-1</ps_time>
                     <stop_on_pass>true</stop_on_pass>
                     <stop_after_timer>false</stop_after_timer>
                 </last_hit_response>
@@ -18145,6 +18355,7 @@
                 <timed_hittable_time>-1</timed_hittable_time>
                 <allow_backward>false</allow_backward>
                 <just_draw_model>false</just_draw_model>
+                <group_id>-1</group_id>
                 <region_type>TriggerEntity</region_type>
                 <active_region_editor_id>
                     <id>480</id>
@@ -18619,6 +18830,8 @@
                     <type>None</type>
                     <speed>-1</speed>
                     <push_angle_deg>90</push_angle_deg>
+                    <time>-1</time>
+                    <ps_time>-1</ps_time>
                     <stop_on_pass>true</stop_on_pass>
                     <stop_after_timer>true</stop_after_timer>
                 </hit_response>
@@ -18627,6 +18840,8 @@
                     <type>Push</type>
                     <speed>-1</speed>
                     <push_angle_deg>90</push_angle_deg>
+                    <time>-1</time>
+                    <ps_time>-1</ps_time>
                     <stop_on_pass>true</stop_on_pass>
                     <stop_after_timer>false</stop_after_timer>
                 </last_hit_response>
@@ -18642,6 +18857,7 @@
                 <timed_hittable_time>-1</timed_hittable_time>
                 <allow_backward>false</allow_backward>
                 <just_draw_model>false</just_draw_model>
+                <group_id>-1</group_id>
                 <region_type>TriggerEntity</region_type>
                 <active_region_editor_id>
                     <id>484</id>
@@ -19219,6 +19435,9 @@
                             <y>0</y>
                             <z>30.542</z>
                         </spawn_pos>
+                        <pos_eid>
+                            <id>-1</id>
+                        </pos_eid>
                         <action_seq_editor_id>
                             <id>-1</id>
                         </action_seq_editor_id>
@@ -19311,6 +19530,8 @@
                     <type>Push</type>
                     <speed>-1</speed>
                     <push_angle_deg>0</push_angle_deg>
+                    <time>-1</time>
+                    <ps_time>-1</ps_time>
                     <stop_on_pass>true</stop_on_pass>
                     <stop_after_timer>true</stop_after_timer>
                 </hit_response>
@@ -19319,6 +19540,8 @@
                     <type>Push</type>
                     <speed>-1</speed>
                     <push_angle_deg>0</push_angle_deg>
+                    <time>-1</time>
+                    <ps_time>-1</ps_time>
                     <stop_on_pass>true</stop_on_pass>
                     <stop_after_timer>false</stop_after_timer>
                 </last_hit_response>
@@ -19334,6 +19557,7 @@
                 <timed_hittable_time>-1</timed_hittable_time>
                 <allow_backward>false</allow_backward>
                 <just_draw_model>false</just_draw_model>
+                <group_id>-1</group_id>
                 <region_type>TriggerEntity</region_type>
                 <active_region_editor_id>
                     <id>-1</id>
@@ -20120,6 +20344,8 @@
                     <type>Pull</type>
                     <speed>-1</speed>
                     <push_angle_deg>-1</push_angle_deg>
+                    <time>-1</time>
+                    <ps_time>-1</ps_time>
                     <stop_on_pass>true</stop_on_pass>
                     <stop_after_timer>true</stop_after_timer>
                 </hit_response>
@@ -20128,6 +20354,8 @@
                     <type>Push</type>
                     <speed>-1</speed>
                     <push_angle_deg>270</push_angle_deg>
+                    <time>-1</time>
+                    <ps_time>-1</ps_time>
                     <stop_on_pass>true</stop_on_pass>
                     <stop_after_timer>false</stop_after_timer>
                 </last_hit_response>
@@ -20143,6 +20371,7 @@
                 <timed_hittable_time>-1</timed_hittable_time>
                 <allow_backward>false</allow_backward>
                 <just_draw_model>false</just_draw_model>
+                <group_id>-1</group_id>
                 <region_type>TriggerEntity</region_type>
                 <active_region_editor_id>
                     <id>-1</id>
@@ -20231,6 +20460,8 @@
                     <type>Pull</type>
                     <speed>-1</speed>
                     <push_angle_deg>-1</push_angle_deg>
+                    <time>-1</time>
+                    <ps_time>-1</ps_time>
                     <stop_on_pass>true</stop_on_pass>
                     <stop_after_timer>true</stop_after_timer>
                 </hit_response>
@@ -20239,6 +20470,8 @@
                     <type>Push</type>
                     <speed>-1</speed>
                     <push_angle_deg>270</push_angle_deg>
+                    <time>-1</time>
+                    <ps_time>-1</ps_time>
                     <stop_on_pass>true</stop_on_pass>
                     <stop_after_timer>false</stop_after_timer>
                 </last_hit_response>
@@ -20254,6 +20487,7 @@
                 <timed_hittable_time>-1</timed_hittable_time>
                 <allow_backward>false</allow_backward>
                 <just_draw_model>false</just_draw_model>
+                <group_id>-1</group_id>
                 <region_type>TriggerEntity</region_type>
                 <active_region_editor_id>
                     <id>-1</id>
@@ -20691,7 +20925,7 @@
                 <note_length>0.125</note_length>
                 <start_time>4</start_time>
                 <is_synth>false</is_synth>
-                <editor_mute>false</editor_mute>
+                <editor_mute>true</editor_mute>
                 <max_voices>-1</max_voices>
                 <quantize_temp_changes>true</quantize_temp_changes>
             </StepSequencer>
@@ -21317,7 +21551,7 @@
                 <note_length>0.25</note_length>
                 <start_time>4</start_time>
                 <is_synth>true</is_synth>
-                <editor_mute>false</editor_mute>
+                <editor_mute>true</editor_mute>
                 <max_voices>-1</max_voices>
                 <quantize_temp_changes>true</quantize_temp_changes>
             </StepSequencer>
@@ -21372,6 +21606,8 @@
                     <type>Pull</type>
                     <speed>-1</speed>
                     <push_angle_deg>-1</push_angle_deg>
+                    <time>-1</time>
+                    <ps_time>-1</ps_time>
                     <stop_on_pass>true</stop_on_pass>
                     <stop_after_timer>true</stop_after_timer>
                 </hit_response>
@@ -21380,6 +21616,8 @@
                     <type>Push</type>
                     <speed>-1</speed>
                     <push_angle_deg>270</push_angle_deg>
+                    <time>-1</time>
+                    <ps_time>-1</ps_time>
                     <stop_on_pass>true</stop_on_pass>
                     <stop_after_timer>false</stop_after_timer>
                 </last_hit_response>
@@ -21395,6 +21633,7 @@
                 <timed_hittable_time>-1</timed_hittable_time>
                 <allow_backward>false</allow_backward>
                 <just_draw_model>false</just_draw_model>
+                <group_id>-1</group_id>
                 <region_type>TriggerEntity</region_type>
                 <active_region_editor_id>
                     <id>-1</id>
@@ -21611,6 +21850,8 @@
                     <type>Pull</type>
                     <speed>-1</speed>
                     <push_angle_deg>-1</push_angle_deg>
+                    <time>-1</time>
+                    <ps_time>-1</ps_time>
                     <stop_on_pass>true</stop_on_pass>
                     <stop_after_timer>true</stop_after_timer>
                 </hit_response>
@@ -21619,6 +21860,8 @@
                     <type>Push</type>
                     <speed>-1</speed>
                     <push_angle_deg>270</push_angle_deg>
+                    <time>-1</time>
+                    <ps_time>-1</ps_time>
                     <stop_on_pass>true</stop_on_pass>
                     <stop_after_timer>false</stop_after_timer>
                 </last_hit_response>
@@ -21634,6 +21877,7 @@
                 <timed_hittable_time>-1</timed_hittable_time>
                 <allow_backward>false</allow_backward>
                 <just_draw_model>false</just_draw_model>
+                <group_id>-1</group_id>
                 <region_type>TriggerEntity</region_type>
                 <active_region_editor_id>
                     <id>-1</id>
@@ -21785,6 +22029,8 @@
                     <type>Pull</type>
                     <speed>-1</speed>
                     <push_angle_deg>-1</push_angle_deg>
+                    <time>-1</time>
+                    <ps_time>-1</ps_time>
                     <stop_on_pass>true</stop_on_pass>
                     <stop_after_timer>true</stop_after_timer>
                 </hit_response>
@@ -21793,6 +22039,8 @@
                     <type>Push</type>
                     <speed>-1</speed>
                     <push_angle_deg>270</push_angle_deg>
+                    <time>-1</time>
+                    <ps_time>-1</ps_time>
                     <stop_on_pass>true</stop_on_pass>
                     <stop_after_timer>false</stop_after_timer>
                 </last_hit_response>
@@ -21808,6 +22056,7 @@
                 <timed_hittable_time>-1</timed_hittable_time>
                 <allow_backward>false</allow_backward>
                 <just_draw_model>false</just_draw_model>
+                <group_id>-1</group_id>
                 <region_type>TriggerEntity</region_type>
                 <active_region_editor_id>
                     <id>-1</id>
@@ -21896,6 +22145,8 @@
                     <type>Pull</type>
                     <speed>-1</speed>
                     <push_angle_deg>-1</push_angle_deg>
+                    <time>-1</time>
+                    <ps_time>-1</ps_time>
                     <stop_on_pass>true</stop_on_pass>
                     <stop_after_timer>true</stop_after_timer>
                 </hit_response>
@@ -21904,6 +22155,8 @@
                     <type>Push</type>
                     <speed>-1</speed>
                     <push_angle_deg>270</push_angle_deg>
+                    <time>-1</time>
+                    <ps_time>-1</ps_time>
                     <stop_on_pass>true</stop_on_pass>
                     <stop_after_timer>false</stop_after_timer>
                 </last_hit_response>
@@ -21919,6 +22172,7 @@
                 <timed_hittable_time>-1</timed_hittable_time>
                 <allow_backward>false</allow_backward>
                 <just_draw_model>false</just_draw_model>
+                <group_id>-1</group_id>
                 <region_type>TriggerEntity</region_type>
                 <active_region_editor_id>
                     <id>-1</id>
@@ -22003,6 +22257,8 @@
                     <type>Pull</type>
                     <speed>-1</speed>
                     <push_angle_deg>-1</push_angle_deg>
+                    <time>-1</time>
+                    <ps_time>-1</ps_time>
                     <stop_on_pass>true</stop_on_pass>
                     <stop_after_timer>true</stop_after_timer>
                 </hit_response>
@@ -22011,6 +22267,8 @@
                     <type>Push</type>
                     <speed>-1</speed>
                     <push_angle_deg>270</push_angle_deg>
+                    <time>-1</time>
+                    <ps_time>-1</ps_time>
                     <stop_on_pass>true</stop_on_pass>
                     <stop_after_timer>false</stop_after_timer>
                 </last_hit_response>
@@ -22026,6 +22284,7 @@
                 <timed_hittable_time>-1</timed_hittable_time>
                 <allow_backward>false</allow_backward>
                 <just_draw_model>false</just_draw_model>
+                <group_id>-1</group_id>
                 <region_type>TriggerEntity</region_type>
                 <active_region_editor_id>
                     <id>-1</id>
@@ -22114,6 +22373,8 @@
                     <type>Pull</type>
                     <speed>-1</speed>
                     <push_angle_deg>-1</push_angle_deg>
+                    <time>-1</time>
+                    <ps_time>-1</ps_time>
                     <stop_on_pass>true</stop_on_pass>
                     <stop_after_timer>true</stop_after_timer>
                 </hit_response>
@@ -22122,6 +22383,8 @@
                     <type>Push</type>
                     <speed>-1</speed>
                     <push_angle_deg>270</push_angle_deg>
+                    <time>-1</time>
+                    <ps_time>-1</ps_time>
                     <stop_on_pass>true</stop_on_pass>
                     <stop_after_timer>false</stop_after_timer>
                 </last_hit_response>
@@ -22137,6 +22400,7 @@
                 <timed_hittable_time>-1</timed_hittable_time>
                 <allow_backward>false</allow_backward>
                 <just_draw_model>false</just_draw_model>
+                <group_id>-1</group_id>
                 <region_type>TriggerEntity</region_type>
                 <active_region_editor_id>
                     <id>-1</id>
@@ -22221,6 +22485,8 @@
                     <type>Pull</type>
                     <speed>-1</speed>
                     <push_angle_deg>-1</push_angle_deg>
+                    <time>-1</time>
+                    <ps_time>-1</ps_time>
                     <stop_on_pass>true</stop_on_pass>
                     <stop_after_timer>true</stop_after_timer>
                 </hit_response>
@@ -22229,6 +22495,8 @@
                     <type>Push</type>
                     <speed>-1</speed>
                     <push_angle_deg>270</push_angle_deg>
+                    <time>-1</time>
+                    <ps_time>-1</ps_time>
                     <stop_on_pass>true</stop_on_pass>
                     <stop_after_timer>false</stop_after_timer>
                 </last_hit_response>
@@ -22244,6 +22512,7 @@
                 <timed_hittable_time>-1</timed_hittable_time>
                 <allow_backward>false</allow_backward>
                 <just_draw_model>false</just_draw_model>
+                <group_id>-1</group_id>
                 <region_type>TriggerEntity</region_type>
                 <active_region_editor_id>
                     <id>-1</id>
@@ -22704,7 +22973,7 @@
                 <note_length>0.25</note_length>
                 <start_time>4</start_time>
                 <is_synth>true</is_synth>
-                <editor_mute>false</editor_mute>
+                <editor_mute>true</editor_mute>
                 <max_voices>-1</max_voices>
                 <quantize_temp_changes>true</quantize_temp_changes>
             </StepSequencer>
@@ -23121,7 +23390,7 @@
                 <note_length>0.25</note_length>
                 <start_time>4</start_time>
                 <is_synth>true</is_synth>
-                <editor_mute>false</editor_mute>
+                <editor_mute>true</editor_mute>
                 <max_voices>-1</max_voices>
                 <quantize_temp_changes>true</quantize_temp_changes>
             </StepSequencer>
@@ -24981,7 +25250,7 @@
                 <note_length>0.25</note_length>
                 <start_time>4</start_time>
                 <is_synth>false</is_synth>
-                <editor_mute>false</editor_mute>
+                <editor_mute>true</editor_mute>
                 <max_voices>-1</max_voices>
                 <quantize_temp_changes>true</quantize_temp_changes>
             </StepSequencer>
@@ -25396,7 +25665,7 @@
                 <note_length>0.25</note_length>
                 <start_time>4</start_time>
                 <is_synth>false</is_synth>
-                <editor_mute>false</editor_mute>
+                <editor_mute>true</editor_mute>
                 <max_voices>-1</max_voices>
                 <quantize_temp_changes>true</quantize_temp_changes>
             </StepSequencer>
@@ -25940,7 +26209,7 @@
                 <note_length>0.25</note_length>
                 <start_time>4</start_time>
                 <is_synth>false</is_synth>
-                <editor_mute>false</editor_mute>
+                <editor_mute>true</editor_mute>
                 <max_voices>-1</max_voices>
                 <quantize_temp_changes>true</quantize_temp_changes>
             </StepSequencer>
@@ -26355,7 +26624,7 @@
                 <note_length>0.25</note_length>
                 <start_time>4</start_time>
                 <is_synth>false</is_synth>
-                <editor_mute>false</editor_mute>
+                <editor_mute>true</editor_mute>
                 <max_voices>-1</max_voices>
                 <quantize_temp_changes>true</quantize_temp_changes>
             </StepSequencer>
@@ -26695,7 +26964,7 @@
                 <note_length>0.10000000000000001</note_length>
                 <start_time>4</start_time>
                 <is_synth>true</is_synth>
-                <editor_mute>false</editor_mute>
+                <editor_mute>true</editor_mute>
                 <max_voices>-1</max_voices>
                 <quantize_temp_changes>true</quantize_temp_changes>
             </StepSequencer>
@@ -27073,7 +27342,7 @@
                 <note_length>0.25</note_length>
                 <start_time>4</start_time>
                 <is_synth>false</is_synth>
-                <editor_mute>false</editor_mute>
+                <editor_mute>true</editor_mute>
                 <max_voices>-1</max_voices>
                 <quantize_temp_changes>true</quantize_temp_changes>
             </StepSequencer>
@@ -27814,7 +28083,7 @@
                 <note_length>1</note_length>
                 <start_time>4</start_time>
                 <is_synth>false</is_synth>
-                <editor_mute>false</editor_mute>
+                <editor_mute>true</editor_mute>
                 <max_voices>-1</max_voices>
                 <quantize_temp_changes>true</quantize_temp_changes>
             </StepSequencer>
@@ -28063,7 +28332,7 @@
                 <note_length>0.10000000000000001</note_length>
                 <start_time>4</start_time>
                 <is_synth>true</is_synth>
-                <editor_mute>false</editor_mute>
+                <editor_mute>true</editor_mute>
                 <max_voices>-1</max_voices>
                 <quantize_temp_changes>true</quantize_temp_changes>
             </StepSequencer>
@@ -28118,6 +28387,8 @@
                     <type>None</type>
                     <speed>-1</speed>
                     <push_angle_deg>-1</push_angle_deg>
+                    <time>-1</time>
+                    <ps_time>-1</ps_time>
                     <stop_on_pass>true</stop_on_pass>
                     <stop_after_timer>true</stop_after_timer>
                 </hit_response>
@@ -28126,6 +28397,8 @@
                     <type>Push</type>
                     <speed>-1</speed>
                     <push_angle_deg>270</push_angle_deg>
+                    <time>-1</time>
+                    <ps_time>-1</ps_time>
                     <stop_on_pass>true</stop_on_pass>
                     <stop_after_timer>false</stop_after_timer>
                 </last_hit_response>
@@ -28141,6 +28414,7 @@
                 <timed_hittable_time>-1</timed_hittable_time>
                 <allow_backward>false</allow_backward>
                 <just_draw_model>false</just_draw_model>
+                <group_id>-1</group_id>
                 <region_type>TriggerEntity</region_type>
                 <active_region_editor_id>
                     <id>654</id>
@@ -28271,6 +28545,8 @@
                     <type>None</type>
                     <speed>-1</speed>
                     <push_angle_deg>270</push_angle_deg>
+                    <time>-1</time>
+                    <ps_time>-1</ps_time>
                     <stop_on_pass>true</stop_on_pass>
                     <stop_after_timer>true</stop_after_timer>
                 </hit_response>
@@ -28279,6 +28555,8 @@
                     <type>Push</type>
                     <speed>-1</speed>
                     <push_angle_deg>270</push_angle_deg>
+                    <time>-1</time>
+                    <ps_time>-1</ps_time>
                     <stop_on_pass>true</stop_on_pass>
                     <stop_after_timer>false</stop_after_timer>
                 </last_hit_response>
@@ -28294,6 +28572,7 @@
                 <timed_hittable_time>-1</timed_hittable_time>
                 <allow_backward>false</allow_backward>
                 <just_draw_model>false</just_draw_model>
+                <group_id>-1</group_id>
                 <region_type>TriggerEntity</region_type>
                 <active_region_editor_id>
                     <id>655</id>
@@ -28850,6 +29129,8 @@
                     <type>None</type>
                     <speed>-1</speed>
                     <push_angle_deg>-1</push_angle_deg>
+                    <time>-1</time>
+                    <ps_time>-1</ps_time>
                     <stop_on_pass>true</stop_on_pass>
                     <stop_after_timer>true</stop_after_timer>
                 </hit_response>
@@ -28858,6 +29139,8 @@
                     <type>Push</type>
                     <speed>-1</speed>
                     <push_angle_deg>270</push_angle_deg>
+                    <time>-1</time>
+                    <ps_time>-1</ps_time>
                     <stop_on_pass>true</stop_on_pass>
                     <stop_after_timer>false</stop_after_timer>
                 </last_hit_response>
@@ -28873,6 +29156,7 @@
                 <timed_hittable_time>-1</timed_hittable_time>
                 <allow_backward>false</allow_backward>
                 <just_draw_model>false</just_draw_model>
+                <group_id>-1</group_id>
                 <region_type>TriggerEntity</region_type>
                 <active_region_editor_id>
                     <id>661</id>
@@ -28969,6 +29253,8 @@
                     <type>None</type>
                     <speed>-1</speed>
                     <push_angle_deg>270</push_angle_deg>
+                    <time>-1</time>
+                    <ps_time>-1</ps_time>
                     <stop_on_pass>true</stop_on_pass>
                     <stop_after_timer>true</stop_after_timer>
                 </hit_response>
@@ -28977,6 +29263,8 @@
                     <type>Push</type>
                     <speed>-1</speed>
                     <push_angle_deg>270</push_angle_deg>
+                    <time>-1</time>
+                    <ps_time>-1</ps_time>
                     <stop_on_pass>true</stop_on_pass>
                     <stop_after_timer>false</stop_after_timer>
                 </last_hit_response>
@@ -28992,6 +29280,7 @@
                 <timed_hittable_time>-1</timed_hittable_time>
                 <allow_backward>false</allow_backward>
                 <just_draw_model>false</just_draw_model>
+                <group_id>-1</group_id>
                 <region_type>TriggerEntity</region_type>
                 <active_region_editor_id>
                     <id>662</id>
@@ -29481,6 +29770,8 @@
                     <type>Push</type>
                     <speed>-1</speed>
                     <push_angle_deg>-1</push_angle_deg>
+                    <time>-1</time>
+                    <ps_time>-1</ps_time>
                     <stop_on_pass>true</stop_on_pass>
                     <stop_after_timer>true</stop_after_timer>
                 </hit_response>
@@ -29489,6 +29780,8 @@
                     <type>Pull</type>
                     <speed>-1</speed>
                     <push_angle_deg>-1</push_angle_deg>
+                    <time>-1</time>
+                    <ps_time>-1</ps_time>
                     <stop_on_pass>true</stop_on_pass>
                     <stop_after_timer>true</stop_after_timer>
                 </last_hit_response>
@@ -29504,6 +29797,7 @@
                 <timed_hittable_time>-1</timed_hittable_time>
                 <allow_backward>false</allow_backward>
                 <just_draw_model>false</just_draw_model>
+                <group_id>-1</group_id>
                 <region_type>TriggerEntity</region_type>
                 <active_region_editor_id>
                     <id>-1</id>
@@ -29583,6 +29877,8 @@
                     <type>None</type>
                     <speed>-1</speed>
                     <push_angle_deg>-1</push_angle_deg>
+                    <time>-1</time>
+                    <ps_time>-1</ps_time>
                     <stop_on_pass>true</stop_on_pass>
                     <stop_after_timer>true</stop_after_timer>
                 </hit_response>
@@ -29591,6 +29887,8 @@
                     <type>Push</type>
                     <speed>-1</speed>
                     <push_angle_deg>270</push_angle_deg>
+                    <time>-1</time>
+                    <ps_time>-1</ps_time>
                     <stop_on_pass>true</stop_on_pass>
                     <stop_after_timer>false</stop_after_timer>
                 </last_hit_response>
@@ -29606,6 +29904,7 @@
                 <timed_hittable_time>-1</timed_hittable_time>
                 <allow_backward>false</allow_backward>
                 <just_draw_model>false</just_draw_model>
+                <group_id>-1</group_id>
                 <region_type>TriggerEntity</region_type>
                 <active_region_editor_id>
                     <id>668</id>
@@ -29770,6 +30069,8 @@
                     <type>None</type>
                     <speed>-1</speed>
                     <push_angle_deg>270</push_angle_deg>
+                    <time>-1</time>
+                    <ps_time>-1</ps_time>
                     <stop_on_pass>true</stop_on_pass>
                     <stop_after_timer>true</stop_after_timer>
                 </hit_response>
@@ -29778,6 +30079,8 @@
                     <type>Push</type>
                     <speed>-1</speed>
                     <push_angle_deg>270</push_angle_deg>
+                    <time>-1</time>
+                    <ps_time>-1</ps_time>
                     <stop_on_pass>true</stop_on_pass>
                     <stop_after_timer>false</stop_after_timer>
                 </last_hit_response>
@@ -29793,6 +30096,7 @@
                 <timed_hittable_time>-1</timed_hittable_time>
                 <allow_backward>false</allow_backward>
                 <just_draw_model>false</just_draw_model>
+                <group_id>-1</group_id>
                 <region_type>TriggerEntity</region_type>
                 <active_region_editor_id>
                     <id>669</id>
@@ -30423,6 +30727,9 @@
                             <y>0</y>
                             <z>-24.754999</z>
                         </spawn_pos>
+                        <pos_eid>
+                            <id>-1</id>
+                        </pos_eid>
                         <action_seq_editor_id>
                             <id>-1</id>
                         </action_seq_editor_id>
@@ -30676,6 +30983,8 @@
                     <type>Push</type>
                     <speed>-1</speed>
                     <push_angle_deg>-1</push_angle_deg>
+                    <time>-1</time>
+                    <ps_time>-1</ps_time>
                     <stop_on_pass>true</stop_on_pass>
                     <stop_after_timer>true</stop_after_timer>
                 </hit_response>
@@ -30684,6 +30993,8 @@
                     <type>Pull</type>
                     <speed>-1</speed>
                     <push_angle_deg>-1</push_angle_deg>
+                    <time>-1</time>
+                    <ps_time>-1</ps_time>
                     <stop_on_pass>true</stop_on_pass>
                     <stop_after_timer>true</stop_after_timer>
                 </last_hit_response>
@@ -30699,6 +31010,7 @@
                 <timed_hittable_time>-1</timed_hittable_time>
                 <allow_backward>false</allow_backward>
                 <just_draw_model>false</just_draw_model>
+                <group_id>-1</group_id>
                 <region_type>TriggerEntity</region_type>
                 <active_region_editor_id>
                     <id>-1</id>

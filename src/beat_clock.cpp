@@ -1,16 +1,16 @@
 #include "beat_clock.h"
 
-#include "audio.h"
+#include "audio_platform.h"
 
 void BeatClock::Init(GameManager& g, double bpm) {
     _bpm = bpm;
-    double audioTimeNow = Pa_GetStreamTime(g._audioContext->_stream);
+    double audioTimeNow = g._audioContext->GetAudioTime();
     _currentAudioTime = audioTimeNow;
     _currentBeatTime = -1.0;
 }
 
 void BeatClock::Update(GameManager& g) {
-    double audioTime = Pa_GetStreamTime(g._audioContext->_stream);
+    double audioTime = g._audioContext->GetAudioTime();
     double dtAudio = audioTime - _currentAudioTime;
     double dtBeat = dtAudio * (_bpm / 60.0);
     double beatTime = _currentBeatTime + dtBeat;

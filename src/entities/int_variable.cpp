@@ -8,7 +8,7 @@
 #include "renderer.h"
 #include "math_util.h"
 #include "synth_patch_bank.h"
-#include "audio.h"
+#include "audio_platform.h"
 #include "math_util.h"
 #include "entities/step_sequencer.h"
 

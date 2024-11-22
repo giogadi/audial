@@ -4,8 +4,6 @@
 #include <vector>
 #include <mutex>
 
-#include <portaudio.h>
-
 #include "audio_util.h"
 #include "synth.h"
 
@@ -44,7 +42,6 @@ struct StateData {
     SoundBank const* soundBank = nullptr;
     std::array<PcmVoice,kNumPcmVoices> pcmVoices;
 
-    EventQueue* events = nullptr;
     PendingEventHeap pendingEvents;
 
     float _finalGain = 1.f;
@@ -56,58 +53,16 @@ struct StateData {
     float* _recentBuffer = nullptr;
 };
 
-void InitStateData(
-    StateData& state,
-    SoundBank const& soundBank,
-    EventQueue* eventQueue, int outputSampleRate);
+void InitStateData(StateData& state, SoundBank const& soundBank, int outputSampleRate, int framesPerBuffer);
 void DestroyStateData(StateData& state);
 
-int PortAudioCallback(
-    const void *inputBuffer, void *outputBuffer,
-    unsigned long framesPerBuffer,
-    const PaStreamCallbackTimeInfo* timeInfo,
-    PaStreamCallbackFlags statusFlags,
-    void *userData);
+void AudioCallback(float const* inputBuffer, float *outputBuffer, unsigned long framesPerBuffer, StateData *state);
 
-struct Context {
-    int _outputSampleRate = -1;
-    PaStreamParameters _outputParameters;
-    PaStream* _stream = nullptr;
-    StateData _state;
-    EventQueue _eventQueue;
-    Context()
-        : _eventQueue(kEventQueueLength) {}
+bool AddEvent(Event const& e);
 
-    bool AddEvent(Event const& e) {
-        bool success = _eventQueue.try_push(e);
-        if (!success) {
-            // TODO: maybe use serialize to get a string of the event
-            std::cout << "Failed to add event to audio queue:" << std::endl;
-        }
-        return success;
-    }
-    int InternalSampleRate() const;
-};
+int InternalSampleRate();
 
-PaError Init(
-    Context& context, SoundBank const& soundBank);
+int NumOutputChannels();
 
-PaError ShutDown(Context& stream);
-
-int GetNumDesyncs();
-int GetAvgDesyncTime();
-double GetAvgTimeBetweenCallbacks();
-double GetLastDt();
-unsigned long GetLastFrameSize();
-
-inline void PrintAudioStats() {
-    // printf("Num desyncs: %d\n", audio::GetNumDesyncs());
-    // printf("Avg desync time: %d\n", audio::GetAvgDesyncTime());
-    // printf("Avg dt: %f\n", audio::GetAvgTimeBetweenCallbacks() * SAMPLE_RATE);
-    // printf("dt: %f\n", audio::GetLastDt());
-    // std::cout.precision(std::numeric_limits<double>::max_digits10);
-    // std::cout << "dt: " << audio::GetLastDt() << std::endl;
-    // printf("frame size: %lu\n", audio::GetLastFrameSize());
-}
 
 }  // namespace audio

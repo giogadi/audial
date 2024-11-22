@@ -62,6 +62,7 @@ add_executable(game
     src/game.cpp
     src/audio_util.cpp src/audio_util.h
     src/audio.cpp src/audio.h
+    src/audio_platform.cpp src/audio_platform.h
     src/audio_event_imgui.cpp src/audio_event_imgui.h
     src/sound_bank.cpp src/sound_bank.h
     src/editor.cpp src/editor.h

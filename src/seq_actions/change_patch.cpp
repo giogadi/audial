@@ -1,7 +1,7 @@
 #include "change_patch.h"
 
 #include "imgui/imgui.h"
-#include "audio.h"
+#include "audio_platform.h"
 #include "imgui_util.h"
 #include "synth_patch_bank.h"
 

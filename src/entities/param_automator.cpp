@@ -5,7 +5,7 @@
 #include "beat_clock.h"
 #include "step_sequencer.h"
 #include "sequencer.h"
-#include "audio.h"
+#include "audio_platform.h"
 
 void ParamAutomatorEntity::LoadDerived(serial::Ptree pt) {
     _props.Load(pt);

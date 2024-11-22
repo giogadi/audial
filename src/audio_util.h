@@ -2,8 +2,6 @@
 
 #include <array>
 
-#include "SPSCQueue.h"
-
 #include "enums/audio_EventType.h"
 #include "enums/audio_SynthParamType.h"
 #include "serial.h"
@@ -55,9 +53,6 @@ struct Event {
     void Save(serial::Ptree pt) const;
     void Load(serial::Ptree pt);
 };
-
-static inline int const kEventQueueLength = 1024;
-typedef rigtorp::SPSCQueue<Event> EventQueue;
 
 struct PcmSound {
     float* _buffer = nullptr;

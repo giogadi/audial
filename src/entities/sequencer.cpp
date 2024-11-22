@@ -3,7 +3,7 @@
 #include "imgui/imgui.h"
 
 #include "game_manager.h"
-#include "audio.h"
+#include "audio_platform.h"
 #include "imgui_vector_util.h"
 
 void SequencerEntity::InitDerived(GameManager& g) {

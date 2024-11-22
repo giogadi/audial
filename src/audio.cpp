@@ -4,9 +4,7 @@
 #include <chrono>
 #include <vector>
 
-#ifdef _WIN32
-#include "portaudio/include/pa_win_wasapi.h"
-#endif
+#include "SPSCQueue.h"
 
 #include "samplerate.h"
 
@@ -19,19 +17,11 @@
 using std::chrono::high_resolution_clock;
 
 #define NUM_OUTPUT_CHANNELS (1)
-#define FRAMES_PER_BUFFER  (512)
 #define INTERNAL_SR (48000)
 
 namespace audio {
 
 namespace {
-
-void OnPortAudioError(PaError const& err) {
-    Pa_Terminate();
-    std::cout << "An error occured while using the portaudio stream" << std::endl;
-    std::cout << "Error number: " << err << std::endl;
-    std::cout << "Error message: " << Pa_GetErrorText(err) << std::endl;
-}
 
 bool HeapLess(HeapEntry const &lhs, HeapEntry const &rhs) {
     if (lhs.key == rhs.key) {
@@ -122,15 +112,27 @@ int gLeftoverInputFramesStartIx = -1;
 
 SRC_STATE *gSrcState = nullptr;
 
+typedef rigtorp::SPSCQueue<Event> EventQueue;
+int constexpr kEventQueueLength = 1024;
+
+EventQueue sEventQueue(kEventQueueLength);
+
 } // namespace
 
-void InitStateData(
-    StateData& state, SoundBank const& soundBank,
-    EventQueue* eventQueue, int outputSampleRate) {
+bool AddEvent(Event const &e) {
+    bool success = sEventQueue.try_push(e);
+    if (!success) {
+        // TODO: maybe use serialize to get a string of the event
+        std::cout << "Failed to add event to audio queue:" << std::endl;
+    }
+    return success;
+}
+
+void InitStateData(StateData& state, SoundBank const& soundBank, int outputSampleRate, int framesPerBuffer) {
 
     if (!gInternalBuffer) {
         // TODO: can we reduce this size safely?
-        gInternalBufferSize = 3 * FRAMES_PER_BUFFER * NUM_OUTPUT_CHANNELS * sizeof(float);
+        gInternalBufferSize = 3 * framesPerBuffer * NUM_OUTPUT_CHANNELS * sizeof(float);
         gInternalBuffer = new float[gInternalBufferSize];
     }
     gLeftoverInputFrames = 0;
@@ -141,12 +143,10 @@ void InitStateData(
 
     for (int i = 0; i < state.synths.size(); ++i) {
         synth::StateData& s = state.synths[i];
-        synth::InitStateData(s, /*channel=*/i, INTERNAL_SR, FRAMES_PER_BUFFER, NUM_OUTPUT_CHANNELS);
+        synth::InitStateData(s, /*channel=*/i, INTERNAL_SR, framesPerBuffer, NUM_OUTPUT_CHANNELS);
     }
 
     state.soundBank = &soundBank;
-
-    state.events = eventQueue;
 
     int constexpr kMaxSize = 1024;
     delete[] state.pendingEvents.entries;
@@ -154,11 +154,10 @@ void InitStateData(
     state.pendingEvents.entries = new HeapEntry[kMaxSize];
     state.pendingEvents.maxSize = kMaxSize;
 
-    state._bufferFrameCount = FRAMES_PER_BUFFER;
-    state._recentBuffer = new float[FRAMES_PER_BUFFER];
+    state._bufferFrameCount = framesPerBuffer;
+    state._recentBuffer = new float[framesPerBuffer];
 
     int srcErr = 0;
-    // TODO: experiment with FASTEST
     gSrcState = src_new(SRC_SINC_FASTEST, NUM_OUTPUT_CHANNELS, &srcErr);
     if (srcErr) {
         printf("Audio error in creating SRC state: %s\n", src_strerror(srcErr));
@@ -178,141 +177,6 @@ void DestroyStateData(StateData& state) {
 
     src_delete(gSrcState);
     gSrcState = nullptr;
-}
-
-/*
- * This routine is called by portaudio when playback is done.
- */
-static void StreamFinished( void* userData )
-{
-}
-
-PaError Init(
-    Context& context, SoundBank const& soundBank) {
-    int const kPreferredSampleRate = 48000;
-    //int const kPreferredSampleRate = 44100;
-    //int const kPreferredSampleRate = 96000;
-
-
-    PaError err;
-
-    err = Pa_Initialize();
-    if( err != paNoError ) {
-        OnPortAudioError(err);
-        return err;
-    }
-
-    context._outputParameters = {0};
-
-    context._outputSampleRate = kPreferredSampleRate;
-    std::vector<PaError> errors;
-#ifdef _WIN32
-    PaHostApiIndex const hostApiCount = Pa_GetHostApiCount();
-    PaHostApiInfo const* hostApiInfo = 0;
-    for (PaHostApiIndex hostApiIx = 0; hostApiIx < hostApiCount; ++hostApiIx) {
-        PaHostApiInfo const *thisHost = Pa_GetHostApiInfo(hostApiIx);
-        if (thisHost->type == paWASAPI) {
-            hostApiInfo = thisHost;
-            break;
-        }
-    }
-    if (!hostApiInfo) {
-        printf("WARNING: could not find a WASAPI audio host. You may have degraded/delayed audio performance.\n");        
-        hostApiInfo = Pa_GetHostApiInfo(Pa_GetDefaultHostApi());
-        printf("Using audio host API \"%s\"\n", hostApiInfo->name);
-    }
-    PaDeviceIndex deviceIx = hostApiInfo->defaultOutputDevice;
-    context._outputParameters.device = deviceIx;
-    PaDeviceInfo const* pDeviceInfo = Pa_GetDeviceInfo(deviceIx);
-    // Check if our preferred sample rate is supported. If not, just use the device's default sample rate.
-    PaStreamParameters params = {0};
-    params.device = context._outputParameters.device;
-    params.channelCount = NUM_OUTPUT_CHANNELS;
-    params.sampleFormat = paFloat32;
-    double sampleRate = kPreferredSampleRate;
-    err = Pa_IsFormatSupported(0, &params, sampleRate);
-    if (err) {
-        // TODO: show previous error
-        sampleRate = pDeviceInfo->defaultSampleRate;
-        err = Pa_IsFormatSupported(0, &params, sampleRate);
-        if (err) {
-            printf("Default device does not support required audio formats.\n");
-        } else {
-            printf("Your audio device is set to an audio rate of %d. This will work, but you may experience better performance if you use this game's preferred audio rate of %d.\n", (int)sampleRate, kPreferredSampleRate);
-        }
-    }
-    context._outputSampleRate = (int)sampleRate;
-    context._outputParameters.device = deviceIx;
-    printf("Selected audio device: %s\n", pDeviceInfo->name);
-    printf("Device sample rate: %d\n", (int)sampleRate);
-#else
-    context._outputParameters.device = Pa_GetDefaultOutputDevice();
-#endif     
-
-    if (err != paNoError) {
-        printf("Audio error: default audio device not supported.\n");
-        char const* finalErrMsg = Pa_GetErrorText(err);
-        printf("Final error: %s\n", finalErrMsg);
-        printf("Error list:\n");
-        for (int i = 0; i < errors.size(); ++i) {
-            char const* errMsg = Pa_GetErrorText(errors[i]);
-            printf("Error %d: %s\n", i, errMsg);
-        }
-        return err;
-    }
-    
-    InitStateData(context._state, soundBank, &context._eventQueue, context._outputSampleRate);
-    
-    context._outputParameters.channelCount = NUM_OUTPUT_CHANNELS;
-    context._outputParameters.sampleFormat = paFloat32; /* 32 bit floating point output */
-    context._outputParameters.suggestedLatency = Pa_GetDeviceInfo( context._outputParameters.device )->defaultLowOutputLatency;    
-
-    err = Pa_OpenStream(
-              &context._stream,
-              NULL, /* no input */
-              &context._outputParameters,
-              context._outputSampleRate,
-              FRAMES_PER_BUFFER,
-              paNoFlag,  // no flags (clipping is on)
-              PortAudioCallback,
-              &context._state );
-    if( err != paNoError ) {
-        OnPortAudioError(err);
-        return err;
-    }
-
-    err = Pa_SetStreamFinishedCallback( context._stream, &StreamFinished );
-    if( err != paNoError ) {
-        OnPortAudioError(err);
-        return err;
-    }
-
-    err = Pa_StartStream( context._stream );
-    if( err != paNoError ) {
-        OnPortAudioError(err);
-        return err;
-    }
-
-    return paNoError;
-}
-
-PaError ShutDown(Context& context) {
-    PaError err = Pa_StopStream(context._stream);
-    if (err != paNoError) {
-        OnPortAudioError(err);
-        return err;
-    }
-
-    err = Pa_CloseStream(context._stream);
-    if (err != paNoError) {
-        OnPortAudioError(err);
-        return err;
-    }
-
-    Pa_Terminate();
-
-    DestroyStateData(context._state);
-    return paNoError;
 }
 
 void ProcessEventQueue(EventQueue* eventQueue, int64_t currentBufferCounter, double sampleRate, int bufferSize, PendingEventHeap* pendingEvents) {
@@ -341,10 +205,10 @@ void FillBuffer(
     memset(outputBufferIn, 0, NUM_OUTPUT_CHANNELS * framesPerBuffer * sizeof(float));
 
     // Figure out which events apply to this invocation of the callback, and which effects should handle them.
-    ProcessEventQueue(state->events, state->_bufferCounter, sampleRate, framesPerBuffer, &state->pendingEvents);
+    ProcessEventQueue(&sEventQueue, state->_bufferCounter, sampleRate, framesPerBuffer, &state->pendingEvents);
 
     int constexpr kMaxSize = 1024;
-    PendingEvent eventsThisFrame[kMaxSize]; // TODO UGH
+    static PendingEvent eventsThisFrame[kMaxSize];
     int eventsThisFrameCount = 0;
     while (state->pendingEvents.size > 0) {
         PendingEvent e = *HeapPeek(&state->pendingEvents);
@@ -552,18 +416,11 @@ void FillBufferAndResample(StateData *state, float *outputBuffer, unsigned long 
 #endif
 }
 
-int PortAudioCallback(
-    const void *inputBuffer, void *const outputBufferUntyped,
-    unsigned long framesPerBuffer,
-    const PaStreamCallbackTimeInfo* timeInfo,
-    PaStreamCallbackFlags statusFlags,
-    void *userData) {
+void AudioCallback(
+    float const* inputBuffer, float * const outputBuffer, unsigned long framesPerBuffer, StateData *state) {
 
     high_resolution_clock::time_point t1 = high_resolution_clock::now();
 
-    StateData* state = (StateData*)userData;
-
-    float *outputBuffer = (float*)outputBufferUntyped;
     if (state->outputSampleRate == INTERNAL_SR) {
         FillBuffer(state, outputBuffer, framesPerBuffer, INTERNAL_SR);
     } else {
@@ -585,13 +442,15 @@ int PortAudioCallback(
     double callbackTimeSecs = std::chrono::duration_cast<std::chrono::duration<double>>(t2 - t1).count();
     if (callbackTimeSecs / kSecsPerCallback > 0.9) {
         printf("Frame close to deadline: %f / %f\n", callbackTimeSecs, kSecsPerCallback);
-    }
- 
-    return paContinue;
+    }    
 }
 
-int Context::InternalSampleRate() const {
+int InternalSampleRate() {
     return INTERNAL_SR;
+}
+
+int NumOutputChannels() {
+    return NUM_OUTPUT_CHANNELS;
 }
 
 }  // namespace audio

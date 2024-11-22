@@ -3,7 +3,7 @@
 #include <sstream>
 
 #include "entities/param_automator.h"
-#include "audio.h"
+#include "audio_platform.h"
 #include "midi_util.h"
 #include "string_util.h"
 #include "entities/flow_player.h"

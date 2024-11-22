@@ -1,7 +1,7 @@
 #pragma once
 
 #include <synth.h>
-#include <audio.h>
+#include <audio_platform.h>
 #include <vector>
 #include "synth_patch_bank.h"
 

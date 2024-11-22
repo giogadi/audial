@@ -6,7 +6,7 @@
 
 #include "imgui/imgui.h"
 
-#include "audio.h"
+#include "audio_platform.h"
 #include "game_manager.h"
 #include "midi_util.h"
 #include "string_util.h"

@@ -14,8 +14,6 @@
 #include <unistd.h>
 #endif  /* __APPLE__ */
 
-#include <portaudio.h>
-
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
@@ -31,7 +29,7 @@
 
 #include "constants.h"
 #include "game_manager.h"
-#include "audio.h"
+#include "audio_platform.h"
 #include "beat_clock.h"
 #include "input_manager.h"
 #include "mesh.h"
@@ -239,10 +237,7 @@ void ShutDown(audio::Context& audioContext, SoundBank& soundBank) {
     glfwTerminate();
 
     // NOTE: Do not use BeatClock after shutting down audio.
-    PaError err = audio::ShutDown(audioContext);
-    if (err != paNoError) {
-        printf("Error in shutting down audio! error: %s\n", Pa_GetErrorText(err));
-    }   
+    audioContext.ShutDown();  
     soundBank.Destroy();
 }
 
@@ -390,14 +385,13 @@ int main(int argc, char** argv) {
     // Set gain from command line
     audioContext._state._finalGain = cmdLineInputs._gain;
 
-    {        
-        if (audio::Init(audioContext, soundBank) != paNoError) {
-            ShutDown(audioContext, soundBank);
+    {
+        if (!audioContext.Init(soundBank)) {
             return 1;
         }
     }    
 
-    soundBank.LoadSounds(audioContext.InternalSampleRate());
+    soundBank.LoadSounds(audio::InternalSampleRate());
 
     // Initialize synth to starting patches.
     {
