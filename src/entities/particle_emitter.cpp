@@ -32,6 +32,7 @@ void ParticleEmitterEntity::InitDerived(GameManager& g) {
 }
 
 namespace {
+#if 0
     void EmitParticlesSpiral(GameManager& g, Vec3 const& entityPrevPos, Vec3 const& entityPos, float timeLeft, float totalTime, Vec3 const& entityDir, float const dt) {
         float particleSpeed = 0.f;
         int constexpr kNumSteps = 8;
@@ -88,7 +89,7 @@ namespace {
             }
         }
     }
-
+#endif
     // Shoot down +z direction
     void GenerateGustParticles(GameManager& g, ParticleEmitterEntity& emitter) {
         int constexpr kNumParticles = 3;
