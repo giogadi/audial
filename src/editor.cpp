@@ -134,6 +134,7 @@ enum class InputMode {
     Scale,
     PolyDraw,
     Piano,
+    EnemyTyping,
     Count
 };
 
@@ -145,6 +146,7 @@ char const *InputModeName(InputMode mode) {
         case InputMode::Scale: return "Scale";
         case InputMode::PolyDraw: return "Draw poly to select";
         case InputMode::Piano: return "Piano";
+        case InputMode::EnemyTyping: return "Enemy typing";
         case InputMode::Count: assert(false); return "";
     }
     return nullptr;
@@ -315,6 +317,11 @@ void UpdateDefault(GameManager &g, float const dt, Editor &editor) {
 
     if (inputManager.IsKeyPressedThisFrame(InputManager::Key::S) && !editor._selectedEntityIds.empty() && !inputManager.IsAltPressed() && !inputManager.IsKeyPressed(InputManager::MouseButton::Right)) {
         sInputMode = InputMode::Scale;
+        return;
+    }
+
+    if (inputManager.IsKeyPressedThisFrame(InputManager::Key::T)) {
+        sInputMode = InputMode::EnemyTyping;
         return;
     }
 
@@ -740,6 +747,54 @@ void UpdatePolyDraw(GameManager &g, Editor &editor, bool newState) {
         sInputMode = InputMode::Default;
     }
 }
+
+void PerEntityFn(GameManager &g, Editor &editor, ne::EntityManager::AllIterator iter) {
+
+}
+
+void UpdateEnemyTyping(GameManager &g, Editor &editor) {
+    InputManager &inputManager = *g._inputManager;
+    if (inputManager.IsKeyPressedThisFrame(InputManager::Key::Escape)) {
+        sInputMode = InputMode::Default;
+        return;
+    }
+
+    Mat4 viewProjTransform = g._scene->GetViewProjTransform();
+    auto perEntityFn = [&](ne::EntityManager::Iterator iter) {
+        TypingEnemyEntity *e = static_cast<TypingEnemyEntity*>(iter.GetEntity());
+        if (e == nullptr) {
+            return;
+        }
+        // Check if it's in view of camera
+        float screenX, screenY;
+        geometry::ProjectWorldPointToScreenSpace(e->_transform.GetPos(), viewProjTransform, g._windowWidth, g._windowHeight, screenX, screenY);
+        if (screenX < 0 || screenX > g._windowWidth || screenY < 0 || screenY > g._windowHeight) {
+            return;
+        }
+
+        TypingEnemyEntity::NextKeys nextKeys = e->GetNextKeys();
+        bool hit = false;
+        for (int kIx = 0; kIx < nextKeys.size(); ++kIx) {
+            InputManager::Key key = nextKeys[kIx];
+            if (key == InputManager::Key::NumKeys) {
+                break;
+            }
+            hit = g._inputManager->IsKeyPressedThisFrame(key);
+            if (hit) {
+                break;
+            }
+        }
+        if (hit) {
+            PickEntity(editor, e);
+        }
+    };
+    for (ne::EntityManager::Iterator iter = g._neEntityManager->GetIterator(ne::EntityType::TypingEnemy); !iter.Finished(); iter.Next()) {
+        perEntityFn(iter);
+    }
+    for (ne::EntityManager::Iterator iter = g._neEntityManager->GetInactiveIterator(ne::EntityType::TypingEnemy); !iter.Finished(); iter.Next()) {
+        perEntityFn(iter);
+    }
+}
 }
 
 void Editor::Update(float dt, SynthGuiState& synthGuiState) {
@@ -790,6 +845,9 @@ void Editor::Update(float dt, SynthGuiState& synthGuiState) {
             break;
         case InputMode::Piano:
             HandlePianoInput(synthGuiState);
+            break;
+        case InputMode::EnemyTyping:
+            UpdateEnemyTyping(*_g, *this);
             break;
         case InputMode::Count:
             break;
