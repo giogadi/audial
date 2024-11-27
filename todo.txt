@@ -14,7 +14,17 @@ Ideas
 - do vocals that say the letters being typed, just for shits and giggles.
   - could be luci saying the letters
 - longer "enemies" that can act like sliders: the current position in the word is the setting of the slider, and you can type to go forward or back
-  - maybe can use them as platforms or walls that change length? 
+  - maybe can use them as platforms or walls that change length?
+- bocuma
+- have player type out the narrative, dialog, etc
+- snake game with percussion
+  - can go straight or turn left/right. Each has a perc instrument that maybe replaces whatever the default perc sound is. Gotta navigate an environment
+- intro song to BGGOAT ep of insert credit
+
+Story:
+- In a world where the only way to die is to satisfy a goal assigned to you at birth. Maybe it’s a vague clue, maybe it’s obvious. Maybe hard, maybe easy. Maybe you disagree with it.
+- The game is told in 2nd person: you are playing this game I made. You are under my control. Whatever. And extra paths where the player contradicts the voice are more challenging. Maybe they are how you actually progress - by choosing the paths where you rebel.
+- tension between independence and control? constraint and freedom?
 
 Near-term ideas:
 - bigger enemy that you dash toward, but more slowly.
