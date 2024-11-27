@@ -37,6 +37,7 @@ InputManager::InputManager(GLFWwindow* window)
     _keyNewStates.fill(false);
     _mouseButtonStates.fill(false);
     _mouseButtonNewStates.fill(false);
+    _mouseButtonDownTimes.fill(0.f);
     _controllerButtonStates.fill(false);
     _controllerButtonNewStates.fill(false);
 
@@ -51,9 +52,17 @@ InputManager::InputManager(GLFWwindow* window)
     }
 }
 
-void InputManager::Update(bool enabled) {
+void InputManager::Update(bool enabled, float const dt) {
     bool hasKeyInput = false;
     bool hasControllerInput = false;
+
+    double newMouseX;
+    double newMouseY;
+    glfwGetCursorPos(_window, &newMouseX, &newMouseY);
+    _mouseMotionX = newMouseX - _mouseX;
+    _mouseMotionY = newMouseY - _mouseY;
+    _mouseX = newMouseX;
+    _mouseY = newMouseY;
 
     for (int i = 0; i < (int)Key::NumKeys; ++i) {
         Key k = (Key) i;
@@ -68,6 +77,15 @@ void InputManager::Update(bool enabled) {
         MouseButton k = (MouseButton) i;
         bool pressed = enabled && glfwGetMouseButton(_window, MapToGlfw(k));
         _mouseButtonNewStates[i] = (pressed != _mouseButtonStates[i]);
+        if (pressed) {
+            if (_mouseButtonNewStates[i]) {
+                _mouseButtonDownTimes[i] = 0.f;
+                _mouseClickX = _mouseX;
+                _mouseClickY = _mouseY;
+            } else {
+                _mouseButtonDownTimes[i] += dt;
+            }
+        }
         _mouseButtonStates[i] = pressed;
     }
     GLFWgamepadstate padState{};    
@@ -114,15 +132,7 @@ void InputManager::Update(bool enabled) {
         _usingController = false;
     } else if (!_usingController && hasControllerInput) {
         _usingController = true;
-    }
-
-    double newMouseX;
-    double newMouseY;
-    glfwGetCursorPos(_window, &newMouseX, &newMouseY);
-    _mouseMotionX = newMouseX - _mouseX;
-    _mouseMotionY = newMouseY - _mouseY;
-    _mouseX = newMouseX;
-    _mouseY = newMouseY;
+    }    
 
     if (!enabled || !_haveScrollInputThisFrame) {
         _mouseScrollX = 0.0;

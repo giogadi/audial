@@ -662,7 +662,7 @@ int main(int argc, char** argv) {
         {
             ImGuiIO& io = ImGui::GetIO();
             bool inputEnabled = !io.WantCaptureMouse && !io.WantCaptureKeyboard;
-            inputManager.Update(inputEnabled);
+            inputManager.Update(inputEnabled, fixedTimeStep);
         }
 
         // if (!cmdLineInputs._editMode && inputManager.IsKeyPressedThisFrame(InputManager::Key::Space)) {

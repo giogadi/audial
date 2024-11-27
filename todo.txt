@@ -37,6 +37,8 @@ BUGS:
 - weird floaty text when camera moves. everything looks floaty actually
 
 TOOLS:
+- need a window list so we know all the types of windows we can show
+- need an input mode list so we know all the types of modes, and which is active, etc
 - type in to search for entity type and seqAction type
 - input midi note from keyboard piano
 - up/down by octave for midi note input

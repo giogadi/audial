@@ -129,9 +129,42 @@ bool ProjectScreenPointToXZPlane(
 
 enum class InputMode {
     Default,
+    DragToSelect,
+    Grab,
+    Scale,
+    PolyDraw,
     Piano,
     Count
 };
+
+char const *InputModeName(InputMode mode) {
+    switch (mode) {
+        case InputMode::Default: return "Default";
+        case InputMode::DragToSelect: return "Drag to select";
+        case InputMode::Grab: return "Grab";
+        case InputMode::Scale: return "Scale";
+        case InputMode::PolyDraw: return "Draw poly to select";
+        case InputMode::Piano: return "Piano";
+        case InputMode::Count: assert(false); return "";
+    }
+    return nullptr;
+}
+
+void PickEntity(Editor &editor, ne::BaseEntity* entity) {
+    if (entity->Type() == ne::EntityType::TypingEnemy) {
+        TypingEnemyEntity* enemy = static_cast<TypingEnemyEntity*>(entity);
+        HitResult result = enemy->OnHit(*editor._g, 0);
+        if (!editor._heldActions.empty()) {
+            for (auto const& a : editor._heldActions) {
+                a->ExecuteRelease(*editor._g);
+            }
+        }
+        editor._heldActions = std::move(result._heldActions);
+        editor._heldActionsTimer = 0.f;
+    } else {
+        entity->OnEditPick(*editor._g);
+    }
+}
 
 InputMode sInputMode = InputMode::Default;
 bool sSynthWindowVisible = false;
@@ -139,414 +172,6 @@ bool sDemoWindowVisible = false;
 bool sMultiEnemyEditorVisible = false;
 
 } // end namespace
-
-void Editor::PickEntity(ne::BaseEntity* entity) {
-    if (entity->Type() == ne::EntityType::TypingEnemy) {
-        TypingEnemyEntity* enemy = static_cast<TypingEnemyEntity*>(entity);
-        HitResult result = enemy->OnHit(*_g, 0);
-        if (!_heldActions.empty()) {
-            for (auto const& a : _heldActions) {
-                a->ExecuteRelease(*_g);
-            }
-        }
-        _heldActions = std::move(result._heldActions);
-        _heldActionsTimer = 0.f;
-    } else {
-        entity->OnEditPick(*_g);
-    }    
-}
-
-enum class InteractionMode {
-    Select,
-    Grab,
-    Scale,
-    DrawSelectPoly
-};
-
-void Editor::HandleEntitySelectAndMove(float deltaTime) {
-    InputManager const& inputManager = *_g->_inputManager;
-
-    static InteractionMode sInteractMode = InteractionMode::Select;
-    static Vec3 sGrabPos;
-    static bool sNewState = false;
-
-    switch (sInteractMode) {
-        case InteractionMode::Grab: {
-            if (sNewState) {
-                sNewState = false;
-            }
-            double mouseX, mouseY;
-            inputManager.GetMousePos(mouseX, mouseY);
-            Vec3 clickedPosOnXZPlane;
-            if (ProjectScreenPointToXZPlane((int)mouseX, (int)mouseY, _g->_windowWidth, _g->_windowHeight, _g->_scene->_camera, &clickedPosOnXZPlane)) {
-                Vec3 grabOffset = clickedPosOnXZPlane - sGrabPos;
-                for (ne::EntityId selectedId : _selectedEntityIds) {
-                    if (ne::Entity* selectedEntity = _g->_neEntityManager->GetActiveOrInactiveEntity(selectedId)) {
-                        Vec3 newPos = selectedEntity->_initTransform.Pos() + grabOffset;
-                        selectedEntity->_transform.SetPos(newPos);
-                    }
-                }
-            }
-
-            if (inputManager.IsKeyReleasedThisFrame(InputManager::Key::Enter) ||
-                inputManager.IsKeyReleasedThisFrame(InputManager::Key::G) ||
-                inputManager.IsKeyReleasedThisFrame(InputManager::MouseButton::Left)) {
-                // commit transforms
-                for (ne::EntityId selectedId : _selectedEntityIds) {
-                    if (ne::Entity* selectedEntity = _g->_neEntityManager->GetActiveOrInactiveEntity(selectedId)) {
-                        selectedEntity->_initTransform = selectedEntity->_transform;
-                    }
-                }
-                sInteractMode = InteractionMode::Select;
-                sNewState = true;
-            }
-
-            if (inputManager.IsKeyReleasedThisFrame(InputManager::Key::Escape)) {
-                // revert transforms
-                for (ne::EntityId selectedId : _selectedEntityIds) {
-                    if (ne::Entity* selectedEntity = _g->_neEntityManager->GetActiveOrInactiveEntity(selectedId)) {
-                        selectedEntity->_transform = selectedEntity->_initTransform;
-                    }
-                }
-                sInteractMode = InteractionMode::Select;
-                sNewState = true;
-            }
-            break;
-        }
-        case InteractionMode::Select: {
-            if (sNewState) {
-                sNewState = false;
-            }
-            static float sClickHoldTimer = -1.f;
-            static double sClickX = -1.f;
-            static double sClickY = -1.f;
-            static bool dragMode = false;
-            if (inputManager.IsKeyPressedThisFrame(InputManager::MouseButton::Left)) {
-                dragMode = false;
-                sClickHoldTimer = 0.f;
-                inputManager.GetMousePos(sClickX, sClickY);
-            }
-
-            bool wasInDragMode = dragMode;
-            if (dragMode) {
-                Vec3 clickWorldPos;
-                if (ProjectScreenPointToXZPlane((int)sClickX, (int)sClickY, _g->_windowWidth, _g->_windowHeight, _g->_scene->_camera, &clickWorldPos)) {
-                    double mouseX, mouseY;
-                    inputManager.GetMousePos(mouseX, mouseY);
-                    Vec3 mouseWorldPos;
-                    if (ProjectScreenPointToXZPlane((int)mouseX, (int)mouseY, _g->_windowWidth, _g->_windowHeight, _g->_scene->_camera, &mouseWorldPos)) {
-                        Vec3 center = (clickWorldPos + mouseWorldPos) * 0.5f;
-                        Vec3 scale = center - clickWorldPos;
-                        scale._x = 2 * std::abs(scale._x);
-                        scale._y = 1.f;
-                        scale._z = 2 * std::abs(scale._z);
-                        Transform t;
-                        t.SetScale(scale);
-                        t.SetPos(center);
-                        _g->_scene->DrawBoundingBox(t.Mat4Scale(), ToColor4(ColorPreset::White));
-
-                        if (!inputManager.IsKeyPressed(InputManager::MouseButton::Left)) {
-                            dragMode = false;
-                            // // LOL
-                            t.SetScale(Vec3(t.Scale()._x, 1000.f, t.Scale()._z));
-                            bool shiftHeld = inputManager.IsShiftPressed();
-                            bool altHeld = inputManager.IsAltPressed();
-                            if (!shiftHeld) {
-                                _selectedEntityIds.clear();
-                            }
-                            std::vector<ne::BaseEntity*> selected;
-                            for (auto iter = _g->_neEntityManager->GetAllIterator(); !iter.Finished(); iter.Next()) {
-                                if (ne::BaseEntity* e = iter.GetEntity()) {
-                                    if (!altHeld && !e->_pickable) {
-                                        continue;
-                                    }
-                                    selected.push_back(e);
-                                }
-                            }
-                            for (auto iter = _g->_neEntityManager->GetAllInactiveIterator(); !iter.Finished(); iter.Next()) {
-                                if (ne::BaseEntity* e = iter.GetEntity()) {
-                                    if (!altHeld && !e->_pickable) {
-                                        continue;
-                                    }
-                                    selected.push_back(e);
-                                }
-                            }
-                            for (ne::BaseEntity* e : selected) {
-                                bool inBox = geometry::IsPointInBoundingBox2d(e->_transform.GetPos(), t);
-                                if (inBox) {
-                                    if (shiftHeld) {
-                                        bool alreadyExists = !_selectedEntityIds.emplace(e->_id).second;
-                                        if (alreadyExists) {
-                                            _selectedEntityIds.erase(e->_id);
-                                        }
-                                    } else {
-                                        _selectedEntityIds.emplace(e->_id);
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            } else if (inputManager.IsKeyPressed(InputManager::MouseButton::Left)) {
-                float constexpr kTimeToDrag = 0.25f;
-                if (sClickHoldTimer >= kTimeToDrag) {
-                    dragMode = true;
-                }
-                sClickHoldTimer += deltaTime;
-            }
-
-            if (!wasInDragMode && inputManager.IsKeyReleasedThisFrame(InputManager::MouseButton::Left)) {
-                double mouseX, mouseY;
-                // inputManager.GetMousePos(mouseX, mouseY);
-                mouseX = sClickX;
-                mouseY = sClickY;
-                static std::vector<std::pair<ne::Entity*, float>> entityDistPairs;
-                entityDistPairs.clear();
-                bool const ignorePickable = inputManager.IsAltPressed();
-                PickEntities(*_g->_neEntityManager, mouseX, mouseY, _g->_windowWidth, _g->_windowHeight, _g->_scene->_camera, ignorePickable, entityDistPairs);
-                if (entityDistPairs.empty()) {
-                    if (!inputManager.IsShiftPressed()) {
-                        _selectedEntityIds.clear();
-                    }
-                } else {
-                    ne::Entity* pPicked = entityDistPairs.front().first;;
-
-                    // See if the currently selected entity is somewhere in the pick
-                    // list
-                    int ixOfSelectedInPicked = -1;
-                    if (!_selectedEntityIds.empty()) {
-                        for (int ii = 0; ii < entityDistPairs.size(); ++ii) {
-                            ne::Entity* pPicked = entityDistPairs[ii].first;
-                            if (_selectedEntityIds.find(pPicked->_id) != _selectedEntityIds.end()) {
-                                ixOfSelectedInPicked = ii;
-                                break;
-                            }
-                        }
-                    }
-
-                    if (ixOfSelectedInPicked >= 0) {
-                        // If no modifiers, just pick this one and select only this
-                        // one. If shift is held, remove only this one from the
-                        // selection. If alt is held, cycle to the next one.
-                        if (inputManager.IsAltPressed()) {
-                            int nextIx = (ixOfSelectedInPicked + 1) % entityDistPairs.size();
-                            pPicked = entityDistPairs[nextIx].first;
-                        } else {
-                            pPicked = entityDistPairs[ixOfSelectedInPicked].first;
-                        }
-                    }
-
-                    assert(pPicked);
-                    if (inputManager.IsShiftPressed()) {
-                        auto selectedIter = _selectedEntityIds.find(pPicked->_id);
-                        if (selectedIter == _selectedEntityIds.end()) {
-                            _selectedEntityIds.emplace(pPicked->_id);
-                            // pPicked->OnEditPick(*_g);
-                            PickEntity(pPicked);
-                        } else {
-                            _selectedEntityIds.erase(selectedIter);
-                        }
-                    } else {
-                        _selectedEntityIds.clear();
-                        _selectedEntityIds.emplace(pPicked->_id);
-                        // pPicked->OnEditPick(*_g);
-                        PickEntity(pPicked);
-                    }
-                }
-            }
-
-            if (sInputMode == InputMode::Default && inputManager.IsKeyReleasedThisFrame(InputManager::Key::G) && !_selectedEntityIds.empty()) {
-                sInteractMode = InteractionMode::Grab;
-                sNewState = true;
-                double mouseX, mouseY;
-                inputManager.GetMousePos(mouseX, mouseY);
-                ProjectScreenPointToXZPlane((int)mouseX, (int)mouseY, _g->_windowWidth, _g->_windowHeight, _g->_scene->_camera, &sGrabPos);
-            } else if (sInputMode == InputMode::Default && inputManager.IsKeyPressedThisFrame(InputManager::Key::S) && !_selectedEntityIds.empty() && !inputManager.IsKeyPressed(InputManager::MouseButton::Right)) {
-                sInteractMode = InteractionMode::Scale;
-                sNewState = true;
-                double mouseX, mouseY;
-                inputManager.GetMousePos(mouseX, mouseY);
-                ProjectScreenPointToXZPlane((int)mouseX, (int)mouseY, _g->_windowWidth, _g->_windowHeight, _g->_scene->_camera, &sGrabPos);
-            } else if (sInputMode == InputMode::Default && inputManager.IsKeyPressedThisFrame(InputManager::Key::S) && inputManager.IsAltPressed() && !inputManager.IsKeyPressed(InputManager::MouseButton::Right)) {
-                sInteractMode = InteractionMode::DrawSelectPoly;
-                sNewState = true;
-            }
-            break;
-        }
-        case InteractionMode::Scale: {
-            enum class ScaleAxis {
-                XZ, X, Z
-            };
-            static ScaleAxis sScaleAxis = ScaleAxis::XZ;
-            static bool sPositive = true;
-            if (sNewState) {
-                sNewState = false;
-                sScaleAxis = ScaleAxis::XZ;
-                sPositive = true;
-            }            
-
-            if (sScaleAxis == ScaleAxis::XZ && sInputMode == InputMode::Default) {
-                if (inputManager.IsKeyReleasedThisFrame(InputManager::Key::X)) {
-                    sScaleAxis = ScaleAxis::X;
-                    sPositive = !inputManager.IsShiftPressed();
-                } else if (inputManager.IsKeyReleasedThisFrame(InputManager::Key::Z)) {
-                    sScaleAxis = ScaleAxis::Z;
-                    sPositive = !inputManager.IsShiftPressed();
-                }
-            }
-
-            double mouseX, mouseY;
-            inputManager.GetMousePos(mouseX, mouseY);
-            Vec3 clickedPosOnXZPlane;
-            if (ProjectScreenPointToXZPlane((int)mouseX, (int)mouseY, _g->_windowWidth, _g->_windowHeight, _g->_scene->_camera, &clickedPosOnXZPlane)) {
-                Vec3 grabOffset = clickedPosOnXZPlane - sGrabPos;
-                switch (sScaleAxis) {
-                    case ScaleAxis::XZ: break;
-                    case ScaleAxis::X: {
-                        grabOffset._y = grabOffset._z = 0.f;
-                        break;
-                    }
-                    case ScaleAxis::Z: {
-                        grabOffset._x = grabOffset._y = 0.f;
-                        break;
-                    }
-                }
-                for (ne::EntityId selectedId : _selectedEntityIds) {
-                    float constexpr kMinScale = 0.001f;
-                    if (ne::Entity* selectedEntity = _g->_neEntityManager->GetActiveOrInactiveEntity(selectedId)) {
-                        switch (sScaleAxis) {
-                            case ScaleAxis::XZ: {
-                                Vec3 newScale = selectedEntity->_initTransform.Scale() + 2.f * grabOffset;
-                                for (int ii = 0; ii < 3; ++ii) {
-                                    newScale(ii) = std::max(kMinScale, newScale(ii));
-                                }
-                                selectedEntity->_transform.SetScale(newScale);
-                                break;
-                            }
-                            case ScaleAxis::X: {
-                                float positive = (sPositive ? 1.f : -1.f);
-                                float newEdgePos = selectedEntity->_initTransform.Pos()._x + positive * 0.5f * selectedEntity->_initTransform.Scale()._x + grabOffset._x;
-                                float newScaleX = 0.5f * selectedEntity->_initTransform.Scale()._x + positive * (newEdgePos - selectedEntity->_initTransform.Pos()._x);
-                                newScaleX = std::max(kMinScale, newScaleX);
-                                float newPosX = newEdgePos + (-positive * 0.5f * newScaleX);
-                                Vec3 newPos = selectedEntity->_transform.Pos();
-                                newPos._x = newPosX;
-                                selectedEntity->_transform.SetPos(newPos);
-                                Vec3 newScale = selectedEntity->_transform.Scale();
-                                newScale._x = newScaleX;
-                                selectedEntity->_transform.SetScale(newScale);
-                                break;
-                            }
-                            case ScaleAxis::Z: {
-                                float positive = (sPositive ? 1.f : -1.f);
-                                float newEdgePos = selectedEntity->_initTransform.Pos()._z + positive * 0.5f * selectedEntity->_initTransform.Scale()._z + grabOffset._z;
-                                float newScaleZ = 0.5f * selectedEntity->_initTransform.Scale()._z + positive * (newEdgePos - selectedEntity->_initTransform.Pos()._z);
-                                newScaleZ = std::max(kMinScale, newScaleZ);
-                                float newPosZ = newEdgePos + (-positive * 0.5f * newScaleZ);
-                                Vec3 newPos = selectedEntity->_transform.Pos();
-                                newPos._z = newPosZ;
-                                selectedEntity->_transform.SetPos(newPos);
-                                Vec3 newScale = selectedEntity->_transform.Scale();
-                                newScale._z = newScaleZ;
-                                selectedEntity->_transform.SetScale(newScale);
-                                break;
-                            }
-                        }
-                    }
-                }
-            }
-
-            if (inputManager.IsKeyReleasedThisFrame(InputManager::Key::Enter) ||
-                inputManager.IsKeyPressedThisFrame(InputManager::Key::S) ||
-                inputManager.IsKeyReleasedThisFrame(InputManager::MouseButton::Left)) {
-                // commit transforms
-                for (ne::EntityId selectedId : _selectedEntityIds) {
-                    if (ne::Entity* selectedEntity = _g->_neEntityManager->GetActiveOrInactiveEntity(selectedId)) {
-                        selectedEntity->_initTransform = selectedEntity->_transform;
-                    }
-                }
-                sInteractMode = InteractionMode::Select;
-                sNewState = true;
-            }
-
-            if (inputManager.IsKeyReleasedThisFrame(InputManager::Key::Escape)) {
-                // revert transforms
-                for (ne::EntityId selectedId : _selectedEntityIds) {
-                    if (ne::Entity* selectedEntity = _g->_neEntityManager->GetActiveOrInactiveEntity(selectedId)) {
-                        selectedEntity->_transform = selectedEntity->_initTransform;
-                    }
-                }
-                sInteractMode = InteractionMode::Select;
-                sNewState = true;
-            }
-            break;
-        }
-        case InteractionMode::DrawSelectPoly: {
-            int constexpr kMaxPoints = 64;
-            static Vec3 sSelectPolyPoints[kMaxPoints];
-            static int sSelectPolyPointsCount = 0;
-            if (sNewState) {
-                sNewState = false;
-                sSelectPolyPointsCount = 0;
-            }
-            if (inputManager.IsKeyReleasedThisFrame(InputManager::MouseButton::Left)) {
-                double mouseX, mouseY;
-                inputManager.GetMousePos(mouseX, mouseY);
-                Vec3 p;
-                ProjectScreenPointToXZPlane((int)mouseX, (int)mouseY, _g->_windowWidth, _g->_windowHeight, _g->_scene->_camera, &p);
-                if (sSelectPolyPointsCount < kMaxPoints) {
-                    sSelectPolyPoints[sSelectPolyPointsCount++] = p;
-                }
-            }
-            for (int ii = 0; ii < sSelectPolyPointsCount - 1; ++ii) {
-                _g->_scene->DrawLine(sSelectPolyPoints[ii], sSelectPolyPoints[ii+1], Vec4(1.f, 1.f, 1.f, 1.f));
-            }
-            
-            _selectedEntityIds.clear();
-            Vec4 localBbox[4];
-            localBbox[0].Set(0.5f, 0.f, 0.5f, 1.f);
-            localBbox[1].Set(0.5, 0.f, -0.5f, 1.f);
-            localBbox[2].Set(-0.5f, 0.f, -0.5f, 1.f);
-            localBbox[3].Set(-0.5f, 0.f, 0.5f, 1.f);
-            Vec4 worldBbox[4];
-            auto maybeSelectEntity = [&](ne::Entity* e) {
-                Mat4 localToWorld = e->_transform.Mat4Scale();
-                for (int ii = 0; ii < 4; ++ii) {
-                    worldBbox[ii] = localToWorld * localBbox[ii];
-                    Vec3 queryP = worldBbox[ii].GetXYZ();
-                    bool inside = geometry::PointInPolygon2D(queryP, sSelectPolyPoints, sSelectPolyPointsCount);
-                    if (inside) {
-                        _selectedEntityIds.insert(e->_id);
-                        break;
-                    }
-                }
-            };
-
-            if (inputManager.IsKeyPressedThisFrame(InputManager::Key::S) && inputManager.IsAltPressed() && !inputManager.IsKeyPressed(InputManager::MouseButton::Right)) {
-                for (auto iter = _g->_neEntityManager->GetAllIterator(); !iter.Finished(); iter.Next()) {
-                    ne::Entity* entity = iter.GetEntity();
-                    if (entity == nullptr) {
-                        continue;
-                    }
-                    maybeSelectEntity(entity);
-                }
-                for (auto iter = _g->_neEntityManager->GetAllInactiveIterator(); !iter.Finished(); iter.Next()) {
-                    ne::Entity* entity = iter.GetEntity();
-                    if (entity == nullptr) {
-                        continue;
-                    }
-                    maybeSelectEntity(entity);
-                }
-
-                sNewState = true;
-                sInteractMode = InteractionMode::Select;
-            }
-            break;
-        }
-    }
-    
-}
-
 
 void Editor::DrawSeqWindow() {
     ImGui::Begin("Step sequencers");
@@ -634,6 +259,11 @@ InputManager::Key sPianoKeys[] = {
 void Editor::HandlePianoInput(SynthGuiState& synthGuiState) {
     InputManager const& inputManager = *_g->_inputManager;
 
+    if (inputManager.IsKeyPressedThisFrame(InputManager::Key::P)) {
+        sInputMode = InputMode::Default;
+        return;
+    }
+
     if (inputManager.IsKeyPressedThisFrame(InputManager::Key::Left)) {
         gPianoOctave = std::max(0, gPianoOctave - 1);
     } else if (inputManager.IsKeyPressedThisFrame(InputManager::Key::Right)) {
@@ -664,6 +294,454 @@ void Editor::HandlePianoInput(SynthGuiState& synthGuiState) {
     }
 }
 
+namespace {
+void UpdateDefault(GameManager &g, float const dt, Editor &editor) {
+    InputManager &inputManager = *g._inputManager;
+
+    if (inputManager.IsKeyPressedThisFrame(InputManager::Key::P)) {
+        sInputMode = InputMode::Piano;
+        return;
+    }
+
+    if (inputManager.IsKeyPressedThisFrame(InputManager::Key::G) && !editor._selectedEntityIds.empty()) {
+        sInputMode = InputMode::Grab;
+        return;
+    }
+
+    if (inputManager.IsAltPressed() && inputManager.IsKeyPressedThisFrame(InputManager::Key::S) && !inputManager.IsKeyPressed(InputManager::MouseButton::Right)) {
+        sInputMode = InputMode::PolyDraw;
+        return;
+    }
+
+    if (inputManager.IsKeyPressedThisFrame(InputManager::Key::S) && !editor._selectedEntityIds.empty() && !inputManager.IsAltPressed() && !inputManager.IsKeyPressed(InputManager::MouseButton::Right)) {
+        sInputMode = InputMode::Scale;
+        return;
+    }
+
+    float constexpr kMinTimeForDrag = 5.f * (1.f / 60.f);
+    if (inputManager.IsKeyPressed(InputManager::MouseButton::Left) &&
+        inputManager.GetKeyDownTime(InputManager::MouseButton::Left) >= kMinTimeForDrag) {
+        sInputMode = InputMode::DragToSelect;
+        return;
+    }
+
+    // Control groups
+    if (inputManager.IsCtrlPressed()) {
+        int ctrlGroupIx = inputManager.GetNumPressedThisFrame();
+        if (ctrlGroupIx >= 0) {
+            std::vector<ne::EntityId>& ctrlGroup = gControlGroups[ctrlGroupIx];
+            ctrlGroup.clear();
+            ctrlGroup.insert(ctrlGroup.begin(), editor._selectedEntityIds.begin(), editor._selectedEntityIds.end());
+        }
+    } else {
+        int ctrlGroupIx = inputManager.GetNumPressedThisFrame();
+        if (ctrlGroupIx >= 0) {
+            std::vector<ne::EntityId>& ctrlGroup = gControlGroups[ctrlGroupIx];
+            editor._selectedEntityIds.clear();
+            editor._selectedEntityIds.insert(ctrlGroup.begin(), ctrlGroup.end());
+        }
+    }
+
+    if (inputManager.IsKeyPressedThisFrame(InputManager::Key::Q)) {
+        sSeqWindowVisible = true;
+    }
+
+    if (inputManager.IsKeyPressedThisFrame(InputManager::Key::Y)) {
+        sSynthWindowVisible = !sSynthWindowVisible;
+    }
+
+    if (inputManager.IsKeyPressedThisFrame(InputManager::Key::I)) {
+        editor._entityWindowVisible = !editor._entityWindowVisible;
+    }
+
+    if (inputManager.IsKeyPressedThisFrame(InputManager::Key::M)) {
+        sMultiEnemyEditorVisible = !sMultiEnemyEditorVisible;
+    }
+
+    if (inputManager.IsKeyPressedThisFrame(InputManager::Key::C)) {
+        editor._showControllerInputs = !editor._showControllerInputs;
+    }
+
+    if (inputManager.IsShiftPressed() && inputManager.IsKeyPressedThisFrame(InputManager::Key::I)) {
+        sDemoWindowVisible = !sDemoWindowVisible;
+    }
+
+    // Move camera around with RMB + WSAD.
+    if (inputManager.IsKeyPressed(InputManager::MouseButton::Right)) {
+        Vec3 inputVec;
+        if (inputManager.IsKeyPressed(InputManager::Key::W)) {
+            inputVec._z -= 1.f;
+        }
+        if (inputManager.IsKeyPressed(InputManager::Key::S)) {
+            inputVec._z += 1.f;
+        }
+        if (inputManager.IsKeyPressed(InputManager::Key::A)) {
+            inputVec._x -= 1.f;
+        }
+        if (inputManager.IsKeyPressed(InputManager::Key::D)) {
+            inputVec._x += 1.f;
+        }
+        Vec3 camVel = inputVec * 5.f;
+        if (inputManager.IsShiftPressed()) {
+            camVel *= 5.f;
+        }
+        g._scene->_camera._transform.Translate(camVel * dt);
+    }
+
+    // Use scroll input to move debug camera around.
+    double scrollX = 0.0, scrollY = 0.0;
+    inputManager.GetMouseScroll(scrollX, scrollY);
+    if (scrollX != 0.0 || scrollY != 0.0) {
+        Vec3 camMotionVec = gScrollFactorForDebugCameraMove * Vec3(-scrollX, 0.f, -scrollY);
+        g._scene->_camera._transform.Translate(camMotionVec);
+    }
+
+    // Click to select entities    
+    if (inputManager.IsKeyReleasedThisFrame(InputManager::MouseButton::Left) &&
+        inputManager.GetKeyDownTime(InputManager::MouseButton::Left) < kMinTimeForDrag) {
+        double clickX, clickY;
+        inputManager.GetMouseClickPos(clickX, clickY);
+
+        static std::vector<std::pair<ne::Entity*, float>> entityDistPairs;
+        entityDistPairs.clear();
+        bool const ignorePickable = inputManager.IsAltPressed();
+        PickEntities(*g._neEntityManager, clickX, clickY, g._windowWidth, g._windowHeight, g._scene->_camera, ignorePickable, entityDistPairs);
+        if (entityDistPairs.empty()) {
+            if (!inputManager.IsShiftPressed()) {
+                editor._selectedEntityIds.clear();
+            }
+        } else {
+            ne::Entity* pPicked = entityDistPairs.front().first;;
+
+            // See if the currently selected entity is somewhere in the pick
+            // list
+            int ixOfSelectedInPicked = -1;
+            if (!editor._selectedEntityIds.empty()) {
+                for (int ii = 0; ii < entityDistPairs.size(); ++ii) {
+                    ne::Entity* pPicked = entityDistPairs[ii].first;
+                    if (editor._selectedEntityIds.find(pPicked->_id) != editor._selectedEntityIds.end()) {
+                        ixOfSelectedInPicked = ii;
+                        break;
+                    }
+                }
+            }
+
+            if (ixOfSelectedInPicked >= 0) {
+                // If no modifiers, just pick this one and select only this
+                // one. If shift is held, remove only this one from the
+                // selection. If alt is held, cycle to the next one.
+                if (inputManager.IsAltPressed()) {
+                    int nextIx = (ixOfSelectedInPicked + 1) % entityDistPairs.size();
+                    pPicked = entityDistPairs[nextIx].first;
+                } else {
+                    pPicked = entityDistPairs[ixOfSelectedInPicked].first;
+                }
+            }
+
+            assert(pPicked);
+            if (inputManager.IsShiftPressed()) {
+                auto selectedIter = editor._selectedEntityIds.find(pPicked->_id);
+                if (selectedIter == editor._selectedEntityIds.end()) {
+                    editor._selectedEntityIds.emplace(pPicked->_id);
+                    PickEntity(editor, pPicked);
+                } else {
+                    editor._selectedEntityIds.erase(selectedIter);
+                }
+            } else {
+                editor._selectedEntityIds.clear();
+                editor._selectedEntityIds.emplace(pPicked->_id);
+                PickEntity(editor, pPicked);
+            }
+        }
+    }
+}
+
+void UpdateDragToSelect(GameManager &g, Editor &editor) {
+    InputManager &inputManager = *g._inputManager;
+
+    Vec3 clickWorldPos;
+    double clickX, clickY;
+    inputManager.GetMouseClickPos(clickX, clickY);
+    bool success = ProjectScreenPointToXZPlane((int)clickX, (int)clickY, g._windowWidth, g._windowHeight, g._scene->_camera, &clickWorldPos);
+    if (!success) {
+        printf("editor.cpp::UpdateDragToSelect: failed to project click pos? %f %f\n", clickX, clickY);
+    }
+
+    double mouseX, mouseY;
+    inputManager.GetMousePos(mouseX, mouseY);
+    Vec3 mouseWorldPos;
+    success = ProjectScreenPointToXZPlane((int)mouseX, (int)mouseY, g._windowWidth, g._windowHeight, g._scene->_camera, &mouseWorldPos);
+    if (!success) {
+        printf("editor.cpp::UpdateDragToSelect: failed to project mouse pos? %f %f\n", mouseX, mouseY);
+    }
+    
+    Vec3 center = (clickWorldPos + mouseWorldPos) * 0.5f;
+    Vec3 scale = center - clickWorldPos;
+    scale._x = 2 * std::abs(scale._x);
+    scale._y = 1.f;
+    scale._z = 2 * std::abs(scale._z);
+    Transform t;
+    t.SetScale(scale);
+    t.SetPos(center);
+    g._scene->DrawBoundingBox(t.Mat4Scale(), ToColor4(ColorPreset::White));
+
+    if (!inputManager.IsKeyPressed(InputManager::MouseButton::Left)) {
+        // // LOL
+        t.SetScale(Vec3(t.Scale()._x, 1000.f, t.Scale()._z));
+        bool shiftHeld = inputManager.IsShiftPressed();
+        bool altHeld = inputManager.IsAltPressed();
+        if (!shiftHeld) {
+            editor._selectedEntityIds.clear();
+        }
+        std::vector<ne::BaseEntity*> selected;
+        for (auto iter = g._neEntityManager->GetAllIterator(); !iter.Finished(); iter.Next()) {
+            if (ne::BaseEntity* e = iter.GetEntity()) {
+                if (!altHeld && !e->_pickable) {
+                    continue;
+                }
+                selected.push_back(e);
+            }
+        }
+        for (auto iter = g._neEntityManager->GetAllInactiveIterator(); !iter.Finished(); iter.Next()) {
+            if (ne::BaseEntity* e = iter.GetEntity()) {
+                if (!altHeld && !e->_pickable) {
+                    continue;
+                }
+                selected.push_back(e);
+            }
+        }
+        for (ne::BaseEntity* e : selected) {
+            bool inBox = geometry::IsPointInBoundingBox2d(e->_transform.GetPos(), t);
+            if (inBox) {
+                if (shiftHeld) {
+                    bool alreadyExists = !editor._selectedEntityIds.emplace(e->_id).second;
+                    if (alreadyExists) {
+                        editor._selectedEntityIds.erase(e->_id);
+                    }
+                } else {
+                    editor._selectedEntityIds.emplace(e->_id);
+                }
+            }
+        }
+
+        sInputMode = InputMode::Default;
+    }
+}
+
+void UpdateGrab(GameManager &g, Editor &editor, bool newState) {
+    InputManager &inputManager = *g._inputManager;
+    double mouseX, mouseY;
+    inputManager.GetMousePos(mouseX, mouseY);
+    Vec3 mousePosOnXZPlane;
+    ProjectScreenPointToXZPlane((int)mouseX, (int)mouseY, g._windowWidth, g._windowHeight, g._scene->_camera, &mousePosOnXZPlane);
+    static Vec3 sGrabPos;
+    if (newState) {
+        // TODO: this will currently happen on the next frame, unless we allow same-frame input mode changes.
+        sGrabPos = mousePosOnXZPlane;
+    }
+    Vec3 grabOffset = mousePosOnXZPlane - sGrabPos;
+    for (ne::EntityId selectedId : editor._selectedEntityIds) {
+        if (ne::Entity* selectedEntity = g._neEntityManager->GetActiveOrInactiveEntity(selectedId)) {
+            Vec3 newPos = selectedEntity->_initTransform.Pos() + grabOffset;
+            selectedEntity->_transform.SetPos(newPos);
+        }
+    }
+
+    if (inputManager.IsKeyPressedThisFrame(InputManager::Key::Enter) ||
+        inputManager.IsKeyPressedThisFrame(InputManager::Key::G) ||
+        inputManager.IsKeyPressedThisFrame(InputManager::MouseButton::Left)) {
+        // commit transforms
+        for (ne::EntityId selectedId : editor._selectedEntityIds) {
+            if (ne::Entity* selectedEntity = g._neEntityManager->GetActiveOrInactiveEntity(selectedId)) {
+                selectedEntity->_initTransform = selectedEntity->_transform;
+            }
+        }
+        sInputMode = InputMode::Default;
+    }
+
+    if (inputManager.IsKeyPressedThisFrame(InputManager::Key::Escape)) {
+        // revert transforms
+        for (ne::EntityId selectedId : editor._selectedEntityIds) {
+            if (ne::Entity* selectedEntity = g._neEntityManager->GetActiveOrInactiveEntity(selectedId)) {
+                selectedEntity->_transform = selectedEntity->_initTransform;
+            }
+        }
+        sInputMode = InputMode::Default;
+    }
+}
+
+void UpdateScale(GameManager &g, Editor &editor, bool newState) {
+    InputManager &inputManager = *g._inputManager;
+
+    double mouseX, mouseY;
+    inputManager.GetMousePos(mouseX, mouseY);
+    Vec3 mousePosOnXZPlane;
+    ProjectScreenPointToXZPlane((int)mouseX, (int)mouseY, g._windowWidth, g._windowHeight, g._scene->_camera, &mousePosOnXZPlane);
+
+    enum class ScaleAxis {
+        XZ, X, Z
+    };
+    static ScaleAxis sScaleAxis = ScaleAxis::XZ;
+    static bool sPositive = true;
+    static Vec3 sGrabPos;
+    if (newState) {
+        sScaleAxis = ScaleAxis::XZ;
+        sPositive = true;
+        sGrabPos = mousePosOnXZPlane;
+    }
+
+    if (sScaleAxis == ScaleAxis::XZ) {
+        if (inputManager.IsKeyPressedThisFrame(InputManager::Key::X)) {
+            sScaleAxis = ScaleAxis::X;
+            sPositive = !inputManager.IsShiftPressed();
+        } else if (inputManager.IsKeyPressedThisFrame(InputManager::Key::Z)) {
+            sScaleAxis = ScaleAxis::Z;
+            sPositive = !inputManager.IsShiftPressed();
+        }
+    }
+
+    Vec3 grabOffset = mousePosOnXZPlane - sGrabPos;
+    switch (sScaleAxis) {
+        case ScaleAxis::XZ: break;
+        case ScaleAxis::X: {
+            grabOffset._y = grabOffset._z = 0.f;
+            break;
+        }
+        case ScaleAxis::Z: {
+            grabOffset._x = grabOffset._y = 0.f;
+            break;
+        }
+    }
+    for (ne::EntityId selectedId : editor._selectedEntityIds) {
+        float constexpr kMinScale = 0.001f;
+        if (ne::Entity* selectedEntity = g._neEntityManager->GetActiveOrInactiveEntity(selectedId)) {
+            switch (sScaleAxis) {
+                case ScaleAxis::XZ: {
+                    Vec3 newScale = selectedEntity->_initTransform.Scale() + 2.f * grabOffset;
+                    for (int ii = 0; ii < 3; ++ii) {
+                        newScale(ii) = std::max(kMinScale, newScale(ii));
+                    }
+                    selectedEntity->_transform.SetScale(newScale);
+                    break;
+                }
+                case ScaleAxis::X: {
+                    float positive = (sPositive ? 1.f : -1.f);
+                    float newEdgePos = selectedEntity->_initTransform.Pos()._x + positive * 0.5f * selectedEntity->_initTransform.Scale()._x + grabOffset._x;
+                    float newScaleX = 0.5f * selectedEntity->_initTransform.Scale()._x + positive * (newEdgePos - selectedEntity->_initTransform.Pos()._x);
+                    newScaleX = std::max(kMinScale, newScaleX);
+                    float newPosX = newEdgePos + (-positive * 0.5f * newScaleX);
+                    Vec3 newPos = selectedEntity->_transform.Pos();
+                    newPos._x = newPosX;
+                    selectedEntity->_transform.SetPos(newPos);
+                    Vec3 newScale = selectedEntity->_transform.Scale();
+                    newScale._x = newScaleX;
+                    selectedEntity->_transform.SetScale(newScale);
+                    break;
+                }
+                case ScaleAxis::Z: {
+                    float positive = (sPositive ? 1.f : -1.f);
+                    float newEdgePos = selectedEntity->_initTransform.Pos()._z + positive * 0.5f * selectedEntity->_initTransform.Scale()._z + grabOffset._z;
+                    float newScaleZ = 0.5f * selectedEntity->_initTransform.Scale()._z + positive * (newEdgePos - selectedEntity->_initTransform.Pos()._z);
+                    newScaleZ = std::max(kMinScale, newScaleZ);
+                    float newPosZ = newEdgePos + (-positive * 0.5f * newScaleZ);
+                    Vec3 newPos = selectedEntity->_transform.Pos();
+                    newPos._z = newPosZ;
+                    selectedEntity->_transform.SetPos(newPos);
+                    Vec3 newScale = selectedEntity->_transform.Scale();
+                    newScale._z = newScaleZ;
+                    selectedEntity->_transform.SetScale(newScale);
+                    break;
+                }
+            }
+        }
+    }
+
+    if (inputManager.IsKeyPressedThisFrame(InputManager::Key::Enter) ||
+        inputManager.IsKeyPressedThisFrame(InputManager::Key::S) ||
+        inputManager.IsKeyPressedThisFrame(InputManager::MouseButton::Left)) {
+        // commit transforms
+        for (ne::EntityId selectedId : editor._selectedEntityIds) {
+            if (ne::Entity* selectedEntity = g._neEntityManager->GetActiveOrInactiveEntity(selectedId)) {
+                selectedEntity->_initTransform = selectedEntity->_transform;
+            }
+        }
+        sInputMode = InputMode::Default;
+    }
+
+    if (inputManager.IsKeyReleasedThisFrame(InputManager::Key::Escape)) {
+        // revert transforms
+        for (ne::EntityId selectedId : editor._selectedEntityIds) {
+            if (ne::Entity* selectedEntity = g._neEntityManager->GetActiveOrInactiveEntity(selectedId)) {
+                selectedEntity->_transform = selectedEntity->_initTransform;
+            }
+        }
+        sInputMode = InputMode::Default;
+    }
+}
+
+void UpdatePolyDraw(GameManager &g, Editor &editor, bool newState) {
+    InputManager &inputManager = *g._inputManager;
+
+    int constexpr kMaxPoints = 64;
+    static Vec3 sSelectPolyPoints[kMaxPoints];
+    static int sSelectPolyPointsCount = 0;
+    if (newState) {
+        sSelectPolyPointsCount = 0;
+    }
+    if (inputManager.IsKeyPressedThisFrame(InputManager::MouseButton::Left)) {
+        double mouseX, mouseY;
+        inputManager.GetMousePos(mouseX, mouseY);
+        Vec3 p;
+        ProjectScreenPointToXZPlane((int)mouseX, (int)mouseY, g._windowWidth, g._windowHeight, g._scene->_camera, &p);
+        if (sSelectPolyPointsCount < kMaxPoints) {
+            sSelectPolyPoints[sSelectPolyPointsCount++] = p;
+        }
+    }
+    for (int ii = 0; ii < sSelectPolyPointsCount - 1; ++ii) {
+        g._scene->DrawLine(sSelectPolyPoints[ii], sSelectPolyPoints[ii+1], Vec4(1.f, 1.f, 1.f, 1.f));
+    }
+
+    editor._selectedEntityIds.clear();
+    Vec4 localBbox[4];
+    localBbox[0].Set(0.5f, 0.f, 0.5f, 1.f);
+    localBbox[1].Set(0.5, 0.f, -0.5f, 1.f);
+    localBbox[2].Set(-0.5f, 0.f, -0.5f, 1.f);
+    localBbox[3].Set(-0.5f, 0.f, 0.5f, 1.f);
+    Vec4 worldBbox[4];
+    auto maybeSelectEntity = [&](ne::Entity* e) {
+        Mat4 localToWorld = e->_transform.Mat4Scale();
+        for (int ii = 0; ii < 4; ++ii) {
+            worldBbox[ii] = localToWorld * localBbox[ii];
+            Vec3 queryP = worldBbox[ii].GetXYZ();
+            bool inside = geometry::PointInPolygon2D(queryP, sSelectPolyPoints, sSelectPolyPointsCount);
+            if (inside) {
+                editor._selectedEntityIds.insert(e->_id);
+                break;
+            }
+        }
+        };
+
+    if (inputManager.IsKeyPressedThisFrame(InputManager::Key::S) && inputManager.IsAltPressed() && !inputManager.IsKeyPressed(InputManager::MouseButton::Right)) {
+        for (auto iter = g._neEntityManager->GetAllIterator(); !iter.Finished(); iter.Next()) {
+            ne::Entity* entity = iter.GetEntity();
+            if (entity == nullptr) {
+                continue;
+            }
+            maybeSelectEntity(entity);
+        }
+        for (auto iter = g._neEntityManager->GetAllInactiveIterator(); !iter.Finished(); iter.Next()) {
+            ne::Entity* entity = iter.GetEntity();
+            if (entity == nullptr) {
+                continue;
+            }
+            maybeSelectEntity(entity);
+        }
+        
+        sInputMode = InputMode::Default;
+    }
+}
+}
+
 void Editor::Update(float dt, SynthGuiState& synthGuiState) {
     if (!_g->_editMode) {
         return;
@@ -690,90 +768,34 @@ void Editor::Update(float dt, SynthGuiState& synthGuiState) {
         _selectedEntityIds.insert(_requestedNewSelection);
         _requestedNewSelection = ne::EntityId();
     }
-    
-    InputManager const& inputManager = *_g->_inputManager;
 
-    if (inputManager.IsKeyPressedThisFrame(InputManager::Key::P)) {
-        sInputMode = (InputMode) ((((int) sInputMode) + 1) % ((int) InputMode::Count));
-    }
-
-    if (inputManager.IsKeyPressedThisFrame(InputManager::Key::Q)) {
-        sSeqWindowVisible = true;
-    }
-
-    if (sInputMode == InputMode::Default) {
-        // Control groups
-        if (inputManager.IsCtrlPressed()) {
-            int ctrlGroupIx = inputManager.GetNumPressedThisFrame();
-            if (ctrlGroupIx >= 0) {
-                std::vector<ne::EntityId>& ctrlGroup = gControlGroups[ctrlGroupIx];
-                ctrlGroup.clear();
-                ctrlGroup.insert(ctrlGroup.begin(), _selectedEntityIds.begin(), _selectedEntityIds.end());
-            }
-        } else {
-            int ctrlGroupIx = inputManager.GetNumPressedThisFrame();
-            if (ctrlGroupIx >= 0) {
-                std::vector<ne::EntityId>& ctrlGroup = gControlGroups[ctrlGroupIx];
-                _selectedEntityIds.clear();
-                _selectedEntityIds.insert(ctrlGroup.begin(), ctrlGroup.end());
-            }            
-        }
-
-        if (inputManager.IsKeyPressedThisFrame(InputManager::Key::Y)) {
-            sSynthWindowVisible = !sSynthWindowVisible;
-        }
-        
-    
-        if (inputManager.IsKeyPressedThisFrame(InputManager::Key::I)) {
-            _entityWindowVisible = !_entityWindowVisible;
-        }
-
-        if (inputManager.IsKeyPressedThisFrame(InputManager::Key::M)) {
-            sMultiEnemyEditorVisible = !sMultiEnemyEditorVisible;
-        }
-
-        if (inputManager.IsKeyPressedThisFrame(InputManager::Key::C)) {
-            _showControllerInputs = !_showControllerInputs;
-        }
-
-        if (inputManager.IsShiftPressed() && inputManager.IsKeyPressedThisFrame(InputManager::Key::I)) {
-            sDemoWindowVisible = !sDemoWindowVisible;
-        }
-
-        // Move camera around with RMB + WSAD.
-        if (_g->_inputManager->IsKeyPressed(InputManager::MouseButton::Right)) {
-            Vec3 inputVec;
-            if (_g->_inputManager->IsKeyPressed(InputManager::Key::W)) {
-                inputVec._z -= 1.f;
-            }
-            if (_g->_inputManager->IsKeyPressed(InputManager::Key::S)) {
-                inputVec._z += 1.f;
-            }
-            if (_g->_inputManager->IsKeyPressed(InputManager::Key::A)) {
-                inputVec._x -= 1.f;
-            }
-            if (_g->_inputManager->IsKeyPressed(InputManager::Key::D)) {
-                inputVec._x += 1.f;
-            }
-            Vec3 camVel = inputVec * 5.f;
-            if (_g->_inputManager->IsShiftPressed()) {
-                camVel *= 5.f;
-            }
-            _g->_scene->_camera._transform.Translate(camVel * dt);
-        }
-    } else if (sInputMode == InputMode::Piano) {
-        HandlePianoInput(synthGuiState);
+    static InputMode sPrevMode = InputMode::Default;
+    bool newInputMode = sPrevMode != sInputMode;
+    sPrevMode = sInputMode;
+    switch (sInputMode) {
+        case InputMode::Default:
+            UpdateDefault(*_g, dt, *this);
+            break;
+        case InputMode::DragToSelect:
+            UpdateDragToSelect(*_g, *this);
+            break;
+        case InputMode::Grab:
+            UpdateGrab(*_g, *this, newInputMode);
+            break;
+        case InputMode::Scale:
+            UpdateScale(*_g, *this, newInputMode);
+            break;
+        case InputMode::PolyDraw:
+            UpdatePolyDraw(*_g, *this, newInputMode);
+            break;
+        case InputMode::Piano:
+            HandlePianoInput(synthGuiState);
+            break;
+        case InputMode::Count:
+            break;
     }
     
-    HandleEntitySelectAndMove(dt);    
-
-    // Use scroll input to move debug camera around.
-    double scrollX = 0.0, scrollY = 0.0;
-    _g->_inputManager->GetMouseScroll(scrollX, scrollY);
-    if (scrollX != 0.0 || scrollY != 0.0) {
-        Vec3 camMotionVec = gScrollFactorForDebugCameraMove * Vec3(-scrollX, 0.f, -scrollY);
-        _g->_scene->_camera._transform.Translate(camMotionVec);
-    }
+    InputManager const& inputManager = *_g->_inputManager;    
 
     // Draw axes
     for (ne::EntityId selectedId : _selectedEntityIds) {

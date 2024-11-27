@@ -26,7 +26,7 @@ public:
 
     InputManager(GLFWwindow* window);
 
-    void Update(bool enabled);
+    void Update(bool enabled, float dt);
 
     static Key CharToKey(char c);
 
@@ -48,6 +48,13 @@ public:
     }
     bool IsKeyReleasedThisFrame(MouseButton k) const {
         return !_mouseButtonStates[(int)k] && _mouseButtonNewStates[(int)k];
+    }
+    float GetKeyDownTime(MouseButton k) const {
+        return _mouseButtonDownTimes[(int)k];
+    }
+    void GetMouseClickPos(double &x, double &y) const {
+        x = _mouseClickX;
+        y = _mouseClickY;
     }
 
     bool IsKeyPressed(ControllerButton k) const {
@@ -107,11 +114,14 @@ private:
     std::array<bool,static_cast<int>(Key::NumKeys)> _keyNewStates;
     std::array<bool,static_cast<int>(MouseButton::Count)> _mouseButtonStates;
     std::array<bool,static_cast<int>(MouseButton::Count)> _mouseButtonNewStates;
+    std::array<float, static_cast<int>(MouseButton::Count)> _mouseButtonDownTimes;
     std::array<bool,static_cast<int>(ControllerButton::Count)> _controllerButtonStates;
     std::array<bool,static_cast<int>(ControllerButton::Count)> _controllerButtonNewStates;
     int _controllerId = -1;
     double _mouseX = 0.0;
     double _mouseY = 0.0;
+    double _mouseClickX = 0.0;
+    double _mouseClickY = 0.0;
     double _mouseMotionX = 0.0;
     double _mouseMotionY = 0.0;
     bool _haveScrollInputThisFrame = false;
