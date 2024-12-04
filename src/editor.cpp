@@ -21,6 +21,7 @@
 #include "geometry.h"
 #include "seq_action.h"
 #include "entities/step_sequencer.h"
+#include <omni_sequencer.h>
 
 extern EditorIdMap *gEditorIdMap;
 
@@ -135,6 +136,7 @@ enum class InputMode {
     PolyDraw,
     Piano,
     EnemyTyping,
+    Sequencer,
     Count
 };
 
@@ -147,6 +149,7 @@ char const *InputModeName(InputMode mode) {
         case InputMode::PolyDraw: return "Draw poly to select";
         case InputMode::Piano: return "Piano";
         case InputMode::EnemyTyping: return "Enemy typing";
+        case InputMode::Sequencer: return "Sequencer";
         case InputMode::Count: assert(false); return "";
     }
     return nullptr;
@@ -325,6 +328,11 @@ void UpdateDefault(GameManager &g, float const dt, Editor &editor) {
         return;
     }
 
+    if (inputManager.IsKeyPressedThisFrame(InputManager::Key::S) && !inputManager.IsShiftPressed()) {
+        sInputMode = InputMode::Sequencer;
+        return;
+    }
+
     float constexpr kMinTimeForDrag = 5.f * (1.f / 60.f);
     if (inputManager.IsKeyPressed(InputManager::MouseButton::Left) &&
         inputManager.GetKeyDownTime(InputManager::MouseButton::Left) >= kMinTimeForDrag) {
@@ -349,8 +357,8 @@ void UpdateDefault(GameManager &g, float const dt, Editor &editor) {
         }
     }
 
-    if (inputManager.IsKeyPressedThisFrame(InputManager::Key::Q)) {
-        sSeqWindowVisible = true;
+    if (inputManager.IsShiftPressed() && inputManager.IsKeyPressedThisFrame(InputManager::Key::Q)) {
+        sSeqWindowVisible = !sSeqWindowVisible;
     }
 
     if (inputManager.IsKeyPressedThisFrame(InputManager::Key::Y)) {
@@ -795,6 +803,15 @@ void UpdateEnemyTyping(GameManager &g, Editor &editor) {
         perEntityFn(iter);
     }
 }
+
+void UpdateSequencer(GameManager &g) {
+    InputManager &inputManager = *g._inputManager;
+    if (inputManager.IsKeyPressed(InputManager::Key::Escape)) {
+        sInputMode = InputMode::Default;
+        return;
+    }
+    g._omniSequencer->Gui(g);
+}
 }
 
 void Editor::Update(float dt, SynthGuiState& synthGuiState) {
@@ -848,6 +865,9 @@ void Editor::Update(float dt, SynthGuiState& synthGuiState) {
             break;
         case InputMode::EnemyTyping:
             UpdateEnemyTyping(*_g, *this);
+            break;
+        case InputMode::Sequencer:
+            UpdateSequencer(*_g);
             break;
         case InputMode::Count:
             break;

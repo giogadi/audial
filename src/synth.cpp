@@ -888,7 +888,7 @@ void OnParamChange(StateData& state, audio::SynthParamType paramType, float newV
     }
 }
 
-void Process(StateData* state, audio::PendingEvent *eventsThisFrame, int eventsThisFrameCount,
+void Process(StateData* state, audio::PendingEvent *eventsThisBuffer, int eventsThisBufferCount,
     float* outputBuffer, int const numChannels, int const framesPerBuffer,
     int const sampleRate, int64_t currentBufferCounter) {
     
@@ -896,8 +896,8 @@ void Process(StateData* state, audio::PendingEvent *eventsThisFrame, int eventsT
 
     // Handle all the events that will happen in this buffer frame.
     int64_t bufferStartTickTime = currentBufferCounter * framesPerBuffer;
-    for (int eventIx = 0; eventIx < eventsThisFrameCount; ++eventIx) {
-        audio::Event const& e = eventsThisFrame[eventIx]._e; 
+    for (int eventIx = 0; eventIx < eventsThisBufferCount; ++eventIx) {
+        audio::Event const& e = eventsThisBuffer[eventIx]._e; 
         if (e.channel != state->channel) {
             // Not meant for this channel. Skip this message.
             continue;

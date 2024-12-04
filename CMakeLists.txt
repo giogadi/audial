@@ -77,6 +77,7 @@ add_executable(game
     src/input_manager.cpp src/input_manager.h
     src/beat_time_event.cpp src/beat_time_event.h
     src/synth_imgui.cpp src/synth_imgui.h
+    src/omni_sequencer.cpp src/omni_sequencer.h
     src/new_entity_id.h
     src/new_entity_id_hash.h
     src/new_entity.cpp src/new_entity.h

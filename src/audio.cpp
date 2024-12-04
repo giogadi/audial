@@ -208,18 +208,18 @@ void FillBuffer(
     ProcessEventQueue(&sEventQueue, state->_bufferCounter, sampleRate, framesPerBuffer, &state->pendingEvents);
 
     int constexpr kMaxSize = 1024;
-    static PendingEvent eventsThisFrame[kMaxSize];
-    int eventsThisFrameCount = 0;
+    static PendingEvent eventsThisBuffer[kMaxSize];
+    int eventsThisBufferCount = 0;
     while (state->pendingEvents.size > 0) {
         PendingEvent e = *HeapPeek(&state->pendingEvents);
         if (state->_bufferCounter < e._runBufferCounter) {
             break;
         }
-        if (eventsThisFrameCount >= kMaxSize) {
-            printf("AUDIO PROBLEM: EventsThisFrame not big enough!\n");
+        if (eventsThisBufferCount >= kMaxSize) {
+            printf("AUDIO PROBLEM: EventsThisBuffer not big enough!\n");
             break;
         }
-        eventsThisFrame[eventsThisFrameCount++] = HeapPop(&state->pendingEvents);
+        eventsThisBuffer[eventsThisBufferCount++] = HeapPop(&state->pendingEvents);
     }
 
     // PCM playback first
@@ -227,8 +227,8 @@ void FillBuffer(
     int currentEventIx = 0;
     for (int i = 0; i < framesPerBuffer; ++i) {
         // Handle events
-        for (int eventIx = 0; eventIx < eventsThisFrameCount; ++eventIx) {
-            Event const& e = eventsThisFrame[eventIx]._e; 
+        for (int eventIx = 0; eventIx < eventsThisBufferCount; ++eventIx) {
+            Event const& e = eventsThisBuffer[eventIx]._e; 
             switch (e.type) {
                 case EventType::PlayPcm: {
                     if (e.pcmSoundIx >= state->soundBank->_sounds.size() || e.pcmSoundIx < 0) {
@@ -337,7 +337,7 @@ void FillBuffer(
 
     for (synth::StateData& s : state->synths) {
         synth::Process(
-            &s, eventsThisFrame, eventsThisFrameCount, outputBufferIn,
+            &s, eventsThisBuffer, eventsThisBufferCount, outputBufferIn,
             NUM_OUTPUT_CHANNELS, framesPerBuffer, sampleRate, state->_bufferCounter);
     }
 

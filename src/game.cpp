@@ -41,6 +41,7 @@
 #include "particle_mgr.h"
 #include "motion_manager.h"
 #include "typing_enemy_mgr.h"
+#include <omni_sequencer.h>
 
 GameManager gGameManager;
 
@@ -466,6 +467,8 @@ int main(int argc, char** argv) {
     MotionManager motionManager;
     TypingEnemyMgr typingEnemyMgr;
 
+    OmniSequencer omniSequencer;
+
     gGameManager._editor = &editor;
     gGameManager._scene = &sceneManager;
     gGameManager._inputManager = &inputManager;
@@ -477,8 +480,9 @@ int main(int argc, char** argv) {
     gGameManager._particleMgr = &particleMgr;
     gGameManager._motionManager = &motionManager;
     gGameManager._typingEnemyMgr = &typingEnemyMgr;
+    gGameManager._omniSequencer = &omniSequencer;
 
-    gGameManager._editMode = cmdLineInputs._editMode;    
+    gGameManager._editMode = cmdLineInputs._editMode;
 
     {
         serial::Ptree pt = serial::Ptree::MakeNew();
@@ -513,7 +517,9 @@ int main(int argc, char** argv) {
 
         double bpm = pt.GetChild("root").GetChild("script").GetDouble("bpm");
         beatClock.Init(gGameManager, bpm);
-        beatClock.Update(gGameManager);        
+        beatClock.Update(gGameManager);
+
+        omniSequencer.Init(gGameManager);
 
         {
             // New entity loading. Manually add them in this order to the editor to keep ordering consistent.
@@ -579,7 +585,7 @@ int main(int argc, char** argv) {
         glfwGetFramebufferSize(window, &gGameManager._fbWidth, &gGameManager._fbHeight);
         gGameManager._viewportInfo = CalculateViewport(gGameManager._aspectRatio, gGameManager._fbWidth, gGameManager._fbHeight, gGameManager._windowWidth, gGameManager._windowHeight);
 
-        beatClock.Update(gGameManager);
+        beatClock.Update(gGameManager);        
 
 #if COMPUTE_FFT
         {
@@ -710,6 +716,8 @@ int main(int argc, char** argv) {
 
         neEntityManager.DestroyTaggedEntities(gGameManager);
         neEntityManager.DeactivateTaggedEntities(gGameManager);
+
+        omniSequencer.Update(gGameManager);
 
         gGameManager._particleMgr->Update(fixedTimeStep);
         

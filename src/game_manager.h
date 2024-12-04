@@ -20,6 +20,7 @@ class SoundBank;
 struct ParticleMgr;
 struct MotionManager;
 struct TypingEnemyMgr;
+struct OmniSequencer;
 
 #include "viewport.h"
 
@@ -35,6 +36,7 @@ struct GameManager {
     ParticleMgr* _particleMgr = nullptr;
     MotionManager* _motionManager = nullptr;
     TypingEnemyMgr *_typingEnemyMgr = nullptr;
+    OmniSequencer *_omniSequencer = nullptr;
 
     bool _editMode = false;
 

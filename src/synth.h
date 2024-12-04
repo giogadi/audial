@@ -149,7 +149,7 @@ void NoteOff(StateData& state, int midiNote, int noteOffId = 0);
 void AllNotesOff(StateData& state);
 
 void Process(
-    StateData* state, audio::PendingEvent *eventsThisFrame, int eventsThisFrameCount,
+    StateData* state, audio::PendingEvent *eventsThisBuffer, int eventsThisBufferCount,
     float* outputBuffer, int numChannels, int framesPerBuffer,
     int sampleRate, int64_t currentBufferCounter);
 }
