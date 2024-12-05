@@ -5,7 +5,7 @@
 #include "new_entity.h"
 
 namespace renderer {
-    class Camera;
+    struct Camera;
 }
 
 struct CameraEntity : ne::Entity {

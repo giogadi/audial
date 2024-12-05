@@ -35,7 +35,7 @@ struct Light {
     float _width = 20.f;
 };
 
-class Camera {
+struct Camera {
 public:
     enum class ProjectionType { Perspective, Orthographic };    
 

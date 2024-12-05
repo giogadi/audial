@@ -111,22 +111,6 @@ void Editor::Init(GameManager* g) {
 }
 
 namespace {
-bool ProjectScreenPointToXZPlane(
-    int screenX, int screenY, int windowWidth, int windowHeight, renderer::Camera const& camera, Vec3* outPoint) {
-    Vec3 rayStart, rayDir;
-    GetPickRay(screenX, screenY, windowWidth, windowHeight, camera, &rayStart, &rayDir);
-
-    // Find where the ray intersects the XZ plane. This is where on the ray the y-value hits 0.
-    if (std::abs(rayDir._y) > 0.0001) {
-        float rayParamAtXZPlane = -rayStart._y / rayDir._y;
-        if (rayParamAtXZPlane > 0.0) {
-            *outPoint = rayStart + (rayDir * rayParamAtXZPlane);
-            return true;
-        }            
-    }
-
-    return false;
-}
 
 enum class InputMode {
     Default,
@@ -299,6 +283,28 @@ void Editor::HandlePianoInput(SynthGuiState& synthGuiState) {
     }
 }
 
+int Editor::GetPianoNotes(int *midiNotes, int maxNotes) {
+    int numPressedNotes = 0;
+    int const numPianoKeys = M_ARRAY_LEN(sPianoKeys);
+    for (int ii = 0; ii < numPianoKeys && numPressedNotes < maxNotes; ++ii) {
+        InputManager::Key key = sPianoKeys[ii];
+        if (_g->_inputManager->IsKeyPressedThisFrame(key)) {
+            midiNotes[numPressedNotes++] = GetMidiNoteFromKey(key, gPianoOctave);
+        }        
+    }
+    return numPressedNotes;
+}
+
+int Editor::IncreasePianoOctave() {
+    gPianoOctave = std::min(7, gPianoOctave + 1);
+    return gPianoOctave;
+}
+
+int Editor::DecreasePianoOctave() {
+    gPianoOctave = std::max(0, gPianoOctave - 1);
+    return gPianoOctave;
+}
+
 namespace {
 void UpdateDefault(GameManager &g, float const dt, Editor &editor) {
     InputManager &inputManager = *g._inputManager;
@@ -328,7 +334,7 @@ void UpdateDefault(GameManager &g, float const dt, Editor &editor) {
         return;
     }
 
-    if (inputManager.IsKeyPressedThisFrame(InputManager::Key::S) && !inputManager.IsShiftPressed()) {
+    if (inputManager.IsKeyPressedThisFrame(InputManager::Key::Q) && !inputManager.IsShiftPressed()) {
         sInputMode = InputMode::Sequencer;
         return;
     }
@@ -477,7 +483,7 @@ void UpdateDragToSelect(GameManager &g, Editor &editor) {
     Vec3 clickWorldPos;
     double clickX, clickY;
     inputManager.GetMouseClickPos(clickX, clickY);
-    bool success = ProjectScreenPointToXZPlane((int)clickX, (int)clickY, g._windowWidth, g._windowHeight, g._scene->_camera, &clickWorldPos);
+    bool success = geometry::ProjectScreenPointToXZPlane((int)clickX, (int)clickY, g._windowWidth, g._windowHeight, g._scene->_camera, &clickWorldPos);
     if (!success) {
         printf("editor.cpp::UpdateDragToSelect: failed to project click pos? %f %f\n", clickX, clickY);
     }
@@ -485,7 +491,7 @@ void UpdateDragToSelect(GameManager &g, Editor &editor) {
     double mouseX, mouseY;
     inputManager.GetMousePos(mouseX, mouseY);
     Vec3 mouseWorldPos;
-    success = ProjectScreenPointToXZPlane((int)mouseX, (int)mouseY, g._windowWidth, g._windowHeight, g._scene->_camera, &mouseWorldPos);
+    success = geometry::ProjectScreenPointToXZPlane((int)mouseX, (int)mouseY, g._windowWidth, g._windowHeight, g._scene->_camera, &mouseWorldPos);
     if (!success) {
         printf("editor.cpp::UpdateDragToSelect: failed to project mouse pos? %f %f\n", mouseX, mouseY);
     }
@@ -548,7 +554,7 @@ void UpdateGrab(GameManager &g, Editor &editor, bool newState) {
     double mouseX, mouseY;
     inputManager.GetMousePos(mouseX, mouseY);
     Vec3 mousePosOnXZPlane;
-    ProjectScreenPointToXZPlane((int)mouseX, (int)mouseY, g._windowWidth, g._windowHeight, g._scene->_camera, &mousePosOnXZPlane);
+    geometry::ProjectScreenPointToXZPlane((int)mouseX, (int)mouseY, g._windowWidth, g._windowHeight, g._scene->_camera, &mousePosOnXZPlane);
     static Vec3 sGrabPos;
     if (newState) {
         // TODO: this will currently happen on the next frame, unless we allow same-frame input mode changes.
@@ -591,7 +597,7 @@ void UpdateScale(GameManager &g, Editor &editor, bool newState) {
     double mouseX, mouseY;
     inputManager.GetMousePos(mouseX, mouseY);
     Vec3 mousePosOnXZPlane;
-    ProjectScreenPointToXZPlane((int)mouseX, (int)mouseY, g._windowWidth, g._windowHeight, g._scene->_camera, &mousePosOnXZPlane);
+    geometry::ProjectScreenPointToXZPlane((int)mouseX, (int)mouseY, g._windowWidth, g._windowHeight, g._scene->_camera, &mousePosOnXZPlane);
 
     enum class ScaleAxis {
         XZ, X, Z
@@ -707,7 +713,7 @@ void UpdatePolyDraw(GameManager &g, Editor &editor, bool newState) {
         double mouseX, mouseY;
         inputManager.GetMousePos(mouseX, mouseY);
         Vec3 p;
-        ProjectScreenPointToXZPlane((int)mouseX, (int)mouseY, g._windowWidth, g._windowHeight, g._scene->_camera, &p);
+        geometry::ProjectScreenPointToXZPlane((int)mouseX, (int)mouseY, g._windowWidth, g._windowHeight, g._scene->_camera, &p);
         if (sSelectPolyPointsCount < kMaxPoints) {
             sSelectPolyPoints[sSelectPolyPointsCount++] = p;
         }
@@ -756,10 +762,6 @@ void UpdatePolyDraw(GameManager &g, Editor &editor, bool newState) {
     }
 }
 
-void PerEntityFn(GameManager &g, Editor &editor, ne::EntityManager::AllIterator iter) {
-
-}
-
 void UpdateEnemyTyping(GameManager &g, Editor &editor) {
     InputManager &inputManager = *g._inputManager;
     if (inputManager.IsKeyPressedThisFrame(InputManager::Key::Escape)) {
@@ -804,13 +806,13 @@ void UpdateEnemyTyping(GameManager &g, Editor &editor) {
     }
 }
 
-void UpdateSequencer(GameManager &g) {
+void UpdateSequencer(GameManager &g, Editor &editor) {
     InputManager &inputManager = *g._inputManager;
     if (inputManager.IsKeyPressed(InputManager::Key::Escape)) {
         sInputMode = InputMode::Default;
         return;
     }
-    g._omniSequencer->Gui(g);
+    g._omniSequencer->Gui(g, editor);
 }
 }
 
@@ -867,7 +869,7 @@ void Editor::Update(float dt, SynthGuiState& synthGuiState) {
             UpdateEnemyTyping(*_g, *this);
             break;
         case InputMode::Sequencer:
-            UpdateSequencer(*_g);
+            UpdateSequencer(*_g, *this);
             break;
         case InputMode::Count:
             break;
@@ -1103,7 +1105,7 @@ void Editor::DrawWindow() {
         _entityIds.push_back(entity->_id);        
         // place entity at center of view
         Vec3 newPos;
-        bool projectSuccess = ProjectScreenPointToXZPlane(_g->_windowWidth / 2, _g->_windowHeight / 2, _g->_windowWidth, _g->_windowHeight, _g->_scene->_camera, &newPos);
+        bool projectSuccess = geometry::ProjectScreenPointToXZPlane(_g->_windowWidth / 2, _g->_windowHeight / 2, _g->_windowWidth, _g->_windowHeight, _g->_scene->_camera, &newPos);
         if (!projectSuccess) {
             printf("Editor.AddEntity: Failed to project center to XZ plane!\n");
         }

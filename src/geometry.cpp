@@ -1,5 +1,9 @@
 #include "geometry.h"
 
+#include <renderer.h>
+
+extern GameManager gGameManager;
+
 namespace geometry {
 
 float constexpr kEps = 0.0001f;
@@ -209,6 +213,22 @@ void ProjectWorldPointToScreenSpace(Vec3 const& worldPos, Mat4 const& viewProjMa
     screenY = (-pos._y * 0.5f + 0.5f) * screenHeight;
 }
 
+bool ProjectScreenPointToXZPlane(int screenX, int screenY, int windowWidth, int windowHeight, renderer::Camera const& camera, Vec3* outPoint) {
+    Vec3 rayStart, rayDir;
+    GetPickRay(screenX, screenY, windowWidth, windowHeight, camera, &rayStart, &rayDir);
+
+    // Find where the ray intersects the XZ plane. This is where on the ray the y-value hits 0.
+    if (std::abs(rayDir._y) > 0.0001) {
+        float rayParamAtXZPlane = -rayStart._y / rayDir._y;
+        if (rayParamAtXZPlane > 0.0) {
+            *outPoint = rayStart + (rayDir * rayParamAtXZPlane);
+            return true;
+        }
+    }
+
+    return false;
+}
+
 bool IsPointInBoundingBox(Vec3 const& p, Transform const& transform) {
     Vec3 dpGlobal = p - transform.GetPos();
     Quaternion localToGlobal = transform.Quat();
@@ -245,6 +265,62 @@ bool PointInPolygon2D(Vec3 const& queryP, Vec3 const* polyPoints, int polyPointC
             c = !c;
     }
     return c;
+}
+
+bool GetPickRay(double screenX, double screenY, int windowWidth, int windowHeight, renderer::Camera const& camera,
+    Vec3* rayStart, Vec3* rayDir) {
+    assert(rayStart != nullptr);
+    assert(rayDir != nullptr);
+
+    Mat4 const& cameraTransform = camera._transform;
+
+    ViewportInfo const& vp = gGameManager._viewportInfo;
+
+    float aspectRatio = (float)vp._screenWidth / (float)vp._screenHeight;
+
+    bool inViewport = true;
+
+    if (camera._projectionType == renderer::Camera::ProjectionType::Perspective) {
+
+        // First we find the world-space position of the top-left corner of the near clipping plane.
+        Vec3 nearPlaneCenter = cameraTransform.GetPos() - cameraTransform.GetCol3(2) * camera._zNear;
+        float nearPlaneHalfHeight = camera._zNear * tan(0.5f * camera._fovyRad);
+        float nearPlaneHalfWidth = nearPlaneHalfHeight * aspectRatio;
+        Vec3 nearPlaneTopLeft = nearPlaneCenter;
+        nearPlaneTopLeft -= nearPlaneHalfWidth * cameraTransform.GetCol3(0);
+        nearPlaneTopLeft += nearPlaneHalfHeight * cameraTransform.GetCol3(1);
+
+        // Now map clicked point from [0,windowWidth] -> [0,1] in viewport
+        float xFactor = (screenX - vp._screenOffsetX) / vp._screenWidth;
+        float yFactor = (screenY - vp._screenOffsetY) / vp._screenHeight;
+
+        inViewport = xFactor >= 0.f && xFactor <= 1.f && yFactor >= 0.f && yFactor <= 1.f;
+
+        Vec3 clickedPointOnNearPlane = nearPlaneTopLeft;
+        clickedPointOnNearPlane += (xFactor * 2 * nearPlaneHalfWidth) * cameraTransform.GetCol3(0);
+        clickedPointOnNearPlane -= (yFactor * 2 * nearPlaneHalfHeight) * cameraTransform.GetCol3(1);
+
+        *rayDir = (clickedPointOnNearPlane - cameraTransform.GetPos()).GetNormalized();
+        *rayStart = cameraTransform.GetPos();
+    } else if (camera._projectionType == renderer::Camera::ProjectionType::Orthographic) {
+        double xFactor = (screenX - vp._screenOffsetX) / vp._screenWidth;
+        // Flip it so that yFactor is 0 at screen bottom
+        double yFactor = 1.0 - ((screenY - vp._screenOffsetY) / vp._screenHeight);
+
+        inViewport = xFactor >= 0.f && xFactor <= 1.f && yFactor >= 0.f && yFactor <= 1.f;
+
+        // map xFactor/yFactor to world units local to camera x/y
+        float offsetFromCameraX = (xFactor - 0.5) * camera._width;
+        float viewHeight = camera._width / aspectRatio;
+        float offsetFromCameraY = (yFactor - 0.5) * viewHeight;
+
+        Vec4 posRelToCamera(offsetFromCameraX, offsetFromCameraY, 0.f, 1.f);
+        Vec4 worldPos = camera._transform * posRelToCamera;
+        rayStart->Set(worldPos._x, worldPos._y, worldPos._z);
+        *rayDir = -camera._transform.GetCol3(2);
+    } else { assert(false); }
+
+    return inViewport;
 }
 
 }  // namespace geometry

@@ -10,5 +10,5 @@ struct OmniSequencer {
 	void Destroy();
 	void Update(GameManager &g);
 	
-	void Gui(GameManager &g);
+	void Gui(GameManager &g, Editor &editor);
 };

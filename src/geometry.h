@@ -6,6 +6,10 @@
 #include "game_manager.h"
 #include "new_entity.h"
 
+namespace renderer {
+struct Camera;
+}
+
 namespace geometry {
 
 bool SegmentBoxIntersection2d(
@@ -25,7 +29,13 @@ bool PointInConvexPolygon2D(Vec3 const& queryP, std::vector<Vec3> const& convexP
 // General polygons without holes
 bool PointInPolygon2D(Vec3 const& queryP, Vec3 const* polyPoints, int polyPointCount);
 
+// return true if the mouse was clicked within the main viewport
+// screenX/screenY go from [0,width/height]
+// screenY is 0 at TOP of screen.
+bool GetPickRay(double screenX, double screenY, int windowWidth, int windowHeight, renderer::Camera const& camera, Vec3* rayStart, Vec3* rayDir);
+
 void ProjectWorldPointToScreenSpace(Vec3 const& worldPos, Mat4 const& viewProjMatrix, int screenWidth, int screenHeight, float& screenX, float& screenY);
+bool ProjectScreenPointToXZPlane(int screenX, int screenY, int windowWidth, int windowHeight, renderer::Camera const& camera, Vec3* outPoint);
 
 bool IsPointInBoundingBox(Vec3 const& p, Transform const& transform);
 bool IsPointInBoundingBox2d(Vec3 const& p, Transform const& transform);

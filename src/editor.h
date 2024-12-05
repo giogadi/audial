@@ -22,6 +22,9 @@ struct Editor {
     void DrawSeqWindow();
     void HandleEntitySelectAndMove(float dt);
     void HandlePianoInput(SynthGuiState& synthGuiState);
+    int GetPianoNotes(int *midiNotes, int maxNotes);
+    int IncreasePianoOctave();
+    int DecreasePianoOctave();
 
     bool IsEntitySelected(ne::EntityId entityId);
 

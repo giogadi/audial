@@ -5,6 +5,7 @@
 #include "renderer.h"
 #include "viewport.h"
 #include "game_manager.h"
+#include "geometry.h"
 
 extern GameManager gGameManager;
 
@@ -34,62 +35,6 @@ std::optional<float> SphereRayCast(Vec3 const& rayStart, Vec3 const& normalizedR
     } else {
         return std::nullopt;
     }
-}
-
-bool GetPickRay(double screenX, double screenY, int windowWidth, int windowHeight, renderer::Camera const& camera,
-    Vec3* rayStart, Vec3* rayDir) {
-    assert(rayStart != nullptr);
-    assert(rayDir != nullptr);
-
-    Mat4 const& cameraTransform = camera._transform;    
-
-    ViewportInfo const& vp = gGameManager._viewportInfo;
-    
-    float aspectRatio = (float) vp._screenWidth / (float) vp._screenHeight;
-
-    bool inViewport = true;
-    
-    if (camera._projectionType == renderer::Camera::ProjectionType::Perspective) {
-
-        // First we find the world-space position of the top-left corner of the near clipping plane.
-        Vec3 nearPlaneCenter = cameraTransform.GetPos() - cameraTransform.GetCol3(2) * camera._zNear;
-        float nearPlaneHalfHeight = camera._zNear * tan(0.5f * camera._fovyRad);
-        float nearPlaneHalfWidth = nearPlaneHalfHeight * aspectRatio;
-        Vec3 nearPlaneTopLeft = nearPlaneCenter;
-        nearPlaneTopLeft -= nearPlaneHalfWidth * cameraTransform.GetCol3(0);
-        nearPlaneTopLeft += nearPlaneHalfHeight * cameraTransform.GetCol3(1);
-
-        // Now map clicked point from [0,windowWidth] -> [0,1] in viewport
-        float xFactor = (screenX - vp._screenOffsetX) / vp._screenWidth;
-        float yFactor = (screenY - vp._screenOffsetY) / vp._screenHeight;
-
-        inViewport = xFactor >= 0.f && xFactor <= 1.f && yFactor >= 0.f && yFactor <= 1.f;
-        
-        Vec3 clickedPointOnNearPlane = nearPlaneTopLeft;
-        clickedPointOnNearPlane += (xFactor * 2 * nearPlaneHalfWidth) * cameraTransform.GetCol3(0);
-        clickedPointOnNearPlane -= (yFactor * 2 * nearPlaneHalfHeight) * cameraTransform.GetCol3(1);
-
-        *rayDir = (clickedPointOnNearPlane - cameraTransform.GetPos()).GetNormalized();
-        *rayStart = cameraTransform.GetPos() ;
-    } else if (camera._projectionType == renderer::Camera::ProjectionType::Orthographic) {
-        double xFactor = (screenX - vp._screenOffsetX) / vp._screenWidth;
-        // Flip it so that yFactor is 0 at screen bottom
-        double yFactor = 1.0 - ((screenY - vp._screenOffsetY) / vp._screenHeight);
-
-        inViewport = xFactor >= 0.f && xFactor <= 1.f && yFactor >= 0.f && yFactor <= 1.f;
-        
-        // map xFactor/yFactor to world units local to camera x/y
-        float offsetFromCameraX = (xFactor - 0.5) * camera._width;
-        float viewHeight = camera._width / aspectRatio;
-        float offsetFromCameraY = (yFactor - 0.5) * viewHeight;
-
-        Vec4 posRelToCamera(offsetFromCameraX, offsetFromCameraY, 0.f, 1.f);
-        Vec4 worldPos = camera._transform * posRelToCamera;
-        rayStart->Set(worldPos._x, worldPos._y, worldPos._z);
-        *rayDir = -camera._transform.GetCol3(2);        
-    } else { assert(false); }
-
-    return inViewport;
 }
 
 // https://github.com/opengl-tutorials/ogl/blob/master/misc05_picking/misc05_picking_custom.cpp
@@ -227,7 +172,7 @@ std::optional<float> EntityRaycast(ne::Entity const& entity, Vec3 const& rayStar
 std::optional<float> PickEntity(ne::Entity const& entity, double clickX, double clickY, int windowWidth, int windowHeight, renderer::Camera const& camera) {
     Vec3 rayStart;
     Vec3 rayDir;
-    if (!GetPickRay(clickX, clickY, windowWidth, windowHeight, camera, &rayStart, &rayDir)) {
+    if (!geometry::GetPickRay(clickX, clickY, windowWidth, windowHeight, camera, &rayStart, &rayDir)) {
         return std::nullopt;
     }
     return EntityRaycast(entity, rayStart, rayDir);
@@ -239,7 +184,7 @@ ne::Entity* PickEntity(
 
     Vec3 rayStart;
     Vec3 rayDir;
-    if (!GetPickRay(clickX, clickY, windowWidth, windowHeight, camera, &rayStart, &rayDir)) {
+    if (!geometry::GetPickRay(clickX, clickY, windowWidth, windowHeight, camera, &rayStart, &rayDir)) {
         return nullptr;
     }
 
@@ -265,7 +210,7 @@ ne::Entity* PickEntity(
 void PickEntities(ne::EntityManager& entityMgr, double clickX, double clickY, int windowWidth, int windowHeight, renderer::Camera const& camera, bool ignorePickable, std::vector<std::pair<ne::Entity*, float>>& entityDistPairs) {
     Vec3 rayStart;
     Vec3 rayDir;
-    if (!GetPickRay(clickX, clickY, windowWidth, windowHeight, camera, &rayStart, &rayDir)) {
+    if (!geometry::GetPickRay(clickX, clickY, windowWidth, windowHeight, camera, &rayStart, &rayDir)) {
         return;
     }
 
