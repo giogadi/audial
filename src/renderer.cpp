@@ -5,10 +5,12 @@
 #include <unordered_map>
 #include <sstream>
 #include <fstream>
+#include <deque>
 
 #include "stb_image.h"
 #include "stb_truetype.h"
 #include <glad/glad.h>
+
 
 #include "mesh.h"
 #include "shader.h"
@@ -18,6 +20,7 @@
 #include "cube_verts.h"
 #include "game_manager.h"
 #include "geometry.h"
+#include <string_util.h>
 
 #define DRAW_WATER 0
 #define DRAW_TERRAIN 1
@@ -39,9 +42,14 @@ float quadVertices[] = {
         1.0f,  1.0f,  1.0f, 1.0f
 };
 
+// Cleared every frame
 std::size_t constexpr kTextBufferCapacity = 1024;
 char sTextBuffer[kTextBufferCapacity];
 int sTextBufferIx = 0;
+
+std::size_t constexpr kConsoleTextBufferCapacity = 1024;
+char sConsoleTextBuffer[kConsoleTextBufferCapacity];
+int sConsoleTextBufferIx = 0;
 }
 
 namespace renderer {
@@ -59,7 +67,7 @@ Mat4 Camera::GetViewMatrix() const {
 }
 
 namespace {
-bool CreateTextureFromFile(char const* filename, unsigned int& textureId, bool gammaCorrection, bool flip=true) {
+bool CreateTextureFromFile(char const* filename, unsigned int& textureId, bool gammaCorrection, bool flip=true, bool mipmap=true) {
     stbi_set_flip_vertically_on_load(flip);
     int texWidth, texHeight, texNumChannels;
     unsigned char *texData = stbi_load(filename, &texWidth, &texHeight, &texNumChannels, 0);
@@ -86,7 +94,9 @@ bool CreateTextureFromFile(char const* filename, unsigned int& textureId, bool g
     glTexImage2D(
         GL_TEXTURE_2D, /*mipmapLevel=*/0, /*textureFormat=*/format, texWidth, texHeight, /*legacy=*/0,
         /*sourceFormat=*/srcFormat, /*sourceDataType=*/GL_UNSIGNED_BYTE, texData);
-    glGenerateMipmap(GL_TEXTURE_2D);
+    if (mipmap) {
+        glGenerateMipmap(GL_TEXTURE_2D);
+    }
     stbi_image_free(texData);
 
     return true;
@@ -271,6 +281,28 @@ struct Polygon2dInstance {
     BoundMeshPNU const* _mesh = nullptr;
 };
 
+struct ConsoleTextInstance {
+    std::string_view _text;
+    float _timeLeft;
+};
+
+enum Bounds { BoundsLeft, BoundsBottom, BoundsRight, BoundsTop };
+struct MsdfCharInfo {
+    int _codepoint;
+    float _advance; // em
+    float _planeBounds[4]; // left,bottom,right,top. em
+    float _atlasBounds[4]; // ditto, but px
+    float _atlasBoundsNormalized[4];
+};
+
+struct MsdfFontInfo {
+    std::vector<MsdfCharInfo> _charInfos;
+    std::unordered_map<char, int> _charToInfoMap;
+    float _pxWidth;
+    float _pxHeight;
+    float _pxPerEm;
+};
+
 }  // namespace
 
 class SceneInternal {
@@ -293,6 +325,7 @@ public:
     std::vector<Polygon2dInstance> _polygonsToDraw;
     std::vector<LineInstance> _linesToDraw;
     std::vector<ModelInstance> _modelsToDraw;
+    std::deque<ConsoleTextInstance> _consoleLines;
 
     std::unordered_map<std::string, std::unique_ptr<BoundMeshPNU>> _meshMap;    
     std::unordered_map<std::string, unsigned int> _textureIdMap;
@@ -318,12 +351,16 @@ public:
     
     Shader _textShader;
     Shader _text3dShader;
+    Shader _msdfTextShader;
 
     unsigned int _textVao = 0;
     unsigned int _textVbo = 0;
     unsigned int _text3dVao = 0;
     unsigned int _text3dVbo = 0;
+    unsigned int _msdfTextVao = 0;
+    unsigned int _msdfTextVbo = 0;
     std::vector<stbtt_bakedchar> _fontCharInfo;
+    MsdfFontInfo _msdfFontInfo;
 
     Shader _wireframeShader;
     int _wireframeShaderUniforms[WireframeShaderUniforms::Count];
@@ -597,6 +634,9 @@ bool SceneInternal::Init(GameManager& g) {
         return false;
     }
 
+    if (!_msdfTextShader.Init("shaders/msdf_text.vert", "shaders/msdf_text.frag")) {
+        return false;
+    }
 
     if (!_wireframeShader.Init("shaders/wireframe.vert", "shaders/wireframe.frag", "shaders/wireframe.geom")) {
         return false;
@@ -670,6 +710,53 @@ bool SceneInternal::Init(GameManager& g) {
         assert(_fontCharInfo.size() == 58);
     }
 
+    {
+        _msdfFontInfo._pxPerEm = 64;
+        _msdfFontInfo._pxWidth = 380;
+        _msdfFontInfo._pxHeight = 380;
+
+        std::ifstream inputFile("data/fonts/vollkorn/vollkorn.csv");
+        
+        for (std::string line; std::getline(inputFile, line); /*no inc*/) {
+            std::istringstream ss(std::move(line));            
+            MsdfCharInfo &info = _msdfFontInfo._charInfos.emplace_back();
+
+            std::string value;
+            std::getline(ss, value, ',');
+            string_util::MaybeStoi(value, info._codepoint);
+
+            _msdfFontInfo._charToInfoMap.emplace((char)info._codepoint, _msdfFontInfo._charInfos.size()-1);
+
+            std::getline(ss, value, ',');
+            string_util::MaybeStof(value, info._advance);
+            
+            for (int ii = 0; ii < 4; ++ii) {
+                std::getline(ss, value, ',');
+                string_util::MaybeStof(value, info._planeBounds[ii]);
+                if (ii == BoundsBottom || ii == BoundsTop) {
+                    info._planeBounds[ii] = -info._planeBounds[ii];
+                }
+            }
+            for (int ii = 0; ii < 4; ++ii) {
+                std::getline(ss, value, ',');
+                string_util::MaybeStof(value, info._atlasBounds[ii]);                
+            }
+            info._atlasBoundsNormalized[BoundsLeft] = info._atlasBounds[BoundsLeft] / _msdfFontInfo._pxWidth;
+            info._atlasBoundsNormalized[BoundsRight] = info._atlasBounds[BoundsRight] / _msdfFontInfo._pxWidth;
+            info._atlasBoundsNormalized[BoundsBottom] = info._atlasBounds[BoundsBottom] / _msdfFontInfo._pxHeight;
+            info._atlasBoundsNormalized[BoundsTop] = info._atlasBounds[BoundsTop] / _msdfFontInfo._pxHeight;
+        }
+
+        inputFile.close();
+    }
+    {
+        unsigned int msdfFontTextureId = 0;
+        if (!CreateTextureFromFile("data/fonts/vollkorn/vollkorn.bmp", msdfFontTextureId, /*gammaCorrect=*/false, /*flip=*/true, /*mipmap=*/false)) {
+            return false;
+        }
+        _textureIdMap.emplace("msdf_font", msdfFontTextureId);
+    }
+
     // DO THE FONT VAO/VBO HERE
     glGenVertexArrays(1, &_textVao);
     glGenBuffers(1, &_textVbo);
@@ -689,9 +776,19 @@ bool SceneInternal::Init(GameManager& g) {
     glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 5 * 4, NULL, GL_DYNAMIC_DRAW);
     glEnableVertexAttribArray(0);
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), 0);
-
     glEnableVertexAttribArray(1);
-    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3*sizeof(float))); 
+    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3*sizeof(float)));
+
+    // MSDF text
+    glGenVertexArrays(1, &_msdfTextVao);
+    glGenBuffers(1, &_msdfTextVbo);
+    glBindVertexArray(_msdfTextVao);
+    glBindBuffer(GL_ARRAY_BUFFER, _msdfTextVbo);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 5 * 4, NULL, GL_DYNAMIC_DRAW);
+    glEnableVertexAttribArray(0);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), 0);
+    glEnableVertexAttribArray(1);
+    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3*sizeof(float)));
 
     // LINE DRAWING STUFF
     {
@@ -934,6 +1031,21 @@ void Scene::DrawText(std::string_view str, float& screenX, float& screenY, float
     screenY = origin._y;
 }
 
+void Scene::DrawConsoleText(std::string_view str) {
+    if (sConsoleTextBufferIx + str.size() >= kConsoleTextBufferCapacity) {
+        printf("Scene::DrawTextWorld: Text buffer out of capacity!!\n");
+        return;
+    }
+    char *textStart = &sConsoleTextBuffer[sConsoleTextBufferIx];
+    str.copy(textStart, str.size());
+    char *terminator = textStart + str.size();
+    *terminator = '\0';
+    ConsoleTextInstance &t = _pInternal->_consoleLines.emplace_back();
+    t._text = std::string_view(textStart, str.size());
+    t._timeLeft = 2.f;
+    sConsoleTextBufferIx += str.size() + 1;
+}
+
 void Scene::DrawLine(Vec3 const& start, Vec3 const& end, Vec4 const& color) {
     if (_pInternal->_linesToDraw.size() == kMaxLineCount) {
         printf("WARNING: Tried to draw too many lines!\n");
@@ -1153,7 +1265,7 @@ void DrawModelInstance(SceneInternal& internal, Mat4 const& viewProjTransform, M
 }
 
 
-void Scene::Draw(int windowWidth, int windowHeight, float timeInSecs) {
+void Scene::Draw(int windowWidth, int windowHeight, float timeInSecs, float deltaTime) {
 
     if (_pInternal->_enableGammaCorrection) {
         glEnable(GL_FRAMEBUFFER_SRGB);
@@ -1504,6 +1616,106 @@ void Scene::Draw(int windowWidth, int windowHeight, float timeInSecs) {
         }
         _pInternal->_textToDraw.clear();
     }
+
+    // Ditto for console text
+#if 0
+    {
+        for (int ii = 0; ii < _pInternal->_consoleLines.size(); ++ii) {
+            ConsoleTextInstance &t = _pInternal->_consoleLines[ii];
+            t._timeLeft -= deltaTime;
+        }
+        while (!_pInternal->_consoleLines.empty()) {
+            ConsoleTextInstance &t = _pInternal->_consoleLines.front();
+            if (t._timeLeft <= 0.f) {
+                _pInternal->_consoleLines.pop_front();
+            } else {
+                break;
+            }
+        }
+
+        for (int ii = 0; ii < _pInternal->_consoleLines.size(); ++ii) {
+            ConsoleTextInstance &t = _pInternal->_consoleLines[ii];
+
+        }
+    }
+#endif
+
+#if 0
+    {
+        // HOWDY MSDF
+        MsdfFontInfo &fontInfo = _pInternal->_msdfFontInfo;
+
+        ViewportInfo const& vp = _pInternal->_g->_viewportInfo;
+        Mat4 projection = Mat4::Ortho(0.f, (float)vp._width, 0.f, (float)vp._height, -1.f, 1.f);
+
+        unsigned int fontTextureId = _pInternal->_textureIdMap.at("msdf_font");
+        
+        Shader& shader = _pInternal->_msdfTextShader;
+        shader.Use();
+        glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_2D, fontTextureId);
+        glBindVertexArray(_pInternal->_msdfTextVao);
+
+        std::string text("Hello, world!");
+        Vec3 currentPoint(0.25f * _pInternal->_g->_windowWidth, 0.5f * _pInternal->_g->_windowHeight, 0.f);
+        shader.SetMat4("uMvpTrans", projection);
+        shader.SetVec4("uColor", Vec4(1.f, 1.f, 1.f, 1.f));
+        float fontSizePx = 24.f;
+        float sf = fontSizePx;
+        for (int ii = 0; ii < text.size(); ++ii) {
+            auto result = fontInfo._charToInfoMap.find(text[ii]);
+            if (result == fontInfo._charToInfoMap.end()) {
+                printf("Could not find character: %c\n", text[ii]);
+                continue;
+            }
+            MsdfCharInfo &charInfo = fontInfo._charInfos[result->second];
+
+                        
+            float vertexData[5 * 4];
+
+            int dataIx = 0;
+            Vec3 p;
+            //top-left
+            p = currentPoint + sf * Vec3(charInfo._planeBounds[BoundsLeft], charInfo._planeBounds[BoundsTop], 0.f);
+            vertexData[dataIx++] = p._x;
+            vertexData[dataIx++] = p._y;
+            vertexData[dataIx++] = p._z;
+            vertexData[dataIx++] = charInfo._atlasBoundsNormalized[BoundsLeft];
+            vertexData[dataIx++] = charInfo._atlasBoundsNormalized[BoundsTop];
+
+            //bottom-left
+            p = currentPoint + sf * Vec3(charInfo._planeBounds[BoundsLeft], charInfo._planeBounds[BoundsBottom], 0.f);
+            vertexData[dataIx++] = p._x;
+            vertexData[dataIx++] = p._y;
+            vertexData[dataIx++] = p._z;
+            vertexData[dataIx++] = charInfo._atlasBoundsNormalized[BoundsLeft];
+            vertexData[dataIx++] = charInfo._atlasBoundsNormalized[BoundsBottom];
+
+            //top-right
+            p = currentPoint + sf * Vec3(charInfo._planeBounds[BoundsRight], charInfo._planeBounds[BoundsTop], 0.f);
+            vertexData[dataIx++] = p._x;
+            vertexData[dataIx++] = p._y;
+            vertexData[dataIx++] = p._z;
+            vertexData[dataIx++] = charInfo._atlasBoundsNormalized[BoundsRight];
+            vertexData[dataIx++] = charInfo._atlasBoundsNormalized[BoundsTop];   
+
+            //bottom-right
+            p = currentPoint + sf * Vec3(charInfo._planeBounds[BoundsRight], charInfo._planeBounds[BoundsBottom], 0.f);
+            vertexData[dataIx++] = p._x;
+            vertexData[dataIx++] = p._y;
+            vertexData[dataIx++] = p._z;
+            vertexData[dataIx++] = charInfo._atlasBoundsNormalized[BoundsRight];
+            vertexData[dataIx++] = charInfo._atlasBoundsNormalized[BoundsBottom];
+
+            glBindBuffer(GL_ARRAY_BUFFER, _pInternal->_msdfTextVbo);
+            glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertexData), vertexData);
+            glBindBuffer(GL_ARRAY_BUFFER, 0);
+            glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+
+            currentPoint._x += sf * charInfo._advance;
+        }
+    }
+#endif
 
     {
         ViewportInfo const& vp = _pInternal->_g->_viewportInfo;

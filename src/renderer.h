@@ -117,7 +117,7 @@ public:
     MeshId LoadPolygon2d(std::vector<Vec3> const& points);
     // bool UnloadPolygon2d(MeshId id);
 
-    void Draw(int windowWidth, int windowHeight, float timeInSecs);
+    void Draw(int windowWidth, int windowHeight, float timeInSecs, float deltaTime);
 
     BoundMeshPNU const* GetMesh(std::string const& meshName) const;
     // Returns white texture if name not found
@@ -136,6 +136,7 @@ public:
     void DrawTextWorld(std::string_view text, Vec3 const& pos, float scale = 1.f, Vec4 const& colorRgba = Vec4(1.f, 1.f, 1.f, 1.f), bool appendToPrevious = false);
     size_t DrawText3d(char const* text, size_t textLength, Mat4 const& t, Vec4 const& colorRgba = Vec4(1.f, 1.f, 1.f, 1.f), BBox2d* bbox2d = nullptr);
     Glyph3dInstance& GetText3d(size_t id);
+    void DrawConsoleText(std::string_view str);
 
 
     void DrawLine(Vec3 const& start, Vec3 const& end, Vec4 const& color);
