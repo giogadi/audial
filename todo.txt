@@ -27,7 +27,7 @@ Story:
 - tension between independence and control? constraint and freedom?
 
 Near-term ideas:
-- bigger enemy that you dash toward, but more slowly.
+- wall that reflects you back to the node you dashed from (and you stop at that node)
 - Change color of letterbox
 - What if we prime the player with an example rhythm and then let them go at it themselves?
 - add fun and weird shader effects (mirror, upside down, whatever) with every loop in the hangout buildup

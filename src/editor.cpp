@@ -339,7 +339,7 @@ void UpdateDefault(GameManager &g, float const dt, Editor &editor) {
         return;
     }
 
-    float constexpr kMinTimeForDrag = 5.f * (1.f / 60.f);
+    float constexpr kMinTimeForDrag = 15.f * (1.f / 60.f);
     if (inputManager.IsKeyPressed(InputManager::MouseButton::Left) &&
         inputManager.GetKeyDownTime(InputManager::MouseButton::Left) >= kMinTimeForDrag) {
         sInputMode = InputMode::DragToSelect;

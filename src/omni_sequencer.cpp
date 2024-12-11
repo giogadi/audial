@@ -29,6 +29,7 @@ struct SeqTrack {
 	int nextStepIx;
 	double nextStepTime; // beat time
 	int synthIx;
+	bool mute;
 };
 
 struct OmniSequencerImpl {
@@ -62,13 +63,13 @@ void OmniSequencer::Init(GameManager &g) {
 		}
 
 		// HOWDY TESTING
-		if (stepIx % 4 == 0) {
+		/*if (stepIx % 4 == 0) {
 			step.numNotes = 4;			
 			step.notes[0].note._note = GetMidiNote("C3");
 			step.notes[1].note._note = GetMidiNote("E3-");
 			step.notes[2].note._note = GetMidiNote("G3");
 			step.notes[3].note._note = GetMidiNote("B3-");
-		}
+		}*/
 	}
 }
 
@@ -121,6 +122,10 @@ void OmniSequencer::Gui(GameManager &g, Editor &editor) {
 	SeqTrack &track = impl->tracks[sTrackIx];
 
 	InputManager &input = *g._inputManager;
+
+	if (input.IsKeyPressedThisFrame(InputManager::Key::M)) {
+		track.mute = !track.mute;
+	}
 
 	if (input.IsKeyPressedThisFrame(InputManager::Key::Right)) {
 		++sSelectedStepIx;
