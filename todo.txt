@@ -37,6 +37,7 @@ BUGS:
 - weird floaty text when camera moves. everything looks floaty actually
 
 TOOLS:
+- faster input of notes and letters for lots of enemies
 - need a window list so we know all the types of windows we can show
 - need an input mode list so we know all the types of modes, and which is active, etc
 - type in to search for entity type and seqAction type
