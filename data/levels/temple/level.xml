@@ -124,7 +124,7 @@
                         <id>-1</id>
                     </follow_entity_editor_id>
                 </waypoint_follower>
-                <ortho>true</ortho>
+                <ortho>false</ortho>
                 <follow_entity_name></follow_entity_name>
                 <tracking_factor>0.050000001</tracking_factor>
                 <fovy_deg>60</fovy_deg>
@@ -3530,12 +3530,12 @@
                             <y>10</y>
                             <z>0</z>
                         </desiredTargetToCameraOffset>
-                        <hasMinX>false</hasMinX>
-                        <minX>0</minX>
+                        <hasMinX>true</hasMinX>
+                        <minX>7.0190001</minX>
                         <hasMinZ>false</hasMinZ>
                         <minZ>0</minZ>
-                        <hasMaxX>false</hasMaxX>
-                        <maxX>0</maxX>
+                        <hasMaxX>true</hasMaxX>
+                        <maxX>7.0190001</maxX>
                         <hasMaxZ>false</hasMaxZ>
                         <maxZ>0</maxZ>
                     </seq_action>
@@ -3545,16 +3545,121 @@
             </FlowTrigger>
             <TypingEnemy>
                 <editor_id>
-                    <id>222</id>
+                    <id>226</id>
                 </editor_id>
-                <name>new_entity</name>
+                <name>new_entity3</name>
                 <entity_active>true</entity_active>
                 <pickable>true</pickable>
                 <transform>
                     <pos>
-                        <x>6.9926996</x>
+                        <x>0.49448633</x>
                         <y>0</y>
-                        <z>-25.572311</z>
+                        <z>-23.037041</z>
+                    </pos>
+                    <quat>
+                        <x>0</x>
+                        <y>0</y>
+                        <z>0</z>
+                        <w>1</w>
+                    </quat>
+                    <scale>
+                        <x>0.5</x>
+                        <y>0.5</y>
+                        <z>0.5</z>
+                    </scale>
+                </transform>
+                <model_name></model_name>
+                <texture_name></texture_name>
+                <model_color_vec4>
+                    <x>0.80000001</x>
+                    <y>0.80000001</y>
+                    <z>0.80000001</z>
+                    <w>1</w>
+                </model_color_vec4>
+                <flow_section_id>-1</flow_section_id>
+                <tag>0</tag>
+                <waypoint_follower>
+                    <mode>Waypoint</mode>
+                    <waypoint_auto_start>false</waypoint_auto_start>
+                    <loop_waypoints>false</loop_waypoints>
+                    <start_time>3</start_time>
+                    <quantize>1</quantize>
+                    <quantize_buffer>0</quantize_buffer>
+                    <waypoints/>
+                    <follow_entity_editor_id>
+                        <id>-1</id>
+                    </follow_entity_editor_id>
+                </waypoint_follower>
+                <hit_response>
+                    <type>Pull</type>
+                    <speed>-1</speed>
+                    <push_angle_deg>-1</push_angle_deg>
+                    <time>-1</time>
+                    <ps_time>-1</ps_time>
+                    <stop_on_pass>true</stop_on_pass>
+                    <stop_after_timer>true</stop_after_timer>
+                </hit_response>
+                <use_last_hit_response>false</use_last_hit_response>
+                <last_hit_response>
+                    <type>Pull</type>
+                    <speed>-1</speed>
+                    <push_angle_deg>-1</push_angle_deg>
+                    <time>-1</time>
+                    <ps_time>-1</ps_time>
+                    <stop_on_pass>true</stop_on_pass>
+                    <stop_after_timer>true</stop_after_timer>
+                </last_hit_response>
+                <text>e</text>
+                <buttons>a</buttons>
+                <type_kill>false</type_kill>
+                <all_actions_on_hit>false</all_actions_on_hit>
+                <flow_cooldown>-1</flow_cooldown>
+                <show_beats_left>false</show_beats_left>
+                <cooldown_quantize_denom>0</cooldown_quantize_denom>
+                <reset_cooldown_on_any_hit>true</reset_cooldown_on_any_hit>
+                <init_hittable>true</init_hittable>
+                <timed_hittable_time>-1</timed_hittable_time>
+                <allow_backward>false</allow_backward>
+                <just_draw_model>false</just_draw_model>
+                <group_id>-1</group_id>
+                <region_type>TriggerEntity</region_type>
+                <active_region_editor_id>
+                    <id>-1</id>
+                </active_region_editor_id>
+                <lock_player_in_region>false</lock_player_in_region>
+                <hit_actions>
+                    <seq_action>
+                        <one_time>false</one_time>
+                        <action_type>NoteOnOff</action_type>
+                        <channel>1</channel>
+                        <midiNotes>
+                            <array_item>
+                                <note>60</note>
+                            </array_item>
+                        </midiNotes>
+                        <noteLength>1</noteLength>
+                        <velocity>1</velocity>
+                        <quantizeDenom>0.25</quantizeDenom>
+                        <doNoteOff>true</doNoteOff>
+                        <holdNotes>false</holdNotes>
+                    </seq_action>
+                </hit_actions>
+                <all_hit_actions/>
+                <off_cooldown_actions/>
+                <combo_end_actions/>
+            </TypingEnemy>
+            <Base>
+                <editor_id>
+                    <id>228</id>
+                </editor_id>
+                <name>r0_spawn_pos</name>
+                <entity_active>true</entity_active>
+                <pickable>true</pickable>
+                <transform>
+                    <pos>
+                        <x>7.0167241</x>
+                        <y>0</y>
+                        <z>-21.091831</z>
                     </pos>
                     <quat>
                         <x>0</x>
@@ -3566,6 +3671,318 @@
                         <x>1</x>
                         <y>1</y>
                         <z>1</z>
+                    </scale>
+                </transform>
+                <model_name></model_name>
+                <texture_name></texture_name>
+                <model_color_vec4>
+                    <x>0.80000001</x>
+                    <y>0.80000001</y>
+                    <z>0.80000001</z>
+                    <w>1</w>
+                </model_color_vec4>
+                <flow_section_id>-1</flow_section_id>
+                <tag>0</tag>
+                <waypoint_follower>
+                    <mode>Waypoint</mode>
+                    <waypoint_auto_start>false</waypoint_auto_start>
+                    <loop_waypoints>false</loop_waypoints>
+                    <start_time>3</start_time>
+                    <quantize>1</quantize>
+                    <quantize_buffer>0</quantize_buffer>
+                    <waypoints/>
+                    <follow_entity_editor_id>
+                        <id>-1</id>
+                    </follow_entity_editor_id>
+                </waypoint_follower>
+            </Base>
+            <FlowWall>
+                <editor_id>
+                    <id>229</id>
+                </editor_id>
+                <name>r0_wall0</name>
+                <entity_active>true</entity_active>
+                <pickable>true</pickable>
+                <transform>
+                    <pos>
+                        <x>-1.6403003</x>
+                        <y>0</y>
+                        <z>-19.241428</z>
+                    </pos>
+                    <quat>
+                        <x>0</x>
+                        <y>0</y>
+                        <z>0</z>
+                        <w>1</w>
+                    </quat>
+                    <scale>
+                        <x>1.072072</x>
+                        <y>1</y>
+                        <z>14.191588</z>
+                    </scale>
+                </transform>
+                <model_name>cube</model_name>
+                <texture_name></texture_name>
+                <model_color_vec4>
+                    <x>0.12363033</x>
+                    <y>0.72058821</y>
+                    <z>0.4221091</z>
+                    <w>1</w>
+                </model_color_vec4>
+                <flow_section_id>-1</flow_section_id>
+                <tag>0</tag>
+                <waypoint_follower>
+                    <mode>Waypoint</mode>
+                    <waypoint_auto_start>false</waypoint_auto_start>
+                    <loop_waypoints>false</loop_waypoints>
+                    <start_time>3</start_time>
+                    <quantize>1</quantize>
+                    <quantize_buffer>0</quantize_buffer>
+                    <waypoints/>
+                    <follow_entity_editor_id>
+                        <id>-1</id>
+                    </follow_entity_editor_id>
+                </waypoint_follower>
+                <hurt_on_hit>false</hurt_on_hit>
+                <can_hit>true</can_hit>
+                <hp>-1</hp>
+                <move_mode>Waypoints</move_mode>
+                <rot_vel>0</rot_vel>
+                <polygon/>
+                <hit_actions>
+                    <seq_action>
+                        <one_time>false</one_time>
+                        <action_type>NoteOnOff</action_type>
+                        <channel>0</channel>
+                        <midiNotes>
+                            <array_item>
+                                <note>36</note>
+                            </array_item>
+                        </midiNotes>
+                        <noteLength>1</noteLength>
+                        <velocity>1</velocity>
+                        <quantizeDenom>0.25</quantizeDenom>
+                        <doNoteOff>true</doNoteOff>
+                        <holdNotes>false</holdNotes>
+                    </seq_action>
+                </hit_actions>
+                <children_editor_ids/>
+            </FlowWall>
+            <Base>
+                <editor_id>
+                    <id>232</id>
+                </editor_id>
+                <name>floor</name>
+                <entity_active>true</entity_active>
+                <pickable>false</pickable>
+                <transform>
+                    <pos>
+                        <x>0.02374649</x>
+                        <y>-1</y>
+                        <z>0.14266968</z>
+                    </pos>
+                    <quat>
+                        <x>0</x>
+                        <y>0</y>
+                        <z>0</z>
+                        <w>1</w>
+                    </quat>
+                    <scale>
+                        <x>100</x>
+                        <y>1</y>
+                        <z>100</z>
+                    </scale>
+                </transform>
+                <model_name>cube</model_name>
+                <texture_name></texture_name>
+                <model_color_vec4>
+                    <x>0.18300651</x>
+                    <y>0.4106113</y>
+                    <z>0.66666663</z>
+                    <w>1</w>
+                </model_color_vec4>
+                <flow_section_id>-1</flow_section_id>
+                <tag>0</tag>
+                <waypoint_follower>
+                    <mode>Waypoint</mode>
+                    <waypoint_auto_start>false</waypoint_auto_start>
+                    <loop_waypoints>false</loop_waypoints>
+                    <start_time>3</start_time>
+                    <quantize>1</quantize>
+                    <quantize_buffer>0</quantize_buffer>
+                    <waypoints/>
+                    <follow_entity_editor_id>
+                        <id>-1</id>
+                    </follow_entity_editor_id>
+                </waypoint_follower>
+            </Base>
+            <FlowWall>
+                <editor_id>
+                    <id>233</id>
+                </editor_id>
+                <name>r0_wall3</name>
+                <entity_active>true</entity_active>
+                <pickable>true</pickable>
+                <transform>
+                    <pos>
+                        <x>7.5485306</x>
+                        <y>0</y>
+                        <z>-26.814528</z>
+                    </pos>
+                    <quat>
+                        <x>0</x>
+                        <y>0</y>
+                        <z>0</z>
+                        <w>1</w>
+                    </quat>
+                    <scale>
+                        <x>19.473484</x>
+                        <y>1</y>
+                        <z>1</z>
+                    </scale>
+                </transform>
+                <model_name>cube</model_name>
+                <texture_name></texture_name>
+                <model_color_vec4>
+                    <x>0.12363033</x>
+                    <y>0.72058821</y>
+                    <z>0.4221091</z>
+                    <w>1</w>
+                </model_color_vec4>
+                <flow_section_id>-1</flow_section_id>
+                <tag>0</tag>
+                <waypoint_follower>
+                    <mode>Waypoint</mode>
+                    <waypoint_auto_start>false</waypoint_auto_start>
+                    <loop_waypoints>false</loop_waypoints>
+                    <start_time>3</start_time>
+                    <quantize>1</quantize>
+                    <quantize_buffer>0</quantize_buffer>
+                    <waypoints/>
+                    <follow_entity_editor_id>
+                        <id>-1</id>
+                    </follow_entity_editor_id>
+                </waypoint_follower>
+                <hurt_on_hit>false</hurt_on_hit>
+                <can_hit>true</can_hit>
+                <hp>-1</hp>
+                <move_mode>Waypoints</move_mode>
+                <rot_vel>0</rot_vel>
+                <polygon/>
+                <hit_actions>
+                    <seq_action>
+                        <one_time>false</one_time>
+                        <action_type>NoteOnOff</action_type>
+                        <channel>0</channel>
+                        <midiNotes>
+                            <array_item>
+                                <note>36</note>
+                            </array_item>
+                        </midiNotes>
+                        <noteLength>1</noteLength>
+                        <velocity>1</velocity>
+                        <quantizeDenom>0.25</quantizeDenom>
+                        <doNoteOff>true</doNoteOff>
+                        <holdNotes>false</holdNotes>
+                    </seq_action>
+                </hit_actions>
+                <children_editor_ids/>
+            </FlowWall>
+            <FlowWall>
+                <editor_id>
+                    <id>236</id>
+                </editor_id>
+                <name>r0_wall4</name>
+                <entity_active>true</entity_active>
+                <pickable>true</pickable>
+                <transform>
+                    <pos>
+                        <x>15.929602</x>
+                        <y>0</y>
+                        <z>-20.720381</z>
+                    </pos>
+                    <quat>
+                        <x>0</x>
+                        <y>0</y>
+                        <z>0</z>
+                        <w>1</w>
+                    </quat>
+                    <scale>
+                        <x>1.072072</x>
+                        <y>1</y>
+                        <z>17.006824</z>
+                    </scale>
+                </transform>
+                <model_name>cube</model_name>
+                <texture_name></texture_name>
+                <model_color_vec4>
+                    <x>0.12363033</x>
+                    <y>0.72058821</y>
+                    <z>0.4221091</z>
+                    <w>1</w>
+                </model_color_vec4>
+                <flow_section_id>-1</flow_section_id>
+                <tag>0</tag>
+                <waypoint_follower>
+                    <mode>Waypoint</mode>
+                    <waypoint_auto_start>false</waypoint_auto_start>
+                    <loop_waypoints>false</loop_waypoints>
+                    <start_time>3</start_time>
+                    <quantize>1</quantize>
+                    <quantize_buffer>0</quantize_buffer>
+                    <waypoints/>
+                    <follow_entity_editor_id>
+                        <id>-1</id>
+                    </follow_entity_editor_id>
+                </waypoint_follower>
+                <hurt_on_hit>false</hurt_on_hit>
+                <can_hit>true</can_hit>
+                <hp>-1</hp>
+                <move_mode>Waypoints</move_mode>
+                <rot_vel>0</rot_vel>
+                <polygon/>
+                <hit_actions>
+                    <seq_action>
+                        <one_time>false</one_time>
+                        <action_type>NoteOnOff</action_type>
+                        <channel>0</channel>
+                        <midiNotes>
+                            <array_item>
+                                <note>36</note>
+                            </array_item>
+                        </midiNotes>
+                        <noteLength>1</noteLength>
+                        <velocity>1</velocity>
+                        <quantizeDenom>0.25</quantizeDenom>
+                        <doNoteOff>true</doNoteOff>
+                        <holdNotes>false</holdNotes>
+                    </seq_action>
+                </hit_actions>
+                <children_editor_ids/>
+            </FlowWall>
+            <TypingEnemy>
+                <editor_id>
+                    <id>237</id>
+                </editor_id>
+                <name>new_entity5</name>
+                <entity_active>true</entity_active>
+                <pickable>true</pickable>
+                <transform>
+                    <pos>
+                        <x>2.7634604</x>
+                        <y>0</y>
+                        <z>-25.306204</z>
+                    </pos>
+                    <quat>
+                        <x>0</x>
+                        <y>0</y>
+                        <z>0</z>
+                        <w>1</w>
+                    </quat>
+                    <scale>
+                        <x>0.5</x>
+                        <y>0.5</y>
+                        <z>0.5</z>
                     </scale>
                 </transform>
                 <model_name></model_name>
@@ -3634,7 +4051,7 @@
                         <channel>1</channel>
                         <midiNotes>
                             <array_item>
-                                <note>65</note>
+                                <note>70</note>
                             </array_item>
                         </midiNotes>
                         <noteLength>1</noteLength>
@@ -3648,37 +4065,37 @@
                 <off_cooldown_actions/>
                 <combo_end_actions/>
             </TypingEnemy>
-            <TypingEnemy>
+            <FlowPickup>
                 <editor_id>
-                    <id>223</id>
+                    <id>240</id>
                 </editor_id>
-                <name>new_entity0</name>
+                <name>new_entity</name>
                 <entity_active>true</entity_active>
                 <pickable>true</pickable>
                 <transform>
                     <pos>
-                        <x>6.9086161</x>
+                        <x>1.6231928</x>
                         <y>0</y>
-                        <z>-17.007746</z>
+                        <z>-24.157124</z>
                     </pos>
                     <quat>
                         <x>0</x>
-                        <y>0</y>
+                        <y>0.38268346</y>
                         <z>0</z>
-                        <w>1</w>
+                        <w>0.9238795</w>
                     </quat>
                     <scale>
-                        <x>1</x>
-                        <y>1</y>
-                        <z>1</z>
+                        <x>0.25</x>
+                        <y>0.25</y>
+                        <z>0.25</z>
                     </scale>
                 </transform>
-                <model_name></model_name>
+                <model_name>cube</model_name>
                 <texture_name></texture_name>
                 <model_color_vec4>
-                    <x>0.80000001</x>
-                    <y>0.80000001</y>
-                    <z>0.80000001</z>
+                    <x>0.24509805</x>
+                    <y>0.93339092</y>
+                    <z>1</z>
                     <w>1</w>
                 </model_color_vec4>
                 <flow_section_id>-1</flow_section_id>
@@ -3695,76 +4112,39 @@
                         <id>-1</id>
                     </follow_entity_editor_id>
                 </waypoint_follower>
-                <hit_response>
-                    <type>Pull</type>
-                    <speed>-1</speed>
-                    <push_angle_deg>-1</push_angle_deg>
-                    <time>-1</time>
-                    <ps_time>-1</ps_time>
-                    <stop_on_pass>true</stop_on_pass>
-                    <stop_after_timer>true</stop_after_timer>
-                </hit_response>
-                <use_last_hit_response>false</use_last_hit_response>
-                <last_hit_response>
-                    <type>Pull</type>
-                    <speed>-1</speed>
-                    <push_angle_deg>-1</push_angle_deg>
-                    <time>-1</time>
-                    <ps_time>-1</ps_time>
-                    <stop_on_pass>true</stop_on_pass>
-                    <stop_after_timer>true</stop_after_timer>
-                </last_hit_response>
-                <text>h</text>
-                <buttons>a</buttons>
-                <type_kill>false</type_kill>
-                <all_actions_on_hit>false</all_actions_on_hit>
-                <flow_cooldown>-1</flow_cooldown>
-                <show_beats_left>false</show_beats_left>
-                <cooldown_quantize_denom>0</cooldown_quantize_denom>
-                <reset_cooldown_on_any_hit>true</reset_cooldown_on_any_hit>
-                <init_hittable>true</init_hittable>
-                <timed_hittable_time>-1</timed_hittable_time>
-                <allow_backward>false</allow_backward>
-                <just_draw_model>false</just_draw_model>
-                <group_id>-1</group_id>
-                <region_type>TriggerEntity</region_type>
-                <active_region_editor_id>
-                    <id>-1</id>
-                </active_region_editor_id>
-                <lock_player_in_region>false</lock_player_in_region>
-                <hit_actions>
+                <actions>
                     <seq_action>
                         <one_time>false</one_time>
                         <action_type>NoteOnOff</action_type>
-                        <channel>1</channel>
+                        <channel>3</channel>
                         <midiNotes>
                             <array_item>
                                 <note>60</note>
                             </array_item>
+                            <array_item>
+                                <note>65</note>
+                            </array_item>
                         </midiNotes>
-                        <noteLength>1</noteLength>
+                        <noteLength>0.125</noteLength>
                         <velocity>1</velocity>
                         <quantizeDenom>0.25</quantizeDenom>
                         <doNoteOff>true</doNoteOff>
                         <holdNotes>false</holdNotes>
                     </seq_action>
-                </hit_actions>
-                <all_hit_actions/>
-                <off_cooldown_actions/>
-                <combo_end_actions/>
-            </TypingEnemy>
+                </actions>
+            </FlowPickup>
             <TypingEnemy>
                 <editor_id>
-                    <id>224</id>
+                    <id>243</id>
                 </editor_id>
-                <name>new_entity1</name>
+                <name>new_entity6</name>
                 <entity_active>true</entity_active>
                 <pickable>true</pickable>
                 <transform>
                     <pos>
-                        <x>7.0047126</x>
+                        <x>14.322284</x>
                         <y>0</y>
-                        <z>-29.572313</z>
+                        <z>-25.341681</z>
                     </pos>
                     <quat>
                         <x>0</x>
@@ -3773,9 +4153,9 @@
                         <w>1</w>
                     </quat>
                     <scale>
-                        <x>1</x>
-                        <y>1</y>
-                        <z>1</z>
+                        <x>0.5</x>
+                        <y>0.5</y>
+                        <z>0.5</z>
                     </scale>
                 </transform>
                 <model_name></model_name>
@@ -3819,7 +4199,7 @@
                     <stop_on_pass>true</stop_on_pass>
                     <stop_after_timer>true</stop_after_timer>
                 </last_hit_response>
-                <text>d</text>
+                <text>c</text>
                 <buttons>a</buttons>
                 <type_kill>false</type_kill>
                 <all_actions_on_hit>false</all_actions_on_hit>
@@ -3844,7 +4224,7 @@
                         <channel>1</channel>
                         <midiNotes>
                             <array_item>
-                                <note>67</note>
+                                <note>72</note>
                             </array_item>
                         </midiNotes>
                         <noteLength>1</noteLength>
@@ -3860,16 +4240,16 @@
             </TypingEnemy>
             <TypingEnemy>
                 <editor_id>
-                    <id>225</id>
+                    <id>244</id>
                 </editor_id>
-                <name>new_entity2</name>
+                <name>new_entity7</name>
                 <entity_active>true</entity_active>
                 <pickable>true</pickable>
                 <transform>
                     <pos>
-                        <x>13.431137</x>
+                        <x>14.369776</x>
                         <y>0</y>
-                        <z>-12.551293</z>
+                        <z>-22.074976</z>
                     </pos>
                     <quat>
                         <x>0</x>
@@ -3878,9 +4258,182 @@
                         <w>1</w>
                     </quat>
                     <scale>
-                        <x>1</x>
-                        <y>1</y>
-                        <z>1</z>
+                        <x>0.5</x>
+                        <y>0.5</y>
+                        <z>0.5</z>
+                    </scale>
+                </transform>
+                <model_name></model_name>
+                <texture_name></texture_name>
+                <model_color_vec4>
+                    <x>0.80000001</x>
+                    <y>0.80000001</y>
+                    <z>0.80000001</z>
+                    <w>1</w>
+                </model_color_vec4>
+                <flow_section_id>-1</flow_section_id>
+                <tag>0</tag>
+                <waypoint_follower>
+                    <mode>Waypoint</mode>
+                    <waypoint_auto_start>false</waypoint_auto_start>
+                    <loop_waypoints>false</loop_waypoints>
+                    <start_time>3</start_time>
+                    <quantize>1</quantize>
+                    <quantize_buffer>0</quantize_buffer>
+                    <waypoints/>
+                    <follow_entity_editor_id>
+                        <id>-1</id>
+                    </follow_entity_editor_id>
+                </waypoint_follower>
+                <hit_response>
+                    <type>Pull</type>
+                    <speed>-1</speed>
+                    <push_angle_deg>-1</push_angle_deg>
+                    <time>-1</time>
+                    <ps_time>-1</ps_time>
+                    <stop_on_pass>true</stop_on_pass>
+                    <stop_after_timer>true</stop_after_timer>
+                </hit_response>
+                <use_last_hit_response>false</use_last_hit_response>
+                <last_hit_response>
+                    <type>Pull</type>
+                    <speed>-1</speed>
+                    <push_angle_deg>-1</push_angle_deg>
+                    <time>-1</time>
+                    <ps_time>-1</ps_time>
+                    <stop_on_pass>true</stop_on_pass>
+                    <stop_after_timer>true</stop_after_timer>
+                </last_hit_response>
+                <text>l</text>
+                <buttons>a</buttons>
+                <type_kill>false</type_kill>
+                <all_actions_on_hit>false</all_actions_on_hit>
+                <flow_cooldown>-1</flow_cooldown>
+                <show_beats_left>false</show_beats_left>
+                <cooldown_quantize_denom>0</cooldown_quantize_denom>
+                <reset_cooldown_on_any_hit>true</reset_cooldown_on_any_hit>
+                <init_hittable>true</init_hittable>
+                <timed_hittable_time>-1</timed_hittable_time>
+                <allow_backward>false</allow_backward>
+                <just_draw_model>false</just_draw_model>
+                <group_id>-1</group_id>
+                <region_type>TriggerEntity</region_type>
+                <active_region_editor_id>
+                    <id>-1</id>
+                </active_region_editor_id>
+                <lock_player_in_region>false</lock_player_in_region>
+                <hit_actions>
+                    <seq_action>
+                        <one_time>false</one_time>
+                        <action_type>NoteOnOff</action_type>
+                        <channel>1</channel>
+                        <midiNotes>
+                            <array_item>
+                                <note>74</note>
+                            </array_item>
+                        </midiNotes>
+                        <noteLength>1</noteLength>
+                        <velocity>1</velocity>
+                        <quantizeDenom>0.25</quantizeDenom>
+                        <doNoteOff>true</doNoteOff>
+                        <holdNotes>false</holdNotes>
+                    </seq_action>
+                </hit_actions>
+                <all_hit_actions/>
+                <off_cooldown_actions/>
+                <combo_end_actions/>
+            </TypingEnemy>
+            <FlowPickup>
+                <editor_id>
+                    <id>245</id>
+                </editor_id>
+                <name>new_entity8</name>
+                <entity_active>true</entity_active>
+                <pickable>true</pickable>
+                <transform>
+                    <pos>
+                        <x>8.7034817</x>
+                        <y>0</y>
+                        <z>-25.356842</z>
+                    </pos>
+                    <quat>
+                        <x>0</x>
+                        <y>0.38268346</y>
+                        <z>0</z>
+                        <w>0.9238795</w>
+                    </quat>
+                    <scale>
+                        <x>0.25</x>
+                        <y>0.25</y>
+                        <z>0.25</z>
+                    </scale>
+                </transform>
+                <model_name>cube</model_name>
+                <texture_name></texture_name>
+                <model_color_vec4>
+                    <x>0.24509805</x>
+                    <y>0.93339092</y>
+                    <z>1</z>
+                    <w>1</w>
+                </model_color_vec4>
+                <flow_section_id>-1</flow_section_id>
+                <tag>0</tag>
+                <waypoint_follower>
+                    <mode>Waypoint</mode>
+                    <waypoint_auto_start>false</waypoint_auto_start>
+                    <loop_waypoints>false</loop_waypoints>
+                    <start_time>3</start_time>
+                    <quantize>1</quantize>
+                    <quantize_buffer>0</quantize_buffer>
+                    <waypoints/>
+                    <follow_entity_editor_id>
+                        <id>-1</id>
+                    </follow_entity_editor_id>
+                </waypoint_follower>
+                <actions>
+                    <seq_action>
+                        <one_time>false</one_time>
+                        <action_type>NoteOnOff</action_type>
+                        <channel>3</channel>
+                        <midiNotes>
+                            <array_item>
+                                <note>63</note>
+                            </array_item>
+                            <array_item>
+                                <note>72</note>
+                            </array_item>
+                        </midiNotes>
+                        <noteLength>0.125</noteLength>
+                        <velocity>1</velocity>
+                        <quantizeDenom>0.25</quantizeDenom>
+                        <doNoteOff>true</doNoteOff>
+                        <holdNotes>false</holdNotes>
+                    </seq_action>
+                </actions>
+            </FlowPickup>
+            <TypingEnemy>
+                <editor_id>
+                    <id>247</id>
+                </editor_id>
+                <name>new_entity9</name>
+                <entity_active>true</entity_active>
+                <pickable>true</pickable>
+                <transform>
+                    <pos>
+                        <x>0.42319965</x>
+                        <y>0</y>
+                        <z>-17.916782</z>
+                    </pos>
+                    <quat>
+                        <x>0</x>
+                        <y>0</y>
+                        <z>0</z>
+                        <w>1</w>
+                    </quat>
+                    <scale>
+                        <x>0.5</x>
+                        <y>0.5</y>
+                        <z>0.5</z>
                     </scale>
                 </transform>
                 <model_name></model_name>
@@ -3949,7 +4502,7 @@
                         <channel>1</channel>
                         <midiNotes>
                             <array_item>
-                                <note>63</note>
+                                <note>67</note>
                             </array_item>
                         </midiNotes>
                         <noteLength>1</noteLength>
@@ -3963,18 +4516,18 @@
                 <off_cooldown_actions/>
                 <combo_end_actions/>
             </TypingEnemy>
-            <TypingEnemy>
+            <FlowWall>
                 <editor_id>
-                    <id>226</id>
+                    <id>248</id>
                 </editor_id>
-                <name>new_entity3</name>
+                <name>r0_wall8</name>
                 <entity_active>true</entity_active>
                 <pickable>true</pickable>
                 <transform>
                     <pos>
-                        <x>7.0047126</x>
+                        <x>7.6317387</x>
                         <y>0</y>
-                        <z>-12.335078</z>
+                        <z>-12.012606</z>
                     </pos>
                     <quat>
                         <x>0</x>
@@ -3983,9 +4536,81 @@
                         <w>1</w>
                     </quat>
                     <scale>
-                        <x>1</x>
+                        <x>19.473484</x>
                         <y>1</y>
                         <z>1</z>
+                    </scale>
+                </transform>
+                <model_name>cube</model_name>
+                <texture_name></texture_name>
+                <model_color_vec4>
+                    <x>0.12363033</x>
+                    <y>0.72058821</y>
+                    <z>0.4221091</z>
+                    <w>1</w>
+                </model_color_vec4>
+                <flow_section_id>-1</flow_section_id>
+                <tag>0</tag>
+                <waypoint_follower>
+                    <mode>Waypoint</mode>
+                    <waypoint_auto_start>false</waypoint_auto_start>
+                    <loop_waypoints>false</loop_waypoints>
+                    <start_time>3</start_time>
+                    <quantize>1</quantize>
+                    <quantize_buffer>0</quantize_buffer>
+                    <waypoints/>
+                    <follow_entity_editor_id>
+                        <id>-1</id>
+                    </follow_entity_editor_id>
+                </waypoint_follower>
+                <hurt_on_hit>false</hurt_on_hit>
+                <can_hit>true</can_hit>
+                <hp>-1</hp>
+                <move_mode>Waypoints</move_mode>
+                <rot_vel>0</rot_vel>
+                <polygon/>
+                <hit_actions>
+                    <seq_action>
+                        <one_time>false</one_time>
+                        <action_type>NoteOnOff</action_type>
+                        <channel>0</channel>
+                        <midiNotes>
+                            <array_item>
+                                <note>36</note>
+                            </array_item>
+                        </midiNotes>
+                        <noteLength>1</noteLength>
+                        <velocity>1</velocity>
+                        <quantizeDenom>0.25</quantizeDenom>
+                        <doNoteOff>true</doNoteOff>
+                        <holdNotes>false</holdNotes>
+                    </seq_action>
+                </hit_actions>
+                <children_editor_ids/>
+            </FlowWall>
+            <TypingEnemy>
+                <editor_id>
+                    <id>249</id>
+                </editor_id>
+                <name>new_entity10</name>
+                <entity_active>true</entity_active>
+                <pickable>true</pickable>
+                <transform>
+                    <pos>
+                        <x>0.32811928</x>
+                        <y>0</y>
+                        <z>-13.212515</z>
+                    </pos>
+                    <quat>
+                        <x>0</x>
+                        <y>0</y>
+                        <z>0</z>
+                        <w>1</w>
+                    </quat>
+                    <scale>
+                        <x>0.5</x>
+                        <y>0.5</y>
+                        <z>0.5</z>
                     </scale>
                 </transform>
                 <model_name></model_name>
@@ -4029,7 +4654,180 @@
                     <stop_on_pass>true</stop_on_pass>
                     <stop_after_timer>true</stop_after_timer>
                 </last_hit_response>
-                <text>y</text>
+                <text>m</text>
+                <buttons>a</buttons>
+                <type_kill>false</type_kill>
+                <all_actions_on_hit>false</all_actions_on_hit>
+                <flow_cooldown>-1</flow_cooldown>
+                <show_beats_left>false</show_beats_left>
+                <cooldown_quantize_denom>0</cooldown_quantize_denom>
+                <reset_cooldown_on_any_hit>true</reset_cooldown_on_any_hit>
+                <init_hittable>true</init_hittable>
+                <timed_hittable_time>-1</timed_hittable_time>
+                <allow_backward>false</allow_backward>
+                <just_draw_model>false</just_draw_model>
+                <group_id>-1</group_id>
+                <region_type>TriggerEntity</region_type>
+                <active_region_editor_id>
+                    <id>-1</id>
+                </active_region_editor_id>
+                <lock_player_in_region>false</lock_player_in_region>
+                <hit_actions>
+                    <seq_action>
+                        <one_time>false</one_time>
+                        <action_type>NoteOnOff</action_type>
+                        <channel>1</channel>
+                        <midiNotes>
+                            <array_item>
+                                <note>65</note>
+                            </array_item>
+                        </midiNotes>
+                        <noteLength>1</noteLength>
+                        <velocity>1</velocity>
+                        <quantizeDenom>0.25</quantizeDenom>
+                        <doNoteOff>true</doNoteOff>
+                        <holdNotes>false</holdNotes>
+                    </seq_action>
+                </hit_actions>
+                <all_hit_actions/>
+                <off_cooldown_actions/>
+                <combo_end_actions/>
+            </TypingEnemy>
+            <FlowPickup>
+                <editor_id>
+                    <id>250</id>
+                </editor_id>
+                <name>new_entity11</name>
+                <entity_active>true</entity_active>
+                <pickable>true</pickable>
+                <transform>
+                    <pos>
+                        <x>0.34022045</x>
+                        <y>0</y>
+                        <z>-14.807907</z>
+                    </pos>
+                    <quat>
+                        <x>0</x>
+                        <y>0.38268346</y>
+                        <z>0</z>
+                        <w>0.9238795</w>
+                    </quat>
+                    <scale>
+                        <x>0.25</x>
+                        <y>0.25</y>
+                        <z>0.25</z>
+                    </scale>
+                </transform>
+                <model_name>cube</model_name>
+                <texture_name></texture_name>
+                <model_color_vec4>
+                    <x>0.24509805</x>
+                    <y>0.93339092</y>
+                    <z>1</z>
+                    <w>1</w>
+                </model_color_vec4>
+                <flow_section_id>-1</flow_section_id>
+                <tag>0</tag>
+                <waypoint_follower>
+                    <mode>Waypoint</mode>
+                    <waypoint_auto_start>false</waypoint_auto_start>
+                    <loop_waypoints>false</loop_waypoints>
+                    <start_time>3</start_time>
+                    <quantize>1</quantize>
+                    <quantize_buffer>0</quantize_buffer>
+                    <waypoints/>
+                    <follow_entity_editor_id>
+                        <id>-1</id>
+                    </follow_entity_editor_id>
+                </waypoint_follower>
+                <actions>
+                    <seq_action>
+                        <one_time>false</one_time>
+                        <action_type>NoteOnOff</action_type>
+                        <channel>3</channel>
+                        <midiNotes>
+                            <array_item>
+                                <note>60</note>
+                            </array_item>
+                            <array_item>
+                                <note>64</note>
+                            </array_item>
+                        </midiNotes>
+                        <noteLength>0.125</noteLength>
+                        <velocity>1</velocity>
+                        <quantizeDenom>0.25</quantizeDenom>
+                        <doNoteOff>true</doNoteOff>
+                        <holdNotes>false</holdNotes>
+                    </seq_action>
+                </actions>
+            </FlowPickup>
+            <TypingEnemy>
+                <editor_id>
+                    <id>251</id>
+                </editor_id>
+                <name>new_entity12</name>
+                <entity_active>true</entity_active>
+                <pickable>true</pickable>
+                <transform>
+                    <pos>
+                        <x>7.0401478</x>
+                        <y>0</y>
+                        <z>-18.011766</z>
+                    </pos>
+                    <quat>
+                        <x>0</x>
+                        <y>0</y>
+                        <z>0</z>
+                        <w>1</w>
+                    </quat>
+                    <scale>
+                        <x>0.5</x>
+                        <y>0.5</y>
+                        <z>0.5</z>
+                    </scale>
+                </transform>
+                <model_name></model_name>
+                <texture_name></texture_name>
+                <model_color_vec4>
+                    <x>0.80000001</x>
+                    <y>0.80000001</y>
+                    <z>0.80000001</z>
+                    <w>1</w>
+                </model_color_vec4>
+                <flow_section_id>-1</flow_section_id>
+                <tag>0</tag>
+                <waypoint_follower>
+                    <mode>Waypoint</mode>
+                    <waypoint_auto_start>false</waypoint_auto_start>
+                    <loop_waypoints>false</loop_waypoints>
+                    <start_time>3</start_time>
+                    <quantize>1</quantize>
+                    <quantize_buffer>0</quantize_buffer>
+                    <waypoints/>
+                    <follow_entity_editor_id>
+                        <id>-1</id>
+                    </follow_entity_editor_id>
+                </waypoint_follower>
+                <hit_response>
+                    <type>Pull</type>
+                    <speed>-1</speed>
+                    <push_angle_deg>-1</push_angle_deg>
+                    <time>-1</time>
+                    <ps_time>-1</ps_time>
+                    <stop_on_pass>true</stop_on_pass>
+                    <stop_after_timer>true</stop_after_timer>
+                </hit_response>
+                <use_last_hit_response>false</use_last_hit_response>
+                <last_hit_response>
+                    <type>Pull</type>
+                    <speed>-1</speed>
+                    <push_angle_deg>-1</push_angle_deg>
+                    <time>-1</time>
+                    <ps_time>-1</ps_time>
+                    <stop_on_pass>true</stop_on_pass>
+                    <stop_after_timer>true</stop_after_timer>
+                </last_hit_response>
+                <text>s</text>
                 <buttons>a</buttons>
                 <type_kill>false</type_kill>
                 <all_actions_on_hit>false</all_actions_on_hit>
@@ -4068,37 +4866,37 @@
                 <off_cooldown_actions/>
                 <combo_end_actions/>
             </TypingEnemy>
-            <TypingEnemy>
+            <FlowPickup>
                 <editor_id>
-                    <id>227</id>
+                    <id>252</id>
                 </editor_id>
-                <name>new_entity4</name>
+                <name>new_entity13</name>
                 <entity_active>true</entity_active>
                 <pickable>true</pickable>
                 <transform>
                     <pos>
-                        <x>1.1428499</x>
+                        <x>5.7572598</x>
                         <y>0</y>
-                        <z>-29.884624</z>
+                        <z>-25.404526</z>
                     </pos>
                     <quat>
                         <x>0</x>
-                        <y>0</y>
+                        <y>0.38268346</y>
                         <z>0</z>
-                        <w>1</w>
+                        <w>0.9238795</w>
                     </quat>
                     <scale>
-                        <x>1</x>
-                        <y>1</y>
-                        <z>1</z>
+                        <x>0.25</x>
+                        <y>0.25</y>
+                        <z>0.25</z>
                     </scale>
                 </transform>
-                <model_name></model_name>
+                <model_name>cube</model_name>
                 <texture_name></texture_name>
                 <model_color_vec4>
-                    <x>0.80000001</x>
-                    <y>0.80000001</y>
-                    <z>0.80000001</z>
+                    <x>0.24509805</x>
+                    <y>0.93339092</y>
+                    <z>1</z>
                     <w>1</w>
                 </model_color_vec4>
                 <flow_section_id>-1</flow_section_id>
@@ -4115,95 +4913,58 @@
                         <id>-1</id>
                     </follow_entity_editor_id>
                 </waypoint_follower>
-                <hit_response>
-                    <type>Pull</type>
-                    <speed>-1</speed>
-                    <push_angle_deg>-1</push_angle_deg>
-                    <time>-1</time>
-                    <ps_time>-1</ps_time>
-                    <stop_on_pass>true</stop_on_pass>
-                    <stop_after_timer>true</stop_after_timer>
-                </hit_response>
-                <use_last_hit_response>false</use_last_hit_response>
-                <last_hit_response>
-                    <type>Pull</type>
-                    <speed>-1</speed>
-                    <push_angle_deg>-1</push_angle_deg>
-                    <time>-1</time>
-                    <ps_time>-1</ps_time>
-                    <stop_on_pass>true</stop_on_pass>
-                    <stop_after_timer>true</stop_after_timer>
-                </last_hit_response>
-                <text>p</text>
-                <buttons>a</buttons>
-                <type_kill>false</type_kill>
-                <all_actions_on_hit>false</all_actions_on_hit>
-                <flow_cooldown>-1</flow_cooldown>
-                <show_beats_left>false</show_beats_left>
-                <cooldown_quantize_denom>0</cooldown_quantize_denom>
-                <reset_cooldown_on_any_hit>true</reset_cooldown_on_any_hit>
-                <init_hittable>true</init_hittable>
-                <timed_hittable_time>-1</timed_hittable_time>
-                <allow_backward>false</allow_backward>
-                <just_draw_model>false</just_draw_model>
-                <group_id>-1</group_id>
-                <region_type>TriggerEntity</region_type>
-                <active_region_editor_id>
-                    <id>-1</id>
-                </active_region_editor_id>
-                <lock_player_in_region>false</lock_player_in_region>
-                <hit_actions>
+                <actions>
                     <seq_action>
                         <one_time>false</one_time>
                         <action_type>NoteOnOff</action_type>
-                        <channel>1</channel>
+                        <channel>3</channel>
                         <midiNotes>
                             <array_item>
-                                <note>72</note>
+                                <note>60</note>
+                            </array_item>
+                            <array_item>
+                                <note>67</note>
                             </array_item>
                         </midiNotes>
-                        <noteLength>1</noteLength>
+                        <noteLength>0.125</noteLength>
                         <velocity>1</velocity>
                         <quantizeDenom>0.25</quantizeDenom>
                         <doNoteOff>true</doNoteOff>
                         <holdNotes>false</holdNotes>
                     </seq_action>
-                </hit_actions>
-                <all_hit_actions/>
-                <off_cooldown_actions/>
-                <combo_end_actions/>
-            </TypingEnemy>
-            <Base>
+                </actions>
+            </FlowPickup>
+            <FlowPickup>
                 <editor_id>
-                    <id>228</id>
+                    <id>253</id>
                 </editor_id>
-                <name>r0_spawn_pos</name>
+                <name>new_entity14</name>
                 <entity_active>true</entity_active>
                 <pickable>true</pickable>
                 <transform>
                     <pos>
-                        <x>7.0167241</x>
+                        <x>11.364414</x>
                         <y>0</y>
-                        <z>-21.091831</z>
+                        <z>-25.368858</z>
                     </pos>
                     <quat>
                         <x>0</x>
-                        <y>0</y>
+                        <y>0.38268346</y>
                         <z>0</z>
-                        <w>1</w>
+                        <w>0.9238795</w>
                     </quat>
                     <scale>
-                        <x>1</x>
-                        <y>1</y>
-                        <z>1</z>
+                        <x>0.25</x>
+                        <y>0.25</y>
+                        <z>0.25</z>
                     </scale>
                 </transform>
-                <model_name></model_name>
+                <model_name>cube</model_name>
                 <texture_name></texture_name>
                 <model_color_vec4>
-                    <x>0.80000001</x>
-                    <y>0.80000001</y>
-                    <z>0.80000001</z>
+                    <x>0.24509805</x>
+                    <y>0.93339092</y>
+                    <z>1</z>
                     <w>1</w>
                 </model_color_vec4>
                 <flow_section_id>-1</flow_section_id>
@@ -4220,7 +4981,503 @@
                         <id>-1</id>
                     </follow_entity_editor_id>
                 </waypoint_follower>
-            </Base>
+                <actions>
+                    <seq_action>
+                        <one_time>false</one_time>
+                        <action_type>NoteOnOff</action_type>
+                        <channel>3</channel>
+                        <midiNotes>
+                            <array_item>
+                                <note>60</note>
+                            </array_item>
+                            <array_item>
+                                <note>70</note>
+                            </array_item>
+                        </midiNotes>
+                        <noteLength>0.125</noteLength>
+                        <velocity>1</velocity>
+                        <quantizeDenom>0.25</quantizeDenom>
+                        <doNoteOff>true</doNoteOff>
+                        <holdNotes>false</holdNotes>
+                    </seq_action>
+                </actions>
+            </FlowPickup>
+            <FlowPickup>
+                <editor_id>
+                    <id>254</id>
+                </editor_id>
+                <name>new_entity15</name>
+                <entity_active>true</entity_active>
+                <pickable>true</pickable>
+                <transform>
+                    <pos>
+                        <x>14.441195</x>
+                        <y>0</y>
+                        <z>-23.788818</z>
+                    </pos>
+                    <quat>
+                        <x>0</x>
+                        <y>0.38268346</y>
+                        <z>0</z>
+                        <w>0.9238795</w>
+                    </quat>
+                    <scale>
+                        <x>0.25</x>
+                        <y>0.25</y>
+                        <z>0.25</z>
+                    </scale>
+                </transform>
+                <model_name>cube</model_name>
+                <texture_name></texture_name>
+                <model_color_vec4>
+                    <x>0.24509805</x>
+                    <y>0.93339092</y>
+                    <z>1</z>
+                    <w>1</w>
+                </model_color_vec4>
+                <flow_section_id>-1</flow_section_id>
+                <tag>0</tag>
+                <waypoint_follower>
+                    <mode>Waypoint</mode>
+                    <waypoint_auto_start>false</waypoint_auto_start>
+                    <loop_waypoints>false</loop_waypoints>
+                    <start_time>3</start_time>
+                    <quantize>1</quantize>
+                    <quantize_buffer>0</quantize_buffer>
+                    <waypoints/>
+                    <follow_entity_editor_id>
+                        <id>-1</id>
+                    </follow_entity_editor_id>
+                </waypoint_follower>
+                <actions>
+                    <seq_action>
+                        <one_time>false</one_time>
+                        <action_type>NoteOnOff</action_type>
+                        <channel>3</channel>
+                        <midiNotes>
+                            <array_item>
+                                <note>63</note>
+                            </array_item>
+                            <array_item>
+                                <note>72</note>
+                            </array_item>
+                        </midiNotes>
+                        <noteLength>0.125</noteLength>
+                        <velocity>1</velocity>
+                        <quantizeDenom>0.25</quantizeDenom>
+                        <doNoteOff>true</doNoteOff>
+                        <holdNotes>false</holdNotes>
+                    </seq_action>
+                </actions>
+            </FlowPickup>
+            <FlowPickup>
+                <editor_id>
+                    <id>255</id>
+                </editor_id>
+                <name>new_entity16</name>
+                <entity_active>true</entity_active>
+                <pickable>true</pickable>
+                <transform>
+                    <pos>
+                        <x>11.91082</x>
+                        <y>0</y>
+                        <z>-20.961376</z>
+                    </pos>
+                    <quat>
+                        <x>0</x>
+                        <y>0.38268346</y>
+                        <z>0</z>
+                        <w>0.9238795</w>
+                    </quat>
+                    <scale>
+                        <x>0.25</x>
+                        <y>0.25</y>
+                        <z>0.25</z>
+                    </scale>
+                </transform>
+                <model_name>cube</model_name>
+                <texture_name></texture_name>
+                <model_color_vec4>
+                    <x>0.24509805</x>
+                    <y>0.93339092</y>
+                    <z>1</z>
+                    <w>1</w>
+                </model_color_vec4>
+                <flow_section_id>-1</flow_section_id>
+                <tag>0</tag>
+                <waypoint_follower>
+                    <mode>Waypoint</mode>
+                    <waypoint_auto_start>false</waypoint_auto_start>
+                    <loop_waypoints>false</loop_waypoints>
+                    <start_time>3</start_time>
+                    <quantize>1</quantize>
+                    <quantize_buffer>0</quantize_buffer>
+                    <waypoints/>
+                    <follow_entity_editor_id>
+                        <id>-1</id>
+                    </follow_entity_editor_id>
+                </waypoint_follower>
+                <actions>
+                    <seq_action>
+                        <one_time>false</one_time>
+                        <action_type>NoteOnOff</action_type>
+                        <channel>3</channel>
+                        <midiNotes>
+                            <array_item>
+                                <note>63</note>
+                            </array_item>
+                            <array_item>
+                                <note>67</note>
+                            </array_item>
+                        </midiNotes>
+                        <noteLength>0.125</noteLength>
+                        <velocity>1</velocity>
+                        <quantizeDenom>0.25</quantizeDenom>
+                        <doNoteOff>true</doNoteOff>
+                        <holdNotes>false</holdNotes>
+                    </seq_action>
+                </actions>
+            </FlowPickup>
+            <FlowPickup>
+                <editor_id>
+                    <id>256</id>
+                </editor_id>
+                <name>new_entity17</name>
+                <entity_active>true</entity_active>
+                <pickable>true</pickable>
+                <transform>
+                    <pos>
+                        <x>8.9528198</x>
+                        <y>0</y>
+                        <z>-19.250683</z>
+                    </pos>
+                    <quat>
+                        <x>0</x>
+                        <y>0.38268346</y>
+                        <z>0</z>
+                        <w>0.9238795</w>
+                    </quat>
+                    <scale>
+                        <x>0.25</x>
+                        <y>0.25</y>
+                        <z>0.25</z>
+                    </scale>
+                </transform>
+                <model_name>cube</model_name>
+                <texture_name></texture_name>
+                <model_color_vec4>
+                    <x>0.24509805</x>
+                    <y>0.93339092</y>
+                    <z>1</z>
+                    <w>1</w>
+                </model_color_vec4>
+                <flow_section_id>-1</flow_section_id>
+                <tag>0</tag>
+                <waypoint_follower>
+                    <mode>Waypoint</mode>
+                    <waypoint_auto_start>false</waypoint_auto_start>
+                    <loop_waypoints>false</loop_waypoints>
+                    <start_time>3</start_time>
+                    <quantize>1</quantize>
+                    <quantize_buffer>0</quantize_buffer>
+                    <waypoints/>
+                    <follow_entity_editor_id>
+                        <id>-1</id>
+                    </follow_entity_editor_id>
+                </waypoint_follower>
+                <actions>
+                    <seq_action>
+                        <one_time>false</one_time>
+                        <action_type>NoteOnOff</action_type>
+                        <channel>3</channel>
+                        <midiNotes>
+                            <array_item>
+                                <note>65</note>
+                            </array_item>
+                            <array_item>
+                                <note>67</note>
+                            </array_item>
+                        </midiNotes>
+                        <noteLength>0.125</noteLength>
+                        <velocity>1</velocity>
+                        <quantizeDenom>0.25</quantizeDenom>
+                        <doNoteOff>true</doNoteOff>
+                        <holdNotes>false</holdNotes>
+                    </seq_action>
+                </actions>
+            </FlowPickup>
+            <FlowPickup>
+                <editor_id>
+                    <id>257</id>
+                </editor_id>
+                <name>new_entity18</name>
+                <entity_active>true</entity_active>
+                <pickable>true</pickable>
+                <transform>
+                    <pos>
+                        <x>5.6384087</x>
+                        <y>0</y>
+                        <z>-18.003281</z>
+                    </pos>
+                    <quat>
+                        <x>0</x>
+                        <y>0.38268346</y>
+                        <z>0</z>
+                        <w>0.9238795</w>
+                    </quat>
+                    <scale>
+                        <x>0.25</x>
+                        <y>0.25</y>
+                        <z>0.25</z>
+                    </scale>
+                </transform>
+                <model_name>cube</model_name>
+                <texture_name></texture_name>
+                <model_color_vec4>
+                    <x>0.24509805</x>
+                    <y>0.93339092</y>
+                    <z>1</z>
+                    <w>1</w>
+                </model_color_vec4>
+                <flow_section_id>-1</flow_section_id>
+                <tag>0</tag>
+                <waypoint_follower>
+                    <mode>Waypoint</mode>
+                    <waypoint_auto_start>false</waypoint_auto_start>
+                    <loop_waypoints>false</loop_waypoints>
+                    <start_time>3</start_time>
+                    <quantize>1</quantize>
+                    <quantize_buffer>0</quantize_buffer>
+                    <waypoints/>
+                    <follow_entity_editor_id>
+                        <id>-1</id>
+                    </follow_entity_editor_id>
+                </waypoint_follower>
+                <actions>
+                    <seq_action>
+                        <one_time>false</one_time>
+                        <action_type>NoteOnOff</action_type>
+                        <channel>3</channel>
+                        <midiNotes>
+                            <array_item>
+                                <note>63</note>
+                            </array_item>
+                            <array_item>
+                                <note>72</note>
+                            </array_item>
+                        </midiNotes>
+                        <noteLength>0.125</noteLength>
+                        <velocity>1</velocity>
+                        <quantizeDenom>0.25</quantizeDenom>
+                        <doNoteOff>true</doNoteOff>
+                        <holdNotes>false</holdNotes>
+                    </seq_action>
+                </actions>
+            </FlowPickup>
+            <FlowPickup>
+                <editor_id>
+                    <id>258</id>
+                </editor_id>
+                <name>new_entity19</name>
+                <entity_active>true</entity_active>
+                <pickable>true</pickable>
+                <transform>
+                    <pos>
+                        <x>2.3952844</x>
+                        <y>0</y>
+                        <z>-17.943964</z>
+                    </pos>
+                    <quat>
+                        <x>0</x>
+                        <y>0.38268346</y>
+                        <z>0</z>
+                        <w>0.9238795</w>
+                    </quat>
+                    <scale>
+                        <x>0.25</x>
+                        <y>0.25</y>
+                        <z>0.25</z>
+                    </scale>
+                </transform>
+                <model_name>cube</model_name>
+                <texture_name></texture_name>
+                <model_color_vec4>
+                    <x>0.24509805</x>
+                    <y>0.93339092</y>
+                    <z>1</z>
+                    <w>1</w>
+                </model_color_vec4>
+                <flow_section_id>-1</flow_section_id>
+                <tag>0</tag>
+                <waypoint_follower>
+                    <mode>Waypoint</mode>
+                    <waypoint_auto_start>false</waypoint_auto_start>
+                    <loop_waypoints>false</loop_waypoints>
+                    <start_time>3</start_time>
+                    <quantize>1</quantize>
+                    <quantize_buffer>0</quantize_buffer>
+                    <waypoints/>
+                    <follow_entity_editor_id>
+                        <id>-1</id>
+                    </follow_entity_editor_id>
+                </waypoint_follower>
+                <actions>
+                    <seq_action>
+                        <one_time>false</one_time>
+                        <action_type>NoteOnOff</action_type>
+                        <channel>3</channel>
+                        <midiNotes>
+                            <array_item>
+                                <note>60</note>
+                            </array_item>
+                            <array_item>
+                                <note>65</note>
+                            </array_item>
+                        </midiNotes>
+                        <noteLength>0.125</noteLength>
+                        <velocity>1</velocity>
+                        <quantizeDenom>0.25</quantizeDenom>
+                        <doNoteOff>true</doNoteOff>
+                        <holdNotes>false</holdNotes>
+                    </seq_action>
+                </actions>
+            </FlowPickup>
+            <FlowPickup>
+                <editor_id>
+                    <id>259</id>
+                </editor_id>
+                <name>new_entity20</name>
+                <entity_active>true</entity_active>
+                <pickable>true</pickable>
+                <transform>
+                    <pos>
+                        <x>4.2959743</x>
+                        <y>0</y>
+                        <z>-19.761469</z>
+                    </pos>
+                    <quat>
+                        <x>0</x>
+                        <y>0.38268346</y>
+                        <z>0</z>
+                        <w>0.9238795</w>
+                    </quat>
+                    <scale>
+                        <x>0.25</x>
+                        <y>0.25</y>
+                        <z>0.25</z>
+                    </scale>
+                </transform>
+                <model_name>cube</model_name>
+                <texture_name></texture_name>
+                <model_color_vec4>
+                    <x>0.24509805</x>
+                    <y>0.93339092</y>
+                    <z>1</z>
+                    <w>1</w>
+                </model_color_vec4>
+                <flow_section_id>-1</flow_section_id>
+                <tag>0</tag>
+                <waypoint_follower>
+                    <mode>Waypoint</mode>
+                    <waypoint_auto_start>false</waypoint_auto_start>
+                    <loop_waypoints>false</loop_waypoints>
+                    <start_time>3</start_time>
+                    <quantize>1</quantize>
+                    <quantize_buffer>0</quantize_buffer>
+                    <waypoints/>
+                    <follow_entity_editor_id>
+                        <id>-1</id>
+                    </follow_entity_editor_id>
+                </waypoint_follower>
+                <actions>
+                    <seq_action>
+                        <one_time>false</one_time>
+                        <action_type>NoteOnOff</action_type>
+                        <channel>3</channel>
+                        <midiNotes>
+                            <array_item>
+                                <note>60</note>
+                            </array_item>
+                            <array_item>
+                                <note>67</note>
+                            </array_item>
+                        </midiNotes>
+                        <noteLength>0.125</noteLength>
+                        <velocity>1</velocity>
+                        <quantizeDenom>0.25</quantizeDenom>
+                        <doNoteOff>true</doNoteOff>
+                        <holdNotes>false</holdNotes>
+                    </seq_action>
+                </actions>
+            </FlowPickup>
+            <FlowPickup>
+                <editor_id>
+                    <id>260</id>
+                </editor_id>
+                <name>new_entity21</name>
+                <entity_active>true</entity_active>
+                <pickable>true</pickable>
+                <transform>
+                    <pos>
+                        <x>2.1338835</x>
+                        <y>0</y>
+                        <z>-21.578976</z>
+                    </pos>
+                    <quat>
+                        <x>0</x>
+                        <y>0.38268346</y>
+                        <z>0</z>
+                        <w>0.9238795</w>
+                    </quat>
+                    <scale>
+                        <x>0.25</x>
+                        <y>0.25</y>
+                        <z>0.25</z>
+                    </scale>
+                </transform>
+                <model_name>cube</model_name>
+                <texture_name></texture_name>
+                <model_color_vec4>
+                    <x>0.24509805</x>
+                    <y>0.93339092</y>
+                    <z>1</z>
+                    <w>1</w>
+                </model_color_vec4>
+                <flow_section_id>-1</flow_section_id>
+                <tag>0</tag>
+                <waypoint_follower>
+                    <mode>Waypoint</mode>
+                    <waypoint_auto_start>false</waypoint_auto_start>
+                    <loop_waypoints>false</loop_waypoints>
+                    <start_time>3</start_time>
+                    <quantize>1</quantize>
+                    <quantize_buffer>0</quantize_buffer>
+                    <waypoints/>
+                    <follow_entity_editor_id>
+                        <id>-1</id>
+                    </follow_entity_editor_id>
+                </waypoint_follower>
+                <actions>
+                    <seq_action>
+                        <one_time>false</one_time>
+                        <action_type>NoteOnOff</action_type>
+                        <channel>3</channel>
+                        <midiNotes>
+                            <array_item>
+                                <note>60</note>
+                            </array_item>
+                            <array_item>
+                                <note>70</note>
+                            </array_item>
+                        </midiNotes>
+                        <noteLength>0.125</noteLength>
+                        <velocity>1</velocity>
+                        <quantizeDenom>0.25</quantizeDenom>
+                        <doNoteOff>true</doNoteOff>
+                        <holdNotes>false</holdNotes>
+                    </seq_action>
+                </actions>
+            </FlowPickup>
         </new_entities>
     </script>
 </root>
