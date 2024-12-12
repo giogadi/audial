@@ -873,9 +873,7 @@ void Editor::Update(float dt, SynthGuiState& synthGuiState) {
             break;
         case InputMode::Count:
             break;
-    }
-    
-    InputManager const& inputManager = *_g->_inputManager;    
+    } 
 
     // Draw axes
     for (ne::EntityId selectedId : _selectedEntityIds) {
@@ -1245,12 +1243,16 @@ void Editor::DrawWindow() {
             }
             if (ImGui::Checkbox("Init active", &example->_initActive)) {
                 for (ne::EntityId eId : _selectedEntityIds) {
-                    if (example->_initActive) {
-                        _g->_neEntityManager->TagForActivate(eId, /*initOnActivate=*/true);
-                    } else {
-                        _g->_neEntityManager->TagForDeactivate(eId);
-                    }
-                } 
+                    if (ne::BaseEntity *e = _g->_neEntityManager->GetActiveOrInactiveEntity(eId)) {
+                        if (example->_initActive) {
+                            e->_initActive = true;
+                            _g->_neEntityManager->TagForActivate(eId, /*initOnActivate=*/true);
+                        } else {
+                            e->_initActive = false;
+                            _g->_neEntityManager->TagForDeactivate(eId);
+                        }
+                    } 
+                }
             }
             if (imgui_util::ColorEdit4("Model color", &example->_modelColor)) {
                 needsInit = true;

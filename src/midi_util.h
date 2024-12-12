@@ -3,6 +3,11 @@
 #include <string_view>
 #include <cassert>
 
+inline constexpr int kMidiMinOctave = 0;
+inline constexpr int kMidiMaxOctave = 8;
+inline constexpr int kMidiMinNote = 0;
+inline constexpr int kMidiMaxNote = 119;
+
 inline int GetMidiNote(char noteName, int octaveNum) {
     noteName = tolower(noteName);
     assert(noteName >= 'a' && noteName <= 'g');
