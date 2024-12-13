@@ -1226,7 +1226,10 @@ void DrawModelInstance(SceneInternal& internal, Mat4 const& viewProjTransform, M
     internal._modelShader.SetMat4(internal._modelShaderUniforms[ModelShaderUniforms::uModelTrans], transMat);
     Mat3 modelTransInv;
     bool success = transMat.GetMat3().TransposeInverse(modelTransInv);
-    assert(success);
+    if (!success) {
+        printf("transpose inverse problem!\n");
+        return;
+    }
     internal._modelShader.SetMat3(internal._modelShaderUniforms[ModelShaderUniforms::uModelInvTrans], modelTransInv);
     internal._modelShader.SetVec3(internal._modelShaderUniforms[ModelShaderUniforms::uExplodeVec], Vec3());
 
@@ -1331,7 +1334,8 @@ void Scene::Draw(int windowWidth, int windowHeight, float timeInSecs, float delt
         }
         transMat.SetTranslation(cameraPos + cameraPosToTerrainPos);
         Mat3 modelTransInv;
-        assert(transMat.GetMat3().TransposeInverse(modelTransInv));
+        bool success = transMat.GetMat3().TransposeInverse(modelTransInv);
+        assert(success);
 
         Shader& shader = _pInternal->_terrainShader;
         shader.Use();
@@ -1469,8 +1473,11 @@ void Scene::Draw(int windowWidth, int windowHeight, float timeInSecs, float delt
             _pInternal->_modelShader.SetMat4(_pInternal->_modelShaderUniforms[ModelShaderUniforms::uModelTrans], poly._t);
             Mat3 modelTransInv;
             bool success = poly._t.GetMat3().TransposeInverse(modelTransInv);
-            assert(success);
-            _pInternal->_modelShader.SetMat3(_pInternal->_modelShaderUniforms[ModelShaderUniforms::uModelInvTrans], modelTransInv);
+            if (success) {
+                _pInternal->_modelShader.SetMat3(_pInternal->_modelShaderUniforms[ModelShaderUniforms::uModelInvTrans], modelTransInv);
+            } else {
+                printf("transpose inverse failed\n");
+            }
             
         }
     }
