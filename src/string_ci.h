@@ -2,6 +2,7 @@
 
 #include <map>
 #include <string>
+#include <string_view>
 #include <cctype>
 
 namespace string_ci {
@@ -20,5 +21,7 @@ template <typename T>
 struct map {
     std::map<std::string, T, LessStr> Type;
 };
+
+bool Contains(std::string_view str, std::string_view substr);
 
 }

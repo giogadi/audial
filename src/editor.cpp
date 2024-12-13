@@ -22,6 +22,7 @@
 #include "seq_action.h"
 #include "entities/step_sequencer.h"
 #include <omni_sequencer.h>
+#include <string_ci.h>
 
 extern EditorIdMap *gEditorIdMap;
 
@@ -1084,16 +1085,23 @@ void Editor::DrawWindow() {
         ImGui::EndListBox();
     }    
 
-    if (ImGui::BeginCombo("Entity types", ne::gkEntityTypeNames[_selectedEntityTypeIx])) {
+    int constexpr kFilterBufLength = 64;
+    static char sEntityTypeFilterBuf[kFilterBufLength] = {0};
+    ImGui::InputText("Type search", sEntityTypeFilterBuf, kFilterBufLength);
+    std::string_view typeFilter(sEntityTypeFilterBuf);
+    if (ImGui::BeginListBox("Entity type")) {
         for (int typeIx = 0; typeIx < ne::gkNumEntityTypes; ++typeIx) {
-            bool selected = typeIx == _selectedEntityTypeIx;
-            bool clicked = ImGui::Selectable(ne::gkEntityTypeNames[typeIx], selected);
-            if (clicked) {
-                _selectedEntityTypeIx = typeIx;
+            char const *typeName = ne::gkEntityTypeNames[typeIx];
+            if (string_ci::Contains(std::string_view(typeName), typeFilter)) {
+                bool selected = typeIx == _selectedEntityTypeIx;
+                bool clicked = ImGui::Selectable(typeName, selected);
+                if (clicked) {
+                    _selectedEntityTypeIx = typeIx;
+                }
             }
         }
-        ImGui::EndCombo();
-    }    
+        ImGui::EndListBox();
+    }
 
     // Add Entities
     if (ImGui::Button("Add Entity")) {

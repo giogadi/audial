@@ -12,6 +12,7 @@
 #include "seq_actions/set_enemy_hittable.h"
 #include "seq_actions/add_motion.h"
 #include "imgui_util.h"
+#include <string_ci.h>
 
 BeatTimeAction::BeatTimeAction() {
     _beatTime = 0.0;
@@ -172,10 +173,30 @@ bool SeqAction::ImGui(char const* label, std::vector<std::unique_ptr<SeqAction>>
             ImGui::EndDisabled();
         }        
         
-        static SeqActionType actionType = SeqActionType::SpawnAutomator;
-        SeqActionTypeImGui("Action type", &actionType);
+        static SeqActionType sSelectedActionType = SeqActionType::SpawnAutomator;
+        {
+            int constexpr kFilterBufLength = 64;
+            static char sActionTypeFilterBuf[kFilterBufLength] = {0};
+            ImGui::InputText("Type search", sActionTypeFilterBuf, kFilterBufLength);
+            std::string_view typeFilter(sActionTypeFilterBuf);
+            if (ImGui::BeginListBox("Type")) {
+                for (int typeIx = 0; typeIx < (int)SeqActionType::Count; ++typeIx) {
+                    SeqActionType const actionType = (SeqActionType)typeIx;
+                    char const *typeName = gSeqActionTypeStrings[typeIx];
+                    if (string_ci::Contains(std::string_view(typeName), typeFilter)) {
+                        bool selected = actionType == sSelectedActionType;
+                        bool clicked = ImGui::Selectable(typeName, selected);
+                        if (clicked) {
+                            sSelectedActionType = actionType;
+                        }
+                    }
+                }
+                ImGui::EndListBox();
+            }
+        }
+        //SeqActionTypeImGui("Action type", &actionType);
         if (ImGui::Button("Add")) {
-            actions.push_back(SeqAction::New(actionType));
+            actions.push_back(SeqAction::New(sSelectedActionType));
             changed = true;
         }        
         int deleteIx = -1;
