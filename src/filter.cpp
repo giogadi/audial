@@ -4,33 +4,33 @@
 
 namespace filter {
 
-constexpr double kTwoPi = 2.0*3.14159265358979323846264338327950288419716939937510582097494459230781640628620899;
+constexpr float kTwoPi = 2.0*3.14159265358979323846264338327950288419716939937510582097494459230781640628620899;
 
-constexpr double GUI_Q_MIN = 1.0;
-constexpr double GUI_Q_MAX = 10.0;
-constexpr double MOOG_Q_SLOPE = (4.0 - 0.0) / (GUI_Q_MAX - GUI_Q_MIN);
+constexpr float GUI_Q_MIN = 1.0;
+constexpr float GUI_Q_MAX = 10.0;
+constexpr float MOOG_Q_SLOPE = (4.0 - 0.0) / (GUI_Q_MAX - GUI_Q_MIN);
 
-inline void boundValue(double& value, double minValue, double maxValue)
+inline void boundValue(float& value, float minValue, float maxValue)
 {
-    const double t = value < minValue ? minValue : value;
+    const float t = value < minValue ? minValue : value;
     value = t > maxValue ? maxValue : t;
 }
 
-inline void mapDoubleValue(double& value, double min, double max, double minMap, double maxMap)
+inline void mapfloatValue(float& value, float min, float max, float minMap, float maxMap)
 {
     // --- bound to limits
     boundValue(value, min, max);
-    double mapped = ((value - min) / (max - min)) * (maxMap - minMap) + minMap;
+    float mapped = ((value - min) / (max - min)) * (maxMap - minMap) + minMap;
     value = mapped;
 }
 
-inline void mapDoubleValue(double& value, double min, double minMap, double slope)
+inline void mapfloatValue(float& value, float min, float minMap, float slope)
 {
     // --- bound to limits
     value = minMap + slope * (value - min);
 }
 
-bool VA1Filter::reset(double _sampleRate)
+bool VA1Filter::reset(float _sampleRate)
 {
     sampleRate = _sampleRate;
     halfSamplePeriod = 1.0 / (2.0 * sampleRate);
@@ -39,7 +39,7 @@ bool VA1Filter::reset(double _sampleRate)
     return true;
 }
 
-void VA1Filter::setFilterParams(double _fc, double _Q)
+void VA1Filter::setFilterParams(float _fc, float _Q)
 {
     if (fc != _fc)
 		{
@@ -50,16 +50,16 @@ void VA1Filter::setFilterParams(double _fc, double _Q)
 
 bool VA1Filter::update()
 {
-    double g = tan(kTwoPi*fc*halfSamplePeriod); // (2.0 / T)*tan(wd*T / 2.0);
+    float g = tan(kTwoPi*fc*halfSamplePeriod); // (2.0 / T)*tan(wd*T / 2.0);
     coeffs.alpha = g / (1.0 + g);
 
     return true;
 }
 
-FilterOutput* VA1Filter::process(double xn)
+FilterOutput* VA1Filter::process(float xn)
 {
     // --- create vn node
-    double vn = (xn - sn)*coeffs.alpha;
+    float vn = (xn - sn)*coeffs.alpha;
 
     // --- form LP output
     output.filter[LPF1] = vn + sn;
@@ -80,7 +80,7 @@ FilterOutput* VA1Filter::process(double xn)
 }
 
 /** reset members to initialized state */
-bool VAMoogFilter::reset(double _sampleRate)
+bool VAMoogFilter::reset(float _sampleRate)
 {
     sampleRate = _sampleRate;
     halfSamplePeriod = 1.0 / (2.0 * sampleRate);
@@ -95,10 +95,10 @@ bool VAMoogFilter::reset(double _sampleRate)
     return true;
 }
 
-void VAMoogFilter::setFilterParams(double _fc, double _Q)
+void VAMoogFilter::setFilterParams(float _fc, float _Q)
 {
     // --- use mapping function for Q -> K
-    mapDoubleValue(_Q, 1.0, 0.0, MOOG_Q_SLOPE);
+    mapfloatValue(_Q, 1.0, 0.0, MOOG_Q_SLOPE);
 
     if (fc != _fc || coeffs.K != _Q)
 		{
@@ -115,7 +115,7 @@ bool VAMoogFilter::update()
 
     // --- alpha0 
     coeffs.alpha0 = 1.0 / (1.0 + coeffs.K*coeffs.alpha*coeffs.alpha*coeffs.alpha*coeffs.alpha);
-    double kernel = 1.0 / (1.0 + coeffs.g);
+    float kernel = 1.0 / (1.0 + coeffs.g);
 
     // --- pre-calculate for distributing to subfilters
     coeffs.subFilterBeta[FLT4] = kernel;
@@ -138,10 +138,10 @@ bool VAMoogFilter::update()
     return true;
 }
 
-FilterOutput* VAMoogFilter::process(double xn)
+FilterOutput* VAMoogFilter::process(float xn)
 {
     // --- 4th order MOOG:
-    double sigma = 0.0;
+    float sigma = 0.0;
 
     for (uint32_t i = 0; i < MOOG_SUBFILTERS; i++)
         sigma += subFilter[i].getFBOutput();
@@ -150,7 +150,7 @@ FilterOutput* VAMoogFilter::process(double xn)
     xn *= 1.0 + coeffs.bassComp*coeffs.K; // --- bassComp is hard coded
 
     // --- now figure out u(n) = alpha0*[x(n) - K*sigma]
-    double u = coeffs.alpha0*(xn - coeffs.K * sigma);
+    float u = coeffs.alpha0*(xn - coeffs.K * sigma);
 
     // --- send u -> LPF1 and then cascade the outputs to form y(n)
     FilterOutput* subFltOut[4];

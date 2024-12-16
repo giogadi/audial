@@ -14,32 +14,32 @@ enum { LPF1, LPF4, NUM_FILTER_OUTPUTS };
 struct FilterOutput
 {
     FilterOutput() { clearData(); }
-    double filter[NUM_FILTER_OUTPUTS];
+    float filter[NUM_FILTER_OUTPUTS];
     void clearData()
     {
-        memset(&filter[0], 0, sizeof(double) * NUM_FILTER_OUTPUTS);
+        memset(&filter[0], 0, sizeof(float) * NUM_FILTER_OUTPUTS);
     }
 };
 
 struct VA1Coeffs
 {
     // --- filter coefficients
-    double alpha = 0.0;			///< alpha is (wcT/2)
-    double beta = 1.0;			///< beta value, not used
+    float alpha = 0.0;			///< alpha is (wcT/2)
+    float beta = 1.0;			///< beta value, not used
 };
 
 class VA1Filter
 {
 public:
     // --- these match SynthModule names
-    bool reset(double _sampleRate);
+    bool reset(float _sampleRate);
     bool update();
-    FilterOutput* process(double xn); 
-    void setFilterParams(double _fc, double _Q);
+    FilterOutput* process(float xn); 
+    void setFilterParams(float _fc, float _Q);
 
     // --- set coeffs directly, bypassing coeff calculation
-    void setAlpha(double _alpha) { coeffs.alpha = _alpha; }
-    void setBeta(double _beta) { coeffs.beta = _beta; }
+    void setAlpha(float _alpha) { coeffs.alpha = _alpha; }
+    void setBeta(float _beta) { coeffs.beta = _beta; }
     void setCoeffs(VA1Coeffs& _coeffs) {
         coeffs = _coeffs;
     }
@@ -49,16 +49,16 @@ public:
     }
 		
     // --- added for MOOG & K35, need access to this output value, scaled by beta
-    double getFBOutput() { return coeffs.beta * sn; }
+    float getFBOutput() { return coeffs.beta * sn; }
 
 protected:
     FilterOutput output;
-    double sampleRate = 44100.0;				///< current sample rate
-    double halfSamplePeriod = 1.0;
-    double fc = 0.0;
+    float sampleRate = 44100.0;				///< current sample rate
+    float halfSamplePeriod = 1.0;
+    float fc = 0.0;
 
     // --- state storage
-    double sn = 0.0;						///< state variables
+    float sn = 0.0;						///< state variables
 
     // --- filter coefficients
     VA1Coeffs coeffs;
@@ -67,15 +67,15 @@ protected:
 struct VAMoogCoeffs
 {
     // --- filter coefficients
-    double K = 1.0;			///< beta value, not used
-    double alpha = 0.0;			///< alpha is (wcT/2)
-    double alpha0 = 1.0;			///< beta value, not used
-    double sigma = 1.0;			///< beta value, not used
-    double bassComp = 1.0;			///< beta value, not used
-    double g = 1.0;			///< beta value, not used
+    float K = 1.0;			///< beta value, not used
+    float alpha = 0.0;			///< alpha is (wcT/2)
+    float alpha0 = 1.0;			///< beta value, not used
+    float sigma = 1.0;			///< beta value, not used
+    float bassComp = 1.0;			///< beta value, not used
+    float g = 1.0;			///< beta value, not used
 
     // --- these are to minimize repeat calculations for left/right pairs
-    double subFilterBeta[MOOG_SUBFILTERS] = { 0.0, 0.0, 0.0, 0.0 };
+    float subFilterBeta[MOOG_SUBFILTERS] = { 0.0, 0.0, 0.0, 0.0 };
 };
 
 class VAMoogFilter
@@ -83,10 +83,10 @@ class VAMoogFilter
 public:
 
     // --- these match SynthModule names
-    bool reset(double _sampleRate);
+    bool reset(float _sampleRate);
     bool update();
-    FilterOutput* process(double xn); 
-    void setFilterParams(double _fc, double _Q);
+    FilterOutput* process(float xn); 
+    void setFilterParams(float _fc, float _Q);
 
     // --- set coeffs directly, bypassing coeff calculation
     void setCoeffs(const VAMoogCoeffs& _coeffs) {
@@ -113,9 +113,9 @@ protected:
     FilterOutput output;
     VA1Filter subFilter[MOOG_SUBFILTERS];
     // VA1Filter subFilterFGN[MOOG_SUBFILTERS];
-    double sampleRate = 44100.0;				///< current sample rate
-    double halfSamplePeriod = 1.0;
-    double fc = 0.0;
+    float sampleRate = 44100.0;				///< current sample rate
+    float halfSamplePeriod = 1.0;
+    float fc = 0.0;
 
     // --- filter coefficients
     VAMoogCoeffs coeffs;
