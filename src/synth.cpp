@@ -43,7 +43,17 @@ float GenerateSquare(float const phase, float const phaseChange) {
      float dt = phaseChange * k1_2Pi;
      float t = phase * k1_2Pi;
      v += Polyblep(t, dt);
-     v -= Polyblep(fmod(t + 0.5f, 1.0f), dt);
+
+     //v -= Polyblep(fmod(t + 0.5f, 1.0f), dt);
+
+     /*float unused;
+     float tFrac = modf(t + 0.5f, &unused);
+     v -= Polyblep(tFrac, dt);*/
+
+     float tFrac = t + 0.5f;
+     if (tFrac >= 1.f) {
+         tFrac -= 1.f;
+     }
 #endif
     return v;
 }
