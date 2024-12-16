@@ -89,6 +89,7 @@ std::unique_ptr<SeqAction> SeqAction::New(SeqActionType actionType) {
         case SeqActionType::SetBpm: return std::make_unique<SetBpmSeqAction>();
         case SeqActionType::SetMissTrigger: return std::make_unique<SetMissTriggerSeqAction>();
         case SeqActionType::SetPlayerResetTrigger: return std::make_unique<SetPlayerResetTriggerSeqAction>();
+        case SeqActionType::RandomizePosition: return std::make_unique<RandomizePositionSeqAction>();
         case SeqActionType::Count: break;
     }
     assert(false);
@@ -194,7 +195,6 @@ bool SeqAction::ImGui(char const* label, std::vector<std::unique_ptr<SeqAction>>
                 ImGui::EndListBox();
             }
         }
-        //SeqActionTypeImGui("Action type", &actionType);
         if (ImGui::Button("Add")) {
             actions.push_back(SeqAction::New(sSelectedActionType));
             changed = true;

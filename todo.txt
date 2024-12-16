@@ -5,6 +5,7 @@ Spiky bits:
 - maybe disable controller inputs for now
 
 Ideas
+- AESTHETIC: Fever Ray's ARTE show
 - Everytime you die, change the patch a bit to keep things interesting
 - let player sing into the mic to get vocoder shit
 - Unlock levels and things by finding the right patch
@@ -27,6 +28,12 @@ Story:
 - tension between independence and control? constraint and freedom?
 
 Near-term ideas:
+- different instruments sometimes, obviously
+- way more variety in notes from pickups. Maybe they even correlate to the notes the player is playing?
+- Change letters sometimes for nodes as you go
+- change positions of letters sometimes. Moving letters?
+- make some nodes be words (type whole thing for them to activate)
+- one-time-use nodes?
 - wall that reflects you back to the node you dashed from (and you stop at that node)
 - Change color of letterbox
 - What if we prime the player with an example rhythm and then let them go at it themselves?
@@ -37,6 +44,7 @@ BUGS:
 - weird floaty text when camera moves. everything looks floaty actually
 
 TOOLS:
+- Copy transform (and/or parts of it)
 - faster input of notes and letters for lots of enemies
 - need a window list so we know all the types of windows we can show
 - need an input mode list so we know all the types of modes, and which is active, etc

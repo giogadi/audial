@@ -360,3 +360,19 @@ struct SetPlayerResetTriggerSeqAction : public SeqAction {
     virtual void InitDerived(GameManager& g) override;
     virtual void ExecuteDerived(GameManager& g) override;
 };
+
+struct RandomizePositionSeqAction : public SeqAction {
+    virtual SeqActionType Type() const override { return SeqActionType::RandomizePosition; }
+    EditorId _editorId;
+    EditorId _regionEditorId;
+    bool _randomizeY = false;
+    
+
+    ne::EntityId _id;
+    ne::EntityId _regionId;
+    virtual void LoadDerived(serial::Ptree pt) override;
+    virtual void SaveDerived(serial::Ptree pt) const override;
+    virtual bool ImGui() override;
+    virtual void InitDerived(GameManager& g) override;
+    virtual void ExecuteDerived(GameManager& g) override;
+};

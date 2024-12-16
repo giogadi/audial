@@ -1,0 +1,2 @@
+-s data/levels/temple/level.xml -y data/levels/temple/patches.xml
+

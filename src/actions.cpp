@@ -1063,6 +1063,8 @@ void SetMissTriggerSeqAction::ExecuteDerived(GameManager& g) {
     player->_s._missTrigger = _trigger;
 }
 
+////////////////////////////////////////////////////////////
+
 void SetPlayerResetTriggerSeqAction::LoadDerived(serial::Ptree pt) {
     serial::LoadFromChildOf(pt, "trigger", _triggerEditorId);
 }
@@ -1089,4 +1091,58 @@ void SetPlayerResetTriggerSeqAction::ExecuteDerived(GameManager& g) {
     if (g._editMode) { return; }
     FlowPlayerEntity* player = static_cast<FlowPlayerEntity*>(g._neEntityManager->GetFirstEntityOfType(ne::EntityType::FlowPlayer));
     player->_s._resetTrigger = _trigger;
+}
+
+////////////////////////////////////////////////////
+
+void RandomizePositionSeqAction::LoadDerived(serial::Ptree pt) {
+    serial::LoadFromChildOf(pt, "entity", _editorId);
+    serial::LoadFromChildOf(pt, "region", _regionEditorId);
+    _randomizeY = false;
+    _randomizeY = pt.GetBool("y");
+}
+
+void RandomizePositionSeqAction::SaveDerived(serial::Ptree pt) const {
+    serial::SaveInNewChildOf(pt, "entity", _editorId);
+    serial::SaveInNewChildOf(pt, "region", _regionEditorId);
+    pt.PutBool("y", _randomizeY);
+}
+
+bool RandomizePositionSeqAction::ImGui() {
+    imgui_util::InputEditorId("Entity", &_editorId);
+    imgui_util::InputEditorId("Region", &_regionEditorId);
+    ImGui::Checkbox("Randomize y", &_randomizeY);
+    return false;
+}
+
+void RandomizePositionSeqAction::InitDerived(GameManager& g) {
+    ne::Entity* e = g._neEntityManager->FindEntityByEditorId(_editorId, /*isActive=*/nullptr, "RandomizePositionSeqAction::InitDerived entity");
+    if (e) {
+        _id = e->_id;
+    }
+    e = g._neEntityManager->FindEntityByEditorId(_regionEditorId, /*isActive=*/nullptr, "RandomizePositionSeqAction::InitDerived region");
+    if (e) {
+        _regionId = e->_id;
+    }
+}
+
+void RandomizePositionSeqAction::ExecuteDerived(GameManager& g) {
+    if (g._editMode) { return; }
+    if (ne::Entity *region = g._neEntityManager->GetActiveOrInactiveEntity(_regionId)) {
+        if (ne::Entity *e = g._neEntityManager->GetActiveOrInactiveEntity(_id)) {
+            Transform const &regionTrans = region->_transform;
+            float x = rng::GetFloatGlobal(-0.5f, 0.5f);
+            float y = rng::GetFloatGlobal(-0.5f, 0.5f);
+            float z = rng::GetFloatGlobal(-0.5f, 0.5f);
+            Vec4 p(x, y, z, 1.f);
+            Mat4 t = regionTrans.Mat4Scale();
+            Vec4 transformed = t * p;
+            transformed /= transformed._w;  // ???
+            if (!_randomizeY) {
+                transformed._y = e->_transform.GetPos()._y;
+            }
+            e->_initTransform.SetPos(transformed.GetXYZ());
+            e->_transform = e->_initTransform;
+        }
+    }
 }
