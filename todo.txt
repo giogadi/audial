@@ -44,6 +44,7 @@ BUGS:
 - weird floaty text when camera moves. everything looks floaty actually
 
 TOOLS:
+- collapse all for vectors
 - Copy transform (and/or parts of it)
 - faster input of notes and letters for lots of enemies
 - need a window list so we know all the types of windows we can show
