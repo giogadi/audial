@@ -1,7 +1,7 @@
 <root>
     <version>13</version>
     <script>
-        <bpm>140</bpm>
+        <bpm>160</bpm>
         <gamma_correction>false</gamma_correction>
         <ctrl_groups>
             <group0/>

@@ -28,6 +28,7 @@ Story:
 - tension between independence and control? constraint and freedom?
 
 Near-term ideas:
+- add Sonic 2/3 style intro panel at level start
 - different instruments sometimes, obviously
 - way more variety in notes from pickups. Maybe they even correlate to the notes the player is playing?
 - Change letters sometimes for nodes as you go
