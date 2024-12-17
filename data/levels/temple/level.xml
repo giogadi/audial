@@ -10885,8 +10885,8 @@
                     <stop_on_pass>true</stop_on_pass>
                     <stop_after_timer>true</stop_after_timer>
                 </last_hit_response>
-                <text>cryyyyyyoutloud</text>
-                <buttons>aaaaaaaaaaaaaaa</buttons>
+                <text>cryyyyyy</text>
+                <buttons>aaaaaaaa</buttons>
                 <type_kill>true</type_kill>
                 <all_actions_on_hit>false</all_actions_on_hit>
                 <flow_cooldown>-1</flow_cooldown>
@@ -11130,7 +11130,59 @@
                         <holdNotes>false</holdNotes>
                     </seq_action>
                 </hit_actions>
-                <all_hit_actions/>
+                <all_hit_actions>
+                    <seq_action>
+                        <one_time>false</one_time>
+                        <action_type>SetEntityActive</action_type>
+                        <entities_tag>-1</entities_tag>
+                        <entity_editor_id>
+                            <id>344</id>
+                        </entity_editor_id>
+                        <active>true</active>
+                        <init_on_activate>true</init_on_activate>
+                        <init_if_already_active>false</init_if_already_active>
+                    </seq_action>
+                    <seq_action>
+                        <one_time>false</one_time>
+                        <action_type>BeatTimeEvent</action_type>
+                        <quantize_denom>0.25</quantize_denom>
+                        <beat_time_event>
+                            <event_type>AllNotesOff</event_type>
+                            <channel>2</channel>
+                            <delay_secs>0</delay_secs>
+                            <beat_time>0</beat_time>
+                        </beat_time_event>
+                    </seq_action>
+                    <seq_action>
+                        <one_time>false</one_time>
+                        <action_type>NoteOnOff</action_type>
+                        <channel>2</channel>
+                        <midiNotes>
+                            <array_item>
+                                <note>50</note>
+                            </array_item>
+                            <array_item>
+                                <note>55</note>
+                            </array_item>
+                            <array_item>
+                                <note>57</note>
+                            </array_item>
+                        </midiNotes>
+                        <noteLength>16</noteLength>
+                        <velocity>1</velocity>
+                        <quantizeDenom>0.25</quantizeDenom>
+                        <doNoteOff>true</doNoteOff>
+                        <holdNotes>false</holdNotes>
+                    </seq_action>
+                    <seq_action>
+                        <one_time>false</one_time>
+                        <action_type>ChangePatch</action_type>
+                        <channel>2</channel>
+                        <blend_beat_time>12</blend_beat_time>
+                        <use_patch_bank>true</use_patch_bank>
+                        <patch_name>padswell0</patch_name>
+                    </seq_action>
+                </all_hit_actions>
                 <off_cooldown_actions/>
                 <combo_end_actions/>
             </TypingEnemy>
@@ -11289,13 +11341,13 @@
                                 <note>51</note>
                             </array_item>
                             <array_item>
-                                <note>58</note>
+                                <note>55</note>
                             </array_item>
                             <array_item>
-                                <note>65</note>
+                                <note>60</note>
                             </array_item>
                         </midiNotes>
-                        <noteLength>0</noteLength>
+                        <noteLength>8</noteLength>
                         <velocity>1</velocity>
                         <quantizeDenom>0.25</quantizeDenom>
                         <doNoteOff>false</doNoteOff>
@@ -11320,9 +11372,9 @@
                 <pickable>true</pickable>
                 <transform>
                     <pos>
-                        <x>-18.760777</x>
+                        <x>-20.103163</x>
                         <y>0</y>
-                        <z>-27.90555</z>
+                        <z>-27.917376</z>
                     </pos>
                     <quat>
                         <x>0</x>
@@ -11380,7 +11432,7 @@
                 <text>a</text>
                 <buttons>a</buttons>
                 <type_kill>true</type_kill>
-                <all_actions_on_hit>false</all_actions_on_hit>
+                <all_actions_on_hit>true</all_actions_on_hit>
                 <flow_cooldown>-1</flow_cooldown>
                 <show_beats_left>false</show_beats_left>
                 <cooldown_quantize_denom>0</cooldown_quantize_denom>
@@ -11398,6 +11450,17 @@
                 <hit_actions>
                     <seq_action>
                         <one_time>false</one_time>
+                        <action_type>BeatTimeEvent</action_type>
+                        <quantize_denom>0</quantize_denom>
+                        <beat_time_event>
+                            <event_type>AllNotesOff</event_type>
+                            <channel>2</channel>
+                            <delay_secs>0</delay_secs>
+                            <beat_time>0</beat_time>
+                        </beat_time_event>
+                    </seq_action>
+                    <seq_action>
+                        <one_time>false</one_time>
                         <action_type>NoteOnOff</action_type>
                         <channel>2</channel>
                         <midiNotes>
@@ -11405,15 +11468,332 @@
                                 <note>51</note>
                             </array_item>
                             <array_item>
-                                <note>58</note>
+                                <note>55</note>
                             </array_item>
                             <array_item>
-                                <note>65</note>
+                                <note>60</note>
                             </array_item>
                         </midiNotes>
-                        <noteLength>2</noteLength>
+                        <noteLength>8</noteLength>
                         <velocity>1</velocity>
                         <quantizeDenom>0.25</quantizeDenom>
+                        <doNoteOff>true</doNoteOff>
+                        <holdNotes>false</holdNotes>
+                    </seq_action>
+                </hit_actions>
+                <all_hit_actions/>
+                <off_cooldown_actions/>
+                <combo_end_actions/>
+            </TypingEnemy>
+            <TypingEnemy>
+                <editor_id>
+                    <id>344</id>
+                </editor_id>
+                <name>mesquite0</name>
+                <entity_active>false</entity_active>
+                <pickable>true</pickable>
+                <transform>
+                    <pos>
+                        <x>-13.630229</x>
+                        <y>0</y>
+                        <z>-20.245266</z>
+                    </pos>
+                    <quat>
+                        <x>0</x>
+                        <y>0</y>
+                        <z>0</z>
+                        <w>1</w>
+                    </quat>
+                    <scale>
+                        <x>0.5</x>
+                        <y>0.5</y>
+                        <z>0.5</z>
+                    </scale>
+                </transform>
+                <model_name></model_name>
+                <texture_name></texture_name>
+                <model_color_vec4>
+                    <x>0.80000001</x>
+                    <y>0.80000001</y>
+                    <z>0.80000001</z>
+                    <w>1</w>
+                </model_color_vec4>
+                <flow_section_id>-1</flow_section_id>
+                <tag>0</tag>
+                <waypoint_follower>
+                    <mode>Waypoint</mode>
+                    <waypoint_auto_start>false</waypoint_auto_start>
+                    <loop_waypoints>false</loop_waypoints>
+                    <start_time>3</start_time>
+                    <quantize>1</quantize>
+                    <quantize_buffer>0</quantize_buffer>
+                    <waypoints/>
+                    <follow_entity_editor_id>
+                        <id>-1</id>
+                    </follow_entity_editor_id>
+                </waypoint_follower>
+                <hit_response>
+                    <type>None</type>
+                    <speed>-1</speed>
+                    <push_angle_deg>-1</push_angle_deg>
+                    <time>-1</time>
+                    <ps_time>-1</ps_time>
+                    <stop_on_pass>true</stop_on_pass>
+                    <stop_after_timer>true</stop_after_timer>
+                </hit_response>
+                <use_last_hit_response>true</use_last_hit_response>
+                <last_hit_response>
+                    <type>Pull</type>
+                    <speed>-1</speed>
+                    <push_angle_deg>-1</push_angle_deg>
+                    <time>-1</time>
+                    <ps_time>-1</ps_time>
+                    <stop_on_pass>true</stop_on_pass>
+                    <stop_after_timer>true</stop_after_timer>
+                </last_hit_response>
+                <text>outloud</text>
+                <buttons>aaaaaaa</buttons>
+                <type_kill>true</type_kill>
+                <all_actions_on_hit>false</all_actions_on_hit>
+                <flow_cooldown>-1</flow_cooldown>
+                <show_beats_left>false</show_beats_left>
+                <cooldown_quantize_denom>0</cooldown_quantize_denom>
+                <reset_cooldown_on_any_hit>true</reset_cooldown_on_any_hit>
+                <init_hittable>true</init_hittable>
+                <timed_hittable_time>-1</timed_hittable_time>
+                <allow_backward>false</allow_backward>
+                <just_draw_model>false</just_draw_model>
+                <group_id>-1</group_id>
+                <region_type>TriggerEntity</region_type>
+                <active_region_editor_id>
+                    <id>-1</id>
+                </active_region_editor_id>
+                <lock_player_in_region>false</lock_player_in_region>
+                <hit_actions>
+                    <seq_action>
+                        <one_time>false</one_time>
+                        <action_type>NoteOnOff</action_type>
+                        <channel>1</channel>
+                        <midiNotes>
+                            <array_item>
+                                <note>77</note>
+                            </array_item>
+                        </midiNotes>
+                        <noteLength>1</noteLength>
+                        <velocity>1</velocity>
+                        <quantizeDenom>0.25</quantizeDenom>
+                        <doNoteOff>true</doNoteOff>
+                        <holdNotes>false</holdNotes>
+                    </seq_action>
+                    <seq_action>
+                        <one_time>false</one_time>
+                        <action_type>NoteOnOff</action_type>
+                        <channel>1</channel>
+                        <midiNotes>
+                            <array_item>
+                                <note>75</note>
+                            </array_item>
+                        </midiNotes>
+                        <noteLength>1</noteLength>
+                        <velocity>1</velocity>
+                        <quantizeDenom>0.25</quantizeDenom>
+                        <doNoteOff>true</doNoteOff>
+                        <holdNotes>false</holdNotes>
+                    </seq_action>
+                    <seq_action>
+                        <one_time>false</one_time>
+                        <action_type>NoteOnOff</action_type>
+                        <channel>1</channel>
+                        <midiNotes>
+                            <array_item>
+                                <note>74</note>
+                            </array_item>
+                        </midiNotes>
+                        <noteLength>1</noteLength>
+                        <velocity>1</velocity>
+                        <quantizeDenom>0.25</quantizeDenom>
+                        <doNoteOff>true</doNoteOff>
+                        <holdNotes>false</holdNotes>
+                    </seq_action>
+                    <seq_action>
+                        <one_time>false</one_time>
+                        <action_type>NoteOnOff</action_type>
+                        <channel>1</channel>
+                        <midiNotes>
+                            <array_item>
+                                <note>75</note>
+                            </array_item>
+                        </midiNotes>
+                        <noteLength>1</noteLength>
+                        <velocity>1</velocity>
+                        <quantizeDenom>0.25</quantizeDenom>
+                        <doNoteOff>true</doNoteOff>
+                        <holdNotes>false</holdNotes>
+                    </seq_action>
+                    <seq_action>
+                        <one_time>false</one_time>
+                        <action_type>NoteOnOff</action_type>
+                        <channel>1</channel>
+                        <midiNotes>
+                            <array_item>
+                                <note>74</note>
+                            </array_item>
+                        </midiNotes>
+                        <noteLength>1</noteLength>
+                        <velocity>1</velocity>
+                        <quantizeDenom>0.25</quantizeDenom>
+                        <doNoteOff>true</doNoteOff>
+                        <holdNotes>false</holdNotes>
+                    </seq_action>
+                    <seq_action>
+                        <one_time>false</one_time>
+                        <action_type>NoteOnOff</action_type>
+                        <channel>1</channel>
+                        <midiNotes>
+                            <array_item>
+                                <note>72</note>
+                            </array_item>
+                        </midiNotes>
+                        <noteLength>1</noteLength>
+                        <velocity>1</velocity>
+                        <quantizeDenom>0.25</quantizeDenom>
+                        <doNoteOff>true</doNoteOff>
+                        <holdNotes>false</holdNotes>
+                    </seq_action>
+                    <seq_action>
+                        <one_time>false</one_time>
+                        <action_type>NoteOnOff</action_type>
+                        <channel>1</channel>
+                        <midiNotes>
+                            <array_item>
+                                <note>74</note>
+                            </array_item>
+                        </midiNotes>
+                        <noteLength>1</noteLength>
+                        <velocity>1</velocity>
+                        <quantizeDenom>0.25</quantizeDenom>
+                        <doNoteOff>true</doNoteOff>
+                        <holdNotes>false</holdNotes>
+                    </seq_action>
+                </hit_actions>
+                <all_hit_actions/>
+                <off_cooldown_actions/>
+                <combo_end_actions/>
+            </TypingEnemy>
+            <TypingEnemy>
+                <editor_id>
+                    <id>345</id>
+                </editor_id>
+                <name>_open_swell0</name>
+                <entity_active>false</entity_active>
+                <pickable>true</pickable>
+                <transform>
+                    <pos>
+                        <x>-18.226149</x>
+                        <y>0</y>
+                        <z>-27.893724</z>
+                    </pos>
+                    <quat>
+                        <x>0</x>
+                        <y>0</y>
+                        <z>0</z>
+                        <w>1</w>
+                    </quat>
+                    <scale>
+                        <x>1</x>
+                        <y>1</y>
+                        <z>1</z>
+                    </scale>
+                </transform>
+                <model_name></model_name>
+                <texture_name></texture_name>
+                <model_color_vec4>
+                    <x>0.80000001</x>
+                    <y>0.80000001</y>
+                    <z>0.80000001</z>
+                    <w>1</w>
+                </model_color_vec4>
+                <flow_section_id>-1</flow_section_id>
+                <tag>0</tag>
+                <waypoint_follower>
+                    <mode>Waypoint</mode>
+                    <waypoint_auto_start>false</waypoint_auto_start>
+                    <loop_waypoints>false</loop_waypoints>
+                    <start_time>3</start_time>
+                    <quantize>1</quantize>
+                    <quantize_buffer>0</quantize_buffer>
+                    <waypoints/>
+                    <follow_entity_editor_id>
+                        <id>-1</id>
+                    </follow_entity_editor_id>
+                </waypoint_follower>
+                <hit_response>
+                    <type>Pull</type>
+                    <speed>-1</speed>
+                    <push_angle_deg>-1</push_angle_deg>
+                    <time>-1</time>
+                    <ps_time>-1</ps_time>
+                    <stop_on_pass>true</stop_on_pass>
+                    <stop_after_timer>true</stop_after_timer>
+                </hit_response>
+                <use_last_hit_response>false</use_last_hit_response>
+                <last_hit_response>
+                    <type>Pull</type>
+                    <speed>-1</speed>
+                    <push_angle_deg>-1</push_angle_deg>
+                    <time>-1</time>
+                    <ps_time>-1</ps_time>
+                    <stop_on_pass>true</stop_on_pass>
+                    <stop_after_timer>true</stop_after_timer>
+                </last_hit_response>
+                <text>a</text>
+                <buttons>a</buttons>
+                <type_kill>true</type_kill>
+                <all_actions_on_hit>true</all_actions_on_hit>
+                <flow_cooldown>-1</flow_cooldown>
+                <show_beats_left>false</show_beats_left>
+                <cooldown_quantize_denom>0</cooldown_quantize_denom>
+                <reset_cooldown_on_any_hit>false</reset_cooldown_on_any_hit>
+                <init_hittable>true</init_hittable>
+                <timed_hittable_time>-1</timed_hittable_time>
+                <allow_backward>false</allow_backward>
+                <just_draw_model>false</just_draw_model>
+                <group_id>-1</group_id>
+                <region_type>TriggerEntity</region_type>
+                <active_region_editor_id>
+                    <id>-1</id>
+                </active_region_editor_id>
+                <lock_player_in_region>false</lock_player_in_region>
+                <hit_actions>
+                    <seq_action>
+                        <one_time>false</one_time>
+                        <action_type>BeatTimeEvent</action_type>
+                        <quantize_denom>0</quantize_denom>
+                        <beat_time_event>
+                            <event_type>AllNotesOff</event_type>
+                            <channel>2</channel>
+                            <delay_secs>0</delay_secs>
+                            <beat_time>0</beat_time>
+                        </beat_time_event>
+                    </seq_action>
+                    <seq_action>
+                        <one_time>false</one_time>
+                        <action_type>NoteOnOff</action_type>
+                        <channel>2</channel>
+                        <midiNotes>
+                            <array_item>
+                                <note>50</note>
+                            </array_item>
+                            <array_item>
+                                <note>55</note>
+                            </array_item>
+                            <array_item>
+                                <note>57</note>
+                            </array_item>
+                        </midiNotes>
+                        <noteLength>8</noteLength>
+                        <velocity>1</velocity>
+                        <quantizeDenom>1</quantizeDenom>
                         <doNoteOff>true</doNoteOff>
                         <holdNotes>false</holdNotes>
                     </seq_action>
