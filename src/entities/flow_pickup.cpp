@@ -7,9 +7,12 @@
 #include "seq_action.h"
 #include "serial_vector_util.h"
 #include "imgui_vector_util.h"
+#include "math_util.h"
+#include "imgui_util.h"
+#include "renderer.h"
 
 namespace {
-Vec4 constexpr kNoHitColor = Vec4(0.245098054f, 0.933390915f, 1.f, 1.f);
+//Vec4 constexpr kNoHitColor = Vec4(0.245098054f, 0.933390915f, 1.f, 1.f);
 Vec4 constexpr kHitColor = Vec4(0.933390915f, 0.245098054f, 1.f, 1.f);
 }
 
@@ -18,7 +21,7 @@ void FlowPickupEntity::InitDerived(GameManager& g) {
         pAction->Init(g);
     }
     _hit = false;
-    _modelColor = kNoHitColor;
+    _beatTimeOfDeath = -1.0;
 
     Quaternion q;
     q.SetFromAngleAxis(0.25f * kPi, Vec3(0.f, 1.f, 0.f));
@@ -27,13 +30,21 @@ void FlowPickupEntity::InitDerived(GameManager& g) {
 
 void FlowPickupEntity::SaveDerived(serial::Ptree pt) const {
     SeqAction::SaveActionsInChildNode(pt, "actions", _actions);
+    pt.PutBool("kop", _killOnPickup);
+    serial::SaveInNewChildOf(pt, "hc", _hitColor);
 }
 
 void FlowPickupEntity::LoadDerived(serial::Ptree pt) {
     SeqAction::LoadActionsFromChildNode(pt, "actions", _actions);
+    _killOnPickup = false;
+    pt.TryGetBool("kop", &_killOnPickup);
+    _hitColor = kHitColor;
+    serial::LoadFromChildOf(pt, "hc", _hitColor);
 }
 
 ne::Entity::ImGuiResult FlowPickupEntity::ImGuiDerived(GameManager& g) {
+    ImGui::Checkbox("Kill on pickup", &_killOnPickup);
+    imgui_util::ColorEdit4("Hit color", &_hitColor);
     if (SeqAction::ImGui("Actions", _actions)) {
         return ne::Entity::ImGuiResult::NeedsInit;
     }
@@ -42,32 +53,69 @@ ne::Entity::ImGuiResult FlowPickupEntity::ImGuiDerived(GameManager& g) {
 
 void FlowPickupEntity::OnHit(GameManager& g) {
     if (!_hit) {
-        for (auto const& pAction : _actions) {
-            pAction->Execute(g);
+        if (_killOnPickup) {
+            _beatTimeOfDeath = g._beatClock->GetBeatTimeFromEpoch();
+        }
+        if (!_killOnPickup) {
+            for (auto const& pAction : _actions) {
+                pAction->Execute(g);
+            }
         }
     
         if (!g._editMode) {
-            _modelColor = kHitColor;
             _hit = true;
         }
     }
 }
 
 void FlowPickupEntity::UpdateDerived(GameManager& g, float dt) {
-    if (!g._editMode) {
-        float speed;
-        if (_hit) {
-            speed = 4.f;
-        } else {
-            speed = 0.5f;
-        }
-        float angle = speed * dt * kPi;
-        Quaternion q = _transform.Quat();
-        Quaternion rot;
-        rot.SetFromAngleAxis(angle, Vec3(0.f, 0.f, 1.f));
-        q = rot * q;
-        _transform.SetQuat(q);
-    }  
+    if (g._editMode) {
+        return;
+    }
+    float speed;
+    if (_hit) {
+        speed = 4.f;
+    } else {
+        speed = 0.5f;
+    }
+    float angle = speed * dt * kPi;
+    Quaternion q = _transform.Quat();
+    Quaternion rot;
+    rot.SetFromAngleAxis(angle, Vec3(0.f, 0.f, 1.f));
+    q = rot * q;
+    _transform.SetQuat(q);
+
+    if (_beatTimeOfDeath >= 0.0) {
+        double constexpr kDeathDuration = 0.25;
+        double const beatTime = g._beatClock->GetBeatTimeFromEpoch();
+        double t = beatTime - _beatTimeOfDeath;
+        double x = math_util::InverseLerp(0.0, kDeathDuration, t);
+
+        Vec3 scale = math_util::Vec3Lerp((float)x, Vec3(0.001f, 0.001f, 0.001f), _initTransform.Scale());
+        _transform.SetScale(scale);
+
+       if (t >= kDeathDuration) {
+           g._neEntityManager->TagForDeactivate(_id);
+           for (auto const &pAction : _actions) { 
+               pAction->Execute(g);
+           }
+       } 
+    }
+}
+
+void FlowPickupEntity::Draw(GameManager &g, float dt) {
+    Vec4 currentColor = _hit ? _hitColor : _modelColor;
+    if (_model != nullptr) {
+        Mat4 const& mat = _transform.Mat4Scale();
+        renderer::ModelInstance* m = g._scene->DrawTexturedMesh(_model, _textureId);
+        m->_transform = mat;
+        m->_color = currentColor;
+    } else if (g._editMode) {
+        // ???
+        Mat4 const& mat = _transform.Mat4Scale();
+        Vec4 constexpr bbColor(0.5f, 0.5f, 0.5f, 1.f);
+        g._scene->DrawBoundingBox(mat, bbColor);
+    }
 }
 
 void FlowPickupEntity::OnEditPick(GameManager& g) {

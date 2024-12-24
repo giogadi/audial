@@ -10,13 +10,18 @@ struct FlowPickupEntity : public ne::Entity {
     
     // serialized
     std::vector<std::unique_ptr<SeqAction>> _actions;
+    bool _killOnPickup;
+    Vec4 _hitColor;
 
     // non-serialized
-    bool _hit = false;
+    bool _hit = false; 
+    double _beatTimeOfDeath = -1.0;
 
     void OnHit(GameManager& g);
        
     virtual void UpdateDerived(GameManager& g, float dt) override;
+    virtual void Draw(GameManager& g, float dt) override;
+
     /* virtual void Destroy(GameManager& g) {} */
     virtual void OnEditPick(GameManager& g) override;
     /* virtual void DebugPrint(); */

@@ -28,6 +28,8 @@ Story:
 - tension between independence and control? constraint and freedom?
 
 Near-term ideas:
+- some pickups require multiple hits to pop? to make trills
+- some pickups are repeated, but require multiple swings through a couple of notes in order to create a looping phrase
 - add Sonic 2/3 style intro panel at level start
 - different instruments sometimes, obviously
 - way more variety in notes from pickups. Maybe they even correlate to the notes the player is playing?
