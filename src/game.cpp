@@ -279,7 +279,7 @@ int main(int argc, char** argv) {
  }
 #endif  /* __APPLE__ */
 
-    rng::SeedGlobal(0x12345678);
+    rng::SeedGlobal(0x12345679);
     
     CommandLineInputs cmdLineInputs;
     ParseCommandLine(cmdLineInputs, argc, argv);

@@ -4299,6 +4299,13 @@
                         <id>-1</id>
                     </follow_entity_editor_id>
                 </waypoint_follower>
+                <kop>false</kop>
+                <hc>
+                    <x>0.93339092</x>
+                    <y>0.24509805</y>
+                    <z>1</z>
+                    <w>1</w>
+                </hc>
                 <actions>
                     <seq_action>
                         <one_time>false</one_time>
@@ -4328,13 +4335,7 @@
                         <reset>false</reset>
                     </seq_action>
                 </actions>
-                <kop>false</kop>
-                <hc>
-                    <x>0.93339092</x>
-                    <y>0.24509805</y>
-                    <z>1</z>
-                    <w>1</w>
-                </hc>
+                <deathActions/>
             </FlowPickup>
             <TypingEnemy>
                 <editor_id>
@@ -6609,6 +6610,13 @@
                         <id>-1</id>
                     </follow_entity_editor_id>
                 </waypoint_follower>
+                <kop>false</kop>
+                <hc>
+                    <x>0.93339092</x>
+                    <y>0.24509805</y>
+                    <z>1</z>
+                    <w>1</w>
+                </hc>
                 <actions>
                     <seq_action>
                         <one_time>false</one_time>
@@ -6638,13 +6646,7 @@
                         <reset>false</reset>
                     </seq_action>
                 </actions>
-                <kop>false</kop>
-                <hc>
-                    <x>0.93339092</x>
-                    <y>0.24509805</y>
-                    <z>1</z>
-                    <w>1</w>
-                </hc>
+                <deathActions/>
             </FlowPickup>
             <FlowWall>
                 <editor_id>
@@ -6855,6 +6857,13 @@
                         <id>-1</id>
                     </follow_entity_editor_id>
                 </waypoint_follower>
+                <kop>false</kop>
+                <hc>
+                    <x>0.93339092</x>
+                    <y>0.24509805</y>
+                    <z>1</z>
+                    <w>1</w>
+                </hc>
                 <actions>
                     <seq_action>
                         <one_time>false</one_time>
@@ -6884,13 +6893,7 @@
                         <reset>false</reset>
                     </seq_action>
                 </actions>
-                <kop>false</kop>
-                <hc>
-                    <x>0.93339092</x>
-                    <y>0.24509805</y>
-                    <z>1</z>
-                    <w>1</w>
-                </hc>
+                <deathActions/>
             </FlowPickup>
             <FlowWall>
                 <editor_id>
@@ -10177,6 +10180,13 @@
                         <id>-1</id>
                     </follow_entity_editor_id>
                 </waypoint_follower>
+                <kop>true</kop>
+                <hc>
+                    <x>0.93339092</x>
+                    <y>0.24509805</y>
+                    <z>1</z>
+                    <w>1</w>
+                </hc>
                 <actions>
                     <seq_action>
                         <one_time>false</one_time>
@@ -10195,17 +10205,6 @@
                         <quantizeDenom>0.25</quantizeDenom>
                         <doNoteOff>true</doNoteOff>
                         <holdNotes>false</holdNotes>
-                    </seq_action>
-                    <seq_action>
-                        <one_time>false</one_time>
-                        <action_type>SetEntityActive</action_type>
-                        <entities_tag>-1</entities_tag>
-                        <entity_editor_id>
-                            <id>332</id>
-                        </entity_editor_id>
-                        <active>false</active>
-                        <init_on_activate>true</init_on_activate>
-                        <init_if_already_active>false</init_if_already_active>
                     </seq_action>
                     <seq_action>
                         <one_time>false</one_time>
@@ -10248,13 +10247,7 @@
                         <reset>false</reset>
                     </seq_action>
                 </actions>
-                <kop>false</kop>
-                <hc>
-                    <x>0.93339092</x>
-                    <y>0.24509805</y>
-                    <z>1</z>
-                    <w>1</w>
-                </hc>
+                <deathActions/>
             </FlowPickup>
             <Base>
                 <editor_id>
@@ -10351,6 +10344,13 @@
                         <id>-1</id>
                     </follow_entity_editor_id>
                 </waypoint_follower>
+                <kop>true</kop>
+                <hc>
+                    <x>0.93339092</x>
+                    <y>0.24509805</y>
+                    <z>1</z>
+                    <w>1</w>
+                </hc>
                 <actions>
                     <seq_action>
                         <one_time>false</one_time>
@@ -10369,17 +10369,6 @@
                         <quantizeDenom>0.25</quantizeDenom>
                         <doNoteOff>true</doNoteOff>
                         <holdNotes>false</holdNotes>
-                    </seq_action>
-                    <seq_action>
-                        <one_time>false</one_time>
-                        <action_type>SetEntityActive</action_type>
-                        <entities_tag>-1</entities_tag>
-                        <entity_editor_id>
-                            <id>334</id>
-                        </entity_editor_id>
-                        <active>false</active>
-                        <init_on_activate>true</init_on_activate>
-                        <init_if_already_active>false</init_if_already_active>
                     </seq_action>
                     <seq_action>
                         <one_time>false</one_time>
@@ -10422,13 +10411,7 @@
                         <reset>false</reset>
                     </seq_action>
                 </actions>
-                <kop>false</kop>
-                <hc>
-                    <x>0.93339092</x>
-                    <y>0.24509805</y>
-                    <z>1</z>
-                    <w>1</w>
-                </hc>
+                <deathActions/>
             </FlowPickup>
             <FlowPickup>
                 <editor_id>
@@ -10477,6 +10460,13 @@
                         <id>-1</id>
                     </follow_entity_editor_id>
                 </waypoint_follower>
+                <kop>true</kop>
+                <hc>
+                    <x>0.93339092</x>
+                    <y>0.24509805</y>
+                    <z>1</z>
+                    <w>1</w>
+                </hc>
                 <actions>
                     <seq_action>
                         <one_time>false</one_time>
@@ -10495,17 +10485,6 @@
                         <quantizeDenom>0.25</quantizeDenom>
                         <doNoteOff>true</doNoteOff>
                         <holdNotes>false</holdNotes>
-                    </seq_action>
-                    <seq_action>
-                        <one_time>false</one_time>
-                        <action_type>SetEntityActive</action_type>
-                        <entities_tag>-1</entities_tag>
-                        <entity_editor_id>
-                            <id>335</id>
-                        </entity_editor_id>
-                        <active>false</active>
-                        <init_on_activate>true</init_on_activate>
-                        <init_if_already_active>false</init_if_already_active>
                     </seq_action>
                     <seq_action>
                         <one_time>false</one_time>
@@ -10548,13 +10527,7 @@
                         <reset>false</reset>
                     </seq_action>
                 </actions>
-                <kop>false</kop>
-                <hc>
-                    <x>0.93339092</x>
-                    <y>0.24509805</y>
-                    <z>1</z>
-                    <w>1</w>
-                </hc>
+                <deathActions/>
             </FlowPickup>
             <FlowPickup>
                 <editor_id>
@@ -10603,6 +10576,13 @@
                         <id>-1</id>
                     </follow_entity_editor_id>
                 </waypoint_follower>
+                <kop>true</kop>
+                <hc>
+                    <x>0.93339092</x>
+                    <y>0.24509805</y>
+                    <z>1</z>
+                    <w>1</w>
+                </hc>
                 <actions>
                     <seq_action>
                         <one_time>false</one_time>
@@ -10621,17 +10601,6 @@
                         <quantizeDenom>0.25</quantizeDenom>
                         <doNoteOff>true</doNoteOff>
                         <holdNotes>false</holdNotes>
-                    </seq_action>
-                    <seq_action>
-                        <one_time>false</one_time>
-                        <action_type>SetEntityActive</action_type>
-                        <entities_tag>-1</entities_tag>
-                        <entity_editor_id>
-                            <id>336</id>
-                        </entity_editor_id>
-                        <active>false</active>
-                        <init_on_activate>true</init_on_activate>
-                        <init_if_already_active>false</init_if_already_active>
                     </seq_action>
                     <seq_action>
                         <one_time>false</one_time>
@@ -10674,13 +10643,7 @@
                         <reset>false</reset>
                     </seq_action>
                 </actions>
-                <kop>false</kop>
-                <hc>
-                    <x>0.93339092</x>
-                    <y>0.24509805</y>
-                    <z>1</z>
-                    <w>1</w>
-                </hc>
+                <deathActions/>
             </FlowPickup>
             <FlowTrigger>
                 <editor_id>
@@ -11906,6 +11869,13 @@
                         <id>-1</id>
                     </follow_entity_editor_id>
                 </waypoint_follower>
+                <kop>true</kop>
+                <hc>
+                    <x>0.93339092</x>
+                    <y>0.24509805</y>
+                    <z>1</z>
+                    <w>1</w>
+                </hc>
                 <actions>
                     <seq_action>
                         <one_time>false</one_time>
@@ -11925,6 +11895,8 @@
                         <doNoteOff>true</doNoteOff>
                         <holdNotes>false</holdNotes>
                     </seq_action>
+                </actions>
+                <deathActions>
                     <seq_action>
                         <one_time>false</one_time>
                         <action_type>SetEntityActive</action_type>
@@ -11936,14 +11908,7 @@
                         <init_on_activate>true</init_on_activate>
                         <init_if_already_active>false</init_if_already_active>
                     </seq_action>
-                </actions>
-                <kop>true</kop>
-                <hc>
-                    <x>0.93339092</x>
-                    <y>0.24509805</y>
-                    <z>1</z>
-                    <w>1</w>
-                </hc>
+                </deathActions>
             </FlowPickup>
             <FlowPickup>
                 <editor_id>
@@ -11992,6 +11957,13 @@
                         <id>-1</id>
                     </follow_entity_editor_id>
                 </waypoint_follower>
+                <kop>true</kop>
+                <hc>
+                    <x>0.93339092</x>
+                    <y>0.24509805</y>
+                    <z>1</z>
+                    <w>1</w>
+                </hc>
                 <actions>
                     <seq_action>
                         <one_time>false</one_time>
@@ -12011,6 +11983,8 @@
                         <doNoteOff>true</doNoteOff>
                         <holdNotes>false</holdNotes>
                     </seq_action>
+                </actions>
+                <deathActions>
                     <seq_action>
                         <one_time>false</one_time>
                         <action_type>SetEntityActive</action_type>
@@ -12022,14 +11996,7 @@
                         <init_on_activate>true</init_on_activate>
                         <init_if_already_active>false</init_if_already_active>
                     </seq_action>
-                </actions>
-                <kop>true</kop>
-                <hc>
-                    <x>0.93339092</x>
-                    <y>0.24509805</y>
-                    <z>1</z>
-                    <w>1</w>
-                </hc>
+                </deathActions>
             </FlowPickup>
             <FlowPickup>
                 <editor_id>
@@ -12078,6 +12045,13 @@
                         <id>-1</id>
                     </follow_entity_editor_id>
                 </waypoint_follower>
+                <kop>true</kop>
+                <hc>
+                    <x>0.93339092</x>
+                    <y>0.24509805</y>
+                    <z>1</z>
+                    <w>1</w>
+                </hc>
                 <actions>
                     <seq_action>
                         <one_time>false</one_time>
@@ -12097,6 +12071,8 @@
                         <doNoteOff>true</doNoteOff>
                         <holdNotes>false</holdNotes>
                     </seq_action>
+                </actions>
+                <deathActions>
                     <seq_action>
                         <one_time>false</one_time>
                         <action_type>SetEntityActive</action_type>
@@ -12108,14 +12084,7 @@
                         <init_on_activate>true</init_on_activate>
                         <init_if_already_active>false</init_if_already_active>
                     </seq_action>
-                </actions>
-                <kop>true</kop>
-                <hc>
-                    <x>0.93339092</x>
-                    <y>0.24509805</y>
-                    <z>1</z>
-                    <w>1</w>
-                </hc>
+                </deathActions>
             </FlowPickup>
             <FlowPickup>
                 <editor_id>
@@ -12164,6 +12133,13 @@
                         <id>-1</id>
                     </follow_entity_editor_id>
                 </waypoint_follower>
+                <kop>true</kop>
+                <hc>
+                    <x>0.93339092</x>
+                    <y>0.24509805</y>
+                    <z>1</z>
+                    <w>1</w>
+                </hc>
                 <actions>
                     <seq_action>
                         <one_time>false</one_time>
@@ -12224,13 +12200,7 @@
                         <patch_name>padswell0</patch_name>
                     </seq_action>
                 </actions>
-                <kop>true</kop>
-                <hc>
-                    <x>0.93339092</x>
-                    <y>0.24509805</y>
-                    <z>1</z>
-                    <w>1</w>
-                </hc>
+                <deathActions/>
             </FlowPickup>
         </new_entities>
     </script>

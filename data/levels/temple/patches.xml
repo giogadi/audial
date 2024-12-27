@@ -1432,7 +1432,7 @@
         <patch>
             <name>new_open</name>
             <patch>
-                <Gain>0.63599998</Gain>
+                <Gain>0.69099998</Gain>
                 <Mono>1</Mono>
                 <FM>0</FM>
                 <Osc1Waveform>Square</Osc1Waveform>

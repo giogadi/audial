@@ -17,7 +17,10 @@ Vec4 constexpr kHitColor = Vec4(0.933390915f, 0.245098054f, 1.f, 1.f);
 }
 
 void FlowPickupEntity::InitDerived(GameManager& g) {
-    for (auto const& pAction : _actions) {
+    for (auto const& pAction : _onHitActions) {
+        pAction->Init(g);
+    }
+    for (auto const& pAction : _onDeathActions) {
         pAction->Init(g);
     }
     _hit = false;
@@ -29,13 +32,17 @@ void FlowPickupEntity::InitDerived(GameManager& g) {
 }
 
 void FlowPickupEntity::SaveDerived(serial::Ptree pt) const {
-    SeqAction::SaveActionsInChildNode(pt, "actions", _actions);
     pt.PutBool("kop", _killOnPickup);
     serial::SaveInNewChildOf(pt, "hc", _hitColor);
+    SeqAction::SaveActionsInChildNode(pt, "actions", _onHitActions);
+    SeqAction::SaveActionsInChildNode(pt, "deathActions", _onDeathActions);
+
 }
 
 void FlowPickupEntity::LoadDerived(serial::Ptree pt) {
-    SeqAction::LoadActionsFromChildNode(pt, "actions", _actions);
+    SeqAction::LoadActionsFromChildNode(pt, "actions", _onHitActions);
+    SeqAction::LoadActionsFromChildNode(pt, "deathActions", _onDeathActions);
+
     _killOnPickup = false;
     pt.TryGetBool("kop", &_killOnPickup);
     _hitColor = kHitColor;
@@ -45,25 +52,35 @@ void FlowPickupEntity::LoadDerived(serial::Ptree pt) {
 ne::Entity::ImGuiResult FlowPickupEntity::ImGuiDerived(GameManager& g) {
     ImGui::Checkbox("Kill on pickup", &_killOnPickup);
     imgui_util::ColorEdit4("Hit color", &_hitColor);
-    if (SeqAction::ImGui("Actions", _actions)) {
+    if (SeqAction::ImGui("Hit actions", _onHitActions)) {
+        return ne::Entity::ImGuiResult::NeedsInit;
+    }
+    if (SeqAction::ImGui("Death actions", _onDeathActions)) {
         return ne::Entity::ImGuiResult::NeedsInit;
     }
     return ne::Entity::ImGuiResult::Done;
 }
 
 void FlowPickupEntity::OnHit(GameManager& g) {
+    bool doActions = false;
+    if (g._editMode) {
+        doActions = true;
+    } 
     if (!_hit) {
         if (_killOnPickup) {
             _beatTimeOfDeath = g._beatClock->GetBeatTimeFromEpoch();
         }
-        if (!_killOnPickup) {
-            for (auto const& pAction : _actions) {
-                pAction->Execute(g);
-            }
-        }
+        //if (!_killOnPickup) {
+           doActions = true; 
+        //}
     
-        if (!g._editMode) {
+        //if (!g._editMode) {
             _hit = true;
+       // }
+    }
+    if (doActions) {
+        for (auto const& pAction : _onHitActions) {
+            pAction->Execute(g);
         }
     }
 }
@@ -91,12 +108,13 @@ void FlowPickupEntity::UpdateDerived(GameManager& g, float dt) {
         double t = beatTime - _beatTimeOfDeath;
         double x = math_util::InverseLerp(0.0, kDeathDuration, t);
 
-        Vec3 scale = math_util::Vec3Lerp((float)x, Vec3(0.001f, 0.001f, 0.001f), _initTransform.Scale());
+        Vec3 minScale = Vec3(1.f, 1.f, 1.f) * 0.05f;
+        Vec3 scale = math_util::Vec3Lerp((float)x, _initTransform.Scale(), minScale);
         _transform.SetScale(scale);
 
        if (t >= kDeathDuration) {
            g._neEntityManager->TagForDeactivate(_id);
-           for (auto const &pAction : _actions) { 
+           for (auto const &pAction : _onDeathActions) { 
                pAction->Execute(g);
            }
        } 

@@ -9,7 +9,8 @@ struct FlowPickupEntity : public ne::Entity {
     static ne::EntityType StaticType() { return ne::EntityType::FlowPickup; }
     
     // serialized
-    std::vector<std::unique_ptr<SeqAction>> _actions;
+    std::vector<std::unique_ptr<SeqAction>> _onHitActions;
+    std::vector<std::unique_ptr<SeqAction>> _onDeathActions;
     bool _killOnPickup;
     Vec4 _hitColor;
 
