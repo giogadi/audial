@@ -47,6 +47,7 @@ BUGS:
 - weird floaty text when camera moves. everything looks floaty actually
 
 TOOLS:
+- make automations WAY easier to implement AND audition
 - collapse all for vectors
 - Copy transform (and/or parts of it)
 - faster input of notes and letters for lots of enemies

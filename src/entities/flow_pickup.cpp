@@ -86,7 +86,7 @@ void FlowPickupEntity::UpdateDerived(GameManager& g, float dt) {
     _transform.SetQuat(q);
 
     if (_beatTimeOfDeath >= 0.0) {
-        double constexpr kDeathDuration = 0.25;
+        double constexpr kDeathDuration = 1.0;
         double const beatTime = g._beatClock->GetBeatTimeFromEpoch();
         double t = beatTime - _beatTimeOfDeath;
         double x = math_util::InverseLerp(0.0, kDeathDuration, t);

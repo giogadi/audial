@@ -4329,6 +4329,12 @@
                     </seq_action>
                 </actions>
                 <kop>false</kop>
+                <hc>
+                    <x>0.93339092</x>
+                    <y>0.24509805</y>
+                    <z>1</z>
+                    <w>1</w>
+                </hc>
             </FlowPickup>
             <TypingEnemy>
                 <editor_id>
@@ -6633,6 +6639,12 @@
                     </seq_action>
                 </actions>
                 <kop>false</kop>
+                <hc>
+                    <x>0.93339092</x>
+                    <y>0.24509805</y>
+                    <z>1</z>
+                    <w>1</w>
+                </hc>
             </FlowPickup>
             <FlowWall>
                 <editor_id>
@@ -6873,6 +6885,12 @@
                     </seq_action>
                 </actions>
                 <kop>false</kop>
+                <hc>
+                    <x>0.93339092</x>
+                    <y>0.24509805</y>
+                    <z>1</z>
+                    <w>1</w>
+                </hc>
             </FlowPickup>
             <FlowWall>
                 <editor_id>
@@ -10231,6 +10249,12 @@
                     </seq_action>
                 </actions>
                 <kop>false</kop>
+                <hc>
+                    <x>0.93339092</x>
+                    <y>0.24509805</y>
+                    <z>1</z>
+                    <w>1</w>
+                </hc>
             </FlowPickup>
             <Base>
                 <editor_id>
@@ -10399,6 +10423,12 @@
                     </seq_action>
                 </actions>
                 <kop>false</kop>
+                <hc>
+                    <x>0.93339092</x>
+                    <y>0.24509805</y>
+                    <z>1</z>
+                    <w>1</w>
+                </hc>
             </FlowPickup>
             <FlowPickup>
                 <editor_id>
@@ -10519,6 +10549,12 @@
                     </seq_action>
                 </actions>
                 <kop>false</kop>
+                <hc>
+                    <x>0.93339092</x>
+                    <y>0.24509805</y>
+                    <z>1</z>
+                    <w>1</w>
+                </hc>
             </FlowPickup>
             <FlowPickup>
                 <editor_id>
@@ -10639,6 +10675,12 @@
                     </seq_action>
                 </actions>
                 <kop>false</kop>
+                <hc>
+                    <x>0.93339092</x>
+                    <y>0.24509805</y>
+                    <z>1</z>
+                    <w>1</w>
+                </hc>
             </FlowPickup>
             <FlowTrigger>
                 <editor_id>
@@ -10716,6 +10758,14 @@
                         <active>true</active>
                         <init_on_activate>true</init_on_activate>
                         <init_if_already_active>false</init_if_already_active>
+                    </seq_action>
+                    <seq_action>
+                        <one_time>true</one_time>
+                        <action_type>ChangePatch</action_type>
+                        <channel>1</channel>
+                        <blend_beat_time>0</blend_beat_time>
+                        <use_patch_bank>true</use_patch_bank>
+                        <patch_name>new_open</patch_name>
                     </seq_action>
                 </actions>
                 <actions_on_exit/>
@@ -11355,7 +11405,7 @@
                             </array_item>
                         </midiNotes>
                         <noteLength>8</noteLength>
-                        <velocity>1</velocity>
+                        <velocity>0.69999999</velocity>
                         <quantizeDenom>0.25</quantizeDenom>
                         <doNoteOff>false</doNoteOff>
                         <holdNotes>false</holdNotes>
@@ -11888,6 +11938,12 @@
                     </seq_action>
                 </actions>
                 <kop>true</kop>
+                <hc>
+                    <x>0.93339092</x>
+                    <y>0.24509805</y>
+                    <z>1</z>
+                    <w>1</w>
+                </hc>
             </FlowPickup>
             <FlowPickup>
                 <editor_id>
@@ -11968,6 +12024,12 @@
                     </seq_action>
                 </actions>
                 <kop>true</kop>
+                <hc>
+                    <x>0.93339092</x>
+                    <y>0.24509805</y>
+                    <z>1</z>
+                    <w>1</w>
+                </hc>
             </FlowPickup>
             <FlowPickup>
                 <editor_id>
@@ -12048,6 +12110,12 @@
                     </seq_action>
                 </actions>
                 <kop>true</kop>
+                <hc>
+                    <x>0.93339092</x>
+                    <y>0.24509805</y>
+                    <z>1</z>
+                    <w>1</w>
+                </hc>
             </FlowPickup>
             <FlowPickup>
                 <editor_id>
@@ -12142,7 +12210,7 @@
                             </array_item>
                         </midiNotes>
                         <noteLength>16</noteLength>
-                        <velocity>1</velocity>
+                        <velocity>0.69999999</velocity>
                         <quantizeDenom>0.25</quantizeDenom>
                         <doNoteOff>true</doNoteOff>
                         <holdNotes>false</holdNotes>
@@ -12151,12 +12219,18 @@
                         <one_time>false</one_time>
                         <action_type>ChangePatch</action_type>
                         <channel>2</channel>
-                        <blend_beat_time>12</blend_beat_time>
+                        <blend_beat_time>24</blend_beat_time>
                         <use_patch_bank>true</use_patch_bank>
                         <patch_name>padswell0</patch_name>
                     </seq_action>
                 </actions>
                 <kop>true</kop>
+                <hc>
+                    <x>0.93339092</x>
+                    <y>0.24509805</y>
+                    <z>1</z>
+                    <w>1</w>
+                </hc>
             </FlowPickup>
         </new_entities>
     </script>
