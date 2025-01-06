@@ -10167,7 +10167,7 @@
                     <w>1</w>
                 </model_color_vec4>
                 <flow_section_id>-1</flow_section_id>
-                <tag>0</tag>
+                <tag>1</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
                     <waypoint_auto_start>false</waypoint_auto_start>
@@ -10219,17 +10219,6 @@
                     </seq_action>
                     <seq_action>
                         <one_time>false</one_time>
-                        <action_type>SetEntityActive</action_type>
-                        <entities_tag>-1</entities_tag>
-                        <entity_editor_id>
-                            <id>334</id>
-                        </entity_editor_id>
-                        <active>true</active>
-                        <init_on_activate>true</init_on_activate>
-                        <init_if_already_active>false</init_if_already_active>
-                    </seq_action>
-                    <seq_action>
-                        <one_time>false</one_time>
                         <action_type>AddToIntVariable</action_type>
                         <var_editor_id>
                             <id>340</id>
@@ -10247,7 +10236,19 @@
                         <reset>false</reset>
                     </seq_action>
                 </actions>
-                <deathActions/>
+                <deathActions>
+                    <seq_action>
+                        <one_time>false</one_time>
+                        <action_type>SetEntityActive</action_type>
+                        <entities_tag>-1</entities_tag>
+                        <entity_editor_id>
+                            <id>334</id>
+                        </entity_editor_id>
+                        <active>true</active>
+                        <init_on_activate>true</init_on_activate>
+                        <init_if_already_active>false</init_if_already_active>
+                    </seq_action>
+                </deathActions>
             </FlowPickup>
             <Base>
                 <editor_id>
@@ -10331,7 +10332,7 @@
                     <w>1</w>
                 </model_color_vec4>
                 <flow_section_id>-1</flow_section_id>
-                <tag>0</tag>
+                <tag>1</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
                     <waypoint_auto_start>false</waypoint_auto_start>
@@ -10383,17 +10384,6 @@
                     </seq_action>
                     <seq_action>
                         <one_time>false</one_time>
-                        <action_type>SetEntityActive</action_type>
-                        <entities_tag>-1</entities_tag>
-                        <entity_editor_id>
-                            <id>335</id>
-                        </entity_editor_id>
-                        <active>true</active>
-                        <init_on_activate>true</init_on_activate>
-                        <init_if_already_active>false</init_if_already_active>
-                    </seq_action>
-                    <seq_action>
-                        <one_time>false</one_time>
                         <action_type>AddToIntVariable</action_type>
                         <var_editor_id>
                             <id>340</id>
@@ -10411,7 +10401,19 @@
                         <reset>false</reset>
                     </seq_action>
                 </actions>
-                <deathActions/>
+                <deathActions>
+                    <seq_action>
+                        <one_time>false</one_time>
+                        <action_type>SetEntityActive</action_type>
+                        <entities_tag>-1</entities_tag>
+                        <entity_editor_id>
+                            <id>335</id>
+                        </entity_editor_id>
+                        <active>true</active>
+                        <init_on_activate>true</init_on_activate>
+                        <init_if_already_active>false</init_if_already_active>
+                    </seq_action>
+                </deathActions>
             </FlowPickup>
             <FlowPickup>
                 <editor_id>
@@ -10447,7 +10449,7 @@
                     <w>1</w>
                 </model_color_vec4>
                 <flow_section_id>-1</flow_section_id>
-                <tag>0</tag>
+                <tag>1</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
                     <waypoint_auto_start>false</waypoint_auto_start>
@@ -10499,17 +10501,6 @@
                     </seq_action>
                     <seq_action>
                         <one_time>false</one_time>
-                        <action_type>SetEntityActive</action_type>
-                        <entities_tag>-1</entities_tag>
-                        <entity_editor_id>
-                            <id>336</id>
-                        </entity_editor_id>
-                        <active>true</active>
-                        <init_on_activate>true</init_on_activate>
-                        <init_if_already_active>false</init_if_already_active>
-                    </seq_action>
-                    <seq_action>
-                        <one_time>false</one_time>
                         <action_type>AddToIntVariable</action_type>
                         <var_editor_id>
                             <id>340</id>
@@ -10527,7 +10518,19 @@
                         <reset>false</reset>
                     </seq_action>
                 </actions>
-                <deathActions/>
+                <deathActions>
+                    <seq_action>
+                        <one_time>false</one_time>
+                        <action_type>SetEntityActive</action_type>
+                        <entities_tag>-1</entities_tag>
+                        <entity_editor_id>
+                            <id>336</id>
+                        </entity_editor_id>
+                        <active>true</active>
+                        <init_on_activate>true</init_on_activate>
+                        <init_if_already_active>false</init_if_already_active>
+                    </seq_action>
+                </deathActions>
             </FlowPickup>
             <FlowPickup>
                 <editor_id>
@@ -10563,7 +10566,7 @@
                     <w>1</w>
                 </model_color_vec4>
                 <flow_section_id>-1</flow_section_id>
-                <tag>0</tag>
+                <tag>1</tag>
                 <waypoint_follower>
                     <mode>Waypoint</mode>
                     <waypoint_auto_start>false</waypoint_auto_start>
@@ -10615,17 +10618,6 @@
                     </seq_action>
                     <seq_action>
                         <one_time>false</one_time>
-                        <action_type>SetEntityActive</action_type>
-                        <entities_tag>-1</entities_tag>
-                        <entity_editor_id>
-                            <id>332</id>
-                        </entity_editor_id>
-                        <active>true</active>
-                        <init_on_activate>true</init_on_activate>
-                        <init_if_already_active>false</init_if_already_active>
-                    </seq_action>
-                    <seq_action>
-                        <one_time>false</one_time>
                         <action_type>AddToIntVariable</action_type>
                         <var_editor_id>
                             <id>340</id>
@@ -10643,7 +10635,19 @@
                         <reset>false</reset>
                     </seq_action>
                 </actions>
-                <deathActions/>
+                <deathActions>
+                    <seq_action>
+                        <one_time>false</one_time>
+                        <action_type>SetEntityActive</action_type>
+                        <entities_tag>-1</entities_tag>
+                        <entity_editor_id>
+                            <id>332</id>
+                        </entity_editor_id>
+                        <active>true</active>
+                        <init_on_activate>true</init_on_activate>
+                        <init_if_already_active>false</init_if_already_active>
+                    </seq_action>
+                </deathActions>
             </FlowPickup>
             <FlowTrigger>
                 <editor_id>
@@ -11016,6 +11020,17 @@
                         <blend_beat_time>4</blend_beat_time>
                         <use_patch_bank>true</use_patch_bank>
                         <patch_name>padswell1</patch_name>
+                    </seq_action>
+                    <seq_action>
+                        <one_time>false</one_time>
+                        <action_type>SetEntityActive</action_type>
+                        <entities_tag>1</entities_tag>
+                        <entity_editor_id>
+                            <id>-1</id>
+                        </entity_editor_id>
+                        <active>false</active>
+                        <init_on_activate>true</init_on_activate>
+                        <init_if_already_active>false</init_if_already_active>
                     </seq_action>
                 </actions>
             </IntVariable>
@@ -11686,6 +11701,17 @@
                             <id>350</id>
                         </entity_editor_id>
                         <active>false</active>
+                        <init_on_activate>true</init_on_activate>
+                        <init_if_already_active>false</init_if_already_active>
+                    </seq_action>
+                    <seq_action>
+                        <one_time>false</one_time>
+                        <action_type>SetEntityActive</action_type>
+                        <entities_tag>-1</entities_tag>
+                        <entity_editor_id>
+                            <id>332</id>
+                        </entity_editor_id>
+                        <active>true</active>
                         <init_on_activate>true</init_on_activate>
                         <init_if_already_active>false</init_if_already_active>
                     </seq_action>
