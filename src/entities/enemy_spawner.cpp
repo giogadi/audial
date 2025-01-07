@@ -113,13 +113,14 @@ void EnemySpawnerEntity::UpdateDerived(GameManager& g, float dt) {
 
             // Generate motion
             {
-                Motion* m = g._motionManager->AddMotion(e->_id);
-                Vec3 dir = _transform.Pos() - enemyPos;
-                dir.Normalize();
-                m->v = dir * 0.f;
-                m->a = dir * 4.f;
-                m->maxSpeed = 20.f;
-                m->timeLeft = 10;
+				Vec3 dir = _transform.Pos() - enemyPos;
+				dir.Normalize();
+				MotionSpec spec;
+				spec.v0 = dir * 0.f;
+				spec.a = dir * 4.f;
+				spec.maxSpeed = 20.f;
+				spec.totalTime = 10.f;
+                g._motionManager->AddMotion(spec, e);
             }
 
 			e->Init(g);

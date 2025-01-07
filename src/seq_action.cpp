@@ -14,6 +14,8 @@
 #include "imgui_util.h"
 #include <string_ci.h>
 
+extern GameManager gGameManager;
+
 BeatTimeAction::BeatTimeAction() {
     _beatTime = 0.0;
     _pAction = SeqAction::New(SeqActionType::SpawnAutomator);
@@ -133,12 +135,17 @@ namespace {
 bool SeqAction::ImGui(char const* label, std::vector<std::unique_ptr<SeqAction>>& actions) {
     bool changed = false;
     if (ImGui::TreeNode(label)) {
-        if (ImGui::Button("Clear Actions")) {
+        if (ImGui::Button("Execute##SeqActions")) {
+            for (auto &pAction : actions) {
+                pAction->ExecuteDerived(gGameManager);
+            }
+        }
+        if (ImGui::Button("Clear##SeqActions")) {
             actions.clear();
             changed = true;
         }
         ImGui::SameLine();
-        if (ImGui::Button("Copy actions")) {
+        if (ImGui::Button("Copy##SeqActions")) {
             sClipboardActions.clear();
             sClipboardActions.reserve(actions.size());
             for (auto const& pAction : actions) {
@@ -150,7 +157,7 @@ bool SeqAction::ImGui(char const* label, std::vector<std::unique_ptr<SeqAction>>
         if (sClipboardActions.empty()) {
             ImGui::BeginDisabled();
         }
-        if (ImGui::Button("Paste actions")) {
+        if (ImGui::Button("Paste##SeqActions")) {
             actions.reserve(actions.size() + sClipboardActions.size());
             for (auto const& pAction : sClipboardActions) {
                 auto clone = SeqAction::Clone(*pAction);
@@ -165,7 +172,7 @@ bool SeqAction::ImGui(char const* label, std::vector<std::unique_ptr<SeqAction>>
         if (sClipboardAction == nullptr) {
             ImGui::BeginDisabled();
         }        
-        if (ImGui::Button("Paste 1 action")) {
+        if (ImGui::Button("Paste 1")) {
             auto clone = SeqAction::Clone(*sClipboardAction);
             actions.push_back(std::move(clone));
             changed = true;

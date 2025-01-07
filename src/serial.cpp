@@ -17,7 +17,7 @@ namespace {
         return (XMLDocument*)p;
     }
 
-    int const kBinaryVersion = 13;
+    int const kBinaryVersion = 14;
 }
 
 Ptree Ptree::AddChild(char const* name) {

@@ -586,6 +586,9 @@ bool WaypointControlSeqAction::ImGui() {
 }
 
 void WaypointControlSeqAction::ExecuteDerived(GameManager& g) {
+    if (g._editMode) {
+        return;
+    }
     ne::Entity* e = g._neEntityManager->FindEntityByEditorId(_entityEditorId, nullptr, "WaypointControlSeqAction");
     if (_followWaypoints) {
         e->_wpFollower.Start(g, *e);

@@ -520,6 +520,7 @@ int main(int argc, char** argv) {
         beatClock.Update(gGameManager);
 
         omniSequencer.Init(gGameManager);
+        motionManager.Init();
 
         {
             // New entity loading. Manually add them in this order to the editor to keep ordering consistent.
@@ -783,8 +784,10 @@ int main(int argc, char** argv) {
     fftw_free(fftIn);
     fftw_free(fftOut);
 #endif
+    
+    motionManager.Destroy();
 
-    ShutDown(audioContext, soundBank);
+    ShutDown(audioContext, soundBank);    
 
     return 0;
 }

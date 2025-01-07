@@ -15,7 +15,6 @@ void FlowWallEntity::InitDerived(GameManager& g) {
         pAction->Init(g);
     }
 
-    _currentColor = _modelColor;
     _hp = _maxHp;
     _meshId = g._scene->LoadPolygon2d(_polygon);
     _canHit = _initCanHit;
@@ -30,7 +29,7 @@ void FlowWallEntity::InitDerived(GameManager& g) {
     }
 }
 
-void FlowWallEntity::Update(GameManager& g, float dt) {
+void FlowWallEntity::UpdateDerived(GameManager& g, float dt) {
     // bool const editModeSelected = g._editMode && g._editor->IsEntitySelected(_id);
     
     switch (_moveMode) {
@@ -54,6 +53,8 @@ void FlowWallEntity::Update(GameManager& g, float dt) {
         _transform.SetQuat(newRot);
     }
 
+    _currentColor = _modelColor;
+
     // At hp == maxHp, use modelColor. Fade to dark red as we get closer to 0.
     Vec4 colorAfterHp = _modelColor;
     if (_maxHp > 0) {
@@ -61,6 +62,7 @@ void FlowWallEntity::Update(GameManager& g, float dt) {
         Vec4 const kDyingColor(1.f, 0.f, 0.f, _modelColor._w);
         float fracOfMaxHp = (float)_hp / (float)_maxHp;
         colorAfterHp = kDyingColor + fracOfMaxHp * (_modelColor - kDyingColor);
+        _currentColor = colorAfterHp;
     }
 
     // Maybe update color from getting hit

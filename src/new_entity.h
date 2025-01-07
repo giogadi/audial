@@ -36,15 +36,16 @@ struct BaseEntity {
     bool _pickable = true;
     std::string _modelName;
     std::string _textureName;
-    Vec4 _modelColor = Vec4(0.8f, 0.8f, 0.8f, 1.f);
+    Vec4 _initModelColor = Vec4(0.8f, 0.8f, 0.8f, 1.f);    
     int _flowSectionId = -1;
     int _tag = 0;
     WaypointFollower::Props _wpProps;
 
     Transform _transform;
-    EntityId _id;
-    BoundMeshPNU const* _model = nullptr;
+    EntityId _id;    
+    BoundMeshPNU const* _model = nullptr;    
     unsigned int _textureId = 0;
+    Vec4 _modelColor = Vec4(0.8f, 0.8f, 0.8f, 1.f);
     WaypointFollower _wpFollower;
     
     void Save(serial::Ptree pt) const;

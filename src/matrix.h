@@ -261,7 +261,7 @@ struct Vec4 {
         return a._x*b._x + a._y*b._y + a._z*b._z + a._w*b._w;
     }
 
-    void ElemWiseMult(Vec4 const& v) {
+    void ElemWiseMultInPlace(Vec4 const& v) {
         _x *= v._x;
         _y *= v._y;
         _z *= v._z;

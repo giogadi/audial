@@ -707,6 +707,7 @@ BaseEntity* EntityManager::AllIterator::GetEntity() {
 
 void BaseEntity::Init(GameManager& g) {
     _transform = _initTransform;
+    _modelColor = _initModelColor;
     _model = g._scene->GetMesh(_modelName);
     _textureId = g._scene->GetTextureId(_textureName);
     _wpFollower.Init(g, *this, _wpProps);
@@ -748,7 +749,7 @@ void BaseEntity::Save(serial::Ptree pt) const {
     serial::SaveInNewChildOf(pt, "transform", _initTransform);
     pt.PutString("model_name", _modelName.c_str());
     pt.PutString("texture_name", _textureName.c_str());
-    serial::SaveInNewChildOf(pt, "model_color_vec4", _modelColor);
+    serial::SaveInNewChildOf(pt, "model_color_vec4", _initModelColor);
     pt.PutInt("flow_section_id", _flowSectionId);
     pt.PutInt("tag", _tag);
     serial::SaveInNewChildOf(pt, "waypoint_follower", _wpProps);
@@ -775,7 +776,7 @@ void BaseEntity::Load(serial::Ptree pt) {
     pt.TryGetString("texture_name", &_textureName);
     serial::Ptree colorPt = pt.TryGetChild("model_color_vec4");
     if (colorPt.IsValid()) {
-        _modelColor.Load(colorPt);
+        _initModelColor.Load(colorPt);
     }
     pt.TryGetInt("flow_section_id", &_flowSectionId);
     _tag = 0;
@@ -842,7 +843,7 @@ BaseEntity::ImGuiResult BaseEntity::ImGui(GameManager& g) {
     ImGui::InputInt("Tag##Entity", &_tag);
     bool modelChanged = imgui_util::InputText<64>("Model name##Entity", &_modelName, /*trueOnReturnOnly=*/true);
     bool textureChanged = imgui_util::InputText<64>("Texture name##Entity", &_textureName, /*trueOnReturnOnly=*/true);
-    if (imgui_util::ColorEdit4("Model color##Entity", &_modelColor)) {
+    if (imgui_util::ColorEdit4("Model color##Entity", &_initModelColor)) {
         result = Entity::ImGuiResult::NeedsInit;
     }
 

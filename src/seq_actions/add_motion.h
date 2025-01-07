@@ -2,15 +2,14 @@
 
 #include "seq_action.h"
 #include "editor_id.h"
+#include "motion_manager.h"
 
 struct AddMotionSeqAction : public SeqAction {
     virtual SeqActionType Type() const override { return SeqActionType::AddMotion; }
 
     struct Props {
+        MotionSpec spec;
         EditorId editorId;
-        Vec3 v0;
-        Vec3 a;
-        float time = 0.f;
     };
     Props _p;
     struct State {

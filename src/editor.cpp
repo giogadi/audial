@@ -557,11 +557,30 @@ void UpdateGrab(GameManager &g, Editor &editor, bool newState) {
     Vec3 mousePosOnXZPlane;
     geometry::ProjectScreenPointToXZPlane((int)mouseX, (int)mouseY, g._windowWidth, g._windowHeight, g._scene->_camera, &mousePosOnXZPlane);
     static Vec3 sGrabPos;
+    enum class GrabAxis { XZ, X, Z };
+    static GrabAxis sGrabAxis = GrabAxis::XZ;
     if (newState) {
         // TODO: this will currently happen on the next frame, unless we allow same-frame input mode changes.
         sGrabPos = mousePosOnXZPlane;
+        sGrabAxis = GrabAxis::XZ;
+    }
+    if (sGrabAxis == GrabAxis::XZ) {
+        if (inputManager.IsKeyPressedThisFrame(InputManager::Key::X)) {
+            sGrabAxis = GrabAxis::X;
+        } else if (inputManager.IsKeyPressedThisFrame(InputManager::Key::Z)) {
+            sGrabAxis = GrabAxis::Z;
+        }
     }
     Vec3 grabOffset = mousePosOnXZPlane - sGrabPos;
+    switch (sGrabAxis) {
+        case GrabAxis::XZ: break;
+        case GrabAxis::X:
+            grabOffset._z = 0.f;
+            break;
+        case GrabAxis::Z:
+            grabOffset._x = 0.f;
+            break;
+    }
     for (ne::EntityId selectedId : editor._selectedEntityIds) {
         if (ne::Entity* selectedEntity = g._neEntityManager->GetActiveOrInactiveEntity(selectedId)) {
             Vec3 newPos = selectedEntity->_initTransform.Pos() + grabOffset;

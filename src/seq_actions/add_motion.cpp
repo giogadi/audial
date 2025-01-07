@@ -6,40 +6,21 @@
 extern GameManager gGameManager;
 
 void AddMotionSeqAction::LoadDerived(serial::Ptree pt) {
-	serial::LoadFromChildOf(pt, "editor_id", _p.editorId);	
-	serial::LoadFromChildOf(pt, "v0", _p.v0);
-	serial::LoadFromChildOf(pt, "a", _p.a);
-	pt.TryGetFloat("time", &_p.time);
-	if (pt.GetVersion() < 12) {
-		Vec3 offset;
-		serial::LoadFromChildOf(pt, "offset", offset);
-		_p.v0 = Vec3();
-		_p.a = Vec3();
-		if (_p.time > 0.f) {
-			_p.v0 = offset / _p.time;
-		}		
+	serial::LoadFromChildOf(pt, "spec", _p.spec);
+	serial::LoadFromChildOf(pt, "editor_id", _p.editorId);
+	if (pt.GetVersion() < 14) {
+		_p.spec.Load(pt);
 	}
 }
 void AddMotionSeqAction::SaveDerived(serial::Ptree pt) const {
+	serial::SaveInNewChildOf(pt, "spec", _p.spec);
 	serial::SaveInNewChildOf(pt, "editor_id", _p.editorId);
-	serial::SaveInNewChildOf(pt, "v0", _p.v0);
-	serial::SaveInNewChildOf(pt, "a", _p.a);
-	pt.PutFloat("time", _p.time);
 }
 bool AddMotionSeqAction::ImGui() {
 	bool needsInit = false;
 	needsInit = imgui_util::InputEditorId("Editor id", &_p.editorId) || needsInit;
-	bool needPreview = false;
-	if (imgui_util::InputVec3("v0", &_p.v0, true)) {
-		needPreview = true;
-	}
-	if (imgui_util::InputVec3("a", &_p.a, true)) {
-		needPreview = true;
-	}
-	if (ImGui::InputFloat("Time", &_p.time, 0.f, 0.f, "%.3f", ImGuiInputTextFlags_EnterReturnsTrue)) {
-		needPreview = true;
-	}
-
+	
+	bool needPreview = _p.spec.ImGui();
 	if (needPreview) {
 		ExecuteDerived(gGameManager);
 	}
@@ -48,16 +29,17 @@ bool AddMotionSeqAction::ImGui() {
 }
 
 void AddMotionSeqAction::InitDerived(GameManager& g) {
-	ne::Entity* e = g._neEntityManager->FindEntityByEditorId(_p.editorId);
+	ne::Entity* e = g._neEntityManager->FindEntityByEditorId(_p.editorId, /*isActive=*/nullptr, "AddMotionSeqAction::Init");
 	if (e) {
 		_s.entityId = e->_id;
 	}
 }
 
 void AddMotionSeqAction::ExecuteDerived(GameManager& g) {
-	Motion* motion = g._motionManager->AddMotion(_s.entityId);
-	motion->v = _p.v0;
-	motion->a = _p.a;
-	motion->entityId = _s.entityId;
-	motion->timeLeft = _p.time;
+	ne::BaseEntity *e = g._neEntityManager->GetActiveOrInactiveEntity(_s.entityId);
+	if (e) {
+		g._motionManager->AddMotion(_p.spec, e);
+	} else {
+		printf("AddMotionSeqAction::Execute: no entity found\n");
+	}
 }

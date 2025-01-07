@@ -1,5 +1,5 @@
 <root>
-    <version>13</version>
+    <version>14</version>
     <script>
         <bpm>110</bpm>
         <gamma_correction>false</gamma_correction>
@@ -7913,20 +7913,37 @@
                     <seq_action>
                         <one_time>false</one_time>
                         <action_type>AddMotion</action_type>
+                        <spec>
+                            <do_pos>true</do_pos>
+                            <v0>
+                                <x>0</x>
+                                <y>0</y>
+                                <z>-26</z>
+                            </v0>
+                            <a>
+                                <x>0</x>
+                                <y>0</y>
+                                <z>100</z>
+                            </a>
+                            <max_speed>-1</max_speed>
+                            <time>0.36000001</time>
+                            <do_color>false</do_color>
+                            <end_color>
+                                <x>0</x>
+                                <y>0</y>
+                                <z>0</z>
+                                <w>0</w>
+                            </end_color>
+                            <do_scale>false</do_scale>
+                            <scale>
+                                <x>1</x>
+                                <y>1</y>
+                                <z>1</z>
+                            </scale>
+                        </spec>
                         <editor_id>
                             <id>360</id>
                         </editor_id>
-                        <v0>
-                            <x>0</x>
-                            <y>0</y>
-                            <z>-26</z>
-                        </v0>
-                        <a>
-                            <x>0</x>
-                            <y>0</y>
-                            <z>100</z>
-                        </a>
-                        <time>0.36000001</time>
                     </seq_action>
                     <seq_action>
                         <one_time>false</one_time>
@@ -11411,20 +11428,37 @@
                     <seq_action>
                         <one_time>false</one_time>
                         <action_type>AddMotion</action_type>
+                        <spec>
+                            <do_pos>true</do_pos>
+                            <v0>
+                                <x>-26.5</x>
+                                <y>0</y>
+                                <z>0</z>
+                            </v0>
+                            <a>
+                                <x>100</x>
+                                <y>0</y>
+                                <z>0</z>
+                            </a>
+                            <max_speed>-1</max_speed>
+                            <time>0.36000001</time>
+                            <do_color>false</do_color>
+                            <end_color>
+                                <x>0</x>
+                                <y>0</y>
+                                <z>0</z>
+                                <w>0</w>
+                            </end_color>
+                            <do_scale>false</do_scale>
+                            <scale>
+                                <x>1</x>
+                                <y>1</y>
+                                <z>1</z>
+                            </scale>
+                        </spec>
                         <editor_id>
                             <id>414</id>
                         </editor_id>
-                        <v0>
-                            <x>-26.5</x>
-                            <y>0</y>
-                            <z>0</z>
-                        </v0>
-                        <a>
-                            <x>100</x>
-                            <y>0</y>
-                            <z>0</z>
-                        </a>
-                        <time>0.36000001</time>
                     </seq_action>
                     <seq_action>
                         <one_time>false</one_time>
@@ -12044,20 +12078,37 @@
                     <seq_action>
                         <one_time>false</one_time>
                         <action_type>AddMotion</action_type>
+                        <spec>
+                            <do_pos>true</do_pos>
+                            <v0>
+                                <x>0</x>
+                                <y>0</y>
+                                <z>24.5</z>
+                            </v0>
+                            <a>
+                                <x>0</x>
+                                <y>0</y>
+                                <z>-100</z>
+                            </a>
+                            <max_speed>-1</max_speed>
+                            <time>0.36000001</time>
+                            <do_color>false</do_color>
+                            <end_color>
+                                <x>0</x>
+                                <y>0</y>
+                                <z>0</z>
+                                <w>0</w>
+                            </end_color>
+                            <do_scale>false</do_scale>
+                            <scale>
+                                <x>1</x>
+                                <y>1</y>
+                                <z>1</z>
+                            </scale>
+                        </spec>
                         <editor_id>
                             <id>365</id>
                         </editor_id>
-                        <v0>
-                            <x>0</x>
-                            <y>0</y>
-                            <z>24.5</z>
-                        </v0>
-                        <a>
-                            <x>0</x>
-                            <y>0</y>
-                            <z>-100</z>
-                        </a>
-                        <time>0.36000001</time>
                     </seq_action>
                     <seq_action>
                         <one_time>false</one_time>
@@ -12732,20 +12783,37 @@
                     <seq_action>
                         <one_time>false</one_time>
                         <action_type>AddMotion</action_type>
+                        <spec>
+                            <do_pos>true</do_pos>
+                            <v0>
+                                <x>0</x>
+                                <y>0</y>
+                                <z>-25.5</z>
+                            </v0>
+                            <a>
+                                <x>0</x>
+                                <y>0</y>
+                                <z>100</z>
+                            </a>
+                            <max_speed>-1</max_speed>
+                            <time>0.36000001</time>
+                            <do_color>false</do_color>
+                            <end_color>
+                                <x>0</x>
+                                <y>0</y>
+                                <z>0</z>
+                                <w>0</w>
+                            </end_color>
+                            <do_scale>false</do_scale>
+                            <scale>
+                                <x>1</x>
+                                <y>1</y>
+                                <z>1</z>
+                            </scale>
+                        </spec>
                         <editor_id>
                             <id>403</id>
                         </editor_id>
-                        <v0>
-                            <x>0</x>
-                            <y>0</y>
-                            <z>-25.5</z>
-                        </v0>
-                        <a>
-                            <x>0</x>
-                            <y>0</y>
-                            <z>100</z>
-                        </a>
-                        <time>0.36000001</time>
                     </seq_action>
                     <seq_action>
                         <one_time>false</one_time>
@@ -13354,20 +13422,37 @@
                     <seq_action>
                         <one_time>false</one_time>
                         <action_type>AddMotion</action_type>
+                        <spec>
+                            <do_pos>true</do_pos>
+                            <v0>
+                                <x>-26.5</x>
+                                <y>0</y>
+                                <z>0</z>
+                            </v0>
+                            <a>
+                                <x>100</x>
+                                <y>0</y>
+                                <z>0</z>
+                            </a>
+                            <max_speed>-1</max_speed>
+                            <time>0.36000001</time>
+                            <do_color>false</do_color>
+                            <end_color>
+                                <x>0</x>
+                                <y>0</y>
+                                <z>0</z>
+                                <w>0</w>
+                            </end_color>
+                            <do_scale>false</do_scale>
+                            <scale>
+                                <x>1</x>
+                                <y>1</y>
+                                <z>1</z>
+                            </scale>
+                        </spec>
                         <editor_id>
                             <id>414</id>
                         </editor_id>
-                        <v0>
-                            <x>-26.5</x>
-                            <y>0</y>
-                            <z>0</z>
-                        </v0>
-                        <a>
-                            <x>100</x>
-                            <y>0</y>
-                            <z>0</z>
-                        </a>
-                        <time>0.36000001</time>
                     </seq_action>
                     <seq_action>
                         <one_time>false</one_time>
@@ -14201,20 +14286,37 @@
                     <seq_action>
                         <one_time>false</one_time>
                         <action_type>AddMotion</action_type>
+                        <spec>
+                            <do_pos>true</do_pos>
+                            <v0>
+                                <x>-28</x>
+                                <y>0</y>
+                                <z>0</z>
+                            </v0>
+                            <a>
+                                <x>100</x>
+                                <y>0</y>
+                                <z>0</z>
+                            </a>
+                            <max_speed>-1</max_speed>
+                            <time>0.36000001</time>
+                            <do_color>false</do_color>
+                            <end_color>
+                                <x>0</x>
+                                <y>0</y>
+                                <z>0</z>
+                                <w>0</w>
+                            </end_color>
+                            <do_scale>false</do_scale>
+                            <scale>
+                                <x>1</x>
+                                <y>1</y>
+                                <z>1</z>
+                            </scale>
+                        </spec>
                         <editor_id>
                             <id>424</id>
                         </editor_id>
-                        <v0>
-                            <x>-28</x>
-                            <y>0</y>
-                            <z>0</z>
-                        </v0>
-                        <a>
-                            <x>100</x>
-                            <y>0</y>
-                            <z>0</z>
-                        </a>
-                        <time>0.36000001</time>
                     </seq_action>
                     <seq_action>
                         <one_time>false</one_time>
@@ -14889,20 +14991,37 @@
                     <seq_action>
                         <one_time>false</one_time>
                         <action_type>AddMotion</action_type>
+                        <spec>
+                            <do_pos>true</do_pos>
+                            <v0>
+                                <x>0</x>
+                                <y>0</y>
+                                <z>-25.5</z>
+                            </v0>
+                            <a>
+                                <x>0</x>
+                                <y>0</y>
+                                <z>100</z>
+                            </a>
+                            <max_speed>-1</max_speed>
+                            <time>0.36000001</time>
+                            <do_color>false</do_color>
+                            <end_color>
+                                <x>0</x>
+                                <y>0</y>
+                                <z>0</z>
+                                <w>0</w>
+                            </end_color>
+                            <do_scale>false</do_scale>
+                            <scale>
+                                <x>1</x>
+                                <y>1</y>
+                                <z>1</z>
+                            </scale>
+                        </spec>
                         <editor_id>
                             <id>435</id>
                         </editor_id>
-                        <v0>
-                            <x>0</x>
-                            <y>0</y>
-                            <z>-25.5</z>
-                        </v0>
-                        <a>
-                            <x>0</x>
-                            <y>0</y>
-                            <z>100</z>
-                        </a>
-                        <time>0.36000001</time>
                     </seq_action>
                     <seq_action>
                         <one_time>false</one_time>
@@ -15480,20 +15599,37 @@
                     <seq_action>
                         <one_time>false</one_time>
                         <action_type>AddMotion</action_type>
+                        <spec>
+                            <do_pos>true</do_pos>
+                            <v0>
+                                <x>26</x>
+                                <y>0</y>
+                                <z>0</z>
+                            </v0>
+                            <a>
+                                <x>-100</x>
+                                <y>0</y>
+                                <z>0</z>
+                            </a>
+                            <max_speed>-1</max_speed>
+                            <time>0.36000001</time>
+                            <do_color>false</do_color>
+                            <end_color>
+                                <x>0</x>
+                                <y>0</y>
+                                <z>0</z>
+                                <w>0</w>
+                            </end_color>
+                            <do_scale>false</do_scale>
+                            <scale>
+                                <x>1</x>
+                                <y>1</y>
+                                <z>1</z>
+                            </scale>
+                        </spec>
                         <editor_id>
                             <id>442</id>
                         </editor_id>
-                        <v0>
-                            <x>26</x>
-                            <y>0</y>
-                            <z>0</z>
-                        </v0>
-                        <a>
-                            <x>-100</x>
-                            <y>0</y>
-                            <z>0</z>
-                        </a>
-                        <time>0.36000001</time>
                     </seq_action>
                     <seq_action>
                         <one_time>false</one_time>
@@ -16238,20 +16374,37 @@
                     <seq_action>
                         <one_time>false</one_time>
                         <action_type>AddMotion</action_type>
+                        <spec>
+                            <do_pos>true</do_pos>
+                            <v0>
+                                <x>0</x>
+                                <y>0</y>
+                                <z>26</z>
+                            </v0>
+                            <a>
+                                <x>0</x>
+                                <y>0</y>
+                                <z>-100</z>
+                            </a>
+                            <max_speed>-1</max_speed>
+                            <time>0.36000001</time>
+                            <do_color>false</do_color>
+                            <end_color>
+                                <x>0</x>
+                                <y>0</y>
+                                <z>0</z>
+                                <w>0</w>
+                            </end_color>
+                            <do_scale>false</do_scale>
+                            <scale>
+                                <x>1</x>
+                                <y>1</y>
+                                <z>1</z>
+                            </scale>
+                        </spec>
                         <editor_id>
                             <id>450</id>
                         </editor_id>
-                        <v0>
-                            <x>0</x>
-                            <y>0</y>
-                            <z>26</z>
-                        </v0>
-                        <a>
-                            <x>0</x>
-                            <y>0</y>
-                            <z>-100</z>
-                        </a>
-                        <time>0.36000001</time>
                     </seq_action>
                     <seq_action>
                         <one_time>false</one_time>
@@ -16437,20 +16590,37 @@
                     <seq_action>
                         <one_time>false</one_time>
                         <action_type>AddMotion</action_type>
+                        <spec>
+                            <do_pos>true</do_pos>
+                            <v0>
+                                <x>0</x>
+                                <y>0</y>
+                                <z>-26</z>
+                            </v0>
+                            <a>
+                                <x>0</x>
+                                <y>0</y>
+                                <z>100</z>
+                            </a>
+                            <max_speed>-1</max_speed>
+                            <time>0.36000001</time>
+                            <do_color>false</do_color>
+                            <end_color>
+                                <x>0</x>
+                                <y>0</y>
+                                <z>0</z>
+                                <w>0</w>
+                            </end_color>
+                            <do_scale>false</do_scale>
+                            <scale>
+                                <x>1</x>
+                                <y>1</y>
+                                <z>1</z>
+                            </scale>
+                        </spec>
                         <editor_id>
                             <id>450</id>
                         </editor_id>
-                        <v0>
-                            <x>0</x>
-                            <y>0</y>
-                            <z>-26</z>
-                        </v0>
-                        <a>
-                            <x>0</x>
-                            <y>0</y>
-                            <z>100</z>
-                        </a>
-                        <time>0.36000001</time>
                     </seq_action>
                     <seq_action>
                         <one_time>false</one_time>
