@@ -47,6 +47,8 @@ BUGS:
 - weird floaty text when camera moves. everything looks floaty actually
 
 TOOLS:
+- HOW MANY TIMES HAVE WE MADE THE MISTAKE OF NOT SETTING "ALL ACTIONS ON HIT" ON AN ENEMY!!!!
+  - maybe "there are more actions than letters and it's not all actions on hit" warning
 - enable breakpoints/pausing without fucking up audio!!!!
 - make automations WAY easier to implement AND audition
 - collapse all for vectors
@@ -82,3 +84,7 @@ Optimizations/improvements/etc:
 - DELAY ON PCM PLAYBACK!!!!
 - better font handling
  
+SECRETS
+- letters you can type that are not shown on screen?
+  - or maybe some letters are hidden but still detectable visually (visual puns, camouflage, whatever)
+- 

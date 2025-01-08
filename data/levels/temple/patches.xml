@@ -1493,8 +1493,8 @@
                 <CutoffLFOGain>0</CutoffLFOGain>
                 <CutoffLFOFreq>0</CutoffLFOFreq>
                 <AmpEnvAttack>0.013</AmpEnvAttack>
-                <AmpEnvDecay>3.1429999</AmpEnvDecay>
-                <AmpEnvSustain>0</AmpEnvSustain>
+                <AmpEnvDecay>0.73500001</AmpEnvDecay>
+                <AmpEnvSustain>0.40400001</AmpEnvSustain>
                 <AmpEnvRelease>0.53299999</AmpEnvRelease>
                 <CutoffEnvGain>0</CutoffEnvGain>
                 <CutoffEnvAttack>0.0080000004</CutoffEnvAttack>

@@ -1149,3 +1149,54 @@ void RandomizePositionSeqAction::ExecuteDerived(GameManager& g) {
         }
     }
 }
+
+////////////////////////////////////////////////////
+
+void ShufflePositionsSeqAction::LoadDerived(serial::Ptree pt) {
+    serial::LoadVectorFromChildNode(pt, "entities", _editorIds);
+}
+
+void ShufflePositionsSeqAction::SaveDerived(serial::Ptree pt) const {
+    serial::SaveVectorInChildNode(pt, "entities", "e", _editorIds);
+}
+
+bool ShufflePositionsSeqAction::ImGui() {
+    imgui_util::InputVectorOptions opts;
+    opts.removeOnSameLine = false;
+    opts.treePerItem = true;
+    bool changed = imgui_util::InputVector(_editorIds, opts);    
+    return changed;
+}
+
+void ShufflePositionsSeqAction::InitDerived(GameManager& g) {
+    _entityIds.clear();
+    _entityIds.reserve(_editorIds.size());
+    for (int ii = 0; ii < _editorIds.size(); ++ii) {
+        EditorId editorId = _editorIds[ii];
+        ne::Entity* e = g._neEntityManager->FindEntityByEditorId(editorId, /*isActive=*/nullptr, "ShufflePositionsSeqAction::InitDerived entity");
+        if (e) {
+            _entityIds.push_back(e->_id);
+        }
+    }
+}
+
+void ShufflePositionsSeqAction::ExecuteDerived(GameManager& g) {
+    if (g._editMode) { return; }
+    for (int ii = 0; ii < _entityIds.size(); ++ii) {               
+        int swapIx = rng::GetIntGlobal(0, _entityIds.size()-1);
+        if (swapIx != ii) {
+            ne::EntityId id = _entityIds[ii];
+            ne::Entity *lhs = g._neEntityManager->GetActiveOrInactiveEntity(id);
+            if (lhs == nullptr) {
+                continue;
+            }
+
+            ne::EntityId swapId = _entityIds[swapIx];
+            ne::Entity *rhs = g._neEntityManager->GetActiveOrInactiveEntity(swapId);
+            if (rhs == nullptr) {
+                continue;
+            }
+            std::swap(lhs->_transform, rhs->_transform);
+        }
+    }
+}

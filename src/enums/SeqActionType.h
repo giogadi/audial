@@ -60,6 +60,8 @@ enum class SeqActionType : int {
     
     RandomizePosition,
     
+    ShufflePositions,
+    
     Count
 };
 extern char const* gSeqActionTypeStrings[];

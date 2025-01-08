@@ -12766,7 +12766,7 @@
                 <text>c</text>
                 <buttons>a</buttons>
                 <type_kill>true</type_kill>
-                <all_actions_on_hit>false</all_actions_on_hit>
+                <all_actions_on_hit>true</all_actions_on_hit>
                 <flow_cooldown>-1</flow_cooldown>
                 <show_beats_left>false</show_beats_left>
                 <cooldown_quantize_denom>0</cooldown_quantize_denom>
@@ -12796,6 +12796,15 @@
                         <quantizeDenom>0.25</quantizeDenom>
                         <doNoteOff>false</doNoteOff>
                         <holdNotes>false</holdNotes>
+                    </seq_action>
+                    <seq_action>
+                        <one_time>false</one_time>
+                        <action_type>AddToIntVariable</action_type>
+                        <var_editor_id>
+                            <id>370</id>
+                        </var_editor_id>
+                        <add_amount>-1</add_amount>
+                        <reset>false</reset>
                     </seq_action>
                 </hit_actions>
                 <all_hit_actions/>
@@ -12871,7 +12880,7 @@
                 <text>o</text>
                 <buttons>a</buttons>
                 <type_kill>true</type_kill>
-                <all_actions_on_hit>false</all_actions_on_hit>
+                <all_actions_on_hit>true</all_actions_on_hit>
                 <flow_cooldown>-1</flow_cooldown>
                 <show_beats_left>false</show_beats_left>
                 <cooldown_quantize_denom>0</cooldown_quantize_denom>
@@ -12901,6 +12910,15 @@
                         <quantizeDenom>0.25</quantizeDenom>
                         <doNoteOff>false</doNoteOff>
                         <holdNotes>false</holdNotes>
+                    </seq_action>
+                    <seq_action>
+                        <one_time>false</one_time>
+                        <action_type>AddToIntVariable</action_type>
+                        <var_editor_id>
+                            <id>370</id>
+                        </var_editor_id>
+                        <add_amount>-1</add_amount>
+                        <reset>false</reset>
                     </seq_action>
                 </hit_actions>
                 <all_hit_actions/>
@@ -12976,7 +12994,7 @@
                 <text>n</text>
                 <buttons>a</buttons>
                 <type_kill>true</type_kill>
-                <all_actions_on_hit>false</all_actions_on_hit>
+                <all_actions_on_hit>true</all_actions_on_hit>
                 <flow_cooldown>-1</flow_cooldown>
                 <show_beats_left>false</show_beats_left>
                 <cooldown_quantize_denom>0</cooldown_quantize_denom>
@@ -13006,6 +13024,15 @@
                         <quantizeDenom>0.25</quantizeDenom>
                         <doNoteOff>false</doNoteOff>
                         <holdNotes>false</holdNotes>
+                    </seq_action>
+                    <seq_action>
+                        <one_time>false</one_time>
+                        <action_type>AddToIntVariable</action_type>
+                        <var_editor_id>
+                            <id>370</id>
+                        </var_editor_id>
+                        <add_amount>-1</add_amount>
+                        <reset>false</reset>
                     </seq_action>
                 </hit_actions>
                 <all_hit_actions/>
@@ -13081,7 +13108,7 @@
                 <text>s</text>
                 <buttons>a</buttons>
                 <type_kill>true</type_kill>
-                <all_actions_on_hit>false</all_actions_on_hit>
+                <all_actions_on_hit>true</all_actions_on_hit>
                 <flow_cooldown>-1</flow_cooldown>
                 <show_beats_left>false</show_beats_left>
                 <cooldown_quantize_denom>0</cooldown_quantize_denom>
@@ -13111,6 +13138,15 @@
                         <quantizeDenom>0.25</quantizeDenom>
                         <doNoteOff>false</doNoteOff>
                         <holdNotes>false</holdNotes>
+                    </seq_action>
+                    <seq_action>
+                        <one_time>false</one_time>
+                        <action_type>AddToIntVariable</action_type>
+                        <var_editor_id>
+                            <id>370</id>
+                        </var_editor_id>
+                        <add_amount>-1</add_amount>
+                        <reset>false</reset>
                     </seq_action>
                 </hit_actions>
                 <all_hit_actions/>
@@ -13186,7 +13222,7 @@
                 <text>i</text>
                 <buttons>a</buttons>
                 <type_kill>true</type_kill>
-                <all_actions_on_hit>false</all_actions_on_hit>
+                <all_actions_on_hit>true</all_actions_on_hit>
                 <flow_cooldown>-1</flow_cooldown>
                 <show_beats_left>false</show_beats_left>
                 <cooldown_quantize_denom>0</cooldown_quantize_denom>
@@ -13216,6 +13252,15 @@
                         <quantizeDenom>0.25</quantizeDenom>
                         <doNoteOff>false</doNoteOff>
                         <holdNotes>false</holdNotes>
+                    </seq_action>
+                    <seq_action>
+                        <one_time>false</one_time>
+                        <action_type>AddToIntVariable</action_type>
+                        <var_editor_id>
+                            <id>370</id>
+                        </var_editor_id>
+                        <add_amount>-1</add_amount>
+                        <reset>false</reset>
                     </seq_action>
                 </hit_actions>
                 <all_hit_actions/>
@@ -13291,7 +13336,7 @@
                 <text>d</text>
                 <buttons>a</buttons>
                 <type_kill>true</type_kill>
-                <all_actions_on_hit>false</all_actions_on_hit>
+                <all_actions_on_hit>true</all_actions_on_hit>
                 <flow_cooldown>-1</flow_cooldown>
                 <show_beats_left>false</show_beats_left>
                 <cooldown_quantize_denom>0</cooldown_quantize_denom>
@@ -13321,6 +13366,15 @@
                         <quantizeDenom>0.25</quantizeDenom>
                         <doNoteOff>false</doNoteOff>
                         <holdNotes>false</holdNotes>
+                    </seq_action>
+                    <seq_action>
+                        <one_time>false</one_time>
+                        <action_type>AddToIntVariable</action_type>
+                        <var_editor_id>
+                            <id>370</id>
+                        </var_editor_id>
+                        <add_amount>-1</add_amount>
+                        <reset>false</reset>
                     </seq_action>
                 </hit_actions>
                 <all_hit_actions/>
@@ -13396,7 +13450,7 @@
                 <text>e</text>
                 <buttons>a</buttons>
                 <type_kill>true</type_kill>
-                <all_actions_on_hit>false</all_actions_on_hit>
+                <all_actions_on_hit>true</all_actions_on_hit>
                 <flow_cooldown>-1</flow_cooldown>
                 <show_beats_left>false</show_beats_left>
                 <cooldown_quantize_denom>0</cooldown_quantize_denom>
@@ -13426,6 +13480,15 @@
                         <quantizeDenom>0.25</quantizeDenom>
                         <doNoteOff>false</doNoteOff>
                         <holdNotes>false</holdNotes>
+                    </seq_action>
+                    <seq_action>
+                        <one_time>false</one_time>
+                        <action_type>AddToIntVariable</action_type>
+                        <var_editor_id>
+                            <id>370</id>
+                        </var_editor_id>
+                        <add_amount>-1</add_amount>
+                        <reset>false</reset>
                     </seq_action>
                 </hit_actions>
                 <all_hit_actions/>
@@ -13501,7 +13564,7 @@
                 <text>r</text>
                 <buttons>a</buttons>
                 <type_kill>true</type_kill>
-                <all_actions_on_hit>false</all_actions_on_hit>
+                <all_actions_on_hit>true</all_actions_on_hit>
                 <flow_cooldown>-1</flow_cooldown>
                 <show_beats_left>false</show_beats_left>
                 <cooldown_quantize_denom>0</cooldown_quantize_denom>
@@ -13531,6 +13594,15 @@
                         <quantizeDenom>0.25</quantizeDenom>
                         <doNoteOff>false</doNoteOff>
                         <holdNotes>false</holdNotes>
+                    </seq_action>
+                    <seq_action>
+                        <one_time>false</one_time>
+                        <action_type>AddToIntVariable</action_type>
+                        <var_editor_id>
+                            <id>370</id>
+                        </var_editor_id>
+                        <add_amount>-1</add_amount>
+                        <reset>false</reset>
                     </seq_action>
                 </hit_actions>
                 <all_hit_actions/>
@@ -13594,24 +13666,13 @@
                 <actions>
                     <seq_action>
                         <one_time>false</one_time>
-                        <action_type>SetEntityActive</action_type>
-                        <entities_tag>5</entities_tag>
-                        <entity_editor_id>
-                            <id>-1</id>
-                        </entity_editor_id>
-                        <active>true</active>
-                        <init_on_activate>true</init_on_activate>
-                        <init_if_already_active>false</init_if_already_active>
-                    </seq_action>
-                    <seq_action>
-                        <one_time>false</one_time>
                         <action_type>BeatTimeEvent</action_type>
                         <quantize_denom>0.25</quantize_denom>
                         <beat_time_event>
                             <event_type>AllNotesOff</event_type>
                             <channel>1</channel>
                             <delay_secs>0</delay_secs>
-                            <beat_time>1</beat_time>
+                            <beat_time>4</beat_time>
                         </beat_time_event>
                     </seq_action>
                     <seq_action>
@@ -13623,8 +13684,183 @@
                         <add_amount>0</add_amount>
                         <reset>true</reset>
                     </seq_action>
+                    <seq_action>
+                        <one_time>false</one_time>
+                        <action_type>Trigger</action_type>
+                        <entity_editor_id>
+                            <id>372</id>
+                        </entity_editor_id>
+                        <do_exit_actions>false</do_exit_actions>
+                    </seq_action>
                 </actions>
             </IntVariable>
+            <FlowTrigger>
+                <editor_id>
+                    <id>371</id>
+                </editor_id>
+                <name>open_delayed_shuffle</name>
+                <entity_active>true</entity_active>
+                <pickable>true</pickable>
+                <transform>
+                    <pos>
+                        <x>-12.328733</x>
+                        <y>0</y>
+                        <z>-11.2705</z>
+                    </pos>
+                    <quat>
+                        <x>0</x>
+                        <y>0</y>
+                        <z>0</z>
+                        <w>1</w>
+                    </quat>
+                    <scale>
+                        <x>1</x>
+                        <y>1</y>
+                        <z>1</z>
+                    </scale>
+                </transform>
+                <model_name></model_name>
+                <texture_name></texture_name>
+                <model_color_vec4>
+                    <x>0.80000001</x>
+                    <y>0.80000001</y>
+                    <z>0.80000001</z>
+                    <w>1</w>
+                </model_color_vec4>
+                <flow_section_id>-1</flow_section_id>
+                <tag>0</tag>
+                <waypoint_follower>
+                    <mode>Waypoint</mode>
+                    <waypoint_auto_start>false</waypoint_auto_start>
+                    <loop_waypoints>false</loop_waypoints>
+                    <start_time>3</start_time>
+                    <quantize>1</quantize>
+                    <quantize_buffer>0</quantize_buffer>
+                    <waypoints/>
+                    <follow_entity_editor_id>
+                        <id>-1</id>
+                    </follow_entity_editor_id>
+                </waypoint_follower>
+                <trigger_delay_beat_time>0.25</trigger_delay_beat_time>
+                <quantize>0</quantize>
+                <on_player_enter>false</on_player_enter>
+                <execute_on_init>false</execute_on_init>
+                <use_trigger_volumes>false</use_trigger_volumes>
+                <random_action_count>-1</random_action_count>
+                <shatter_on_trigger>false</shatter_on_trigger>
+                <actions>
+                    <seq_action>
+                        <one_time>false</one_time>
+                        <action_type>ShufflePositions</action_type>
+                        <entities>
+                            <e>
+                                <id>362</id>
+                            </e>
+                            <e>
+                                <id>363</id>
+                            </e>
+                            <e>
+                                <id>364</id>
+                            </e>
+                            <e>
+                                <id>365</id>
+                            </e>
+                            <e>
+                                <id>366</id>
+                            </e>
+                            <e>
+                                <id>367</id>
+                            </e>
+                            <e>
+                                <id>368</id>
+                            </e>
+                            <e>
+                                <id>369</id>
+                            </e>
+                        </entities>
+                    </seq_action>
+                </actions>
+                <actions_on_exit/>
+                <trigger_volume_entities/>
+            </FlowTrigger>
+            <FlowTrigger>
+                <editor_id>
+                    <id>372</id>
+                </editor_id>
+                <name>open_delayed_reinit_then_shuffle</name>
+                <entity_active>true</entity_active>
+                <pickable>true</pickable>
+                <transform>
+                    <pos>
+                        <x>-12.328733</x>
+                        <y>0</y>
+                        <z>-11.2705</z>
+                    </pos>
+                    <quat>
+                        <x>0</x>
+                        <y>0</y>
+                        <z>0</z>
+                        <w>1</w>
+                    </quat>
+                    <scale>
+                        <x>1</x>
+                        <y>1</y>
+                        <z>1</z>
+                    </scale>
+                </transform>
+                <model_name></model_name>
+                <texture_name></texture_name>
+                <model_color_vec4>
+                    <x>0.80000001</x>
+                    <y>0.80000001</y>
+                    <z>0.80000001</z>
+                    <w>1</w>
+                </model_color_vec4>
+                <flow_section_id>-1</flow_section_id>
+                <tag>0</tag>
+                <waypoint_follower>
+                    <mode>Waypoint</mode>
+                    <waypoint_auto_start>false</waypoint_auto_start>
+                    <loop_waypoints>false</loop_waypoints>
+                    <start_time>3</start_time>
+                    <quantize>1</quantize>
+                    <quantize_buffer>0</quantize_buffer>
+                    <waypoints/>
+                    <follow_entity_editor_id>
+                        <id>-1</id>
+                    </follow_entity_editor_id>
+                </waypoint_follower>
+                <trigger_delay_beat_time>4</trigger_delay_beat_time>
+                <quantize>0</quantize>
+                <on_player_enter>false</on_player_enter>
+                <execute_on_init>false</execute_on_init>
+                <use_trigger_volumes>false</use_trigger_volumes>
+                <random_action_count>-1</random_action_count>
+                <shatter_on_trigger>false</shatter_on_trigger>
+                <actions>
+                    <seq_action>
+                        <one_time>false</one_time>
+                        <action_type>SetEntityActive</action_type>
+                        <entities_tag>5</entities_tag>
+                        <entity_editor_id>
+                            <id>-1</id>
+                        </entity_editor_id>
+                        <active>true</active>
+                        <init_on_activate>true</init_on_activate>
+                        <init_if_already_active>false</init_if_already_active>
+                    </seq_action>
+                    <seq_action>
+                        <one_time>false</one_time>
+                        <action_type>Trigger</action_type>
+                        <entity_editor_id>
+                            <id>371</id>
+                        </entity_editor_id>
+                        <do_exit_actions>false</do_exit_actions>
+                    </seq_action>
+                </actions>
+                <actions_on_exit/>
+                <trigger_volume_entities/>
+            </FlowTrigger>
         </new_entities>
     </script>
 </root>

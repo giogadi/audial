@@ -29,6 +29,7 @@
         "SetBpm",
         "SetMissTrigger",
         "SetPlayerResetTrigger",
-        "RandomizePosition"
+        "RandomizePosition",
+        "ShufflePositions"
     ]
 }

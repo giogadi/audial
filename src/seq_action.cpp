@@ -92,6 +92,7 @@ std::unique_ptr<SeqAction> SeqAction::New(SeqActionType actionType) {
         case SeqActionType::SetMissTrigger: return std::make_unique<SetMissTriggerSeqAction>();
         case SeqActionType::SetPlayerResetTrigger: return std::make_unique<SetPlayerResetTriggerSeqAction>();
         case SeqActionType::RandomizePosition: return std::make_unique<RandomizePositionSeqAction>();
+        case SeqActionType::ShufflePositions: return std::make_unique<ShufflePositionsSeqAction>();
         case SeqActionType::Count: break;
     }
     assert(false);

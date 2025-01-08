@@ -376,3 +376,15 @@ struct RandomizePositionSeqAction : public SeqAction {
     virtual void InitDerived(GameManager& g) override;
     virtual void ExecuteDerived(GameManager& g) override;
 };
+
+struct ShufflePositionsSeqAction : public SeqAction {
+    virtual SeqActionType Type() const override { return SeqActionType::ShufflePositions; }
+    std::vector<EditorId> _editorIds;
+
+    std::vector<ne::EntityId> _entityIds;
+    virtual void LoadDerived(serial::Ptree pt) override;
+    virtual void SaveDerived(serial::Ptree pt) const override;
+    virtual bool ImGui() override;
+    virtual void InitDerived(GameManager& g) override;
+    virtual void ExecuteDerived(GameManager& g) override;
+};
