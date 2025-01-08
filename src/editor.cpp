@@ -249,7 +249,8 @@ InputManager::Key sPianoKeys[] = {
 void Editor::HandlePianoInput(SynthGuiState& synthGuiState) {
     InputManager const& inputManager = *_g->_inputManager;
 
-    if (inputManager.IsKeyPressedThisFrame(InputManager::Key::P)) {
+    if (inputManager.IsKeyPressedThisFrame(InputManager::Key::P) ||
+        inputManager.IsKeyPressedThisFrame(InputManager::Key::Escape)) {
         sInputMode = InputMode::Default;
         return;
     }
