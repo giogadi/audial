@@ -370,6 +370,10 @@ void TypingEnemyEntity::InitDerived(GameManager& g) {
     if (_p._groupId >= 0) {
         TypingEnemyMgr_AddEnemy(*g._typingEnemyMgr, g, *this);
     }
+
+    if (_p._hitActions.size() > _p._keyText.size() && _p._hitBehavior == TypingEnemyEntity::HitBehavior::SingleAction) {
+        printf("WARNING: TypingEnemyEntity \"%s\" (editor id: %lld) has more actions than keys and is not All-Actions-On-Hit\n", _name.c_str(), _editorId._id);
+    }
 }
 
 namespace {
