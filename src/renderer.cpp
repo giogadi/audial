@@ -1052,8 +1052,7 @@ void Scene::DrawConsoleText(std::string_view str) {
     *terminator = '\0';
     ConsoleTextInstance &t = _pInternal->_consoleLines.emplace_back();
     t._text = std::string_view(textStart, str.size());
-    //t._timeLeft = 2.f;
-    t._timeLeft = 1000.f;
+    t._timeLeft = 2.f;
     sConsoleTextBufferIx += str.size() + 1;
 }
 
@@ -1309,6 +1308,7 @@ void Scene::Draw(int windowWidth, int windowHeight, float timeInSecs, float delt
     _pInternal->_topLayerModels.clear();
 
     glEnable(GL_BLEND);
+    glBlendEquation(GL_FUNC_ADD);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
     // WATER
@@ -1635,8 +1635,7 @@ void Scene::Draw(int windowWidth, int windowHeight, float timeInSecs, float delt
         _pInternal->_textToDraw.clear();
     }
     
-    glDisable(GL_DEPTH_TEST);
-    glBlendEquation(GL_FUNC_ADD);
+    glDisable(GL_DEPTH_TEST);    
     glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
     {
         // Update console lines
