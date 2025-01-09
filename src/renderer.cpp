@@ -301,6 +301,7 @@ struct MsdfFontInfo {
     float _pxWidth;
     float _pxHeight;
     float _pxPerEm;
+    float _planeBounds[4];  // left,bottom,right,top. em. bounds all glyphs in font.
 };
 
 }  // namespace
@@ -711,9 +712,13 @@ bool SceneInternal::Init(GameManager& g) {
     }
 
     {
-        _msdfFontInfo._pxPerEm = 64;
-        _msdfFontInfo._pxWidth = 380;
-        _msdfFontInfo._pxHeight = 380;
+        _msdfFontInfo._pxPerEm = 32.59375;
+        _msdfFontInfo._pxWidth = 208;
+        _msdfFontInfo._pxHeight = 208;
+        _msdfFontInfo._planeBounds[BoundsLeft] = std::numeric_limits<float>::max();
+        _msdfFontInfo._planeBounds[BoundsRight] = -std::numeric_limits<float>::max();
+        _msdfFontInfo._planeBounds[BoundsBottom] = -std::numeric_limits<float>::max();
+        _msdfFontInfo._planeBounds[BoundsTop] = std::numeric_limits<float>::max();
 
         std::ifstream inputFile("data/fonts/vollkorn/vollkorn.csv");
         
@@ -725,7 +730,7 @@ bool SceneInternal::Init(GameManager& g) {
             std::getline(ss, value, ',');
             string_util::MaybeStoi(value, info._codepoint);
 
-            _msdfFontInfo._charToInfoMap.emplace((char)info._codepoint, _msdfFontInfo._charInfos.size()-1);
+            _msdfFontInfo._charToInfoMap.emplace((char)info._codepoint, (int)_msdfFontInfo._charInfos.size()-1);
 
             std::getline(ss, value, ',');
             string_util::MaybeStof(value, info._advance);
@@ -735,6 +740,11 @@ bool SceneInternal::Init(GameManager& g) {
                 string_util::MaybeStof(value, info._planeBounds[ii]);
                 if (ii == BoundsBottom || ii == BoundsTop) {
                     info._planeBounds[ii] = -info._planeBounds[ii];
+                }
+                if (ii == BoundsLeft || ii == BoundsTop) {
+                    _msdfFontInfo._planeBounds[ii] = std::min(info._planeBounds[ii], _msdfFontInfo._planeBounds[ii]);
+                } else {
+                    _msdfFontInfo._planeBounds[ii] = std::max(info._planeBounds[ii], _msdfFontInfo._planeBounds[ii]);
                 }
             }
             for (int ii = 0; ii < 4; ++ii) {
@@ -1042,7 +1052,8 @@ void Scene::DrawConsoleText(std::string_view str) {
     *terminator = '\0';
     ConsoleTextInstance &t = _pInternal->_consoleLines.emplace_back();
     t._text = std::string_view(textStart, str.size());
-    t._timeLeft = 2.f;
+    //t._timeLeft = 2.f;
+    t._timeLeft = 1000.f;
     sConsoleTextBufferIx += str.size() + 1;
 }
 
@@ -1623,10 +1634,12 @@ void Scene::Draw(int windowWidth, int windowHeight, float timeInSecs, float delt
         }
         _pInternal->_textToDraw.clear();
     }
-
-    // Ditto for console text
-#if 0
+    
+    glDisable(GL_DEPTH_TEST);
+    glBlendEquation(GL_FUNC_ADD);
+    glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
     {
+        // Update console lines
         for (int ii = 0; ii < _pInternal->_consoleLines.size(); ++ii) {
             ConsoleTextInstance &t = _pInternal->_consoleLines[ii];
             t._timeLeft -= deltaTime;
@@ -1640,15 +1653,6 @@ void Scene::Draw(int windowWidth, int windowHeight, float timeInSecs, float delt
             }
         }
 
-        for (int ii = 0; ii < _pInternal->_consoleLines.size(); ++ii) {
-            ConsoleTextInstance &t = _pInternal->_consoleLines[ii];
-
-        }
-    }
-#endif
-
-#if 0
-    {
         // HOWDY MSDF
         MsdfFontInfo &fontInfo = _pInternal->_msdfFontInfo;
 
@@ -1663,66 +1667,73 @@ void Scene::Draw(int windowWidth, int windowHeight, float timeInSecs, float delt
         glBindTexture(GL_TEXTURE_2D, fontTextureId);
         glBindVertexArray(_pInternal->_msdfTextVao);
 
-        std::string text("Hello, world!");
-        Vec3 currentPoint(0.25f * _pInternal->_g->_windowWidth, 0.5f * _pInternal->_g->_windowHeight, 0.f);
+        float fontSizePx = 24.f;
+        float sf = fontSizePx;        
+        Vec3 initialPoint(-sf * fontInfo._planeBounds[BoundsLeft], -sf * fontInfo._planeBounds[BoundsTop], 0.f);
+        Vec3 currentPoint = initialPoint;
         shader.SetMat4("uMvpTrans", projection);
         shader.SetVec4("uColor", Vec4(1.f, 1.f, 1.f, 1.f));
-        float fontSizePx = 24.f;
-        float sf = fontSizePx;
-        for (int ii = 0; ii < text.size(); ++ii) {
-            auto result = fontInfo._charToInfoMap.find(text[ii]);
-            if (result == fontInfo._charToInfoMap.end()) {
-                printf("Could not find character: %c\n", text[ii]);
-                continue;
+        for (int ii = 0; ii < _pInternal->_consoleLines.size(); ++ii) {
+            ConsoleTextInstance &t = _pInternal->_consoleLines[ii];
+
+            for (int ii = 0; ii < t._text.size(); ++ii) {
+                auto result = fontInfo._charToInfoMap.find(t._text[ii]);
+                if (result == fontInfo._charToInfoMap.end()) {
+                    printf("Could not find character: %c\n", t._text[ii]);
+                    continue;
+                }
+                MsdfCharInfo &charInfo = fontInfo._charInfos[result->second];
+
+                float vertexData[5 * 4];
+
+                int dataIx = 0;
+                Vec3 p;
+                //top-left
+                p = currentPoint + sf * Vec3(charInfo._planeBounds[BoundsLeft], charInfo._planeBounds[BoundsTop], 0.f);
+                vertexData[dataIx++] = p._x;
+                vertexData[dataIx++] = p._y;
+                vertexData[dataIx++] = p._z;
+                vertexData[dataIx++] = charInfo._atlasBoundsNormalized[BoundsLeft];
+                vertexData[dataIx++] = charInfo._atlasBoundsNormalized[BoundsTop];
+
+                //bottom-left
+                p = currentPoint + sf * Vec3(charInfo._planeBounds[BoundsLeft], charInfo._planeBounds[BoundsBottom], 0.f);
+                vertexData[dataIx++] = p._x;
+                vertexData[dataIx++] = p._y;
+                vertexData[dataIx++] = p._z;
+                vertexData[dataIx++] = charInfo._atlasBoundsNormalized[BoundsLeft];
+                vertexData[dataIx++] = charInfo._atlasBoundsNormalized[BoundsBottom];
+
+                //top-right
+                p = currentPoint + sf * Vec3(charInfo._planeBounds[BoundsRight], charInfo._planeBounds[BoundsTop], 0.f);
+                vertexData[dataIx++] = p._x;
+                vertexData[dataIx++] = p._y;
+                vertexData[dataIx++] = p._z;
+                vertexData[dataIx++] = charInfo._atlasBoundsNormalized[BoundsRight];
+                vertexData[dataIx++] = charInfo._atlasBoundsNormalized[BoundsTop];
+
+                //bottom-right
+                p = currentPoint + sf * Vec3(charInfo._planeBounds[BoundsRight], charInfo._planeBounds[BoundsBottom], 0.f);
+                vertexData[dataIx++] = p._x;
+                vertexData[dataIx++] = p._y;
+                vertexData[dataIx++] = p._z;
+                vertexData[dataIx++] = charInfo._atlasBoundsNormalized[BoundsRight];
+                vertexData[dataIx++] = charInfo._atlasBoundsNormalized[BoundsBottom];
+
+                glBindBuffer(GL_ARRAY_BUFFER, _pInternal->_msdfTextVbo);
+                glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertexData), vertexData);
+                glBindBuffer(GL_ARRAY_BUFFER, 0);
+                glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+
+                currentPoint._x += sf * charInfo._advance;
             }
-            MsdfCharInfo &charInfo = fontInfo._charInfos[result->second];
-
-                        
-            float vertexData[5 * 4];
-
-            int dataIx = 0;
-            Vec3 p;
-            //top-left
-            p = currentPoint + sf * Vec3(charInfo._planeBounds[BoundsLeft], charInfo._planeBounds[BoundsTop], 0.f);
-            vertexData[dataIx++] = p._x;
-            vertexData[dataIx++] = p._y;
-            vertexData[dataIx++] = p._z;
-            vertexData[dataIx++] = charInfo._atlasBoundsNormalized[BoundsLeft];
-            vertexData[dataIx++] = charInfo._atlasBoundsNormalized[BoundsTop];
-
-            //bottom-left
-            p = currentPoint + sf * Vec3(charInfo._planeBounds[BoundsLeft], charInfo._planeBounds[BoundsBottom], 0.f);
-            vertexData[dataIx++] = p._x;
-            vertexData[dataIx++] = p._y;
-            vertexData[dataIx++] = p._z;
-            vertexData[dataIx++] = charInfo._atlasBoundsNormalized[BoundsLeft];
-            vertexData[dataIx++] = charInfo._atlasBoundsNormalized[BoundsBottom];
-
-            //top-right
-            p = currentPoint + sf * Vec3(charInfo._planeBounds[BoundsRight], charInfo._planeBounds[BoundsTop], 0.f);
-            vertexData[dataIx++] = p._x;
-            vertexData[dataIx++] = p._y;
-            vertexData[dataIx++] = p._z;
-            vertexData[dataIx++] = charInfo._atlasBoundsNormalized[BoundsRight];
-            vertexData[dataIx++] = charInfo._atlasBoundsNormalized[BoundsTop];   
-
-            //bottom-right
-            p = currentPoint + sf * Vec3(charInfo._planeBounds[BoundsRight], charInfo._planeBounds[BoundsBottom], 0.f);
-            vertexData[dataIx++] = p._x;
-            vertexData[dataIx++] = p._y;
-            vertexData[dataIx++] = p._z;
-            vertexData[dataIx++] = charInfo._atlasBoundsNormalized[BoundsRight];
-            vertexData[dataIx++] = charInfo._atlasBoundsNormalized[BoundsBottom];
-
-            glBindBuffer(GL_ARRAY_BUFFER, _pInternal->_msdfTextVbo);
-            glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertexData), vertexData);
-            glBindBuffer(GL_ARRAY_BUFFER, 0);
-            glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
-
-            currentPoint._x += sf * charInfo._advance;
+            currentPoint._x = initialPoint._x;
+            float constexpr verticalPadding = 0.1f; // em
+            currentPoint._y += sf * (fontInfo._planeBounds[BoundsBottom] + (-fontInfo._planeBounds[BoundsTop]) + verticalPadding);
         }
     }
-#endif
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    glEnable(GL_DEPTH_TEST);
 
     {
         ViewportInfo const& vp = _pInternal->_g->_viewportInfo;

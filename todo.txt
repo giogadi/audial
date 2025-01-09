@@ -28,10 +28,7 @@ Story:
 - tension between independence and control? constraint and freedom?
 
 Near-term ideas:
-- some pickups require multiple hits to pop? to make trills
-- some pickups are repeated, but require multiple swings through a couple of notes in order to create a looping phrase
 - add Sonic 2/3 style intro panel at level start
-- different instruments sometimes, obviously
 - way more variety in notes from pickups. Maybe they even correlate to the notes the player is playing?
 - Change letters sometimes for nodes as you go
 - change positions of letters sometimes. Moving letters?
@@ -47,8 +44,9 @@ BUGS:
 - weird floaty text when camera moves. everything looks floaty actually
 
 TOOLS:
-- HOW MANY TIMES HAVE WE MADE THE MISTAKE OF NOT SETTING "ALL ACTIONS ON HIT" ON AN ENEMY!!!!
-  - maybe "there are more actions than letters and it's not all actions on hit" warning
+- group all the room-transition-related things into one entity that's easy to set up.
+- in-game "console output" for tools
+- Motion editor window
 - enable breakpoints/pausing without fucking up audio!!!!
 - make automations WAY easier to implement AND audition
 - collapse all for vectors
@@ -59,13 +57,12 @@ TOOLS:
 - type in to search for entity type and seqAction type
 - input midi note from keyboard piano
 - up/down by octave for midi note input
-- group all the room-transition-related things into one entity that's easy to set up.
 - multiediting FOR REAL DUDE WTF
 - make soundbank not shit
 - DICTIONARY
 - imgui EditorId selector that can constrain to a specific type
 - "musical savestates" that will change patches, launch sequencers, etc for editing
-- Find a way to set lengths based on musical timings more easily.
+- Find a way to set physical distances based on musical timings more easily.
 - Support SynthParams in BeatTimeEvents
 - Enable setting a new global beat time epoch
 - Save to file in a separate thread
@@ -75,16 +72,20 @@ TOOLS:
 - dropdown for model select
 - dropdown for patch select for intvariable (and others?)
 - figure out stable euler angles. use that code you saw once
+- build out FM synth
+- continue OmniSequencer work
 
 Optimizations/improvements/etc:
+- ALWAYS DO premultiplied alpha blending.
+- Have a global time (separate from audio) that I can use instead of incrementing a million "timeLeft" variables everywhere
 - stepsequencer that lives inside the audio thread and has all the channels
 - Allow Solo/Mute/Gain on seq tracks.
 - velocity should use exponential curve
 - Use an arena when loading so we don't have all this allocations for GetChildren().
 - DELAY ON PCM PLAYBACK!!!!
 - better font handling
+- Make entity system less complicated? And make adding new entity types way simpler.
  
 SECRETS
 - letters you can type that are not shown on screen?
   - or maybe some letters are hidden but still detectable visually (visual puns, camouflage, whatever)
-- 

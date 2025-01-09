@@ -24,6 +24,7 @@ void main() {
     float sd = median(msd.r, msd.g, msd.b);
     float screenPxDistance = screenPxRange()*(sd - 0.5);
     float opacity = clamp(screenPxDistance + 0.5, 0.0, 1.0);
-
-    FragColor = mix(vec4(0.f, 0.f, 0.f, 0.f), uColor, opacity);
+    vec4 bgColor = vec4(0, 0, 0, 0);
+    //bgColor = vec4(0, 0, 0, 1);
+    FragColor = mix(bgColor, uColor, opacity);
 }

@@ -308,31 +308,40 @@ int Editor::DecreasePianoOctave() {
 }
 
 namespace {
-void UpdateDefault(GameManager &g, float const dt, Editor &editor) {
+void UpdateDefault(GameManager &g, float const dt, Editor &editor, bool newInputMode) {
     InputManager &inputManager = *g._inputManager;
+
+    if (newInputMode) {
+        g._scene->DrawConsoleText("Default");
+    }
 
     if (inputManager.IsKeyPressedThisFrame(InputManager::Key::P)) {
         sInputMode = InputMode::Piano;
+        g._scene->DrawConsoleText("Piano");
         return;
     }
 
     if (inputManager.IsKeyPressedThisFrame(InputManager::Key::G) && !editor._selectedEntityIds.empty()) {
         sInputMode = InputMode::Grab;
+        g._scene->DrawConsoleText("Grab");
         return;
     }
 
     if (inputManager.IsAltPressed() && inputManager.IsKeyPressedThisFrame(InputManager::Key::S) && !inputManager.IsKeyPressed(InputManager::MouseButton::Right)) {
         sInputMode = InputMode::PolyDraw;
+        g._scene->DrawConsoleText("PolyDraw");
         return;
     }
 
     if (inputManager.IsKeyPressedThisFrame(InputManager::Key::S) && !editor._selectedEntityIds.empty() && !inputManager.IsAltPressed() && !inputManager.IsKeyPressed(InputManager::MouseButton::Right)) {
         sInputMode = InputMode::Scale;
+        g._scene->DrawConsoleText("Scale");
         return;
     }
 
     if (inputManager.IsKeyPressedThisFrame(InputManager::Key::T)) {
         sInputMode = InputMode::EnemyTyping;
+        g._scene->DrawConsoleText("Typing");
         return;
     }
 
@@ -869,7 +878,7 @@ void Editor::Update(float dt, SynthGuiState& synthGuiState) {
     sPrevMode = sInputMode;
     switch (sInputMode) {
         case InputMode::Default:
-            UpdateDefault(*_g, dt, *this);
+            UpdateDefault(*_g, dt, *this, newInputMode);
             break;
         case InputMode::DragToSelect:
             UpdateDragToSelect(*_g, *this);

@@ -1,5 +1,5 @@
 <root>
-    <version>13</version>
+    <version>14</version>
     <script>
         <bpm>120</bpm>
         <gamma_correction>false</gamma_correction>
@@ -3172,6 +3172,9 @@
                             <y>0</y>
                             <z>-9.3400002</z>
                         </spawn_pos>
+                        <pos_eid>
+                            <id>-1</id>
+                        </pos_eid>
                         <action_seq_editor_id>
                             <id>-1</id>
                         </action_seq_editor_id>
@@ -3222,6 +3225,54 @@
                 <actions_on_exit/>
                 <trigger_volume_entities/>
             </FlowTrigger>
+            <Base>
+                <editor_id>
+                    <id>222</id>
+                </editor_id>
+                <name>floor</name>
+                <entity_active>true</entity_active>
+                <pickable>true</pickable>
+                <transform>
+                    <pos>
+                        <x>7.0047121</x>
+                        <y>-0.5</y>
+                        <z>-21.103844</z>
+                    </pos>
+                    <quat>
+                        <x>0</x>
+                        <y>0</y>
+                        <z>0</z>
+                        <w>1</w>
+                    </quat>
+                    <scale>
+                        <x>100</x>
+                        <y>1</y>
+                        <z>100</z>
+                    </scale>
+                </transform>
+                <model_name>cube</model_name>
+                <texture_name></texture_name>
+                <model_color_vec4>
+                    <x>0.29411763</x>
+                    <y>0.29123411</y>
+                    <z>0.29123411</z>
+                    <w>1</w>
+                </model_color_vec4>
+                <flow_section_id>-1</flow_section_id>
+                <tag>0</tag>
+                <waypoint_follower>
+                    <mode>Waypoint</mode>
+                    <waypoint_auto_start>false</waypoint_auto_start>
+                    <loop_waypoints>false</loop_waypoints>
+                    <start_time>3</start_time>
+                    <quantize>1</quantize>
+                    <quantize_buffer>0</quantize_buffer>
+                    <waypoints/>
+                    <follow_entity_editor_id>
+                        <id>-1</id>
+                    </follow_entity_editor_id>
+                </waypoint_follower>
+            </Base>
         </new_entities>
     </script>
 </root>
