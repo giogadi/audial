@@ -30,6 +30,7 @@ add_executable(game
     src/constants.h
 
     src/tinyxml2/tinyxml2.cpp src/tinyxml2/tinyxml2.h
+    src/cJSON.c src/cJSON.h
 
     src/editor_id.cpp src/editor_id.h
     src/util.h

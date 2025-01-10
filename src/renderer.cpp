@@ -10,7 +10,7 @@
 #include "stb_image.h"
 #include "stb_truetype.h"
 #include <glad/glad.h>
-
+#include "cJSON.h"
 
 #include "mesh.h"
 #include "shader.h"
@@ -298,6 +298,7 @@ struct MsdfCharInfo {
 struct MsdfFontInfo {
     std::vector<MsdfCharInfo> _charInfos;
     std::unordered_map<char, int> _charToInfoMap;
+    float _distancePxRange;
     float _pxWidth;
     float _pxHeight;
     float _pxPerEm;
@@ -534,6 +535,154 @@ bool SceneInternal::LoadPsButtons() {
     return true;
 }
 
+namespace {
+bool GetFloatJson(cJSON *json, char const *name, float *value, char const *errPrefix) {
+    cJSON *obj = cJSON_GetObjectItem(json, name);
+    if (obj == nullptr) {
+        printf("%sNo attribute \"%s\"\n", errPrefix, name);
+        return false;
+    }
+    if (!cJSON_IsNumber(obj)) {
+        printf("%sAttribute \"%s\" is not a number!\n", errPrefix, name);
+        return false;
+    }
+    *value = (float)obj->valuedouble;
+    return true;
+}
+bool GetIntJson(cJSON *json, char const *name, int *value, char const *errPrefix) {
+    cJSON *obj = cJSON_GetObjectItem(json, name);
+    if (obj == nullptr) {
+        printf("%sNo attribute \"%s\"\n", errPrefix, name);
+        return false;
+    }
+    if (!cJSON_IsNumber(obj)) {
+        printf("%sAttribute \"%s\" is not a number!\n", errPrefix, name);
+        return false;
+    }
+    *value = obj->valueint;
+    return true;
+}
+bool GetMsdfFontInfoFromJson(char const *filePath, MsdfFontInfo &fontInfo) {
+    fontInfo._planeBounds[BoundsLeft] = std::numeric_limits<float>::max();
+    fontInfo._planeBounds[BoundsRight] = -std::numeric_limits<float>::max();
+    fontInfo._planeBounds[BoundsBottom] = -std::numeric_limits<float>::max();
+    fontInfo._planeBounds[BoundsTop] = std::numeric_limits<float>::max();
+
+    std::string errorPrefixStr = "ERROR: failed to parse JSON file " + std::string(filePath) + ": ";
+
+    std::stringstream fontInfoStream;
+    {
+        std::ifstream fontInfoFile(filePath);
+        if (!fontInfoFile.is_open()) {
+            printf("ERROR: Failed to read font info file at \"%s\"\n", filePath);
+            return false;
+        }
+        fontInfoStream << fontInfoFile.rdbuf();
+    }
+    std::string jsonStr = fontInfoStream.str();
+    cJSON *json = cJSON_Parse(jsonStr.c_str());
+    if (json == nullptr) {
+        const char *errorPtr = cJSON_GetErrorPtr();
+        if (errorPtr != nullptr) {
+            printf("ERROR: Failed to parse font info file \"%s\". Error before: %s\n", filePath, errorPtr);
+        }
+        return false;
+    } 
+    cJSON *atlas = cJSON_GetObjectItem(json, "atlas");
+    if (atlas == nullptr) {
+        printf("ERROR: No \"atlas\" in \"%s\"\n", filePath);
+        return false;
+    }
+    if (!GetFloatJson(atlas, "distanceRange", &fontInfo._distancePxRange, errorPrefixStr.c_str())) {
+        return false;
+    }
+    if (!GetFloatJson(atlas, "size", &fontInfo._pxPerEm, errorPrefixStr.c_str())) {
+        return false;
+    }
+    if (!GetFloatJson(atlas, "width", &fontInfo._pxWidth, errorPrefixStr.c_str())) {
+        return false;
+    }
+    if (!GetFloatJson(atlas, "height", &fontInfo._pxHeight, errorPrefixStr.c_str())) {
+        return false;
+    }
+
+    cJSON *glyphArray = cJSON_GetObjectItem(json, "glyphs");
+    if (glyphArray == nullptr) {
+        printf("ERROR: no \"glyphs\" array in %s\n", filePath);
+        return false;
+    }
+    int const numGlyphs = cJSON_GetArraySize(glyphArray);
+    for (int ii = 0; ii < numGlyphs; ++ii) {
+        cJSON *glyph = cJSON_GetArrayItem(glyphArray, ii);
+        if (glyph == nullptr) {
+            printf("ERROR: could not get glyph item %d in %s\n", ii, filePath);
+            return false;
+        }
+
+        MsdfCharInfo &info = fontInfo._charInfos.emplace_back();
+        if (!GetIntJson(glyph, "unicode", &info._codepoint, errorPrefixStr.c_str())) {
+            return false;
+        }
+
+        fontInfo._charToInfoMap.emplace((char)info._codepoint, (int)fontInfo._charInfos.size()-1);
+
+        if (!GetFloatJson(glyph, "advance", &info._advance, errorPrefixStr.c_str())) {
+            return false;
+        }            
+
+        for (int ii = 0; ii < 4; ++ii) {
+            info._atlasBounds[ii] = info._atlasBoundsNormalized[ii] = info._planeBounds[ii] = 0.f;
+        }
+        cJSON *bounds = cJSON_GetObjectItem(glyph, "planeBounds");
+        if (bounds) {
+            if (!GetFloatJson(bounds, "left", &info._planeBounds[BoundsLeft], errorPrefixStr.c_str())) {
+                return false;
+            }
+            if (!GetFloatJson(bounds, "bottom", &info._planeBounds[BoundsBottom], errorPrefixStr.c_str())) {
+                return false;
+            }
+            if (!GetFloatJson(bounds, "right", &info._planeBounds[BoundsRight], errorPrefixStr.c_str())) {
+                return false;
+            }
+            if (!GetFloatJson(bounds, "top", &info._planeBounds[BoundsTop], errorPrefixStr.c_str())) {
+                return false;
+            }
+
+            info._planeBounds[BoundsBottom] = -info._planeBounds[BoundsBottom];
+            info._planeBounds[BoundsTop] = -info._planeBounds[BoundsTop];
+
+            fontInfo._planeBounds[BoundsLeft] = std::min(info._planeBounds[BoundsLeft], fontInfo._planeBounds[BoundsLeft]);
+            fontInfo._planeBounds[BoundsTop] = std::min(info._planeBounds[BoundsTop], fontInfo._planeBounds[BoundsTop]);
+            fontInfo._planeBounds[BoundsRight] = std::max(info._planeBounds[BoundsRight], fontInfo._planeBounds[BoundsRight]);
+            fontInfo._planeBounds[BoundsBottom] = std::max(info._planeBounds[BoundsBottom], fontInfo._planeBounds[BoundsBottom]);
+        }
+        bounds = cJSON_GetObjectItem(glyph, "atlasBounds");
+        if (bounds) {
+            if (!GetFloatJson(bounds, "left", &info._atlasBounds[BoundsLeft], errorPrefixStr.c_str())) {
+                return false;
+            }
+            if (!GetFloatJson(bounds, "bottom", &info._atlasBounds[BoundsBottom], errorPrefixStr.c_str())) {
+                return false;
+            }
+            if (!GetFloatJson(bounds, "right", &info._atlasBounds[BoundsRight], errorPrefixStr.c_str())) {
+                return false;
+            }
+            if (!GetFloatJson(bounds, "top", &info._atlasBounds[BoundsTop], errorPrefixStr.c_str())) {
+                return false;
+            }
+
+            info._atlasBoundsNormalized[BoundsLeft] = info._atlasBounds[BoundsLeft] / fontInfo._pxWidth;
+            info._atlasBoundsNormalized[BoundsRight] = info._atlasBounds[BoundsRight] / fontInfo._pxWidth;
+            info._atlasBoundsNormalized[BoundsBottom] = info._atlasBounds[BoundsBottom] / fontInfo._pxHeight;
+            info._atlasBoundsNormalized[BoundsTop] = info._atlasBounds[BoundsTop] / fontInfo._pxHeight;
+        }
+    }
+
+    cJSON_Delete(json);
+    return true;
+}
+}
+
 bool SceneInternal::Init(GameManager& g) {
     _g = &g;
 
@@ -711,54 +860,10 @@ bool SceneInternal::Init(GameManager& g) {
         assert(_fontCharInfo.size() == 58);
     }
 
-    {
-        _msdfFontInfo._pxPerEm = 32.59375;
-        _msdfFontInfo._pxWidth = 208;
-        _msdfFontInfo._pxHeight = 208;
-        _msdfFontInfo._planeBounds[BoundsLeft] = std::numeric_limits<float>::max();
-        _msdfFontInfo._planeBounds[BoundsRight] = -std::numeric_limits<float>::max();
-        _msdfFontInfo._planeBounds[BoundsBottom] = -std::numeric_limits<float>::max();
-        _msdfFontInfo._planeBounds[BoundsTop] = std::numeric_limits<float>::max();
-
-        std::ifstream inputFile("data/fonts/vollkorn/vollkorn.csv");
-        
-        for (std::string line; std::getline(inputFile, line); /*no inc*/) {
-            std::istringstream ss(std::move(line));            
-            MsdfCharInfo &info = _msdfFontInfo._charInfos.emplace_back();
-
-            std::string value;
-            std::getline(ss, value, ',');
-            string_util::MaybeStoi(value, info._codepoint);
-
-            _msdfFontInfo._charToInfoMap.emplace((char)info._codepoint, (int)_msdfFontInfo._charInfos.size()-1);
-
-            std::getline(ss, value, ',');
-            string_util::MaybeStof(value, info._advance);
-            
-            for (int ii = 0; ii < 4; ++ii) {
-                std::getline(ss, value, ',');
-                string_util::MaybeStof(value, info._planeBounds[ii]);
-                if (ii == BoundsBottom || ii == BoundsTop) {
-                    info._planeBounds[ii] = -info._planeBounds[ii];
-                }
-                if (ii == BoundsLeft || ii == BoundsTop) {
-                    _msdfFontInfo._planeBounds[ii] = std::min(info._planeBounds[ii], _msdfFontInfo._planeBounds[ii]);
-                } else {
-                    _msdfFontInfo._planeBounds[ii] = std::max(info._planeBounds[ii], _msdfFontInfo._planeBounds[ii]);
-                }
-            }
-            for (int ii = 0; ii < 4; ++ii) {
-                std::getline(ss, value, ',');
-                string_util::MaybeStof(value, info._atlasBounds[ii]);                
-            }
-            info._atlasBoundsNormalized[BoundsLeft] = info._atlasBounds[BoundsLeft] / _msdfFontInfo._pxWidth;
-            info._atlasBoundsNormalized[BoundsRight] = info._atlasBounds[BoundsRight] / _msdfFontInfo._pxWidth;
-            info._atlasBoundsNormalized[BoundsBottom] = info._atlasBounds[BoundsBottom] / _msdfFontInfo._pxHeight;
-            info._atlasBoundsNormalized[BoundsTop] = info._atlasBounds[BoundsTop] / _msdfFontInfo._pxHeight;
-        }
-
-        inputFile.close();
+    if (!GetMsdfFontInfoFromJson("data/fonts/vollkorn/vollkorn.json", _msdfFontInfo)) {
+        return false;
     }
+
     {
         unsigned int msdfFontTextureId = 0;
         if (!CreateTextureFromFile("data/fonts/vollkorn/vollkorn.bmp", msdfFontTextureId, /*gammaCorrect=*/false, /*flip=*/true, /*mipmap=*/false)) {
@@ -1672,6 +1777,7 @@ void Scene::Draw(int windowWidth, int windowHeight, float timeInSecs, float delt
         Vec3 currentPoint = initialPoint;
         shader.SetMat4("uMvpTrans", projection);
         shader.SetVec4("uColor", Vec4(1.f, 1.f, 1.f, 1.f));
+        shader.SetFloat("uPxRange", fontInfo._distancePxRange);
         for (int ii = 0; ii < _pInternal->_consoleLines.size(); ++ii) {
             ConsoleTextInstance &t = _pInternal->_consoleLines[ii];
 
