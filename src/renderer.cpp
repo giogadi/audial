@@ -46,10 +46,6 @@ float quadVertices[] = {
 std::size_t constexpr kTextBufferCapacity = 1024;
 char sTextBuffer[kTextBufferCapacity];
 int sTextBufferIx = 0;
-
-std::size_t constexpr kConsoleTextBufferCapacity = 1024;
-char sConsoleTextBuffer[kConsoleTextBufferCapacity];
-int sConsoleTextBufferIx = 0;
 }
 
 namespace renderer {
@@ -134,11 +130,6 @@ struct TextWorldInstance {
     float _scale = 1.f;
     std::string_view _text;
     bool _appendToPrevious = false;
-};
-
-struct GlyphInstance {
-    Vec4 _colorRgba;
-    stbtt_aligned_quad _quad;
 };
 
 namespace ModelShaderUniforms {
@@ -321,7 +312,6 @@ public:
 
     std::vector<Light> _lightsToDraw;
     std::vector<TextWorldInstance> _textToDraw;
-    std::vector<GlyphInstance> _glyphsToDraw;
     std::vector<Glyph3dInstance> _glyph3dsToDraw;
     std::vector<BoundingBoxInstance> _boundingBoxesToDraw;
     std::vector<Polygon2dInstance> _polygonsToDraw;
@@ -1103,64 +1093,6 @@ size_t Scene::DrawText3d(char const* text, size_t const textLength, Mat4 const& 
     return firstCharIndex;
 }
 
-
-void Scene::DrawText(std::string_view str, float& screenX, float& screenY, float scale, Vec4 const& colorRgba) {
-    // Pretend the "reference" size is with viewport resolution of size 2560/1494 with screen=pixels
-    ViewportInfo const& vp = _pInternal->_g->_viewportInfo;
-    scale *= ((float)vp._height / 1494.f);
-    // TODO: for some reason we don't need this? Would be nice to fully figure out why, lol
-    // account for screen units not being the same as pixels.
-    // scale *= ((float)vp._width / (float) vp._screenWidth);
-    
-    Vec3 origin(screenX, screenY, 0.f);
-    for (char c : str) {
-        char constexpr kFirstChar = 65;  // 'A'
-        int constexpr kNumChars = 58;
-        int constexpr kBmpWidth = 512;
-        int constexpr kBmpHeight = 128;
-        int charIndex = c - kFirstChar;
-        if (charIndex >= kNumChars || charIndex < 0) {
-            printf("ERROR: character \'%c\' not in font!\n", c);
-            continue;
-        }
-        stbtt_aligned_quad quad;
-        Vec3 outPos = origin;
-        stbtt_GetBakedQuad(_pInternal->_fontCharInfo.data(), kBmpWidth, kBmpHeight, charIndex, &outPos._x, &outPos._y, &quad, /*opengl_fillrule=*/1);
-        
-        _pInternal->_glyphsToDraw.emplace_back();
-        GlyphInstance& t = _pInternal->_glyphsToDraw.back();
-        t._colorRgba = colorRgba;
-        t._quad.x0 = origin._x + scale * (quad.x0 - origin._x);
-        t._quad.y0 = origin._y + scale * (quad.y0 - origin._y);
-        t._quad.x1 = t._quad.x0 + scale * (quad.x1 - quad.x0);
-        t._quad.y1 = t._quad.y0 + scale * (quad.y1 - quad.y0);
-        t._quad.s0 = quad.s0;
-        t._quad.s1 = quad.s1;
-        t._quad.t0 = quad.t0;
-        t._quad.t1 = quad.t1;
-
-        origin += scale * (outPos - origin);
-    }
-
-    screenX = origin._x;
-    screenY = origin._y;
-}
-
-void Scene::DrawConsoleText(std::string_view str) {
-    if (sConsoleTextBufferIx + str.size() >= kConsoleTextBufferCapacity) {
-        printf("Scene::DrawTextWorld: Text buffer out of capacity!!\n");
-        return;
-    }
-    char *textStart = &sConsoleTextBuffer[sConsoleTextBufferIx];
-    str.copy(textStart, str.size());
-    char *terminator = textStart + str.size();
-    *terminator = '\0';
-    ConsoleTextInstance &t = _pInternal->_consoleLines.emplace_back();
-    t._text = std::string_view(textStart, str.size());
-    t._timeLeft = 2.f;
-    sConsoleTextBufferIx += str.size() + 1;
-}
-
 void Scene::DrawLine(Vec3 const& start, Vec3 const& end, Vec4 const& color) {
     if (_pInternal->_linesToDraw.size() == kMaxLineCount) {
         printf("WARNING: Tried to draw too many lines!\n");
@@ -1723,40 +1655,10 @@ void Scene::Draw(int windowWidth, int windowHeight, float timeInSecs, float delt
     //
     // TEXT RENDERING
     //
-
-    // First go through our world text strings and convert them into glyphs to draw
-    {
-        ViewportInfo const& vp = _pInternal->_g->_viewportInfo;
-        float screenX = 0.f, screenY = 0.f;
-        for (TextWorldInstance const& text : _pInternal->_textToDraw) {
-            if (!text._appendToPrevious) {
-                geometry::ProjectWorldPointToScreenSpace(text._pos, viewProjTransform, vp._width, vp._height, screenX, screenY);
-            }
-
-            /*screenX = std::round(screenX);
-            screenY = std::round(screenY);*/
-            DrawText(text._text, screenX, screenY, text._scale, text._colorRgba);
-        }
-        _pInternal->_textToDraw.clear();
-    }
     
     glDisable(GL_DEPTH_TEST);    
     glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
     {
-        // Update console lines
-        for (int ii = 0; ii < _pInternal->_consoleLines.size(); ++ii) {
-            ConsoleTextInstance &t = _pInternal->_consoleLines[ii];
-            t._timeLeft -= deltaTime;
-        }
-        while (!_pInternal->_consoleLines.empty()) {
-            ConsoleTextInstance &t = _pInternal->_consoleLines.front();
-            if (t._timeLeft <= 0.f) {
-                _pInternal->_consoleLines.pop_front();
-            } else {
-                break;
-            }
-        }
-
         // HOWDY MSDF
         MsdfFontInfo &fontInfo = _pInternal->_msdfFontInfo;
 
@@ -1770,17 +1672,20 @@ void Scene::Draw(int windowWidth, int windowHeight, float timeInSecs, float delt
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, fontTextureId);
         glBindVertexArray(_pInternal->_msdfTextVao);
-
-        float fontSizePx = 24.f;
-        float sf = fontSizePx;        
-        Vec3 initialPoint(-sf * fontInfo._planeBounds[BoundsLeft], -sf * fontInfo._planeBounds[BoundsTop], 0.f);
-        Vec3 currentPoint = initialPoint;
-        shader.SetMat4("uMvpTrans", projection);
-        shader.SetVec4("uColor", Vec4(1.f, 1.f, 1.f, 1.f));
+        shader.SetMat4("uMvpTrans", projection);        
         shader.SetFloat("uPxRange", fontInfo._distancePxRange);
-        for (int ii = 0; ii < _pInternal->_consoleLines.size(); ++ii) {
-            ConsoleTextInstance &t = _pInternal->_consoleLines[ii];
+        float const fontSizeAtUnitScale = 48.f;
+        // This means that the font will only "truly" be 48px if the window height is 1494.
+        float const scaleFactorFromWindowSize = ((float)vp._height / 1494.f);
+        Vec3 point;
+        for (int ii = 0; ii < _pInternal->_textToDraw.size(); ++ii) {
+            TextWorldInstance const &t = _pInternal->_textToDraw[ii];
+            float const sf = t._scale * fontSizeAtUnitScale * scaleFactorFromWindowSize;
 
+            if (!t._appendToPrevious) {
+                geometry::ProjectWorldPointToScreenSpace(t._pos, viewProjTransform, vp._width, vp._height, point._x, point._y);
+            }
+            
             for (int ii = 0; ii < t._text.size(); ++ii) {
                 auto result = fontInfo._charToInfoMap.find(t._text[ii]);
                 if (result == fontInfo._charToInfoMap.end()) {
@@ -1794,7 +1699,7 @@ void Scene::Draw(int windowWidth, int windowHeight, float timeInSecs, float delt
                 int dataIx = 0;
                 Vec3 p;
                 //top-left
-                p = currentPoint + sf * Vec3(charInfo._planeBounds[BoundsLeft], charInfo._planeBounds[BoundsTop], 0.f);
+                p = point + sf * Vec3(charInfo._planeBounds[BoundsLeft], charInfo._planeBounds[BoundsTop], 0.f);
                 vertexData[dataIx++] = p._x;
                 vertexData[dataIx++] = p._y;
                 vertexData[dataIx++] = p._z;
@@ -1802,7 +1707,7 @@ void Scene::Draw(int windowWidth, int windowHeight, float timeInSecs, float delt
                 vertexData[dataIx++] = charInfo._atlasBoundsNormalized[BoundsTop];
 
                 //bottom-left
-                p = currentPoint + sf * Vec3(charInfo._planeBounds[BoundsLeft], charInfo._planeBounds[BoundsBottom], 0.f);
+                p = point + sf * Vec3(charInfo._planeBounds[BoundsLeft], charInfo._planeBounds[BoundsBottom], 0.f);
                 vertexData[dataIx++] = p._x;
                 vertexData[dataIx++] = p._y;
                 vertexData[dataIx++] = p._z;
@@ -1810,7 +1715,7 @@ void Scene::Draw(int windowWidth, int windowHeight, float timeInSecs, float delt
                 vertexData[dataIx++] = charInfo._atlasBoundsNormalized[BoundsBottom];
 
                 //top-right
-                p = currentPoint + sf * Vec3(charInfo._planeBounds[BoundsRight], charInfo._planeBounds[BoundsTop], 0.f);
+                p = point + sf * Vec3(charInfo._planeBounds[BoundsRight], charInfo._planeBounds[BoundsTop], 0.f);
                 vertexData[dataIx++] = p._x;
                 vertexData[dataIx++] = p._y;
                 vertexData[dataIx++] = p._z;
@@ -1818,61 +1723,28 @@ void Scene::Draw(int windowWidth, int windowHeight, float timeInSecs, float delt
                 vertexData[dataIx++] = charInfo._atlasBoundsNormalized[BoundsTop];
 
                 //bottom-right
-                p = currentPoint + sf * Vec3(charInfo._planeBounds[BoundsRight], charInfo._planeBounds[BoundsBottom], 0.f);
+                p = point + sf * Vec3(charInfo._planeBounds[BoundsRight], charInfo._planeBounds[BoundsBottom], 0.f);
                 vertexData[dataIx++] = p._x;
                 vertexData[dataIx++] = p._y;
                 vertexData[dataIx++] = p._z;
                 vertexData[dataIx++] = charInfo._atlasBoundsNormalized[BoundsRight];
                 vertexData[dataIx++] = charInfo._atlasBoundsNormalized[BoundsBottom];
 
+                Vec4 premult = t._colorRgba._w * t._colorRgba;
+                premult._w = t._colorRgba._w;
+                shader.SetVec4("uColor", premult);
                 glBindBuffer(GL_ARRAY_BUFFER, _pInternal->_msdfTextVbo);
                 glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertexData), vertexData);
                 glBindBuffer(GL_ARRAY_BUFFER, 0);
                 glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 
-                currentPoint._x += sf * charInfo._advance;
+                point._x += sf * charInfo._advance;
             }
-            currentPoint._x = initialPoint._x;
-            float constexpr verticalPadding = 0.1f; // em
-            currentPoint._y += sf * (fontInfo._planeBounds[BoundsBottom] + (-fontInfo._planeBounds[BoundsTop]) + verticalPadding);
         }
+        _pInternal->_textToDraw.clear();
     }
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    glEnable(GL_DEPTH_TEST);
-
-    {
-        ViewportInfo const& vp = _pInternal->_g->_viewportInfo;
-        Mat4 projection = Mat4::Ortho(0.f, (float)vp._width, 0.f, (float)vp._height, -1.f, 1.f);
-
-        unsigned int fontTextureId = _pInternal->_textureIdMap.at("font");
-
-        Shader& shader = _pInternal->_textShader;
-        shader.Use();
-        shader.SetMat4("uProjection", projection);
-        glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_2D, fontTextureId);
-        glBindVertexArray(_pInternal->_textVao);
-        Vec4 quadVertices[4];
-        Vec4 cachedColor(-1.f, -1.f, -1.f, -1.f);
-        for (GlyphInstance const& glyph : _pInternal->_glyphsToDraw) {
-            if (glyph._colorRgba != cachedColor) {
-                cachedColor = glyph._colorRgba;
-                shader.SetVec4("uTextColor", cachedColor);
-            }
-            stbtt_aligned_quad const& q = glyph._quad;
-            quadVertices[0].Set(q.x0, q.y0, q.s0, q.t0);
-            quadVertices[1].Set(q.x0, q.y1, q.s0, q.t1);
-            quadVertices[2].Set(q.x1, q.y0, q.s1, q.t0);
-            quadVertices[3].Set(q.x1, q.y1, q.s1, q.t1);
-
-            glBindBuffer(GL_ARRAY_BUFFER, _pInternal->_textVbo);
-            glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(quadVertices), quadVertices);
-            glBindBuffer(GL_ARRAY_BUFFER, 0);
-            glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
-        }
-
-        _pInternal->_glyphsToDraw.clear();
-    }           
+    glEnable(GL_DEPTH_TEST);      
 
     // Lines
     if (!_pInternal->_linesToDraw.empty()) {
