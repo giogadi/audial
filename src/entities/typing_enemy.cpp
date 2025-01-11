@@ -239,6 +239,24 @@ void AddToMidiNotes(GameManager &g, ne::BaseEntity **entities, size_t entityCoun
         }
     }
 }
+
+void SetQuantizeDenoms(GameManager &g, ne::BaseEntity **entities, size_t entityCount, double denom) {
+    for (int entityIx = 0; entityIx < entityCount; ++entityIx) {
+        TypingEnemyEntity *e = (TypingEnemyEntity *)entities[entityIx];
+        for (int actionIx = 0; actionIx < e->_p._hitActions.size(); ++actionIx) {
+            std::unique_ptr<SeqAction> &pAction = e->_p._hitActions[actionIx];
+            if (!pAction) {
+                printf("typing_enemy.cpp:SetQuantizeDenoms: null pAction, wtf?\n");
+                continue;
+            }
+            SeqAction &baseAction = *pAction;
+            if (baseAction.Type() == SeqActionType::NoteOnOff) {
+                NoteOnOffSeqAction &action = static_cast<NoteOnOffSeqAction&>(baseAction);
+                action._props._quantizeDenom = denom;
+            }
+        }
+    }
+}
 }
 
 ne::BaseEntity::ImGuiResult TypingEnemyEntity::ImGuiDerived(GameManager& g) {
@@ -347,6 +365,13 @@ ne::BaseEntity::ImGuiResult TypingEnemyEntity::MultiImGui(GameManager& g, BaseEn
     ImGui::SameLine();
     if (ImGui::Button("Decrease octave")) {
         AddToMidiNotes(g, entities, entityCount, -12);
+    }
+    
+    static double sDenom = 0.0;
+    ImGui::InputDouble("Quantize denoms", &sDenom);
+    ImGui::SameLine();
+    if (ImGui::Button("Apply")) {
+        SetQuantizeDenoms(g, entities, entityCount, sDenom);
     }
 
     return needsInit ? ne::BaseEntity::ImGuiResult::NeedsInit : ne::BaseEntity::ImGuiResult::Done;

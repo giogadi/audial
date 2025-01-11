@@ -40,7 +40,41 @@
                     <id>338</id>
                 </editor_id>
             </group1>
-            <group2/>
+            <group2>
+                <editor_id>
+                    <id>322</id>
+                </editor_id>
+                <editor_id>
+                    <id>323</id>
+                </editor_id>
+                <editor_id>
+                    <id>324</id>
+                </editor_id>
+                <editor_id>
+                    <id>325</id>
+                </editor_id>
+                <editor_id>
+                    <id>326</id>
+                </editor_id>
+                <editor_id>
+                    <id>327</id>
+                </editor_id>
+                <editor_id>
+                    <id>328</id>
+                </editor_id>
+                <editor_id>
+                    <id>329</id>
+                </editor_id>
+                <editor_id>
+                    <id>330</id>
+                </editor_id>
+                <editor_id>
+                    <id>331</id>
+                </editor_id>
+                <editor_id>
+                    <id>338</id>
+                </editor_id>
+            </group2>
             <group3/>
             <group4/>
             <group5/>
@@ -3545,7 +3579,7 @@
                         </midiNotes>
                         <noteLength>4</noteLength>
                         <velocity>1</velocity>
-                        <quantizeDenom>0.25</quantizeDenom>
+                        <quantizeDenom>0</quantizeDenom>
                         <doNoteOff>true</doNoteOff>
                         <holdNotes>false</holdNotes>
                     </seq_action>
@@ -3650,7 +3684,7 @@
                         </midiNotes>
                         <noteLength>4</noteLength>
                         <velocity>1</velocity>
-                        <quantizeDenom>0.25</quantizeDenom>
+                        <quantizeDenom>0</quantizeDenom>
                         <doNoteOff>true</doNoteOff>
                         <holdNotes>false</holdNotes>
                     </seq_action>
@@ -3755,7 +3789,7 @@
                         </midiNotes>
                         <noteLength>4</noteLength>
                         <velocity>1</velocity>
-                        <quantizeDenom>0.25</quantizeDenom>
+                        <quantizeDenom>0</quantizeDenom>
                         <doNoteOff>true</doNoteOff>
                         <holdNotes>false</holdNotes>
                     </seq_action>
@@ -3860,7 +3894,7 @@
                         </midiNotes>
                         <noteLength>4</noteLength>
                         <velocity>1</velocity>
-                        <quantizeDenom>0.25</quantizeDenom>
+                        <quantizeDenom>0</quantizeDenom>
                         <doNoteOff>true</doNoteOff>
                         <holdNotes>false</holdNotes>
                     </seq_action>
@@ -3965,7 +3999,7 @@
                         </midiNotes>
                         <noteLength>4</noteLength>
                         <velocity>1</velocity>
-                        <quantizeDenom>0.25</quantizeDenom>
+                        <quantizeDenom>0</quantizeDenom>
                         <doNoteOff>true</doNoteOff>
                         <holdNotes>false</holdNotes>
                     </seq_action>
@@ -4070,7 +4104,7 @@
                         </midiNotes>
                         <noteLength>4</noteLength>
                         <velocity>1</velocity>
-                        <quantizeDenom>0.25</quantizeDenom>
+                        <quantizeDenom>0</quantizeDenom>
                         <doNoteOff>true</doNoteOff>
                         <holdNotes>false</holdNotes>
                     </seq_action>
@@ -4175,7 +4209,7 @@
                         </midiNotes>
                         <noteLength>4</noteLength>
                         <velocity>1</velocity>
-                        <quantizeDenom>0.25</quantizeDenom>
+                        <quantizeDenom>0</quantizeDenom>
                         <doNoteOff>true</doNoteOff>
                         <holdNotes>false</holdNotes>
                     </seq_action>
@@ -4280,7 +4314,7 @@
                         </midiNotes>
                         <noteLength>4</noteLength>
                         <velocity>1</velocity>
-                        <quantizeDenom>0.25</quantizeDenom>
+                        <quantizeDenom>0</quantizeDenom>
                         <doNoteOff>true</doNoteOff>
                         <holdNotes>false</holdNotes>
                     </seq_action>
@@ -4385,7 +4419,7 @@
                         </midiNotes>
                         <noteLength>4</noteLength>
                         <velocity>1</velocity>
-                        <quantizeDenom>0.25</quantizeDenom>
+                        <quantizeDenom>0</quantizeDenom>
                         <doNoteOff>true</doNoteOff>
                         <holdNotes>false</holdNotes>
                     </seq_action>
@@ -4490,7 +4524,7 @@
                         </midiNotes>
                         <noteLength>4</noteLength>
                         <velocity>1</velocity>
-                        <quantizeDenom>0.25</quantizeDenom>
+                        <quantizeDenom>0</quantizeDenom>
                         <doNoteOff>true</doNoteOff>
                         <holdNotes>false</holdNotes>
                     </seq_action>
@@ -5192,7 +5226,7 @@
                         </midiNotes>
                         <noteLength>4</noteLength>
                         <velocity>1</velocity>
-                        <quantizeDenom>0.25</quantizeDenom>
+                        <quantizeDenom>0</quantizeDenom>
                         <doNoteOff>true</doNoteOff>
                         <holdNotes>false</holdNotes>
                     </seq_action>
