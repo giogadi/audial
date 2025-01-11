@@ -213,6 +213,34 @@ void TypingEnemyEntity::SaveDerived(serial::Ptree pt) const {
     SeqAction::SaveActionsInChildNode(pt, "combo_end_actions", _p._comboEndActions);
 }
 
+namespace {
+void AddToMidiNotes(GameManager &g, ne::BaseEntity **entities, size_t entityCount, int octaveChange) {
+    for (int entityIx = 0; entityIx < entityCount; ++entityIx) {
+        TypingEnemyEntity *e = (TypingEnemyEntity *)entities[entityIx];
+        for (int actionIx = 0; actionIx < e->_p._hitActions.size(); ++actionIx) {
+            std::unique_ptr<SeqAction> &pAction = e->_p._hitActions[actionIx];
+            if (!pAction) {
+                printf("typing_enemy.cpp:AddToMidiNotes: null pAction, wtf?\n");
+                continue;
+            }
+            SeqAction &baseAction = *pAction;
+            if (baseAction.Type() == SeqActionType::NoteOnOff) {
+                NoteOnOffSeqAction &action = static_cast<NoteOnOffSeqAction&>(baseAction);
+                std::vector<MidiNoteAndName> &midiNotes = action._props._midiNotes;
+                for (int noteIx = 0; noteIx < midiNotes.size(); ++noteIx) {
+                    MidiNoteAndName &n = midiNotes[noteIx];
+                    if (n._note < 0) {
+                        continue;
+                    }
+                    n._note += octaveChange;
+                    n._note = math_util::Clamp(n._note, kMidiMinNote, kMidiMaxNote);
+                }
+            }
+        }
+    }
+}
+}
+
 ne::BaseEntity::ImGuiResult TypingEnemyEntity::ImGuiDerived(GameManager& g) {
     ImGuiResult result = ImGuiResult::Done;
 
@@ -269,6 +297,15 @@ ne::BaseEntity::ImGuiResult TypingEnemyEntity::ImGuiDerived(GameManager& g) {
             e->_modelColor = color;
         }
     }
+    if (ImGui::Button("Increase octave")) {
+        BaseEntity *entities[1] = {this};
+        AddToMidiNotes(g, entities, 1, 12);
+    }
+    ImGui::SameLine();
+    if (ImGui::Button("Decrease octave")) {
+        BaseEntity *entities[1] = {this};
+        AddToMidiNotes(g, entities, 1, -12);
+    }
     if (SeqAction::ImGui("Hit actions", _p._hitActions)) {
         result = ImGuiResult::NeedsInit;
     }
@@ -283,34 +320,6 @@ ne::BaseEntity::ImGuiResult TypingEnemyEntity::ImGuiDerived(GameManager& g) {
     }
 
     return result;
-}
-
-namespace {
-void AddToMidiNotes(GameManager &g, ne::BaseEntity **entities, size_t entityCount, int octaveChange) {
-    for (int entityIx = 0; entityIx < entityCount; ++entityIx) {
-        TypingEnemyEntity *e = (TypingEnemyEntity *)entities[entityIx];
-        for (int actionIx = 0; actionIx < e->_p._hitActions.size(); ++actionIx) {
-            std::unique_ptr<SeqAction> &pAction = e->_p._hitActions[actionIx];
-            if (!pAction) {
-                printf("typing_enemy.cpp:AddToMidiNotes: null pAction, wtf?\n");
-                continue;
-            }
-            SeqAction &baseAction = *pAction;
-            if (baseAction.Type() == SeqActionType::NoteOnOff) {
-                NoteOnOffSeqAction &action = static_cast<NoteOnOffSeqAction&>(baseAction);
-                std::vector<MidiNoteAndName> &midiNotes = action._props._midiNotes;
-                for (int noteIx = 0; noteIx < midiNotes.size(); ++noteIx) {
-                    MidiNoteAndName &n = midiNotes[noteIx];
-                    if (n._note < 0) {
-                        continue;
-                    }
-                    n._note += octaveChange;
-                    n._note = math_util::Clamp(n._note, kMidiMinNote, kMidiMaxNote);
-                }
-            }
-        }
-    }
-}
 }
 
 ne::BaseEntity::ImGuiResult TypingEnemyEntity::MultiImGui(GameManager& g, BaseEntity** entities, size_t entityCount) {
