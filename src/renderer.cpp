@@ -146,16 +146,6 @@ namespace ModelShaderUniforms {
         uDirLightAmb,
         uDirLightDif,
         uDirLightShadows,
-        uPointLight0Pos,
-        uPointLight0Color,
-        uPointLight0Amb,
-        uPointLight0Dif,
-        uPointLight0Spec,
-        uPointLight1Pos,
-        uPointLight1Color,
-        uPointLight1Amb,
-        uPointLight1Dif,
-        uPointLight1Spec,
         Count
     };
     static char const* NameStrings[] = {
@@ -170,17 +160,7 @@ namespace ModelShaderUniforms {
         "uDirLight._color",
         "uDirLight._ambient",
         "uDirLight._diffuse",
-        "uDirLight._shadows",
-        "uPointLights[0]._pos",
-        "uPointLights[0]._color",
-        "uPointLights[0]._ambient",
-        "uPointLights[0]._diffuse",
-        "uPointLights[0]._specular",
-        "uPointLights[1]._pos",
-        "uPointLights[1]._color",
-        "uPointLights[1]._ambient",
-        "uPointLights[1]._diffuse",
-        "uPointLights[1]._specular"
+        "uDirLight._shadows"
     };
 };
 
@@ -369,6 +349,8 @@ public:
     int _depthOnlyShaderUniforms[DepthOnlyShaderUniforms::Count];
     unsigned int _depthMapFbo = 0;
     unsigned int _depthMap = 0;
+
+    unsigned int _pointLightUbo;
     
 
     std::array<std::unique_ptr<BoundMeshPNU>, (int)InputManager::ControllerButton::Count> _psButtonMeshes;
@@ -673,6 +655,15 @@ bool GetMsdfFontInfoFromJson(char const *filePath, MsdfFontInfo &fontInfo) {
 }
 }
 
+struct PointLightUniform {
+    float _pos[4];
+    float _color[4];
+    float _ambient;
+    float _diffuse;
+    float _specular;
+    float _padding0;
+};
+
 bool SceneInternal::Init(GameManager& g) {
     _g = &g;
 
@@ -747,6 +738,8 @@ bool SceneInternal::Init(GameManager& g) {
     for (int i = 0; i < ModelShaderUniforms::Count; ++i) {
         _modelShaderUniforms[i] = _modelShader.GetUniformLocation(ModelShaderUniforms::NameStrings[i]);
     }
+    unsigned int pointLightsBlockIx = glGetUniformBlockIndex(_modelShader.GetId(), "uPointLights");
+    glUniformBlockBinding(_modelShader.GetId(), pointLightsBlockIx, 0);
     
 #if DRAW_WATER    
     if (!_waterShader.Init("shaders/water.vert", "shaders/water.frag")) {
@@ -810,6 +803,12 @@ bool SceneInternal::Init(GameManager& g) {
         return false;
     }
     _textureIdMap.emplace("wood_box", woodboxTextureId);
+
+    unsigned int moroccanTileTextureId = 0;
+    if (!CreateTextureFromFile("data/textures/moroccan_tile.jpg", moroccanTileTextureId, _enableGammaCorrection)) {
+        return false;
+    }
+    _textureIdMap.emplace("moroccan_tile", moroccanTileTextureId);
 
     unsigned int perlinNoiseTextureId = 0;
     if (!CreateTextureFromFile("data/textures/perlin_noise.png", perlinNoiseTextureId, /*gammaCorrection=*/false)) {
@@ -931,6 +930,15 @@ bool SceneInternal::Init(GameManager& g) {
 
         glVertexAttribPointer(1, 2, GL_FLOAT, false, kNumValuesPerVertex*sizeof(float), (void*)(2*sizeof(float)));
         glEnableVertexAttribArray(1); 
+    }
+
+    // Point light UBO
+    {
+        glGenBuffers(1, &_pointLightUbo);
+        glBindBuffer(GL_UNIFORM_BUFFER, _pointLightUbo);
+        glBufferData(GL_UNIFORM_BUFFER, kMaxNumPointLights * sizeof(PointLightUniform), 0, GL_STATIC_DRAW);
+        glBindBuffer(GL_UNIFORM_BUFFER, 0);
+        glBindBufferRange(GL_UNIFORM_BUFFER, 0, _pointLightUbo, 0, kMaxNumPointLights * sizeof(PointLightUniform));
     }
     
 
@@ -1198,20 +1206,19 @@ void SetLightUniformsModelShader(Lights const& lights, Vec3 const& viewPos, Mat4
     shader.SetVec3(uniforms[ModelShaderUniforms::uViewPos], viewPos);
     shader.SetMat4(uniforms[ModelShaderUniforms::uLightViewProjT], lightViewProjT);
     shader.SetBool(uniforms[ModelShaderUniforms::uDirLightShadows], lights._dirLight._shadows);
-    for (int i = 0; i < kMaxNumPointLights; ++i) {
-        int constexpr kNumUniforms = 5;
-        int posLoc = uniforms[ModelShaderUniforms::uPointLight0Pos + kNumUniforms * i];
-        int colorLoc = uniforms[ModelShaderUniforms::uPointLight0Color + kNumUniforms * i];
-        int ambLoc = uniforms[ModelShaderUniforms::uPointLight0Amb + kNumUniforms * i];
-        int difLoc = uniforms[ModelShaderUniforms::uPointLight0Dif + kNumUniforms * i];
-        int specLoc = uniforms[ModelShaderUniforms::uPointLight0Spec + kNumUniforms * i];
-        Light const& pl = lights._pointLights[i];
-        shader.SetVec3(posLoc, pl._p);
-        shader.SetVec3(colorLoc, pl._color);
-        shader.SetFloat(ambLoc, pl._ambient);
-        shader.SetFloat(difLoc, pl._diffuse);
-        shader.SetFloat(specLoc, pl._specular);
+
+    PointLightUniform plUniforms[kMaxNumPointLights] = {0};
+    for (int ii = 0; ii < kMaxNumPointLights; ++ii) {            
+        Light const &pl = lights._pointLights[ii];
+        pl._p.CopyToArray(plUniforms[ii]._pos);
+        pl._color.CopyToArray(plUniforms[ii]._color);
+        plUniforms[ii]._ambient = pl._ambient;
+        plUniforms[ii]._diffuse = pl._diffuse;
+        plUniforms[ii]._specular = pl._specular;        
     }
+    glBindBuffer(GL_UNIFORM_BUFFER, sceneInternal._pointLightUbo);
+    glBufferSubData(GL_UNIFORM_BUFFER, 0, kMaxNumPointLights * sizeof(PointLightUniform), plUniforms);
+    glBindBuffer(GL_UNIFORM_BUFFER, 0);
 }
 
 #if DRAW_WATER
@@ -1279,6 +1286,9 @@ void DrawModelInstance(SceneInternal& internal, Mat4 const& viewProjTransform, M
     }
     internal._modelShader.SetMat3(internal._modelShaderUniforms[ModelShaderUniforms::uModelInvTrans], modelTransInv);
     internal._modelShader.SetVec3(internal._modelShaderUniforms[ModelShaderUniforms::uExplodeVec], Vec3());
+    internal._modelShader.SetBool("uLighting", m._useLighting);
+    internal._modelShader.SetFloat("uTextureUFactor", m._textureUFactor);
+    internal._modelShader.SetFloat("uTextureVFactor", m._textureVFactor);
 
     // TEMPORARY! What we really want is to use the submeshes always unless the outer Model
     // has defined some overrides.

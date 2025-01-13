@@ -9,6 +9,8 @@ uniform mat4 uModelTrans;
 uniform mat3 uModelInvTrans;
 uniform vec3 uExplodeVec;
 uniform mat4 uLightViewProjT;
+uniform float uTextureUFactor;
+uniform float uTextureVFactor;
 
 out vec2 texCoord;
 out vec3 fragPos;
@@ -20,7 +22,7 @@ void main() {
     p += uExplodeVec;
     gl_Position = uMvpTrans * vec4(p.x, p.y, p.z, 1.0);
     fragPos = vec3(uModelTrans * vec4(p, 1.0f));
-    texCoord = aTexCoord;
+    texCoord = aTexCoord * vec2(uTextureUFactor, uTextureVFactor);
     normalNonNorm = uModelInvTrans * aNormal;
     fragPosLightSpace = uLightViewProjT * vec4(fragPos, 1.0);
 }

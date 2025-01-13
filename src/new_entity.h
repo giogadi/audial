@@ -36,7 +36,9 @@ struct BaseEntity {
     bool _pickable = true;
     std::string _modelName;
     std::string _textureName;
-    Vec4 _initModelColor = Vec4(0.8f, 0.8f, 0.8f, 1.f);    
+    Vec4 _initModelColor = Vec4(0.8f, 0.8f, 0.8f, 1.f);
+    float _textureUFactor = 1.f;
+    float _textureVFactor = 1.f;
     int _flowSectionId = -1;
     int _tag = 0;
     WaypointFollower::Props _wpProps;

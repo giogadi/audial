@@ -79,5 +79,14 @@ void LightEntity::UpdateDerived(GameManager& g, float dt) {
     l->_zf = _zf;
     l->_width = _width;
 }
+void LightEntity::Draw(GameManager &g, float dt) {
+    if (_model != nullptr) {
+        Mat4 const& mat = _transform.Mat4Scale();
+        renderer::ModelInstance* m = g._scene->DrawTexturedMesh(_model, _textureId);
+        m->_transform = mat;
+        m->_color = _modelColor;
+        m->_useLighting = false;
+    }
+}
 void LightEntity::Destroy(GameManager& g) {
 }

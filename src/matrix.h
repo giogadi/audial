@@ -108,7 +108,7 @@ struct Vec3 {
         return !(*this == rhs);
     }
 
-    void CopyToArray(float* v) {
+    void CopyToArray(float* v) const {
         v[0] = _x;
         v[1] = _y;
         v[2] = _z;

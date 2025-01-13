@@ -1017,6 +1017,8 @@
                 <editor_mute>false</editor_mute>
                 <max_voices>-1</max_voices>
                 <quantize_temp_changes>true</quantize_temp_changes>
+                <one_shot>false</one_shot>
+                <start_denom>1</start_denom>
             </StepSequencer>
             <StepSequencer>
                 <editor_id>
@@ -1770,6 +1772,8 @@
                 <editor_mute>true</editor_mute>
                 <max_voices>4</max_voices>
                 <quantize_temp_changes>true</quantize_temp_changes>
+                <one_shot>false</one_shot>
+                <start_denom>1</start_denom>
             </StepSequencer>
             <StepSequencer>
                 <editor_id>
@@ -2103,6 +2107,8 @@
                 <editor_mute>false</editor_mute>
                 <max_voices>-1</max_voices>
                 <quantize_temp_changes>true</quantize_temp_changes>
+                <one_shot>false</one_shot>
+                <start_denom>1</start_denom>
             </StepSequencer>
             <StepSequencer>
                 <editor_id>
@@ -2856,6 +2862,8 @@
                 <editor_mute>true</editor_mute>
                 <max_voices>-1</max_voices>
                 <quantize_temp_changes>true</quantize_temp_changes>
+                <one_shot>false</one_shot>
+                <start_denom>1</start_denom>
             </StepSequencer>
             <StepSequencer>
                 <editor_id>
@@ -3273,6 +3281,8 @@
                 <editor_mute>false</editor_mute>
                 <max_voices>-1</max_voices>
                 <quantize_temp_changes>false</quantize_temp_changes>
+                <one_shot>false</one_shot>
+                <start_denom>1</start_denom>
             </StepSequencer>
             <Base>
                 <editor_id>
@@ -7041,6 +7051,14 @@
                             <id>-1</id>
                         </action_seq_editor_id>
                     </seq_action>
+                    <seq_action>
+                        <one_time>false</one_time>
+                        <action_type>ChangePatch</action_type>
+                        <channel>3</channel>
+                        <blend_beat_time>0</blend_beat_time>
+                        <use_patch_bank>true</use_patch_bank>
+                        <patch_name>cad_dink</patch_name>
+                    </seq_action>
                 </actions>
                 <actions_on_exit>
                     <seq_action>
@@ -8749,6 +8767,8 @@
                 <editor_mute>true</editor_mute>
                 <max_voices>-1</max_voices>
                 <quantize_temp_changes>true</quantize_temp_changes>
+                <one_shot>false</one_shot>
+                <start_denom>1</start_denom>
             </StepSequencer>
             <StepSequencer>
                 <editor_id>
@@ -9502,6 +9522,8 @@
                 <editor_mute>true</editor_mute>
                 <max_voices>-1</max_voices>
                 <quantize_temp_changes>true</quantize_temp_changes>
+                <one_shot>false</one_shot>
+                <start_denom>1</start_denom>
             </StepSequencer>
             <TypingEnemy>
                 <editor_id>
@@ -9792,8 +9814,8 @@
                     <stop_on_pass>true</stop_on_pass>
                     <stop_after_timer>true</stop_after_timer>
                 </last_hit_response>
-                <text>th</text>
-                <buttons>aa</buttons>
+                <text>h</text>
+                <buttons>a</buttons>
                 <type_kill>false</type_kill>
                 <all_actions_on_hit>false</all_actions_on_hit>
                 <flow_cooldown>-1</flow_cooldown>
@@ -9811,21 +9833,6 @@
                 </active_region_editor_id>
                 <lock_player_in_region>false</lock_player_in_region>
                 <hit_actions>
-                    <seq_action>
-                        <one_time>false</one_time>
-                        <action_type>NoteOnOff</action_type>
-                        <channel>0</channel>
-                        <midiNotes>
-                            <array_item>
-                                <note>50</note>
-                            </array_item>
-                        </midiNotes>
-                        <noteLength>4</noteLength>
-                        <velocity>1</velocity>
-                        <quantizeDenom>0</quantizeDenom>
-                        <doNoteOff>true</doNoteOff>
-                        <holdNotes>false</holdNotes>
-                    </seq_action>
                     <seq_action>
                         <one_time>false</one_time>
                         <action_type>NoteOnOff</action_type>
@@ -10040,34 +10047,17 @@
                 <all_hit_actions>
                     <seq_action>
                         <one_time>false</one_time>
-                        <action_type>BeatTimeEvent</action_type>
-                        <quantize_denom>0.25</quantize_denom>
-                        <beat_time_event>
-                            <event_type>PlayPcm</event_type>
-                            <channel>0</channel>
-                            <delay_secs>0</delay_secs>
-                            <sound_ix>28</sound_ix>
-                            <velocity>0.15000001</velocity>
-                            <loop>false</loop>
-                            <beat_time>0</beat_time>
-                        </beat_time_event>
-                    </seq_action>
-                    <seq_action>
-                        <one_time>false</one_time>
                         <action_type>NoteOnOff</action_type>
-                        <channel>2</channel>
+                        <channel>3</channel>
                         <midiNotes>
                             <array_item>
-                                <note>62</note>
+                                <note>76</note>
                             </array_item>
                             <array_item>
-                                <note>64</note>
+                                <note>78</note>
                             </array_item>
                             <array_item>
-                                <note>67</note>
-                            </array_item>
-                            <array_item>
-                                <note>70</note>
+                                <note>81</note>
                             </array_item>
                         </midiNotes>
                         <noteLength>1</noteLength>
@@ -11909,9 +11899,9 @@
                 <pickable>true</pickable>
                 <transform>
                     <pos>
-                        <x>-19.335949</x>
+                        <x>-24.254219</x>
                         <y>0</y>
-                        <z>-13.342214</z>
+                        <z>-16.621029</z>
                     </pos>
                     <quat>
                         <x>0</x>
@@ -12037,9 +12027,9 @@
                 <pickable>true</pickable>
                 <transform>
                     <pos>
-                        <x>-11.886064</x>
+                        <x>-12.040462</x>
                         <y>0</y>
-                        <z>-13.69593</z>
+                        <z>-14.289875</z>
                     </pos>
                     <quat>
                         <x>0</x>
@@ -12094,8 +12084,8 @@
                     <stop_on_pass>true</stop_on_pass>
                     <stop_after_timer>true</stop_after_timer>
                 </last_hit_response>
-                <text>pa</text>
-                <buttons>aa</buttons>
+                <text>p</text>
+                <buttons>a</buttons>
                 <type_kill>false</type_kill>
                 <all_actions_on_hit>false</all_actions_on_hit>
                 <flow_cooldown>-1</flow_cooldown>
@@ -12120,21 +12110,6 @@
                         <midiNotes>
                             <array_item>
                                 <note>38</note>
-                            </array_item>
-                        </midiNotes>
-                        <noteLength>4</noteLength>
-                        <velocity>1</velocity>
-                        <quantizeDenom>0</quantizeDenom>
-                        <doNoteOff>true</doNoteOff>
-                        <holdNotes>false</holdNotes>
-                    </seq_action>
-                    <seq_action>
-                        <one_time>false</one_time>
-                        <action_type>NoteOnOff</action_type>
-                        <channel>0</channel>
-                        <midiNotes>
-                            <array_item>
-                                <note>45</note>
                             </array_item>
                         </midiNotes>
                         <noteLength>4</noteLength>
@@ -12295,6 +12270,14 @@
                         <one_time>false</one_time>
                         <action_type>Respawn</action_type>
                     </seq_action>
+                    <seq_action>
+                        <one_time>false</one_time>
+                        <action_type>ChangePatch</action_type>
+                        <channel>3</channel>
+                        <blend_beat_time>0</blend_beat_time>
+                        <use_patch_bank>true</use_patch_bank>
+                        <patch_name>cad_dink</patch_name>
+                    </seq_action>
                 </actions>
                 <actions_on_exit/>
                 <trigger_volume_entities/>
@@ -12347,6 +12330,840 @@
                     </follow_entity_editor_id>
                 </waypoint_follower>
             </Base>
+            <TypingEnemy>
+                <editor_id>
+                    <id>403</id>
+                </editor_id>
+                <name>cad_n12</name>
+                <entity_active>true</entity_active>
+                <pickable>true</pickable>
+                <transform>
+                    <pos>
+                        <x>-11.553423</x>
+                        <y>0</y>
+                        <z>-13.256383</z>
+                    </pos>
+                    <quat>
+                        <x>0</x>
+                        <y>0</y>
+                        <z>0</z>
+                        <w>1</w>
+                    </quat>
+                    <scale>
+                        <x>0.5</x>
+                        <y>0.5</y>
+                        <z>0.5</z>
+                    </scale>
+                </transform>
+                <model_name></model_name>
+                <texture_name></texture_name>
+                <model_color_vec4>
+                    <x>0.80000001</x>
+                    <y>0.80000001</y>
+                    <z>0.80000001</z>
+                    <w>1</w>
+                </model_color_vec4>
+                <flow_section_id>-1</flow_section_id>
+                <tag>0</tag>
+                <waypoint_follower>
+                    <mode>Waypoint</mode>
+                    <waypoint_auto_start>false</waypoint_auto_start>
+                    <loop_waypoints>false</loop_waypoints>
+                    <start_time>3</start_time>
+                    <quantize>1</quantize>
+                    <quantize_buffer>0</quantize_buffer>
+                    <waypoints/>
+                    <follow_entity_editor_id>
+                        <id>-1</id>
+                    </follow_entity_editor_id>
+                </waypoint_follower>
+                <hit_response>
+                    <type>None</type>
+                    <speed>-1</speed>
+                    <push_angle_deg>-1</push_angle_deg>
+                    <time>-1</time>
+                    <ps_time>-1</ps_time>
+                    <stop_on_pass>true</stop_on_pass>
+                    <stop_after_timer>true</stop_after_timer>
+                </hit_response>
+                <use_last_hit_response>true</use_last_hit_response>
+                <last_hit_response>
+                    <type>Pull</type>
+                    <speed>-1</speed>
+                    <push_angle_deg>-1</push_angle_deg>
+                    <time>-1</time>
+                    <ps_time>-1</ps_time>
+                    <stop_on_pass>true</stop_on_pass>
+                    <stop_after_timer>true</stop_after_timer>
+                </last_hit_response>
+                <text>a</text>
+                <buttons>a</buttons>
+                <type_kill>false</type_kill>
+                <all_actions_on_hit>false</all_actions_on_hit>
+                <flow_cooldown>-1</flow_cooldown>
+                <show_beats_left>false</show_beats_left>
+                <cooldown_quantize_denom>0</cooldown_quantize_denom>
+                <reset_cooldown_on_any_hit>true</reset_cooldown_on_any_hit>
+                <init_hittable>true</init_hittable>
+                <timed_hittable_time>-1</timed_hittable_time>
+                <allow_backward>false</allow_backward>
+                <just_draw_model>false</just_draw_model>
+                <group_id>-1</group_id>
+                <region_type>TriggerEntity</region_type>
+                <active_region_editor_id>
+                    <id>-1</id>
+                </active_region_editor_id>
+                <lock_player_in_region>false</lock_player_in_region>
+                <hit_actions>
+                    <seq_action>
+                        <one_time>false</one_time>
+                        <action_type>NoteOnOff</action_type>
+                        <channel>0</channel>
+                        <midiNotes>
+                            <array_item>
+                                <note>45</note>
+                            </array_item>
+                        </midiNotes>
+                        <noteLength>4</noteLength>
+                        <velocity>1</velocity>
+                        <quantizeDenom>0</quantizeDenom>
+                        <doNoteOff>true</doNoteOff>
+                        <holdNotes>false</holdNotes>
+                    </seq_action>
+                </hit_actions>
+                <all_hit_actions/>
+                <off_cooldown_actions/>
+                <combo_end_actions/>
+            </TypingEnemy>
+            <TypingEnemy>
+                <editor_id>
+                    <id>404</id>
+                </editor_id>
+                <name>cad_n13</name>
+                <entity_active>true</entity_active>
+                <pickable>true</pickable>
+                <transform>
+                    <pos>
+                        <x>-10.68625</x>
+                        <y>0</y>
+                        <z>-12.3297</z>
+                    </pos>
+                    <quat>
+                        <x>0</x>
+                        <y>0</y>
+                        <z>0</z>
+                        <w>1</w>
+                    </quat>
+                    <scale>
+                        <x>0.5</x>
+                        <y>0.5</y>
+                        <z>0.5</z>
+                    </scale>
+                </transform>
+                <model_name></model_name>
+                <texture_name></texture_name>
+                <model_color_vec4>
+                    <x>0.80000001</x>
+                    <y>0.80000001</y>
+                    <z>0.80000001</z>
+                    <w>1</w>
+                </model_color_vec4>
+                <flow_section_id>-1</flow_section_id>
+                <tag>0</tag>
+                <waypoint_follower>
+                    <mode>Waypoint</mode>
+                    <waypoint_auto_start>false</waypoint_auto_start>
+                    <loop_waypoints>false</loop_waypoints>
+                    <start_time>3</start_time>
+                    <quantize>1</quantize>
+                    <quantize_buffer>0</quantize_buffer>
+                    <waypoints/>
+                    <follow_entity_editor_id>
+                        <id>-1</id>
+                    </follow_entity_editor_id>
+                </waypoint_follower>
+                <hit_response>
+                    <type>None</type>
+                    <speed>-1</speed>
+                    <push_angle_deg>-1</push_angle_deg>
+                    <time>-1</time>
+                    <ps_time>-1</ps_time>
+                    <stop_on_pass>true</stop_on_pass>
+                    <stop_after_timer>true</stop_after_timer>
+                </hit_response>
+                <use_last_hit_response>true</use_last_hit_response>
+                <last_hit_response>
+                    <type>Pull</type>
+                    <speed>-1</speed>
+                    <push_angle_deg>-1</push_angle_deg>
+                    <time>-1</time>
+                    <ps_time>-1</ps_time>
+                    <stop_on_pass>true</stop_on_pass>
+                    <stop_after_timer>true</stop_after_timer>
+                </last_hit_response>
+                <text>t</text>
+                <buttons>a</buttons>
+                <type_kill>false</type_kill>
+                <all_actions_on_hit>false</all_actions_on_hit>
+                <flow_cooldown>-1</flow_cooldown>
+                <show_beats_left>false</show_beats_left>
+                <cooldown_quantize_denom>0</cooldown_quantize_denom>
+                <reset_cooldown_on_any_hit>true</reset_cooldown_on_any_hit>
+                <init_hittable>true</init_hittable>
+                <timed_hittable_time>-1</timed_hittable_time>
+                <allow_backward>false</allow_backward>
+                <just_draw_model>false</just_draw_model>
+                <group_id>-1</group_id>
+                <region_type>TriggerEntity</region_type>
+                <active_region_editor_id>
+                    <id>-1</id>
+                </active_region_editor_id>
+                <lock_player_in_region>false</lock_player_in_region>
+                <hit_actions>
+                    <seq_action>
+                        <one_time>false</one_time>
+                        <action_type>NoteOnOff</action_type>
+                        <channel>0</channel>
+                        <midiNotes>
+                            <array_item>
+                                <note>50</note>
+                            </array_item>
+                        </midiNotes>
+                        <noteLength>4</noteLength>
+                        <velocity>1</velocity>
+                        <quantizeDenom>0</quantizeDenom>
+                        <doNoteOff>true</doNoteOff>
+                        <holdNotes>false</holdNotes>
+                    </seq_action>
+                </hit_actions>
+                <all_hit_actions/>
+                <off_cooldown_actions/>
+                <combo_end_actions/>
+            </TypingEnemy>
+            <TypingEnemy>
+                <editor_id>
+                    <id>407</id>
+                </editor_id>
+                <name>_sting0</name>
+                <entity_active>false</entity_active>
+                <pickable>true</pickable>
+                <transform>
+                    <pos>
+                        <x>-7.8248587</x>
+                        <y>0</y>
+                        <z>-11.013827</z>
+                    </pos>
+                    <quat>
+                        <x>0</x>
+                        <y>0</y>
+                        <z>0</z>
+                        <w>1</w>
+                    </quat>
+                    <scale>
+                        <x>0.5</x>
+                        <y>0.5</y>
+                        <z>0.5</z>
+                    </scale>
+                </transform>
+                <model_name></model_name>
+                <texture_name></texture_name>
+                <model_color_vec4>
+                    <x>0.80000001</x>
+                    <y>0.80000001</y>
+                    <z>0.80000001</z>
+                    <w>1</w>
+                </model_color_vec4>
+                <flow_section_id>-1</flow_section_id>
+                <tag>0</tag>
+                <waypoint_follower>
+                    <mode>Waypoint</mode>
+                    <waypoint_auto_start>false</waypoint_auto_start>
+                    <loop_waypoints>false</loop_waypoints>
+                    <start_time>3</start_time>
+                    <quantize>1</quantize>
+                    <quantize_buffer>0</quantize_buffer>
+                    <waypoints/>
+                    <follow_entity_editor_id>
+                        <id>-1</id>
+                    </follow_entity_editor_id>
+                </waypoint_follower>
+                <hit_response>
+                    <type>None</type>
+                    <speed>-1</speed>
+                    <push_angle_deg>-1</push_angle_deg>
+                    <time>-1</time>
+                    <ps_time>-1</ps_time>
+                    <stop_on_pass>true</stop_on_pass>
+                    <stop_after_timer>true</stop_after_timer>
+                </hit_response>
+                <use_last_hit_response>true</use_last_hit_response>
+                <last_hit_response>
+                    <type>Pull</type>
+                    <speed>-1</speed>
+                    <push_angle_deg>-1</push_angle_deg>
+                    <time>-1</time>
+                    <ps_time>-1</ps_time>
+                    <stop_on_pass>true</stop_on_pass>
+                    <stop_after_timer>true</stop_after_timer>
+                </last_hit_response>
+                <text>i</text>
+                <buttons>a</buttons>
+                <type_kill>false</type_kill>
+                <all_actions_on_hit>true</all_actions_on_hit>
+                <flow_cooldown>-1</flow_cooldown>
+                <show_beats_left>false</show_beats_left>
+                <cooldown_quantize_denom>0</cooldown_quantize_denom>
+                <reset_cooldown_on_any_hit>true</reset_cooldown_on_any_hit>
+                <init_hittable>true</init_hittable>
+                <timed_hittable_time>-1</timed_hittable_time>
+                <allow_backward>false</allow_backward>
+                <just_draw_model>false</just_draw_model>
+                <group_id>-1</group_id>
+                <region_type>TriggerEntity</region_type>
+                <active_region_editor_id>
+                    <id>-1</id>
+                </active_region_editor_id>
+                <lock_player_in_region>false</lock_player_in_region>
+                <hit_actions>
+                    <seq_action>
+                        <one_time>false</one_time>
+                        <action_type>NoteOnOff</action_type>
+                        <channel>3</channel>
+                        <midiNotes>
+                            <array_item>
+                                <note>61</note>
+                            </array_item>
+                        </midiNotes>
+                        <noteLength>1</noteLength>
+                        <velocity>1</velocity>
+                        <quantizeDenom>0.25</quantizeDenom>
+                        <doNoteOff>true</doNoteOff>
+                        <holdNotes>false</holdNotes>
+                    </seq_action>
+                    <seq_action>
+                        <one_time>false</one_time>
+                        <action_type>NoteOnOff</action_type>
+                        <channel>3</channel>
+                        <midiNotes>
+                            <array_item>
+                                <note>67</note>
+                            </array_item>
+                        </midiNotes>
+                        <noteLength>1</noteLength>
+                        <velocity>1</velocity>
+                        <quantizeDenom>0.25</quantizeDenom>
+                        <doNoteOff>true</doNoteOff>
+                        <holdNotes>false</holdNotes>
+                    </seq_action>
+                    <seq_action>
+                        <one_time>false</one_time>
+                        <action_type>NoteOnOff</action_type>
+                        <channel>3</channel>
+                        <midiNotes>
+                            <array_item>
+                                <note>72</note>
+                            </array_item>
+                        </midiNotes>
+                        <noteLength>1</noteLength>
+                        <velocity>1</velocity>
+                        <quantizeDenom>0.25</quantizeDenom>
+                        <doNoteOff>true</doNoteOff>
+                        <holdNotes>false</holdNotes>
+                    </seq_action>
+                </hit_actions>
+                <all_hit_actions/>
+                <off_cooldown_actions/>
+                <combo_end_actions/>
+            </TypingEnemy>
+            <StepSequencer>
+                <editor_id>
+                    <id>408</id>
+                </editor_id>
+                <name>dink_seq</name>
+                <entity_active>false</entity_active>
+                <pickable>false</pickable>
+                <transform>
+                    <pos>
+                        <x>-0.76876879</x>
+                        <y>0</y>
+                        <z>-1.4894905</z>
+                    </pos>
+                    <quat>
+                        <x>0</x>
+                        <y>0</y>
+                        <z>0</z>
+                        <w>1</w>
+                    </quat>
+                    <scale>
+                        <x>1</x>
+                        <y>1</y>
+                        <z>1</z>
+                    </scale>
+                </transform>
+                <model_name></model_name>
+                <texture_name>white</texture_name>
+                <model_color_vec4>
+                    <x>0</x>
+                    <y>0</y>
+                    <z>0</z>
+                    <w>0</w>
+                </model_color_vec4>
+                <flow_section_id>-1</flow_section_id>
+                <tag>0</tag>
+                <waypoint_follower>
+                    <mode>Waypoint</mode>
+                    <waypoint_auto_start>false</waypoint_auto_start>
+                    <loop_waypoints>false</loop_waypoints>
+                    <start_time>0</start_time>
+                    <quantize>1</quantize>
+                    <quantize_buffer>0</quantize_buffer>
+                    <waypoints/>
+                    <follow_entity_editor_id>
+                        <id>-1</id>
+                    </follow_entity_editor_id>
+                </waypoint_follower>
+                <param_track_types>
+                    <c>
+                        <active>false</active>
+                        <type>Gain</type>
+                    </c>
+                    <c>
+                        <active>false</active>
+                        <type>Gain</type>
+                    </c>
+                    <c>
+                        <active>false</active>
+                        <type>Gain</type>
+                    </c>
+                    <c>
+                        <active>false</active>
+                        <type>Gain</type>
+                    </c>
+                </param_track_types>
+                <sequence>
+                    <s>
+                        <notes>
+                            <n>
+                                <note>73</note>
+                                <v>1</v>
+                            </n>
+                            <n>
+                                <note>-1</note>
+                                <v>1</v>
+                            </n>
+                            <n>
+                                <note>-1</note>
+                                <v>1</v>
+                            </n>
+                            <n>
+                                <note>-1</note>
+                                <v>1</v>
+                            </n>
+                        </notes>
+                        <params/>
+                    </s>
+                    <s>
+                        <notes>
+                            <n>
+                                <note>79</note>
+                                <v>1</v>
+                            </n>
+                            <n>
+                                <note>-1</note>
+                                <v>1</v>
+                            </n>
+                            <n>
+                                <note>-1</note>
+                                <v>1</v>
+                            </n>
+                            <n>
+                                <note>-1</note>
+                                <v>1</v>
+                            </n>
+                        </notes>
+                        <params/>
+                    </s>
+                    <s>
+                        <notes>
+                            <n>
+                                <note>84</note>
+                                <v>1</v>
+                            </n>
+                            <n>
+                                <note>-1</note>
+                                <v>1</v>
+                            </n>
+                            <n>
+                                <note>-1</note>
+                                <v>1</v>
+                            </n>
+                            <n>
+                                <note>-1</note>
+                                <v>1</v>
+                            </n>
+                        </notes>
+                        <params/>
+                    </s>
+                    <s>
+                        <notes>
+                            <n>
+                                <note>-1</note>
+                                <v>1</v>
+                            </n>
+                            <n>
+                                <note>-1</note>
+                                <v>1</v>
+                            </n>
+                            <n>
+                                <note>-1</note>
+                                <v>1</v>
+                            </n>
+                            <n>
+                                <note>-1</note>
+                                <v>1</v>
+                            </n>
+                        </notes>
+                        <params/>
+                    </s>
+                    <s>
+                        <notes>
+                            <n>
+                                <note>-1</note>
+                                <v>1</v>
+                            </n>
+                            <n>
+                                <note>-1</note>
+                                <v>1</v>
+                            </n>
+                            <n>
+                                <note>-1</note>
+                                <v>1</v>
+                            </n>
+                            <n>
+                                <note>-1</note>
+                                <v>1</v>
+                            </n>
+                        </notes>
+                        <params/>
+                    </s>
+                    <s>
+                        <notes>
+                            <n>
+                                <note>-1</note>
+                                <v>1</v>
+                            </n>
+                            <n>
+                                <note>-1</note>
+                                <v>1</v>
+                            </n>
+                            <n>
+                                <note>-1</note>
+                                <v>1</v>
+                            </n>
+                            <n>
+                                <note>-1</note>
+                                <v>1</v>
+                            </n>
+                        </notes>
+                        <params/>
+                    </s>
+                    <s>
+                        <notes>
+                            <n>
+                                <note>-1</note>
+                                <v>1</v>
+                            </n>
+                            <n>
+                                <note>-1</note>
+                                <v>1</v>
+                            </n>
+                            <n>
+                                <note>-1</note>
+                                <v>1</v>
+                            </n>
+                            <n>
+                                <note>-1</note>
+                                <v>1</v>
+                            </n>
+                        </notes>
+                        <params/>
+                    </s>
+                    <s>
+                        <notes>
+                            <n>
+                                <note>-1</note>
+                                <v>1</v>
+                            </n>
+                            <n>
+                                <note>-1</note>
+                                <v>1</v>
+                            </n>
+                            <n>
+                                <note>-1</note>
+                                <v>1</v>
+                            </n>
+                            <n>
+                                <note>-1</note>
+                                <v>1</v>
+                            </n>
+                        </notes>
+                        <params/>
+                    </s>
+                    <s>
+                        <notes>
+                            <n>
+                                <note>-1</note>
+                                <v>1</v>
+                            </n>
+                            <n>
+                                <note>-1</note>
+                                <v>1</v>
+                            </n>
+                            <n>
+                                <note>-1</note>
+                                <v>1</v>
+                            </n>
+                            <n>
+                                <note>-1</note>
+                                <v>1</v>
+                            </n>
+                        </notes>
+                        <params/>
+                    </s>
+                    <s>
+                        <notes>
+                            <n>
+                                <note>-1</note>
+                                <v>1</v>
+                            </n>
+                            <n>
+                                <note>-1</note>
+                                <v>1</v>
+                            </n>
+                            <n>
+                                <note>-1</note>
+                                <v>1</v>
+                            </n>
+                            <n>
+                                <note>-1</note>
+                                <v>1</v>
+                            </n>
+                        </notes>
+                        <params/>
+                    </s>
+                    <s>
+                        <notes>
+                            <n>
+                                <note>-1</note>
+                                <v>1</v>
+                            </n>
+                            <n>
+                                <note>-1</note>
+                                <v>1</v>
+                            </n>
+                            <n>
+                                <note>-1</note>
+                                <v>1</v>
+                            </n>
+                            <n>
+                                <note>-1</note>
+                                <v>1</v>
+                            </n>
+                        </notes>
+                        <params/>
+                    </s>
+                    <s>
+                        <notes>
+                            <n>
+                                <note>-1</note>
+                                <v>1</v>
+                            </n>
+                            <n>
+                                <note>-1</note>
+                                <v>1</v>
+                            </n>
+                            <n>
+                                <note>-1</note>
+                                <v>1</v>
+                            </n>
+                            <n>
+                                <note>-1</note>
+                                <v>1</v>
+                            </n>
+                        </notes>
+                        <params/>
+                    </s>
+                    <s>
+                        <notes>
+                            <n>
+                                <note>-1</note>
+                                <v>1</v>
+                            </n>
+                            <n>
+                                <note>-1</note>
+                                <v>1</v>
+                            </n>
+                            <n>
+                                <note>-1</note>
+                                <v>1</v>
+                            </n>
+                            <n>
+                                <note>-1</note>
+                                <v>1</v>
+                            </n>
+                        </notes>
+                        <params/>
+                    </s>
+                    <s>
+                        <notes>
+                            <n>
+                                <note>-1</note>
+                                <v>1</v>
+                            </n>
+                            <n>
+                                <note>-1</note>
+                                <v>1</v>
+                            </n>
+                            <n>
+                                <note>-1</note>
+                                <v>1</v>
+                            </n>
+                            <n>
+                                <note>-1</note>
+                                <v>1</v>
+                            </n>
+                        </notes>
+                        <params/>
+                    </s>
+                    <s>
+                        <notes>
+                            <n>
+                                <note>-1</note>
+                                <v>1</v>
+                            </n>
+                            <n>
+                                <note>-1</note>
+                                <v>1</v>
+                            </n>
+                            <n>
+                                <note>-1</note>
+                                <v>1</v>
+                            </n>
+                            <n>
+                                <note>-1</note>
+                                <v>1</v>
+                            </n>
+                        </notes>
+                        <params/>
+                    </s>
+                    <s>
+                        <notes>
+                            <n>
+                                <note>-1</note>
+                                <v>1</v>
+                            </n>
+                            <n>
+                                <note>-1</note>
+                                <v>1</v>
+                            </n>
+                            <n>
+                                <note>-1</note>
+                                <v>1</v>
+                            </n>
+                            <n>
+                                <note>-1</note>
+                                <v>1</v>
+                            </n>
+                        </notes>
+                        <params/>
+                    </s>
+                </sequence>
+                <late_changes>true</late_changes>
+                <start_mute>false</start_mute>
+                <gain>1</gain>
+                <channels>
+                    <channel>3</channel>
+                </channels>
+                <step_length>0.25</step_length>
+                <note_length>1</note_length>
+                <start_time>0</start_time>
+                <is_synth>true</is_synth>
+                <editor_mute>true</editor_mute>
+                <max_voices>4</max_voices>
+                <quantize_temp_changes>true</quantize_temp_changes>
+                <one_shot>true</one_shot>
+                <start_denom>0</start_denom>
+            </StepSequencer>
+            <FlowTrigger>
+                <editor_id>
+                    <id>409</id>
+                </editor_id>
+                <name>cad_dink0_trigger</name>
+                <entity_active>true</entity_active>
+                <pickable>true</pickable>
+                <transform>
+                    <pos>
+                        <x>-10.233642</x>
+                        <y>0</y>
+                        <z>-11.031713</z>
+                    </pos>
+                    <quat>
+                        <x>0</x>
+                        <y>0</y>
+                        <z>0</z>
+                        <w>1</w>
+                    </quat>
+                    <scale>
+                        <x>1.8316021</x>
+                        <y>1</y>
+                        <z>1.2613068</z>
+                    </scale>
+                </transform>
+                <model_name></model_name>
+                <texture_name></texture_name>
+                <model_color_vec4>
+                    <x>0.80000001</x>
+                    <y>0.80000001</y>
+                    <z>0.80000001</z>
+                    <w>1</w>
+                </model_color_vec4>
+                <flow_section_id>-1</flow_section_id>
+                <tag>0</tag>
+                <waypoint_follower>
+                    <mode>Waypoint</mode>
+                    <waypoint_auto_start>false</waypoint_auto_start>
+                    <loop_waypoints>false</loop_waypoints>
+                    <start_time>3</start_time>
+                    <quantize>1</quantize>
+                    <quantize_buffer>0</quantize_buffer>
+                    <waypoints/>
+                    <follow_entity_editor_id>
+                        <id>-1</id>
+                    </follow_entity_editor_id>
+                </waypoint_follower>
+                <trigger_delay_beat_time>-1</trigger_delay_beat_time>
+                <quantize>0</quantize>
+                <on_player_enter>true</on_player_enter>
+                <execute_on_init>false</execute_on_init>
+                <use_trigger_volumes>false</use_trigger_volumes>
+                <random_action_count>-1</random_action_count>
+                <shatter_on_trigger>false</shatter_on_trigger>
+                <actions>
+                    <seq_action>
+                        <one_time>true</one_time>
+                        <action_type>SetEntityActive</action_type>
+                        <entities_tag>-1</entities_tag>
+                        <entity_editor_id>
+                            <id>408</id>
+                        </entity_editor_id>
+                        <active>true</active>
+                        <init_on_activate>true</init_on_activate>
+                        <init_if_already_active>false</init_if_already_active>
+                    </seq_action>
+                </actions>
+                <actions_on_exit/>
+                <trigger_volume_entities/>
+            </FlowTrigger>
         </new_entities>
     </script>
 </root>

@@ -723,6 +723,8 @@ void BaseEntity::Draw(GameManager& g, float dt) {
         renderer::ModelInstance* m = g._scene->DrawTexturedMesh(_model, _textureId);
         m->_transform = mat;
         m->_color = _modelColor;
+        m->_textureUFactor = _textureUFactor;
+        m->_textureVFactor = _textureVFactor;
     } else if (g._editMode) {
         Mat4 const& mat = _transform.Mat4Scale();
         Vec4 constexpr bbColor(0.5f, 0.5f, 0.5f, 1.f);
@@ -749,6 +751,8 @@ void BaseEntity::Save(serial::Ptree pt) const {
     serial::SaveInNewChildOf(pt, "transform", _initTransform);
     pt.PutString("model_name", _modelName.c_str());
     pt.PutString("texture_name", _textureName.c_str());
+    pt.PutFloat("texture_u_factor", _textureUFactor);
+    pt.PutFloat("texture_v_factor", _textureVFactor);
     serial::SaveInNewChildOf(pt, "model_color_vec4", _initModelColor);
     pt.PutInt("flow_section_id", _flowSectionId);
     pt.PutInt("tag", _tag);
@@ -778,6 +782,8 @@ void BaseEntity::Load(serial::Ptree pt) {
     if (colorPt.IsValid()) {
         _initModelColor.Load(colorPt);
     }
+    pt.TryGetFloat("texture_u_factor", &_textureUFactor);
+    pt.TryGetFloat("texture_v_factor", &_textureVFactor);
     pt.TryGetInt("flow_section_id", &_flowSectionId);
     _tag = 0;
     pt.TryGetInt("tag", &_tag);
@@ -843,6 +849,8 @@ BaseEntity::ImGuiResult BaseEntity::ImGui(GameManager& g) {
     ImGui::InputInt("Tag##Entity", &_tag);
     bool modelChanged = imgui_util::InputText<64>("Model name##Entity", &_modelName, /*trueOnReturnOnly=*/true);
     bool textureChanged = imgui_util::InputText<64>("Texture name##Entity", &_textureName, /*trueOnReturnOnly=*/true);
+    ImGui::InputFloat("Texture U factor##Entity", &_textureUFactor);
+    ImGui::InputFloat("Texture V factor##Entity", &_textureVFactor);
     if (imgui_util::ColorEdit4("Model color##Entity", &_initModelColor)) {
         result = Entity::ImGuiResult::NeedsInit;
     }

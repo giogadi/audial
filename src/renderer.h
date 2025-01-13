@@ -26,9 +26,9 @@ struct Light {
     Vec3 _p;  
     Vec3 _dir; // dirLight only
     Vec3 _color;
-    float _ambient;
-    float _diffuse;
-    float _specular;
+    float _ambient = 0.f;
+    float _diffuse = 0.f;
+    float _specular = 0.f;
     bool _shadows = false;
     float _zn = 1.f;
     float _zf = 20.f;
@@ -78,6 +78,9 @@ public:
     bool _useMeshColor = false;
     float _explodeDist = 0.f;
     bool _castShadows = true;
+    bool _useLighting = true;
+    float _textureUFactor = 1.f;
+    float _textureVFactor = 1.f;
 };
 
 struct LineInstance {

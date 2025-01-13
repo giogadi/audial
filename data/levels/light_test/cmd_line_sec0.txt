@@ -1,0 +1,1 @@
+-s data/levels/light_test/level.xml -y data/levels/light_test/patches.xml
