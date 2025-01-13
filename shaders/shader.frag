@@ -5,7 +5,7 @@ in vec3 fragPos;
 in vec3 normalNonNorm;
 in vec4 fragPosLightSpace;
 
-#define NUM_POINT_LIGHTS 2
+#define NUM_POINT_LIGHTS 10
 
 struct PointLight {
     vec4 _pos;
@@ -37,14 +37,36 @@ uniform bool uLighting;
 
 out vec4 FragColor;
 
+float shininess = 32.f;
+float attenConstant = 1.0f;
+float attenLinear = 0.14f;
+float attenQuad = 0.07f;
+
+void CalcPointLight(in PointLight light, in vec3 viewDir, in vec3 normal, inout vec3 totalAmbient, inout vec3 totalDiffuse, inout vec3 totalSpecular) {
+    vec3 lightDir = normalize(light._pos.xyz - fragPos);
+           
+    vec3 halfwayDir = normalize(lightDir + viewDir);
+    float spec = pow(max(dot(normal, halfwayDir), 0.0f), shininess);
+    vec3 specular = spec * light._color.xyz * light._specular;
+
+    float diff = max(dot(normal, lightDir), 0.0);
+    vec3 diffuse = diff*light._color.xyz*light._diffuse;
+
+    float lightDist = length(light._pos.xyz - fragPos); // TODO waste of invsqrt
+    float atten = 1.0f / (attenConstant + lightDist*attenLinear + lightDist*lightDist*attenQuad);
+    diffuse *= atten;
+    specular *= atten;
+    vec3 ambient = light._color.xyz * light._ambient * atten;
+    //result += diffuse + ambient + specular;
+    totalAmbient += ambient;
+    totalDiffuse += diffuse;
+    totalSpecular += specular;
+}
+
 void main() {
     vec3 normal = normalize(normalNonNorm);
 
-    float shininess = 32.f;
-    float attenConstant = 1.0f;
-    float attenLinear = 0.14f;
-    float attenQuad = 0.07f;
-
+    
     vec3 viewDir = normalize(uViewPos - fragPos);
 
     vec4 albedo = texture(uMyTexture, texCoord);
@@ -65,27 +87,23 @@ void main() {
     }
 
     // Point lights
+#if 0
     for (int i = 0; i < NUM_POINT_LIGHTS; ++i) {
         PointLight light = pointLights[i];
-        vec3 lightDir = normalize(light._pos.xyz - fragPos);
-               
-        vec3 halfwayDir = normalize(lightDir + viewDir);
-        float spec = pow(max(dot(normal, halfwayDir), 0.0f), shininess);
-        vec3 specular = spec * light._color.xyz * light._specular;
-
-        float diff = max(dot(normal, lightDir), 0.0);
-        vec3 diffuse = diff*light._color.xyz*light._diffuse;
-
-        float lightDist = length(light._pos.xyz - fragPos); // TODO waste of invsqrt
-        float atten = 1.0f / (attenConstant + lightDist*attenLinear + lightDist*lightDist*attenQuad);
-        diffuse *= atten;
-        specular *= atten;
-        vec3 ambient = light._color.xyz * light._ambient * atten;
-        //result += diffuse + ambient + specular;
-        totalAmbient += ambient;
-        totalDiffuse += diffuse;
-        totalSpecular += specular;
+        CalcPointLight(pointLights[i], viewDir, normal, totalAmbient, totalDiffuse, totalSpecular);
     }
+#else
+    CalcPointLight(pointLights[0], viewDir, normal, totalAmbient, totalDiffuse, totalSpecular);
+    CalcPointLight(pointLights[1], viewDir, normal, totalAmbient, totalDiffuse, totalSpecular);
+    CalcPointLight(pointLights[2], viewDir, normal, totalAmbient, totalDiffuse, totalSpecular);
+    CalcPointLight(pointLights[3], viewDir, normal, totalAmbient, totalDiffuse, totalSpecular);
+    CalcPointLight(pointLights[4], viewDir, normal, totalAmbient, totalDiffuse, totalSpecular);
+    CalcPointLight(pointLights[5], viewDir, normal, totalAmbient, totalDiffuse, totalSpecular);
+    CalcPointLight(pointLights[6], viewDir, normal, totalAmbient, totalDiffuse, totalSpecular);
+    CalcPointLight(pointLights[7], viewDir, normal, totalAmbient, totalDiffuse, totalSpecular);
+    CalcPointLight(pointLights[8], viewDir, normal, totalAmbient, totalDiffuse, totalSpecular);
+    CalcPointLight(pointLights[9], viewDir, normal, totalAmbient, totalDiffuse, totalSpecular);
+#endif
 
     // shadow
     float shadow = 0.0f;

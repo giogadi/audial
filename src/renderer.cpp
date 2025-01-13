@@ -27,7 +27,7 @@
 
 namespace {
 constexpr int kMaxLineCount = 512;
-int constexpr kMaxNumPointLights = 2;
+int constexpr kMaxNumPointLights = 10;
 
 constexpr int kShadowWidth = 1 * 1024;
 constexpr int kShadowHeight = 1 * 1024;
@@ -1207,7 +1207,7 @@ void SetLightUniformsModelShader(Lights const& lights, Vec3 const& viewPos, Mat4
     shader.SetMat4(uniforms[ModelShaderUniforms::uLightViewProjT], lightViewProjT);
     shader.SetBool(uniforms[ModelShaderUniforms::uDirLightShadows], lights._dirLight._shadows);
 
-    PointLightUniform plUniforms[kMaxNumPointLights] = {0};
+    PointLightUniform plUniforms[kMaxNumPointLights] = {};
     for (int ii = 0; ii < kMaxNumPointLights; ++ii) {            
         Light const &pl = lights._pointLights[ii];
         pl._p.CopyToArray(plUniforms[ii]._pos);
