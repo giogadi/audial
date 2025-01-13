@@ -592,7 +592,7 @@ void StepSequencerEntity::UpdateDerived(GameManager& g, float dt) {
 
     if (_seqNeedsReset) {
         _lastPlayedNoteTime = 0.0;
-        _loopStartBeatTime = g._beatClock->GetNextDownBeatTime(beatTime);
+        _loopStartBeatTime = g._beatClock->GetNextBeatDenomTime(beatTime, _startDenom);
         _changeQueueHeadIx = 0;
         _changeQueueTailIx = 0;
         _changeQueueCount = 0;
@@ -650,8 +650,12 @@ void StepSequencerEntity::UpdateDerived(GameManager& g, float dt) {
     ++_currentIx;
 
     if (_currentIx >= _permanentSequence.size()) {
-        _currentIx = 0;
-        _loopStartBeatTime += _permanentSequence.size() * _stepBeatLength;
+        if (_oneShot && !g._editMode) {
+            g._neEntityManager->TagForDeactivate(_id);
+        } else {
+            _currentIx = 0;
+            _loopStartBeatTime += _permanentSequence.size() * _stepBeatLength;
+        }
     }
 }
 
@@ -690,6 +694,8 @@ void StepSequencerEntity::SaveDerived(serial::Ptree pt) const {
     pt.PutBool("editor_mute", _editorMute);
     pt.PutInt("max_voices", _initMaxNumVoices);
     pt.PutBool("quantize_temp_changes", _quantizeTempStepChanges);
+    pt.PutBool("one_shot", _oneShot);
+    pt.PutFloat("start_denom", _startDenom);
 }
 
 void StepSequencerEntity::LoadDerived(serial::Ptree pt) {
@@ -750,16 +756,26 @@ void StepSequencerEntity::LoadDerived(serial::Ptree pt) {
 
     _quantizeTempStepChanges = true;
     pt.TryGetBool("quantize_temp_changes", &_quantizeTempStepChanges);
+
+    _oneShot = false;
+    pt.TryGetBool("one_shot", &_oneShot);
+    
+    _startDenom = 1.f;
+    pt.TryGetFloat("start_denom", &_startDenom);
 }
 
 ne::BaseEntity::ImGuiResult StepSequencerEntity::ImGuiDerived(GameManager& g) {
     bool needsInit = false;
+    ImGui::Checkbox("One shot", &_oneShot);
     ImGui::Checkbox("Mute in Editor", &_editorMute);
     ImGui::Checkbox("Start mute", &_startMute);
     if (ImGui::InputFloat("Gain", &_initGain)) {
         _gain = _initGain;
     }
     if (ImGui::InputDouble("Step length", &_stepBeatLength, ImGuiInputTextFlags_EnterReturnsTrue)) {
+        needsInit = true;
+    }
+    if (ImGui::InputFloat("Start denom", &_startDenom)) {
         needsInit = true;
     }
     ImGui::Checkbox("Is synth", &_isSynth);

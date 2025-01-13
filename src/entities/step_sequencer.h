@@ -65,6 +65,8 @@ struct StepSequencerEntity : ne::Entity {
     int _initMaxNumVoices = -1;
     float _initGain = 1.f;
     bool _quantizeTempStepChanges = true;
+    bool _oneShot = false;
+    float _startDenom = 1.f;
 
     static int constexpr kChangeQueueSize = 3;
 
