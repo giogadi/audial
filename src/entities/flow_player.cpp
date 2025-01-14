@@ -10,6 +10,7 @@
 #include "geometry.h"
 #include "seq_action.h"
 #include "imgui_util.h"
+#include "features.h"
 
 #include "entities/flow_pickup.h"
 #include "entities/flow_wall.h"
@@ -387,7 +388,21 @@ void FlowPlayerEntity::Draw(GameManager& g, float const dt) {
         }
         renderer::ModelInstance& model = g._scene->DrawMesh(_model, renderTrans.Mat4Scale(), color);
         model._topLayer = true;
+        model._lightFactor = 0.f;
     }
+
+#if NEW_LIGHTS
+    {
+        renderer::Light *light = g._scene->DrawLight();
+        light->_p = renderTrans.Pos();
+        light->_color = _s._currentColor.GetXYZ();
+        light->_ambient = 0.f;
+        light->_diffuse = 1.f;
+        light->_specular = 0.f;
+        light->_isDirectional = false;
+        light->_range = 7.f;
+    }
+#endif
 
     // Draw misses (assumes ringbuffer is ordered by t)
     bool append = false;

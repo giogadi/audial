@@ -1,41 +1,6 @@
 #pragma once
 
 #include "matrix.h"
-#if 0
-inline Vec4 RgbaToHsva(Vec4 const& rgba) {
-    float r = rgba._x, g = rgba._y, b = rgba._z;
-    float xMax = std::max(r, std::max(g, b));
-    float xMin = std::min(r, std::min(g, b));
-    float v = xMax;
-    float c = xMax - xMin;
-    float hue;
-    if (c == 0.f) {
-        hue = 0.f;
-    } else if (v == r) {
-        hue = 60 * fmod((g - b) / c, 6.f);
-    } else if (v == g) {
-        hue = 60 * (((b - r) / c) + 2.f);
-    } else 
-        hue = 60 * (((r - g) / c) + 4.f);
-    }
-    float s;
-    if (v == 0.f) {
-        s = 0.f;
-    } else {
-        s = c / v;
-    }
-
-    return Vec4(hue, s, v, rgba._w);
-}
-
-inline Vec4 HsvaToRgba(Vec4 const& hsva) {
-    float h = hsva._x, s = hsva._y, v = hsva._z;
-    if (h >= 360.f) { h = 0.f; }
-    float c = v * s;
-    float hh = h / 60.f;
-    
-}
-#endif
 
 inline Vec4 RgbaToHsva(Vec4 rgba) {
     float r = rgba._x, g = rgba._y, b = rgba._z;

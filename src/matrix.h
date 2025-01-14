@@ -249,6 +249,8 @@ struct Vec4 {
         : _x(x), _y(y), _z(z), _w(w) {}
     constexpr explicit Vec4(float* v)
         : _x(v[0]), _y(v[1]), _z(v[2]), _w(v[3]) {}
+    constexpr Vec4(Vec3 const xyz, float w)
+        : _x(xyz._x), _y(xyz._y), _z(xyz._z), _w(w) {}
     
     void Set(float x, float y, float z, float w) {
         _x = x;

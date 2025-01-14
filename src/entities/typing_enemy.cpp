@@ -21,6 +21,8 @@
 #include "imgui_vector_util.h"
 #include "typing_enemy_mgr.h"
 #include "midi_util.h"
+#include "color.h"
+#include "features.h"
 
 #include "actions.h"
 
@@ -619,6 +621,7 @@ void TypingEnemyEntity::UpdateDerived(GameManager& g, float dt) {
     }
 }
 
+#if !NEW_LIGHTS
 void TypingEnemyEntity::Draw(GameManager& g, float dt) {
     bool showControllerInputs;
     if (g._editMode) {
@@ -676,6 +679,67 @@ void TypingEnemyEntity::Draw(GameManager& g, float dt) {
             break;
     }    
 }
+#else
+void TypingEnemyEntity::Draw(GameManager& g, float dt) {
+    Transform renderTrans = _transform;
+    Mat4 transMat = renderTrans.Mat4Scale();
+    renderer::ModelInstance &model = g._scene->DrawCube(transMat, _modelColor);
+    float constexpr kDefaultLightFactor = 0.7f;
+    float constexpr kGlowLightFactor = 0.f;
+    model._lightFactor = kDefaultLightFactor;
+
+    float constexpr kMinGlowRange = 10.f;
+    float constexpr kMaxGlowRange = 100.f;
+    renderer::Light *light = g._scene->DrawLight();
+    light->_p = renderTrans.Pos();
+    light->_p._y += 0.5f;
+    light->_color = _modelColor.GetXYZ();
+    light->_ambient = 0.f;
+    light->_diffuse = 1.f;
+    light->_specular = 0.f;
+    light->_range = kMinGlowRange;
+    light->_isDirectional = false;    
+
+    Vec4 const kDefaultTextColor = Vec4(1.f, 1.f, 1.f, 1.f);
+    renderer::BBox2d textBBox;
+    g._scene->GetText3dBbox(_p._keyText, textBBox);
+    Vec3 textCenter(0.5f*(textBBox.minX + textBBox.maxX), 0.f, 0.5f*(textBBox.minY + textBBox.maxY));
+    Transform textTrans = renderTrans;
+    textTrans.Translate(-textCenter);
+    textTrans.Translate(Vec3(0.f, 0.51f*renderTrans.Scale()._y, 0.f));
+
+    double beatTime = g._beatClock->GetBeatTimeFromEpoch();
+
+    if (_s._timeOfLastHit >= 0.0) {        
+        double beatTimeElapsed = beatTime - _s._timeOfLastHit;
+        double constexpr kGlowTime = 1.0;
+        float t = (float)math_util::InverseLerp(0.0, kGlowTime, beatTimeElapsed);
+        light->_range = math_util::Lerp(kMaxGlowRange, kMinGlowRange, t);
+        model._lightFactor = math_util::Lerp(kGlowLightFactor, kDefaultLightFactor, t);
+    }
+    
+    float constexpr kTextGlowFreq = 0.25f;
+    float colorVFactor = 0.5f * sin(beatTime * kTextGlowFreq * 2 * kPi) + 0.5f;
+    float colorMinV = 0.7f;
+    float colorMaxV = 1.f;
+    Vec4 colorHsva = RgbaToHsva(kDefaultTextColor);
+    colorHsva._z = math_util::Lerp(colorMinV, colorMaxV, colorVFactor);
+    Vec4 textColor = HsvaToRgba(colorHsva);
+    g._scene->DrawText3d(_p._keyText, textTrans.Mat4Scale(), textColor);
+
+    /*Transform lightTrans = renderTrans;
+    lightTrans.Translate(Vec3(0.f, 1.f * renderTrans.Scale()._y, 0.f));
+    float constexpr kTextLightRange = 10.f;
+    renderer::Light *textLight = g._scene->DrawLight();
+    textLight->_p = lightTrans.Pos();
+    textLight->_color = textColor.GetXYZ();
+    textLight->_diffuse = 1.f;
+    textLight->_ambient = 0.f;
+    textLight->_specular = 0.f;
+    textLight->_range = kTextLightRange;
+    textLight->_isDirectional = false;*/
+}
+#endif
 
 HitResult TypingEnemyEntity::OnHit(GameManager& g, int hitKeyIndex) {
     HitResult result;
@@ -706,14 +770,14 @@ HitResult TypingEnemyEntity::OnHit(GameManager& g, int hitKeyIndex) {
     DoHitActions(g, hitActionIx, result._heldActions);
     if (g._editMode && _s._numHits >= _p._keyText.length()) {
         _s._numHits = 0;
-    }
+    }    
+
+    double beatTime = g._beatClock->GetBeatTimeFromEpoch();
+    _s._timeOfLastHit = beatTime;
 
     if (g._editMode) {
         return result;
     }
-
-    double beatTime = g._beatClock->GetBeatTimeFromEpoch();
-    _s._timeOfLastHit = beatTime;
 
     if (_p._useLastHitResponse && _s._numHits >= _p._keyText.length()) {
         result._response = _p._lastHitResponse;

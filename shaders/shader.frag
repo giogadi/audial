@@ -37,7 +37,7 @@ uniform sampler2D uShadowMap;
 
 uniform vec4 uColor;
 uniform vec3 uViewPos;
-uniform bool uLighting;
+uniform float uLightingFactor;
 
 out vec4 FragColor;
 
@@ -130,9 +130,8 @@ void main() {
     }
 
     vec3 lighting = totalAmbient + (1-shadow)*(totalDiffuse + totalSpecular);
-    if (!uLighting) {
-        lighting = vec3(1.0);
-    }
 
-    FragColor = vec4(lighting, 1.0) * albedo;    
+    //FragColor = vec4(mix(lighting, vec3(1.0), uLightingFactor), 1.0) * albedo;
+    vec3 lightAdjusted = mix(vec3(1.0), lighting, uLightingFactor);
+    FragColor = vec4(lightAdjusted, 1.0) * albedo;
 }

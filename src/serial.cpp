@@ -47,7 +47,13 @@ void Ptree::PutString(char const* name, char const* v) {
     GetInternal(_internal)->InsertNewChildElement(name)->SetText(v);
 }
 std::string Ptree::GetString(char const* name) {
-    return std::string(GetInternal(_internal)->FirstChildElement(name)->GetText());
+    XMLElement *element = GetInternal(_internal)->FirstChildElement(name);
+    char const *text = element->GetText();
+    if (text) {
+        return std::string(text);
+    } else {
+        return std::string();
+    }
 }
 bool Ptree::TryGetString(char const* name, std::string* v) {
     assert(IsValid());

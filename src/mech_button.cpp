@@ -85,7 +85,7 @@ void MechButton::Draw(GameManager& g, Transform const& t) {
     Transform textTrans;
     char textBuf[] = "*";
     textBuf[0] = toupper(_p.key.c);
-    size_t const textId = g._scene->DrawText3d(textBuf, 1, textTrans.Mat4Scale(), textColor, &textBbox); 
+    size_t const textId = g._scene->DrawText3dOld(std::string_view(textBuf, 1), textTrans.Mat4Scale(), textColor, &textBbox);
     Vec3 textOriginToCenter;
     textOriginToCenter._x = 0.5f * (textBbox.minX + textBbox.maxX);
     textOriginToCenter._y = 0.f;

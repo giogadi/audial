@@ -79,7 +79,7 @@ public:
     bool _useMeshColor = false;
     float _explodeDist = 0.f;
     bool _castShadows = true;
-    bool _useLighting = true;
+    float _lightFactor = 1.f;
     float _textureUFactor = 1.f;
     float _textureVFactor = 1.f;
 };
@@ -99,7 +99,7 @@ struct Glyph3dInstance {
     float x0,y0,s0,t0;
     float x1,y1,s1,t1;
     Mat4 _t;
-    Vec4 _colorRgba; 
+    Vec4 _colorRgba;
 };
 class SceneInternal;
 class Scene {
@@ -137,9 +137,11 @@ public:
     void DrawBoundingBox(Mat4 const& t, Vec4 const& color);
 
     void DrawTextWorld(std::string_view text, Vec3 const& pos, float scale = 1.f, Vec4 const& colorRgba = Vec4(1.f, 1.f, 1.f, 1.f), bool appendToPrevious = false);
-    size_t DrawText3d(char const* text, size_t textLength, Mat4 const& t, Vec4 const& colorRgba = Vec4(1.f, 1.f, 1.f, 1.f), BBox2d* bbox2d = nullptr);
+    size_t DrawText3dOld(std::string_view text, Mat4 const& t, Vec4 const& colorRgba = Vec4(1.f, 1.f, 1.f, 1.f), BBox2d* bbox2d = nullptr);
     Glyph3dInstance& GetText3d(size_t id);
 
+    void DrawText3d(std::string_view text, Mat4 const &mat, Vec4 const& colorRgba = Vec4(1.f, 1.f, 1.f, 1.f));
+    void GetText3dBbox(std::string_view text, BBox2d &bbox2d) const;
 
     void DrawLine(Vec3 const& start, Vec3 const& end, Vec4 const& color);
 

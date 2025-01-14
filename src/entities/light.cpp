@@ -90,7 +90,7 @@ void LightEntity::Draw(GameManager &g, float dt) {
         renderer::ModelInstance* m = g._scene->DrawTexturedMesh(_model, _textureId);
         m->_transform = mat;
         m->_color = _modelColor;
-        m->_useLighting = false;
+        m->_lightFactor = 0.f;
     }
 }
 void LightEntity::Destroy(GameManager& g) {

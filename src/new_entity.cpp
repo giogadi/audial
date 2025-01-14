@@ -736,7 +736,7 @@ void BaseEntity::UpdateEditMode(GameManager& g, float dt, bool isActive) {
         _wpFollower.Update(g, dt, this, _wpProps);
         UpdateDerived(g, dt);
     }
-    Draw(g, dt);
+    //Draw(g, dt);
 }
 void BaseEntity::DebugPrint() {
     Vec3 p = _transform.GetPos();

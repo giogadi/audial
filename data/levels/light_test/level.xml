@@ -30,10 +30,10 @@
                         <z>0</z>
                     </pos>
                     <quat>
-                        <x>0.70710677</x>
-                        <y>0</y>
-                        <z>0</z>
-                        <w>0.70710677</w>
+                        <x>0.37361234</x>
+                        <y>0.19996414</y>
+                        <z>-0.082827859</z>
+                        <w>0.90197986</w>
                     </quat>
                     <scale>
                         <x>1</x>
@@ -70,9 +70,10 @@
                     <y>1</y>
                     <z>1</z>
                 </color>
-                <ambient>0.42647061</ambient>
-                <diffuse>0.54363704</diffuse>
+                <ambient>0</ambient>
+                <diffuse>0.011</diffuse>
                 <specular>0</specular>
+                <range>32</range>
                 <is_directional>true</is_directional>
                 <shadows>false</shadows>
                 <zn>1</zn>
@@ -145,9 +146,9 @@
                 <pickable>true</pickable>
                 <transform>
                     <pos>
-                        <x>-0.74066257</x>
-                        <y>0</y>
-                        <z>-24.754642</z>
+                        <x>-0.73653781</x>
+                        <y>2</y>
+                        <z>-0.98600912</z>
                     </pos>
                     <quat>
                         <x>0</x>
@@ -3275,7 +3276,7 @@
                 </editor_id>
                 <name>floor</name>
                 <entity_active>true</entity_active>
-                <pickable>true</pickable>
+                <pickable>false</pickable>
                 <transform>
                     <pos>
                         <x>7.0047121</x>
@@ -3319,18 +3320,18 @@
                     </follow_entity_editor_id>
                 </waypoint_follower>
             </Base>
-            <Light>
+            <TypingEnemy>
                 <editor_id>
-                    <id>223</id>
+                    <id>226</id>
                 </editor_id>
-                <name>cube_light</name>
+                <name>n0</name>
                 <entity_active>true</entity_active>
                 <pickable>true</pickable>
                 <transform>
                     <pos>
-                        <x>0</x>
+                        <x>-0.49300304</x>
                         <y>0.5</y>
-                        <z>0</z>
+                        <z>1.7462914</z>
                     </pos>
                     <quat>
                         <x>0</x>
@@ -3344,7 +3345,7 @@
                         <z>1</z>
                     </scale>
                 </transform>
-                <model_name>cube</model_name>
+                <model_name></model_name>
                 <texture_name></texture_name>
                 <texture_u_factor>1</texture_u_factor>
                 <texture_v_factor>1</texture_v_factor>
@@ -3368,32 +3369,60 @@
                         <id>-1</id>
                     </follow_entity_editor_id>
                 </waypoint_follower>
-                <color>
-                    <x>0.98039216</x>
-                    <y>0</y>
-                    <z>0</z>
-                </color>
-                <ambient>0</ambient>
-                <diffuse>1</diffuse>
-                <specular>0</specular>
-                <is_directional>false</is_directional>
-                <shadows>false</shadows>
-                <zn>1</zn>
-                <zf>20</zf>
-                <w>20</w>
-            </Light>
-            <Light>
+                <hit_response>
+                    <type>Pull</type>
+                    <speed>-1</speed>
+                    <push_angle_deg>-1</push_angle_deg>
+                    <time>-1</time>
+                    <ps_time>-1</ps_time>
+                    <stop_on_pass>true</stop_on_pass>
+                    <stop_after_timer>true</stop_after_timer>
+                </hit_response>
+                <use_last_hit_response>false</use_last_hit_response>
+                <last_hit_response>
+                    <type>Pull</type>
+                    <speed>-1</speed>
+                    <push_angle_deg>-1</push_angle_deg>
+                    <time>-1</time>
+                    <ps_time>-1</ps_time>
+                    <stop_on_pass>true</stop_on_pass>
+                    <stop_after_timer>true</stop_after_timer>
+                </last_hit_response>
+                <text>a</text>
+                <buttons>a</buttons>
+                <type_kill>true</type_kill>
+                <all_actions_on_hit>false</all_actions_on_hit>
+                <flow_cooldown>-1</flow_cooldown>
+                <show_beats_left>false</show_beats_left>
+                <cooldown_quantize_denom>0</cooldown_quantize_denom>
+                <reset_cooldown_on_any_hit>false</reset_cooldown_on_any_hit>
+                <init_hittable>true</init_hittable>
+                <timed_hittable_time>-1</timed_hittable_time>
+                <allow_backward>false</allow_backward>
+                <just_draw_model>false</just_draw_model>
+                <group_id>-1</group_id>
+                <region_type>TriggerEntity</region_type>
+                <active_region_editor_id>
+                    <id>-1</id>
+                </active_region_editor_id>
+                <lock_player_in_region>false</lock_player_in_region>
+                <hit_actions/>
+                <all_hit_actions/>
+                <off_cooldown_actions/>
+                <combo_end_actions/>
+            </TypingEnemy>
+            <TypingEnemy>
                 <editor_id>
-                    <id>224</id>
+                    <id>227</id>
                 </editor_id>
-                <name>cube_light0</name>
+                <name>n1</name>
                 <entity_active>true</entity_active>
                 <pickable>true</pickable>
                 <transform>
                     <pos>
-                        <x>4.6330395</x>
+                        <x>-5.7675414</x>
                         <y>0.5</y>
-                        <z>-1.591867</z>
+                        <z>-2.85111</z>
                     </pos>
                     <quat>
                         <x>0</x>
@@ -3407,75 +3436,12 @@
                         <z>1</z>
                     </scale>
                 </transform>
-                <model_name>cube</model_name>
+                <model_name></model_name>
                 <texture_name></texture_name>
                 <texture_u_factor>1</texture_u_factor>
                 <texture_v_factor>1</texture_v_factor>
                 <model_color_vec4>
-                    <x>0</x>
-                    <y>0.26470613</y>
-                    <z>1</z>
-                    <w>1</w>
-                </model_color_vec4>
-                <flow_section_id>-1</flow_section_id>
-                <tag>0</tag>
-                <waypoint_follower>
-                    <mode>Waypoint</mode>
-                    <waypoint_auto_start>false</waypoint_auto_start>
-                    <loop_waypoints>false</loop_waypoints>
-                    <start_time>3</start_time>
-                    <quantize>1</quantize>
-                    <quantize_buffer>0</quantize_buffer>
-                    <waypoints/>
-                    <follow_entity_editor_id>
-                        <id>-1</id>
-                    </follow_entity_editor_id>
-                </waypoint_follower>
-                <color>
-                    <x>0</x>
-                    <y>0.26666668</y>
-                    <z>1</z>
-                </color>
-                <ambient>0</ambient>
-                <diffuse>1</diffuse>
-                <specular>0</specular>
-                <is_directional>false</is_directional>
-                <shadows>false</shadows>
-                <zn>1</zn>
-                <zf>20</zf>
-                <w>20</w>
-            </Light>
-            <Light>
-                <editor_id>
-                    <id>225</id>
-                </editor_id>
-                <name>cube_light1</name>
-                <entity_active>true</entity_active>
-                <pickable>true</pickable>
-                <transform>
-                    <pos>
-                        <x>-5.2982979</x>
-                        <y>0.5</y>
-                        <z>-2.3640385</z>
-                    </pos>
-                    <quat>
-                        <x>0</x>
-                        <y>0</y>
-                        <z>0</z>
-                        <w>1</w>
-                    </quat>
-                    <scale>
-                        <x>1</x>
-                        <y>1</y>
-                        <z>1</z>
-                    </scale>
-                </transform>
-                <model_name>cube</model_name>
-                <texture_name></texture_name>
-                <texture_u_factor>1</texture_u_factor>
-                <texture_v_factor>1</texture_v_factor>
-                <model_color_vec4>
-                    <x>0.97058821</x>
+                    <x>0.82352924</x>
                     <y>0</y>
                     <z>1</z>
                     <w>1</w>
@@ -3494,20 +3460,139 @@
                         <id>-1</id>
                     </follow_entity_editor_id>
                 </waypoint_follower>
-                <color>
-                    <x>0.97254902</x>
-                    <y>0</y>
+                <hit_response>
+                    <type>Pull</type>
+                    <speed>-1</speed>
+                    <push_angle_deg>-1</push_angle_deg>
+                    <time>-1</time>
+                    <ps_time>-1</ps_time>
+                    <stop_on_pass>true</stop_on_pass>
+                    <stop_after_timer>true</stop_after_timer>
+                </hit_response>
+                <use_last_hit_response>false</use_last_hit_response>
+                <last_hit_response>
+                    <type>Pull</type>
+                    <speed>-1</speed>
+                    <push_angle_deg>-1</push_angle_deg>
+                    <time>-1</time>
+                    <ps_time>-1</ps_time>
+                    <stop_on_pass>true</stop_on_pass>
+                    <stop_after_timer>true</stop_after_timer>
+                </last_hit_response>
+                <text>b</text>
+                <buttons>a</buttons>
+                <type_kill>true</type_kill>
+                <all_actions_on_hit>false</all_actions_on_hit>
+                <flow_cooldown>-1</flow_cooldown>
+                <show_beats_left>false</show_beats_left>
+                <cooldown_quantize_denom>0</cooldown_quantize_denom>
+                <reset_cooldown_on_any_hit>false</reset_cooldown_on_any_hit>
+                <init_hittable>true</init_hittable>
+                <timed_hittable_time>-1</timed_hittable_time>
+                <allow_backward>false</allow_backward>
+                <just_draw_model>false</just_draw_model>
+                <group_id>-1</group_id>
+                <region_type>TriggerEntity</region_type>
+                <active_region_editor_id>
+                    <id>-1</id>
+                </active_region_editor_id>
+                <lock_player_in_region>false</lock_player_in_region>
+                <hit_actions/>
+                <all_hit_actions/>
+                <off_cooldown_actions/>
+                <combo_end_actions/>
+            </TypingEnemy>
+            <TypingEnemy>
+                <editor_id>
+                    <id>228</id>
+                </editor_id>
+                <name>n2</name>
+                <entity_active>true</entity_active>
+                <pickable>true</pickable>
+                <transform>
+                    <pos>
+                        <x>4.6389794</x>
+                        <y>0.5</y>
+                        <z>-2.3521669</z>
+                    </pos>
+                    <quat>
+                        <x>0</x>
+                        <y>0</y>
+                        <z>0</z>
+                        <w>1</w>
+                    </quat>
+                    <scale>
+                        <x>1</x>
+                        <y>1</y>
+                        <z>1</z>
+                    </scale>
+                </transform>
+                <model_name></model_name>
+                <texture_name></texture_name>
+                <texture_u_factor>1</texture_u_factor>
+                <texture_v_factor>1</texture_v_factor>
+                <model_color_vec4>
+                    <x>0</x>
+                    <y>0.088235378</y>
                     <z>1</z>
-                </color>
-                <ambient>0</ambient>
-                <diffuse>1</diffuse>
-                <specular>0</specular>
-                <is_directional>false</is_directional>
-                <shadows>false</shadows>
-                <zn>1</zn>
-                <zf>20</zf>
-                <w>20</w>
-            </Light>
+                    <w>1</w>
+                </model_color_vec4>
+                <flow_section_id>-1</flow_section_id>
+                <tag>0</tag>
+                <waypoint_follower>
+                    <mode>Waypoint</mode>
+                    <waypoint_auto_start>false</waypoint_auto_start>
+                    <loop_waypoints>false</loop_waypoints>
+                    <start_time>3</start_time>
+                    <quantize>1</quantize>
+                    <quantize_buffer>0</quantize_buffer>
+                    <waypoints/>
+                    <follow_entity_editor_id>
+                        <id>-1</id>
+                    </follow_entity_editor_id>
+                </waypoint_follower>
+                <hit_response>
+                    <type>Pull</type>
+                    <speed>-1</speed>
+                    <push_angle_deg>-1</push_angle_deg>
+                    <time>-1</time>
+                    <ps_time>-1</ps_time>
+                    <stop_on_pass>true</stop_on_pass>
+                    <stop_after_timer>true</stop_after_timer>
+                </hit_response>
+                <use_last_hit_response>false</use_last_hit_response>
+                <last_hit_response>
+                    <type>Pull</type>
+                    <speed>-1</speed>
+                    <push_angle_deg>-1</push_angle_deg>
+                    <time>-1</time>
+                    <ps_time>-1</ps_time>
+                    <stop_on_pass>true</stop_on_pass>
+                    <stop_after_timer>true</stop_after_timer>
+                </last_hit_response>
+                <text>c</text>
+                <buttons>a</buttons>
+                <type_kill>true</type_kill>
+                <all_actions_on_hit>false</all_actions_on_hit>
+                <flow_cooldown>-1</flow_cooldown>
+                <show_beats_left>false</show_beats_left>
+                <cooldown_quantize_denom>0</cooldown_quantize_denom>
+                <reset_cooldown_on_any_hit>false</reset_cooldown_on_any_hit>
+                <init_hittable>true</init_hittable>
+                <timed_hittable_time>-1</timed_hittable_time>
+                <allow_backward>false</allow_backward>
+                <just_draw_model>false</just_draw_model>
+                <group_id>-1</group_id>
+                <region_type>TriggerEntity</region_type>
+                <active_region_editor_id>
+                    <id>-1</id>
+                </active_region_editor_id>
+                <lock_player_in_region>false</lock_player_in_region>
+                <hit_actions/>
+                <all_hit_actions/>
+                <off_cooldown_actions/>
+                <combo_end_actions/>
+            </TypingEnemy>
         </new_entities>
     </script>
 </root>

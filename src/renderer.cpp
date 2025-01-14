@@ -152,6 +152,12 @@ struct TextWorldInstance {
     bool _appendToPrevious = false;
 };
 
+struct Text3dInstance {
+    Vec4 _colorRgba;
+    Mat4 _mat;
+    std::string_view _text;
+};
+
 namespace ModelShaderUniforms {
     enum Names {
         uColor,
@@ -166,6 +172,9 @@ namespace ModelShaderUniforms {
         uDirLightAmb,
         uDirLightDif,
         uDirLightShadows,
+        uLightingFactor,
+        uTextureUFactor,
+        uTextureVFactor,
         Count
     };
     static char const* NameStrings[] = {
@@ -180,7 +189,10 @@ namespace ModelShaderUniforms {
         "uDirLight._color",
         "uDirLight._ambient",
         "uDirLight._diffuse",
-        "uDirLight._shadows"
+        "uDirLight._shadows",
+        "uLightingFactor",
+        "uTextureUFactor",
+        "uTextureVFactor",
     };
 };
 
@@ -313,6 +325,7 @@ public:
     std::vector<Light> _lightsToDraw;
     std::vector<TextWorldInstance> _textToDraw;
     std::vector<Glyph3dInstance> _glyph3dsToDraw;
+    std::vector<Text3dInstance> _text3dsToDraw;
     std::vector<BoundingBoxInstance> _boundingBoxesToDraw;
     std::vector<Polygon2dInstance> _polygonsToDraw;
     std::vector<LineInstance> _linesToDraw;
@@ -1076,11 +1089,11 @@ void Scene::DrawTextWorld(std::string_view text, Vec3 const& pos, float scale, V
     t._appendToPrevious = appendToPrevious;
 }
 
-size_t Scene::DrawText3d(char const* text, size_t const textLength, Mat4 const& t, Vec4 const& colorRgba, BBox2d* bbox) {
+size_t Scene::DrawText3dOld(std::string_view text, Mat4 const& mat, Vec4 const& colorRgba, BBox2d* bbox) {
     size_t const firstCharIndex = _pInternal->_glyph3dsToDraw.size();
     float currentX = 0.f;
     float currentY = 0.f;
-    for (int textIx = 0; textIx < textLength; ++textIx) {
+    for (int textIx = 0; textIx < text.size(); ++textIx) {
         char c = text[textIx];
         char constexpr kFirstChar = 65;  // 'A'
         int constexpr kNumChars = 58;
@@ -1118,11 +1131,26 @@ size_t Scene::DrawText3d(char const* text, size_t const textLength, Mat4 const& 
         Glyph3dInstance& instance = _pInternal->_glyph3dsToDraw.emplace_back();
         instance.x0 = quad.x0; instance.y0 = quad.y0; instance.s0 = quad.s0; instance.t0 = quad.t0;
         instance.x1 = quad.x1; instance.y1 = quad.y1; instance.s1 = quad.s1; instance.t1 = quad.t1; 
-        instance._t = t;
+        instance._t = mat;
         instance._colorRgba = colorRgba; 
     }
 
     return firstCharIndex;
+}
+
+void Scene::DrawText3d(std::string_view text, Mat4 const& mat, Vec4 const& colorRgba) {
+    Text3dInstance& t = _pInternal->_text3dsToDraw.emplace_back();
+    if (sTextBufferIx + text.size() >= kTextBufferCapacity) {
+        printf("Scene::DrawTextWorld: Text buffer out of capacity!!\n");
+    }
+    char *textStart = &sTextBuffer[sTextBufferIx];
+    text.copy(textStart, text.size());
+    char *terminator = textStart + text.size();
+    *terminator = '\0';
+    t._text = std::string_view(textStart, text.size());
+    sTextBufferIx += text.size() + 1;
+    t._mat = mat;
+    t._colorRgba = colorRgba;    
 }
 
 void Scene::DrawLine(Vec3 const& start, Vec3 const& end, Vec4 const& color) {
@@ -1316,9 +1344,9 @@ void DrawModelInstance(SceneInternal& internal, Mat4 const& viewProjTransform, M
     }
     internal._modelShader.SetMat3(internal._modelShaderUniforms[ModelShaderUniforms::uModelInvTrans], modelTransInv);
     internal._modelShader.SetVec3(internal._modelShaderUniforms[ModelShaderUniforms::uExplodeVec], Vec3());
-    internal._modelShader.SetBool("uLighting", m._useLighting);
-    internal._modelShader.SetFloat("uTextureUFactor", m._textureUFactor);
-    internal._modelShader.SetFloat("uTextureVFactor", m._textureVFactor);
+    internal._modelShader.SetFloat(internal._modelShaderUniforms[ModelShaderUniforms::uLightingFactor], m._lightFactor);
+    internal._modelShader.SetFloat(internal._modelShaderUniforms[ModelShaderUniforms::uTextureUFactor], m._textureUFactor);
+    internal._modelShader.SetFloat(internal._modelShaderUniforms[ModelShaderUniforms::uTextureVFactor], m._textureVFactor);
 
     // TEMPORARY! What we really want is to use the submeshes always unless the outer Model
     // has defined some overrides.
@@ -1354,8 +1382,40 @@ void DrawModelInstance(SceneInternal& internal, Mat4 const& viewProjTransform, M
 }
 }
 
+void Scene::GetText3dBbox(std::string_view text, BBox2d &bbox) const {
+    bbox.minX = bbox.minY = std::numeric_limits<float>::max();
+    bbox.maxX = bbox.maxY = std::numeric_limits<float>::lowest();
+
+    MsdfFontInfo &fontInfo = _pInternal->_msdfFontInfo;
+
+    float const sf = 1.f;
+
+    Vec3 point;
+    for (int ii = 0; ii < text.size(); ++ii) {
+        auto result = fontInfo._charToInfoMap.find(text[ii]);
+        if (result == fontInfo._charToInfoMap.end()) {
+            printf("Could not find character: %c\n", text[ii]);
+            continue;
+        }
+        MsdfCharInfo &charInfo = fontInfo._charInfos[result->second];
+
+        if (ii == 0) {
+            bbox.minX = point._x + sf * charInfo._planeBounds[BoundsLeft];
+        }
+        if (ii == text.size() - 1) {
+            bbox.maxX = point._x + sf * charInfo._planeBounds[BoundsRight];
+        }
+
+        bbox.minY = std::min(bbox.minY, point._z + sf * charInfo._planeBounds[BoundsTop]);
+        bbox.maxY = std::max(bbox.maxY, point._z + sf * charInfo._planeBounds[BoundsBottom]);        
+        point._x += sf * charInfo._advance;
+    }
+}
+
 
 void Scene::Draw(int windowWidth, int windowHeight, float timeInSecs, float deltaTime) {
+
+    glDepthFunc(GL_LEQUAL);
 
     if (_pInternal->_enableGammaCorrection) {
         glEnable(GL_FRAMEBUFFER_SRGB);
@@ -1571,6 +1631,89 @@ void Scene::Draw(int windowWidth, int windowHeight, float timeInSecs, float delt
     }
 
     // 3D TEXT
+    glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);    
+    {
+        // HOWDY MSDF
+        MsdfFontInfo &fontInfo = _pInternal->_msdfFontInfo;
+
+        ViewportInfo const& vp = _pInternal->_g->_viewportInfo;
+
+        unsigned int fontTextureId = _pInternal->_textureIdMap.at("msdf_font");
+
+        Shader& shader = _pInternal->_msdfTextShader;
+        shader.Use();
+        glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_2D, fontTextureId);
+        glBindVertexArray(_pInternal->_msdfTextVao);        
+        shader.SetFloat("uPxRange", fontInfo._distancePxRange);     
+        for (int ii = 0; ii < _pInternal->_text3dsToDraw.size(); ++ii) {
+            Text3dInstance const &t = _pInternal->_text3dsToDraw[ii];
+
+            shader.SetMat4("uMvpTrans", viewProjTransform * t._mat);
+
+            float const sf = 1.f;
+
+            Vec3 point;
+            for (int ii = 0; ii < t._text.size(); ++ii) {
+                auto result = fontInfo._charToInfoMap.find(t._text[ii]);
+                if (result == fontInfo._charToInfoMap.end()) {
+                    printf("Could not find character: %c\n", t._text[ii]);
+                    continue;
+                }
+                MsdfCharInfo &charInfo = fontInfo._charInfos[result->second];
+
+                float vertexData[5 * 4];
+
+                int dataIx = 0;
+                Vec3 p;
+                //top-left
+                p = point + sf * Vec3(charInfo._planeBounds[BoundsLeft], 0.f, charInfo._planeBounds[BoundsTop]);
+                vertexData[dataIx++] = p._x;
+                vertexData[dataIx++] = p._y;
+                vertexData[dataIx++] = p._z;
+                vertexData[dataIx++] = charInfo._atlasBoundsNormalized[BoundsLeft];
+                vertexData[dataIx++] = charInfo._atlasBoundsNormalized[BoundsTop];
+
+                //bottom-left
+                p = point + sf * Vec3(charInfo._planeBounds[BoundsLeft], 0.f, charInfo._planeBounds[BoundsBottom]);
+                vertexData[dataIx++] = p._x;
+                vertexData[dataIx++] = p._y;
+                vertexData[dataIx++] = p._z;
+                vertexData[dataIx++] = charInfo._atlasBoundsNormalized[BoundsLeft];
+                vertexData[dataIx++] = charInfo._atlasBoundsNormalized[BoundsBottom];
+
+                //top-right
+                p = point + sf * Vec3(charInfo._planeBounds[BoundsRight], 0.f, charInfo._planeBounds[BoundsTop]);
+                vertexData[dataIx++] = p._x;
+                vertexData[dataIx++] = p._y;
+                vertexData[dataIx++] = p._z;
+                vertexData[dataIx++] = charInfo._atlasBoundsNormalized[BoundsRight];
+                vertexData[dataIx++] = charInfo._atlasBoundsNormalized[BoundsTop];
+
+                //bottom-right
+                p = point + sf * Vec3(charInfo._planeBounds[BoundsRight], 0.f, charInfo._planeBounds[BoundsBottom]);
+                vertexData[dataIx++] = p._x;
+                vertexData[dataIx++] = p._y;
+                vertexData[dataIx++] = p._z;
+                vertexData[dataIx++] = charInfo._atlasBoundsNormalized[BoundsRight];
+                vertexData[dataIx++] = charInfo._atlasBoundsNormalized[BoundsBottom];
+
+                Vec4 premult = t._colorRgba._w * t._colorRgba;
+                premult._w = t._colorRgba._w;
+                shader.SetVec4("uColor", premult);
+                glBindBuffer(GL_ARRAY_BUFFER, _pInternal->_msdfTextVbo);
+                glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertexData), vertexData);
+                glBindBuffer(GL_ARRAY_BUFFER, 0);
+                glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+
+                point._x += sf * charInfo._advance;
+            }
+        }
+        _pInternal->_text3dsToDraw.clear();
+    }
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+    // OLD 3d TEXT
     {
         unsigned int fontTextureId = _pInternal->_textureIdMap.at("font");
         
