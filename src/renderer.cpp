@@ -42,6 +42,26 @@ float quadVertices[] = {
         1.0f,  1.0f,  1.0f, 1.0f
 };
 
+struct LightParams {
+    float _range;
+    float _constant;
+    float _linear;
+    float _quadratic;
+};
+//https://wiki.ogre3d.org/Light%20Attenuation%20Shortcut
+void GetLightParamsForRange(float const range, LightParams &params) {
+    if (range <= 0.f) {
+        params._range = 0.f;
+        params._constant = 1.f;
+        params._linear = 0.f;
+        params._quadratic = 0.f;
+    }
+    params._range = range;
+    params._constant = 1.f;
+    params._linear = 4.5f / range;
+    params._quadratic = 75.f / (range*range);
+}
+
 // Cleared every frame
 std::size_t constexpr kTextBufferCapacity = 1024;
 char sTextBuffer[kTextBufferCapacity];
@@ -661,7 +681,11 @@ struct PointLightUniform {
     float _ambient;
     float _diffuse;
     float _specular;
+    float _constant;
+    float _linear;
+    float _quadratic;
     float _padding0;
+    float _padding1;
 };
 
 bool SceneInternal::Init(GameManager& g) {
@@ -1214,7 +1238,13 @@ void SetLightUniformsModelShader(Lights const& lights, Vec3 const& viewPos, Mat4
         pl._color.CopyToArray(plUniforms[ii]._color);
         plUniforms[ii]._ambient = pl._ambient;
         plUniforms[ii]._diffuse = pl._diffuse;
-        plUniforms[ii]._specular = pl._specular;        
+        plUniforms[ii]._specular = pl._specular;
+
+        LightParams params;
+        GetLightParamsForRange(pl._range, params);
+        plUniforms[ii]._constant = params._constant;
+        plUniforms[ii]._linear = params._linear;
+        plUniforms[ii]._quadratic = params._quadratic;
     }
     glBindBuffer(GL_UNIFORM_BUFFER, sceneInternal._pointLightUbo);
     glBufferSubData(GL_UNIFORM_BUFFER, 0, kMaxNumPointLights * sizeof(PointLightUniform), plUniforms);

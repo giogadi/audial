@@ -29,6 +29,7 @@ struct Light {
     float _ambient = 0.f;
     float _diffuse = 0.f;
     float _specular = 0.f;
+    float _range = 32.f;
     bool _shadows = false;
     float _zn = 1.f;
     float _zf = 20.f;

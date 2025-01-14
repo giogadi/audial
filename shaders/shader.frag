@@ -13,7 +13,11 @@ struct PointLight {
     float _ambient;
     float _diffuse;
     float _specular;
+    float _constant;
+    float _linear;
+    float _quadratic;
     float _padding0;
+    float _padding1;
 };
 layout (std140) uniform uPointLights {
     PointLight pointLights[NUM_POINT_LIGHTS];
@@ -38,9 +42,6 @@ uniform bool uLighting;
 out vec4 FragColor;
 
 float shininess = 32.f;
-float attenConstant = 1.0f;
-float attenLinear = 0.14f;
-float attenQuad = 0.07f;
 
 void CalcPointLight(in PointLight light, in vec3 viewDir, in vec3 normal, inout vec3 totalAmbient, inout vec3 totalDiffuse, inout vec3 totalSpecular) {
     vec3 lightDir = normalize(light._pos.xyz - fragPos);
@@ -53,7 +54,7 @@ void CalcPointLight(in PointLight light, in vec3 viewDir, in vec3 normal, inout 
     vec3 diffuse = diff*light._color.xyz*light._diffuse;
 
     float lightDist = length(light._pos.xyz - fragPos); // TODO waste of invsqrt
-    float atten = 1.0f / (attenConstant + lightDist*attenLinear + lightDist*lightDist*attenQuad);
+    float atten = 1.0f / (light._constant + lightDist*light._linear + lightDist*lightDist*light._quadratic);
     diffuse *= atten;
     specular *= atten;
     vec3 ambient = light._color.xyz * light._ambient * atten;

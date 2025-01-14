@@ -13,6 +13,7 @@ void LightEntity::SaveDerived(serial::Ptree pt) const {
     pt.PutFloat("ambient", _ambient);
     pt.PutFloat("diffuse", _diffuse);
     pt.PutFloat("specular", _specular);
+    pt.PutFloat("range", _range);
     pt.PutBool("is_directional", _isDirectional);
     pt.PutBool("shadows", _shadows);
     pt.PutFloat("zn", _zn);
@@ -24,6 +25,7 @@ void LightEntity::LoadDerived(serial::Ptree pt) {
     _ambient = 0.f;
     _diffuse = 0.f;
     _specular = 0.f;
+    _range = 32.f;
     if (pt.GetVersion() >= 5) {
         serial::LoadFromChildOf(pt, "color", _color);
         _ambient = pt.GetFloat("ambient");
@@ -41,6 +43,7 @@ void LightEntity::LoadDerived(serial::Ptree pt) {
         serial::LoadFromChildOf(pt, "diffuse", difVec);
         _diffuse = (difVec._x + difVec._y + difVec._z) / 3.f;
     }
+    pt.TryGetFloat("range", &_range);
     _isDirectional = false;
     pt.TryGetBool("is_directional", &_isDirectional);
     _shadows = false;
@@ -57,6 +60,7 @@ ne::Entity::ImGuiResult LightEntity::ImGuiDerived(GameManager& g) {
     ImGui::SliderFloat("Diffuse", &_diffuse, 0.f, 1.f);
     ImGui::SliderFloat("Ambient", &_ambient, 0.f, 1.f);
     ImGui::SliderFloat("Specular", &_specular, 0.f, 1.f);
+    ImGui::SliderFloat("Range (point only)", &_range, 0.1f, 100.f);
     ImGui::InputFloat("zn", &_zn);
     ImGui::InputFloat("zf", &_zf);
     ImGui::InputFloat("w", &_width);
@@ -74,6 +78,7 @@ void LightEntity::UpdateDerived(GameManager& g, float dt) {
     l->_ambient = _ambient;
     l->_diffuse = _diffuse;   
     l->_specular = _specular;
+    l->_range = _range;
     l->_shadows = _shadows;
     l->_zn = _zn;
     l->_zf = _zf;
