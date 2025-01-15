@@ -5,7 +5,7 @@ in vec3 fragPos;
 in vec3 normalNonNorm;
 in vec4 fragPosLightSpace;
 
-#define NUM_POINT_LIGHTS 5 
+#define NUM_POINT_LIGHTS 10
 
 struct PointLight {
     vec4 _pos;
@@ -25,17 +25,23 @@ struct DirLight {
     vec3 _dir;
     vec3 _color;
     float _ambient;
-    float _diffuse;    
+    float _diffuse;
     bool _shadows;
 };
 uniform DirLight uDirLight;
 
 uniform sampler2D uMyTexture;
 uniform sampler2D uShadowMap;
+uniform isamplerBuffer uLightGrid;
 
 uniform vec4 uColor;
 uniform vec3 uViewPos;
 uniform float uLightingFactor;
+
+uniform int uLightCellSizePx;
+uniform int uLightGridRows;
+uniform int uLightGridColumns;
+uniform int uNumLightsPerCell;
 
 out vec4 FragColor;
 
@@ -86,13 +92,18 @@ void main() {
     }
 
     // Point lights
-#if 1
+#if 0
     for (int i = 0; i < NUM_POINT_LIGHTS; ++i) {
         CalcPointLight(uPointLights[i], viewDir, normal, totalAmbient, totalDiffuse, totalSpecular);
     }
 #else
-    {
-
+    ivec2 rc = ivec2((gl_FragCoord.yx - vec2(0.5f, 0.5f)) / uLightCellSizePx);
+    rc.x = uLightGridRows - rc.x - 1;
+    int gridIx = (rc.x * uLightGridColumns + rc.y) * uNumLightsPerCell;
+    for (int cellLightIx = 0; cellLightIx < uNumLightsPerCell; ++cellLightIx) {
+        int lightIx = texelFetch(uLightGrid, gridIx + cellLightIx).r;
+        PointLight light = uPointLights[lightIx];
+        CalcPointLight(light, viewDir, normal, totalAmbient, totalDiffuse, totalSpecular);
     }
 #endif
 
@@ -124,4 +135,16 @@ void main() {
     //FragColor = vec4(mix(lighting, vec3(1.0), uLightingFactor), 1.0) * albedo;
     vec3 lightAdjusted = mix(vec3(1.0), lighting, uLightingFactor);
     FragColor = vec4(lightAdjusted, 1.0) * albedo;
+
+#if 0
+    ivec2 rc = ivec2((gl_FragCoord.yx - vec2(0.5f, 0.5f)) / uLightCellSizePx);
+    rc.x = uLightGridRows - rc.x - 1;
+    int gridIx = (rc.x * uLightGridColumns + rc.y) * uNumLightsPerCell;
+    float testR = float(texelFetch(uLightGrid, gridIx).r) / 255.f;
+    float testG = float(texelFetch(uLightGrid, gridIx+1).r) / 255.f;
+    float testB = float(texelFetch(uLightGrid, gridIx+2).r) / 255.f;
+    float testA = float(texelFetch(uLightGrid, gridIx+3).r) / 255.f;
+    vec4 testColor = vec4(testR, testG, testB, testA);
+    FragColor = testColor;
+#endif
 }

@@ -21,18 +21,22 @@
 #include "game_manager.h"
 #include "geometry.h"
 #include <string_util.h>
+#include "math_util.h"
 
 #define DRAW_WATER 0
 #define DRAW_TERRAIN 1
 
 namespace {
 constexpr int kMaxLineCount = 512;
-int constexpr kMaxNumPointLights = 5;
+int constexpr kMaxNumPointLights = 10;
 
 constexpr int kShadowWidth = 1 * 1024;
 constexpr int kShadowHeight = 1 * 1024;
 
-constexpr int kMaxLightGridBufferSize = (2560 / 8) * (1600 / 8) * 4 * sizeof(int32_t);
+int constexpr kLightGridSizePx = 8;
+int constexpr kNumLightsPerCell = 4;
+constexpr int kMaxLightGridBufferSize = (2560 / kLightGridSizePx) * (1600 / kLightGridSizePx) * kNumLightsPerCell * sizeof(int32_t);
+int32_t sLightGrid[kMaxLightGridBufferSize];
 
 float quadVertices[] = {
        // positions   // texCoords
@@ -1248,7 +1252,6 @@ void SetLightUniformsModelShader(Lights const& lights, Vec3 const& viewPos, Mat4
     shader.SetVec3(uniforms[ModelShaderUniforms::uViewPos], viewPos);
     shader.SetMat4(uniforms[ModelShaderUniforms::uLightViewProjT], lightViewProjT);
     shader.SetBool(uniforms[ModelShaderUniforms::uDirLightShadows], lights._dirLight._shadows);
-
     char name[128];
     for (int ii = 0; ii < kMaxNumPointLights; ++ii) {
         Light const &pl = lights._pointLights[ii];
@@ -1417,6 +1420,70 @@ void Scene::GetText3dBbox(std::string_view text, BBox2d &bbox) const {
     }
 }
 
+namespace {
+struct LightGridInfo {
+    int totalSize;
+    int rows;
+    int columns;
+};
+void UpdateLightGrid(int windowWidth, int windowHeight, Mat4 const &viewProj, Lights const &lights, LightGridInfo &info) {
+    memset(sLightGrid, 0, kMaxLightGridBufferSize);
+    info.rows = (int)std::ceil((float)windowHeight / kLightGridSizePx);
+    info.columns = (int)std::ceil((float)windowWidth / kLightGridSizePx);
+    info.totalSize = info.rows * info.columns * kNumLightsPerCell * sizeof(int32_t);
+    // start at index 1 because 0-th light always has no effect.
+    for (int ii = 1; ii < lights._pointLights.size(); ++ii) {
+        // Assume for now that the range is 2 units in the XZ plane from a light.
+        Light const &pl = lights._pointLights[ii];
+        // Find extents on light grid of this light's influence
+        float minScreenX, minScreenY, maxScreenX, maxScreenY;
+        Vec3 minEffectWorld = pl._p + Vec3(-2.f, 0.f, -2.f);
+        Vec3 maxEffectWorld = pl._p + Vec3(2.f, 0, 2.f);
+        geometry::ProjectWorldPointToScreenSpace(minEffectWorld, viewProj, windowWidth, windowHeight, minScreenX, minScreenY);
+        geometry::ProjectWorldPointToScreenSpace(maxEffectWorld, viewProj, windowWidth, windowHeight, maxScreenX, maxScreenY);
+        int minGridCol = math_util::Clamp((int)(minScreenX / kLightGridSizePx), 0, info.columns-1);
+        int minGridRow = math_util::Clamp((int)(minScreenY / kLightGridSizePx), 0, info.rows-1);
+        int maxGridCol = math_util::Clamp((int)(maxScreenX / kLightGridSizePx), 0, info.columns-1);
+        int maxGridRow = math_util::Clamp((int)(maxScreenY / kLightGridSizePx), 0, info.rows-1);
+        for (int r = minGridRow; r <= maxGridRow; ++r) {
+            for (int c = minGridCol; c <= maxGridCol; ++c) {
+                int offset = (r*info.columns + c)*kNumLightsPerCell;
+                for (int lix = 0; lix < kNumLightsPerCell; ++lix) {
+                    if (sLightGrid[offset+lix] == 0) {
+                        sLightGrid[offset+lix] = ii;
+                        break;
+                    }
+                }
+            }
+        }
+    }
+}
+void UpdateLightGridTestColors(int windowWidth, int windowHeight, LightGridInfo &info) {    
+    Vec4 testColorA(1.f, 0.f, 0.f, 1.f);
+    Vec4 testColorB(0.f, 1.f, 1.f, 1.f);
+    int ii = 0;
+    int numRows = (int)std::ceil((float)windowHeight / kLightGridSizePx);
+    int numColumns = (int)std::ceil((float)windowWidth / kLightGridSizePx);
+    int const numInts = numRows * numColumns * kNumLightsPerCell;
+    int const writtenSize = numInts * sizeof(int32_t);
+    assert(writtenSize <= kMaxLightGridBufferSize);
+    for (int row = 0; row < numRows; ++row) {
+        for (int col = 0; col < numColumns; ++col) {
+            float r = (float)row / (numRows - 1);
+            float g = (float)col / (numColumns - 1);
+            sLightGrid[ii++] = (int)(r * 255.f);
+            sLightGrid[ii++] = (int)(g * 255.f);
+            sLightGrid[ii++] = 0;
+            sLightGrid[ii++] = 255;
+        }
+    }
+    assert(ii == numInts);
+    info.totalSize = writtenSize;
+    info.rows = numRows;
+    info.columns = numColumns;
+}
+}
+
 
 void Scene::Draw(int windowWidth, int windowHeight, float timeInSecs, float deltaTime) {
 
@@ -1432,6 +1499,7 @@ void Scene::Draw(int windowWidth, int windowHeight, float timeInSecs, float delt
     int numDir = 0;
     int numPoint = 0;
     {
+        ++numPoint;  // first light should always be "no effect".
         for (Light const& light : _pInternal->_lightsToDraw) {            
             if (light._isDirectional) {                
                 lights._dirLight = light;
@@ -1448,7 +1516,17 @@ void Scene::Draw(int windowWidth, int windowHeight, float timeInSecs, float delt
             }
         }
         _pInternal->_lightsToDraw.clear();
-    }       
+    }
+
+    // LIGHT GRID
+    // (r=0,c=0) [light0, light1, light2, light3], (r=0,c=1) [...], ....
+    LightGridInfo lightGridInfo;
+    {
+        UpdateLightGrid(windowWidth, windowHeight, viewProjTransform, lights, lightGridInfo);
+        glBindBuffer(GL_TEXTURE_BUFFER, _pInternal->_lightGridTBO);
+        glBufferSubData(GL_TEXTURE_BUFFER, 0, lightGridInfo.totalSize, sLightGrid);
+        glBindBuffer(GL_TEXTURE_BUFFER, 0);
+    }
 
     auto& transparentModels = _pInternal->_transparentModels;
     transparentModels.clear();
@@ -1573,9 +1651,17 @@ void Scene::Draw(int windowWidth, int windowHeight, float timeInSecs, float delt
         // TODO: NEED TO DO THIS BETTER!!!!
         shader.SetInt("uMyTexture", 0);
         shader.SetInt("uShadowMap", 1);
+        shader.SetInt("uLightGrid", 2);
         glActiveTexture(GL_TEXTURE1);
         glBindTexture(GL_TEXTURE_2D, _pInternal->_depthMap);
+        glActiveTexture(GL_TEXTURE2);
+        glBindTexture(GL_TEXTURE_BUFFER, _pInternal->_lightGridTextureId);        
+
         SetLightUniformsModelShader(lights, _camera._transform.GetPos(), lightViewProj, *_pInternal);
+        shader.SetInt("uLightCellSizePx", kLightGridSizePx);
+        shader.SetInt("uLightGridRows", lightGridInfo.rows);
+        shader.SetInt("uLightGridColumns", lightGridInfo.columns);
+        shader.SetInt("uNumLightsPerCell", kNumLightsPerCell);
         for (ModelInstance const& m : _pInternal->_modelsToDraw) {
             if (m._topLayer) {
                 _pInternal->_topLayerModels.push_back(&m);
