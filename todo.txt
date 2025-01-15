@@ -28,6 +28,7 @@ Story:
 - tension between independence and control? constraint and freedom?
 
 Near-term ideas:
+- Maybe the top of the node is a letter-shaped whole where a light comes through? that would look tite dude
 - PANNING for fx in cadenza
 - Add secret reward for staying in first room after the door transition
 - add Sonic 2/3 style intro panel at level start
