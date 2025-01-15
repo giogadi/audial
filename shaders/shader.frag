@@ -5,7 +5,7 @@ in vec3 fragPos;
 in vec3 normalNonNorm;
 in vec4 fragPosLightSpace;
 
-#define NUM_POINT_LIGHTS 20
+#define NUM_POINT_LIGHTS 5 
 
 struct PointLight {
     vec4 _pos;
@@ -19,9 +19,7 @@ struct PointLight {
     float _padding0;
     float _padding1;
 };
-layout (std140) uniform uPointLights {
-    PointLight pointLights[NUM_POINT_LIGHTS];
-};
+uniform PointLight uPointLights[NUM_POINT_LIGHTS];
 
 struct DirLight {
     vec3 _dir;
@@ -88,32 +86,14 @@ void main() {
     }
 
     // Point lights
-#if 0
+#if 1
     for (int i = 0; i < NUM_POINT_LIGHTS; ++i) {
-        PointLight light = pointLights[i];
-        CalcPointLight(pointLights[i], viewDir, normal, totalAmbient, totalDiffuse, totalSpecular);
+        CalcPointLight(uPointLights[i], viewDir, normal, totalAmbient, totalDiffuse, totalSpecular);
     }
 #else
-    CalcPointLight(pointLights[0], viewDir, normal, totalAmbient, totalDiffuse, totalSpecular);
-    CalcPointLight(pointLights[1], viewDir, normal, totalAmbient, totalDiffuse, totalSpecular);
-    CalcPointLight(pointLights[2], viewDir, normal, totalAmbient, totalDiffuse, totalSpecular);
-    CalcPointLight(pointLights[3], viewDir, normal, totalAmbient, totalDiffuse, totalSpecular);
-    CalcPointLight(pointLights[4], viewDir, normal, totalAmbient, totalDiffuse, totalSpecular);
-    CalcPointLight(pointLights[5], viewDir, normal, totalAmbient, totalDiffuse, totalSpecular);
-    CalcPointLight(pointLights[6], viewDir, normal, totalAmbient, totalDiffuse, totalSpecular);
-    CalcPointLight(pointLights[7], viewDir, normal, totalAmbient, totalDiffuse, totalSpecular);
-    CalcPointLight(pointLights[8], viewDir, normal, totalAmbient, totalDiffuse, totalSpecular);
-    CalcPointLight(pointLights[9], viewDir, normal, totalAmbient, totalDiffuse, totalSpecular);
-    CalcPointLight(pointLights[10], viewDir, normal, totalAmbient, totalDiffuse, totalSpecular);
-    CalcPointLight(pointLights[11], viewDir, normal, totalAmbient, totalDiffuse, totalSpecular);
-    CalcPointLight(pointLights[12], viewDir, normal, totalAmbient, totalDiffuse, totalSpecular);
-    CalcPointLight(pointLights[13], viewDir, normal, totalAmbient, totalDiffuse, totalSpecular);
-    CalcPointLight(pointLights[14], viewDir, normal, totalAmbient, totalDiffuse, totalSpecular);
-    CalcPointLight(pointLights[15], viewDir, normal, totalAmbient, totalDiffuse, totalSpecular);
-    CalcPointLight(pointLights[16], viewDir, normal, totalAmbient, totalDiffuse, totalSpecular);
-    CalcPointLight(pointLights[17], viewDir, normal, totalAmbient, totalDiffuse, totalSpecular);
-    CalcPointLight(pointLights[18], viewDir, normal, totalAmbient, totalDiffuse, totalSpecular);
-    CalcPointLight(pointLights[19], viewDir, normal, totalAmbient, totalDiffuse, totalSpecular);
+    {
+
+    }
 #endif
 
     // shadow

@@ -27,7 +27,7 @@
 
 namespace {
 constexpr int kMaxLineCount = 512;
-int constexpr kMaxNumPointLights = 20;
+int constexpr kMaxNumPointLights = 5;
 
 constexpr int kShadowWidth = 1 * 1024;
 constexpr int kShadowHeight = 1 * 1024;
@@ -344,6 +344,8 @@ public:
     Shader _modelShader;
     int _modelShaderUniforms[ModelShaderUniforms::Count];
 
+     
+
 #if DRAW_WATER    
     Shader _waterShader;
     int _waterShaderUniforms[WaterShaderUniforms::Count];
@@ -382,9 +384,7 @@ public:
     int _depthOnlyShaderUniforms[DepthOnlyShaderUniforms::Count];
     unsigned int _depthMapFbo = 0;
     unsigned int _depthMap = 0;
-
-    unsigned int _pointLightUbo;
-    
+ 
 
     std::array<std::unique_ptr<BoundMeshPNU>, (int)InputManager::ControllerButton::Count> _psButtonMeshes;
     unsigned int _psButtonsTextureId;
@@ -688,19 +688,6 @@ bool GetMsdfFontInfoFromJson(char const *filePath, MsdfFontInfo &fontInfo) {
 }
 }
 
-struct PointLightUniform {
-    float _pos[4];
-    float _color[4];
-    float _ambient;
-    float _diffuse;
-    float _specular;
-    float _constant;
-    float _linear;
-    float _quadratic;
-    float _padding0;
-    float _padding1;
-};
-
 bool SceneInternal::Init(GameManager& g) {
     _g = &g;
 
@@ -775,9 +762,7 @@ bool SceneInternal::Init(GameManager& g) {
     for (int i = 0; i < ModelShaderUniforms::Count; ++i) {
         _modelShaderUniforms[i] = _modelShader.GetUniformLocation(ModelShaderUniforms::NameStrings[i]);
     }
-    unsigned int pointLightsBlockIx = glGetUniformBlockIndex(_modelShader.GetId(), "uPointLights");
-    glUniformBlockBinding(_modelShader.GetId(), pointLightsBlockIx, 0);
-    
+        
 #if DRAW_WATER    
     if (!_waterShader.Init("shaders/water.vert", "shaders/water.frag")) {
         return false;
@@ -968,17 +953,7 @@ bool SceneInternal::Init(GameManager& g) {
         glVertexAttribPointer(1, 2, GL_FLOAT, false, kNumValuesPerVertex*sizeof(float), (void*)(2*sizeof(float)));
         glEnableVertexAttribArray(1); 
     }
-
-    // Point light UBO
-    {
-        glGenBuffers(1, &_pointLightUbo);
-        glBindBuffer(GL_UNIFORM_BUFFER, _pointLightUbo);
-        glBufferData(GL_UNIFORM_BUFFER, kMaxNumPointLights * sizeof(PointLightUniform), 0, GL_STATIC_DRAW);
-        glBindBuffer(GL_UNIFORM_BUFFER, 0);
-        glBindBufferRange(GL_UNIFORM_BUFFER, 0, _pointLightUbo, 0, kMaxNumPointLights * sizeof(PointLightUniform));
-    }
-    
-
+ 
     _cubeMesh = _meshMap["cube"].get();
 
     // SHADOW STUFF
@@ -1259,25 +1234,39 @@ void SetLightUniformsModelShader(Lights const& lights, Vec3 const& viewPos, Mat4
     shader.SetMat4(uniforms[ModelShaderUniforms::uLightViewProjT], lightViewProjT);
     shader.SetBool(uniforms[ModelShaderUniforms::uDirLightShadows], lights._dirLight._shadows);
 
-    PointLightUniform plUniforms[kMaxNumPointLights] = {};
+    char name[128];
     for (int ii = 0; ii < kMaxNumPointLights; ++ii) {
         Light const &pl = lights._pointLights[ii];
+        int memberStartIx = sprintf(name, "uPointLights[%d]._", ii);
+        char *member = name + memberStartIx;
 
-        pl._p.CopyToArray(plUniforms[ii]._pos);
-        pl._color.CopyToArray(plUniforms[ii]._color);
-        plUniforms[ii]._ambient = pl._ambient;
-        plUniforms[ii]._diffuse = pl._diffuse;
-        plUniforms[ii]._specular = pl._specular;
+        sprintf(member, "pos");
+        shader.SetVec4(name, Vec4(pl._p, 1.f));
+        
+        sprintf(member, "color");
+        shader.SetVec4(name, Vec4(pl._color, 1.f));
+
+        sprintf(member, "ambient");
+        shader.SetFloat(name, pl._ambient);
+
+        sprintf(member, "diffuse");
+        shader.SetFloat(name, pl._diffuse);
+
+        sprintf(member, "specular");
+        shader.SetFloat(name, pl._specular);
 
         LightParams params;
         GetLightParamsForRange(pl._range, params);
-        plUniforms[ii]._constant = params._constant;
-        plUniforms[ii]._linear = params._linear;
-        plUniforms[ii]._quadratic = params._quadratic;
+
+        sprintf(member, "constant");
+        shader.SetFloat(name, params._constant);
+
+        sprintf(member, "linear");
+        shader.SetFloat(name, params._linear);
+
+        sprintf(member, "quadratic");
+        shader.SetFloat(name, params._quadratic);
     }
-    glBindBuffer(GL_UNIFORM_BUFFER, sceneInternal._pointLightUbo);
-    glBufferSubData(GL_UNIFORM_BUFFER, 0, kMaxNumPointLights * sizeof(PointLightUniform), plUniforms);
-    glBindBuffer(GL_UNIFORM_BUFFER, 0);
 }
 
 #if DRAW_WATER
@@ -1643,7 +1632,7 @@ void Scene::Draw(int windowWidth, int windowHeight, float timeInSecs, float delt
         // HOWDY MSDF
         MsdfFontInfo &fontInfo = _pInternal->_msdfFontInfo;
 
-        ViewportInfo const& vp = _pInternal->_g->_viewportInfo;
+        //ViewportInfo const& vp = _pInternal->_g->_viewportInfo;
 
         unsigned int fontTextureId = _pInternal->_textureIdMap.at("msdf_font");
 
