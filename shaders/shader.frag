@@ -5,7 +5,7 @@ in vec3 fragPos;
 in vec3 normalNonNorm;
 in vec4 fragPosLightSpace;
 
-#define NUM_POINT_LIGHTS 10
+#define NUM_POINT_LIGHTS 20
 
 struct PointLight {
     vec4 _pos;
@@ -104,6 +104,16 @@ void main() {
     CalcPointLight(pointLights[7], viewDir, normal, totalAmbient, totalDiffuse, totalSpecular);
     CalcPointLight(pointLights[8], viewDir, normal, totalAmbient, totalDiffuse, totalSpecular);
     CalcPointLight(pointLights[9], viewDir, normal, totalAmbient, totalDiffuse, totalSpecular);
+    CalcPointLight(pointLights[10], viewDir, normal, totalAmbient, totalDiffuse, totalSpecular);
+    CalcPointLight(pointLights[11], viewDir, normal, totalAmbient, totalDiffuse, totalSpecular);
+    CalcPointLight(pointLights[12], viewDir, normal, totalAmbient, totalDiffuse, totalSpecular);
+    CalcPointLight(pointLights[13], viewDir, normal, totalAmbient, totalDiffuse, totalSpecular);
+    CalcPointLight(pointLights[14], viewDir, normal, totalAmbient, totalDiffuse, totalSpecular);
+    CalcPointLight(pointLights[15], viewDir, normal, totalAmbient, totalDiffuse, totalSpecular);
+    CalcPointLight(pointLights[16], viewDir, normal, totalAmbient, totalDiffuse, totalSpecular);
+    CalcPointLight(pointLights[17], viewDir, normal, totalAmbient, totalDiffuse, totalSpecular);
+    CalcPointLight(pointLights[18], viewDir, normal, totalAmbient, totalDiffuse, totalSpecular);
+    CalcPointLight(pointLights[19], viewDir, normal, totalAmbient, totalDiffuse, totalSpecular);
 #endif
 
     // shadow

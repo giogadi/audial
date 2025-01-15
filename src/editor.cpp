@@ -1286,11 +1286,11 @@ void Editor::DrawWindow() {
                     } 
                 }
             }
-            if (imgui_util::ColorEdit4("Model color", &example->_modelColor)) {
+            if (imgui_util::ColorEdit4("Model color", &example->_initModelColor)) {
                 needsInit = true;
                 for (ne::EntityId eId : _selectedEntityIds) {
                     ne::Entity* e = GetEntity(eId);
-                    e->_modelColor = example->_modelColor;
+                    e->_initModelColor = example->_initModelColor;
                 }
             }
 

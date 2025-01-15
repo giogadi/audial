@@ -11,6 +11,7 @@
 #include "audio_platform.h"
 #include "math_util.h"
 #include "entities/step_sequencer.h"
+#include "features.h"
 
 void IntVariableEntity::Automation::Save(serial::Ptree pt) const {
     serial::PutEnum(pt, "type", _type);
@@ -395,7 +396,10 @@ void IntVariableEntity::DrawCounter(GameManager& g) {
         color._w = alpha;
 
         t.SetTranslation(pos);
-        g._scene->DrawCube(t.Mat4Scale(), color);
+        renderer::ModelInstance &model = g._scene->DrawCube(t.Mat4Scale(), color);
+#if NEW_LIGHTS
+        model._lightFactor = 0.f;
+#endif
         pos += (_cellWidth + _cellSpacing) * direction;
 
         ++countInCurrentRow;

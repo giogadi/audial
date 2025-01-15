@@ -1,0 +1,1 @@
+-s data/levels/temple/level_pretty.xml -y data/levels/temple/patches.xml

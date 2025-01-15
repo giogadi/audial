@@ -690,7 +690,7 @@ void TypingEnemyEntity::Draw(GameManager& g, float dt) {
     model._lightFactor = kDefaultLightFactor;
 
     float constexpr kMinGlowRange = 10.f;
-    float constexpr kMaxGlowRange = 100.f;
+    float constexpr kMaxGlowRange = 50.f;
     renderer::Light *light = g._scene->DrawLight();
     light->_p = renderTrans.Pos();
     light->_p._y += 0.5f;
@@ -933,7 +933,7 @@ static TypingEnemyEntity sMultiEnemy;
 
 void TypingEnemyEntity::MultiSelectImGui(GameManager& g, std::vector<TypingEnemyEntity*>& enemies) {
     ImGui::InputInt("Entity tag", &sMultiEnemy._tag);
-    imgui_util::ColorEdit4("Model color", &sMultiEnemy._modelColor);
+    imgui_util::ColorEdit4("Model color", &sMultiEnemy._initModelColor);
     ImGui::InputInt("Section ID", &sMultiEnemy._flowSectionId);
 
     static bool sApplyTag = false;

@@ -10,6 +10,7 @@
 #include "math_util.h"
 #include "imgui_util.h"
 #include "renderer.h"
+#include "features.h"
 
 namespace {
 //Vec4 constexpr kNoHitColor = Vec4(0.245098054f, 0.933390915f, 1.f, 1.f);
@@ -128,6 +129,17 @@ void FlowPickupEntity::Draw(GameManager &g, float dt) {
         renderer::ModelInstance* m = g._scene->DrawTexturedMesh(_model, _textureId);
         m->_transform = mat;
         m->_color = currentColor;
+        m->_lightFactor = 0.f;
+#if NEW_LIGHTS
+        renderer::Light *light = g._scene->DrawLight();
+        light->_p = _transform.Pos();
+        light->_color = currentColor.GetXYZ();
+        light->_ambient = 0.f;
+        light->_diffuse = 1.f;
+        light->_specular = 0.f;
+        light->_range = 20.f;
+        light->_isDirectional = false;
+#endif
     } else if (g._editMode) {
         // ???
         Mat4 const& mat = _transform.Mat4Scale();

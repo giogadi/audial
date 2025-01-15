@@ -27,7 +27,7 @@
 
 namespace {
 constexpr int kMaxLineCount = 512;
-int constexpr kMaxNumPointLights = 10;
+int constexpr kMaxNumPointLights = 20;
 
 constexpr int kShadowWidth = 1 * 1024;
 constexpr int kShadowHeight = 1 * 1024;
@@ -1260,8 +1260,9 @@ void SetLightUniformsModelShader(Lights const& lights, Vec3 const& viewPos, Mat4
     shader.SetBool(uniforms[ModelShaderUniforms::uDirLightShadows], lights._dirLight._shadows);
 
     PointLightUniform plUniforms[kMaxNumPointLights] = {};
-    for (int ii = 0; ii < kMaxNumPointLights; ++ii) {            
+    for (int ii = 0; ii < kMaxNumPointLights; ++ii) {
         Light const &pl = lights._pointLights[ii];
+
         pl._p.CopyToArray(plUniforms[ii]._pos);
         pl._color.CopyToArray(plUniforms[ii]._color);
         plUniforms[ii]._ambient = pl._ambient;
@@ -1421,11 +1422,19 @@ void Scene::Draw(int windowWidth, int windowHeight, float timeInSecs, float delt
         glEnable(GL_FRAMEBUFFER_SRGB);
     }
 
+    Mat4 viewProjTransform = GetViewProjTransform();
+
     Lights lights = {};
     int numDir = 0;
     int numPoint = 0;
     {
         for (Light const& light : _pInternal->_lightsToDraw) {
+            // cull light if not visible in camera
+            float screenX, screenY;
+            geometry::ProjectWorldPointToScreenSpace(light._p, viewProjTransform, windowWidth, windowHeight, screenX, screenY);
+            if (screenX < 0 || screenX > windowWidth || screenY < 0 || screenY > windowHeight) {
+                continue;
+            }
             if (light._isDirectional) {                
                 lights._dirLight = light;
                 ++numDir;
@@ -1435,9 +1444,7 @@ void Scene::Draw(int windowWidth, int windowHeight, float timeInSecs, float delt
             }
         }
         _pInternal->_lightsToDraw.clear();
-    }   
-
-    Mat4 viewProjTransform = GetViewProjTransform();
+    }       
 
     auto& transparentModels = _pInternal->_transparentModels;
     transparentModels.clear();
