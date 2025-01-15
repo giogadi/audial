@@ -89,7 +89,7 @@
                     <id>0</id>
                 </editor_id>
                 <name>dir_light</name>
-                <entity_active>false</entity_active>
+                <entity_active>true</entity_active>
                 <pickable>false</pickable>
                 <transform>
                     <pos>
@@ -111,8 +111,6 @@
                 </transform>
                 <model_name></model_name>
                 <texture_name>white</texture_name>
-                <texture_u_factor>1</texture_u_factor>
-                <texture_v_factor>1</texture_v_factor>
                 <model_color_vec4>
                     <x>0</x>
                     <y>0</y>
@@ -141,7 +139,6 @@
                 <ambient>0.42647061</ambient>
                 <diffuse>0.54363704</diffuse>
                 <specular>0</specular>
-                <range>32</range>
                 <is_directional>true</is_directional>
                 <shadows>false</shadows>
                 <zn>1</zn>
@@ -175,8 +172,6 @@
                 </transform>
                 <model_name></model_name>
                 <texture_name>white</texture_name>
-                <texture_u_factor>1</texture_u_factor>
-                <texture_v_factor>1</texture_v_factor>
                 <model_color_vec4>
                     <x>0</x>
                     <y>0</y>
@@ -232,8 +227,6 @@
                 </transform>
                 <model_name>cube</model_name>
                 <texture_name>white</texture_name>
-                <texture_u_factor>1</texture_u_factor>
-                <texture_v_factor>1</texture_v_factor>
                 <model_color_vec4>
                     <x>1</x>
                     <y>1</y>
@@ -301,8 +294,6 @@
                 </transform>
                 <model_name></model_name>
                 <texture_name>white</texture_name>
-                <texture_u_factor>1</texture_u_factor>
-                <texture_v_factor>1</texture_v_factor>
                 <model_color_vec4>
                     <x>0</x>
                     <y>0</y>
@@ -1056,8 +1047,6 @@
                 </transform>
                 <model_name></model_name>
                 <texture_name>white</texture_name>
-                <texture_u_factor>1</texture_u_factor>
-                <texture_v_factor>1</texture_v_factor>
                 <model_color_vec4>
                     <x>0</x>
                     <y>0</y>
@@ -1813,8 +1802,6 @@
                 </transform>
                 <model_name></model_name>
                 <texture_name>white</texture_name>
-                <texture_u_factor>1</texture_u_factor>
-                <texture_v_factor>1</texture_v_factor>
                 <model_color_vec4>
                     <x>0</x>
                     <y>0</y>
@@ -2150,8 +2137,6 @@
                 </transform>
                 <model_name></model_name>
                 <texture_name>white</texture_name>
-                <texture_u_factor>1</texture_u_factor>
-                <texture_v_factor>1</texture_v_factor>
                 <model_color_vec4>
                     <x>0</x>
                     <y>0</y>
@@ -2907,8 +2892,6 @@
                 </transform>
                 <model_name></model_name>
                 <texture_name>white</texture_name>
-                <texture_u_factor>1</texture_u_factor>
-                <texture_v_factor>1</texture_v_factor>
                 <model_color_vec4>
                     <x>0</x>
                     <y>0</y>
@@ -3311,7 +3294,7 @@
                 <transform>
                     <pos>
                         <x>0.02374649</x>
-                        <y>-1.75</y>
+                        <y>-1</y>
                         <z>0.14266968</z>
                     </pos>
                     <quat>
@@ -3327,13 +3310,11 @@
                     </scale>
                 </transform>
                 <model_name>cube</model_name>
-                <texture_name>moroccan_tile</texture_name>
-                <texture_u_factor>10</texture_u_factor>
-                <texture_v_factor>15</texture_v_factor>
+                <texture_name></texture_name>
                 <model_color_vec4>
-                    <x>1</x>
-                    <y>1</y>
-                    <z>1</z>
+                    <x>0.18300651</x>
+                    <y>0.4106113</y>
+                    <z>0.66666663</z>
                     <w>1</w>
                 </model_color_vec4>
                 <flow_section_id>-1</flow_section_id>
@@ -3378,8 +3359,6 @@
                 </transform>
                 <model_name></model_name>
                 <texture_name></texture_name>
-                <texture_u_factor>1</texture_u_factor>
-                <texture_v_factor>1</texture_v_factor>
                 <model_color_vec4>
                     <x>0.80000001</x>
                     <y>0.80000001</y>
@@ -3428,8 +3407,6 @@
                 </transform>
                 <model_name></model_name>
                 <texture_name></texture_name>
-                <texture_u_factor>1</texture_u_factor>
-                <texture_v_factor>1</texture_v_factor>
                 <model_color_vec4>
                     <x>0.80000001</x>
                     <y>0.80000001</y>
@@ -3536,19 +3513,17 @@
                         <w>1</w>
                     </quat>
                     <scale>
-                        <x>1</x>
-                        <y>1</y>
-                        <z>1</z>
+                        <x>0.5</x>
+                        <y>0.5</y>
+                        <z>0.5</z>
                     </scale>
                 </transform>
                 <model_name></model_name>
                 <texture_name></texture_name>
-                <texture_u_factor>1</texture_u_factor>
-                <texture_v_factor>1</texture_v_factor>
                 <model_color_vec4>
-                    <x>0</x>
-                    <y>0.20934248</y>
-                    <z>0.59313726</z>
+                    <x>0.80000001</x>
+                    <y>0.80000001</y>
+                    <z>0.80000001</z>
                     <w>1</w>
                 </model_color_vec4>
                 <flow_section_id>-1</flow_section_id>
@@ -3643,19 +3618,17 @@
                         <w>1</w>
                     </quat>
                     <scale>
-                        <x>1</x>
-                        <y>1</y>
-                        <z>1</z>
+                        <x>0.5</x>
+                        <y>0.5</y>
+                        <z>0.5</z>
                     </scale>
                 </transform>
                 <model_name></model_name>
                 <texture_name></texture_name>
-                <texture_u_factor>1</texture_u_factor>
-                <texture_v_factor>1</texture_v_factor>
                 <model_color_vec4>
-                    <x>0</x>
-                    <y>0.20934248</y>
-                    <z>0.59313726</z>
+                    <x>0.80000001</x>
+                    <y>0.80000001</y>
+                    <z>0.80000001</z>
                     <w>1</w>
                 </model_color_vec4>
                 <flow_section_id>-1</flow_section_id>
@@ -3750,19 +3723,17 @@
                         <w>1</w>
                     </quat>
                     <scale>
-                        <x>1</x>
-                        <y>1</y>
-                        <z>1</z>
+                        <x>0.5</x>
+                        <y>0.5</y>
+                        <z>0.5</z>
                     </scale>
                 </transform>
                 <model_name></model_name>
                 <texture_name></texture_name>
-                <texture_u_factor>1</texture_u_factor>
-                <texture_v_factor>1</texture_v_factor>
                 <model_color_vec4>
-                    <x>0</x>
-                    <y>0.20934248</y>
-                    <z>0.59313726</z>
+                    <x>0.80000001</x>
+                    <y>0.80000001</y>
+                    <z>0.80000001</z>
                     <w>1</w>
                 </model_color_vec4>
                 <flow_section_id>-1</flow_section_id>
@@ -3857,19 +3828,17 @@
                         <w>1</w>
                     </quat>
                     <scale>
-                        <x>1</x>
-                        <y>1</y>
-                        <z>1</z>
+                        <x>0.5</x>
+                        <y>0.5</y>
+                        <z>0.5</z>
                     </scale>
                 </transform>
                 <model_name></model_name>
                 <texture_name></texture_name>
-                <texture_u_factor>1</texture_u_factor>
-                <texture_v_factor>1</texture_v_factor>
                 <model_color_vec4>
-                    <x>0</x>
-                    <y>0.20934248</y>
-                    <z>0.59313726</z>
+                    <x>0.80000001</x>
+                    <y>0.80000001</y>
+                    <z>0.80000001</z>
                     <w>1</w>
                 </model_color_vec4>
                 <flow_section_id>-1</flow_section_id>
@@ -3964,19 +3933,17 @@
                         <w>1</w>
                     </quat>
                     <scale>
-                        <x>1</x>
-                        <y>1</y>
-                        <z>1</z>
+                        <x>0.5</x>
+                        <y>0.5</y>
+                        <z>0.5</z>
                     </scale>
                 </transform>
                 <model_name></model_name>
                 <texture_name></texture_name>
-                <texture_u_factor>1</texture_u_factor>
-                <texture_v_factor>1</texture_v_factor>
                 <model_color_vec4>
-                    <x>0</x>
-                    <y>0.20934248</y>
-                    <z>0.59313726</z>
+                    <x>0.80000001</x>
+                    <y>0.80000001</y>
+                    <z>0.80000001</z>
                     <w>1</w>
                 </model_color_vec4>
                 <flow_section_id>-1</flow_section_id>
@@ -4071,19 +4038,17 @@
                         <w>1</w>
                     </quat>
                     <scale>
-                        <x>1</x>
-                        <y>1</y>
-                        <z>1</z>
+                        <x>0.5</x>
+                        <y>0.5</y>
+                        <z>0.5</z>
                     </scale>
                 </transform>
                 <model_name></model_name>
                 <texture_name></texture_name>
-                <texture_u_factor>1</texture_u_factor>
-                <texture_v_factor>1</texture_v_factor>
                 <model_color_vec4>
-                    <x>0</x>
-                    <y>0.20934248</y>
-                    <z>0.59313726</z>
+                    <x>0.80000001</x>
+                    <y>0.80000001</y>
+                    <z>0.80000001</z>
                     <w>1</w>
                 </model_color_vec4>
                 <flow_section_id>-1</flow_section_id>
@@ -4178,19 +4143,17 @@
                         <w>1</w>
                     </quat>
                     <scale>
-                        <x>1</x>
-                        <y>1</y>
-                        <z>1</z>
+                        <x>0.5</x>
+                        <y>0.5</y>
+                        <z>0.5</z>
                     </scale>
                 </transform>
                 <model_name></model_name>
                 <texture_name></texture_name>
-                <texture_u_factor>1</texture_u_factor>
-                <texture_v_factor>1</texture_v_factor>
                 <model_color_vec4>
-                    <x>0</x>
-                    <y>0.20934248</y>
-                    <z>0.59313726</z>
+                    <x>0.80000001</x>
+                    <y>0.80000001</y>
+                    <z>0.80000001</z>
                     <w>1</w>
                 </model_color_vec4>
                 <flow_section_id>-1</flow_section_id>
@@ -4285,19 +4248,17 @@
                         <w>1</w>
                     </quat>
                     <scale>
-                        <x>1</x>
-                        <y>1</y>
-                        <z>1</z>
+                        <x>0.5</x>
+                        <y>0.5</y>
+                        <z>0.5</z>
                     </scale>
                 </transform>
                 <model_name></model_name>
                 <texture_name></texture_name>
-                <texture_u_factor>1</texture_u_factor>
-                <texture_v_factor>1</texture_v_factor>
                 <model_color_vec4>
-                    <x>0</x>
-                    <y>0.20934248</y>
-                    <z>0.59313726</z>
+                    <x>0.80000001</x>
+                    <y>0.80000001</y>
+                    <z>0.80000001</z>
                     <w>1</w>
                 </model_color_vec4>
                 <flow_section_id>-1</flow_section_id>
@@ -4392,19 +4353,17 @@
                         <w>1</w>
                     </quat>
                     <scale>
-                        <x>1</x>
-                        <y>1</y>
-                        <z>1</z>
+                        <x>0.5</x>
+                        <y>0.5</y>
+                        <z>0.5</z>
                     </scale>
                 </transform>
                 <model_name></model_name>
                 <texture_name></texture_name>
-                <texture_u_factor>1</texture_u_factor>
-                <texture_v_factor>1</texture_v_factor>
                 <model_color_vec4>
-                    <x>0</x>
-                    <y>0.20934248</y>
-                    <z>0.59313726</z>
+                    <x>0.80000001</x>
+                    <y>0.80000001</y>
+                    <z>0.80000001</z>
                     <w>1</w>
                 </model_color_vec4>
                 <flow_section_id>-1</flow_section_id>
@@ -4499,19 +4458,17 @@
                         <w>1</w>
                     </quat>
                     <scale>
-                        <x>1</x>
-                        <y>1</y>
-                        <z>1</z>
+                        <x>0.5</x>
+                        <y>0.5</y>
+                        <z>0.5</z>
                     </scale>
                 </transform>
                 <model_name></model_name>
                 <texture_name></texture_name>
-                <texture_u_factor>1</texture_u_factor>
-                <texture_v_factor>1</texture_v_factor>
                 <model_color_vec4>
-                    <x>0</x>
-                    <y>0.20934248</y>
-                    <z>0.59313726</z>
+                    <x>0.80000001</x>
+                    <y>0.80000001</y>
+                    <z>0.80000001</z>
                     <w>1</w>
                 </model_color_vec4>
                 <flow_section_id>-1</flow_section_id>
@@ -4613,12 +4570,10 @@
                 </transform>
                 <model_name>cube</model_name>
                 <texture_name></texture_name>
-                <texture_u_factor>1</texture_u_factor>
-                <texture_v_factor>1</texture_v_factor>
                 <model_color_vec4>
-                    <x>0.97058821</x>
-                    <y>0.40385205</y>
-                    <z>0.199827</z>
+                    <x>0.24509805</x>
+                    <y>0.93339092</y>
+                    <z>1</z>
                     <w>1</w>
                 </model_color_vec4>
                 <flow_section_id>-1</flow_section_id>
@@ -4732,8 +4687,6 @@
                 </transform>
                 <model_name></model_name>
                 <texture_name></texture_name>
-                <texture_u_factor>1</texture_u_factor>
-                <texture_v_factor>1</texture_v_factor>
                 <model_color_vec4>
                     <x>0.80000001</x>
                     <y>0.80000001</y>
@@ -4782,12 +4735,10 @@
                 </transform>
                 <model_name>cube</model_name>
                 <texture_name></texture_name>
-                <texture_u_factor>1</texture_u_factor>
-                <texture_v_factor>1</texture_v_factor>
                 <model_color_vec4>
-                    <x>0.97058821</x>
-                    <y>0.40385205</y>
-                    <z>0.199827</z>
+                    <x>0.24509805</x>
+                    <y>0.93339092</y>
+                    <z>1</z>
                     <w>1</w>
                 </model_color_vec4>
                 <flow_section_id>-1</flow_section_id>
@@ -4901,12 +4852,10 @@
                 </transform>
                 <model_name>cube</model_name>
                 <texture_name></texture_name>
-                <texture_u_factor>1</texture_u_factor>
-                <texture_v_factor>1</texture_v_factor>
                 <model_color_vec4>
-                    <x>0.97058821</x>
-                    <y>0.40385205</y>
-                    <z>0.199827</z>
+                    <x>0.24509805</x>
+                    <y>0.93339092</y>
+                    <z>1</z>
                     <w>1</w>
                 </model_color_vec4>
                 <flow_section_id>-1</flow_section_id>
@@ -5020,12 +4969,10 @@
                 </transform>
                 <model_name>cube</model_name>
                 <texture_name></texture_name>
-                <texture_u_factor>1</texture_u_factor>
-                <texture_v_factor>1</texture_v_factor>
                 <model_color_vec4>
-                    <x>0.97058821</x>
-                    <y>0.40385205</y>
-                    <z>0.199827</z>
+                    <x>0.24509805</x>
+                    <y>0.93339092</y>
+                    <z>1</z>
                     <w>1</w>
                 </model_color_vec4>
                 <flow_section_id>-1</flow_section_id>
@@ -5139,8 +5086,6 @@
                 </transform>
                 <model_name></model_name>
                 <texture_name></texture_name>
-                <texture_u_factor>1</texture_u_factor>
-                <texture_v_factor>1</texture_v_factor>
                 <model_color_vec4>
                     <x>0.80000001</x>
                     <y>0.80000001</y>
@@ -5215,19 +5160,17 @@
                         <w>1</w>
                     </quat>
                     <scale>
-                        <x>1</x>
-                        <y>1</y>
-                        <z>1</z>
+                        <x>0.5</x>
+                        <y>0.5</y>
+                        <z>0.5</z>
                     </scale>
                 </transform>
                 <model_name></model_name>
                 <texture_name></texture_name>
-                <texture_u_factor>1</texture_u_factor>
-                <texture_v_factor>1</texture_v_factor>
                 <model_color_vec4>
-                    <x>0</x>
-                    <y>0.20934248</y>
-                    <z>0.59313726</z>
+                    <x>0.80000001</x>
+                    <y>0.80000001</y>
+                    <z>0.80000001</z>
                     <w>1</w>
                 </model_color_vec4>
                 <flow_section_id>-1</flow_section_id>
@@ -5329,8 +5272,6 @@
                 </transform>
                 <model_name></model_name>
                 <texture_name></texture_name>
-                <texture_u_factor>1</texture_u_factor>
-                <texture_v_factor>1</texture_v_factor>
                 <model_color_vec4>
                     <x>0.80000001</x>
                     <y>0.80000001</y>
@@ -5403,8 +5344,6 @@
                 </transform>
                 <model_name></model_name>
                 <texture_name></texture_name>
-                <texture_u_factor>1</texture_u_factor>
-                <texture_v_factor>1</texture_v_factor>
                 <model_color_vec4>
                     <x>0.80000001</x>
                     <y>0.80000001</y>
@@ -5532,8 +5471,6 @@
                 </transform>
                 <model_name></model_name>
                 <texture_name></texture_name>
-                <texture_u_factor>1</texture_u_factor>
-                <texture_v_factor>1</texture_v_factor>
                 <model_color_vec4>
                     <x>0.80000001</x>
                     <y>0.80000001</y>
@@ -5656,8 +5593,6 @@
                 </transform>
                 <model_name></model_name>
                 <texture_name></texture_name>
-                <texture_u_factor>1</texture_u_factor>
-                <texture_v_factor>1</texture_v_factor>
                 <model_color_vec4>
                     <x>0.80000001</x>
                     <y>0.80000001</y>
@@ -5780,8 +5715,6 @@
                 </transform>
                 <model_name>cube</model_name>
                 <texture_name></texture_name>
-                <texture_u_factor>1</texture_u_factor>
-                <texture_v_factor>1</texture_v_factor>
                 <model_color_vec4>
                     <x>0.877451</x>
                     <y>0.6577087</y>
@@ -5879,8 +5812,6 @@
                 </transform>
                 <model_name>cube</model_name>
                 <texture_name></texture_name>
-                <texture_u_factor>1</texture_u_factor>
-                <texture_v_factor>1</texture_v_factor>
                 <model_color_vec4>
                     <x>0.87843138</x>
                     <y>0.65882355</y>
@@ -5978,8 +5909,6 @@
                 </transform>
                 <model_name>cube</model_name>
                 <texture_name></texture_name>
-                <texture_u_factor>1</texture_u_factor>
-                <texture_v_factor>1</texture_v_factor>
                 <model_color_vec4>
                     <x>0.87843138</x>
                     <y>0.65882355</y>
@@ -6077,8 +6006,6 @@
                 </transform>
                 <model_name>cube</model_name>
                 <texture_name></texture_name>
-                <texture_u_factor>1</texture_u_factor>
-                <texture_v_factor>1</texture_v_factor>
                 <model_color_vec4>
                     <x>0.87843138</x>
                     <y>0.65882355</y>
@@ -6437,8 +6364,6 @@
                 </transform>
                 <model_name></model_name>
                 <texture_name></texture_name>
-                <texture_u_factor>1</texture_u_factor>
-                <texture_v_factor>1</texture_v_factor>
                 <model_color_vec4>
                     <x>0.80000001</x>
                     <y>0.80000001</y>
@@ -6495,8 +6420,6 @@
                 </transform>
                 <model_name>cube</model_name>
                 <texture_name></texture_name>
-                <texture_u_factor>1</texture_u_factor>
-                <texture_v_factor>1</texture_v_factor>
                 <model_color_vec4>
                     <x>0.80000001</x>
                     <y>0.80000001</y>
@@ -6553,8 +6476,6 @@
                 </transform>
                 <model_name>cube</model_name>
                 <texture_name></texture_name>
-                <texture_u_factor>1</texture_u_factor>
-                <texture_v_factor>1</texture_v_factor>
                 <model_color_vec4>
                     <x>0.80000001</x>
                     <y>0.80000001</y>
@@ -6611,8 +6532,6 @@
                 </transform>
                 <model_name>cube</model_name>
                 <texture_name></texture_name>
-                <texture_u_factor>1</texture_u_factor>
-                <texture_v_factor>1</texture_v_factor>
                 <model_color_vec4>
                     <x>0.80000001</x>
                     <y>0.80000001</y>
@@ -6669,8 +6588,6 @@
                 </transform>
                 <model_name>cube</model_name>
                 <texture_name></texture_name>
-                <texture_u_factor>1</texture_u_factor>
-                <texture_v_factor>1</texture_v_factor>
                 <model_color_vec4>
                     <x>0.80000001</x>
                     <y>0.80000001</y>
@@ -6727,8 +6644,6 @@
                 </transform>
                 <model_name>cube</model_name>
                 <texture_name></texture_name>
-                <texture_u_factor>1</texture_u_factor>
-                <texture_v_factor>1</texture_v_factor>
                 <model_color_vec4>
                     <x>0.80000001</x>
                     <y>0.80000001</y>
@@ -6785,8 +6700,6 @@
                 </transform>
                 <model_name>cube</model_name>
                 <texture_name></texture_name>
-                <texture_u_factor>1</texture_u_factor>
-                <texture_v_factor>1</texture_v_factor>
                 <model_color_vec4>
                     <x>0.80000001</x>
                     <y>0.80000001</y>
@@ -6843,8 +6756,6 @@
                 </transform>
                 <model_name>cube</model_name>
                 <texture_name></texture_name>
-                <texture_u_factor>1</texture_u_factor>
-                <texture_v_factor>1</texture_v_factor>
                 <model_color_vec4>
                     <x>0.80000001</x>
                     <y>0.80000001</y>
@@ -6901,8 +6812,6 @@
                 </transform>
                 <model_name></model_name>
                 <texture_name></texture_name>
-                <texture_u_factor>1</texture_u_factor>
-                <texture_v_factor>1</texture_v_factor>
                 <model_color_vec4>
                     <x>0.80000001</x>
                     <y>0.80000001</y>
@@ -7008,8 +6917,6 @@
                 </transform>
                 <model_name></model_name>
                 <texture_name></texture_name>
-                <texture_u_factor>1</texture_u_factor>
-                <texture_v_factor>1</texture_v_factor>
                 <model_color_vec4>
                     <x>0.80000001</x>
                     <y>0.80000001</y>
@@ -7058,8 +6965,6 @@
                 </transform>
                 <model_name></model_name>
                 <texture_name></texture_name>
-                <texture_u_factor>1</texture_u_factor>
-                <texture_v_factor>1</texture_v_factor>
                 <model_color_vec4>
                     <x>0.80000001</x>
                     <y>0.80000001</y>
@@ -7197,8 +7102,6 @@
                 </transform>
                 <model_name></model_name>
                 <texture_name></texture_name>
-                <texture_u_factor>1</texture_u_factor>
-                <texture_v_factor>1</texture_v_factor>
                 <model_color_vec4>
                     <x>0.80000001</x>
                     <y>0.80000001</y>
@@ -7313,8 +7216,6 @@
                 </transform>
                 <model_name></model_name>
                 <texture_name></texture_name>
-                <texture_u_factor>1</texture_u_factor>
-                <texture_v_factor>1</texture_v_factor>
                 <model_color_vec4>
                     <x>0.80000001</x>
                     <y>0.80000001</y>
@@ -7429,8 +7330,6 @@
                 </transform>
                 <model_name></model_name>
                 <texture_name></texture_name>
-                <texture_u_factor>1</texture_u_factor>
-                <texture_v_factor>1</texture_v_factor>
                 <model_color_vec4>
                     <x>0.80000001</x>
                     <y>0.80000001</y>
@@ -7545,8 +7444,6 @@
                 </transform>
                 <model_name></model_name>
                 <texture_name></texture_name>
-                <texture_u_factor>1</texture_u_factor>
-                <texture_v_factor>1</texture_v_factor>
                 <model_color_vec4>
                     <x>0.80000001</x>
                     <y>0.80000001</y>
@@ -7661,8 +7558,6 @@
                 </transform>
                 <model_name></model_name>
                 <texture_name></texture_name>
-                <texture_u_factor>1</texture_u_factor>
-                <texture_v_factor>1</texture_v_factor>
                 <model_color_vec4>
                     <x>0.80000001</x>
                     <y>0.80000001</y>
@@ -7777,8 +7672,6 @@
                 </transform>
                 <model_name></model_name>
                 <texture_name></texture_name>
-                <texture_u_factor>1</texture_u_factor>
-                <texture_v_factor>1</texture_v_factor>
                 <model_color_vec4>
                     <x>0.80000001</x>
                     <y>0.80000001</y>
@@ -7893,8 +7786,6 @@
                 </transform>
                 <model_name></model_name>
                 <texture_name></texture_name>
-                <texture_u_factor>1</texture_u_factor>
-                <texture_v_factor>1</texture_v_factor>
                 <model_color_vec4>
                     <x>0.80000001</x>
                     <y>0.80000001</y>
@@ -8009,8 +7900,6 @@
                 </transform>
                 <model_name></model_name>
                 <texture_name></texture_name>
-                <texture_u_factor>1</texture_u_factor>
-                <texture_v_factor>1</texture_v_factor>
                 <model_color_vec4>
                     <x>0.80000001</x>
                     <y>0.80000001</y>
@@ -8125,8 +8014,6 @@
                 </transform>
                 <model_name></model_name>
                 <texture_name></texture_name>
-                <texture_u_factor>1</texture_u_factor>
-                <texture_v_factor>1</texture_v_factor>
                 <model_color_vec4>
                     <x>0.80000001</x>
                     <y>0.80000001</y>
@@ -8241,8 +8128,6 @@
                 </transform>
                 <model_name></model_name>
                 <texture_name></texture_name>
-                <texture_u_factor>1</texture_u_factor>
-                <texture_v_factor>1</texture_v_factor>
                 <model_color_vec4>
                     <x>0.80000001</x>
                     <y>0.80000001</y>
@@ -8328,8 +8213,6 @@
                 </transform>
                 <model_name></model_name>
                 <texture_name></texture_name>
-                <texture_u_factor>1</texture_u_factor>
-                <texture_v_factor>1</texture_v_factor>
                 <model_color_vec4>
                     <x>0.80000001</x>
                     <y>0.80000001</y>
@@ -8419,8 +8302,6 @@
                 </transform>
                 <model_name></model_name>
                 <texture_name></texture_name>
-                <texture_u_factor>1</texture_u_factor>
-                <texture_v_factor>1</texture_v_factor>
                 <model_color_vec4>
                     <x>0.80000001</x>
                     <y>0.80000001</y>
@@ -8499,8 +8380,6 @@
                 </transform>
                 <model_name></model_name>
                 <texture_name>white</texture_name>
-                <texture_u_factor>1</texture_u_factor>
-                <texture_v_factor>1</texture_v_factor>
                 <model_color_vec4>
                     <x>0</x>
                     <y>0</y>
@@ -8918,8 +8797,6 @@
                 </transform>
                 <model_name></model_name>
                 <texture_name>white</texture_name>
-                <texture_u_factor>1</texture_u_factor>
-                <texture_v_factor>1</texture_v_factor>
                 <model_color_vec4>
                     <x>0</x>
                     <y>0</y>
@@ -9675,8 +9552,6 @@
                 </transform>
                 <model_name></model_name>
                 <texture_name></texture_name>
-                <texture_u_factor>1</texture_u_factor>
-                <texture_v_factor>1</texture_v_factor>
                 <model_color_vec4>
                     <x>0.80000001</x>
                     <y>0.80000001</y>
@@ -9796,8 +9671,6 @@
                 </transform>
                 <model_name></model_name>
                 <texture_name></texture_name>
-                <texture_u_factor>1</texture_u_factor>
-                <texture_v_factor>1</texture_v_factor>
                 <model_color_vec4>
                     <x>0.80000001</x>
                     <y>0.80000001</y>
@@ -9902,8 +9775,6 @@
                 </transform>
                 <model_name></model_name>
                 <texture_name></texture_name>
-                <texture_u_factor>1</texture_u_factor>
-                <texture_v_factor>1</texture_v_factor>
                 <model_color_vec4>
                     <x>0.80000001</x>
                     <y>0.80000001</y>
@@ -10009,8 +9880,6 @@
                 </transform>
                 <model_name></model_name>
                 <texture_name></texture_name>
-                <texture_u_factor>1</texture_u_factor>
-                <texture_v_factor>1</texture_v_factor>
                 <model_color_vec4>
                     <x>0.80000001</x>
                     <y>0.80000001</y>
@@ -10228,8 +10097,6 @@
                 </transform>
                 <model_name></model_name>
                 <texture_name></texture_name>
-                <texture_u_factor>1</texture_u_factor>
-                <texture_v_factor>1</texture_v_factor>
                 <model_color_vec4>
                     <x>0.80000001</x>
                     <y>0.80000001</y>
@@ -10350,8 +10217,6 @@
                 </transform>
                 <model_name>cube</model_name>
                 <texture_name></texture_name>
-                <texture_u_factor>1</texture_u_factor>
-                <texture_v_factor>1</texture_v_factor>
                 <model_color_vec4>
                     <x>0.80000001</x>
                     <y>0.80000001</y>
@@ -10408,8 +10273,6 @@
                 </transform>
                 <model_name>cube</model_name>
                 <texture_name></texture_name>
-                <texture_u_factor>1</texture_u_factor>
-                <texture_v_factor>1</texture_v_factor>
                 <model_color_vec4>
                     <x>0.80000001</x>
                     <y>0.80000001</y>
@@ -10466,8 +10329,6 @@
                 </transform>
                 <model_name>cube</model_name>
                 <texture_name></texture_name>
-                <texture_u_factor>1</texture_u_factor>
-                <texture_v_factor>1</texture_v_factor>
                 <model_color_vec4>
                     <x>0.80000001</x>
                     <y>0.80000001</y>
@@ -10524,8 +10385,6 @@
                 </transform>
                 <model_name>cube</model_name>
                 <texture_name></texture_name>
-                <texture_u_factor>1</texture_u_factor>
-                <texture_v_factor>1</texture_v_factor>
                 <model_color_vec4>
                     <x>0.80000001</x>
                     <y>0.80000001</y>
@@ -10582,8 +10441,6 @@
                 </transform>
                 <model_name>cube</model_name>
                 <texture_name></texture_name>
-                <texture_u_factor>1</texture_u_factor>
-                <texture_v_factor>1</texture_v_factor>
                 <model_color_vec4>
                     <x>0.80000001</x>
                     <y>0.80000001</y>
@@ -10640,8 +10497,6 @@
                 </transform>
                 <model_name></model_name>
                 <texture_name></texture_name>
-                <texture_u_factor>1</texture_u_factor>
-                <texture_v_factor>1</texture_v_factor>
                 <model_color_vec4>
                     <x>0.80000001</x>
                     <y>0.80000001</y>
@@ -10792,8 +10647,6 @@
                 </transform>
                 <model_name>cube</model_name>
                 <texture_name></texture_name>
-                <texture_u_factor>1</texture_u_factor>
-                <texture_v_factor>1</texture_v_factor>
                 <model_color_vec4>
                     <x>0.80000001</x>
                     <y>0.80000001</y>
@@ -10850,8 +10703,6 @@
                 </transform>
                 <model_name>cube</model_name>
                 <texture_name></texture_name>
-                <texture_u_factor>1</texture_u_factor>
-                <texture_v_factor>1</texture_v_factor>
                 <model_color_vec4>
                     <x>0.80000001</x>
                     <y>0.80000001</y>
@@ -10908,8 +10759,6 @@
                 </transform>
                 <model_name></model_name>
                 <texture_name></texture_name>
-                <texture_u_factor>1</texture_u_factor>
-                <texture_v_factor>1</texture_v_factor>
                 <model_color_vec4>
                     <x>0.80000001</x>
                     <y>0.80000001</y>
@@ -11075,8 +10924,6 @@
                 </transform>
                 <model_name></model_name>
                 <texture_name></texture_name>
-                <texture_u_factor>1</texture_u_factor>
-                <texture_v_factor>1</texture_v_factor>
                 <model_color_vec4>
                     <x>0.80000001</x>
                     <y>0.80000001</y>
@@ -11272,8 +11119,6 @@
                 </transform>
                 <model_name></model_name>
                 <texture_name></texture_name>
-                <texture_u_factor>1</texture_u_factor>
-                <texture_v_factor>1</texture_v_factor>
                 <model_color_vec4>
                     <x>0.80000001</x>
                     <y>0.80000001</y>
@@ -11394,8 +11239,6 @@
                 </transform>
                 <model_name></model_name>
                 <texture_name></texture_name>
-                <texture_u_factor>1</texture_u_factor>
-                <texture_v_factor>1</texture_v_factor>
                 <model_color_vec4>
                     <x>0.80000001</x>
                     <y>0.80000001</y>
@@ -11561,8 +11404,6 @@
                 </transform>
                 <model_name>cube</model_name>
                 <texture_name></texture_name>
-                <texture_u_factor>1</texture_u_factor>
-                <texture_v_factor>1</texture_v_factor>
                 <model_color_vec4>
                     <x>0.80000001</x>
                     <y>0.80000001</y>
@@ -11619,8 +11460,6 @@
                 </transform>
                 <model_name>cube</model_name>
                 <texture_name></texture_name>
-                <texture_u_factor>1</texture_u_factor>
-                <texture_v_factor>1</texture_v_factor>
                 <model_color_vec4>
                     <x>0.80000001</x>
                     <y>0.80000001</y>
@@ -11677,8 +11516,6 @@
                 </transform>
                 <model_name></model_name>
                 <texture_name></texture_name>
-                <texture_u_factor>1</texture_u_factor>
-                <texture_v_factor>1</texture_v_factor>
                 <model_color_vec4>
                     <x>0.80000001</x>
                     <y>0.80000001</y>
@@ -11799,8 +11636,6 @@
                 </transform>
                 <model_name></model_name>
                 <texture_name></texture_name>
-                <texture_u_factor>1</texture_u_factor>
-                <texture_v_factor>1</texture_v_factor>
                 <model_color_vec4>
                     <x>0.80000001</x>
                     <y>0.80000001</y>
@@ -11906,8 +11741,6 @@
                 </transform>
                 <model_name></model_name>
                 <texture_name></texture_name>
-                <texture_u_factor>1</texture_u_factor>
-                <texture_v_factor>1</texture_v_factor>
                 <model_color_vec4>
                     <x>0.80000001</x>
                     <y>0.80000001</y>
@@ -12028,8 +11861,6 @@
                 </transform>
                 <model_name>cube</model_name>
                 <texture_name></texture_name>
-                <texture_u_factor>1</texture_u_factor>
-                <texture_v_factor>1</texture_v_factor>
                 <model_color_vec4>
                     <x>0.80000001</x>
                     <y>0.80000001</y>
@@ -12086,8 +11917,6 @@
                 </transform>
                 <model_name></model_name>
                 <texture_name></texture_name>
-                <texture_u_factor>1</texture_u_factor>
-                <texture_v_factor>1</texture_v_factor>
                 <model_color_vec4>
                     <x>0.80000001</x>
                     <y>0.80000001</y>
@@ -12216,8 +12045,6 @@
                 </transform>
                 <model_name></model_name>
                 <texture_name></texture_name>
-                <texture_u_factor>1</texture_u_factor>
-                <texture_v_factor>1</texture_v_factor>
                 <model_color_vec4>
                     <x>0.80000001</x>
                     <y>0.80000001</y>
@@ -12323,8 +12150,6 @@
                 </transform>
                 <model_name></model_name>
                 <texture_name></texture_name>
-                <texture_u_factor>1</texture_u_factor>
-                <texture_v_factor>1</texture_v_factor>
                 <model_color_vec4>
                     <x>0.80000001</x>
                     <y>0.80000001</y>
@@ -12484,8 +12309,6 @@
                 </transform>
                 <model_name></model_name>
                 <texture_name></texture_name>
-                <texture_u_factor>1</texture_u_factor>
-                <texture_v_factor>1</texture_v_factor>
                 <model_color_vec4>
                     <x>0.80000001</x>
                     <y>0.80000001</y>
@@ -12534,8 +12357,6 @@
                 </transform>
                 <model_name></model_name>
                 <texture_name></texture_name>
-                <texture_u_factor>1</texture_u_factor>
-                <texture_v_factor>1</texture_v_factor>
                 <model_color_vec4>
                     <x>0.80000001</x>
                     <y>0.80000001</y>
@@ -12641,8 +12462,6 @@
                 </transform>
                 <model_name></model_name>
                 <texture_name></texture_name>
-                <texture_u_factor>1</texture_u_factor>
-                <texture_v_factor>1</texture_v_factor>
                 <model_color_vec4>
                     <x>0.80000001</x>
                     <y>0.80000001</y>
@@ -12748,8 +12567,6 @@
                 </transform>
                 <model_name></model_name>
                 <texture_name></texture_name>
-                <texture_u_factor>1</texture_u_factor>
-                <texture_v_factor>1</texture_v_factor>
                 <model_color_vec4>
                     <x>0.80000001</x>
                     <y>0.80000001</y>
@@ -12885,8 +12702,6 @@
                 </transform>
                 <model_name></model_name>
                 <texture_name>white</texture_name>
-                <texture_u_factor>1</texture_u_factor>
-                <texture_v_factor>1</texture_v_factor>
                 <model_color_vec4>
                     <x>0</x>
                     <y>0</y>
@@ -13306,8 +13121,6 @@
                 </transform>
                 <model_name></model_name>
                 <texture_name></texture_name>
-                <texture_u_factor>1</texture_u_factor>
-                <texture_v_factor>1</texture_v_factor>
                 <model_color_vec4>
                     <x>0.80000001</x>
                     <y>0.80000001</y>

@@ -128,9 +128,9 @@ void FlowPickupEntity::Draw(GameManager &g, float dt) {
         Mat4 const& mat = _transform.Mat4Scale();
         renderer::ModelInstance* m = g._scene->DrawTexturedMesh(_model, _textureId);
         m->_transform = mat;
-        m->_color = currentColor;
-        m->_lightFactor = 0.f;
+        m->_color = currentColor;        
 #if NEW_LIGHTS
+        m->_lightFactor = 0.f;
         renderer::Light *light = g._scene->DrawLight();
         light->_p = _transform.Pos();
         light->_color = currentColor.GetXYZ();

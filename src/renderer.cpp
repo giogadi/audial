@@ -1428,17 +1428,17 @@ void Scene::Draw(int windowWidth, int windowHeight, float timeInSecs, float delt
     int numDir = 0;
     int numPoint = 0;
     {
-        for (Light const& light : _pInternal->_lightsToDraw) {
-            // cull light if not visible in camera
-            float screenX, screenY;
-            geometry::ProjectWorldPointToScreenSpace(light._p, viewProjTransform, windowWidth, windowHeight, screenX, screenY);
-            if (screenX < 0 || screenX > windowWidth || screenY < 0 || screenY > windowHeight) {
-                continue;
-            }
+        for (Light const& light : _pInternal->_lightsToDraw) {            
             if (light._isDirectional) {                
                 lights._dirLight = light;
                 ++numDir;
             } else if (numPoint < lights._pointLights.size()) {
+                // cull point light if not visible in camera
+                float screenX, screenY;
+                geometry::ProjectWorldPointToScreenSpace(light._p, viewProjTransform, windowWidth, windowHeight, screenX, screenY);
+                if (screenX < 0 || screenX > windowWidth || screenY < 0 || screenY > windowHeight) {
+                    continue;
+                }
                 lights._pointLights[numPoint] = light;
                 ++numPoint;
             }
