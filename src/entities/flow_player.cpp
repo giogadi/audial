@@ -309,6 +309,7 @@ void FlowPlayerEntity::Draw(GameManager& g, float const dt) {
         tailTrans.SetTranslation(t.p);
         renderer::ModelInstance& model = g._scene->DrawCube(tailTrans, _s._currentColor);
         model._topLayer = true;
+        model._lightFactor = 0.f;
     }
 
     Transform renderTrans = _transform;

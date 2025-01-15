@@ -1,6 +1,7 @@
 #include "seq_action.h"
 
 #include <sstream>
+#include <algorithm>
 
 #include "imgui/imgui.h"
 

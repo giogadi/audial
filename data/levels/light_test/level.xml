@@ -3280,7 +3280,7 @@
                 <transform>
                     <pos>
                         <x>7.0047121</x>
-                        <y>-0.5</y>
+                        <y>-1.5</y>
                         <z>-21.103844</z>
                     </pos>
                     <quat>
@@ -3390,7 +3390,7 @@
                 </last_hit_response>
                 <text>a</text>
                 <buttons>a</buttons>
-                <type_kill>true</type_kill>
+                <type_kill>false</type_kill>
                 <all_actions_on_hit>false</all_actions_on_hit>
                 <flow_cooldown>-1</flow_cooldown>
                 <show_beats_left>false</show_beats_left>
@@ -3406,7 +3406,23 @@
                     <id>-1</id>
                 </active_region_editor_id>
                 <lock_player_in_region>false</lock_player_in_region>
-                <hit_actions/>
+                <hit_actions>
+                    <seq_action>
+                        <one_time>false</one_time>
+                        <action_type>NoteOnOff</action_type>
+                        <channel>0</channel>
+                        <midiNotes>
+                            <array_item>
+                                <note>43</note>
+                            </array_item>
+                        </midiNotes>
+                        <noteLength>0.5</noteLength>
+                        <velocity>1</velocity>
+                        <quantizeDenom>0.25</quantizeDenom>
+                        <doNoteOff>true</doNoteOff>
+                        <holdNotes>false</holdNotes>
+                    </seq_action>
+                </hit_actions>
                 <all_hit_actions/>
                 <off_cooldown_actions/>
                 <combo_end_actions/>
@@ -3481,7 +3497,7 @@
                 </last_hit_response>
                 <text>b</text>
                 <buttons>a</buttons>
-                <type_kill>true</type_kill>
+                <type_kill>false</type_kill>
                 <all_actions_on_hit>false</all_actions_on_hit>
                 <flow_cooldown>-1</flow_cooldown>
                 <show_beats_left>false</show_beats_left>
@@ -3497,7 +3513,23 @@
                     <id>-1</id>
                 </active_region_editor_id>
                 <lock_player_in_region>false</lock_player_in_region>
-                <hit_actions/>
+                <hit_actions>
+                    <seq_action>
+                        <one_time>false</one_time>
+                        <action_type>NoteOnOff</action_type>
+                        <channel>0</channel>
+                        <midiNotes>
+                            <array_item>
+                                <note>36</note>
+                            </array_item>
+                        </midiNotes>
+                        <noteLength>0.5</noteLength>
+                        <velocity>1</velocity>
+                        <quantizeDenom>0.25</quantizeDenom>
+                        <doNoteOff>true</doNoteOff>
+                        <holdNotes>false</holdNotes>
+                    </seq_action>
+                </hit_actions>
                 <all_hit_actions/>
                 <off_cooldown_actions/>
                 <combo_end_actions/>
@@ -3572,7 +3604,7 @@
                 </last_hit_response>
                 <text>c</text>
                 <buttons>a</buttons>
-                <type_kill>true</type_kill>
+                <type_kill>false</type_kill>
                 <all_actions_on_hit>false</all_actions_on_hit>
                 <flow_cooldown>-1</flow_cooldown>
                 <show_beats_left>false</show_beats_left>
@@ -3588,7 +3620,23 @@
                     <id>-1</id>
                 </active_region_editor_id>
                 <lock_player_in_region>false</lock_player_in_region>
-                <hit_actions/>
+                <hit_actions>
+                    <seq_action>
+                        <one_time>false</one_time>
+                        <action_type>NoteOnOff</action_type>
+                        <channel>0</channel>
+                        <midiNotes>
+                            <array_item>
+                                <note>41</note>
+                            </array_item>
+                        </midiNotes>
+                        <noteLength>0.5</noteLength>
+                        <velocity>1</velocity>
+                        <quantizeDenom>0.25</quantizeDenom>
+                        <doNoteOff>true</doNoteOff>
+                        <holdNotes>false</holdNotes>
+                    </seq_action>
+                </hit_actions>
                 <all_hit_actions/>
                 <off_cooldown_actions/>
                 <combo_end_actions/>

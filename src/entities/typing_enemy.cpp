@@ -616,7 +616,6 @@ void TypingEnemyEntity::UpdateDerived(GameManager& g, float dt) {
             }
             _s._flowCooldownStartBeatTime = -1.0;
             _s._numHits = 0;
-            _s._timeOfLastHit = -1.0;
         }
     }
 }
@@ -682,6 +681,8 @@ void TypingEnemyEntity::Draw(GameManager& g, float dt) {
 #else
 void TypingEnemyEntity::Draw(GameManager& g, float dt) {
     Transform renderTrans = _transform;
+    float baseY = -0.75f * renderTrans.Scale()._y;
+    renderTrans.Translate(Vec3(0.f, baseY, 0.f));
     Mat4 transMat = renderTrans.Mat4Scale();
     renderer::ModelInstance &model = g._scene->DrawCube(transMat, _modelColor);
     float constexpr kDefaultLightFactor = 0.7f;
@@ -706,7 +707,7 @@ void TypingEnemyEntity::Draw(GameManager& g, float dt) {
     Vec3 textCenter(0.5f*(textBBox.minX + textBBox.maxX), 0.f, 0.5f*(textBBox.minY + textBBox.maxY));
     Transform textTrans = renderTrans;
     textTrans.Translate(-textCenter);
-    textTrans.Translate(Vec3(0.f, 0.51f*renderTrans.Scale()._y, 0.f));
+    textTrans.Translate(Vec3(0, 0.5f*renderTrans.Scale()._y + 0.1f, 0.f));
 
     double beatTime = g._beatClock->GetBeatTimeFromEpoch();
 
@@ -878,16 +879,12 @@ void TypingEnemyEntity::DoComboEndActions(GameManager& g) {
 void TypingEnemyEntity::ResetCooldown() {
     _s._flowCooldownStartBeatTime = -1.0;
     _s._numHits = 0;
-    _s._timeOfLastHit = -1.0;
 }
 
 void TypingEnemyEntity::OnHitOther(GameManager& g) {
     if (_p._resetCooldownOnAnyHit) {
-        //_s._flowCooldownStartBeatTime = -1.0;
         ResetCooldown();
     }
-    /*_s._numHits = 0;
-    _s._timeOfLastHit = -1.0;*/
 }
 
 TypingEnemyEntity::NextKeys TypingEnemyEntity::GetNextKeys() const {

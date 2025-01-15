@@ -97,7 +97,7 @@ void InitStateData(StateData& state, int channel, int const sampleRate, int cons
             }
             rng::Seed(v.oscillators[ii].rng, 1234871 + ii);
         }
-        v.moogLpfState.reset(sampleRate);
+        v.moogLpfState.reset((float)sampleRate);
     }
 }
 
