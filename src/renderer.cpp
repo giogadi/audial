@@ -32,6 +32,8 @@ int constexpr kMaxNumPointLights = 5;
 constexpr int kShadowWidth = 1 * 1024;
 constexpr int kShadowHeight = 1 * 1024;
 
+constexpr int kMaxLightGridBufferSize = (2560 / 8) * (1600 / 8) * 4 * sizeof(int32_t);
+
 float quadVertices[] = {
        // positions   // texCoords
        -1.0f,  1.0f,  0.0f, 1.0f,
@@ -344,7 +346,8 @@ public:
     Shader _modelShader;
     int _modelShaderUniforms[ModelShaderUniforms::Count];
 
-     
+    unsigned int _lightGridTBO = 0;
+    unsigned int _lightGridTextureId = 0;
 
 #if DRAW_WATER    
     Shader _waterShader;
@@ -882,6 +885,18 @@ bool SceneInternal::Init(GameManager& g) {
         }
         _textureIdMap.emplace("msdf_font", msdfFontTextureId);
     }
+    
+    // LIGHT GRID HERE
+    glGenBuffers(1, &_lightGridTBO);
+    glBindBuffer(GL_TEXTURE_BUFFER, _lightGridTBO);
+    glBufferData(GL_TEXTURE_BUFFER, kMaxLightGridBufferSize, NULL, GL_DYNAMIC_DRAW);    
+
+    glGenTextures(1, &_lightGridTextureId);
+    glBindTexture(GL_TEXTURE_BUFFER, _lightGridTextureId);
+    glTexBuffer(GL_TEXTURE_BUFFER, GL_R32I, _lightGridTBO);
+
+    glBindBuffer(GL_TEXTURE_BUFFER, 0);
+
 
     // DO THE FONT VAO/VBO HERE
     glGenVertexArrays(1, &_textVao);
