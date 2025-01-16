@@ -5,7 +5,7 @@ in vec3 fragPos;
 in vec3 normalNonNorm;
 in vec4 fragPosLightSpace;
 
-#define NUM_POINT_LIGHTS 10
+#define NUM_POINT_LIGHTS 20 
 
 struct PointLight {
     vec4 _pos;
@@ -97,13 +97,15 @@ void main() {
         CalcPointLight(uPointLights[i], viewDir, normal, totalAmbient, totalDiffuse, totalSpecular);
     }
 #else
-    ivec2 rc = ivec2((gl_FragCoord.yx - vec2(0.5f, 0.5f)) / uLightCellSizePx);
-    rc.x = uLightGridRows - rc.x - 1;
-    int gridIx = (rc.x * uLightGridColumns + rc.y) * uNumLightsPerCell;
-    for (int cellLightIx = 0; cellLightIx < uNumLightsPerCell; ++cellLightIx) {
-        int lightIx = texelFetch(uLightGrid, gridIx + cellLightIx).r;
-        PointLight light = uPointLights[lightIx];
-        CalcPointLight(light, viewDir, normal, totalAmbient, totalDiffuse, totalSpecular);
+    {
+        ivec2 rc = ivec2((gl_FragCoord.yx - vec2(0.5f, 0.5f)) / uLightCellSizePx);
+        rc.x = uLightGridRows - rc.x - 1;
+        int gridIx = (rc.x * uLightGridColumns + rc.y) * uNumLightsPerCell;
+        for (int cellLightIx = 0; cellLightIx < uNumLightsPerCell; ++cellLightIx) {
+            int lightIx = texelFetch(uLightGrid, gridIx + cellLightIx).r;
+            PointLight light = uPointLights[lightIx];
+            CalcPointLight(light, viewDir, normal, totalAmbient, totalDiffuse, totalSpecular);
+        }
     }
 #endif
 
@@ -145,6 +147,9 @@ void main() {
     float testB = float(texelFetch(uLightGrid, gridIx+2).r) / 255.f;
     float testA = float(texelFetch(uLightGrid, gridIx+3).r) / 255.f;
     vec4 testColor = vec4(testR, testG, testB, testA);
+    //vec4 testColor = vec4(float(rc.x) / uLightGridRows, float(rc.y) / uLightGridColumns, 0.f, 1.f);
+    //int txl = texelFetch(uLightGrid, 0);
+    //vec4 testColor = vec4(float(txl));
     FragColor = testColor;
 #endif
 }

@@ -28,13 +28,13 @@
 
 namespace {
 constexpr int kMaxLineCount = 512;
-int constexpr kMaxNumPointLights = 10;
+int constexpr kMaxNumPointLights = 20;
 
 constexpr int kShadowWidth = 1 * 1024;
 constexpr int kShadowHeight = 1 * 1024;
 
-int constexpr kLightGridSizePx = 8;
-int constexpr kNumLightsPerCell = 4;
+int constexpr kLightGridSizePx = 64;
+int constexpr kNumLightsPerCell = 3;
 constexpr int kMaxLightGridBufferSize = (2560 / kLightGridSizePx) * (1600 / kLightGridSizePx) * kNumLightsPerCell * sizeof(int32_t);
 int32_t sLightGrid[kMaxLightGridBufferSize];
 
@@ -1432,13 +1432,13 @@ void UpdateLightGrid(int windowWidth, int windowHeight, Mat4 const &viewProj, Li
     info.columns = (int)std::ceil((float)windowWidth / kLightGridSizePx);
     info.totalSize = info.rows * info.columns * kNumLightsPerCell * sizeof(int32_t);
     // start at index 1 because 0-th light always has no effect.
-    for (int ii = 1; ii < lights._pointLights.size(); ++ii) {
+    for (int32_t ii = 1; ii < lights._pointLights.size(); ++ii) {
         // Assume for now that the range is 2 units in the XZ plane from a light.
         Light const &pl = lights._pointLights[ii];
         // Find extents on light grid of this light's influence
         float minScreenX, minScreenY, maxScreenX, maxScreenY;
-        Vec3 minEffectWorld = pl._p + Vec3(-2.f, 0.f, -2.f);
-        Vec3 maxEffectWorld = pl._p + Vec3(2.f, 0, 2.f);
+        Vec3 minEffectWorld = pl._p + Vec3(-3.f, 0.f, -3.f);
+        Vec3 maxEffectWorld = pl._p + Vec3(3.f, 0, 3.f);
         geometry::ProjectWorldPointToScreenSpace(minEffectWorld, viewProj, windowWidth, windowHeight, minScreenX, minScreenY);
         geometry::ProjectWorldPointToScreenSpace(maxEffectWorld, viewProj, windowWidth, windowHeight, maxScreenX, maxScreenY);
         int minGridCol = math_util::Clamp((int)(minScreenX / kLightGridSizePx), 0, info.columns-1);
@@ -1471,8 +1471,8 @@ void UpdateLightGridTestColors(int windowWidth, int windowHeight, LightGridInfo 
         for (int col = 0; col < numColumns; ++col) {
             float r = (float)row / (numRows - 1);
             float g = (float)col / (numColumns - 1);
-            sLightGrid[ii++] = (int)(r * 255.f);
-            sLightGrid[ii++] = (int)(g * 255.f);
+            sLightGrid[ii++] = (int32_t)(r * 255.f);
+            sLightGrid[ii++] = (int32_t)(g * 255.f);
             sLightGrid[ii++] = 0;
             sLightGrid[ii++] = 255;
         }
@@ -1485,7 +1485,7 @@ void UpdateLightGridTestColors(int windowWidth, int windowHeight, LightGridInfo 
 }
 
 
-void Scene::Draw(int windowWidth, int windowHeight, float timeInSecs, float deltaTime) {
+void Scene::Draw(int windowWidth, int windowHeight, int fbWidth, int fbHeight, float timeInSecs, float deltaTime) {
 
     glDepthFunc(GL_LEQUAL);
 
@@ -1522,7 +1522,8 @@ void Scene::Draw(int windowWidth, int windowHeight, float timeInSecs, float delt
     // (r=0,c=0) [light0, light1, light2, light3], (r=0,c=1) [...], ....
     LightGridInfo lightGridInfo;
     {
-        UpdateLightGrid(windowWidth, windowHeight, viewProjTransform, lights, lightGridInfo);
+        UpdateLightGrid(fbWidth, fbHeight, viewProjTransform, lights, lightGridInfo);
+        //UpdateLightGridTestColors(fbWidth, fbHeight, lightGridInfo);
         glBindBuffer(GL_TEXTURE_BUFFER, _pInternal->_lightGridTBO);
         glBufferSubData(GL_TEXTURE_BUFFER, 0, lightGridInfo.totalSize, sLightGrid);
         glBindBuffer(GL_TEXTURE_BUFFER, 0);

@@ -121,7 +121,7 @@ public:
     MeshId LoadPolygon2d(std::vector<Vec3> const& points);
     // bool UnloadPolygon2d(MeshId id);
 
-    void Draw(int windowWidth, int windowHeight, float timeInSecs, float deltaTime);
+    void Draw(int windowWidth, int windowHeight, int fbWidth, int fbHeight, float timeInSecs, float deltaTime);
 
     BoundMeshPNU const* GetMesh(std::string const& meshName) const;
     // Returns white texture if name not found
