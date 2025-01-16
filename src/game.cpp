@@ -763,7 +763,7 @@ int main(int argc, char** argv) {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         float timeInSecs = (float) glfwGetTime();
-        sceneManager.Draw(gGameManager._windowWidth, gGameManager._windowHeight, timeInSecs, fixedTimeStep);
+        sceneManager.Draw(gGameManager._windowWidth, gGameManager._windowHeight, gGameManager._fbWidth, gGameManager._fbHeight, timeInSecs, fixedTimeStep);
 
         ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 

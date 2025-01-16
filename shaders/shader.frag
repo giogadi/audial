@@ -5,7 +5,7 @@ in vec3 fragPos;
 in vec3 normalNonNorm;
 in vec4 fragPosLightSpace;
 
-#define NUM_POINT_LIGHTS 20 
+#define NUM_POINT_LIGHTS 16 
 
 struct PointLight {
     vec4 _pos;
@@ -62,7 +62,6 @@ void CalcPointLight(in PointLight light, in vec3 viewDir, in vec3 normal, inout 
     diffuse *= atten;
     specular *= atten;
     vec3 ambient = light._color.xyz * light._ambient * atten;
-    //result += diffuse + ambient + specular;
     totalAmbient += ambient;
     totalDiffuse += diffuse;
     totalSpecular += specular;
@@ -98,14 +97,31 @@ void main() {
     }
 #else
     {
+        
+        
         ivec2 rc = ivec2((gl_FragCoord.yx - vec2(0.5f, 0.5f)) / uLightCellSizePx);
         rc.x = uLightGridRows - rc.x - 1;
         int gridIx = (rc.x * uLightGridColumns + rc.y) * uNumLightsPerCell;
+        
+        
         for (int cellLightIx = 0; cellLightIx < uNumLightsPerCell; ++cellLightIx) {
             int lightIx = texelFetch(uLightGrid, gridIx + cellLightIx).r;
             PointLight light = uPointLights[lightIx];
             CalcPointLight(light, viewDir, normal, totalAmbient, totalDiffuse, totalSpecular);
         }
+        
+        
+        
+        
+       /* 
+        int packedLightIxs = texelFetch(uLightGrid, gridIx).r;           
+        for (int cellLightIx = 0; cellLightIx < 4; ++cellLightIx) {
+            int lightIx = packedLightIxs & (0x000000FF << cellLightIx*8);
+            lightIx >> cellLightIx*8;
+            PointLight light = uPointLights[lightIx];
+            CalcPointLight(light, viewDir, normal, totalAmbient, totalDiffuse, totalSpecular);
+        }
+        */ 
     }
 #endif
 

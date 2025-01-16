@@ -28,13 +28,13 @@
 
 namespace {
 constexpr int kMaxLineCount = 512;
-int constexpr kMaxNumPointLights = 20;
+int constexpr kMaxNumPointLights = 16; 
 
 constexpr int kShadowWidth = 1 * 1024;
 constexpr int kShadowHeight = 1 * 1024;
 
-int constexpr kLightGridSizePx = 64;
-int constexpr kNumLightsPerCell = 3;
+int constexpr kLightGridSizePx = 8;
+int constexpr kNumLightsPerCell = 4;
 constexpr int kMaxLightGridBufferSize = (2560 / kLightGridSizePx) * (1600 / kLightGridSizePx) * kNumLightsPerCell * sizeof(int32_t);
 int32_t sLightGrid[kMaxLightGridBufferSize];
 
@@ -1437,8 +1437,8 @@ void UpdateLightGrid(int windowWidth, int windowHeight, Mat4 const &viewProj, Li
         Light const &pl = lights._pointLights[ii];
         // Find extents on light grid of this light's influence
         float minScreenX, minScreenY, maxScreenX, maxScreenY;
-        Vec3 minEffectWorld = pl._p + Vec3(-3.f, 0.f, -3.f);
-        Vec3 maxEffectWorld = pl._p + Vec3(3.f, 0, 3.f);
+        Vec3 minEffectWorld = pl._p + Vec3(-1.f, 0.f, -1.f);
+        Vec3 maxEffectWorld = pl._p + Vec3(1.f, 0, 1.f);
         geometry::ProjectWorldPointToScreenSpace(minEffectWorld, viewProj, windowWidth, windowHeight, minScreenX, minScreenY);
         geometry::ProjectWorldPointToScreenSpace(maxEffectWorld, viewProj, windowWidth, windowHeight, maxScreenX, maxScreenY);
         int minGridCol = math_util::Clamp((int)(minScreenX / kLightGridSizePx), 0, info.columns-1);
@@ -1447,13 +1447,32 @@ void UpdateLightGrid(int windowWidth, int windowHeight, Mat4 const &viewProj, Li
         int maxGridRow = math_util::Clamp((int)(maxScreenY / kLightGridSizePx), 0, info.rows-1);
         for (int r = minGridRow; r <= maxGridRow; ++r) {
             for (int c = minGridCol; c <= maxGridCol; ++c) {
-                int offset = (r*info.columns + c)*kNumLightsPerCell;
+                int offset = (r*info.columns + c)*kNumLightsPerCell; 
+                
+                
+               /* 
+                for (int lix = 0; lix < 4; ++lix) {
+                    int32_t mask = 0x000000FF << (8*lix);
+                    int32_t v = sLightGrid[offset] & mask;
+                    if (v == 0) {
+                        int32_t shifted = ii << (8 * lix);
+                        sLightGrid[offset] |= shifted;
+                        break;
+                    }
+                } 
+                */
+                
+                
+                
+                
                 for (int lix = 0; lix < kNumLightsPerCell; ++lix) {
                     if (sLightGrid[offset+lix] == 0) {
                         sLightGrid[offset+lix] = ii;
                         break;
                     }
                 }
+                
+                
             }
         }
     }
