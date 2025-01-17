@@ -25,18 +25,23 @@
 
 #define DRAW_WATER 0
 #define DRAW_TERRAIN 1
+#define LIGHT_GRID 0
 
 namespace {
 constexpr int kMaxLineCount = 512;
-int constexpr kMaxNumPointLights = 16; 
+int constexpr kMaxNumPointLights = 30; 
 
 constexpr int kShadowWidth = 1 * 1024;
 constexpr int kShadowHeight = 1 * 1024;
 
 int constexpr kLightGridSizePx = 8;
-int constexpr kNumLightsPerCell = 4;
+int constexpr kNumLightsPerCell = 8;
+#if LIGHT_GRID
 constexpr int kMaxLightGridBufferSize = (2560 / kLightGridSizePx) * (1600 / kLightGridSizePx) * kNumLightsPerCell * sizeof(int32_t);
 int32_t sLightGrid[kMaxLightGridBufferSize];
+#else
+constexpr int kMaxLightGridBufferSize = 8;
+#endif
 
 float quadVertices[] = {
        // positions   // texCoords
@@ -61,6 +66,7 @@ void GetLightParamsForRange(float const range, LightParams &params) {
         params._constant = 1.f;
         params._linear = 0.f;
         params._quadratic = 0.f;
+        return;
     }
     params._range = range;
     params._constant = 1.f;
@@ -1426,11 +1432,14 @@ struct LightGridInfo {
     int rows;
     int columns;
 };
+
+#if LIGHT_GRID
 void UpdateLightGrid(int windowWidth, int windowHeight, Mat4 const &viewProj, Lights const &lights, LightGridInfo &info) {
     memset(sLightGrid, 0, kMaxLightGridBufferSize);
     info.rows = (int)std::ceil((float)windowHeight / kLightGridSizePx);
     info.columns = (int)std::ceil((float)windowWidth / kLightGridSizePx);
     info.totalSize = info.rows * info.columns * kNumLightsPerCell * sizeof(int32_t);
+#if 1
     // start at index 1 because 0-th light always has no effect.
     for (int32_t ii = 1; ii < lights._pointLights.size(); ++ii) {
         // Assume for now that the range is 2 units in the XZ plane from a light.
@@ -1447,35 +1456,18 @@ void UpdateLightGrid(int windowWidth, int windowHeight, Mat4 const &viewProj, Li
         int maxGridRow = math_util::Clamp((int)(maxScreenY / kLightGridSizePx), 0, info.rows-1);
         for (int r = minGridRow; r <= maxGridRow; ++r) {
             for (int c = minGridCol; c <= maxGridCol; ++c) {
-                int offset = (r*info.columns + c)*kNumLightsPerCell; 
-                
-                
-               /* 
-                for (int lix = 0; lix < 4; ++lix) {
-                    int32_t mask = 0x000000FF << (8*lix);
-                    int32_t v = sLightGrid[offset] & mask;
-                    if (v == 0) {
-                        int32_t shifted = ii << (8 * lix);
-                        sLightGrid[offset] |= shifted;
-                        break;
-                    }
-                } 
-                */
-                
-                
-                
+                int offset = (r*info.columns + c)*kNumLightsPerCell;         
                 
                 for (int lix = 0; lix < kNumLightsPerCell; ++lix) {
                     if (sLightGrid[offset+lix] == 0) {
                         sLightGrid[offset+lix] = ii;
                         break;
                     }
-                }
-                
-                
+                } 
             }
         }
     }
+#endif
 }
 void UpdateLightGridTestColors(int windowWidth, int windowHeight, LightGridInfo &info) {    
     Vec4 testColorA(1.f, 0.f, 0.f, 1.f);
@@ -1501,7 +1493,8 @@ void UpdateLightGridTestColors(int windowWidth, int windowHeight, LightGridInfo 
     info.rows = numRows;
     info.columns = numColumns;
 }
-}
+#endif
+}  // namespace
 
 
 void Scene::Draw(int windowWidth, int windowHeight, int fbWidth, int fbHeight, float timeInSecs, float deltaTime) {
@@ -1537,9 +1530,11 @@ void Scene::Draw(int windowWidth, int windowHeight, int fbWidth, int fbHeight, f
         _pInternal->_lightsToDraw.clear();
     }
 
+
+    LightGridInfo lightGridInfo = {};
+#if LIGHT_GRID
     // LIGHT GRID
     // (r=0,c=0) [light0, light1, light2, light3], (r=0,c=1) [...], ....
-    LightGridInfo lightGridInfo;
     {
         UpdateLightGrid(fbWidth, fbHeight, viewProjTransform, lights, lightGridInfo);
         //UpdateLightGridTestColors(fbWidth, fbHeight, lightGridInfo);
@@ -1547,6 +1542,7 @@ void Scene::Draw(int windowWidth, int windowHeight, int fbWidth, int fbHeight, f
         glBufferSubData(GL_TEXTURE_BUFFER, 0, lightGridInfo.totalSize, sLightGrid);
         glBindBuffer(GL_TEXTURE_BUFFER, 0);
     }
+#endif
 
     auto& transparentModels = _pInternal->_transparentModels;
     transparentModels.clear();
@@ -1678,6 +1674,7 @@ void Scene::Draw(int windowWidth, int windowHeight, int fbWidth, int fbHeight, f
         glBindTexture(GL_TEXTURE_BUFFER, _pInternal->_lightGridTextureId);        
 
         SetLightUniformsModelShader(lights, _camera._transform.GetPos(), lightViewProj, *_pInternal);
+        shader.SetBool("uUseLightGrid", LIGHT_GRID);
         shader.SetInt("uLightCellSizePx", kLightGridSizePx);
         shader.SetInt("uLightGridRows", lightGridInfo.rows);
         shader.SetInt("uLightGridColumns", lightGridInfo.columns);

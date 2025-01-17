@@ -5,7 +5,7 @@ in vec3 fragPos;
 in vec3 normalNonNorm;
 in vec4 fragPosLightSpace;
 
-#define NUM_POINT_LIGHTS 16 
+#define NUM_POINT_LIGHTS 30 
 
 struct PointLight {
     vec4 _pos;
@@ -38,6 +38,7 @@ uniform vec4 uColor;
 uniform vec3 uViewPos;
 uniform float uLightingFactor;
 
+uniform bool uUseLightGrid;
 uniform int uLightCellSizePx;
 uniform int uLightGridRows;
 uniform int uLightGridColumns;
@@ -47,7 +48,7 @@ out vec4 FragColor;
 
 float shininess = 32.f;
 
-void CalcPointLight(in PointLight light, in vec3 viewDir, in vec3 normal, inout vec3 totalAmbient, inout vec3 totalDiffuse, inout vec3 totalSpecular) {
+void CalcPointLight(in PointLight light, in vec3 viewDir, in vec3 normal, inout vec3 totalAmbient, inout vec3 totalDiffuse, inout vec3 totalSpecular) { 
     vec3 lightDir = normalize(light._pos.xyz - fragPos);
            
     vec3 halfwayDir = normalize(lightDir + viewDir);
@@ -91,14 +92,11 @@ void main() {
     }
 
     // Point lights
-#if 0
+if (!uUseLightGrid) {
     for (int i = 0; i < NUM_POINT_LIGHTS; ++i) {
         CalcPointLight(uPointLights[i], viewDir, normal, totalAmbient, totalDiffuse, totalSpecular);
     }
-#else
-    {
-        
-        
+} else {        
         ivec2 rc = ivec2((gl_FragCoord.yx - vec2(0.5f, 0.5f)) / uLightCellSizePx);
         rc.x = uLightGridRows - rc.x - 1;
         int gridIx = (rc.x * uLightGridColumns + rc.y) * uNumLightsPerCell;
@@ -109,21 +107,8 @@ void main() {
             PointLight light = uPointLights[lightIx];
             CalcPointLight(light, viewDir, normal, totalAmbient, totalDiffuse, totalSpecular);
         }
-        
-        
-        
-        
-       /* 
-        int packedLightIxs = texelFetch(uLightGrid, gridIx).r;           
-        for (int cellLightIx = 0; cellLightIx < 4; ++cellLightIx) {
-            int lightIx = packedLightIxs & (0x000000FF << cellLightIx*8);
-            lightIx >> cellLightIx*8;
-            PointLight light = uPointLights[lightIx];
-            CalcPointLight(light, viewDir, normal, totalAmbient, totalDiffuse, totalSpecular);
-        }
-        */ 
+           
     }
-#endif
 
     // shadow
     float shadow = 0.0f;
@@ -150,7 +135,6 @@ void main() {
 
     vec3 lighting = totalAmbient + (1-shadow)*(totalDiffuse + totalSpecular);
 
-    //FragColor = vec4(mix(lighting, vec3(1.0), uLightingFactor), 1.0) * albedo;
     vec3 lightAdjusted = mix(vec3(1.0), lighting, uLightingFactor);
     FragColor = vec4(lightAdjusted, 1.0) * albedo;
 
