@@ -689,14 +689,16 @@ void TypingEnemyEntity::Draw(GameManager& g, float dt) {
     float constexpr kGlowLightFactor = 0.f;
     model._lightFactor = kDefaultLightFactor;
 
-    float constexpr kMinGlowRange = 10.f;
-    float constexpr kMaxGlowRange = 50.f;
+    float constexpr kMinGlowRange = 4.f;
+    float constexpr kMaxGlowRange = 4.f;
+    float constexpr kMinIntensity = 2.f;
+    float constexpr kMaxIntensity = 15.f;
     renderer::Light *light = g._scene->DrawLight();
     light->_p = renderTrans.Pos();
     light->_p._y += 0.5f;
     light->_color = _modelColor.GetXYZ();
     light->_ambient = 0.f;
-    light->_diffuse = 1.f;
+    light->_diffuse = kMinIntensity;
     light->_specular = 0.f;
     light->_range = kMinGlowRange;
     light->_isDirectional = false;    
@@ -716,29 +718,34 @@ void TypingEnemyEntity::Draw(GameManager& g, float dt) {
         double constexpr kGlowTime = 1.0;
         float t = (float)math_util::InverseLerp(0.0, kGlowTime, beatTimeElapsed);
         light->_range = math_util::Lerp(kMaxGlowRange, kMinGlowRange, t);
+        light->_diffuse = math_util::Lerp(kMaxIntensity, kMinIntensity, t);
         model._lightFactor = math_util::Lerp(kGlowLightFactor, kDefaultLightFactor, t);
     }
     
     float constexpr kTextGlowFreq = 0.25f;
     float colorVFactor = 0.5f * sin(beatTime * kTextGlowFreq * 2 * kPi) + 0.5f;
-    float colorMinV = 0.7f;
+    //float colorMinV = 0.7f;
+    float colorMinV = 1.f;
     float colorMaxV = 1.f;
     Vec4 colorHsva = RgbaToHsva(kDefaultTextColor);
     colorHsva._z = math_util::Lerp(colorMinV, colorMaxV, colorVFactor);
     Vec4 textColor = HsvaToRgba(colorHsva);
     g._scene->DrawText3d(_p._keyText, textTrans.Mat4Scale(), textColor);
 
-    /*Transform lightTrans = renderTrans;
-    lightTrans.Translate(Vec3(0.f, 1.f * renderTrans.Scale()._y, 0.f));
-    float constexpr kTextLightRange = 10.f;
+    Transform lightTrans = renderTrans;
+    lightTrans.Translate(Vec3(0.f, 0.85f * renderTrans.Scale()._y, 0.f));
+    float constexpr kTextLightMinRange = 1.75f;
+    float constexpr kTextLightMaxRange = 1.75f;
+    float constexpr kTextLightMinIntensity = 4.f;
+    float constexpr kTextLightMaxIntensity = 5.f;
     renderer::Light *textLight = g._scene->DrawLight();
     textLight->_p = lightTrans.Pos();
     textLight->_color = textColor.GetXYZ();
-    textLight->_diffuse = 1.f;
+    textLight->_diffuse = math_util::Lerp(kTextLightMinIntensity, kTextLightMaxIntensity, colorVFactor);
     textLight->_ambient = 0.f;
     textLight->_specular = 0.f;
-    textLight->_range = kTextLightRange;
-    textLight->_isDirectional = false;*/
+    textLight->_range = math_util::Lerp(kTextLightMinRange, kTextLightMaxRange, colorVFactor);
+    textLight->_isDirectional = false;
 }
 #endif
 
