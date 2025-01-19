@@ -28,6 +28,7 @@ Story:
 - tension between independence and control? constraint and freedom?
 
 Near-term ideas:
+- do a RATTLE EFFECT when we get to the Cm chord in cadenza
 - Maybe the top of the node is a letter-shaped whole where a light comes through? that would look tite dude
 - PANNING for fx in cadenza
 - Add secret reward for staying in first room after the door transition
@@ -93,3 +94,5 @@ Optimizations/improvements/etc:
 SECRETS
 - letters you can type that are not shown on screen?
   - or maybe some letters are hidden but still detectable visually (visual puns, camouflage, whatever)
+- If player does something like keep grooving on the "final" letters of the 1st section, maybe they unlock a secret
+- If player keeps hitting the boxes in the first section, they get a secret or a different path. OMG like Super Mario World!!!
